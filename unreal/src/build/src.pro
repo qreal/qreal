@@ -19,6 +19,7 @@ INCLUDEPATH += \
 		../repo/anton \
 		../view \
 		../umllib \
+		../umllib/src \
 		../misc
 
 # Input
@@ -37,5 +38,8 @@ SOURCES += ../main/main.cpp \
            ../repo/treemodel.cpp \
            ../umllib/edge.cpp \
            ../umllib/element.cpp \
-           ../view/pieview.cpp \
+	   ../umllib/src/uml_actor.cpp \
+	   ../umllib/src/uml_comment.cpp \
+	   ../umllib/src/uml_container.cpp \
+	   ../view/pieview.cpp \
            ../repo/anton/R_Entity.cpp

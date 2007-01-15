@@ -99,10 +99,10 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     painter->setBrush(QBrush(Qt::white));
     painter->drawRect(boundingRect());
     
-    QTextDocument d;
-    d.setHtml(text);
-    d.setTextWidth(boundingRect().width());
-    d.drawContents(painter,boundingRect());
+//    QTextDocument d;
+//    d.setHtml(text);
+//    d.setTextWidth(boundingRect().width());
+//    d.drawContents(painter,boundingRect());
     
     if (option->state & QStyle::State_Selected) {
 	    painter->setBrush(Qt::SolidPattern);

@@ -1,0 +1,10 @@
+#include "uml_@@classname@@.h"
+
+@@ClassName@@::@@ClassName@@()
+{
+}
+
+void @@ClassName@@::paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget)
+{
+    Element::paint(painter,item,widget);
+}

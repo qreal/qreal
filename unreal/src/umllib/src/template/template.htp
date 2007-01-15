@@ -1,0 +1,19 @@
+#ifndef @@CLASSNAME@@_H
+#define @@CLASSNAME@@_H
+
+#include "element.h"
+
+class @@ClassName@@ : public Element
+{
+public:
+    @@ClassName@@();
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
+
+private:    
+    QString text;
+    
+    @@PropertyList@@
+};
+
+#endif

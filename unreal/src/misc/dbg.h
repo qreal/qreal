@@ -1,7 +1,7 @@
 #ifndef VERBOSE_DEBUG_H
 #define VERBOSE_DEBUG_H
 
-//#ifdef _LONG_DEBUG
+#ifdef _LONG_DEBUG
 
 class __tepkom_debugger{
       public:
@@ -11,5 +11,11 @@ class __tepkom_debugger{
 
 #define dbg \
     __tepkom_debugger __a_tepkom_debugger(__PRETTY_FUNCTION__)
+
+#else
+
+#define dbg
+
+#endif
 
 #endif

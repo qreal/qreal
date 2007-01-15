@@ -1,0 +1,13 @@
+(
+    name => "Comment",
+    resizeable => 1,
+    paint => [  [ "rect", 0, 0, 100, 100 ],
+		[ "text", 20, 20, "\$title" ] ],
+#    props => (
+#		name	=> "QString",
+#		uuid	=> "QString"
+#	     )
+);
+
+
+
