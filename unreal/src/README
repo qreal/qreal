@@ -1,4 +1,4 @@
-Right now we add everything buildable to the main qmake file file, like in the
+Right now we add everything buildable to the main qmake file, like in the
 K+M-REAL. I am too lazy to split up these files, but sometime in future we
 should move to one-makefile-per-dir structure.
 
