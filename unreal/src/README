@@ -10,7 +10,7 @@ Right now we have:
     main/	- main file
     misc/	- global includes
     repo/	- repository
-	anton/	- anton's part of repository (to be removed soon)
+    mainwindow/ - some GUI stuff 
     umllib/	- elements to be placed on diagrams
     view/	- view module
 
@@ -20,4 +20,3 @@ To build this project:
     $ cd src/build
     $ qmake && make
     $ ./real
-
