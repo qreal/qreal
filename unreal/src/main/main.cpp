@@ -1,49 +1,34 @@
-//=====================================================================
-// Project:      altREAL 
-// File Name:    main.cpp
-// Description:  main() function file  
-//
-// Date:         21-November-06
-// Revision:      
-//
-// Author:       Timofey A. Bryksin (sly@tercom.ru)
-//===================================================================== 
+/****************************************************************************
+**
+** Copyright (C) 2005-2006 Trolltech ASA. All rights reserved.
+**
+** This file is part of the example classes of the Qt Toolkit.
+**
+** Licensees holding valid Qt Preview licenses may use this file in
+** accordance with the Qt Preview License Agreement provided with the
+** Software.
+**
+** See http://www.trolltech.com/pricing.html or email sales@trolltech.com for
+** information about Qt Commercial License Agreements.
+**
+** Contact info@trolltech.com if any conditions of this licensing are
+** not clear to you.
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+****************************************************************************/
 
+#include <QApplication>
 
-#include <QtGui>
-#include <QString>
-#include <QHBoxLayout>
-#include <QTableView>
-#include "treemodel.h"
-#include "pieview.h"
-
-//class 
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(qtreal);
+
     QApplication app(argc, argv);
-
-    TreeModel *model = new TreeModel();
-    
-    QSplitter *splitter = new QSplitter;
-    QTreeView *table = new QTreeView;
-    PieView *pieChart = new PieView;
-    splitter->addWidget(table);
-    splitter->addWidget(pieChart);
-    splitter->setStretchFactor(0, 0);
-    splitter->setStretchFactor(1, 1);
-
-    table->setModel(model);
-    pieChart->setModel(model);
-    
-    QItemSelectionModel *selectionModel = new QItemSelectionModel(model);
-    table->setSelectionModel(selectionModel);
-    pieChart->setSelectionModel(selectionModel);
-						    
-    splitter->setWindowTitle(QObject::tr("0bj3ct xpl0r3r (tr33) && pr0p3rty 3d1t0r (tr33)"));
-
-//  splitter->resize(400,200);
-    splitter->show();
-
+    MainWindow mainWin;
+    mainWin.show();
     return app.exec();
 }
