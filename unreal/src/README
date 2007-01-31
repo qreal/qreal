@@ -7,10 +7,12 @@ Right now we have:
  src/
     build/	- buildsystem, all files right now are built there
     editors/	- editor-building tools & generated sources
+    images/     - images
     main/	- main file
+    mainwindow/ - some GUI stuff 
     misc/	- global includes
     repo/	- repository
-    mainwindow/ - some GUI stuff 
+    shapes/     - SVG shapes
     umllib/	- elements to be placed on diagrams
     view/	- view module
 
