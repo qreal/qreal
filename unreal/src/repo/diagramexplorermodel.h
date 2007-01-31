@@ -13,8 +13,6 @@
 #define DIAGRAMEXPLORERMODEL_H
 
 #include <QAbstractItemModel>
-#include <QVariant>
-#include <QDebug>
 #include "treeitem.h"
 
 class TreeItem;
@@ -40,7 +38,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
  
-    void createMaps();
+    void prepareInsertion( int, int, QModelIndex, QString, QString, QString, QString );
+    QModelIndex getIndex(QString );
 
 signals:    
     void dataAboutToBeChanged(const QModelIndex&, QVariant);

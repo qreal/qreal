@@ -10,67 +10,64 @@
 //===================================================================== 
 
 #include "diagramexplorermodel.h"
-#include "dbg.h"
+//#include "dbg.h"
 
 DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
-dbg;
-  createMaps();
+//dbg;
 
   db = _db;
-
-  rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0); 
-  rootItem->addChild(new TreeItem("awesome_diagram", "diagram", "diagram", diagrams, rootItem)); 
-  rootItem->addChild(new TreeItem("super_cool_diagram", "diagram", "diagram", diagrams, rootItem)); 
-  TreeItem *tmp1 = rootItem->getChild("awesome_diagram");
-  tmp1->addChild(new TreeItem("actor 1", "actor", "awesome_diagram", diagrams, tmp1));
-  tmp1->addChild(new TreeItem("usecase 1", "usecase", "awesome_diagram", diagrams, tmp1));
-  TreeItem *tmp2 = rootItem->getChild("super_cool_diagram");
-  tmp2->addChild(new TreeItem("actor 2", "actor", "super_cool_diagram", diagrams, tmp2));
-  tmp2->addChild(new TreeItem("actor 4", "actor", "super_cool_diagram", diagrams, tmp2));
-
-}
-
-void DiagramExplorerModel::createMaps(){
-//dbg;
-  objects = new QMap<QString, QSqlQuery>;
-
-  QSqlQuery o1;
-  o1.prepare("select name from actor");
-  objects->insert("actor", o1);
-   
-  QSqlQuery o2;
-  o2.prepare("select name from usecase");
-  objects->insert("usecase", o2);
-  
-  QSqlQuery o3;
-  o3.prepare("select name from diagram where type='objects'");
-  objects->insert("diagram", o3);
-
   diagrams = new QMap<QString, QSqlQuery>;
+  rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
   
-  QSqlQuery d1;
-  d1.prepare("select name from awesome_diagram");
-  diagrams->insert("awesome_diagram", d1);
-   
-  QSqlQuery d2;
-  d2.prepare("select name from super_cool_diagram");
-  diagrams->insert("super_cool_diagram", d2);
+  TreeItem *table, *value;
+  
+  QSqlQuery q, q1,q2;  
+  q.prepare("select name from diagram where type='diagrams'");
+  diagrams->insert("diagram", q);
+  
+  q1.exec("select name from diagram where type='diagrams'");
+  //qDebug() << q1.executedQuery();
+  int nameClmn = q1.record().indexOf("name");
+  while(q1.next()){           // fetching diagram names
+    QString tableName = q1.value(nameClmn).toString();    
+    table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem);                  
+    rootItem->addChild(table);
+    q2.prepare("select name from " + tableName);
+    diagrams->insert(tableName, q2);
+    q2.exec("select * from " + tableName);
+  //  qDebug() << q2.executedQuery();
+    int nameCol = q2.record().indexOf("name");
+    int typeCol = q2.record().indexOf("type");  
+    while(q2.next()){
+       QString valueName = q2.value(nameCol).toString();
+       QString typeName  = q2.value(typeCol).toString();
+    //   qDebug() << valueName << typeName;
+       value = new TreeItem(valueName, typeName, tableName, diagrams, table);
+       table->addChild(value);
+    }    
+  }
+ /* 
+  qDebug() << "testing... size is " << diagrams->size();
+  
+  qDebug() << rootItem->rowCount();
+  qDebug() << rootItem->getName();
+  qDebug() << "  " << rootItem->getChild(0)->getName();
+  qDebug() << "    " << rootItem->getChild(0)->getChild(0)->getName();
+  qDebug() << "    " << rootItem->getChild(0)->getChild(1)->getName();
 
-  QSqlQuery d3;
-  d3.prepare("select name from diagram where type='diagrams'");
-  diagrams->insert("diagram", d3);
+  qDebug() << "  " << rootItem->getChild(1)->getName();
+  qDebug() << "    " << rootItem->getChild(1)->getChild(0)->getName();
+  qDebug() << "    " << rootItem->getChild(1)->getChild(1)->getName();
+*/
+}  
 
-
-}
-
-
- DiagramExplorerModel::~ DiagramExplorerModel(){
-dbg;    
+DiagramExplorerModel::~ DiagramExplorerModel(){
+//dbg;    
   delete rootItem;
 }
 
 bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
-dbg;
+//dbg;
   if (index.isValid() && role == Qt::EditRole) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     emit dataAboutToBeChanged(index, value);
@@ -104,7 +101,7 @@ dbg;
 
 
 bool  DiagramExplorerModel::insertRows(int position, int rows, const QModelIndex &parent){
-	
+//dbg;	
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
 	
 	endInsertRows();
@@ -112,7 +109,7 @@ bool  DiagramExplorerModel::insertRows(int position, int rows, const QModelIndex
 }
 
 bool  DiagramExplorerModel::removeRows(int position, int rows, const QModelIndex &parent){
- 
+//dbg; 
  beginRemoveRows(QModelIndex(), position, position + rows - 1);
  
  endRemoveRows();
@@ -190,21 +187,30 @@ QModelIndex DiagramExplorerModel::parent(const QModelIndex &index) const{
 
 int DiagramExplorerModel::rowCount(const QModelIndex &parent) const{
 //dbg;
- TreeItem *parentItem;
- if (!parent.isValid()){
-  parentItem = rootItem;
-}  
- else{
-  parentItem = static_cast<TreeItem*>(parent.internalPointer());
+  TreeItem *parentItem;
+  if (!parent.isValid()){
+    parentItem = rootItem;
+  }  
+  else{
+    parentItem = static_cast<TreeItem*>(parent.internalPointer());
 
- }  
- //qDebug() << "==" << __FUNCTION__ << ": " << parentItem->rowCount() << ", name = " << parentItem->name;  
- return parentItem->rowCount();
+  }  
+  //qDebug() << "==" << __FUNCTION__ << ": " << parentItem->rowCount() << ", name = " << parentItem->getName();  
+  return parentItem->rowCount();
 }
 
 void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
 //dbg;
   TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-  //qDebug() << item->diagram << item->name << value.toString();
+  //qDebug() << item->getDiagramName() << item->getName() << value.toString();
   rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
 }
+
+QModelIndex DiagramExplorerModel::getIndex(QString id){
+//dbg;
+    QString diagram = id.section('/',1,1);
+    QString name    = id.section('/',2,2);
+    TreeItem* item = rootItem->getChild(diagram)->getChild(name);
+    return createIndex(item->row(),0,item);
+}
+
