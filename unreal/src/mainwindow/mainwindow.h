@@ -9,7 +9,8 @@
 #include "pieview.h"
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
-#include "proxymodel.h"
+#include "propertyeditormodel.h"
+#include "editor.h"
 
 class QAction;
 class QListWidget;
@@ -56,6 +57,7 @@ private:
     QMenu *helpMenu;
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
+    QToolBar *reqDiagramToolBar;
     QAction *newLetterAct;
     QAction *saveAct;
     QAction *printAct;
@@ -66,10 +68,23 @@ private:
     QAction *addActorAct;
     QAction *debugAct;
 
+    //req diagram
+    QAction *nFeaturedAct; //nodes
+    QAction *nConcAltAct;
+    QAction *nLeafAct;
+    QAction *nParentAct;
+    QAction *nParentMandAct;
+    QAction *nParentOrAct;
+    QAction *nParentOptAct;
+    QAction *nParentAltAct;
+    QAction *nParentOptAltAct;
+    QAction *eP2NAct; // edge
+
+    Editor *reqEditor;
     ObjectExplorerModel *model1;
     DiagramExplorerModel *model2;
+    PropertyEditorModel *propModel;
     QSqlQueryModel *q;
-    Proxy *proxy;
     QTreeView *tree1;
     QTreeView *tree2;
     QTableView *table;
@@ -77,3 +92,4 @@ private:
 };
 
 #endif
+

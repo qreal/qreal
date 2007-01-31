@@ -1,17 +1,18 @@
 #include <QtGui>
-
 #include "mainwindow.h"
 
 MainWindow::MainWindow()
 {
 dbg;
-  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-  db.setHostName("localhost");
-  db.setDatabaseName("test");
-  db.setUserName("real");
-  db.setPassword("domination");
+  /*QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
   
-  //db.setDatabaseName(":memory:");
+  db.setDatabaseName(":memory:");*/
+
+  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+  db.setDatabaseName("unreal");
+  db.setUserName("unreal");
+  db.setPassword("domination");
+  db.setHostName("localhost");
   if (!db.open()) {
     QMessageBox::critical(0, qApp->tr("Cannot open database"),
       qApp->tr("Unable to establish a database connection.\n"), 
@@ -21,8 +22,11 @@ dbg;
 
   QSqlQuery query;    
 
-  query.exec("create table diagram (id int primary key, name varchar(20), type varchar(20))");
-  query.exec("insert into diagram values (1, 'actor', 'objects')");   
+  query.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
+  
+  reqEditor = new Editor;
+ 
+/*  query.exec("insert into diagram values (1, 'actor', 'objects')");   
   query.exec("insert into diagram values (2, 'usecase', 'objects')");
   query.exec("insert into diagram values (3, 'super_cool_diagram', 'diagrams')");   
   query.exec("insert into diagram values (4, 'awesome_diagram', 'diagrams')");   
@@ -30,7 +34,7 @@ dbg;
   query.exec("create table actor (id int primary key, name varchar(20), diagram varchar(20), svg varchar(20))");
   query.exec("insert into actor values (1, 'actor 1', 'awesome_diagram', 'path 1')");
   query.exec("insert into actor values (2, 'actor 2', 'super_cool_diagram', 'path 2')");
-  query.exec("insert into actor values (3, 'actor 3', 'super_cool_diagram', 'path 1')");
+  query.exec("insert into actor values (3, 'actor 4', 'super_cool_diagram', 'path 1')");
  
   query.exec("create table usecase (id int primary key, name varchar(20), diagram varchar(20), svg varchar(30))");
   query.exec("insert into usecase values (1, 'usecase 1', 'awesome_diagram', 'path 3')");
@@ -44,7 +48,7 @@ dbg;
   query.exec("insert into awesome_diagram values (2, 'usecase 1', 'usecase')");
    
   //basemodel = new BaseModel(db);
-    
+  */  
     model1 = new ObjectExplorerModel(db);
 
     QDockWidget *dock = new QDockWidget(tr("object explorer"), this);
@@ -67,11 +71,24 @@ dbg;
     dock3->setWidget(tree2);
     addDockWidget(Qt::LeftDockWidgetArea, dock3);
 
-//    connect(model2, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), model1, SLOT(reset2(const QModelIndex &, const QModelIndex &)));
 
     connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model1, SLOT(updateData(const QModelIndex &, QVariant)));
     connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model2, SLOT(updateData(const QModelIndex &, QVariant)));
 
+    
+    ////////
+    
+    propModel = new PropertyEditorModel();
+    table = new QTableView();
+    table->setModel(propModel);
+    connect(tree2, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
+    connect(tree1, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
+    QDockWidget *dock4 = new QDockWidget(tr("property editor"), this);
+    dock4->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock4->setWidget(table);
+    addDockWidget(Qt::LeftDockWidgetArea, dock4);
+    
+    
     /*   freezed for some time
     
     q = new QSqlQueryModel();
@@ -89,7 +106,9 @@ dbg;
     connect(tree, SIGNAL(clicked(const QModelIndex&)), q, SLOT(reset(const QModelIndex&)));
     */
     pieChart = new PieView();
-    //pieChart->setModel(model2);
+    pieChart->setModel(model2);
+
+    connect(tree2, SIGNAL(clicked(const QModelIndex&)), pieChart, SLOT(setRootIndex(const QModelIndex&)));
 
     //QItemSelectionModel *selectionModel = new QItemSelectionModel(model);
     //table->setSelectionModel(selectionModel);
@@ -97,6 +116,7 @@ dbg;
  
     setCentralWidget(pieChart);
 
+   
     createActions();
     createMenus();
     createToolBars();
@@ -185,6 +205,7 @@ void MainWindow::createActions()
 
     addActorAct = new QAction(tr("Add Actor"), this);
     connect(addActorAct, SIGNAL(triggered()), this, SLOT(addActor()));
+
 }
 
 void MainWindow::createMenus()
@@ -222,6 +243,11 @@ void MainWindow::createToolBars()
 
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(undoAct);
+
+    reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
+//    QList<QAction*>::iterator it;
+//    for (it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++)    
+    reqDiagramToolBar->addActions(reqEditor->actions);
 }
 
 void MainWindow::createStatusBar()
