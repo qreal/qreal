@@ -1,5 +1,6 @@
 #include <QtGui>
 #include "mainwindow.h"
+#include "dbg.h"
 
 MainWindow::MainWindow()
 {
@@ -106,9 +107,9 @@ dbg;
     connect(tree, SIGNAL(clicked(const QModelIndex&)), q, SLOT(reset(const QModelIndex&)));
     */
     pieChart = new PieView();
-    pieChart->setModel(model2);
+    //pieChart->setModel(model2);
 
-    connect(tree2, SIGNAL(clicked(const QModelIndex&)), pieChart, SLOT(setRootIndex(const QModelIndex&)));
+    //connect(tree2, SIGNAL(clicked(const QModelIndex&)), pieChart, SLOT(setRootIndex(const QModelIndex&)));
 
     //QItemSelectionModel *selectionModel = new QItemSelectionModel(model);
     //table->setSelectionModel(selectionModel);
