@@ -5,7 +5,7 @@
 #include "pieview.h"
 #include "dbg.h"
 
-#include "uml_comment.h"
+//#include "uml_comment.h"
 #include "element.h"
 #include "edge.h"
 
@@ -98,10 +98,10 @@ void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
         QModelIndex nameIndex = model()->index(row, 1, rootIndex());
         QString name = model()->data(nameIndex).toString();
 	
-	Element *foo = new Comment;
+/*	Element *foo = new Comment;
 	items[model()->index(row, 0, rootIndex()).internalId()] = foo;
 	foo->setInfo(type, name);
-	scene->addItem(foo);
+	scene->addItem(foo);*/
     }
 
 }
@@ -124,7 +124,7 @@ void PieView::setModel ( QAbstractItemModel * newModel )
 	
 	std::cout << type.toLocal8Bit().constData() << std::endl;
 	
-	if ( type != "link" ) {
+	/*if ( type != "link" ) {
 	    prelast = last;
 	    last = new Comment;
 	    items[model()->index(row, 0, rootIndex()).internalId()] = last;
@@ -140,7 +140,7 @@ void PieView::setModel ( QAbstractItemModel * newModel )
 	    
 	    items[model()->index(row, 0, rootIndex()).internalId()] = edge;
 	    scene->addItem(edge);
-	}
+	}*/
     }
     
     
