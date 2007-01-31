@@ -16,6 +16,7 @@
 #include <QList>
 #include <QVariant>
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 class TreeItem{
 
