@@ -4,49 +4,54 @@
 
 QT += sql
 TEMPLATE = app
-TARGET = real
-DEPENDPATH	+= \
-		. \
-		../main \
-		../misc \
-		../repo \
-		../umllib \
-		../view \
-        ../mainwindow \
-		../editors 
+TARGET = unreal
+DEPENDPATH      += \
+                . \
+                ../editors \
+                ../main \
+                ../mainwindow \
+                ../misc \
+                ../repo \
+                ../umllib \
+                ../view 
+                
+                
 		
 INCLUDEPATH += \
-		. \
-		../repo \
-		../view \
-		../umllib \
-		../umllib/src \
-		../editors \
-        ../mainwindow \
-		../misc 
-		
+                . \
+                ../editors \
+                ../mainwindow \
+                ../misc \
+                ../repo \
+                ../view \
+                ../umllib \
+                ../umllib/src 
 
 # Input
-HEADERS +=  ../misc/dbg.h \
+HEADERS +=  ../editors/editor.h \
+            ../mainwindow/dialogs.h \            
+            ../mainwindow/mainwindow.h \
+            ../misc/dbg.h \
             ../repo/diagramexplorermodel.h \
             ../repo/objectexplorermodel.h \ 
             ../repo/propertyeditormodel.h \
             ../repo/treeitem.h \
             ../umllib/edge.h \
             ../umllib/element.h \
-            ../view/pieview.h \
-            ../editors/editor.h \
-            ../mainwindow/mainwindow.h
+            ../view/pieview.h        
+            
            
-SOURCES +=  ../main/main.cpp \
-            ../umllib/edge.cpp \
-            ../umllib/element.cpp \
+SOURCES +=  ../editors/editor.cpp \
+            ../main/main.cpp \
+            ../mainwindow/dialogs.cpp \
             ../mainwindow/mainwindow.cpp \
-            ../view/pieview.cpp \
-            ../repo/treeitem.cpp \
-            ../repo/objectexplorermodel.cpp \
-            ../repo/propertyeditormodel.cpp \
             ../repo/diagramexplorermodel.cpp \
-            ../editors/editor.cpp
+            ../repo/objectexplorermodel.cpp \
+            ../repo/propertyeditormodel.cpp \             
+            ../repo/treeitem.cpp \
+            ../umllib/edge.cpp \
+            ../umllib/element.cpp \            
+            ../view/pieview.cpp
+            
 
 RESOURCES += qtreal.qrc
