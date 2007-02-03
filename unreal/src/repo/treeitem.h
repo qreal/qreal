@@ -4,8 +4,8 @@
 // Description:  Tree item, provides hierarchical structures for 
 //               relational tables 
 //
-// Created:      16-January-07
-// Revision:      
+// Created:      16-Jan-07
+// Revision:     01-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -17,6 +17,7 @@
 #include <QVariant>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QDebug>
 
 class TreeItem{
 
@@ -26,6 +27,7 @@ public:
 
     int rowCount() const;
     int columnCount() const { return 1; }
+    int childCount() const { return childItems.size(); }
     
     QVariant data() const { return name; }
     QString getType() const { return type; }

@@ -40,20 +40,27 @@ public:
  
     void prepareInsertion( int, int, QModelIndex, QString, QString, QString, QString );
     QModelIndex getIndex(QString );
+    void createDiagram(QString& );
+    void createElement(QList<QString> values);
 
 signals:    
     void dataAboutToBeChanged(const QModelIndex&, QVariant);
+    void elemAdded();
 
 public slots:
     void updateData(const QModelIndex&, QVariant);
 
 private:              
     //BaseModel *model;
+    int curID;
+    int elemID;
     TreeItem *rootItem;
     QSqlDatabase db;
     QMap<QString, QSqlQuery> *objects;
     QMap<QString, QSqlQuery> *diagrams;
  
+    void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL OF THAT!!
+    
 };
 
 

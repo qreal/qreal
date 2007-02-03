@@ -3,63 +3,58 @@
 // File Name:    diagramexplorermodel.cpp
 // Description:  Proxy model for Diagram Explorer
 //
-// Created:      16-January-07
-// Revision:      
+// Created:      16-Jan-07
+// Revision:     01-Feb-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
 #include "diagramexplorermodel.h"
-//#include "dbg.h"
+#include "dbg.h"
 
 DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
 //dbg;
 
-  db = _db;
-  diagrams = new QMap<QString, QSqlQuery>;
-  rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    db = _db;
+    diagrams = new QMap<QString, QSqlQuery>;
+    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    rescan();  
   
-  TreeItem *table, *value;
-  
-  QSqlQuery q, q1,q2;  
-  q.prepare("select name from diagram where type='diagrams'");
-  diagrams->insert("diagram", q);
-  
-  q1.exec("select name from diagram where type='diagrams'");
-  //qDebug() << q1.executedQuery();
-  int nameClmn = q1.record().indexOf("name");
-  while(q1.next()){           // fetching diagram names
-    QString tableName = q1.value(nameClmn).toString();    
-    table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem);                  
-    rootItem->addChild(table);
-    q2.prepare("select name from " + tableName);
-    diagrams->insert(tableName, q2);
-    q2.exec("select * from " + tableName);
-  //  qDebug() << q2.executedQuery();
-    int nameCol = q2.record().indexOf("name");
-    int typeCol = q2.record().indexOf("type");  
-    while(q2.next()){
-       QString valueName = q2.value(nameCol).toString();
-       QString typeName  = q2.value(typeCol).toString();
-    //   qDebug() << valueName << typeName;
-       value = new TreeItem(valueName, typeName, tableName, diagrams, table);
-       table->addChild(value);
-    }    
-  }
- /* 
-  qDebug() << "testing... size is " << diagrams->size();
-  
-  qDebug() << rootItem->rowCount();
-  qDebug() << rootItem->getName();
-  qDebug() << "  " << rootItem->getChild(0)->getName();
-  qDebug() << "    " << rootItem->getChild(0)->getChild(0)->getName();
-  qDebug() << "    " << rootItem->getChild(0)->getChild(1)->getName();
-
-  qDebug() << "  " << rootItem->getChild(1)->getName();
-  qDebug() << "    " << rootItem->getChild(1)->getChild(0)->getName();
-  qDebug() << "    " << rootItem->getChild(1)->getChild(1)->getName();
-*/
+    curID = 666;
+    elemID = 0;
 }  
+
+void DiagramExplorerModel::rescan(){
+dbg;
+
+    TreeItem *table, *value;
+
+    QSqlQuery q, q1,q2;  
+    q.prepare("select name from diagram where type='diagrams'");
+    diagrams->insert("diagram", q);
+  
+    q1.exec("select name from diagram where type='diagrams'");
+    //qDebug() << q1.executedQuery();
+    int nameClmn = q1.record().indexOf("name");
+    while(q1.next()){           // fetching diagram names
+        QString tableName = q1.value(nameClmn).toString();    
+        table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem);                  
+        rootItem->addChild(table);
+        q2.prepare("select name from " + tableName);
+        diagrams->insert(tableName, q2);
+        q2.exec("select * from " + tableName);
+        //  qDebug() << q2.executedQuery();
+        int nameCol = q2.record().indexOf("name");
+        int typeCol = q2.record().indexOf("type");  
+        while(q2.next()){
+            QString valueName = q2.value(nameCol).toString();
+            QString typeName  = q2.value(typeCol).toString();
+            //   qDebug() << valueName << typeName;
+            value = new TreeItem(valueName, typeName, tableName, diagrams, table);
+            table->addChild(value);
+        }    
+    }
+}
 
 DiagramExplorerModel::~ DiagramExplorerModel(){
 //dbg;    
@@ -102,8 +97,9 @@ bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &va
 
 bool  DiagramExplorerModel::insertRows(int position, int rows, const QModelIndex &parent){
 //dbg;	
-	beginInsertRows(QModelIndex(), position, position + rows - 1);
-	
+    beginInsertRows(QModelIndex(), position, position + rows - 1);
+    
+    
 	endInsertRows();
 	return true;
 }
@@ -214,3 +210,52 @@ QModelIndex DiagramExplorerModel::getIndex(QString id){
     return createIndex(item->row(),0,item);
 }
 
+void DiagramExplorerModel::createDiagram(QString &dname){
+//dbg;
+    QSqlQuery q;    
+    QString tmp = "insert into diagram values (%1, '" + dname + "', 'diagrams')";
+    q.exec(tmp.arg(curID));
+    curID++;
+    tmp = "create table %1 (id integer primary key, name varchar(20), type varchar(20))";
+    q.exec(tmp.arg(dname));
+    //qDebug() << q.executedQuery(); q.exec("select name from diagram where type='diagrams'"); 
+    //while(q.next()) qDebug() << q.value(0).toString();
+
+//qDebug() << "rowcount: " << rootItem->rowCount();
+
+//    TreeItem *item = new TreeItem(dname, "diagram", "diagram", diagrams, rootItem);                  
+//    rootItem->addChild(item);       
+   
+//    q.prepare("select name from " + dname);
+  //  qDebug() << "select name from " + dname;
+//    diagrams->insert(dname, q);          
+
+    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    rescan(); 
+}
+
+void DiagramExplorerModel::createElement(QList<QString> values){
+dbg;
+    QSqlQuery q, q1;
+
+    QString tmp = "insert into %1 values (%2, '%3', '%4')";
+    q.exec(tmp.arg(values.at(0)).arg(elemID).arg(values.at(1)).arg(values.at(6)));
+    //q.exec("select name from " + values.at(0)); qDebug() << q.executedQuery() << ": "; 
+    //while(q.next()) qDebug() << q.value(0).toString();
+
+
+    tmp = "insert into %1 values (%2, '%3', '%4', %5, '%6', '%7', '%8')";
+    //qDebug() << "list: " << values;
+    tmp = tmp.arg(values.at(6)).arg(elemID++).arg(values.at(1)).arg(values.at(2)).arg(values.at(3)).arg(values.at(4)).arg(values.at(5)).arg(values.at(0));
+//    qDebug() << "tmp:" << tmp;
+    q1.exec(tmp);
+//    qDebug() << q1.executedQuery();
+ //   q1.exec("select name from nFeatured"); qDebug() << q1.executedQuery() << ": "; 
+ //   while(q1.next()) qDebug() << q1.value(0).toString();
+   
+    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    rescan(); 
+    emit elemAdded();
+
+   
+}

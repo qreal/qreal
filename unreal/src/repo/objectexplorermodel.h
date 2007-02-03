@@ -13,7 +13,6 @@
 #define OBJECTEXPLORERMODEL_H
 
 #include <QAbstractItemModel>
-#include <QVariant>
 
 #include "treeitem.h"
 
@@ -28,8 +27,8 @@ public:
     ~ObjectExplorerModel();
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
-//    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-//    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
     QVariant data(const QModelIndex &index, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -38,15 +37,17 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
  
-    void createMaps();
-
+    void preInsertRows( int , QString );
+       
 signals:
     void dataAboutToBeChanged(const QModelIndex &, QVariant);
 
 public slots:
     void updateData(const QModelIndex &, QVariant);
- 
-private:              
+    void doNOTuseIt();
+
+private:          
+    void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     TreeItem *rootItem;
     QSqlDatabase db;
     QMap<QString, QSqlQuery> *objects;

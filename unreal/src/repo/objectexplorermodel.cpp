@@ -9,105 +9,145 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-#include <QtGui>
+//#include <QtGui>
 #include "objectexplorermodel.h"
 #include "dbg.h"
 
 
 ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
-dbg;
-  createMaps();
- 
-  db = _db;
- 
-  rootItem = new TreeItem("diagram", "diagram", "", objects, 0); 
-  rootItem->addChild(new TreeItem("actor", "diagram", "diagram", objects, rootItem)); 
-  rootItem->addChild(new TreeItem("usecase", "diagram", "diagram", objects, rootItem)); 
-  TreeItem *tmp1 = rootItem->getChild("actor");
-  tmp1->addChild(new TreeItem("actor 1", "actor", "awesome_diagram", objects, tmp1));
-  tmp1->addChild(new TreeItem("actor 2", "actor", "super_cool_diagram", objects, tmp1));
-  tmp1->addChild(new TreeItem("actor 4", "actor", "super_cool_diagram", objects, tmp1));
-  TreeItem *tmp2 = rootItem->getChild("usecase");
-  tmp2->addChild(new TreeItem("usecase 1", "usecase", "awesome_diagram", objects, tmp2));
-
-}
-
-void ObjectExplorerModel::createMaps(){
 //dbg;
+ 
+  //qDebug() << __FUNCTION__;  
+
+  db = _db;
   objects = new QMap<QString, QSqlQuery>;
 
-  QSqlQuery o1;
-  o1.prepare("select name from actor");
-  objects->insert("actor", o1);
-   
-  QSqlQuery o2;
-  o2.prepare("select name from usecase");
-  objects->insert("usecase", o2);
-  
-  QSqlQuery o3;
-  o3.prepare("select name from diagram where type='objects'");
-  objects->insert("diagram", o3);
+    rescan(); 
+ 
+}
 
-  diagrams = new QMap<QString, QSqlQuery>;
+void ObjectExplorerModel::rescan(){
+//dbg;
+  //qDebug() << __FUNCTION__;  
+    objects = new QMap<QString, QSqlQuery>; 
+    rootItem = new TreeItem("diagram", "diagram", "", objects, 0);   
   
-  QSqlQuery d1;
-  d1.prepare("select name from awesome_diagram");
-  diagrams->insert("awesome_diagram", d1);
-   
-  QSqlQuery d2;
-  d2.prepare("select name from super_cool_diagram");
-  diagrams->insert("super_cool_diagram", d2);
+    TreeItem *table, *val;
+  
+    QSqlQuery q, q1,q2;  
+    q.prepare("select name from diagram where type='objects'");
+    objects->insert("diagram", q);
+  
+    q1.exec("select name from diagram where type='objects'");
+//      qDebug() << q1.executedQuery();
+ //   qDebug() << q1.executedQuery(); //q1.exec("select name from diag" + item->parent()->getType());
+   // while(q1.next()) qDebug() << q1.value(0).toString();
 
-  QSqlQuery d3;
-  d3.prepare("select name from diagram where type='diagrams'");
-  diagrams->insert("diagram", d3);
+
+    int nameClmn = q1.record().indexOf("name");
+    while(q1.next()){           // fetching diagram names
+        QString tableName = q1.value(nameClmn).toString();    
+        table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem);                  
+        rootItem->addChild(table);
+        q2.prepare("select name from " + tableName);
+        objects->insert(tableName, q2);
+        q2.exec("select * from " + tableName);
+        //    qDebug() << q2.executedQuery();
+        int nameCol = q2.record().indexOf("name");
+        int diagramCol = q2.record().indexOf("diagram");
+        while(q2.next()){
+            QString valueName = q2.value(nameCol).toString();
+//            qDebug() << "name: " << valueName;
+            QString diagramName = q2.value(diagramCol).toString();
+//            qDebug() << "diagram:" << diagramName;
+            val = new TreeItem(valueName, tableName, diagramName, objects, table);
+            qDebug() << "created: " << valueName << " " << tableName << " " << diagramName;
+            table->addChild(val);
+        }    
+    }
+ 
+ 
+ /*
+    qDebug() << "testing... size is " << objects->size();
+ 
+    qDebug() << rootItem->rowCount();
+    qDebug() << rootItem->getName();
+    
+    qDebug() << "  " << rootItem->getChild("nFeatured")->getName();
+    qDebug() << "  " << rootItem->getChild("nFeatured")->rowCount();
+    qDebug() << "  " << rootItem->getChild("nFeatured")->parent()->getName();*/
+    //qDebug() << "  " << rootItem->getChild("nFeatured")->rowCount();
+    
+    //qDebug() << "    " << rootItem->getChild("nFeatured")->getChild(0)->getName();
+//    qDebug() << "    " << rootItem->getChild("req_diagram_1")->getChild(1)->getName();
+           
+    //qDebug() << "  " << rootItem->getChild(1)->getName();
+    //qDebug() << "    " << rootItem->getChild(1)->getChild(0)->getName();
+    //qDebug() << "    " << rootItem->getChild(1)->getChild(1)->getName();
+                  
+  
 
 
 }
 
+
 ObjectExplorerModel::~ObjectExplorerModel(){
-dbg;    
+//dbg;    
+  //qDebug() << __FUNCTION__;  
   delete rootItem;
 }
 
 bool ObjectExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
-dbg;
+//dbg;
+  //qDebug() << __FUNCTION__;  
   if (index.isValid() && role == Qt::EditRole) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     emit dataAboutToBeChanged(index, value);
     QSqlQuery q;
     q.exec("update " +item->getDiagramName()+ " set name='" + value.toString() + "' where name='" + item->getName() + "'");
+    
+  //  qDebug() << q.executedQuery(); q.exec("select name from " + item->parent()->getDiagramName());
+  //  while(q.next()) qDebug() << q.value(0).toString();
+ 
     q.exec("update " +item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
     item->setData(value.toString());
-   // qDebug() << q.executedQuery();
-    //q.exec("select name from " + item->parent()->name);
-    //while(q.next()) qDebug() << q.value(0).toString();
+    
+  //  qDebug() << q.executedQuery(); q.exec("select name from " + item->parent()->getType());
+  //  while(q.next()) qDebug() << q.value(0).toString();
+    
     emit dataChanged(index, index);
     return true;
   }
   return false;
 }
 
+void ObjectExplorerModel::preInsertRows(int rows, QString type){
+//dbg;  
+  //qDebug() << __FUNCTION__;  
+  insertRows(0, rows, createIndex(0,0,(void*)rootItem->getChild(type)));
+}
 
-/*
 bool ObjectExplorerModel::insertRows(int position, int rows, const QModelIndex &parent){
-	
+//dbg;	
+  //qDebug() << __FUNCTION__;  
 	beginInsertRows(QModelIndex(), position, position + rows - 1);
-	
+
 	endInsertRows();
 	return true;
 }
 
 bool ObjectExplorerModel::removeRows(int position, int rows, const QModelIndex &parent){
- 
+//dbg; 
+//  qDebug() << __FUNCTION__;  
  beginRemoveRows(QModelIndex(), position, position + rows - 1);
  
  endRemoveRows();
  return true;
-}*/
+}
 
 int ObjectExplorerModel::columnCount(const QModelIndex &parent) const{
 //dbg;
+//  qDebug() << __FUNCTION__;  
   if (parent.isValid())
     return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
   else
@@ -116,6 +156,7 @@ int ObjectExplorerModel::columnCount(const QModelIndex &parent) const{
 
 QVariant ObjectExplorerModel::data(const QModelIndex &index, int role) const{
 //dbg;
+//  qDebug() << __FUNCTION__;  
  if (!index.isValid())
    return QVariant();
  if (role != Qt::DisplayRole)
@@ -128,6 +169,7 @@ QVariant ObjectExplorerModel::data(const QModelIndex &index, int role) const{
 
 Qt::ItemFlags ObjectExplorerModel::flags(const QModelIndex &index) const{
 //dbg;
+//  qDebug() << __FUNCTION__;  
   Qt::ItemFlags f = Qt::ItemIsEnabled;
   if (!index.isValid())
     return f;
@@ -139,11 +181,14 @@ Qt::ItemFlags ObjectExplorerModel::flags(const QModelIndex &index) const{
 
 QVariant ObjectExplorerModel::headerData(int , Qt::Orientation , int ) const {
 //dbg;                               
+//  qDebug() << __FUNCTION__;  
  return "";
 }
 
 QModelIndex ObjectExplorerModel::index(int row, int column, const QModelIndex &parent) const{
 //dbg;            
+  //qDebug() << __FUNCTION__;  
+//  qDebug() << __FUNCTION__;  
  TreeItem *parentItem;
  if (!parent.isValid())
    parentItem = rootItem;
@@ -162,17 +207,23 @@ QModelIndex ObjectExplorerModel::index(int row, int column, const QModelIndex &p
 
 QModelIndex ObjectExplorerModel::parent(const QModelIndex &index) const{
 //dbg;
- if (!index.isValid())
-   return QModelIndex();
- TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
- TreeItem *parentItem = childItem->parent();
- if (parentItem == rootItem)
-   return QModelIndex();
- return createIndex(parentItem->row(), 0, parentItem);
+ // qDebug() << __FUNCTION__;  
+    if (!index.isValid())
+        return QModelIndex();
+    TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
+    TreeItem *parentItem = childItem->parent();
+    if (parentItem == rootItem || !parentItem)
+        return QModelIndex();
+//    qDebug() << "000" << parentItem->getName(); 
+    
+    QModelIndex ind = createIndex(parentItem->row(), 0, parentItem);
+  //  qDebug() << "123";
+    return ind;
 }
 
 int ObjectExplorerModel::rowCount(const QModelIndex &parent) const{
 //dbg;
+  //qDebug() << __FUNCTION__;  
  TreeItem *parentItem;
  if (!parent.isValid()){
   parentItem = rootItem;
@@ -181,12 +232,20 @@ int ObjectExplorerModel::rowCount(const QModelIndex &parent) const{
   parentItem = static_cast<TreeItem*>(parent.internalPointer());
 
  }  
- //qDebug() << "==" << __FUNCTION__ << ": " << parentItem->rowCount() << ", name = " << parentItem->name;  
+ //qDebug() << "==" << __FUNCTION__ << ": " << parentItem->rowCount() << ", name = " << parentItem->getName();  
  return parentItem->rowCount();
 }
 
 void ObjectExplorerModel::updateData(const QModelIndex &index, QVariant value){
 //dbg;
+//  qDebug() << __FUNCTION__;  
   TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
   rootItem->getChild(item->getType())->getChild(item->getName())->setData(value.toString());
+}
+
+void ObjectExplorerModel::doNOTuseIt(){
+//dbg;
+//  qDebug() << __FUNCTION__;  
+//    rootItem = new TreeItem("diagram", "diagram", "", objects, 0);   
+    rescan();
 }
