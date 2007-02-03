@@ -1,3 +1,14 @@
+//=====================================================================
+// Project:      unREAL
+// File Name:    mainwindow.h
+// Description:  Application's main window class
+//
+// Created:      hz :)
+// Revision:     03-Feb-07
+//
+// Author:       
+//===================================================================== 
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -6,17 +17,20 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QSqlQueryModel>
+#include <QSignalMapper>
 #include "pieview.h"
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
 #include "propertyeditormodel.h"
 #include "editor.h"
+#include "dialogs.h"
 
 class QAction;
 class QListWidget;
 class QMenu;
 class QTextEdit;
 class QTreeWidget;
+class AddDiagramDialog;
 
 class MainWindow : public QMainWindow
 {
@@ -33,7 +47,9 @@ private slots:
     void about();
     void insertCustomer(const QString &customer);
     void addParagraph(const QString &paragraph);
-    void addActor();
+    void addDiagram();
+    void addElement(const QString&);
+    void setCurrentDiagram(const QString&);
     //void debug();
   
 private:
@@ -55,8 +71,10 @@ private:
     QMenu *addMenu;
     QMenu *debugMenu;
     QMenu *helpMenu;
+    QMenu *diagramsMenu;
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
+    QToolBar *diagramsToolBar;
     QToolBar *reqDiagramToolBar;
     QAction *newLetterAct;
     QAction *saveAct;
@@ -65,8 +83,11 @@ private:
     QAction *aboutAct;
     QAction *aboutQtAct;
     QAction *quitAct;
-    QAction *addActorAct;
+    QAction *addReqDiagramAct;
     QAction *debugAct;
+    QList<QAction*> diagramsList;
+    QSignalMapper *elements;
+    QSignalMapper *diagrams;
 
     //req diagram
     QAction *nFeaturedAct; //nodes
@@ -89,7 +110,10 @@ private:
     QTreeView *tree2;
     QTableView *table;
     PieView *pieChart;
+    int curNum;
+    int elemID;
+    QString curDiagram;
 };
 
-#endif
 
+#endif

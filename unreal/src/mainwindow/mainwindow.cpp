@@ -1,3 +1,14 @@
+//=====================================================================
+// Project:      unREAL
+// File Name:    mainwindow.cpp
+// Description:  Application's main window class
+//
+// Created:      hz :)
+// Revision:     03-Feb-07
+//
+// Author:       
+//===================================================================== 
+
 #include <QtGui>
 #include "mainwindow.h"
 #include "dbg.h"
@@ -5,51 +16,41 @@
 MainWindow::MainWindow()
 {
 dbg;
-  /*QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-  
-  db.setDatabaseName(":memory:");*/
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+     
+    db.setDatabaseName(":memory:");
 
-  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-  db.setDatabaseName("unreal");
-  db.setUserName("unreal");
-  db.setPassword("domination");
-  db.setHostName("localhost");
-  if (!db.open()) {
-    QMessageBox::critical(0, qApp->tr("Cannot open database"),
-      qApp->tr("Unable to establish a database connection.\n"), 
-               QMessageBox::Cancel);
-    return;
-  }
+    curNum = 0;
+    elemID = 0;
+    curDiagram = "";
+    /*QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setDatabaseName("unreal");
+    db.setUserName("unreal");
+    db.setPassword("domination");
+    db.setHostName("localhost");*/
+    if (!db.open()) {
+        QMessageBox::critical(0, qApp->tr("Cannot open database"),
+            qApp->tr("Unable to establish a database connection.\n"), 
+                QMessageBox::Cancel);
+        return;
+    }
 
-  QSqlQuery query;    
+    QSqlQuery query;    
 
-  query.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
-  
-  reqEditor = new Editor;
+    query.exec("create table diagram (id int primary key, name varchar(20), type varchar(20))");
+    
+    reqEditor = new Editor;
+    
+    diagrams = new QSignalMapper(this);
+    elements = new QSignalMapper(this);
+    
+    for(QList<QAction*>::iterator it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++){
+        connect(*it, SIGNAL(triggered()), elements, SLOT(map()));
+        elements->setMapping(*it, (*it)->data().toString());
+    }    
+    connect(elements, SIGNAL(mapped(const QString&)), this, SLOT(addElement(const QString&)));
+    connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setCurrentDiagram(const QString&)));
  
-/*  query.exec("insert into diagram values (1, 'actor', 'objects')");   
-  query.exec("insert into diagram values (2, 'usecase', 'objects')");
-  query.exec("insert into diagram values (3, 'super_cool_diagram', 'diagrams')");   
-  query.exec("insert into diagram values (4, 'awesome_diagram', 'diagrams')");   
-
-  query.exec("create table actor (id int primary key, name varchar(20), diagram varchar(20), svg varchar(20))");
-  query.exec("insert into actor values (1, 'actor 1', 'awesome_diagram', 'path 1')");
-  query.exec("insert into actor values (2, 'actor 2', 'super_cool_diagram', 'path 2')");
-  query.exec("insert into actor values (3, 'actor 4', 'super_cool_diagram', 'path 1')");
- 
-  query.exec("create table usecase (id int primary key, name varchar(20), diagram varchar(20), svg varchar(30))");
-  query.exec("insert into usecase values (1, 'usecase 1', 'awesome_diagram', 'path 3')");
- 
-  query.exec("create table super_cool_diagram (id int primary key, name varchar(20), type varchar(20))");
-  query.exec("insert into super_cool_diagram values (1, 'actor 2', 'actor')");
-  query.exec("insert into super_cool_diagram values (2, 'actor 4', 'actor')");
- 
-  query.exec("create table awesome_diagram (id int primary key, name varchar(20), type varchar(20))");
-  query.exec("insert into awesome_diagram values (1, 'actor 1', 'actor')");
-  query.exec("insert into awesome_diagram values (2, 'usecase 1', 'usecase')");
-   
-  //basemodel = new BaseModel(db);
-  */  
     model1 = new ObjectExplorerModel(db);
 
     QDockWidget *dock = new QDockWidget(tr("object explorer"), this);
@@ -75,7 +76,7 @@ dbg;
 
     connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model1, SLOT(updateData(const QModelIndex &, QVariant)));
     connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model2, SLOT(updateData(const QModelIndex &, QVariant)));
-
+    connect(model2, SIGNAL(elemAdded()), model1, SLOT(doNOTuseIt()));
     
     ////////
     
@@ -85,7 +86,7 @@ dbg;
     connect(tree2, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
     connect(tree1, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
     QDockWidget *dock4 = new QDockWidget(tr("property editor"), this);
-    dock4->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    //dock4->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
@@ -126,7 +127,7 @@ dbg;
 
     readFile();
 
-    setWindowTitle(tr("REAL"));
+    setWindowTitle(tr("unREAL"));
 
 //    newLetter();
 
@@ -204,9 +205,10 @@ void MainWindow::createActions()
     aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    addActorAct = new QAction(tr("Add Actor"), this);
-    connect(addActorAct, SIGNAL(triggered()), this, SLOT(addActor()));
+    addReqDiagramAct = new QAction(tr("Add Requirements diagram"), this);
+    connect(addReqDiagramAct, SIGNAL(triggered()), this, SLOT(addDiagram()));
 
+//    connect(addReqDiagramAct, SIGNAL(triggered()), model1, SLOT(doNOTuseIt()));
 }
 
 void MainWindow::createMenus()
@@ -226,7 +228,11 @@ void MainWindow::createMenus()
     menuBar()->addSeparator();
 
     addMenu = menuBar()->addMenu(tr("&Add"));
-    addMenu->addAction(addActorAct);
+    addMenu->addAction(addReqDiagramAct);
+
+    menuBar()->addSeparator();
+
+    diagramsMenu = menuBar()->addMenu(tr("Diagrams"));
 
     menuBar()->addSeparator();
 
@@ -245,6 +251,9 @@ void MainWindow::createToolBars()
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(undoAct);
 
+    diagramsToolBar = addToolBar(tr("diagrams"));
+    diagramsToolBar->addAction(addReqDiagramAct);
+
     reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
 //    QList<QAction*>::iterator it;
 //    for (it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++)    
@@ -260,18 +269,43 @@ void MainWindow::createDockWindows()
 {
 }
 
-void MainWindow::addActor(){
+void MainWindow::addDiagram(){
   
-  QSqlQuery q;
-  qDebug() << "==actors:";
-  q.exec("select name from actor");
-  while(q.next())
-    qDebug() << "  " << q.value(0).toString();
-
-  qDebug() << "==awesome_diagram:";
-  q.exec("select name from awesome_diagram");
-  while(q.next())
-    qDebug() << "  " << q.value(0).toString();
-  
+    AddDiagramDialog dialog(this);
+    if(dialog.exec()){     
+        QString name = dialog.eName->text();
+        QAction *tmp = new QAction(name, 0);
+        tmp->setData(name);
+        diagramsList << tmp;        
+        diagramsMenu->addAction(diagramsList.last());
+        
+        connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
+        diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
+        
+        model2->createDiagram(name);
+        tree2->reset();
+        curDiagram = name;
+    }   
 }
 
+void MainWindow::addElement(const QString &dname){
+//dbg;    
+    AddElementDialog dialog(this);
+    if(dialog.exec()){
+        QString name = dialog.eName->text();
+        QString desc = dialog.eDescription->text();
+        QString prio = dialog.ePriority->text();
+        QString srce = dialog.eSource->text();
+        QString stat = dialog.eStatus->text();
+        
+        QList<QString> list;                
+        list << curDiagram << name << desc << prio << srce << stat << dname;
+        model2->createElement(list);
+        tree2->reset(); 
+        tree1->reset();
+    }
+}
+
+void MainWindow::setCurrentDiagram(const QString &dname){
+    curDiagram = dname;
+}
