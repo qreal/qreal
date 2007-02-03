@@ -3,8 +3,8 @@
 // File Name:    editor.cpp
 // Description:  Editor 
 //
-// Created:      30-January-07
-// Revision:      
+// Created:      30-Jan-07
+// Revision:     03-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -33,26 +33,36 @@ Editor::~Editor(){
 
 void Editor::createActions(){
 //dbg;
-    QAction *tmp = new QAction(QObject::tr("Featured Element"), 0);
+    QAction *tmp = new QAction(QObject::tr("Featured Element"), 0);    
+    tmp->setData("nFeatured");
     actions << tmp;
     tmp = new QAction(QObject::tr("Concept Alternative"), 0);
+    tmp->setData("nConcAlternative");
     actions << tmp;
     tmp = new QAction(QObject::tr("Leaf"), 0);
+    tmp->setData("nLeaf");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent Node"), 0);
+    tmp->setData("nParent");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent Of Mandatory Features"), 0);
+    tmp->setData("nParentMandatory");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent of Or-Features"), 0);
+    tmp->setData("nParentOr");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent of Optional Features"), 0);
+    tmp->setData("nParentOptional");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent of Alternative Features"), 0);
+    tmp->setData("nParentAlternative");
     actions << tmp;
     tmp = new QAction(QObject::tr("Parent of Optional-Alternative Features"), 0);
+    tmp->setData("nParentOpAlternative");
     actions << tmp;
     tmp = new QAction(QObject::tr("Feature P2N Relationship"), 0);
-    actions << tmp;
+    tmp->setData("eP2N");
+    actLinks << tmp;
 }
 
 void Editor::createNodes(){
@@ -78,7 +88,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Featured";
@@ -105,7 +115,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Featured";
@@ -132,7 +142,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Featured";
@@ -159,7 +169,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -186,7 +196,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -213,7 +223,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -240,7 +250,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -267,7 +277,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -294,7 +304,7 @@ void Editor::createNodes(){
     p->type = "string";
     el->properties << p;
     p = new Property();
-    p->name = "static";
+    p->name = "status";
     p->type = "string";
     el->properties << p;
     el->links << "aP2N_Parent";
@@ -313,100 +323,104 @@ void Editor::createEdges(){
     edges.insert("eP2N", link);
 }
 
+int getSize(QSqlQuery &qu, bool flag){
+    if(flag)
+        return qu.size();
+    else{
+        qu.last();
+        return qu.at() + 1;
+    }
+}
+
 void Editor::execDBScripts(){
 //dbg;
 
     QSqlQuery q;
     QSqlRecord r;
+    int z;
     q.exec("select id from diagram where name='nFeatured'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nFeatured', 'objects')");
-        q.exec("create table nFeatured (id integer primary key auto_increment, name varchar(20),"  
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    bool canGetSize = q.driver()->hasFeature(QSqlDriver::QuerySize);
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram values (1, 'nFeatured', 'objects')");
+        q.exec("create table nFeatured (id integer primary key, name varchar(20),"  
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        
+//        q.exec("insert into nFeatured values(1, 'aaa', 'desc', 1, 'source', 'status', 'req_diagram_1')");
     }    
     else 
         qDebug() << "value:" << r.value(0).toString();
     
     q.exec("select id from diagram where name='nConcAlternative'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nConcAlternative', 'objects')");
-        q.exec("create table nConcAlternative (id integer primary key auto_increment,"  
-            " name varchar(20), description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram values (2, 'nConcAlternative', 'objects')");
+        q.exec("create table nConcAlternative (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nLeaf'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nLeaf', 'objects')");
-        q.exec("create table nLeaf (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram  values (3, 'nLeaf', 'objects')");
+        q.exec("create table nLeaf (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParent'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nParent', 'objects')");
-        q.exec("create table nParent (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (4, 'nParent', 'objects')");
+        q.exec("create table nParent (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }   
     
     q.exec("select id from diagram where name='nParentMandatory'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nParentMandatory', 'objects')");
-        q.exec("create table nParentMandatory (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (5, 'nParentMandatory', 'objects')");
+        q.exec("create table nParentMandatory (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     } 
     
     q.exec("select id from diagram where name='nParentOr'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
         q.exec("insert into diagram (name, type) values ('nParentOr', 'objects')");
-        q.exec("create table nParentOr (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+        q.exec("create table nParentOr (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentOptional'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nParentOptional', 'objects')");
-        q.exec("create table nParentOptional (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (6, 'nParentOptional', 'objects')");
+        q.exec("create table nParentOptional (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentAlternative'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nParentAlternative', 'objects')");
-        q.exec("create table nParentAlternative (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (7, 'nParentAlternative', 'objects')");
+        q.exec("create table nParentAlternative (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentOpAlternative'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('nParentOpAlternative', 'objects')");
-        q.exec("create table nParentOpAlternative (id integer primary key auto_increment, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (8, 'nParentOpAlternative', 'objects')");
+        q.exec("create table nParentOpAlternative (id integer primary key, name varchar(20),"
+            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='eP2N'");
-    //r = q.record();
-    //if (r.isEmpty()){
-    if (q.size() == 0){
-        q.exec("insert into diagram (name, type) values ('eP2N', 'objects')");
-        q.exec("create table eP2N (id integer primary key auto_increment, beginsWith varchar(20), endsWith varchar(20))");
+    z = getSize(q, canGetSize);  
+    if (z <= 0){
+        q.exec("insert into diagram (id, name, type) values (9, 'eP2N', 'objects')");
+        q.exec("create table eP2N (id integer primary key, name varchar(20), beginsWith varchar(40),"
+            " endsWith varchar(40), diagram varchar(20))");
     }
-       
+    
 }

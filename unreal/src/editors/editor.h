@@ -3,8 +3,8 @@
 // File Name:    editor.h
 // Description:  Editor 
 //
-// Created:      30-January-07
-// Revision:      
+// Created:      30-Jan-07
+// Revision:     03-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -19,10 +19,14 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlRecord>
+#include <QSqlDriver>
+
+#include "dialogs.h"
 
 class Element;
 class Link;
 class Property;
+class AddElementDialog;
 
 class Editor{
 public:
@@ -33,8 +37,10 @@ public:
     QMap<QString, Element*> nodes;
     QMap<QString, Link*> edges;
   
-    QList<QAction*> actions;
+    QList<QAction*> actions;   
+    QList<QAction*> actLinks;
     QList<QString> scripts;
+    
   
 private:
     void createActions();
