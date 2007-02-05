@@ -16,41 +16,33 @@
 MainWindow::MainWindow()
 {
 dbg;
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-     
-    db.setDatabaseName(":memory:");
+    sqlite = false;
+    QSqlDatabase db;
+
+    if (sqlite){
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(":memory:");
+    }
+    else {
+        db = QSqlDatabase::addDatabase("QMYSQL");
+        db.setDatabaseName("unreal");
+        db.setUserName("unreal");
+        db.setPassword("");
+        db.setHostName("localhost");
+    }
+    if (db.open())
+        dbOpened = true;
+    else
+        dbOpened = false;
 
     curNum = 0;
     elemID = 0;
     curDiagram = "";
-    /*QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setDatabaseName("unreal");
-    db.setUserName("unreal");
-    db.setPassword("domination");
-    db.setHostName("localhost");*/
-    if (!db.open()) {
-        QMessageBox::critical(0, qApp->tr("Cannot open database"),
-            qApp->tr("Unable to establish a database connection.\n"), 
-                QMessageBox::Cancel);
-        return;
-    }
-
-    QSqlQuery query;    
-
-    query.exec("create table diagram (id int primary key, name varchar(20), type varchar(20))");
     
-    reqEditor = new Editor;
-    
-    diagrams = new QSignalMapper(this);
-    elements = new QSignalMapper(this);
-    
-    for(QList<QAction*>::iterator it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++){
-        connect(*it, SIGNAL(triggered()), elements, SLOT(map()));
-        elements->setMapping(*it, (*it)->data().toString());
+    if (dbOpened){
+        createEditors();
     }    
-    connect(elements, SIGNAL(mapped(const QString&)), this, SLOT(addElement(const QString&)));
-    connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setCurrentDiagram(const QString&)));
- 
+    
     model1 = new ObjectExplorerModel(db);
 
     QDockWidget *dock = new QDockWidget(tr("object explorer"), this);
@@ -78,46 +70,17 @@ dbg;
     connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model2, SLOT(updateData(const QModelIndex &, QVariant)));
     connect(model2, SIGNAL(elemAdded()), model1, SLOT(doNOTuseIt()));
     
-    ////////
-    
     propModel = new PropertyEditorModel();
     table = new QTableView();
     table->setModel(propModel);
     connect(tree2, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
     connect(tree1, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
     QDockWidget *dock4 = new QDockWidget(tr("property editor"), this);
-    //dock4->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
-    
-    /*   freezed for some time
-    
-    q = new QSqlQueryModel();
-    //q->setQuery("select * from actor where name='actor 1'");
-    proxy = new Proxy();
-    proxy->setSourceModel(q);
-    
-    
-    QDockWidget  *dock2 = new QDockWidget(tr("property editor"), this);
-    table = new QTableView();
-    table->setModel(proxy);
-    dock2->setWidget(table);
-    addDockWidget(Qt::LeftDockWidgetArea, dock2);
-    
-    connect(tree, SIGNAL(clicked(const QModelIndex&)), q, SLOT(reset(const QModelIndex&)));
-    */
     pieChart = new PieView();
-    //pieChart->setModel(model2);
-
-    //connect(tree2, SIGNAL(clicked(const QModelIndex&)), pieChart, SLOT(setRootIndex(const QModelIndex&)));
-
-    //QItemSelectionModel *selectionModel = new QItemSelectionModel(model);
-    //table->setSelectionModel(selectionModel);
-    //pieChart->setSelectionModel(selectionModel);
- 
     setCentralWidget(pieChart);
-
    
     createActions();
     createMenus();
@@ -125,17 +88,29 @@ dbg;
     createStatusBar();
     createDockWindows();
 
-    readFile();
-
     setWindowTitle(tr("unREAL"));
-
-//    newLetter();
-
    
 }
 
-void MainWindow::newLetter()
-{
+void MainWindow::createEditors(){
+
+    QSqlQuery query;    
+
+    query.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
+    
+    reqEditor = new Editor;
+    
+    diagrams = new QSignalMapper(this);
+    elements = new QSignalMapper(this);
+    
+    for(QList<QAction*>::iterator it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++){
+        connect(*it, SIGNAL(triggered()), elements, SLOT(map()));
+        elements->setMapping(*it, (*it)->data().toString());
+    }    
+
+    connect(elements, SIGNAL(mapped(const QString&)), this, SLOT(addElement(const QString&)));
+    connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setCurrentDiagram(const QString&)));
+
 }
 
 void MainWindow::print()
@@ -147,18 +122,6 @@ void MainWindow::save()
 }
 
 void MainWindow::undo()
-{
-}
-
-void MainWindow::insertCustomer(const QString &)
-{
-}
-
-void MainWindow::addParagraph(const QString &)
-{
-}
-
-void MainWindow::readFile()
 {
 }
 
@@ -175,7 +138,6 @@ void MainWindow::createActions()
                                this);
     newLetterAct->setShortcut(tr("Ctrl+N"));
     newLetterAct->setStatusTip(tr("Create a new form letter"));
-    connect(newLetterAct, SIGNAL(triggered()), this, SLOT(newLetter()));
 
     saveAct = new QAction(QIcon(":/images/save.png"), tr("&Save..."), this);
     saveAct->setShortcut(tr("Ctrl+S"));
@@ -208,6 +170,9 @@ void MainWindow::createActions()
     addReqDiagramAct = new QAction(tr("Add Requirements diagram"), this);
     connect(addReqDiagramAct, SIGNAL(triggered()), this, SLOT(addDiagram()));
 
+    clearAct = new QAction(tr("clear all"), this);
+    connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
+
 //    connect(addReqDiagramAct, SIGNAL(triggered()), model1, SLOT(doNOTuseIt()));
 }
 
@@ -222,6 +187,7 @@ void MainWindow::createMenus()
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(undoAct);
+    editMenu->addAction(clearAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
 
@@ -233,6 +199,8 @@ void MainWindow::createMenus()
     menuBar()->addSeparator();
 
     diagramsMenu = menuBar()->addMenu(tr("Diagrams"));
+
+    menuBar()->addSeparator();
 
     menuBar()->addSeparator();
 
@@ -300,7 +268,11 @@ void MainWindow::addElement(const QString &dname){
         
         QList<QString> list;                
         list << curDiagram << name << desc << prio << srce << stat << dname;
-        model2->createElement(list);
+        
+        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
+        QString fields;
+        fields = "name, description, priority, source, status, diagram";
+        model2->createElement(list, fields);
         tree2->reset(); 
         tree1->reset();
     }
@@ -308,4 +280,15 @@ void MainWindow::addElement(const QString &dname){
 
 void MainWindow::setCurrentDiagram(const QString &dname){
     curDiagram = dname;
+}
+
+void MainWindow::clear(){
+// not working
+    QSqlQuery q;
+    q.exec("drop database unreal");
+    q.exec("create database unreal");
+    createEditors();
+    tree1->reset();
+    tree2->reset();
+    table->reset();
 }

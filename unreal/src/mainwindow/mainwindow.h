@@ -40,17 +40,14 @@ public:
     MainWindow();
 
 private slots:
-    void newLetter();
     void save();
     void print();
     void undo();
     void about();
-    void insertCustomer(const QString &customer);
-    void addParagraph(const QString &paragraph);
     void addDiagram();
     void addElement(const QString&);
     void setCurrentDiagram(const QString&);
-    //void debug();
+    void clear();
   
 private:
     void createActions();
@@ -58,8 +55,7 @@ private:
     void createToolBars();
     void createStatusBar();
     void createDockWindows();
-    
-    void readFile();
+    void createEditors();
 
 
     QTreeWidget *foobar;
@@ -72,6 +68,7 @@ private:
     QMenu *debugMenu;
     QMenu *helpMenu;
     QMenu *diagramsMenu;
+    QMenu *useMenu;
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
     QToolBar *diagramsToolBar;
@@ -85,6 +82,9 @@ private:
     QAction *quitAct;
     QAction *addReqDiagramAct;
     QAction *debugAct;
+    QAction *useSQLiteAct;
+    QAction *useMySQLAct;
+    QAction *clearAct;
     QList<QAction*> diagramsList;
     QSignalMapper *elements;
     QSignalMapper *diagrams;
@@ -113,6 +113,8 @@ private:
     int curNum;
     int elemID;
     QString curDiagram;
+    bool sqlite;
+    bool dbOpened;
 };
 
 
