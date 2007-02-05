@@ -342,8 +342,8 @@ void Editor::execDBScripts(){
     bool canGetSize = q.driver()->hasFeature(QSqlDriver::QuerySize);
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram values (1, 'nFeatured', 'objects')");
-        q.exec("create table nFeatured (id integer primary key, name varchar(20),"  
+        q.exec("insert into diagram (name, type) values ('nFeatured', 'objects')");
+        q.exec("create table nFeatured (id integer primary key auto_increment, name varchar(20),"  
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
         
 //        q.exec("insert into nFeatured values(1, 'aaa', 'desc', 1, 'source', 'status', 'req_diagram_1')");
@@ -354,32 +354,32 @@ void Editor::execDBScripts(){
     q.exec("select id from diagram where name='nConcAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram values (2, 'nConcAlternative', 'objects')");
-        q.exec("create table nConcAlternative (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nConcAlternative', 'objects')");
+        q.exec("create table nConcAlternative (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nLeaf'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram  values (3, 'nLeaf', 'objects')");
-        q.exec("create table nLeaf (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nLeaf', 'objects')");
+        q.exec("create table nLeaf (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParent'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (4, 'nParent', 'objects')");
-        q.exec("create table nParent (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nParent', 'objects')");
+        q.exec("create table nParent (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }   
     
     q.exec("select id from diagram where name='nParentMandatory'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (5, 'nParentMandatory', 'objects')");
-        q.exec("create table nParentMandatory (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nParentMandatory', 'objects')");
+        q.exec("create table nParentMandatory (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     } 
     
@@ -387,39 +387,39 @@ void Editor::execDBScripts(){
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (name, type) values ('nParentOr', 'objects')");
-        q.exec("create table nParentOr (id integer primary key, name varchar(20),"
+        q.exec("create table nParentOr (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentOptional'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (6, 'nParentOptional', 'objects')");
-        q.exec("create table nParentOptional (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nParentOptional', 'objects')");
+        q.exec("create table nParentOptional (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (7, 'nParentAlternative', 'objects')");
-        q.exec("create table nParentAlternative (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nParentAlternative', 'objects')");
+        q.exec("create table nParentAlternative (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='nParentOpAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (8, 'nParentOpAlternative', 'objects')");
-        q.exec("create table nParentOpAlternative (id integer primary key, name varchar(20),"
+        q.exec("insert into diagram (name, type) values ('nParentOpAlternative', 'objects')");
+        q.exec("create table nParentOpAlternative (id integer primary key auto_increment, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
     q.exec("select id from diagram where name='eP2N'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (id, name, type) values (9, 'eP2N', 'objects')");
-        q.exec("create table eP2N (id integer primary key, name varchar(20), beginsWith varchar(40),"
+        q.exec("insert into diagram (name, type) values ('eP2N', 'objects')");
+        q.exec("create table eP2N (id integer primary key auto_increment, name varchar(20), beginsWith varchar(40),"
             " endsWith varchar(40), diagram varchar(20))");
     }
     
