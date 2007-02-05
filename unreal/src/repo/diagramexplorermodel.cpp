@@ -213,11 +213,12 @@ QModelIndex DiagramExplorerModel::getIndex(QString id){
 void DiagramExplorerModel::createDiagram(QString &dname){
 //dbg;
     QSqlQuery q;    
-    QString tmp = "insert into diagram values (%1, '" + dname + "', 'diagrams')";
-    q.exec(tmp.arg(curID));
-    curID++;
-    tmp = "create table %1 (id integer primary key, name varchar(20), type varchar(20))";
+    QString tmp = "insert into diagram (name, type) values ('" + dname + "', 'diagrams')";
+    q.exec(tmp);//.arg(curID));
+    //curID++;
+    tmp = "create table %1 (id integer primary key auto_increment, name varchar(20), type varchar(20))";
     q.exec(tmp.arg(dname));
+
     //qDebug() << q.executedQuery(); q.exec("select name from diagram where type='diagrams'"); 
     //while(q.next()) qDebug() << q.value(0).toString();
 
@@ -231,23 +232,23 @@ void DiagramExplorerModel::createDiagram(QString &dname){
 //    diagrams->insert(dname, q);          
 
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
-    rescan(); 
+    rescan();
 }
 
-void DiagramExplorerModel::createElement(QList<QString> values){
+void DiagramExplorerModel::createElement(QList<QString> values, QString fields){
 dbg;
     QSqlQuery q, q1;
 
-    QString tmp = "insert into %1 values (%2, '%3', '%4')";
-    q.exec(tmp.arg(values.at(0)).arg(elemID).arg(values.at(1)).arg(values.at(6)));
+    QString tmp = "insert into %1 (name, type) values ('%2', '%3')";
+    q.exec(tmp.arg(values.at(0)).arg(values.at(1)).arg(values.at(6)));
     //q.exec("select name from " + values.at(0)); qDebug() << q.executedQuery() << ": "; 
     //while(q.next()) qDebug() << q.value(0).toString();
 
 
-    tmp = "insert into %1 values (%2, '%3', '%4', %5, '%6', '%7', '%8')";
+    tmp = "insert into %1 (%2) values ('%3', '%4', %5, '%6', '%7', '%8')";
     //qDebug() << "list: " << values;
-    tmp = tmp.arg(values.at(6)).arg(elemID++).arg(values.at(1)).arg(values.at(2)).arg(values.at(3)).arg(values.at(4)).arg(values.at(5)).arg(values.at(0));
-//    qDebug() << "tmp:" << tmp;
+    tmp = tmp.arg(values.at(6)).arg(fields).arg(values.at(1)).arg(values.at(2)).arg(values.at(3)).arg(values.at(4)).arg(values.at(5)).arg(values.at(0));
+    //qDebug() << "tmp:" << tmp;
     q1.exec(tmp);
 //    qDebug() << q1.executedQuery();
  //   q1.exec("select name from nFeatured"); qDebug() << q1.executedQuery() << ": "; 

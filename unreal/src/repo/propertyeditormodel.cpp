@@ -31,13 +31,16 @@ void PropertyEditorModel::updateData(const QModelIndex& index, QVariant value){
 
 void PropertyEditorModel::setFocus( const QModelIndex &index){
 //dbg;
-  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-  if (item->getType() == "diagrams"){
-    reset();
-    return;
-  }  
-  setTable(item->getType());
-  setFilter("name='" + item->getName() + "'");
-  select();
+    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+/*    if (item->getType() == "diagrams"){
+        reset();
+        return;
+    }  */
+//    qDebug() << item->getType() << item->getName();
+    setTable(item->getType());
+    QString tmp = "name='" + item->getName() + "'";
+    setFilter(tmp);
+    select();
+//    qDebug() << tableName();
 }
 

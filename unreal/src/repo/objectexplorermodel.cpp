@@ -61,7 +61,7 @@ void ObjectExplorerModel::rescan(){
             QString diagramName = q2.value(diagramCol).toString();
 //            qDebug() << "diagram:" << diagramName;
             val = new TreeItem(valueName, tableName, diagramName, objects, table);
-            qDebug() << "created: " << valueName << " " << tableName << " " << diagramName;
+    //        qDebug() << "created: " << valueName << " " << tableName << " " << diagramName;
             table->addChild(val);
         }    
     }
