@@ -83,6 +83,8 @@ dbg;
     setCentralWidget(pieChart);
     pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
     pieChart->setModel(model2);
+    
+    setCurrentDiagram("req_diagram_");
 	    
    
     createActions();
@@ -278,6 +280,7 @@ void MainWindow::addElement(const QString &dname){
         model2->createElement(list, fields);
         tree2->reset(); 
         tree1->reset();
+	pieChart->reset();
     }
 }
 

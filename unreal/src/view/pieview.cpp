@@ -104,6 +104,7 @@ void PieView::setModel ( QAbstractItemModel * newModel )
     QAbstractItemView::setModel(newModel);
     
     clearScene();
+    items.clear();
     
     for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
@@ -164,6 +165,43 @@ void PieView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlag
 
 void PieView::reset()
 { dbg;
+
+    clearScene();
+    items.clear();
+
+    for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
+        if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
+
+            QString name = ti->getName();
+	    QString type = ti->getType();
+
+    	    std::cout << "fvkk>> " << ti->getType().toLocal8Bit().constData() << std::endl;
+            std::cout << "   --- " << ti->getName().toLocal8Bit().constData() << std::endl;
+	    std::cout << "   -#- " << ti->childCount() << std::endl;
+
+
+        if ( type == "nFeatured" ) {
+            Element *last = new Element;
+            items[type + "/" + name] = last;
+            last->setInfo(ti->getType(), ti->getName());
+            scene->addItem(last);
+        } else if ( type == "eP2N" ) {
+            Edge *foo = new Edge;
+
+            foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
+            foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
+
+            scene->addItem(foo);
+        }
+
+	} else { 
+	    qDebug("unable to cast model.internalPointer to TreeItem");
+	}
+    }
+
+
+
+    
 }
 
 QRect PieView::visualRect(const QModelIndex &index) const
