@@ -3,9 +3,12 @@
 #include <iostream>
 
 #include "pieview.h"
+#define _LONG_DEBUG
 #include "dbg.h"
 
 //#include "uml_comment.h"
+
+#include "treeitem.h"
 #include "element.h"
 #include "edge.h"
 
@@ -28,16 +31,6 @@ PieView::PieView(QWidget *parent)
 void PieView::dataChanged(const QModelIndex &topLeft,
                           const QModelIndex &bottomRight)
 { dbg;
-    for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-        QModelIndex typeIndex = model()->index(row, 0, rootIndex());
-        QString type = model()->data(typeIndex).toString();
-
-        QModelIndex nameIndex = model()->index(row, 1, rootIndex());
-        QString name = model()->data(nameIndex).toString();
-	
-	if (Element *foo = qgraphicsitem_cast<Element *>(items[ model()->index(row, 0, rootIndex()).internalId() ]))
-	    foo->setInfo(type, name);
-    }
 }
 
 void PieView::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
@@ -47,14 +40,14 @@ void PieView::selectionChanged ( const QItemSelection & selected, const QItemSel
     QList<QModelIndex>::Iterator it;
 
     list = deselected.indexes();
-    for (it = list.begin(); it != list.end(); ++it) {
-        items[(*it).internalId()]->setSelected(false);
-    }
+//    for (it = list.begin(); it != list.end(); ++it) {
+//        items[(*it).internalId()]->setSelected(false);
+//    }
 
     list = selected.indexes();
-    for (it = list.begin(); it != list.end(); ++it) {
-        items[(*it).internalId()]->setSelected(true);
-    }
+//    for (it = list.begin(); it != list.end(); ++it) {
+//        items[(*it).internalId()]->setSelected(true);
+//    }
     
 }
 
@@ -112,35 +105,31 @@ void PieView::setModel ( QAbstractItemModel * newModel )
     
     clearScene();
     
-    Element *last, *prelast;
-    
     for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-	QModelIndex typeIndex = model()->index(row, 0, rootIndex());
-	QString type = model()->data(typeIndex).toString();
+	TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
+
+	QString name = ti->getName();
+	QString type = ti->getType();
 	
-	QModelIndex nameIndex = model()->index(row, 1, rootIndex());
-	QString name = model()->data(nameIndex).toString();
+	std::cout << "fvkk>> " << ti->getType().toLocal8Bit().constData() << std::endl;
+	std::cout << "fvkk>>    " << ti->getName().toLocal8Bit().constData() << std::endl;
+
+	std::cout << "fvkk -- " << ti->childCount() << std::endl;
+
 	
-	
-	std::cout << type.toLocal8Bit().constData() << std::endl;
-	
-	/*if ( type != "link" ) {
-	    prelast = last;
-	    last = new Comment;
-	    items[model()->index(row, 0, rootIndex()).internalId()] = last;
-	    last->setInfo(type, name);
+	if ( type == "nFeatured" ) {
+	    Element *last = new Element;
+	    items[type + "/" + name] = last;
+	    last->setInfo(ti->getType(), ti->getName());
 	    scene->addItem(last);
-	} else {
-	    Edge *edge = new Edge;
-	    
-//	    edge->setSource(qgraphicsitem_cast<Element *>(items[i.key()]));
-//	    edge->setDest  (qgraphicsitem_cast<Element *>(items[(++i).key()]));
-	    edge->setSource(prelast);
-	    edge->setDest(last);
-	    
-	    items[model()->index(row, 0, rootIndex()).internalId()] = edge;
-	    scene->addItem(edge);
-	}*/
+	} else if ( type == "eP2N" ) {
+	    Edge *foo = new Edge;
+
+	    foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
+	    foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
+
+	    scene->addItem(foo);
+	}
     }
     
     
@@ -166,10 +155,14 @@ void PieView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end
 
 void PieView::scrollTo(const QModelIndex &index, ScrollHint)
 { dbg;
-    view->ensureVisible(items[index.internalId()]);
+//    view->ensureVisible(items[index.internalId()]);
 }
 
 void PieView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
+{ dbg;
+}
+
+void PieView::reset()
 { dbg;
 }
 

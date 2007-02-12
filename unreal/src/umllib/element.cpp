@@ -4,7 +4,7 @@
 #include <QtGui>
 
 Element::Element()
-    : mysize(0,0,100,200)
+    : mysize(0,0,50,50)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
     setAcceptsHoverEvents(true);
@@ -28,7 +28,7 @@ QRectF Element::boundingRect() const
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
-    if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
+/*    if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
 	dragState = TopLeft;
     } else if ( QRectF(mysize.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
 	dragState = TopRight;
@@ -36,25 +36,25 @@ void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 	dragState = BottomRight;
     } else if ( QRectF(mysize.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
 	dragState = BottomLeft;
-    } else
+    } else */
 	QGraphicsItem::mousePressEvent(event);
 }
 
 void Element::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-    if ( dragState != None ) {
+/*    if ( dragState != None ) {
 	dragState = None;
-    } else
+    } else */
 	QGraphicsItem::mouseReleaseEvent(event);
-	
-    mysize = mysize.normalized();
+/*	
+    mysize = mysize.normalized(); */
 }
 
 void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-    if ( dragState == None ) {
+//    if ( dragState == None ) {
         QGraphicsItem::mouseMoveEvent(event);
-    } else {
+/*    } else {
 	if ( ( mysize.width() < 10 ) || ( mysize.height() < 10 ) ) {
 	} else {
 		prepareGeometryChange();
@@ -72,7 +72,7 @@ void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		setPos(pos() + mysize.topLeft());
 		mysize.translate(-mysize.topLeft());
 	}
-    } 
+    }  */
     foreach (Edge *edge, edgeList)
         edge->adjust();
 	
@@ -112,4 +112,6 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	    painter->drawRect(QRectF(mysize.bottomLeft(),QSizeF(4,-4)));
     }
     
+    painter->drawEllipse(0,0,50,50);
+
 }

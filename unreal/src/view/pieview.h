@@ -50,6 +50,9 @@ public:
     QModelIndex indexAt(const QPoint &point) const;
 
     void setModel ( QAbstractItemModel * model );
+    
+public slots:
+    void reset();
 
 
 protected slots:
@@ -88,7 +91,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsView *view;
 	    
-    QMap<int, QGraphicsItem *> items;    
+    QMap<QString, QGraphicsItem *> items;    
 };
 
 #endif

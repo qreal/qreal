@@ -27,8 +27,8 @@ dbg;
         db = QSqlDatabase::addDatabase("QMYSQL");
         db.setDatabaseName("unreal");
         db.setUserName("unreal");
-        db.setPassword("");
-        db.setHostName("localhost");
+        db.setPassword("domination");
+        db.setHostName("mashtab-2");
     }
     if (db.open())
         dbOpened = true;
@@ -81,6 +81,9 @@ dbg;
     
     pieChart = new PieView();
     setCentralWidget(pieChart);
+    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+    pieChart->setModel(model2);
+	    
    
     createActions();
     createMenus();
