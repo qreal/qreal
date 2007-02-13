@@ -102,38 +102,7 @@ void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
 void PieView::setModel ( QAbstractItemModel * newModel )
 { dbg;
     QAbstractItemView::setModel(newModel);
-    
-    clearScene();
-    items.clear();
-    
-    for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-	TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
-
-	QString name = ti->getName();
-	QString type = ti->getType();
-	
-	std::cout << "fvkk>> " << ti->getType().toLocal8Bit().constData() << std::endl;
-	std::cout << "fvkk>>    " << ti->getName().toLocal8Bit().constData() << std::endl;
-
-	std::cout << "fvkk -- " << ti->childCount() << std::endl;
-
-	
-	if ( type == "nFeatured" ) {
-	    Element *last = new Element;
-	    items[type + "/" + name] = last;
-	    last->setInfo(ti->getType(), ti->getName());
-	    scene->addItem(last);
-	} else if ( type == "eP2N" ) {
-	    Edge *foo = new Edge;
-
-	    foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
-	    foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
-
-	    scene->addItem(foo);
-	}
-    }
-    
-    
+    reset();
 }
 
 void PieView::clearScene ()
@@ -149,7 +118,6 @@ void PieView::clearScene ()
 
 void PieView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 { dbg;
-
 
     QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
@@ -170,14 +138,20 @@ void PieView::reset()
     items.clear();
 
     for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
+	
+	QModelIndex nameIndex = model()->index(row, 0, rootIndex());
+        QString name = model()->data(nameIndex).toString();
+
+	QModelIndex typeIndex = model()->index(row, 2, rootIndex());
+        QString type = model()->data(typeIndex).toString();
+
+
+	std::cout << "name: \"" << name.toStdString()
+	    << "\", type: \"" << type.toStdString() << "\"" << std::endl;
+
         if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
 
-            QString name = ti->getName();
 	    QString type = ti->getType();
-
-    	    std::cout << "fvkk>> " << ti->getType().toLocal8Bit().constData() << std::endl;
-            std::cout << "   --- " << ti->getName().toLocal8Bit().constData() << std::endl;
-	    std::cout << "   -#- " << ti->childCount() << std::endl;
 
 
         if ( type == "nFeatured" ) {
@@ -198,10 +172,6 @@ void PieView::reset()
 	    qDebug("unable to cast model.internalPointer to TreeItem");
 	}
     }
-
-
-
-    
 }
 
 QRect PieView::visualRect(const QModelIndex &index) const
