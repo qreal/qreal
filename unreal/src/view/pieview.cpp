@@ -142,11 +142,8 @@ void PieView::reset()
 
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 
-		QModelIndex nameIndex = model()->index(row, 0, rootIndex());
-		QString name = model()->data(nameIndex).toString();
-
-		QModelIndex typeIndex = model()->index(row, 2, rootIndex());
-		QString type = model()->data(typeIndex).toString();
+		QString name = model()->data( model()->index(row, 0, rootIndex()) ).toString();
+		QString type = model()->data( model()->index(row, 1, rootIndex()) ).toString();
 
 		if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
 
@@ -154,24 +151,20 @@ void PieView::reset()
 
 			QString idx =  type + "/" + name;
 
-			qDebug() << "index: " << idx << ( items.contains(idx) ? " in index" : "not in index" );
-
 			if ( ! items.contains(type + "/" + name) ) {
-
-				if ( type == "nFeatured" ) {
-					Element *last = new Element;
-					items[type + "/" + name] = last;
-					last->setInfo(ti->getType(), ti->getName());
-					scene->addItem(last);
-				} else if ( type == "eP2N" ) {
+				if ( type == "eP2N" ) {
 					Edge *foo = new Edge;
 
 					foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
 					foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
 
 					scene->addItem(foo);
+				} else {
+					Element *last = new Element;
+					items[type + "/" + name] = last;
+					last->setInfo(ti->getType(), ti->getName());
+					scene->addItem(last);
 				}
-
 			}
 		} else { 
 			qDebug("unable to cast model.internalPointer to TreeItem");
