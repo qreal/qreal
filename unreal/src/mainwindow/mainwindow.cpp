@@ -96,7 +96,8 @@ dbg;
     createDockWindows();
 
     setWindowTitle(tr("unREAL"));
-   
+
+    resize(800,600);   
 }
 
 void MainWindow::createEditors(){
