@@ -133,10 +133,21 @@ void PieView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlag
 
 void PieView::reset()
 { dbg;
+//	QAbstractItemView::reset();
+
+        qDebug(__PRETTY_FUNCTION__);
+	 
+TreeItem *rootItem = static_cast<TreeItem*>(rootIndex().internalPointer());
+TreeItem *item = rootItem; //->getChild("req_diagram_");
+for (int i = 0; i < item->childCount(); i++){
+qDebug() << item->getChild(i)->getName() << item->getChild(i)->getType();
+}
 
     clearScene();
     items.clear();
 
+    qDebug() << "---=============---";
+    
     for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	
 	QModelIndex nameIndex = model()->index(row, 0, rootIndex());
@@ -144,7 +155,6 @@ void PieView::reset()
 
 	QModelIndex typeIndex = model()->index(row, 2, rootIndex());
         QString type = model()->data(typeIndex).toString();
-
 
 	std::cout << "name: \"" << name.toStdString()
 	    << "\", type: \"" << type.toStdString() << "\"" << std::endl;

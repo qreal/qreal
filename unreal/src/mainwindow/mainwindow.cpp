@@ -28,7 +28,7 @@ dbg;
         db.setDatabaseName("unreal");
         db.setUserName("unreal");
         db.setPassword("domination");
-        db.setHostName("mashtab-2");
+        db.setHostName("127.0.0.1");
     }
     if (db.open())
         dbOpened = true;
@@ -278,8 +278,20 @@ void MainWindow::addElement(const QString &dname){
         QString fields;
         fields = "name, description, priority, source, status, diagram";
         model2->createElement(list, fields);
+	
+        qDebug(__PRETTY_FUNCTION__);
+	
+	TreeItem *rootItem = static_cast<TreeItem*>(model2->index(0,0,QModelIndex()).internalPointer());
+	TreeItem *item = rootItem;//->getChild("req_diagram_");
+	for (int i = 0; i < item->childCount(); i++){
+	qDebug() << item->getChild(i)->getName() << item->getChild(i)->getType();
+	}
+	
+	
         tree2->reset(); 
         tree1->reset();
+	
+//	QTimer::singleShot(1000,pieChart,SLOT(reset()));
 	pieChart->reset();
     }
 }

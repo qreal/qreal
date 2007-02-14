@@ -42,7 +42,7 @@ dbg;
         rootItem->addChild(table);
         q2.prepare("select name from " + tableName);
         diagrams->insert(tableName, q2);
-        q2.exec("select * from " + tableName);
+        q2.exec("select * from " + tableName + " order by id");
         //  qDebug() << q2.executedQuery();
         int nameCol = q2.record().indexOf("name");
         int typeCol = q2.record().indexOf("type");  
@@ -256,6 +256,12 @@ dbg;
    
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
     rescan(); 
+    
+    TreeItem *item = rootItem->getChild("req_diagram_");
+    for (int i = 0; i < item->childCount(); i++){
+     qDebug() << item->getChild(i)->getName() << item->getChild(i)->getType();
+     }
+    
     emit elemAdded();
 
    
