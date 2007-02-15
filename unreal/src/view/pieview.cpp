@@ -151,6 +151,8 @@ void PieView::reset()
 
 			QString idx =  type + "/" + name;
 
+			qDebug() << idx;
+
 			if ( ! items.contains(type + "/" + name) ) {
 				if ( type == "eP2N" ) {
 					Edge *foo = new Edge;
@@ -160,7 +162,7 @@ void PieView::reset()
 
 					scene->addItem(foo);
 				} else {
-					Element *last = new Element;
+					Element *last = new Element(type);
 					items[type + "/" + name] = last;
 					last->setInfo(ti->getType(), ti->getName());
 					scene->addItem(last);

@@ -2,8 +2,9 @@
 #include "edge.h"
 
 #include <QtGui>
+#include <QtSvg>
 
-Element::Element()
+Element::Element(const QString &type)
     : mysize(0,0,50,50)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
@@ -13,6 +14,10 @@ Element::Element()
     dragState = None;
     
     text = "foo<br><b>bar</b><hr>blah<br>blah<br>blah";
+
+    this->type = type;
+
+    svgr.load(QString("../shapes/%1.svg").arg(type));
 }
 
 void Element::addEdge(Edge *e)
@@ -112,6 +117,7 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 	    painter->drawRect(QRectF(mysize.bottomLeft(),QSizeF(4,-4)));
     }
     
-    painter->drawEllipse(0,0,50,50);
+//    painter->drawEllipse(0,0,50,50);
+    svgr.render(painter,mysize);
 
 }

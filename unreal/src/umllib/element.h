@@ -4,12 +4,14 @@
 #include <QtGui/QColor>
 #include <QtGui/QGraphicsItem>
 
+#include <QtSvg/QSvgRenderer>
+
 class Edge;
 
 class Element : public QGraphicsItem
 {
 public:
-    Element();
+    Element(const QString &type);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
@@ -36,6 +38,8 @@ private:
     QList<Edge *> edgeList;
     
     QString text;
+
+    QSvgRenderer svgr;
 };
 
 #endif

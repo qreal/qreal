@@ -11,7 +11,7 @@ static double TwoPi = 2.0 * Pi;
 
 Edge::Edge()
 {
-    setFlags(ItemIsSelectable);
+//    setFlags(ItemIsSelectable);
     source = dest = 0;
 }
 
