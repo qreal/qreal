@@ -179,8 +179,8 @@ void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
 
 QModelIndex DiagramExplorerModel::getIndex(QString id){
 //dbg;
-    QString diagram = id.section('/',1,1);
-    QString name    = id.section('/',2,2);
+    QString diagram = id.section('/',0,0);
+    QString name    = id.section('/',1,1);
     TreeItem* item = rootItem->getChild(diagram)->getChild(name);
     return createIndex(item->row(),0,item);
 }
@@ -196,6 +196,30 @@ void DiagramExplorerModel::createDiagram(QString &dname){
     
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
     rescan();
+}
+
+void DiagramExplorerModel::removeDiagram(QString &name){
+//dbg;
+    QSqlQuery q,qq;    
+    QString tmp;
+
+    TreeItem *d = rootItem->getChild(name);
+    int cnt = d->childCount();
+    for (int i=0; i<cnt; i++)  // mutilate children! ARRRRRRRRRRRRRRRGGGGGGGHHH!!
+        removeElement(d->getChild(i)->getName(), name); 
+    
+    
+    rootItem->removeChild(name);
+    tmp = "drop table %1";
+    q.exec(tmp.arg(name));
+    tmp = "delete from diagram where name='%1'";
+    qq.exec(tmp.arg(name));
+    
+
+    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    rescan();
+
+    emit elemAdded();
 }
 
 void DiagramExplorerModel::createElement(QList<QString> values, QString fields){
@@ -219,4 +243,23 @@ dbg;
     emit elemAdded();
 }
 
+void DiagramExplorerModel::removeElement( QString name, QString diagram ){
+//dbg;    
+    QString type = rootItem->getChild(diagram)->getChild(name)->getType();
 
+    QSqlQuery q, qq;
+    QString tmp = "delete from %1 where name='%2'";
+    qDebug() << "tmp: " << tmp.arg (diagram).arg(name);
+    q.exec(tmp.arg(diagram).arg(name));
+    qDebug() << q.executedQuery();
+
+    qq.exec(tmp.arg(type).arg(name));
+    qDebug() << "tmp: " << tmp.arg (diagram).arg(name);
+    qDebug() << q.executedQuery();
+    
+    
+    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0);   
+    rescan(); 
+    
+    emit elemAdded();
+}    

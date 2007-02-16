@@ -40,6 +40,7 @@ public:
     void setData( QString ); 
     
     void addChild( TreeItem* );  
+    void removeChild ( QString );
     
     TreeItem *parent() { return parentItem; }
     

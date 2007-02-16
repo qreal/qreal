@@ -88,7 +88,6 @@ dbg;
     
     setCurrentDiagram("req_diagram_");
 	    
-   
     createActions();
     createMenus();
     createToolBars();
@@ -178,6 +177,12 @@ void MainWindow::createActions()
     addReqDiagramAct = new QAction(tr("Add Requirements diagram"), this);
     connect(addReqDiagramAct, SIGNAL(triggered()), this, SLOT(addDiagram()));
 
+    removeDiagramAct = new QAction(tr("Mutilate Diagram"), this);
+    connect(removeDiagramAct, SIGNAL(triggered()), this, SLOT(removeDiagram()));
+
+    removeElementAct = new QAction(tr("Mutilate Element"), this);
+    connect(removeElementAct, SIGNAL(triggered()), this, SLOT(removeElement()));
+
     clearAct = new QAction(tr("clear all"), this);
     connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
 
@@ -203,6 +208,12 @@ void MainWindow::createMenus()
 
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMenu->addAction(addReqDiagramAct);
+
+    menuBar()->addSeparator();
+
+    removeMenu = menuBar()->addMenu(tr("Mutilate"));
+    removeMenu->addAction(removeDiagramAct);
+    removeMenu->addAction(removeElementAct);
 
     menuBar()->addSeparator();
 
@@ -290,6 +301,44 @@ void MainWindow::addElement(const QString &dname){
     }
 }
 
+void MainWindow::removeElement(){
+//dbg;    
+    RemoveElementDialog dialog(this);
+    if(dialog.exec()){
+        QString name    = dialog.eName->text().section('/',1,1);
+        QString diagram = dialog.eName->text().section('/',0,0);
+    
+        qDebug() << "removing: " << name << diagram;
+
+        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
+        model2->removeElement(name, diagram);
+        tree2->reset(); 
+        tree1->reset();
+	
+	pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+	pieChart->reset();
+    }
+}
+
+void MainWindow::removeDiagram(){
+//dbg;    
+    RemoveDiagramDialog dialog(this);
+    if(dialog.exec()){
+        QString name    = dialog.eName->text().section('/',0,0);
+    
+        qDebug() << "removing diagram: " << name;
+
+        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
+        model2->removeDiagram(name);
+        tree2->reset(); 
+        tree1->reset();
+	
+	pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+	pieChart->reset();
+    }
+}
+
+
 void MainWindow::setCurrentDiagram(const QString &dname){
     curDiagram = dname;
 }
@@ -304,3 +353,6 @@ void MainWindow::clear(){
     tree2->reset();
     table->reset();
 }
+
+
+

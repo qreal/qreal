@@ -41,7 +41,9 @@ public:
     void prepareInsertion( int, int, QModelIndex, QString, QString, QString, QString );
     QModelIndex getIndex(QString );
     void createDiagram(QString& );
+    void removeDiagram(QString& );
     void createElement(QList<QString> values, QString fields);
+    void removeElement(QString name, QString diagram);
 
 signals:    
     void dataAboutToBeChanged(const QModelIndex&, QVariant);

@@ -16,6 +16,7 @@
 
 PieView::PieView(QWidget *parent)
 { dbg;
+qDebug() << __FUNCTION__;
 	scene = new QGraphicsScene(-400,-300,800,600);
 	view = new QGraphicsView(scene,this);
 	view->setRenderHint(QPainter::Antialiasing);
@@ -33,10 +34,12 @@ PieView::PieView(QWidget *parent)
 void PieView::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 { dbg;
+qDebug() << __FUNCTION__;
 }
 
 void PieView::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 { dbg;
+qDebug() << __FUNCTION__;
 
 	QList<QModelIndex> list;
 	QList<QModelIndex>::Iterator it;
@@ -55,6 +58,7 @@ void PieView::selectionChanged ( const QItemSelection & selected, const QItemSel
 
 bool PieView::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
 { dbg;
+qDebug() << __FUNCTION__;
 	/*    if (index.column() == 0)
 	      return QAbstractItemView::edit(index, trigger, event);
 	      else
@@ -63,27 +67,32 @@ bool PieView::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
 
 QModelIndex PieView::indexAt(const QPoint &point) const
 { dbg;
+qDebug() << __FUNCTION__;
 	return QModelIndex();
 }
 
 bool PieView::isIndexHidden(const QModelIndex & /*index*/) const
 { dbg;
+qDebug() << __FUNCTION__;
 	return false;
 }
 
 QModelIndex PieView::moveCursor(QAbstractItemView::CursorAction cursorAction,
 		Qt::KeyboardModifiers /*modifiers*/)
 { dbg;
+qDebug() << __FUNCTION__;
 	return currentIndex();
 }
 
 int PieView::rows(const QModelIndex &index) const
 { dbg;
+qDebug() << __FUNCTION__;
 	return model()->rowCount(model()->parent(index));
 }
 
 void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
 { dbg;
+qDebug() << __FUNCTION__;
 //	clearScene();
 
 //	for (int row = start; row <= end; ++row) {
@@ -103,12 +112,14 @@ void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
 
 void PieView::setModel ( QAbstractItemModel * newModel )
 { dbg;
+qDebug() << __FUNCTION__;
 	QAbstractItemView::setModel(newModel);
 	reset();
 }
 
 void PieView::clearScene ()
 {
+qDebug() << __FUNCTION__;
 	QList<QGraphicsItem *> list = scene->items();
 	QList<QGraphicsItem *>::Iterator it = list.begin();
 	for (; it != list.end(); ++it) {
@@ -121,20 +132,24 @@ void PieView::clearScene ()
 void PieView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 { dbg;
 
+qDebug() << __FUNCTION__;
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
 void PieView::scrollTo(const QModelIndex &index, ScrollHint)
 { dbg;
+qDebug() << __FUNCTION__;
 	//    view->ensureVisible(items[index.internalId()]);
 }
 
 void PieView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 { dbg;
+qDebug() << __FUNCTION__;
 }
 
 void PieView::reset()
 { dbg;
+qDebug() << __FUNCTION__;
 	//	QAbstractItemView::reset();
 
 	//	clearScene();
@@ -180,20 +195,24 @@ void PieView::reset()
 
 QRect PieView::visualRect(const QModelIndex &index) const
 {
+qDebug() << __FUNCTION__;
 	return QRect();
 }
 
 QRegion PieView::visualRegionForSelection(const QItemSelection &selection) const
 {
+qDebug() << __FUNCTION__;
 	return QRegion();
 }
 
 int PieView::horizontalOffset() const
 {
+qDebug() << __FUNCTION__;
 	return 0;
 }
 
 int PieView::verticalOffset() const
 {
+qDebug() << __FUNCTION__;
 	return 0;
 }

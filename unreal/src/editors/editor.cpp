@@ -345,8 +345,6 @@ void Editor::execDBScripts(){
         q.exec("insert into diagram (name, type) values ('nFeatured', 'objects')");
         q.exec("create table nFeatured (id integer primary key auto_increment, name varchar(20),"  
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
-        
-//        q.exec("insert into nFeatured values(1, 'aaa', 'desc', 1, 'source', 'status', 'req_diagram_1')");
     }    
     else 
         qDebug() << "value:" << r.value(0).toString();

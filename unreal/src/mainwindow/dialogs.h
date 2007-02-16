@@ -21,7 +21,7 @@
 #include <QVBoxLayout>
 
 
-class  AddElementDialog : public QDialog{
+class AddElementDialog : public QDialog{
     Q_OBJECT
 public:
     AddElementDialog(QWidget *parent = 0);
@@ -41,7 +41,7 @@ public:
     QPushButton *closeButton;
 };
 
-class  AddDiagramDialog : public QDialog{
+class AddDiagramDialog : public QDialog{
     Q_OBJECT
 public:
     AddDiagramDialog(QWidget *parent = 0);
@@ -54,6 +54,28 @@ public:
 };
 
 
+
+class RemoveDiagramDialog : public QDialog{
+    Q_OBJECT
+public:
+    RemoveDiagramDialog(QWidget *parent = 0);
+
+    QLabel *lName;    
+    QLineEdit *eName;    
+    QPushButton *okButton;
+    QPushButton *closeButton;
+};
+
+class RemoveElementDialog : public QDialog{
+    Q_OBJECT
+public:
+    RemoveElementDialog(QWidget *parent = 0);
+
+    QLabel *lName;    
+    QLineEdit *eName;    
+    QPushButton *okButton;
+    QPushButton *closeButton;
+};
 
 
 

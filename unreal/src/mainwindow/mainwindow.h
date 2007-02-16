@@ -46,6 +46,8 @@ private slots:
     void about();
     void addDiagram();
     void addElement(const QString&);
+    void removeElement();
+    void removeDiagram();
     void setCurrentDiagram(const QString&);
     void clear();
   
@@ -65,6 +67,7 @@ private:
     QMenu *editMenu;
     QMenu *viewMenu;
     QMenu *addMenu;
+    QMenu *removeMenu;
     QMenu *debugMenu;
     QMenu *helpMenu;
     QMenu *diagramsMenu;
@@ -81,6 +84,8 @@ private:
     QAction *aboutQtAct;
     QAction *quitAct;
     QAction *addReqDiagramAct;
+    QAction *removeDiagramAct;
+    QAction *removeElementAct;
     QAction *debugAct;
     QAction *useSQLiteAct;
     QAction *useMySQLAct;

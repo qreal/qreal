@@ -91,3 +91,13 @@ int TreeItem::row(){
 bool TreeItem::isTable(){
   return tables->contains(name);
 }
+
+void TreeItem::removeChild( QString name ){
+    int i=0;
+    while (i < childItems.size() && childItems.at(i)->name != name)
+        i++;
+    if (childItems.at(i)->name == name){
+        delete childItems.at(i);
+        childItems.removeAt(i);
+    }
+}

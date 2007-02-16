@@ -84,4 +84,60 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     setLayout(v);
     
     setWindowTitle(tr("add element")); 
+
 }
+
+
+RemoveDiagramDialog::RemoveDiagramDialog(QWidget *parent) : QDialog(parent) {
+//dbg;    
+    lName = new QLabel(tr("name: "));
+    eName = new QLineEdit("req_diagram_");
+    okButton = new QPushButton(tr("ok"));
+    closeButton = new QPushButton(tr("close"));
+    
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(reject()));
+    
+    QHBoxLayout *h1 = new QHBoxLayout;
+    h1->addWidget(lName);
+    h1->addWidget(eName);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(okButton);    
+    h6->addWidget(closeButton);     
+    
+    QVBoxLayout *v = new QVBoxLayout;
+    v->addLayout(h1);
+    v->addLayout(h6);
+    
+    setLayout(v);
+    
+    setWindowTitle(tr("remove diagram")); 
+}
+
+
+RemoveElementDialog::RemoveElementDialog(QWidget *parent) : QDialog(parent) {
+//dbg;    
+    lName = new QLabel(tr("name: "));
+    eName = new QLineEdit("req_diagram_/element 1");
+    okButton = new QPushButton(tr("ok"));
+    closeButton = new QPushButton(tr("close"));
+    
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(reject()));
+    
+    QHBoxLayout *h1 = new QHBoxLayout;
+    h1->addWidget(lName);
+    h1->addWidget(eName);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(okButton);    
+    h6->addWidget(closeButton);     
+    
+    QVBoxLayout *v = new QVBoxLayout;
+    v->addLayout(h1);
+    v->addLayout(h6);
+    
+    setLayout(v);
+    
+    setWindowTitle(tr("remove element")); 
+}
+
