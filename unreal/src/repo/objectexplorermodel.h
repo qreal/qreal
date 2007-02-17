@@ -50,8 +50,8 @@ private:
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     TreeItem *rootItem;
     QSqlDatabase db;
-    QMap<QString, QSqlQuery> *objects;
-    QMap<QString, QSqlQuery> *diagrams;
+    QMap<QString, QString> *objects;
+    QMap<QString, QString> *diagrams;
 };
 
 

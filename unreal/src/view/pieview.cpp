@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "pieview.h"
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include "dbg.h"
 
 //#include "uml_comment.h"

@@ -22,7 +22,7 @@
 class TreeItem{
 
 public:
-    TreeItem( QString _name, QString _type, QString _diagram, QMap<QString, QSqlQuery>*, TreeItem *parent = 0 );
+    TreeItem( QString _name, QString _type, QString _diagram, QMap<QString, QString>*, TreeItem *parent, QSqlDatabase _db);
     ~TreeItem();
 
     int rowCount() const;
@@ -33,11 +33,14 @@ public:
     QString getType() const { return type; }
     QString getName() const { return name; }
     QString getDiagramName() const { return diagramName; }
+    QString getBeginning() const { return beginsWith; }
+    QString getEnding() const { return endsWith; }
     TreeItem* getChild( QString );
     TreeItem* getChild( int );
     
     void setType( QString t ) { type = t; }
     void setData( QString ); 
+    void setEnds( QString, QString );
     
     void addChild( TreeItem* );  
     void removeChild ( QString );
@@ -52,9 +55,12 @@ private:
     QString name;
     QString type;
     QString diagramName;
+    QString beginsWith;
+    QString endsWith;
     QList<TreeItem*> childItems;
     TreeItem *parentItem;
-    QMap<QString, QSqlQuery> *tables;
+    QMap<QString, QString> *tables;
+    QSqlDatabase db;
 };
 
 #endif

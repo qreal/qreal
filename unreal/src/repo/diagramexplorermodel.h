@@ -44,6 +44,9 @@ public:
     void removeDiagram(QString& );
     void createElement(QList<QString> values, QString fields);
     void removeElement(QString name, QString diagram);
+    QModelIndex getDiagramIndex( QString& );
+    QModelIndex getBeginning( QModelIndex& );
+    QModelIndex getEnding( QModelIndex& );
 
 signals:    
     void dataAboutToBeChanged(const QModelIndex&, QVariant);
@@ -58,8 +61,8 @@ private:
     int elemID;
     TreeItem *rootItem;
     QSqlDatabase db;
-    QMap<QString, QSqlQuery> *objects;
-    QMap<QString, QSqlQuery> *diagrams;
+    QMap<QString, QString> *objects;
+    QMap<QString, QString> *diagrams;
  
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL OF THAT!!
     

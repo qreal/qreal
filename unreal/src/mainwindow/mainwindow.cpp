@@ -12,14 +12,13 @@
 #include <QtGui>
 #include "mainwindow.h"
 #include "dbg.h"
-
+#include <QDebug>
 #include <stdio.h>
 
 MainWindow::MainWindow()
 {
 dbg;
     sqlite = false;
-    QSqlDatabase db;
 
     if (sqlite){
         db = QSqlDatabase::addDatabase("QSQLITE");
@@ -30,7 +29,7 @@ dbg;
         db.setDatabaseName("unreal");
         db.setUserName("unreal");
         db.setPassword("domination");
-        db.setHostName("mashtab-2");
+        db.setHostName("127.0.0.1");
     }
     if (db.open())
         dbOpened = true;
@@ -45,6 +44,7 @@ dbg;
         createEditors();
     }    
     
+     
     model1 = new ObjectExplorerModel(db);
 
     QDockWidget *dock = new QDockWidget(tr("object explorer"), this);
@@ -57,13 +57,14 @@ dbg;
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 
     model2 = new DiagramExplorerModel(db);
-
+    TreeItem *item = static_cast<TreeItem*>(model2->index(0,0,QModelIndex()).internalPointer());
+    
     QDockWidget *dock3 = new QDockWidget(tr("diagram explorer"), this);
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tree2 = new QTreeView();
     tree2->setModel(model2);
     tree2->setHeader(0);
-
+ 
     dock3->setWidget(tree2);
     addDockWidget(Qt::LeftDockWidgetArea, dock3);
 
@@ -96,14 +97,14 @@ dbg;
 
     setWindowTitle(tr("unREAL"));
 
-    resize(800,600);   
+    resize(800,600);  
+    
+    
 }
 
 void MainWindow::createEditors(){
 
-    QSqlQuery query;    
-
-    query.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
+    db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
     
     reqEditor = new Editor;
     
@@ -268,10 +269,15 @@ void MainWindow::addDiagram(){
         
         connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
         diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
+
+        qDebug() << "creating diagram " << name;
         
         model2->createDiagram(name);
         tree2->reset();
         curDiagram = name;
+
+///        pieChart->setRootIndex(model2->getDiagramIndex(name));
+  //      pieChart->reset();
     }   
 }
 
@@ -346,8 +352,8 @@ void MainWindow::setCurrentDiagram(const QString &dname){
 void MainWindow::clear(){
 // not working
     QSqlQuery q;
-    q.exec("drop database unreal");
-    q.exec("create database unreal");
+    db.exec("drop database unreal");
+    db.exec("create database unreal");
     createEditors();
     tree1->reset();
     tree2->reset();

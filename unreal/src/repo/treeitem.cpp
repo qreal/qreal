@@ -17,13 +17,14 @@
           
 #include "treeitem.h"
 
-TreeItem::TreeItem(QString str, QString t, QString d, QMap<QString, QSqlQuery> *map, TreeItem *parent){
+TreeItem::TreeItem(QString str, QString t, QString d, QMap<QString, QString> *map, TreeItem *parent, QSqlDatabase _db){
 
-  parentItem = parent;
-  name = str;   
-  tables = map;
-  type = t;
-  diagramName = d;
+    db = _db;
+    parentItem = parent;
+    name = str;   
+    tables = map;
+    type = t;
+    diagramName = d;
 }
 
 TreeItem::~TreeItem(){
@@ -32,27 +33,33 @@ TreeItem::~TreeItem(){
 }
 
 int TreeItem::rowCount() const{
-//dbg;  
-  if(!tables->contains(name))
-    return 0;
-  
-  if(!(tables->value(name).isActive()))
-    (*tables)[name].exec();
+//dbg; 
+    //QSqlDatabase d = QSqlDatabase::database();
+    //QSqlQuery aaa = db.exec("select name from diagram where type='diagrams'");
+    //qDebug() << "TREEITEM: " << aaa.size();
 
-  //qDebug() << "name: " << name;
-  //qDebug() << "isActive: " << (*tables)[name].isActive();
-  bool a = tables->value(name).driver()->hasFeature(QSqlDriver::QuerySize);
-  //qDebug() << "can fetch query size: " << a;
-  //qDebug() << "size: " << (*tables)[name].size();
-  //while((*tables)[name].next()) qDebug() << "  " << (*tables)[name].value(0).toString();
+    if(!tables->contains(name))
+        return 0;
   
-  if (a)
-    return tables->value(name).size();
-  else{ // really horrible way, but nothing else to do if size() is not supported
-    (*tables)[name].last();
-    //qDebug() << "rows: " << (*tables)[name].at() + 1;
-    return tables->value(name).at() + 1;
-  }  
+    //if(!(tables->value(name).isActive()))
+    QSqlQuery qq = db.exec((*tables)[name]);
+
+    //qDebug() << (*tables)[name].executedQuery();  
+   // qDebug() << "name: " << name;
+    bool a = db.driver()->hasFeature(QSqlDriver::QuerySize);
+    //qDebug() << "can fetch query size: " << a;
+//    qDebug() << "size: " << (*tables)[name].size();
+    //while(qq.next()) qDebug() << "  " << qq.value(0).toString();
+  
+    if (a){
+      //  qDebug() << "size is " << qq.size(); 
+        return qq.size();
+    }    
+    else{ // really horrible way, but nothing else to do if size() is not supported
+        qq.last();
+        //qDebug() << "rows: " << qq.at() + 1;
+        return qq.at() + 1;
+    }  
 }
 
 void TreeItem::addChild(TreeItem* item){
@@ -100,4 +107,9 @@ void TreeItem::removeChild( QString name ){
         delete childItems.at(i);
         childItems.removeAt(i);
     }
+}
+
+void TreeItem::setEnds( QString b, QString e){
+    beginsWith = b;
+    endsWith   = e;
 }

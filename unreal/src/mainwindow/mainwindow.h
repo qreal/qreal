@@ -120,6 +120,8 @@ private:
     QString curDiagram;
     bool sqlite;
     bool dbOpened;
+
+    QSqlDatabase db;
 };
 
 

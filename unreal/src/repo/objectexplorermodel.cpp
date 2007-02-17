@@ -20,7 +20,7 @@ ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, QObject *parent) : Q
   //qDebug() << __FUNCTION__;  
 
   db = _db;
-  objects = new QMap<QString, QSqlQuery>;
+  objects = new QMap<QString, QString>;
 
     rescan(); 
  
@@ -29,16 +29,17 @@ ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, QObject *parent) : Q
 void ObjectExplorerModel::rescan(){
 //dbg;
   //qDebug() << __FUNCTION__;  
-    objects = new QMap<QString, QSqlQuery>; 
-    rootItem = new TreeItem("diagram", "diagram", "", objects, 0);   
+    objects = new QMap<QString, QString>; 
+    rootItem = new TreeItem("diagram", "diagram", "", objects, 0, db);   
   
     TreeItem *table, *val;
+    QString tmp;
   
     QSqlQuery q, q1,q2;  
-    q.prepare("select name from diagram where type='objects'");
-    objects->insert("diagram", q);
+    tmp = "select name from diagram where type='objects'";
+    objects->insert("diagram", tmp);
   
-    q1.exec("select name from diagram where type='objects'");
+    q1 = db.exec(tmp);
 //      qDebug() << q1.executedQuery();
  //   qDebug() << q1.executedQuery(); //q1.exec("select name from diag" + item->parent()->getType());
    // while(q1.next()) qDebug() << q1.value(0).toString();
@@ -47,11 +48,11 @@ void ObjectExplorerModel::rescan(){
     int nameClmn = q1.record().indexOf("name");
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
-        table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem);                  
+        table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem, db);                  
         rootItem->addChild(table);
-        q2.prepare("select name from " + tableName);
-        objects->insert(tableName, q2);
-        q2.exec("select * from " + tableName);
+        tmp = "select name from " + tableName;
+        objects->insert(tableName, tmp);
+        q2 = db.exec(tmp);
         //    qDebug() << q2.executedQuery();
         int nameCol = q2.record().indexOf("name");
         int diagramCol = q2.record().indexOf("diagram");
@@ -60,7 +61,7 @@ void ObjectExplorerModel::rescan(){
 //            qDebug() << "name: " << valueName;
             QString diagramName = q2.value(diagramCol).toString();
 //            qDebug() << "diagram:" << diagramName;
-            val = new TreeItem(valueName, tableName, diagramName, objects, table);
+            val = new TreeItem(valueName, tableName, diagramName, objects, table, db);
     //        qDebug() << "created: " << valueName << " " << tableName << " " << diagramName;
             table->addChild(val);
         }    
@@ -104,12 +105,12 @@ bool ObjectExplorerModel::setData(const QModelIndex& index, const QVariant &valu
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     emit dataAboutToBeChanged(index, value);
     QSqlQuery q;
-    q.exec("update " +item->getDiagramName()+ " set name='" + value.toString() + "' where name='" + item->getName() + "'");
+    db.exec("update " +item->getDiagramName()+ " set name='" + value.toString() + "' where name='" + item->getName() + "'");
     
   //  qDebug() << q.executedQuery(); q.exec("select name from " + item->parent()->getDiagramName());
   //  while(q.next()) qDebug() << q.value(0).toString();
  
-    q.exec("update " +item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
+    db.exec("update " +item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
     item->setData(value.toString());
     
   //  qDebug() << q.executedQuery(); q.exec("select name from " + item->parent()->getType());
