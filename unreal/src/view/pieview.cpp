@@ -138,19 +138,27 @@ void PieView::reset()
 
 	//	clearScene();
 	//	items.clear();
+	
+	QMap<QString,int> seen;
+	seen.clear();
 
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 
 		QString name = model()->data( model()->index(row, 0, rootIndex()) ).toString();
 		QString type = model()->data( model()->index(row, 1, rootIndex()) ).toString();
 
+		QString idx =  type + "/" + name;
+		
+		seen[idx] = 666;
+
 		if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
 
 			type = ti->getType();
 
-			QString idx =  type + "/" + name;
 
-			qDebug() << idx;
+		QString idx =  type + "/" + name;
+		
+		seen[idx] = 666;
 
 			if ( ! items.contains(type + "/" + name) ) {
 				if ( type == "eP2N" ) {
@@ -171,9 +179,27 @@ void PieView::reset()
 			qDebug("unable to cast model.internalPointer to TreeItem");
 		}
 	}
+	
+	// Remove items not seen this time
+	
+	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
+	    qDebug() << "haxoring " << i.key();
+	    
+	    if ( seen[i.key()] == 666 ) {
+		qDebug() << "seen";
+		i++;
+	    } else {
+		qDebug() << "not seen";
+		scene->removeItem(i.value());
+		delete i.value();
+		i = items.erase(i);
+	    }
+	}
+	
+/*	for ( QMap<QString, int>::const_iterator i = seen.constBegin(); i != seen.constEnd(); i++ ) {
+	    qDebug() << i.key();
+	}		      */
 
-	//    scene->update(scene->sceneRect());
-	// view->scale(1,1);
 	scene->update(view->sceneRect());
 }
 

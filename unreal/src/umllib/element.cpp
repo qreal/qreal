@@ -5,7 +5,7 @@
 #include <QtSvg>
 
 Element::Element(const QString &type)
-    : mysize(0,0,50,50)
+    : mysize(0,0,75,75)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
     setAcceptsHoverEvents(true);
@@ -28,7 +28,7 @@ void Element::addEdge(Edge *e)
 
 QRectF Element::boundingRect() const
 {
-    return mysize;
+    return mysize.adjusted(-10,-10,10,10);
 }
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
@@ -85,8 +85,8 @@ void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 
 void Element::setInfo(QString type, QString name)
 {
-    text = "<img src=\"none\"><b>" + type + "</b>: " + name + "<hr>blah<br>blah<br>blah";
-    update();
+  text = "<img src=\"none\"><b>" + type + "</b><hr>" + name;
+  update();
 }
 
 void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -102,12 +102,12 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 //	    painter->drawRect(boundingRect());
 
     painter->setBrush(QBrush(Qt::white));
-    painter->drawRect(boundingRect());
+    painter->drawRect(mysize);
     
-//    QTextDocument d;
-//    d.setHtml(text);
-//    d.setTextWidth(boundingRect().width());
-//    d.drawContents(painter,boundingRect());
+    QTextDocument d;
+    d.setHtml(text);
+    d.setTextWidth(mysize.width()*2);
+    d.drawContents(painter,mysize);
     
     if (option->state & QStyle::State_Selected) {
 	    painter->setBrush(Qt::SolidPattern);
