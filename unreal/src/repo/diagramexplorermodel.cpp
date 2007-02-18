@@ -9,9 +9,10 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
+//#define _LONG_DEBUG
 #include "diagramexplorermodel.h"
 #include "dbg.h"
-#define _LONG_DEBUG
+
 
 DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
 dbg;
@@ -19,7 +20,9 @@ dbg;
     db = _db;
     diagrams = new QMap<QString, QString>;
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
+    diagramsList.clear();
     rescan();  
+    
   
     curID = 666;
     elemID = 0;
@@ -40,7 +43,8 @@ dbg;
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
        // qDebug() << tableName;
-        table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem, db);                  
+        table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem, db);                 
+        diagramsList << tableName;
         rootItem->addChild(table);
         tmp = "select * from " + tableName;
         diagrams->insert(tableName, tmp);
@@ -231,9 +235,12 @@ dbg;
     db.exec(tmp.arg(type).arg(name));
 }    
 
-QModelIndex DiagramExplorerModel::getDiagramIndex( QString& name ){
+QModelIndex DiagramExplorerModel::getDiagramIndex( QString name ){
 dbg;
-    return createIndex(rootItem->getChild(name)->row(),0,(void*)rootItem->getChild(name));
+    if (name != "")
+        return  createIndex(rootItem->getChild(name)->row(),0,(void*)rootItem->getChild(name));
+    else 
+        return QModelIndex();
 }
 
 QModelIndex DiagramExplorerModel::getIndex(QString id){
@@ -273,8 +280,10 @@ dbg;
     if (!insertRows(rowCount(), 1, fields, values, index))
         qDebug() << "cannot create new row"; 
 
-    if (isElement){
+    if (isElement)
         emit elemAdded(values);    
+    else{
+        diagramsList << values.at(0);
     }    
 }
 
@@ -341,8 +350,10 @@ dbg;
     if (!removeRows(par->getChild(values.at(0))->row(), 1, isElement, values, index))
         qDebug() << "cannot remove row"; 
 
-    if (isElement){
+    if (isElement)
         emit elemRemoved(values);    
+    else{
+        diagramsList.removeAt(diagramsList.indexOf(values.at(0)));
     }    
 }
 

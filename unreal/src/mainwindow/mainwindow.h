@@ -49,7 +49,8 @@ private slots:
     void removeElement();
     void removeDiagram();
     void setCurrentDiagram(const QString&);
-  
+    
+    
 private:
     void createActions();
     void createMenus();
@@ -57,7 +58,8 @@ private:
     void createStatusBar();
     void createDockWindows();
     void createEditors();
-
+    void adjustPieChart();
+    QString currentDiagram();
 
     QTreeWidget *foobar;
     QTreeWidget *treeWidget;
@@ -89,7 +91,7 @@ private:
     QAction *useSQLiteAct;
     QAction *useMySQLAct;
     QAction *clearAct;
-    QList<QAction*> diagramsList;
+    QList<QAction*> diagramsActList;
     QSignalMapper *elements;
     QSignalMapper *diagrams;
 
@@ -117,6 +119,7 @@ private:
     int curNum;
     int elemID;
     QString curDiagram;
+    QStringList diagramsList;
     bool sqlite;
     bool dbOpened;
 

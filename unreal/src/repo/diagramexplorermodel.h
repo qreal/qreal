@@ -45,9 +45,10 @@ public:
     void removeDiagramScriptsExec( const QString& );
     void createElementScriptsExec( QStringList , QString );
     void removeElementScriptsExec( QStringList );
-    QModelIndex getDiagramIndex( QString& );
+    QModelIndex getDiagramIndex( QString );
     QModelIndex getBeginning( QModelIndex& );
     QModelIndex getEnding( QModelIndex& );
+    QStringList getDiagramsList() const { return diagramsList; }
 
 signals:    
     void dataAboutToBeChanged( const QModelIndex&, QVariant );
@@ -63,6 +64,7 @@ private:
     int elemID;
     TreeItem *rootItem;
     QSqlDatabase db;
+    QStringList diagramsList;
     QMap<QString, QString> *objects;
     QMap<QString, QString> *diagrams;
  

@@ -9,6 +9,7 @@
 // Author:       
 //===================================================================== 
 
+//#define _LONG_DEBUG
 #include <QtGui>
 #include "mainwindow.h"
 #include "dbg.h"
@@ -38,7 +39,6 @@ dbg;
 
     curNum = 0;
     elemID = 0;
-    curDiagram = "";
     
     if (dbOpened){
         createEditors();
@@ -57,6 +57,12 @@ dbg;
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 
     model2 = new DiagramExplorerModel(db);
+    diagramsList = model2->getDiagramsList();
+    
+    if( diagramsList.size() > 0 )
+        setCurrentDiagram(diagramsList.at(0));
+    else    
+        setCurrentDiagram("");
     
     QDockWidget *dock3 = new QDockWidget(tr("diagram explorer"), this);
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -84,11 +90,10 @@ dbg;
     
     pieChart = new PieView();
     setCentralWidget(pieChart);
-    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+    
+    pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     pieChart->setModel(model2);
     
-    setCurrentDiagram("req_diagram_");
-	    
     createActions();
     createMenus();
     createToolBars();
@@ -261,19 +266,20 @@ void MainWindow::addDiagram(){
     AddDiagramDialog dialog(this);
     if(dialog.exec()){     
         QString name = dialog.eName->text();
-        QAction *tmp = new QAction(name, 0);
-        tmp->setData(name);
-        diagramsList << tmp;        
-        diagramsMenu->addAction(diagramsList.last());
+        //QAction *tmp = new QAction(name, 0);
+        //tmp->setData(name);
+        //diagramsList << tmp;        
+        //diagramsMenu->addAction(diagramsList.last());
         
-        connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
-        diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
+        //connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
+        //diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
 
         QStringList l;
         l << name;
         model2->insert(false, "", l);
-        curDiagram = name;
-
+        diagramsList << name;
+        setCurrentDiagram(name);
+        adjustPieChart();
     }   
 }
 
@@ -302,8 +308,7 @@ void MainWindow::addElement(const QString &type){
         
         model2->insert(true, fields, list);
 	
-	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	    pieChart->reset();
+        adjustPieChart();
     }
 }
 
@@ -317,9 +322,7 @@ void MainWindow::removeElement(){
         QStringList list;
         list << name << diagram; 
         model2->remove(true, list);
-	
-	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	    pieChart->reset();
+        adjustPieChart();
     }
 }
 
@@ -332,9 +335,13 @@ void MainWindow::removeDiagram(){
         QStringList l;
         l << name;
         model2->remove(false, l);
-	
-	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	    pieChart->reset();
+
+        diagramsList.removeAt(diagramsList.indexOf(name));
+        if ( diagramsList.size() > 0 && currentDiagram() == name)
+            setCurrentDiagram(diagramsList.at(0));
+        if ( diagramsList.size() == 0 )
+            setCurrentDiagram("");
+        adjustPieChart();
     }
 }
 
@@ -343,3 +350,15 @@ void MainWindow::setCurrentDiagram(const QString &dname){
     curDiagram = dname;
 }
 
+QString MainWindow::currentDiagram(){
+    return curDiagram;
+}
+
+void MainWindow::adjustPieChart(){
+
+    if(currentDiagram() != "")
+        pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
+    else 
+        pieChart->setRootIndex(QModelIndex());
+	pieChart->reset();
+}
