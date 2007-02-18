@@ -57,7 +57,6 @@ dbg;
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 
     model2 = new DiagramExplorerModel(db);
-    TreeItem *item = static_cast<TreeItem*>(model2->index(0,0,QModelIndex()).internalPointer());
     
     QDockWidget *dock3 = new QDockWidget(tr("diagram explorer"), this);
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -71,7 +70,8 @@ dbg;
 
     connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model1, SLOT(updateData(const QModelIndex &, QVariant)));
     connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model2, SLOT(updateData(const QModelIndex &, QVariant)));
-    connect(model2, SIGNAL(elemAdded()), model1, SLOT(doNOTuseIt()));
+    connect(model2, SIGNAL(elemAdded( QStringList )), model1, SLOT(addElem( QStringList )));
+    connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
     
     propModel = new PropertyEditorModel();
     table = new QTableView();
@@ -185,7 +185,6 @@ void MainWindow::createActions()
     connect(removeElementAct, SIGNAL(triggered()), this, SLOT(removeElement()));
 
     clearAct = new QAction(tr("clear all"), this);
-    connect(clearAct, SIGNAL(triggered()), this, SLOT(clear()));
 
 //    connect(addReqDiagramAct, SIGNAL(triggered()), model1, SLOT(doNOTuseIt()));
 }
@@ -270,40 +269,41 @@ void MainWindow::addDiagram(){
         connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
         diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
 
-        qDebug() << "creating diagram " << name;
-        
-        model2->createDiagram(name);
-        tree2->reset();
+        QStringList l;
+        l << name;
+        model2->insert(false, "", l);
         curDiagram = name;
 
-///        pieChart->setRootIndex(model2->getDiagramIndex(name));
-  //      pieChart->reset();
     }   
 }
 
-void MainWindow::addElement(const QString &dname){
+void MainWindow::addElement(const QString &type){
 //dbg;    
     AddElementDialog dialog(this);
     if(dialog.exec()){
         QString name = dialog.eName->text();
         QString desc = dialog.eDescription->text();
         QString prio = dialog.ePriority->text();
-        QString srce = dialog.eSource->text();
+        QString source = dialog.eSource->text();
         QString stat = dialog.eStatus->text();
         
         QList<QString> list;                
-        list << curDiagram << name << desc << prio << srce << stat << dname;
-        
-        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
         QString fields;
-        fields = "name, description, priority, source, status, diagram";
-        model2->createElement(list, fields);
+        
+        
+        if (type != "eP2N"){
+            list << curDiagram << name << type << desc << prio << source << stat;
+            fields = "name, description, priority, source, status, diagram";
+        }   
+        //else{
+        //    list << curDiagram << name << type << beginsWith << endsWith << status;
+        //    fields = "name, beginsWith, endsWith, diagram";
+        //}    
+        
+        model2->insert(true, fields, list);
 	
-        tree2->reset(); 
-        tree1->reset();
-	
-	pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	pieChart->reset();
+	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+	    pieChart->reset();
     }
 }
 
@@ -314,15 +314,12 @@ void MainWindow::removeElement(){
         QString name    = dialog.eName->text().section('/',1,1);
         QString diagram = dialog.eName->text().section('/',0,0);
     
-        qDebug() << "removing: " << name << diagram;
-
-        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
-        model2->removeElement(name, diagram);
-        tree2->reset(); 
-        tree1->reset();
+        QStringList list;
+        list << name << diagram; 
+        model2->remove(true, list);
 	
-	pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	pieChart->reset();
+	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+	    pieChart->reset();
     }
 }
 
@@ -330,17 +327,14 @@ void MainWindow::removeDiagram(){
 //dbg;    
     RemoveDiagramDialog dialog(this);
     if(dialog.exec()){
-        QString name    = dialog.eName->text().section('/',0,0);
+        QString name = dialog.eName->text();
     
-        qDebug() << "removing diagram: " << name;
-
-        //qDebug() << curDiagram << name << desc << prio << srce << stat << dname;
-        model2->removeDiagram(name);
-        tree2->reset(); 
-        tree1->reset();
+        QStringList l;
+        l << name;
+        model2->remove(false, l);
 	
-	pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
-	pieChart->reset();
+	    pieChart->setRootIndex(model2->index(0, 0, QModelIndex()));
+	    pieChart->reset();
     }
 }
 
@@ -348,17 +342,4 @@ void MainWindow::removeDiagram(){
 void MainWindow::setCurrentDiagram(const QString &dname){
     curDiagram = dname;
 }
-
-void MainWindow::clear(){
-// not working
-    QSqlQuery q;
-    db.exec("drop database unreal");
-    db.exec("create database unreal");
-    createEditors();
-    tree1->reset();
-    tree2->reset();
-    table->reset();
-}
-
-
 

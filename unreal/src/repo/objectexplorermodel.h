@@ -27,8 +27,6 @@ public:
     ~ObjectExplorerModel();
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
-    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
     QVariant data(const QModelIndex &index, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -44,8 +42,9 @@ signals:
 
 public slots:
     void updateData(const QModelIndex &, QVariant);
-    void doNOTuseIt();
-
+    void addElem( QStringList );
+    void removeElem( QStringList );
+    
 private:          
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     TreeItem *rootItem;

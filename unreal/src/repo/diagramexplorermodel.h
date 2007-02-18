@@ -28,8 +28,8 @@ public:
     ~DiagramExplorerModel();
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
-    bool insertRows(int position, int rows, const QModelIndex &index = QModelIndex());
-    bool removeRows(int position, int rows, const QModelIndex &index = QModelIndex());
+    bool insertRows(int position, int rows, QString fields, QStringList vals, const QModelIndex &index = QModelIndex());
+    bool removeRows(int position, int rows, bool esElem, QStringList vals, const QModelIndex &index = QModelIndex());
     QVariant data(const QModelIndex &index, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -38,19 +38,21 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
  
-    void prepareInsertion( int, int, QModelIndex, QString, QString, QString, QString );
-    QModelIndex getIndex(QString );
-    void createDiagram(QString& );
-    void removeDiagram(QString& );
-    void createElement(QList<QString> values, QString fields);
-    void removeElement(QString name, QString diagram);
+    void insert( bool isElement, QString, QStringList );
+    void remove( bool isElement, QStringList );
+    QModelIndex getIndex( QString );
+    void createDiagramScriptsExec( const QString& );
+    void removeDiagramScriptsExec( const QString& );
+    void createElementScriptsExec( QStringList , QString );
+    void removeElementScriptsExec( QStringList );
     QModelIndex getDiagramIndex( QString& );
     QModelIndex getBeginning( QModelIndex& );
     QModelIndex getEnding( QModelIndex& );
 
 signals:    
-    void dataAboutToBeChanged(const QModelIndex&, QVariant);
-    void elemAdded();
+    void dataAboutToBeChanged( const QModelIndex&, QVariant );
+    void elemAdded( QStringList );
+    void elemRemoved( QStringList );
 
 public slots:
     void updateData(const QModelIndex&, QVariant);

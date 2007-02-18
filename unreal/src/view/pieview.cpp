@@ -186,13 +186,13 @@ void PieView::reset()
 	// Remove items not seen this time
 	
 	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
-	    qDebug() << "haxoring " << i.key();
+//	    qDebug() << "haxoring " << i.key();
 	    
 	    if ( seen[i.key()] == 666 ) {
-		qDebug() << "seen";
+//		qDebug() << "seen";
 		i++;
 	    } else {
-		qDebug() << "not seen";
+//		qDebug() << "not seen";
 		scene->removeItem(i.value());
 		delete i.value();
 		i = items.erase(i);

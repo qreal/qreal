@@ -18,6 +18,7 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QStringList>
 
 class TreeItem{
 

@@ -11,11 +11,11 @@
 
 #include "diagramexplorermodel.h"
 #include "dbg.h"
+#define _LONG_DEBUG
 
 DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
-//dbg;
+dbg;
 
-    QSqlQuery aaa; 
     db = _db;
     diagrams = new QMap<QString, QString>;
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
@@ -31,7 +31,7 @@ dbg;
     TreeItem *table, *value;
     QString tmp;
 
-    QSqlQuery q, q1,q2,q3;  
+    QSqlQuery q1,q3;  
     tmp = "select name from diagram where type='diagrams'";
     diagrams->insert("diagram", tmp);
   
@@ -63,18 +63,16 @@ dbg;
 }
 
 DiagramExplorerModel::~ DiagramExplorerModel(){
-//dbg;    
+dbg;    
   delete rootItem;
 }
 
 bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
-//dbg;
+dbg;
   if (index.isValid() && role == Qt::EditRole) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     emit dataAboutToBeChanged(index, value);
     
-    QSqlQuery q1;
-    QSqlQuery q2;
     db.exec("update " +item->getDiagramName()+ " set name='"+ value.toString() + "' where name='" + item->getName() + "'");
     db.exec("update " + item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
     item->setData(value.toString());
@@ -84,28 +82,8 @@ bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &va
   }
   return false;
 }
-
-
-
-bool  DiagramExplorerModel::insertRows(int position, int rows, const QModelIndex &parent){
-//dbg;	
-    beginInsertRows(QModelIndex(), position, position + rows - 1);
-    
-    
-	endInsertRows();
-	return true;
-}
-
-bool  DiagramExplorerModel::removeRows(int position, int rows, const QModelIndex &parent){
-//dbg; 
- beginRemoveRows(QModelIndex(), position, position + rows - 1);
- 
- endRemoveRows();
- return true;
-}
-
 int DiagramExplorerModel::columnCount(const QModelIndex &parent) const{
-//dbg;
+dbg;
   if (parent.isValid())
     return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
   else
@@ -113,7 +91,7 @@ int DiagramExplorerModel::columnCount(const QModelIndex &parent) const{
 }
 
 QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
-//dbg;
+dbg;
  if (!index.isValid())
    return QVariant();
  if (role != Qt::DisplayRole)
@@ -124,7 +102,7 @@ QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
 }
 
 Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{
-//dbg;
+dbg;
   Qt::ItemFlags f = Qt::ItemIsEnabled;
   if (!index.isValid())
     return f;
@@ -135,13 +113,13 @@ Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{
 }
 
 QVariant DiagramExplorerModel::headerData(int , Qt::Orientation , int ) const {
-//dbg;                               
+dbg;                               
  return "";
 }
 
 QModelIndex DiagramExplorerModel::index(int row, int column, const QModelIndex &parent)
             const{
-//dbg;            
+dbg;            
  TreeItem *parentItem;
  if (!parent.isValid())
    parentItem = rootItem;
@@ -157,7 +135,7 @@ QModelIndex DiagramExplorerModel::index(int row, int column, const QModelIndex &
 }
 
 QModelIndex DiagramExplorerModel::parent(const QModelIndex &index) const{
-//dbg;
+dbg;
  if (!index.isValid())
    return QModelIndex();
  TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
@@ -168,7 +146,7 @@ QModelIndex DiagramExplorerModel::parent(const QModelIndex &index) const{
 }
 
 int DiagramExplorerModel::rowCount(const QModelIndex &parent) const{
-//dbg;
+dbg;
   TreeItem *parentItem;
   if (!parent.isValid()){
     parentItem = rootItem;
@@ -181,82 +159,76 @@ int DiagramExplorerModel::rowCount(const QModelIndex &parent) const{
 }
 
 void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
-//dbg;
+dbg;
   TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
   rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
 }
 
-void DiagramExplorerModel::createDiagram(QString &dname){
-//dbg;
+void DiagramExplorerModel::createDiagramScriptsExec(const QString &dname){
+dbg;
     QString tmp = "insert into diagram (name, type) values ('" + dname + "', 'diagrams')";
     db.exec(tmp);
     
     tmp = "create table " + dname + " (id integer primary key auto_increment, name varchar(20), type varchar(20))";
     db.exec(tmp);
-    
-    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
-    rescan();
 }
 
-void DiagramExplorerModel::removeDiagram(QString &name){
-//dbg;
-    QSqlQuery q,qq;    
+void DiagramExplorerModel::removeDiagramScriptsExec(const QString &name){
+dbg;
     QString tmp;
+    QStringList l;
 
     TreeItem *d = rootItem->getChild(name);
     int cnt = d->childCount();
-    for (int i=0; i<cnt; i++)  // mutilate children! ARRRRRRRRRRRRRRRGGGGGGGHHH!!
-        removeElement(d->getChild(i)->getName(), name); 
     
+    for (int i=0; i<cnt; i++){  // mutilate children! ARRRRRRRRRRRRRRRGGGGGGGHHH!!
+        l.clear();
+        l << d->getChild(0)->getName() << name;
+        remove(true, l);
+    }    
     
-    rootItem->removeChild(name);
     tmp = "drop table %1";
     db.exec(tmp.arg(name));
     tmp = "delete from diagram where name='%1'";
     db.exec(tmp.arg(name));
-    
-    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
-    rescan();
-
-    emit elemAdded();
 }
 
-void DiagramExplorerModel::createElement(QList<QString> values, QString fields){
+void DiagramExplorerModel::createElementScriptsExec(QStringList values, QString fields){
 dbg;
-    QSqlQuery q, q1;
-
+    QString diagram = values.at(0);
+    QString name    = values.at(1);
+    QString type    = values.at(2);
+    
     QString tmp = "insert into %1 (name, type) values ('%2', '%3')";
-    tmp = tmp.arg(values.at(0)).arg(values.at(1)).arg(values.at(6)) ;
-   // qDebug() << tmp;
+    tmp = tmp.arg(diagram).arg(name).arg(type) ;
     db.exec(tmp);
-    tmp = "insert into %1 (%2) values ('%3', '%4', %5, '%6', '%7', '%8')";
-    tmp = tmp.arg(values.at(6)).arg(fields).arg(values.at(1)).arg(values.at(2)).arg(values.at(3)).arg(values.at(4)).arg(values.at(5)).arg(values.at(0));
-    //qDebug() << tmp;
-    db.exec(tmp);
+
+    if (type != "eP2N"){
+        QString desc    = values.at(3);
+        QString prio    = values.at(4);
+        QString source  = values.at(5);
+        QString stat    = values.at(6);
     
-    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
-    rescan(); 
-    
-    TreeItem *item = rootItem->getChild("req_diagram_");
-  //  for (int i = 0; i < item->childCount(); i++){
-  //   qDebug() << item->getChild(i)->getName() << item->getChild(i)->getType();
-  //   }
-    
-    emit elemAdded();
+        tmp = "insert into %1 (%2) values ('%3', '%4', %5, '%6', '%7', '%8')";
+        tmp = tmp.arg(type).arg(fields).arg(name).arg(desc).arg(prio).arg(source).arg(stat).arg(diagram);
+        db.exec(tmp);
+    }
+    else{
+        QString from = values.at(3);
+        QString to   = values.at(4);
+        tmp = "insert into %1 (%2) values ('%3', '%4', '%5', '%6')";
+        tmp = tmp.arg(type).arg(fields).arg(name).arg(from).arg(to).arg(diagram);
+    }
 }
 
-void DiagramExplorerModel::removeElement( QString name, QString diagram ){
-//dbg;    
+void DiagramExplorerModel::removeElementScriptsExec( QStringList vals ){
+dbg;   
+    QString name    = vals.at(0);
+    QString diagram = vals.at(1);
     QString type = rootItem->getChild(diagram)->getChild(name)->getType();
-    QSqlQuery q;
     QString tmp = "delete from %1 where name='%2'";
-    q = db.exec(tmp.arg(diagram).arg(name));
-    q = db.exec(tmp.arg(type).arg(name));
-    
-    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
-    rescan(); 
-    
-    emit elemAdded();
+    db.exec(tmp.arg(diagram).arg(name));
+    db.exec(tmp.arg(type).arg(name));
 }    
 
 QModelIndex DiagramExplorerModel::getDiagramIndex( QString& name ){
@@ -265,7 +237,7 @@ dbg;
 }
 
 QModelIndex DiagramExplorerModel::getIndex(QString id){
-//dbg;
+dbg;
     QString diagram = id.section('/',0,0);
     QString name    = id.section('/',1,1);
     TreeItem* item = rootItem->getChild(diagram)->getChild(name);
@@ -283,4 +255,119 @@ QModelIndex DiagramExplorerModel::getEnding( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
     return getIndex(it->getEnding());
+}
+
+void DiagramExplorerModel::insert(bool isElement, QString fields, QStringList values){
+dbg;
+    
+    QModelIndex index;
+    TreeItem* par; 
+    
+    if (isElement)
+        par = rootItem->getChild(values.at(0));
+    else
+        par = rootItem;
+         
+    index = createIndex( par->row(), 0, (void*) par );
+    
+    if (!insertRows(rowCount(), 1, fields, values, index))
+        qDebug() << "cannot create new row"; 
+
+    if (isElement){
+        emit elemAdded(values);    
+    }    
+}
+
+bool  DiagramExplorerModel::insertRows(int position, int rows, QString fields, QStringList vals, const QModelIndex &parent){
+dbg;	
+    beginInsertRows(QModelIndex(), position, position + rows - 1);
+    
+    QString name;
+    QString type;
+    QString diagram;
+
+    if ( fields == "" ){ // creating diagram in the database
+        createDiagramScriptsExec(vals.at(0));
+        name    = vals.at(0);
+        type    = "diagram";
+        diagram = "diagram";
+    }    
+    else{ // creating element in the database
+        createElementScriptsExec(vals, fields);
+        name    = vals.at(1);
+        type    = vals.at(2);
+        diagram = vals.at(0);
+    }    
+    
+    TreeItem *par;
+    if(parent.isValid())
+        par = static_cast<TreeItem*>(parent.internalPointer());
+    else 
+        par = 0;
+      
+    TreeItem *child = new TreeItem(name, type, diagram, diagrams, par, db);
+    
+    if( fields == ""){
+        QString tmp = "select * from " + name;
+        diagrams->insert(name, tmp);
+    }
+   
+    if (type == "eP2N"){
+        QString beginning = vals.at(3);
+        QString ending    = vals.at(4);
+        child->setEnds(beginning, ending);
+    }
+    
+    if (par)
+        par->addChild(child);
+    
+	endInsertRows();
+	return true;
+}
+
+void DiagramExplorerModel::remove(bool isElement, QStringList values){
+dbg;
+    QModelIndex index;
+    TreeItem* par; 
+    if (isElement){
+        par = rootItem->getChild(values.at(1));
+        values << par->getChild(values.at(0))->getType();
+    }    
+    else
+        par = rootItem;
+    
+    index = createIndex( par->row(), 0, (void*) par );
+       
+    if (!removeRows(par->getChild(values.at(0))->row(), 1, isElement, values, index))
+        qDebug() << "cannot remove row"; 
+
+    if (isElement){
+        emit elemRemoved(values);    
+    }    
+}
+
+
+bool  DiagramExplorerModel::removeRows(int position, int rows, bool isElement, QStringList vals, const QModelIndex &parent){
+dbg; 
+    beginRemoveRows(QModelIndex(), position, position + rows - 1);
+    
+    if ( !isElement ) // removing diagram from the database
+        removeDiagramScriptsExec(vals.at(0));
+    else // removing element from the database
+        removeElementScriptsExec(vals);
+    
+    TreeItem *par;
+    if(parent.isValid())
+        par = static_cast<TreeItem*>(parent.internalPointer());
+    else 
+        return false;
+    
+    QString name = vals.at(0);
+    par->removeChild(name);
+    
+    if( !isElement )
+        diagrams->remove(name);
+    
+    endRemoveRows();
+    return true;
 }

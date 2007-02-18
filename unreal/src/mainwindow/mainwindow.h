@@ -49,7 +49,6 @@ private slots:
     void removeElement();
     void removeDiagram();
     void setCurrentDiagram(const QString&);
-    void clear();
   
 private:
     void createActions();
