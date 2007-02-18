@@ -33,7 +33,7 @@ signals:
     void dataAboutToBeChanged( const QModelIndex&, QVariant );
 
 public slots:
-    void updateData( const QModelIndex&, QVariant );
+//    void updateData( const QModelIndex&, QVariant );
     void setFocus( const QModelIndex& );
 
 private:                  

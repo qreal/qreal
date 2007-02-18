@@ -80,10 +80,19 @@ dbg;
     connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
     
     propModel = new PropertyEditorModel();
+    propModel->setTable("nFeatured");
+    propModel->select();
+    trans = new TransposeProxyModel();
+    trans->setSourceModel(propModel);
+    //propModel = new TableModel(db);
     table = new QTableView();
-    table->setModel(propModel);
-    connect(tree2, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
-    connect(tree1, SIGNAL(clicked( const QModelIndex&) ), propModel, SLOT( setFocus(const QModelIndex& )));
+    table->setModel(trans);
+    //table->setHeader(0);
+    table->show();
+    
+    connect(tree2, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
+    connect(tree1, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
+    
     QDockWidget *dock4 = new QDockWidget(tr("property editor"), this);
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
@@ -105,6 +114,12 @@ dbg;
     resize(800,600);  
     
     
+}
+
+void MainWindow::setFocus( QModelIndex ind ){
+dbg;
+   propModel->setFocus(ind);
+   table->reset();
 }
 
 void MainWindow::createEditors(){

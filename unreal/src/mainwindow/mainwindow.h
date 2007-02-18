@@ -22,6 +22,7 @@
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
 #include "propertyeditormodel.h"
+#include "transposeproxymodel.h"
 #include "editor.h"
 #include "dialogs.h"
 
@@ -49,7 +50,7 @@ private slots:
     void removeElement();
     void removeDiagram();
     void setCurrentDiagram(const QString&);
-    
+    void setFocus(QModelIndex);  
     
 private:
     void createActions();
@@ -111,6 +112,8 @@ private:
     ObjectExplorerModel *model1;
     DiagramExplorerModel *model2;
     PropertyEditorModel *propModel;
+    TransposeProxyModel *trans;
+    //TableModel *propModel;
     QSqlQueryModel *q;
     QTreeView *tree1;
     QTreeView *tree2;
