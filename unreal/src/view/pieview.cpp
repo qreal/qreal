@@ -163,6 +163,9 @@ void PieView::reset()
 			if ( ! items.contains(type + "/" + name) ) {
 				if ( type == "eP2N" ) {
 					Edge *foo = new Edge;
+					items[idx] = foo;
+					
+					foo->setText(idx);
 
 					foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
 					foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
@@ -170,7 +173,7 @@ void PieView::reset()
 					scene->addItem(foo);
 				} else {
 					Element *last = new Element(type);
-					items[type + "/" + name] = last;
+					items[idx] = last;
 					last->setInfo(ti->getType(), ti->getName());
 					scene->addItem(last);
 				}

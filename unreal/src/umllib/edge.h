@@ -17,6 +17,8 @@ public:
     void setSource(Element *source);
     void setDest(Element *dest);
     
+    void setText(const QString &text);
+    
     void adjust();
 
 //protected:
@@ -30,6 +32,8 @@ private:
     QPointF sourcePoint;
     QPointF destPoint;
     qreal arrowSize;
+    
+    QString text;
 };
 
 #endif

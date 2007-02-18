@@ -13,6 +13,7 @@ Edge::Edge()
 {
 //    setFlags(ItemIsSelectable);
     source = dest = 0;
+    text = "This is a Link";
 }
 
 void Edge::setSource(Element *source)
@@ -25,6 +26,12 @@ void Edge::setDest(Element *dest)
 {
     this->dest = dest;
         dest->addEdge(this);
+}
+
+void Edge::setText(const QString &text)
+{
+    this->text = text;
+    update();
 }
 
 void Edge::adjust()
@@ -68,6 +75,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     	    
     if (option->state & QStyle::State_Selected)
 	penWidth += 2;
+
     // Draw the line itself
     QLineF line(sourcePoint, destPoint);
     painter->setPen(QPen(Qt::black, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -92,6 +100,17 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 																												    
     painter->setBrush(Qt::black);
     painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+
+
+    int textLength = painter->fontMetrics().width(text);
+    if (line.length() > textLength + 10) {
+	painter->save();
+	painter->translate(line.pointAt(1));
+	painter->rotate(180-(angle*360)/TwoPi);
+        painter->drawText((line.length()-textLength)/2,-3,text);
+	painter->restore();
+    }
+    
 //    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
 
 }
