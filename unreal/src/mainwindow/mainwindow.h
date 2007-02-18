@@ -50,16 +50,19 @@ private slots:
     void removeElement();
     void removeDiagram();
     void setCurrentDiagram(const QString&);
+    void setRootDiagram( QString );
     void setFocus(QModelIndex);  
     
 private:
     void createActions();
     void createMenus();
+    void createDiagramMenu();
     void createToolBars();
     void createStatusBar();
     void createDockWindows();
     void createEditors();
     void adjustPieChart();
+    
     QString currentDiagram();
 
     QTreeWidget *foobar;

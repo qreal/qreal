@@ -80,7 +80,8 @@ dbg;
     connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
     
     propModel = new PropertyEditorModel();
-    propModel->setTable("nFeatured");
+    propModel->setTable("nFeatured"); // dirty hack, i don't yet now how to do it another way 
+    propModel->setFilter("id=(select MIN(id) from nFeatured)");
     propModel->select();
     trans = new TransposeProxyModel();
     trans->setSourceModel(propModel);
@@ -105,6 +106,7 @@ dbg;
     
     createActions();
     createMenus();
+    createDiagramMenu();
     createToolBars();
     createStatusBar();
     createDockWindows();
@@ -137,8 +139,14 @@ void MainWindow::createEditors(){
     }    
 
     connect(elements, SIGNAL(mapped(const QString&)), this, SLOT(addElement(const QString&)));
-    connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setCurrentDiagram(const QString&)));
+    connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setRootDiagram(const QString&)));
 
+}
+
+void MainWindow::setRootDiagram( QString name ){
+dbg;
+    setCurrentDiagram(name);
+    adjustPieChart();
 }
 
 void MainWindow::print()
@@ -267,6 +275,23 @@ void MainWindow::createToolBars()
     reqDiagramToolBar->addActions(reqEditor->actions);
 }
 
+void MainWindow::createDiagramMenu(){
+dbg;
+    QAction* act;
+    for ( int i=0; i<diagramsList.size(); i++ ){
+        act = new QAction(diagramsList.at(i), 0);
+        act->setData(diagramsList.at(i));
+        diagramsActList << act;
+    }
+    for(QList<QAction*>::iterator it = diagramsActList.begin(); it != diagramsActList.end(); it++){
+        connect(*it, SIGNAL(triggered()), diagrams, SLOT(map()));
+        diagrams->setMapping(*it, (*it)->data().toString());
+        diagramsMenu->addAction(*it);
+    } 
+}
+
+
+
 void MainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Ready"));
@@ -281,10 +306,15 @@ void MainWindow::addDiagram(){
     AddDiagramDialog dialog(this);
     if(dialog.exec()){     
         QString name = dialog.eName->text();
-        //QAction *tmp = new QAction(name, 0);
-        //tmp->setData(name);
-        //diagramsList << tmp;        
-        //diagramsMenu->addAction(diagramsList.last());
+        QAction *tmp = new QAction(name, 0);
+        tmp->setData(name);
+        diagramsActList << tmp;        
+        diagramsMenu->clear();
+        for(int i=0; i<diagramsActList.size(); i++){
+            connect(diagramsActList.at(i), SIGNAL(triggered()), diagrams, SLOT(map()));
+            diagrams->setMapping(diagramsActList.at(i),diagramsActList.at(i)->data().toString());
+            diagramsMenu->addAction(diagramsActList.at(i));
+        }    
         
         //connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
         //diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
@@ -346,6 +376,11 @@ void MainWindow::removeDiagram(){
     RemoveDiagramDialog dialog(this);
     if(dialog.exec()){
         QString name = dialog.eName->text();
+
+        for(int i=0; i<diagramsActList.size(); i++){
+            if (diagramsActList.at(i)->data().toString() == name)
+                diagramsActList.removeAt(i);
+        }
     
         QStringList l;
         l << name;
