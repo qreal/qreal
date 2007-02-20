@@ -30,7 +30,7 @@ dbg;
         db.setDatabaseName("unreal");
         db.setUserName("unreal");
         db.setPassword("domination");
-        db.setHostName("127.0.0.1");
+        db.setHostName("mashtab-2");
     }
     if (db.open())
         dbOpened = true;
@@ -81,7 +81,7 @@ dbg;
     
     propModel = new PropertyEditorModel();
     propModel->setTable("nFeatured"); // dirty hack, i don't yet now how to do it another way 
-    propModel->setFilter("id=(select MIN(id) from nFeatured)");
+    propModel->setFilter("id=(select MAX(id) from nFeatured)");
     propModel->select();
     trans = new TransposeProxyModel();
     trans->setSourceModel(propModel);

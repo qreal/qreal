@@ -166,9 +166,14 @@ void PieView::reset()
 					items[idx] = foo;
 					
 					foo->setText(idx);
-
-					foo->setSource(static_cast<Element *> (items["nFeatured/fvvkk"]));
-					foo->setDest(static_cast<Element *> (items["nFeatured/fvkk2"]));
+                    if (name == "link 1"){
+					    foo->setSource(static_cast<Element *> (items["nParentOr/el 2"]));
+					    foo->setDest(static_cast<Element *> (items["nFeatured/el 666"]));
+                    }
+                    if (name == "link 2"){
+                   	    foo->setSource(static_cast<Element *> (items["nConcAlternative/el 21"]));
+					    foo->setDest(static_cast<Element *> (items["nFeatured/el 34"]));
+                    }
 
 					scene->addItem(foo);
 				} else {
