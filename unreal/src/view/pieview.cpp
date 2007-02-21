@@ -171,12 +171,19 @@ void PieView::reset()
 					
 					QModelIndex current = model()->index(row, 0, rootIndex());
 					if ( DiagramExplorerModel *demodel = static_cast<DiagramExplorerModel *> (model()) ) {
-						QModelIndex linkSource = demodel->getBeginning( current );
-						QModelIndex linkDest = demodel->getEnding( current );
+//						QModelIndex linkSource = demodel->getBeginning( current );
+//						QModelIndex linkDest = demodel->getEnding( current );
+						
+//						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
+//						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
+						
+//						QString idxSource = tiSource->getName() + "/" +  tiSource->getType();
+//						QString idxDest = tiDest->getName() + "/" +  tiDest->getType();
+						
+//						foo->setSource(static_cast<Element *> (items[idxSource]));
+//						foo->setDest(static_cast<Element *> (items[idxDest]));
 					}
 				
-//					foo->setSource(static_cast<Element *> (items["nParentOr/el 2"]));
-//					foo->setDest(static_cast<Element *> (items["nFeatured/el 666"]));
 
 					scene->addItem(foo);
 				} else {
