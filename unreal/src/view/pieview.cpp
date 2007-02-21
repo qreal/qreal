@@ -12,6 +12,8 @@
 #include "element.h"
 #include "edge.h"
 
+#include "diagramexplorermodel.h"
+
 #include <stdio.h>
 
 PieView::PieView(QWidget *parent)
@@ -166,14 +168,15 @@ void PieView::reset()
 					items[idx] = foo;
 					
 					foo->setText(idx);
-                    if (name == "link 1"){
-					    foo->setSource(static_cast<Element *> (items["nParentOr/el 2"]));
-					    foo->setDest(static_cast<Element *> (items["nFeatured/el 666"]));
-                    }
-                    if (name == "link 2"){
-                   	    foo->setSource(static_cast<Element *> (items["nConcAlternative/el 21"]));
-					    foo->setDest(static_cast<Element *> (items["nFeatured/el 34"]));
-                    }
+					
+					QModelIndex current = model()->index(row, 0, rootIndex());
+					if ( DiagramExplorerModel *demodel = static_cast<DiagramExplorerModel *> (model()) ) {
+						QModelIndex linkSource = demodel->getBeginning( current );
+						QModelIndex linkDest = demodel->getEnding( current );
+					}
+				
+//					foo->setSource(static_cast<Element *> (items["nParentOr/el 2"]));
+//					foo->setDest(static_cast<Element *> (items["nFeatured/el 666"]));
 
 					scene->addItem(foo);
 				} else {

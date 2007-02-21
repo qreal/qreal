@@ -30,7 +30,7 @@ dbg;
         db.setDatabaseName("unreal");
         db.setUserName("unreal");
         db.setPassword("domination");
-        db.setHostName("mashtab-2");
+        db.setHostName("127.0.0.1");
     }
     if (db.open())
         dbOpened = true;
