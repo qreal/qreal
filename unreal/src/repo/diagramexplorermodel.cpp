@@ -109,7 +109,7 @@ dbg;
    return QVariant();
  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
- return item->data();
+ return item->data(index.column());
 }
 
 Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{

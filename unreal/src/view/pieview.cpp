@@ -139,7 +139,7 @@ void PieView::reset()
 		QString type = model()->data( model()->index(row, 1, rootIndex()) ).toString();
 
 		QString idx =  type + "/" + name;
-		
+		qDebug() << "index: " << idx;
 		seen[idx] = 666;
 
 		if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
@@ -167,15 +167,13 @@ void PieView::reset()
 						QModelIndex linkDest = demodel->getEnding( current );
 						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
 						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
-					qDebug() << 1;	
-						QString idxSource = tiSource->getName() + "/" +  tiSource->getType();
+						QString idxSource =  tiSource->getDiagramName() + "/" + tiSource->getName();
                         
-					qDebug() << 2;	
-						QString idxDest = tiDest->getName() + "/" +  tiDest->getType();
-						
-					qDebug() << 3;	
+						QString idxDest =  tiDest->getDiagramName() + "/" + tiDest->getName();
+					
+                    qDebug() << "setSource(): " << idxSource; 	
 						foo->setSource(static_cast<Element *> (items[idxSource]));
-					qDebug() << 4;	
+					qDebug() << "setDest(): " << idxDest;	
 						foo->setDest(static_cast<Element *> (items[idxDest]));
 					}
 				

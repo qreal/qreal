@@ -19,7 +19,7 @@ Edge::Edge()
 void Edge::setSource(Element *source)
 {
     this->source = source;
-        source->addEdge(this);
+    source->addEdge(this);
 }
 
 void Edge::setDest(Element *dest)

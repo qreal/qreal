@@ -30,7 +30,7 @@ public:
     int columnCount() const { return 1; }
     int childCount() const { return childItems.size(); }
     
-    QVariant data() const { return name; }
+    QVariant data( int i ) const { if (i!=1) return name; else return diagramName; }
     QString getType() const { return type; }
     QString getName() const { return name; }
     QString getDiagramName() const { return diagramName; }
