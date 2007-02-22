@@ -34,7 +34,7 @@ dbg;
     TreeItem *table, *value;
     QString tmp;
 
-    QSqlQuery q1,q3;  
+    QSqlQuery q1,q2,q3;  
     tmp = "select name from diagram where type='diagrams'";
     diagrams->insert("diagram", tmp);
   
@@ -57,8 +57,15 @@ dbg;
             //qDebug() << valueName << typeName;
             value = new TreeItem(valueName, typeName, tableName, diagrams, table, db);
             if (typeName == "eP2N"){
-                QString beginning = q3.value(q3.record().indexOf("beginsWith")).toString();
-                QString ending    = q3.value(q3.record().indexOf("endsWith")).toString();
+                q2 = db.exec("select * from eP2N where name='" + valueName + "'");
+                if (!q2.next()){
+                    qDebug() << "there's no such link in the db, sorry...";
+                    return;
+                }    
+                int fromPos = q2.record().indexOf("beginsWith");
+                int toPos   = q2.record().indexOf("endsWith");
+                QString beginning = q2.value(fromPos).toString();
+                QString ending    = q2.value(toPos).toString();
                 value->setEnds(beginning, ending);
             }
             table->addChild(value);
@@ -247,6 +254,7 @@ QModelIndex DiagramExplorerModel::getIndex(QString id){
 dbg;
     QString diagram = id.section('/',0,0);
     QString name    = id.section('/',1,1);
+    qDebug() << "getIndex(): " << diagram << name;
     TreeItem* item = rootItem->getChild(diagram)->getChild(name);
     return createIndex(item->row(),0,item);
 }
@@ -255,6 +263,7 @@ dbg;
 QModelIndex DiagramExplorerModel::getBeginning( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
+    qDebug() << "requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getBeginning());
 }
 

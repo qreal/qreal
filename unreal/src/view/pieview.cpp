@@ -4,7 +4,7 @@
 #include <typeinfo>
 
 #include "pieview.h"
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include "dbg.h"
 
 //#include "uml_comment.h"
@@ -163,16 +163,19 @@ void PieView::reset()
 					qDebug() << typeid(*(model())).name();
 					
 					if ( DiagramExplorerModel *demodel = dynamic_cast<DiagramExplorerModel *> (model()) ) {
-						QModelIndex linkSource = demodel->getBeginning( current );
+                        QModelIndex linkSource = demodel->getBeginning( current );
 						QModelIndex linkDest = demodel->getEnding( current );
-						
 						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
 						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
-						
+					qDebug() << 1;	
 						QString idxSource = tiSource->getName() + "/" +  tiSource->getType();
+                        
+					qDebug() << 2;	
 						QString idxDest = tiDest->getName() + "/" +  tiDest->getType();
 						
+					qDebug() << 3;	
 						foo->setSource(static_cast<Element *> (items[idxSource]));
+					qDebug() << 4;	
 						foo->setDest(static_cast<Element *> (items[idxDest]));
 					}
 				
