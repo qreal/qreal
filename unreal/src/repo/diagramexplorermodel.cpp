@@ -263,13 +263,14 @@ dbg;
 QModelIndex DiagramExplorerModel::getBeginning( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
-    qDebug() << "requesting for " << it->getName() << it->getBeginning(); 
+    qDebug() << "getBeginning(): requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getBeginning());
 }
 
 QModelIndex DiagramExplorerModel::getEnding( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
+    qDebug() << "getEnding():    requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getEnding());
 }
 
