@@ -1,6 +1,7 @@
 #include <QtGui>
 
 #include <iostream>
+#include <typeinfo>
 
 #include "pieview.h"
 //#define _LONG_DEBUG
@@ -86,20 +87,8 @@ int PieView::rows(const QModelIndex &index) const
 
 void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
 { dbg;
-//	clearScene();
-
-//	for (int row = start; row <= end; ++row) {
-//		QModelIndex typeIndex = model()->index(row, 0, rootIndex());
-//		QString type = model()->data(typeIndex).toString();
-
-//		QModelIndex nameIndex = model()->index(row, 1, rootIndex());
-//		QString name = model()->data(nameIndex).toString();
-
-		/*	Element *foo = new Comment;
-			items[model()->index(row, 0, rootIndex()).internalId()] = foo;
-			foo->setInfo(type, name);
-			scene->addItem(foo);*/
-//	}
+	for (int row = start; row <= end; ++row) {
+	}
 
 }
 
@@ -170,18 +159,21 @@ void PieView::reset()
 					foo->setText(idx);
 					
 					QModelIndex current = model()->index(row, 0, rootIndex());
-					if ( DiagramExplorerModel *demodel = static_cast<DiagramExplorerModel *> (model()) ) {
-//						QModelIndex linkSource = demodel->getBeginning( current );
-//						QModelIndex linkDest = demodel->getEnding( current );
+					
+					qDebug() << typeid(*(model())).name();
+					
+					if ( DiagramExplorerModel *demodel = dynamic_cast<DiagramExplorerModel *> (model()) ) {
+						QModelIndex linkSource = demodel->getBeginning( current );
+						QModelIndex linkDest = demodel->getEnding( current );
 						
-//						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
-//						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
+						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
+						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
 						
-//						QString idxSource = tiSource->getName() + "/" +  tiSource->getType();
-//						QString idxDest = tiDest->getName() + "/" +  tiDest->getType();
+						QString idxSource = tiSource->getName() + "/" +  tiSource->getType();
+						QString idxDest = tiDest->getName() + "/" +  tiDest->getType();
 						
-//						foo->setSource(static_cast<Element *> (items[idxSource]));
-//						foo->setDest(static_cast<Element *> (items[idxDest]));
+						foo->setSource(static_cast<Element *> (items[idxSource]));
+						foo->setDest(static_cast<Element *> (items[idxDest]));
 					}
 				
 
@@ -201,23 +193,15 @@ void PieView::reset()
 	// Remove items not seen this time
 	
 	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
-//	    qDebug() << "haxoring " << i.key();
-	    
 	    if ( seen[i.key()] == 666 ) {
-//		qDebug() << "seen";
 		i++;
 	    } else {
-//		qDebug() << "not seen";
 		scene->removeItem(i.value());
 		delete i.value();
 		i = items.erase(i);
 	    }
 	}
 	
-/*	for ( QMap<QString, int>::const_iterator i = seen.constBegin(); i != seen.constEnd(); i++ ) {
-	    qDebug() << i.key();
-	}		      */
-
 	scene->update(view->sceneRect());
 }
 
