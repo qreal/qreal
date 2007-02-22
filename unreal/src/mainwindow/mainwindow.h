@@ -52,8 +52,11 @@ private slots:
     void setCurrentDiagram(const QString&);
     void setRootDiagram( QString );
     void setFocus(QModelIndex);  
+    void options();
     
 private:
+    void runREAL();
+    void clearAll();
     void createActions();
     void createMenus();
     void createDiagramMenu();
@@ -62,7 +65,13 @@ private:
     void createDockWindows();
     void createEditors();
     void adjustPieChart();
-    
+    void reconnect();
+    void deleteActions();
+    void deleteEditors();
+    void deleteMenus();
+    void deleteDiagramMenu();
+    void deleteToolBars();
+ 
     QString currentDiagram();
 
     QTreeWidget *foobar;
@@ -95,9 +104,13 @@ private:
     QAction *useSQLiteAct;
     QAction *useMySQLAct;
     QAction *clearAct;
+    QAction *optionsAct;
     QList<QAction*> diagramsActList;
     QSignalMapper *elements;
     QSignalMapper *diagrams;
+    QDockWidget *dock;
+    QDockWidget *dock3;
+    QDockWidget *dock4;
 
     //req diagram
     QAction *nFeaturedAct; //nodes
@@ -122,12 +135,16 @@ private:
     QTreeView *tree2;
     QTableView *table;
     PieView *pieChart;
-    int curNum;
-    int elemID;
     QString curDiagram;
     QStringList diagramsList;
+    int count;
     bool sqlite;
     bool dbOpened;
+    QString driver;
+    QString hostName;
+    QString userName;
+    QString dbName;
+    QString passwd;
 
     QSqlDatabase db;
 };

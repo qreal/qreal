@@ -141,3 +141,53 @@ RemoveElementDialog::RemoveElementDialog(QWidget *parent) : QDialog(parent) {
     setWindowTitle(tr("remove element")); 
 }
 
+RepoOptionsDialog::RepoOptionsDialog(QStringList list, QWidget *parent) : QDialog(parent) {
+//dbg;    
+    QString hostName = list.at(0);
+    QString dbName   = list.at(1);
+    QString userName = list.at(2);
+
+    lHostName = new QLabel(tr("host name: "));
+    eHostName = new QLineEdit(hostName);
+    lDBName   = new QLabel(tr("db name: "));
+    eDBName   = new QLineEdit(dbName);
+    lUserName = new QLabel(tr("user name: "));
+    eUserName = new QLineEdit(userName);
+    lPasswd   = new QLabel(tr("password: "));
+    ePasswd   = new QLineEdit("");
+    
+    okButton = new QPushButton(tr("reconnect"));
+    closeButton = new QPushButton(tr("abort"));
+    
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(reject()));
+    
+    QHBoxLayout *h1 = new QHBoxLayout;
+    h1->addWidget(lHostName);
+    h1->addWidget(eHostName);
+    QHBoxLayout *h2 = new QHBoxLayout;
+    h2->addWidget(lDBName);
+    h2->addWidget(eDBName);
+    QHBoxLayout *h3 = new QHBoxLayout;
+    h3->addWidget(lUserName);
+    h3->addWidget(eUserName);
+    QHBoxLayout *h4 = new QHBoxLayout;
+    h4->addWidget(lPasswd);
+    h4->addWidget(ePasswd);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(okButton);    
+    h6->addWidget(closeButton);     
+    
+    QVBoxLayout *v = new QVBoxLayout;
+    v->addLayout(h1);
+    v->addLayout(h2);
+    v->addLayout(h3);
+    v->addLayout(h4);
+    v->addLayout(h6);
+    
+    setLayout(v);
+    
+    setWindowTitle(tr("repository settings")); 
+}
+
+

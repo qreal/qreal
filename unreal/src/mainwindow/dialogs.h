@@ -77,6 +77,22 @@ public:
     QPushButton *closeButton;
 };
 
+class RepoOptionsDialog : public QDialog{
+    Q_OBJECT
+public:
+    RepoOptionsDialog(QStringList list, QWidget *parent = 0);
+
+    QLabel    *lHostName;    
+    QLineEdit *eHostName;    
+    QLabel    *lDBName;    
+    QLineEdit *eDBName;    
+    QLabel    *lUserName;    
+    QLineEdit *eUserName;    
+    QLabel    *lPasswd;    
+    QLineEdit *ePasswd;    
+    QPushButton *okButton;
+    QPushButton *closeButton;
+};
 
 
 

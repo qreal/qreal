@@ -9,7 +9,7 @@
 // Author:       
 //===================================================================== 
 
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include <QtGui>
 #include "mainwindow.h"
 #include "dbg.h"
@@ -19,35 +19,25 @@
 MainWindow::MainWindow()
 {
 dbg;
-    sqlite = false;
-
-    if (sqlite){
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName(":memory:");
-    }
-    else {
-        db = QSqlDatabase::addDatabase("QMYSQL");
-        db.setDatabaseName("unreal");
-        db.setUserName("unreal");
-        db.setPassword("domination");
-        db.setHostName("127.0.0.1");
-    }
-    if (db.open())
-        dbOpened = true;
-    else
-        dbOpened = false;
-
-    curNum = 0;
-    elemID = 0;
-    
+    sqlite   = false;
+    driver   = "QMYSQL";
+    hostName = "127.0.0.1";
+    dbName   = "unreal";
+    userName = "unreal";
+    passwd   = "";
+    runREAL();
+}
+ 
+void MainWindow::runREAL(){ 
+dbg;
+    reconnect();
     if (dbOpened){
         createEditors();
     }    
-    
      
     model1 = new ObjectExplorerModel(db);
 
-    QDockWidget *dock = new QDockWidget(tr("object explorer"), this);
+    dock = new QDockWidget(tr("object explorer"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tree1 = new QTreeView();
     tree1->setModel(model1);
@@ -64,14 +54,14 @@ dbg;
     else    
         setCurrentDiagram("");
     
-    QDockWidget *dock3 = new QDockWidget(tr("diagram explorer"), this);
+    dock3 = new QDockWidget(tr("diagram explorer"), this);
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tree2 = new QTreeView();
     tree2->setModel(model2);
     tree2->setHeader(0);
  
     dock3->setWidget(tree2);
-    addDockWidget(Qt::LeftDockWidgetArea, dock3);
+    addDockWidget(Qt::RightDockWidgetArea, dock3);
 
 
     connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model1, SLOT(updateData(const QModelIndex &, QVariant)));
@@ -94,7 +84,7 @@ dbg;
     connect(tree2, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
     connect(tree1, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
     
-    QDockWidget *dock4 = new QDockWidget(tr("property editor"), this);
+    dock4 = new QDockWidget(tr("property editor"), this);
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
@@ -105,7 +95,8 @@ dbg;
     pieChart->setModel(model2);
     
     createActions();
-    createMenus();
+    //if( count == 0 )
+        createMenus();
     createDiagramMenu();
     createToolBars();
     createStatusBar();
@@ -113,9 +104,42 @@ dbg;
 
     setWindowTitle(tr("unREAL"));
 
-    resize(800,600);  
+    resize(1024, 768);  
     
+    count++;    
+}
+
+void MainWindow::clearAll(){ 
+dbg;
+    removeDockWidget(dock);
+    removeDockWidget(dock3);
+    removeDockWidget(dock4);
     
+    model1->disconnect();
+    model2->disconnect();
+    tree1->disconnect();
+    tree2->disconnect();
+    delete model1;
+    delete tree1;
+    delete model2;
+    delete tree2;
+    delete propModel;
+    delete trans;
+    delete table;
+    delete pieChart;
+   
+    delete dock;
+    delete dock3;
+    delete dock4;
+   
+    deleteDiagramMenu();
+    deleteActions();
+    deleteEditors();
+    deleteMenus();
+    deleteToolBars();
+
+    diagramsList.clear();
+    diagramsActList.clear();
 }
 
 void MainWindow::setFocus( QModelIndex ind ){
@@ -125,12 +149,13 @@ dbg;
 }
 
 void MainWindow::createEditors(){
-
+dbg;
     db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
     
     reqEditor = new Editor;
     
     diagrams = new QSignalMapper(this);
+    qDebug() << "diagrams created;";
     elements = new QSignalMapper(this);
     
     for(QList<QAction*>::iterator it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++){
@@ -141,6 +166,16 @@ void MainWindow::createEditors(){
     connect(elements, SIGNAL(mapped(const QString&)), this, SLOT(addElement(const QString&)));
     connect(diagrams, SIGNAL(mapped(const QString&)), this, SLOT(setRootDiagram(const QString&)));
 
+}
+
+void MainWindow::deleteEditors(){
+dbg;
+    diagrams->disconnect();
+    elements->disconnect();
+    
+    delete reqEditor;
+    delete diagrams;
+    delete elements;
 }
 
 void MainWindow::setRootDiagram( QString name ){
@@ -162,7 +197,7 @@ void MainWindow::undo()
 }
 
 void MainWindow::about()
-{
+{dbg;
 QMessageBox::about(this, tr("about unREAL"),
             tr("this is the baseline of <b>unREAL</b> -- troo Qt-based version of <b>REAL</b>\n"
                       "<center>(approved and blessed by the Elder Gods themselves!!)</center>"));
@@ -170,6 +205,7 @@ QMessageBox::about(this, tr("about unREAL"),
 
 void MainWindow::createActions()
 {
+dbg;
     newLetterAct = new QAction(QIcon(":/images/new.png"), tr("&New Letter"),
                                this);
     newLetterAct->setShortcut(tr("Ctrl+N"));
@@ -214,11 +250,40 @@ void MainWindow::createActions()
 
     clearAct = new QAction(tr("clear all"), this);
 
-//    connect(addReqDiagramAct, SIGNAL(triggered()), model1, SLOT(doNOTuseIt()));
+    optionsAct = new QAction(tr("Settings"), this);
+    connect(optionsAct, SIGNAL(triggered()), this, SLOT(options()));
+
+}
+
+void MainWindow::deleteActions()
+{dbg;
+    delete newLetterAct;
+    saveAct->disconnect();
+    delete saveAct;
+    printAct->disconnect();
+    delete printAct;
+    undoAct->disconnect();
+    delete undoAct;
+    quitAct->disconnect();
+    delete quitAct;
+    aboutAct->disconnect();
+    delete aboutAct;
+    aboutQtAct->disconnect();
+    delete aboutQtAct;
+    addReqDiagramAct->disconnect();
+    delete addReqDiagramAct;
+    removeDiagramAct->disconnect();
+    delete removeDiagramAct;
+    removeElementAct->disconnect();
+    delete removeElementAct;
+    clearAct->disconnect();
+    delete clearAct;
+    optionsAct->disconnect();
+    delete optionsAct;
 }
 
 void MainWindow::createMenus()
-{
+{dbg;
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(newLetterAct);
     fileMenu->addAction(saveAct);
@@ -228,7 +293,7 @@ void MainWindow::createMenus()
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(undoAct);
-    editMenu->addAction(clearAct);
+    editMenu->addAction(optionsAct);
 
     viewMenu = menuBar()->addMenu(tr("&View"));
 
@@ -244,7 +309,7 @@ void MainWindow::createMenus()
     removeMenu->addAction(removeElementAct);
 
     menuBar()->addSeparator();
-
+    
     diagramsMenu = menuBar()->addMenu(tr("Diagrams"));
 
     menuBar()->addSeparator();
@@ -256,8 +321,21 @@ void MainWindow::createMenus()
     helpMenu->addAction(aboutQtAct);
 }
 
+void MainWindow::deleteMenus()
+{dbg;
+    delete fileMenu;
+    delete editMenu;
+    delete viewMenu;
+    delete addMenu;
+    delete removeMenu;
+    delete diagramsMenu;
+    delete helpMenu;
+    delete menuWidget();
+    delete menuBar();
+}
+
 void MainWindow::createToolBars()
-{
+{dbg;
     fileToolBar = addToolBar(tr("File"));
     fileToolBar->addAction(newLetterAct);
     fileToolBar->addAction(saveAct);
@@ -270,9 +348,15 @@ void MainWindow::createToolBars()
     diagramsToolBar->addAction(addReqDiagramAct);
 
     reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
-//    QList<QAction*>::iterator it;
-//    for (it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++)    
     reqDiagramToolBar->addActions(reqEditor->actions);
+}
+
+void MainWindow::deleteToolBars()
+{dbg;
+    delete fileToolBar;
+    delete editToolBar;
+    delete diagramsToolBar;
+    delete reqDiagramToolBar;
 }
 
 void MainWindow::createDiagramMenu(){
@@ -290,10 +374,17 @@ dbg;
     } 
 }
 
+void MainWindow::deleteDiagramMenu(){
+dbg;
+    for ( int i=0; i<diagramsActList.size(); i++ ){
+        diagramsActList.at(i)->disconnect();
+        delete diagramsActList.at(i);
+    }    
+}
 
 
 void MainWindow::createStatusBar()
-{
+{dbg;
     statusBar()->showMessage(tr("Ready"));
 }
 
@@ -302,7 +393,7 @@ void MainWindow::createDockWindows()
 }
 
 void MainWindow::addDiagram(){
-  
+ dbg; 
     AddDiagramDialog dialog(this);
     if(dialog.exec()){     
         QString name = dialog.eName->text();
@@ -315,10 +406,6 @@ void MainWindow::addDiagram(){
             diagrams->setMapping(diagramsActList.at(i),diagramsActList.at(i)->data().toString());
             diagramsMenu->addAction(diagramsActList.at(i));
         }    
-        
-        //connect(diagramsList.last(), SIGNAL(triggered()), diagrams, SLOT(map()));
-        //diagrams->setMapping(diagramsList.last(), diagramsList.last()->data().toString());
-
         QStringList l;
         l << name;
         model2->insert(false, "", l);
@@ -329,7 +416,7 @@ void MainWindow::addDiagram(){
 }
 
 void MainWindow::addElement(const QString &type){
-//dbg;    
+dbg;    
     AddElementDialog dialog(this);
     if(dialog.exec()){
         QString name = dialog.eName->text();
@@ -358,7 +445,7 @@ void MainWindow::addElement(const QString &type){
 }
 
 void MainWindow::removeElement(){
-//dbg;    
+dbg;    
     RemoveElementDialog dialog(this);
     if(dialog.exec()){
         QString name    = dialog.eName->text().section('/',1,1);
@@ -372,7 +459,7 @@ void MainWindow::removeElement(){
 }
 
 void MainWindow::removeDiagram(){
-//dbg;    
+dbg;    
     RemoveDiagramDialog dialog(this);
     if(dialog.exec()){
         QString name = dialog.eName->text();
@@ -397,18 +484,60 @@ void MainWindow::removeDiagram(){
 
 
 void MainWindow::setCurrentDiagram(const QString &dname){
+dbg;
     curDiagram = dname;
 }
 
 QString MainWindow::currentDiagram(){
+dbg;
     return curDiagram;
 }
 
 void MainWindow::adjustPieChart(){
-
+dbg;
     if(currentDiagram() != "")
         pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     else 
         pieChart->setRootIndex(QModelIndex());
 	pieChart->reset();
+}
+
+void MainWindow::reconnect(){
+dbg;
+    if (sqlite){
+        db = QSqlDatabase::addDatabase("QSQLITE");
+        db.setDatabaseName(":memory:");
+    }
+    else {
+        db = QSqlDatabase::addDatabase(driver);
+        db.setDatabaseName(dbName);
+        db.setUserName(userName);
+        db.setPassword(passwd);
+        db.setHostName(hostName);
+    }
+    if (db.open())
+        dbOpened = true;
+    else{
+        QMessageBox::information(0, tr("AAAAAAAAAAAAAAAAA"), tr("database connection error\ncheck your repo settings"));
+        dbOpened = false;
+    }    
+    
+}
+
+void MainWindow::options(){
+dbg;
+    QStringList list;
+    list << hostName << dbName << userName;
+
+    RepoOptionsDialog dialog(list, this);
+    if (dialog.exec()){
+        hostName = dialog.eHostName->text();
+        dbName   = dialog.eDBName->text();
+        userName = dialog.eUserName->text();
+        passwd   = dialog.ePasswd->text();
+       
+        db.close();
+        clearAll();
+        runREAL();
+    }
 }

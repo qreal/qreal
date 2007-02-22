@@ -25,7 +25,7 @@ void Edge::setSource(Element *source)
 void Edge::setDest(Element *dest)
 {
     this->dest = dest;
-        dest->addEdge(this);
+    dest->addEdge(this);
 }
 
 void Edge::setText(const QString &text)
