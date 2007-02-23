@@ -24,7 +24,7 @@ dbg;
     hostName = "127.0.0.1";
     dbName   = "unreal";
     userName = "unreal";
-    passwd   = "";
+    passwd   = "domination";
     runREAL();
 }
  
@@ -77,7 +77,7 @@ dbg;
     trans->setSourceModel(propModel);
     //propModel = new TableModel(db);
     table = new QTableView();
-    table->setModel(trans);
+    table->setModel(propModel);
     //table->setHeader(0);
     table->show();
     
@@ -86,7 +86,7 @@ dbg;
     
     dock4 = new QDockWidget(tr("property editor"), this);
     dock4->setWidget(table);
-    addDockWidget(Qt::LeftDockWidgetArea, dock4);
+    addDockWidget(Qt::BottomDockWidgetArea, dock4);
     
     pieChart = new ExampleEditor();
     setCentralWidget(pieChart);
@@ -150,7 +150,7 @@ dbg;
 
 void MainWindow::createEditors(){
 dbg;
-    db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20))");
+    db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20), status varchar(20))");
     
     reqEditor = new Editor;
     
@@ -402,7 +402,8 @@ void MainWindow::addDiagram(){
  dbg; 
     AddDiagramDialog dialog(this);
     if(dialog.exec()){     
-        QString name = dialog.eName->text();
+        QString name   = dialog.eName->text();
+        QString status = dialog.eStat->text();
         QAction *tmp = new QAction(name, 0);
         tmp->setData(name);
         diagramsActList << tmp;        
@@ -413,7 +414,7 @@ void MainWindow::addDiagram(){
             diagramsMenu->addAction(diagramsActList.at(i));
         }    
         QStringList l;
-        l << name;
+        l << name << status;
         model2->insert(false, "", l);
         diagramsList << name;
         setCurrentDiagram(name);
@@ -488,16 +489,14 @@ dbg;
         QString name = dialog.eName->text();
         QString from = dialog.eFrom->text();
         QString to   = dialog.eTo->text();
+        QString stat = dialog.eStat->text();
         QString type = "eP2N";
         
         QList<QString> list;                
         QString fields;
         
-qDebug() << "from: " << from;
-qDebug() << "to  : " << to;
-
-        list << curDiagram << name << type << from << to;
-        fields = "name, beginsWith, endsWith, diagram";
+        list << curDiagram << name << type << from << to << stat;
+        fields = "name, beginsWith, endsWith, diagram, status";
         
         model2->insert(true, fields, list);
 	

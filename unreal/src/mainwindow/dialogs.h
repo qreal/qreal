@@ -46,9 +46,10 @@ class AddDiagramDialog : public QDialog{
 public:
     AddDiagramDialog(QWidget *parent = 0);
 
-
     QLabel *lName;    
     QLineEdit *eName;    
+    QLabel *lStat;    
+    QLineEdit *eStat;    
     QPushButton *okButton;
     QPushButton *closeButton;
 };
@@ -102,9 +103,11 @@ public:
     QLabel *lFrom;
     QLabel *lTo;
     QLabel *lName;
+    QLabel *lStat;
     QLineEdit *eFrom;
     QLineEdit *eTo;
     QLineEdit *eName;
+    QLineEdit *eStat;
     QPushButton *okButton;
     QPushButton *closeButton;
 };

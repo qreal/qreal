@@ -418,7 +418,7 @@ void Editor::execDBScripts(){
     if (z <= 0){
         q.exec("insert into diagram (name, type) values ('eP2N', 'objects')");
         q.exec("create table eP2N (id integer primary key auto_increment, name varchar(20), beginsWith varchar(40),"
-            " endsWith varchar(40), diagram varchar(20))");
+            " endsWith varchar(40), status varchar(20), diagram varchar(20))");
     }
     
 }

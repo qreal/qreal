@@ -41,7 +41,7 @@ public:
     void insert( bool isElement, QString, QStringList );
     void remove( bool isElement, QStringList );
     QModelIndex getIndex( QString );
-    void createDiagramScriptsExec( const QString& );
+    void createDiagramScriptsExec( QStringList );
     void removeDiagramScriptsExec( const QString& );
     void createElementScriptsExec( QStringList , QString );
     void removeElementScriptsExec( QStringList );

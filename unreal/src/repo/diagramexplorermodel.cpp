@@ -176,12 +176,14 @@ dbg;
   rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
 }
 
-void DiagramExplorerModel::createDiagramScriptsExec(const QString &dname){
+void DiagramExplorerModel::createDiagramScriptsExec(QStringList vals){
 dbg;
-    QString tmp = "insert into diagram (name, type) values ('" + dname + "', 'diagrams')";
+    QString name   = vals.at(0);
+    QString status = vals.at(vals.size()-1);
+    QString tmp = "insert into diagram (name, type, status) values ('" + name + "', 'diagrams', '" + status + "')";
     db.exec(tmp);
     
-    tmp = "create table " + dname + " (id integer primary key auto_increment, name varchar(20), type varchar(20))";
+    tmp = "create table " + name + " (id integer primary key auto_increment, name varchar(20), type varchar(20), status varchar(20))";
     db.exec(tmp);
 }
 
@@ -210,6 +212,7 @@ dbg;
     QString diagram = values.at(0);
     QString name    = values.at(1);
     QString type    = values.at(2);
+    QString status  = values.at(values.size()-1);
     
     QString tmp = "insert into %1 (name, type) values ('%2', '%3')";
     tmp = tmp.arg(diagram).arg(name).arg(type) ;
@@ -219,17 +222,16 @@ dbg;
         QString desc    = values.at(3);
         QString prio    = values.at(4);
         QString source  = values.at(5);
-        QString stat    = values.at(6);
     
         tmp = "insert into %1 (%2) values ('%3', '%4', %5, '%6', '%7', '%8')";
-        tmp = tmp.arg(type).arg(fields).arg(name).arg(desc).arg(prio).arg(source).arg(stat).arg(diagram);
+        tmp = tmp.arg(type).arg(fields).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(diagram);
         db.exec(tmp);
     }
     else{
         QString from = values.at(3);
         QString to   = values.at(4);
-        tmp = "insert into %1 (%2) values ('%3', '%4', '%5', '%6')";
-        tmp = tmp.arg(type).arg(fields).arg(name).arg(from).arg(to).arg(diagram);
+        tmp = "insert into %1 (%2) values ('%3', '%4', '%5', '%6', '%7')";
+        tmp = tmp.arg(type).arg(fields).arg(name).arg(from).arg(to).arg(diagram).arg(status);
         db.exec(tmp);
     }
 }
@@ -306,10 +308,12 @@ dbg;
     QString name;
     QString type;
     QString diagram;
+    QString status;
 
     if ( fields == "" ){ // creating diagram in the database
-        createDiagramScriptsExec(vals.at(0));
+        createDiagramScriptsExec(vals);
         name    = vals.at(0);
+        status  = vals.at(vals.size()-1);
         type    = "diagram";
         diagram = "diagram";
     }    
@@ -318,6 +322,7 @@ dbg;
         name    = vals.at(1);
         type    = vals.at(2);
         diagram = vals.at(0);
+        status  = vals.at(vals.size()-1);
     }    
     
     TreeItem *par;

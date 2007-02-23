@@ -16,6 +16,9 @@ AddDiagramDialog::AddDiagramDialog(QWidget *parent) : QDialog(parent) {
 //dbg;    
     lName = new QLabel(tr("name: "));
     eName = new QLineEdit("req_diagram_1");
+    lStat = new QLabel(tr("status: "));
+    eStat = new QLineEdit("");
+
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     
@@ -25,12 +28,16 @@ AddDiagramDialog::AddDiagramDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(lName);
     h1->addWidget(eName);
+    QHBoxLayout *h2 = new QHBoxLayout;
+    h2->addWidget(lStat);
+    h2->addWidget(eStat);
     QHBoxLayout *h6 = new QHBoxLayout;
     h6->addWidget(okButton);    
     h6->addWidget(closeButton);     
     
     QVBoxLayout *v = new QVBoxLayout;
     v->addLayout(h1);
+    v->addLayout(h2);
     v->addLayout(h6);
     
     setLayout(v);
@@ -193,10 +200,12 @@ RepoOptionsDialog::RepoOptionsDialog(QStringList list, QWidget *parent) : QDialo
 AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
 //dbg;
     lName = new QLabel(tr("name: "));
-    lFrom = new QLabel(tr("from: "));
-    lTo   = new QLabel(tr("to:   "));
     eName = new QLineEdit("link 1");
+    lFrom = new QLabel(tr("from: "));
     eFrom = new QLineEdit("req_diagram_1/element 1");
+    lStat = new QLabel(tr("status:"));
+    eStat = new QLineEdit("");
+    lTo   = new QLabel(tr("to:   "));
     eTo   = new QLineEdit("req_diagram_1/element 2");
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
@@ -213,6 +222,9 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h3 = new QHBoxLayout;
     h3->addWidget(lTo);
     h3->addWidget(eTo);
+    QHBoxLayout *h4 = new QHBoxLayout;
+    h4->addWidget(lStat);
+    h4->addWidget(eStat);
     QHBoxLayout *h6 = new QHBoxLayout;
     h6->addWidget(okButton);    
     h6->addWidget(closeButton);     
@@ -220,6 +232,7 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     v->addLayout(h1);
     v->addLayout(h2);
     v->addLayout(h3);
+    v->addLayout(h4);
     v->addLayout(h6);
     setLayout(v);
     
