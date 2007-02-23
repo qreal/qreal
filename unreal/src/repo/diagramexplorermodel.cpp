@@ -67,6 +67,7 @@ dbg;
                 QString beginning = q2.value(fromPos).toString();
                 QString ending    = q2.value(toPos).toString();
                 value->setEnds(beginning, ending);
+                qDebug() << "name: " << valueName << ", " << beginning << " -> " << ending;
             }
             table->addChild(value);
         }    
@@ -229,6 +230,7 @@ dbg;
         QString to   = values.at(4);
         tmp = "insert into %1 (%2) values ('%3', '%4', '%5', '%6')";
         tmp = tmp.arg(type).arg(fields).arg(name).arg(from).arg(to).arg(diagram);
+        db.exec(tmp);
     }
 }
 
@@ -254,7 +256,7 @@ QModelIndex DiagramExplorerModel::getIndex(QString id){
 dbg;
     QString diagram = id.section('/',0,0);
     QString name    = id.section('/',1,1);
-    qDebug() << "getIndex(): " << diagram << name;
+    qDebug() << "getIndex(): diagram: " << diagram << ", name: " << name;
     TreeItem* item = rootItem->getChild(diagram)->getChild(name);
     return createIndex(item->row(),0,item);
 }
@@ -263,14 +265,14 @@ dbg;
 QModelIndex DiagramExplorerModel::getBeginning( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
-    qDebug() << "getBeginning(): requesting for " << it->getName() << it->getBeginning(); 
+    //qDebug() << "getBeginning(): requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getBeginning());
 }
 
 QModelIndex DiagramExplorerModel::getEnding( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
-    qDebug() << "getEnding():    requesting for " << it->getName() << it->getBeginning(); 
+    //qDebug() << "getEnding():    requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getEnding());
 }
 

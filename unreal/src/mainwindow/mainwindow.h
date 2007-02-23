@@ -47,6 +47,7 @@ private slots:
     void about();
     void addDiagram();
     void addElement(const QString&);
+    void addLink();
     void removeElement();
     void removeDiagram();
     void setCurrentDiagram(const QString&);
@@ -105,6 +106,7 @@ private:
     QAction *useMySQLAct;
     QAction *clearAct;
     QAction *optionsAct;
+    QAction *addLinkAct;
     QList<QAction*> diagramsActList;
     QSignalMapper *elements;
     QSignalMapper *diagrams;

@@ -15,7 +15,7 @@
 AddDiagramDialog::AddDiagramDialog(QWidget *parent) : QDialog(parent) {
 //dbg;    
     lName = new QLabel(tr("name: "));
-    eName = new QLineEdit("req_diagram_");
+    eName = new QLineEdit("req_diagram_1");
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     
@@ -118,7 +118,7 @@ RemoveDiagramDialog::RemoveDiagramDialog(QWidget *parent) : QDialog(parent) {
 RemoveElementDialog::RemoveElementDialog(QWidget *parent) : QDialog(parent) {
 //dbg;    
     lName = new QLabel(tr("name: "));
-    eName = new QLineEdit("req_diagram_/element 1");
+    eName = new QLineEdit("req_diagram_1/element 1");
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     
@@ -190,4 +190,40 @@ RepoOptionsDialog::RepoOptionsDialog(QStringList list, QWidget *parent) : QDialo
     setWindowTitle(tr("repository settings")); 
 }
 
+AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
+//dbg;
+    lName = new QLabel(tr("name: "));
+    lFrom = new QLabel(tr("from: "));
+    lTo   = new QLabel(tr("to:   "));
+    eName = new QLineEdit("link 1");
+    eFrom = new QLineEdit("req_diagram_1/element 1");
+    eTo   = new QLineEdit("req_diagram_1/element 2");
+    okButton = new QPushButton(tr("ok"));
+    closeButton = new QPushButton(tr("close"));
+    
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(reject()));
+    
+    QHBoxLayout *h1 = new QHBoxLayout;
+    h1->addWidget(lName);
+    h1->addWidget(eName);
+    QHBoxLayout *h2 = new QHBoxLayout;
+    h2->addWidget(lFrom);
+    h2->addWidget(eFrom);
+    QHBoxLayout *h3 = new QHBoxLayout;
+    h3->addWidget(lTo);
+    h3->addWidget(eTo);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(okButton);    
+    h6->addWidget(closeButton);     
+    QVBoxLayout *v = new QVBoxLayout;
+    v->addLayout(h1);
+    v->addLayout(h2);
+    v->addLayout(h3);
+    v->addLayout(h6);
+    setLayout(v);
+    
+    setWindowTitle(tr("add link")); 
+
+}
 

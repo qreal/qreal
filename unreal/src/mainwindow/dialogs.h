@@ -94,6 +94,20 @@ public:
     QPushButton *closeButton;
 };
 
+class AddLinkDialog : public QDialog{
+    Q_OBJECT
+public:
+    AddLinkDialog(QWidget *parent = 0);
+
+    QLabel *lFrom;
+    QLabel *lTo;
+    QLabel *lName;
+    QLineEdit *eFrom;
+    QLineEdit *eTo;
+    QLineEdit *eName;
+    QPushButton *okButton;
+    QPushButton *closeButton;
+};
 
 
 #endif

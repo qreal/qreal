@@ -9,7 +9,7 @@
 // Author:       
 //===================================================================== 
 
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include <QtGui>
 #include "mainwindow.h"
 #include "dbg.h"
@@ -24,7 +24,7 @@ dbg;
     hostName = "127.0.0.1";
     dbName   = "unreal";
     userName = "unreal";
-    passwd   = "domination";
+    passwd   = "";
     runREAL();
 }
  
@@ -253,6 +253,9 @@ dbg;
     optionsAct = new QAction(tr("Settings"), this);
     connect(optionsAct, SIGNAL(triggered()), this, SLOT(options()));
 
+    addLinkAct = new QAction(tr("Add link"), this);
+    connect(addLinkAct, SIGNAL(triggered()), this, SLOT(addLink()));
+
 }
 
 void MainWindow::deleteActions()
@@ -346,9 +349,12 @@ void MainWindow::createToolBars()
 
     diagramsToolBar = addToolBar(tr("diagrams"));
     diagramsToolBar->addAction(addReqDiagramAct);
-
-    reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
-    reqDiagramToolBar->addActions(reqEditor->actions);
+    diagramsToolBar->addAction(addLinkAct);
+    
+    if (dbOpened){
+        reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
+        reqDiagramToolBar->addActions(reqEditor->actions);
+    }
 }
 
 void MainWindow::deleteToolBars()
@@ -428,15 +434,8 @@ dbg;
         QList<QString> list;                
         QString fields;
         
-        
-        if (type != "eP2N"){
-            list << curDiagram << name << type << desc << prio << source << stat;
-            fields = "name, description, priority, source, status, diagram";
-        }   
-        //else{
-        //    list << curDiagram << name << type << beginsWith << endsWith << status;
-        //    fields = "name, beginsWith, endsWith, diagram";
-        //}    
+        list << curDiagram << name << type << desc << prio << source << stat;
+        fields = "name, description, priority, source, status, diagram";
         
         model2->insert(true, fields, list);
 	
@@ -450,7 +449,7 @@ dbg;
     if(dialog.exec()){
         QString name    = dialog.eName->text().section('/',1,1);
         QString diagram = dialog.eName->text().section('/',0,0);
-    
+   qDebug() << "deleting: " << diagram << name; 
         QStringList list;
         list << name << diagram; 
         model2->remove(true, list);
@@ -482,6 +481,29 @@ dbg;
     }
 }
 
+void MainWindow::addLink(){
+dbg;    
+    AddLinkDialog dialog(this);
+    if(dialog.exec()){
+        QString name = dialog.eName->text();
+        QString from = dialog.eFrom->text();
+        QString to   = dialog.eTo->text();
+        QString type = "eP2N";
+        
+        QList<QString> list;                
+        QString fields;
+        
+qDebug() << "from: " << from;
+qDebug() << "to  : " << to;
+
+        list << curDiagram << name << type << from << to;
+        fields = "name, beginsWith, endsWith, diagram";
+        
+        model2->insert(true, fields, list);
+	
+        adjustPieChart();
+    }
+}
 
 void MainWindow::setCurrentDiagram(const QString &dname){
 dbg;
