@@ -24,7 +24,7 @@ dbg;
     hostName = "127.0.0.1";
     dbName   = "unreal";
     userName = "unreal";
-    passwd   = "";
+    passwd   = "domination";
     runREAL();
 }
  

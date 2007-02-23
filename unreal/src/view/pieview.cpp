@@ -129,80 +129,83 @@ void PieView::reset()
 
 	//	clearScene();
 	//	items.clear();
-	
+
 	QMap<QString,int> seen;
 	seen.clear();
-
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-
-		QString name = model()->data( model()->index(row, 0, rootIndex()) ).toString();
-		QString type = model()->data( model()->index(row, 1, rootIndex()) ).toString();
-
+		 qDebug() << model()->data( model()->index(row, 0, rootIndex()) ).toString();
+		 
+		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
+		QString name = ti->getName();
+		QString type = ti->getDiagramName();
 		QString idx =  type + "/" + name;
-		qDebug() << "index: " << idx;
+
 		seen[idx] = 666;
-
-		if ( TreeItem *ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() ) ) {
-
-			type = ti->getType();
-
-
-		QString idx =  type + "/" + name;
 		
-		seen[idx] = 666;
+		qDebug() << idx;
 
-			if ( ! items.contains(type + "/" + name) ) {
-				if ( type == "eP2N" ) {
-					Edge *foo = new Edge;
-					items[idx] = foo;
-					
-					foo->setText(idx);
-					
-					QModelIndex current = model()->index(row, 0, rootIndex());
-					
-					qDebug() << typeid(*(model())).name();
-					
-					if ( DiagramExplorerModel *demodel = dynamic_cast<DiagramExplorerModel *> (model()) ) {
-                        QModelIndex linkSource = demodel->getBeginning( current );
-						QModelIndex linkDest = demodel->getEnding( current );
-						TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
-						TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
-						QString idxSource =  tiSource->getDiagramName() + "/" + tiSource->getName();
-                        
-						QString idxDest =  tiDest->getDiagramName() + "/" + tiDest->getName();
-					
-                    qDebug() << "setSource(): " << idxSource; 	
-						foo->setSource(static_cast<Element *> (items[idxSource]));
-					qDebug() << "setDest(): " << idxDest;	
-						foo->setDest(static_cast<Element *> (items[idxDest]));
-					}
-				
+		if ( items.contains(idx) )
+			continue;
+		
+		if ( ti->getType() == "eP2N" )
+			continue;	// another kludge, we handle these later...
+			
+		Element *last = new Element(ti->getType());
+		items[idx] = last;
+		last->setInfo(ti->getType(), ti->getName());
+		scene->addItem(last);
+	}
+	
+	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
+		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
+		QString name = ti->getName();
+		QString type = ti->getDiagramName();
+		QString idx =  type + "/" + name;
+						
+		if ( ti->getType() != "eP2N" )
+		    continue;
 
-					scene->addItem(foo);
-				} else {
-					Element *last = new Element(type);
-					items[idx] = last;
-					last->setInfo(ti->getType(), ti->getName());
-					scene->addItem(last);
-				}
-			}
-		} else { 
-			qDebug("unable to cast model.internalPointer to TreeItem");
+    		Edge *foo = new Edge;
+		items[idx] = foo;
+	
+		foo->setText(idx);
+
+		QModelIndex current = model()->index(row, 0, rootIndex());
+
+		DiagramExplorerModel *demodel = dynamic_cast<DiagramExplorerModel *> (model());
+
+		QModelIndex linkSource = demodel->getBeginning( current );
+		QModelIndex linkDest = demodel->getEnding( current );
+
+		TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
+		TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
+
+		QString idxSource =  tiSource->getDiagramName() + "/" + tiSource->getName();
+		QString idxDest =  tiDest->getDiagramName() + "/" + tiDest->getName();
+
+		foo->setSource(static_cast<Element *> (items[idxSource]));
+		foo->setDest(static_cast<Element *> (items[idxDest]));
+	
+//		for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end(); i++ ) {
+//			qDebug() << i.key();
+//		}
+		
+		scene->addItem(foo);
+	}
+    			
+
+	// Remove items not seen this time
+
+	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
+		if ( seen[i.key()] == 666 ) {
+			i++;
+		} else {
+			scene->removeItem(i.value());
+			delete i.value();
+			i = items.erase(i);
 		}
 	}
-	
-	// Remove items not seen this time
-	
-	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
-	    if ( seen[i.key()] == 666 ) {
-		i++;
-	    } else {
-		scene->removeItem(i.value());
-		delete i.value();
-		i = items.erase(i);
-	    }
-	}
-	
+
 	scene->update(view->sceneRect());
 }
 

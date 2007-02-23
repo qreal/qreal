@@ -56,7 +56,7 @@ QRectF Edge::boundingRect() const
 	   
    qreal penWidth = 1;
    qreal arrowSize = 10;
-   qreal extra = (penWidth + arrowSize) / 2.0;
+   qreal extra = (penWidth + arrowSize) / 2.0 + 20;
 
    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                      destPoint.y() - sourcePoint.y()))
