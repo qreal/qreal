@@ -99,7 +99,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                             cos(angle - Pi + Pi / 3) * arrowSize);
 																												    
     painter->setBrush(Qt::black);
-    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+//    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
 
 
     int textLength = painter->fontMetrics().width(text);
@@ -111,6 +111,6 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	painter->restore();
     }
     
-//    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+    painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
 
 }

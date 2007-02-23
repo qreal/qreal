@@ -95,6 +95,8 @@ void ExampleEditor::rowsInserted(const QModelIndex &parent, int start, int end)
 void ExampleEditor::setModel ( QAbstractItemModel * newModel )
 { dbg;
 	QAbstractItemView::setModel(newModel);
+        clearScene();
+	items.clear();
 	reset();
 }
 
