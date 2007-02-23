@@ -18,7 +18,7 @@
 #include <QHeaderView>
 #include <QSqlQueryModel>
 #include <QSignalMapper>
-#include "pieview.h"
+#include "exampleeditor.h"
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
 #include "propertyeditormodel.h"
@@ -134,7 +134,7 @@ private:
     QTreeView *tree1;
     QTreeView *tree2;
     QTableView *table;
-    PieView *pieChart;
+    ExampleEditor *pieChart;
     QString curDiagram;
     QStringList diagramsList;
     int count;

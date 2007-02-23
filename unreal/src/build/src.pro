@@ -40,7 +40,7 @@ HEADERS +=  ../editors/editor.h \
             ../repo/treeitem.h \
             ../umllib/edge.h \
             ../umllib/element.h \
-            ../view/pieview.h        
+            ../view/exampleeditor.h        
             
            
 SOURCES +=  ../editors/editor.cpp \
@@ -54,7 +54,7 @@ SOURCES +=  ../editors/editor.cpp \
             ../repo/treeitem.cpp \
             ../umllib/edge.cpp \
             ../umllib/element.cpp \            
-            ../view/pieview.cpp
+            ../view/exampleeditor.cpp
             
 
 RESOURCES += qtreal.qrc

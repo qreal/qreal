@@ -88,7 +88,7 @@ dbg;
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
-    pieChart = new PieView();
+    pieChart = new ExampleEditor();
     setCentralWidget(pieChart);
     
     pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));

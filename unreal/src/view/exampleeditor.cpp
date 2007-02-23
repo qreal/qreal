@@ -3,7 +3,7 @@
 #include <iostream>
 #include <typeinfo>
 
-#include "pieview.h"
+#include "exampleeditor.h"
 #define _LONG_DEBUG
 #include "dbg.h"
 
@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 
-PieView::PieView(QWidget *parent)
+ExampleEditor::ExampleEditor(QWidget *parent)
 { dbg;
 	scene = new QGraphicsScene(-400,-300,800,600);
 	view = new QGraphicsView(scene,this);
@@ -33,12 +33,12 @@ PieView::PieView(QWidget *parent)
 	setLayout(l); 
 }
 
-void PieView::dataChanged(const QModelIndex &topLeft,
+void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 { dbg;
 }
 
-void PieView::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
+void ExampleEditor::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 { dbg;
 
 	QList<QModelIndex> list;
@@ -56,7 +56,7 @@ void PieView::selectionChanged ( const QItemSelection & selected, const QItemSel
 
 }
 
-bool PieView::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
+bool ExampleEditor::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
 { dbg;
 	/*    if (index.column() == 0)
 	      return QAbstractItemView::edit(index, trigger, event);
@@ -64,41 +64,41 @@ bool PieView::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
 	      return false; */
 }
 
-QModelIndex PieView::indexAt(const QPoint &point) const
+QModelIndex ExampleEditor::indexAt(const QPoint &point) const
 { dbg;
 	return QModelIndex();
 }
 
-bool PieView::isIndexHidden(const QModelIndex & /*index*/) const
+bool ExampleEditor::isIndexHidden(const QModelIndex & /*index*/) const
 { dbg;
 	return false;
 }
 
-QModelIndex PieView::moveCursor(QAbstractItemView::CursorAction cursorAction,
+QModelIndex ExampleEditor::moveCursor(QAbstractItemView::CursorAction cursorAction,
 		Qt::KeyboardModifiers /*modifiers*/)
 { dbg;
 	return currentIndex();
 }
 
-int PieView::rows(const QModelIndex &index) const
+int ExampleEditor::rows(const QModelIndex &index) const
 { dbg;
 	return model()->rowCount(model()->parent(index));
 }
 
-void PieView::rowsInserted(const QModelIndex &parent, int start, int end)
+void ExampleEditor::rowsInserted(const QModelIndex &parent, int start, int end)
 { dbg;
 	for (int row = start; row <= end; ++row) {
 	}
 
 }
 
-void PieView::setModel ( QAbstractItemModel * newModel )
+void ExampleEditor::setModel ( QAbstractItemModel * newModel )
 { dbg;
 	QAbstractItemView::setModel(newModel);
 	reset();
 }
 
-void PieView::clearScene ()
+void ExampleEditor::clearScene ()
 { dbg;
 	QList<QGraphicsItem *> list = scene->items();
 	QList<QGraphicsItem *>::Iterator it = list.begin();
@@ -109,21 +109,21 @@ void PieView::clearScene ()
 
 }
 
-void PieView::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void ExampleEditor::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 { dbg;
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void PieView::scrollTo(const QModelIndex &index, ScrollHint)
+void ExampleEditor::scrollTo(const QModelIndex &index, ScrollHint)
 { dbg;
 	//    view->ensureVisible(items[index.internalId()]);
 }
 
-void PieView::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
+void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
 { dbg;
 }
 
-void PieView::reset()
+void ExampleEditor::reset()
 { dbg;
 	//	QAbstractItemView::reset();
 
@@ -209,22 +209,22 @@ void PieView::reset()
 	scene->update(view->sceneRect());
 }
 
-QRect PieView::visualRect(const QModelIndex &index) const
+QRect ExampleEditor::visualRect(const QModelIndex &index) const
 {
 	return QRect();
 }
 
-QRegion PieView::visualRegionForSelection(const QItemSelection &selection) const
+QRegion ExampleEditor::visualRegionForSelection(const QItemSelection &selection) const
 {
 	return QRegion();
 }
 
-int PieView::horizontalOffset() const
+int ExampleEditor::horizontalOffset() const
 {
 	return 0;
 }
 
-int PieView::verticalOffset() const
+int ExampleEditor::verticalOffset() const
 {
 	return 0;
 }
