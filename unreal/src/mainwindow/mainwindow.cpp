@@ -79,8 +79,6 @@ dbg;
 
     connect(propModel, SIGNAL(nameChanged(QStringList)), model1, SLOT(nameChanged(QStringList)));
     connect(propModel, SIGNAL(nameChanged(QStringList)), model2, SLOT(nameChanged(QStringList)));
-//    connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), propModel, SLOT(updateName(const QModelIndex &, QVariant)));
-  //  connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), propModel, SLOT(updateName(const QModelIndex &, QVariant)));
     connect(model2, SIGNAL(nameAboutToBeChanged(QStringList)), propModel, SLOT(updateName(QStringList)));
     connect(model1, SIGNAL(nameAboutToBeChanged(QStringList)), propModel, SLOT(updateName(QStringList)));
     
@@ -150,13 +148,6 @@ dbg;
    table->reset();
 }
 
-void MainWindow::updateName( const QModelIndex& ind, QVariant v ){
-dbg;
-   //propModel->updateName(ind,v);
-   table->setModel(propModel);
-   table->reset();
-}
-
 void MainWindow::createEditors(){
 dbg;
     db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20), status varchar(20))");
@@ -164,7 +155,6 @@ dbg;
     reqEditor = new Editor;
     
     diagrams = new QSignalMapper(this);
-    qDebug() << "diagrams created;";
     elements = new QSignalMapper(this);
     
     for(QList<QAction*>::iterator it = reqEditor->actions.begin(); it != reqEditor->actions.end(); it++){
@@ -440,7 +430,10 @@ dbg;
         QString prio = dialog.ePriority->text();
         QString source = dialog.eSource->text();
         QString stat = dialog.eStatus->text();
-        
+       
+        if( model2->elementExists(name, type, curDiagram) <= 0 )
+            return;
+            
         QList<QString> list;                
         QString fields;
         
@@ -459,7 +452,6 @@ dbg;
     if(dialog.exec()){
         QString name    = dialog.eName->text().section('/',1,1);
         QString diagram = dialog.eName->text().section('/',0,0);
-   qDebug() << "deleting: " << diagram << name; 
         QStringList list;
         list << name << diagram; 
         model2->remove(true, list);

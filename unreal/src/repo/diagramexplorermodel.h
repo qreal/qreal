@@ -12,6 +12,7 @@
 #ifndef DIAGRAMEXPLORERMODEL_H
 #define DIAGRAMEXPLORERMODEL_H
 
+#include <QtGui>
 #include <QAbstractItemModel>
 #include "treeitem.h"
 
@@ -40,15 +41,11 @@ public:
  
     void insert( bool isElement, QString, QStringList );
     void remove( bool isElement, QStringList );
-    QModelIndex getIndex( QString );
-    void createDiagramScriptsExec( QStringList );
-    void removeDiagramScriptsExec( const QString& );
-    void createElementScriptsExec( QStringList , QString );
-    void removeElementScriptsExec( QStringList );
     QModelIndex getDiagramIndex( QString );
     QModelIndex getBeginning( QModelIndex& );
     QModelIndex getEnding( QModelIndex& );
     QStringList getDiagramsList() const { return diagramsList; }
+    int elementExists( QString, QString, QString );    
 
 signals:    
     void nameAboutToBeChanged( QStringList );
@@ -70,6 +67,11 @@ private:
     QMap<QString, QString> *diagrams;
  
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL OF THAT!!
+    void createDiagramScriptsExec( QStringList );
+    void removeDiagramScriptsExec( const QString& );
+    void createElementScriptsExec( QStringList , QString );
+    void removeElementScriptsExec( QStringList );
+    QModelIndex getIndex( QString );
     
 };
 

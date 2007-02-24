@@ -12,6 +12,7 @@
 #ifndef OBJECTEXPLORERMODEL_H
 #define OBJECTEXPLORERMODEL_H
 
+#include <QtGui>
 #include <QAbstractItemModel>
 
 #include "treeitem.h"
@@ -36,6 +37,7 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
  
     void preInsertRows( int , QString );
+    int elementExists( QString, QString, QString );    
        
 signals:
     void nameAboutToBeChanged( QStringList );

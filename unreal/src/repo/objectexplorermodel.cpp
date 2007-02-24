@@ -11,7 +11,7 @@
 
 //#include <QtGui>
 
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include "objectexplorermodel.h"
 #include "dbg.h"
 
@@ -67,6 +67,9 @@ bool ObjectExplorerModel::setData(const QModelIndex& index, const QVariant &valu
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
+            return false;
+        
         QStringList list;
         list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
         emit nameAboutToBeChanged(list);
@@ -210,4 +213,19 @@ dbg;
     rootItem->getChild(type)->removeChild(name);
 
     endInsertRows();
+}
+
+int ObjectExplorerModel::elementExists( QString name, QString type, QString diagram){
+dbg;
+    TreeItem* par = rootItem->getChild(type);
+    if (!par){
+        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("no such element type.\nthis is weird, plz contact the developers"));
+        return -1;
+    }   
+    TreeItem *child = par->getChild(name);
+    if(child && child->getDiagramName() == diagram){
+        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
+        return 0;
+    }
+    return 1;
 }

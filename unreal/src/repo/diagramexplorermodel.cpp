@@ -9,7 +9,7 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include "diagramexplorermodel.h"
 #include "dbg.h"
 
@@ -83,6 +83,9 @@ bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &va
 dbg;
   if (index.isValid() && role == Qt::EditRole) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
+        return false;
+    
     QStringList list;
     list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
     emit nameAboutToBeChanged(list);
@@ -417,4 +420,19 @@ dbg;
     
     endRemoveRows();
     return true;
+}
+
+int DiagramExplorerModel::elementExists( QString name, QString , QString diagram){
+dbg;
+    TreeItem* par = rootItem->getChild(diagram);
+    if (!par){
+        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
+        return -1;
+    }   
+    TreeItem *child = par->getChild(name);
+    if(child){
+        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
+        return 0;
+    }
+    return 1;
 }
