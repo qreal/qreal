@@ -11,7 +11,7 @@
 
 //#include <QtGui>
 
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include "objectexplorermodel.h"
 #include "dbg.h"
 

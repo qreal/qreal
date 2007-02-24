@@ -9,7 +9,7 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include "diagramexplorermodel.h"
 #include "dbg.h"
 
