@@ -436,3 +436,13 @@ dbg;
     }
     return 1;
 }
+
+int DiagramExplorerModel::diagramExists( QString name ){
+dbg;
+    TreeItem* par = rootItem->getChild(name);
+    if (par){
+        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("such diagram already exists.\ntry another name"));
+        return 1;
+    }   
+    return 0;
+}

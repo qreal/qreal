@@ -69,7 +69,8 @@ dbg;
     connect(model2, SIGNAL(elemAdded( QStringList )), model1, SLOT(addElem( QStringList )));
     connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
     
-    propModel = new PropertyEditorModel(db);
+    propModel = new PropertyEditorModel(db, model2);
+    
     table = new QTableView();
     table->setModel(propModel);
     table->show();
@@ -403,6 +404,8 @@ void MainWindow::addDiagram(){
     if(dialog.exec()){     
         QString name   = dialog.eName->text();
         QString status = dialog.eStat->text();
+        if (model2->diagramExists(name))
+            return;
         QAction *tmp = new QAction(name, 0);
         tmp->setData(name);
         diagramsActList << tmp;        

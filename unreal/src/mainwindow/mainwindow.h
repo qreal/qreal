@@ -21,9 +21,7 @@
 #include "exampleeditor.h"
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
-#include "new.h"
-//#include "propertyeditormodel.h"
-//#include "transposeproxymodel.h"
+#include "propertyeditormodel.h"
 #include "editor.h"
 #include "dialogs.h"
 

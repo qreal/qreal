@@ -46,7 +46,8 @@ public:
     QModelIndex getEnding( QModelIndex& );
     QStringList getDiagramsList() const { return diagramsList; }
     int elementExists( QString, QString, QString );    
-
+    int diagramExists( QString );    
+    
 signals:    
     void nameAboutToBeChanged( QStringList );
     void elemAdded( QStringList );
