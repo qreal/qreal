@@ -3,13 +3,15 @@
 // File Name:    objectexplorermodel.cpp
 // Description:  Proxy model for Object Explorer
 //
-// Created:      16-January-07
-// Revision:      
+// Created:      16-Jan-07
+// Revision:     23-Jan-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
 //#include <QtGui>
+
+//#define _LONG_DEBUG
 #include "objectexplorermodel.h"
 #include "dbg.h"
 
@@ -41,7 +43,7 @@ void ObjectExplorerModel::rescan(){
         QString tableName = q1.value(nameClmn).toString();    
         table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem, db);                  
         rootItem->addChild(table);
-        tmp = "select name from " + tableName;
+        tmp = "select * from " + tableName;
         objects->insert(tableName, tmp);
         q2 = db.exec(tmp);
         int nameCol = q2.record().indexOf("name");
@@ -65,7 +67,9 @@ bool ObjectExplorerModel::setData(const QModelIndex& index, const QVariant &valu
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-        emit dataAboutToBeChanged(index, value);
+        QStringList list;
+        list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
+        emit nameAboutToBeChanged(list);
         db.exec("update " +item->getDiagramName()+ " set name='" + value.toString() + "' where name='" + item->getName() + "'");
         db.exec("update " +item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
         item->setData(value.toString());
@@ -74,6 +78,18 @@ dbg;
         return true;
     }
     return false;
+}
+
+void ObjectExplorerModel::nameChanged( QStringList list ){
+dbg;
+    QString oldname = list.at(0);
+    QString type    = list.at(3);
+    QString newname = list.at(1);
+    TreeItem *it = rootItem->getChild(type)->getChild(oldname);
+    it->setName(newname);
+    
+    QModelIndex index = createIndex(it->row(), 0, (void*) it);
+    emit dataChanged(index, index);
 }
 
 void ObjectExplorerModel::preInsertRows(int rows, QString type){
@@ -161,6 +177,8 @@ void ObjectExplorerModel::updateData(const QModelIndex &index, QVariant value){
 dbg;
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     rootItem->getChild(item->getType())->getChild(item->getName())->setData(value.toString());
+  qDebug() << "oem: name changed to " << value.toString();
+    emit dataChanged(index, index);
 }
 
 void ObjectExplorerModel::addElem( QStringList vals ){

@@ -3,8 +3,8 @@
 // File Name:    propertyeditormodel.h
 // Description:  Proxy model for Property Editor
 //
-// Created:      29-January-07
-// Revision:      
+// Created:      29-Jan-07
+// Revision:     23-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 

@@ -3,8 +3,8 @@
 // File Name:    objectexplorermodel.h
 // Description:  Proxy model for Object Explorer
 //
-// Created:      16-January-07
-// Revision:      
+// Created:      16-Jan-07
+// Revision:     23-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -38,12 +38,13 @@ public:
     void preInsertRows( int , QString );
        
 signals:
-    void dataAboutToBeChanged(const QModelIndex &, QVariant);
+    void nameAboutToBeChanged( QStringList );
 
 public slots:
     void updateData(const QModelIndex &, QVariant);
     void addElem( QStringList );
     void removeElem( QStringList );
+    void nameChanged( QStringList );
     
 private:          
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!

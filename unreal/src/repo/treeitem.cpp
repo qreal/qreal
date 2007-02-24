@@ -5,7 +5,7 @@
 //               relational tables 
 //
 // Created:      16-Jan-07
-// Revision:     01-Feb-07 
+// Revision:     20-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -83,10 +83,6 @@ TreeItem* TreeItem::getChild( int pos ){
     return childItems.value(pos);
   else 
     return 0;
-}
-
-void TreeItem::setData( QString str ){
-  name = str;
 }
 
 int TreeItem::row(){

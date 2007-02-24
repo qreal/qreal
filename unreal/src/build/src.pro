@@ -34,8 +34,9 @@ HEADERS +=  ../editors/editor.h \
             ../misc/dbg.h \
             ../repo/diagramexplorermodel.h \
             ../repo/objectexplorermodel.h \ 
-            ../repo/propertyeditormodel.h \
+           # ../repo/propertyeditormodel.h \
             ../repo/transposeproxymodel.h \
+            ../repo/new.h \
             ../repo/tablemodel.h \
             ../repo/treeitem.h \
             ../umllib/edge.h \
@@ -49,7 +50,8 @@ SOURCES +=  ../editors/editor.cpp \
             ../mainwindow/mainwindow.cpp \
             ../repo/diagramexplorermodel.cpp \
             ../repo/objectexplorermodel.cpp \
-            ../repo/propertyeditormodel.cpp \             
+          #  ../repo/propertyeditormodel.cpp \             
+            ../repo/new.cpp \
             ../repo/tablemodel.cpp \
             ../repo/treeitem.cpp \
             ../umllib/edge.cpp \

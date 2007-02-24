@@ -4,7 +4,7 @@
 // Description:  Proxy model for Diagram Explorer
 //
 // Created:      16-Jan-07
-// Revision:     01-Feb-07
+// Revision:     23-Feb-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -83,7 +83,9 @@ bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &va
 dbg;
   if (index.isValid() && role == Qt::EditRole) {
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-    emit dataAboutToBeChanged(index, value);
+    QStringList list;
+    list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
+    emit nameAboutToBeChanged(list);
     
     db.exec("update " +item->getDiagramName()+ " set name='"+ value.toString() + "' where name='" + item->getName() + "'");
     db.exec("update " + item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
@@ -94,6 +96,21 @@ dbg;
   }
   return false;
 }
+
+void DiagramExplorerModel::nameChanged( QStringList list ){
+dbg;
+    QString oldname = list.at(0);
+    QString diagram = list.at(2);
+    QString newname = list.at(1);
+    qDebug() << list;
+    TreeItem *it = rootItem->getChild(diagram)->getChild(oldname);
+    it->setName(newname);
+    
+    QModelIndex index = createIndex(it->row(), 0, (void*) it);
+    emit dataChanged(index, index);
+}
+
+
 int DiagramExplorerModel::columnCount(const QModelIndex &parent) const{
 dbg;
   if (parent.isValid())
@@ -174,6 +191,8 @@ void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
 dbg;
   TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
   rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
+  qDebug() << "dem: name changed to " << value.toString();
+  emit dataChanged(index, index);
 }
 
 void DiagramExplorerModel::createDiagramScriptsExec(QStringList vals){

@@ -63,30 +63,30 @@ dbg;
     dock3->setWidget(tree2);
     addDockWidget(Qt::RightDockWidgetArea, dock3);
 
-
-    connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model1, SLOT(updateData(const QModelIndex &, QVariant)));
-    connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), model2, SLOT(updateData(const QModelIndex &, QVariant)));
+    connect(model2, SIGNAL(nameAboutToBeChanged(QStringList)), model1, SLOT(nameChanged(QStringList)));
+    connect(model1, SIGNAL(nameAboutToBeChanged(QStringList)), model2, SLOT(nameChanged(QStringList)));
+    
     connect(model2, SIGNAL(elemAdded( QStringList )), model1, SLOT(addElem( QStringList )));
     connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
     
-    propModel = new PropertyEditorModel();
-    propModel->setTable("nFeatured"); // dirty hack, i don't yet now how to do it another way 
-    propModel->setFilter("id=(select MAX(id) from nFeatured)");
-    propModel->select();
-    trans = new TransposeProxyModel();
-    trans->setSourceModel(propModel);
-    //propModel = new TableModel(db);
+    propModel = new PropertyEditorModel(db);
     table = new QTableView();
     table->setModel(propModel);
-    //table->setHeader(0);
     table->show();
-    
-    connect(tree2, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
-    connect(tree1, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex )));
+   
+    connect(tree2, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+    connect(tree1, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+
+    connect(propModel, SIGNAL(nameChanged(QStringList)), model1, SLOT(nameChanged(QStringList)));
+    connect(propModel, SIGNAL(nameChanged(QStringList)), model2, SLOT(nameChanged(QStringList)));
+//    connect(model2, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), propModel, SLOT(updateName(const QModelIndex &, QVariant)));
+  //  connect(model1, SIGNAL(dataAboutToBeChanged(const QModelIndex &, QVariant)), propModel, SLOT(updateName(const QModelIndex &, QVariant)));
+    connect(model2, SIGNAL(nameAboutToBeChanged(QStringList)), propModel, SLOT(updateName(QStringList)));
+    connect(model1, SIGNAL(nameAboutToBeChanged(QStringList)), propModel, SLOT(updateName(QStringList)));
     
     dock4 = new QDockWidget(tr("property editor"), this);
     dock4->setWidget(table);
-    addDockWidget(Qt::BottomDockWidgetArea, dock4);
+    addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
     pieChart = new ExampleEditor();
     setCentralWidget(pieChart);
@@ -94,9 +94,10 @@ dbg;
     pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     pieChart->setModel(model2);
     
+    connect(pieChart, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+    
     createActions();
-    //if( count == 0 )
-        createMenus();
+    createMenus();
     createDiagramMenu();
     createToolBars();
     createStatusBar();
@@ -124,7 +125,7 @@ dbg;
     delete model2;
     delete tree2;
     delete propModel;
-    delete trans;
+    //delete trans;
     delete table;
     delete pieChart;
    
@@ -144,7 +145,15 @@ dbg;
 
 void MainWindow::setFocus( QModelIndex ind ){
 dbg;
-   propModel->setFocus(ind);
+   propModel->adjustData(ind);
+   table->setModel(propModel);
+   table->reset();
+}
+
+void MainWindow::updateName( const QModelIndex& ind, QVariant v ){
+dbg;
+   //propModel->updateName(ind,v);
+   table->setModel(propModel);
    table->reset();
 }
 

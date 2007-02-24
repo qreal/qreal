@@ -51,12 +51,13 @@ public:
     QStringList getDiagramsList() const { return diagramsList; }
 
 signals:    
-    void dataAboutToBeChanged( const QModelIndex&, QVariant );
+    void nameAboutToBeChanged( QStringList );
     void elemAdded( QStringList );
     void elemRemoved( QStringList );
 
 public slots:
     void updateData(const QModelIndex&, QVariant);
+    void nameChanged( QStringList );
 
 private:              
     //BaseModel *model;

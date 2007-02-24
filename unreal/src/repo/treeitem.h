@@ -5,7 +5,7 @@
 //               relational tables 
 //
 // Created:      16-Jan-07
-// Revision:     01-Feb-07 
+// Revision:     23-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -39,9 +39,10 @@ public:
     TreeItem* getChild( QString );
     TreeItem* getChild( int );
     
+    void setName( QString n ) { name = n; }
     void setType( QString t ) { type = t; }
-    void setData( QString ); 
     void setEnds( QString, QString );
+    void setData( QString d ) { name = d; }
     
     void addChild( TreeItem* );  
     void removeChild ( QString );

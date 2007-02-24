@@ -4,7 +4,7 @@
 // Description:  Editor 
 //
 // Created:      30-Jan-07
-// Revision:     03-Feb-07 
+// Revision:     23-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
