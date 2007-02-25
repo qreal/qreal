@@ -33,26 +33,33 @@ void ObjectExplorerModel::rescan(){
     QString tmp;
   
     QSqlQuery q1,q2;  
-    tmp = "select name from diagram where type='objects'";
+    tmp = "select * from diagram where type='objects'";
     objects->insert("diagram", tmp);
   
     q1 = db.exec(tmp);
 
     int nameClmn = q1.record().indexOf("name");
+    int uuidClmn = q1.record().indexOf("uuid");
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
+        int uuid = q1.value(uuidClmn).toInt();
         table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem, db);                  
+        table->setID(uuid);
         rootItem->addChild(table);
         tmp = "select * from " + tableName;
         objects->insert(tableName, tmp);
         q2 = db.exec(tmp);
         int nameCol = q2.record().indexOf("name");
         int diagramCol = q2.record().indexOf("diagram");
+        int idCol = q2.record().indexOf("uuid");
         while(q2.next()){
             QString valueName = q2.value(nameCol).toString();
             QString diagramName = q2.value(diagramCol).toString();
+            int id = q2.value(idCol).toInt();
             val = new TreeItem(valueName, tableName, diagramName, objects, table, db);
+            val->setID(id);
             table->addChild(val);
+            
         }    
     }
 }

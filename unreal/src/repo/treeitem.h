@@ -31,6 +31,7 @@ public:
     int childCount() const { return childItems.size(); }
     
     QVariant data( int i ) const { if (i!=1) return name; else return diagramName; }
+    int getID() const { return id; }
     QString getType() const { return type; }
     QString getName() const { return name; }
     QString getDiagramName() const { return diagramName; }
@@ -43,6 +44,7 @@ public:
     void setType( QString t ) { type = t; }
     void setEnds( QString, QString );
     void setData( QString d ) { name = d; }
+    void setID( int _id ) { id = _id; }
     
     void addChild( TreeItem* );  
     void removeChild ( QString );
@@ -54,6 +56,7 @@ public:
     bool isTable();
     
 private:
+    int id;
     QString name;
     QString type;
     QString diagramName;

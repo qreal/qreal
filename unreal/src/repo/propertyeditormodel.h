@@ -9,8 +9,8 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-#ifndef NEW
-#define NEW
+#ifndef PROPERTYEDITORMODEL_H
+#define PROPERTYEDITORMODEL_H
 
 #include <QtGui>
 #include <QAbstractTableModel>

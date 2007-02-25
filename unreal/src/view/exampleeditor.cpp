@@ -62,6 +62,7 @@ bool ExampleEditor::edit(const QModelIndex &index, EditTrigger trigger, QEvent *
 	      return QAbstractItemView::edit(index, trigger, event);
 	      else
 	      return false; */
+     return false;     
 }
 
 QModelIndex ExampleEditor::indexAt(const QPoint &point) const
@@ -135,17 +136,14 @@ void ExampleEditor::reset()
 	QMap<QString,int> seen;
 	seen.clear();
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-		 qDebug() << model()->data( model()->index(row, 0, rootIndex()) ).toString();
 		 
 		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
 		QString name = ti->getName();
 		QString type = ti->getDiagramName();
-		QString idx =  type + "/" + name;
+		QString idx =  QString("%1").arg(ti->getID());
 
 		seen[idx] = 666;
 		
-		qDebug() << idx;
-
 		if ( items.contains(idx) )
 			continue;
 		
@@ -162,15 +160,14 @@ void ExampleEditor::reset()
 		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
 		QString name = ti->getName();
 		QString type = ti->getDiagramName();
-		QString idx =  type + "/" + name;
-						
+		QString idx =  QString("%1").arg(ti->getID());
 		if ( ti->getType() != "eP2N" )
 		    continue;
 
-    		Edge *foo = new Edge;
+    	Edge *foo = new Edge;
 		items[idx] = foo;
 	
-		foo->setText(idx);
+		foo->setText(type + "/" + name);
 
 		QModelIndex current = model()->index(row, 0, rootIndex());
 
@@ -178,12 +175,10 @@ void ExampleEditor::reset()
 
 		QModelIndex linkSource = demodel->getBeginning( current );
 		QModelIndex linkDest = demodel->getEnding( current );
-
 		TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
 		TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
-
-		QString idxSource =  tiSource->getDiagramName() + "/" + tiSource->getName();
-		QString idxDest =  tiDest->getDiagramName() + "/" + tiDest->getName();
+		QString idxSource =  QString("%1").arg(tiSource->getID());
+		QString idxDest =  QString("%1").arg(tiDest->getID());
 
 		foo->setSource(static_cast<Element *> (items[idxSource]));
 		foo->setDest(static_cast<Element *> (items[idxDest]));

@@ -31,10 +31,10 @@ dbg;
 void MainWindow::runREAL(){ 
 dbg;
     reconnect();
+
     if (dbOpened){
         createEditors();
     }    
-     
     model1 = new ObjectExplorerModel(db);
 
     dock = new QDockWidget(tr("object explorer"), this);
@@ -151,7 +151,7 @@ dbg;
 
 void MainWindow::createEditors(){
 dbg;
-    db.exec("create table diagram (id int primary key auto_increment, name varchar(20), type varchar(20), status varchar(20))");
+    db.exec("create table diagram (uuid integer, name varchar(20), type varchar(20), status varchar(20))");
     
     reqEditor = new Editor;
     
@@ -441,7 +441,7 @@ dbg;
         QString fields;
         
         list << curDiagram << name << type << desc << prio << source << stat;
-        fields = "name, description, priority, source, status, diagram";
+        fields = "uuid, name, description, priority, source, status, diagram";
         
         model2->insert(true, fields, list);
 	
@@ -495,12 +495,15 @@ dbg;
         QString to   = dialog.eTo->text();
         QString stat = dialog.eStat->text();
         QString type = "eP2N";
-        
+       
+       if( model2->elementExists(name, type, curDiagram) <= 0 )
+            return;
+ 
         QList<QString> list;                
         QString fields;
         
         list << curDiagram << name << type << from << to << stat;
-        fields = "name, beginsWith, endsWith, diagram, status";
+        fields = "uuid, name, beginsWith, endsWith, diagram, status";
         
         model2->insert(true, fields, list);
 	

@@ -9,7 +9,6 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-//#include <QtGui>
 //#define _LONG_DEBUG
 #include "propertyeditormodel.h"
 #include "dbg.h"
@@ -22,7 +21,7 @@ dbg;
     diagram = "";
     name = "";
     rootd = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer()); 
-    rootd = rootd->parent();
+//    rootd = rootd->parent();
 }
 
 void PropertyEditorModel::rescan(const QModelIndex &index ){
@@ -35,10 +34,18 @@ dbg;
     type    = ti->getType();
     name    = ti->getName();
 
+qDebug() << name << type << diagram;
+
     QSqlQuery q;  
-    QString tmp = "select * from %1 where name='%2' and diagram='%3'";
-    tmp = tmp.arg(type).arg(name).arg(diagram);
-    
+    QString tmp;
+    if( type == "diagram"){  // get diagram info
+        tmp = "select * from %1 where name='%2'";
+        tmp = tmp.arg(type).arg(name).arg(diagram);
+    }
+    else { // get element info
+        tmp = "select * from %1 where name='%2' and diagram='%3'";
+        tmp = tmp.arg(type).arg(name).arg(diagram);
+    }    
     q = db.exec(tmp);
     QSqlRecord r = q.record();
 

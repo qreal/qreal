@@ -202,11 +202,11 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     lName = new QLabel(tr("name: "));
     eName = new QLineEdit("link 1");
     lFrom = new QLabel(tr("from: "));
-    eFrom = new QLineEdit("req_diagram_1/element 1");
+    eFrom = new QLineEdit("");
     lStat = new QLabel(tr("status:"));
     eStat = new QLineEdit("");
     lTo   = new QLabel(tr("to:   "));
-    eTo   = new QLineEdit("req_diagram_1/element 2");
+    eTo   = new QLineEdit("");
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     

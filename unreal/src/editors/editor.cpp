@@ -4,7 +4,7 @@
 // Description:  Editor 
 //
 // Created:      30-Jan-07
-// Revision:     23-Feb-07 
+// Revision:     25-Feb-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -338,86 +338,86 @@ void Editor::execDBScripts(){
     QSqlQuery q;
     QSqlRecord r;
     int z;
-    q.exec("select id from diagram where name='nFeatured'");
+    q.exec("select uuid from diagram where name='nFeatured'");
     bool canGetSize = q.driver()->hasFeature(QSqlDriver::QuerySize);
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nFeatured', 'objects')");
-        q.exec("create table nFeatured (id integer primary key auto_increment, name varchar(20),"  
+        q.exec("insert into diagram (uuid, name, type) values (3, 'nFeatured', 'objects')");
+        q.exec("create table nFeatured (uuid integer, name varchar(20),"  
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }    
   //  else 
 //        qDebug() << "value:" << r.value(0).toString();
     
-    q.exec("select id from diagram where name='nConcAlternative'");
+    q.exec("select uuid from diagram where name='nConcAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nConcAlternative', 'objects')");
-        q.exec("create table nConcAlternative (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (4, 'nConcAlternative', 'objects')");
+        q.exec("create table nConcAlternative (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='nLeaf'");
+    q.exec("select uuid from diagram where name='nLeaf'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nLeaf', 'objects')");
-        q.exec("create table nLeaf (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (5, 'nLeaf', 'objects')");
+        q.exec("create table nLeaf (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='nParent'");
+    q.exec("select uuid from diagram where name='nParent'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParent', 'objects')");
-        q.exec("create table nParent (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (6, 'nParent', 'objects')");
+        q.exec("create table nParent (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }   
     
-    q.exec("select id from diagram where name='nParentMandatory'");
+    q.exec("select uuid from diagram where name='nParentMandatory'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParentMandatory', 'objects')");
-        q.exec("create table nParentMandatory (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (7, 'nParentMandatory', 'objects')");
+        q.exec("create table nParentMandatory (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     } 
     
-    q.exec("select id from diagram where name='nParentOr'");
+    q.exec("select uuid from diagram where name='nParentOr'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParentOr', 'objects')");
-        q.exec("create table nParentOr (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (8, 'nParentOr', 'objects')");
+        q.exec("create table nParentOr (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='nParentOptional'");
+    q.exec("select uuid from diagram where name='nParentOptional'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParentOptional', 'objects')");
-        q.exec("create table nParentOptional (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (9, 'nParentOptional', 'objects')");
+        q.exec("create table nParentOptional (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='nParentAlternative'");
+    q.exec("select uuid from diagram where name='nParentAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParentAlternative', 'objects')");
-        q.exec("create table nParentAlternative (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (10, 'nParentAlternative', 'objects')");
+        q.exec("create table nParentAlternative (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='nParentOpAlternative'");
+    q.exec("select uuid from diagram where name='nParentOpAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('nParentOpAlternative', 'objects')");
-        q.exec("create table nParentOpAlternative (id integer primary key auto_increment, name varchar(20),"
+        q.exec("insert into diagram (uuid, name, type) values (11, 'nParentOpAlternative', 'objects')");
+        q.exec("create table nParentOpAlternative (uuid integer, name varchar(20),"
             " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
     }
     
-    q.exec("select id from diagram where name='eP2N'");
+    q.exec("select uuid from diagram where name='eP2N'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
-        q.exec("insert into diagram (name, type) values ('eP2N', 'objects')");
-        q.exec("create table eP2N (id integer primary key auto_increment, name varchar(20), beginsWith varchar(40),"
+        q.exec("insert into diagram (uuid, name, type) values (12, 'eP2N', 'objects')");
+        q.exec("create table eP2N (uuid integer, name varchar(20), beginsWith varchar(40),"
             " endsWith varchar(40), status varchar(20), diagram varchar(20))");
     }
     

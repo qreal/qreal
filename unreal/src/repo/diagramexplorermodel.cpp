@@ -18,44 +18,74 @@ DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) 
 dbg;
 
     db = _db;
+    elements = new QMap<int, TreeItem*>;
     diagrams = new QMap<QString, QString>;
     rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
+    rootItem->setID(-1);
     diagramsList.clear();
+    maxID = 0;
     rescan();  
-    
-  
-    curID = 666;
-    elemID = 0;
 }  
+
+int DiagramExplorerModel::getID(){
+dbg;
+    return maxID;
+}
+
+int DiagramExplorerModel::getNextID(){
+dbg;
+    return (++maxID);
+}
 
 void DiagramExplorerModel::rescan(){
 dbg;
 
+    diagramsList.clear();
+    elements->clear();
+
     TreeItem *table, *value;
     QString tmp;
 
-    QSqlQuery q1,q2,q3;  
-    tmp = "select name from diagram where type='diagrams'";
+    QSqlQuery q,q1,q2,q3;  
+
+    tmp = "select MAX(uuid) from diagram";
+    q = db.exec(tmp);
+    q.next();
+    maxID = q.record().value(0).toInt();
+qDebug() << "maxid = " << maxID;    
+    tmp = "select * from diagram where type='diagrams'";
     diagrams->insert("diagram", tmp);
   
     q1 = db.exec(tmp);
     int nameClmn = q1.record().indexOf("name");
+    int idClmn   = q1.record().indexOf("uuid");
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
-       // qDebug() << tableName;
+        int id = q1.value(idClmn).toInt();
+        if (maxID < id)
+            maxID = id;
         table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem, db);                 
+        table->setID(id);
         diagramsList << tableName;
         rootItem->addChild(table);
+        if (elements->contains(id))
+            QMessageBox::warning(0, tr("mmmm..."), tr("something weird with diagrams IDs"));
+        elements->insert(id, table);
+
         tmp = "select * from " + tableName;
         diagrams->insert(tableName, tmp);
         q3 = db.exec(tmp);
         int nameCol = q3.record().indexOf("name");
         int typeCol = q3.record().indexOf("type");  
+        int uuidCol = q3.record().indexOf("uuid");
         while(q3.next()){
             QString valueName = q3.value(nameCol).toString();
             QString typeName  = q3.value(typeCol).toString();
-            //qDebug() << valueName << typeName;
+            int curID = q3.value(uuidCol).toInt();
+            if ( curID > maxID )
+                maxID = curID;
             value = new TreeItem(valueName, typeName, tableName, diagrams, table, db);
+            value->setID(curID);
             if (typeName == "eP2N"){
                 q2 = db.exec("select * from eP2N where name='" + valueName + "'");
                 if (!q2.next()){
@@ -67,11 +97,15 @@ dbg;
                 QString beginning = q2.value(fromPos).toString();
                 QString ending    = q2.value(toPos).toString();
                 value->setEnds(beginning, ending);
-                qDebug() << "name: " << valueName << ", " << beginning << " -> " << ending;
             }
             table->addChild(value);
+            if (elements->contains(curID))
+                QMessageBox::warning(0, tr("mmmm..."), tr("something weird with elements IDs"));
+            qDebug() << valueName << curID;    
+            elements->insert(curID, value);
         }    
     }
+
 }
 
 DiagramExplorerModel::~ DiagramExplorerModel(){
@@ -105,7 +139,6 @@ dbg;
     QString oldname = list.at(0);
     QString diagram = list.at(2);
     QString newname = list.at(1);
-    qDebug() << list;
     TreeItem *it = rootItem->getChild(diagram)->getChild(oldname);
     it->setName(newname);
     
@@ -152,19 +185,20 @@ dbg;
 QModelIndex DiagramExplorerModel::index(int row, int column, const QModelIndex &parent)
             const{
 dbg;            
- TreeItem *parentItem;
- if (!parent.isValid())
-   parentItem = rootItem;
- else
-   parentItem = static_cast<TreeItem*>(parent.internalPointer());
- TreeItem *childItem = parentItem->getChild(row);
- 
- if (childItem){
-   return createIndex(row, column, childItem);
- }  
- else
-   return QModelIndex();
-}
+    TreeItem *parentItem;
+    if (!parent.isValid())
+        parentItem = rootItem;
+    else
+        parentItem = static_cast<TreeItem*>(parent.internalPointer());
+
+    TreeItem *childItem = parentItem->getChild(row);
+
+    if (childItem){
+        return createIndex(row, column, childItem);
+    }  
+    else
+         return QModelIndex();
+    }
 
 QModelIndex DiagramExplorerModel::parent(const QModelIndex &index) const{
 dbg;
@@ -194,7 +228,6 @@ void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
 dbg;
   TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
   rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
-  qDebug() << "dem: name changed to " << value.toString();
   emit dataChanged(index, index);
 }
 
@@ -202,10 +235,11 @@ void DiagramExplorerModel::createDiagramScriptsExec(QStringList vals){
 dbg;
     QString name   = vals.at(0);
     QString status = vals.at(vals.size()-1);
-    QString tmp = "insert into diagram (name, type, status) values ('" + name + "', 'diagrams', '" + status + "')";
+    QString tmp = "insert into diagram (uuid, name, type, status) values (%1, '%2', 'diagrams', '%3')";
+    tmp = tmp.arg(getID()).arg(name).arg(status);
     db.exec(tmp);
     
-    tmp = "create table " + name + " (id integer primary key auto_increment, name varchar(20), type varchar(20), status varchar(20))";
+    tmp = "create table " + name + " (uuid integer, name varchar(20), type varchar(20), status varchar(20))";
     db.exec(tmp);
 }
 
@@ -236,8 +270,8 @@ dbg;
     QString type    = values.at(2);
     QString status  = values.at(values.size()-1);
     
-    QString tmp = "insert into %1 (name, type) values ('%2', '%3')";
-    tmp = tmp.arg(diagram).arg(name).arg(type) ;
+    QString tmp = "insert into %1 (uuid, name, type) values (%2, '%3', '%4')";
+    tmp = tmp.arg(diagram).arg(getID()).arg(name).arg(type);
     db.exec(tmp);
 
     if (type != "eP2N"){
@@ -245,15 +279,15 @@ dbg;
         QString prio    = values.at(4);
         QString source  = values.at(5);
     
-        tmp = "insert into %1 (%2) values ('%3', '%4', %5, '%6', '%7', '%8')";
-        tmp = tmp.arg(type).arg(fields).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(diagram);
+        tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', '%9')";
+        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(diagram);
         db.exec(tmp);
     }
     else{
         QString from = values.at(3);
         QString to   = values.at(4);
-        tmp = "insert into %1 (%2) values ('%3', '%4', '%5', '%6', '%7')";
-        tmp = tmp.arg(type).arg(fields).arg(name).arg(from).arg(to).arg(diagram).arg(status);
+        tmp = "insert into %1 (%2) values (%3, '%4', '%5', '%6', '%7', '%8')";
+        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(from).arg(to).arg(diagram).arg(status);
         db.exec(tmp);
     }
 }
@@ -278,10 +312,7 @@ dbg;
 
 QModelIndex DiagramExplorerModel::getIndex(QString id){
 dbg;
-    QString diagram = id.section('/',0,0);
-    QString name    = id.section('/',1,1);
-    qDebug() << "getIndex(): diagram: " << diagram << ", name: " << name;
-    TreeItem* item = rootItem->getChild(diagram)->getChild(name);
+    TreeItem* item = elements->value(id.toInt());//rootItem->getChild(diagram)->getChild(name);
     return createIndex(item->row(),0,item);
 }
 
@@ -289,14 +320,12 @@ dbg;
 QModelIndex DiagramExplorerModel::getBeginning( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
-    //qDebug() << "getBeginning(): requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getBeginning());
 }
 
 QModelIndex DiagramExplorerModel::getEnding( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
-    //qDebug() << "getEnding():    requesting for " << it->getName() << it->getBeginning(); 
     return getIndex(it->getEnding());
 }
 
@@ -332,6 +361,8 @@ dbg;
     QString diagram;
     QString status;
 
+    getNextID();
+
     if ( fields == "" ){ // creating diagram in the database
         createDiagramScriptsExec(vals);
         name    = vals.at(0);
@@ -354,7 +385,8 @@ dbg;
         par = 0;
       
     TreeItem *child = new TreeItem(name, type, diagram, diagrams, par, db);
-    
+    child->setID(getID());
+  
     if( fields == ""){
         QString tmp = "select * from " + name;
         diagrams->insert(name, tmp);
@@ -368,6 +400,10 @@ dbg;
     
     if (par)
         par->addChild(child);
+
+    if( elements->contains(getID()))
+        QMessageBox::warning(0, tr("mmm..."), tr("something weird with IDs..."));
+    elements->insert(getID(), child);
     
 	endInsertRows();
 	return true;

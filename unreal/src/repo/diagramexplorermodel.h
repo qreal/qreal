@@ -60,12 +60,13 @@ public slots:
 private:              
     //BaseModel *model;
     int curID;
-    int elemID;
+    int maxID;
     TreeItem *rootItem;
     QSqlDatabase db;
     QStringList diagramsList;
     QMap<QString, QString> *objects;
     QMap<QString, QString> *diagrams;
+    QMap<int, TreeItem*> *elements;
  
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL OF THAT!!
     void createDiagramScriptsExec( QStringList );
@@ -73,6 +74,8 @@ private:
     void createElementScriptsExec( QStringList , QString );
     void removeElementScriptsExec( QStringList );
     QModelIndex getIndex( QString );
+    int getID();
+    int getNextID();
     
 };
 

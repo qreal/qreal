@@ -14,12 +14,13 @@
 #include <QSqlRecord>
 #include <QSqlDriver>
 #include <QtGui>
+//#define _LONG_DEBUG
 #include "dbg.h"
           
 #include "treeitem.h"
 
 TreeItem::TreeItem(QString str, QString t, QString d, QMap<QString, QString> *map, TreeItem *parent, QSqlDatabase _db){
-
+dbg;
     db = _db;
     parentItem = parent;
     name = str;   
@@ -29,7 +30,7 @@ TreeItem::TreeItem(QString str, QString t, QString d, QMap<QString, QString> *ma
 }
 
 TreeItem::~TreeItem(){
-
+dbg;
   qDeleteAll(childItems);
 }
 
@@ -50,11 +51,12 @@ dbg;
 }
 
 void TreeItem::addChild(TreeItem* item){
-  childItems.append(item);   
+dbg;
+    childItems.append(item);   
 }
 
 TreeItem* TreeItem::getChild(QString str){
-  
+dbg;  
     int i=0;
     while (i<childItems.size() && childItems.at(i)->name != str)
         i++;
@@ -65,23 +67,31 @@ TreeItem* TreeItem::getChild(QString str){
 }
 
 TreeItem* TreeItem::getChild( int pos ){
-  if (pos <= childItems.size() && pos >= 0)
-    return childItems.value(pos);
-  else 
-    return 0;
+dbg;
+    if (childItems.size() == 0)
+        return 0;
+    if (pos < childItems.size() && pos >= 0){
+        return childItems.value(pos);
+    }    
+    else {
+        return 0 ;
+    }    
 }
 
 int TreeItem::row(){
-  if (parentItem)
-    return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
-  return 0;  
+dbg;
+    if (parentItem)
+        return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
+    return 0;  
 }
 
 bool TreeItem::isTable(){
-  return tables->contains(name);
+dbg;
+    return tables->contains(name);
 }
 
 void TreeItem::removeChild( QString name ){
+dbg;
     int i=0;
     while (i < childItems.size() && childItems.at(i)->name != name)
         i++;
@@ -92,6 +102,7 @@ void TreeItem::removeChild( QString name ){
 }
 
 void TreeItem::setEnds( QString b, QString e){
+dbg;
     beginsWith = b;
     endsWith   = e;
 }
