@@ -44,6 +44,7 @@ public:
     void setType( QString t ) { type = t; }
     void setEnds( QString, QString );
     void setData( QString d ) { name = d; }
+    void setDiagramName( QString d ) { diagramName = d; }
     void setID( int _id ) { id = _id; }
     
     void addChild( TreeItem* );  

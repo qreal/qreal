@@ -115,22 +115,56 @@ dbg;
 
 bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
 dbg;
-  if (index.isValid() && role == Qt::EditRole) {
-    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-    if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
-        return false;
+    if (index.isValid() && role == Qt::EditRole) {
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+
+        if (item->getType() == "diagram"){
+  
+        QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature.\n"));
+        
+        /* if ( diagramExists( value.toString() ) )
+                return false;
+            for (int i=0; i<item->childCount(); i++)
+                item->getChild(i)->setDiagramName(value.toString());
+            
+            QString tmp = "update %1 set diagram='%2'";
+            tmp = tmp.arg(item->getName()).arg(value.toString());
+            db.exec(tmp);
+            
+            tmp = "create table %1 as select * from %2";
+            tmp = tmp.arg(value.toString()).arg(item->getName());
+            db.exec(tmp);
+
+            tmp = "drop table " + item->getName();
+            db.exec(tmp);
+
+            tmp = "update diagram set name='%1' where name='%2' and type='diagrams'"; 
+            tmp = tmp.arg(value.toString()).arg(item->getName());
+            db.exec(tmp);
+
+            diagramsList.replace(diagramsList.indexOf(item->getName()), value.toString());
+            emit diagramNameChanged();
+            item->setName(value.toString());
+*/
+        }
+        else{
+            if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
+                return false;
     
-    QStringList list;
-    list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
-    emit nameAboutToBeChanged(list);
+            QStringList list;
+            list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
+            emit nameAboutToBeChanged(list);
     
-    db.exec("update " +item->getDiagramName()+ " set name='"+ value.toString() + "' where name='" + item->getName() + "'");
-    db.exec("update " + item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
-    item->setData(value.toString());
-    
-    emit dataChanged(index, index);
-    return true;
-  }
+            db.exec("update "+item->getDiagramName()+" set name='"+value.toString()+"'"
+                                                                " where name='" + item->getName() + "'");
+            db.exec("update " + item->getType() + " set name='" + value.toString() + "'"
+                                                                " where name='" + item->getName() + "'");
+            item->setData(value.toString());
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
   return false;
 }
 
@@ -171,10 +205,10 @@ dbg;
   Qt::ItemFlags f = Qt::ItemIsEnabled;
   if (!index.isValid())
     return f;
-  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-  if (!item->isTable())
-    f |= Qt::ItemIsEditable;
-  return f | Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+  //TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+  //if (!item->isTable())
+    //f |= Qt::ItemIsEditable;
+  return f | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
 QVariant DiagramExplorerModel::headerData(int , Qt::Orientation , int ) const {
@@ -222,13 +256,6 @@ dbg;
 
   }  
   return parentItem->rowCount();
-}
-
-void DiagramExplorerModel::updateData(const QModelIndex& index, QVariant value){
-dbg;
-  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-  rootItem->getChild(item->getDiagramName())->getChild(item->getName())->setData(value.toString());
-  emit dataChanged(index, index);
 }
 
 void DiagramExplorerModel::createDiagramScriptsExec(QStringList vals){

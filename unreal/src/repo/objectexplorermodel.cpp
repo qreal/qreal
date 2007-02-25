@@ -74,6 +74,11 @@ bool ObjectExplorerModel::setData(const QModelIndex& index, const QVariant &valu
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if( item->getType() == "diagram"){
+            QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature"));
+            return false;
+        }
+        
         if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
             return false;
         

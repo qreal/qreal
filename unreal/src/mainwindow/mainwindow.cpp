@@ -68,7 +68,9 @@ dbg;
     
     connect(model2, SIGNAL(elemAdded( QStringList )), model1, SLOT(addElem( QStringList )));
     connect(model2, SIGNAL(elemRemoved( QStringList )), model1, SLOT(removeElem( QStringList )));
-    
+
+    connect(model2, SIGNAL(diagramNameChanged()), this, SLOT(refreshDiagrams()));
+
     propModel = new PropertyEditorModel(db, model2);
     
     table = new QTableView();
@@ -107,6 +109,13 @@ dbg;
     resize(1024, 768);  
     
     count++;    
+}
+
+void MainWindow::refreshDiagrams(){
+dbg;
+    diagramsList = model2->getDiagramsList();
+    deleteDiagramMenu();
+    createDiagramMenu();
 }
 
 void MainWindow::clearAll(){ 
@@ -199,8 +208,7 @@ void MainWindow::undo()
 void MainWindow::about()
 {dbg;
 QMessageBox::about(this, tr("about unREAL"),
-            tr("this is the baseline of <b>unREAL</b> -- troo Qt-based version of <b>REAL</b>\n"
-                      "<center>(approved and blessed by the Elder Gods themselves!!)</center>"));
+            tr("this is the baseline of <b>unREAL</b> -- trve Qt-based version of <b>REAL</b>"));
 }
 
 void MainWindow::createActions()
@@ -288,36 +296,19 @@ void MainWindow::deleteActions()
 void MainWindow::createMenus()
 {dbg;
     fileMenu = menuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(newLetterAct);
-    fileMenu->addAction(saveAct);
-    fileMenu->addAction(printAct);
-    fileMenu->addSeparator();
     fileMenu->addAction(quitAct);
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
-    editMenu->addAction(undoAct);
     editMenu->addAction(optionsAct);
-
-    viewMenu = menuBar()->addMenu(tr("&View"));
-
-    menuBar()->addSeparator();
 
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMenu->addAction(addReqDiagramAct);
-
-    menuBar()->addSeparator();
 
     removeMenu = menuBar()->addMenu(tr("Mutilate"));
     removeMenu->addAction(removeDiagramAct);
     removeMenu->addAction(removeElementAct);
 
-    menuBar()->addSeparator();
-    
     diagramsMenu = menuBar()->addMenu(tr("Diagrams"));
-
-    menuBar()->addSeparator();
-
-    menuBar()->addSeparator();
 
     helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(aboutAct);
@@ -328,7 +319,6 @@ void MainWindow::deleteMenus()
 {dbg;
     delete fileMenu;
     delete editMenu;
-    delete viewMenu;
     delete addMenu;
     delete removeMenu;
     delete diagramsMenu;
@@ -339,13 +329,6 @@ void MainWindow::deleteMenus()
 
 void MainWindow::createToolBars()
 {dbg;
-    fileToolBar = addToolBar(tr("File"));
-    fileToolBar->addAction(newLetterAct);
-    fileToolBar->addAction(saveAct);
-    fileToolBar->addAction(printAct);
-
-    editToolBar = addToolBar(tr("Edit"));
-    editToolBar->addAction(undoAct);
 
     diagramsToolBar = addToolBar(tr("diagrams"));
     diagramsToolBar->addAction(addReqDiagramAct);
@@ -359,8 +342,6 @@ void MainWindow::createToolBars()
 
 void MainWindow::deleteToolBars()
 {dbg;
-    delete fileToolBar;
-    delete editToolBar;
     delete diagramsToolBar;
     delete reqDiagramToolBar;
 }

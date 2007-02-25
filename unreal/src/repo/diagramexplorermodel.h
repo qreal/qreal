@@ -52,9 +52,9 @@ signals:
     void nameAboutToBeChanged( QStringList );
     void elemAdded( QStringList );
     void elemRemoved( QStringList );
+    void diagramNameChanged();
 
 public slots:
-    void updateData(const QModelIndex&, QVariant);
     void nameChanged( QStringList );
 
 private:              
@@ -68,7 +68,7 @@ private:
     QMap<QString, QString> *diagrams;
     QMap<int, TreeItem*> *elements;
  
-    void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL OF THAT!!
+    void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!!
     void createDiagramScriptsExec( QStringList );
     void removeDiagramScriptsExec( const QString& );
     void createElementScriptsExec( QStringList , QString );

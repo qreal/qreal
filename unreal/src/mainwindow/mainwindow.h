@@ -53,6 +53,7 @@ private slots:
     void setRootDiagram( QString );
     void setFocus(QModelIndex);  
     void options();
+    void refreshDiagrams();
     
 private:
     void runREAL();

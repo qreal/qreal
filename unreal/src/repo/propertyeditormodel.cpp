@@ -9,7 +9,7 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include "propertyeditormodel.h"
 #include "dbg.h"
 
@@ -40,7 +40,7 @@ qDebug() << name << type << diagram;
     QString tmp;
     if( type == "diagram"){  // get diagram info
         tmp = "select * from %1 where name='%2'";
-        tmp = tmp.arg(type).arg(name).arg(diagram);
+        tmp = tmp.arg(type).arg(name);
     }
     else { // get element info
         tmp = "select * from %1 where name='%2' and diagram='%3'";
@@ -81,6 +81,12 @@ dbg;
 bool PropertyEditorModel::setData(const QModelIndex& index, const QVariant &value, int role){
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
+        
+
+        if (rootd->getType() == "diagram"){
+            QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature"));
+            return false;
+        }
         
         if( elementExists(value.toString(), type, diagram) <= 0)
             return false;
