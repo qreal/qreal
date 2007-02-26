@@ -16,6 +16,7 @@
 #include <QAbstractItemModel>
 
 #include "treeitem.h"
+#include "diagramexplorermodel.h"
 
 class TreeItem;
 
@@ -24,7 +25,7 @@ class ObjectExplorerModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    ObjectExplorerModel(QSqlDatabase &, QObject *parent = 0);
+    ObjectExplorerModel(QSqlDatabase &, DiagramExplorerModel *_dem, QObject *parent = 0);
     ~ObjectExplorerModel();
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
@@ -51,9 +52,11 @@ public slots:
 private:          
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     TreeItem *rootItem;
+    TreeItem *rootDem;
     QSqlDatabase db;
     QMap<QString, QString> *objects;
     QMap<QString, QString> *diagrams;
+    DiagramExplorerModel *dem;
 };
 
 

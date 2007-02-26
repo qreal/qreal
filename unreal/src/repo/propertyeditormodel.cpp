@@ -9,7 +9,7 @@
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include "propertyeditormodel.h"
 #include "dbg.h"
 
@@ -21,20 +21,22 @@ dbg;
     diagram = "";
     name = "";
     rootd = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer()); 
-//    rootd = rootd->parent();
+    cur = rootd;
+    if( rootd != 0 )
+        rootd = rootd->parent();
 }
 
 void PropertyEditorModel::rescan(const QModelIndex &index ){
 dbg;
     
     current = index;
-    TreeItem *ti = static_cast<TreeItem*>(index.internalPointer());
+    cur = static_cast<TreeItem*>(index.internalPointer());
 
-    diagram = ti->getDiagramName();
-    type    = ti->getType();
-    name    = ti->getName();
+    diagram = cur->getDiagramName();
+    type    = cur->getType();
+    name    = cur->getName();
 
-qDebug() << name << type << diagram;
+qDebug() << "cur: " << name << type << diagram;
 
     QSqlQuery q;  
     QString tmp;
@@ -82,8 +84,9 @@ bool PropertyEditorModel::setData(const QModelIndex& index, const QVariant &valu
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
         
+qDebug() << "cur: " << cur->getName()  << cur->getType();
 
-        if (rootd->getType() == "diagram"){
+        if (cur->getType() == "diagram"){
             QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature"));
             return false;
         }
@@ -177,9 +180,6 @@ dbg;
 int PropertyEditorModel::elementExists( QString name, QString , QString diagram){
 dbg;
     TreeItem* par = rootd->getChild(diagram);
-    qDebug() << diagram;
-    qDebug() << par;
-    qDebug() << par->getName();
     if (!par){
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
         return -1;
@@ -189,6 +189,6 @@ dbg;
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
         return 0;
     }
-    return 1;
+    return 7;
 }
 

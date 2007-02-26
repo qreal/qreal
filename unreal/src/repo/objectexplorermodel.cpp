@@ -16,10 +16,11 @@
 #include "dbg.h"
 
 
-ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, QObject *parent) : QAbstractItemModel(parent) {
+ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, DiagramExplorerModel *_dem, QObject *parent) : QAbstractItemModel(parent) {
 dbg;
  
     db = _db;
+    dem = _dem;
     objects = new QMap<QString, QString>;
     rescan(); 
 }
@@ -227,9 +228,12 @@ dbg;
     endInsertRows();
 }
 
-int ObjectExplorerModel::elementExists( QString name, QString type, QString diagram){
+int ObjectExplorerModel::elementExists( QString name, QString , QString diagram){
 dbg;
-    TreeItem* par = rootItem->getChild(type);
+    rootDem = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer());
+    if (rootDem)
+        rootDem = rootDem->parent();
+    TreeItem* par = rootDem->getChild(diagram);
     if (!par){
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("no such element type.\nthis is weird, plz contact the developers"));
         return -1;

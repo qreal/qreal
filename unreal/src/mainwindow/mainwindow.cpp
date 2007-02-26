@@ -21,7 +21,7 @@ MainWindow::MainWindow()
 dbg;
     sqlite   = false;
     driver   = "QMYSQL";
-    hostName = "127.0.0.1";
+    hostName = "mashtab-2";
     dbName   = "unreal";
     userName = "unreal";
     passwd   = "domination";
@@ -35,7 +35,10 @@ dbg;
     if (dbOpened){
         createEditors();
     }    
-    model1 = new ObjectExplorerModel(db);
+    model2 = new DiagramExplorerModel(db);
+    diagramsList = model2->getDiagramsList();
+    
+    model1 = new ObjectExplorerModel(db, model2);
 
     dock = new QDockWidget(tr("object explorer"), this);
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -46,9 +49,7 @@ dbg;
     dock->setWidget(tree1);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
 
-    model2 = new DiagramExplorerModel(db);
-    diagramsList = model2->getDiagramsList();
-    
+        
     if( diagramsList.size() > 0 )
         setCurrentDiagram(diagramsList.at(0));
     else    
