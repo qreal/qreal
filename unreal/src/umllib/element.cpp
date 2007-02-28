@@ -33,7 +33,7 @@ QRectF Element::boundingRect() const
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
-/*    if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
+    if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
 	dragState = TopLeft;
     } else if ( QRectF(mysize.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
 	dragState = TopRight;
@@ -41,25 +41,25 @@ void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 	dragState = BottomRight;
     } else if ( QRectF(mysize.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
 	dragState = BottomLeft;
-    } else */
+    } else 
 	QGraphicsItem::mousePressEvent(event);
 }
 
 void Element::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-/*    if ( dragState != None ) {
+    if ( dragState != None ) {
 	dragState = None;
-    } else */
+    } else 
 	QGraphicsItem::mouseReleaseEvent(event);
-/*	
-    mysize = mysize.normalized(); */
+	
+    mysize = mysize.normalized();
 }
 
 void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-//    if ( dragState == None ) {
+    if ( dragState == None ) {
         QGraphicsItem::mouseMoveEvent(event);
-/*    } else {
+    } else {
 	if ( ( mysize.width() < 10 ) || ( mysize.height() < 10 ) ) {
 	} else {
 		prepareGeometryChange();
@@ -77,7 +77,7 @@ void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		setPos(pos() + mysize.topLeft());
 		mysize.translate(-mysize.topLeft());
 	}
-    }  */
+    }
     foreach (Edge *edge, edgeList)
         edge->adjust();
 	
