@@ -7,7 +7,7 @@
 Element::Element(const QString &type)
     : mysize(0,0,75,75)
 {
-    setFlags(ItemIsSelectable | ItemIsMovable);
+    setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
     setAcceptsHoverEvents(true);
     setCursor(Qt::SizeAllCursor);
     
@@ -29,6 +29,15 @@ void Element::addEdge(Edge *e)
 QRectF Element::boundingRect() const
 {
     return mysize.adjusted(-10,-10,10,10);
+}
+
+void Element::keyPressEvent ( QKeyEvent * event )
+{
+    if ( event->key() == Qt::Key_Backspace )
+	text.chop(1);
+    else
+        text += event->text();
+    update();
 }
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )

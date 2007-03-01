@@ -21,6 +21,8 @@ public:
     void setInfo(QString type, QString name);
 
 protected:
+    void keyPressEvent ( QKeyEvent * event );
+
     void mousePressEvent ( QGraphicsSceneMouseEvent * event );
     void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
