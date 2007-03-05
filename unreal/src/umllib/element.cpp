@@ -20,6 +20,11 @@ Element::Element(const QString &type)
     svgr.load(QString("../shapes/%1.svg").arg(type));
 }
 
+void Element::setIndex(QPersistentModelIndex idx)
+{
+    this->idx = idx;
+}
+
 void Element::addEdge(Edge *e)
 {
     edgeList << e;
@@ -97,6 +102,8 @@ void Element::setInfo(QString type, QString name)
   text = "<img src=\"none\"><b>" + type + "</b><hr>" + name;
   update();
 }
+
+    
 
 void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

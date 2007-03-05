@@ -88,9 +88,7 @@ int ExampleEditor::rows(const QModelIndex &index) const
 
 void ExampleEditor::rowsInserted(const QModelIndex &parent, int start, int end)
 { dbg;
-	for (int row = start; row <= end; ++row) {
-	}
-
+	
 }
 
 void ExampleEditor::setModel ( QAbstractItemModel * newModel )
@@ -164,7 +162,7 @@ void ExampleEditor::reset()
 		if ( ti->getType() != "eP2N" )
 		    continue;
 
-    	Edge *foo = new Edge;
+        	Edge *foo = new Edge;
 		items[idx] = foo;
 	
 		foo->setText(type + "/" + name);

@@ -18,6 +18,8 @@ public:
     
     void addEdge(Edge *e);
     
+    void setIndex(QPersistentModelIndex idx);
+    
     void setInfo(QString type, QString name);
 
 protected:
@@ -42,6 +44,8 @@ private:
     QString text;
 
     QSvgRenderer svgr;
+    
+    QPersistentModelIndex idx;
 };
 
 #endif
