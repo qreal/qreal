@@ -4,6 +4,8 @@
 #include <QtGui/QColor>
 #include <QtGui/QGraphicsItem>
 
+#include <QtCore/QPersistentModelIndex>
+
 #include <QtSvg/QSvgRenderer>
 
 class Edge;

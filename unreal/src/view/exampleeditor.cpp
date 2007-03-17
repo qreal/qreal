@@ -126,82 +126,15 @@ void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::Selecti
 
 void ExampleEditor::reset()
 { dbg;
-	//	QAbstractItemView::reset();
-
-	//	clearScene();
-	//	items.clear();
-
-	QMap<QString,int> seen;
-	seen.clear();
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-		 
-		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
-		QString name = ti->getName();
-		QString type = ti->getDiagramName();
-		QString idx =  QString("%1").arg(ti->getID());
-
-		seen[idx] = 666;
-		
-		if ( items.contains(idx) )
-			continue;
-		
-		if ( ti->getType() == "eP2N" )
-			continue;	// another kludge, we handle these later...
-			
-		Element *last = new Element(ti->getType());
-		items[idx] = last;
-		last->setInfo(ti->getType(), ti->getName());
-		scene->addItem(last);
+	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
+	    
+	    Element *e = new Element("fvkk");
+	    e->setIndex(current);
+	    scene->addItem(e);
+	    
+	    qDebug() << "creating an index for element unknown";
 	}
-	
-	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-		TreeItem * ti = static_cast<TreeItem *>( (model()->index(row, 0, rootIndex())).internalPointer() );
-		QString name = ti->getName();
-		QString type = ti->getDiagramName();
-		QString idx =  QString("%1").arg(ti->getID());
-		if ( ti->getType() != "eP2N" )
-		    continue;
-
-        	Edge *foo = new Edge;
-		items[idx] = foo;
-	
-		foo->setText(type + "/" + name);
-
-		QModelIndex current = model()->index(row, 0, rootIndex());
-
-		DiagramExplorerModel *demodel = dynamic_cast<DiagramExplorerModel *> (model());
-
-		QModelIndex linkSource = demodel->getBeginning( current );
-		QModelIndex linkDest = demodel->getEnding( current );
-		TreeItem *tiSource = static_cast<TreeItem *>( linkSource.internalPointer() );
-		TreeItem *tiDest = static_cast<TreeItem *>( linkDest.internalPointer() );
-		QString idxSource =  QString("%1").arg(tiSource->getID());
-		QString idxDest =  QString("%1").arg(tiDest->getID());
-
-		foo->setSource(static_cast<Element *> (items[idxSource]));
-		foo->setDest(static_cast<Element *> (items[idxDest]));
-	
-//		for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end(); i++ ) {
-//			qDebug() << i.key();
-//		}
-		
-		scene->addItem(foo);
-	}
-    			
-
-	// Remove items not seen this time
-
-	for( QMap<QString, QGraphicsItem *>::iterator i = items.begin(); i != items.end();  ) {
-		if ( seen[i.key()] == 666 ) {
-			i++;
-		} else {
-			scene->removeItem(i.value());
-			delete i.value();
-			i = items.erase(i);
-		}
-	}
-
-	scene->update(view->sceneRect());
 }
 
 QRect ExampleEditor::visualRect(const QModelIndex &index) const

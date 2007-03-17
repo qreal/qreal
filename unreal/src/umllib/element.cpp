@@ -13,7 +13,7 @@ Element::Element(const QString &type)
     
     dragState = None;
     
-    text = "foo<br><b>bar</b><hr>blah<br>blah<br>blah";
+    text = "";
 
     this->type = type;
 
@@ -23,6 +23,18 @@ Element::Element(const QString &type)
 void Element::setIndex(QPersistentModelIndex idx)
 {
     this->idx = idx;
+    
+    // maybe move elsewhere?
+    int myrow = idx.row();
+    
+    text = QString("el row # %1<hr>").arg(idx.row());
+    
+    for (int col = 0; col <= 3; col++) {
+	text += idx.sibling(myrow,col).data().toString();
+	text += "<br>";
+    }
+
+    update();
 }
 
 void Element::addEdge(Edge *e)
