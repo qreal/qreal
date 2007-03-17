@@ -4,7 +4,7 @@
 // Description:  Proxy model for Diagram Explorer
 //
 // Created:      16-Jan-07
-// Revision:     23-Feb-07
+// Revision:     17-Mar-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -18,9 +18,11 @@ DiagramExplorerModel:: DiagramExplorerModel(QSqlDatabase &_db, QObject *parent) 
 dbg;
 
     db = _db;
+    QStringList l;
+    l << "diagram" << "diagram" << "";
     elements = new QMap<int, TreeItem*>;
     diagrams = new QMap<QString, QString>;
-    rootItem = new TreeItem("diagram", "diagram", "", diagrams, 0, db);   
+    rootItem = new TreeItem(l, diagrams, 0, db);   
     rootItem->setID(-1);
     diagramsList.clear();
     maxID = 0;
@@ -47,24 +49,28 @@ dbg;
     QString tmp;
 
     QSqlQuery q,q1,q2,q3;  
+    QStringList l;
 
     tmp = "select MAX(uuid) from diagram";
     q = db.exec(tmp);
     q.next();
     maxID = q.record().value(0).toInt();
-qDebug() << "maxid = " << maxID;    
     tmp = "select * from diagram where type='diagrams'";
     diagrams->insert("diagram", tmp);
   
     q1 = db.exec(tmp);
     int nameClmn = q1.record().indexOf("name");
     int idClmn   = q1.record().indexOf("uuid");
+    int statusClmn = q1.record().indexOf("status");
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
+        QString statusName = q1.value(statusClmn).toString();    
         int id = q1.value(idClmn).toInt();
         if (maxID < id)
             maxID = id;
-        table = new TreeItem(tableName, "diagram", "diagram", diagrams, rootItem, db);                 
+        l.clear(); 
+        l << tableName << "diagram" << "diagram" << statusName;
+        table = new TreeItem(l, diagrams, rootItem, db);                 
         table->setID(id);
         diagramsList << tableName;
         rootItem->addChild(table);
@@ -84,24 +90,21 @@ qDebug() << "maxid = " << maxID;
             int curID = q3.value(uuidCol).toInt();
             if ( curID > maxID )
                 maxID = curID;
-            value = new TreeItem(valueName, typeName, tableName, diagrams, table, db);
+            l.clear();
+            l << valueName << typeName << tableName;
+            q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
+            if (!q2.next()){
+                qDebug() << "there's no such element in the db, sorry...";
+                return;
+            }    
+            for (int i=2; i<q2.record().count()-1; i++){
+                l << q2.value(i).toString();
+            }    
+            value = new TreeItem(l, diagrams, table, db);
             value->setID(curID);
-            if (typeName == "eP2N"){
-                q2 = db.exec("select * from eP2N where name='" + valueName + "'");
-                if (!q2.next()){
-                    qDebug() << "there's no such link in the db, sorry...";
-                    return;
-                }    
-                int fromPos = q2.record().indexOf("beginsWith");
-                int toPos   = q2.record().indexOf("endsWith");
-                QString beginning = q2.value(fromPos).toString();
-                QString ending    = q2.value(toPos).toString();
-                value->setEnds(beginning, ending);
-            }
             table->addChild(value);
             if (elements->contains(curID))
                 QMessageBox::warning(0, tr("mmmm..."), tr("something weird with elements IDs"));
-            qDebug() << valueName << curID;    
             elements->insert(curID, value);
         }    
     }
@@ -349,7 +352,6 @@ dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
     return getIndex(it->getBeginning());
 }
-
 QModelIndex DiagramExplorerModel::getEnding( QModelIndex& index ){
 dbg;
     TreeItem* it = static_cast<TreeItem*>(index.internalPointer());
@@ -389,6 +391,8 @@ dbg;
     QString status;
 
     getNextID();
+    
+    QStringList l;
 
     if ( fields == "" ){ // creating diagram in the database
         createDiagramScriptsExec(vals);
@@ -396,6 +400,7 @@ dbg;
         status  = vals.at(vals.size()-1);
         type    = "diagram";
         diagram = "diagram";
+        l << name << type << diagram;  
     }    
     else{ // creating element in the database
         createElementScriptsExec(vals, fields);
@@ -403,15 +408,18 @@ dbg;
         type    = vals.at(2);
         diagram = vals.at(0);
         status  = vals.at(vals.size()-1);
+        l << name << type << diagram;  
+        for (int i=3; i<vals.size(); i++)
+            l << vals.at(i);
     }    
     
     TreeItem *par;
     if(parent.isValid())
         par = static_cast<TreeItem*>(parent.internalPointer());
     else 
-        par = 0;
-      
-    TreeItem *child = new TreeItem(name, type, diagram, diagrams, par, db);
+        par = 0;     
+        
+    TreeItem *child = new TreeItem(l, diagrams, par, db);
     child->setID(getID());
   
     if( fields == ""){
@@ -429,7 +437,7 @@ dbg;
         par->addChild(child);
 
     if( elements->contains(getID()))
-        QMessageBox::warning(0, tr("mmm..."), tr("something weird with IDs..."));
+        QMessageBox::warning(0, tr("mmmm..."), tr("something weird with IDs..."));
     elements->insert(getID(), child);
     
 	endInsertRows();
@@ -487,7 +495,7 @@ dbg;
 
 int DiagramExplorerModel::elementExists( QString name, QString , QString diagram){
 dbg;
-    TreeItem* par = rootItem->getChild(diagram);
+TreeItem* par = rootItem->getChild(diagram);
     if (!par){
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
         return -1;

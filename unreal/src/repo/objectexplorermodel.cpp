@@ -4,7 +4,7 @@
 // Description:  Proxy model for Object Explorer
 //
 // Created:      16-Jan-07
-// Revision:     23-Jan-07 
+// Revision:     17-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -18,8 +18,8 @@
 
 ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, DiagramExplorerModel *_dem, QObject *parent) : QAbstractItemModel(parent) {
 dbg;
- 
-    db = _db;
+
+    db = _db
     dem = _dem;
     objects = new QMap<QString, QString>;
     rescan(); 
@@ -28,7 +28,9 @@ dbg;
 void ObjectExplorerModel::rescan(){
     dbg;
     objects = new QMap<QString, QString>; 
-    rootItem = new TreeItem("diagram", "diagram", "", objects, 0, db);   
+    QStringList l;
+    l << "diagram" << "diagram" << "";
+    rootItem = new TreeItem(l, objects 0, db);   
   
     TreeItem *table, *val;
     QString tmp;
@@ -44,7 +46,9 @@ void ObjectExplorerModel::rescan(){
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(nameClmn).toString();    
         int uuid = q1.value(uuidClmn).toInt();
-        table = new TreeItem(tableName, "diagram", "diagram", objects, rootItem, db);                  
+        l.clear();
+        l << tableName << "diagram" << "diagram";
+        table = new TreeItem(l, objects, rootItem, db);                  
         table->setID(uuid);
         rootItem->addChild(table);
         tmp = "select * from " + tableName;
@@ -57,7 +61,9 @@ void ObjectExplorerModel::rescan(){
             QString valueName = q2.value(nameCol).toString();
             QString diagramName = q2.value(diagramCol).toString();
             int id = q2.value(idCol).toInt();
-            val = new TreeItem(valueName, tableName, diagramName, objects, table, db);
+            l.clear();
+            l << valueName << tableName << diagramName;
+            val = new TreeItem(l, objects, table, db);
             val->setID(id);
             table->addChild(val);
             
@@ -144,7 +150,7 @@ dbg;
 }
 
 QVariant ObjectExplorerModel::headerData(int , Qt::Orientation , int ) const {
-dbg;                               
+dbg;
     return "";
 }
 
@@ -206,7 +212,9 @@ dbg;
     QString diagram = vals.at(0);
 
     TreeItem *par   = rootItem->getChild(type); 
-    TreeItem *child = new TreeItem(name, type, diagram, objects, par, db);
+    QStringList l;
+    l << name << type << diagram;
+    TreeItem *child = new TreeItem(l, objects, par, db);
     par->addChild(child);
 
     endInsertRows();

@@ -4,7 +4,7 @@
 // Description:  Proxy model for Object Explorer
 //
 // Created:      16-Jan-07
-// Revision:     23-Feb-07 
+// Revision:     17-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 

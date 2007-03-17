@@ -51,7 +51,6 @@ private:
     QModelIndex current;
     DiagramExplorerModel *dem;
     TreeItem *rootd;
-    TreeItem *cur;
     void rescan( const QModelIndex& ); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     QSqlDatabase db;
     QStringList fields;

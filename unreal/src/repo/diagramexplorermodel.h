@@ -3,8 +3,8 @@
 // File Name:    diagramexplorermodel.h
 // Description:  Proxy model for Diagram Explorer
 //
-// Created:      16-January-07
-// Revision:      
+// Created:      16-Jan-07
+// Revision:     17-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
