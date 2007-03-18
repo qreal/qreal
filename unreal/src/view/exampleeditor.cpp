@@ -129,7 +129,7 @@ void ExampleEditor::reset()
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
 	    
-	    Element *e = new Element("fvkk");
+	    Element *e = new Element();
 	    e->setIndex(current);
 	    scene->addItem(e);
 	    

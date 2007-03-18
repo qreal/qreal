@@ -13,7 +13,7 @@ class Edge;
 class Element : public QGraphicsItem
 {
 public:
-    Element(const QString &type);
+    Element();
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
@@ -32,9 +32,6 @@ protected:
     void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
     
 private:
-    QString type;
-    QString name;
-    
     QRectF mysize;    
     
     enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };

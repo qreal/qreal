@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtSvg>
 
-Element::Element(const QString &type)
+Element::Element()
     : mysize(0,0,75,75)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
@@ -13,11 +13,6 @@ Element::Element(const QString &type)
     
     dragState = None;
     
-    text = "";
-
-    this->type = type;
-
-    svgr.load(QString("../shapes/%1.svg").arg(type));
 }
 
 void Element::setIndex(QPersistentModelIndex idx)
@@ -33,6 +28,9 @@ void Element::setIndex(QPersistentModelIndex idx)
 	text += idx.sibling(myrow,col).data().toString();
 	text += "<br>";
     }
+    
+    QString type = idx.sibling(myrow,1).data().toString();
+    svgr.load(QString("../shapes/%1.svg").arg(type));
 
     update();
 }

@@ -19,7 +19,7 @@
 ObjectExplorerModel::ObjectExplorerModel(QSqlDatabase &_db, DiagramExplorerModel *_dem, QObject *parent) : QAbstractItemModel(parent) {
 dbg;
 
-    db = _db
+    db = _db;
     dem = _dem;
     objects = new QMap<QString, QString>;
     rescan(); 
@@ -30,7 +30,7 @@ void ObjectExplorerModel::rescan(){
     objects = new QMap<QString, QString>; 
     QStringList l;
     l << "diagram" << "diagram" << "";
-    rootItem = new TreeItem(l, objects 0, db);   
+    rootItem = new TreeItem(l, objects , rootItem, db);   
   
     TreeItem *table, *val;
     QString tmp;
