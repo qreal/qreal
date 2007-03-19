@@ -24,7 +24,7 @@ void Element::setIndex(QPersistentModelIndex idx)
     
     text = QString("el row # %1<hr>").arg(idx.row());
     
-    for (int col = 0; col <= 3; col++) {
+    for (int col = 0; col <= 6; col++) {
 	text += idx.sibling(myrow,col).data().toString();
 	text += "<br>";
     }

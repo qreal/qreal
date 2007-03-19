@@ -126,6 +126,8 @@ void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::Selecti
 
 void ExampleEditor::reset()
 { dbg;
+	clearScene();
+
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
 	    
