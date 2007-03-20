@@ -4,7 +4,7 @@
 // Description:  Proxy model for Diagram Explorer
 //
 // Created:      16-Jan-07
-// Revision:     17-Mar-07
+// Revision:     21-Mar-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -59,17 +59,14 @@ dbg;
     diagrams->insert("diagram", tmp);
   
     q1 = db.exec(tmp);
-    int nameClmn = q1.record().indexOf("name");
-    int idClmn   = q1.record().indexOf("uuid");
-    int statusClmn = q1.record().indexOf("status");
     while(q1.next()){           // fetching diagram names
-        QString tableName = q1.value(nameClmn).toString();    
-        QString statusName = q1.value(statusClmn).toString();    
-        int id = q1.value(idClmn).toInt();
+        QString tableName = q1.value(q1.record().indexOf("name")).toString();    
+        QString statusName = q1.value(q1.record().indexOf("uuid")).toString();    
+        int id = q1.value(q1.record().indexOf("status")).toInt();
         if (maxID < id)
             maxID = id;
         l.clear(); 
-        l << tableName << "diagram" << "diagram" << statusName;
+        l << tableName << "diagram" << "diagram" << statusName << "0" << "0";
         table = new TreeItem(l, diagrams, rootItem, db);                 
         table->setID(id);
         diagramsList << tableName;
@@ -81,17 +78,16 @@ dbg;
         tmp = "select * from " + tableName;
         diagrams->insert(tableName, tmp);
         q3 = db.exec(tmp);
-        int nameCol = q3.record().indexOf("name");
-        int typeCol = q3.record().indexOf("type");  
-        int uuidCol = q3.record().indexOf("uuid");
         while(q3.next()){
-            QString valueName = q3.value(nameCol).toString();
-            QString typeName  = q3.value(typeCol).toString();
-            int curID = q3.value(uuidCol).toInt();
+            QString valueName = q3.value(q3.record().indexOf("name")).toString();
+            QString typeName  = q3.value(q3.record().indexOf("type")).toString();
+            QString x  = q3.value(q3.record().indexOf("x")).toString();
+            QString y  = q3.value(q3.record().indexOf("y")).toString();
+            int curID = q3.value(q3.record().indexOf("uuid")).toInt();
             if ( curID > maxID )
                 maxID = curID;
             l.clear();
-            l << valueName << typeName << tableName;
+            l << valueName << typeName << tableName << x << y;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){
                 qDebug() << "there's no such element in the db, sorry...";
@@ -208,9 +204,6 @@ dbg;
   Qt::ItemFlags f = Qt::ItemIsEnabled;
   if (!index.isValid())
     return f;
-  //TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-  //if (!item->isTable())
-    //f |= Qt::ItemIsEditable;
   return f | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -298,7 +291,6 @@ dbg;
     QString diagram = values.at(0);
     QString name    = values.at(1);
     QString type    = values.at(2);
-    QString status  = values.at(values.size()-1);
     
     QString tmp = "insert into %1 (uuid, name, type) values (%2, '%3', '%4')";
     tmp = tmp.arg(diagram).arg(getID()).arg(name).arg(type);
@@ -308,16 +300,23 @@ dbg;
         QString desc    = values.at(3);
         QString prio    = values.at(4);
         QString source  = values.at(5);
+        QString x       = values.at(6);
+        QString y       = values.at(7);
+        QString status  = values.at(8);
     
-        tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', '%9')";
-        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(diagram);
+        tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', %9, %10, '%11')";
+        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(x).arg(y).arg(diagram);
+qDebug() << "adding element: " << tmp;
         db.exec(tmp);
     }
     else{
         QString from = values.at(3);
         QString to   = values.at(4);
+        QString status = values.at(5);
+        
         tmp = "insert into %1 (%2) values (%3, '%4', '%5', '%6', '%7', '%8')";
         tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(from).arg(to).arg(diagram).arg(status);
+qDebug() << "adding link: " << tmp;        
         db.exec(tmp);
     }
 }
@@ -389,6 +388,8 @@ dbg;
     QString type;
     QString diagram;
     QString status;
+    QString x;
+    QString y;
 
     getNextID();
     
@@ -409,6 +410,11 @@ dbg;
         diagram = vals.at(0);
         status  = vals.at(vals.size()-1);
         l << name << type << diagram;  
+        if ( type != "eP2N" ){
+            x  = vals.at(vals.size()-3);
+            y  = vals.at(vals.size()-2);
+            l << x << y;
+        }
         for (int i=3; i<vals.size(); i++)
             l << vals.at(i);
     }    

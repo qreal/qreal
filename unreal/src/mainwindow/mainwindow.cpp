@@ -4,9 +4,9 @@
 // Description:  Application's main window class
 //
 // Created:      hz :)
-// Revision:     03-Feb-07
+// Revision:     21-Mar-07
 //
-// Author:       
+// Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
 
 //#define _LONG_DEBUG
@@ -21,7 +21,7 @@ MainWindow::MainWindow()
 dbg;
     sqlite   = false;
     driver   = "QMYSQL";
-    hostName = "mashtab-2";
+    hostName = "127.0.0.1";
     dbName   = "unreal";
     userName = "unreal";
     passwd   = "domination";
@@ -415,6 +415,8 @@ dbg;
         QString prio = dialog.ePriority->text();
         QString source = dialog.eSource->text();
         QString stat = dialog.eStatus->text();
+        QString y    = dialog.eY->text();
+        QString x    = dialog.eX->text();
        
         if( model2->elementExists(name, type, curDiagram) <= 0 )
             return;
@@ -422,8 +424,8 @@ dbg;
         QList<QString> list;                
         QString fields;
         
-        list << curDiagram << name << type << desc << prio << source << stat;
-        fields = "uuid, name, description, priority, source, status, diagram";
+        list << curDiagram << name << type << desc << prio << source << x << y << stat;
+        fields = "uuid, name, description, priority, source, status, x, y, diagram";
         
         model2->insert(true, fields, list);
 	

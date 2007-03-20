@@ -4,7 +4,7 @@
 // Description:  Some useful Dialogs 
 //
 // Created:      03-Feb-07
-// Revision:     
+// Revision:     21-Mar-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -32,11 +32,15 @@ public:
     QLabel *lPriority;
     QLabel *lSource;
     QLabel *lStatus;
+    QLabel *lX;
+    QLabel *lY;
     QLineEdit *eName;
     QLineEdit *eDescription;
     QLineEdit *ePriority;
     QLineEdit *eSource;
     QLineEdit *eStatus;
+    QLineEdit *eX;
+    QLineEdit *eY;
     QPushButton *okButton;
     QPushButton *closeButton;
 };

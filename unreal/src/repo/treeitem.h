@@ -5,7 +5,7 @@
 //               relational tables 
 //
 // Created:      16-Jan-07
-// Revision:     17-Mar-07 
+// Revision:     21-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -47,6 +47,11 @@ public:
     void setDiagramName( QString d ) { values.replace(2, d); }
     void setID( int _id ) { id = _id; }
     
+    int getX() { return values.at(values.size()-2).toInt(); }
+    int getY() { return values.at(values.size()-1).toInt(); }
+    void setX( int x ) { values.replace(values.size()-2, QString(x)); }
+    void setY( int y ) { values.replace(values.size()-1, QString(y)); }
+    
     void addChild( TreeItem* );  
     void removeChild ( QString );
     
@@ -72,7 +77,7 @@ public:
        1 - type, 
        2 - diagram, 
        3,4,5 etc. - as in DB create table script:
-             "description, priority, source, status" for nodes or
+             "description, priority, source, status, x, y" for nodes or
              "beginsWith, endsWith, status" for edges
     */
 };

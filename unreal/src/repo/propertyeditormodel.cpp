@@ -21,7 +21,8 @@ dbg;
     diagram = "";
     name = "";
     rootd = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer()); 
-//    rootd = rootd->parent();
+    if(rootd)
+        rootd = rootd->parent();
 }
 
 void PropertyEditorModel::rescan(const QModelIndex &index ){
@@ -34,7 +35,7 @@ dbg;
     type    = ti->getType();
     name    = ti->getName();
 
-qDebug() << name << type << diagram;
+qDebug() << "pem sync: " << name << type << diagram;
 
     QSqlQuery q;  
     QString tmp;
@@ -81,9 +82,10 @@ dbg;
 bool PropertyEditorModel::setData(const QModelIndex& index, const QVariant &value, int role){
 dbg;
     if (index.isValid() && role == Qt::EditRole) {
-        
+    
+        TreeItem *ti = static_cast<TreeItem*>(current.internalPointer());
 
-        if (rootd->getType() == "diagram"){
+        if (ti->getType() == "diagram"){
             QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature"));
             return false;
         }
@@ -93,13 +95,19 @@ dbg;
         
         QString field  = fields.at(index.row());
         QString oldval = vals.at(index.row());
+//        QString name   = ti->getName();
         
-        QString tmp = "update %1 set %2='%3' where %2='%4' and diagram='%5'";
-        QString tmp2 = tmp.arg(type).arg(field).arg(value.toString()).arg(oldval).arg(diagram);
+        QString tmp = "update %1 set %2='%3' where name='%4' and diagram='%5'";
+        QString tmp2 = tmp.arg(type).arg(field).arg(value.toString()).arg(name).arg(diagram);
+        qDebug() << "pem: update: " << diagram;
+        qDebug() << "pem: update: " << tmp2;
+        
         db.exec(tmp2);
 
         if( field == "name" ){
+            tmp = "update %1 set %2='%3' where name='%4'";
             tmp2 = tmp.arg(diagram).arg(field).arg(value.toString()).arg(oldval);
+            qDebug() << "pem name change:" << tmp2;
             db.exec(tmp2);
             name = value.toString();
             QStringList list;
@@ -176,10 +184,9 @@ dbg;
 
 int PropertyEditorModel::elementExists( QString name, QString , QString diagram){
 dbg;
+    qDebug() << "pem elexists: par: " << rootd;
+    qDebug() << "pem elexists: par: " << rootd->getName();
     TreeItem* par = rootd->getChild(diagram);
-    qDebug() << diagram;
-    qDebug() << par;
-    qDebug() << par->getName();
     if (!par){
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
         return -1;

@@ -4,7 +4,7 @@
 // Description:  Editor 
 //
 // Created:      30-Jan-07
-// Revision:     25-Feb-07 
+// Revision:     21-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -343,8 +343,8 @@ void Editor::execDBScripts(){
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (3, 'nFeatured', 'objects')");
-        q.exec("create table nFeatured (uuid integer, name varchar(20),"  
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nFeatured (uuid integer, name varchar(20), description text, priority integer, "
+                "source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }    
   //  else 
 //        qDebug() << "value:" << r.value(0).toString();
@@ -353,64 +353,64 @@ void Editor::execDBScripts(){
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (4, 'nConcAlternative', 'objects')");
-        q.exec("create table nConcAlternative (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nConcAlternative (uuid integer, name varchar(20), description text, priority integer,"
+                " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='nLeaf'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (5, 'nLeaf', 'objects')");
-        q.exec("create table nLeaf (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nLeaf (uuid integer, name varchar(20), description text, priority integer,"
+                " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='nParent'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (6, 'nParent', 'objects')");
-        q.exec("create table nParent (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParent (uuid integer, name varchar(20), description text, priority integer, "
+                    "source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }   
     
     q.exec("select uuid from diagram where name='nParentMandatory'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (7, 'nParentMandatory', 'objects')");
-        q.exec("create table nParentMandatory (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParentMandatory (uuid integer, name varchar(20), description text, priority integer,"
+                    " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     } 
     
     q.exec("select uuid from diagram where name='nParentOr'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (8, 'nParentOr', 'objects')");
-        q.exec("create table nParentOr (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParentOr (uuid integer, name varchar(20), description text, priority integer, "
+                    "source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='nParentOptional'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (9, 'nParentOptional', 'objects')");
-        q.exec("create table nParentOptional (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParentOptional (uuid integer, name varchar(20), description text, priority integer,"
+                    " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='nParentAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (10, 'nParentAlternative', 'objects')");
-        q.exec("create table nParentAlternative (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParentAlternative (uuid integer, name varchar(20), description text, priority integer,"
+                " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='nParentOpAlternative'");
     z = getSize(q, canGetSize);  
     if (z <= 0){
         q.exec("insert into diagram (uuid, name, type) values (11, 'nParentOpAlternative', 'objects')");
-        q.exec("create table nParentOpAlternative (uuid integer, name varchar(20),"
-            " description text, priority integer, source varchar(20), status varchar(20), diagram varchar(20))");
+        q.exec("create table nParentOpAlternative (uuid integer, name varchar(20), description text, priority integer,"
+                " source varchar(20), status varchar(20), x integer, y integer, diagram varchar(20))");
     }
     
     q.exec("select uuid from diagram where name='eP2N'");

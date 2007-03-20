@@ -66,7 +66,6 @@ void ObjectExplorerModel::rescan(){
             val = new TreeItem(l, objects, table, db);
             val->setID(id);
             table->addChild(val);
-            
         }    
     }
 }

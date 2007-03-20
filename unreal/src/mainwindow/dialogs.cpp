@@ -4,7 +4,7 @@
 // Description:  Some useful Dialogs 
 //
 // Created:      03-Feb-07
-// Revision:     
+// Revision:     21-Mar-07
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -52,11 +52,15 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     lPriority = new QLabel(tr("prior: "));
     lSource = new QLabel("source: ");
     lStatus = new QLabel(tr("status: "));
+    lX = new QLabel(tr("x: "));
+    lY = new QLabel(tr("x: "));
     eName = new QLineEdit("element 1");
     eDescription = new QLineEdit("desc 1");
     ePriority = new QLineEdit("1");
     eSource = new QLineEdit("source 1");
     eStatus = new QLineEdit("status 1");
+    eX = new QLineEdit("0");
+    eY = new QLineEdit("0");
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     
@@ -78,6 +82,12 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h5 = new QHBoxLayout;
     h5->addWidget(lStatus);    
     h5->addWidget(eStatus);               
+    QHBoxLayout *h51 = new QHBoxLayout;
+    h51->addWidget(lX);    
+    h51->addWidget(eX);               
+    QHBoxLayout *h52 = new QHBoxLayout;
+    h52->addWidget(lY);    
+    h52->addWidget(eY);               
     QHBoxLayout *h6 = new QHBoxLayout;
     h6->addWidget(okButton);    
     h6->addWidget(closeButton);               
@@ -87,6 +97,8 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     v->addLayout(h3);
     v->addLayout(h4);
     v->addLayout(h5);
+    v->addLayout(h51);
+    v->addLayout(h52);
     v->addLayout(h6);
     setLayout(v);
     

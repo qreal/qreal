@@ -5,7 +5,7 @@
 //               relational tables 
 //
 // Created:      16-Jan-07
-// Revision:     17-Mar-07 
+// Revision:     21-Mar-07 
 //
 // Author:       Timofey A. Bryksin (sly@tercom.ru)
 //===================================================================== 
@@ -24,7 +24,7 @@ dbg;
     db = _db;
     parentItem = parent;
     tables = map;
-    for ( int i=0; i<10; i++){
+    for ( int i=0; i<13; i++){
         if (i<_vals.size())
             values << _vals.at(i);
         else    
