@@ -109,7 +109,6 @@ void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::Selecti
 
 QGraphicsItem * ExampleEditor::getItem(int uuid)
 {
-    qDebug() << "returning item " << uuid;
     return items[uuid];
 }
 
@@ -198,9 +197,16 @@ void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
 	    
+	    qDebug() << "------- uuid:" << uuid;
+	    
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
-	                
-	    qgraphicsitem_cast<Element *>(items[uuid])->setIndex(current);
+	    	    
+	    if ( model()->index(row, 2, rootIndex()).data().toString() == "eP2N" ) {
+	        qgraphicsitem_cast<Edge *>(items[uuid])->setIndex(current);
+	    } else {
+	        qgraphicsitem_cast<Element *>(items[uuid])->setIndex(current);
+	    }
+				
 	}
 }
 

@@ -104,6 +104,8 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(widget);
 
     if (!source || !dest)
+            updateData();
+    if (!source || !dest)
             return;
 
     double penWidth = 1;
