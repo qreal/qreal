@@ -35,8 +35,8 @@ public:
     QString getType() const { return values.at(1); }                          
     QString getName() const { return values.at(0); }
     QString getDiagramName() const { return values.at(2); }
-    QString getBeginning() const { if (values.size() >= 4) return values.at(3); }
-    QString getEnding() const { if (values.size() >= 5) return values.at(4); }
+    QString getBeginning() const { if (values.size() >= 4) return values.at(3); else return -1; }
+    QString getEnding() const { if (values.size() >= 5) return values.at(4); else return -1; }
     TreeItem* getChild( QString );
     TreeItem* getChild( int );
     
