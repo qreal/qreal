@@ -1,6 +1,8 @@
 #include "edge.h"
 #include "element.h"
 
+#include "exampleeditor.h"
+
 #include <QtGui>
 
 #include <math.h>
@@ -9,29 +11,13 @@ static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
 
-Edge::Edge()
+Edge::Edge(ExampleEditor *parent)
 {
 //    setFlags(ItemIsSelectable);
     source = dest = 0;
     text = "This is a Link";
-}
-
-void Edge::setSource(Element *source)
-{
-    this->source = source;
-    source->addEdge(this);
-}
-
-void Edge::setDest(Element *dest)
-{
-    this->dest = dest;
-    dest->addEdge(this);
-}
-
-void Edge::setText(const QString &text)
-{
-    this->text = text;
-    update();
+    
+    editor = parent;
 }
 
 void Edge::adjust()
@@ -47,6 +33,34 @@ void Edge::adjust()
     sourcePoint = line.p1() + edgeOffset;
     destPoint = line.p2() - edgeOffset;
     addToIndex();
+}
+
+void Edge::setIndex(QPersistentModelIndex idx)
+{
+    this->idx = idx;
+    updateData();
+}	
+
+void Edge::updateData()
+{
+    // maybe move elsewhere?
+    int myrow = idx.row();
+	
+    text = QString("el row # %1: ").arg(idx.row());
+    
+    int uuidFrom = idx.sibling(myrow,6).data().toInt();
+    int uuidTo = idx.sibling(myrow,7).data().toInt();
+    
+    qDebug() << "Boo!" << uuidFrom << uuidTo;
+    
+    source = qgraphicsitem_cast<Element *>(editor->getItem(uuidFrom));
+    if (source)
+	source->addEdge(this);
+    dest = qgraphicsitem_cast<Element *>(editor->getItem(uuidTo));
+    if (dest)
+	dest->addEdge(this);
+				    
+    update();
 }
 
 QRectF Edge::boundingRect() const

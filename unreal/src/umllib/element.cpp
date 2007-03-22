@@ -1,10 +1,12 @@
 #include "element.h"
 #include "edge.h"
 
+#include "exampleeditor.h"
+
 #include <QtGui>
 #include <QtSvg>
 
-Element::Element()
+Element::Element(ExampleEditor *parent)
     : mysize(0,0,75,75)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
@@ -12,6 +14,8 @@ Element::Element()
     setCursor(Qt::SizeAllCursor);
     
     dragState = None;
+    
+    editor = parent;
     
     updateno = 0;
 }
@@ -111,14 +115,6 @@ void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
         edge->adjust();
 	
 }
-
-void Element::setInfo(QString type, QString name)
-{
-  text = "<img src=\"none\"><b>" + type + "</b><hr>" + name;
-  update();
-}
-
-    
 
 void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

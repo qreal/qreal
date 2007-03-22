@@ -110,6 +110,13 @@ void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::Selecti
 { dbg;
 }
 
+
+QGraphicsItem * ExampleEditor::getItem(int uuid)
+{
+    qDebug() << "returning item " << uuid;
+    return items[uuid];
+}
+
 void ExampleEditor::reset()
 { dbg;
 	clearScene();
@@ -117,12 +124,22 @@ void ExampleEditor::reset()
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-	    	    
-	    Element *e = new Element();
-	    e->setIndex(current);
-	    scene->addItem(e);
+	    QString type = model()->index(row, 2, rootIndex()).data().toString();
 	    
-	    items[uuid] = e;
+	    // FIXME: later
+	    if (type == "eP2N") {
+		Edge *e = new Edge(this);
+		e->setIndex(current);
+		scene->addItem(e);
+		
+		items[uuid] = e;
+	    } else {
+		Element *e = new Element(this);
+		e->setIndex(current);
+		scene->addItem(e);
+	    
+		items[uuid] = e;
+	    }
 	    
 	    qDebug() << "creating an index for element unknown";
 	}

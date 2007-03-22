@@ -28,6 +28,8 @@ public:
 
     void setModel ( QAbstractItemModel * model );
     
+    QGraphicsItem * getItem(int uuid);
+    
 public slots:
     void reset();
 

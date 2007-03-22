@@ -9,11 +9,12 @@
 #include <QtSvg/QSvgRenderer>
 
 class Edge;
+class ExampleEditor;
 
 class Element : public QGraphicsItem
 {
 public:
-    Element();
+    Element(ExampleEditor *parent);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
@@ -21,8 +22,6 @@ public:
     void addEdge(Edge *e);
     
     void setIndex(QPersistentModelIndex idx);
-    
-    void setInfo(QString type, QString name);
     
     void updateData();
 
@@ -47,6 +46,8 @@ private:
     QSvgRenderer svgr;
     
     int updateno;
+    
+    ExampleEditor *editor;
     
     QPersistentModelIndex idx;
 };

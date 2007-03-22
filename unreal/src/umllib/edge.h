@@ -4,22 +4,24 @@
 #include <QtGui/QColor>
 #include <QtGui/QGraphicsItem>
 
+#include <QtCore/QPersistentModelIndex>
+
+
 class Element;
+class ExampleEditor;
 
 class Edge : public QGraphicsItem
 {
 public:
-    Edge();
+    Edge(ExampleEditor *parent);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
     
-    void setSource(Element *source);
-    void setDest(Element *dest);
-    
-    void setText(const QString &text);
-    
+    void setIndex(QPersistentModelIndex idx);
+
     void adjust();
+    void updateData();
 
 //protected:
 //    void mousePressEvent ( QGraphicsSceneMouseEvent * event );
@@ -34,6 +36,10 @@ private:
     qreal arrowSize;
     
     QString text;
+    
+    QPersistentModelIndex idx;
+
+    ExampleEditor *editor;
 };
 
 #endif
