@@ -130,8 +130,12 @@ void ExampleEditor::reset()
 
 void ExampleEditor::dumpStuff( const QModelIndex & idx)
 { dbg;
+	std::cerr << "--- dumpStuff ---";
         for (int row = 0; row < model()->rowCount(idx); ++row) {
-            qDebug() << "dumpStuff: " << row << " - " << model()->index(row, 0, idx).data().toString();
+            std::cerr << "dumpStuff: " << row << " - ";
+	    for (int col = 0; col <= 10; ++col )
+		std::cerr << model()->index(row, col, idx).data().toString().toStdString() << " ";
+	    std::cerr << std::endl;
         }
 }
 
@@ -169,9 +173,16 @@ void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start
 void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 { dbg;
+	qDebug() << "dataChanged!!!! dataChanged!!!";
+	
+	dumpStuff(rootIndex());
+
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-	    qgraphicsitem_cast<Element *>(items[uuid])->updateData();
+	    
+	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
+	                
+	    qgraphicsitem_cast<Element *>(items[uuid])->setIndex(current);
 	}
 }
 

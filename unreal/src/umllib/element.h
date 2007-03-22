@@ -46,6 +46,8 @@ private:
 
     QSvgRenderer svgr;
     
+    int updateno;
+    
     QPersistentModelIndex idx;
 };
 

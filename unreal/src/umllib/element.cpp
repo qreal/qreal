@@ -13,6 +13,7 @@ Element::Element()
     
     dragState = None;
     
+    updateno = 0;
 }
 
 void Element::setIndex(QPersistentModelIndex idx)
@@ -26,7 +27,7 @@ void Element::updateData()
     // maybe move elsewhere?
     int myrow = idx.row();
     
-    text = QString("el row # %1<hr>").arg(idx.row());
+    text = QString("el row # %1 upd %2<hr>").arg(idx.row()).arg(updateno++);
     
     for (int col = 0; col <= 11; col++) {
 	text += idx.sibling(myrow,col).data().toString();
