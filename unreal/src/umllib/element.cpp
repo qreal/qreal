@@ -66,6 +66,8 @@ void Element::keyPressEvent ( QKeyEvent * event )
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
+    editor->userclickedon( idx );
+
     if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
 	dragState = TopLeft;
     } else if ( QRectF(mysize.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {

@@ -156,15 +156,18 @@ dbg;
 
             QStringList list;
             list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
+
+	    qDebug() << "bljo1111!!!!" << value.toString() << item->getName() << item->getType() << item->getDiagramName();
+
             emit nameAboutToBeChanged(list);
     
+	    qDebug() << "bljo2222!!!!" << value.toString() << item->getName() << item->getType() << item->getDiagramName();
             db.exec("update "+item->getDiagramName()+" set name='"+value.toString()+"'"
                                                                 " where name='" + item->getName() + "'");
             db.exec("update " + item->getType() + " set name='" + value.toString() + "'"
                                                                 " where name='" + item->getName() + "'");
             item->setData(value.toString());
         }
-	    qDebug() << "bljo!!!!" << value.toString() << item->getName() << item->getType() << item->getDiagramName();
 
         emit dataChanged(index, index);
         return true;

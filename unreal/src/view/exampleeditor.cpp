@@ -41,23 +41,19 @@ void ExampleEditor::selectionChanged ( const QItemSelection & selected, const QI
 	QList<QModelIndex>::Iterator it;
 
 	list = deselected.indexes();
-	//    for (it = list.begin(); it != list.end(); ++it) {
+	//for (it = list.begin(); it != list.end(); ++it) {
 	//        items[(*it).internalId()]->setSelected(false);
 	//    }
 
 	list = selected.indexes();
-	//    for (it = list.begin(); it != list.end(); ++it) {
-	//        items[(*it).internalId()]->setSelected(true);
-	//    }
+	//for (it = list.begin(); it != list.end(); ++it) {
+	//    items[(*it).internalId()]->setSelected(true);
+	//}
 
 }
 
 bool ExampleEditor::edit(const QModelIndex &index, EditTrigger trigger, QEvent *event)
 { dbg;
-	/*    if (index.column() == 0)
-	      return QAbstractItemView::edit(index, trigger, event);
-	      else
-	      return false; */
      return false;     
 }
 
@@ -103,7 +99,7 @@ void ExampleEditor::clearScene ()
 
 void ExampleEditor::scrollTo(const QModelIndex &index, ScrollHint)
 { dbg;
-	//    view->ensureVisible(items[index.internalId()]);
+//	view->ensureVisible(items[index.internalId()]);
 }
 
 void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command)
@@ -115,6 +111,11 @@ QGraphicsItem * ExampleEditor::getItem(int uuid)
 {
     qDebug() << "returning item " << uuid;
     return items[uuid];
+}
+
+void ExampleEditor::userclickedon(const QModelIndex & idx)
+{
+    emit clicked(idx);
 }
 
 void ExampleEditor::reset()

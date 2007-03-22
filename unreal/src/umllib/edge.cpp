@@ -77,6 +77,12 @@ void Edge::keyPressEvent ( QKeyEvent * event )
     update();
 }
 
+void Edge::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+{
+    editor->userclickedon( idx );
+    QGraphicsItem::mousePressEvent(event);
+}    
+
 QRectF Edge::boundingRect() const
 {
     if (!source || !dest)
@@ -91,6 +97,7 @@ QRectF Edge::boundingRect() const
              .normalized()
              .adjusted(-extra, -extra, extra, extra);
 }
+
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

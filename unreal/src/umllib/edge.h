@@ -23,12 +23,11 @@ public:
     void adjust();
     void updateData();
 
-//protected:
-//    void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+protected:
+    void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 //    void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 //    void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
     
-protected:
     void keyPressEvent ( QKeyEvent * event );
     
 

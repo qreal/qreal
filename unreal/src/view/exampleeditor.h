@@ -30,16 +30,20 @@ public:
     
     QGraphicsItem * getItem(int uuid);
     
+    void userclickedon ( const QModelIndex & index );
+
+signals:
+    void clicked ( const QModelIndex & index );
+    
 public slots:
     void reset();
-
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
     void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end );
     void rowsInserted ( const QModelIndex & parent, int start, int end );
     void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
-
+    
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction,
