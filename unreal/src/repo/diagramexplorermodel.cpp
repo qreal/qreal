@@ -114,6 +114,7 @@ dbg;
 
 bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
 dbg;
+
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
@@ -147,9 +148,12 @@ dbg;
 */
         }
         else{
+
+
             if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
                 return false;
     
+
             QStringList list;
             list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
             emit nameAboutToBeChanged(list);
@@ -160,6 +164,7 @@ dbg;
                                                                 " where name='" + item->getName() + "'");
             item->setData(value.toString());
         }
+	    qDebug() << "bljo!!!!" << value.toString() << item->getName() << item->getType() << item->getDiagramName();
 
         emit dataChanged(index, index);
         return true;

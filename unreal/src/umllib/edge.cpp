@@ -69,13 +69,8 @@ void Edge::keyPressEvent ( QKeyEvent * event )
     if ( event->key() == Qt::Key_Backspace )
         text.chop(1);
     else if ( ( event->key() == Qt::Key_Enter ) || ( event->key() == Qt::Key_Return ) ) {
-	qDebug() << "update!!!!!!!! update!!!!!!!!!!!";
-
 	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(idx.model());
-	
-	im->setData(idx.sibling(idx.row(),1), text, Qt::DisplayRole );
-	
-	qDebug() << "old data:" << idx.sibling(idx.row(),1).data().toString() << "; new data:" << text;
+	im->setData(idx.sibling(idx.row(),1), text );
     } else
         text += event->text();
 
