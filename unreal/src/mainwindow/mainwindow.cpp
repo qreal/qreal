@@ -21,7 +21,7 @@ MainWindow::MainWindow()
 dbg;
     sqlite   = false;
     driver   = "QMYSQL";
-    hostName = "127.0.0.1";
+    hostName = "mashtab-2";
     dbName   = "unreal";
     userName = "unreal";
     passwd   = "domination";

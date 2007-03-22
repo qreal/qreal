@@ -112,6 +112,7 @@ dbg;
             name = value.toString();
             QStringList list;
             list << oldval << value.toString() << diagram << type;
+            qDebug() << "name changed: " << list;
             emit nameChanged( list );
         }
 
@@ -120,7 +121,7 @@ dbg;
         }
         
         vals.replace(index.row(), value.toString());
-       
+
         emit dataChanged(index, index);
         return true;
     }
