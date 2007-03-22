@@ -28,6 +28,10 @@ public:
 //    void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 //    void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
     
+protected:
+    void keyPressEvent ( QKeyEvent * event );
+    
+
 private:
     Element *source, *dest;
     

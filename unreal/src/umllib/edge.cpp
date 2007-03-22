@@ -13,7 +13,7 @@ static double TwoPi = 2.0 * Pi;
 
 Edge::Edge(ExampleEditor *parent)
 {
-//    setFlags(ItemIsSelectable);
+    setFlags(ItemIsSelectable | ItemIsFocusable);
     source = dest = 0;
     text = "This is a Link";
     
@@ -46,7 +46,7 @@ void Edge::updateData()
     // maybe move elsewhere?
     int myrow = idx.row();
 	
-    text = QString("el row # %1: ").arg(idx.row());
+    text = idx.sibling(myrow,1).data().toString();;
     
     int uuidFrom = idx.sibling(myrow,6).data().toInt();
     int uuidTo = idx.sibling(myrow,7).data().toInt();
@@ -56,10 +56,29 @@ void Edge::updateData()
     source = qgraphicsitem_cast<Element *>(editor->getItem(uuidFrom));
     if (source)
 	source->addEdge(this);
+
     dest = qgraphicsitem_cast<Element *>(editor->getItem(uuidTo));
     if (dest)
 	dest->addEdge(this);
 				    
+    update();
+}
+
+void Edge::keyPressEvent ( QKeyEvent * event )
+{
+    if ( event->key() == Qt::Key_Backspace )
+        text.chop(1);
+    else if ( ( event->key() == Qt::Key_Enter ) || ( event->key() == Qt::Key_Return ) ) {
+	qDebug() << "update!!!!!!!! update!!!!!!!!!!!";
+
+	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(idx.model());
+	
+	im->setData(idx.sibling(idx.row(),1), text, Qt::DisplayRole );
+	
+	qDebug() << "old data:" << idx.sibling(idx.row(),1).data().toString() << "; new data:" << text;
+    } else
+        text += event->text();
+
     update();
 }
 
