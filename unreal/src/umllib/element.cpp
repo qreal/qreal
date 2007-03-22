@@ -18,7 +18,11 @@ Element::Element()
 void Element::setIndex(QPersistentModelIndex idx)
 {
     this->idx = idx;
-    
+    updateData();
+}
+
+void Element::updateData()
+{
     // maybe move elsewhere?
     int myrow = idx.row();
     
@@ -29,8 +33,8 @@ void Element::setIndex(QPersistentModelIndex idx)
 	text += "<br>";
     }
     
-    QString type = idx.sibling(myrow,1).data().toString();
-    svgr.load(QString("../shapes/%1.svg").arg(type));
+//    QString type = idx.sibling(myrow,1).data().toString();
+//    svgr.load(QString("../shapes/%1.svg").arg(type));
 
     update();
 }

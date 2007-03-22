@@ -23,6 +23,8 @@ public:
     void setIndex(QPersistentModelIndex idx);
     
     void setInfo(QString type, QString name);
+    
+    void updateData();
 
 protected:
     void keyPressEvent ( QKeyEvent * event );

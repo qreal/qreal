@@ -33,10 +33,6 @@ ExampleEditor::ExampleEditor(QWidget *parent)
 	setLayout(l); 
 }
 
-void ExampleEditor::dataChanged(const QModelIndex &topLeft,
-		const QModelIndex &bottomRight)
-{ dbg;
-}
 
 void ExampleEditor::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 { dbg;
@@ -169,6 +165,16 @@ void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start
 
         QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
+
+void ExampleEditor::dataChanged(const QModelIndex &topLeft,
+		const QModelIndex &bottomRight)
+{ dbg;
+	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+	    qgraphicsitem_cast<Element *>(items[uuid])->updateData();
+	}
+}
+
 
 QRect ExampleEditor::visualRect(const QModelIndex &index) const
 {
