@@ -506,6 +506,7 @@ dbg;
 }
 
 void MainWindow::adjustPieChart(){
+return;
 dbg;
     if(currentDiagram() != "")
         pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));

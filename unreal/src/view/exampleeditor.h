@@ -34,8 +34,8 @@ public slots:
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-    void rowsInserted(const QModelIndex &parent, int start, int end);
-    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end );
+    void rowsInserted ( const QModelIndex & parent, int start, int end );
     void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
 
 protected:
@@ -57,6 +57,7 @@ private:
     int rows(const QModelIndex &index = QModelIndex()) const;
 
     void clearScene();
+    void dumpStuff(const QModelIndex &idx);
 
     int margin;
     int totalSize;
@@ -68,7 +69,7 @@ private:
     QGraphicsScene *scene;
     QGraphicsView *view;
 	    
-    QMap<QString, QGraphicsItem *> items;    
+    QMap<int, QGraphicsItem *> items;    
 };
 
 #endif

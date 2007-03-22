@@ -5,6 +5,9 @@
 QT += sql svg
 TEMPLATE = app
 TARGET = unreal
+
+#DEFINES += _LONG_DEBUG
+
 DEPENDPATH      += \
                 . \
                 ../editors \

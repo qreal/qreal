@@ -184,8 +184,8 @@ int DiagramExplorerModel::columnCount(const QModelIndex &parent) const{
 dbg;
   if (parent.isValid())
     return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
-  else
-    return rootItem->columnCount();
+  else // ---BEGIN TMP FIX---
+    return rootItem->columnCount()+1;
 }
 
 QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
@@ -196,7 +196,11 @@ dbg;
    return QVariant();
  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
- return item->data(index.column());
+    //------BEGIN TMP FIX------
+    if ( index.column() == 0 )
+	return item->getID();
+    else
+	return item->data(index.column()-1);
 }
 
 Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{

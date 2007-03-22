@@ -86,11 +86,6 @@ int ExampleEditor::rows(const QModelIndex &index) const
 	return model()->rowCount(model()->parent(index));
 }
 
-void ExampleEditor::rowsInserted(const QModelIndex &parent, int start, int end)
-{ dbg;
-	
-}
-
 void ExampleEditor::setModel ( QAbstractItemModel * newModel )
 { dbg;
 	QAbstractItemView::setModel(newModel);
@@ -110,11 +105,6 @@ void ExampleEditor::clearScene ()
 
 }
 
-void ExampleEditor::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
-{ dbg;
-	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
-}
-
 void ExampleEditor::scrollTo(const QModelIndex &index, ScrollHint)
 { dbg;
 	//    view->ensureVisible(items[index.internalId()]);
@@ -130,13 +120,54 @@ void ExampleEditor::reset()
 
 	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
-	    
+	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+	    	    
 	    Element *e = new Element();
 	    e->setIndex(current);
 	    scene->addItem(e);
 	    
+	    items[uuid] = e;
+	    
 	    qDebug() << "creating an index for element unknown";
 	}
+}
+
+void ExampleEditor::dumpStuff( const QModelIndex & idx)
+{ dbg;
+        for (int row = 0; row < model()->rowCount(idx); ++row) {
+            qDebug() << "dumpStuff: " << row << " - " << model()->index(row, 0, idx).data().toString();
+        }
+}
+
+void ExampleEditor::rowsInserted ( const QModelIndex & parent, int start, int end )
+{ dbg;
+	qDebug() << "rowsInserted " << start << end;
+	
+	dumpStuff(parent);
+
+        for (int row = start; row <= end; ++row) {
+            int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+
+//	    int uuid = parent.data().toInt();
+
+	    qDebug() << "adding elements with uuid" << uuid;
+	}								
+
+        QAbstractItemView::rowsInserted(parent, start, end);
+}
+
+void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
+{ dbg;
+        for (int row = start; row <= end; ++row) {
+	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+	    
+	    qDebug() << "removing elements with uuid" << uuid;
+	    
+	    scene->removeItem(items[uuid]);
+	    items.remove(uuid);
+	}	
+
+        QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
 QRect ExampleEditor::visualRect(const QModelIndex &index) const
