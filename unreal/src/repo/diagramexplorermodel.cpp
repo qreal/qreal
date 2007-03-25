@@ -378,7 +378,7 @@ dbg;
          
     index = createIndex( par->row(), 0, (void*) par );
     
-    if (!insertRows(rowCount(), 1, fields, values, index))
+    if (!insertRows(rowCount(index), 1, fields, values, index))
         qDebug() << "cannot create new row"; 
 
     if (isElement)
@@ -389,7 +389,7 @@ dbg;
 }
 
 bool  DiagramExplorerModel::insertRows(int position, int rows, QString fields, QStringList vals, const QModelIndex &parent){
-dbg;	
+dbg;
     beginInsertRows(QModelIndex(), position, position + rows - 1);
     
     QString name;

@@ -9,7 +9,6 @@
 
 //#include "uml_comment.h"
 
-#include "treeitem.h"
 #include "element.h"
 #include "edge.h"
 
@@ -120,29 +119,7 @@ void ExampleEditor::userclickedon(const QModelIndex & idx)
 void ExampleEditor::reset()
 { dbg;
 	clearScene();
-
-	for (int row = 0; row < model()->rowCount(rootIndex()); ++row) {
-	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
-	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-	    QString type = model()->index(row, 2, rootIndex()).data().toString();
-	    
-	    // FIXME: later
-	    if (type == "eP2N") {
-		Edge *e = new Edge(this);
-		e->setIndex(current);
-		scene->addItem(e);
-		
-		items[uuid] = e;
-	    } else {
-		Element *e = new Element(this);
-		e->setIndex(current);
-		scene->addItem(e);
-	    
-		items[uuid] = e;
-	    }
-	    
-	    qDebug() << "creating an index for element unknown";
-	}
+	rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()));
 }
 
 void ExampleEditor::dumpStuff( const QModelIndex & idx)
@@ -158,16 +135,24 @@ void ExampleEditor::dumpStuff( const QModelIndex & idx)
 
 void ExampleEditor::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
-	qDebug() << "rowsInserted " << start << end;
-	
-	dumpStuff(parent);
-
         for (int row = start; row <= end; ++row) {
+	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
             int uuid = model()->index(row, 0, rootIndex()).data().toInt();
 
-//	    int uuid = parent.data().toInt();
-
-	    qDebug() << "adding elements with uuid" << uuid;
+            QString type = model()->index(row, 2, rootIndex()).data().toString();
+			
+            // FIXME: later
+            if (type == "eP2N") {
+	                Edge *e = new Edge(this);
+	                e->setIndex(current);
+	                scene->addItem(e);
+	                items[uuid] = e;
+            } else {
+                        Element *e = new Element(this);
+                        e->setIndex(current);
+	                scene->addItem(e);
+	                items[uuid] = e;
+            }
 	}								
 
         QAbstractItemView::rowsInserted(parent, start, end);
@@ -177,8 +162,6 @@ void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start
 { dbg;
         for (int row = start; row <= end; ++row) {
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-	    
-	    qDebug() << "removing elements with uuid" << uuid;
 	    
 	    scene->removeItem(items[uuid]);
 	    items.remove(uuid);
@@ -190,8 +173,6 @@ void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start
 void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 { dbg;
-	qDebug() << "dataChanged!!!! dataChanged!!!";
-	
 	dumpStuff(rootIndex());
 
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
