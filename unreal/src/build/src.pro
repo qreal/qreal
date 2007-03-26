@@ -41,6 +41,9 @@ HEADERS +=  ../editors/editor.h \
             ../repo/treeitem.h \
             ../umllib/edge.h \
             ../umllib/element.h \
+	    ../view/editorview.h \
+	    ../view/editorviewscene.h \
+	    ../view/editorviewmvciface.h \
             ../view/exampleeditor.h        
             
            
@@ -53,7 +56,10 @@ SOURCES +=  ../editors/editor.cpp \
             ../repo/propertyeditormodel.cpp \
             ../repo/treeitem.cpp \
             ../umllib/edge.cpp \
-            ../umllib/element.cpp \            
+            ../umllib/element.cpp \
+	    ../view/editorview.cpp \
+	    ../view/editorviewscene.cpp \
+	    ../view/editorviewmvciface.cpp \           
             ../view/exampleeditor.cpp
             
 

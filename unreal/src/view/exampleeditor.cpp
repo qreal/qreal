@@ -119,7 +119,7 @@ void ExampleEditor::userclickedon(const QModelIndex & idx)
 void ExampleEditor::reset()
 { dbg;
 	clearScene();
-	rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()));
+	rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
 void ExampleEditor::dumpStuff( const QModelIndex & idx)

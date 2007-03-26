@@ -90,13 +90,12 @@ dbg;
     dock4->setWidget(table);
     addDockWidget(Qt::LeftDockWidgetArea, dock4);
     
-    pieChart = new ExampleEditor();
+    pieChart = new EditorView();
     setCentralWidget(pieChart);
     
-    pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
-    pieChart->setModel(model2);
-    
-    connect(pieChart, SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+    pieChart->mvcIface()->setRootIndex(model2->getDiagramIndex(currentDiagram()));
+    pieChart->mvcIface()->setModel(model2);
+    connect(pieChart->mvcIface(), SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
     
     createActions();
     createMenus();
@@ -507,12 +506,12 @@ dbg;
 
 void MainWindow::adjustPieChart(){
 return;
-dbg;
+/*dbg;
     if(currentDiagram() != "")
         pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     else 
         pieChart->setRootIndex(QModelIndex());
-	pieChart->reset();
+	pieChart->reset();*/
 }
 
 void MainWindow::reconnect(){
