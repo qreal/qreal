@@ -96,8 +96,6 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 
             QString type = model()->index(row, 2, rootIndex()).data().toString();
 	    
-	    qDebug() << "add elem" << uuid << type;
-	    
 	    UML::Element *e;
 
             if (type == "eP2N") {
@@ -108,7 +106,6 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             scene->addItem(e);
             e->setIndex(current);
             items[uuid] = e;
-	    qDebug() << e->uuid();
         }
 
         QAbstractItemView::rowsInserted(parent, start, end);
@@ -133,7 +130,6 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
         for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
             int uuid = model()->index(row, 0, rootIndex()).data().toInt();
 
-            qDebug() << "------- uuid:" << uuid;
             QPersistentModelIndex current = model()->index(row, 0, rootIndex());
             qgraphicsitem_cast<UML::Element *>(items[uuid])->setIndex(current);
         }

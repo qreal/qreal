@@ -6,7 +6,6 @@ using namespace UML;
 
 NodeElement::NodeElement()
 {
-    qDebug() << "NodeElement::NodeElement()";
 }
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )

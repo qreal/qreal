@@ -6,7 +6,6 @@ using namespace UML;
 
 Element::Element()
 {
-    qDebug() << "Element::Element()";
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
 }
 

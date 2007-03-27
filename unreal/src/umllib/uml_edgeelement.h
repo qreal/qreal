@@ -11,6 +11,7 @@ namespace UML {
     {
     public:
         EdgeElement();
+	~EdgeElement();
 
         void updateData();
 

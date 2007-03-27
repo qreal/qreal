@@ -10,10 +10,18 @@ using namespace UML;
 const int kvadratik = 4;
 
 EdgeElement::EdgeElement()
-    : srcPoint(0,0), dstPoint(50,50)
+    : srcPoint(0,0), dstPoint(50,50), src(0), dst(0)
 {
-    qDebug() << "EdgeElement::EdgeElement()";
     dragState = 0;
+}
+
+EdgeElement::~EdgeElement()
+{
+    qDebug() << "edgeelement destructor";
+//    if (src)
+//        src->delEdge(this);
+//    if (dst)
+//	dst->delEdge(this);			
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -78,7 +86,6 @@ void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
     if ( dragState != 0 ) {
-            dragState = 0;
 	    
 //    int uuidFrom = idx.sibling(myrow,6).data().toInt();
 //    int uuidTo = idx.sibling(myrow,7).data().toInt();
@@ -90,15 +97,17 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    if ( dragState == 1 ) {
 			src = e;
 			src->addEdge(this);
+			qDebug() << "adding src" << src->uuid();
 
-    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
+//    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+//			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
+			qDebug() << "adding dst" << dst->uuid();
 
-    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
+//    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+//			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
 		    }
 
 		    break;
@@ -111,18 +120,19 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    qDebug() << "deleting src" << src->uuid();
 		    src = 0;
 
-	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    	            im->setData(dataIndex.sibling(dataIndex.row(),6), 0 );
+//	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+//    	            im->setData(dataIndex.sibling(dataIndex.row(),6), 0 );
         	} else if ( dragState == 2 ) {
 		    dst->delEdge(this);
                     qDebug() << "deleting dst" << dst->uuid();
              	    dst = 0;
 
-                    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-	            im->setData(dataIndex.sibling(dataIndex.row(),7), 0 );
+//                    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+//	            im->setData(dataIndex.sibling(dataIndex.row(),7), 0 );
     	        }
 	    }
 
+            dragState = 0;
     } else
         Element::mouseReleaseEvent(event);
 }
@@ -145,15 +155,15 @@ void EdgeElement::updateData()
     
     if ( EditorViewScene *scene = dynamic_cast<EditorViewScene *>(this->scene()) ) {
 
-//	if (src)
-//	    src->delEdge(this);
+	if (src)
+	    src->delEdge(this);
 	if (uuidFrom)
 	    src = dynamic_cast<NodeElement *>(scene->getElem(uuidFrom));
 	if (src)
 	    src->addEdge(this);
 
-//	if (dst)
-//	    dst->delEdge(this);
+	if (dst)
+	    dst->delEdge(this);
 	if (uuidTo)
 	    dst = dynamic_cast<NodeElement *>(scene->getElem(uuidTo));
 	if (dst)

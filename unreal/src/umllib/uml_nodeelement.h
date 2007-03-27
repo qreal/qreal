@@ -4,6 +4,8 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 
+#include <QtGui/QWidget>
+
 namespace UML {
     class NodeElement : public Element
     {
@@ -13,8 +15,8 @@ namespace UML {
         QPersistentModelIndex index() const { return dataIndex; };
 	void setIndex(QPersistentModelIndex index) { dataIndex = index; updateData(); };
 
-	void addEdge(EdgeElement *edge) { edgeList << edge; };
-	void delEdge(EdgeElement *edge) { ; };
+	void addEdge(EdgeElement *edge) { qDebug() << "addEdge" << edge->uuid(); edgeList << edge; };
+	void delEdge(EdgeElement *edge) { qDebug() << "delEdge" << edge->uuid(); edgeList.removeAt(edgeList.indexOf(edge)); };
 
    protected:
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
