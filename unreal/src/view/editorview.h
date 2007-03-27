@@ -14,10 +14,13 @@ public:
     EditorView(QWidget *parent = 0);
     ~EditorView();
 
-    EditorViewMVCIface * mvcIface() { return mvciface; };
+    EditorViewMViface * mvcIface() { return mvciface; };
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
 
 private:
-    EditorViewMVCIface * mvciface;
+    EditorViewMViface * mvciface;
 };
 
 #endif

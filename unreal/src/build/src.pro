@@ -43,8 +43,7 @@ HEADERS +=  ../editors/editor.h \
             ../umllib/element.h \
 	    ../view/editorview.h \
 	    ../view/editorviewscene.h \
-	    ../view/editorviewmvciface.h \
-            ../view/exampleeditor.h        
+	    ../view/editorviewmvciface.h
             
            
 SOURCES +=  ../editors/editor.cpp \
@@ -59,8 +58,7 @@ SOURCES +=  ../editors/editor.cpp \
             ../umllib/element.cpp \
 	    ../view/editorview.cpp \
 	    ../view/editorviewscene.cpp \
-	    ../view/editorviewmvciface.cpp \           
-            ../view/exampleeditor.cpp
+	    ../view/editorviewmvciface.cpp
             
 
 RESOURCES += qtreal.qrc

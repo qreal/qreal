@@ -1,12 +1,12 @@
 #include "element.h"
 #include "edge.h"
 
-#include "exampleeditor.h"
+#include "editorviewmvciface.h"
 
 #include <QtGui>
 #include <QtSvg>
 
-Element::Element(ExampleEditor *parent)
+Element::Element(EditorViewMViface *parent)
     : mysize(0,0,75,75)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
@@ -66,8 +66,6 @@ void Element::keyPressEvent ( QKeyEvent * event )
 
 void Element::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
-    editor->userclickedon( idx );
-
     if ( QRectF(mysize.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
 	dragState = TopLeft;
     } else if ( QRectF(mysize.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
@@ -116,6 +114,11 @@ void Element::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
     foreach (Edge *edge, edgeList)
         edge->adjust();
 	
+}
+
+QString Element::toolTip() const
+{
+    return text;
 }
 
 void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

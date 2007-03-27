@@ -3,26 +3,31 @@
 
 #include <QtGui/QAbstractItemView>
 
-class EditorViewMVCIface : public QAbstractItemView
+class QGraphicsItem;
+
+class EditorView;
+class EditorViewScene;
+
+class EditorViewMViface : public QAbstractItemView
 {
     Q_OBJECT
 
 public:
-    EditorViewMVCIface(QWidget * parent = 0);
+    EditorViewMViface(EditorView *view, EditorViewScene *scene);
 
     QRect visualRect(const QModelIndex &index) const;
     void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
     QModelIndex indexAt(const QPoint &point) const;
 
-//    void setModel ( QAbstractItemModel * model );
+    void setModel ( QAbstractItemModel * model );
     
-//    QGraphicsItem * getItem(int uuid);
+    QGraphicsItem * getItem(int uuid);
     
-//    void userclickedon ( const QModelIndex & index );
+    void raiseClick ( const QGraphicsItem * item );
 
 //signals:
-//    void clicked ( const QModelIndex & index );
-    
+//    void clicked( 
+
 public slots:
     void reset();
 
@@ -48,7 +53,7 @@ protected slots:
     QRegion visualRegionForSelection(const QItemSelection &selection) const;
     
 
-//private:
+private:
 //    int rows(const QModelIndex &index = QModelIndex()) const;
 
 //    void clearScene();
@@ -61,10 +66,13 @@ protected slots:
 //    double totalValue;
 //    QPoint origin;
     
-//    QGraphicsScene *scene;
-//    QGraphicsView *view;
+      EditorViewScene *scene;
+      EditorView *view;
 	    
-//    QMap<int, QGraphicsItem *> items;    
+      QMap<int, QGraphicsItem *> items;    
+
+//    friend class EditorView;
+//    friend class EditorViewScene;
 };
 
 #endif

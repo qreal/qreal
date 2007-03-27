@@ -8,22 +8,25 @@
 
 #include <QtSvg/QSvgRenderer>
 
+class EditorViewMViface;
 class Edge;
-class ExampleEditor;
 
 class Element : public QGraphicsItem
 {
 public:
-    Element(ExampleEditor *parent);
+    Element(EditorViewMViface *parent);
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
     
     void addEdge(Edge *e);
     
+    QPersistentModelIndex index() const { return idx; };
     void setIndex(QPersistentModelIndex idx);
     
     void updateData();
+    
+    QString toolTip() const;
 
 protected:
     void keyPressEvent ( QKeyEvent * event );
@@ -47,7 +50,7 @@ private:
     
     int updateno;
     
-    ExampleEditor *editor;
+    EditorViewMViface *editor;
     
     QPersistentModelIndex idx;
 };

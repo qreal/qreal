@@ -2,11 +2,14 @@
 
 #include  "element.h"
 
+#include <QGraphicsSvgItem>
+#include <QtGui>
+
+
 EditorViewScene::EditorViewScene(QObject *parent)
     : QGraphicsScene(parent)
 {
-    Element *e = new Element(0);
-    addItem(e);
+    setSceneRect (-400,-300,800,600);
 }
 
 void EditorViewScene::clearScene ()

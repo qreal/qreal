@@ -1,7 +1,7 @@
 #include "edge.h"
 #include "element.h"
 
-#include "exampleeditor.h"
+#include "editorviewmvciface.h"
 
 #include <QtGui>
 
@@ -11,11 +11,12 @@ static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
 
-Edge::Edge(ExampleEditor *parent)
+Edge::Edge(EditorViewMViface *parent)
 {
     setFlags(ItemIsSelectable | ItemIsFocusable);
     source = dest = 0;
-    text = "This is a Link";
+    text = "";
+    textLength = 0;
     
     editor = parent;
 }
@@ -51,8 +52,6 @@ void Edge::updateData()
     int uuidFrom = idx.sibling(myrow,6).data().toInt();
     int uuidTo = idx.sibling(myrow,7).data().toInt();
     
-    qDebug() << "Boo!" << uuidFrom << uuidTo;
-    
     source = qgraphicsitem_cast<Element *>(editor->getItem(uuidFrom));
     if (source)
 	source->addEdge(this);
@@ -77,11 +76,24 @@ void Edge::keyPressEvent ( QKeyEvent * event )
     update();
 }
 
-void Edge::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+QPainterPath Edge::shape() const
 {
-    editor->userclickedon( idx );
-    QGraphicsItem::mousePressEvent(event);
-}    
+    QPainterPath path;
+    
+    path.moveTo(sourcePoint+QPointF(1,1));
+    path.lineTo(sourcePoint+QPointF(-1,-1));
+
+    path.lineTo(destPoint+QPointF(1,1));
+    path.lineTo(destPoint+QPointF(-1,-1));
+    path.closeSubpath();
+
+    return path;	
+}
+
+QString Edge::toolTip() const
+{
+    return text;
+}
 
 QRectF Edge::boundingRect() const
 {
@@ -117,6 +129,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QLineF line(sourcePoint, destPoint);
     painter->setPen(QPen(Qt::black, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
+//    painter->drawPath(shape());
     
     
     double arrowSize = 10.0; 
@@ -139,7 +152,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 //    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
 
 
-    int textLength = painter->fontMetrics().width(text);
+    textLength = painter->fontMetrics().width(text);
     if (line.length() > textLength + 10) {
 	painter->save();
 	painter->translate(line.pointAt(1));

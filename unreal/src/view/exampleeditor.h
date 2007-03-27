@@ -60,10 +60,12 @@ protected:
     
 
 private:
-    int rows(const QModelIndex &index = QModelIndex()) const;
+    void initGraphicsScene();
 
     void clearScene();
     void dumpStuff(const QModelIndex &idx);
+
+    int rows(const QModelIndex &index = QModelIndex()) const;
 
     int margin;
     int totalSize;

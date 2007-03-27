@@ -2,73 +2,102 @@
 
 #include "editorviewmvciface.h"
 
+#include "editorview.h"
+#include "editorviewscene.h"
+
+#include "edge.h"
+#include "element.h"
+
 #define _LONG_DEBUG
 #include "dbg.h"
 
-
-EditorViewMVCIface::EditorViewMVCIface(QWidget * parent)
-    : QAbstractItemView(parent)
+EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
+    : QAbstractItemView(0)
 { dbg;
+    this->view = view;
+    this->scene = scene;
 }
 
-QRect EditorViewMVCIface::visualRect(const QModelIndex &index) const
+QRect EditorViewMViface::visualRect(const QModelIndex &index) const
 { dbg;
     return QRect();
 }
 
-void EditorViewMVCIface::scrollTo(const QModelIndex &index, ScrollHint hint)
+void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
 { dbg;
 }
 
-QModelIndex EditorViewMVCIface::indexAt(const QPoint &point) const
+QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
 { dbg;
     return QModelIndex();
 }
 
-QModelIndex EditorViewMVCIface::moveCursor(QAbstractItemView::CursorAction cursorAction,
+QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction cursorAction,
                            Qt::KeyboardModifiers modifiers)
 { dbg;
     return QModelIndex();
 }
 
-int EditorViewMVCIface::horizontalOffset() const
+int EditorViewMViface::horizontalOffset() const
 { dbg;
 }
 
-int EditorViewMVCIface::verticalOffset() const
+int EditorViewMViface::verticalOffset() const
 { dbg;
 }
 
-bool EditorViewMVCIface::isIndexHidden(const QModelIndex &index) const
+bool EditorViewMViface::isIndexHidden(const QModelIndex &index) const
 { dbg;
 }
 
-void EditorViewMVCIface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags command)
+void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags command)
 { dbg;
 }
 
-QRegion EditorViewMVCIface::visualRegionForSelection(const QItemSelection &selection) const
+QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &selection) const
 { dbg;
 }
 
+void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
+{
+    const Element *e = qgraphicsitem_cast<const Element *>(item);
+    if (e)
+	emit clicked(e->index());
 
-void EditorViewMVCIface::reset()
+    if ( const Edge *e = qgraphicsitem_cast<const Edge *>(item) ) {
+	emit clicked(e->index());
+    }
+}
+
+QGraphicsItem * EditorViewMViface::getItem(int uuid)
+{
+    return items[uuid];
+}
+
+void EditorViewMViface::reset()
 { dbg;
-//        clearScene();
+	items.clear();
+        scene->clearScene();
         rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
-void EditorViewMVCIface::rowsInserted ( const QModelIndex & parent, int start, int end )
+void EditorViewMViface::setModel ( QAbstractItemModel * newModel )
+{ dbg;
+        QAbstractItemView::setModel(newModel);
+        reset();
+}
+
+void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
         for (int row = start; row <= end; ++row) {
             QPersistentModelIndex current = model()->index(row, 0, rootIndex());
             int uuid = model()->index(row, 0, rootIndex()).data().toInt();
 
             QString type = model()->index(row, 2, rootIndex()).data().toString();
+	    
+	    qDebug() << "add elem" << uuid << type;
 
-	    qDebug() << uuid;
-
-/*            // FIXME: later
+          // FIXME: later
             if (type == "eP2N") {
                         Edge *e = new Edge(this);
                         e->setIndex(current);
@@ -79,20 +108,21 @@ void EditorViewMVCIface::rowsInserted ( const QModelIndex & parent, int start, i
                         e->setIndex(current);
                         scene->addItem(e);
                         items[uuid] = e;
-            }*/
+            }
         }
 
         QAbstractItemView::rowsInserted(parent, start, end);
 }
 
-void EditorViewMVCIface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
+void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 { dbg;
         for (int row = start; row <= end; ++row) {
             int uuid = model()->index(row, 0, rootIndex()).data().toInt();
 
-//            scene->removeItem(items[uuid]);
-//            items.remove(uuid);
+            scene->removeItem(items[uuid]);
+            items.remove(uuid);
         }
 
         QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
+

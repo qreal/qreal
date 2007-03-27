@@ -18,13 +18,11 @@
 
 ExampleEditor::ExampleEditor(QWidget *parent)
 { dbg;
-	scene = new QGraphicsScene(-400,-300,800,600);
-	view = new QGraphicsView(scene,this);
-	view->setRenderHint(QPainter::Antialiasing);
-
-	viewport()->hide();
-
 	setFrameStyle(QFrame::NoFrame);   
+	viewport()->hide();
+	
+	initGraphicsScene();
+
 	QHBoxLayout *l = new QHBoxLayout(this);
 	l->setMargin(0);
 	l->setSpacing(0);
@@ -32,6 +30,13 @@ ExampleEditor::ExampleEditor(QWidget *parent)
 	setLayout(l); 
 }
 
+void ExampleEditor::initGraphicsScene()
+{
+	scene = new QGraphicsScene(-400,-300,800,600);
+	view = new QGraphicsView(scene,this);
+
+	view->setRenderHint(QPainter::Antialiasing);
+}
 
 void ExampleEditor::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected )
 { dbg;
@@ -122,17 +127,6 @@ void ExampleEditor::reset()
 	rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
-void ExampleEditor::dumpStuff( const QModelIndex & idx)
-{ dbg;
-	std::cerr << "--- dumpStuff ---";
-        for (int row = 0; row < model()->rowCount(idx); ++row) {
-            std::cerr << "dumpStuff: " << row << " - ";
-	    for (int col = 0; col <= 10; ++col )
-		std::cerr << model()->index(row, col, idx).data().toString().toStdString() << " ";
-	    std::cerr << std::endl;
-        }
-}
-
 void ExampleEditor::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
         for (int row = start; row <= end; ++row) {
@@ -173,7 +167,7 @@ void ExampleEditor::rowsAboutToBeRemoved ( const QModelIndex & parent, int start
 void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 { dbg;
-	dumpStuff(rootIndex());
+	//dumpStuff(rootIndex());
 
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
