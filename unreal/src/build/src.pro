@@ -41,9 +41,12 @@ HEADERS +=  ../editors/editor.h \
             ../repo/treeitem.h \
             ../umllib/edge.h \
             ../umllib/element.h \
+	    ../umllib/uml_element.h \
+	    ../umllib/uml_edgeelement.h \
+	    ../umllib/uml_nodeelement.h \
 	    ../view/editorview.h \
 	    ../view/editorviewscene.h \
-	    ../view/editorviewmvciface.h
+	    ../view/editorviewmviface.h
             
            
 SOURCES +=  ../editors/editor.cpp \
@@ -56,9 +59,12 @@ SOURCES +=  ../editors/editor.cpp \
             ../repo/treeitem.cpp \
             ../umllib/edge.cpp \
             ../umllib/element.cpp \
+	    ../umllib/uml_element.cpp \
+	    ../umllib/uml_edgeelement.cpp \
+	    ../umllib/uml_nodeelement.cpp \
 	    ../view/editorview.cpp \
 	    ../view/editorviewscene.cpp \
-	    ../view/editorviewmvciface.cpp
+	    ../view/editorviewmviface.cpp
             
 
 RESOURCES += qtreal.qrc

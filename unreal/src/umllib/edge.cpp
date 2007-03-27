@@ -1,7 +1,7 @@
 #include "edge.h"
 #include "element.h"
 
-#include "editorviewmvciface.h"
+#include "editorviewmviface.h"
 
 #include <QtGui>
 
@@ -9,6 +9,25 @@
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
+
+QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen)
+{
+    // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
+    // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
+    const qreal penWidthZero = qreal(0.00000001);
+
+    if (path == QPainterPath())
+        return path;
+    QPainterPathStroker ps;
+    ps.setCapStyle(pen.capStyle());
+    ps.setWidth(pen.widthF() <= 0.0 ? penWidthZero : pen.widthF());
+    ps.setJoinStyle(pen.joinStyle());
+    ps.setMiterLimit(pen.miterLimit());
+    QPainterPath p = ps.createStroke(path);
+    p.addPath(path);
+    return p;
+}
+
 
 
 Edge::Edge(EditorViewMViface *parent)
@@ -76,18 +95,16 @@ void Edge::keyPressEvent ( QKeyEvent * event )
     update();
 }
 
+QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
+
 QPainterPath Edge::shape() const
 {
     QPainterPath path;
     
-    path.moveTo(sourcePoint+QPointF(1,1));
-    path.lineTo(sourcePoint+QPointF(-1,-1));
+    path.moveTo(sourcePoint);
+    path.lineTo(destPoint);
 
-    path.lineTo(destPoint+QPointF(1,1));
-    path.lineTo(destPoint+QPointF(-1,-1));
-    path.closeSubpath();
-
-    return path;	
+    return qt_graphicsItem_shapeFromPath(path, QPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));	
 }
 
 QString Edge::toolTip() const
@@ -109,7 +126,6 @@ QRectF Edge::boundingRect() const
              .normalized()
              .adjusted(-extra, -extra, extra, extra);
 }
-
 
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

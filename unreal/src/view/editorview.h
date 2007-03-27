@@ -4,7 +4,7 @@
 #include <QtGui/QGraphicsView>
 
 #include "editorviewscene.h"
-#include "editorviewmvciface.h"
+#include "editorviewmviface.h"
 
 class EditorView : public QGraphicsView
 {

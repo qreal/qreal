@@ -21,7 +21,7 @@ public:
 
     void setModel ( QAbstractItemModel * model );
     
-    QGraphicsItem * getItem(int uuid);
+    QGraphicsItem * getItem(int uuid) __attribute__ ((deprecated));
     
     void raiseClick ( const QGraphicsItem * item );
 
@@ -32,7 +32,7 @@ public slots:
     void reset();
 
 protected slots:
-//    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
     void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end );
     void rowsInserted ( const QModelIndex & parent, int start, int end );
 //    void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );

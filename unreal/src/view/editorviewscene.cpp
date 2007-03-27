@@ -21,3 +21,16 @@ void EditorViewScene::clearScene ()
                     delete *it;
     }
 }
+
+UML::Element *EditorViewScene::getElem(int uuid)
+{
+    qDebug() << "FIXME: SLOW!";
+    QList<QGraphicsItem *> list = items();
+    for (QList<QGraphicsItem *>::Iterator it = list.begin(); it != list.end(); ++it) {
+	if ( UML::Element *elem = dynamic_cast<UML::Element *>(*it) ) {
+	    if ( elem->uuid() == uuid ) {
+		return elem;
+	    }
+	}
+    }
+}

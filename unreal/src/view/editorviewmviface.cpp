@@ -1,12 +1,15 @@
 #include <QtGui>
 
-#include "editorviewmvciface.h"
+#include "editorviewmviface.h"
 
 #include "editorview.h"
 #include "editorviewscene.h"
 
 #include "edge.h"
 #include "element.h"
+
+#include "uml_edgeelement.h"
+#include "uml_nodeelement.h"
 
 #define _LONG_DEBUG
 #include "dbg.h"
@@ -25,6 +28,8 @@ QRect EditorViewMViface::visualRect(const QModelIndex &index) const
 
 void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
 { dbg;
+    int uuid = index.sibling(0,index.row()).data().toInt();
+    qDebug() << "scroll to" << uuid;
 }
 
 QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
@@ -60,13 +65,9 @@ QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &select
 
 void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 {
-    const Element *e = qgraphicsitem_cast<const Element *>(item);
+    const UML::Element *e = qgraphicsitem_cast<const UML::Element *>(item);
     if (e)
 	emit clicked(e->index());
-
-    if ( const Edge *e = qgraphicsitem_cast<const Edge *>(item) ) {
-	emit clicked(e->index());
-    }
 }
 
 QGraphicsItem * EditorViewMViface::getItem(int uuid)
@@ -96,19 +97,18 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             QString type = model()->index(row, 2, rootIndex()).data().toString();
 	    
 	    qDebug() << "add elem" << uuid << type;
+	    
+	    UML::Element *e;
 
-          // FIXME: later
             if (type == "eP2N") {
-                        Edge *e = new Edge(this);
-                        e->setIndex(current);
-                        scene->addItem(e);
-                        items[uuid] = e;
-            } else {
-                        Element *e = new Element(this);
-                        e->setIndex(current);
-                        scene->addItem(e);
-                        items[uuid] = e;
-            }
+			e = new UML::EdgeElement();
+	    } else {
+			e = new UML::NodeElement();
+	    }
+            scene->addItem(e);
+            e->setIndex(current);
+            items[uuid] = e;
+	    qDebug() << e->uuid();
         }
 
         QAbstractItemView::rowsInserted(parent, start, end);
@@ -126,3 +126,15 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
         QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
+                const QModelIndex &bottomRight)
+{ dbg;
+
+        for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+            int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+
+            qDebug() << "------- uuid:" << uuid;
+            QPersistentModelIndex current = model()->index(row, 0, rootIndex());
+            qgraphicsitem_cast<UML::Element *>(items[uuid])->setIndex(current);
+        }
+}

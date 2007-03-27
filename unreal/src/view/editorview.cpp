@@ -18,13 +18,9 @@ EditorView::~EditorView()
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
     if (QGraphicsItem *item = itemAt(event->pos())) {
-	qDebug() << "You clicked on item" << item;
-        mvciface->raiseClick(item);
-    } else {
-        qDebug() << "You didn't click on an item.";
+	mvciface->raiseClick(item);
     }
-    
-    
+
     QGraphicsView::mousePressEvent(event);
 }
 

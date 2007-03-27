@@ -1,7 +1,7 @@
 #include "element.h"
 #include "edge.h"
 
-#include "editorviewmvciface.h"
+#include "editorviewmviface.h"
 
 #include <QtGui>
 #include <QtSvg>
