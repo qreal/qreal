@@ -116,15 +116,19 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	    
 	    if ( !e ) {
 		if ( dragState == 1 ) {
-		    src->delEdge(this);
-		    qDebug() << "deleting src" << src->uuid();
+		    if (src) {
+			src->delEdge(this);
+			qDebug() << "deleting src" << src->uuid();
+		    }
 		    src = 0;
 
 //	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 //    	            im->setData(dataIndex.sibling(dataIndex.row(),6), 0 );
         	} else if ( dragState == 2 ) {
-		    dst->delEdge(this);
-                    qDebug() << "deleting dst" << dst->uuid();
+		    if (dst) {
+		        dst->delEdge(this);
+                	qDebug() << "deleting dst" << dst->uuid();
+		    }
              	    dst = 0;
 
 //                    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
