@@ -15,3 +15,12 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
     
     Element::mouseMoveEvent(event);
 }
+
+void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+{
+    foreach (EdgeElement *edge, edgeList)
+        edge->adjustLink();
+
+    Element::mouseMoveEvent(event);
+}
+
