@@ -20,6 +20,7 @@ namespace UML {
 
    protected:
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 
     private:
 	QList<EdgeElement *> edgeList;
