@@ -95,6 +95,7 @@ dbg;
     
     pieChart->mvcIface()->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     pieChart->mvcIface()->setModel(model2);
+
     connect(pieChart->mvcIface(), SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
     
     createActions();
@@ -106,7 +107,7 @@ dbg;
 
     setWindowTitle(tr("unREAL"));
 
-    resize(1024, 768);  
+    resize(800, 600);  
     
     count++;    
 }

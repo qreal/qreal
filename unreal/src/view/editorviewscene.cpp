@@ -33,4 +33,5 @@ UML::Element *EditorViewScene::getElem(int uuid)
 	    }
 	}
     }
+    return 0;
 }

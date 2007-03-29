@@ -11,7 +11,7 @@ namespace UML {
         Element();
 
         QPersistentModelIndex index() const { return dataIndex; };
-	void setIndex(QPersistentModelIndex index) { dataIndex = index; updateData(); };
+	void setIndex(QPersistentModelIndex &index);
 
         virtual void updateData();
 

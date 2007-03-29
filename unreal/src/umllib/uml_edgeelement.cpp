@@ -55,7 +55,7 @@ QPainterPath EdgeElement::shape() const
     QPainterPath path;
     path.moveTo(srcPoint);
     path.lineTo(dstPoint);
-    return qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik));
+    return qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik*2));
 }
 
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
@@ -161,15 +161,21 @@ void EdgeElement::updateData()
 
 	if (src)
 	    src->delEdge(this);
-	if (uuidFrom)
-	    src = dynamic_cast<NodeElement *>(scene->getElem(uuidFrom));
+	if (uuidFrom) {
+	    QGraphicsItem *tmp = scene->getElem(uuidFrom);
+	    if ( tmp ) 
+		src = dynamic_cast<NodeElement *>(tmp);
+	}
 	if (src)
 	    src->addEdge(this);
 
 	if (dst)
 	    dst->delEdge(this);
-	if (uuidTo)
-	    dst = dynamic_cast<NodeElement *>(scene->getElem(uuidTo));
+	if (uuidTo) {
+	QGraphicsItem *tmp = scene->getElem(uuidTo);
+        if ( tmp )
+	    dst = dynamic_cast<NodeElement *>(tmp);
+	}
 	if (dst)
 	    dst->addEdge(this);
 	adjustLink();
@@ -177,6 +183,8 @@ void EdgeElement::updateData()
     } else {
 	qDebug() << "no scene!";
     }    
+
+    Element::updateData();
 }
 
 

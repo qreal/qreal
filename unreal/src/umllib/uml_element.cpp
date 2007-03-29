@@ -5,6 +5,7 @@
 using namespace UML;
 
 Element::Element()
+    : m_uuid(1234567)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
 }
@@ -26,6 +27,12 @@ void Element::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*
     painter->drawRect(boundingRect());
 }
 
+void Element::setIndex(QPersistentModelIndex &index)
+{
+    dataIndex = index;
+    updateData();
+}
+
 int Element::uuid() const
 {
     return m_uuid;
@@ -33,5 +40,7 @@ int Element::uuid() const
 
 void Element::updateData()
 {
+    qDebug() << "// updateData()" << m_uuid;
     m_uuid = dataIndex.sibling(dataIndex.row(),0).data().toInt();
+    qDebug() << "\\\\ updateData()" << m_uuid;
 }

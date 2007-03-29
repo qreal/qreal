@@ -19,8 +19,6 @@ public:
     void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
     QModelIndex indexAt(const QPoint &point) const;
 
-    void setModel ( QAbstractItemModel * model );
-    
     QGraphicsItem * getItem(int uuid) __attribute__ ((deprecated));
     
     void raiseClick ( const QGraphicsItem * item );

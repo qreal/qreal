@@ -82,19 +82,16 @@ void EditorViewMViface::reset()
         rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
-void EditorViewMViface::setModel ( QAbstractItemModel * newModel )
-{ dbg;
-        QAbstractItemView::setModel(newModel);
-        reset();
-}
-
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
+	qDebug() << "rowsInserted";
         for (int row = start; row <= end; ++row) {
-            QPersistentModelIndex current = model()->index(row, 0, rootIndex());
-            int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+            QPersistentModelIndex current = model()->index(row, 0, parent);
+            int uuid = model()->index(row, 0, parent).data().toInt();
 
-            QString type = model()->index(row, 2, rootIndex()).data().toString();
+            QString type = model()->index(row, 2, parent).data().toString();
+
+	    qDebug() << "row" << row << "uuid" << uuid << "type" << type;
 	    
 	    UML::Element *e;
 
@@ -113,9 +110,10 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 { dbg;
+        qDebug() << "removed";
         for (int row = start; row <= end; ++row) {
-            int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-
+            int uuid = model()->index(row, 0, parent).data().toInt();
+	    
             scene->removeItem(items[uuid]);
             items.remove(uuid);
         }
@@ -128,9 +126,9 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 { dbg;
 
         for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-            int uuid = model()->index(row, 0, rootIndex()).data().toInt();
+            int uuid = topLeft.sibling(row, 0).data().toInt();
 
-            QPersistentModelIndex current = model()->index(row, 0, rootIndex());
+            QPersistentModelIndex current = topLeft.sibling(row, 0);
             qgraphicsitem_cast<UML::Element *>(items[uuid])->setIndex(current);
         }
 }

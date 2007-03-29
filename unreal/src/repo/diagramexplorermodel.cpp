@@ -243,6 +243,8 @@ dbg;
  if (!index.isValid())
    return QModelIndex();
  TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
+ if (childItem == rootItem)
+    return QModelIndex();
  TreeItem *parentItem = childItem->parent();
  if (parentItem == rootItem)
    return QModelIndex();
@@ -390,7 +392,7 @@ dbg;
 
 bool  DiagramExplorerModel::insertRows(int position, int rows, QString fields, QStringList vals, const QModelIndex &parent){
 dbg;
-    beginInsertRows(QModelIndex(), position, position + rows - 1);
+    beginInsertRows(parent, position, position + rows - 1);
     
     QString name;
     QString type;
@@ -465,8 +467,7 @@ dbg;
     if (isElement){
         par = rootItem->getChild(values.at(1));
         values << par->getChild(values.at(0))->getType();
-    }    
-    else
+    } else
         par = rootItem;
     
     index = createIndex( par->row(), 0, (void*) par );
@@ -484,7 +485,7 @@ dbg;
 
 bool  DiagramExplorerModel::removeRows(int position, int rows, bool isElement, QStringList vals, const QModelIndex &parent){
 dbg; 
-    beginRemoveRows(QModelIndex(), position, position + rows - 1);
+    beginRemoveRows(parent, position, position + rows - 1);
     
     if ( !isElement ) // removing diagram from the database
         removeDiagramScriptsExec(vals.at(0));

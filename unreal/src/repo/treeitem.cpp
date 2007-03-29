@@ -19,8 +19,8 @@
           
 #include "treeitem.h"
 
-TreeItem::TreeItem(QStringList _vals, QMap<QString, QString> *map, TreeItem *parent, QSqlDatabase _db){
-dbg;
+TreeItem::TreeItem(QStringList _vals, QMap<QString, QString> *map, TreeItem *parent, QSqlDatabase _db)
+{dbg;
     db = _db;
     parentItem = parent;
     tables = map;
