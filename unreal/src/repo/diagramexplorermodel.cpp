@@ -26,6 +26,30 @@ dbg;
     rootItem->setID(-1);
     diagramsList.clear();
     maxID = 0;
+
+    //FIXME: temporary kludge
+
+    QMap<int, QString> a1;
+    a1.insert(0,"uuid");
+    a1.insert(1,"name");
+    a1.insert(2,"type");
+    a1.insert(3,"diagram");
+    a1.insert(4,"status");
+    a1.insert(5,"description");
+    a1.insert(6,"priority");
+    a1.insert(7,"source");
+    QMap<int, QString> a2;
+    a2.insert(0,"uuid");
+    a2.insert(1,"name");
+    a2.insert(2,"type");
+    a2.insert(3,"diagram");
+    a2.insert(4,"status");
+    a2.insert(5,"beginsWith");
+    a2.insert(6,"endsWith");
+
+    props.insert("eP2N", a2);
+    props.insert("non-eP2N", a1);
+
     rescan();  
 }  
 
@@ -122,54 +146,46 @@ dbg;
 bool  DiagramExplorerModel::setData(const QModelIndex& index, const QVariant &value, int role){
 dbg;
 
+    int col = index.column();
+
+    QString fld;
+
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
+        if (item->getType() == "eP2N")
+            fld = props.value("eP2N").value(col);
+        else
+            fld = props.value("non-eP2N").value(col);
+
         if (item->getType() == "diagram"){
   
-        QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature.\n"));
-        
-        /* if ( diagramExists( value.toString() ) )
-                return false;
-            for (int i=0; i<item->childCount(); i++)
-                item->getChild(i)->setDiagramName(value.toString());
-            
-            QString tmp = "update %1 set diagram='%2'";
-            tmp = tmp.arg(item->getName()).arg(value.toString());
-            db.exec(tmp);
-            
-            tmp = "create table %1 as select * from %2";
-            tmp = tmp.arg(value.toString()).arg(item->getName());
-            db.exec(tmp);
+            QMessageBox::critical(0, tr("error"), tr("sorry, you should donate to use this feature.\n"));
 
-            tmp = "drop table " + item->getName();
-            db.exec(tmp);
-
-            tmp = "update diagram set name='%1' where name='%2' and type='diagrams'"; 
-            tmp = tmp.arg(value.toString()).arg(item->getName());
-            db.exec(tmp);
-
-            diagramsList.replace(diagramsList.indexOf(item->getName()), value.toString());
-            emit diagramNameChanged();
-            item->setName(value.toString());
-*/
         }
         else{
 
+//    qDebug() << col << fld;
 
-            if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
-                return false;
+            if( col == 1 ){
+                if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
+                    return false;
     
 
-            QStringList list;
-            list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
-            emit nameAboutToBeChanged(list);
+                QStringList list;
+                list << item->getName() << value.toString() << item->getDiagramName() << item->getType();
+                emit nameAboutToBeChanged(list);
+            }    
     
-            db.exec("update "+item->getDiagramName()+" set name='"+value.toString()+"'"
+            db.exec("update "+item->getDiagramName()+" set "+fld+"='"+value.toString()+"'"
                                                                 " where name='" + item->getName() + "'");
-            db.exec("update " + item->getType() + " set name='" + value.toString() + "'"
+            qDebug() << "update "+item->getDiagramName()+" set "+fld+"='"+value.toString()+"'"
+                                                                " where name='" + item->getName() + "'";
+            db.exec("update " + item->getType() + " set "+fld+"='" + value.toString() + "'"
                                                                 " where name='" + item->getName() + "'");
-            item->setData(1, value.toString());
+            qDebug() << "update " + item->getType() + " set "+fld+"='" + value.toString() + "'"
+                                                                " where name='" + item->getName() + "'";
+            item->setData(col, value.toString());
         }
 
         emit dataChanged(index, index);

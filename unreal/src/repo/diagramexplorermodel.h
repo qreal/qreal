@@ -67,6 +67,7 @@ private:
     QMap<QString, QString> *objects;
     QMap<QString, QString> *diagrams;
     QMap<int, TreeItem*> *elements;
+    QMap<QString, QMap<int, QString> > props;
  
     void rescan(); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!!
     void createDiagramScriptsExec( QStringList );

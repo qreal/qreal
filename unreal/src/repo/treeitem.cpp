@@ -56,7 +56,7 @@ dbg;
 int TreeItem::columnCount() const {
 dbg;
     //if( values.at(1) == "diagram" )
-    return 2; 
+    return 10; 
 }
 
 void TreeItem::addChild(TreeItem* item){

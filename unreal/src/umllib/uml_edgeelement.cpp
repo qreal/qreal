@@ -115,15 +115,14 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    if ( dragState == 1 ) {
 			src = e;
 			src->addEdge(this);
-
-//    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-//			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
+    		
+            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+			im->setData(dataIndex.sibling(dataIndex.row(),5), e->uuid() );
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
-
-//    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-//			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
+    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    }
 
 		    break;

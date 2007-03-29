@@ -45,6 +45,8 @@ dbg;
     tree1 = new QTreeView();
     tree1->setModel(model1);
     tree1->setHeader(0);
+    for (int i=2; i<model1->columnCount(QModelIndex()); i++)
+        tree1->hideColumn(i);
 
     dock->setWidget(tree1);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -60,6 +62,8 @@ dbg;
     tree2 = new QTreeView();
     tree2->setModel(model2);
     tree2->setHeader(0);
+    for (int i=2; i<model2->columnCount(QModelIndex()); i++)
+        tree2->hideColumn(i);
  
     dock3->setWidget(tree2);
     addDockWidget(Qt::RightDockWidgetArea, dock3);
