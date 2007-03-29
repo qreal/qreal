@@ -43,9 +43,9 @@ public:
     void setName( QString n ) { values.replace(1, n); }
     void setType( QString t ) { values.replace(2, t); }
     void setEnds( QString, QString );
-    void setData( int i, QString d ) { values.replace(1, d); }
+    void setData( int i, QString d ) { values.replace(i, d); }
     void setDiagramName( QString d ) { values.replace(3, d); }
-    void setID( int _id ) { values.replace(0,QString(_id)); }
+    void setID( int _id ) { values.replace(0,QString::number(_id)); }
     
     int getX() { return values.at(values.size()-2).toInt(); }
     int getY() { return values.at(values.size()-1).toInt(); }

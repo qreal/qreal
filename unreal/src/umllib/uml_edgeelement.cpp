@@ -95,7 +95,7 @@ void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	    prepareGeometryChange();
 	    if ( dragState == 1 ) {
 		srcPoint = event->pos();
-	    } else if ( dragState = 2 ) {
+	    } else if ( dragState == 2 ) {
         	dstPoint = event->pos();
 	    }
     }
@@ -116,12 +116,15 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			src = e;
 			src->addEdge(this);
     		
-	                QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+	        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+qDebug() << "TMP:" << im->data(dataIndex.sibling(dataIndex.row(),1));
 			im->setData(dataIndex.sibling(dataIndex.row(),5), e->uuid() );
+qDebug() << "TMP" << im->data(dataIndex.sibling(dataIndex.row(),1));
+
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
-    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+    		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    }
 

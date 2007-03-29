@@ -47,7 +47,7 @@ void ObjectExplorerModel::rescan(){
         QString tableName = q1.value(nameClmn).toString();    
         int uuid = q1.value(uuidClmn).toInt();
         l.clear();
-        l << QString(uuid) << tableName << "diagram" << "diagram";
+        l << QString::number(uuid) << tableName << "diagram" << "diagram";
         table = new TreeItem(l, objects, rootItem, db);                  
         table->setID(uuid);
         rootItem->addChild(table);
@@ -62,7 +62,7 @@ void ObjectExplorerModel::rescan(){
             QString diagramName = q2.value(diagramCol).toString();
             int id = q2.value(idCol).toInt();
             l.clear();
-            l << QString(id) << valueName << tableName << diagramName;
+            l << QString::number(id) << valueName << tableName << diagramName;
             val = new TreeItem(l, objects, table, db);
             val->setID(id);
             table->addChild(val);

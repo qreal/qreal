@@ -21,6 +21,7 @@
 
 TreeItem::TreeItem(QStringList _vals, QMap<QString, QString> *map, TreeItem *parent, QSqlDatabase _db)
 {dbg;
+//qDebug() << "TREEITEM: "<< _vals;
     db = _db;
     parentItem = parent;
     tables = map;

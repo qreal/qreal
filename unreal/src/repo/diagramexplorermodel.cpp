@@ -71,6 +71,7 @@ dbg;
 
     TreeItem *table, *value;
     QString tmp;
+    QString tmpID;
 
     QSqlQuery q,q1,q2,q3;  
     QStringList l;
@@ -90,10 +91,8 @@ dbg;
         if (maxID < id)
             maxID = id;
         l.clear(); 
-        l << QString(id) << tableName << "diagram" << "diagram" << statusName << "0" << "0";
-        qDebug() << "creating: " << l;
+        l << QString::number(id) << tableName << "diagram" << "diagram" << statusName << "0" << "0";
         table = new TreeItem(l, diagrams, rootItem, db);                 
-        //table->setID(id);
         diagramsList << tableName;
         rootItem->addChild(table);
         if (elements->contains(id))
@@ -109,10 +108,12 @@ dbg;
             QString x  = q3.value(q3.record().indexOf("x")).toString();
             QString y  = q3.value(q3.record().indexOf("y")).toString();
             int curID = q3.value(q3.record().indexOf("uuid")).toInt();
+            //qDebug() << valueName << curID;
             if ( curID > maxID )
                 maxID = curID;
             l.clear();
-            l << QString(curID) << valueName << typeName << tableName << x << y;
+            l << QString::number(curID) << valueName << typeName << tableName << x << y;
+            //qDebug() << l;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){
                 qDebug() << "there's no such element in the db, sorry...";
@@ -130,12 +131,6 @@ dbg;
         }    
     }
 
-    qDebug() << rootItem;
-    qDebug() << rootItem->rowCount() << rootItem->childCount();
-    qDebug() << rootItem->getChild(0)->getName();
-    qDebug() << rootItem;
-    qDebug() << rootItem;
-
 }
 
 DiagramExplorerModel::~ DiagramExplorerModel(){
@@ -152,6 +147,8 @@ dbg;
 
     if (index.isValid() && role == Qt::EditRole) {
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+
+      //  qDebug() << "ID: " << item->getID();
 
         if (item->getType() == "eP2N")
             fld = props.value("eP2N").value(col);
