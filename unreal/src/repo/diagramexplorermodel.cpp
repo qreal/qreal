@@ -224,9 +224,9 @@ dbg;
  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
     //------BEGIN TMP FIX------
-//    if ( index.column() == 0 )
-//	return item->getID();
- //   else
+    if ( index.column() == 0 )
+	return item->getID();
+    else
 	return item->data(index.column());
 }
 

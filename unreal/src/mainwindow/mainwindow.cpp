@@ -44,7 +44,8 @@ dbg;
     dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tree1 = new QTreeView();
     tree1->setModel(model1);
-    tree1->setHeader(0);
+//    tree1->setHeader(0);
+//    tree1->hideColumn(1);
     for (int i=2; i<model1->columnCount(QModelIndex()); i++)
         tree1->hideColumn(i);
 
@@ -61,7 +62,8 @@ dbg;
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tree2 = new QTreeView();
     tree2->setModel(model2);
-    tree2->setHeader(0);
+//    tree2->setHeader(0);
+//    tree2->hideColumn(1);
     for (int i=2; i<model2->columnCount(QModelIndex()); i++)
         tree2->hideColumn(i);
  

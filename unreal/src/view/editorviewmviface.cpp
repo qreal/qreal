@@ -93,7 +93,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 
             QString type = model()->index(row, 2, parent).data().toString();
 
-	    qDebug() << "row" << row << "uuid" << uuid << "type" << type;
+	    qDebug() << "row" << row << "uuid" << uuid;
 	    
 	    UML::Element *e;
 
