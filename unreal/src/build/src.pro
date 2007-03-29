@@ -39,8 +39,6 @@ HEADERS +=  ../editors/editor.h \
             ../repo/objectexplorermodel.h \ 
             ../repo/propertyeditormodel.h \
             ../repo/treeitem.h \
-            ../umllib/edge.h \
-            ../umllib/element.h \
 	    ../umllib/uml_element.h \
 	    ../umllib/uml_edgeelement.h \
 	    ../umllib/uml_nodeelement.h \
@@ -57,8 +55,6 @@ SOURCES +=  ../editors/editor.cpp \
             ../repo/objectexplorermodel.cpp \
             ../repo/propertyeditormodel.cpp \
             ../repo/treeitem.cpp \
-            ../umllib/edge.cpp \
-            ../umllib/element.cpp \
 	    ../umllib/uml_element.cpp \
 	    ../umllib/uml_edgeelement.cpp \
 	    ../umllib/uml_nodeelement.cpp \

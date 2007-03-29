@@ -10,7 +10,7 @@ using namespace UML;
 const int kvadratik = 4;
 
 EdgeElement::EdgeElement()
-    : srcPoint(0,0), dstPoint(50,50), src(0), dst(0)
+    : src(0), dst(0), srcPoint(0,0), dstPoint(50,150)
 {
     dragState = 0;
 }
@@ -18,10 +18,10 @@ EdgeElement::EdgeElement()
 EdgeElement::~EdgeElement()
 {
     qDebug() << "edgeelement destructor";
-//    if (src)
-//        src->delEdge(this);
-//    if (dst)
-//	dst->delEdge(this);			
+    if (src)
+        src->delEdge(this);
+    if (dst)
+	dst->delEdge(this);			
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -48,6 +48,24 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         painter->drawRect(QRectF(srcPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
         painter->drawRect(QRectF(dstPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
     }
+}
+
+QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen)
+{
+    // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
+    // if we pass a value of 0.0 to QPainterPathStroker::setWidth()
+    const qreal penWidthZero = qreal(0.00000001);
+
+    if (path == QPainterPath())
+        return path;
+    QPainterPathStroker ps;
+    ps.setCapStyle(pen.capStyle());
+    ps.setWidth(pen.widthF() <= 0.0 ? penWidthZero : pen.widthF());
+    ps.setJoinStyle(pen.joinStyle());
+    ps.setMiterLimit(pen.miterLimit());
+    QPainterPath p = ps.createStroke(path);
+    p.addPath(path);
+    return p;
 }
 
 QPainterPath EdgeElement::shape() const
@@ -97,14 +115,12 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    if ( dragState == 1 ) {
 			src = e;
 			src->addEdge(this);
-			qDebug() << "adding src" << src->uuid();
 
 //    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 //			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
-			qDebug() << "adding dst" << dst->uuid();
 
 //    		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 //			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
@@ -118,7 +134,6 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		if ( dragState == 1 ) {
 		    if (src) {
 			src->delEdge(this);
-			qDebug() << "deleting src" << src->uuid();
 		    }
 		    src = 0;
 
@@ -127,11 +142,10 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
         	} else if ( dragState == 2 ) {
 		    if (dst) {
 		        dst->delEdge(this);
-                	qDebug() << "deleting dst" << dst->uuid();
 		    }
              	    dst = 0;
 
-//                    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+//                  QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 //	            im->setData(dataIndex.sibling(dataIndex.row(),7), 0 );
     	        }
 	    }

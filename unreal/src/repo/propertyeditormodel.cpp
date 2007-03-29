@@ -35,7 +35,7 @@ dbg;
     type    = ti->getType();
     name    = ti->getName();
 
-qDebug() << "pem sync: " << name << type << diagram;
+//qDebug() << "pem sync: " << name << type << diagram;
 
     QSqlQuery q;  
     QString tmp;

@@ -15,9 +15,6 @@ namespace UML {
 
         virtual void updateData();
 
-	QRectF boundingRect() const;
-	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
-
 	int uuid() const;    
     protected:
 	QPersistentModelIndex dataIndex;

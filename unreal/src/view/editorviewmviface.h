@@ -8,6 +8,10 @@ class QGraphicsItem;
 class EditorView;
 class EditorViewScene;
 
+namespace UML {
+    class Element;
+};
+
 class EditorViewMViface : public QAbstractItemView
 {
     Q_OBJECT
@@ -19,7 +23,7 @@ public:
     void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
     QModelIndex indexAt(const QPoint &point) const;
 
-    QGraphicsItem * getItem(int uuid) __attribute__ ((deprecated));
+    UML::Element* getItem(int uuid) __attribute__ ((deprecated));
     
     void raiseClick ( const QGraphicsItem * item );
 
@@ -67,7 +71,7 @@ private:
       EditorViewScene *scene;
       EditorView *view;
 	    
-      QMap<int, QGraphicsItem *> items;    
+      QMap<int, UML::Element*> items;    
 
 //    friend class EditorView;
 //    friend class EditorViewScene;

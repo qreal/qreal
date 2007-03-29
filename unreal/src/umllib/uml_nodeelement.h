@@ -11,12 +11,13 @@ namespace UML {
     {
     public:
         NodeElement();
+	~NodeElement();
 
-        QPersistentModelIndex index() const { return dataIndex; };
-	void setIndex(QPersistentModelIndex index) { dataIndex = index; updateData(); };
+        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+	QRectF boundingRect() const;
 
-	void addEdge(EdgeElement *edge) { qDebug() << "addEdge" << edge->uuid(); edgeList << edge; };
-	void delEdge(EdgeElement *edge) { qDebug() << "delEdge" << edge->uuid(); edgeList.removeAt(edgeList.indexOf(edge)); };
+	void addEdge(EdgeElement *edge) { edgeList << edge; };
+	void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
 
    protected:
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );

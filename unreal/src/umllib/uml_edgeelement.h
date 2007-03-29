@@ -20,6 +20,8 @@ namespace UML {
 	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 
 	void adjustLink();
+	void removeLink(UML::NodeElement *from) { if (src == from) { src = 0; }; if (dst == from) { dst = 0; }; };
+
     protected:
         void mousePressEvent ( QGraphicsSceneMouseEvent * event );
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );

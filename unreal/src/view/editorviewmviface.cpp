@@ -5,9 +5,6 @@
 #include "editorview.h"
 #include "editorviewscene.h"
 
-#include "edge.h"
-#include "element.h"
-
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 
@@ -70,7 +67,7 @@ void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 	emit clicked(e->index());
 }
 
-QGraphicsItem * EditorViewMViface::getItem(int uuid)
+UML::Element* EditorViewMViface::getItem(int uuid)
 {
     return items[uuid];
 }
@@ -84,8 +81,13 @@ void EditorViewMViface::reset()
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
-	qDebug() << "rowsInserted";
+	qDebug() << "rowsInserted" << parent;
         for (int row = start; row <= end; ++row) {
+//	    if ( ! parent.isValid() ) {
+//		qDebug() << "parent index invalid";
+//		continue;
+//	    }
+
             QPersistentModelIndex current = model()->index(row, 0, parent);
             int uuid = model()->index(row, 0, parent).data().toInt();
 
@@ -115,6 +117,7 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
             int uuid = model()->index(row, 0, parent).data().toInt();
 	    
             scene->removeItem(items[uuid]);
+	    delete items[uuid];
             items.remove(uuid);
         }
 
@@ -127,8 +130,6 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 
         for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
             int uuid = topLeft.sibling(row, 0).data().toInt();
-
-            QPersistentModelIndex current = topLeft.sibling(row, 0);
-            qgraphicsitem_cast<UML::Element *>(items[uuid])->setIndex(current);
+            items[uuid]->updateData();
         }
 }
