@@ -398,7 +398,9 @@ dbg;
 
 void DiagramExplorerModel::insert(bool isElement, QString fields, QStringList values){
 dbg;
-    
+   
+qDebug() << "inserting:" << fields << values;
+
     QModelIndex index;
     TreeItem* par; 
     
@@ -434,6 +436,8 @@ dbg;
     
     QStringList l;
 
+    l << QString::number(getID());
+
     if ( fields == "" ){ // creating diagram in the database
         createDiagramScriptsExec(vals);
         name    = vals.at(0);
@@ -448,7 +452,7 @@ dbg;
         type    = vals.at(2);
         diagram = vals.at(0);
         status  = vals.at(vals.size()-1);
-        l << name << type << diagram;  
+        l << name << type << diagram << status;
         if ( type != "eP2N" ){
             x  = vals.at(vals.size()-3);
             y  = vals.at(vals.size()-2);
@@ -464,6 +468,8 @@ dbg;
     else 
         par = 0;     
         
+qDebug() << "ADD: " << l;
+
     TreeItem *child = new TreeItem(l, diagrams, par, db);
     child->setID(getID());
   
