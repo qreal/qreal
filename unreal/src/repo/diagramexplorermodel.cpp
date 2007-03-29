@@ -108,11 +108,12 @@ dbg;
             QString x  = q3.value(q3.record().indexOf("x")).toString();
             QString y  = q3.value(q3.record().indexOf("y")).toString();
             int curID = q3.value(q3.record().indexOf("uuid")).toInt();
+	    QString status = q3.value(q3.record().indexOf("status")).toString();
             //qDebug() << valueName << curID;
             if ( curID > maxID )
                 maxID = curID;
             l.clear();
-            l << QString::number(curID) << valueName << typeName << tableName << x << y;
+            l << QString::number(curID) << valueName << typeName << tableName << status;
             //qDebug() << l;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){

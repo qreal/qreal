@@ -8,6 +8,7 @@ Element::Element()
     : m_uuid(1234567)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
+    setCursor(Qt::PointingHandCursor);
 }
 
 void Element::setIndex(QPersistentModelIndex &index)

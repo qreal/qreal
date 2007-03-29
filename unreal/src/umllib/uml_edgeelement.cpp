@@ -105,8 +105,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
     if ( dragState != 0 ) {
 	    
-//    int uuidFrom = idx.sibling(myrow,6).data().toInt();
-//    int uuidTo = idx.sibling(myrow,7).data().toInt();
+//    int uuidFrom = idx.sibling(myrow,5).data().toInt();
+//    int uuidTo = idx.sibling(myrow,6).data().toInt();
 
 	    // FIXME: probably slow.
 	    NodeElement *e = 0;
@@ -116,10 +116,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			src = e;
 			src->addEdge(this);
     		
-	        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-qDebug() << "TMP:" << im->data(dataIndex.sibling(dataIndex.row(),1));
+		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),5), e->uuid() );
-qDebug() << "TMP" << im->data(dataIndex.sibling(dataIndex.row(),1));
 
 		    } else if ( dragState == 2 ) {
 			dst = e;
@@ -172,6 +170,8 @@ void EdgeElement::updateData()
     int myrow = dataIndex.row();
     int uuidFrom = dataIndex.sibling(myrow,5).data().toInt();
     int uuidTo = dataIndex.sibling(myrow,6).data().toInt();
+
+    qDebug() << "src" << uuidFrom << "dst" << uuidTo;
     
     if ( EditorViewScene *scene = dynamic_cast<EditorViewScene *>(this->scene()) ) {
 

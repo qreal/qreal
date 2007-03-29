@@ -79,23 +79,28 @@ void EditorViewMViface::reset()
         rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
+static void dumpStuff( const QModelIndex & idx )
+{
+    qDebug() << idx << ":"
+	    << idx.sibling(idx.row(),0).data().toString()
+	    << idx.sibling(idx.row(),1).data().toString()
+	    << idx.sibling(idx.row(),2).data().toString()
+	    << idx.sibling(idx.row(),3).data().toString()
+	    << idx.sibling(idx.row(),4).data().toString()
+	    << idx.sibling(idx.row(),5).data().toString()
+	    << idx.sibling(idx.row(),6).data().toString()
+	    << idx.sibling(idx.row(),7).data().toString();
+}
+
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
 	qDebug() << "rowsInserted" << parent;
         for (int row = start; row <= end; ++row) {
-//	    if ( ! parent.isValid() ) {
-//		qDebug() << "parent index invalid";
-//		continue;
-//	    }
-
             QPersistentModelIndex current = model()->index(row, 0, parent);
+	    dumpStuff(current);
             int uuid = model()->index(row, 0, parent).data().toInt();
-
             QString type = model()->index(row, 2, parent).data().toString();
-            QString uuid_text = model()->index(row,0,parent).data().toString();
 
-	    qDebug() << "row" << row << "uuid" << uuid << uuid_text;
-	    
 	    UML::Element *e;
 
             if (type == "eP2N") {
@@ -107,6 +112,11 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             e->setIndex(current);
             items[uuid] = e;
         }
+        for (int row = start; row <= end; ++row) {
+	    int uuid = model()->index(row, 0, parent).data().toInt();
+	    items[uuid]->updateData();
+	}
+
 
         QAbstractItemView::rowsInserted(parent, start, end);
 }
