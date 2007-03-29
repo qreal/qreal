@@ -66,9 +66,10 @@ dbg;
         if (maxID < id)
             maxID = id;
         l.clear(); 
-        l << tableName << "diagram" << "diagram" << statusName << "0" << "0";
+        l << QString(id) << tableName << "diagram" << "diagram" << statusName << "0" << "0";
+        qDebug() << "creating: " << l;
         table = new TreeItem(l, diagrams, rootItem, db);                 
-        table->setID(id);
+        //table->setID(id);
         diagramsList << tableName;
         rootItem->addChild(table);
         if (elements->contains(id))
@@ -87,7 +88,7 @@ dbg;
             if ( curID > maxID )
                 maxID = curID;
             l.clear();
-            l << valueName << typeName << tableName << x << y;
+            l << QString(curID) << valueName << typeName << tableName << x << y;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){
                 qDebug() << "there's no such element in the db, sorry...";
@@ -104,6 +105,12 @@ dbg;
             elements->insert(curID, value);
         }    
     }
+
+    qDebug() << rootItem;
+    qDebug() << rootItem->rowCount() << rootItem->childCount();
+    qDebug() << rootItem->getChild(0)->getName();
+    qDebug() << rootItem;
+    qDebug() << rootItem;
 
 }
 
@@ -162,7 +169,7 @@ dbg;
                                                                 " where name='" + item->getName() + "'");
             db.exec("update " + item->getType() + " set name='" + value.toString() + "'"
                                                                 " where name='" + item->getName() + "'");
-            item->setData(value.toString());
+            item->setData(1, value.toString());
         }
 
         emit dataChanged(index, index);
@@ -189,7 +196,7 @@ dbg;
   if (parent.isValid())
     return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
   else // ---BEGIN TMP FIX---
-    return rootItem->columnCount()+1;
+    return rootItem->columnCount();
 }
 
 QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
@@ -201,10 +208,10 @@ dbg;
  TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
     //------BEGIN TMP FIX------
-    if ( index.column() == 0 )
-	return item->getID();
-    else
-	return item->data(index.column()-1);
+//    if ( index.column() == 0 )
+//	return item->getID();
+ //   else
+	return item->data(index.column());
 }
 
 Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{
@@ -343,6 +350,14 @@ dbg;
 
 QModelIndex DiagramExplorerModel::getDiagramIndex( QString name ){
 dbg;
+    qDebug() << __FUNCTION__ << name;
+    qDebug() << rootItem;
+    qDebug() << rootItem->getName();
+    qDebug() << rootItem->rowCount() << rootItem->childCount();
+    qDebug() << rootItem->getChild(0);
+    qDebug() << rootItem->getChild(0)->getName();
+    qDebug() << name;
+    qDebug() << rootItem->getChild(name);
     if (name != "")
         return  createIndex(rootItem->getChild(name)->row(),0,(void*)rootItem->getChild(name));
     else 

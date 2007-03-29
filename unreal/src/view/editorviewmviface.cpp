@@ -8,7 +8,7 @@
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 
-#define _LONG_DEBUG
+//#define _LONG_DEBUG
 #include "dbg.h"
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)

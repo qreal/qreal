@@ -32,19 +32,19 @@ public:
     
     QVariant data( int i ) const;
     int getID() const { return id; }
-    QString getType() const { return values.at(1); }                          
-    QString getName() const { return values.at(0); }
-    QString getDiagramName() const { return values.at(2); }
-    QString getBeginning() const { if (values.size() >= 4) return values.at(3); else return QString(-1); }
-    QString getEnding() const { if (values.size() >= 5) return values.at(4); else return QString(-1); }
+    QString getType() const { return values.at(2); }                          
+    QString getName() const { return values.at(1); }
+    QString getDiagramName() const { return values.at(3); }
+    QString getBeginning() const { if (values.size() >= 6) return values.at(5); else return QString(-1); }
+    QString getEnding() const { if (values.size() >= 7) return values.at(6); else return QString(-1); }
     TreeItem* getChild( QString );
     TreeItem* getChild( int );
     
-    void setName( QString n ) { values.replace(0, n); }
-    void setType( QString t ) { values.replace(1, t); }
+    void setName( QString n ) { values.replace(1, n); }
+    void setType( QString t ) { values.replace(2, t); }
     void setEnds( QString, QString );
-    void setData( QString d ) { values.replace(0, d); }
-    void setDiagramName( QString d ) { values.replace(2, d); }
+    void setData( int i, QString d ) { values.replace(1, d); }
+    void setDiagramName( QString d ) { values.replace(3, d); }
     void setID( int _id ) { id = _id; }
     
     int getX() { return values.at(values.size()-2).toInt(); }
@@ -63,22 +63,19 @@ public:
     
 //private:
     int id;
-    //QString name;
-    //QString type;
-    //QString diagramName;
-    //QString beginsWith;
-    //QString endsWith;
     QList<TreeItem*> childItems;
     TreeItem *parentItem;
     QMap<QString, QString> *tables;
     QSqlDatabase db;
     QStringList values;   
-    /* 0 - name, 
-       1 - type, 
-       2 - diagram, 
-       3,4,5 etc. - as in DB create table script:
-             "description, priority, source, status, x, y" for nodes or
-             "beginsWith, endsWith, status" for edges
+    /* 0 -- uuid
+     * 1 -- name, 
+       2 -- type, 
+       3 -- diagram, 
+       4 -- status,
+       5,6 etc. - as in DB create table script:
+             "description, priority, source" for nodes or
+             "beginsWith, endsWith" for edges
     */
 };
 

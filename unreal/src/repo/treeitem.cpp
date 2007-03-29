@@ -39,10 +39,10 @@ dbg;
 
 int TreeItem::rowCount() const{
 dbg; 
-    if(!tables->contains(values.at(0)))
+    if(!tables->contains(values.at(1)))
         return 0;
   
-    QSqlQuery qq = db.exec((*tables)[values.at(0)]);
+    QSqlQuery qq = db.exec((*tables)[values.at(1)]);
     bool a = db.driver()->hasFeature(QSqlDriver::QuerySize);
     if (a){
         return qq.size();
@@ -56,7 +56,7 @@ dbg;
 int TreeItem::columnCount() const {
 dbg;
     //if( values.at(1) == "diagram" )
-    return 10;
+    return 2; 
 }
 
 void TreeItem::addChild(TreeItem* item){
@@ -67,7 +67,7 @@ dbg;
 TreeItem* TreeItem::getChild(QString str){
 dbg;  
     int i=0;
-    while (i<childItems.size() && childItems.at(i)->values.at(0) != str)
+    while (i<childItems.size() && childItems.at(i)->values.at(1) != str)
         i++;
     if(i == childItems.size())
         return 0;
@@ -96,7 +96,7 @@ dbg;
 
 bool TreeItem::isTable(){
 dbg;
-    return tables->contains(values.at(0));
+    return tables->contains(values.at(1));
 }
                                                      
 void TreeItem::removeChild( QString name ){
@@ -104,7 +104,7 @@ dbg;
     int i=0;
     while (i < childItems.size() && childItems.at(i)->values.at(0) != name)
         i++;
-    if (childItems.at(i)->values.at(0) == name){
+    if (childItems.at(i)->values.at(1) == name){
         delete childItems.at(i);
         childItems.removeAt(i);
     }
@@ -112,8 +112,8 @@ dbg;
 
 void TreeItem::setEnds( QString b, QString e){
 dbg;
-    values.replace(3, b); // beginsWith
-    values.replace(4, e); // endsWith    
+    values.replace(4, b); // beginsWith
+    values.replace(5, e); // endsWith    
 }
 
 QVariant TreeItem::data( int i ) const { 

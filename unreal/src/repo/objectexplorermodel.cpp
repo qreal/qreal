@@ -47,7 +47,7 @@ void ObjectExplorerModel::rescan(){
         QString tableName = q1.value(nameClmn).toString();    
         int uuid = q1.value(uuidClmn).toInt();
         l.clear();
-        l << tableName << "diagram" << "diagram";
+        l << QString(uuid) << tableName << "diagram" << "diagram";
         table = new TreeItem(l, objects, rootItem, db);                  
         table->setID(uuid);
         rootItem->addChild(table);
@@ -62,7 +62,7 @@ void ObjectExplorerModel::rescan(){
             QString diagramName = q2.value(diagramCol).toString();
             int id = q2.value(idCol).toInt();
             l.clear();
-            l << valueName << tableName << diagramName;
+            l << QString(id) << valueName << tableName << diagramName;
             val = new TreeItem(l, objects, table, db);
             val->setID(id);
             table->addChild(val);
@@ -93,7 +93,7 @@ dbg;
         emit nameAboutToBeChanged(list);
         db.exec("update " +item->getDiagramName()+ " set name='" + value.toString() + "' where name='" + item->getName() + "'");
         db.exec("update " +item->getType() + " set name='" + value.toString() + "' where name='" + item->getName() + "'");
-        item->setData(value.toString());
+        item->setData(1, value.toString());
     
         emit dataChanged(index, index);
         return true;
@@ -197,7 +197,7 @@ dbg;
 void ObjectExplorerModel::updateData(const QModelIndex &index, QVariant value){
 dbg;
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-    rootItem->getChild(item->getType())->getChild(item->getName())->setData(value.toString());
+    rootItem->getChild(item->getType())->getChild(item->getName())->setData(1, value.toString());
   qDebug() << "oem: name changed to " << value.toString();
     emit dataChanged(index, index);
 }
