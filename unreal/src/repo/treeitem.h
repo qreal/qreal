@@ -31,7 +31,7 @@ public:
     int childCount() const { return childItems.size(); }
     
     QVariant data( int i ) const;
-    int getID() const { return values.at(0); }
+    int getID() const { return values.at(0).toInt(); }
     QString getType() const { return values.at(2); }                          
     QString getName() const { return values.at(1); }
     QString getDiagramName() const { return values.at(3); }
@@ -45,7 +45,7 @@ public:
     void setEnds( QString, QString );
     void setData( int i, QString d ) { values.replace(1, d); }
     void setDiagramName( QString d ) { values.replace(3, d); }
-    void setID( int _id ) { values.replace(0,_id); }
+    void setID( int _id ) { values.replace(0,QString(_id)); }
     
     int getX() { return values.at(values.size()-2).toInt(); }
     int getY() { return values.at(values.size()-1).toInt(); }
