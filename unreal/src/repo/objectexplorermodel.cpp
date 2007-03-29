@@ -29,7 +29,7 @@ void ObjectExplorerModel::rescan(){
     dbg;
     objects = new QMap<QString, QString>; 
     QStringList l;
-    l << "diagram" << "diagram" << "";
+    l << QString::number(0) << "diagram" << "diagram" << "";
     rootItem = new TreeItem(l, objects , rootItem, db);   
   
     TreeItem *table, *val;
@@ -49,7 +49,7 @@ void ObjectExplorerModel::rescan(){
         l.clear();
         l << QString::number(uuid) << tableName << "diagram" << "diagram";
         table = new TreeItem(l, objects, rootItem, db);                  
-        table->setID(uuid);
+//        table->setID(uuid);
         rootItem->addChild(table);
         tmp = "select * from " + tableName;
         objects->insert(tableName, tmp);
@@ -60,11 +60,12 @@ void ObjectExplorerModel::rescan(){
         while(q2.next()){
             QString valueName = q2.value(nameCol).toString();
             QString diagramName = q2.value(diagramCol).toString();
+            QString status = q2.value(q2.record().indexOf("status")).toString();
             int id = q2.value(idCol).toInt();
             l.clear();
-            l << QString::number(id) << valueName << tableName << diagramName;
+            l << QString::number(id) << valueName << tableName << diagramName << status;
             val = new TreeItem(l, objects, table, db);
-            val->setID(id);
+            //val->setID(id);
             table->addChild(val);
         }    
     }
@@ -209,10 +210,11 @@ dbg;
     QString name    = vals.at(1);
     QString type    = vals.at(2);
     QString diagram = vals.at(0);
+    int uuid        = vals.at(vals.size()-1).toInt();
 
     TreeItem *par   = rootItem->getChild(type); 
     QStringList l;
-    l << name << type << diagram;
+    l << QString::number(uuid) << name << type << diagram;
     TreeItem *child = new TreeItem(l, objects, par, db);
     par->addChild(child);
 
@@ -222,11 +224,10 @@ dbg;
 
 void ObjectExplorerModel::removeElem( QStringList vals ){
 dbg;
-    
     QString name    = vals.at(0);
     QString type    = vals.at(2);
     QString diagram = vals.at(1);
-    
+
     int pos = rootItem->getChild(type)->getChild(name)->row(); 
     beginRemoveRows(QModelIndex(), pos, pos);
 

@@ -337,7 +337,6 @@ dbg;
     
         tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', %9, %10, '%11')";
         tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(x).arg(y).arg(diagram);
-qDebug() << "adding element: " << tmp;
         db.exec(tmp);
     }
     else{
@@ -347,7 +346,6 @@ qDebug() << "adding element: " << tmp;
         
         tmp = "insert into %1 (%2) values (%3, '%4', '%5', '%6', '%7', '%8')";
         tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(from).arg(to).arg(diagram).arg(status);
-qDebug() << "adding link: " << tmp;        
         db.exec(tmp);
     }
 }
@@ -364,14 +362,6 @@ dbg;
 
 QModelIndex DiagramExplorerModel::getDiagramIndex( QString name ){
 dbg;
-    qDebug() << __FUNCTION__ << name;
-    qDebug() << rootItem;
-    qDebug() << rootItem->getName();
-    qDebug() << rootItem->rowCount() << rootItem->childCount();
-    qDebug() << rootItem->getChild(0);
-    qDebug() << rootItem->getChild(0)->getName();
-    qDebug() << name;
-    qDebug() << rootItem->getChild(name);
     if (name != "")
         return  createIndex(rootItem->getChild(name)->row(),0,(void*)rootItem->getChild(name));
     else 
@@ -399,11 +389,13 @@ dbg;
 void DiagramExplorerModel::insert(bool isElement, QString fields, QStringList values){
 dbg;
    
-qDebug() << "inserting:" << fields << values;
 
     QModelIndex index;
     TreeItem* par; 
-    
+
+    getNextID();
+    values << QString::number(getID());
+
     if (isElement)
         par = rootItem->getChild(values.at(0));
     else
@@ -432,8 +424,6 @@ dbg;
     QString x;
     QString y;
 
-    getNextID();
-    
     QStringList l;
 
     l << QString::number(getID());
@@ -468,8 +458,6 @@ dbg;
     else 
         par = 0;     
         
-qDebug() << "ADD: " << l;
-
     TreeItem *child = new TreeItem(l, diagrams, par, db);
     child->setID(getID());
   
@@ -514,14 +502,14 @@ dbg;
         emit elemRemoved(values);    
     else{
         diagramsList.removeAt(diagramsList.indexOf(values.at(0)));
-    }    
+    }
+    
 }
 
 
 bool  DiagramExplorerModel::removeRows(int position, int rows, bool isElement, QStringList vals, const QModelIndex &parent){
 dbg; 
     beginRemoveRows(parent, position, position + rows - 1);
-    
     if ( !isElement ) // removing diagram from the database
         removeDiagramScriptsExec(vals.at(0));
     else // removing element from the database

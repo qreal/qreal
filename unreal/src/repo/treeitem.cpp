@@ -103,7 +103,7 @@ dbg;
 void TreeItem::removeChild( QString name ){
 dbg;
     int i=0;
-    while (i < childItems.size() && childItems.at(i)->values.at(0) != name)
+    while (i < childItems.size() && childItems.at(i)->values.at(1) != name)
         i++;
     if (childItems.at(i)->values.at(1) == name){
         delete childItems.at(i);
