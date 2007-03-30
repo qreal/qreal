@@ -14,6 +14,7 @@ EdgeElement::EdgeElement()
 {
     dragState = 0;
     setZValue(100);
+    setFlag(ItemIsMovable, true);
 }
 
 EdgeElement::~EdgeElement()
@@ -166,6 +167,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
         		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    }
+		    setFlag(ItemIsMovable, false);
 
 		    break;
 	        }
@@ -189,6 +191,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
     	            im->setData(dataIndex.sibling(dataIndex.row(),6), 0 );
     	        }
+		if ( ! src && ! dst )
+		        setFlag(ItemIsMovable, true);
 	    }
 
             dragState = 0;
@@ -240,6 +244,8 @@ void EdgeElement::updateData()
     } else {
 	qDebug() << "no scene!";
     }    
+
+    setFlag(ItemIsMovable, ( ! src && ! dst ) );
 
     Element::updateData();
 }

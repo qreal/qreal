@@ -7,14 +7,14 @@ using namespace UML;
 Element::Element()
     : m_uuid(1234567)
 {
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
+    setFlags(ItemIsSelectable | ItemIsMovable);
     setCursor(Qt::PointingHandCursor);
 }
 
 void Element::setIndex(QPersistentModelIndex &index)
 {
     dataIndex = index;
-    updateData();
+//    updateData();
     update();
 }
 

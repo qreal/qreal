@@ -9,7 +9,7 @@ EditorView::EditorView(QWidget *parent)
     setScene(new EditorViewScene(this));
     mvciface = new EditorViewMViface(this,dynamic_cast<EditorViewScene *>(scene()));
 
-//  setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     setRenderHints(QPainter::Antialiasing);
 }
 

@@ -8,6 +8,8 @@
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 
+#include "uml_glamour_class.h"
+
 //#define _LONG_DEBUG
 #include "dbg.h"
 
@@ -106,7 +108,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             if (type == "eP2N") {
 			e = new UML::EdgeElement();
 	    } else {
-			e = new UML::NodeElement();
+			e = new UML::GlamourClass();
 	    }
             scene->addItem(e);
             e->setIndex(current);
