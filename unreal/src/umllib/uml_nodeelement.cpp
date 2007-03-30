@@ -53,7 +53,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWid
 {
     foreach (QPointF port, ports) {
         painter->save();
-        painter->setOpacity(0.5);
+//      painter->setOpacity(0.5);
         painter->translate(port);
         painter->setBrush(Qt::gray);
         painter->setPen(Qt::NoPen);
