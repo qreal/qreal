@@ -32,6 +32,8 @@ namespace UML {
 	QPointF srcPoint, dstPoint;
     
 	int dragState;
+	
+	int portFrom, portTo;
     };
 };
 

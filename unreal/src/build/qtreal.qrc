@@ -15,6 +15,32 @@
     <file>../images/rotateleft.png</file>
     <file>../images/rotateright.png</file>
     <file>../images/fileprint.png</file>
-		    
+    
+    <file>../images/kdevclassview/CVpackage_meth.png</file>
+    <file>../images/kdevclassview/CVpublic_signal.png</file>
+    <file>../images/kdevclassview/CVprivate_meth.png</file>
+    <file>../images/kdevclassview/CVglobal_var.png</file>
+    <file>../images/kdevclassview/CVstruct.png</file>
+    <file>../images/kdevclassview/CTvirtuals.png</file>
+    <file>../images/kdevclassview/CVnamespace.png</file>
+    <file>../images/kdevclassview/CTparents.png</file>
+    <file>../images/kdevclassview/CVclass.png</file>
+    <file>../images/kdevclassview/CTclients.png</file>
+    <file>../images/kdevclassview/CVpublic_slot.png</file>
+    <file>../images/kdevclassview/CVprivate_signal.png</file>
+    <file>../images/kdevclassview/CVpublic_var.png</file>
+    <file>../images/kdevclassview/CVprotected_slot.png</file>
+    <file>../images/kdevclassview/CVprotected_signal.png</file>
+    <file>../images/kdevclassview/CVglobal_meth.png</file>
+    <file>../images/kdevclassview/CVprivate_var.png</file>
+    <file>../images/kdevclassview/CVprotected_var.png</file>
+    <file>../images/kdevclassview/CVprivate_slot.png</file>
+    <file>../images/kdevclassview/CVpackage_var.png</file>
+    <file>../images/kdevclassview/CVtypedef.png</file>
+    <file>../images/kdevclassview/CVpublic_meth.png</file>
+    <file>../images/kdevclassview/CVprotected_meth.png</file>
+    <file>../images/kdevclassview/CTsuppliers.png</file>
+    <file>../images/kdevclassview/CTchildren.png</file>
+
 </qresource>
 </RCC>

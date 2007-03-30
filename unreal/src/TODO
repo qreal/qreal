@@ -3,5 +3,8 @@ General:
   My proposal is: "%/repo/diagram/element" or something like that.
 
 EditorView && UML:: namespace stuff 
-- Adjust link ends when creating elements is finished
-  (so that link can refer to element that is added later)
+*DONE* Adjust link ends when creating elements is finished
+       (so that link can refer to element that is added later)
+
+- Implement a simple "class editor" to show masta our progress :)
+

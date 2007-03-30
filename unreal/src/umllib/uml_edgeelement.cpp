@@ -10,9 +10,10 @@ using namespace UML;
 const int kvadratik = 4;
 
 EdgeElement::EdgeElement()
-    : src(0), dst(0), srcPoint(0,0), dstPoint(50,150)
+    : src(0), dst(0), srcPoint(0,0), dstPoint(50,150), portFrom(0), portTo(0)
 {
     dragState = 0;
+    setZValue(100);
 }
 
 EdgeElement::~EdgeElement()
@@ -36,12 +37,47 @@ QRectF EdgeElement::boundingRect() const
              .adjusted(-extra, -extra, extra, extra);
 }
 
+#include <math.h>
+
+static const double Pi = 3.14159265358979323846264338327950288419717;
+static double TwoPi = 2.0 * Pi;
+
+
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
     QPainterPath path;
     path.moveTo(srcPoint);
     path.lineTo(dstPoint);
     painter->drawPath(path);
+
+
+///////tmp///////
+
+    QLineF line(srcPoint,dstPoint);
+
+    double arrowSize = 10.0;
+    
+    // Draw the arrows if there's enough room
+    double angle = ::acos(line.dx() / line.length());
+    if (line.dy() >= 0)
+            angle = TwoPi - angle;
+
+    QPointF sourceArrowP1 = srcPoint + QPointF(sin(angle + Pi / 3) * arrowSize,
+                            cos(angle + Pi / 3) * arrowSize);
+    QPointF sourceArrowP2 = srcPoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
+                            cos(angle + Pi - Pi / 3) * arrowSize);
+    QPointF destArrowP1 = dstPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
+                            cos(angle - Pi / 3) * arrowSize);
+    QPointF destArrowP2 = dstPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
+                            cos(angle - Pi + Pi / 3) * arrowSize);
+
+    painter->setBrush(Qt::white);
+    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+																				
+
+//////tmp///////    
+    
+    
 
     if (option->state & QStyle::State_Selected) {
         painter->setBrush(Qt::SolidPattern);
@@ -115,6 +151,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    if ( dragState == 1 ) {
 			src = e;
 			src->addEdge(this);
+			portFrom = src->getNearestPort(mapToItem(src,event->pos()));
+			srcPoint = src->getPort(portFrom);
     		
 		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),5), e->uuid() );
@@ -122,7 +160,10 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
-    		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+                        portTo = dst->getNearestPort(mapToItem(dst,event->pos()));
+                        dstPoint = dst->getPort(portTo);
+
+        		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
 		    }
 
@@ -159,9 +200,9 @@ void EdgeElement::adjustLink()
 {
     prepareGeometryChange();
     if ( src )
-	srcPoint = mapFromItem(src, 0, 0);
+	srcPoint = mapFromItem(src, src->getPort(portFrom));
     if ( dst )
-        dstPoint = mapFromItem(dst, 0, 0);
+        dstPoint = mapFromItem(dst, dst->getPort(portTo));
     update();
 }
 

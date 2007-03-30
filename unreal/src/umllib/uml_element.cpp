@@ -27,3 +27,9 @@ void Element::updateData()
 {
     m_uuid = dataIndex.sibling(dataIndex.row(),0).data().toInt();
 }
+/*
+void Element::getProperty( const QString &proprety )
+{
+    
+}
+*/

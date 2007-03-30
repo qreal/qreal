@@ -15,9 +15,13 @@ namespace UML {
 
         void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
 	QRectF boundingRect() const;
+	QRectF contentsRect() const;
 
 	void addEdge(EdgeElement *edge) { edgeList << edge; };
 	void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
+
+	const QPointF getPort(int i) const;
+	int getNearestPort(const QPointF location) const;
 
    protected:
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
@@ -25,6 +29,7 @@ namespace UML {
 
     private:
 	QList<EdgeElement *> edgeList;
+	QList<QPointF> ports;
     };
 };
 
