@@ -10,56 +10,53 @@
 
 #include "uml_glamour_class.h"
 
-//#define _LONG_DEBUG
-#include "dbg.h"
-
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
     : QAbstractItemView(0)
-{ dbg;
+{
     this->view = view;
     this->scene = scene;
 }
 
 QRect EditorViewMViface::visualRect(const QModelIndex &index) const
-{ dbg;
+{
     return QRect();
 }
 
 void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
-{ dbg;
+{
     int uuid = index.sibling(0,index.row()).data().toInt();
 //    qDebug() << "scroll to" << uuid;
 }
 
 QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
-{ dbg;
+{
     return QModelIndex();
 }
 
 QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction cursorAction,
                            Qt::KeyboardModifiers modifiers)
-{ dbg;
+{
     return QModelIndex();
 }
 
 int EditorViewMViface::horizontalOffset() const
-{ dbg;
+{
 }
 
 int EditorViewMViface::verticalOffset() const
-{ dbg;
+{
 }
 
 bool EditorViewMViface::isIndexHidden(const QModelIndex &index) const
-{ dbg;
+{
 }
 
 void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags command)
-{ dbg;
+{
 }
 
 QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &selection) const
-{ dbg;
+{
 }
 
 void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
@@ -75,7 +72,7 @@ UML::Element* EditorViewMViface::getItem(int uuid)
 }
 
 void EditorViewMViface::reset()
-{ dbg;
+{
 	items.clear();
         scene->clearScene();
         rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
@@ -95,7 +92,7 @@ static void dumpStuff( const QModelIndex & idx )
 }
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
-{ dbg;
+{
 	//qDebug() << "rowsInserted" << parent;
         for (int row = start; row <= end; ++row) {
             QPersistentModelIndex current = model()->index(row, 0, parent);
@@ -124,7 +121,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 }
 
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
-{ dbg;
+{
         //qDebug() << "removed";
         for (int row = start; row <= end; ++row) {
             int uuid = model()->index(row, 0, parent).data().toInt();
@@ -139,7 +136,7 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
                 const QModelIndex &bottomRight)
-{ dbg;
+{
 
         for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
             int uuid = topLeft.sibling(row, 0).data().toInt();
