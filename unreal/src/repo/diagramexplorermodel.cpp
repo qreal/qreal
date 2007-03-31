@@ -292,7 +292,7 @@ dbg;
 void DiagramExplorerModel::createDiagramScriptsExec(QStringList vals){
 dbg;
     QString name   = vals.at(0);
-    QString status = vals.at(vals.size()-1);
+    QString status = vals.at(1);
     QString tmp = "insert into diagram (uuid, name, type, status) values (%1, '%2', 'diagrams', '%3')";
     tmp = tmp.arg(getID()).arg(name).arg(status);
     db.exec(tmp);
@@ -401,10 +401,10 @@ dbg;
     values << QString::number(getID());
 
     if (isElement)
-        par = rootItem->getChild(values.at(0));
+        par = rootItem->getChild(values.at(2));
     else
         par = rootItem;
-         
+qDebug() << par;         
     index = createIndex( par->row(), 0, (void*) par );
     
     if (!insertRows(rowCount(index), 1, fields, values, index))
@@ -435,7 +435,7 @@ dbg;
     if ( fields == "" ){ // creating diagram in the database
         createDiagramScriptsExec(vals);
         name    = vals.at(0);
-        status  = vals.at(5);
+        status  = vals.at(1);
         type    = "diagram";
         diagram = "diagram";
         l << name << type << diagram;  

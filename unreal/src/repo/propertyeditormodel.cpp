@@ -65,9 +65,9 @@ dbg;
     QSqlRecord r2 = q2.record();
 
     while(q2.next()){
-        for(int i=0; i<r.count(); i++ ){
-            fields << r.fieldName(i);
-            vals   << q.value(i).toString();
+        for(int i=0; i<r2.count(); i++ ){
+            fields << r2.fieldName(i);
+            vals   << q2.value(i).toString();
         }
     }
 }
@@ -120,6 +120,7 @@ dbg;
             tmp2 = tmp.arg(type).arg(field).arg(value.toString()).arg(name).arg(diagram);
             qDebug() << "pem: update: " << field << value.toString();
         }
+        qDebug() << tmp2;
         db.exec(tmp2);
 
         if( field == "name" ){
