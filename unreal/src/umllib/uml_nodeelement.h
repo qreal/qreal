@@ -13,9 +13,11 @@ namespace UML {
         NodeElement();
 	~NodeElement();
 
-        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
-//	QRectF boundingRect() const;
+        virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+//	virtual QRectF boundingRect() const;
 	virtual QRectF contentsRect() const = 0;
+	
+        virtual void updateData();
 
 	void addEdge(EdgeElement *edge) { edgeList << edge; };
 	void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };

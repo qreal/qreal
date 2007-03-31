@@ -5,7 +5,7 @@
 using namespace UML;
 
 Element::Element()
-    : m_uuid(1234567)
+    : m_uuid(1234567), moving(false)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
     setCursor(Qt::PointingHandCursor);

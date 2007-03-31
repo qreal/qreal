@@ -13,5 +13,6 @@ That is (in this order):
     - Save & restore port no. for links
     - "Glamour" classes, links, comments.
     - Save & restore misc properties (in one field, for now....)
+    - Make elements resizeable.
     - Reworked interface
     - Multi-part links

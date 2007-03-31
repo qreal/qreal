@@ -17,9 +17,12 @@ namespace UML {
 
 	int uuid() const;    
     protected:
+//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 	QPersistentModelIndex dataIndex;
 
 	int m_uuid;
+	bool moving;
     };
 };
 

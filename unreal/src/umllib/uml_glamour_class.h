@@ -12,9 +12,13 @@ namespace UML {
         GlamourClass();
 	~GlamourClass();
 
-        void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
-	QRectF boundingRect() const;
-	QRectF contentsRect() const;
+        virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+	virtual QRectF boundingRect() const;
+	virtual QRectF contentsRect() const;
+	
+	virtual void updateData();
+    private:
+	QString text;
     };
 };
 

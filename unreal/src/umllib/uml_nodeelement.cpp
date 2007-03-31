@@ -24,10 +24,31 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
+    moving = 1;
+    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+    im->setData(dataIndex.sibling(dataIndex.row(),4), x() );
+    im->setData(dataIndex.sibling(dataIndex.row(),5), y() );
+    moving = 0;
+    
     foreach (EdgeElement *edge, edgeList)
         edge->adjustLink();
 
     Element::mouseReleaseEvent(event);
+}
+
+void NodeElement::updateData()
+{
+    if (moving == 0) {
+	int myrow = dataIndex.row();
+        int x = dataIndex.sibling(myrow,4).data().toInt();
+	int y = dataIndex.sibling(myrow,5).data().toInt();
+        setPos(x,y);
+    
+	Element::updateData();
+    
+	foreach (EdgeElement *edge, edgeList)
+            edge->adjustLink();
+    }
 }
 
 const QPointF NodeElement::getPort(int i) const
@@ -53,7 +74,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWid
 {
     foreach (QPointF port, ports) {
         painter->save();
-//      painter->setOpacity(0.5);
+        painter->setOpacity(0.5);
         painter->translate(port);
         painter->setBrush(Qt::gray);
         painter->setPen(Qt::NoPen);
