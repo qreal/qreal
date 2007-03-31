@@ -32,11 +32,11 @@ public:
     
     QVariant data( int i ) const;
     int getID() const { return values.at(0).toInt(); }
-    QString getType() const { return values.at(2); }                          
     QString getName() const { return values.at(1); }
+    QString getType() const { return values.at(2); }                          
     QString getDiagramName() const { return values.at(3); }
-    QString getBeginning() const { if (values.size() >= 6) return values.at(5); else return QString(-1); }
-    QString getEnding() const { if (values.size() >= 7) return values.at(6); else return QString(-1); }
+    QString getBeginning() const { return values.at(7); }
+    QString getEnding() const { return values.at(8); }
     TreeItem* getChild( QString );
     TreeItem* getChild( int );
     
@@ -47,10 +47,10 @@ public:
     void setDiagramName( QString d ) { values.replace(3, d); }
     void setID( int _id ) { values.replace(0,QString::number(_id)); }
     
-    int getX() { return values.at(values.size()-2).toInt(); }
-    int getY() { return values.at(values.size()-1).toInt(); }
-    void setX( int x ) { values.replace(values.size()-2, QString(x)); }
-    void setY( int y ) { values.replace(values.size()-1, QString(y)); }
+    int getX() { return values.at(4).toInt(); }
+    int getY() { return values.at(5).toInt(); }
+    void setX( int x ) { values.replace(4, QString(x)); }
+    void setY( int y ) { values.replace(5, QString(y)); }
     
     void addChild( TreeItem* );  
     void removeChild ( QString );
@@ -72,8 +72,10 @@ public:
      * 1 -- name, 
        2 -- type, 
        3 -- diagram, 
-       4 -- status,
-       5,6 etc. - as in DB create table script:
+       4 -- x,
+       5 -- y,
+       6 -- status,
+       7,8 etc. - as in DB create table script:
              "description, priority, source" for nodes or
              "beginsWith, endsWith" for edges
     */

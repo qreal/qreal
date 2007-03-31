@@ -430,8 +430,8 @@ dbg;
         QList<QString> list;                
         QString fields;
         
-        list << curDiagram << name << type << desc << prio << source << x << y << stat;
-        fields = "uuid, name, description, priority, source, status, x, y, diagram";
+        list << name << type << curDiagram << x << y << stat << desc << prio << source;
+        fields = "uuid, name, description, priority, source, status, diagram";
         
         model2->insert(true, fields, list);
 	
@@ -492,8 +492,8 @@ dbg;
         QList<QString> list;                
         QString fields;
         
-        list << curDiagram << name << type << from << to << stat;
-        fields = "uuid, name, beginsWith, endsWith, diagram, status";
+        list << name << type << curDiagram << "0" << "0" << stat << from << to;
+        fields = "uuid, name, beginsWith, endsWith, status, diagram";
         
         model2->insert(true, fields, list);
 	

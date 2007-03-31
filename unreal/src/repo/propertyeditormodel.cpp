@@ -37,8 +37,8 @@ dbg;
 
 //qDebug() << "pem sync: " << name << type << diagram;
 
-    QSqlQuery q;  
-    QString tmp;
+    QSqlQuery q, q2;  
+    QString tmp, tmp2;
     if( type == "diagram"){  // get diagram info
         tmp = "select * from %1 where name='%2'";
         tmp = tmp.arg(type).arg(name);
@@ -46,6 +46,8 @@ dbg;
     else { // get element info
         tmp = "select * from %1 where name='%2' and diagram='%3'";
         tmp = tmp.arg(type).arg(name).arg(diagram);
+        tmp2 = "select x,y from %1 where name='%2'";
+        tmp2 = tmp2.arg(diagram).arg(name);
     }    
     q = db.exec(tmp);
     QSqlRecord r = q.record();
@@ -54,6 +56,16 @@ dbg;
         fields.clear(); 
         vals.clear();
         for( int i = 0; i < r.count(); i++ ){
+            fields << r.fieldName(i);
+            vals   << q.value(i).toString();
+        }
+    }
+
+    q2 = db.exec(tmp2);
+    QSqlRecord r2 = q2.record();
+
+    while(q2.next()){
+        for(int i=0; i<r.count(); i++ ){
             fields << r.fieldName(i);
             vals   << q.value(i).toString();
         }
@@ -95,13 +107,19 @@ dbg;
         
         QString field  = fields.at(index.row());
         QString oldval = vals.at(index.row());
+        QString tmp, tmp2;
 //        QString name   = ti->getName();
-        
-        QString tmp = "update %1 set %2='%3' where name='%4' and diagram='%5'";
-        QString tmp2 = tmp.arg(type).arg(field).arg(value.toString()).arg(name).arg(diagram);
-        qDebug() << "pem: update: " << diagram;
-        qDebug() << "pem: update: " << tmp2;
-        
+       
+        if( field == "x" || field == "y" ){
+           tmp = "update %1 set %2=%3 where name='%4'";
+           tmp2 = tmp.arg(diagram).arg(field).arg(value.toString()).arg(name);
+           qDebug() << "pem: update: " << field << value.toString();
+        }
+        else{
+            tmp = "update %1 set %2='%3' where name='%4' and diagram='%5'";
+            tmp2 = tmp.arg(type).arg(field).arg(value.toString()).arg(name).arg(diagram);
+            qDebug() << "pem: update: " << field << value.toString();
+        }
         db.exec(tmp2);
 
         if( field == "name" ){

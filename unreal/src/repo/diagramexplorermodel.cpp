@@ -34,18 +34,22 @@ dbg;
     a1.insert(1,"name");
     a1.insert(2,"type");
     a1.insert(3,"diagram");
-    a1.insert(4,"status");
-    a1.insert(5,"description");
-    a1.insert(6,"priority");
-    a1.insert(7,"source");
+    a1.insert(4,"x");
+    a1.insert(5,"y");
+    a1.insert(6,"status");
+    a1.insert(7,"description");
+    a1.insert(8,"priority");
+    a1.insert(9,"source");
     QMap<int, QString> a2;
     a2.insert(0,"uuid");
     a2.insert(1,"name");
     a2.insert(2,"type");
     a2.insert(3,"diagram");
-    a2.insert(4,"status");
-    a2.insert(5,"beginsWith");
-    a2.insert(6,"endsWith");
+    a2.insert(4,"x");
+    a2.insert(5,"y");
+    a2.insert(6,"status");
+    a2.insert(7,"beginsWith");
+    a2.insert(8,"endsWith");
 
     props.insert("eP2N", a2);
     props.insert("non-eP2N", a1);
@@ -91,7 +95,7 @@ dbg;
         if (maxID < id)
             maxID = id;
         l.clear(); 
-        l << QString::number(id) << tableName << "diagram" << "diagram" << statusName << "0" << "0";
+        l << QString::number(id) << tableName << "diagram" << "diagram" << "0" << "0" << statusName << "0" << "0";
         table = new TreeItem(l, diagrams, rootItem, db);                 
         diagramsList << tableName;
         rootItem->addChild(table);
@@ -108,13 +112,13 @@ dbg;
             QString x  = q3.value(q3.record().indexOf("x")).toString();
             QString y  = q3.value(q3.record().indexOf("y")).toString();
             int curID = q3.value(q3.record().indexOf("uuid")).toInt();
-	    QString status = q3.value(q3.record().indexOf("status")).toString();
+	        QString status = q3.value(q3.record().indexOf("status")).toString();
             //qDebug() << valueName << curID;
             if ( curID > maxID )
                 maxID = curID;
             l.clear();
-            l << QString::number(curID) << valueName << typeName << tableName << status;
-            //qDebug() << l;
+            l << QString::number(curID) << valueName << typeName << tableName << x << y << status;
+            qDebug() << l;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){
                 qDebug() << "there's no such element in the db, sorry...";
@@ -293,7 +297,8 @@ dbg;
     tmp = tmp.arg(getID()).arg(name).arg(status);
     db.exec(tmp);
     
-    tmp = "create table " + name + " (uuid integer, name varchar(20), type varchar(20), status varchar(20))";
+    tmp = "create table " + name + " (uuid integer, name varchar(20), type varchar(20),"
+                                                " status varchar(20), x integer, y integer)";
     db.exec(tmp);
 }
 
@@ -319,33 +324,32 @@ dbg;
 
 void DiagramExplorerModel::createElementScriptsExec(QStringList values, QString fields){
 dbg;
-    QString diagram = values.at(0);
-    QString name    = values.at(1);
-    QString type    = values.at(2);
+    QString name    = values.at(0);
+    QString type    = values.at(1);
+    QString diagram = values.at(2);
+    QString x       = values.at(3);
+    QString y       = values.at(4);
+    QString status  = values.at(5);
     
-    QString tmp = "insert into %1 (uuid, name, type) values (%2, '%3', '%4')";
-    tmp = tmp.arg(diagram).arg(getID()).arg(name).arg(type);
+    QString tmp = "insert into %1 (uuid, name, type, status, x, y) values (%2, '%3', '%4', '%5', %6, %7)";
+    tmp = tmp.arg(diagram).arg(getID()).arg(name).arg(type).arg(status).arg(x).arg(y);
     db.exec(tmp);
 
     if (type != "eP2N"){
-        QString desc    = values.at(3);
-        QString prio    = values.at(4);
-        QString source  = values.at(5);
-        QString x       = values.at(6);
-        QString y       = values.at(7);
-        QString status  = values.at(8);
+        QString desc    = values.at(6);
+        QString prior   = values.at(7);
+        QString source  = values.at(8);
     
-        tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', %9, %10, '%11')";
-        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prio).arg(source).arg(status).arg(x).arg(y).arg(diagram);
+        tmp = "insert into %1 (%2) values (%3, '%4', '%5', %6, '%7', '%8', '%9')";
+        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(desc).arg(prior).arg(source).arg(status).arg(diagram);
         db.exec(tmp);
     }
     else{
-        QString from = values.at(3);
-        QString to   = values.at(4);
-        QString status = values.at(5);
+        QString from = values.at(6);
+        QString to   = values.at(7);
         
         tmp = "insert into %1 (%2) values (%3, '%4', '%5', '%6', '%7', '%8')";
-        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(from).arg(to).arg(diagram).arg(status);
+        tmp = tmp.arg(type).arg(fields).arg(getID()).arg(name).arg(from).arg(to).arg(status).arg(diagram);
         db.exec(tmp);
     }
 }
@@ -431,23 +435,20 @@ dbg;
     if ( fields == "" ){ // creating diagram in the database
         createDiagramScriptsExec(vals);
         name    = vals.at(0);
-        status  = vals.at(vals.size()-1);
+        status  = vals.at(5);
         type    = "diagram";
         diagram = "diagram";
         l << name << type << diagram;  
     }    
     else{ // creating element in the database
         createElementScriptsExec(vals, fields);
-        name    = vals.at(1);
-        type    = vals.at(2);
-        diagram = vals.at(0);
-        status  = vals.at(vals.size()-1);
-        l << name << type << diagram << status;
-        if ( type != "eP2N" ){
-            x  = vals.at(vals.size()-3);
-            y  = vals.at(vals.size()-2);
-            l << x << y;
-        }
+        name    = vals.at(0);
+        type    = vals.at(1);
+        diagram = vals.at(2);
+        x       = vals.at(3);
+        y       = vals.at(4);
+        status  = vals.at(5);
+        l << name << type << diagram << status << x << y;
         for (int i=3; i<vals.size(); i++)
             l << vals.at(i);
     }    
@@ -467,8 +468,8 @@ dbg;
     }
    
     if (type == "eP2N"){
-        QString beginning = vals.at(3);
-        QString ending    = vals.at(4);
+        QString beginning = vals.at(6);
+        QString ending    = vals.at(7);
         child->setEnds(beginning, ending);
     }
     

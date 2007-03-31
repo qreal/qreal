@@ -199,7 +199,7 @@ void ObjectExplorerModel::updateData(const QModelIndex &index, QVariant value){
 dbg;
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
     rootItem->getChild(item->getType())->getChild(item->getName())->setData(1, value.toString());
-  qDebug() << "oem: name changed to " << value.toString();
+//  qDebug() << "oem: name changed to " << value.toString();
     emit dataChanged(index, index);
 }
 
@@ -207,14 +207,16 @@ void ObjectExplorerModel::addElem( QStringList vals ){
 dbg;
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
-    QString name    = vals.at(1);
-    QString type    = vals.at(2);
-    QString diagram = vals.at(0);
+    QString name    = vals.at(0);
+    QString type    = vals.at(1);
+    QString diagram = vals.at(2);
+    QString x       = vals.at(3);
+    QString y       = vals.at(4);
     int uuid        = vals.at(vals.size()-1).toInt();
 
     TreeItem *par   = rootItem->getChild(type); 
     QStringList l;
-    l << QString::number(uuid) << name << type << diagram;
+    l << QString::number(uuid) << name << type << diagram << x << y;
     TreeItem *child = new TreeItem(l, objects, par, db);
     par->addChild(child);
 
@@ -225,8 +227,8 @@ dbg;
 void ObjectExplorerModel::removeElem( QStringList vals ){
 dbg;
     QString name    = vals.at(0);
-    QString type    = vals.at(2);
-    QString diagram = vals.at(1);
+    QString type    = vals.at(1);
+    QString diagram = vals.at(2);
 
     int pos = rootItem->getChild(type)->getChild(name)->row(); 
     beginRemoveRows(QModelIndex(), pos, pos);

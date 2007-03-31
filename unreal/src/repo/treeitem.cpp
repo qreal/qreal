@@ -113,8 +113,8 @@ dbg;
 
 void TreeItem::setEnds( QString b, QString e){
 dbg;
-    values.replace(4, b); // beginsWith
-    values.replace(5, e); // endsWith    
+    values.replace(7, b); // beginsWith
+    values.replace(8, e); // endsWith    
 }
 
 QVariant TreeItem::data( int i ) const { 
