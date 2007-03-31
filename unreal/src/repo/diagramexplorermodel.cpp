@@ -90,8 +90,8 @@ dbg;
     q1 = db.exec(tmp);
     while(q1.next()){           // fetching diagram names
         QString tableName = q1.value(q1.record().indexOf("name")).toString();    
-        QString statusName = q1.value(q1.record().indexOf("uuid")).toString();    
-        int id = q1.value(q1.record().indexOf("status")).toInt();
+        QString statusName = q1.value(q1.record().indexOf("status")).toString();    
+        int id = q1.value(q1.record().indexOf("uuid")).toInt();
         if (maxID < id)
             maxID = id;
         l.clear(); 
@@ -393,20 +393,20 @@ dbg;
 void DiagramExplorerModel::insert(bool isElement, QString fields, QStringList values){
 dbg;
    
-
-    QModelIndex index;
+    QModelIndex index = QModelIndex();
     TreeItem* par; 
 
     getNextID();
     values << QString::number(getID());
 
-    if (isElement)
-        par = rootItem->getChild(values.at(2));
-    else
-        par = rootItem;
-qDebug() << par;         
-    index = createIndex( par->row(), 0, (void*) par );
-    
+    if (!values.at(2).isEmpty()){
+        if (isElement)
+            par = rootItem->getChild(values.at(2));
+        else
+            par = rootItem;
+        index = createIndex( par->row(), 0, (void*) par );
+    }        
+        
     if (!insertRows(rowCount(index), 1, fields, values, index))
         qDebug() << "cannot create new row"; 
 
@@ -419,7 +419,9 @@ qDebug() << par;
 
 bool  DiagramExplorerModel::insertRows(int position, int rows, QString fields, QStringList vals, const QModelIndex &parent){
 dbg;
-    beginInsertRows(parent, position, position + rows - 1);
+    
+    if (!vals.at(2).isEmpty()) 
+        beginInsertRows(parent, position, position + rows - 1);
     
     QString name;
     QString type;
@@ -452,35 +454,41 @@ dbg;
         for (int i=3; i<vals.size(); i++)
             l << vals.at(i);
     }    
-    
-    TreeItem *par;
-    if(parent.isValid())
-        par = static_cast<TreeItem*>(parent.internalPointer());
-    else 
-        par = 0;     
-        
-    TreeItem *child = new TreeItem(l, diagrams, par, db);
-    child->setID(getID());
-  
+
     if( fields == ""){
         QString tmp = "select * from " + name;
         diagrams->insert(name, tmp);
     }
-   
-    if (type == "eP2N"){
-        QString beginning = vals.at(6);
-        QString ending    = vals.at(7);
-        child->setEnds(beginning, ending);
-    }
     
-    if (par)
-        par->addChild(child);
+    if(!diagram.isEmpty()){
 
-    if( elements->contains(getID()))
-        QMessageBox::warning(0, tr("mmmm..."), tr("something weird with IDs..."));
-    elements->insert(getID(), child);
+        TreeItem *par;
+        if(parent.isValid())
+            par = static_cast<TreeItem*>(parent.internalPointer());
+        else 
+            par = 0;     
     
-	endInsertRows();
+    
+        TreeItem *child = new TreeItem(l, diagrams, par, db);
+        child->setID(getID());
+  
+   
+        if (type == "eP2N"){
+            QString beginning = vals.at(6);
+            QString ending    = vals.at(7);
+            child->setEnds(beginning, ending);
+        }
+    
+        if (par)
+            par->addChild(child);
+
+        if( elements->contains(getID()))
+            QMessageBox::warning(0, tr("mmmm..."), tr("something weird with IDs..."));
+        elements->insert(getID(), child);
+    }
+    if(!vals.at(2).isEmpty())
+	    endInsertRows();
+
 	return true;
 }
 
@@ -536,7 +544,7 @@ int DiagramExplorerModel::elementExists( QString name, QString , QString diagram
 dbg;
 TreeItem* par = rootItem->getChild(diagram);
     if (!par){
-        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
+        QMessageBox::critical(0, QObject::tr("dem error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
         return -1;
     }   
     TreeItem *child = par->getChild(name);

@@ -26,7 +26,7 @@ class PropertyEditorModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    PropertyEditorModel(QSqlDatabase&, DiagramExplorerModel*, QObject *parent = 0);
+    PropertyEditorModel(QSqlDatabase&, ObjectExplorerModel*, DiagramExplorerModel*, QObject *parent = 0);
     ~PropertyEditorModel();
 
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
@@ -50,7 +50,9 @@ public slots:
 private:          
     QModelIndex current;
     DiagramExplorerModel *dem;
+    ObjectExplorerModel *oem;
     TreeItem *rootd;
+    TreeItem *rooto;
     void rescan( const QModelIndex& ); // DO NOT USE IT OUTSIDE THE CONSTRUCTOR!! YOU GONNA BURN IN HELL FOR THAT!
     QSqlDatabase db;
     QStringList fields;

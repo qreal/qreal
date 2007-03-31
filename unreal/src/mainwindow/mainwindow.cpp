@@ -78,7 +78,7 @@ dbg;
 
     connect(model2, SIGNAL(diagramNameChanged()), this, SLOT(refreshDiagrams()));
 
-    propModel = new PropertyEditorModel(db, model2);
+    propModel = new PropertyEditorModel(db, model1, model2);
     
     table = new QTableView();
     table->setModel(propModel);
@@ -404,7 +404,7 @@ void MainWindow::addDiagram(){
             diagramsMenu->addAction(diagramsActList.at(i));
         }    
         QStringList l;
-        l << name << status;
+        l << name << status << "diagram";
         model2->insert(false, "", l);
         diagramsList << name;
         setCurrentDiagram(name);
@@ -423,14 +423,18 @@ dbg;
         QString stat = dialog.eStatus->text();
         QString y    = dialog.eY->text();
         QString x    = dialog.eX->text();
-       
-        if( model2->elementExists(name, type, curDiagram) <= 0 )
+        QString dgr  = dialog.eDiagram->text();
+    
+        if(!diagramsList.contains(dgr))
+            dgr = "";
+
+        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr) <= 0 )
             return;
             
         QList<QString> list;                
         QString fields;
         
-        list << name << type << curDiagram << x << y << stat << desc << prio << source;
+        list << name << type << dgr << x << y << stat << desc << prio << source;
         fields = "uuid, name, description, priority, source, status, diagram";
         
         model2->insert(true, fields, list);
@@ -485,14 +489,18 @@ dbg;
         QString to   = dialog.eTo->text();
         QString stat = dialog.eStat->text();
         QString type = "eP2N";
-       
-       if( model2->elementExists(name, type, curDiagram) <= 0 )
+        QString dgr  = dialog.eDiagram->text();
+      
+        if(!diagramsList.contains(dgr))
+            dgr = "";
+ 
+        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr) <= 0 )
             return;
  
         QList<QString> list;                
         QString fields;
         
-        list << name << type << curDiagram << "0" << "0" << stat << from << to;
+        list << name << type << dgr << "0" << "0" << stat << from << to;
         fields = "uuid, name, beginsWith, endsWith, status, diagram";
         
         model2->insert(true, fields, list);
@@ -513,8 +521,8 @@ dbg;
 
 void MainWindow::adjustPieChart(){
 return;
-/*dbg;
-    if(currentDiagram() != "")
+dbg;
+/*    if(currentDiagram() != "")
         pieChart->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     else 
         pieChart->setRootIndex(QModelIndex());

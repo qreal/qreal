@@ -14,15 +14,19 @@
 #include "dbg.h"
 
 
-PropertyEditorModel::PropertyEditorModel(QSqlDatabase &_db, DiagramExplorerModel *_dem, QObject *parent) : QAbstractTableModel(parent) {
+PropertyEditorModel::PropertyEditorModel(QSqlDatabase &_db, ObjectExplorerModel *_oem, DiagramExplorerModel *_dem, QObject *parent) : QAbstractTableModel(parent) {
 dbg;
     dem = _dem;
+    oem = _oem;
     db = _db;
     diagram = "";
     name = "";
-    rootd = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer()); 
+    rootd = static_cast<TreeItem*>(dem->index(0,0,QModelIndex()).internalPointer());
+    rooto = static_cast<TreeItem*>(oem->index(0,0,QModelIndex()).internalPointer());
     if(rootd)
         rootd = rootd->parent();
+    if(rooto)
+        rooto = rooto->parent();
 }
 
 void PropertyEditorModel::rescan(const QModelIndex &index ){
@@ -204,8 +208,10 @@ dbg;
 
 int PropertyEditorModel::elementExists( QString name, QString , QString diagram){
 dbg;
-    qDebug() << "pem elexists: par: " << rootd;
-    qDebug() << "pem elexists: par: " << rootd->getName();
+//    qDebug() << "pem elexists: par: " << rootd;
+//    qDebug() << "pem elexists: par: " << rootd->getName();
+    if (diagram.isEmpty())
+        return 1;
     TreeItem* par = rootd->getChild(diagram);
     if (!par){
         QMessageBox::critical(0, QObject::tr("error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));

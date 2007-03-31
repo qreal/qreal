@@ -227,8 +227,9 @@ dbg;
 void ObjectExplorerModel::removeElem( QStringList vals ){
 dbg;
     QString name    = vals.at(0);
-    QString type    = vals.at(1);
-    QString diagram = vals.at(2);
+    QString type    = vals.at(2);
+    QString diagram = vals.at(1);
+qDebug() << vals;
 
     int pos = rootItem->getChild(type)->getChild(name)->row(); 
     beginRemoveRows(QModelIndex(), pos, pos);

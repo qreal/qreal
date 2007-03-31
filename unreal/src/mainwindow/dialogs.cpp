@@ -48,6 +48,7 @@ AddDiagramDialog::AddDiagramDialog(QWidget *parent) : QDialog(parent) {
 AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
 //dbg;
     lName = new QLabel(tr("name: "));
+    lDiagram = new QLabel(tr("diagaram: "));
     lDescription = new QLabel(tr("desc: "));
     lPriority = new QLabel(tr("prior: "));
     lSource = new QLabel("source: ");
@@ -55,6 +56,7 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     lX = new QLabel(tr("x: "));
     lY = new QLabel(tr("x: "));
     eName = new QLineEdit("element 1");
+    eDiagram = new QLineEdit("req_diagram_1");
     eDescription = new QLineEdit("desc 1");
     ePriority = new QLineEdit("1");
     eSource = new QLineEdit("source 1");
@@ -70,6 +72,9 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(lName);
     h1->addWidget(eName);
+    QHBoxLayout *h11 = new QHBoxLayout;
+    h11->addWidget(lDiagram);
+    h11->addWidget(eDiagram);
     QHBoxLayout *h2 = new QHBoxLayout;
     h2->addWidget(lDescription);
     h2->addWidget(eDescription);
@@ -93,6 +98,7 @@ AddElementDialog::AddElementDialog(QWidget *parent) : QDialog(parent) {
     h6->addWidget(closeButton);               
     QVBoxLayout *v = new QVBoxLayout;
     v->addLayout(h1);
+    v->addLayout(h11);
     v->addLayout(h2);
     v->addLayout(h3);
     v->addLayout(h4);
@@ -213,6 +219,8 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
 //dbg;
     lName = new QLabel(tr("name: "));
     eName = new QLineEdit("link 1");
+    lDiagram = new QLabel(tr("diagram: "));
+    eDiagram = new QLineEdit(tr("req_diagram_1"));
     lFrom = new QLabel(tr("from: "));
     eFrom = new QLineEdit("");
     lStat = new QLabel(tr("status:"));
@@ -228,6 +236,9 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(lName);
     h1->addWidget(eName);
+    QHBoxLayout *h11 = new QHBoxLayout;
+    h11->addWidget(lDiagram);
+    h11->addWidget(eDiagram);
     QHBoxLayout *h2 = new QHBoxLayout;
     h2->addWidget(lFrom);
     h2->addWidget(eFrom);
@@ -242,6 +253,7 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     h6->addWidget(closeButton);     
     QVBoxLayout *v = new QVBoxLayout;
     v->addLayout(h1);
+    v->addLayout(h11);
     v->addLayout(h2);
     v->addLayout(h3);
     v->addLayout(h4);
@@ -249,6 +261,43 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
     setLayout(v);
     
     setWindowTitle(tr("add link")); 
+
+}
+
+MoveDialog::MoveDialog(QWidget *parent) : QDialog(parent) {
+//dbg;
+    lName = new QLabel(tr("name: "));
+    eName = new QLineEdit("aaa");
+    lFrom = new QLabel(tr("from: "));
+    eFrom = new QLineEdit("");
+    lTo   = new QLabel(tr("to:   "));
+    eTo   = new QLineEdit("req_diagram_1");
+    okButton = new QPushButton(tr("ok"));
+    closeButton = new QPushButton(tr("close"));
+    
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(reject()));
+    
+    QHBoxLayout *h1 = new QHBoxLayout;
+    h1->addWidget(lName);
+    h1->addWidget(eName);
+    QHBoxLayout *h2 = new QHBoxLayout;
+    h2->addWidget(lFrom);
+    h2->addWidget(eFrom);
+    QHBoxLayout *h3 = new QHBoxLayout;
+    h3->addWidget(lTo);
+    h3->addWidget(eTo);
+    QHBoxLayout *h6 = new QHBoxLayout;
+    h6->addWidget(okButton);    
+    h6->addWidget(closeButton);     
+    QVBoxLayout *v = new QVBoxLayout;
+    v->addLayout(h1);
+    v->addLayout(h2);
+    v->addLayout(h3);
+    v->addLayout(h6);
+    setLayout(v);
+    
+    setWindowTitle(tr("move")); 
 
 }
 

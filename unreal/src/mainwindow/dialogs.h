@@ -28,6 +28,7 @@ public:
 
 
     QLabel *lName;
+    QLabel *lDiagram;
     QLabel *lDescription;
     QLabel *lPriority;
     QLabel *lSource;
@@ -35,6 +36,7 @@ public:
     QLabel *lX;
     QLabel *lY;
     QLineEdit *eName;
+    QLineEdit *eDiagram;
     QLineEdit *eDescription;
     QLineEdit *ePriority;
     QLineEdit *eSource;
@@ -108,13 +110,28 @@ public:
     QLabel *lTo;
     QLabel *lName;
     QLabel *lStat;
+    QLabel *lDiagram;
     QLineEdit *eFrom;
     QLineEdit *eTo;
     QLineEdit *eName;
     QLineEdit *eStat;
+    QLineEdit *eDiagram;
     QPushButton *okButton;
     QPushButton *closeButton;
 };
 
+class MoveDialog : public QDialog{
+    Q_OBJECT
+public:
+    MoveDialog(QWidget *parent = 0);
 
+    QLabel *lFrom;
+    QLabel *lTo;
+    QLabel *lName;
+    QLineEdit *eFrom;
+    QLineEdit *eTo;
+    QLineEdit *eName;
+    QPushButton *okButton;
+    QPushButton *closeButton;
+};
 #endif
