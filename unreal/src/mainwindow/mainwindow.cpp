@@ -113,7 +113,7 @@ dbg;
 
     setWindowTitle(tr("unREAL"));
 
-    resize(800, 600);  
+    resize(1024, 800);  
     
     count++;    
 }
@@ -270,6 +270,9 @@ dbg;
 
     addLinkAct = new QAction(tr("Add link"), this);
     connect(addLinkAct, SIGNAL(triggered()), this, SLOT(addLink()));
+    
+    moveAct = new QAction(tr("Move"), this);
+    connect(moveAct, SIGNAL(triggered()), this, SLOT(move()));
 
 }
 
@@ -298,6 +301,8 @@ void MainWindow::deleteActions()
     delete clearAct;
     optionsAct->disconnect();
     delete optionsAct;
+    moveAct->disconnect();
+    delete moveAct;
 }
 
 void MainWindow::createMenus()
@@ -340,6 +345,7 @@ void MainWindow::createToolBars()
     diagramsToolBar = addToolBar(tr("diagrams"));
     diagramsToolBar->addAction(addReqDiagramAct);
     diagramsToolBar->addAction(addLinkAct);
+    diagramsToolBar->addAction(moveAct);
     
     if (dbOpened){
         reqDiagramToolBar = addToolBar(tr("Requirements Diagram"));
@@ -428,7 +434,7 @@ dbg;
         if(!diagramsList.contains(dgr))
             dgr = "";
 
-        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr) <= 0 )
+        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr, true) <= 0 )
             return;
             
         QList<QString> list;                
@@ -447,10 +453,11 @@ void MainWindow::removeElement(){
 dbg;    
     RemoveElementDialog dialog(this);
     if(dialog.exec()){
-        QString name    = dialog.eName->text().section('/',1,1);
-        QString diagram = dialog.eName->text().section('/',0,0);
+        QString name    = dialog.eName->text();
+        QString type    = dialog.eType->text();
+        QString diagram = dialog.eDgr->text();
         QStringList list;
-        list << name << diagram; 
+        list << name << type << diagram; 
         model2->remove(true, list);
         adjustPieChart();
     }
@@ -468,7 +475,7 @@ dbg;
         }
     
         QStringList l;
-        l << name;
+        l << name << "trash" << "trash";
         model2->remove(false, l);
 
         diagramsList.removeAt(diagramsList.indexOf(name));
@@ -494,7 +501,7 @@ dbg;
         if(!diagramsList.contains(dgr))
             dgr = "";
  
-        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr) <= 0 )
+        if( !dgr.isEmpty() && model2->elementExists(name, type, dgr, true) <= 0 )
             return;
  
         QList<QString> list;                
@@ -567,4 +574,33 @@ dbg;
         clearAll();
         runREAL();
     }
+}
+
+void MainWindow::move(){
+dbg;
+    MoveDialog dialog(this);
+    QString name;
+    QString type;
+    QString from;
+    QString to;
+
+    if(dialog.exec()){
+        name = dialog.eName->text();
+        type = dialog.eType->text();
+        from = dialog.eFrom->text();
+        to   = dialog.eTo->text();
+
+/*        if( model2->elementExists(name, type, from, false) <= 0 )
+            return;
+  */  
+        if(!diagramsList.contains(to))
+            to = "";
+
+        if( !to.isEmpty() && model2->elementExists(name, type, to, true) <= 0 )
+            return;
+    
+        QStringList l;
+        l << name << type << from << to;
+        model2->move(l);
+    }    
 }

@@ -53,6 +53,7 @@ public:
     void setY( int y ) { values.replace(5, QString(y)); }
     
     void addChild( TreeItem* );  
+    void removeChild ( int );
     void removeChild ( QString );
     
     TreeItem *parent() { return parentItem; }

@@ -53,6 +53,7 @@ private slots:
     void setCurrentDiagram(const QString&);
     void setRootDiagram( QString );
     void setFocus(QModelIndex);  
+    void move();
     void options();
     void refreshDiagrams();
     
@@ -102,6 +103,7 @@ private:
     QAction *addReqDiagramAct;
     QAction *removeDiagramAct;
     QAction *removeElementAct;
+    QAction *moveAct;
     QAction *debugAct;
     QAction *useSQLiteAct;
     QAction *useMySQLAct;

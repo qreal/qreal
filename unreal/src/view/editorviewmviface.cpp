@@ -28,7 +28,7 @@ QRect EditorViewMViface::visualRect(const QModelIndex &index) const
 void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
 { dbg;
     int uuid = index.sibling(0,index.row()).data().toInt();
-    qDebug() << "scroll to" << uuid;
+//    qDebug() << "scroll to" << uuid;
 }
 
 QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
@@ -83,7 +83,7 @@ void EditorViewMViface::reset()
 
 static void dumpStuff( const QModelIndex & idx )
 {
-    qDebug() << idx << ":"
+/*    qDebug() << idx << ":"
 	    << idx.sibling(idx.row(),0).data().toString()
 	    << idx.sibling(idx.row(),1).data().toString()
 	    << idx.sibling(idx.row(),2).data().toString()
@@ -91,12 +91,12 @@ static void dumpStuff( const QModelIndex & idx )
 	    << idx.sibling(idx.row(),4).data().toString()
 	    << idx.sibling(idx.row(),5).data().toString()
 	    << idx.sibling(idx.row(),6).data().toString()
-	    << idx.sibling(idx.row(),7).data().toString();
+	    << idx.sibling(idx.row(),7).data().toString();*/
 }
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 { dbg;
-	qDebug() << "rowsInserted" << parent;
+	//qDebug() << "rowsInserted" << parent;
         for (int row = start; row <= end; ++row) {
             QPersistentModelIndex current = model()->index(row, 0, parent);
 	    dumpStuff(current);
@@ -125,7 +125,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 { dbg;
-        qDebug() << "removed";
+        //qDebug() << "removed";
         for (int row = start; row <= end; ++row) {
             int uuid = model()->index(row, 0, parent).data().toInt();
 	    

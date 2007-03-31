@@ -143,7 +143,13 @@ RemoveDiagramDialog::RemoveDiagramDialog(QWidget *parent) : QDialog(parent) {
 RemoveElementDialog::RemoveElementDialog(QWidget *parent) : QDialog(parent) {
 //dbg;    
     lName = new QLabel(tr("name: "));
-    eName = new QLineEdit("req_diagram_1/element 1");
+    eName = new QLineEdit("element 1");
+    lType = new QLabel(tr("type: "));
+    eType = new QLineEdit("nFeatured");
+    lDgr = new QLabel(tr("diagram: "));
+    eDgr = new QLineEdit("req_diagram_1");
+    
+
     okButton = new QPushButton(tr("ok"));
     closeButton = new QPushButton(tr("close"));
     
@@ -153,12 +159,20 @@ RemoveElementDialog::RemoveElementDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(lName);
     h1->addWidget(eName);
+    QHBoxLayout *h2 = new QHBoxLayout;
+    h2->addWidget(lType);
+    h2->addWidget(eType);
+    QHBoxLayout *h3 = new QHBoxLayout;
+    h3->addWidget(lDgr);
+    h3->addWidget(eDgr);
     QHBoxLayout *h6 = new QHBoxLayout;
     h6->addWidget(okButton);    
     h6->addWidget(closeButton);     
     
     QVBoxLayout *v = new QVBoxLayout;
     v->addLayout(h1);
+    v->addLayout(h2);
+    v->addLayout(h3);
     v->addLayout(h6);
     
     setLayout(v);
@@ -267,7 +281,9 @@ AddLinkDialog::AddLinkDialog(QWidget *parent) : QDialog(parent) {
 MoveDialog::MoveDialog(QWidget *parent) : QDialog(parent) {
 //dbg;
     lName = new QLabel(tr("name: "));
-    eName = new QLineEdit("aaa");
+    eName = new QLineEdit("element 1");
+    lType = new QLabel("type: ");
+    eType = new QLineEdit("nFeatured");
     lFrom = new QLabel(tr("from: "));
     eFrom = new QLineEdit("");
     lTo   = new QLabel(tr("to:   "));
@@ -281,6 +297,9 @@ MoveDialog::MoveDialog(QWidget *parent) : QDialog(parent) {
     QHBoxLayout *h1 = new QHBoxLayout;
     h1->addWidget(lName);
     h1->addWidget(eName);
+    QHBoxLayout *h11 = new QHBoxLayout;
+    h11->addWidget(lType);
+    h11->addWidget(eType);
     QHBoxLayout *h2 = new QHBoxLayout;
     h2->addWidget(lFrom);
     h2->addWidget(eFrom);
@@ -292,6 +311,7 @@ MoveDialog::MoveDialog(QWidget *parent) : QDialog(parent) {
     h6->addWidget(closeButton);     
     QVBoxLayout *v = new QVBoxLayout;
     v->addLayout(h1);
+    v->addLayout(h11);
     v->addLayout(h2);
     v->addLayout(h3);
     v->addLayout(h6);

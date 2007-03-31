@@ -118,15 +118,15 @@ dbg;
                 maxID = curID;
             l.clear();
             l << QString::number(curID) << valueName << typeName << tableName << x << y << status;
-            qDebug() << l;
             q2 = db.exec("select * from " + typeName + " where name='" + valueName + "'");
             if (!q2.next()){
                 qDebug() << "there's no such element in the db, sorry...";
                 return;
             }    
-            for (int i=2; i<q2.record().count()-1; i++){
+            for (int i=3; i<q2.record().count()-1; i++){
                 l << q2.value(i).toString();
             }    
+            qDebug() << "DEM rescan(): " << l;
             value = new TreeItem(l, diagrams, table, db);
             value->setID(curID);
             table->addChild(value);
@@ -170,7 +170,7 @@ dbg;
 //    qDebug() << col << fld;
 
             if( col == 1 ){
-                if ( elementExists( value.toString(), item->getType(), item->getDiagramName()) <= 0)
+                if ( elementExists( value.toString(), item->getType(), item->getDiagramName(), true) <= 0)
                     return false;
     
 
@@ -181,11 +181,11 @@ dbg;
     
             db.exec("update "+item->getDiagramName()+" set "+fld+"='"+value.toString()+"'"
                                                                 " where name='" + item->getName() + "'");
-            qDebug() << "update "+item->getDiagramName()+" set "+fld+"='"+value.toString()+"'"
+            //qDebug() << "update "+item->getDiagramName()+" set "+fld+"='"+value.toString()+"'"
                                                                 " where name='" + item->getName() + "'";
             db.exec("update " + item->getType() + " set "+fld+"='" + value.toString() + "'"
                                                                 " where name='" + item->getName() + "'");
-            qDebug() << "update " + item->getType() + " set "+fld+"='" + value.toString() + "'"
+            //qDebug() << "update " + item->getType() + " set "+fld+"='" + value.toString() + "'"
                                                                 " where name='" + item->getName() + "'";
             item->setData(col, value.toString());
         }
@@ -357,11 +357,14 @@ dbg;
 void DiagramExplorerModel::removeElementScriptsExec( QStringList vals ){
 dbg;   
     QString name    = vals.at(0);
-    QString diagram = vals.at(1);
-    QString type = rootItem->getChild(diagram)->getChild(name)->getType();
+    QString type    = vals.at(1);
+    QString diagram = vals.at(2);
+
+//    QString type = rootItem->getChild(diagram)->getChild(name)->getType();
     QString tmp = "delete from %1 where name='%2'";
     db.exec(tmp.arg(diagram).arg(name));
-    db.exec(tmp.arg(type).arg(name));
+    tmp = "delete from %1 where name='%2' and diagram='%3'";
+    db.exec(tmp.arg(type).arg(name).arg(diagram));
 }    
 
 QModelIndex DiagramExplorerModel::getDiagramIndex( QString name ){
@@ -494,17 +497,20 @@ dbg;
 
 void DiagramExplorerModel::remove(bool isElement, QStringList values){
 dbg;
-    QModelIndex index;
-    TreeItem* par; 
-    if (isElement){
-        par = rootItem->getChild(values.at(1));
-        values << par->getChild(values.at(0))->getType();
-    } else
-        par = rootItem;
-    
-    index = createIndex( par->row(), 0, (void*) par );
-       
-    if (!removeRows(par->getChild(values.at(0))->row(), 1, isElement, values, index))
+    QModelIndex index = QModelIndex();
+    TreeItem* par;
+    int row = -10;
+
+    if (!values.at(2).isEmpty()){
+        if (isElement)
+            par = rootItem->getChild(values.at(2));
+        else
+            par = rootItem;
+        index = createIndex( par->row(), 0, (void*) par );
+        row = par->getChild(values.at(0))->row();
+    }    
+        
+    if (!removeRows(row, 1, isElement, values, index))
         qDebug() << "cannot remove row"; 
 
     if (isElement)
@@ -518,38 +524,45 @@ dbg;
 
 bool  DiagramExplorerModel::removeRows(int position, int rows, bool isElement, QStringList vals, const QModelIndex &parent){
 dbg; 
-    beginRemoveRows(parent, position, position + rows - 1);
+    if( !vals.at(2).isEmpty() )
+        beginRemoveRows(parent, position, position + rows - 1);
+
     if ( !isElement ) // removing diagram from the database
         removeDiagramScriptsExec(vals.at(0));
     else // removing element from the database
         removeElementScriptsExec(vals);
     
-    TreeItem *par;
-    if(parent.isValid())
-        par = static_cast<TreeItem*>(parent.internalPointer());
-    else 
-        return false;
+    if(!vals.at(2).isEmpty()){
+        TreeItem *par;
+        if(parent.isValid())
+            par = static_cast<TreeItem*>(parent.internalPointer());
+        else 
+            return false;
     
-    QString name = vals.at(0);
-    par->removeChild(name);
-    
+        QString name = vals.at(0);
+        par->removeChild(name);
+    }
+
     if( !isElement )
-        diagrams->remove(name);
+        diagrams->remove(vals.at(0));
     
-    endRemoveRows();
+    if( !vals.at(2).isEmpty() )
+        endRemoveRows();
     return true;
 }
 
-int DiagramExplorerModel::elementExists( QString name, QString , QString diagram){
+int DiagramExplorerModel::elementExists( QString name, QString , QString diagram, bool verbose){
 dbg;
 TreeItem* par = rootItem->getChild(diagram);
     if (!par){
-        QMessageBox::critical(0, QObject::tr("dem error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
+        if (verbose)
+            QMessageBox::critical(0, QObject::tr("dem error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
         return -1;
     }   
     TreeItem *child = par->getChild(name);
     if(child){
-        QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
+        if (verbose)
+            QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
         return 0;
     }
     return 1;
@@ -563,4 +576,54 @@ dbg;
         return 1;
     }   
     return 0;
+}
+
+void DiagramExplorerModel::move( QStringList vals ){
+dbg;
+
+    QString name = vals.at(0);
+    QString type = vals.at(1);
+    QString from = vals.at(2);
+    QString to = vals.at(3);
+
+    QStringList l;
+    QString flds;
+    QSqlQuery q;
+
+    l << name << type << to << "0" << "0";
+
+    if( !from.isEmpty() ){
+        TreeItem* it = rootItem->getChild(from)->getChild(name);
+        for( int i=6; i<it->columnCount(); i++)
+            l << it->data(i).toString();
+    }
+    else{
+        QString tmp = "select * from %1 where name='%2' and diagram=''";
+        tmp = tmp.arg(type).arg(name);
+        q = db.exec(tmp);
+        q.next();
+        for (int i=2; i<q.record().count()-1; i++)
+            l << q.value(i).toString();
+            
+    } 
+    if (type == "eP2N")
+        flds = "uuid, name, beginsWith, endsWith, status, diagram";
+    else
+        flds = "uuid, name, description, priority, source, status, diagram";
+
+qDebug() << "list: "<< l;
+qDebug() << "flds: " << flds;
+
+    remove(true, vals);
+    insert(true, flds, l);
+
+  //  moveScriptsExec(vals, l);
+}
+
+void DiagramExplorerModel::moveScriptsExec(QStringList vals, QStringList l){
+dbg;
+    
+    //QString tmp = ""
+
+
 }

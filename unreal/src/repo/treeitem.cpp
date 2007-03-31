@@ -111,6 +111,12 @@ dbg;
     }
 }
 
+void TreeItem::removeChild(int pos){
+dbg;
+    delete childItems.at(pos);
+    childItems.removeAt(pos);
+}
+
 void TreeItem::setEnds( QString b, QString e){
 dbg;
     values.replace(7, b); // beginsWith

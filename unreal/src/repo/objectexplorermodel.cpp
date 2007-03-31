@@ -213,10 +213,10 @@ dbg;
     QString x       = vals.at(3);
     QString y       = vals.at(4);
     int uuid        = vals.at(vals.size()-1).toInt();
-
     TreeItem *par   = rootItem->getChild(type); 
     QStringList l;
     l << QString::number(uuid) << name << type << diagram << x << y;
+
     TreeItem *child = new TreeItem(l, objects, par, db);
     par->addChild(child);
 
@@ -227,14 +227,21 @@ dbg;
 void ObjectExplorerModel::removeElem( QStringList vals ){
 dbg;
     QString name    = vals.at(0);
-    QString type    = vals.at(2);
-    QString diagram = vals.at(1);
+    QString type    = vals.at(1);
+    QString diagram = vals.at(2);
 qDebug() << vals;
 
-    int pos = rootItem->getChild(type)->getChild(name)->row(); 
-    beginRemoveRows(QModelIndex(), pos, pos);
+    int pos; 
+    TreeItem* par = rootItem->getChild(type);
 
-    rootItem->getChild(type)->removeChild(name);
+    for(int i=0; i<par->childCount(); i++)
+        if(par->getChild(i)->getName() == name && par->getChild(i)->getDiagramName() == diagram){
+            pos = i;
+            break;
+        }
+    beginRemoveRows(QModelIndex(), pos, pos);
+         
+    rootItem->getChild(type)->removeChild(pos);
 
     endInsertRows();
 }

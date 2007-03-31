@@ -79,7 +79,11 @@ public:
     RemoveElementDialog(QWidget *parent = 0);
 
     QLabel *lName;    
+    QLabel *lType;
+    QLabel *lDgr;
     QLineEdit *eName;    
+    QLineEdit *eType;
+    QLineEdit *eDgr;
     QPushButton *okButton;
     QPushButton *closeButton;
 };
@@ -128,6 +132,8 @@ public:
     QLabel *lFrom;
     QLabel *lTo;
     QLabel *lName;
+    QLabel *lType;
+    QLineEdit *eType;
     QLineEdit *eFrom;
     QLineEdit *eTo;
     QLineEdit *eName;

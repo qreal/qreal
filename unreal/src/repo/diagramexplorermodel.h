@@ -41,11 +41,12 @@ public:
  
     void insert( bool isElement, QString, QStringList );
     void remove( bool isElement, QStringList );
+    void move ( QStringList );
     QModelIndex getDiagramIndex( QString );
     QModelIndex getBeginning( QModelIndex& );
     QModelIndex getEnding( QModelIndex& );
     QStringList getDiagramsList() const { return diagramsList; }
-    int elementExists( QString, QString, QString );    
+    int elementExists( QString, QString, QString, bool );    
     int diagramExists( QString );    
     
 signals:    
@@ -74,6 +75,7 @@ private:
     void removeDiagramScriptsExec( const QString& );
     void createElementScriptsExec( QStringList , QString );
     void removeElementScriptsExec( QStringList );
+    void moveScriptsExec( QStringList, QStringList );
     QModelIndex getIndex( QString );
     int getID();
     int getNextID();
