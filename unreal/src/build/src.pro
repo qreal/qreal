@@ -43,6 +43,7 @@ HEADERS +=  ../editors/editor.h \
 	    ../umllib/uml_edgeelement.h \
 	    ../umllib/uml_nodeelement.h \
 	    ../umllib/uml_glamour_class.h \
+	    ../umllib/uml_guiobjectfactory.h \
 	    ../view/editorview.h \
 	    ../view/editorviewscene.h \
 	    ../view/editorviewmviface.h
@@ -60,6 +61,7 @@ SOURCES +=  ../editors/editor.cpp \
 	    ../umllib/uml_edgeelement.cpp \
 	    ../umllib/uml_nodeelement.cpp \
 	    ../umllib/uml_glamour_class.cpp \
+	    ../umllib/uml_guiobjectfactory.cpp \
 	    ../view/editorview.cpp \
 	    ../view/editorviewscene.cpp \
 	    ../view/editorviewmviface.cpp

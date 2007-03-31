@@ -28,12 +28,30 @@ void GlamourClass::updateData()
     text += name;
     text += "</b><hr><hr>&nbsp;\n";
     
+    QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
+
+    fields = stuff.split(";"); // boyan ;)
+    
+    foreach (QString str, fields) {
+	text += "<img src=\":/images/kdevclassview/CVpublic_var.png\" />";
+	text += str;
+	text += "<br>\n";
+    }
+            
     text += "</center>";
     
     update();
     
     NodeElement::updateData();
 }
+
+//void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
+//{
+//  QMenu menu;
+//  QAction *removeAction = menu.addAction("Remove");
+//  QAction *markAction = menu.addAction("Mark");
+//  QAction *selectedAction = menu.exec(event->screenPos());
+//}
 
 void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
@@ -46,7 +64,6 @@ void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *styl
 //    painter->drawPath(path);
 //    painter->drawRect(boundingRect());
 
-	
     painter->setBrush(QBrush(QColor(255,255,191,200)));
     painter->drawRect(contentsRect());
 	

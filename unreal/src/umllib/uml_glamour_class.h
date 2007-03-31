@@ -17,8 +17,12 @@ namespace UML {
 	virtual QRectF contentsRect() const;
 	
 	virtual void updateData();
+//    protected:
+//	void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
     private:
 	QString text;
+	
+	QStringList methods, fields;
     };
 };
 

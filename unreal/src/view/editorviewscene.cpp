@@ -2,7 +2,7 @@
 
 #include  "element.h"
 
-#include <QGraphicsSvgItem>
+#include <QGraphicsTextItem>
 #include <QtGui>
 
 
@@ -10,6 +10,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
     : QGraphicsScene(parent)
 {
     setSceneRect (-400,-300,800,600);
+    
+    
 }
 
 void EditorViewScene::clearScene ()
@@ -20,6 +22,12 @@ void EditorViewScene::clearScene ()
             if ( *it )
                     delete *it;
     }
+
+/*    QGraphicsTextItem *t = new QGraphicsTextItem ();
+    t->setTextInteractionFlags(Qt::TextEditable);
+    t->setHtml("<b>FVKK</b>");
+    addItem(t);
+*/
 }
 
 UML::Element *EditorViewScene::getElem(int uuid)

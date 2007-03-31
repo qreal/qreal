@@ -5,10 +5,8 @@
 #include "editorview.h"
 #include "editorviewscene.h"
 
-#include "uml_edgeelement.h"
-#include "uml_nodeelement.h"
-
-#include "uml_glamour_class.h"
+#include "uml_element.h"
+#include "uml_guiobjectfactory.h"
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
     : QAbstractItemView(0)
@@ -80,7 +78,7 @@ void EditorViewMViface::reset()
 
 static void dumpStuff( const QModelIndex & idx )
 {
-/*    qDebug() << idx << ":"
+    qDebug() << idx << ":"
 	    << idx.sibling(idx.row(),0).data().toString()
 	    << idx.sibling(idx.row(),1).data().toString()
 	    << idx.sibling(idx.row(),2).data().toString()
@@ -88,7 +86,11 @@ static void dumpStuff( const QModelIndex & idx )
 	    << idx.sibling(idx.row(),4).data().toString()
 	    << idx.sibling(idx.row(),5).data().toString()
 	    << idx.sibling(idx.row(),6).data().toString()
-	    << idx.sibling(idx.row(),7).data().toString();*/
+	    << idx.sibling(idx.row(),7).data().toString()
+	    << idx.sibling(idx.row(),8).data().toString()
+	    << idx.sibling(idx.row(),9).data().toString()
+	    ;
+	    
 }
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
@@ -96,17 +98,11 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 	//qDebug() << "rowsInserted" << parent;
         for (int row = start; row <= end; ++row) {
             QPersistentModelIndex current = model()->index(row, 0, parent);
-	    dumpStuff(current);
+//	    dumpStuff(current);
             int uuid = model()->index(row, 0, parent).data().toInt();
             QString type = model()->index(row, 2, parent).data().toString();
 
-	    UML::Element *e;
-
-            if (type == "eP2N") {
-			e = new UML::EdgeElement();
-	    } else {
-			e = new UML::GlamourClass();
-	    }
+	    UML::Element *e = UML::GUIObjectFactory(type);
             scene->addItem(e);
             e->setIndex(current);
             items[uuid] = e;
