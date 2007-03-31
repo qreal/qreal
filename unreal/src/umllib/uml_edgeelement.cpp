@@ -156,7 +156,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			srcPoint = src->getPort(portFrom);
     		
 		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),5), e->uuid() );
+			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
 
 		    } else if ( dragState == 2 ) {
 			dst = e;
@@ -165,7 +165,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
                         dstPoint = dst->getPort(portTo);
 
         		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),6), e->uuid() );
+			im->setData(dataIndex.sibling(dataIndex.row(),8), e->uuid() );
 		    }
 		    setFlag(ItemIsMovable, false);
 
@@ -181,7 +181,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    src = 0;
 
 	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    	            im->setData(dataIndex.sibling(dataIndex.row(),5), 0 );
+    	            im->setData(dataIndex.sibling(dataIndex.row(),7), 0 );
         	} else if ( dragState == 2 ) {
 		    if (dst) {
 		        dst->delEdge(this);
@@ -189,7 +189,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
              	    dst = 0;
 
 		    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    	            im->setData(dataIndex.sibling(dataIndex.row(),6), 0 );
+    	            im->setData(dataIndex.sibling(dataIndex.row(),8), 0 );
     	        }
 		if ( ! src && ! dst )
 		        setFlag(ItemIsMovable, true);
@@ -213,8 +213,8 @@ void EdgeElement::adjustLink()
 void EdgeElement::updateData()
 {
     int myrow = dataIndex.row();
-    int uuidFrom = dataIndex.sibling(myrow,5).data().toInt();
-    int uuidTo = dataIndex.sibling(myrow,6).data().toInt();
+    int uuidFrom = dataIndex.sibling(myrow,7).data().toInt();
+    int uuidTo = dataIndex.sibling(myrow,8).data().toInt();
 
     qDebug() << "src" << uuidFrom << "dst" << uuidTo;
     
