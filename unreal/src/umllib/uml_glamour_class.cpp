@@ -26,16 +26,24 @@ void GlamourClass::updateData()
     QString name = dataIndex.sibling(dataIndex.row(),1).data().toString();
     text = "<center><img src=\":/images/kdevclassview/CVclass.png\" /><b>class ";
     text += name;
-    text += "</b><hr><hr>&nbsp;\n";
+    text += "</b><hr>&nbsp;";
     
-    QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
+//    QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
 
-    fields = stuff.split(";"); // boyan ;)
+//    fields = stuff.split(";"); // boyan ;)
+
+    foreach (QString str, methods) {
+	text += "<img src=\":/images/kdevclassview/CVpublic_meth.png\" />";
+	text += str;
+	text += "\n";
+    }
     
+    text += "<hr>&nbsp;";
+
     foreach (QString str, fields) {
 	text += "<img src=\":/images/kdevclassview/CVpublic_var.png\" />";
 	text += str;
-	text += "<br>\n";
+	text += "\n";
     }
             
     text += "</center>";
@@ -45,13 +53,40 @@ void GlamourClass::updateData()
     NodeElement::updateData();
 }
 
-//void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
-//{
-//  QMenu menu;
-//  QAction *removeAction = menu.addAction("Remove");
-//  QAction *markAction = menu.addAction("Mark");
-//  QAction *selectedAction = menu.exec(event->screenPos());
-//}
+void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
+{
+  QMenu menu;
+  
+  QAction *addMethAction = menu.addAction("Add Method");
+  QAction *delMethAction = menu.addAction("Remove Method");
+  
+  QAction *addPropAction = menu.addAction("Add Property");
+  QAction *delPropAction = menu.addAction("Remove Property");
+  
+  if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
+        bool ok;
+
+	if ( selectedAction == addMethAction ) {
+	    QString text = QInputDialog::getText(0, QObject::tr("New Method"), QObject::tr("Method name:"), QLineEdit::Normal, "", &ok);
+	    if (ok && !text.isEmpty())
+	        methods << text;
+	} else if ( selectedAction == delMethAction ) {
+	    QString text = QInputDialog::getItem(0, QObject::tr("Remove Method"), QObject::tr("Method name:"), methods, 0, false, &ok);
+	    if (ok && !text.isEmpty())
+	        methods.removeAll(text);
+        } else if ( selectedAction == addPropAction ) {
+	    QString text = QInputDialog::getText(0, QObject::tr("New Field"), QObject::tr("Field name:"), QLineEdit::Normal, "", &ok);
+	    if (ok && !text.isEmpty())
+	        fields << text;
+	} else if ( selectedAction == delPropAction ) {
+	    QString text = QInputDialog::getItem(0, QObject::tr("Remove Field"), QObject::tr("Field name:"), fields, 0, false, &ok);
+	    if (ok && !text.isEmpty())
+	        fields.removeAll(text);
+        }
+  }
+  
+  updateData();
+}
 
 void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
