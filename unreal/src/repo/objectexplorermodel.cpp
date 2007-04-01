@@ -226,21 +226,21 @@ dbg;
 
 void ObjectExplorerModel::removeElem( QStringList vals ){
 dbg;
+qDebug() << 1;
     QString name    = vals.at(0);
     QString type    = vals.at(1);
     QString diagram = vals.at(2);
-qDebug() << vals;
+qDebug() << "oem: removing " << vals;
 
     int pos; 
     TreeItem* par = rootItem->getChild(type);
-
     for(int i=0; i<par->childCount(); i++)
         if(par->getChild(i)->getName() == name && par->getChild(i)->getDiagramName() == diagram){
             pos = i;
             break;
         }
     beginRemoveRows(QModelIndex(), pos, pos);
-         
+qDebug() << "deleting elem #" << pos << " of " << rootItem->getChild(type)->childCount();         
     rootItem->getChild(type)->removeChild(pos);
 
     endInsertRows();

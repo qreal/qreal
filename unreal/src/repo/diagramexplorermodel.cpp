@@ -125,6 +125,7 @@ dbg;
             }    
             for (int i=3; i<q2.record().count()-1; i++){
                 l << q2.value(i).toString();
+                qDebug() << "   " << q2.value(i).toString();
             }    
             qDebug() << "DEM rescan(): " << l;
             value = new TreeItem(l, diagrams, table, db);
@@ -219,17 +220,36 @@ dbg;
 
 QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
 dbg;
- if (!index.isValid())
-   return QVariant();
- if (role != Qt::DisplayRole)
-   return QVariant();
- TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    if (!index.isValid())
+        return QVariant();
+        
+    if (role == Qt::DecorationRole){
+        if( index.column() == 0)
+            return QVariant();
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if( item->getType() == "diagram"){
+            if( item->rowCount() > 0 )
+                return QIcon(":/images/kdevclassview/CVstruct.png");
+            else
+                return QIcon(":/images/kdevclassview/CVtypedef.png");
+        }    
+        else if (item->getType() == "eP2N")
+            return QIcon(":/images/kdevclassview/CTchildren.png"); 
+        else
+            return QIcon(":/images/kdevclassview/CTvirtuals.png"); 
+            
+    } 
+    else if (role == Qt::DisplayRole){
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
 
-    //------BEGIN TMP FIX------
-    if ( index.column() == 0 )
-	return item->getID();
+        //------BEGIN TMP FIX------
+        if ( index.column() == 0 )
+	        return item->getID();
+        else
+	        return item->data(index.column());
+    }   
     else
-	return item->data(index.column());
+        return QVariant();
 }
 
 Qt::ItemFlags DiagramExplorerModel::flags(const QModelIndex &index) const{
@@ -268,6 +288,7 @@ dbg;
  if (!index.isValid())
    return QModelIndex();
  TreeItem *childItem = static_cast<TreeItem*>(index.internalPointer());
+
  if (childItem == rootItem)
     return QModelIndex();
  TreeItem *parentItem = childItem->parent();
@@ -309,13 +330,14 @@ dbg;
 
     TreeItem *d = rootItem->getChild(name);
     int cnt = d->childCount();
-    
     for (int i=0; i<cnt; i++){  // mutilate children! ARRRRRRRRRRRRRRRGGGGGGGHHH!!
+qDebug() << "mutilating child #" << i << "of" << cnt;    
         l.clear();
         l << d->getChild(0)->getName() << name;
+qDebug() <<  l;
         remove(true, l);
     }    
-    
+qDebug() << "mutilation complete. thanx.";   
     tmp = "drop table %1";
     db.exec(tmp.arg(name));
     tmp = "delete from diagram where name='%1'";
@@ -512,13 +534,11 @@ dbg;
         
     if (!removeRows(row, 1, isElement, values, index))
         qDebug() << "cannot remove row"; 
-
     if (isElement)
         emit elemRemoved(values);    
     else{
         diagramsList.removeAt(diagramsList.indexOf(values.at(0)));
     }
-    
 }
 
 
@@ -531,7 +551,6 @@ dbg;
         removeDiagramScriptsExec(vals.at(0));
     else // removing element from the database
         removeElementScriptsExec(vals);
-    
     if(!vals.at(2).isEmpty()){
         TreeItem *par;
         if(parent.isValid())
