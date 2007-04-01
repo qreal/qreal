@@ -38,17 +38,18 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void NodeElement::updateData()
 {
+    Element::updateData();
+
     if (moving == 0) {
 	int myrow = dataIndex.row();
         int x = dataIndex.sibling(myrow,4).data().toInt();
 	int y = dataIndex.sibling(myrow,5).data().toInt();
         setPos(x,y);
     
-	Element::updateData();
-    
 	foreach (EdgeElement *edge, edgeList)
             edge->adjustLink();
     }
+    
 }
 
 const QPointF NodeElement::getPort(int i) const

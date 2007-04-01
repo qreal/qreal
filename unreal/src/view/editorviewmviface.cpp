@@ -23,7 +23,6 @@ QRect EditorViewMViface::visualRect(const QModelIndex &index) const
 void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
 {
     int uuid = index.sibling(0,index.row()).data().toInt();
-//    qDebug() << "scroll to" << uuid;
 }
 
 QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
@@ -95,8 +94,8 @@ static void dumpStuff( const QModelIndex & idx )
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
-	//qDebug() << "rowsInserted" << parent;
-        for (int row = start; row <= end; ++row) {
+	qDebug() << "rowsInserted: adding items";
+	for (int row = start; row <= end; ++row) {
             QPersistentModelIndex current = model()->index(row, 0, parent);
 //	    dumpStuff(current);
             int uuid = model()->index(row, 0, parent).data().toInt();
@@ -107,6 +106,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             e->setIndex(current);
             items[uuid] = e;
         }
+	qDebug() << "rowsInserted: updating items";
         for (int row = start; row <= end; ++row) {
 	    int uuid = model()->index(row, 0, parent).data().toInt();
 	    items[uuid]->updateData();

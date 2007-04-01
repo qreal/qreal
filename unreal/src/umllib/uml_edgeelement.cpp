@@ -154,18 +154,20 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			src->addEdge(this);
 			portFrom = src->getNearestPort(mapToItem(src,event->pos()));
 			srcPoint = src->getPort(portFrom);
+			QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
     		
 		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),7), e->uuid() );
+			im->setData(dataIndex.sibling(dataIndex.row(),7), fromPort);
 
 		    } else if ( dragState == 2 ) {
 			dst = e;
 			dst->addEdge(this);
                         portTo = dst->getNearestPort(mapToItem(dst,event->pos()));
                         dstPoint = dst->getPort(portTo);
-
+                        QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
+			
         		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex.sibling(dataIndex.row(),8), e->uuid() );
+			im->setData(dataIndex.sibling(dataIndex.row(),8), toPort );
 		    }
 		    setFlag(ItemIsMovable, false);
 
@@ -181,7 +183,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		    src = 0;
 
 	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    	            im->setData(dataIndex.sibling(dataIndex.row(),7), 0 );
+    	            im->setData(dataIndex.sibling(dataIndex.row(),7), "0:0" );
         	} else if ( dragState == 2 ) {
 		    if (dst) {
 		        dst->delEdge(this);
@@ -189,7 +191,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
              	    dst = 0;
 
 		    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    	            im->setData(dataIndex.sibling(dataIndex.row(),8), 0 );
+    	            im->setData(dataIndex.sibling(dataIndex.row(),8), "0:0" );
     	        }
 		if ( ! src && ! dst )
 		        setFlag(ItemIsMovable, true);
@@ -212,11 +214,24 @@ void EdgeElement::adjustLink()
 
 void EdgeElement::updateData()
 {
-    int myrow = dataIndex.row();
-    int uuidFrom = dataIndex.sibling(myrow,7).data().toInt();
-    int uuidTo = dataIndex.sibling(myrow,8).data().toInt();
+    Element::updateData();
 
-    qDebug() << "src" << uuidFrom << "dst" << uuidTo;
+    // temporary code, to be reworked with introduction of new schema handling
+    
+    int myrow = dataIndex.row();
+    
+    QString from = dataIndex.sibling(myrow,7).data().toString();
+    QString to = dataIndex.sibling(myrow,8).data().toString();
+    
+    int uuidFrom = from.split(":").at(0).toInt();
+    int uuidTo = to.split(":").at(0).toInt();
+    
+    if ( from.split(":").size() > 1 )
+	portFrom = from.split(":").at(1).toInt();
+    if ( to.split(":").size() > 1 )
+	portTo = to.split(":").at(1).toInt();
+
+    qDebug() << "src" << uuidFrom << "port" << portFrom << "dst" << uuidTo << "port" << portTo;
     
     if ( EditorViewScene *scene = dynamic_cast<EditorViewScene *>(this->scene()) ) {
 
@@ -233,21 +248,20 @@ void EdgeElement::updateData()
 	if (dst)
 	    dst->delEdge(this);
 	if (uuidTo) {
-	QGraphicsItem *tmp = scene->getElem(uuidTo);
-        if ( tmp )
-	    dst = dynamic_cast<NodeElement *>(tmp);
+	    qDebug() << uuidTo;
+	    QGraphicsItem *tmp = scene->getElem(uuidTo);
+    	    if ( tmp )
+		dst = dynamic_cast<NodeElement *>(tmp);
 	}
 	if (dst)
 	    dst->addEdge(this);
-	adjustLink();
 
+	adjustLink();
     } else {
 	qDebug() << "no scene!";
     }    
 
     setFlag(ItemIsMovable, ( ! src && ! dst ) );
-
-    Element::updateData();
 }
 
 

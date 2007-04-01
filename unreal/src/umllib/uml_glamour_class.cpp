@@ -23,19 +23,20 @@ GlamourClass::~GlamourClass()
 
 void GlamourClass::updateData()
 {
+    NodeElement::updateData();
+
     QString name = dataIndex.sibling(dataIndex.row(),1).data().toString();
     text = "<center><img src=\":/images/kdevclassview/CVclass.png\" /><b>class ";
     text += name;
     text += "</b><hr>&nbsp;";
     
-//    QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
-
-//    fields = stuff.split(";"); // boyan ;)
+    QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
+    fields = stuff.split(";",QString::SkipEmptyParts);
 
     foreach (QString str, methods) {
 	text += "<img src=\":/images/kdevclassview/CVpublic_meth.png\" />";
 	text += str;
-	text += "\n";
+	text += "<br>\n";
     }
     
     text += "<hr>&nbsp;";
@@ -43,14 +44,13 @@ void GlamourClass::updateData()
     foreach (QString str, fields) {
 	text += "<img src=\":/images/kdevclassview/CVpublic_var.png\" />";
 	text += str;
-	text += "\n";
+	text += "<br>\n";
     }
             
     text += "</center>";
     
     update();
     
-    NodeElement::updateData();
 }
 
 void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
