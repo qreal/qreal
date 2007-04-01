@@ -15,6 +15,11 @@ public:
     void clearScene();
     
     UML::Element *getElem(int uuid);
+    
+protected:
+    void dragEnterEvent( QGraphicsSceneDragDropEvent * event );
+    void dropEvent ( QGraphicsSceneDragDropEvent * event );
+    
 };
 
 #endif

@@ -101,15 +101,17 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
             int uuid = model()->index(row, 0, parent).data().toInt();
             QString type = model()->index(row, 2, parent).data().toString();
 
-	    UML::Element *e = UML::GUIObjectFactory(type);
-            scene->addItem(e);
-            e->setIndex(current);
-            items[uuid] = e;
+	    if ( UML::Element *e = UML::GUIObjectFactory(type) ) {
+		scene->addItem(e);
+                e->setIndex(current);
+	        items[uuid] = e;
+	    }
         }
 	qDebug() << "rowsInserted: updating items";
         for (int row = start; row <= end; ++row) {
 	    int uuid = model()->index(row, 0, parent).data().toInt();
-	    items[uuid]->updateData();
+	    if (items.contains(uuid))
+		    items[uuid]->updateData();
 	}
 
 

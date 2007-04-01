@@ -6,8 +6,9 @@
 EditorView::EditorView(QWidget *parent)
     : QGraphicsView(parent)
 {
-    setScene(new EditorViewScene(this));
-    mvciface = new EditorViewMViface(this,dynamic_cast<EditorViewScene *>(scene()));
+    EditorViewScene *myScene = new EditorViewScene(this);
+    mvciface = new EditorViewMViface(this,myScene);
+    setScene(myScene);
 
 //    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     setRenderHints(QPainter::Antialiasing);

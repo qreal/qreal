@@ -15,15 +15,12 @@ public:
     ~EditorView();
 
     EditorViewMViface * mvcIface() { return mvciface; };
-    QWidget *visNavigator() { return minimap; };
 
 protected:
     void mousePressEvent(QMouseEvent *event);
 
 private:
     EditorViewMViface * mvciface;
-    
-    QGraphicsView * minimap;
 };
 
 #endif

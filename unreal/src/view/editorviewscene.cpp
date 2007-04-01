@@ -24,16 +24,26 @@ void EditorViewScene::clearScene()
 
 UML::Element * EditorViewScene::getElem(int uuid)
 {
-	qDebug() << "FIXME: SLOW!";
+	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-			qDebug() << "uuid" << elem->uuid() << "wanted" <<uuid;
 			if (elem->uuid() == uuid) {
 				return elem;
 			}
 		}
 	}
-	qDebug() << "uuid" << uuid << "not found";
 	return 0;
+}
+
+void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	qDebug() << "dragEnter event!!!!" << event->mimeData()->formats();
+	event->setAccepted(event->mimeData()->hasFormat("text/plain"));
+}
+
+void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	qDebug() << "drop event!!!!";
+	event->acceptProposedAction();
 }

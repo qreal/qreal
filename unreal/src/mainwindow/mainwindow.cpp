@@ -12,6 +12,7 @@
 //#define _LONG_DEBUG
 #include <QtGui>
 #include "mainwindow.h"
+#include "dragwidget.h"
 #include "dbg.h"
 #include <QDebug>
 #include <stdio.h>
@@ -19,7 +20,7 @@
 MainWindow::MainWindow()
 {
 dbg;
-    sqlite   = false;
+    sqlite   =  false;
     driver   = "QMYSQL";
     hostName = "127.0.0.1";
     dbName   = "unreal";
@@ -111,6 +112,11 @@ dbg;
 //    miniMap->setInteractive(false);
     dock5->setMinimumSize(100,100);
     dock5->setMaximumSize(300,200);
+    
+    dock6 = new QDockWidget(tr("Toolbox"), this);
+    toolbox = new DragWidget(this);
+    dock6->setWidget(toolbox);
+    addDockWidget(Qt::LeftDockWidgetArea, dock6);
 
     addDockWidget(Qt::RightDockWidgetArea, dock5);
     addDockWidget(Qt::RightDockWidgetArea, dock3);

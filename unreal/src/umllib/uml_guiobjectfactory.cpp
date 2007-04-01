@@ -11,8 +11,10 @@ Element * UML::GUIObjectFactory(QString &type)
 {
     if (type == "eP2N") {
             return new EdgeElement();
-    } else {
+    } else if (type == "nFeatured" ) {
             return new GlamourClass();
+    } else {
+	    qDebug() << "not creating" << type;
+	    return 0;
     }
-											
 }

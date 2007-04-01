@@ -34,6 +34,7 @@ INCLUDEPATH += \
 HEADERS +=  ../editors/editor.h \
             ../mainwindow/dialogs.h \            
             ../mainwindow/mainwindow.h \
+	    ../mainwindow/dragwidget.h \
             ../misc/dbg.h \
             ../repo/diagramexplorermodel.h \
             ../repo/objectexplorermodel.h \ 
@@ -53,6 +54,7 @@ SOURCES +=  ../editors/editor.cpp \
             ../main/main.cpp \
             ../mainwindow/dialogs.cpp \
             ../mainwindow/mainwindow.cpp \
+	    ../mainwindow/dragwidget.cpp \
             ../repo/diagramexplorermodel.cpp \
             ../repo/objectexplorermodel.cpp \
             ../repo/propertyeditormodel.cpp \

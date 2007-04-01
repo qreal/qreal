@@ -23,6 +23,7 @@
 #include "objectexplorermodel.h"
 #include "diagramexplorermodel.h"
 #include "propertyeditormodel.h"
+
 #include "editor.h"
 #include "dialogs.h"
 
@@ -32,6 +33,7 @@ class QMenu;
 class QTextEdit;
 class QTreeWidget;
 class AddDiagramDialog;
+class DragWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -114,7 +116,7 @@ private:
     QSignalMapper *elements;
     QSignalMapper *diagrams;
     QDockWidget *dock;
-    QDockWidget *dock3, *dock4, *dock5;
+    QDockWidget *dock3, *dock4, *dock5, *dock6;
 
     //req diagram
     QAction *nFeaturedAct; //nodes
@@ -140,6 +142,7 @@ private:
     QTableView *table;
     EditorView *pieChart;
     QGraphicsView *miniMap;
+    DragWidget *toolbox;
     QString curDiagram;
     QStringList diagramsList;
     int count;
