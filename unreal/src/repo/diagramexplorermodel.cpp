@@ -236,7 +236,7 @@ dbg;
         else if (item->getType() == "eP2N")
             return QIcon(":/images/kdevclassview/CTchildren.png"); 
         else
-            return QIcon(":/images/kdevclassview/CTvirtuals.png"); 
+            return QIcon(":/shapes/" + item->getType()); 
             
     } 
     else if (role == Qt::DisplayRole){

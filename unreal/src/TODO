@@ -18,6 +18,6 @@ That is (in this order):
     - Multi-part links
 
 repo & stuff:
-1. multiple copies of single element ability 
-2. database locks support
+- multiple copies of single element ability 
+- database locks support
 

@@ -131,11 +131,22 @@ QVariant ObjectExplorerModel::data(const QModelIndex &index, int role) const{
 dbg;
     if (!index.isValid())
         return QVariant();
-    if (role != Qt::DisplayRole)
+    
+    if( role == Qt::DecorationRole ){
+        if (index.column() == 0)
+            return QVariant();
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if (item->getType() == "diagram") 
+            return QIcon(":/shapes/" + item->getName());
+        else
+            return QIcon(":/shapes/" + item->getType());
+    }
+    else if (role == Qt::DisplayRole){
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        return item->data(index.column());
+    }   
+    else 
         return QVariant();
-    TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-
-    return item->data(index.column());
 }
 
 Qt::ItemFlags ObjectExplorerModel::flags(const QModelIndex &index) const{

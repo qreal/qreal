@@ -68,6 +68,9 @@ dbg;
 //    tree2->hideColumn(1);
     for (int i=2; i<model2->columnCount(QModelIndex()); i++)
         tree2->hideColumn(i);
+    
+    tree1->setColumnWidth(0,70);
+    tree2->setColumnWidth(0,70);
  
     dock3->setWidget(tree2);
 
