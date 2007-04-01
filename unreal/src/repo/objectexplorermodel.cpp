@@ -136,8 +136,14 @@ dbg;
         if (index.column() == 0)
             return QVariant();
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-        if (item->getType() == "diagram") 
-            return QIcon(":/shapes/" + item->getName());
+        if (item->getType() == "diagram") {
+            if (item->getName() == "eP2N")
+                return QIcon(":/images/kdevclassview/CTchildren.png");
+            else
+                return QIcon(":/shapes/" + item->getName());
+        }    
+        else if (item->getType() == "eP2N")
+            return QIcon(":/images/kdevclassview/CTchildren.png");
         else
             return QIcon(":/shapes/" + item->getType());
     }
