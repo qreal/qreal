@@ -30,8 +30,14 @@ void GlamourClass::updateData()
     text += name;
     text += "</b><hr>&nbsp;";
     
+    fields.clear();
+    methods.clear();
+    
     QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
-    fields = stuff.split(";",QString::SkipEmptyParts);
+    QStringList everything = stuff.split(";",QString::SkipEmptyParts);
+
+    methods = everything.filter("()");
+    fields = everything.filter("$");
 
     foreach (QString str, methods) {
 	text += "<img src=\":/images/kdevclassview/CVpublic_meth.png\" />";
@@ -69,7 +75,7 @@ void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 	if ( selectedAction == addMethAction ) {
 	    QString text = QInputDialog::getText(0, QObject::tr("New Method"), QObject::tr("Method name:"), QLineEdit::Normal, "", &ok);
 	    if (ok && !text.isEmpty())
-	        methods << text;
+	        methods << (text + "()");
 	} else if ( selectedAction == delMethAction ) {
 	    QString text = QInputDialog::getItem(0, QObject::tr("Remove Method"), QObject::tr("Method name:"), methods, 0, false, &ok);
 	    if (ok && !text.isEmpty())
@@ -77,7 +83,7 @@ void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
         } else if ( selectedAction == addPropAction ) {
 	    QString text = QInputDialog::getText(0, QObject::tr("New Field"), QObject::tr("Field name:"), QLineEdit::Normal, "", &ok);
 	    if (ok && !text.isEmpty())
-	        fields << text;
+	        fields << ( QString("$") + text );
 	} else if ( selectedAction == delPropAction ) {
 	    QString text = QInputDialog::getItem(0, QObject::tr("Remove Field"), QObject::tr("Field name:"), fields, 0, false, &ok);
 	    if (ok && !text.isEmpty())
@@ -85,6 +91,12 @@ void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
         }
   }
   
+    QString result = (fields+methods).join(";");
+    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+    im->setData(dataIndex.sibling(dataIndex.row(),7), result );
+    
+//    qDebug() << result;
+
   updateData();
 }
 

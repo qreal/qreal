@@ -19,7 +19,6 @@ EdgeElement::EdgeElement()
 
 EdgeElement::~EdgeElement()
 {
-    qDebug() << "edgeelement destructor";
     if (src)
         src->delEdge(this);
     if (dst)

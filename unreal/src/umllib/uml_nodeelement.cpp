@@ -49,7 +49,6 @@ void NodeElement::updateData()
 	foreach (EdgeElement *edge, edgeList)
             edge->adjustLink();
     }
-    
 }
 
 const QPointF NodeElement::getPort(int i) const

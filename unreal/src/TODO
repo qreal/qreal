@@ -12,7 +12,7 @@ That is (in this order):
     * Save & restore x & y coordinates
     * Save & restore port no. for links
     + "Glamour" classes, links, comments.
-    + Save & restore misc properties (in one field, for now....)
+    * Save & restore misc properties (in one field, for now....)
     - Make elements resizeable.
     - Reworked interface
     - Multi-part links
