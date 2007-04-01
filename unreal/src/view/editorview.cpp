@@ -11,6 +11,12 @@ EditorView::EditorView(QWidget *parent)
 
 //    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     setRenderHints(QPainter::Antialiasing);
+    
+    QGraphicsView *minimap = new QGraphicsView(scene());
+    minimap->setWindowTitle("Minimap");
+    minimap->resize(200,200);
+    minimap->scale(0.2,0.2);
+    minimap->show();
 }
 
 EditorView::~EditorView()
