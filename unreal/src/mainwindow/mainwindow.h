@@ -114,8 +114,7 @@ private:
     QSignalMapper *elements;
     QSignalMapper *diagrams;
     QDockWidget *dock;
-    QDockWidget *dock3;
-    QDockWidget *dock4;
+    QDockWidget *dock3, *dock4, *dock5;
 
     //req diagram
     QAction *nFeaturedAct; //nodes
@@ -140,6 +139,7 @@ private:
     QTreeView *tree2;
     QTableView *table;
     EditorView *pieChart;
+    QGraphicsView *miniMap;
     QString curDiagram;
     QStringList diagramsList;
     int count;

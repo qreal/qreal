@@ -60,6 +60,7 @@ dbg;
     
     dock3 = new QDockWidget(tr("diagram explorer"), this);
     dock3->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
     tree2 = new QTreeView();
     tree2->setModel(model2);
 //    tree2->setHeader(0);
@@ -68,7 +69,6 @@ dbg;
         tree2->hideColumn(i);
  
     dock3->setWidget(tree2);
-    addDockWidget(Qt::RightDockWidgetArea, dock3);
 
     connect(model2, SIGNAL(nameAboutToBeChanged(QStringList)), model1, SLOT(nameChanged(QStringList)));
     connect(model1, SIGNAL(nameAboutToBeChanged(QStringList)), model2, SLOT(nameChanged(QStringList)));
@@ -99,10 +99,28 @@ dbg;
     pieChart = new EditorView();
     setCentralWidget(pieChart);
     
+    
+    miniMap = new QGraphicsView();
+    
+    dock5 = new QDockWidget(tr("MiniMap"), this);
+//  dock5->setWidget(pieChart->visNavigator());
+    dock5->setWidget(miniMap);
+    
+    miniMap->scale(0.2,0.2);
+    miniMap->setScene(pieChart->scene());
+//    miniMap->setInteractive(false);
+    dock5->setMinimumSize(100,100);
+    dock5->setMaximumSize(300,200);
+
+    addDockWidget(Qt::RightDockWidgetArea, dock5);
+    addDockWidget(Qt::RightDockWidgetArea, dock3);
+        
     pieChart->mvcIface()->setRootIndex(model2->getDiagramIndex(currentDiagram()));
     pieChart->mvcIface()->setModel(model2);
 
     connect(pieChart->mvcIface(), SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+
+    
     
     createActions();
     createMenus();
@@ -113,7 +131,7 @@ dbg;
 
     setWindowTitle(tr("unREAL"));
 
-    resize(1024, 800);  
+    resize(800,600);  
     
     count++;    
 }
@@ -147,6 +165,7 @@ dbg;
     delete dock;
     delete dock3;
     delete dock4;
+    delete dock5;
    
     deleteDiagramMenu();
     deleteActions();
