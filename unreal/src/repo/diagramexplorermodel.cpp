@@ -125,9 +125,8 @@ dbg;
             }    
             for (int i=3; i<q2.record().count()-1; i++){
                 l << q2.value(i).toString();
-                qDebug() << "   " << q2.value(i).toString();
             }    
-            qDebug() << "DEM rescan(): " << l;
+            //qDebug() << "DEM rescan(): " << l;
             value = new TreeItem(l, diagrams, table, db);
             value->setID(curID);
             table->addChild(value);
@@ -222,8 +221,15 @@ QVariant DiagramExplorerModel::data(const QModelIndex &index, int role) const{
 dbg;
     if (!index.isValid())
         return QVariant();
-        
-    if (role == Qt::DecorationRole){
+
+    if (role == Qt::ToolTipRole){
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if (item->getType() == "diagram")
+            return "diagram " + item->getName();
+        else
+            return "element " + item->getName() + " (" + item->getType() + ")";
+    }
+    else if (role == Qt::DecorationRole){
         if( index.column() == 0)
             return QVariant();
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());

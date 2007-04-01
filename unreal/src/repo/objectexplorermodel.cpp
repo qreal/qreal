@@ -131,8 +131,14 @@ QVariant ObjectExplorerModel::data(const QModelIndex &index, int role) const{
 dbg;
     if (!index.isValid())
         return QVariant();
-    
-    if( role == Qt::DecorationRole ){
+    if (role == Qt::ToolTipRole){
+        TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+        if (item->getType() == "diagram")
+            return "type " + item->getName();
+        else
+            return "element " + item->getName() + " (" + item->getType() + ")";
+    }
+    else if( role == Qt::DecorationRole ){
         if (index.column() == 0)
             return QVariant();
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
