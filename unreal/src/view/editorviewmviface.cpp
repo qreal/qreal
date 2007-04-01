@@ -13,6 +13,10 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 {
     this->view = view;
     this->scene = scene;
+    
+//    view->mv_iface = this;
+    scene->mv_iface = this;
+    scene->view = view;
 }
 
 QRect EditorViewMViface::visualRect(const QModelIndex &index) const

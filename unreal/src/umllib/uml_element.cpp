@@ -8,6 +8,7 @@ Element::Element()
     : m_uuid(1234567), moving(false)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
+    setAcceptDrops(true);
     setCursor(Qt::PointingHandCursor);
 }
 
@@ -30,6 +31,7 @@ int Element::uuid() const
 
 void Element::updateData()
 {
+    setToolTip(dataIndex.data(Qt::ToolTipRole).toString());
 }
 /*
 void Element::getProperty( const QString &proprety )

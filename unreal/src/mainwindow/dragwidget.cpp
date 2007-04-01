@@ -29,20 +29,23 @@ DragWidget::DragWidget(QWidget *parent)
     : QFrame(parent)
 {
 //  setAcceptDrops(true);
-    QLabel *classIcon = new QLabel(this);
+    classIcon = new QLabel(this);
     classIcon->setPixmap(QPixmap(":/images/misc/class.png"));
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    linkIcon = new QLabel(this);
+    linkIcon->setPixmap(QPixmap(":/images/misc/link.png"));
+
+    QHBoxLayout *layout = new QHBoxLayout;
     
     layout->addWidget(classIcon);
+    layout->addWidget(linkIcon);
     
     setLayout(layout);
-
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+/*    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
         if (event->source() == this) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
@@ -51,12 +54,12 @@ void DragWidget::dragEnterEvent(QDragEnterEvent *event)
         }
     } else {
         event->ignore();
-    }
+    }*/
 }
 
 void DragWidget::dropEvent(QDropEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+/*    if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
         QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
         
@@ -78,7 +81,7 @@ void DragWidget::dropEvent(QDropEvent *event)
         }
     } else {
         event->ignore();
-    }
+    }*/
 }
 
 void DragWidget::mousePressEvent(QMouseEvent *event)
@@ -89,17 +92,18 @@ void DragWidget::mousePressEvent(QMouseEvent *event)
 
     QPixmap pixmap = *child->pixmap();
 
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->pos() - child->pos());
-
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-dnditemdata", itemData);
+//    mimeData->setData("application/x-uml-data", itemData);
+    if ( child == classIcon ) {
+	mimeData->setText("nFeatured");
+    } else if ( child == linkIcon ) {
+	mimeData->setText("eP2N");
+    }
         
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
-    drag->setHotSpot(event->pos() - child->pos());
+//    drag->setHotSpot(event->pos() - child->pos());
 
     QPixmap tempPixmap = pixmap;
     QPainter painter;

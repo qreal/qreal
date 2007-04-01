@@ -171,9 +171,6 @@ void ExampleEditor::dataChanged(const QModelIndex &topLeft,
 
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 	    int uuid = model()->index(row, 0, rootIndex()).data().toInt();
-	    
-	    qDebug() << "------- uuid:" << uuid;
-	    
 	    QPersistentModelIndex current = model()->index(row, 0, rootIndex());
 	    	    
 	    if ( model()->index(row, 2, rootIndex()).data().toString() == "eP2N" ) {

@@ -124,10 +124,11 @@ dbg;
     addDockWidget(Qt::RightDockWidgetArea, dock5);
     addDockWidget(Qt::RightDockWidgetArea, dock3);
         
-    pieChart->mvcIface()->setRootIndex(model2->getDiagramIndex(currentDiagram()));
-    pieChart->mvcIface()->setModel(model2);
+    pieChart->mvIface()->setRootIndex(model2->getDiagramIndex(currentDiagram()));
+    pieChart->mvIface()->setModel(model2);
+    pieChart->setDEM(model2);
 
-    connect(pieChart->mvcIface(), SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
+    connect(pieChart->mvIface(), SIGNAL(clicked( const QModelIndex&) ), this, SLOT( setFocus(const QModelIndex& )));
 
     
     

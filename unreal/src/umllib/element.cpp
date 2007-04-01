@@ -10,7 +10,8 @@ Element::Element(EditorViewMViface *parent)
     : mysize(0,0,75,75)
 {
     setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable);
-    setAcceptsHoverEvents(true);
+//    setAcceptsHoverEvents(true);
+    setAcceptDrops(true);
     setCursor(Qt::SizeAllCursor);
     
     dragState = None;

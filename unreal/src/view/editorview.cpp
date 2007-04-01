@@ -7,11 +7,13 @@ EditorView::EditorView(QWidget *parent)
     : QGraphicsView(parent)
 {
     EditorViewScene *myScene = new EditorViewScene(this);
-    mvciface = new EditorViewMViface(this,myScene);
+    mv_iface = new EditorViewMViface(this,myScene);
     setScene(myScene);
 
 //    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     setRenderHints(QPainter::Antialiasing);
+    
+    setAcceptDrops(true);
 }
 
 EditorView::~EditorView()
@@ -21,9 +23,8 @@ EditorView::~EditorView()
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
     if (QGraphicsItem *item = itemAt(event->pos())) {
-	mvciface->raiseClick(item);
+	mv_iface->raiseClick(item);
     }
 
     QGraphicsView::mousePressEvent(event);
 }
-

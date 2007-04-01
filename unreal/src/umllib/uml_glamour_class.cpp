@@ -113,13 +113,15 @@ void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *styl
 
     painter->setBrush(QBrush(QColor(255,255,191,200)));
     painter->drawRect(contentsRect());
-	
-    QTextDocument d;
-    d.setHtml(text);
-    d.setTextWidth(contentsRect().width());
-    d.drawContents(painter,contentsRect());
 
-    NodeElement::paint(painter, style, widget);
+    if (style->levelOfDetail > 0.5) {
+        QTextDocument d;
+	d.setHtml(text);
+        d.setTextWidth(contentsRect().width());
+	d.drawContents(painter,contentsRect());
+
+        NodeElement::paint(painter, style, widget);
+    }
 }
 
 QRectF GlamourClass::boundingRect() const

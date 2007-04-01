@@ -1,6 +1,8 @@
 #include "editorviewscene.h"
+#include "editorviewmviface.h"
+#include "editorview.h"
 
-#include  "element.h"
+#include "diagramexplorermodel.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -38,12 +40,28 @@ UML::Element * EditorViewScene::getElem(int uuid)
 
 void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	qDebug() << "dragEnter event!!!!" << event->mimeData()->formats();
-	event->setAccepted(event->mimeData()->hasFormat("text/plain"));
+	event->setAccepted(event->mimeData()->hasText());
+}
+
+void EditorViewScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+}
+
+void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
+{
 }
 
 void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	qDebug() << "drop event!!!!";
-	event->acceptProposedAction();
+    static int count;
+
+    if ( event->mimeData()->hasText() ) {
+	if ( event->mimeData()->text() == "nFeatured" ) {
+		QList<QString> list;
+		list << QString("class %1").arg(count++) << "nFeatured" << "req_diagram_1" << QString::number(event->scenePos().x()) << QString::number(event->scenePos().y()) << "" << "" << "" << "";
+		QString fields = "uuid, name, description, priority, source, status, diagram";
+	
+	        view->getDEM()->insert(true, fields, list);
+	}
+    }
 }
