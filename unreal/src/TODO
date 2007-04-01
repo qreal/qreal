@@ -16,3 +16,8 @@ That is (in this order):
     - Make elements resizeable.
     - Reworked interface
     - Multi-part links
+
+repo & stuff:
+1. multiple copies of single element ability 
+2. database locks support
+
