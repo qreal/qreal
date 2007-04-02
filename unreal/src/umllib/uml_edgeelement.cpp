@@ -230,8 +230,6 @@ void EdgeElement::updateData()
     if ( to.split(":").size() > 1 )
 	portTo = to.split(":").at(1).toInt();
 
-    qDebug() << "src" << uuidFrom << "port" << portFrom << "dst" << uuidTo << "port" << portTo;
-    
     if ( EditorViewScene *scene = dynamic_cast<EditorViewScene *>(this->scene()) ) {
 
 	if (src)
@@ -260,7 +258,15 @@ void EdgeElement::updateData()
 	qDebug() << "no scene!";
     }    
 
-    setFlag(ItemIsMovable, ( ! src && ! dst ) );
+    if ( ! src && ! dst ) {
+        setFlag(ItemIsMovable, true );
+	int x = dataIndex.sibling(myrow,4).data().toInt();
+        int y = dataIndex.sibling(myrow,5).data().toInt();
+        setPos(x,y);
+
+    } else {
+	setFlag(ItemIsMovable, false );
+    }
 }
 
 
