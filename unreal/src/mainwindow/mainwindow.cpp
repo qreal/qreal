@@ -400,6 +400,11 @@ void MainWindow::deleteMenus()
 void MainWindow::createToolBars()
 {dbg;
 
+    miscToolBar = addToolBar(tr("misc"));
+    miscToolBar->addAction(printAct);
+    miscToolBar->addAction(zoomInAct);
+    miscToolBar->addAction(zoomOutAct);
+
     diagramsToolBar = addToolBar(tr("diagrams"));
     diagramsToolBar->addAction(addReqDiagramAct);
     diagramsToolBar->addAction(addLinkAct);

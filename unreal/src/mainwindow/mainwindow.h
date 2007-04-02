@@ -95,6 +95,7 @@ private:
     QToolBar *editToolBar;
     QToolBar *diagramsToolBar;
     QToolBar *reqDiagramToolBar;
+    QToolBar *miscToolBar;
     QAction *newLetterAct;
     QAction *saveAct;
     QAction *printAct;
