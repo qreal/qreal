@@ -224,10 +224,35 @@ dbg;
 
     if (role == Qt::ToolTipRole){
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-        if (item->getType() == "diagram")
-            return "diagram <b>" + item->getName() + "<b>";
-        else
-            return "element " + item->getName() + " (" + item->getType() + ")";
+        QString tip;
+        QString from = "<i>undefined</i>";
+        QString to = "<i>undefined</i>";
+        int fromID = -1;
+        int toID = -1;
+
+        if (item->getType() == "diagram"){
+            tip = "diagram <b>" + item->getName() + "</b>";
+            if (item->childCount() == 0)
+                tip += "<br>is empty now";
+            else
+                tip += QString("<br>contains %1 elements").arg(item->childCount());
+        }    
+        else{
+            tip = "<b>" + item->getName() + "</b><br> type: " + item->getType() + "";
+            if (item->getType() == "eP2N"){
+                fromID = item->getBeginning().section(":",0,0).toInt();
+                toID = item->getEnding().section(":",0,0).toInt();
+                for (int i=0; i<item->parent()->childCount(); i++){
+                    if (item->parent()->getChild(i)->getID() == fromID)
+                        from = item->parent()->getChild(i)->getName();
+                    if (item->parent()->getChild(i)->getID() == toID)
+                        to = item->parent()->getChild(i)->getName();
+                }    
+
+                tip += "<br>" + from + " -> " + to;
+            }    
+        }    
+        return tip;    
     }
     else if (role == Qt::DecorationRole){
         if( index.column() == 0)

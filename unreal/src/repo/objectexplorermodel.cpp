@@ -133,10 +133,19 @@ dbg;
         return QVariant();
     if (role == Qt::ToolTipRole){
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-        if (item->getType() == "diagram")
-            return "type " + item->getName();
+        QString tip;
+        if (item->getType() == "diagram"){
+            tip = "type <b>" + item->getName() + "</b>";
+            if (item->childCount() == 0)
+                tip += "<br> no objects created";
+            else
+                tip += QString("<br>%1 objects created").arg(item->childCount());
+        }    
         else
-            return "element " + item->getName() + " (" + item->getType() + ")";
+            tip = "<b> " + item->getName() + "</b><br> type: " + item->getType() + "";
+
+        return tip;
+            
     }
     else if( role == Qt::DecorationRole ){
         if (index.column() == 0)
