@@ -110,7 +110,6 @@ void ExampleEditor::setSelection(const QRect &rect, QItemSelectionModel::Selecti
 { dbg;
 }
 
-
 QGraphicsItem * ExampleEditor::getItem(int uuid)
 {
     return items[uuid];

@@ -11,7 +11,6 @@ EditorView::EditorView(QWidget *parent)
     setScene(myScene);
 
 //    setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-    setRenderHints(QPainter::Antialiasing);
     
     setAcceptDrops(true);
 }
@@ -28,3 +27,25 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 
     QGraphicsView::mousePressEvent(event);
 }
+
+void EditorView::toggleAntialiasing(bool checked)
+{
+    setRenderHint(QPainter::Antialiasing, checked);
+    setRenderHint(QPainter::SmoothPixmapTransform, checked);
+}
+
+void EditorView::toggleOpenGL(bool checked)
+{
+    setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
+}
+
+void EditorView::zoomIn()
+{
+    scale(1.5,1.5);
+}
+
+void EditorView::zoomOut()
+{
+    scale(0.666,0.666);
+}
+

@@ -231,6 +231,13 @@ dbg;
 
 void MainWindow::print()
 {
+     QPrinter printer(QPrinter::HighResolution);
+     QPrintDialog dialog(&printer, this);
+     if (dialog.exec() == QDialog::Accepted) {
+         QPainter painter(&printer);
+//	 QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
+         pieChart->scene()->render(&painter);
+     }
 }
 
 void MainWindow::save()
@@ -303,6 +310,19 @@ dbg;
     moveAct = new QAction(tr("Move"), this);
     connect(moveAct, SIGNAL(triggered()), this, SLOT(move()));
 
+    toggleAntialiasingAct = new QAction(tr("Antialiasing"), this);
+    toggleAntialiasingAct->setCheckable(true);    
+    connect(toggleAntialiasingAct, SIGNAL(toggled(bool)), pieChart, SLOT(toggleAntialiasing(bool)));
+
+    toggleOpenGLAct = new QAction(tr("OpenGL"), this);
+    toggleOpenGLAct->setCheckable(true);
+    connect(toggleOpenGLAct, SIGNAL(toggled(bool)), pieChart, SLOT(toggleOpenGL(bool)));
+
+    zoomInAct = new QAction(QIcon(":/images/zoomin.png"), tr("Zoom in"), this);
+    connect(zoomInAct, SIGNAL(triggered()), pieChart, SLOT(zoomIn()));
+
+    zoomOutAct = new QAction(QIcon(":/images/zoomout.png"), tr("Zoom out"), this);
+    connect(zoomOutAct, SIGNAL(triggered()), pieChart, SLOT(zoomOut()));
 }
 
 void MainWindow::deleteActions()
@@ -337,10 +357,19 @@ void MainWindow::deleteActions()
 void MainWindow::createMenus()
 {dbg;
     fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(printAct);
+    fileMenu->addSeparator();
     fileMenu->addAction(quitAct);
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(optionsAct);
+
+    viewMenu = menuBar()->addMenu(tr("&View"));
+    viewMenu->addAction(zoomInAct);
+    viewMenu->addAction(zoomOutAct);
+    viewMenu->addSeparator();
+    viewMenu->addAction(toggleOpenGLAct);
+    viewMenu->addAction(toggleAntialiasingAct);
 
     addMenu = menuBar()->addMenu(tr("&Add"));
     addMenu->addAction(addReqDiagramAct);

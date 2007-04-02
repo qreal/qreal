@@ -83,3 +83,22 @@ qDebug() << list;
 	}
     }
 }
+
+void EditorViewScene::keyPressEvent( QKeyEvent * event )
+{
+    if ( event->key() == Qt::Key_Delete ) {
+        QList<QGraphicsItem *> list = selectedItems();
+        foreach ( QGraphicsItem *item, list ) {
+            if ( UML::Element *e = dynamic_cast<UML::Element *>(item) ) {
+		QStringList list;
+		list << e->index().sibling(e->index().row(),1).data().toString()
+			<< e->index().sibling(e->index().row(),2).data().toString()
+			<< e->index().sibling(e->index().row(),3).data().toString();
+
+		view->getDEM()->remove(true, list);
+	    }
+        }
+    }
+    
+    QGraphicsScene::keyPressEvent(event);
+}

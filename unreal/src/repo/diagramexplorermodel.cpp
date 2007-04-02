@@ -554,6 +554,8 @@ dbg;
     TreeItem* par;
     int row = -10;
 
+    qDebug() << values;
+
     if (!values.at(2).isEmpty()){
         if (isElement)
             par = rootItem->getChild(values.at(2));

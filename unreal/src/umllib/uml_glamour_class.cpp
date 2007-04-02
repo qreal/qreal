@@ -111,8 +111,20 @@ void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *styl
 //    painter->drawPath(path);
 //    painter->drawRect(boundingRect());
 
+    QPen oldPen = painter->pen();
+    QPen pen = oldPen;
+    int width = 0;
+    if (style->state & QStyle::State_Selected)
+         width += 2;
+
+    pen.setWidth(width);
+    
+    painter->setPen(pen);
+
     painter->setBrush(QBrush(QColor(255,255,191,200)));
     painter->drawRect(contentsRect());
+    
+    painter->setPen(oldPen);
 
     if (style->levelOfDetail > 0.5) {
         QTextDocument d;

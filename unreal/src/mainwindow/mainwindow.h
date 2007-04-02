@@ -102,6 +102,10 @@ private:
     QAction *aboutAct;
     QAction *aboutQtAct;
     QAction *quitAct;
+    QAction *zoomInAct;
+    QAction *zoomOutAct;
+    QAction *toggleOpenGLAct;
+    QAction *toggleAntialiasingAct;
     QAction *addReqDiagramAct;
     QAction *removeDiagramAct;
     QAction *removeElementAct;

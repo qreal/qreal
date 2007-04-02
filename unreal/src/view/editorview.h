@@ -20,6 +20,12 @@ public:
     
     void setDEM(DiagramExplorerModel *model) { model2 = model; }  __attribute((deprecated));
     DiagramExplorerModel *getDEM() { return model2; }  __attribute((deprecated));
+
+public slots:
+    void toggleAntialiasing(bool);
+    void toggleOpenGL(bool);
+    void zoomIn();
+    void zoomOut();
     
 protected:
     void mousePressEvent(QMouseEvent *event);
