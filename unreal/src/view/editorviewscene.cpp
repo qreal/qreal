@@ -58,7 +58,11 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
     if ( event->mimeData()->hasText() ) {
 	if ( event->mimeData()->text() == "nFeatured" ) {
 		QList<QString> list;
-		list << QString("class %1").arg(count++) << "nFeatured" << "req_diagram_1" << QString::number(event->scenePos().x()) << QString::number(event->scenePos().y()) << "" << "" << "" << "";
+
+        if (view->getDEM()->elementExists(QString("class %1").arg(++count), "nFeatured", "req_diagram_1", true) <= 0)
+            return;
+
+		list << QString("class %1").arg(count) << "nFeatured" << "req_diagram_1" << QString::number(event->scenePos().x()) << QString::number(event->scenePos().y()) << "" << "" << "0" << "";
 		QString fields = "uuid, name, description, priority, source, status, diagram";
 	
 	        view->getDEM()->insert(true, fields, list);

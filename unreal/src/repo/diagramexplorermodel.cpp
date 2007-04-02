@@ -579,6 +579,9 @@ dbg;
 int DiagramExplorerModel::elementExists( QString name, QString , QString diagram, bool verbose){
 dbg;
 TreeItem* par = rootItem->getChild(diagram);
+
+qDebug() << "checking " <<  name << diagram ;
+
     if (!par){
         if (verbose)
             QMessageBox::critical(0, QObject::tr("dem error"), QObject::tr("requested diagram not found.\nyou should create diagram first"));
@@ -587,7 +590,8 @@ TreeItem* par = rootItem->getChild(diagram);
     TreeItem *child = par->getChild(name);
     if(child){
         if (verbose)
-            QMessageBox::critical(0, QObject::tr("error"), QObject::tr("element with such name already exists.\nchoose another name plz"));
+            QMessageBox::critical(0, QObject::tr("error"), QString("element with name '%1' already exists "
+                    "at diagram '%2'\nchoose another name plz").arg(name).arg(diagram));
         return 0;
     }
     return 1;
