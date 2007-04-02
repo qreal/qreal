@@ -225,7 +225,7 @@ dbg;
     if (role == Qt::ToolTipRole){
         TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
         if (item->getType() == "diagram")
-            return "diagram " + item->getName();
+            return "diagram <b>" + item->getName() + "<b>";
         else
             return "element " + item->getName() + " (" + item->getType() + ")";
     }
@@ -361,7 +361,8 @@ dbg;
     
     QString tmp = "insert into %1 (uuid, name, type, status, x, y) values (%2, '%3', '%4', '%5', %6, %7)";
     tmp = tmp.arg(diagram).arg(getID()).arg(name).arg(type).arg(status).arg(x).arg(y);
-    db.exec(tmp);
+qDebug() << tmp;
+db.exec(tmp);
 
     if (type != "eP2N"){
         QString desc    = values.at(6);
@@ -481,8 +482,8 @@ dbg;
         x       = vals.at(3);
         y       = vals.at(4);
         status  = vals.at(5);
-        l << name << type << diagram << status << x << y;
-        for (int i=3; i<vals.size(); i++)
+        l << name << type << diagram << x << y << status;
+        for (int i=6; i<vals.size(); i++)
             l << vals.at(i);
     }    
 
@@ -498,7 +499,6 @@ dbg;
             par = static_cast<TreeItem*>(parent.internalPointer());
         else 
             par = 0;     
-    
     
         TreeItem *child = new TreeItem(l, diagrams, par, db);
         child->setID(getID());
