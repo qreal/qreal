@@ -18,6 +18,7 @@
 #include <QHeaderView>
 #include <QSqlQueryModel>
 #include <QSignalMapper>
+#include <QSqlError>
 
 #include "editorview.h"
 #include "objectexplorermodel.h"

@@ -615,7 +615,7 @@ dbg;
     if (db.open())
         dbOpened = true;
     else{
-        QMessageBox::information(0, tr("AAAAAAAAAAAAAAAAA"), tr("database connection error\ncheck your repo settings"));
+        QMessageBox::critical(0, tr("Database error"), db.lastError().driverText() + "\n" + db.lastError().databaseText());
         dbOpened = false;
     }    
     
