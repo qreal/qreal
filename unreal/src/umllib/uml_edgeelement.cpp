@@ -114,6 +114,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			src = e;
 			src->addEdge(this);
 			portFrom = src->getNearestPort(mapToItem(src,event->pos()));
+			prepareGeometryChange();
 			m_line[0] = mapFromItem(src,src->getPort(portFrom));
 			QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
     		
@@ -124,6 +125,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			dst = e;
 			dst->addEdge(this);
                         portTo = dst->getNearestPort(mapToItem(dst,event->pos()));
+			prepareGeometryChange();
                         m_line[m_line.size()-1] = mapFromItem(dst,dst->getPort(portTo));
                         QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
 			
@@ -176,6 +178,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 	if ( selectedAction == delPointAction ) {
             for ( int i = 1 ; i < m_line.size()-1 ; i++ ) {
 	        if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
+		    prepareGeometryChange();
 		    m_line.remove(i);
 		    update();
 		    break;
