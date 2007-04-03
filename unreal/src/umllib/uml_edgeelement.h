@@ -27,13 +27,17 @@ namespace UML {
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
         void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 
+	void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
+
     private:
 	NodeElement *src, *dst;
-	QPointF srcPoint, dstPoint;
+//	QPointF srcPoint, dstPoint;
     
 	int dragState;
 	
 	int portFrom, portTo;
+
+	QPolygonF m_line;
     };
 };
 

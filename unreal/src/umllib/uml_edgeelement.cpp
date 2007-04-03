@@ -9,83 +9,6 @@ using namespace UML;
 
 const int kvadratik = 4;
 
-EdgeElement::EdgeElement()
-    : src(0), dst(0), srcPoint(0,0), dstPoint(50,150), portFrom(0), portTo(0)
-{
-    dragState = 0;
-    setZValue(100);
-    setFlag(ItemIsMovable, true);
-}
-
-EdgeElement::~EdgeElement()
-{
-    if (src)
-        src->delEdge(this);
-    if (dst)
-	dst->delEdge(this);			
-}
-
-QRectF EdgeElement::boundingRect() const
-{
-   qreal penWidth = 1;
-   qreal arrowSize = 10;
-   qreal extra = (penWidth + arrowSize + kvadratik) / 2.0 + 20;
-
-   return QRectF(srcPoint, QSizeF(dstPoint.x() - srcPoint.x(),
-                     dstPoint.y() - srcPoint.y()))
-             .normalized()
-             .adjusted(-extra, -extra, extra, extra);
-}
-
-#include <math.h>
-
-static const double Pi = 3.14159265358979323846264338327950288419717;
-static double TwoPi = 2.0 * Pi;
-
-
-void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
-{
-    QPainterPath path;
-    path.moveTo(srcPoint);
-    path.lineTo(dstPoint);
-    painter->drawPath(path);
-
-
-///////tmp///////
-
-    QLineF line(srcPoint,dstPoint);
-
-    double arrowSize = 10.0;
-    
-    // Draw the arrows if there's enough room
-    double angle = ::acos(line.dx() / line.length());
-    if (line.dy() >= 0)
-            angle = TwoPi - angle;
-
-    QPointF sourceArrowP1 = srcPoint + QPointF(sin(angle + Pi / 3) * arrowSize,
-                            cos(angle + Pi / 3) * arrowSize);
-    QPointF sourceArrowP2 = srcPoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-                            cos(angle + Pi - Pi / 3) * arrowSize);
-    QPointF destArrowP1 = dstPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
-                            cos(angle - Pi / 3) * arrowSize);
-    QPointF destArrowP2 = dstPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
-                            cos(angle - Pi + Pi / 3) * arrowSize);
-
-    painter->setBrush(Qt::white);
-    painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
-																				
-
-//////tmp///////    
-    
-    
-
-    if (option->state & QStyle::State_Selected) {
-        painter->setBrush(Qt::SolidPattern);
-        painter->drawRect(QRectF(srcPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
-        painter->drawRect(QRectF(dstPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
-    }
-}
-
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen)
 {
     // We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
@@ -100,46 +23,85 @@ QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen 
     ps.setJoinStyle(pen.joinStyle());
     ps.setMiterLimit(pen.miterLimit());
     QPainterPath p = ps.createStroke(path);
-    p.addPath(path);
     return p;
+}
+
+#include <math.h>
+
+static const double Pi = 3.14159265358979323846264338327950288419717;
+static double TwoPi = 2.0 * Pi;
+
+
+EdgeElement::EdgeElement()
+    : src(0), dst(0), portFrom(0), portTo(0)
+{
+    dragState = -1;
+    setZValue(100);
+    setFlag(ItemIsMovable, true);
+
+    m_line << QPointF(-50,-10) << QPointF(50,10);
+}
+
+EdgeElement::~EdgeElement()
+{
+    if (src)
+        src->delEdge(this);
+    if (dst)
+	dst->delEdge(this);
+}
+
+QRectF EdgeElement::boundingRect() const
+{
+    return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+}
+
+void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
+{
+    painter->drawPolyline(m_line);
+
+    if (option->state & QStyle::State_Selected) {
+        painter->setBrush(Qt::SolidPattern);
+	foreach( QPointF point, m_line) {
+            painter->drawRect(QRectF(point-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
+	}
+    }
 }
 
 QPainterPath EdgeElement::shape() const
 {
     QPainterPath path;
-    path.moveTo(srcPoint);
-    path.lineTo(dstPoint);
+    path.addPolygon(m_line);
     return qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik*2));
 }
 
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
-    dragState = 0;
-    if ( QRectF(srcPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
-	dragState = 1;
-    } else if ( QRectF(dstPoint-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
-        dragState = 2;
-    } else
+    dragState = -1;
+
+    for ( int i = 0 ; i < m_line.size() ; i++ ) {
+	if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
+	    dragState = i;
+	    break;
+	}
+    }
+
+    if ( dragState == -1 )
 	Element::mousePressEvent(event);
 }
 
 void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-    if ( dragState == 0 ) {
+    if ( dragState == -1 ) {
         Element::mouseMoveEvent(event);
     } else {
 	    prepareGeometryChange();
-	    if ( dragState == 1 ) {
-		srcPoint = event->pos();
-	    } else if ( dragState == 2 ) {
-        	dstPoint = event->pos();
-	    }
+	    m_line[dragState] = event->pos();
     }
 }
 
 void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-    if ( dragState != 0 ) {
+    if ( dragState != -1 ) {
 	    
 //    int uuidFrom = idx.sibling(myrow,5).data().toInt();
 //    int uuidTo = idx.sibling(myrow,6).data().toInt();
@@ -148,21 +110,21 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	    NodeElement *e = 0;
 	    foreach( QGraphicsItem *item, scene()->items(mapToScene(event->pos())) ) {
                 if ( e = dynamic_cast<NodeElement *>(item) ) {
-		    if ( dragState == 1 ) {
+		    if ( dragState == 0 ) {
 			src = e;
 			src->addEdge(this);
 			portFrom = src->getNearestPort(mapToItem(src,event->pos()));
-			srcPoint = src->getPort(portFrom);
+			m_line[0] = mapFromItem(src,src->getPort(portFrom));
 			QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
     		
 		        QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 			im->setData(dataIndex.sibling(dataIndex.row(),7), fromPort);
 
-		    } else if ( dragState == 2 ) {
+		    } else if ( dragState == m_line.size()-1 ) {
 			dst = e;
 			dst->addEdge(this);
                         portTo = dst->getNearestPort(mapToItem(dst,event->pos()));
-                        dstPoint = dst->getPort(portTo);
+                        m_line[m_line.size()-1] = mapFromItem(dst,dst->getPort(portTo));
                         QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
 			
         		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
@@ -175,7 +137,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	    }
 	    
 	    if ( !e ) {
-		if ( dragState == 1 ) {
+		if ( dragState == 0 ) {
 		    if (src) {
 			src->delEdge(this);
 		    }
@@ -183,7 +145,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	            QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
     	            im->setData(dataIndex.sibling(dataIndex.row(),7), "0:0" );
-        	} else if ( dragState == 2 ) {
+        	} else if ( dragState == m_line.size()-1 ) {
 		    if (dst) {
 		        dst->delEdge(this);
 		    }
@@ -196,18 +158,50 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		        setFlag(ItemIsMovable, true);
 	    }
 
-            dragState = 0;
+            dragState = -1;
     } else
         Element::mouseReleaseEvent(event);
+
+    dragState = -1;
+}
+
+void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
+{
+  QMenu menu;
+
+  QAction *addPointAction = menu.addAction("Add point");
+  QAction *delPointAction = menu.addAction("Remove point");
+
+    if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
+	if ( selectedAction == delPointAction ) {
+            for ( int i = 1 ; i < m_line.size()-1 ; i++ ) {
+	        if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
+		    m_line.remove(i);
+		    update();
+		    break;
+		}
+	    }
+	} else if ( selectedAction == addPointAction ) {
+	    for ( int i = 0; i < m_line.size()-1; i++ ) {
+		QPainterPath path;
+	        path.moveTo(m_line[i]);
+	        path.lineTo(m_line[i+1]);
+	        if ( qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik*2)).contains(event->pos()) ) {
+		    m_line.insert(i+1,event->pos());
+		    break;
+		}
+	    }
+        }
+    }
 }
 
 void EdgeElement::adjustLink()
 {
     prepareGeometryChange();
     if ( src )
-	srcPoint = mapFromItem(src, src->getPort(portFrom));
+	m_line[0] = mapFromItem(src, src->getPort(portFrom));
     if ( dst )
-        dstPoint = mapFromItem(dst, dst->getPort(portTo));
+        m_line[m_line.size()-1]= mapFromItem(dst, dst->getPort(portTo));
     update();
 }
 
