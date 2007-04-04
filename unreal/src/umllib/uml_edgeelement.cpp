@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QtGlobal>
 
 #include "editorviewscene.h"
 
@@ -173,6 +174,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 
   QAction *addPointAction = menu.addAction("Add point");
   QAction *delPointAction = menu.addAction("Remove point");
+  QAction *squarizeAction = menu.addAction("Squarize :)");
 
     if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
 	if ( selectedAction == delPointAction ) {
@@ -194,7 +196,17 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 		    break;
 		}
 	    }
-        }
+        } else if ( selectedAction == squarizeAction ) {
+	    prepareGeometryChange();
+	    for ( int i = 0; i < m_line.size()-1; i++ ) {
+		QLineF line(m_line[i],m_line[i+1]);	
+		if ( qAbs(line.dx()) < qAbs(line.dy()) ) {
+		    m_line[i+1].setX(m_line[i].x());		    
+		} else {
+		    m_line[i+1].setY(m_line[i].y());
+		}
+	    }
+	} 
     }
 }
 
