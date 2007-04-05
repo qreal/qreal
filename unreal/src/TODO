@@ -1,3 +1,9 @@
+==================================================
+DO NOT WRITE HERE!!!!! USE TRAC INSTEAD!!!!!!
+==================================================
+
+
+
 General:
 - New URL for our stuff. Something like Qt's internal ":/dir/file" scheme.
   My proposal is: "%/repo/diagram/element" or something like that.
@@ -20,4 +26,6 @@ That is (in this order):
 repo & stuff:
 - multiple copies of single element ability 
 - database locks support
+
+
 
