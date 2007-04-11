@@ -15,18 +15,13 @@ RealRepoModel::~RealRepoModel()
     delete rootItem;
 }
 
-int RealRepoModel::columnCount(const QModelIndex &/*parent*/) const
-{
-    return 1;
-}
-
 static QColor rndColor()
 {
     using namespace Qt;
     QList<QColor> list;
     list << white << black << red << darkRed << green << darkGreen <<
 	    blue << darkBlue << cyan << darkCyan << magenta << darkMagenta <<
-	    yellow << darkYellow << gray << darkGray << lightGray;
+	    yellow << darkYellow << lightGray;
     
     return list[random()%list.size()];
 }
@@ -41,10 +36,9 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
     switch ( role ) {
 	case Qt::DisplayRole:
 	case Qt::EditRole:		return item->name();
-	case Qt::BackgroundRole:	return rndColor();
-	case Qt::ForegroundRole:	return rndColor();
-	default:			return QVariant();
     }
+
+    return QVariant();
 }
 
 bool RealRepoModel::setData(const QModelIndex &index, const QVariant &value, int role) 
@@ -74,9 +68,14 @@ Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     
     if ( static_cast<RealRepoItem*>(index.internalPointer())->id() > 100 )
-	flags |= Qt::ItemIsEditable;
+	flags |= Qt::ItemIsEditable | Qt::ItemIsDragEnabled;
 
     return flags;
+}
+
+Qt::DropActions RealRepoModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
 }
 
 QVariant RealRepoModel::headerData(int section, Qt::Orientation orientation,
@@ -137,6 +136,11 @@ int RealRepoModel::rowCount(const QModelIndex &parent) const
     return parentItem->rowCount();
 }
 
+int RealRepoModel::columnCount(const QModelIndex &/*parent*/) const
+{
+    return 1;
+}
+
 QModelIndex RealRepoModel::getIndexByItem(const RealRepoItem *item)
 {
     QList <int> rowCoords;
@@ -154,3 +158,4 @@ QModelIndex RealRepoModel::getIndexByItem(const RealRepoItem *item)
 
     return result;
 }
+

@@ -6,6 +6,8 @@
 #include <QtCore/QVariant>
 #include <QtSql/QSqlDatabase>
 
+#include "realreporoles.h"
+
 class RealRepoItem;
 
 class RealRepoModel : public QAbstractItemModel
@@ -23,6 +25,7 @@ public:
 			int role = Qt::EditRole);
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
+    Qt::DropActions supportedDropActions () const;
 
     QModelIndex index(int row, int column,
                       const QModelIndex &parent = QModelIndex()) const;

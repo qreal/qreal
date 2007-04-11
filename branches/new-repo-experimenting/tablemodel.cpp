@@ -4,6 +4,8 @@
 #include "qsqlconnectiondialog.h"
 
 #include "repo/realrepomodel.h"
+#include "repo/realreporoles.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +17,8 @@ int main(int argc, char *argv[])
 
    QSqlError err;
    QSqlDatabase db = QSqlDatabase::addDatabase(dialog.driverName());
-   db.setDatabaseName(dialog.databaseName());
+   
+    db.setDatabaseName(dialog.databaseName());
    db.setHostName(dialog.hostName());
    db.setPort(dialog.port());
    if (!db.open(dialog.userName(), dialog.password())) {
@@ -28,12 +31,13 @@ int main(int argc, char *argv[])
                                        "opening the connection:\n") + err.driverText() + "\n" + err.databaseText());
 
     RealRepoModel model;
-//    model.setQuery("select name, id, table_name from elements_all;");
-
-    QMessageBox::information(0, QObject::tr("Dedication"), QObject::tr("This testing program is dedicated to Carlos Castaneda"));					       
-					       
 
     QTreeView *view = new QTreeView;
+//    view->setDragEnabled(true);
+//    view->setAcceptDrops(true);
+//    view->setDropIndicatorShown(true);
+//    view->setDragDropMode(QAbstractItemView::InternalMove); 
+
     view->setModel(&model);
     view->show();
 
