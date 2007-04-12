@@ -9,37 +9,38 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+	QApplication app(argc, argv);
 
-  QSqlConnectionDialog dialog(0);
-  if (dialog.exec() != QDialog::Accepted)
-      return 0;
+	QSqlConnectionDialog dialog(0);
+	if (dialog.exec() != QDialog::Accepted)
+		return 0;
 
-   QSqlError err;
-   QSqlDatabase db = QSqlDatabase::addDatabase(dialog.driverName());
-   
-    db.setDatabaseName(dialog.databaseName());
-   db.setHostName(dialog.hostName());
-   db.setPort(dialog.port());
-   if (!db.open(dialog.userName(), dialog.password())) {
-       err = db.lastError();
-       db = QSqlDatabase();
-   }
+	QSqlError err;
+	QSqlDatabase db = QSqlDatabase::addDatabase(dialog.driverName());
 
-    if (err.type() != QSqlError::NoError)
-	QMessageBox::warning(0, QObject::tr("Unable to open database"), QObject::tr("An error occured while "
-                                       "opening the connection:\n") + err.driverText() + "\n" + err.databaseText());
+	db.setDatabaseName(dialog.databaseName());
+	db.setHostName(dialog.hostName());
+	db.setPort(dialog.port());
+	if (!db.open(dialog.userName(), dialog.password())) {
+		err = db.lastError();
+		db = QSqlDatabase();
+	}
 
-    RealRepoModel model;
+	if (err.type() != QSqlError::NoError)
+		QMessageBox::warning(0, QObject::tr("Unable to open database"),
+				QObject::tr("An error occured while opening the connection:\n")
+				+ err.driverText() + "\n" + err.databaseText());
 
-    QTreeView *view = new QTreeView;
-//    view->setDragEnabled(true);
-//    view->setAcceptDrops(true);
-//    view->setDropIndicatorShown(true);
-//    view->setDragDropMode(QAbstractItemView::InternalMove); 
+	RealRepoModel model;
 
-    view->setModel(&model);
-    view->show();
+	QTreeView *view = new QTreeView;
+	view->setDragEnabled(true);
+	view->setAcceptDrops(true);
+	view->setDropIndicatorShown(true);
+	view->setDragDropMode(QAbstractItemView::InternalMove); 
 
-    return app.exec();
+	view->setModel(&model);
+	view->show();
+
+	return app.exec();
 }

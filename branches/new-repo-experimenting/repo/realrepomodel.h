@@ -23,8 +23,14 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     bool setData (const QModelIndex &index, const QVariant &value,
 			int role = Qt::EditRole);
-    Qt::ItemFlags flags(const QModelIndex &index) const;
 
+    bool dropMimeData(const QMimeData *data, Qt::DropAction action,
+		int row, int column, const QModelIndex &parent);
+    
+    bool insertRows (int row, int count,
+			const QModelIndex &parent = QModelIndex());
+    
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     Qt::DropActions supportedDropActions () const;
 
     QModelIndex index(int row, int column,
@@ -33,7 +39,7 @@ public:
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
-
+    
 private:
     RealRepoItem *rootItem;
     QSqlDatabase db;

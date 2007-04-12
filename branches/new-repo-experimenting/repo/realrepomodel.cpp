@@ -68,7 +68,7 @@ Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     
     if ( static_cast<RealRepoItem*>(index.internalPointer())->id() > 100 )
-	flags |= Qt::ItemIsEditable | Qt::ItemIsDragEnabled;
+	flags |= Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 
     return flags;
 }
@@ -92,6 +92,24 @@ QVariant RealRepoModel::headerData(int section, Qt::Orientation orientation,
 
     return QVariant();
 }
+
+bool RealRepoModel::insertRows (int row, int count, const QModelIndex &parent)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    return false;
+}
+
+bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
+		int row, int column, const QModelIndex &parent)
+{
+//	if (action == Qt::IgnoreAction)
+//		return true;
+
+	qDebug() << row << column << parent << static_cast<RealRepoItem*>(parent.internalPointer())->name();
+	
+	return true;
+}
+			    
 
 QModelIndex RealRepoModel::index(int row, int column, const QModelIndex &parent)
             const
