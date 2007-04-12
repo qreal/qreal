@@ -7,6 +7,8 @@ namespace Unreal {
     enum Roles {
 	PositionRole = Qt::UserRole + 64,	// Position on a diagram
 	ConfigurationRole,			// Configuration (e.g. for link)
+	IdRole,
+	TypeRole,
 	UserRole = Qt::UserRole + 96		// First role available for other types
     };
 

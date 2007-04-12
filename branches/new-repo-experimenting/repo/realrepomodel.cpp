@@ -4,6 +4,8 @@
 #include "realrepoitem.h"
 #include "realrepomodel.h"
 
+#include "realreporoles.h"
+
 RealRepoModel::RealRepoModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
@@ -13,17 +15,6 @@ RealRepoModel::RealRepoModel(QObject *parent)
 RealRepoModel::~RealRepoModel()
 {
     delete rootItem;
-}
-
-static QColor rndColor()
-{
-    using namespace Qt;
-    QList<QColor> list;
-    list << white << black << red << darkRed << green << darkGreen <<
-	    blue << darkBlue << cyan << darkCyan << magenta << darkMagenta <<
-	    yellow << darkYellow << lightGray;
-    
-    return list[random()%list.size()];
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
@@ -36,18 +27,33 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
     switch ( role ) {
 	case Qt::DisplayRole:
 	case Qt::EditRole:		return item->name();
+        case Unreal::IdRole:		return item->id();
+        case Unreal::TypeRole:          return item->type();
     }
 
     return QVariant();
 }
 
+QMap<int, QVariant> RealRepoModel::itemData ( const QModelIndex & index ) const
+{
+    QMap<int, QVariant> map = QAbstractItemModel::itemData(index);
+
+    map[Unreal::IdRole] = data(index,Unreal::IdRole);
+    map[Unreal::TypeRole] = data(index,Unreal::TypeRole);
+
+    return map;
+}
+
 bool RealRepoModel::setData(const QModelIndex &index, const QVariant &value, int role) 
 {
+    qDebug() << __PRETTY_FUNCTION__ << index << value << role;
     RealRepoItem *item = static_cast<RealRepoItem*>(index.internalPointer());
 
     switch ( role ) {
 	case Qt::DisplayRole:
 	case Qt::EditRole:		item->setName(value.toString());	break;
+	case Unreal::IdRole:		item->setId(value.toInt());		break;
+	case Unreal::TypeRole:		item->setType(static_cast<RealRepoItem::NodeType>(value.toInt()));	break;
 	default:			return false;
     }
 
@@ -95,10 +101,19 @@ QVariant RealRepoModel::headerData(int section, Qt::Orientation orientation,
 
 bool RealRepoModel::insertRows (int row, int count, const QModelIndex &parent)
 {
-    qDebug() << __PRETTY_FUNCTION__;
-    return false;
+	beginInsertRows(parent,row,row+count);
+        RealRepoItem *item = static_cast<RealRepoItem*>(parent.internalPointer());
+	
+	bool b = false;
+	if ( row == item->rowCount() )
+	    b = item->insertChild(row,count);
+
+	endInsertRows();
+
+	return b;
 }
 
+/*
 bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent)
 {
@@ -106,10 +121,11 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 //		return true;
 
 	qDebug() << row << column << parent << static_cast<RealRepoItem*>(parent.internalPointer())->name();
+	static_cast<RealRepoItem*>(parent.internalPointer())->addChild();
 	
 	return true;
 }
-			    
+*/	    
 
 QModelIndex RealRepoModel::index(int row, int column, const QModelIndex &parent)
             const

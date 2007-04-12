@@ -22,7 +22,6 @@ RealRepoItem::RealRepoItem(NodeType type, int row, int id, RealRepoItem *parent)
     : parentItem(parent), rowNumber(row), childCount(-1),
 	m_id(id), m_type(type)
 {
-    // Record the item's location within its parent.
     switch (type) {
 	case Root:	childTableName = "el_0";			break;
 	case Category:	childTableName = QString("el_%1").arg(id);	break;
@@ -31,12 +30,49 @@ RealRepoItem::RealRepoItem(NodeType type, int row, int id, RealRepoItem *parent)
 
     updateData();
 
-    listByUuid[m_id].append(this);
+    if ( m_id )
+	listByUuid[m_id].append(this);
+}
+
+RealRepoItem::RealRepoItem(int row, RealRepoItem *parent)
+    : parentItem(parent), rowNumber(row), childCount(-1),
+	m_id(0), m_type(Undefined)
+{
+}
+
+void RealRepoItem::setId(int id)
+{
+    if ( !m_id ) {
+	m_id = id;
+	getQuery(QString("UPDATE %1 SET id=%2 WHERE id=0;")
+                            .arg(parentItem->childTableName).arg(m_id));
+
+	listByUuid[m_id].append(this);
+    }
+}
+
+void RealRepoItem::setType(NodeType type)
+{
+    if ( !m_type ) {
+	m_type = type;
+	getQuery(QString("UPDATE %1 SET type=%2 WHERE id=%3;")
+                            .arg(parentItem->childTableName).arg(m_type).arg(m_id));
+
+       switch (type) {
+	    case Root:      childTableName = "el_0";                        break;
+	    case Category:  childTableName = QString("el_%1").arg(m_id);      break;
+            default:        childTableName = QString("cont_%1").arg(m_id);    break;
+        }
+
+        updateData();
+
+    }
 }
 
 RealRepoItem::~RealRepoItem()
 {
-    listByUuid[m_id].removeAll(this);
+    if ( m_id )
+        listByUuid[m_id].removeAll(this);
 
     qDeleteAll(childItems);
 }
@@ -89,6 +125,25 @@ RealRepoItem *RealRepoItem::child(int row)
     child = new RealRepoItem(childCategory, row, childId, this);
     childItems[row] = child;
     return child;
+}
+
+bool RealRepoItem::addChild(RealRepoItem *child)
+{
+//    child = new RealRepoItem(child->type(), rowCount()+1, child->id(), this);
+    getQuery(QString("INSERT INTO %1 VALUES (%2,%3);").arg(childTableName).arg(child->id()).arg(child->type()));
+}
+
+bool RealRepoItem::insertChild(int row, int count)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    for ( int i = 0; i < count; i++ ) {
+	getQuery(QString("INSERT INTO %1 VALUES (0,0);").arg(childTableName));
+        RealRepoItem *child = new RealRepoItem(row+i,this);
+	childItems[row+i] = child;
+    }
+    if ( childCount != -1 ) {
+	childCount += count;
+    }
 }
 
 int RealRepoItem::rowCount() const

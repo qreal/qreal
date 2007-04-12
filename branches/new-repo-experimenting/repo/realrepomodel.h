@@ -20,12 +20,15 @@ public:
 
     QVariant headerData(int section, Qt::Orientation orientation,
                         int role = Qt::DisplayRole) const;
+
     QVariant data(const QModelIndex &index, int role) const;
     bool setData (const QModelIndex &index, const QVariant &value,
 			int role = Qt::EditRole);
 
-    bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-		int row, int column, const QModelIndex &parent);
+    QMap<int, QVariant> itemData ( const QModelIndex & index ) const;
+
+//    bool dropMimeData(const QMimeData *data, Qt::DropAction action,
+//		int row, int column, const QModelIndex &parent);
     
     bool insertRows (int row, int count,
 			const QModelIndex &parent = QModelIndex());

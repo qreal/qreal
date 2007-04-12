@@ -8,11 +8,12 @@
 class RealRepoItem
 {
 public:
-    enum NodeType { Root = 0, Category = 1, Element = 2,
+    enum NodeType { Undefined = 0, Root = 1, Category = 2, Element = 3,
 	Diagram = 10, Class = 11, Package = 12, Link = 13
     };
 
     RealRepoItem(NodeType type, int row, int id, RealRepoItem *parent = 0);
+    RealRepoItem(int row, RealRepoItem *parent);
     ~RealRepoItem();
 
     RealRepoItem *child(int i);
@@ -31,6 +32,11 @@ public:
 	    { return m_type; };
 
     void setName(QString name);
+    void setId(int id);
+    void setType(NodeType type);
+
+    bool insertChild(int row, int count);
+    bool addChild(RealRepoItem *child);
 
     void updateData();
     void childrenCleanup();
