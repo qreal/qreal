@@ -21,6 +21,9 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
+	if (index.column() != 0 )
+		return QVariant();
+
     RealRepoItem *item = static_cast<RealRepoItem*>(index.internalPointer());
 
     switch ( role ) {
@@ -46,6 +49,9 @@ QMap<int, QVariant> RealRepoModel::itemData ( const QModelIndex & index ) const
 bool RealRepoModel::setData(const QModelIndex &index, const QVariant &value, int role) 
 {
     qDebug() << __PRETTY_FUNCTION__ << index << value << role;
+	if (index.column() != 0)
+		return false;
+
     RealRepoItem *item = static_cast<RealRepoItem*>(index.internalPointer());
 
     switch ( role ) {

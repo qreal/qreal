@@ -3,18 +3,22 @@
 
 #include "mainwindow.h"
 
-#include "dialogs/qsqlconnectiondialog.h"
-#include "repo/realrepomodel.h"
+#include "qsqlconnectiondialog.h"
+#include "realrepomodel.h"
+#include "editorview.h"
 
 MainWindow::MainWindow()
 	: model(0)
 {
-	QWidget *widget = new QWidget;
-	setCentralWidget(widget);
+	view = new EditorView;
+	setCentralWidget(view);
 
 	QDockWidget *diagramDock = new QDockWidget(tr("Diagram Explorer"));
 	diagramExplorer = new QTreeView(this);
 	diagramDock->setWidget(diagramExplorer);
+
+	connect(diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
+			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 
 	addDockWidget(Qt::LeftDockWidgetArea, diagramDock);
 
@@ -88,10 +92,12 @@ void MainWindow::connectRepo()
 		db = QSqlDatabase();
 	}
 
-	if (err.type() != QSqlError::NoError)
+	if (err.type() != QSqlError::NoError) {
 		QMessageBox::warning(0, QObject::tr("Unable to open database"),
 				QObject::tr("An error occured while opening the connection:\n")
 				+ err.driverText() + "\n" + err.databaseText());
+		return;
+	}
 
 	model = new RealRepoModel();
 	
@@ -100,5 +106,12 @@ void MainWindow::connectRepo()
 
 	objectExplorer->setModel(model);
 	objectExplorer->setRowHidden(0,QModelIndex(),true);
+
+	view->mvIface()->setModel(model);
+}
+
+void MainWindow::selectDiagram(const QModelIndex &index)
+{
+	view->mvIface()->setRootIndex(index);
 }
 

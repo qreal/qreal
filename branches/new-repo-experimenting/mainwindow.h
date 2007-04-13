@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtCore/QModelIndex>
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
 
@@ -10,6 +11,7 @@ class QLabel;
 class QMenu;
 class QTreeView;
 class RealRepoModel;
+class EditorView;
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +22,7 @@ public:
 
 public slots:
 	void connectRepo();
+	void selectDiagram(const QModelIndex &index);
 
 private:
 	void createActions();
@@ -37,6 +40,7 @@ private:
 	QTreeView *objectExplorer;
 
 	RealRepoModel *model;
+	EditorView *view;
 
 	QSqlDatabase db;
 };
