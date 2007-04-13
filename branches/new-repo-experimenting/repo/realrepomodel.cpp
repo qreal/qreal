@@ -1,5 +1,4 @@
 #include <QtGui>
-#include <QtXml>
 
 #include "realrepoitem.h"
 #include "realrepomodel.h"

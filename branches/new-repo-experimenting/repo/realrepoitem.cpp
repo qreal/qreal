@@ -1,4 +1,3 @@
-#include <QtXml>
 #include <QtSql>
 
 #include "realrepoitem.h"
@@ -75,6 +74,8 @@ RealRepoItem::~RealRepoItem()
         listByUuid[m_id].removeAll(this);
 
     qDeleteAll(childItems);
+
+    qDebug() << "deleted" << m_name;
 }
 
 void RealRepoItem::updateData()
@@ -144,6 +145,7 @@ bool RealRepoItem::insertChild(int row, int count)
     if ( childCount != -1 ) {
 	childCount += count;
     }
+	return false;
 }
 
 int RealRepoItem::rowCount() const
