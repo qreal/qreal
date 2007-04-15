@@ -55,11 +55,11 @@ bool RealRepoModel::setData(const QModelIndex &index, const QVariant &value, int
     RealRepoItem *item = static_cast<RealRepoItem*>(index.internalPointer());
 
     switch ( role ) {
-	case Qt::DisplayRole:
-	case Qt::EditRole:		item->setName(value.toString());	break;
-	case Unreal::IdRole:		item->setId(value.toInt());		break;
-	case Unreal::TypeRole:		item->setType(static_cast<RealRepoItem::NodeType>(value.toInt()));	break;
-	default:			return false;
+		case Qt::DisplayRole:
+		case Qt::EditRole:			item->setName(value.toString());	break;
+		case Unreal::IdRole:		item->setId(value.toInt());		break;
+		case Unreal::TypeRole:		item->setType(static_cast<RealRepoItem::NodeType>(value.toInt()));	break;
+		default:					return false;
     }
 
     foreach(RealRepoItem *item, listByUuid[item->id()]) {

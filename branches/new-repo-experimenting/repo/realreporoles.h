@@ -3,6 +3,15 @@
 
 #include <Qt>
 
+namespace UML {
+	enum ElementTypes {
+		Diagram = 11,
+		Package = 12,
+		Class = 13,
+		Link = 14
+	};
+};
+
 namespace Unreal {
     enum Roles {
 	PositionRole = Qt::UserRole + 64,	// Position on a diagram

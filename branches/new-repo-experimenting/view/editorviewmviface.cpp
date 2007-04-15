@@ -5,6 +5,8 @@
 #include "editorview.h"
 #include "editorviewscene.h"
 
+#include "realreporoles.h"
+
 #include "uml_element.h"
 #include "uml_guiobjectfactory.h"
 
@@ -19,23 +21,22 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	scene->view = view;
 }
 
-QRect EditorViewMViface::visualRect(const QModelIndex &index) const
+QRect EditorViewMViface::visualRect(const QModelIndex &) const
 {
 	return QRect();
 }
 
-void EditorViewMViface::scrollTo(const QModelIndex &index, ScrollHint hint)
+void EditorViewMViface::scrollTo(const QModelIndex &, ScrollHint)
 {
-	int uuid = index.sibling(0,index.row()).data().toInt();
 }
 
-QModelIndex EditorViewMViface::indexAt(const QPoint &point) const
+QModelIndex EditorViewMViface::indexAt(const QPoint &) const
 {
 	return QModelIndex();
 }
 
-QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction cursorAction,
-		Qt::KeyboardModifiers modifiers)
+QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
+		Qt::KeyboardModifiers)
 {
 	return QModelIndex();
 }
@@ -48,15 +49,15 @@ int EditorViewMViface::verticalOffset() const
 {
 }
 
-bool EditorViewMViface::isIndexHidden(const QModelIndex &index) const
+bool EditorViewMViface::isIndexHidden(const QModelIndex &) const
 {
 }
 
-void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags command)
+void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags )
 {
 }
 
-QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &selection) const
+QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &) const
 {
 }
 
@@ -81,7 +82,6 @@ void EditorViewMViface::reset()
 
 void EditorViewMViface::setRootIndex(const QModelIndex &index)
 {
-	qDebug() << "setRootIndex" << index;
 	QAbstractItemView::setRootIndex(index);
 	reset();
 }
@@ -101,8 +101,11 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		dumpStuff(current);
-		int uuid = model()->index(row, 0, parent).data().toInt();
-		QString type = model()->index(row, 2, parent).data().toString();
+		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
+		int type = model()->index(row, 0, parent).data(Unreal::TypeRole).toInt();
+
+		if ( ! uuid )
+			continue;
 
 		if ( UML::Element *e = UML::GUIObjectFactory(type) ) {
 			scene->addItem(e);
@@ -112,7 +115,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 	}
 	qDebug() << "rowsInserted: updating items";
 	for (int row = start; row <= end; ++row) {
-		int uuid = model()->index(row, 0, parent).data().toInt();
+		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		if (items.contains(uuid))
 			items[uuid]->updateData();
 	}
@@ -123,7 +126,6 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 {
-	//qDebug() << "removed";
 	for (int row = start; row <= end; ++row) {
 		int uuid = model()->index(row, 0, parent).data().toInt();
 
@@ -138,9 +140,14 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 		const QModelIndex &bottomRight)
 {
-
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		int uuid = topLeft.sibling(row, 0).data().toInt();
-		items[uuid]->updateData();
+		int uuid = topLeft.sibling(row, 0).data(Unreal::IdRole).toInt();
+
+		if ( items.contains(uuid) )
+			items[uuid]->updateData();
+		else
+			rowsInserted(topLeft.parent(),row,row);
+
 	}
 }
+

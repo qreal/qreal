@@ -7,14 +7,6 @@ using namespace UML;
 GlamourClass::GlamourClass()
 {
     ports << QPointF(70,0) << QPointF(70,170) << QPointF(0,85) << QPointF(140,85);
-
-/*    QString text("<center><img src=\":/images/kdevclassview/CVclass.png\" /><b>class UML::Element</b><hr>&nbsp;\n"
-	"<img src=\":/images/kdevclassview/CVpublic_meth.png\" />setIndex()<br>\n"
-	"<img src=\":/images/kdevclassview/CVpublic_meth.png\" />updateData()<br>\n"
-	"<img src=\":/images/kdevclassview/CVpublic_meth.png\" />uuid()<hr>&nbsp;\n"
-	"<img src=\":/images/kdevclassview/CVpublic_var.png\" />int m_uuid<br>\n"
-	"<img src=\":/images/kdevclassview/CVpublic_var.png\" />QString name<br>\n"
-	"</center>"); */
 }
 
 GlamourClass::~GlamourClass()
@@ -25,7 +17,7 @@ void GlamourClass::updateData()
 {
     NodeElement::updateData();
 
-    QString name = dataIndex.sibling(dataIndex.row(),1).data().toString();
+    QString name = dataIndex.data().toString();
     text = "<center><img src=\":/images/kdevclassview/CVclass.png\" /><b>class ";
     text += name;
     text += "</b><hr>&nbsp;";

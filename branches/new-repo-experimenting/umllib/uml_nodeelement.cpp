@@ -41,13 +41,13 @@ void NodeElement::updateData()
     Element::updateData();
 
     if (moving == 0) {
-	int myrow = dataIndex.row();
+		int myrow = dataIndex.row();
         int x = dataIndex.sibling(myrow,4).data().toInt();
-	int y = dataIndex.sibling(myrow,5).data().toInt();
+		int y = dataIndex.sibling(myrow,5).data().toInt();
         setPos(x,y);
     
-	foreach (EdgeElement *edge, edgeList)
-            edge->adjustLink();
+		foreach (EdgeElement *edge, edgeList)
+			edge->adjustLink();
     }
 }
 

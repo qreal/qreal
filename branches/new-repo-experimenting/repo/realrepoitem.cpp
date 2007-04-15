@@ -80,13 +80,15 @@ RealRepoItem::~RealRepoItem()
 
 void RealRepoItem::updateData()
 {
-    m_name = getQuery(QString("SELECT name FROM el_%1 WHERE id=%2;")
-	                .arg(m_type > Element ? m_type : 0).arg(m_id)).toString();
+	if ( m_id )
+	    m_name = getQuery(QString("SELECT name FROM el_%1 WHERE id=%2;")
+		                .arg(m_type > Element ? m_type : 0).arg(m_id)).toString();
 }
 
 void RealRepoItem::setName(QString name)
 {
-    getQuery(QString("UPDATE el_%1 SET name='%3' WHERE id=%2;")
+	if ( m_id )
+	    getQuery(QString("UPDATE el_%1 SET name='%3' WHERE id=%2;")
                             .arg(m_type).arg(m_id).arg(name.replace("'","''")));
 }
 

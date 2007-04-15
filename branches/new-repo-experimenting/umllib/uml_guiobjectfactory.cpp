@@ -1,5 +1,7 @@
 #include <QtGui>
 
+#include "realreporoles.h"
+
 #include "uml_guiobjectfactory.h"
 
 #include "uml_edgeelement.h"
@@ -7,14 +9,12 @@
 
 using namespace UML;
 
-Element * UML::GUIObjectFactory(QString &type)
+Element * UML::GUIObjectFactory(int type)
 {
-    if (type == "eP2N") {
-            return new EdgeElement();
-    } else if (type == "nFeatured" ) {
-            return new GlamourClass();
-    } else {
-	    qDebug() << "not creating" << type;
-	    return 0;
-    }
+	switch ( type ) {
+		case UML::Class:	return new GlamourClass();
+		case UML::Link:		return new EdgeElement();
+		default:			qDebug() << "not creating" << type;
+	}
+	return 0;
 }
