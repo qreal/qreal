@@ -1,6 +1,8 @@
 #include <QApplication>
 
-#include "mainwindow.h"
+// #include "mainwindow.h"
+
+#include "realreporoles.h"
 
 int main(int argc, char *argv[])
 {

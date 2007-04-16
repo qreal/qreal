@@ -43,14 +43,17 @@ QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
 
 int EditorViewMViface::horizontalOffset() const
 {
+	return 0;
 }
 
 int EditorViewMViface::verticalOffset() const
 {
+	return 0;
 }
 
 bool EditorViewMViface::isIndexHidden(const QModelIndex &) const
 {
+	return false;
 }
 
 void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags )
@@ -59,6 +62,7 @@ void EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::Selectio
 
 QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &) const
 {
+	return QRegion();
 }
 
 void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
@@ -90,8 +94,7 @@ static void dumpStuff( const QModelIndex & idx )
 {
 	qDebug() << idx << ":"
 		<< idx.sibling(idx.row(),0).data().toString()
-		<< idx.sibling(idx.row(),1).data().toString()
-		;
+		<< idx.sibling(idx.row(),1).data().toString();
 
 }
 
@@ -100,7 +103,6 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 	qDebug() << "rowsInserted: adding items";
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		dumpStuff(current);
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		int type = model()->index(row, 0, parent).data(Unreal::TypeRole).toInt();
 

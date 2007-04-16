@@ -38,7 +38,7 @@ MainWindow::MainWindow()
 
 	setWindowTitle(tr("UnREAL"));
 	setMinimumSize(160, 160);
-	resize(480, 320);
+	resize(640, 480);
 	
 	show();
 	connectRepo();

@@ -1,6 +1,7 @@
 #include <QtGui>
 
 #include "uml_nodeelement.h"
+#include "realreporoles.h"
 
 using namespace UML;
 
@@ -25,9 +26,9 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
     moving = 1;
-    QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-    im->setData(dataIndex.sibling(dataIndex.row(),4), x() );
-    im->setData(dataIndex.sibling(dataIndex.row(),5), y() );
+    
+	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+    im->setData(dataIndex, pos(), Unreal::PositionRole);
     moving = 0;
     
     foreach (EdgeElement *edge, edgeList)

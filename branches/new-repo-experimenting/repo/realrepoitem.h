@@ -17,19 +17,17 @@ public:
     ~RealRepoItem();
 
     RealRepoItem *child(int i);
-    RealRepoItem *parent()
-	    { return parentItem; };
+    RealRepoItem *parent()		    { return parentItem; };
     
-    int row() const
-	    { return rowNumber; };
+    int row() const				    { return rowNumber; };
     int rowCount() const;
-    
-    QString name() const
-	    { return m_name; };
-    int id() const
-	    { return m_id; };
-    NodeType type() const
-	    { return m_type; };
+
+    QString name() const		    { return m_name; };
+    int id() const				    { return m_id; };
+    NodeType type() const		    { return m_type; };
+
+	QVariant property(int key);
+	bool setProperty(int key, const QVariant &data);
 
     void setName(QString name);
     void setId(int id);
@@ -54,7 +52,7 @@ private:
     NodeType m_type;
 
     QString childTableName;
-
+//	QString query __attribute((deprecated));
 };
 
 // FIXME: only one open DB
