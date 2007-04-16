@@ -1,6 +1,7 @@
 #include <QtGui>
 
 #include "uml_glamour_class.h"
+#include "realreporoles.h"
 
 using namespace UML;
 
@@ -28,8 +29,8 @@ void GlamourClass::updateData()
     QString stuff = dataIndex.sibling(dataIndex.row(),7).data().toString();
     QStringList everything = stuff.split(";",QString::SkipEmptyParts);
 
-    methods = everything.filter("()");
-    fields = everything.filter("$");
+    methods = dataIndex.data(Unreal::MethodsRole).toString().split(';');
+    fields = dataIndex.data(Unreal::FieldsRole).toString().split(';');
 
     foreach (QString str, methods) {
 	text += "<img src=\":/images/kdevclassview/CVpublic_meth.png\" />";
@@ -48,7 +49,6 @@ void GlamourClass::updateData()
     text += "</center>";
     
     update();
-    
 }
 
 void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )

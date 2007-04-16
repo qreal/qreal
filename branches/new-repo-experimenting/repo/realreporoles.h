@@ -4,16 +4,29 @@
 #include <Qt>
 
 namespace SQLFields {
+	static int ElementOffset = 11;
+
 	static const char * Diagram[] = {
 		"x", "y", "cfg"
 	};
 
+	static const char * Package[] = {
+		"foo!"
+	};
+
 	static const char * Class[] = {
-		"props", "methods"
+		"properties", "methods"
 	};
 
 	static const char * Link[] = {
 		"from", "to"
+	};
+
+	static const char ** ColumnNames[] = {
+		Diagram,
+		Package,
+		Class,
+		Link
 	};
 
 };
