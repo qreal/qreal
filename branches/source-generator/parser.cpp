@@ -244,15 +244,17 @@ void Parser::genEnums()
            "\t\tUserRole = Qt::UserRole + 96        // First role available for other types\n\t};\n\n";
    
     for( int i=0; i < objects.size(); i++ ){
-        out << "\tenum " + objects.at(i)->id + " {\n";
+        out << "\tnamespace " + objects.at(i)->id + " {\n";
+	out << "\t\tenum Roles {\n";
         for (int j=0; j<objects.at(i)->properties.size(); j++){
-            out << "\t\t" + objects.at(i)->properties.at(j).first + "Role";
+            out << "\t\t\t" + objects.at(i)->properties.at(j).first + "Role";
             if( !j )
                 out << " = UserRole + 1";
             if( j != objects.at(i)->properties.size()-1)
                 out << ",";
             out << "\n";
         }
+	out << "\t\t};\n";
         out << "\t};\n\n";
    }
     
@@ -351,31 +353,40 @@ void Parser::genClasses(){
     
         out << "#include <QtGui>\n\n";
         out << QString("#include \"" + classname + ".h\"\n\n");
+	out << "using namespace UML;\n\n\n";
         
         //constructor
-        out << classname << "::" << classname << "()\n{\n";
+        out << classname << "::" << classname << "()\n";
+        out <<   "{\n";
         out << "\tports << " << QString("QPointF(%1, %2)").arg(height/2).arg(0) << " << " <<
                             QString("QPointF(%1, %2)").arg(height/2).arg(width) << " << " <<
                             QString("QPointF(%1, %2)").arg(0).arg(width/2) << " << " <<
-                            QString("QPointF(%1, %2)").arg(height).arg(width/2) << "\n";
-        out << QString("\trenderer(\"%1\")\n").arg(":/shapes/" + classname + ".svg");
+                            QString("QPointF(%1, %2)").arg(height).arg(width/2) << ";\n";
+
+	out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
+
         out << "}\n\n";
+
+	//destructor
+	out << classname << "::~" << classname << "()\n";
+        out <<   "{\n}\n";
+
         
         //paint
         out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                                                                                 "QWidget *widget)\n{\n";
         out << "\trenderer.render(painter, contentsRect());\n";
-        out << "\tNodeElement::paint(painter, style, widjet);\n";
+        out << "\tNodeElement::paint(painter, style, widget);\n";
         out << "}\n\n";
 
         //boundingRect
-        out << "QRectF " << classname << "::boundingRect() const\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4)\n").arg(-8).arg(-8).arg(height+16).arg(width+16);
+        out << "QRectF " << classname << "::boundingRect() const\n{\n";
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-8).arg(-8).arg(height+16).arg(width+16);
         out << "}\n\n";
 
         //contentsRect
-        out << "QRectF " << classname << "::contentsRect() const\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4)\n").arg(0).arg(0).arg(height).arg(width);
+        out << "QRectF " << classname << "::contentsRect() const\n{\n";
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(0).arg(0).arg(height).arg(width);
         out << "}\n\n";
 
         file.close();    
@@ -391,7 +402,7 @@ void Parser::genClasses(){
         out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
         out2 << "#include \"uml_nodeelement.h\"\n";
         //out << "#include \"uml_edgeelement.h\"\n";
-        out2 << "#include <QWidget>\n\n";
+        out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n";
 
         out2 << "namespace UML {\n";
         out2 << "class " << classname << " : public NodeElement{\n";
@@ -399,8 +410,10 @@ void Parser::genClasses(){
         out2 << "\t\t~" << classname << "();\n";
         out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
                 "\tvirtual QRectF boundingRect() const;\n"
-                "\tvirtual QRectF contentsRect() const;\n";
-        out2 << "\t};\n};";        
+                "\tvirtual QRectF contentsRect() const;\n"
+		"private:\n"
+		"\tQSvgRenderer renderer;\n";
+        out2 << "\t};\n};\n\n#endif\n";
         file2.close();
     }    
 
