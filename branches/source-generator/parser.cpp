@@ -97,7 +97,8 @@ void Parser::run(QString filename){
                     type = property.at(j).firstChildElement("ref").attribute("idref");
                 } 
                 if( !name.isEmpty())
-                    cur->properties << QPair<QString, QString>(name, type);
+                    if( !cur->properties.contains(QPair<QString, QString>(name, type)))
+                        cur->properties << QPair<QString, QString>(name, type);
                 
                 // TODO: defaults and other missing property stuff support               
             } 
@@ -267,15 +268,17 @@ void Parser::genSQLScripts()
         return;
     QTextStream out(&file);
     
-    QString inserts = "INSERT INTO 'elements_all' VALUES \n";
+    out << "drop database unreal;\n create database unreal;\n use unreal;\n";
+
+    QString inserts = "INSERT INTO `elements_all` (id, name) VALUES ";
     
     for (int i=0; i<objects.size(); i++){
         int j = i+10;
         inserts += QString("\t(%1, '%2'),\n").arg(j).arg(objects.at(i)->id);
-        
+
         out <<  "CREATE TABLE `el_" << j << "` (\n"
                 "\t`id` mediumint NOT NULL";
-                //"\t`name` VARCHAR2(100) NOT NULL\n";
+                //"\t'name' VARCHAR2(100) NOT NULL\n";
         for (int k=0; k<objects.at(i)->properties.size(); k++){
             QString cortege = ",\n\t`%1` %2";
             QString name = objects.at(i)->properties.at(k).first;
@@ -290,9 +293,10 @@ void Parser::genSQLScripts()
             out << cortege.arg(name).arg(type);
            // out << "\n";
         }        
-        out << "\n);\n\n";    
+        out << ");\n\n";    
     }
     
+    out << "CREATE TABLE `elements_all` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
     inserts += "\t(666,'fixmeplz');";
     out << inserts;
     file.close();
