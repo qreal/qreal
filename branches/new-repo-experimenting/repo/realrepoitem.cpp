@@ -95,9 +95,21 @@ void RealRepoItem::setName(QString name)
 
 QVariant RealRepoItem::property(int key)
 {
+	if ( key == Unreal::PositionRole ) {
+		QString query = QString("SELECT x, y FROM %1 WHERE id=%2")
+			.arg(parent()->childTableName).arg(m_id);
+		qDebug() << query;
+		QSqlQuery q1(query);
+		if (!q1.next()) {
+			return QVariant();
+		}
+		return QPointF(q1.value(0).toInt(),q1.value(1).toInt());
+	}
+
+	qDebug() << "getting property" << key;
 	if ( key > Unreal::UserRole ) {
 		return getQuery(QString("SELECT %1 FROM el_%2 WHERE id=%3;")
-				.arg(m_type).arg(m_id));
+				.arg(SQLFields::Class[key - Unreal::UserRole - 1]).arg(m_type).arg(m_id));
 	} else {
 		return QVariant();
 	}
@@ -105,12 +117,22 @@ QVariant RealRepoItem::property(int key)
 
 bool RealRepoItem::setProperty(int key, const QVariant &data)
 {
+	if ( key == Unreal::PositionRole ) {
+		getQuery(QString("UPDATE %1 set x=%3, y=%4 WHERE id=%2")
+				.arg(parent()->childTableName).arg(m_id)
+				.arg(data.toPointF().x()).arg(data.toPointF().y()));
+		return true;
+	}
+
+	qDebug() << "setting property" << key << "to" << data;
 	if ( key > Unreal::UserRole ) {
 		getQuery(QString("UPDATE el_%1 SET %3='%4' WHERE id=%2;")
-				.arg(m_type).arg(m_id));
+				.arg(m_type).arg(m_id)
+				.arg(SQLFields::Class[key - Unreal::UserRole - 1]).arg(data.toString()));
 	} else {
 		getQuery(QString("UPDATE %1 SET %3='%4 WHERE id=%2;")
-				.arg(parent()->childTableName).arg(m_id));
+				.arg(parent()->childTableName).arg(m_id)
+				.arg(SQLFields::Class[key - Unreal::UserRole - 1]).arg(data.toString()));
 	}
 	return false;
 }

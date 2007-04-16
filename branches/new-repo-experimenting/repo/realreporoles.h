@@ -4,15 +4,15 @@
 #include <Qt>
 
 namespace SQLFields {
-	static const char * Diagram = {
+	static const char * Diagram[] = {
 		"x", "y", "cfg"
 	};
 
-	static const char * Class = {
+	static const char * Class[] = {
 		"props", "methods"
 	};
 
-	static const char * Link = {
+	static const char * Link[] = {
 		"from", "to"
 	};
 

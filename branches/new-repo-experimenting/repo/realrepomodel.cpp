@@ -28,11 +28,16 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 
 	switch ( role ) {
 		case Qt::DisplayRole:
-		case Qt::EditRole:				return item->name();
-		case Unreal::IdRole:		return item->id();
-		case Unreal::TypeRole:		return item->type();
-									//		case Unreal::PositionRole:	return item->pos();
-		default:					return item->property(role);
+		case Qt::EditRole:
+			return item->name();
+		case Unreal::IdRole:
+			return item->id();
+		case Unreal::TypeRole:
+			return item->type();
+		//case Unreal::PositionRole:	return item->pos();
+		default:
+			if ( role >= Qt::UserRole )
+				return item->property(role);
 	}
 
 	return QVariant();
@@ -58,10 +63,18 @@ bool RealRepoModel::setData(const QModelIndex &index, const QVariant &value, int
 
 	switch ( role ) {
 		case Qt::DisplayRole:
-		case Qt::EditRole:			item->setName(value.toString());	break;
-		case Unreal::IdRole:		item->setId(value.toInt());		break;
-		case Unreal::TypeRole:		item->setType(static_cast<RealRepoItem::NodeType>(value.toInt()));	break;
-		default:					item->setProperty(role,value);
+		case Qt::EditRole:
+			item->setName(value.toString());
+			break;
+		case Unreal::IdRole:
+			item->setId(value.toInt());
+			break;
+		case Unreal::TypeRole:
+			item->setType(static_cast<RealRepoItem::NodeType>(value.toInt()));
+			break;
+		default:
+			if (role >= Qt::UserRole )
+				item->setProperty(role,value);
 	}
 
 	foreach(RealRepoItem *item, listByUuid[item->id()]) {
