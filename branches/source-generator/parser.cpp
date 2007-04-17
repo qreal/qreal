@@ -280,7 +280,7 @@ void Parser::genSQLScripts()
     QString inserts = "INSERT INTO `elements_all` (id, name) VALUES ";
     
     for (int i=0; i<objects.size(); i++){
-        int j = i+10;
+        int j = i+12;
         inserts += QString("\t(%1, '%2'),\n").arg(j).arg(objects.at(i)->id);
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
@@ -381,8 +381,8 @@ void Parser::genClasses(){
         out << "}\n\n";
 
 	    //destructor
-	    out << classname << "::~" << classname << "()\n\n";
-        out <<   "{\n}\n";
+	    out << classname << "::~" << classname << "()\n";
+        out <<   "{\n}\n\n";
 
         
         //paint
