@@ -266,7 +266,6 @@ void Parser::genEnums()
     out << "#endif\n";
     
     file.close();
-    dir.cdUp();
 }
 
 void Parser::genSQLScripts()
@@ -338,7 +337,6 @@ void Parser::genMappings()
     out << QString("\treturn map.value(elementNum).at(roleNum-%1);\n").arg(roleBase);
     out << "}\n";
     file.close();
-    dir.cdUp();
 }
 
 void Parser::genClasses(){
@@ -360,7 +358,6 @@ void Parser::genClasses(){
         dir.cd("umllib");
         if( !dir.exists("cppcode") )
             dir.mkdir("cppcode");
-        dir.cd("cppcode");
         
         QFile file("generated/umllib/cppcode/" + classname + ".cpp");
         if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -432,7 +429,6 @@ void Parser::genClasses(){
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
         dir.cdUp();
-        dir.cdUp();
     }    
 
     // 
@@ -440,7 +436,6 @@ void Parser::genClasses(){
     //
     if( !dir.exists("build"))
         dir.mkdir("build");
-    dir.cd("build");    
     QFile file("generated/build/umllib.pri");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
@@ -465,7 +460,6 @@ void Parser::genClasses(){
     out << headers << "\n\n";
     out << sources << "\n";
     file.close();
-    dir.cdUp();
 }
 
 void Parser::genFactory()
@@ -473,7 +467,6 @@ void Parser::genFactory()
 
     if( !dir.exists("umllib"))
         dir.mkdir("umllib");
-    dir.cd("umllib");
     QFile file("generated/umllib/uml_guiobjectfactory.cpp");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
@@ -503,6 +496,5 @@ void Parser::genFactory()
     out << "\treturn 0;\n}\n";
 
     file.close();
-    dir.cdUp();
 }
 
