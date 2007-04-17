@@ -2,6 +2,9 @@
 
 Parser::Parser( QStringList l ){
     files = l;
+    dir.cd(".");
+    dir.mkdir("generated");
+    dir.cd("generated");
     for (int i=0; i<l.size(); i++)
         run(l.at(i));
 //    display();
@@ -216,7 +219,9 @@ void Parser::display()
 
 void Parser::genEnums()
 {
-    QFile file("generated/realreporoles.h");
+    if( !dir.exists("repo") )
+        dir.mkdir("repo");
+    QFile file("generated/repo/realreporoles.h");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
@@ -261,6 +266,7 @@ void Parser::genEnums()
     out << "#endif\n";
     
     file.close();
+    dir.cdUp();
 }
 
 void Parser::genSQLScripts()
@@ -307,7 +313,9 @@ void Parser::genSQLScripts()
 
 void Parser::genMappings()
 {
-    QFile file("generated/realreporoles.cpp");
+    if( !dir.exists("repo") )
+        dir.mkdir("repo");
+    QFile file("generated/repo/realreporoles.cpp");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
@@ -330,6 +338,7 @@ void Parser::genMappings()
     out << QString("\treturn map.value(elementNum).at(roleNum-%1);\n").arg(roleBase);
     out << "}\n";
     file.close();
+    dir.cdUp();
 }
 
 void Parser::genClasses(){
@@ -346,7 +355,14 @@ void Parser::genClasses(){
         // 
         // I. cpp-file
         //
-        QFile file("generated/" + classname + ".cpp");
+        if( !dir.exists("umllib") )
+            dir.mkdir("umllib");
+        dir.cd("umllib");
+        if( !dir.exists("cppcode") )
+            dir.mkdir("cppcode");
+        dir.cd("cppcode");
+        
+        QFile file("generated/umllib/cppcode/" + classname + ".cpp");
         if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out(&file);
@@ -363,12 +379,12 @@ void Parser::genClasses(){
                             QString("QPointF(%1, %2)").arg(0).arg(width/2) << " << " <<
                             QString("QPointF(%1, %2)").arg(height).arg(width/2) << ";\n";
 
-	out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
+	    out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
 
         out << "}\n\n";
 
-	//destructor
-	out << classname << "::~" << classname << "()\n";
+	    //destructor
+	    out << classname << "::~" << classname << "()\n\n";
         out <<   "{\n}\n";
 
         
@@ -394,7 +410,7 @@ void Parser::genClasses(){
         //
         //II. H-file
         //
-        QFile file2("generated/" + classname + ".h");
+        QFile file2("generated/umllib/cppcode/" + classname + ".h");
         if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out2(&file2);
@@ -415,12 +431,17 @@ void Parser::genClasses(){
 		"\tQSvgRenderer renderer;\n";
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
+        dir.cdUp();
+        dir.cdUp();
     }    
 
     // 
     // III. pri-file
     //
-    QFile file("generated/umllib.pri");
+    if( !dir.exists("build"))
+        dir.mkdir("build");
+    dir.cd("build");    
+    QFile file("generated/build/umllib.pri");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
@@ -436,20 +457,24 @@ void Parser::genClasses(){
         if ( height == -1 && width == -1 )
             continue;
         
-        headers += " \\ \n\t" + prefix + objects.at(i)->id + ".h";
-        sources += " \\ \n\t" + prefix + objects.at(i)->id + ".cpp";
+        headers += " \\ \n\t" + prefix + objects.at(i)->id + "Class.h";
+        sources += " \\ \n\t" + prefix + objects.at(i)->id + "Class.cpp";
 
 
     }        
     out << headers << "\n\n";
     out << sources << "\n";
     file.close();
+    dir.cdUp();
 }
 
 void Parser::genFactory()
 {
 
-    QFile file("generated/uml_guiobjectfactory.cpp");
+    if( !dir.exists("umllib"))
+        dir.mkdir("umllib");
+    dir.cd("umllib");
+    QFile file("generated/umllib/uml_guiobjectfactory.cpp");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
@@ -478,5 +503,6 @@ void Parser::genFactory()
     out << "\treturn 0;\n}\n";
 
     file.close();
+    dir.cdUp();
 }
 

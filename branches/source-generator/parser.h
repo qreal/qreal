@@ -7,6 +7,7 @@
 #include <QDomNode>
 #include <QDomNodeList>
 #include <QFile>
+#include <QDir>
 #include <QStringList>
 
 
@@ -33,7 +34,7 @@ private:
     QList<Entity*> objects;
     QMap<QString, QStringList> enumerations;
     
-    
+    QDir dir;
     QDomNodeList nodes;
    
 };
