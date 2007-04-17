@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel</include>
+	<namespace>trace</namespace>
+	<diagram name="TRACE">
+		<node id="tracenTraceRelationship" name="TraceRelationship">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:line x1="0" y1="0" x2="300" y2="300" style="stroke:rgb(99,99,99);stroke-width:2" />
+						</svg:svg>
+					</svg_shape>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneDirRelationship" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+	</diagram>
+</metamodel>

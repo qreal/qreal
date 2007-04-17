@@ -1,0 +1,5 @@
+<svg contentScriptType="text/ecmascript" width="100.0px" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 100.0 100.0" height="100.0px" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+<circle r="0" style="fill:#000000;" cx="29" transform="matrix( 1, 0, 0, 1, -8, -4)" cy="34"/>
+<line transform="matrix( 2.6609697356055295, 0, 0, 2.7357881921643377, -9.66633418332165, -117.11886804817236)" x1="14" x2="30" y1="54" style="stroke:#000000;" y2="70"/>
+<line transform="matrix( 2.893128773953586, 0, 0, 2.9546371662005972, -16.8064624021217, -121.86678769804318)" x1="31.8" x2="15.8" y1="52.5" y2="65.8" style="stroke:#000000;" id="0"/>
+</svg>
