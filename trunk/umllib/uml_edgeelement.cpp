@@ -53,12 +53,35 @@ EdgeElement::~EdgeElement()
 
 QRectF EdgeElement::boundingRect() const
 {
-	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+//	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+
+	return m_line.boundingRect().adjusted(-20,-20,20,20);
+}
+
+static double lineAngle(const QLineF &line)
+{
+     double angle = ::acos(line.dx() / line.length());
+     if (line.dy() >= 0)
+         angle = TwoPi - angle;
+
+	 return angle*180/Pi;
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	painter->drawPolyline(m_line);
+
+	painter->save();
+	painter->translate(m_line[0]);
+	painter->rotate(90-lineAngle(QLineF(m_line[1],m_line[0])));
+	drawStartArrow(painter);
+	painter->restore();
+
+	painter->save();
+	painter->translate(m_line[m_line.size()-1]);
+	painter->rotate(90-lineAngle(QLineF(m_line[m_line.size()-2],m_line[m_line.size()-1])));
+	drawEndArrow(painter);
+	painter->restore();
 
 	if (option->state & QStyle::State_Selected) {
 		painter->setBrush(Qt::SolidPattern);
@@ -277,7 +300,3 @@ void EdgeElement::updateData()
 		setFlag(ItemIsMovable, false );
 	}
 }
-
-
-
-
