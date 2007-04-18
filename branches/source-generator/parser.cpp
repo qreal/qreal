@@ -113,15 +113,27 @@ void Parser::run(QString filename){
 
         // 4. SVG stuff
         QDomNodeList svg = nodes.at(ii).toElement().elementsByTagName("svg:svg");
-//        qDebug() << svg.text();
+        if( !dir.exists("shapes") )
+            dir.mkdir("shapes");
+
         if (!svg.isEmpty()){
             cur->height = svg.at(0).toElement().attribute("height").toInt();
             cur->width = svg.at(0).toElement().attribute("width").toInt();
+
+            QFile file("generated/shapes/" + cur->id + ".svg");
+            if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+                return;
+            QTextStream stream(&file);
+            svg.at(0).save(stream, 1);
+            file.close();
         }
         else {
             cur->height = -1;
             cur->width = -1;
         }    
+
+        
+        
 
         objects << cur;    
     }
