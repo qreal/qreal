@@ -68,12 +68,12 @@ void Parser::run(QString filename){
             QString parentID = generalization.firstChildElement("parent").attribute("parent_id");
             Entity* par = find(parentID);
             if( par ){
+                cur->parent = parentID;
                 for( int i=0; i<par->properties.size(); i++){
                     if (!cur->properties.contains(par->properties.at(i)))
                         cur->properties << par->properties.at(i);
                 }
             }        
-                // TODO: associations generalization
         }
         
         // 2. properties
@@ -109,8 +109,17 @@ void Parser::run(QString filename){
         
         
 
-        // TODO: 3. associations
+        // 3. associations
 
+        QDomNode assocs = logic.firstChildElement("associations");
+        if( assocs != QDomNode() ){
+            QDomNodeList refs = assocs.toElement().elementsByTagName("assoc_ref");
+            for (int k=0; k<refs.size(); k++)
+                cur->associations << refs.at(k).toElement().attribute("idref");
+        }
+
+        qDebug() << cur->associations;
+        
         // 4. SVG stuff
         QDomNodeList svg = nodes.at(ii).toElement().elementsByTagName("svg:svg");
         if( !dir.exists("shapes") )
