@@ -5,25 +5,25 @@
 #include <QtCore/QModelIndex>
 
 namespace UML {
-    class Element : public QGraphicsItem
-    {
-    public:
-        Element();
+	class Element : public QGraphicsItem
+	{
+	public:
+		Element();
 
-        QPersistentModelIndex index() const { return dataIndex; };
-	void setIndex(QPersistentModelIndex &index);
+		QPersistentModelIndex index() const { return dataIndex; };
+		void setIndex(QPersistentModelIndex &index);
 
-        virtual void updateData();
+		virtual void updateData();
 
-	int uuid() const;    
-    protected:
-//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
-//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
-	QPersistentModelIndex dataIndex;
+		int uuid() const;    
+	protected:
+		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+		QPersistentModelIndex dataIndex;
 
-	int m_uuid;
-	bool moving;
-    };
+		int m_uuid;
+		bool moving;
+	};
 };
 
 #endif

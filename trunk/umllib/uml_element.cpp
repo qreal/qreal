@@ -2,6 +2,8 @@
 
 #include "uml_element.h"
 
+#include "realreporoles.h"
+
 using namespace UML;
 
 Element::Element()
@@ -18,9 +20,10 @@ void Element::setIndex(QPersistentModelIndex &index)
 //    updateData();
 
     // this should probably be here, uuid is too important...
-    m_uuid = dataIndex.sibling(dataIndex.row(),0).data().toInt();
-    
-    
+    m_uuid = dataIndex.data(Unreal::IdRole).toInt();
+
+	qDebug() << "uuid is" << m_uuid;
+        
     update();
 }
 
