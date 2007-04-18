@@ -4,7 +4,7 @@
 namespace UML {
     class Element;
     
-    Element * GUIObjectFactory(int type);
+    Element * GUIObjectFactory(QString &type);
 };
 
 #endif

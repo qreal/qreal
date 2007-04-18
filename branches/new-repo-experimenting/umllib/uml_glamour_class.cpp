@@ -26,8 +26,8 @@ void GlamourClass::updateData()
 	fields.clear();
 	methods.clear();
 
-	methods = dataIndex.data(Unreal::MethodsRole).toString().split(';');
-	fields = dataIndex.data(Unreal::FieldsRole).toString().split(';');
+//	methods = dataIndex.data(Unreal::MethodsRole).toString().split(';');
+//	fields = dataIndex.data(Unreal::FieldsRole).toString().split(';');
 
 	foreach (QString str, methods) {
 		text += "<img src=\":/images/kdevclassview/CVpublic_meth.png\" />";
@@ -50,7 +50,7 @@ void GlamourClass::updateData()
 
 void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 {
-	QMenu menu;
+/*	QMenu menu;
 
 	QAction *addMethAction = menu.addAction("Add Method");
 	QAction *delMethAction = menu.addAction("Remove Method");
@@ -88,7 +88,7 @@ void GlamourClass::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 				im->setData(dataIndex, fields.join(";"), Unreal::FieldsRole );
 			}
 		}
-	}
+	} */
 }
 
 void GlamourClass::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
