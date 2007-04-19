@@ -32,6 +32,7 @@ private:
     void genFactory();
     
     QList<Entity*> objects;
+    QList<Entity*> links;
     QMap<QString, QStringList> enumerations;
     
     QDir dir;

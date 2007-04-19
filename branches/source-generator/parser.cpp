@@ -118,8 +118,6 @@ void Parser::run(QString filename){
                 cur->associations << refs.at(k).toElement().attribute("idref");
         }
 
-        qDebug() << cur->associations;
-        
         // 4. SVG stuff
         QDomNodeList svg = nodes.at(ii).toElement().elementsByTagName("svg:svg");
         if( !dir.exists("shapes") )
@@ -211,8 +209,8 @@ void Parser::run(QString filename){
  
         cur->height = -1;
         cur->width = -1;
-        objects << cur;    
-    
+        links << cur;    
+        objects << cur;  
     }
 
 }
@@ -362,6 +360,10 @@ void Parser::genMappings()
 
 void Parser::genClasses(){
     
+    //
+    // I. elements
+    //
+
     for (int i=0; i < objects.size(); i++){
 
         int height = objects.at(i)->height;
@@ -372,7 +374,7 @@ void Parser::genClasses(){
 
         QString classname = objects.at(i)->id + "Class";
         // 
-        // I. cpp-file
+        // 1. CPP-file
         //
         if( !dir.exists("umllib") )
             dir.mkdir("umllib");
@@ -426,7 +428,7 @@ void Parser::genClasses(){
         file.close();    
 
         //
-        //II. H-file
+        //2. H-files
         //
         QFile file2("generated/umllib/cppcode/" + classname + ".h");
         if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -435,7 +437,6 @@ void Parser::genClasses(){
 
         out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
         out2 << "#include \"uml_nodeelement.h\"\n";
-        //out << "#include \"uml_edgeelement.h\"\n";
         out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n";
 
         out2 << "namespace UML {\n";
@@ -449,11 +450,69 @@ void Parser::genClasses(){
 		"\tQSvgRenderer renderer;\n";
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
-        dir.cdUp();
     }    
+    
+    //
+    // II. links
+    //
+
+    for ( int i=0; i<links.size(); i++ ){
+
+        //
+        // 1. H-files
+        //
+
+        QString classname = links.at(i)->id + "Class";
+        QFile f("generated/umllib/cppcode/" + classname + ".h");
+        if( !f.open(QIODevice::WriteOnly | QIODevice::Text) )
+            return;
+        QTextStream out(&f);
+        
+        out << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
+        out << "#include \"uml_edgeelement.h\"\n";
+        out << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n";
+
+        out << "namespace UML {\n";
+        out << "\tclass " << classname << " : public EdgeElement{\n";
+        out << "\tpublic:\n\t\t" << classname << "();\n";
+        out << "\t\t~" << classname << "();\n";
+        out <<  "\t\tvirtual void drawStartArrow() const;\n"
+                "\t\tvirtual void drawEndArrow() const;\n"
+		        "\tprivate:\n"
+		        "\t\tQSvgRenderer renderer;\n";
+        out << "\t};\n};\n\n#endif\n";
+        f.close();
+        
+        // 
+        // CPP-files
+        //
+
+        QFile f2("generated/umllib/cppcode/" + classname + ".cpp");
+        if( !f2.open(QIODevice::WriteOnly | QIODevice::Text) )
+            return;
+        QTextStream out2(&f2);
+
+        out2 << classname << "::" << classname << "()\n";
+        out2 <<   "{\n}\n\n";
+        
+        out2 << classname << "::~" << classname << "()\n";
+        out2 <<   "{\n}\n\n";
+
+        out2 << classname << "::drawStartArrow()\n";
+        out2 <<   "{\n}\n\n";
+        
+        out2 << classname << "::drawEndArrow()\n";
+        out2 <<   "{\n}\n\n";
+ 
+        f2.close();
+    }
+        
+        
+    dir.cdUp();
+
 
     // 
-    // III. pri-file
+    // IV. pri-file
     //
     if( !dir.exists("build"))
         dir.mkdir("build");
@@ -478,6 +537,13 @@ void Parser::genClasses(){
 
 
     }        
+
+    for ( int i=0; i < links.size(); i++){
+    
+        headers += " \\ \n\t" + prefix + links.at(i)->id + "Class.h";
+        sources += " \\ \n\t" + prefix + links.at(i)->id + "Class.cpp";
+    }
+
     out << headers << "\n\n";
     out << sources << "\n";
     file.close();
