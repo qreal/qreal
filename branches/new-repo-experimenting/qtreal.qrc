@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>shapes/reqnFeaturedClass.svg</file>
+    <file>shapes/reqnLeafClass.svg</file>
+    <file>shapes/reqnParentAlternativeClass.svg</file>
+    <file>shapes/reqnParentMandatoryClass.svg</file>
+    <file>shapes/reqnParentOpAlternativeClass.svg</file>
+    <file>shapes/reqnParentOptionalClass.svg</file>
+    <file>shapes/reqnParentOrClass.svg</file>
+    <file>shapes/reqnParentClass.svg</file>
+
+</qresource>
+</RCC>

@@ -204,7 +204,6 @@ int RealRepoItem::rowCount() const
 			UNCONST childCount = getQuery(QString("SELECT count(*) FROM %1;").arg(childTableName) ).toInt();
 		}
 	}
-
 	return childCount;
 }
 
