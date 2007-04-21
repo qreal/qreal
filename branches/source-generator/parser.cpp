@@ -127,7 +127,7 @@ void Parser::run(QString filename){
             cur->height = svg.at(0).toElement().attribute("height").toInt();
             cur->width = svg.at(0).toElement().attribute("width").toInt();
 
-            QFile file("generated/shapes/" + cur->id + ".svg");
+            QFile file("generated/shapes/" + cur->id + "Class.svg");
             if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
                 return;
             QTextStream stream(&file);
@@ -248,6 +248,25 @@ void Parser::genEnums()
     int id = 12;
     
     out << "#ifndef REALREPOROLES_H\n#define REALREPOROLES_H\n\n";
+    
+    QString tmp2 = "#include \"%1\"\n";
+
+    QString includes = "";
+    for (int i=0; i<objects.size(); i++){
+        int height = objects.at(i)->height;
+        int width  = objects.at(i)->width;
+
+        if ( height == -1 && width == -1 )
+            continue;
+        includes += tmp2.arg(objects.at(i)->id + "Class.h");
+    }
+
+    for (int i=0; i<links.size(); i++)
+        includes += tmp2.arg(links.at(i)->id + "Class.h");
+
+
+    out << includes << "\n\n";
+
     out << "namespace UML {\n";
     out << "\tenum ElementTypes{\n";
     for( int i=0; i < objects.size(); i++ ){
@@ -281,7 +300,21 @@ void Parser::genEnums()
 	out << "\t\t};\n";
         out << "\t};\n\n";
    }
+   
+    out << "};\n\n";
+
+    out << "namespace SQLFields {\n\tstatic int ElementOffset = 11;\n\n\tstatic const char * Diagram[] = {\n"
+           "\t\t\"x\", \"y\", \"cfg\"\n\t};\n\n\tstatic const char * Package[] = {\n\t\t\"foo!\"\t};\n\n"
+           "\tstatic const char * Class[] = {\n\t\t\"properties\", \"methods\"\n\t};\n\n"
+           "\tstatic const char * Link[] = {\n\t\t\"from\", \"to\"\n\t};\n\n"
+           "\tstatic const char ** ColumnNames[] = {\n\t\tDiagram,\n\t\tPackage,\n\t\tClass,\n\t\tLink\n\t};\n};\n\n";
     
+    out << 
+           "namespace Unreal {\n\t"
+           "enum ClassRoles {\n\t\tFieldsRole = UserRole + 1,\n\t\tMethodsRole\n\t};\n\n\t"
+           "enum LinkRoles {\n\t\tFromRole = UserRole + 1,\n\t\tToRole,\n\t\tFromPortRole,\n\t\tToPortRole\n\t};\n};\n";
+
+
     out << "#endif\n";
     
     file.close();
@@ -294,9 +327,9 @@ void Parser::genSQLScripts()
         return;
     QTextStream out(&file);
     
-    out << "drop database unreal;\n create database unreal;\n use unreal;\n";
+    out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
 
-    QString inserts = "INSERT INTO `elements_all` (id, name) VALUES ";
+    QString inserts = "INSERT INTO `el_0` (id, name) VALUES ";
     
     for (int i=0; i<objects.size(); i++){
         int j = i+12;
@@ -322,8 +355,10 @@ void Parser::genSQLScripts()
         out << ");\n\n";    
     }
     
-    out << "CREATE TABLE `elements_all` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
-    inserts += "\t(666,'fixmeplz');";
+    out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    inserts += "\t(10,'Diagram');";
+
     out << inserts;
     file.close();
     
@@ -450,6 +485,7 @@ void Parser::genClasses(){
 		"\tQSvgRenderer renderer;\n";
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
+        dir.cdUp();
     }    
     
     //
@@ -491,6 +527,12 @@ void Parser::genClasses(){
         if( !f2.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out2(&f2);
+        
+        out2 << "#include <QtGui>\n\n";
+
+        out2 << QString("#include \"%1\"\n\n").arg(classname + ".h");
+
+        out2 << "using namespace UML;\n\n";
 
         out2 << classname << "::" << classname << "()\n";
         out2 <<   "{\n}\n\n";
@@ -498,17 +540,16 @@ void Parser::genClasses(){
         out2 << classname << "::~" << classname << "()\n";
         out2 <<   "{\n}\n\n";
 
-        out2 << classname << "::drawStartArrow()\n";
+        out2 << "void " << classname << "::drawStartArrow() const\n";
         out2 <<   "{\n}\n\n";
         
-        out2 << classname << "::drawEndArrow()\n";
+        out2 << "void " << classname << "::drawEndArrow() const\n";
         out2 <<   "{\n}\n\n";
  
         f2.close();
     }
         
         
-    dir.cdUp();
 
 
     // 
@@ -558,16 +599,16 @@ void Parser::genFactory()
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
+    QString includes = "";
+    QString classes = "";
     QString tmp = "\t\tcase UML::%1:\t\treturn new %2();\n";
+    QString tmp2 = "#include \"%1\"\n";
     
     out <<  "#include <QtGui>\n\n"
             "#include \"realreporoles.h\"\n\n"
             "#include \"uml_guiobjectfactory.h\"\n\n"
             "#include \"uml_edgeelement.h\"\n"
-            "#include \"uml_glamour_class.h\"\n\n"
-            "using namespace UML;\n\n"
-            "Element * UML::GUIObjectFactory(int type){\n"
-            "\tswitch ( type ) {\n";
+            "#include \"uml_glamour_class.h\"\n";
 
 
     for (int i=0; i<objects.size(); i++){
@@ -576,8 +617,22 @@ void Parser::genFactory()
 
         if ( height == -1 && width == -1 )
             continue;
-        out << tmp.arg(objects.at(i)->id).arg(objects.at(i)->id + "Class");
+        classes += tmp.arg(objects.at(i)->id).arg(objects.at(i)->id + "Class") ;
+        includes += tmp2.arg(objects.at(i)->id + "Class.h");
     }
+
+    for (int i=0; i<links.size(); i++){
+    
+        classes += tmp.arg(links.at(i)->id).arg(links.at(i)->id + "Class");
+        includes += tmp2.arg(links.at(i)->id + "Class.h");
+
+    }
+    
+  //  out << includes << "\n\n";
+    out <<  "using namespace UML;\n\n"
+            "Element * UML::GUIObjectFactory(int type){\n"
+            "\tswitch ( type ) {\n";
+    out << classes;
 
     out << "\t\tdefault: \t qDebug() << \"not creating\" << type; \n\t}\n";
     out << "\treturn 0;\n}\n";
