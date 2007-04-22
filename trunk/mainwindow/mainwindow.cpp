@@ -20,7 +20,7 @@
 MainWindow::MainWindow()
 {
 dbg;
-    sqlite   =  false;
+    sqlite   =  true;
     driver   = "QMYSQL";
     hostName = "mashtab-2";
     dbName   = "unreal";
