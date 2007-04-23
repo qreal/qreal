@@ -4,7 +4,6 @@
 #include <QtCore/QHash>
 #include <QtSql/QSqlQuery>
 
-
 class RealRepoItem
 {
 public:

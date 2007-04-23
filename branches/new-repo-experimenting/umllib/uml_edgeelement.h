@@ -29,8 +29,8 @@ namespace UML {
 
 			void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
 
-			virtual void drawStartArrow ( QPainter * ){};
-			virtual void drawEndArrow ( QPainter * ){};
+			virtual void drawStartArrow ( QPainter * ) const = 0;
+			virtual void drawEndArrow ( QPainter * ) const = 0;
 		private:
 			NodeElement *src, *dst;
 			//	QPointF srcPoint, dstPoint;

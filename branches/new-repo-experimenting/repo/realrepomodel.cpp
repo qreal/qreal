@@ -1,7 +1,7 @@
 #include <QtGui>
 
-#include "realrepoitem.h"
 #include "realrepomodel.h"
+#include "realrepoitem.h"
 
 #include "realreporoles.h"
 

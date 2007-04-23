@@ -1,5 +1,0 @@
- <svg:svg width="30" version="1.1" height="30" xmlns:svg="http://www.w3.org/2000/svg" >
-  <svg:title>Example arcs01 - arc commands in path data</svg:title>
-  <svg:path fill="white" stroke="black" stroke-width="2" d="M15,15 h-10 a10,10 270 1,0 10,-10 z" />
-  <svg:path fill="black" stroke="black" stroke-width="2" d="M15,15 v-10 a10,10 270 0,0 -10,10 z" />
- </svg:svg>
