@@ -313,11 +313,12 @@ void Parser::genSQLScripts()
     
     out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
 
-    QString inserts = "INSERT INTO `el_0` (id, name) VALUES ";
+    QString inserts = "INSERT INTO `el_0` (id, name) VALUES\n"
+		    "\t\t(10,'Diagram')";
     
     for (int i=0; i<objects.size(); i++){
         int j = i+12;
-        inserts += QString("\t(%1, '%2'),\n").arg(j).arg(objects.at(i)->id);
+        inserts += QString(",\n\t\t(%1, '%2')").arg(j).arg(objects.at(i)->id);
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
                 "\t`id` mediumint NOT NULL";
@@ -341,7 +342,7 @@ void Parser::genSQLScripts()
     
     out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
     out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
-    inserts += "\t(10,'Diagram');";
+    inserts += ";";
 
     out << inserts;
     file.close();
