@@ -306,19 +306,21 @@ void Parser::genEnums()
 
 void Parser::genSQLScripts()
 {
-    QFile file("generated/scripts.sql");
+    QFile file("generated/repo/scripts.sql");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
     
     out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
 
-    QString inserts = "INSERT INTO `el_0` (id, name) VALUES\n"
-		    "\t\t(10,'Diagram')";
+    QString ins = "INSERT INTO `el_0` (id, name) VALUES (%1, '%2');\n";
+    QString inserts = "";
+    
+    inserts += ins.arg(10).arg("Diagram");
     
     for (int i=0; i<objects.size(); i++){
         int j = i+12;
-        inserts += QString(",\n\t\t(%1, '%2')").arg(j).arg(objects.at(i)->id);
+        inserts += ins.arg(j).arg(objects.at(i)->id);
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
                 "\t`id` mediumint NOT NULL";
@@ -342,7 +344,7 @@ void Parser::genSQLScripts()
     
     out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
     out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
-    inserts += ";";
+    //inserts += ";";
 
     out << inserts;
     file.close();
