@@ -416,13 +416,13 @@ void Parser::genClasses(){
         //constructor
         out << classname << "::" << classname << "()\n";
         out <<   "{\n";
-        out << "\tports << " << QString("QPointF(%1, %2)").arg(height/2).arg(0) << " << " <<
-                            QString("QPointF(%1, %2)").arg(height/2).arg(width) << " << " <<
-                            QString("QPointF(%1, %2)").arg(0).arg(width/2) << " << " <<
-                            QString("QPointF(%1, %2)").arg(height).arg(width/2) << ";\n";
+        out << "\tports << " << QString("QPointF(%1, %2)").arg(2*height/3).arg(0) << " << " <<
+                            QString("QPointF(%1, %2)").arg(2*height/3).arg(4*width/3) << " << " <<
+                            QString("QPointF(%1, %2)").arg(0).arg(2*width/3) << " << " <<
+                            QString("QPointF(%1, %2)").arg(4*height/3).arg(2*width/3) << ";\n";
 
 	    out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
-
+        out << "\ttext = \"\";";
         out << "}\n\n";
 
 	    //destructor
@@ -433,18 +433,26 @@ void Parser::genClasses(){
         //paint
         out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                                                                                 "QWidget *widget)\n{\n";
-        out << "\trenderer.render(painter, contentsRect());\n";
+        out <<QString("\trenderer.render(painter, QRectF(%1, %2, %3, %4));\n").arg(5).arg(height/2).arg(height).arg(width);
+        out << "\n\tQTextDocument d;\n\td.setHtml(text);\n\td.setTextWidth(contentsRect().width());"
+                    "\n\td.drawContents(painter,contentsRect());\n\n";
         out << "\tNodeElement::paint(painter, style, widget);\n";
         out << "}\n\n";
 
         //boundingRect
         out << "QRectF " << classname << "::boundingRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-8).arg(-8).arg(height+16).arg(width+16);
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height/2).arg(-height/2).arg(2*height).arg(2*width);
         out << "}\n\n";
 
         //contentsRect
         out << "QRectF " << classname << "::contentsRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(0).arg(0).arg(height).arg(width);
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(0).arg(0).arg(height).arg(2*width/3);
+        out << "}\n\n";
+
+        //updateName
+        out << "void " << classname << "::updateData()\n{\n";
+        out << "\ttext = \"<center><i>asdf</i></center>\";\n"; //FIXME
+        out << "\tupdate();\n";
         out << "}\n\n";
 
         file.close();    
@@ -468,8 +476,11 @@ void Parser::genClasses(){
         out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
                 "\tvirtual QRectF boundingRect() const;\n"
                 "\tvirtual QRectF contentsRect() const;\n"
+                "\tvirtual void updateData();\n"
 		"private:\n"
+        "\tQString text;\n"
 		"\tQSvgRenderer renderer;\n";
+        
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
         dir.cdUp();
