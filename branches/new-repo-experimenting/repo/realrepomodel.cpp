@@ -9,6 +9,7 @@ RealRepoModel::RealRepoModel(QObject *parent)
 	: QAbstractItemModel(parent)
 {
 	rootItem = new RealRepoItem(RealRepoItem::Root,0,0,0);
+    rootItem->rowCount();
 }
 
 RealRepoModel::~RealRepoModel()

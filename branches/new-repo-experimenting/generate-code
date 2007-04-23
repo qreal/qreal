@@ -1,8 +1,10 @@
 #!/bin/sh
 
-WD=../unreal-tim
+WD=../source-generator
 
 pushd $WD
+qmake
+make
 ./code
 popd
 

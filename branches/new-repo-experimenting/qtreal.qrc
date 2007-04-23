@@ -9,5 +9,6 @@
     <file>shapes/reqnParentOrClass.svg</file>
     <file>shapes/reqnParentClass.svg</file>
 
+    <file>repo/scripts.sql</file>
 </qresource>
 </RCC>

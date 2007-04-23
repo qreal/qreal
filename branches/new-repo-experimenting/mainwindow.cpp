@@ -82,10 +82,15 @@ void MainWindow::connectRepo()
 		delete model;
 
 	db = QSqlDatabase::addDatabase(dialog.driverName());
-
-	db.setDatabaseName(dialog.databaseName());
-	db.setHostName(dialog.hostName());
-	db.setPort(dialog.port()); 
+    
+    if (dialog.driverName() == "QSQLITE"){
+        db.setDatabaseName("./sqlite-database");
+    }
+    else{
+	    db.setDatabaseName(dialog.databaseName());
+	    db.setHostName(dialog.hostName());
+	    db.setPort(dialog.port()); 
+   }     
 	
 	if (!db.open(dialog.userName(), dialog.password())) {
 		err = db.lastError();
@@ -98,6 +103,13 @@ void MainWindow::connectRepo()
 				+ err.driverText() + "\n" + err.databaseText());
 		return;
 	}
+
+    if ( dialog.driverName() == "QSQLITE"){
+        if (!createDatabase()){
+            qDebug() << "cannot create sqlite database, exiting...\n";
+            exit(1);
+        }    
+    }
 
 	model = new RealRepoModel();
 	
@@ -115,3 +127,52 @@ void MainWindow::selectDiagram(const QModelIndex &index)
 	view->mvIface()->setRootIndex(index);
 }
 
+bool MainWindow::createDatabase(){
+
+    QFile file(":/repo/scripts.sql");
+    if( !file.open(QIODevice::ReadOnly | QIODevice::Text) )
+        return false;
+    QTextStream in(&file);
+    
+    QString str;
+    in >> str;
+    QString all = "";
+    while (!str.isEmpty() ){
+        in >> str;
+        all += " " + str;
+    }    
+
+    QStringList l = all.split(";"); 
+    qDebug() << l.size();
+    QSqlQuery q;
+
+    for (int i=0; i<l.size(); i++){
+        q.prepare(l.at(i) + ";");
+        q.exec();
+    }    
+
+    // FIXME plz :)
+
+    q.prepare("insert into el_10 values (412, 'diagram 1');");
+    q.exec();
+    q.prepare("insert into el_10 values (413, 'diagram 2');");
+    q.exec();
+    q.prepare("create table cont_412(id mediumint, type mediumint, x mediumint, y mediumint);");
+    q.exec();
+    q.prepare("create table cont_413(id mediumint, type mediumint, x mediumint, y mediumint);");
+    q.exec();
+    q.prepare("insert into el_44 values (1001, null, null, null, null, null);");
+    q.exec();
+    q.prepare("insert into el_35 values (1002, null, 'element 1', null, null, null, null);");
+    q.exec();
+    q.prepare("insert into el_35 values (1011, null, 'element 11', null, null, null, null);");
+    q.exec();
+    q.prepare("insert into el_41 values (1004, null, 'element 3', null, null, null, null);");
+    q.exec();
+    q.prepare("insert into el_40 values (1003, null, 'element 2', null, null, null, null);");
+    q.exec();
+
+
+    file.close();
+    return true;
+}

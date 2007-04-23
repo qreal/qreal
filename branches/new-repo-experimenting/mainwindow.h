@@ -27,6 +27,7 @@ public slots:
 private:
 	void createActions();
 	void createMenus();
+    bool createDatabase();
 
 	QMenu *fileMenu;
 	QMenu *editMenu;

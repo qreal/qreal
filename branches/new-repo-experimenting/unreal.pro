@@ -39,3 +39,7 @@ include (umllib/generated/umllib.pri)
 HEADERS		+= mainwindow.h
 SOURCES		+= mainwindow.cpp \
 		    main.cpp
+
+# Resources
+
+RESOURCES += qtreal.qrc
