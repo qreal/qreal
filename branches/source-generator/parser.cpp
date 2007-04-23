@@ -251,22 +251,6 @@ void Parser::genEnums()
     
     QString tmp2 = "#include \"%1\"\n";
 
-    QString includes = "";
-    for (int i=0; i<objects.size(); i++){
-        int height = objects.at(i)->height;
-        int width  = objects.at(i)->width;
-
-        if ( height == -1 && width == -1 )
-            continue;
-        includes += tmp2.arg(objects.at(i)->id + "Class.h");
-    }
-
-    for (int i=0; i<links.size(); i++)
-        includes += tmp2.arg(links.at(i)->id + "Class.h");
-
-
-    out << includes << "\n\n";
-
     out << "namespace UML {\n";
     out << "\tenum ElementTypes{\n";
     for( int i=0; i < objects.size(); i++ ){
@@ -414,10 +398,10 @@ void Parser::genClasses(){
         if( !dir.exists("umllib") )
             dir.mkdir("umllib");
         dir.cd("umllib");
-        if( !dir.exists("cppcode") )
-            dir.mkdir("cppcode");
+        if( !dir.exists("generated") )
+            dir.mkdir("generated");
         
-        QFile file("generated/umllib/cppcode/" + classname + ".cpp");
+        QFile file("generated/umllib/generated/" + classname + ".cpp");
         if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out(&file);
@@ -465,7 +449,7 @@ void Parser::genClasses(){
         //
         //2. H-files
         //
-        QFile file2("generated/umllib/cppcode/" + classname + ".h");
+        QFile file2("generated/umllib/generated/" + classname + ".h");
         if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out2(&file2);
@@ -499,7 +483,7 @@ void Parser::genClasses(){
         //
 
         QString classname = links.at(i)->id + "Class";
-        QFile f("generated/umllib/cppcode/" + classname + ".h");
+        QFile f("generated/umllib/generated/" + classname + ".h");
         if( !f.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out(&f);
@@ -512,8 +496,8 @@ void Parser::genClasses(){
         out << "\tclass " << classname << " : public EdgeElement{\n";
         out << "\tpublic:\n\t\t" << classname << "();\n";
         out << "\t\t~" << classname << "();\n";
-        out <<  "\t\tvirtual void drawStartArrow() const;\n"
-                "\t\tvirtual void drawEndArrow() const;\n"
+        out <<  "\t\tvirtual void drawStartArrow(QPainter *) const;\n"
+                "\t\tvirtual void drawEndArrow(QPainter *) const;\n"
 		        "\tprivate:\n"
 		        "\t\tQSvgRenderer renderer;\n";
         out << "\t};\n};\n\n#endif\n";
@@ -523,7 +507,7 @@ void Parser::genClasses(){
         // CPP-files
         //
 
-        QFile f2("generated/umllib/cppcode/" + classname + ".cpp");
+        QFile f2("generated/umllib/generated/" + classname + ".cpp");
         if( !f2.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
         QTextStream out2(&f2);
@@ -540,10 +524,10 @@ void Parser::genClasses(){
         out2 << classname << "::~" << classname << "()\n";
         out2 <<   "{\n}\n\n";
 
-        out2 << "void " << classname << "::drawStartArrow() const\n";
+        out2 << "void " << classname << "::drawStartArrow(QPainter *) const\n";
         out2 <<   "{\n}\n\n";
         
-        out2 << "void " << classname << "::drawEndArrow() const\n";
+        out2 << "void " << classname << "::drawEndArrow(QPainter *) const\n";
         out2 <<   "{\n}\n\n";
  
         f2.close();
@@ -563,7 +547,7 @@ void Parser::genClasses(){
     QTextStream out(&file);
     QString headers = "HEADERS += ";
     QString sources = "SOURCES += ";
-    QString prefix = "umllib/cppcode/";
+    QString prefix = "umllib/generated/";
     
     for (int i=0; i < objects.size(); i++){
 
@@ -601,15 +585,24 @@ void Parser::genFactory()
     QTextStream out(&file);
     QString includes = "";
     QString classes = "";
-    QString tmp = "\t\tcase UML::%1:\t\treturn new %2();\n";
+    QString tmp = "\t\tcase UML::%1:\n\t\t\treturn new %2();\n";
     QString tmp2 = "#include \"%1\"\n";
     
     out <<  "#include <QtGui>\n\n"
-            "#include \"realreporoles.h\"\n\n"
-            "#include \"uml_guiobjectfactory.h\"\n\n"
-            "#include \"uml_edgeelement.h\"\n"
-            "#include \"uml_glamour_class.h\"\n";
+	    "#include \"realreporoles.h\"\n"
+            "#include \"uml_guiobjectfactory.h\"\n\n";
 
+    for (int i=0; i<objects.size(); i++){
+        int height = objects.at(i)->height;
+        int width  = objects.at(i)->width;
+
+        if ( height == -1 && width == -1 )
+            continue;
+	out << QString("#include \"%1Class.h\"\n").arg(objects.at(i)->id);
+    }
+
+    for (int i=0; i<links.size(); i++)
+        out << QString("#include \"%1Class.h\"\n").arg(links.at(i)->id);
 
     for (int i=0; i<objects.size(); i++){
         int height = objects.at(i)->height;
