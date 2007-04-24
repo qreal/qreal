@@ -451,7 +451,7 @@ void Parser::genClasses(){
 
         //updateName
         out << "void " << classname << "::updateData()\n{\n";
-        out << "\ttext = \"<center><i>asdf</i></center>\";\n"; //FIXME
+        out << "\ttext = \"<center>\" + dataIndex.data().toString() + \"</center>\";\n"; 
         out << "\tupdate();\n";
         out << "}\n\n";
 
