@@ -449,8 +449,9 @@ void Parser::genClasses(){
         out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(0).arg(0).arg(height).arg(2*width/3);
         out << "}\n\n";
 
-        //updateName
+        //updateData
         out << "void " << classname << "::updateData()\n{\n";
+        out << "\tNodeElement::updateData();\n";
         out << "\ttext = \"<center>\" + dataIndex.data().toString() + \"</center>\";\n"; 
         out << "\tupdate();\n";
         out << "}\n\n";
