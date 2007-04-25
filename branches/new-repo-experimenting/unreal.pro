@@ -1,17 +1,19 @@
-QT           += sql svg
+QT		+= sql svg
 
 INCLUDEPATH	+= view umllib repo dialogs umllib/generated
 
-RESOURCES += qtreal.qrc
+RESOURCES	+= qtreal.qrc
 
 # SQL model
 HEADERS         = dialogs/qsqlconnectiondialog.h \
 		    repo/realrepomodel.h \
 		    repo/realrepoitem.h \
+		    repo/realreporoles.h \
 		    repo/realreponames.h
 SOURCES         = dialogs/qsqlconnectiondialog.cpp \
 		    repo/realrepomodel.cpp \
 		    repo/realrepoitem.cpp \
+		    repo/realreporoles.cpp \
 		    repo/realreponames.cpp
 FORMS           = dialogs/qsqlconnectiondialog.ui
 
@@ -39,7 +41,3 @@ include (umllib/generated/umllib.pri)
 HEADERS		+= mainwindow.h
 SOURCES		+= mainwindow.cpp \
 		    main.cpp
-
-# Resources
-
-RESOURCES += qtreal.qrc

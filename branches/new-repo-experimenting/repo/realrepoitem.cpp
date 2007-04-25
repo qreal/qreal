@@ -5,6 +5,8 @@
 
 #define UNCONST const_cast<RealRepoItem *>(this)->
 
+QString getColumnName(int elementNum, int roleNum);
+
 static QVariant getQuery(QString query)
 {
 	qDebug() << query;
@@ -44,8 +46,10 @@ void RealRepoItem::setId(int id)
 {
 	if ( !m_id ) {
 		m_id = id;
-		getQuery(QString("UPDATE %1 SET id=%2 WHERE id=0;")
-				.arg(parentItem->childTableName).arg(m_id));
+
+		if ( m_id && m_type )
+			getQuery(QString("INSERT INTO %1 (id,type) VALUES (%2,%3);")
+				.arg(parentItem->childTableName).arg(m_id).arg(m_type));
 
 		listByUuid[m_id].append(this);
 	}
@@ -55,14 +59,16 @@ void RealRepoItem::setType(NodeType type)
 {
 	if ( !m_type ) {
 		m_type = type;
-		getQuery(QString("UPDATE %1 SET type=%2 WHERE id=%3;")
-				.arg(parentItem->childTableName).arg(m_type).arg(m_id));
 
 		switch (type) {
 			case Root:      childTableName = "el_0";                        break;
 			case Category:  childTableName = QString("el_%1").arg(m_id);      break;
 			default:        childTableName = QString("cont_%1").arg(m_id);    break;
 		}
+		
+		if ( m_id && m_type )
+			getQuery(QString("INSERT INTO %1 (id,type) VALUES (%2,%3);")
+				.arg(parentItem->childTableName).arg(m_id).arg(m_type));
 
 		updateData();
 
@@ -108,8 +114,8 @@ QVariant RealRepoItem::property(int key)
 
 	qDebug() << "getting property" << key;
 	if ( key > Unreal::UserRole ) {
-		return getQuery(QString("SELECT %1 FROM el_%2 WHERE id=%3;")
-				.arg(SQLFields::ColumnNames[m_type - SQLFields::ElementOffset][key - Unreal::UserRole - 1]).arg(m_type).arg(m_id));
+		return getQuery(QString("SELECT `%1` FROM el_%2 WHERE id=%3;")
+				.arg(getColumnName(m_type,key)).arg(m_type).arg(m_id));
 	} else {
 		return QVariant();
 	}
@@ -118,7 +124,7 @@ QVariant RealRepoItem::property(int key)
 bool RealRepoItem::setProperty(int key, const QVariant &data)
 {
 	if ( key == Unreal::PositionRole ) {
-		getQuery(QString("UPDATE %1 set x=%3, y=%4 WHERE id=%2")
+		getQuery(QString("UPDATE `%1` set x=%3, y=%4 WHERE id=%2")
 				.arg(parent()->childTableName).arg(m_id)
 				.arg(data.toPointF().x()).arg(data.toPointF().y()));
 		return true;
@@ -126,13 +132,13 @@ bool RealRepoItem::setProperty(int key, const QVariant &data)
 
 	qDebug() << "setting property" << key << "to" << data;
 	if ( key > Unreal::UserRole ) {
-		getQuery(QString("UPDATE el_%1 SET %3='%4' WHERE id=%2;")
+		getQuery(QString("UPDATE `el_%1` SET `%3`='%4' WHERE id=%2;")
 				.arg(m_type).arg(m_id)
-				.arg(SQLFields::ColumnNames[m_type - SQLFields::ElementOffset][key - Unreal::UserRole - 1]).arg(data.toString()));
+				.arg(getColumnName(m_type,key)).arg(data.toString()));
 	} else {
-		getQuery(QString("UPDATE %1 SET %3='%4 WHERE id=%2;")
+		getQuery(QString("UPDATE `%1` SET `%3`='%4' WHERE id=%2;")
 				.arg(parent()->childTableName).arg(m_id)
-				.arg(SQLFields::ColumnNames[m_type - SQLFields::ElementOffset][key - Unreal::UserRole - 1]).arg(data.toString()));
+				.arg(getColumnName(m_type,key)).arg(data.toString()));
 	}
 	return false;
 }
@@ -185,7 +191,6 @@ bool RealRepoItem::addChild(RealRepoItem *child)
 bool RealRepoItem::insertChild(int row, int count)
 {
 	for ( int i = 0; i < count; i++ ) {
-		getQuery(QString("INSERT INTO %1 VALUES (0,0);").arg(childTableName));
 		RealRepoItem *child = new RealRepoItem(row+i,this);
 		childItems[row+i] = child;
 	}

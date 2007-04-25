@@ -6,6 +6,8 @@
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 
+#include "realreporoles.h"
+
 using namespace UML;
 
 const int kvadratik = 4;
@@ -143,7 +145,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
 
 					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-					im->setData(dataIndex.sibling(dataIndex.row(),7), fromPort);
+					im->setData(dataIndex, fromPort, Unreal::reqeP2N::fromRole );
 
 				} else if ( dragState == m_line.size()-1 ) {
 					dst = e;
@@ -154,7 +156,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
 
 					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-					im->setData(dataIndex.sibling(dataIndex.row(),8), toPort );
+					im->setData(dataIndex, toPort, Unreal::reqeP2N::toRole );
 				}
 				setFlag(ItemIsMovable, false);
 
@@ -170,7 +172,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 				src = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-				im->setData(dataIndex.sibling(dataIndex.row(),7), "0:0" );
+				im->setData(dataIndex, "0:0", Unreal::reqeP2N::fromRole );
 			} else if ( dragState == m_line.size()-1 ) {
 				if (dst) {
 					dst->delEdge(this);
@@ -178,7 +180,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 				dst = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-				im->setData(dataIndex.sibling(dataIndex.row(),8), "0:0" );
+				im->setData(dataIndex, "0:0", Unreal::reqeP2N::toRole );
 			}
 			if ( ! src && ! dst )
 				setFlag(ItemIsMovable, true);
@@ -251,8 +253,8 @@ void EdgeElement::updateData()
 
 	int myrow = dataIndex.row();
 
-	QString from = dataIndex.sibling(myrow,7).data().toString();
-	QString to = dataIndex.sibling(myrow,8).data().toString();
+	QString from = dataIndex.data(Unreal::reqeP2N::fromRole).toString();
+	QString to = dataIndex.data(Unreal::reqeP2N::toRole).toString();
 
 	int uuidFrom = from.split(":").at(0).toInt();
 	int uuidTo = to.split(":").at(0).toInt();

@@ -92,10 +92,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 static void dumpStuff( const QModelIndex & idx )
 {
-	qDebug() << idx << ":"
-		<< idx.sibling(idx.row(),0).data().toString()
-		<< idx.sibling(idx.row(),1).data().toString();
-
+	qDebug() << idx;
 }
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )

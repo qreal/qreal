@@ -5,6 +5,7 @@
 
 #include "realreporoles.h"
 
+
 RealRepoModel::RealRepoModel(QObject *parent)
 	: QAbstractItemModel(parent)
 {
