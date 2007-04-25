@@ -20,6 +20,7 @@ MainWindow::MainWindow()
 	connect(diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 
+
 	addDockWidget(Qt::LeftDockWidgetArea, diagramDock);
 
 	QDockWidget *objectDock = new QDockWidget(tr("Object Explorer"));
@@ -83,14 +84,9 @@ void MainWindow::connectRepo()
 
 	db = QSqlDatabase::addDatabase(dialog.driverName());
     
-    if (dialog.driverName() == "QSQLITE"){
-        db.setDatabaseName("./sqlite-database");
-    }
-    else{
-	    db.setDatabaseName(dialog.databaseName());
-	    db.setHostName(dialog.hostName());
-	    db.setPort(dialog.port()); 
-   }     
+    db.setDatabaseName(dialog.databaseName());
+    db.setHostName(dialog.hostName());
+    db.setPort(dialog.port()); 
 	
 	if (!db.open(dialog.userName(), dialog.password())) {
 		err = db.lastError();
@@ -104,12 +100,9 @@ void MainWindow::connectRepo()
 		return;
 	}
 
-    if ( dialog.driverName() == "QSQLITE"){
-        if (!createDatabase()){
-            qDebug() << "cannot create sqlite database, exiting...\n";
-            exit(1);
-        }    
-    }
+	if ( dialog.driverName() == "QSQLITE" ) {
+		this->createDatabase();
+	}
 
 	model = new RealRepoModel();
 	
@@ -117,9 +110,12 @@ void MainWindow::connectRepo()
 	diagramExplorer->setRootIndex(model->index(0,0,QModelIndex()));
 
 	objectExplorer->setModel(model);
-	objectExplorer->setRowHidden(0,QModelIndex(),true);
+	//objectExplorer->setRowHidden(0,QModelIndex(),true);
 
 	view->mvIface()->setModel(model);
+
+	connect(objectExplorer, SIGNAL( activated( const QModelIndex & ) ),
+			model, SLOT( createSomeChild( const QModelIndex & )));
 }
 
 void MainWindow::selectDiagram(const QModelIndex &index)
@@ -150,28 +146,6 @@ bool MainWindow::createDatabase(){
         q.prepare(l.at(i) + ";");
         q.exec();
     }    
-
-    // FIXME plz :)
-
-    q.prepare("insert into el_10 values (412, 'diagram 1');");
-    q.exec();
-    q.prepare("insert into el_10 values (413, 'diagram 2');");
-    q.exec();
-    q.prepare("create table cont_412(id mediumint, type mediumint, x mediumint, y mediumint);");
-    q.exec();
-    q.prepare("create table cont_413(id mediumint, type mediumint, x mediumint, y mediumint);");
-    q.exec();
-    q.prepare("insert into el_44 values (1001, null, null, null, null, null);");
-    q.exec();
-    q.prepare("insert into el_35 values (1002, null, 'element 1', null, null, null, null);");
-    q.exec();
-    q.prepare("insert into el_35 values (1011, null, 'element 11', null, null, null, null);");
-    q.exec();
-    q.prepare("insert into el_41 values (1004, null, 'element 3', null, null, null, null);");
-    q.exec();
-    q.prepare("insert into el_40 values (1003, null, 'element 2', null, null, null, null);");
-    q.exec();
-
 
     file.close();
     return true;

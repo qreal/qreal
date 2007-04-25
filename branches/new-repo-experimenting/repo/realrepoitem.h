@@ -33,7 +33,7 @@ public:
     void setType(NodeType type);
 
     bool insertChild(int row, int count);
-    bool addChild(RealRepoItem *child);
+	bool createChild(int row, int type);
 
     void updateData();
     void childrenCleanup();

@@ -43,6 +43,11 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
+	void insertChild(const QModelIndex &parent, int type);
+
+public slots:
+	void createSomeChild(const QModelIndex &parent);
+
 private:
     RealRepoItem *rootItem;
     QSqlDatabase db;

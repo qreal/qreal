@@ -157,7 +157,7 @@ RealRepoItem *RealRepoItem::child(int row)
 		query = QString("SELECT id, type FROM %1;").arg(childTableName);
 	}
 
-	if ( ! childQuery.isActive() ) {
+	if ( ( childCount == -1 ) || ( ! childQuery.isActive() ) ) {
 		qDebug() << query;
 		childQuery.exec(query);
 	}
@@ -181,13 +181,6 @@ RealRepoItem *RealRepoItem::child(int row)
 	return child;
 }
 
-bool RealRepoItem::addChild(RealRepoItem *child)
-{
-	//    child = new RealRepoItem(child->type(), rowCount()+1, child->id(), this);
-	getQuery(QString("INSERT INTO %1 VALUES (%2,%3);").arg(childTableName).arg(child->id()).arg(child->type()));
-	return false;
-}
-
 bool RealRepoItem::insertChild(int row, int count)
 {
 	for ( int i = 0; i < count; i++ ) {
@@ -198,6 +191,28 @@ bool RealRepoItem::insertChild(int row, int count)
 		childCount += count;
 	}
 	return false;
+}
+
+bool RealRepoItem::createChild(int /*row*/, int type)
+{
+	int id = getQuery(QString("SELECT get_id();")).toInt();
+	
+	QString tableName = QString("cont_%1").arg(id);
+	
+	childCount = -1;
+
+	// Create record in parent table;
+	//getQuery(QString("INSERT INTO %1 (id,type) VALUES (%2,%3);")
+	//		.arg(childTableName).arg(id).arg(type));
+
+	// Create record in type table;
+	getQuery(QString("INSERT INTO el_%1 (id) VALUES (%2);")
+			.arg(type).arg(id));
+
+	// Create container table;
+	getQuery(QString("CREATE TABLE `%1` (id mediumint, type mediumint, x mediumint, y mediumint);").arg(tableName));
+
+	return true;
 }
 
 int RealRepoItem::rowCount() const

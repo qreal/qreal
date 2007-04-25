@@ -135,20 +135,6 @@ bool RealRepoModel::insertRows (int row, int count, const QModelIndex &parent)
 	return b;
 }
 
-/*
-   bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
-   int row, int column, const QModelIndex &parent)
-   {
-//	if (action == Qt::IgnoreAction)
-//		return true;
-
-qDebug() << row << column << parent << static_cast<RealRepoItem*>(parent.internalPointer())->name();
-static_cast<RealRepoItem*>(parent.internalPointer())->addChild();
-
-return true;
-}
-*/	    
-
 QModelIndex RealRepoModel::index(int row, int column, const QModelIndex &parent)
 	const
 {
@@ -195,6 +181,21 @@ int RealRepoModel::rowCount(const QModelIndex &parent) const
 int RealRepoModel::columnCount(const QModelIndex &/*parent*/) const
 {
 	return 1;
+}
+
+void RealRepoModel::insertChild(const QModelIndex &parent, int type)
+{
+	beginInsertRows(parent,rowCount(parent),rowCount(parent)+1);
+
+	static_cast<RealRepoItem*>(parent.internalPointer())->createChild(0,type);
+
+	endInsertRows();
+}
+
+void RealRepoModel::createSomeChild(const QModelIndex &parent)
+{
+	int id = static_cast<RealRepoItem*>(parent.internalPointer())->id();
+	insertChild(parent,id);
 }
 
 QModelIndex RealRepoModel::getIndexByItem(const RealRepoItem *item)
