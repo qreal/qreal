@@ -434,25 +434,25 @@ void Parser::genClasses(){
         out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                                                                                 "QWidget *widget)\n{\n";
         out <<QString("\trenderer.render(painter, QRectF(%1, %2, %3, %4));\n").arg(5).arg(height/2).arg(height).arg(width);
-        out << "\n\tQTextDocument d;\n\td.setHtml(text);\n\td.setTextWidth(contentsRect().width());"
-                    "\n\td.drawContents(painter,contentsRect());\n\n";
+        out << "\n\tQTextDocument d;\n\td.setHtml(text);\n"
+                    "\n\td.drawContents(painter,QRectF(0,0,0,0));\n\n";
         out << "\tNodeElement::paint(painter, style, widget);\n";
         out << "}\n\n";
 
         //boundingRect
         out << "QRectF " << classname << "::boundingRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height/2).arg(-height/2).arg(2*height).arg(2*width);
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height).arg(-height).arg(150).arg(150);
         out << "}\n\n";
 
         //contentsRect
         out << "QRectF " << classname << "::contentsRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(0).arg(0).arg(height).arg(2*width/3);
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-5).arg(-5).arg(height).arg(2*width/3);
         out << "}\n\n";
 
         //updateData
         out << "void " << classname << "::updateData()\n{\n";
         out << "\tNodeElement::updateData();\n";
-        out << "\ttext = \"<center>\" + dataIndex.data().toString() + \"</center>\";\n"; 
+        out << "\ttext = dataIndex.data().toString();\n"; 
         out << "\tupdate();\n";
         out << "}\n\n";
 

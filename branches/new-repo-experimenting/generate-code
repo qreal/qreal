@@ -18,3 +18,6 @@ cp -rf $WD/generated/repo/* repo/
 
 rm -rf shapes
 cp -rf $WD/generated/shapes .
+
+qmake
+make
