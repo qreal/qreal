@@ -30,11 +30,6 @@ MainWindow::MainWindow()
 
 	addDockWidget(Qt::RightDockWidgetArea, objectDock);
 
-    QDockWidget *dnd = new QDockWidget(tr("dnd widget"));
-    DragWidget *dw = new DragWidget(this);
-    dnd->setWidget(dw);
-    addDockWidget(Qt::LeftDockWidgetArea, dnd);
-
 	diagramExplorer->setDragDropMode(QAbstractItemView::DragDrop);
 	objectExplorer->setDragDropMode(QAbstractItemView::DragDrop);
 
