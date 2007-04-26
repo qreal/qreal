@@ -2,6 +2,8 @@
 
 Parser::Parser( QStringList l ){
     files = l;
+    res = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>";
+    resource = "\t<file>%1</file>\n";
     dir.cd(".");
     dir.mkdir("generated");
     dir.cd("generated");
@@ -13,6 +15,17 @@ Parser::Parser( QStringList l ){
     genMappings();
     genClasses();
     genFactory();
+
+    QFile file("generated/qtreal.qrc");
+    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+        return;
+    QTextStream out(&file);
+    res += "</qresource>\n</RCC>";
+    
+    out << res;
+
+    file.close();
+    
     qDebug() << "done";
 }
 
@@ -126,6 +139,8 @@ void Parser::run(QString filename){
         if (!svg.isEmpty()){
             cur->height = svg.at(0).toElement().attribute("height").toInt();
             cur->width = svg.at(0).toElement().attribute("width").toInt();
+
+            res += resource.arg("shapes/" + cur->id + "Class.svg");
 
             QFile file("generated/shapes/" + cur->id + "Class.svg");
             if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -310,7 +325,9 @@ void Parser::genSQLScripts()
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
-    
+   
+    res += resource.arg("repo/scripts.sql");
+   
     out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
 
     QString ins = "INSERT INTO `el_0` (id, name) VALUES (%1, '%2');\n";

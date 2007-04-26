@@ -34,7 +34,9 @@ private:
     QList<Entity*> objects;
     QList<Entity*> links;
     QMap<QString, QStringList> enumerations;
-    
+
+    QString res;
+    QString resource;
     QDir dir;
     QDomNodeList nodes;
    

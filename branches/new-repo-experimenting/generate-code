@@ -1,6 +1,7 @@
 #!/bin/sh
 
 WD=../source-generator
+GEN=$WD/generated
 
 pushd $WD
 qmake
@@ -9,14 +10,12 @@ make
 popd
 
 mkdir -p umllib/generated
-cp -rf $WD/generated/umllib/generated/* umllib/generated
+cp -rf $GEN/umllib/generated/* umllib/generated
 
-
-cp -rf $WD/generated/umllib/uml_guiobjectfactory.cpp umllib/
-cp -rf $WD/generated/repo/* repo/
+cp -rf $GEN/umllib/uml_guiobjectfactory.cpp umllib/
+cp -rf $GEN/repo/* repo/
 
 rm -rf shapes
-cp -rf $WD/generated/shapes .
+cp -rf $GEN/shapes .
 
-qmake
-make
+cp -rf $GEN/qtreal.qrc .
