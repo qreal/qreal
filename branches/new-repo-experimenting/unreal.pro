@@ -6,11 +6,13 @@ RESOURCES	+= qtreal.qrc
 
 # SQL model
 HEADERS         = dialogs/qsqlconnectiondialog.h \
+            dialogs/dragwidget.h\
 		    repo/realrepomodel.h \
 		    repo/realrepoitem.h \
 		    repo/realreporoles.h \
 		    repo/realreponames.h
 SOURCES         = dialogs/qsqlconnectiondialog.cpp \
+            dialogs/dragwidget.cpp \
 		    repo/realrepomodel.cpp \
 		    repo/realrepoitem.cpp \
 		    repo/realreporoles.cpp \

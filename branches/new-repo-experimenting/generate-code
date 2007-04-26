@@ -10,7 +10,6 @@ popd
 
 mkdir -p umllib/generated
 cp -rf $WD/generated/umllib/generated/* umllib/generated
-cp -rf $WD/generated/build/umllib.pri umllib/generated
 
 
 cp -rf $WD/generated/umllib/uml_guiobjectfactory.cpp umllib/

@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 
+#include "dragwidget.h"
 #include "qsqlconnectiondialog.h"
 #include "realrepomodel.h"
 #include "editorview.h"
@@ -28,6 +29,11 @@ MainWindow::MainWindow()
 	objectDock->setWidget(objectExplorer);
 
 	addDockWidget(Qt::RightDockWidgetArea, objectDock);
+
+    QDockWidget *dnd = new QDockWidget(tr("dnd widget"));
+    DragWidget *dw = new DragWidget(this);
+    dnd->setWidget(dw);
+    addDockWidget(Qt::LeftDockWidgetArea, dnd);
 
 	diagramExplorer->setDragDropMode(QAbstractItemView::DragDrop);
 	objectExplorer->setDragDropMode(QAbstractItemView::DragDrop);

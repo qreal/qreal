@@ -13,8 +13,6 @@
     <file>shapes/uscExtensionPointClass.svg</file>
     <file>shapes/uscUseCaseClass.svg</file>
     <file>repo/scripts.sql</file>
-    <file>class.png</file>
-    <file>link.png</file>
 </qresource>
 </RCC>
 
