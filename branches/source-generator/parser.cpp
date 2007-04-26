@@ -441,7 +441,7 @@ void Parser::genClasses(){
 
         //boundingRect
         out << "QRectF " << classname << "::boundingRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height).arg(-height).arg(150).arg(150);
+        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height/2).arg(-height/2).arg(2*height).arg(2*height);
         out << "}\n\n";
 
         //contentsRect
@@ -556,7 +556,7 @@ void Parser::genClasses(){
     //
     if( !dir.exists("build"))
         dir.mkdir("build");
-    QFile file("generated/build/umllib.pri");
+    QFile file("generated/umllib/generated/umllib.pri");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
