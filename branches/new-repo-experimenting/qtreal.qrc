@@ -8,7 +8,14 @@
     <file>shapes/reqnParentOptionalClass.svg</file>
     <file>shapes/reqnParentOrClass.svg</file>
     <file>shapes/reqnParentClass.svg</file>
-
+    <file>shapes/uscActorClass.svg</file>
+    <file>shapes/uscClassifierClass.svg</file>
+    <file>shapes/uscExtensionPointClass.svg</file>
+    <file>shapes/uscUseCaseClass.svg</file>
     <file>repo/scripts.sql</file>
+    <file>class.png</file>
+    <file>link.png</file>
 </qresource>
 </RCC>
+
+
