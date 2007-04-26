@@ -3,7 +3,6 @@
 
 #include "mainwindow.h"
 
-#include "dragwidget.h"
 #include "qsqlconnectiondialog.h"
 #include "realrepomodel.h"
 #include "editorview.h"
