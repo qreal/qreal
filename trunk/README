@@ -4,7 +4,6 @@ should move to one-makefile-per-dir structure.
 
 Right now we have:
 
- src/
     build/	- buildsystem, all files right now are built there
     editors/	- editor-building tools & generated sources
     images/     - images
@@ -19,6 +18,6 @@ Right now we have:
 
 
 To build this project:
-    $ cd src/build
+    $ cd build
     $ qmake && make
     $ ./real
