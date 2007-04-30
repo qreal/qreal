@@ -9,5 +9,5 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += parser.h
-SOURCES += main.cpp parser.cpp
+HEADERS += generator.h entity.h
+SOURCES += main.cpp generator.cpp entity.cpp

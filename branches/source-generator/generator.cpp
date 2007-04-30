@@ -1,15 +1,22 @@
-#include "parser.h"
+#include "generator.h"
 
-Parser::Parser( QStringList l ){
-    files = l;
-    res = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>";
-    resource = "\t<file>%1</file>\n";
+Generator::Generator( QStringList files ){
+
+    // inits
+    resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>";
+    res = "\t<file>%1</file>\n";
+
+    // creating directory for generated stuff
     dir.cd(".");
     dir.mkdir("generated");
     dir.cd("generated");
-    for (int i=0; i<l.size(); i++)
-        run(l.at(i));
-//    display();
+    // parse all files
+    for (int i=0; i<files.size(); i++){
+        qDebug() << "processing file " << files.at(i);
+        parseFile(files.at(i));
+    }  
+    // TODO: generalize props
+
     genEnums();
     genSQLScripts();
     genMappings();
@@ -20,80 +27,122 @@ Parser::Parser( QStringList l ){
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
-    res += "</qresource>\n</RCC>";
+    resources += "</qresource>\n</RCC>";
     
-    out << res;
+    out << resources;
 
     file.close();
     
     qDebug() << "done";
 }
 
-Parser::~Parser(){
+Generator::~Generator(){
+   // TODO: delete objects and edges
 }
 
-void Parser::run(QString filename){
+void Generator::parseFile( QString filename ){
 
-    QDomDocument *doc = new QDomDocument("new");
+    QDomDocument *doc = new QDomDocument("+1"); // :)
     QFile file(filename);
     if( !file.open(QIODevice::ReadOnly)){
-        qDebug() << "incorrect filename";
+        qDebug() << "incorrect filename " << filename;
         return;
     }
     if( !doc->setContent(&file)){
         file.close();
-        qDebug() << "cannot set qdomdocument's content";
+        qDebug() << "cannot set qdomdocument's content in " << filename;
         return;
     }
     file.close();
-   
-    // I. enums
-    QDomNodeList enums = doc->elementsByTagName("enumType"); 
 
-    for( int i=0; i < (int) enums.length(); i++){
-        QDomElement cur = enums.at(i).toElement();
-        QStringList values;
-        QString name = cur.attribute("id");
-        QDomNodeList vals = cur.elementsByTagName("enumValue");
-        for( int k = 0; k < (int) vals.length(); k++ )
-            values << vals.at(k).toElement().text();
-        enumerations.insert(name, values);
+    // I. parsing enums
+    QDomNodeList enumList = doc->elementsByTagName("enumType"); 
+    for( int i=0; i < (int) enumList.length(); i++){
+        parseEnum( enumList.at(i) );
     }
 
-    //qDebug() << enumerations;
+    // II. parsing nodes
+    QDomNodeList nodeList = doc->elementsByTagName("node"); 
+    for( int i=0; i < (int) nodeList.length(); i++ ){
+        parseNode( nodeList.at(i) );
+    }
 
+    // III. parsing edges
+    QDomNodeList edgeList = doc->elementsByTagName("edge");
+    for( int i=0; i < (int) edgeList.length(); i++ ){
+        parseEdge( edgeList.at(i) );
+    }
+}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-   
-    // II. nodes
-    nodes = doc->elementsByTagName("node"); 
+void Generator::parseEnum( QDomNode dnode ){
+    
+    QDomElement cur = dnode.toElement();
+    QStringList values;
+    QString name = cur.attribute("id");
+    QDomNodeList vals = cur.elementsByTagName("enumValue");
+    for( int k = 0; k < (int) vals.length(); k++ )
+        values << vals.at(k).toElement().text();
+    enumerations.insert(name, values);
 
-    for( int ii=0; ii< (int)nodes.length(); ii++ ){
-        Entity *cur = new Entity();
-        cur->id  = nodes.at(ii).toElement().attribute("id");
-        QDomElement logic = nodes.at(ii).firstChildElement("logic");
-        
-        // 1. generalizations
-        //TODO: multiple generalizations support
-        //TODO: forward declaration support
-        QDomElement generalization = logic.firstChildElement("generalizations").firstChildElement("generalization"); // searching for <generalization> tag
-        if( generalization != QDomElement() ){
-            QString parentID = generalization.firstChildElement("parent").attribute("parent_id");
-            Entity* par = find(parentID);
-            if( par ){
-                cur->parent = parentID;
-                for( int i=0; i<par->properties.size(); i++){
-                    if (!cur->properties.contains(par->properties.at(i)))
-                        cur->properties << par->properties.at(i);
-                }
-            }        
-        }
-        
-        // 2. properties
-        QDomNodeList props = logic.elementsByTagName("properties");
-        for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> block
-            QDomNodeList property = props.at(i).toElement().elementsByTagName("property");
-            for( int j=0; j<property.size(); j++ ){   // for each <property ... > tag
+}
+
+void Generator::parseNode( QDomNode dnode ){
+
+    Node *cur = new Node();
+    cur->id  = dnode.toElement().attribute("id");
+    QDomElement logic = dnode.firstChildElement("logic");
+    
+    parseGeneralizations( cur, logic );
+    parseProperties( cur, logic );
+    // TODO: uncomment
+    // parseAssociations( cur, logic );
+    parseSVG( cur, dnode ); 
+
+    cur->type = NODE;
+    objects << cur;
+
+}
+
+void Generator::parseEdge( QDomNode dnode ){
+
+    Edge *cur = new Edge();
+    cur->id  = dnode.toElement().attribute("id");
+    QDomElement logic = dnode.firstChildElement("logic");
+    
+    // quick hack to make these props be on top
+    cur->properties << QPair<QString, QString>("from", "string");
+    cur->properties << QPair<QString, QString>("to", "string");
+    cur->properties << QPair<QString, QString>("fromPort", "string");
+    cur->properties << QPair<QString, QString>("toPort", "string");
+
+    parseGeneralizations( cur, logic ); 
+    parseProperties( cur, logic );
+    parseAssociations( cur, logic );
+
+    cur->height = -1;
+    cur->width = -1;
+    cur->type = EDGE;
+    edges << cur;    
+    objects << cur;  
+
+}
+
+void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
+
+    QDomNodeList gens = logic.firstChildElement("generalizations").toElement().elementsByTagName("generalization");
+    // for each <generalization> tag
+    for( int i=0; i < (int) gens.size(); i++ ){
+        QString parentID = gens.at(i).firstChildElement("parent").attribute("parent_id");
+        cur->addParent( parentID );
+    } 
+}
+
+void Generator::parseProperties( Entity* cur, QDomNode logic ){
+
+    QDomNodeList props = logic.toElement().elementsByTagName("properties");
+    for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> section
+        QDomNodeList property = props.at(i).toElement().elementsByTagName("property");
+        for( int j=0; j<property.size(); j++ ){   // for each <property ... > tag
                 QDomNamedNodeMap attrs = property.at(j).attributes();
                 QString name;
                 QString type;
@@ -105,153 +154,64 @@ void Parser::run(QString filename){
                     name = property.at(j).firstChildElement("name").text();
                     type = property.at(j).firstChildElement("type").text();
                 }    
-                //qDebug() << i << j << property.at(j).hasAttributes() << property.at(j).toElement().hasChildNodes();
                 if( type == "enum" ){
                     type = "enum " + property.at(j).firstChildElement("enum").attribute("idref");
                 }
                 if( type == "ref" ){
                     type = property.at(j).firstChildElement("ref").attribute("idref");
                 } 
-                if( !name.isEmpty())
-                    if( !cur->properties.contains(QPair<QString, QString>(name, type)))
-                        cur->properties << QPair<QString, QString>(name, type);
-                
+                cur->addProperty( name, type );
                 // TODO: defaults and other missing property stuff support               
-            } 
         }
-        
-        
+    }    
+}
 
-        // 3. associations
+void Generator::parseSVG( Entity* cur, QDomNode dnode ){
 
-        QDomNode assocs = logic.firstChildElement("associations");
-        if( assocs != QDomNode() ){
-            QDomNodeList refs = assocs.toElement().elementsByTagName("assoc_ref");
-            for (int k=0; k<refs.size(); k++)
-                cur->associations << refs.at(k).toElement().attribute("idref");
-        }
+    QDomNodeList svg = dnode.toElement().elementsByTagName("svg:svg");
+    if( !dir.exists("shapes") )
+        dir.mkdir("shapes");
 
-        // 4. SVG stuff
-        QDomNodeList svg = nodes.at(ii).toElement().elementsByTagName("svg:svg");
-        if( !dir.exists("shapes") )
-            dir.mkdir("shapes");
+    if (!svg.isEmpty()){
+        cur->height = svg.at(0).toElement().attribute("height").toInt();
+        cur->width = svg.at(0).toElement().attribute("width").toInt();
 
-        if (!svg.isEmpty()){
-            cur->height = svg.at(0).toElement().attribute("height").toInt();
-            cur->width = svg.at(0).toElement().attribute("width").toInt();
+        resources += res.arg("shapes/" + cur->id + "Class.svg");
 
-            res += resource.arg("shapes/" + cur->id + "Class.svg");
-
-            QFile file("generated/shapes/" + cur->id + "Class.svg");
-            if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-                return;
-            QTextStream stream(&file);
-            svg.at(0).save(stream, 1);
-            file.close();
-        }
-        else {
-            cur->height = -1;
-            cur->width = -1;
-        }    
-
-        
-        
-
-        objects << cur;    
+        QFile file("generated/shapes/" + cur->id + "Class.svg");
+        if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+            return;
+        QTextStream stream(&file);
+        svg.at(0).save(stream, 1);
+        file.close();
     }
-    
-///////////////////////////////////////////////////////////////////////////////////////////////////
-    // III. edges
-
-    QDomNodeList edges = doc->elementsByTagName("edge");
-    
-    for( int i=0; i< (int)edges.length(); i++ ){
-        Entity *cur = new Entity();
-        cur->id  = edges.at(i).toElement().attribute("id");
-        QDomElement logic = edges.at(i).firstChildElement("logic");
-        
-        cur->properties << QPair<QString, QString>("from", "string");
-        cur->properties << QPair<QString, QString>("to", "string");
-        cur->properties << QPair<QString, QString>("fromPort", "string");
-        cur->properties << QPair<QString, QString>("toPort", "string");
-
-        // generalizations
-        //TODO: multiple generalizations support
-        QDomElement generalization = logic.firstChildElement("generalizations").firstChildElement("generalization"); // searching for <generalization> tag
-        if( generalization != QDomElement() ){
-            QString parentID = generalization.firstChildElement("parent").attribute("parent_id");
-            Entity* par = find(parentID);
-            if( par ){
-                for( int i=0; i<par->properties.size(); i++){
-                    if (!cur->properties.contains(par->properties.at(i)))
-                        cur->properties << par->properties.at(i);
-                }
-            }        
-        }
-        
-   
-   
-        // 2. properties
-                
-        QDomNodeList props = logic.elementsByTagName("properties");
-        for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> block
-            QDomNodeList property = props.at(i).toElement().elementsByTagName("property");
-            for( int j=0; j<property.size(); j++ ){   // for each <property ... > tag
-                QDomNamedNodeMap attrs = property.at(j).attributes();
-                QString name;
-                QString type;
-                if( !attrs.isEmpty() ){
-                    name = attrs.namedItem("name").toAttr().value();
-                    type = attrs.namedItem("type").toAttr().value();
-                }
-                else{
-                    name = property.at(j).firstChildElement("name").text();
-                    type = property.at(j).firstChildElement("type").text();
-                }    
-                //qDebug() << i << j << property.at(j).hasAttributes() << property.at(j).toElement().hasChildNodes();
-                if( type == "enum" ){
-                    type = "enum " + property.at(j).firstChildElement("enum").attribute("idref");
-                }
-                if( type == "ref" ){
-                    type = property.at(j).firstChildElement("ref").attribute("idref");
-                } 
-                if( !name.isEmpty())
-                    cur->properties << QPair<QString, QString>(name, type);
-                
-                // TODO: defaults and other missing property stuff support               
-            } 
-        }
- 
+    else {
         cur->height = -1;
         cur->width = -1;
-        links << cur;    
-        objects << cur;  
-    }
-
+    }    
 }
 
-Entity* Parser::find( QString id )
-{
-    for( int i=0; i<objects.size(); i++){
-        if( objects.at(i)->id == id )
-            return objects.at(i);
-    } 
-    return 0;
-}
+void Generator::parseAssociations( Entity *cur, QDomNode logic ){
 
-void Parser::display()
-{
-    qDebug() << "elements: " << objects.size(); 
-    for( int i=0; i<objects.size(); i++ ){
-        qDebug() << objects.at(i)->id;
-        for (int j=0; j<objects.at(i)->properties.size(); j++)
-            qDebug() << objects.at(i)->properties.at(j).first << "\t\t" << objects.at(i)->properties.at(j).second;
-        
-        qDebug() << "";
+    Edge* edge = (Edge*) cur;
+    QDomNodeList assocs = logic.toElement().elementsByTagName("association");
+    for( int i=0; i < assocs.size(); i++){  
+        QString role = assocs.at(i).toElement().attribute("id");
+        QDomElement begin = assocs.at(i).firstChildElement("begin");
+        QDomElement end = assocs.at(i).firstChildElement("end");
+        if( begin != QDomElement() ){
+            edge->beginRole << role;
+            edge->beginsWith << begin.attribute("idref");
+        }
+        if( end != QDomElement() ){
+            edge->endRole << role;
+            edge->endsWith << end.attribute("idref");
+        }
     }
 }
 
-void Parser::genEnums()
+
+void Generator::genEnums()
 {
     if( !dir.exists("repo") )
         dir.mkdir("repo");
@@ -319,14 +279,14 @@ void Parser::genEnums()
     file.close();
 }
 
-void Parser::genSQLScripts()
+void Generator::genSQLScripts()
 {
     QFile file("generated/repo/scripts.sql");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
    
-    res += resource.arg("repo/scripts.sql");
+    resources += res.arg("repo/scripts.sql");
    
     out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
 
@@ -368,7 +328,7 @@ void Parser::genSQLScripts()
     
 }
 
-void Parser::genMappings()
+void Generator::genMappings()
 {
     if( !dir.exists("repo") )
         dir.mkdir("repo");
@@ -397,7 +357,7 @@ void Parser::genMappings()
     file.close();
 }
 
-void Parser::genClasses(){
+void Generator::genClasses(){
     
     //
     // I. elements
@@ -505,16 +465,16 @@ void Parser::genClasses(){
     }    
     
     //
-    // II. links
+    // II. edges
     //
 
-    for ( int i=0; i<links.size(); i++ ){
+    for ( int i=0; i<edges.size(); i++ ){
 
         //
         // 1. H-files
         //
 
-        QString classname = links.at(i)->id + "Class";
+        QString classname = edges.at(i)->id + "Class";
         QFile f("generated/umllib/generated/" + classname + ".h");
         if( !f.open(QIODevice::WriteOnly | QIODevice::Text) )
             return;
@@ -595,10 +555,10 @@ void Parser::genClasses(){
 
     }        
 
-    for ( int i=0; i < links.size(); i++){
+    for ( int i=0; i < edges.size(); i++){
     
-        headers += " \\ \n\t" + prefix + links.at(i)->id + "Class.h";
-        sources += " \\ \n\t" + prefix + links.at(i)->id + "Class.cpp";
+        headers += " \\ \n\t" + prefix + edges.at(i)->id + "Class.h";
+        sources += " \\ \n\t" + prefix + edges.at(i)->id + "Class.cpp";
     }
 
     out << headers << "\n\n";
@@ -606,7 +566,7 @@ void Parser::genClasses(){
     file.close();
 }
 
-void Parser::genFactory()
+void Generator::genFactory()
 {
 
     if( !dir.exists("umllib"))
@@ -633,8 +593,8 @@ void Parser::genFactory()
 	out << QString("#include \"%1Class.h\"\n").arg(objects.at(i)->id);
     }
 
-    for (int i=0; i<links.size(); i++)
-        out << QString("#include \"%1Class.h\"\n").arg(links.at(i)->id);
+    for (int i=0; i<edges.size(); i++)
+        out << QString("#include \"%1Class.h\"\n").arg(edges.at(i)->id);
 
     for (int i=0; i<objects.size(); i++){
         int height = objects.at(i)->height;
@@ -646,10 +606,10 @@ void Parser::genFactory()
         includes += tmp2.arg(objects.at(i)->id + "Class.h");
     }
 
-    for (int i=0; i<links.size(); i++){
+    for (int i=0; i<edges.size(); i++){
     
-        classes += tmp.arg(links.at(i)->id).arg(links.at(i)->id + "Class");
-        includes += tmp2.arg(links.at(i)->id + "Class.h");
+        classes += tmp.arg(edges.at(i)->id).arg(edges.at(i)->id + "Class");
+        includes += tmp2.arg(edges.at(i)->id + "Class.h");
 
     }
     
@@ -664,4 +624,7 @@ void Parser::genFactory()
 
     file.close();
 }
+
+
+
 
