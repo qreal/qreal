@@ -44,6 +44,7 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
+										<xs:element name="line_type" type="line_type" />
 									</xs:choice>
 								</xs:sequence>
 							</xs:complexType>
@@ -184,7 +185,7 @@
 			<xs:enumeration value="ref" />
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="end_type">
+	<xs:simpleType name="line_type">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="noPan" />
 			<xs:enumeration value="solidLine" />
@@ -193,6 +194,13 @@
 			<xs:enumeration value="dashDotLine" />
 			<xs:enumeration value="dashDotDotLine" />
 			<xs:enumeration value="customDashLine" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="end_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="arrow" />
+			<xs:enumeration value="emtyRhomb" />
+			<xs:enumeration value="filledRhomb" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="association">
@@ -215,7 +223,7 @@
 				<xs:element name="begin" type="ref_elem" />
 				<xs:element name="end" type="ref_elem" />
 			</xs:choice>
-			<xs:element name="end_line" type="end_type" />
+			<xs:element name="end_type" type="end_type" />
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required" />
 		<xs:attribute name="labelled" type="xs:boolean" use="optional" />
