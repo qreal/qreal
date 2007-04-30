@@ -8,6 +8,8 @@
 
 enum elementsType { NODE, EDGE };
 
+enum sideType { BEGIN, END };
+
 // parent for nodes and edges class
 class Entity
 {
@@ -35,18 +37,34 @@ class Node : public Entity
 {
 public:
     //TODO: containers 
-    QStringList associations; 
+    //QStringList associations; 
     
+};
+
+class Association {
+public:
+    QString id;
+    sideType side; // begin or end
+    QString idref;
+    //TODO: full schema support
+    //QString role;  
 };
 
 // edge class
 class Edge : public Entity
 {
 public:
-    QStringList beginsWith;
-    QStringList endsWith;
-    QStringList beginRole;
-    QStringList endRole;
+    Edge(){
+        assocsPropagated = false;
+        endsPropagated   = false;
+    }
+
+    void addAssociation( Association* );
+
+    QList< Association*  > associations;
+
+    bool assocsPropagated; // edges' own generalizations
+    bool endsPropagated; // connected nodes' generalizations
 };
 
 

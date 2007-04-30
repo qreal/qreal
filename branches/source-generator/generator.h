@@ -37,8 +37,10 @@ private:
 
     void propagateAll();
     void propagateProperties( Entity* );
+    void propagateAssocs( Edge* );
 
     Entity* find( QString id );
+    Edge* findEdge( QString id );
 
     QList< Entity* > objects; 
     QList< Edge* > edges;

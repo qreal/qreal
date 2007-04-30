@@ -15,7 +15,6 @@ Generator::Generator( QStringList files ){
         qDebug() << "processing file " << files.at(i);
         parseFile(files.at(i));
     }  
-    
     // propagate properties and other useful things
     propagateAll();
 
@@ -203,14 +202,17 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic ){
         QString role = assocs.at(i).toElement().attribute("id");
         QDomElement begin = assocs.at(i).firstChildElement("begin");
         QDomElement end = assocs.at(i).firstChildElement("end");
+        Association* ass = new Association();
+        ass->id = role;
         if( begin != QDomElement() ){
-            edge->beginRole << role;
-            edge->beginsWith << begin.attribute("idref");
-        }
+            ass->side  = BEGIN;
+            ass->idref = begin.toElement().attribute("idref");
+        }    
         if( end != QDomElement() ){
-            edge->endRole << role;
-            edge->endsWith << end.attribute("idref");
-        }
+            ass->side = END; 
+            ass->idref = end.toElement().attribute("idref");
+        }   
+        edge->associations << ass;
     }
 }
 
@@ -632,6 +634,13 @@ Entity* Generator::find( QString id ){
     return 0;    
 }
 
+Edge* Generator::findEdge( QString id ){
+    for ( int i=0; i < (int) edges.size(); i++ )
+        if( edges.at(i)->id == id )
+            return edges.at(i);
+    return 0;    
+}
+
 void Generator::propagateAll(){
 
     // propagating objects' properties
@@ -640,6 +649,13 @@ void Generator::propagateAll(){
             propagateProperties( objects.at(i) );
     }
     
+    // propagating edges' stuff    
+    for( int i=0; i < (int) edges.size(); i++ ){
+        if( !edges.at(i)->assocsPropagated )
+            propagateAssocs( edges.at(i) );
+    }
+    
+    //TODO: propagating connected nodes' ids
     
   
 }
@@ -654,4 +670,20 @@ void Generator::propagateProperties( Entity* cur ){
             cur->addProperty( par->properties.at(k).first, par->properties.at(k).second );
     }
     cur->propsPropagated = true;
+}
+
+void Generator::propagateAssocs( Edge* cur ){
+
+    for( int j=0; j < cur->parents.size(); j++ ){
+        Edge* par = findEdge(cur->parents.at(j));
+        if( !par ){
+            cur->assocsPropagated = true;
+            return;
+        }    
+        if ( !par->assocsPropagated )
+            propagateAssocs( par );
+        for( int k=0; k < par->associations.size(); k++ )
+            cur->addAssociation( par->associations.at(k) );
+    }
+    cur->assocsPropagated = true;
 }
