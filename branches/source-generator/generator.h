@@ -35,6 +35,11 @@ private:
     void genClasses();
     void genFactory();
 
+    void propagateAll();
+    void propagateProperties( Entity* );
+
+    Entity* find( QString id );
+
     QList< Entity* > objects; 
     QList< Edge* > edges;
     

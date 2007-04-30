@@ -15,14 +15,18 @@ Generator::Generator( QStringList files ){
         qDebug() << "processing file " << files.at(i);
         parseFile(files.at(i));
     }  
-    // TODO: generalize props
+    
+    // propagate properties and other useful things
+    propagateAll();
 
+    // generate all the stuff needed
     genEnums();
     genSQLScripts();
     genMappings();
     genClasses();
     genFactory();
 
+    // write the resource file
     QFile file("generated/qtreal.qrc");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
@@ -524,15 +528,11 @@ void Generator::genClasses(){
  
         f2.close();
     }
-        
-        
-
-
+    
     // 
     // IV. pri-file
     //
-    if( !dir.exists("build"))
-        dir.mkdir("build");
+
     QFile file("generated/umllib/generated/umllib.pri");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
@@ -625,6 +625,33 @@ void Generator::genFactory()
     file.close();
 }
 
+Entity* Generator::find( QString id ){
+    for ( int i=0; i < (int) objects.size(); i++ )
+        if( objects.at(i)->id == id )
+            return objects.at(i);
+    return 0;    
+}
 
+void Generator::propagateAll(){
 
+    // propagating objects' properties
+    for( int i=0; i < (int) objects.size(); i++ ){
+        if( !objects.at(i)->propsPropagated )
+            propagateProperties( objects.at(i) );
+    }
+    
+    
+  
+}
 
+void Generator::propagateProperties( Entity* cur ){
+   
+    for( int j=0; j < cur->parents.size(); j++ ){
+        Entity* par = find(cur->parents.at(j));
+        if ( !par->propsPropagated )
+            propagateProperties( par );
+        for( int k=0; k < par->properties.size(); k++ )
+            cur->addProperty( par->properties.at(k).first, par->properties.at(k).second );
+    }
+    cur->propsPropagated = true;
+}

@@ -12,6 +12,8 @@ enum elementsType { NODE, EDGE };
 class Entity
 {
 public:
+    Entity(){ propsPropagated = false; }
+
     void addParent( QString );
     void addProperty( QString, QString );
 
@@ -24,6 +26,8 @@ public:
     QList< QPair<QString, QString> > properties;
 
     elementsType type;
+
+    bool propsPropagated;
 };
 
 // node class
