@@ -18,9 +18,6 @@ public:
 
     EditorViewMViface * mvIface() { return mv_iface; };
     
-//  void setDEM(DiagramExplorerModel *model) { model2 = model; }  __attribute((deprecated));
-//  DiagramExplorerModel *getDEM() { return model2; }  __attribute((deprecated));
-
 public slots:
     void toggleAntialiasing(bool);
     void toggleOpenGL(bool);
@@ -32,7 +29,6 @@ protected:
 
 private:
     EditorViewMViface * mv_iface;
-//  DiagramExplorerModel *model2 __attribute((deprecated));
 };
 
 #endif

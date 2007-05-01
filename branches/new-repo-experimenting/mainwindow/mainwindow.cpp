@@ -15,6 +15,10 @@ MainWindow::MainWindow()
 	view = new EditorView;
 	setCentralWidget(view);
 
+//	delete ui.centralwidget;
+
+	ui.minimapView->setScene(view->scene());
+
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 
@@ -27,6 +31,9 @@ MainWindow::MainWindow()
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), view, SLOT( toggleOpenGL(bool) ) );
 
+	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
+	adjustMinimapZoom(ui.minimapZoomSlider->value());
+
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.objectDock->setWidget(ui.objectExplorer);
@@ -38,6 +45,12 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
 	delete view;
+}
+
+void MainWindow::adjustMinimapZoom(int zoom)
+{
+	ui.minimapView->resetMatrix();
+	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
 void MainWindow::connectRepo()

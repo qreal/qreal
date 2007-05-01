@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
-    <height>414</height>
+    <width>576</width>
+    <height>565</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -21,7 +21,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>603</width>
+     <width>576</width>
      <height>25</height>
     </rect>
    </property>
@@ -55,7 +55,7 @@
     <string>Object Explorer</string>
    </property>
    <attribute name="dockWidgetArea" >
-    <number>2</number>
+    <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3" >
     <layout class="QHBoxLayout" >
@@ -115,12 +115,88 @@
   </widget>
   <widget class="QDockWidget" name="minimapDock" >
    <property name="windowTitle" >
-    <string>MiniMap</string>
+    <string>Mini Map</string>
    </property>
    <attribute name="dockWidgetArea" >
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4" />
+   <widget class="QWidget" name="dockWidgetContents_4" >
+    <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>9</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QGraphicsView" name="minimapView" />
+     </item>
+     <item>
+      <widget class="QSlider" name="minimapZoomSlider" >
+       <property name="maximum" >
+        <number>50</number>
+       </property>
+       <property name="value" >
+        <number>25</number>
+       </property>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="paletteDock" >
+   <property name="windowTitle" >
+    <string>Palette</string>
+   </property>
+   <attribute name="dockWidgetArea" >
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_5" >
+    <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>9</number>
+     </property>
+     <property name="spacing" >
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QToolBox" name="toolBox" >
+       <property name="currentIndex" >
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="page" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>129</width>
+          <height>163</height>
+         </rect>
+        </property>
+        <attribute name="label" >
+         <string>Page 1</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="page_2" >
+        <property name="geometry" >
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>96</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <attribute name="label" >
+         <string>Page 2</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionQuit" >
    <property name="text" >
@@ -165,6 +241,8 @@
    </property>
   </action>
  </widget>
+ <layoutdefault spacing="0" margin="0" />
+ <includes/>
  <resources>
   <include location="../qtreal.qrc" />
   <include location="../static.qrc" />

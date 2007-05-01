@@ -20,6 +20,7 @@ public:
 
 public slots:
 	void connectRepo();
+	void adjustMinimapZoom(int zoom);
 
 private:
 	RealRepoModel *model;
