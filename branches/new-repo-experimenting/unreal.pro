@@ -1,6 +1,6 @@
 QT		+= sql svg
 INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
-RESOURCES	+= qtreal.qrc static.qrc
+RESOURCES	+= real_dynamic.qrc static.qrc
 SOURCES		= main.cpp
 
 

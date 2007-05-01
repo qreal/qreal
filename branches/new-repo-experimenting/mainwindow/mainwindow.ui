@@ -40,12 +40,17 @@
     <addaction name="actionZoom_In" />
     <addaction name="actionZoom_Out" />
     <addaction name="separator" />
+    <addaction name="actionAntialiasing" />
+    <addaction name="actionOpenGL_Renderer" />
    </widget>
    <addaction name="menu_File_2" />
    <addaction name="menu_View" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QDockWidget" name="objectDock" >
+   <property name="allowedAreas" >
+    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
    <property name="windowTitle" >
     <string>Object Explorer</string>
    </property>
@@ -71,6 +76,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="diagramDock" >
+   <property name="allowedAreas" >
+    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
    <property name="windowTitle" >
     <string>Diagram Explorer</string>
    </property>
@@ -105,6 +113,15 @@
    <addaction name="actionZoom_In" />
    <addaction name="actionZoom_Out" />
   </widget>
+  <widget class="QDockWidget" name="minimapDock" >
+   <property name="windowTitle" >
+    <string>MiniMap</string>
+   </property>
+   <attribute name="dockWidgetArea" >
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4" />
+  </widget>
   <action name="actionQuit" >
    <property name="text" >
     <string>&amp;Quit</string>
@@ -129,6 +146,22 @@
    </property>
    <property name="text" >
     <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionAntialiasing" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Antialiasing</string>
+   </property>
+  </action>
+  <action name="actionOpenGL_Renderer" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>OpenGL Renderer</string>
    </property>
   </action>
  </widget>

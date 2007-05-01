@@ -24,6 +24,9 @@ MainWindow::MainWindow()
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
 	connect(ui.actionZoom_Out, SIGNAL( triggered() ), view, SLOT( zoomOut() ) );
 
+	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), view, SLOT( toggleAntialiasing(bool) ) );
+	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), view, SLOT( toggleOpenGL(bool) ) );
+
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.objectDock->setWidget(ui.objectExplorer);
