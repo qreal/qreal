@@ -288,7 +288,20 @@ void Generator::genSQLScripts()
    
     resources += res.arg("repo/scripts.sql");
    
-    out << "drop database unreal2;\n create database unreal2;\n use unreal2;\n";
+    out << "drop database unreal2;\ncreate database unreal2;\nuse unreal2;\n";
+
+    out <<  "CREATE TABLE `max_uuid` ( `id` mediumint  NOT NULL );\n\n"
+            "INSERT INTO `max_uuid` VALUES (100);\n\n"
+            "DELIMITER ;;\n\n"
+            "CREATE FUNCTION get_id() RETURNS mediumint\n"
+            "BEGIN\n"
+            "\tDECLARE x mediumint;\n"
+            "\tUPDATE max_uuid SET id=id+1;\n"
+            "\tSELECT id FROM max_uuid INTO x;\n"
+            "\tRETURN x;\n"
+            "END;\n"
+            ";;\n\n"
+            "DELIMITER ;\n\n";
 
     QString ins = "INSERT INTO `el_0` (id, name) VALUES (%1, '%2');\n";
     QString inserts = "";
@@ -584,9 +597,11 @@ void Generator::genFactory()
         int height = objects.at(i)->height;
         int width  = objects.at(i)->width;
 
-        if ( height == -1 && width == -1 )
+        if ( height == -1 && width == -1 ){
             continue;
-	out << QString("#include \"%1Class.h\"\n").arg(objects.at(i)->id);
+        }    
+    	out << QString("#include \"%1Class.h\"\n").arg(objects.at(i)->id);
+
     }
 
     for (int i=0; i<edges.size(); i++)

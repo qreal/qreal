@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel</include>
+	<include>basicbehaviors_metamodel</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="USE CASE DIAGRAM">
+		<node name="Actor" id="uscnActor">
+			<graphics>
+				<view>
+					<svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="150" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 150 150" height="150" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:circle cx="75" cy="37" r="18" stroke="black" stroke-width="2" fill="white"/>
+              <svg:line x1="75" y1="55" x2="75" y2="105" stroke="black" stroke-width="2" />
+              <svg:line x1="55" y1="75" x2="95" y2="75" stroke="black" stroke-width="2" />
+              <svg:line x1="75" y1="105" x2="55" y2="135" stroke="black" stroke-width="2" />
+              <svg:line x1="75" y1="105" x2="95" y2="135" stroke="black" stroke-width="2" />
+            </svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="bbnBehavioredClassifier"></parent>
+					</generalization>
+				</generalizations>
+				<properties>
+					<property name="name" type="string"></property>
+				</properties>
+			</logic>
+		</node>
+		<node name="Classifier" id="uscClassifier">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg contentScriptType="text/ecmascript" width="150" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 150 150" height="150" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="30" y="10" width="90" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" 
+               id="uscClassifier0" height="130"/>
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnClassifier"></parent>
+					</generalization>
+				</generalizations>
+				<associations>
+					<assoc_ref idref="uscaClassifier" />
+				</associations>
+				<containers>
+					<container>
+						<contains idref="uscUseCase" role="use case" />
+					</container>
+				</containers>
+				<properties>
+					<property name="name" type="string"></property>
+				</properties>
+			</logic>
+		</node>
+		<node name="ExtensionPoint" id="uscExtensionPoint">
+			<graphics>
+				<view>
+					<svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="150" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 150 150" height="150" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+							<svg:circle cx="100" cy="50" r="40" stroke="black" stroke-width="2" fill="white" />
+							<svg:line x1="80" y1="30" x2="120" y2="70" stroke="black" stroke-width="2" />
+							<svg:line x1="120" y1="30" x2="80" y2="70" stroke="black" stroke-width="2" />
+              <!--хотя, может, у нее вообще не должно быть графического представления...-->
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnRedefElement"></parent>
+					</generalization>
+				</generalizations>
+				<properties>
+					<property name="name" type="string"></property>
+				</properties>
+				<containers>
+					<container>
+						<contained_by idref="uscUseCase" role="use case" />
+					</container>
+				</containers>
+			</logic>
+		</node>
+		<node name="UseCase" id="uscUseCase">
+			<graphics>
+				<view>
+					<svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="150" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 150 150" height="150" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:ellipse cx="75" cy="75" rx="70" ry="40" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="bbnBehavioredClassifier"></parent>
+					</generalization>
+				</generalizations>
+				<properties>
+					<property name="name" type="string"></property>
+				</properties>
+				<associations>
+					<association id="uscaClassifier" role="subject">
+						<begin idref="uscClassifier" />
+					</association>
+				</associations>
+				<containers>
+					<container>
+						<contains idref="uscExtensionPoint" role="extension point" />
+						<contains idref="uscExtend" role="extend" />
+						<contains idref="uscInclude" role="include" />
+					</container>
+				</containers>
+			</logic>
+		</node>
+		<edge name="Extend" id="uscExtend">
+			<graphics>
+				<view>
+					<svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
+              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:line x1="0" y1="45" x2="15" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="25" y1="45" x2="40" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="45" x2="65" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="75" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="35" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="55" stroke="black" stroke-width="2" />
+              <svg:text x="15" y="40" style="font-size:12pt;fill:#000000;">extend</svg:text>
+            </svg:svg>
+					</svg_shape>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnNamedElement"></parent>
+						<parent parent_id="krneDirRelationship"></parent>
+					</generalization>
+				</generalizations>
+				<containers>
+					<container>
+						<contained_by idref="uscUseCase" role="extended case" />
+						<contained_by idref="uscUseCase" role="extension" />
+					</container>
+				</containers>
+			</logic>
+		</edge>
+		<edge name="Include" id="uscInclude">
+			<graphics>
+				<view>
+					<svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
+              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:line x1="0" y1="45" x2="15" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="25" y1="45" x2="40" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="45" x2="65" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="75" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="35" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="55" stroke="black" stroke-width="2" />
+              <svg:text x="15" y="40" style="font-size:12pt;fill:#000000;">include</svg:text>
+            </svg:svg>
+					</svg_shape>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneDirRelationship"></parent>
+						<parent parent_id="krnnNamedElement"></parent>
+					</generalization>
+				</generalizations>
+				<containers>
+					<container>
+						<contained_by idref="uscUseCase" role="addition" />
+						<contained_by idref="uscUseCase" role="including case" />
+					</container>
+				</containers>
+			</logic>
+		</edge>
+	</diagram>
+</metamodel>
