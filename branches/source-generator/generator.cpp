@@ -26,7 +26,7 @@ Generator::Generator( QStringList files ){
     genFactory();
 
     // write the resource file
-    QFile file("generated/qtreal.qrc");
+    QFile file("generated/real_dynamic.qrc");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
@@ -268,12 +268,6 @@ void Generator::genEnums()
    
     out << "};\n\n";
 
-    out << "namespace SQLFields {\n\tstatic int ElementOffset = 11;\n\n\tstatic const char * Diagram[] = {\n"
-           "\t\t\"x\", \"y\", \"cfg\"\n\t};\n\n\tstatic const char * Package[] = {\n\t\t\"foo!\"\t};\n\n"
-           "\tstatic const char * Class[] = {\n\t\t\"properties\", \"methods\"\n\t};\n\n"
-           "\tstatic const char * Link[] = {\n\t\t\"from\", \"to\"\n\t};\n\n"
-           "\tstatic const char ** ColumnNames[] = {\n\t\tDiagram,\n\t\tPackage,\n\t\tClass,\n\t\tLink\n\t};\n};\n\n";
-    
     out << 
            "namespace Unreal {\n\t"
            "enum ClassRoles {\n\t\tFieldsRole = UserRole + 1,\n\t\tMethodsRole\n\t};\n\n\t"
@@ -664,6 +658,10 @@ void Generator::propagateProperties( Entity* cur ){
    
     for( int j=0; j < cur->parents.size(); j++ ){
         Entity* par = find(cur->parents.at(j));
+        if( !par){
+            cur->propsPropagated = true;
+            return;
+        }
         if ( !par->propsPropagated )
             propagateProperties( par );
         for( int k=0; k < par->properties.size(); k++ )
