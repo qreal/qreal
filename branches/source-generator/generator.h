@@ -19,6 +19,8 @@ public:
 
 private:
 
+    static const int NUM = 12;
+
     void parseFile( QString );
     void parseEnum( QDomNode );
     void parseNode( QDomNode );
@@ -34,10 +36,13 @@ private:
     void genMappings();
     void genClasses();
     void genFactory();
+    void genEdgesFunction();
 
     void propagateAll();
     void propagateProperties( Entity* );
     void propagateAssocs( Edge* );
+
+    int position( QString );
 
     Entity* find( QString id );
     Edge* findEdge( QString id );

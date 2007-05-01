@@ -19,7 +19,7 @@ void Edge::addAssociation( Association* ass){
 
     bool found = false;
     for( int i=0; i< associations.size(); i++)
-        if( associations.at(i)->id == ass->id)
+        if( ( associations.at(i)->fromID == ass->fromID ) && ( associations.at(i)->toID == ass->toID ) )
             found = true;
     if( !found )
         associations << ass;

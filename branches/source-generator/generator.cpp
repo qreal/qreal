@@ -24,6 +24,7 @@ Generator::Generator( QStringList files ){
     genMappings();
     genClasses();
     genFactory();
+    genEdgesFunction();
 
     // write the resource file
     QFile file("generated/real_dynamic.qrc");
@@ -198,22 +199,22 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic ){
 
     Edge* edge = (Edge*) cur;
     QDomNodeList assocs = logic.toElement().elementsByTagName("association");
+    //TODO: multiple associations support
+    Association* ass = new Association();
     for( int i=0; i < assocs.size(); i++){  
         QString role = assocs.at(i).toElement().attribute("id");
         QDomElement begin = assocs.at(i).firstChildElement("begin");
         QDomElement end = assocs.at(i).firstChildElement("end");
-        Association* ass = new Association();
-        ass->id = role;
         if( begin != QDomElement() ){
-            ass->side  = BEGIN;
-            ass->idref = begin.toElement().attribute("idref");
+            ass->from = begin.toElement().attribute("idref");
+            ass->fromID = role;
         }    
         if( end != QDomElement() ){
-            ass->side = END; 
-            ass->idref = end.toElement().attribute("idref");
+            ass->to = end.toElement().attribute("idref");
+            ass->toID = role;
         }   
-        edge->associations << ass;
     }
+    edge->associations << ass;
 }
 
 
@@ -226,7 +227,7 @@ void Generator::genEnums()
         return;
     QTextStream out(&file);
     
-    int id = 12;
+    int id = NUM;
     
     out << "#ifndef REALREPOROLES_H\n#define REALREPOROLES_H\n\n";
     
@@ -309,7 +310,7 @@ void Generator::genSQLScripts()
     inserts += ins.arg(10).arg("Diagram");
     
     for (int i=0; i<objects.size(); i++){
-        int j = i+12;
+        int j = i+NUM;
         inserts += ins.arg(j).arg(objects.at(i)->id);
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
@@ -354,7 +355,7 @@ void Generator::genMappings()
     out << "QString getColumnName(int elementNum, int roleNum){\n";
     out << "\tQMap<int, QStringList> map;\n";
     out << "\tQStringList l;\n";
-    int elementBase = 12;
+    int elementBase = NUM;
     int roleBase = 129;
 
     for (int i=0; i<objects.size(); i++){
@@ -636,6 +637,56 @@ void Generator::genFactory()
     file.close();
 }
 
+int Generator::position( QString id ){
+    
+    int result = -1;
+    for( int i=0; i<(int) objects.size(); i++ )
+        if( objects.at(i)->id == id ){
+            result = i;
+            break;
+        }
+   return result; 
+    
+}
+
+void Generator::genEdgesFunction(){
+
+    QFile file("generated/umllib/edges_stuff.cpp");
+    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+        return;
+    QTextStream out(&file);
+    
+    out <<  "#include <QMap>\n#include <QHash>\n#include <QDebug>\n\n"
+            "bool canBeConnected( int linkID, int from, int to ){\n"
+            "\tQMap< int, QHash< int, int > > edges;\n"
+            "\tQHash< int, int> hash;\n\n";
+    
+    for( int i=0; i<(int) objects.size(); i++){
+        if( objects.at(i)->type == EDGE ){
+            Edge* edge = (Edge*) objects.at(i);
+            for( int j=0; j<(int) edge->associations.size(); j++ ){
+                out << "\thash.clear();\n";        
+                int from = position(edge->associations.at(j)->from);
+                int to = position(edge->associations.at(j)->to);
+                if( from != -1)
+                    from += 12;
+                 if( to != -1)
+                    to += 12;
+                out << QString("\thash.insertMulti(%1, %2);\n").arg(from).arg(to); 
+                out << QString("\thash.insertMulti(%1, -1);\n").arg(from); 
+                out << QString("\thash.insertMulti(-1, %1);\n").arg(to); 
+                out << QString("\thash.insertMulti(-1, -1);\n"); 
+                out << QString("\tedges.insert(%1, hash);\n\n").arg(i+NUM);
+            }
+        }
+    } 
+    
+    out << "\treturn edges.value(linkID).values(from).contains(to);\n";
+    out << "};\n";
+
+    file.close();
+}
+
 Entity* Generator::find( QString id ){
     for ( int i=0; i < (int) objects.size(); i++ )
         if( objects.at(i)->id == id )
@@ -657,14 +708,15 @@ void Generator::propagateAll(){
         if( !objects.at(i)->propsPropagated )
             propagateProperties( objects.at(i) );
     }
-    
+
+    // do not needed right now
+/*    
     // propagating edges' stuff    
     for( int i=0; i < (int) edges.size(); i++ ){
         if( !edges.at(i)->assocsPropagated )
             propagateAssocs( edges.at(i) );
     }
-    
-    //TODO: propagating connected nodes' ids
+  */  
     
   
 }

@@ -43,9 +43,10 @@ public:
 
 class Association {
 public:
-    QString id;
-    sideType side; // begin or end
-    QString idref;
+    QString fromID;
+    QString toID;
+    QString from;
+    QString to;
     //TODO: full schema support
     //QString role;  
 };
