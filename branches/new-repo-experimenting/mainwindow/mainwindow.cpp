@@ -10,63 +10,31 @@
 MainWindow::MainWindow()
 	: model(0)
 {
+	ui.setupUi(this);
+
 	view = new EditorView;
 	setCentralWidget(view);
 
-	QDockWidget *diagramDock = new QDockWidget(tr("Diagram Explorer"));
-	diagramExplorer = new QTreeView(this);
-	diagramDock->setWidget(diagramExplorer);
-
-	connect(diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
+	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 
-
-	addDockWidget(Qt::LeftDockWidgetArea, diagramDock);
-
-	QDockWidget *objectDock = new QDockWidget(tr("Object Explorer"));
-	objectExplorer = new QTreeView(this);
-	objectDock->setWidget(objectExplorer);
-
-	addDockWidget(Qt::RightDockWidgetArea, objectDock);
-
-	diagramExplorer->setDragDropMode(QAbstractItemView::DragDrop);
-	objectExplorer->setDragDropMode(QAbstractItemView::DragDrop);
-
-	createActions();
-	createMenus();
-
-	statusBar()->showMessage(tr("Yo!"));
-
-	setWindowTitle(tr("UnREAL"));
-	setMinimumSize(160, 160);
-	resize(640, 480);
+	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
+	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 	
+	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
+	connect(ui.actionZoom_Out, SIGNAL( triggered() ), view, SLOT( zoomOut() ) );
+
+	// XXX: kludge... don't know how to do it in designer
+	ui.diagramDock->setWidget(ui.diagramExplorer);
+	ui.objectDock->setWidget(ui.objectExplorer);
+
 	show();
 	connectRepo();
 }
 
-void MainWindow::createActions()
+MainWindow::~MainWindow()
 {
-	connectAct = new QAction(tr("&Connect"), this);
-	connectAct->setShortcut(tr("Ctrl+C"));
-	connectAct->setStatusTip(tr("Connect to database"));
-	connect(connectAct, SIGNAL(triggered()), this, SLOT(connectRepo()));
-
-	exitAct = new QAction(tr("E&xit"), this);
-	exitAct->setShortcut(tr("Ctrl+Q"));
-	exitAct->setStatusTip(tr("Exit the application"));
-	connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
-}
-
-void MainWindow::createMenus()
-{
-	fileMenu = menuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(connectAct);
-	//    fileMenu->addAction(openAct);
-	//    fileMenu->addAction(saveAct);
-	//    fileMenu->addAction(printAct);
-	fileMenu->addSeparator();
-	fileMenu->addAction(exitAct);
+	delete view;
 }
 
 void MainWindow::connectRepo()
@@ -77,16 +45,16 @@ void MainWindow::connectRepo()
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
-	diagramExplorer->setModel(0);
-	objectExplorer->setModel(0);
+	ui.diagramExplorer->setModel(0);
+	ui.objectExplorer->setModel(0);
 	if( model )
 		delete model;
 
 	db = QSqlDatabase::addDatabase(dialog.driverName());
     
-    db.setDatabaseName(dialog.databaseName());
-    db.setHostName(dialog.hostName());
-    db.setPort(dialog.port()); 
+	db.setDatabaseName(dialog.databaseName());
+	db.setHostName(dialog.hostName());
+	db.setPort(dialog.port()); 
 	
 	if (!db.open(dialog.userName(), dialog.password())) {
 		err = db.lastError();
@@ -99,54 +67,21 @@ void MainWindow::connectRepo()
 				+ err.driverText() + "\n" + err.databaseText());
 		return;
 	}
-
+/*
 	if ( dialog.driverName() == "QSQLITE" ) {
 		this->createDatabase();
 	}
-
+*/
 	model = new RealRepoModel();
 	
-	diagramExplorer->setModel(model);
-	diagramExplorer->setRootIndex(model->index(0,0,QModelIndex()));
+	ui.diagramExplorer->setModel(model);
+	ui.diagramExplorer->setRootIndex(model->index(0,0,QModelIndex()));
 
-	objectExplorer->setModel(model);
-	//objectExplorer->setRowHidden(0,QModelIndex(),true);
+	ui.objectExplorer->setModel(model);
+	ui.objectExplorer->setRowHidden(0,QModelIndex(),true);
 
 	view->mvIface()->setModel(model);
 
-	connect(objectExplorer, SIGNAL( activated( const QModelIndex & ) ),
+	connect(ui.objectExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			model, SLOT( createSomeChild( const QModelIndex & )));
-}
-
-void MainWindow::selectDiagram(const QModelIndex &index)
-{
-	view->mvIface()->setRootIndex(index);
-}
-
-bool MainWindow::createDatabase(){
-
-    QFile file(":/repo/scripts.sql");
-    if( !file.open(QIODevice::ReadOnly | QIODevice::Text) )
-        return false;
-    QTextStream in(&file);
-    
-    QString str;
-    in >> str;
-    QString all = "";
-    while (!str.isEmpty() ){
-        in >> str;
-        all += " " + str;
-    }    
-
-    QStringList l = all.split(";"); 
-    qDebug() << l.size();
-    QSqlQuery q;
-
-    for (int i=0; i<l.size(); i++){
-        q.prepare(l.at(i) + ";");
-        q.exec();
-    }    
-
-    file.close();
-    return true;
 }

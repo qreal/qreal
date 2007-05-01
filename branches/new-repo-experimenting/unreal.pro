@@ -1,6 +1,6 @@
 QT		+= sql svg
-INCLUDEPATH	+= view umllib repo dialogs umllib/generated
-RESOURCES	+= qtreal.qrc
+INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
+RESOURCES	+= qtreal.qrc static.qrc
 SOURCES		= main.cpp
 
 
@@ -20,6 +20,7 @@ FORMS           += dialogs/qsqlconnectiondialog.ui
 # Mainwindow
 HEADERS		+= mainwindow/mainwindow.h
 SOURCES		+= mainwindow/mainwindow.cpp
+FORMS		+= mainwindow/mainwindow.ui
 
 # View
 HEADERS		+= view/editorview.h \
