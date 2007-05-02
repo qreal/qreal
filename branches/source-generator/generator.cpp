@@ -3,7 +3,7 @@
 Generator::Generator( QStringList files ){
 
     // inits
-    resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>";
+    resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
     res = "\t<file>%1</file>\n";
 
     // creating directory for generated stuff
