@@ -97,7 +97,7 @@ static void dumpStuff( const QModelIndex & idx )
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
-	qDebug() << "rowsInserted: adding items";
+	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();

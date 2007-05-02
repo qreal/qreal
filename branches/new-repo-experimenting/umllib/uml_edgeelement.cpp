@@ -43,6 +43,7 @@ EdgeElement::EdgeElement()
 	setFlag(ItemIsMovable, true);
 
 	m_line << QPointF(-50,-10) << QPointF(50,10);
+	m_penStyle = Qt::DashLine;
 }
 
 EdgeElement::~EdgeElement()
@@ -72,7 +73,8 @@ static double lineAngle(const QLineF &line)
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	painter->save();
-	painter->setPen(QPen(m_color));
+	painter->setPen(m_color);
+	painter->setPen(m_penStyle);
 	painter->drawPolyline(m_line);
 	painter->restore();
 
@@ -111,9 +113,9 @@ void EdgeElement::checkConnection()
 		to = dst->type();
 		
 	if ( canBeConnected( type, from, to ) )
-		m_color = Qt::red;
-	else
 		m_color = Qt::black;
+	else
+		m_color = Qt::red;
 
 }
 

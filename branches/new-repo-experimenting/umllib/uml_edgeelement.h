@@ -26,11 +26,12 @@ namespace UML {
 			void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
-
 			void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event );
 
 			virtual void drawStartArrow ( QPainter * ) const = 0;
 			virtual void drawEndArrow ( QPainter * ) const = 0;
+
+			Qt::PenStyle m_penStyle;
 		private:
 			void checkConnection();
 			NodeElement *src, *dst;

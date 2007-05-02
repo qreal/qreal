@@ -1,16 +1,11 @@
 <ui version="4.0" >
  <class>MainWindowUi</class>
  <widget class="QMainWindow" name="MainWindowUi" >
-  <property name="geometry" >
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>576</width>
-    <height>559</height>
-   </rect>
-  </property>
   <property name="windowTitle" >
    <string>unREAL</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="../static.qrc" >:/icons/zoomin.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" />
   <widget class="QMenuBar" name="menubar" >
@@ -18,8 +13,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>576</width>
-     <height>25</height>
+     <width>640</width>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File_2" >
@@ -169,8 +164,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>92</width>
-          <height>223</height>
+          <width>123</width>
+          <height>105</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -182,8 +177,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>92</width>
-          <height>223</height>
+          <width>96</width>
+          <height>26</height>
          </rect>
         </property>
         <attribute name="label" >
@@ -239,9 +234,8 @@
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0" />
- <includes/>
  <resources>
-  <include location="../qtreal.qrc" />
+  <include location="../static.qrc" />
   <include location="../static.qrc" />
  </resources>
  <connections/>

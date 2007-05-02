@@ -38,6 +38,8 @@ MainWindow::MainWindow()
 	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.objectDock->setWidget(ui.objectExplorer);
 
+	ui.paletteDock->setWidget(ui.paletteToolbox);
+
 	show();
 	connectRepo();
 }
