@@ -525,7 +525,9 @@ void Generator::genClasses(){
         out2 << "using namespace UML;\n\n";
 
         out2 << classname << "::" << classname << "()\n";
-        out2 <<   "{\n}\n\n";
+        out2 <<   "{\n"
+                  "\t\tm_penStyle = Qt::SolidLine;\n"
+                  "}\n\n";
         
         out2 << classname << "::~" << classname << "()\n";
         out2 <<   "{\n}\n\n";
@@ -533,8 +535,15 @@ void Generator::genClasses(){
         out2 << "void " << classname << "::drawStartArrow(QPainter *) const\n";
         out2 <<   "{\n}\n\n";
         
-        out2 << "void " << classname << "::drawEndArrow(QPainter *) const\n";
-        out2 <<   "{\n}\n\n";
+        out2 << "void " << classname << "::drawEndArrow(QPainter *painter) const\n";
+        out2 <<   "{\n";
+        out2 <<   "\tQPolygon poly;\n"
+                  "\tpoly << QPoint(0,0) << QPoint(5,10) << QPoint(-5,10);\n"
+                  "\tpainter->setBrush(Qt::white);"
+                  "\tpainter->drawPolygon(poly);\n";
+        out2 <<   "}\n\n";
+
+
  
         f2.close();
     }
