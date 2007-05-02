@@ -1,13 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QtCore/QModelIndex>
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
 
 #include "ui_mainwindow.h"
 
 class RealRepoModel;
+class QSortFilterProxyModel;
 class EditorView;
 
 class MainWindow : public QMainWindow
@@ -24,6 +24,7 @@ public slots:
 
 private:
 	RealRepoModel *model;
+	QSortFilterProxyModel *filterModel;
 	EditorView *view;
 	QSqlDatabase db;
 	

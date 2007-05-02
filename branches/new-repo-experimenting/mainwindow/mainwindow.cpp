@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 
 #include "qsqlconnectiondialog.h"
+#include "categoryfilterproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
 
@@ -36,9 +37,13 @@ MainWindow::MainWindow()
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
-	ui.objectDock->setWidget(ui.objectExplorer);
+	// ui.objectDock->setWidget(ui.objectExplorer);
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
+
+	filterModel = new CategoryFilterProxyModel(this);
+	connect(ui.comboBox, SIGNAL( activated(const QString &) ),
+			filterModel, SLOT( setFilterRegExp(const QString &)));
 
 	show();
 	connectRepo();
@@ -65,6 +70,7 @@ void MainWindow::connectRepo()
 
 	ui.diagramExplorer->setModel(0);
 	ui.objectExplorer->setModel(0);
+	filterModel->setSourceModel(0);
 	if( model )
 		delete model;
 
@@ -92,11 +98,13 @@ void MainWindow::connectRepo()
 */
 	model = new RealRepoModel();
 	
+	filterModel->setSourceModel(model);
+	
 	ui.diagramExplorer->setModel(model);
 	ui.diagramExplorer->setRootIndex(model->index(0,0,QModelIndex()));
 
-	ui.objectExplorer->setModel(model);
-	ui.objectExplorer->setRowHidden(0,QModelIndex(),true);
+	ui.objectExplorer->setModel(filterModel);
+	// ui.objectExplorer->setRowHidden(0,QModelIndex(),true);
 
 	view->mvIface()->setModel(model);
 

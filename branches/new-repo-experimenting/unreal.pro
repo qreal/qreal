@@ -19,8 +19,10 @@ SOURCES	        += dialogs/qsqlconnectiondialog.cpp \
 FORMS           += dialogs/qsqlconnectiondialog.ui
 
 # Mainwindow
-HEADERS		+= mainwindow/mainwindow.h
-SOURCES		+= mainwindow/mainwindow.cpp
+HEADERS		+= mainwindow/mainwindow.h \
+		   mainwindow/categoryfilterproxymodel.h
+SOURCES		+= mainwindow/mainwindow.cpp \
+		   mainwindow/categoryfilterproxymodel.cpp
 FORMS		+= mainwindow/mainwindow.ui
 
 # View
