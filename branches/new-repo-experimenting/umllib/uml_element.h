@@ -16,12 +16,15 @@ namespace UML {
 		virtual void updateData();
 
 		int uuid() const;    
+		int type() const;
 	protected:
 		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 		QPersistentModelIndex dataIndex;
 
 		int m_uuid;
+		int m_type;
+
 		bool moving;
 	};
 };

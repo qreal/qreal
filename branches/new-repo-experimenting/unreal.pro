@@ -14,7 +14,8 @@ SOURCES	        += dialogs/qsqlconnectiondialog.cpp \
 		    repo/realrepomodel.cpp \
 		    repo/realrepoitem.cpp \
 		    repo/realreporoles.cpp \
-		    repo/realreponames.cpp
+		    repo/realreponames.cpp \
+		    repo/edges_stuff.cpp
 FORMS           += dialogs/qsqlconnectiondialog.ui
 
 # Mainwindow

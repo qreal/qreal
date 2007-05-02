@@ -21,8 +21,7 @@ void Element::setIndex(QPersistentModelIndex &index)
 
     // this should probably be here, uuid is too important...
     m_uuid = dataIndex.data(Unreal::IdRole).toInt();
-
-	qDebug() << "uuid is" << m_uuid;
+	m_type = dataIndex.data(Unreal::TypeRole).toInt();
         
     update();
 }
@@ -32,13 +31,13 @@ int Element::uuid() const
     return m_uuid;
 }
 
+int Element::type() const
+{
+	return m_type;
+}
+
 void Element::updateData()
 {
     setToolTip(dataIndex.data(Qt::ToolTipRole).toString());
 }
-/*
-void Element::getProperty( const QString &proprety )
-{
-    
-}
-*/
+

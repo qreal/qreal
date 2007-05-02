@@ -71,7 +71,10 @@ static double lineAngle(const QLineF &line)
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
+	painter->save();
+	painter->setPen(QPen(m_color));
 	painter->drawPolyline(m_line);
+	painter->restore();
 
 	painter->save();
 	painter->translate(m_line[0]);
@@ -92,6 +95,28 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		}
 	}
 }
+
+bool canBeConnected( int linkID, int from, int to );
+
+void EdgeElement::checkConnection()
+{
+	int type = this->type();
+	int from = -1;
+	int to = -1;
+
+	if ( src != 0 )
+		from = src->type();
+
+	if ( dst != 0 )
+		to = dst->type();
+		
+	if ( canBeConnected( type, from, to ) )
+		m_color = Qt::red;
+	else
+		m_color = Qt::black;
+
+}
+
 
 QPainterPath EdgeElement::shape() const
 {
@@ -159,6 +184,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					im->setData(dataIndex, toPort, Unreal::reqeP2N::toRole );
 				}
 				setFlag(ItemIsMovable, false);
+				checkConnection();
 
 				break;
 			}
@@ -166,17 +192,15 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 		if ( !e ) {
 			if ( dragState == 0 ) {
-				if (src) {
+				if (src)
 					src->delEdge(this);
-				}
 				src = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 				im->setData(dataIndex, "0:0", Unreal::reqeP2N::fromRole );
 			} else if ( dragState == m_line.size()-1 ) {
-				if (dst) {
+				if (dst)
 					dst->delEdge(this);
-				}
 				dst = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
@@ -184,6 +208,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 			if ( ! src && ! dst )
 				setFlag(ItemIsMovable, true);
+			checkConnection();
 		}
 
 		dragState = -1;
@@ -297,7 +322,6 @@ void EdgeElement::updateData()
 		int x = dataIndex.sibling(myrow,4).data().toInt();
 		int y = dataIndex.sibling(myrow,5).data().toInt();
 		setPos(x,y);
-
 	} else {
 		setFlag(ItemIsMovable, false );
 	}

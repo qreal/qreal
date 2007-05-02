@@ -32,14 +32,15 @@ namespace UML {
 			virtual void drawStartArrow ( QPainter * ) const = 0;
 			virtual void drawEndArrow ( QPainter * ) const = 0;
 		private:
+			void checkConnection();
 			NodeElement *src, *dst;
 			//	QPointF srcPoint, dstPoint;
 
 			int dragState;
-
 			int portFrom, portTo;
 
 			QPolygonF m_line;
+			QColor m_color;
 	};
 };
 
