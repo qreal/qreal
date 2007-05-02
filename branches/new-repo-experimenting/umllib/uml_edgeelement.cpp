@@ -36,14 +36,13 @@ static double TwoPi = 2.0 * Pi;
 
 
 EdgeElement::EdgeElement()
-	: src(0), dst(0), portFrom(0), portTo(0)
+	: src(0), dst(0), portFrom(0), portTo(0),
+	  m_penStyle(Qt::SolidLine), dragState(-1)
 {
-	dragState = -1;
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 
 	m_line << QPointF(-50,-10) << QPointF(50,10);
-	m_penStyle = Qt::DashLine;
 }
 
 EdgeElement::~EdgeElement()
@@ -57,7 +56,6 @@ EdgeElement::~EdgeElement()
 QRectF EdgeElement::boundingRect() const
 {
 //	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
-
 	return m_line.boundingRect().adjusted(-20,-20,20,20);
 }
 
@@ -73,8 +71,10 @@ static double lineAngle(const QLineF &line)
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	painter->save();
-	painter->setPen(m_color);
-	painter->setPen(m_penStyle);
+	QPen pen = painter->pen();
+	pen.setColor(m_color);
+	pen.setStyle(m_penStyle);
+	painter->setPen(pen);
 	painter->drawPolyline(m_line);
 	painter->restore();
 
@@ -118,7 +118,6 @@ void EdgeElement::checkConnection()
 		m_color = Qt::red;
 
 }
-
 
 QPainterPath EdgeElement::shape() const
 {
