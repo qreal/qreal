@@ -58,7 +58,7 @@
 			<logic>
 				<generalizations>
 					<generalization>
-						<parent parent_id="krnnElement" />
+						<parent parent_id="krnnNamedElement" />
 					</generalization>
 				</generalizations>
 			</logic>
