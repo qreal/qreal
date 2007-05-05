@@ -21,15 +21,18 @@ private:
 
     static const int NUM = 12;
 
+    int untitled;
+
     void parseFile( QString );
     void parseEnum( QDomNode );
     void parseNode( QDomNode );
     void parseEdge( QDomNode );
     
-    void parseGeneralizations( Entity*, QDomNode );
-    void parseProperties     ( Entity*, QDomNode );
-    void parseAssociations   ( Entity*, QDomNode );
-    void parseSVG            ( Entity*, QDomNode );
+    void parseGeneralizations ( Entity*, QDomNode );
+    void parseProperties      ( Entity*, QDomNode );
+    void parseAssociations    ( Entity*, QDomNode, bool isNode = false );
+    //void parseNodeAssociations( Entity*, QDomNode );
+    void parseSVG             ( Entity*, QDomNode );
 
     void genEnums();
     void genSQLScripts();

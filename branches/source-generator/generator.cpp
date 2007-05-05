@@ -6,6 +6,8 @@ Generator::Generator( QStringList files ){
     resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
     res = "\t<file>%1</file>\n";
 
+    untitled = 0;
+
     // creating directory for generated stuff
     dir.cd(".");
     dir.mkdir("generated");
@@ -58,7 +60,6 @@ void Generator::parseFile( QString filename ){
         return;
     }
     file.close();
-
     // I. parsing enums
     QDomNodeList enumList = doc->elementsByTagName("enumType"); 
     for( int i=0; i < (int) enumList.length(); i++){
@@ -82,8 +83,10 @@ void Generator::parseEnum( QDomNode dnode ){
     
     QDomElement cur = dnode.toElement();
     QStringList values;
-    QString name = cur.attribute("id");
+    QString name  = cur.attribute("id");
+    QString qname = cur.attribute("name");
     QDomNodeList vals = cur.elementsByTagName("enumValue");
+    values << qname;
     for( int k = 0; k < (int) vals.length(); k++ )
         values << vals.at(k).toElement().text();
     enumerations.insert(name, values);
@@ -94,12 +97,13 @@ void Generator::parseNode( QDomNode dnode ){
 
     Node *cur = new Node();
     cur->id  = dnode.toElement().attribute("id");
+    cur->name = dnode.toElement().attribute("name");
     QDomElement logic = dnode.firstChildElement("logic");
+    bool isNode = true;
     
     parseGeneralizations( cur, logic );
     parseProperties( cur, logic );
-    // TODO: uncomment
-    // parseAssociations( cur, logic );
+    parseAssociations( cur, logic, isNode);
     parseSVG( cur, dnode ); 
 
     cur->type = NODE;
@@ -111,7 +115,9 @@ void Generator::parseEdge( QDomNode dnode ){
 
     Edge *cur = new Edge();
     cur->id  = dnode.toElement().attribute("id");
+    cur->name = dnode.toElement().attribute("name");
     QDomElement logic = dnode.firstChildElement("logic");
+    bool isNode = false;
     
     // quick hack to make these props be on top
     cur->properties << QPair<QString, QString>("from", "string");
@@ -121,7 +127,7 @@ void Generator::parseEdge( QDomNode dnode ){
 
     parseGeneralizations( cur, logic ); 
     parseProperties( cur, logic );
-    parseAssociations( cur, logic );
+    parseAssociations( cur, logic, isNode );
 
     cur->height = -1;
     cur->width = -1;
@@ -195,10 +201,23 @@ void Generator::parseSVG( Entity* cur, QDomNode dnode ){
     }    
 }
 
-void Generator::parseAssociations( Entity *cur, QDomNode logic ){
-
-    Edge* edge = (Edge*) cur;
+void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
+    
+    Edge* edge;
     QDomNodeList assocs = logic.toElement().elementsByTagName("association");
+    if( assocs.size() == 0 )
+        return;
+    if( isNode ){
+        edge = new Edge();
+        edge->id = QString("untitledEdge_%1").arg(untitled);
+        edge->name = QString("untitled edge #%1").arg(untitled);
+        untitled++;
+        edge->height = -1;
+        edge->width = -1;
+        edge->type = EDGE;
+    }    
+    else
+        edge = (Edge*) cur;
     //TODO: multiple associations support
     Association* ass = new Association();
     for( int i=0; i < assocs.size(); i++){  
@@ -215,6 +234,10 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic ){
         }   
     }
     edge->associations << ass;
+    if( isNode ){
+        objects << edge;
+        edges << edge;
+    }
 }
 
 

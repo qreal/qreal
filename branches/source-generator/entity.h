@@ -23,6 +23,7 @@ public:
     int width;
 
     QString id;
+    QString name;
     QStringList parents;
 
     QList< QPair<QString, QString> > properties;
