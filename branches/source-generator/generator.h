@@ -19,7 +19,7 @@ public:
 
 private:
 
-    static const int NUM = 12;
+    static const int NUM = 1;
 
     int untitled;
 

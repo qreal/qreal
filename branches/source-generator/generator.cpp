@@ -210,7 +210,7 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
     if( isNode ){
         edge = new Edge();
         edge->id = QString("untitledEdge_%1").arg(untitled);
-        edge->name = QString("untitled edge #%1").arg(untitled);
+        edge->name = QString("embedded edge #%1").arg(untitled);
         untitled++;
         edge->height = -1;
         edge->width = -1;
@@ -312,38 +312,43 @@ void Generator::genSQLScripts()
    
     resources += res.arg("repo/scripts.sql");
    
-    out << "drop database unreal2;\ncreate database unreal2;\nuse unreal2;\n";
-
-    out <<  "CREATE TABLE `max_uuid` ( `id` mediumint  NOT NULL );\n\n"
-            "INSERT INTO `max_uuid` VALUES (100);\n\n"
-            "DELIMITER ;;\n\n"
-            "CREATE FUNCTION get_id() RETURNS mediumint\n"
-            "BEGIN\n"
-            "\tDECLARE x mediumint;\n"
-            "\tUPDATE max_uuid SET id=id+1;\n"
-            "\tSELECT id FROM max_uuid INTO x;\n"
-            "\tRETURN x;\n"
-            "END;\n"
-            ";;\n\n"
-            "DELIMITER ;\n\n";
-
-    QString ins = "INSERT INTO `el_0` (id, name) VALUES (%1, '%2');\n";
+    out << "CREATE TABLE nametable (\n"
+            "\tid MEDIUMINT NOT NULL,\n"
+            "\ttype MEDIUMINT NOT NULL,\n"
+            "\tname VARCHAR(255),\n"
+            "\tqualifiedName VARCHAR(255)\n"
+            ");\n\n"
+            "CREATE TABLE metatable (\n"
+            "\tid MEDIUMINT NOT NULL,\n"
+            "\tname VARCHAR(255),\n"
+            "\tqualifiedName VARCHAR(255)\n"
+            ");\n\n"
+            "CREATE TABLE diagram (\n"
+            "\tdiagram_id MEDIUMINT NOT NULL,\n"
+            "\tel_id MEDIUMINT NOT NULL,\n"
+            "\tx MEDIUMINT,\n"
+            "\ty MEDIUMINT\n"
+            ");\n\n";
+                                 
+    QString ins = "INSERT INTO `metatable` (id, name, qualifiedName) VALUES (%1, '%2', '%3');\n";
     QString inserts = "";
     
-    inserts += ins.arg(10).arg("Diagram");
+//    inserts += ins.arg(10).arg("Diagram");
     
     for (int i=0; i<objects.size(); i++){
         int j = i+NUM;
-        inserts += ins.arg(j).arg(objects.at(i)->id);
+        inserts += ins.arg(j).arg(objects.at(i)->id).arg(objects.at(i)->name);
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
                 "\t`id` mediumint NOT NULL";
-                //"\t'name' VARCHAR2(100) NOT NULL\n";
         for (int k=0; k<objects.at(i)->properties.size(); k++){
             QString cortege = ",\n\t`%1` %2";
             QString name = objects.at(i)->properties.at(k).first;
             QString type = objects.at(i)->properties.at(k).second;
-
+            
+            if( name == "name")
+                continue;
+            
             //TODO: bool and other types support
             if (type == "string" || type.contains("enum"))
                 type = "VARCHAR(100)";
@@ -356,8 +361,8 @@ void Generator::genSQLScripts()
         out << ");\n\n";    
     }
     
-    out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
-    out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    //out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    //out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
     //inserts += ";";
 
     out << inserts;
