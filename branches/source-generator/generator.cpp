@@ -312,6 +312,8 @@ void Generator::genSQLScripts()
    
     resources += res.arg("repo/scripts.sql");
    
+    out << "drop database unreal2;\ncreate database unreal2;\nuse unreal2;\n\n";
+
     out << "CREATE TABLE nametable (\n"
             "\tid MEDIUMINT NOT NULL,\n"
             "\ttype MEDIUMINT NOT NULL,\n"
@@ -352,8 +354,16 @@ void Generator::genSQLScripts()
             //TODO: bool and other types support
             if (type == "string" || type.contains("enum"))
                 type = "VARCHAR(100)";
-            else 
+            else if (type == "int")
+                type = "INTEGER";
+            else if (type == "positiveInt" || type == "nonNegativeInt")
+                type = "INTEGER UNSIGNED";
+            else if (type == "bool" )    
+                type = "BOOL";
+            else if (type == "text" )    
                 type = "VARCHAR(1000)";
+            else 
+                type = "INTEGER";
             
             out << cortege.arg(name).arg(type);
            // out << "\n";
