@@ -6,6 +6,10 @@ void Entity::addParent( QString id ){
         parents << id;
 }
 
+void Entity::addChild( QString id ){
+    if( !children.contains(id) )
+        children << id;
+}
 
 void Entity::addProperty( QString name, QString type ){
 
@@ -19,8 +23,8 @@ void Edge::addAssociation( Association* ass){
 
     bool found = false;
     for( int i=0; i< associations.size(); i++)
-        if( ( associations.at(i)->fromID == ass->fromID ) && ( associations.at(i)->toID == ass->toID ) )
+        if( ( associations.at(i)->from == ass->from ) && ( associations.at(i)->to == ass->to ) )
             found = true;
     if( !found )
-        associations << ass;
+        associations.push_back(ass);
 }

@@ -4,7 +4,7 @@
 #include <QStringList>
 #include <QList>
 #include <QPair>
-
+#include <QDebug>
 
 enum elementsType { NODE, EDGE };
 
@@ -17,6 +17,7 @@ public:
     Entity(){ propsPropagated = false; }
 
     void addParent( QString );
+    void addChild( QString);
     void addProperty( QString, QString );
 
     int height; 
@@ -25,6 +26,7 @@ public:
     QString id;
     QString name;
     QStringList parents;
+    QStringList children;
 
     QList< QPair<QString, QString> > properties;
 
@@ -59,6 +61,10 @@ public:
     Edge(){
         assocsPropagated = false;
         endsPropagated   = false;
+    }
+    ~Edge(){
+        for( int i=0; i<associations.size(); i++)   
+            delete associations.at(i);
     }
 
     void addAssociation( Association* );
