@@ -24,12 +24,12 @@ namespace UML {
 
 	const QPointF getPort(int i) const;
 	int getNearestPort(const QPointF location) const;
+	bool isChildOf(int id){ return parentsList.contains(id); }
 
    protected:
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 
-	bool isChildOf(int id){ return parentsList.contains(id); }
     QList<int> parentsList;
 
 	QList<QPointF> ports;
