@@ -1,6 +1,6 @@
 #!/bin/sh
 
-WD=../unreal-tim
+WD=../source-generator
 GEN=$WD/generated
 
 pushd $WD
@@ -14,7 +14,6 @@ cp -rf $GEN/umllib/generated/* umllib/generated
 
 cp -rf $GEN/umllib/uml_guiobjectfactory.cpp umllib/
 
-cp -rf $GEN/umllib/edges_stuff.cpp repo/
 cp -rf $GEN/repo/* repo/
 
 rm -rf shapes
