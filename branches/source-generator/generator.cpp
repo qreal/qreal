@@ -331,15 +331,34 @@ void Generator::genSQLScripts()
             "\tx MEDIUMINT,\n"
             "\ty MEDIUMINT\n"
             ");\n\n";
-                                 
+    //TODO: remove
+        out <<  "CREATE TABLE `max_uuid` ( `id` mediumint  NOT NULL );\n\n"
+                "INSERT INTO `max_uuid` VALUES (100);\n\n"
+                "DELIMITER ;;\n\n"
+                "CREATE FUNCTION get_id() RETURNS mediumint\n"
+                "BEGIN\n"
+                "\tDECLARE x mediumint;\n"
+                "\tUPDATE max_uuid SET id=id+1;\n"
+                "\tSELECT id FROM max_uuid INTO x;\n"
+                "\tRETURN x;\n"
+                "END;\n"
+                ";;\n\n"
+                "DELIMITER ;\n\n";
+                                                                                                                                            
     QString ins = "INSERT INTO `metatable` (id, name, qualifiedName) VALUES (%1, '%2', '%3');\n";
+    QString ins2 = "INSERT INTO `el_0` (id, name) VALUES (%1, '%2');\n"; //TODO: remove
+
     QString inserts = "";
+    
+    inserts += ins2.arg(10).arg("Diagram");
     
 //    inserts += ins.arg(10).arg("Diagram");
     
     for (int i=0; i<objects.size(); i++){
         int j = i+NUM;
         inserts += ins.arg(j).arg(objects.at(i)->id).arg(objects.at(i)->name);
+        inserts += ins2.arg(j).arg(objects.at(i)->id);
+                
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
                 "\t`id` mediumint NOT NULL";
@@ -348,8 +367,8 @@ void Generator::genSQLScripts()
             QString name = objects.at(i)->properties.at(k).first;
             QString type = objects.at(i)->properties.at(k).second;
             
-            if( name == "name")
-                continue;
+//            if( name == "name")
+  //              continue;
             
             //TODO: bool and other types support
             if (type == "string" || type.contains("enum"))
@@ -370,9 +389,9 @@ void Generator::genSQLScripts()
         }        
         out << ");\n\n";    
     }
-    
-    //out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
-    //out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    //TODO: remove
+    out << "CREATE TABLE `el_0` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
+    out << "CREATE TABLE `el_10` (`id` mediumint NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (id));\n";
     //inserts += ";";
 
     out << inserts;
@@ -419,10 +438,10 @@ void Generator::genClasses(){
 
         int height = objects.at(i)->height;
         int width  = objects.at(i)->width;
-
+/*
         if ( height == -1 && width == -1 )
             continue;
-
+*/
         QString classname = objects.at(i)->id + "Class";
         // 
         // 1. CPP-file
@@ -440,8 +459,8 @@ void Generator::genClasses(){
     
         out << "#include <QtGui>\n\n";
         out << QString("#include \"" + classname + ".h\"\n\n");
-	out << "using namespace UML;\n\n\n";
-        
+	    out << "using namespace UML;\n\n\n";
+       
         //constructor
         out << classname << "::" << classname << "()\n";
         out <<   "{\n";
@@ -451,8 +470,13 @@ void Generator::genClasses(){
                             QString("QPointF(%1, %2)").arg(4*height/3).arg(2*width/3) << ";\n";
 
 	    out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
-        out << "\ttext = \"\";";
-        out << "}\n\n";
+        out << "\ttext = \"\";\n";
+        if( objects.at(i)->parents.size() > 0)
+            out << "\tparentsList";
+        for( int j=0;j<objects.at(i)->parents.size(); j++ ){
+            out << QString("  << %1").arg(position(objects.at(i)->parents.at(j)) + NUM);
+        }    
+        out << ";\n}\n\n";
 
 	    //destructor
 	    out << classname << "::~" << classname << "()\n";
@@ -497,7 +521,7 @@ void Generator::genClasses(){
 
         out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
         out2 << "#include \"uml_nodeelement.h\"\n";
-        out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n";
+        out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n#include <QList>\n\n";
 
         out2 << "namespace UML {\n";
         out2 << "class " << classname << " : public NodeElement{\n";
@@ -506,10 +530,10 @@ void Generator::genClasses(){
         out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
                 "\tvirtual QRectF boundingRect() const;\n"
                 "\tvirtual QRectF contentsRect() const;\n"
-                "\tvirtual void updateData();\n"
-		"private:\n"
-        "\tQString text;\n"
-		"\tQSvgRenderer renderer;\n";
+                "\tvirtual void updateData();\n\n"
+		        "private:\n"
+                "\tQString text;\n"
+		        "\tQSvgRenderer renderer;\n";
         
         out2 << "\t};\n};\n\n#endif\n";
         file2.close();
@@ -534,7 +558,7 @@ void Generator::genClasses(){
         
         out << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
         out << "#include \"uml_edgeelement.h\"\n";
-        out << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n";
+        out << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n#include <QList>\n\n";
 
         out << "namespace UML {\n";
         out << "\tclass " << classname << " : public EdgeElement{\n";
@@ -563,9 +587,7 @@ void Generator::genClasses(){
         out2 << "using namespace UML;\n\n";
 
         out2 << classname << "::" << classname << "()\n";
-        out2 <<   "{\n"
-                  "\t\tm_penStyle = Qt::SolidLine;\n"
-                  "}\n\n";
+        out2 <<   "{\n}\n\n";
         
         out2 << classname << "::~" << classname << "()\n";
         out2 <<   "{\n}\n\n";
@@ -573,15 +595,8 @@ void Generator::genClasses(){
         out2 << "void " << classname << "::drawStartArrow(QPainter *) const\n";
         out2 <<   "{\n}\n\n";
         
-        out2 << "void " << classname << "::drawEndArrow(QPainter *painter) const\n";
-        out2 <<   "{\n";
-        out2 <<   "\tQPolygon poly;\n"
-                  "\tpoly << QPoint(0,0) << QPoint(5,10) << QPoint(-5,10);\n"
-                  "\tpainter->setBrush(Qt::white);"
-                  "\tpainter->drawPolygon(poly);\n";
-        out2 <<   "}\n\n";
-
-
+        out2 << "void " << classname << "::drawEndArrow(QPainter *) const\n";
+        out2 <<   "{\n}\n\n";
  
         f2.close();
     }
@@ -600,28 +615,30 @@ void Generator::genClasses(){
     
     for (int i=0; i < objects.size(); i++){
 
-        int height = objects.at(i)->height;
-        int width  = objects.at(i)->width;
+    //    int height = objects.at(i)->height;
+    //    int width  = objects.at(i)->width;
 
-        if ( height == -1 && width == -1 )
-            continue;
+ //       if ( height == -1 && width == -1 )
+   //         continue;
         
         headers += " \\ \n\t" + prefix + objects.at(i)->id + "Class.h";
         sources += " \\ \n\t" + prefix + objects.at(i)->id + "Class.cpp";
 
 
     }        
-
+/*
     for ( int i=0; i < edges.size(); i++){
     
         headers += " \\ \n\t" + prefix + edges.at(i)->id + "Class.h";
         sources += " \\ \n\t" + prefix + edges.at(i)->id + "Class.cpp";
     }
-
+*/
     out << headers << "\n\n";
     out << sources << "\n";
     file.close();
 }
+
+
 
 void Generator::genFactory()
 {
@@ -698,15 +715,44 @@ int Generator::position( QString id ){
 
 void Generator::genEdgesFunction(){
 
-    QFile file("generated/umllib/edges_stuff.cpp");
+    QFile file("generated/repo/edges_stuff.cpp");
     if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
         return;
     QTextStream out(&file);
     
     out <<  "#include <QMap>\n#include <QHash>\n#include <QDebug>\n\n"
-            "bool canBeConnected( int linkID, int from, int to ){\n"
-            "\tQMap< int, QHash< int, int > > edges;\n"
-            "\tQHash< int, int> hash;\n\n";
+            "#include \"uml_nodeelement.h\"\n";
+    QString cases = "";
+    QString singleCase = "\t\tcase %1: return check(pars, new %2()); break;\n";
+
+    for( int i=0; i<objects.size(); i++)
+        if( objects.at(i)->type == NODE){
+            out << "#include \"" + objects.at(i)->id + "Class.h\"\n";
+            cases += singleCase.arg(i+NUM).arg(objects.at(i)->id + "Class");
+        }
+    out << "\n";       
+    out <<  "const int ANY = -1;\n"
+            "const int NONE = 0;\n\n";
+
+    out << "using namespace UML;\n";        
+
+    out << "int check(QList<int> pars, NodeElement* el){\n"
+           "\tfor( int i=0; i<pars.size(); i++)\n"
+           "\t\tif( el->isChildOf(pars.at(i)) ){\n"
+           "\t\t\treturn pars.at(i);\t\t\n\t}\n\n"
+           "\treturn NONE;\n}\n\n";
+
+    out << "int checkParents(QList<int> pars, int id){\n"
+           "\tswitch(id){\n"
+           "\t\tcase -1: return -1; break;\n";
+    out << cases;                        
+    out << "\t\tdefault: return NONE; break;\n\t}\n\n";
+    out << "}\n\n";
+
+
+    out << "bool canBeConnected( int linkID, int from, int to ){\n"
+           "\tQMap< int, QHash< int, int > > edges;\n"
+           "\tQHash< int, int> hash;\n\n";
     
     for( int i=0; i<(int) objects.size(); i++){
         if( objects.at(i)->type == EDGE ){
@@ -720,15 +766,33 @@ void Generator::genEdgesFunction(){
                  if( to != -1)
                     to += 12;
                 out << QString("\thash.insertMulti(%1, %2);\n").arg(from).arg(to); 
-                out << QString("\thash.insertMulti(%1, -1);\n").arg(from); 
-                out << QString("\thash.insertMulti(-1, %1);\n").arg(to); 
-                out << QString("\thash.insertMulti(-1, -1);\n"); 
                 out << QString("\tedges.insert(%1, hash);\n\n").arg(i+NUM);
             }
         }
     } 
-    
-    out << "\treturn edges.value(linkID).values(from).contains(to);\n";
+     
+    out << "\tif( from == ANY && to == ANY )\n"
+           "\t\treturn true; // (-1, -1)\n\n"
+           "\tQHash<int, int> h;\n"
+           "\tbool res;\n"
+           "\tint fromID = NONE;\n"
+           "\tint toID = NONE;\n"
+           "\th = edges.value(linkID);\n\n"
+           "\tif( h.keys().contains(from) )\n"
+           "\t\tfromID = from;\n"
+           "\telse\n"
+           "\t\ttoID = checkParents(h.keys(), to);\n\n"
+           "\tif( h.values().contains(to) )\n"
+           "\t\ttoID = to;\n"
+           "\telse\n"
+           "\t\ttoID = checkParents(h.values(), to);\n\n"
+           "\tif( fromID == ANY && toID != NONE)\n"
+           "\t\treturn h.values().contains(toID);\n\n"
+           "\tif( toID == ANY && fromID != NONE)\n"
+           "\t\treturn h.keys().contains(fromID);\n\n"
+           "\tres = h.values(fromID).contains(toID);\n\n"
+           "\treturn res;\n";
+                                                                                                                    
     out << "};\n";
 
     file.close();
@@ -756,7 +820,16 @@ void Generator::propagateAll(){
             propagateProperties( objects.at(i) );
     }
 
-    // do not needed right now
+    for( int i=0; i< (int) objects.size(); i++ ){
+        if( !objects.at(i)->parentsPropagated )
+            propagateParents(objects.at(i));
+    }
+
+    for( int i=0; i< (int) objects.size(); i++ ){
+        qDebug() << i + NUM << objects.at(i)->id << objects.at(i)->parents;
+    }
+
+    // is not needed right now
 /*    
     // propagating edges' stuff    
     for( int i=0; i < (int) edges.size(); i++ ){
@@ -768,6 +841,36 @@ void Generator::propagateAll(){
   
 }
 
+void Generator::propagateParents( Entity* cur ){
+
+    for( int j=0; j < cur->parents.size(); j++ ){
+        Entity* par = find(cur->parents.at(j));
+        if( !par ){
+            cur->parentsPropagated = true;
+            return;
+        }
+        cur->addParent(par->id);
+        if ( !par->parentsPropagated )
+            propagateParents( par );
+        for( int i=0; i<par->parents.size(); i++)
+            cur->addParent(par->parents.at(i));
+    }
+    cur->parentsPropagated = true;
+   
+}
+
+/*
+void Generator::findChildren(Entity* cur, QString id){
+    for( int i=0; i<(int) cur->parents.size(); i++ ){
+        Entity* par = find(cur->parents.at(i));
+        par->addChild(cur->id);
+        for( int ch=0; ch<cur->children.size(); ch++ )
+            par->addChild(cur->children.at(ch));
+        findParents(par, id);
+
+    }
+}
+*/
 void Generator::propagateProperties( Entity* cur ){
    
     for( int j=0; j < cur->parents.size(); j++ ){

@@ -19,7 +19,7 @@ public:
 
 private:
 
-    static const int NUM = 1;
+    static const int NUM = 12;
 
     int untitled;
 
@@ -44,8 +44,11 @@ private:
     void propagateAll();
     void propagateProperties( Entity* );
     void propagateAssocs( Edge* );
+    void propagateParents( Entity* );
+//    void findChildren( Entity*, QString );
 
     int position( QString );
+    
 
     Entity* find( QString id );
     Edge* findEdge( QString id );

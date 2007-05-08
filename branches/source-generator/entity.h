@@ -33,6 +33,7 @@ public:
     elementsType type;
 
     bool propsPropagated;
+    bool parentsPropagated;
 };
 
 // node class
