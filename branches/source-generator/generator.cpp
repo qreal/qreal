@@ -752,7 +752,7 @@ void Generator::genEdgesFunction(){
            "\tif( h.keys().contains(from) )\n"
            "\t\tfromID = from;\n"
            "\telse\n"
-           "\t\ttoID = checkParents(h.keys(), to);\n\n"
+           "\t\tfromID = checkParents(h.keys(), from);\n\n"
            "\tif( h.values().contains(to) )\n"
            "\t\ttoID = to;\n"
            "\telse\n"
