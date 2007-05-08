@@ -29,6 +29,9 @@ namespace UML {
         void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 
+	bool isChildOf(int id){ return parentsList.contains(id); }
+    QList<int> parentsList;
+
 	QList<QPointF> ports;
 
     private:
