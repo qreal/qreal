@@ -7,6 +7,7 @@ Generator::Generator( QStringList files ){
     res = "\t<file>%1</file>\n";
 
     untitled = 0;
+    objectsCount = 0;
 
     // creating directory for generated stuff
     dir.cd(".");
@@ -16,7 +17,7 @@ Generator::Generator( QStringList files ){
     for (int i=0; i<files.size(); i++){
         qDebug() << "processing file " << files.at(i);
         parseFile(files.at(i));
-    }  
+    } 
     // propagate properties and other useful things
     propagateAll();
 
@@ -26,6 +27,7 @@ Generator::Generator( QStringList files ){
     genMappings();
     genClasses();
     genFactory();
+    genRealRepoInfo();
     genEdgesFunction();
 
     // write the resource file
@@ -60,6 +62,11 @@ void Generator::parseFile( QString filename ){
         return;
     }
     file.close();
+
+    Category* cat = new Category();
+    cat->name = doc->elementsByTagName("diagram").at(0).toElement().attribute("name");
+    categories << cat;
+
     // I. parsing enums
     QDomNodeList enumList = doc->elementsByTagName("enumType"); 
     for( int i=0; i < (int) enumList.length(); i++){
@@ -77,6 +84,7 @@ void Generator::parseFile( QString filename ){
     for( int i=0; i < (int) edgeList.length(); i++ ){
         parseEdge( edgeList.at(i) );
     }
+
 }
 
 void Generator::parseEnum( QDomNode dnode ){
@@ -108,7 +116,7 @@ void Generator::parseNode( QDomNode dnode ){
 
     cur->type = NODE;
     objects << cur;
-
+    categories.at(categories.size()-1)->objects << objectsCount++;    
 }
 
 void Generator::parseEdge( QDomNode dnode ){
@@ -135,6 +143,7 @@ void Generator::parseEdge( QDomNode dnode ){
     edges << cur;    
     objects << cur;  
 
+    categories.at(categories.size()-1)->objects << objectsCount++;    
 }
 
 void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
@@ -634,20 +643,6 @@ void Generator::genFactory()
         int height = objects.at(i)->height;
         int width  = objects.at(i)->width;
 
-        if ( height == -1 && width == -1 ){
-            continue;
-        }    
-    	out << QString("#include \"%1Class.h\"\n").arg(objects.at(i)->id);
-
-    }
-
-    for (int i=0; i<edges.size(); i++)
-        out << QString("#include \"%1Class.h\"\n").arg(edges.at(i)->id);
-
-    for (int i=0; i<objects.size(); i++){
-        int height = objects.at(i)->height;
-        int width  = objects.at(i)->width;
-
         if ( height == -1 && width == -1 )
             continue;
         classes += tmp.arg(objects.at(i)->id).arg(objects.at(i)->id + "Class") ;
@@ -683,6 +678,82 @@ int Generator::position( QString id ){
     
 }
 
+void Generator::genRealRepoInfo(){
+
+    QFile file("generated/repo/realrepoinfo.h");
+    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+        return;
+    QTextStream out(&file);
+
+    out << "#include <QStringList>\n\n";
+
+    out << "class Category{\n"
+            "\tpublic:\n"
+            "\t\tQString name;\n"
+            "\tQList<int> objects;\n};\n\n";
+
+    out <<  "class RealRepoInfo\n{"
+            "public:\n"
+            "\tRealRepoInfo();\n"
+            "\t~RealRepoInfo();\n"
+            "\tQStringList getObjectCategories() const;\n"
+            "\tQList<int> getObjects(int category) const;\n"
+            "\tQString objectName(int id) const;\n\n"
+            "private:\n"
+            "\tQList< Category > categories;\n"
+            "\tQList< QString > objects;\n"
+            "\tQStringList m_categories;\n};\n";
+   
+    file.close();
+
+    QFile file2("generated/repo/realrepoinfo.cpp");
+    if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
+        return;
+    QTextStream out2(&file2);
+
+    // constructor
+    out2 << "#include \"realrepoinfo.h\"\n";
+    out2 << "RealRepoInfo::RealRepoInfo(){\n\n"
+            "\tCategory cat;\n\n";
+    for( int i=0; i<categories.size(); i++){
+        out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
+        if( categories.at(i)->objects.size() > 0 )
+            out2 << QString("\tcat.objects ");
+        for( int j=0; j<categories.at(i)->objects.size(); j++)
+            out2 << QString(" << %1").arg(categories.at(i)->objects.at(j));
+        out2 << "\t;\n";    
+        out2 << "\tcategories << cat;\n\n";
+    }
+    if( objects.size() > 0 )
+        out2 << "objects ";
+    for( int i=0; i<objects.size(); i++ ){
+        out2 << QString(" << \"%1\"").arg(objects.at(i)->name);
+    }
+
+    out2 << ";\n\n}\n\n";
+
+    // destructor
+    out2 << "RealRepoInfo::~RealRepoInfo(){}\n\n";
+
+    // getObjectCategories
+    out2 << "\tQStringList RealRepoInfo::getObjectCategories() const {\n\n"
+            "\tQStringList l;\n"
+            "\tfor( int i=0; i<categories.size(); i++)\n"
+            "\t\tl << categories.at(i).name;\n"
+            "\treturn l;\n}\n\n";
+
+    // getObjects
+    out2 << "QList<int> RealRepoInfo::getObjects(int category) const{\n"
+            "\treturn categories.at(category).objects;\n}\n\n";
+
+    // objectName
+    out2 << "QString RealRepoInfo::objectName( int id ) const {\n"
+            "\treturn objects.at(id);\n}\n\n";
+            
+    file2.close();
+}
+
+
 void Generator::genEdgesFunction(){
 
     QFile file("generated/repo/edges_stuff.cpp");
@@ -698,7 +769,6 @@ void Generator::genEdgesFunction(){
 
     for( int i=0; i<objects.size(); i++)
         if( objects.at(i)->type == NODE){
-            out << "#include \"" + objects.at(i)->id + "Class.h\"\n";
             cases += singleCase.arg(i+NUM).arg(objects.at(i)->id + "Class");
         }
     out << "\n";       

@@ -10,6 +10,8 @@
 
 #include "entity.h"
 
+class Category;
+
 // the generator itself
 class Generator
 {
@@ -22,6 +24,7 @@ private:
     static const int NUM = 12;
 
     int untitled;
+    int objectsCount;
 
     void parseFile( QString );
     void parseEnum( QDomNode );
@@ -39,6 +42,7 @@ private:
     void genMappings();
     void genClasses();
     void genFactory();
+    void genRealRepoInfo();
     void genEdgesFunction();
 
     void propagateAll();
@@ -55,13 +59,21 @@ private:
 
     QList< Entity* > objects; 
     QList< Edge* > edges;
-    
+
+    QList < Category* > categories;
+
     QMap<QString, QStringList> enumerations;
 
     QString res;
     QString resources;
 
     QDir dir;
+};
+
+class Category{
+public:
+    QString name;
+    QList<int> objects;
 };
 
 #endif
