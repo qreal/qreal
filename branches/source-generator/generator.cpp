@@ -471,8 +471,6 @@ void Generator::genClasses(){
 
     for (int i=0; i < objects.size(); i++){
 
-        int height = objects.at(i)->height;
-        int width  = objects.at(i)->width;
         QString classname = objects.at(i)->id + "Class";
 
         if( objects.at(i)->type == EDGE )
@@ -481,23 +479,26 @@ void Generator::genClasses(){
         // 
         // 1. CPP-file
         //
-       
+        
+        out << "// " << classname << "\n";
+
         //constructor
         out << classname << "::" << classname << "()\n";
         out <<   "{\n";
-        out << "\tports << " << QString("QPointF(%1, %2)").arg(2*height/3).arg(0) << " << " <<
-                            QString("QPointF(%1, %2)").arg(2*height/3).arg(4*width/3) << " << " <<
-                            QString("QPointF(%1, %2)").arg(0).arg(2*width/3) << " << " <<
-                            QString("QPointF(%1, %2)").arg(4*height/3).arg(2*width/3) << ";\n";
-
-	    out << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") ;
-        out << "\ttext = \"\";\n";
+	    
+        out << "\tupdatePorts();\n"
+            << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") 
+            << "\ttext = \"\";\n";
         if( objects.at(i)->parents.size() > 0)
             out << "\tparentsList";
         for( int j=0;j<objects.at(i)->parents.size(); j++ ){
             out << QString("  << %1").arg(position(objects.at(i)->parents.at(j)) + NUM);
         }    
-        out << ";\n}\n\n";
+        out << ";\n";
+        out << QString("\theight = %1;\n").arg(objects.at(i)->height)
+            << QString("\twidth = %1;\n").arg(objects.at(i)->width)
+            << QString("\ttextSize = 0;\n")
+            << "}\n\n";
 
 	    //destructor
 	    out << classname << "::~" << classname << "()\n";
@@ -507,28 +508,44 @@ void Generator::genClasses(){
         //paint
         out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                                                                                 "QWidget *widget)\n{\n";
-        out <<QString("\trenderer.render(painter, QRectF(%1, %2, %3, %4));\n").arg(5).arg(height/2).arg(height).arg(width);
-        out << "\n\tQTextDocument d;\n\td.setHtml(text);\n"
-                    "\n\td.drawContents(painter,QRectF(0,0,0,0));\n\n";
-        out << "\tNodeElement::paint(painter, style, widget);\n";
-        out << "}\n\n";
+        out << "\tupdatePorts();\n"
+            << QString("\trenderer.render(painter, QRectF(textSize/2-width/2, 0, width, height));\n\n")
+            << "\tQTextDocument d;\n\td.setHtml(text);\n"
+            << "\tpainter->save();\n"
+            << "\tpainter->translate(0,height-10);\n"
+            << "\n\td.drawContents(painter,contentsRect());\n"
+            << "\tpainter->restore();\n"
+            << "\tNodeElement::paint(painter, style, widget);\n"
+            << "}\n\n";
 
         //boundingRect
-        out << "QRectF " << classname << "::boundingRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-height/2).arg(-height/2).arg(2*height).arg(2*height);
-        out << "}\n\n";
+        out << "QRectF " << classname << "::boundingRect() const\n{\n"
+            << QString("\treturn QRectF(-5, -5, textSize+10, height+10);\n")
+            << "}\n\n";
 
         //contentsRect
-        out << "QRectF " << classname << "::contentsRect() const\n{\n";
-        out << QString("\treturn QRectF(%1, %2, %3, %4);\n").arg(-5).arg(-5).arg(height).arg(2*width/3);
-        out << "}\n\n";
+        out << "QRectF " << classname << "::contentsRect() const\n{\n"
+            << QString("\treturn QRectF(0, 0, textSize, height);\n")
+            << "}\n\n";
 
         //updateData
-        out << "void " << classname << "::updateData()\n{\n";
-        out << "\tNodeElement::updateData();\n";
-        out << "\ttext = dataIndex.data().toString();\n"; 
-        out << "\tupdate();\n";
-        out << "}\n\n";
+        out << "void " << classname << "::updateData()\n{\n"
+            << "\tNodeElement::updateData();\n"
+            << "\ttext = dataIndex.data().toString();\n"
+            << "\tprepareGeometryChange();\n"
+            << "\ttextSize = (width > text.size() * 8) ? width : text.size() * 8;\n"
+            << "\tupdate();\n"
+            << "}\n\n";
+
+        // updatePorts
+        out << "void " + classname + "::updatePorts(){\n"
+               "\tports.clear();\n"
+               "\tint d = textSize/2 - width/2;\n"
+               "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                            " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n"
+               "}\n";
+        
+        out << "// " + classname  << "\n";
 
         //
         //2. H-files
@@ -544,7 +561,11 @@ void Generator::genClasses(){
                 "\tvirtual QRectF contentsRect() const;\n"
                 "\tvirtual void updateData();\n\n"
 		        "private:\n"
+                "\tvoid updatePorts();\n\n"
                 "\tQString text;\n"
+                "\tint textSize;\n"
+                "\tint width;\n"
+                "\tint height;\n"
 		        "\tQSvgRenderer renderer;\n";
         
         out2 << "};\n\n#endif\n";
