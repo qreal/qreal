@@ -5,15 +5,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>468</height>
+    <width>516</width>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>unREAL</string>
-  </property>
-  <property name="windowIcon" >
-   <iconset resource="../static.qrc" >:/icons/zoomin.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" />
   <widget class="QMenuBar" name="menubar" >
@@ -21,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>429</width>
-     <height>28</height>
+     <width>516</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File_2" >
@@ -49,7 +46,7 @@
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QDockWidget" name="objectDock" >
    <property name="allowedAreas" >
-    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+    <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle" >
     <string>Object Explorer</string>
@@ -59,16 +56,28 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>9</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
      </property>
+     <property name="leftMargin" >
+      <number>9</number>
+     </property>
+     <property name="topMargin" >
+      <number>9</number>
+     </property>
+     <property name="rightMargin" >
+      <number>9</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>9</number>
+     </property>
      <item>
       <widget class="QTreeView" name="objectExplorer" >
+       <property name="acceptDrops" >
+        <bool>true</bool>
+       </property>
        <property name="dragDropMode" >
-        <enum>QAbstractItemView::InternalMove</enum>
+        <enum>QAbstractItemView::DragDrop</enum>
        </property>
       </widget>
      </item>
@@ -76,7 +85,7 @@
       <widget class="QComboBox" name="comboBox" >
        <item>
         <property name="text" >
-         <string></string>
+         <string/>
         </property>
        </item>
        <item>
@@ -101,7 +110,7 @@
   </widget>
   <widget class="QDockWidget" name="diagramDock" >
    <property name="allowedAreas" >
-    <set>Qt::LeftDockWidgetArea|Qt::NoDockWidgetArea|Qt::RightDockWidgetArea</set>
+    <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle" >
     <string>Diagram Explorer</string>
@@ -111,14 +120,26 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>9</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
      </property>
+     <property name="leftMargin" >
+      <number>9</number>
+     </property>
+     <property name="topMargin" >
+      <number>9</number>
+     </property>
+     <property name="rightMargin" >
+      <number>9</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>9</number>
+     </property>
      <item>
       <widget class="QTreeView" name="diagramExplorer" >
+       <property name="acceptDrops" >
+        <bool>true</bool>
+       </property>
        <property name="dragDropMode" >
         <enum>QAbstractItemView::DragDrop</enum>
        </property>
@@ -132,7 +153,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
    </attribute>
    <addaction name="actionZoom_In" />
    <addaction name="actionZoom_Out" />
@@ -146,14 +170,27 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_4" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>9</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
      </property>
+     <property name="leftMargin" >
+      <number>9</number>
+     </property>
+     <property name="topMargin" >
+      <number>9</number>
+     </property>
+     <property name="rightMargin" >
+      <number>9</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>9</number>
+     </property>
      <item>
-      <widget class="QGraphicsView" name="minimapView" />
+      <widget class="QGraphicsView" name="minimapView" >
+       <property name="dragMode" >
+        <enum>QGraphicsView::ScrollHandDrag</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QSlider" name="minimapZoomSlider" >
@@ -180,44 +217,23 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>9</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
      </property>
+     <property name="leftMargin" >
+      <number>9</number>
+     </property>
+     <property name="topMargin" >
+      <number>9</number>
+     </property>
+     <property name="rightMargin" >
+      <number>9</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>9</number>
+     </property>
      <item>
-      <widget class="QToolBox" name="paletteToolbox" >
-       <property name="currentIndex" >
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="page" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>102</width>
-          <height>66</height>
-         </rect>
-        </property>
-        <attribute name="label" >
-         <string>Page 1</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="page_2" >
-        <property name="geometry" >
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>96</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <attribute name="label" >
-         <string>Page 2</string>
-        </attribute>
-       </widget>
-      </widget>
+      <widget class="PaletteToolbox" name="paletteToolbox" />
      </item>
     </layout>
    </widget>
@@ -266,6 +282,14 @@
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0" />
+ <customwidgets>
+  <customwidget>
+   <class>PaletteToolbox</class>
+   <extends>QToolBox</extends>
+   <header>palettetoolbox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../static.qrc" />
  </resources>
