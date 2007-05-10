@@ -3,11 +3,14 @@
 #include "palettetoolbox.h"
 #include "realrepoinfo.h"
 
-PaletteToolbox::DraggableElement::DraggableElement(QString className, QWidget *parent/*0*/)
+RealRepoInfo info;
+
+PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/*0*/)
 	: QWidget(parent)
 {
-	m_text = className;
-	m_icon = QIcon(":/shapes/" + className + "Class.svg");
+	m_id = classid;
+	m_text = info.objectName(classid);
+	m_icon = QIcon(":/shapes/" + m_text + "Class.svg");
 	
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	QLabel *icon = new QLabel(this);
@@ -22,20 +25,18 @@ PaletteToolbox::DraggableElement::DraggableElement(QString className, QWidget *p
 	setLayout(layout);
 }
 
-
 PaletteToolbox::PaletteToolbox(QWidget *parent)
     : QToolBox(parent)
 {
 //  setAcceptDrops(true);
-	RealRepoInfo info;
 	QStringList categories = info.getObjectCategories();
 	for (int i = 0; i < categories.size(); i++) {
 		QWidget *tab = new QWidget(this);
 		QVBoxLayout *layout = new QVBoxLayout(this);
 		addItem(tab, categories[i]);
 
-		foreach(QString classname, info.getObjects(i)) {
-			DraggableElement *element = new DraggableElement(classname, this);
+		foreach(int classid, info.getObjects(i)) {
+			DraggableElement *element = new DraggableElement(classid, this);
 			layout->addWidget(element);
 		}
 		
@@ -63,6 +64,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QByteArray itemData;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
+	stream << -1;				// uuid
+	stream << child->id();		// type
 	stream << child->text();
 
     QMimeData *mimeData = new QMimeData;

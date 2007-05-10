@@ -13,25 +13,25 @@ MainWindow::MainWindow()
 {
 	ui.setupUi(this);
 
-//	view = new EditorView;
-//	setCentralWidget(view);
+	view = new EditorView;
+	setCentralWidget(view);
 
 //	delete ui.centralwidget;
 
-//	ui.minimapView->setScene(view->scene());
+	ui.minimapView->setScene(view->scene());
 
-//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-//			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
+			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 	
-/*	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
+	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
 	connect(ui.actionZoom_Out, SIGNAL( triggered() ), view, SLOT( zoomOut() ) );
 
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), view, SLOT( toggleOpenGL(bool) ) );
-*/
+
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -51,7 +51,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-//	delete view;
+	delete view;
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -93,15 +93,12 @@ void MainWindow::connectRepo()
 	}
 
 	model = new RealRepoModel(db,this);
-	
+
 	ui.diagramExplorer->setModel(model);
 	ui.diagramExplorer->setRootIndex(model->index(1,0,QModelIndex()));
 
 	ui.objectExplorer->setModel(model);
 //	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
 
-//	view->mvIface()->setModel(model);
-
-//	connect(ui.objectExplorer, SIGNAL( activated( const QModelIndex & ) ),
-//			model, SLOT( createSomeChild( const QModelIndex & )));
+	view->mvIface()->setModel(model);
 }

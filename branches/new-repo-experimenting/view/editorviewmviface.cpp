@@ -97,11 +97,16 @@ static void dumpStuff( const QModelIndex & idx )
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
+	if ( parent != rootIndex() )
+		return;
+
 	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		int type = model()->index(row, 0, parent).data(Unreal::TypeRole).toInt();
+
+		qDebug() << uuid << type;
 
 		if ( ! uuid )
 			continue;
@@ -118,7 +123,6 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 		if (items.contains(uuid))
 			items[uuid]->updateData();
 	}
-
 
 	QAbstractItemView::rowsInserted(parent, start, end);
 }

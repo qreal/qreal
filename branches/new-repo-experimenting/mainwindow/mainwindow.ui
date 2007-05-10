@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>389</height>
+    <width>576</width>
+    <height>364</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>516</width>
-     <height>25</height>
+     <width>576</width>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File_2" >
@@ -56,20 +56,11 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3" >
     <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
      <property name="spacing" >
       <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>9</number>
-     </property>
-     <property name="topMargin" >
-      <number>9</number>
-     </property>
-     <property name="rightMargin" >
-      <number>9</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>9</number>
      </property>
      <item>
       <widget class="QTreeView" name="objectExplorer" >
@@ -120,20 +111,11 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2" >
     <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
      <property name="spacing" >
       <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>9</number>
-     </property>
-     <property name="topMargin" >
-      <number>9</number>
-     </property>
-     <property name="rightMargin" >
-      <number>9</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>9</number>
      </property>
      <item>
       <widget class="QTreeView" name="diagramExplorer" >
@@ -153,10 +135,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
+    <number>4</number>
    </attribute>
    <addaction name="actionZoom_In" />
    <addaction name="actionZoom_Out" />
@@ -170,20 +149,11 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_4" >
     <layout class="QVBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
      <property name="spacing" >
       <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>9</number>
-     </property>
-     <property name="topMargin" >
-      <number>9</number>
-     </property>
-     <property name="rightMargin" >
-      <number>9</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>9</number>
      </property>
      <item>
       <widget class="QGraphicsView" name="minimapView" >
@@ -217,20 +187,11 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5" >
     <layout class="QHBoxLayout" >
+     <property name="margin" >
+      <number>0</number>
+     </property>
      <property name="spacing" >
       <number>6</number>
-     </property>
-     <property name="leftMargin" >
-      <number>9</number>
-     </property>
-     <property name="topMargin" >
-      <number>9</number>
-     </property>
-     <property name="rightMargin" >
-      <number>9</number>
-     </property>
-     <property name="bottomMargin" >
-      <number>9</number>
      </property>
      <item>
       <widget class="PaletteToolbox" name="paletteToolbox" />

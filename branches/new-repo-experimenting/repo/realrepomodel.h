@@ -47,6 +47,8 @@ class RealRepoModel : public QAbstractItemModel
 			QList<RepoTreeItem *> children;
 		};
 
+		enum ElementType { Root, Category, Container };
+
 		QModelIndex index(const RepoTreeItem *item) const;
 
 		QHash <int, QString> hashNames;
@@ -57,14 +59,18 @@ class RealRepoModel : public QAbstractItemModel
 		QHash <int,QList<RepoTreeItem *> > hashTreeItems;
 
 		void cleanupTree(RepoTreeItem *root);
+
+		void updateRootTable();
+
+		void createItem(RepoTreeItem *, int type, int id);
 		
 		void readRootTable();
 		void readCategoryTable(RepoTreeItem *root);
 		void readContainerTable(RepoTreeItem *root);
 
-		inline bool isElement(RepoTreeItem *root) const
-				{ return ( root->id >= 100 ); };
-		
+		ElementType type(const RepoTreeItem *item) const;
+		ElementType type(const QModelIndex &index) const;
+
 		QSqlDatabase db;
 		RepoTreeItem *rootItem;
 

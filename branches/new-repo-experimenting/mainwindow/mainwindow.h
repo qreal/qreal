@@ -25,7 +25,7 @@ public slots:
 private:
 	RealRepoModel *model;
 	QSortFilterProxyModel *filterModel;
-//	EditorView *view;
+	EditorView *view;
 	QSqlDatabase db;
 	
 	Ui::MainWindowUi ui;
