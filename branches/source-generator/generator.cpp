@@ -719,10 +719,12 @@ void Generator::genRealRepoInfo(){
             "\t~RealRepoInfo();\n"
             "\tQStringList getObjectCategories() const;\n"
             "\tQList<int> getObjects(int category) const;\n"
+            "\tQString objectsDesc(int id) const;\n"
             "\tQString objectName(int id) const;\n\n"
             "private:\n"
             "\tQList< Category > categories;\n"
-            "\tQList< QString > objects;\n"
+            "\tQStringList objects;\n"
+            "\tQStringList descriptions;\n"
             "\tQStringList m_categories;\n};\n";
    
     file.close();
@@ -747,6 +749,11 @@ void Generator::genRealRepoInfo(){
     }
     if( objects.size() > 0 )
         out2 << "objects ";
+    for( int i=0; i<objects.size(); i++ )
+        out2 << QString(" << \"%1\"").arg(objects.at(i)->id);
+    out2 << ";\n\n";    
+    if( objects.size() > 0 )
+        out2 << "descriptions ";
     for( int i=0; i<objects.size(); i++ ){
         out2 << QString(" << \"%1\"").arg(objects.at(i)->name);
     }
@@ -770,7 +777,10 @@ void Generator::genRealRepoInfo(){
     // objectName
     out2 << "QString RealRepoInfo::objectName( int id ) const {\n"
             "\treturn objects.at(id);\n}\n\n";
-            
+    
+    out2 << "QString RealRepoInfo::objectDesc( int id ) const{\n"
+            "\treturn descriptions.at(id);\n}\n\n";
+
     file2.close();
 }
 
