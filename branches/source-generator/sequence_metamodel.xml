@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>basicbehaviors_metamodel</include>
+  <include>kernel_metamodel</include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="SEQUENCE DIAGRAM">
+    <enumType name="CombinedFragmentKind" id="sqnCombinedFragmentKind">
+      <enumValue>alt</enumValue>
+      <enumValue>par</enumValue>
+    </enumType>
+    <node name="Interaction" id="sqnnInteraction">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="122"
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 122 62" height="62" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="1" y="1" width="120" height="60" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:line x1="1" y1="21" x2="41" y2="21" stroke="black" stroke-width="2" />
+              <svg:line x1="41" y1="21" x2="51" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="51" y1="11" x2="51" y2="1" stroke="black" stroke-width="2" />
+              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">sd</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="21" y="16">
+              <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavior"></parent>
+            <parent parent_id="sqnnInteractionFragment"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <containers>
+          <container>
+            <contains idref="sqnnSLifeline"/>
+            <contains idref="sqnMessage"/>
+            <contains idref="sqnnOccurenceSpecification"/>
+          </container>
+        </containers>
+      </logic>
+    </node>
+    <node name="SLifeline" id="sqnnSLifeline">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="82" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 82 27" height="27" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="1" y="1" width="80" height="25" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:line x1="6" y1="21" x2="76" y2="21" stroke="black" stroke-width="2" />
+              <svg:text x="9" y="16" style="font-size:12pt;fill:#000000;">:</svg:text>
+              <!--при прорисовке SLifeLine должно рисоваться также OccurrenceSpecification-->
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="15"  y="16">
+              <html:b>
+                <html:text_from_repo name="name"/>
+              </html:b>
+            </html:html>
+            <ports>
+              <port type="line" x1="1" y1="1" x2="89" y2="1" />
+              <port type="line" x1="89" y1="1" x2="89" y2="26" />
+              <port type="line" x1="89" y1="26" x2="1" y2="26" />
+              <port type="line" x1="1" y1="26" x2="1" y2="1" />
+            </ports>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contained_by idref="sqnnInteraction"/>
+            <contained_by idref="sqnnCombinedFragment"/>
+            <contained_by idref="sqnnInteractionFragment"/>
+          </container>
+        </containers>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+      </logic>
+    </node>
+    <node name="InteractionUse" id="sqnnInteractionUse">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="122"
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 122 62" height="62" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="1" y="1" width="120" height="60" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:line x1="1" y1="21" x2="41" y2="21" stroke="black" stroke-width="2" />
+              <svg:line x1="41" y1="21" x2="51" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="51" y1="11" x2="51" y2="1" stroke="black" stroke-width="2" />
+              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">ref</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="25" y="16">
+              <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="sqnnInteractionFragment"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+      </logic>
+    </node>
+    <node name="CombinedFragment" id="sqnnCombinedFragment">
+      <graphics>
+        <view>
+          <svg_shape>
+            <!--если par-->
+            <svg:svg contentScriptType="text/ecmascript" width="100" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 100 90" height="90" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="46" x2="16" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="46" x2="41" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="51" y1="46" x2="66" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="76" y1="46" x2="91" y2="46" stroke="black" stroke-width="2" />
+              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">par</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <svg_shape>
+            <!--если alt-->
+            <svg:svg contentScriptType="text/ecmascript" width="100" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 100 90" height="90" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="46" x2="16" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="46" x2="41" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="51" y1="46" x2="66" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="76" y1="46" x2="91" y2="46" stroke="black" stroke-width="2" />
+              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">alt</svg:text>
+              <svg:text x="5" y="60" font-weight="bold" style="font-size:12pt;fill:#000000;">[else]</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="5" y="43">
+              <html:text_from_repo name="alternative"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="sqnnInteractionFragment"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="kind" type="enum">
+            <enum idref="sqnCombinedFragmentKind" />
+          </property>
+          <property name="alternative" type="string"></property>
+          <!--оно есть только у alt-->
+        </properties>
+      </logic>
+    </node>
+    <node name="OccurrenceSpecification" id="sqnnOccurenceSpecification">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="2" 
+              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
+              viewBox="0 0 2 92" height="92" preserveAspectRatio="xMidYMid meet"
+              xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:line x1="1" y1="1" x2="1" y2="16" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="26" x2="1" y2="41" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="51" x2="1" y2="66" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="76" x2="1" y2="91" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <ports>
+              <port type="line" x1="1" y1="1" x2="1" y2="91" />
+            </ports>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="sqnnInteractionFragment"></parent>
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contained_by idref="sqnnInteraction"/>
+          </container>
+          <container>
+            <contains idref="sqnnSLifeline"/>
+          </container>
+        </containers>
+        <associations>
+          <assoc_ref idref="sqnaMessage"/>
+        </associations>
+      </logic>
+    </node>
+    <edge name="Message" id="sqnMessage">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
+              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+              <svg:line x1="0" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="35" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="45" x2="75" y2="55" stroke="black" stroke-width="2" />
+              <!--стрелочка закрашенная-->
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="15" y="40">
+              <html:b>
+                <html:text_from_repo name="name"/>
+              </html:b>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contained_by idref="sqnnInteraction"/>
+            <contained_by idref="sqnnCombinedFragment"/>
+          </container>
+        </containers>
+        <associations>
+          <association id="sqnaMessage" role="event">
+            <begin idref="sqnnOccurenceSpecification"/>
+          </association>
+        </associations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+      </logic>
+    </edge>
+    <node name="InteractionFragment" id="sqnnInteractionFragment">
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contains idref="sqnnSLifeline"></contains>
+          </container>
+        </containers>
+      </logic>
+    </node>
+  </diagram>
+</metamodel>
