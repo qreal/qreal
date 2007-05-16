@@ -39,7 +39,6 @@ private:
 
     void genEnums();
     void genSQLScripts();
-    void genMappings();
     void genClasses();
     void genFactory();
     void genRealRepoInfo();

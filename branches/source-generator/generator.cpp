@@ -24,7 +24,6 @@ Generator::Generator( QStringList files ){
     // generate all the stuff needed
     genEnums();
     genSQLScripts();
-    genMappings();
     genClasses();
     genFactory();
     genRealRepoInfo();
@@ -385,35 +384,6 @@ void Generator::genSQLScripts()
     
 }
 
-void Generator::genMappings()
-{
-    if( !dir.exists("repo") )
-        dir.mkdir("repo");
-    QFile file("generated/repo/realreporoles.cpp");
-    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-        return;
-    QTextStream out(&file);
-
-    out << "#include <QString>\n#include <QMap>\n#include <QStringList>\n\n";
-    out << "QString getColumnName(int elementNum, int roleNum){\n";
-    out << "\tQMap<int, QStringList> map;\n";
-    out << "\tQStringList l;\n";
-    int elementBase = NUM;
-    int roleBase = 129;
-
-    for (int i=0; i<objects.size(); i++){
-        out << "\tl.clear();\n";
-        for( int j=0; j<objects.at(i)->properties.size(); j++)
-            out << QString("\t\tl << \"%1\";\n").arg(objects.at(i)->properties.at(j).first);
-        out << QString("\tmap.insert(%1, l);\n").arg(elementBase + i);
-        out << "\n";
-    }
-
-    out << QString("\treturn map.value(elementNum).at(roleNum-%1);\n").arg(roleBase);
-    out << "}\n";
-    file.close();
-}
-
 void Generator::genClasses(){
     
     //
@@ -683,7 +653,7 @@ void Generator::genRealRepoInfo(){
         return;
     QTextStream out(&file);
 
-    out << "#include <QStringList>\n\n";
+    out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n";
 
     out << "class Category{\n"
             "\tpublic:\n"
@@ -698,11 +668,12 @@ void Generator::genRealRepoInfo(){
             "\tQList<int> getObjects(int category) const;\n"
             "\tQString objectDesc(int id) const;\n"
             "\tQString objectName(int id) const;\n\n"
+            "\tQStringList getColumnNames(int type) const;\n"
+            "\tQString getColumnName(int type, int role) const;\n\n"
+            "\tint roleByIndex(int index) const;\n"
+            "\tint indexByRole(int role) const;\n\n"
             "private:\n"
-            "\tQList< Category > categories;\n"
-            "\tQStringList objects;\n"
-            "\tQStringList descriptions;\n"
-            "\tQStringList m_categories;\n};\n";
+            "\n};\n";
    
     file.close();
 
@@ -711,9 +682,15 @@ void Generator::genRealRepoInfo(){
         return;
     QTextStream out2(&file2);
 
-    // constructor
-    out2 << "#include \"realrepoinfo.h\"\n";
-    out2 << "RealRepoInfo::RealRepoInfo(){\n\n"
+    // static inits
+    out2 << "#include \"realrepoinfo.h\"\n\n"
+            "static bool initCompleted = false;\n\n"
+            "QString getColumnName(int elementNum, int roleNum);\n\n"
+            "static QList< Category > categories;\n"
+            "static QStringList objects;\n"
+            "static QStringList descriptions;\n"
+            "static QMap<int, QStringList> map;\n\n";
+    out2 << "static void initStaticData()\n{\n"
             "\tCategory cat;\n\n";
     for( int i=0; i<categories.size(); i++){
         out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
@@ -735,8 +712,30 @@ void Generator::genRealRepoInfo(){
         out2 << QString(" << \"%1\"").arg(objects.at(i)->name);
     }
 
-    out2 << ";\n\n}\n\n";
+    out2 << ";\n\n";
 
+    // from former realreporoles
+    
+    out2 << "// from realreporoles.cpp\n\n";
+    out2 << "\tQStringList l;\n";
+
+    for (int i=0; i<objects.size(); i++){
+        out2 << "\tl.clear();\n";
+        for( int j=0; j<objects.at(i)->properties.size(); j++)
+            out2 << QString("\t\tl << \"%1\";\n").arg(objects.at(i)->properties.at(j).first);
+        out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
+        out2 << "\n";
+    }
+
+    out2 << "\n}\n\n";
+
+    // constructor
+
+    out2 << "RealRepoInfo::RealRepoInfo()\n"
+            "{\n\tif ( ! initCompleted )\n"
+            "\tinitStaticData();\n"
+            "\tinitCompleted = true;\n}\n\n";
+                
     // destructor
     out2 << "RealRepoInfo::~RealRepoInfo(){}\n\n";
 
@@ -757,6 +756,17 @@ void Generator::genRealRepoInfo(){
     
     out2 << "QString RealRepoInfo::objectDesc( int id ) const{\n"
             "\treturn descriptions.at(id-1);\n}\n\n";
+
+    // getColumnName
+
+    out2 << "QString RealRepoInfo::getColumnName(int type, int role) const{\n"
+            "\treturn map.value(type).at(role-129);\n}\n\n";
+
+    // getColumnNames
+
+    out2 << "QStringList RealRepoInfo::getColumnNames(int type) const{\n"
+            "\treturn map.value(type);\n}\n\n";
+
 
     file2.close();
 }
