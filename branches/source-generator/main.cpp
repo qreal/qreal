@@ -1,5 +1,3 @@
-#include <QApplication>
-
 #include "generator.h"
 
 int main()

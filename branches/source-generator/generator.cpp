@@ -653,14 +653,9 @@ void Generator::genRealRepoInfo(){
         return;
     QTextStream out(&file);
 
-    out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n";
+    out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n\n";
 
-    out << "class Category{\n"
-            "\tpublic:\n"
-            "\t\tQString name;\n"
-            "\tQList<int> objects;\n};\n\n";
-
-    out <<  "class RealRepoInfo\n{"
+    out <<  "class RealRepoInfo\n{\n"
             "public:\n"
             "\tRealRepoInfo();\n"
             "\t~RealRepoInfo();\n"
@@ -670,10 +665,12 @@ void Generator::genRealRepoInfo(){
             "\tQString objectName(int id) const;\n\n"
             "\tQStringList getColumnNames(int type) const;\n"
             "\tQString getColumnName(int type, int role) const;\n\n"
-            "\tint roleByIndex(int index) const;\n"
-            "\tint indexByRole(int role) const;\n\n"
+            "\tint roleByIndex(int index) const\n"
+	    "\t\t{ return index+129; };\n"
+            "\tint indexByRole(int role) const\n"
+	    "\t\t{ return index-129; };\n\n"
             "private:\n"
-            "\n};\n";
+            "};\n";
    
     file.close();
 
@@ -685,11 +682,17 @@ void Generator::genRealRepoInfo(){
     // static inits
     out2 << "#include \"realrepoinfo.h\"\n\n"
             "static bool initCompleted = false;\n\n"
-            "QString getColumnName(int elementNum, int roleNum);\n\n"
+
+	    "class Category\n{\n"
+            "public:\n"
+            "\tQString name;\n"
+            "\tQList<int> objects;\n};\n\n"
+
             "static QList< Category > categories;\n"
             "static QStringList objects;\n"
             "static QStringList descriptions;\n"
             "static QMap<int, QStringList> map;\n\n";
+
     out2 << "static void initStaticData()\n{\n"
             "\tCategory cat;\n\n";
     for( int i=0; i<categories.size(); i++){
@@ -733,40 +736,39 @@ void Generator::genRealRepoInfo(){
 
     out2 << "RealRepoInfo::RealRepoInfo()\n"
             "{\n\tif ( ! initCompleted )\n"
-            "\tinitStaticData();\n"
+            "\t\tinitStaticData();\n"
             "\tinitCompleted = true;\n}\n\n";
                 
     // destructor
-    out2 << "RealRepoInfo::~RealRepoInfo(){}\n\n";
+    out2 << "RealRepoInfo::~RealRepoInfo()\n{\n}\n\n";
 
     // getObjectCategories
-    out2 << "\tQStringList RealRepoInfo::getObjectCategories() const {\n\n"
+    out2 << "QStringList RealRepoInfo::getObjectCategories() const\n{\n"
             "\tQStringList l;\n"
             "\tfor( int i=0; i<categories.size(); i++)\n"
             "\t\tl << categories.at(i).name;\n"
             "\treturn l;\n}\n\n";
 
     // getObjects
-    out2 << "QList<int> RealRepoInfo::getObjects(int category) const{\n"
+    out2 << "QList<int> RealRepoInfo::getObjects(int category) const\n{\n"
             "\treturn categories.at(category).objects;\n}\n\n";
 
     // objectName
-    out2 << "QString RealRepoInfo::objectName( int id ) const {\n"
+    out2 << "QString RealRepoInfo::objectName( int id ) const\n{\n"
             "\treturn objects.at(id-1);\n}\n\n";
     
-    out2 << "QString RealRepoInfo::objectDesc( int id ) const{\n"
+    out2 << "QString RealRepoInfo::objectDesc( int id ) const\n{\n"
             "\treturn descriptions.at(id-1);\n}\n\n";
 
     // getColumnName
 
-    out2 << "QString RealRepoInfo::getColumnName(int type, int role) const{\n"
-            "\treturn map.value(type).at(role-129);\n}\n\n";
+    out2 << "QString RealRepoInfo::getColumnName(int type, int role) const\n{\n"
+            "\treturn map.value(type).at(indexByRole(role));\n}\n\n";
 
     // getColumnNames
 
-    out2 << "QStringList RealRepoInfo::getColumnNames(int type) const{\n"
+    out2 << "QStringList RealRepoInfo::getColumnNames(int type) const\n{\n"
             "\treturn map.value(type);\n}\n\n";
-
 
     file2.close();
 }
