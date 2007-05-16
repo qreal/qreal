@@ -668,7 +668,7 @@ void Generator::genRealRepoInfo(){
             "\tint roleByIndex(int index) const\n"
 	    "\t\t{ return index+129; };\n"
             "\tint indexByRole(int role) const\n"
-	    "\t\t{ return index-129; };\n\n"
+	    "\t\t{ return role-129; };\n\n"
             "private:\n"
             "};\n";
    
