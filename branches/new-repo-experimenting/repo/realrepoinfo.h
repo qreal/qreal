@@ -1,13 +1,10 @@
 #include <QStringList>
-
-class Category{
-	public:
-		QString name;
-	QList<int> objects;
-};
+#include <QMap>
+#include <QString>
 
 class RealRepoInfo
-{public:
+{
+public:
 	RealRepoInfo();
 	~RealRepoInfo();
 	QStringList getObjectCategories() const;
@@ -15,9 +12,13 @@ class RealRepoInfo
 	QString objectDesc(int id) const;
 	QString objectName(int id) const;
 
+	QStringList getColumnNames(int type) const;
+	QString getColumnName(int type, int role) const;
+
+	int roleByIndex(int index) const
+		{ return index+129; };
+	int indexByRole(int role) const
+		{ return role-129; };
+
 private:
-	QList< Category > categories;
-	QStringList objects;
-	QStringList descriptions;
-	QStringList m_categories;
 };

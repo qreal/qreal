@@ -3,11 +3,11 @@
 #include "palettetoolbox.h"
 #include "realrepoinfo.h"
 
-RealRepoInfo info;
-
 PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/*0*/)
 	: QWidget(parent)
 {
+	RealRepoInfo info;
+
 	m_id = classid;
 	m_text = info.objectName(classid);
 	m_icon = QIcon(":/shapes/" + m_text + "Class.svg");
@@ -28,6 +28,7 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 PaletteToolbox::PaletteToolbox(QWidget *parent)
     : QToolBox(parent)
 {
+	RealRepoInfo info;
 //  setAcceptDrops(true);
 	QStringList categories = info.getObjectCategories();
 	for (int i = 0; i < categories.size(); i++) {

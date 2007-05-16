@@ -6,6 +6,9 @@
 #include <QModelIndex>
 #include <QVariant>
 #include <QHash>
+#include <QPoint>
+
+#include "realrepoinfo.h"
 
 class RealRepoModel : public QAbstractItemModel
 {
@@ -56,9 +59,19 @@ class RealRepoModel : public QAbstractItemModel
 		QHash <int, QList<int> > hashChildren;
 		QHash <int, int> hashChildCount;
 
+		QHash <int, QMap<int, QVariant> > hashElementProps;
+
 		QHash <int,QList<RepoTreeItem *> > hashTreeItems;
 
+		struct ElementOnDiagram {
+			QPoint position;
+		};
+
+		QHash <int, QMap<int, ElementOnDiagram> > hashDiagramElements;
+
 		void cleanupTree(RepoTreeItem *root);
+
+		void updateProperties(int id);
 
 		void updateRootTable();
 
@@ -73,6 +86,8 @@ class RealRepoModel : public QAbstractItemModel
 
 		QSqlDatabase db;
 		RepoTreeItem *rootItem;
+
+		RealRepoInfo info;
 
 		int bytesCleaned;
 };

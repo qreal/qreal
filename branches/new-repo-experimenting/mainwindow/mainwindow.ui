@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
-    <height>364</height>
+    <width>417</width>
+    <height>349</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -18,15 +18,18 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>576</width>
+     <width>417</width>
      <height>28</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_File_2" >
+   <widget class="QMenu" name="menu_File" >
     <property name="title" >
      <string>&amp;File</string>
     </property>
     <addaction name="actionConnect" />
+    <addaction name="separator" />
+    <addaction name="actionPrint" />
+    <addaction name="actionMakeSvg" />
     <addaction name="separator" />
     <addaction name="actionQuit" />
    </widget>
@@ -40,7 +43,7 @@
     <addaction name="actionAntialiasing" />
     <addaction name="actionOpenGL_Renderer" />
    </widget>
-   <addaction name="menu_File_2" />
+   <addaction name="menu_File" />
    <addaction name="menu_View" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
@@ -56,11 +59,20 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QTreeView" name="objectExplorer" >
@@ -111,11 +123,20 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QTreeView" name="diagramExplorer" >
@@ -130,15 +151,17 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="ViewToolbar" >
+  <widget class="QToolBar" name="fileToolbar" >
    <property name="orientation" >
     <enum>Qt::Horizontal</enum>
    </property>
    <attribute name="toolBarArea" >
-    <number>4</number>
+    <enum>TopToolBarArea</enum>
    </attribute>
-   <addaction name="actionZoom_In" />
-   <addaction name="actionZoom_Out" />
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionPrint" />
   </widget>
   <widget class="QDockWidget" name="minimapDock" >
    <property name="windowTitle" >
@@ -149,11 +172,20 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_4" >
     <layout class="QVBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="QGraphicsView" name="minimapView" >
@@ -187,17 +219,39 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_5" >
     <layout class="QHBoxLayout" >
-     <property name="margin" >
-      <number>0</number>
-     </property>
      <property name="spacing" >
       <number>6</number>
+     </property>
+     <property name="leftMargin" >
+      <number>0</number>
+     </property>
+     <property name="topMargin" >
+      <number>0</number>
+     </property>
+     <property name="rightMargin" >
+      <number>0</number>
+     </property>
+     <property name="bottomMargin" >
+      <number>0</number>
      </property>
      <item>
       <widget class="PaletteToolbox" name="paletteToolbox" />
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="viewToolbar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionZoom_In" />
+   <addaction name="actionZoom_Out" />
   </widget>
   <action name="actionQuit" >
    <property name="text" >
@@ -239,6 +293,19 @@
    </property>
    <property name="text" >
     <string>OpenGL Renderer</string>
+   </property>
+  </action>
+  <action name="actionPrint" >
+   <property name="icon" >
+    <iconset resource="../static.qrc" >:/icons/print.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionMakeSvg" >
+   <property name="text" >
+    <string>Export to SVG</string>
    </property>
   </action>
  </widget>

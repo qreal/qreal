@@ -36,11 +36,12 @@ static double TwoPi = 2.0 * Pi;
 
 
 EdgeElement::EdgeElement()
-	: src(0), dst(0), portFrom(0), portTo(0),
-	  m_penStyle(Qt::SolidLine), dragState(-1)
+	: src(0), dst(0), portFrom(0), portTo(0), dragState(-1)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
+
+	m_penStyle = Qt::SolidLine;
 
 	m_line << QPointF(-50,-10) << QPointF(50,10);
 }
@@ -161,7 +162,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		// FIXME: probably slow.
 		NodeElement *e = 0;
 		foreach( QGraphicsItem *item, scene()->items(mapToScene(event->pos())) ) {
-			if ( e = dynamic_cast<NodeElement *>(item) ) {
+			e = dynamic_cast<NodeElement *>(item); 
+			if ( e ) {
 				if ( dragState == 0 ) {
 					src = e;
 					src->addEdge(this);

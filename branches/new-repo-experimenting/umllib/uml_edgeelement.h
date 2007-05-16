@@ -22,6 +22,16 @@ namespace UML {
 			void adjustLink();
 			void removeLink(UML::NodeElement *from) { if (src == from) { src = 0; }; if (dst == from) { dst = 0; }; };
 
+		private:
+			void checkConnection();
+			NodeElement *src, *dst;
+			//	QPointF srcPoint, dstPoint;
+
+			int portFrom, portTo;
+			int dragState;
+
+			QPolygonF m_line;
+			QColor m_color;
 		protected:
 			void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
@@ -32,16 +42,6 @@ namespace UML {
 			virtual void drawEndArrow ( QPainter * ) const = 0;
 
 			Qt::PenStyle m_penStyle;
-		private:
-			void checkConnection();
-			NodeElement *src, *dst;
-			//	QPointF srcPoint, dstPoint;
-
-			int dragState;
-			int portFrom, portTo;
-
-			QPolygonF m_line;
-			QColor m_color;
 	};
 };
 

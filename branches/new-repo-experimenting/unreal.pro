@@ -1,4 +1,4 @@
-QT		+= sql svg
+QT		+= sql svg opengl
 INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
 RESOURCES	+= real_dynamic.qrc static.qrc
 SOURCES		= main.cpp
@@ -50,5 +50,5 @@ SOURCES		+= umllib/uml_edgeelement.cpp \
 		   umllib/uml_nodeelement.cpp
 
 # Generated UML code
-SOURCES		+= umllib/edges_stuff.cpp
 include (umllib/generated/umllib.pri)
+SOURCES		+= umllib/edges_stuff.cpp

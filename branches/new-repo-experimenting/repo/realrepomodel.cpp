@@ -4,8 +4,8 @@
 #include "realrepomodel.h"
 #include "realreporoles.h"
 
-	RealRepoModel::RealRepoModel(QSqlDatabase db, QObject *parent)
-: QAbstractItemModel(parent)
+RealRepoModel::RealRepoModel(QSqlDatabase db, QObject *parent)
+	: QAbstractItemModel(parent)
 {
 	this->db = db;
 
@@ -37,10 +37,34 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 
 	switch (role) {
 		case Qt::DisplayRole:
-		case Qt::EditRole:			return hashNames[item->id];
-		case Unreal::IdRole:		return item->id;
-		case Unreal::TypeRole:		return hashTypes[item->id]; 
-		default:					return QVariant();
+		case Qt::EditRole:
+			return hashNames[item->id];
+		case Unreal::IdRole:
+			return item->id;
+		case Unreal::TypeRole:
+			return hashTypes[item->id]; 
+		case Unreal::PositionRole:
+			{
+				if ( type( item->parent ) == Container )
+					if ( hashDiagramElements[item->parent->id].contains(item->id) )
+						return hashDiagramElements[item->parent->id][item->id].position;
+	
+				return QVariant();
+			};
+		default:
+			if ( role > Unreal::UserRole ) {
+				if ( hashElementProps.contains(item->id) ) {
+					if ( hashElementProps[item->id].contains(role) )
+						return hashElementProps[item->id][role];
+					else
+						return QVariant();
+				} else {
+					const_cast<RealRepoModel *>(this)->updateProperties(item->id);
+					return hashElementProps[item->id][role];
+				}
+			} else {
+				;
+			}
 	}
 
 	return QVariant();
@@ -60,19 +84,35 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 
 	switch (role) {
 		case Qt::DisplayRole:
-		case Qt::EditRole:				{
-											q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");
-											q.bindValue(":id",  item->id );
-											q.bindValue(":name", value.toString() );
-											if ( q.exec() ) {
-												hashNames[item->id] = value.toString();
-											} else {
-												qDebug() << db.lastError().text();
-											}
-										}
-										break;
+		case Qt::EditRole:
+			{
+				q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");
+				q.bindValue(":id",  item->id );
+				q.bindValue(":name", value.toString() );
+				if ( q.exec() ) {
+					hashNames[item->id] = value.toString();
+				} else {
+					qDebug() << db.lastError().text();
+				}
+			}
+			break;
+		case Unreal::PositionRole:
+			{
+				if ( type(item->parent) == Container ) {
+					q.prepare("UPDATE diagram SET x=:x , y=:y  WHERE diagram_id=:did AND el_id=:elid;");
+					q.bindValue(":did", item->parent->id );
+					q.bindValue(":elid", item->id );
+					q.bindValue(":x", value.toPoint().x() );
+					q.bindValue(":y", value.toPoint().y() );
+
+					if ( q.exec() ) {
+						hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
+					} else
+						qDebug() << db.lastError().text();
+				}
+			}
 		default:
-										return false;
+			return false;
 	}
 
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
@@ -87,7 +127,8 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
 {
 	switch ( type(index) ) {
-		case Container:		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable /* | Qt::ItemIsDragEnabled */ | Qt::ItemIsDropEnabled;
+		case Container:		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable
+							/* | Qt::ItemIsDragEnabled */ | Qt::ItemIsDropEnabled;
 		case Category:		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 		case Root:			return Qt::ItemIsEnabled;
 		default:			return 0;
@@ -272,81 +313,84 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 	QSqlQuery q(db);
 
 	switch (type(parentItem)) {
-		case Category:	{
-							if ( parentItem->id != newtype ) {
-								qDebug() << "Object dragged into the wrong category";
-								return false;
-							}
+		case Category:
+			{
+				if ( parentItem->id != newtype ) {
+					qDebug() << "Object dragged into the wrong category";
+					return false;
+				}
 
-							q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
-							if ( newid == -1 ) {
-								q.bindValue(":type", newtype);
-								q.bindValue(":name", name);
+				q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
+				if ( newid == -1 ) {
+					q.bindValue(":type", newtype);
+					q.bindValue(":name", name);
 
-								beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
+					beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 
-								if ( q.exec() ) {
-									newid = q.lastInsertId().toInt();
-									q.clear();
+					if ( q.exec() ) {
+						newid = q.lastInsertId().toInt();
+						q.clear();
 
-									q.prepare(QString("INSERT INTO el_%1 (id) VALUES (:id) ;").arg(newtype));
-									q.bindValue(":id", newid);
-									q.exec();
+						q.prepare(QString("INSERT INTO el_%1 (id) VALUES (:id) ;").arg(newtype));
+						q.bindValue(":id", newid);
+						q.exec();
 
-									createItem(parentItem, newid, newtype);
+						createItem(parentItem, newid, newtype);
 
-								} else 
-									qDebug() << db.lastError().text();
+					} else 
+						qDebug() << db.lastError().text();
 
-								endInsertRows();
-							}
+					endInsertRows();
+				}
 
-							return true;
-						}
-						break;
-		case Container:	{
-							int diagram_id = parentItem->id;
+				return true;
+			}
+			break;
+		case Container:
+			{
+				int diagram_id = parentItem->id;
 
-							if ( action == Qt::CopyAction ) {
+				if ( action == Qt::CopyAction ) {
 
-								q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
-								if ( newid == -1 ) {
-									q.bindValue(":type", newtype);
-									q.bindValue(":name", name);
+					q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
+					if ( newid == -1 ) {
+						q.bindValue(":type", newtype);
+						q.bindValue(":name", name);
 
-									beginInsertRows(index(newtype-1,0,QModelIndex()),
-												hashChildCount[newtype], hashChildCount[newtype]);
+						beginInsertRows(index(newtype-1,0,QModelIndex()),
+								hashChildCount[newtype], hashChildCount[newtype]);
 
-									if ( q.exec() ) {
-										newid = q.lastInsertId().toInt();
-										q.clear();
+						if ( q.exec() ) {
+							newid = q.lastInsertId().toInt();
+							q.clear();
 
-										q.prepare(QString("INSERT INTO el_%1 (id) VALUES (:id) ;").arg(newtype));
-										q.bindValue(":id", newid);
-										q.exec();
+							q.prepare(QString("INSERT INTO el_%1 (id) VALUES (:id) ;").arg(newtype));
+							q.bindValue(":id", newid);
+							q.exec();
 
-										createItem(rootItem->children.at(newtype-1), newid, newtype);
-									} else 
-										qDebug() << db.lastError().text();
+							createItem(rootItem->children.at(newtype-1), newid, newtype);
+						} else 
+							qDebug() << db.lastError().text();
 
-									endInsertRows();
-								}
+						endInsertRows();
+					}
 
-								q.prepare("INSERT INTO diagram (diagram_id, el_id) VALUES (:did, :elid) ;");
-								q.bindValue(":did",diagram_id);
-								q.bindValue(":elid",newid);
-								if ( !q.exec() )
-									qDebug() << db.lastError().text();
-							}
+					q.prepare("INSERT INTO diagram (diagram_id, el_id) VALUES (:did, :elid) ;");
+					q.bindValue(":did",diagram_id);
+					q.bindValue(":elid",newid);
+					if ( !q.exec() )
+						qDebug() << db.lastError().text();
+				}
 
-							beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-							createItem(parentItem, newid, newtype);
-							endInsertRows();
+				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
+				createItem(parentItem, newid, newtype);
+				endInsertRows();
 
-							//							updateRootTable();
-						}
-						break;
-		default:		return false;
+				//							updateRootTable();
+			}
+			break;
+		default:
+			return false;
 	}
 
 	return false;
@@ -397,6 +441,31 @@ void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
 	hashChildCount[parentItem->id]++;
 }
 
+void RealRepoModel::updateProperties(int id)
+{
+	QSqlQuery q(db);
+	int type = hashTypes[id];
+
+	QString sql = QString("SELECT id, %1 FROM el_%2 WHERE id = :id")
+		.arg(info.getColumnNames(type).join(", ")).arg(type);
+
+	qDebug() << sql;
+
+	q.prepare(sql);
+
+	QMap <int, QVariant> properties;
+
+	if ( q.exec() ) {
+		if ( q.next() )
+			for ( int i = 0; i < q.record().count(); i++ )
+				properties[info.roleByIndex(i)] = q.value(i);
+		else
+			qDebug() << "some weird error";
+	} else
+		qDebug() << db.lastError().text();
+
+}
+
 void RealRepoModel::updateRootTable()
 {
 	// FIXME: call signals!!!! or rewrite the other way
@@ -439,7 +508,8 @@ void RealRepoModel::readRootTable()
 void RealRepoModel::readCategoryTable(RepoTreeItem *parent)
 {
 	QSqlQuery q(db);
-	q.prepare("SELECT nametable.id, nametable.name, nametable.type, nametable.qualifiedName, metatable.name, COUNT(diagram.diagram_id) FROM nametable"
+	q.prepare("SELECT nametable.id, nametable.name, nametable.type, nametable.qualifiedName,"
+			" metatable.name, COUNT(diagram.diagram_id) FROM nametable"
 			"  LEFT JOIN metatable ON metatable.id = nametable.type"
 			"  LEFT JOIN diagram ON diagram.diagram_id = nametable.id"
 			"  WHERE nametable.type = :type"
@@ -492,7 +562,8 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 		}
 	} else {
 		QSqlQuery q(db);
-		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, nametable.qualifiedName, COUNT (children.el_id) FROM diagram"
+		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, diagram.x, diagram.y,"
+				  " nametable.qualifiedName, COUNT (children.el_id) FROM diagram"
 				"  LEFT JOIN nametable ON diagram.el_id = nametable.id"
 				"  LEFT JOIN diagram AS children ON children.diagram_id = diagram.el_id"
 				"  WHERE diagram.diagram_id = :type"
@@ -511,12 +582,13 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 				hashNames[item->id] = q.value(1).toString();
 				hashTypes[item->id] = q.value(2).toInt();
 
-				hashChildCount[item->id] = q.value(4).toInt();
-
+				hashChildCount[item->id] = q.value(6).toInt();
 				hashChildren[root->id].append(item->id);
 
 				root->children.append(item);
 				hashTreeItems[item->id].append(item);
+				
+				hashDiagramElements[root->id][item->id].position = QPoint(q.value(3).toInt(), q.value(4).toInt());
 			}
 		} else
 			qDebug() << db.lastError().text();

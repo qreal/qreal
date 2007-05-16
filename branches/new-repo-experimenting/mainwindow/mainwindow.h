@@ -22,6 +22,9 @@ public slots:
 	void connectRepo();
 	void adjustMinimapZoom(int zoom);
 
+	void print();
+	void makeSvg();
+
 private:
 	RealRepoModel *model;
 	QSortFilterProxyModel *filterModel;

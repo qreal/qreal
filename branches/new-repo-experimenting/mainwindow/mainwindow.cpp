@@ -1,5 +1,9 @@
 #include <QtGui>
-#include <QtSql>
+
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+
+#include <QtSvg/QSvgGenerator>
 
 #include "mainwindow.h"
 
@@ -31,6 +35,9 @@ MainWindow::MainWindow()
 
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), view, SLOT( toggleOpenGL(bool) ) );
+
+	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
+	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
@@ -102,3 +109,30 @@ void MainWindow::connectRepo()
 
 	view->mvIface()->setModel(model);
 }
+
+void MainWindow::print()
+{
+	QPrinter printer(QPrinter::HighResolution);
+	QPrintDialog dialog(&printer, this);
+	if (dialog.exec() == QDialog::Accepted) {
+		QPainter painter(&printer);
+//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
+		view->scene()->render(&painter);
+	}
+}
+
+void MainWindow::makeSvg()
+{
+	QSvgGenerator newSvg;
+	
+	QString fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
+
+	newSvg.setFileName(fileName);
+	newSvg.setSize(QSize(800,600));
+
+	QPainter painter(&newSvg);
+	view->scene()->render(&painter);
+}
+
