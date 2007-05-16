@@ -111,6 +111,7 @@ void Generator::parseNode( QDomNode dnode ){
     parseGeneralizations( cur, logic );
     parseProperties( cur, logic );
     parseAssociations( cur, logic, isNode);
+    parsePorts( cur, dnode );
     parseSVG( cur, dnode ); 
 
     cur->type = NODE;
@@ -183,6 +184,34 @@ void Generator::parseProperties( Entity* cur, QDomNode logic ){
         }
     }    
 }
+
+void Generator::parsePorts( Node* cur, QDomNode dnode ){
+    
+    QDomNodeList ports = dnode.toElement().elementsByTagName("port");
+    for( int i=0; i<ports.size(); i++ ){
+        Port port;
+        QString type = ports.at(i).toElement().attribute("type");
+        port.type = type;
+        if( type == "point"){
+            port.vals << ports.at(i).toElement().attribute("x").toInt();
+            port.vals << ports.at(i).toElement().attribute("y").toInt();
+        }
+        else if( type == "line" ){
+            port.vals << ports.at(i).toElement().attribute("x1").toInt();
+            port.vals << ports.at(i).toElement().attribute("x2").toInt();
+            port.vals << ports.at(i).toElement().attribute("y1").toInt();
+            port.vals << ports.at(i).toElement().attribute("y2").toInt();
+        }
+        else if( type == "ellipse" ){
+            port.vals << ports.at(i).toElement().attribute("x").toInt();
+            port.vals << ports.at(i).toElement().attribute("y").toInt();
+            port.vals << ports.at(i).toElement().attribute("rx").toInt();
+            port.vals << ports.at(i).toElement().attribute("ry").toInt();
+        }
+        cur->ports << port;
+    }
+}
+
 
 void Generator::parseSVG( Entity* cur, QDomNode dnode ){
 
@@ -459,7 +488,7 @@ void Generator::genClasses(){
             << QString("\trenderer.render(painter, QRectF(textSize/2-width/2, 0, width, height));\n\n")
             << "\tQTextDocument d;\n\td.setHtml(text);\n"
             << "\tpainter->save();\n"
-            << "\tpainter->translate(0,height-10);\n"
+            << "\tpainter->translate(0,height-5);\n"
             << "\n\td.drawContents(painter,contentsRect());\n"
             << "\tpainter->restore();\n"
             << "\tNodeElement::paint(painter, style, widget);\n"
@@ -467,12 +496,12 @@ void Generator::genClasses(){
 
         //boundingRect
         out << "QRectF " << classname << "::boundingRect() const\n{\n"
-            << QString("\treturn QRectF(-5, -5, textSize+10, height+10);\n")
+            << QString("\treturn QRectF(-5, -5, textSize+10, height+15);\n")
             << "}\n\n";
 
         //contentsRect
         out << "QRectF " << classname << "::contentsRect() const\n{\n"
-            << QString("\treturn QRectF(0, 0, textSize, height);\n")
+            << QString("\treturn QRectF(0, 0, textSize, height+15);\n")
             << "}\n\n";
 
         //updateData
@@ -486,11 +515,26 @@ void Generator::genClasses(){
 
         // updatePorts
         out << "void " + classname + "::updatePorts(){\n"
-               "\tports.clear();\n"
-               "\tint d = textSize/2 - width/2;\n"
-               "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
-                            " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n"
-               "}\n";
+               "\tports.clear();\n";
+        if( objects.at(i)->type == NODE){       
+            Node* node = (Node*) objects.at(i);
+            out << "\tint d = textSize/2 - width/2;\n";
+            if( node->ports.size() == 0 ){
+                    out <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
+            }          
+            for( int j=0; j<node->ports.size(); j++ ){
+                if( node->ports.at(j).type == "point" ){
+                    out << QString("\tports << QPointF(d+%1, %2);\n").arg(node->ports.at(j).vals.at(0))
+                                                          .arg(node->ports.at(j).vals.at(1));
+                }                                          
+                else if( node->id != "uscnActor" ){
+                    out <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
+                }          
+            }
+        } 
+        out << "}\n";
         
         out << "// " + classname  << "\n";
 
