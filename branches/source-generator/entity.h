@@ -10,6 +10,8 @@ enum elementsType { NODE, EDGE };
 
 enum sideType { BEGIN, END };
 
+class Port;
+
 // parent for nodes and edges class
 class Entity
 {
@@ -42,7 +44,7 @@ class Node : public Entity
 public:
     //TODO: containers 
     //QStringList associations; 
-    
+    QList< Port > ports;    
 };
 
 class Association {
@@ -53,6 +55,12 @@ public:
     QString to;
     //TODO: full schema support
     //QString role;  
+};
+
+class Port {
+public:
+    QString type;
+    QList<int> vals;
 };
 
 // edge class

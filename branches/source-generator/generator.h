@@ -36,6 +36,7 @@ private:
     void parseAssociations    ( Entity*, QDomNode, bool isNode = false );
     //void parseNodeAssociations( Entity*, QDomNode );
     void parseSVG             ( Entity*, QDomNode );
+    void parsePorts           ( Node*,   QDomNode );
 
     void genEnums();
     void genSQLScripts();
