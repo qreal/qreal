@@ -19,16 +19,16 @@ EditorView::EditorView(QWidget *parent)
 EditorView::~EditorView()
 {
 }
-
+/*
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
-    if (QGraphicsItem *item = itemAt(event->pos())) {
-	mv_iface->raiseClick(item);
-    }
+//    if (QGraphicsItem *item = itemAt(event->pos())) {
+//	mv_iface->raiseClick(item);
+//    }
 
     QGraphicsView::mousePressEvent(event);
 }
-
+*/
 void EditorView::toggleAntialiasing(bool checked)
 {
     setRenderHint(QPainter::Antialiasing, checked);

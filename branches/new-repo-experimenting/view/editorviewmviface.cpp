@@ -64,13 +64,14 @@ QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &) cons
 {
 	return QRegion();
 }
-
+/*
 void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 {
 	const UML::Element *e = qgraphicsitem_cast<const UML::Element *>(item);
 	if (e)
 		emit clicked(e->index());
 }
+*/
 
 UML::Element* EditorViewMViface::getItem(int uuid)
 {
@@ -88,11 +89,6 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 {
 	QAbstractItemView::setRootIndex(index);
 	reset();
-}
-
-static void dumpStuff( const QModelIndex & idx )
-{
-	qDebug() << idx;
 }
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
@@ -114,6 +110,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 		if ( UML::Element *e = UML::GUIObjectFactory(type) ) {
 			scene->addItem(e);
 			e->setIndex(current);
+			e->setPos(current.data(Unreal::PositionRole).toPointF());
 			items[uuid] = e;
 		}
 	}

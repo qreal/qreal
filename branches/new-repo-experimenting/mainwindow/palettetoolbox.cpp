@@ -56,8 +56,11 @@ void PaletteToolbox::dropEvent(QDropEvent *event)
 void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 {
 	QWidget *atMouse = childAt(event->pos());
+	if ( atMouse == this )
+		return;
+
     DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
-    if (!child)
+	if (!child)
 		child = dynamic_cast<DraggableElement *>(atMouse);
 	if (!child)
 		return;

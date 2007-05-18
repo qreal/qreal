@@ -16,12 +16,8 @@ static QMap<int, QStringList> map;
 
 static void initStaticData()
 {
-	if( initCompleted )
+	if ( initCompleted )
 		return;
-
-objects  << "krnnElement" << "krnnDiagram" << "krnnNamedElement" << "krnnComment" << "krnnNamespace" << "krnnPackage" << "krnnPackageableElem" << "krnnType" << "krnnTypedElem" << "krnnRedefElement" << "krnnClassifier" << "krnnProperty" << "krnnOperation" << "krnnParameter" << "krnnFeature" << "krnnBehavioralFeature" << "krnnStructuralFeature" << "krneRelationship" << "krneDirRelationship" << "krneComLink" << "krneElementImport" << "krnePackageImport" << "krneGeneralization" << "bbnBehavior" << "bbnBehavioredClassifier" << "bbnOpaqueBehavior" << "bbnFunctionBehavior" << "reqnFeatured" << "reqnConceptAlternative" << "reqnLeaf" << "reqnParent" << "reqnParentMandatory" << "reqnParentOr" << "reqnParentOptional" << "reqnParentAlternative" << "reqnParentOpAlternative" << "reqeP2N" << "cnClass" << "uscnActor" << "uscClassifier" << "uscExtensionPoint" << "untitledEdge_0" << "uscUseCase" << "uscExtend" << "uscInclude";
-
-descriptions  << "Element" << "Diagram" << "NamedElement" << "Comment" << "Namespace" << "Package" << "PackageableElement" << "Type" << "TypedElement" << "RedefinableElement" << "Classifier" << "Property" << "Operation" << "Parameter" << "Feature" << "BehavioralFeature" << "StructuralFeature" << "Relationship" << "DirectedRelationship" << "CommentLink" << "ElementImport" << "PackageImport" << "Generalization" << "Behavour" << "Behavour" << "Behavour" << "Behavour" << "Featured Element" << "Concept Alternative" << "Leaf" << "Parent Node" << "Parent of Mandatory Features" << "Parent of Or-Features" << "Parent of Optional Features" << "Parent of Alternative Features" << "Parent of Optional-Alternative Features" << "Feature P2N Relationship" << "Class" << "Actor" << "Classifier" << "ExtensionPoint" << "embedded edge #0" << "UseCase" << "Extend" << "Include";
 
 	Category cat;
 
@@ -49,6 +45,10 @@ descriptions  << "Element" << "Diagram" << "NamedElement" << "Comment" << "Names
 	cat.name = "USE CASE DIAGRAM";
 	cat.objects  << 39 << 40 << 41 << 42 << 43 << 44	;
 	categories << cat;
+
+objects  << "krnnElement" << "krnnDiagram" << "krnnNamedElement" << "krnnComment" << "krnnNamespace" << "krnnPackage" << "krnnPackageableElem" << "krnnType" << "krnnTypedElem" << "krnnRedefElement" << "krnnClassifier" << "krnnProperty" << "krnnOperation" << "krnnParameter" << "krnnFeature" << "krnnBehavioralFeature" << "krnnStructuralFeature" << "krneRelationship" << "krneDirRelationship" << "krneComLink" << "krneElementImport" << "krnePackageImport" << "krneGeneralization" << "bbnBehavior" << "bbnBehavioredClassifier" << "bbnOpaqueBehavior" << "bbnFunctionBehavior" << "reqnFeatured" << "reqnConceptAlternative" << "reqnLeaf" << "reqnParent" << "reqnParentMandatory" << "reqnParentOr" << "reqnParentOptional" << "reqnParentAlternative" << "reqnParentOpAlternative" << "reqeP2N" << "cnClass" << "uscnActor" << "uscClassifier" << "uscExtensionPoint" << "untitledEdge_0" << "uscUseCase" << "uscExtend" << "uscInclude";
+
+descriptions  << "Element" << "Diagram" << "NamedElement" << "Comment" << "Namespace" << "Package" << "PackageableElement" << "Type" << "TypedElement" << "RedefinableElement" << "Classifier" << "Property" << "Operation" << "Parameter" << "Feature" << "BehavioralFeature" << "StructuralFeature" << "Relationship" << "DirectedRelationship" << "CommentLink" << "ElementImport" << "PackageImport" << "Generalization" << "Behavour" << "Behavour" << "Behavour" << "Behavour" << "Featured Element" << "Concept Alternative" << "Leaf" << "Parent Node" << "Parent of Mandatory Features" << "Parent of Or-Features" << "Parent of Optional Features" << "Parent of Alternative Features" << "Parent of Optional-Alternative Features" << "Feature P2N Relationship" << "Class" << "Actor" << "Classifier" << "ExtensionPoint" << "embedded edge #0" << "UseCase" << "Extend" << "Include";
 
 // from realreporoles.cpp
 

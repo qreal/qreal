@@ -9,7 +9,8 @@ using namespace UML;
 Element::Element()
     : m_uuid(1234567), moving(false)
 {
-    setFlags(ItemIsSelectable | ItemIsMovable);
+    setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape
+			| ItemClipsToShape);
     setAcceptDrops(true);
     setCursor(Qt::PointingHandCursor);
 }

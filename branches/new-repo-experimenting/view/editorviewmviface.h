@@ -25,11 +25,6 @@ public:
 
     UML::Element* getItem(int uuid) __attribute__ ((deprecated));
     
-    void raiseClick ( const QGraphicsItem * item );
-
-//signals:
-//    void clicked( 
-
 public slots:
     void reset();
 	void setRootIndex(const QModelIndex &index);

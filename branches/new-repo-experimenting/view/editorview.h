@@ -24,8 +24,8 @@ public slots:
     void zoomIn();
     void zoomOut();
     
-protected:
-    void mousePressEvent(QMouseEvent *event);
+//protected:
+//    void mousePressEvent(QMouseEvent *event);
 
 private:
     EditorViewMViface * mv_iface;

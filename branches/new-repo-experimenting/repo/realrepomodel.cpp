@@ -63,7 +63,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 					return hashElementProps[item->id][role];
 				}
 			} else {
-				;
+				return QVariant(); //for now
 			}
 	}
 
@@ -112,7 +112,21 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 				}
 			}
 		default:
-			return false;
+			if ( role > Unreal::UserRole ) {
+				QString sql = QString("UPDATE el_%1 SET `%2` = :value WHERE id = :elid ;")
+					.arg(hashTypes[item->id]).arg(info.getColumnName(hashTypes[item->id],role));
+				q.prepare(sql);
+				q.bindValue(":elid", item->id);
+				q.bindValue(":value", value);
+				
+				if ( q.exec() )
+					if ( hashElementProps.contains(item->id) ) {
+						hashElementProps[item->id][role] = value;
+						return true;
+					}
+
+				return false;
+			}
 	}
 
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
@@ -285,6 +299,8 @@ Qt::DropActions RealRepoModel::supportedDropActions () const
 bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent)
 {
+	Q_UNUSED(row);
+
 	if (action == Qt::IgnoreAction)
 		return true;
 	if (!data->hasFormat("application/x-real-uml-data"))
@@ -330,6 +346,15 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 					if ( q.exec() ) {
 						newid = q.lastInsertId().toInt();
 						q.clear();
+
+						// FIXME: Fix numbering... don't know how to do better.
+						if ( newid < 1000 ) {
+							q.prepare("UPDATE nametable SET id=id+1000 WHERE id=:id ;");
+							q.bindValue(":id", newid);
+							if ( q.exec() )
+								newid += 1000;
+							q.clear();
+						}
 
 						q.prepare(QString("INSERT INTO el_%1 (id) VALUES (:id) ;").arg(newtype));
 						q.bindValue(":id", newid);
@@ -446,24 +471,24 @@ void RealRepoModel::updateProperties(int id)
 	QSqlQuery q(db);
 	int type = hashTypes[id];
 
-	QString sql = QString("SELECT id, %1 FROM el_%2 WHERE id = :id")
-		.arg(info.getColumnNames(type).join(", ")).arg(type);
-
-	qDebug() << sql;
+	QString sql = QString("SELECT `id`, `%1` FROM el_%2 WHERE id = :id ;")
+		.arg(info.getColumnNames(type).join("`, `")).arg(type);
 
 	q.prepare(sql);
+	q.bindValue(":id", id);
 
 	QMap <int, QVariant> properties;
 
 	if ( q.exec() ) {
 		if ( q.next() )
-			for ( int i = 0; i < q.record().count(); i++ )
-				properties[info.roleByIndex(i)] = q.value(i);
+			for ( int i = 1; i < q.record().count(); i++ )
+				properties[info.roleByIndex(i-1)] = q.value(i);
 		else
 			qDebug() << "some weird error";
 	} else
 		qDebug() << db.lastError().text();
 
+	hashElementProps[id] = properties;
 }
 
 void RealRepoModel::updateRootTable()

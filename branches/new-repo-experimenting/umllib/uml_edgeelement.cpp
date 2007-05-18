@@ -8,42 +8,24 @@
 
 #include "realreporoles.h"
 
-using namespace UML;
-
-const int kvadratik = 4;
-
-QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen)
-{
-	// We unfortunately need this hack as QPainterPathStroker will set a width of 1.0
-	// if we pass a value of 0.0 to QPainterPathStroker::setWidth()
-	const qreal penWidthZero = qreal(0.00000001);
-
-	if (path == QPainterPath())
-		return path;
-	QPainterPathStroker ps;
-	ps.setCapStyle(pen.capStyle());
-	ps.setWidth(pen.widthF() <= 0.0 ? penWidthZero : pen.widthF());
-	ps.setJoinStyle(pen.joinStyle());
-	ps.setMiterLimit(pen.miterLimit());
-	QPainterPath p = ps.createStroke(path);
-	return p;
-}
-
 #include <math.h>
+
+using namespace UML;
 
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-
 EdgeElement::EdgeElement()
-	: src(0), dst(0), portFrom(0), portTo(0), dragState(-1)
+: src(0), dst(0), portFrom(0), portTo(0), dragState(-1)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
+	// FIXME: draws strangely...
+	setFlag(ItemClipsToShape, false);
 
 	m_penStyle = Qt::SolidLine;
 
-	m_line << QPointF(-50,-10) << QPointF(50,10);
+	m_line << QPointF(-100,-30) << QPointF(100,30);
 }
 
 EdgeElement::~EdgeElement()
@@ -56,17 +38,17 @@ EdgeElement::~EdgeElement()
 
 QRectF EdgeElement::boundingRect() const
 {
-//	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+	//	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
 	return m_line.boundingRect().adjusted(-20,-20,20,20);
 }
 
 static double lineAngle(const QLineF &line)
 {
-     double angle = ::acos(line.dx() / line.length());
-     if (line.dy() >= 0)
-         angle = TwoPi - angle;
+	double angle = ::acos(line.dx() / line.length());
+	if (line.dy() >= 0)
+		angle = TwoPi - angle;
 
-	 return angle*180/Pi;
+	return angle*180/Pi;
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -112,7 +94,7 @@ void EdgeElement::checkConnection()
 
 	if ( dst != 0 )
 		to = dst->type();
-		
+
 	if ( canBeConnected( type, from, to ) )
 		m_color = Qt::black;
 	else
@@ -123,18 +105,31 @@ void EdgeElement::checkConnection()
 QPainterPath EdgeElement::shape() const
 {
 	QPainterPath path;
+	path.setFillRule(Qt::WindingFill);
+	
+	QPainterPathStroker ps;
+	ps.setWidth(kvadratik);
+
 	path.addPolygon(m_line);
-	return qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik*2));
+	path = ps.createStroke(path);
+
+	foreach( QPointF point, m_line) {
+		path.addRect(QRectF(point-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
+	}
+
+	return path;
 }
 
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
 	dragState = -1;
 
-	for ( int i = 0 ; i < m_line.size() ; i++ ) {
-		if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
-			dragState = i;
-			break;
+	if ( isSelected() ) {
+		for ( int i = 0 ; i < m_line.size() ; i++ ) {
+			if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
+				dragState = i;
+				break;
+			}
 		}
 	}
 
@@ -173,7 +168,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
 
 					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-					im->setData(dataIndex, fromPort, Unreal::reqeP2N::fromRole );
+					im->setData(dataIndex, fromPort, Unreal::krneRelationship::fromRole );
 
 				} else if ( dragState == m_line.size()-1 ) {
 					dst = e;
@@ -184,7 +179,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
 
 					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-					im->setData(dataIndex, toPort, Unreal::reqeP2N::toRole );
+					im->setData(dataIndex, toPort, Unreal::krneRelationship::toRole );
 				}
 				setFlag(ItemIsMovable, false);
 				checkConnection();
@@ -200,14 +195,14 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 				src = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-				im->setData(dataIndex, "0:0", Unreal::reqeP2N::fromRole );
+				im->setData(dataIndex, "0:0", Unreal::krneRelationship::fromRole );
 			} else if ( dragState == m_line.size()-1 ) {
 				if (dst)
 					dst->delEdge(this);
 				dst = 0;
 
 				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-				im->setData(dataIndex, "0:0", Unreal::reqeP2N::toRole );
+				im->setData(dataIndex, "0:0", Unreal::krneRelationship::toRole );
 			}
 			if ( ! src && ! dst )
 				setFlag(ItemIsMovable, true);
@@ -244,7 +239,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 				QPainterPath path;
 				path.moveTo(m_line[i]);
 				path.lineTo(m_line[i+1]);
-				if ( qt_graphicsItem_shapeFromPath(path,QPen(Qt::black,kvadratik*2)).contains(event->pos()) ) {
+				if ( shape().contains(event->pos()) ) {
 					m_line.insert(i+1,event->pos());
 					break;
 				}
@@ -267,10 +262,13 @@ void EdgeElement::adjustLink()
 {
 	prepareGeometryChange();
 	if ( src )
-		m_line[0] = mapFromItem(src, src->getPort(portFrom));
+		m_line[0] = mapFromItem(src, /* src->getPort(portFrom) */ QPointF(0,0) );
 	if ( dst )
-		m_line[m_line.size()-1]= mapFromItem(dst, dst->getPort(portTo));
+		m_line[m_line.size()-1] = mapFromItem(dst, /* dst->getPort(portTo) */ QPointF(0,0) );
 	update();
+
+//	qDebug() << m_line[0] << m_line[m_line.size()-1];
+	qDebug() << portFrom << portTo;
 }
 
 void EdgeElement::updateData()
@@ -278,9 +276,6 @@ void EdgeElement::updateData()
 	Element::updateData();
 
 	// temporary code, to be reworked with introduction of new schema handling
-
-	int myrow = dataIndex.row();
-
 	QString from = dataIndex.data(Unreal::reqeP2N::fromRole).toString();
 	QString to = dataIndex.data(Unreal::reqeP2N::toRole).toString();
 
@@ -322,9 +317,7 @@ void EdgeElement::updateData()
 
 	if ( ! src && ! dst ) {
 		setFlag(ItemIsMovable, true );
-		int x = dataIndex.sibling(myrow,4).data().toInt();
-		int y = dataIndex.sibling(myrow,5).data().toInt();
-		setPos(x,y);
+		setPos(dataIndex.data(Unreal::PositionRole).toPoint());
 	} else {
 		setFlag(ItemIsMovable, false );
 	}

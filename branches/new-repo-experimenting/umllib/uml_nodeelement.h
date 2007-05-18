@@ -6,37 +6,44 @@
 
 #include <QtGui/QWidget>
 
+const int kvadratik = 5;
+
 namespace UML {
-    class NodeElement : public Element
-    {
-    public:
-        NodeElement();
-	~NodeElement();
+	class NodeElement : public Element
+	{
+		public:
+			NodeElement();
+			~NodeElement();
 
-        virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
-//	virtual QRectF boundingRect() const;
-	virtual QRectF contentsRect() const = 0;
-	
-        virtual void updateData();
+			virtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);
+			QRectF boundingRect() const;
+			QRectF contentsRect() const;
 
-	void addEdge(EdgeElement *edge) { edgeList << edge; };
-	void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
+			virtual void updateData();
 
-	const QPointF getPort(int i) const;
-	int getNearestPort(const QPointF location) const;
-	bool isChildOf(int id){ return parentsList.contains(id); }
+			const QPointF getPort(int i) const;
+			int getNearestPort(const QPointF location) const;
+			bool isChildOf(int id){ return parentsList.contains(id); }
 
-   protected:
-        void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+			void addEdge(EdgeElement *edge) { edgeList << edge; };
+			void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
 
-    QList<int> parentsList;
+		protected:
+			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+			void mousePressEvent( QGraphicsSceneMouseEvent * event );
 
-	QList<QPointF> ports;
+			QList<int> parentsList;
 
-    private:
-	QList<EdgeElement *> edgeList;
-    };
+			QList<QPointF> ports;
+			
+			QRectF m_contents;
+		private:
+			QList<EdgeElement *> edgeList;
+
+			enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
+			DragState dragState;
+	};
 };
 
 #endif
