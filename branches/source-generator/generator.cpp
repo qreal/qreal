@@ -485,24 +485,24 @@ void Generator::genClasses(){
         out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                                                                                 "QWidget *widget)\n{\n";
         out << "\tupdatePorts();\n"
-            << QString("\trenderer.render(painter, QRectF(textSize/2-width/2, 0, width, height));\n\n")
+            << QString("\trenderer.render(painter, m_contents);\n\n")
             << "\tQTextDocument d;\n\td.setHtml(text);\n"
-            << "\tpainter->save();\n"
-            << "\tpainter->translate(0,height-5);\n"
-            << "\n\td.drawContents(painter,contentsRect());\n"
-            << "\tpainter->restore();\n"
+//            << "\tpainter->save();\n"
+//            << "\tpainter->translate(0,height-10);\n"
+            << "\n\td.drawContents(painter, m_contents);\n"
+//            << "\tpainter->restore();\n"
             << "\tNodeElement::paint(painter, style, widget);\n"
             << "}\n\n";
 
         //boundingRect
-        out << "QRectF " << classname << "::boundingRect() const\n{\n"
-            << QString("\treturn QRectF(-5, -5, textSize+10, height+15);\n")
-            << "}\n\n";
+//        out << "QRectF " << classname << "::boundingRect() const\n{\n"
+//            << QString("\treturn QRectF(-5, -5, textSize+10, height+10);\n")
+//            << "}\n\n";
 
         //contentsRect
-        out << "QRectF " << classname << "::contentsRect() const\n{\n"
-            << QString("\treturn QRectF(0, 0, textSize, height+15);\n")
-            << "}\n\n";
+//        out << "QRectF " << classname << "::contentsRect() const\n{\n"
+//            << QString("\treturn QRectF(0, 0, textSize, height);\n")
+//            << "}\n\n";
 
         //updateData
         out << "void " << classname << "::updateData()\n{\n"
@@ -510,6 +510,8 @@ void Generator::genClasses(){
             << "\ttext = dataIndex.data().toString();\n"
             << "\tprepareGeometryChange();\n"
             << "\ttextSize = (width > text.size() * 8) ? width : text.size() * 8;\n"
+	    << "\tm_contents.setWidth(width);\n"
+	    << "\tm_contents.setHeight(height);\n"
             << "\tupdate();\n"
             << "}\n\n";
 
@@ -548,16 +550,16 @@ void Generator::genClasses(){
         out2 << "\tpublic:\n\t\t" << classname << "();\n";
         out2 << "\t\t~" << classname << "();\n";
         out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
-                "\tvirtual QRectF boundingRect() const;\n"
-                "\tvirtual QRectF contentsRect() const;\n"
+//                "\tvirtual QRectF boundingRect() const;\n"
+//                "\tvirtual QRectF contentsRect() const;\n"
                 "\tvirtual void updateData();\n\n"
-		        "private:\n"
+		"private:\n"
                 "\tvoid updatePorts();\n\n"
                 "\tQString text;\n"
                 "\tint textSize;\n"
                 "\tint width;\n"
                 "\tint height;\n"
-		        "\tQSvgRenderer renderer;\n";
+		"\tQSvgRenderer renderer;\n";
         
         out2 << "};\n\n#endif\n";
     }    
@@ -738,6 +740,8 @@ void Generator::genRealRepoInfo(){
             "static QMap<int, QStringList> map;\n\n";
 
     out2 << "static void initStaticData()\n{\n"
+	    "\tif ( initCompleted )\n"
+	    "\t\treturn;\n\n"
             "\tCategory cat;\n\n";
     for( int i=0; i<categories.size(); i++){
         out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
@@ -774,14 +778,15 @@ void Generator::genRealRepoInfo(){
         out2 << "\n";
     }
 
-    out2 << "\n}\n\n";
+    out2 << "\tinitCompleted = true;\n"
+	    "}\n\n";
 
     // constructor
 
     out2 << "RealRepoInfo::RealRepoInfo()\n"
-            "{\n\tif ( ! initCompleted )\n"
-            "\t\tinitStaticData();\n"
-            "\tinitCompleted = true;\n}\n\n";
+            "{\n"
+            "\tinitStaticData();\n"
+            "}\n\n";
                 
     // destructor
     out2 << "RealRepoInfo::~RealRepoInfo()\n{\n}\n\n";
