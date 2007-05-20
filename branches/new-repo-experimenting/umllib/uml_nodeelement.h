@@ -22,16 +22,18 @@ namespace UML {
 			virtual void updateData();
 
 			const QPointF getPort(int i) const;
-			int getNearestPort(const QPointF location) const;
+			int getNearestPort(const QPointF &location) const;
 			bool isChildOf(int id){ return parentsList.contains(id); }
 
 			void addEdge(EdgeElement *edge) { edgeList << edge; };
 			void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
 
 		protected:
-			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
-			void mousePressEvent( QGraphicsSceneMouseEvent * event );
+//			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+//			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+//			void mousePressEvent( QGraphicsSceneMouseEvent * event );
+
+			virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 			QList<int> parentsList;
 

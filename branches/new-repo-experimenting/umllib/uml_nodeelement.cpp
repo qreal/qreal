@@ -14,7 +14,7 @@ NodeElement::~NodeElement()
 	foreach (EdgeElement *edge, edgeList)
 		edge->removeLink(this);
 }
-
+/*
 void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 {
 	if ( isSelected() ) {
@@ -36,9 +36,6 @@ void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	foreach (EdgeElement *edge, edgeList)
-		edge->adjustLink();
-
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
@@ -71,15 +68,26 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	im->setData(dataIndex, pos(), Unreal::PositionRole);
 	moving = 0;
 
-	foreach (EdgeElement *edge, edgeList)
-		edge->adjustLink();
-
 	if ( dragState != None )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
 
 	m_contents = m_contents.normalized();
+}
+*/
+QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+	switch ( change ) {
+		case ItemPositionHasChanged:
+			{
+				foreach (EdgeElement *edge, edgeList)
+					edge->adjustLink();
+			}
+			return value;
+		default:
+			return QGraphicsItem::itemChange(change, value);
+	}
 }
 
 QRectF NodeElement::contentsRect() const
@@ -98,9 +106,6 @@ void NodeElement::updateData()
 
 	if (moving == 0) {
 		setPos(dataIndex.data(Unreal::PositionRole).toPointF());
-
-		foreach (EdgeElement *edge, edgeList)
-			edge->adjustLink();
 	}
 }
 
@@ -109,18 +114,13 @@ const QPointF NodeElement::getPort(int i) const
 	return ports[i];
 }
 
-int NodeElement::getNearestPort(const QPointF location) const
+int NodeElement::getNearestPort(const QPointF &location) const
 {
-	int closest = 0;
-	qreal minLength = 1000000;
-	for (int i = 0; i < ports.size(); ++i) {
-		qreal curLength = QLineF(ports.at(i),location).length();
-		if ( curLength < minLength ) {
-			minLength = curLength;
-			closest = i;
-		}
-	}
-	return closest;
+	for ( int i = 0 ; i < ports.size() ; i++ )
+		if ( QRectF(ports[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
+			return i;
+	
+	return -1;
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)

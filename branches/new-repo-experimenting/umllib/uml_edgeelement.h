@@ -23,7 +23,9 @@ namespace UML {
 			void removeLink(UML::NodeElement *from) { if (src == from) { src = 0; }; if (dst == from) { dst = 0; }; };
 
 		private:
-			void checkConnection();
+			int getPoint( const QPointF &location );
+			NodeElement *getNodeAt( const QPointF &position );
+//			void checkConnection();
 			NodeElement *src, *dst;
 			//	QPointF srcPoint, dstPoint;
 

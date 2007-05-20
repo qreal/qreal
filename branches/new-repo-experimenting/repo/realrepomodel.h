@@ -1,12 +1,15 @@
 #ifndef REALREPOMODEL_H
 #define REALREPOMODEL_H
 
-#include <QAbstractItemModel>
-#include <QSqlDatabase>
-#include <QModelIndex>
-#include <QVariant>
-#include <QHash>
-#include <QPoint>
+#include <QtSql/QSqlDatabase>
+
+#include <QtCore/QAbstractItemModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QVariant>
+#include <QtCore/QHash>
+#include <QtCore/QPoint>
+
+#include <QtGui/QPolygon>
 
 #include "realrepoinfo.h"
 
@@ -65,6 +68,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		struct ElementOnDiagram {
 			QPoint position;
+			QPolygon configuration;
 		};
 
 		QHash <int, QMap<int, ElementOnDiagram> > hashDiagramElements;

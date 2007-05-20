@@ -38,6 +38,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
+		case Unreal::krnnNamedElement::nameRole:
 			return hashNames[item->id];
 		case Unreal::IdRole:
 			return item->id;
@@ -48,6 +49,14 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 				if ( type( item->parent ) == Container )
 					if ( hashDiagramElements[item->parent->id].contains(item->id) )
 						return hashDiagramElements[item->parent->id][item->id].position;
+	
+				return QVariant();
+			};
+		case Unreal::ConfigurationRole:
+			{
+				if ( type( item->parent ) == Container )
+					if ( hashDiagramElements[item->parent->id].contains(item->id) )
+						return hashDiagramElements[item->parent->id][item->id].configuration;
 	
 				return QVariant();
 			};
@@ -85,6 +94,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
+		case Unreal::krnnNamedElement::nameRole:
 			{
 				q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");
 				q.bindValue(":id",  item->id );
@@ -107,6 +117,28 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 
 					if ( q.exec() ) {
 						hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
+					} else
+						qDebug() << db.lastError().text();
+				}
+			}
+		case Unreal::ConfigurationRole:
+			{
+				if ( type(item->parent) == Container ) {
+					q.prepare("UPDATE diagram SET cfg=:config WHERE diagram_id=:did AND el_id=:elid;");
+					q.bindValue(":did", item->parent->id );
+					q.bindValue(":elid", item->id );
+					// save QPolygon to QString
+					QPolygon poly(value.value<QPolygon>());
+					QString result;
+					foreach ( QPoint point, poly ) {
+						result += QString("(%1,%2);").arg(point.x()).arg(point.y());
+					}
+					result.chop(1);
+
+					q.bindValue(":config", result);
+
+					if ( q.exec() ) {
+						hashDiagramElements[item->parent->id][item->id].configuration = value.value<QPolygon>();
 					} else
 						qDebug() << db.lastError().text();
 				}
@@ -361,7 +393,6 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 						q.exec();
 
 						createItem(parentItem, newid, newtype);
-
 					} else 
 						qDebug() << db.lastError().text();
 
@@ -587,7 +618,7 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 		}
 	} else {
 		QSqlQuery q(db);
-		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, diagram.x, diagram.y,"
+		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, diagram.x, diagram.y, diagram.cfg,"
 				  " nametable.qualifiedName, COUNT (children.el_id) FROM diagram"
 				"  LEFT JOIN nametable ON diagram.el_id = nametable.id"
 				"  LEFT JOIN diagram AS children ON children.diagram_id = diagram.el_id"
@@ -607,13 +638,23 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 				hashNames[item->id] = q.value(1).toString();
 				hashTypes[item->id] = q.value(2).toInt();
 
-				hashChildCount[item->id] = q.value(6).toInt();
+				hashChildCount[item->id] = q.value(7).toInt();
 				hashChildren[root->id].append(item->id);
 
 				root->children.append(item);
 				hashTreeItems[item->id].append(item);
 				
 				hashDiagramElements[root->id][item->id].position = QPoint(q.value(3).toInt(), q.value(4).toInt());
+
+				// FIXME: parse some better way
+				QPolygon newConfig; 
+				QStringList pointList = q.value(5).toString().split(';',QString::SkipEmptyParts);
+				foreach ( QString pointData, pointList ) {
+					QStringList coords = pointData.split(QRegExp("\\(|\\)|,"),QString::SkipEmptyParts);
+					newConfig << QPoint(coords.at(0).toInt(), coords.at(1).toInt());
+				}
+
+				hashDiagramElements[root->id][item->id].configuration = newConfig;
 			}
 		} else
 			qDebug() << db.lastError().text();

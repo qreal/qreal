@@ -24,8 +24,7 @@ EdgeElement::EdgeElement()
 	setFlag(ItemClipsToShape, false);
 
 	m_penStyle = Qt::SolidLine;
-
-	m_line << QPointF(-100,-30) << QPointF(100,30);
+	m_line << QPointF(0,0) << QPointF(200,60);
 }
 
 EdgeElement::~EdgeElement()
@@ -38,8 +37,8 @@ EdgeElement::~EdgeElement()
 
 QRectF EdgeElement::boundingRect() const
 {
-	//	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
-	return m_line.boundingRect().adjusted(-20,-20,20,20);
+	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+	// return m_line.boundingRect().adjusted(-20,-20,20,20);
 }
 
 static double lineAngle(const QLineF &line)
@@ -82,10 +81,10 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 }
 
 bool canBeConnected( int linkID, int from, int to );
-
+/*
 void EdgeElement::checkConnection()
 {
-	int type = this->type();
+//	int type = this->type();
 	int from = -1;
 	int to = -1;
 
@@ -95,13 +94,9 @@ void EdgeElement::checkConnection()
 	if ( dst != 0 )
 		to = dst->type();
 
-	if ( canBeConnected( type, from, to ) )
-		m_color = Qt::black;
-	else
-		m_color = Qt::red;
-
+	m_color = Qt::black;
 }
-
+*/
 QPainterPath EdgeElement::shape() const
 {
 	QPainterPath path;
@@ -120,18 +115,21 @@ QPainterPath EdgeElement::shape() const
 	return path;
 }
 
+int EdgeElement::getPoint( const QPointF &location )
+{
+	for ( int i = 0 ; i < m_line.size() ; i++ )
+		if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
+			return i;
+
+	return -1;
+}
+
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
 	dragState = -1;
 
-	if ( isSelected() ) {
-		for ( int i = 0 ; i < m_line.size() ; i++ ) {
-			if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
-				dragState = i;
-				break;
-			}
-		}
-	}
+	if ( isSelected() )
+		dragState = getPoint( event->pos() );
 
 	if ( dragState == -1 )
 		Element::mousePressEvent(event);
@@ -149,6 +147,54 @@ void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 
 void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
+	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+
+	setPos(pos()+m_line[0]);
+	m_line.translate(-m_line[0]);
+	
+	im->setData(dataIndex, pos(), Unreal::PositionRole);
+	im->setData(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
+
+	if ( dragState == -1 )
+		Element::mouseReleaseEvent(event);
+	else
+		dragState = -1;
+
+	// Now we check whether start or end have been connected
+
+	NodeElement *new_src = getNodeAt(m_line[0]);
+	if ( src != new_src ) {
+		if ( src && ( new_src == 0 ) ) {
+			src->delEdge(this);
+			src = 0;
+		} else if ( new_src && ( src == 0 ) ) {
+			src = new_src;
+			src->addEdge(this);
+		} else if ( src && new_src ) {
+			src->delEdge(this);
+			src = new_src;
+			src->addEdge(this);
+		}
+	}
+
+//	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
+//	if ( dst == 0 ) {
+//		dst = new_dst;
+//		dst->addEdge(this);
+//	}
+}
+
+NodeElement *EdgeElement::getNodeAt( const QPointF &position )
+{
+	foreach( QGraphicsItem *item, scene()->items(mapToScene(position)) ) {
+		NodeElement *e = dynamic_cast<NodeElement *>(item);
+		if ( e )
+			return e;
+	}
+	return 0;
+}
+
+/*	
 	if ( dragState != -1 ) {
 
 		//    int uuidFrom = idx.sibling(myrow,5).data().toInt();
@@ -167,7 +213,6 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					m_line[0] = mapFromItem(src,src->getPort(portFrom));
 					QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
 
-					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 					im->setData(dataIndex, fromPort, Unreal::krneRelationship::fromRole );
 
 				} else if ( dragState == m_line.size()-1 ) {
@@ -178,7 +223,6 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					m_line[m_line.size()-1] = mapFromItem(dst,dst->getPort(portTo));
 					QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
 
-					QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 					im->setData(dataIndex, toPort, Unreal::krneRelationship::toRole );
 				}
 				setFlag(ItemIsMovable, false);
@@ -194,14 +238,12 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					src->delEdge(this);
 				src = 0;
 
-				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 				im->setData(dataIndex, "0:0", Unreal::krneRelationship::fromRole );
 			} else if ( dragState == m_line.size()-1 ) {
 				if (dst)
 					dst->delEdge(this);
 				dst = 0;
 
-				QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 				im->setData(dataIndex, "0:0", Unreal::krneRelationship::toRole );
 			}
 			if ( ! src && ! dst )
@@ -210,12 +252,12 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		}
 
 		dragState = -1;
-	} else
+	} else 
 		Element::mouseReleaseEvent(event);
 
 	dragState = -1;
 }
-
+*/
 void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 {
 	QMenu menu;
@@ -226,21 +268,23 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 
 	if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
 		if ( selectedAction == delPointAction ) {
-			for ( int i = 1 ; i < m_line.size()-1 ; i++ ) {
-				if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( event->pos() ) ) {
-					prepareGeometryChange();
-					m_line.remove(i);
-					update();
-					break;
-				}
+			int i = getPoint( event->pos() );
+			if ( i != -1 ) {
+				prepareGeometryChange();
+				m_line.remove(i);
+				update();
 			}
 		} else if ( selectedAction == addPointAction ) {
 			for ( int i = 0; i < m_line.size()-1; i++ ) {
 				QPainterPath path;
+				QPainterPathStroker ps;
+				ps.setWidth(kvadratik);
+	
 				path.moveTo(m_line[i]);
 				path.lineTo(m_line[i+1]);
-				if ( shape().contains(event->pos()) ) {
+				if ( ps.createStroke(path).contains(event->pos()) ) {
 					m_line.insert(i+1,event->pos());
+					update();
 					break;
 				}
 			}
@@ -254,10 +298,12 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 					m_line[i+1].setY(m_line[i].y());
 				}
 			}
+			update();
 		} 
 	}
 }
-
+/*
+*/
 void EdgeElement::adjustLink()
 {
 	prepareGeometryChange();
@@ -268,16 +314,23 @@ void EdgeElement::adjustLink()
 	update();
 
 //	qDebug() << m_line[0] << m_line[m_line.size()-1];
-	qDebug() << portFrom << portTo;
+//	qDebug() << portFrom << src->getPort(portFrom) << portTo << dst->getPort(portTo) ;
 }
+
 
 void EdgeElement::updateData()
 {
 	Element::updateData();
 
+	setPos(dataIndex.data(Unreal::PositionRole).toPointF());
+	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
+	if ( !newLine.isEmpty() )
+		m_line = newLine;
+}
+/*
 	// temporary code, to be reworked with introduction of new schema handling
-	QString from = dataIndex.data(Unreal::reqeP2N::fromRole).toString();
-	QString to = dataIndex.data(Unreal::reqeP2N::toRole).toString();
+	QString from = dataIndex.data(Unreal::krneRelationship::fromRole).toString();
+	QString to = dataIndex.data(Unreal::krneRelationship::toRole).toString();
 
 	int uuidFrom = from.split(":").at(0).toInt();
 	int uuidTo = to.split(":").at(0).toInt();
@@ -322,3 +375,4 @@ void EdgeElement::updateData()
 		setFlag(ItemIsMovable, false );
 	}
 }
+*/
