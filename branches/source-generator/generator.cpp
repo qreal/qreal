@@ -220,8 +220,9 @@ void Generator::parseLabels( Node* cur, QDomNode dnode ){
         Label l;
         QString txt;
         QTextStream stream(&txt);
-        l.x = htmls.at(i).toElement().attribute("x").toInt();
-        l.y = htmls.at(i).toElement().attribute("y").toInt();
+        l.x = (qreal)htmls.at(i).toElement().attribute("x").toInt()/cur->width;
+        l.y = (qreal)htmls.at(i).toElement().attribute("y").toInt()/cur->height;
+        qDebug() << l.x << l.y;
         
         QDomNode tfr = htmls.at(i).toElement().elementsByTagName("html:text_from_repo").at(0);
         QDomNode par = tfr.parentNode();
@@ -516,9 +517,19 @@ void Generator::genClasses(){
                                                                                 "QWidget *widget)\n{\n";
         out << "\tupdatePorts();\n"
             << QString("\trenderer.render(painter, m_contents);\n\n")
-            << "\tQTextDocument d;\n\td.setHtml(text);\n"
-            << "\n\td.drawContents(painter, m_contents);\n"
-            << "\tNodeElement::paint(painter, style, widget);\n"
+            << "\tQTextDocument d;\n"
+            << "\td.setHtml(text);\n";
+        if( objects.at(i)->labels.size() > 0){
+            out << "\tpainter->save();\n"
+            << QString("\tpainter->translate(QPointF(%1 * m_contents.width(), %2 * m_contents.height()));\n")
+                                        .arg(objects.at(i)->labels.at(0).x)
+                                        .arg(objects.at(i)->labels.at(0).y)
+            << "\td.drawContents(painter, m_contents);\n"
+            << "\tpainter->restore();\n";
+        }
+        else
+            out << "\td.drawContents(painter, m_contents);\n";
+        out << "\tNodeElement::paint(painter, style, widget);\n"
             << "}\n\n";
 
         //updateData

@@ -15,7 +15,7 @@
 						</svg:svg>
 					</svg_shape>
 					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/" x="0" y="25">
+						<html:html xmlns:html="http://www.w3.org/html/" x="0" y="20">
 							<html:center>
 								<html:b>
 									<html:text_from_repo name="name" />
@@ -98,7 +98,7 @@
 						</svg:svg>
 					</svg_shape>
 					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/">
+						<html:html xmlns:html="http://www.w3.org/html/" x="0">
 							<html:center>
 								<html:b>
 									<html:text_from_repo name="name" />
