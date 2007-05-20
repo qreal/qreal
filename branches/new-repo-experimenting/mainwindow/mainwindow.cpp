@@ -105,7 +105,7 @@ void MainWindow::connectRepo()
 	ui.diagramExplorer->setRootIndex(model->index(1,0,QModelIndex()));
 
 	ui.objectExplorer->setModel(model);
-	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
+//	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
 
 	view->mvIface()->setModel(model);
 }
