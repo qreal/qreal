@@ -49,7 +49,7 @@ Generator::~Generator(){
 
 void Generator::parseFile( QString filename ){
 
-    QDomDocument *doc = new QDomDocument("+1"); // :)
+    doc = new QDomDocument("+1"); // :)
     QFile file(filename);
     if( !file.open(QIODevice::ReadOnly)){
         qDebug() << "incorrect filename " << filename;
@@ -84,6 +84,7 @@ void Generator::parseFile( QString filename ){
         parseEdge( edgeList.at(i) );
     }
 
+    delete doc;
 }
 
 void Generator::parseEnum( QDomNode dnode ){
@@ -111,8 +112,9 @@ void Generator::parseNode( QDomNode dnode ){
     parseGeneralizations( cur, logic );
     parseProperties( cur, logic );
     parseAssociations( cur, logic, isNode);
-    parsePorts( cur, dnode );
     parseSVG( cur, dnode ); 
+    parsePorts( cur, dnode );
+    parseLabels( cur, dnode );
 
     cur->type = NODE;
     objects << cur;
@@ -133,6 +135,7 @@ void Generator::parseEdge( QDomNode dnode ){
     cur->properties << QPair<QString, QString>("fromPort", "string");
     cur->properties << QPair<QString, QString>("toPort", "string");
 
+    parseNodeGraphics( cur, dnode );
     parseGeneralizations( cur, logic ); 
     parseProperties( cur, logic );
     parseAssociations( cur, logic, isNode );
@@ -187,31 +190,55 @@ void Generator::parseProperties( Entity* cur, QDomNode logic ){
 
 void Generator::parsePorts( Node* cur, QDomNode dnode ){
     
-    QDomNodeList ports = dnode.toElement().elementsByTagName("port");
+    QDomNodeList ports = dnode.toElement().elementsByTagName("point_port");
     for( int i=0; i<ports.size(); i++ ){
         Port port;
-        QString type = ports.at(i).toElement().attribute("type");
-        port.type = type;
-        if( type == "point"){
-            port.vals << ports.at(i).toElement().attribute("x").toInt();
-            port.vals << ports.at(i).toElement().attribute("y").toInt();
-        }
-        else if( type == "line" ){
-            port.vals << ports.at(i).toElement().attribute("x1").toInt();
-            port.vals << ports.at(i).toElement().attribute("x2").toInt();
-            port.vals << ports.at(i).toElement().attribute("y1").toInt();
-            port.vals << ports.at(i).toElement().attribute("y2").toInt();
-        }
-        else if( type == "ellipse" ){
-            port.vals << ports.at(i).toElement().attribute("x").toInt();
-            port.vals << ports.at(i).toElement().attribute("y").toInt();
-            port.vals << ports.at(i).toElement().attribute("rx").toInt();
-            port.vals << ports.at(i).toElement().attribute("ry").toInt();
-        }
+        port.type = "point";
+        port.vals << (qreal) ports.at(i).toElement().attribute("x").toInt()/cur->width;
+        port.vals << (qreal) ports.at(i).toElement().attribute("y").toInt()/cur->height;
         cur->ports << port;
     }
 }
 
+void Generator::parseNodeGraphics( Edge* cur, QDomNode dnode ){
+
+    QDomNode lineType = dnode.toElement().elementsByTagName("line_type").at(0);
+    if( lineType != QDomNode() ){
+        QString type = lineType.toElement().attribute("type");
+        if( type == "noPan"){ // temporary kludge
+            type = "solidLine";
+        }
+        cur->lineType = "Qt::" + type.replace(0,1,type.at(0).toUpper());
+    }
+    
+}
+
+void Generator::parseLabels( Node* cur, QDomNode dnode ){
+
+    QDomNodeList htmls = dnode.toElement().elementsByTagName("html:html");
+    for( int i=0; i < htmls.size(); i++ ){
+        Label l;
+        QString txt;
+        QTextStream stream(&txt);
+        l.x = htmls.at(i).toElement().attribute("x").toInt();
+        l.y = htmls.at(i).toElement().attribute("y").toInt();
+        
+        QDomNode tfr = htmls.at(i).toElement().elementsByTagName("html:text_from_repo").at(0);
+        QDomNode par = tfr.parentNode();
+        par.removeChild(tfr);
+        
+        const QDomText data = doc->createTextNode("%1");
+        l.arg = "Unreal::" + cur->id + "::" + tfr.toElement().attribute("name") + "Role";
+        par.appendChild(data);
+        
+        htmls.at(0).firstChild().save(stream, 1);
+        txt.replace(QString("\n"), QString(" "));
+        txt.replace(QString("\""), QString("\\\""));
+        txt.replace(QString("html:"), QString(""));
+        l.text = txt.simplified();
+        cur->labels <<  l;
+    }
+}
 
 void Generator::parseSVG( Entity* cur, QDomNode dnode ){
 
@@ -304,7 +331,7 @@ void Generator::genEnums()
     }
     out << "\t};\n};\n\n";
 
-    out << "namespace Unreal{\n";
+    out << "namespace Unreal {\n";
     out << "\tenum Roles {\n"
            "\t\tPositionRole = Qt::UserRole + 64,   // Position on a diagram\n"
            "\t\tConfigurationRole,          // Configuration (e.g. for link)\n"
@@ -385,8 +412,8 @@ void Generator::genSQLScripts()
             QString name = objects.at(i)->properties.at(k).first;
             QString type = objects.at(i)->properties.at(k).second;
             
-//            if( name == "name")
-  //              continue;
+            if( name == "name")
+                continue;
             
             //TODO: bool and other types support
             if (type == "string" || type.contains("enum"))
@@ -437,11 +464,13 @@ void Generator::genClasses(){
 
     out <<  "#include <QtGui>\n"
             "#include \"objects.h\"\n\n"
+            "using namespace Unreal;\n"
             "using namespace UML;\n\n";
 
     out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n#include <QList>\n\n"
             "#include \"uml_nodeelement.h\"\n"
             "#include \"uml_edgeelement.h\"\n"
+            "#include \"realreporoles.h\"\n"
             "namespace UML {\n";
 
 
@@ -473,7 +502,8 @@ void Generator::genClasses(){
         out << ";\n";
         out << QString("\theight = %1;\n").arg(objects.at(i)->height)
             << QString("\twidth = %1;\n").arg(objects.at(i)->width)
-            << QString("\ttextSize = 0;\n")
+	    << "\tm_contents.setWidth(width);\n"
+	    << "\tm_contents.setHeight(height);\n"
             << "}\n\n";
 
 	    //destructor
@@ -487,31 +517,21 @@ void Generator::genClasses(){
         out << "\tupdatePorts();\n"
             << QString("\trenderer.render(painter, m_contents);\n\n")
             << "\tQTextDocument d;\n\td.setHtml(text);\n"
-//            << "\tpainter->save();\n"
-//            << "\tpainter->translate(0,height-10);\n"
             << "\n\td.drawContents(painter, m_contents);\n"
-//            << "\tpainter->restore();\n"
             << "\tNodeElement::paint(painter, style, widget);\n"
             << "}\n\n";
 
-        //boundingRect
-//        out << "QRectF " << classname << "::boundingRect() const\n{\n"
-//            << QString("\treturn QRectF(-5, -5, textSize+10, height+10);\n")
-//            << "}\n\n";
-
-        //contentsRect
-//        out << "QRectF " << classname << "::contentsRect() const\n{\n"
-//            << QString("\treturn QRectF(0, 0, textSize, height);\n")
-//            << "}\n\n";
-
         //updateData
         out << "void " << classname << "::updateData()\n{\n"
-            << "\tNodeElement::updateData();\n"
-            << "\ttext = dataIndex.data().toString();\n"
+            << "\tNodeElement::updateData();\n";
+        if( objects.at(i)->labels.size() > 0){
+            out << QString("\ttext = QString(\"%1\")").arg(objects.at(i)->labels.at(0).text);
+            out << QString(".arg(dataIndex.data(%2).toString());\n").arg(objects.at(i)->labels.at(0).arg);
+        }    
+        else
+            out << "\ttext = \"\";\n";
+        out << QString("")
             << "\tprepareGeometryChange();\n"
-            << "\ttextSize = (width > text.size() * 8) ? width : text.size() * 8;\n"
-	    << "\tm_contents.setWidth(width);\n"
-	    << "\tm_contents.setHeight(height);\n"
             << "\tupdate();\n"
             << "}\n\n";
 
@@ -520,20 +540,22 @@ void Generator::genClasses(){
                "\tports.clear();\n";
         if( objects.at(i)->type == NODE){       
             Node* node = (Node*) objects.at(i);
-            out << "\tint d = textSize/2 - width/2;\n";
             if( node->ports.size() == 0 ){
-                    out <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                    out << "\tint d = textSize/2 - width/2;\n"
+                     <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
                                    " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
             }          
             for( int j=0; j<node->ports.size(); j++ ){
                 if( node->ports.at(j).type == "point" ){
-                    out << QString("\tports << QPointF(d+%1, %2);\n").arg(node->ports.at(j).vals.at(0))
-                                                          .arg(node->ports.at(j).vals.at(1));
+                        out << QString("\tports << QPointF(m_contents.width() * %1, m_contents.height() * %2);\n")
+                                                            .arg(node->ports.at(j).vals.at(0))
+                                                            .arg(node->ports.at(j).vals.at(1));
                 }                                          
-                else if( node->id != "uscnActor" ){
-                    out <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                else //if( node->id != "uscnActor" ){
+                    out << "\tint d = textSize/2 - width/2;\n"
+                        <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
                                    " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
-                }          
+                          
             }
         } 
         out << "}\n";
@@ -550,8 +572,6 @@ void Generator::genClasses(){
         out2 << "\tpublic:\n\t\t" << classname << "();\n";
         out2 << "\t\t~" << classname << "();\n";
         out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
-//                "\tvirtual QRectF boundingRect() const;\n"
-//                "\tvirtual QRectF contentsRect() const;\n"
                 "\tvirtual void updateData();\n\n"
 		"private:\n"
                 "\tvoid updatePorts();\n\n"
@@ -591,7 +611,7 @@ void Generator::genClasses(){
         //
 
         out << classname << "::" << classname << "()\n";
-        out <<   "{\n}\n\n";
+        out << QString("{\n\tm_penStyle = %1;\n}\n\n").arg(edges.at(i)->lineType);
         
         out << classname << "::~" << classname << "()\n";
         out <<   "{\n}\n\n";

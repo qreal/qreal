@@ -37,6 +37,8 @@ private:
     //void parseNodeAssociations( Entity*, QDomNode );
     void parseSVG             ( Entity*, QDomNode );
     void parsePorts           ( Node*,   QDomNode );
+    void parseLabels          ( Node*,   QDomNode );
+    void parseNodeGraphics    ( Edge*,   QDomNode );
 
     void genEnums();
     void genSQLScripts();
@@ -53,6 +55,7 @@ private:
 
     int position( QString );
     
+    QDomDocument* doc;
 
     Entity* find( QString id );
     Edge* findEdge( QString id );

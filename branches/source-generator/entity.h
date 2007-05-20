@@ -11,6 +11,7 @@ enum elementsType { NODE, EDGE };
 enum sideType { BEGIN, END };
 
 class Port;
+class Label;
 
 // parent for nodes and edges class
 class Entity
@@ -31,6 +32,8 @@ public:
     QStringList children;
 
     QList< QPair<QString, QString> > properties;
+
+    QList< Label > labels;
 
     elementsType type;
 
@@ -60,8 +63,17 @@ public:
 class Port {
 public:
     QString type;
-    QList<int> vals;
+    QList< qreal > vals;
 };
+
+class Label{
+public:
+    qreal x;
+    qreal y;
+    QString text;
+    QString arg;
+};
+
 
 // edge class
 class Edge : public Entity
@@ -70,6 +82,7 @@ public:
     Edge(){
         assocsPropagated = false;
         endsPropagated   = false;
+        lineType = "Qt::SolidLine";
     }
     ~Edge(){
         for( int i=0; i<associations.size(); i++)   
@@ -79,6 +92,7 @@ public:
     void addAssociation( Association* );
 
     QList< Association*  > associations;
+    QString lineType;
 
     bool assocsPropagated; // edges' own generalizations
     bool endsPropagated; // connected nodes' generalizations
