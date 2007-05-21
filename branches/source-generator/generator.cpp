@@ -504,8 +504,29 @@ void Generator::genClasses(){
         out << QString("\theight = %1;\n").arg(objects.at(i)->height)
             << QString("\twidth = %1;\n").arg(objects.at(i)->width)
 	    << "\tm_contents.setWidth(width);\n"
-	    << "\tm_contents.setHeight(height);\n"
-            << "}\n\n";
+	    << "\tm_contents.setHeight(height);\n";
+
+        if( objects.at(i)->type == NODE){       
+            Node* node = (Node*) objects.at(i);
+            if( node->ports.size() == 0 ){
+                    out << "\tint d = textSize/2 - width/2;\n"
+                     <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
+            }          
+            for( int j=0; j<node->ports.size(); j++ ){
+                if( node->ports.at(j).type == "point" ){
+                        out << QString("\tports << QPointF(%1, %2);\n")
+                                                            .arg(node->ports.at(j).vals.at(0))
+                                                            .arg(node->ports.at(j).vals.at(1));
+                }                                          
+                else //if( node->id != "uscnActor" ){
+                    out << "\tint d = textSize/2 - width/2;\n"
+                        <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
+                          
+            }
+        } 
+        out  << "}\n\n";
 
 	    //destructor
 	    out << classname << "::~" << classname << "()\n";
@@ -547,28 +568,8 @@ void Generator::genClasses(){
             << "}\n\n";
 
         // updatePorts
-        out << "void " + classname + "::updatePorts(){\n"
-               "\tports.clear();\n";
-        if( objects.at(i)->type == NODE){       
-            Node* node = (Node*) objects.at(i);
-            if( node->ports.size() == 0 ){
-                    out << "\tint d = textSize/2 - width/2;\n"
-                     <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
-                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
-            }          
-            for( int j=0; j<node->ports.size(); j++ ){
-                if( node->ports.at(j).type == "point" ){
-                        out << QString("\tports << QPointF(m_contents.width() * %1, m_contents.height() * %2);\n")
-                                                            .arg(node->ports.at(j).vals.at(0))
-                                                            .arg(node->ports.at(j).vals.at(1));
-                }                                          
-                else //if( node->id != "uscnActor" ){
-                    out << "\tint d = textSize/2 - width/2;\n"
-                        <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
-                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
-                          
-            }
-        } 
+        out << "void " + classname + "::updatePorts(){\n";
+               //"\tports.clear();\n";
         out << "}\n";
         
         out << "// " + classname  << "\n";
