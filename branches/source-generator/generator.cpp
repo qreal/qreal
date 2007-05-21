@@ -510,20 +510,18 @@ void Generator::genClasses(){
             Node* node = (Node*) objects.at(i);
             if( node->ports.size() == 0 ){
                     out << "\tint d = textSize/2 - width/2;\n"
-                     <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
+                     <<  "\tpointPorts << QPointF(d, height/2) << QPointF(width/2 + d, height)"
                                    " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
             }          
             for( int j=0; j<node->ports.size(); j++ ){
                 if( node->ports.at(j).type == "point" ){
-                        out << QString("\tports << QPointF(%1, %2);\n")
+                        out << QString("\tpointPorts << QPointF(%1, %2);\n")
                                                             .arg(node->ports.at(j).vals.at(0))
                                                             .arg(node->ports.at(j).vals.at(1));
-                }                                          
-                else //if( node->id != "uscnActor" ){
-                    out << "\tint d = textSize/2 - width/2;\n"
-                        <<  "\tports << QPointF(d, height/2) << QPointF(width/2 + d, height)"
-                                   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
-                          
+                }                                         
+                else{
+                //TODO
+                }
             }
         } 
         out  << "}\n\n";
