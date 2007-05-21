@@ -229,7 +229,11 @@ void Generator::parseLabels( Node* cur, QDomNode dnode ){
         par.removeChild(tfr);
         
         const QDomText data = doc->createTextNode("%1");
-        l.arg = "Unreal::" + cur->id + "::" + tfr.toElement().attribute("name") + "Role";
+        QString role = tfr.toElement().attribute("name");
+        if( role == "name" )
+            l.arg = "Qt::DisplayRole";
+        else    
+            l.arg = "Unreal::" + cur->id + "::" + role + "Role";
         par.appendChild(data);
         
         htmls.at(0).firstChild().save(stream, 1);
