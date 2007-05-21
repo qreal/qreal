@@ -27,6 +27,7 @@ RealRepoModel::~RealRepoModel()
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 {
+	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
 
@@ -38,7 +39,6 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-		case Unreal::krnnNamedElement::nameRole:
 			return hashNames[item->id];
 		case Unreal::IdRole:
 			return item->id;
@@ -81,6 +81,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 
 bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
+	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return false;
 
@@ -94,7 +95,6 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-		case Unreal::krnnNamedElement::nameRole:
 			{
 				q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");
 				q.bindValue(":id",  item->id );
@@ -144,20 +144,17 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 				}
 			}
 		default:
-			if ( role > Unreal::UserRole ) {
+			if ( role >= Unreal::UserRole ) {
 				QString sql = QString("UPDATE el_%1 SET `%2` = :value WHERE id = :elid ;")
 					.arg(hashTypes[item->id]).arg(info.getColumnName(hashTypes[item->id],role));
 				q.prepare(sql);
 				q.bindValue(":elid", item->id);
 				q.bindValue(":value", value);
 				
-				if ( q.exec() )
+				if ( q.exec() ) 
 					if ( hashElementProps.contains(item->id) ) {
 						hashElementProps[item->id][role] = value;
-						return true;
 					}
-
-				return false;
 			}
 	}
 

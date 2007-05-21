@@ -15,6 +15,8 @@ using namespace UML;
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
+static bool moving = false;
+
 EdgeElement::EdgeElement()
 : src(0), dst(0), portFrom(0), portTo(0), dragState(-1)
 {
@@ -56,6 +58,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	QPen pen = painter->pen();
 	pen.setColor(m_color);
 	pen.setStyle(m_penStyle);
+	pen.setWidth(1);
 	painter->setPen(pen);
 	painter->drawPolyline(m_line);
 	painter->restore();
@@ -152,36 +155,67 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	setPos(pos()+m_line[0]);
 	m_line.translate(-m_line[0]);
 	
-	im->setData(dataIndex, pos(), Unreal::PositionRole);
-	im->setData(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
-
 	if ( dragState == -1 )
 		Element::mouseReleaseEvent(event);
 	else
 		dragState = -1;
 
-	// Now we check whether start or end have been connected
+	moving = true;
 
+	// Now we check whether start or end have been connected
 	NodeElement *new_src = getNodeAt(m_line[0]);
-	if ( src != new_src ) {
-		if ( src && ( new_src == 0 ) ) {
-			src->delEdge(this);
-			src = 0;
-		} else if ( new_src && ( src == 0 ) ) {
-			src = new_src;
-			src->addEdge(this);
-		} else if ( src && new_src ) {
-			src->delEdge(this);
-			src = new_src;
-			src->addEdge(this);
-		}
+	if ( new_src )
+		portFrom = new_src->getPortId( mapToItem(new_src, m_line[0]) );
+	else
+		portFrom = -1.0;
+
+	if ( src ) {
+		src->delEdge(this);
+		src = 0;
 	}
 
-//	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
-//	if ( dst == 0 ) {
-//		dst = new_dst;
-//		dst->addEdge(this);
-//	}
+	if ( portFrom >= 0.0 ) {
+		src = new_src;
+		src->addEdge(this);
+	}
+
+	if ( src )
+		im->setData(dataIndex, src->uuid(), Unreal::krneRelationship::fromRole);
+	else
+		im->setData(dataIndex, 0, Unreal::krneRelationship::fromRole);
+
+	im->setData(dataIndex, portFrom, Unreal::krneRelationship::fromPortRole);
+
+
+	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
+	if ( new_dst )
+		portTo = new_dst->getPortId( mapToItem(new_dst, m_line[m_line.size()-1]) );
+	else
+		portTo = -1.0;
+
+	if ( dst ) {
+		dst->delEdge(this);
+		dst = 0;
+	}
+
+	if ( portTo >= 0.0 ) {
+		dst = new_dst;
+		dst->addEdge(this);
+	}
+	
+	if ( dst )
+		im->setData(dataIndex, dst->uuid(), Unreal::krneRelationship::toRole);
+	else
+		im->setData(dataIndex, 0, Unreal::krneRelationship::toRole);
+
+	im->setData(dataIndex, portTo, Unreal::krneRelationship::toPortRole);
+
+	setFlag(ItemIsMovable, !(dst||src) );
+
+	im->setData(dataIndex, pos(), Unreal::PositionRole);
+	im->setData(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
+
+	moving = false;
 }
 
 NodeElement *EdgeElement::getNodeAt( const QPointF &position )
@@ -194,70 +228,6 @@ NodeElement *EdgeElement::getNodeAt( const QPointF &position )
 	return 0;
 }
 
-/*	
-	if ( dragState != -1 ) {
-
-		//    int uuidFrom = idx.sibling(myrow,5).data().toInt();
-		//    int uuidTo = idx.sibling(myrow,6).data().toInt();
-
-		// FIXME: probably slow.
-		NodeElement *e = 0;
-		foreach( QGraphicsItem *item, scene()->items(mapToScene(event->pos())) ) {
-			e = dynamic_cast<NodeElement *>(item); 
-			if ( e ) {
-				if ( dragState == 0 ) {
-					src = e;
-					src->addEdge(this);
-					portFrom = src->getNearestPort(mapToItem(src,event->pos()));
-					prepareGeometryChange();
-					m_line[0] = mapFromItem(src,src->getPort(portFrom));
-					QString fromPort = QString("%1:%2").arg(e->uuid()).arg(portFrom);
-
-					im->setData(dataIndex, fromPort, Unreal::krneRelationship::fromRole );
-
-				} else if ( dragState == m_line.size()-1 ) {
-					dst = e;
-					dst->addEdge(this);
-					portTo = dst->getNearestPort(mapToItem(dst,event->pos()));
-					prepareGeometryChange();
-					m_line[m_line.size()-1] = mapFromItem(dst,dst->getPort(portTo));
-					QString toPort = QString("%1:%2").arg(e->uuid()).arg(portTo);
-
-					im->setData(dataIndex, toPort, Unreal::krneRelationship::toRole );
-				}
-				setFlag(ItemIsMovable, false);
-				checkConnection();
-
-				break;
-			}
-		}
-
-		if ( !e ) {
-			if ( dragState == 0 ) {
-				if (src)
-					src->delEdge(this);
-				src = 0;
-
-				im->setData(dataIndex, "0:0", Unreal::krneRelationship::fromRole );
-			} else if ( dragState == m_line.size()-1 ) {
-				if (dst)
-					dst->delEdge(this);
-				dst = 0;
-
-				im->setData(dataIndex, "0:0", Unreal::krneRelationship::toRole );
-			}
-			if ( ! src && ! dst )
-				setFlag(ItemIsMovable, true);
-			checkConnection();
-		}
-
-		dragState = -1;
-	} else 
-		Element::mouseReleaseEvent(event);
-
-	dragState = -1;
-}
-*/
 void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 {
 	QMenu menu;
@@ -298,81 +268,48 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 					m_line[i+1].setY(m_line[i].y());
 				}
 			}
+			adjustLink();
 			update();
 		} 
 	}
 }
-/*
-*/
+
 void EdgeElement::adjustLink()
 {
 	prepareGeometryChange();
 	if ( src )
-		m_line[0] = mapFromItem(src, /* src->getPort(portFrom) */ QPointF(0,0) );
+		m_line[0] = mapFromItem(src, src->getPortPos(portFrom) );
 	if ( dst )
-		m_line[m_line.size()-1] = mapFromItem(dst, /* dst->getPort(portTo) */ QPointF(0,0) );
-	update();
-
-//	qDebug() << m_line[0] << m_line[m_line.size()-1];
-//	qDebug() << portFrom << src->getPort(portFrom) << portTo << dst->getPort(portTo) ;
+		m_line[m_line.size()-1] = mapFromItem(dst, dst->getPortPos(portTo) );
 }
-
 
 void EdgeElement::updateData()
 {
+	if ( moving )
+		return;
+
 	Element::updateData();
 
 	setPos(dataIndex.data(Unreal::PositionRole).toPointF());
 	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
 	if ( !newLine.isEmpty() )
 		m_line = newLine;
+
+	int uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toInt();
+	int uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toInt();
+
+	src = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidFrom) );
+	dst = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidTo) );
+
+	if ( src )
+		src->addEdge(this);
+	if ( dst )
+		dst->addEdge(this);
+
+	portFrom = dataIndex.data(Unreal::krneRelationship::fromPortRole).toDouble();
+	portTo = dataIndex.data(Unreal::krneRelationship::toPortRole).toDouble();
+
+	qDebug() << uuidFrom << uuidTo << portFrom << portTo;
+
+	adjustLink();
 }
-/*
-	// temporary code, to be reworked with introduction of new schema handling
-	QString from = dataIndex.data(Unreal::krneRelationship::fromRole).toString();
-	QString to = dataIndex.data(Unreal::krneRelationship::toRole).toString();
-
-	int uuidFrom = from.split(":").at(0).toInt();
-	int uuidTo = to.split(":").at(0).toInt();
-
-	if ( from.split(":").size() > 1 )
-		portFrom = from.split(":").at(1).toInt();
-	if ( to.split(":").size() > 1 )
-		portTo = to.split(":").at(1).toInt();
-
-	if ( EditorViewScene *scene = dynamic_cast<EditorViewScene *>(this->scene()) ) {
-
-		if (src)
-			src->delEdge(this);
-		if (uuidFrom) {
-			QGraphicsItem *tmp = scene->getElem(uuidFrom);
-			if ( tmp ) 
-				src = dynamic_cast<NodeElement *>(tmp);
-		}
-		if (src)
-			src->addEdge(this);
-
-		if (dst)
-			dst->delEdge(this);
-		if (uuidTo) {
-			qDebug() << uuidTo;
-			QGraphicsItem *tmp = scene->getElem(uuidTo);
-			if ( tmp )
-				dst = dynamic_cast<NodeElement *>(tmp);
-		}
-		if (dst)
-			dst->addEdge(this);
-
-		adjustLink();
-	} else {
-		qDebug() << "no scene!";
-	}    
-
-	if ( ! src && ! dst ) {
-		setFlag(ItemIsMovable, true );
-		setPos(dataIndex.data(Unreal::PositionRole).toPoint());
-	} else {
-		setFlag(ItemIsMovable, false );
-	}
-}
-*/

@@ -29,7 +29,7 @@ namespace UML {
 			NodeElement *src, *dst;
 			//	QPointF srcPoint, dstPoint;
 
-			int portFrom, portTo;
+			qreal portFrom, portTo;
 			int dragState;
 
 			QPolygonF m_line;

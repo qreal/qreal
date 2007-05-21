@@ -14,11 +14,10 @@ NodeElement::~NodeElement()
 	foreach (EdgeElement *edge, edgeList)
 		edge->removeLink(this);
 }
-/*
+
 void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 {
 	if ( isSelected() ) {
-
 		if ( QRectF(m_contents.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
 			dragState = TopLeft;
 		} else if ( QRectF(m_contents.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
@@ -29,7 +28,6 @@ void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 			dragState = BottomLeft;
 		} else 
 			Element::mousePressEvent(event);	
-
 	} else
 		Element::mousePressEvent(event);
 }
@@ -57,25 +55,32 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
             
                 setPos(pos() + m_contents.topLeft());
                 m_contents.translate(-m_contents.topLeft());
+			
+				transform.reset();
+				transform.scale(m_contents.width(), m_contents.height());
+
+				foreach (EdgeElement *edge, edgeList)
+					edge->adjustLink();
         }
     }
 }
 
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
+	m_contents = m_contents.normalized();
+
 	moving = 1;
 	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 	im->setData(dataIndex, pos(), Unreal::PositionRole);
+	im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
 	moving = 0;
 
 	if ( dragState != None )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
-
-	m_contents = m_contents.normalized();
 }
-*/
+
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch ( change ) {
@@ -106,21 +111,61 @@ void NodeElement::updateData()
 
 	if (moving == 0) {
 		setPos(dataIndex.data(Unreal::PositionRole).toPointF());
+		QRectF newRect = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>().boundingRect();
+		if ( ! newRect.isEmpty() )
+			m_contents = newRect;
+
+		transform.reset();
+		transform.scale(m_contents.width(), m_contents.height());
+	}	
+}
+
+static int portId(qreal id)
+{
+	int iid = qRound(id);
+	if ( id < ( 1.0 * iid ) )
+		return iid - 1;
+	else
+		return iid;
+}
+
+const QPointF NodeElement::getPortPos(qreal id) const
+{
+	int iid = portId(id);
+
+	if ( id < 0.0 )
+		return QPointF(0,0);
+	if ( id < pointPorts.size() )
+		return transform.map(pointPorts[iid]);
+	if ( id < pointPorts.size() + linePorts.size() )
+		return transform.map(linePorts.at(iid - pointPorts.size()).pointAt(id - 1.0 * iid));
+	else
+		return QPointF(0,0);
+}
+
+qreal NodeElement::getPortId(const QPointF &location) const
+{
+	for( int i = 0; i < pointPorts.size(); i++ ) {
+		if ( QRectF(transform.map(pointPorts[i])-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
+			return 1.0 * i;
 	}
-}
 
-const QPointF NodeElement::getPort(int i) const
-{
-	return ports[i];
-}
+	for( int i = 0; i < linePorts.size(); i++ ) {
+		QPainterPathStroker ps;
+		ps.setWidth(kvadratik);
 
-int NodeElement::getNearestPort(const QPointF &location) const
-{
-	for ( int i = 0 ; i < ports.size() ; i++ )
-		if ( QRectF(ports[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
-			return i;
-	
-	return -1;
+		QPainterPath path;
+		path.moveTo(transform.map(linePorts[i].p1()));
+		path.lineTo(transform.map(linePorts[i].p2()));
+
+		path = ps.createStroke(path);
+		if ( path.contains(location) )
+			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999, 
+					QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length()
+					      / linePorts[i].length() ) );
+	}
+
+	return -1.0;
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -138,10 +183,10 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->restore();
 		}
 
-		foreach (QPointF port, ports) {
+		foreach (QPointF port, pointPorts) {
 			painter->save();
-//			painter->setOpacity(0.5);
-			painter->translate(port);
+			painter->setOpacity(0.3);
+			painter->translate(transform.map(port));
 			painter->setBrush(Qt::gray);
 			painter->setPen(Qt::NoPen);
 			painter->drawRect(QRectF(-5,-5,10,10));
@@ -149,6 +194,21 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->drawLine(QLineF(-5,-5,5,5));
 			painter->drawLine(QLineF(-5,5,5,-5));
 			painter->restore();
+		}
+
+		foreach (QLineF port, linePorts) {
+			QPen pen;
+			pen.setBrush(Qt::gray);
+			pen.setWidth(kvadratik);
+			painter->setOpacity(0.3);
+			painter->setPen(pen);
+			painter->drawLine(transform.map(port));
+
+			pen.setBrush(Qt::darkGray);
+			pen.setWidth(1);
+			painter->setPen(pen);
+			painter->drawLine(transform.map(port));
+			
 		}
 	}
 }

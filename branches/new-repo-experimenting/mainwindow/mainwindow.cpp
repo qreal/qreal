@@ -23,6 +23,7 @@ MainWindow::MainWindow()
 //	delete ui.centralwidget;
 
 	ui.minimapView->setScene(view->scene());
+	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );

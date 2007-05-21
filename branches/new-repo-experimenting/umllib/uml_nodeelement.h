@@ -21,23 +21,25 @@ namespace UML {
 
 			virtual void updateData();
 
-			const QPointF getPort(int i) const;
-			int getNearestPort(const QPointF &location) const;
+			const QPointF getPortPos(qreal id) const;
+			qreal getPortId(const QPointF &location) const;
+
 			bool isChildOf(int id){ return parentsList.contains(id); }
 
 			void addEdge(EdgeElement *edge) { edgeList << edge; };
 			void delEdge(EdgeElement *edge) { edgeList.removeAt(edgeList.indexOf(edge)); };
 
 		protected:
-//			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-//			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
-//			void mousePressEvent( QGraphicsSceneMouseEvent * event );
+			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+			void mousePressEvent( QGraphicsSceneMouseEvent * event );
 
 			virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 			QList<int> parentsList;
 
-			QList<QPointF> ports;
+			QList<QPointF> pointPorts;
+			QList<QLineF> linePorts;
 			
 			QRectF m_contents;
 		private:
@@ -45,6 +47,8 @@ namespace UML {
 
 			enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 			DragState dragState;
+
+			QTransform transform;
 	};
 };
 
