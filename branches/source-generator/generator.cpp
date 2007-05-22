@@ -393,8 +393,9 @@ void Generator::genSQLScripts()
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
             "CREATE TABLE diagram (\n"
-            "\tdiagram_id INTEGER PRIMARY KEY NOT NULL,\n"
+            "\tdiagram_id INTEGER NOT NULL,\n"
             "\tel_id MEDIUMINT NOT NULL,\n"
+            "\tcfg VARCHAR(666),"
             "\tx MEDIUMINT,\n"
             "\ty MEDIUMINT\n"
             ");\n\n";
@@ -544,9 +545,9 @@ void Generator::genClasses(){
             << "\td.setHtml(text);\n";
         if( objects.at(i)->labels.size() > 0){
             out << "\tpainter->save();\n"
-            << QString("\tpainter->translate(QPointF(%1 * m_contents.width(), %2 * m_contents.height()));\n")
-                                        .arg(objects.at(i)->labels.at(0).x)
-                                        .arg(objects.at(i)->labels.at(0).y)
+            << QString("\tpainter->translate(QPointF(m_contents.width()/2 - 2*text.size()/3, m_contents.height() - 15 ));\n")
+        //                                .arg(objects.at(i)->labels.at(0).x)
+          //                              .arg(objects.at(i)->labels.at(0).y)
             << "\td.drawContents(painter, m_contents);\n"
             << "\tpainter->restore();\n";
         }
