@@ -734,6 +734,8 @@ void Generator::genRealRepoInfo(){
         return;
     QTextStream out(&file);
 
+    out << "#ifndef REALREPOINFO_H\n#define REALREPOINFO_H\n\n";
+
     out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n\n";
 
     out <<  "class RealRepoInfo\n{\n"
@@ -751,8 +753,10 @@ void Generator::genRealRepoInfo(){
             "\tint indexByRole(int role) const\n"
 	    "\t\t{ return role-129; };\n\n"
             "private:\n"
-            "};\n";
-   
+            "};\n\n";
+  
+    out << "#endif\n\n";
+
     file.close();
 
     QFile file2("generated/repo/realrepoinfo.cpp");
@@ -799,6 +803,7 @@ void Generator::genRealRepoInfo(){
     }
 
     out2 << ";\n\n";
+
 
     // from former realreporoles
     
