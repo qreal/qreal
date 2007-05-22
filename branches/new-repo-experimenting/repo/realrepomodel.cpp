@@ -40,10 +40,17 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			return hashNames[item->id];
+		case Qt::DecorationRole:
+			{
+				if ( hashTypes.contains(item->id) )
+					return info.objectIcon(hashTypes.value(item->id));
+				else
+					return info.objectIcon(item->id);
+			};
 		case Unreal::IdRole:
 			return item->id;
 		case Unreal::TypeRole:
-			return hashTypes[item->id]; 
+			return hashTypes[item->id];
 		case Unreal::PositionRole:
 			{
 				if ( type( item->parent ) == Container )

@@ -3,31 +3,25 @@ INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
 RESOURCES	+= real_dynamic.qrc static.qrc
 SOURCES		= main.cpp
 
-
 # SQL model
 HEADERS         += dialogs/qsqlconnectiondialog.h \
 		    repo/realrepomodel.h \
 		    repo/realrepoinfo.h
-#    		    repo/realrepoitem.h \
-#		    repo/realreporoles.h \
-#		    repo/realreponames.h
+
 SOURCES	        += dialogs/qsqlconnectiondialog.cpp \
 		    repo/realrepomodel.cpp \
 		    repo/realrepoinfo.cpp
-
-#		    repo/realrepoitem.cpp \
-#		    repo/realreporoles.cpp \
-#		    repo/realreponames.cpp \
-#		    repo/edges_stuff.cpp
 
 FORMS           += dialogs/qsqlconnectiondialog.ui
 
 # Mainwindow
 HEADERS		+= mainwindow/mainwindow.h \
 		   mainwindow/categoryfilterproxymodel.h \
+                   mainwindow/propertyeditorproxymodel.h \
 		   mainwindow/palettetoolbox.h
 SOURCES		+= mainwindow/mainwindow.cpp \
 		   mainwindow/categoryfilterproxymodel.cpp \
+                   mainwindow/propertyeditorproxymodel.cpp \
 		   mainwindow/palettetoolbox.cpp
 FORMS		+= mainwindow/mainwindow.ui
 

@@ -6,8 +6,9 @@
 
 #include "ui_mainwindow.h"
 
+#include "propertyeditorproxymodel.h"
+
 class RealRepoModel;
-class QSortFilterProxyModel;
 class EditorView;
 
 class MainWindow : public QMainWindow
@@ -27,7 +28,7 @@ public slots:
 
 private:
 	RealRepoModel *model;
-	QSortFilterProxyModel *filterModel;
+	PropertyEditorModel propertyModel;
 	EditorView *view;
 	QSqlDatabase db;
 	

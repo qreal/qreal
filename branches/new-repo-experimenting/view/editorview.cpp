@@ -9,6 +9,8 @@
 EditorView::EditorView(QWidget *parent)
     : QGraphicsView(parent)
 {
+	setRenderHint(QPainter::Antialiasing, true);
+
     EditorViewScene *myScene = new EditorViewScene(this);
     mv_iface = new EditorViewMViface(this,myScene);
     setScene(myScene);

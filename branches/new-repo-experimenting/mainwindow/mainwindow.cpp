@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 
 #include "qsqlconnectiondialog.h"
-#include "categoryfilterproxymodel.h"
+#include "propertyeditorproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
 
@@ -27,7 +27,6 @@ MainWindow::MainWindow()
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
-
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 	
@@ -49,9 +48,12 @@ MainWindow::MainWindow()
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 
-	filterModel = new CategoryFilterProxyModel(this);
-	connect(ui.comboBox, SIGNAL( activated(const QString &) ),
-			filterModel, SLOT( setFilterRegExp(const QString &)));
+	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
+	ui.propertyEditor->horizontalHeader()->hide();
+	ui.propertyEditor->setModel(&propertyModel);
+
+	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
+			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
 
 	show();
 	connectRepo();
@@ -78,7 +80,8 @@ void MainWindow::connectRepo()
 
 	ui.diagramExplorer->setModel(0);
 	ui.objectExplorer->setModel(0);
-//	filterModel->setSourceModel(0);
+	propertyModel.setSourceModel(0);
+
 	if( model )
 		delete model;
 
@@ -107,6 +110,8 @@ void MainWindow::connectRepo()
 
 	ui.objectExplorer->setModel(model);
 //	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
+
+	propertyModel.setSourceModel(model);
 
 	view->mvIface()->setModel(model);
 }

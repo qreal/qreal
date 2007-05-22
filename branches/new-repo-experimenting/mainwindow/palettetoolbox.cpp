@@ -10,7 +10,7 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 
 	m_id = classid;
 	m_text = info.objectName(classid);
-	m_icon = QIcon(":/shapes/" + m_text + "Class.svg");
+	m_icon = info.objectIcon(classid);
 	
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	QLabel *icon = new QLabel(this);

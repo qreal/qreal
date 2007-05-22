@@ -26,7 +26,6 @@ protected:
     void dropEvent ( QGraphicsSceneDragDropEvent * event );
 
     void keyPressEvent( QKeyEvent * event );
-
 private:
     EditorViewMViface *mv_iface;
     EditorView *view;

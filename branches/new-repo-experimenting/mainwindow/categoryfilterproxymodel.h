@@ -1,7 +1,6 @@
 #ifndef CATEGORYFILTERPROXYMODEL_H
 #define CATEGORYFILTERPROXYMODEL_H
 
-#include <QDate>
 #include <QSortFilterProxyModel>
 
 class CategoryFilterProxyModel : public QSortFilterProxyModel
@@ -10,6 +9,7 @@ class CategoryFilterProxyModel : public QSortFilterProxyModel
 
 public:
     CategoryFilterProxyModel(QObject *parent = 0);
+
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 };

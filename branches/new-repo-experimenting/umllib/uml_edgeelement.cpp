@@ -298,6 +298,11 @@ void EdgeElement::updateData()
 	int uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toInt();
 	int uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toInt();
 
+	if ( src )
+		src->delEdge(this);
+	if ( dst )
+		dst->delEdge(this);
+
 	src = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidFrom) );
 	dst = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidTo) );
 
@@ -305,11 +310,11 @@ void EdgeElement::updateData()
 		src->addEdge(this);
 	if ( dst )
 		dst->addEdge(this);
+	
+	setFlag(ItemIsMovable, !(dst||src) );
 
 	portFrom = dataIndex.data(Unreal::krneRelationship::fromPortRole).toDouble();
 	portTo = dataIndex.data(Unreal::krneRelationship::toPortRole).toDouble();
-
-	qDebug() << uuidFrom << uuidTo << portFrom << portTo;
 
 	adjustLink();
 }
