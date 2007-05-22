@@ -545,9 +545,10 @@ void Generator::genClasses(){
             << "\td.setHtml(text);\n";
         if( objects.at(i)->labels.size() > 0){
             out << "\tpainter->save();\n"
-            << QString("\tpainter->translate(QPointF(m_contents.width()/2 - 2*text.size()/3, m_contents.height() - 15 ));\n")
+            << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n")
         //                                .arg(objects.at(i)->labels.at(0).x)
           //                              .arg(objects.at(i)->labels.at(0).y)
+            << "\td.setTextWidth(m_contents.width());\n"
             << "\td.drawContents(painter, m_contents);\n"
             << "\tpainter->restore();\n";
         }
@@ -566,7 +567,6 @@ void Generator::genClasses(){
         else
             out << "\ttext = \"\";\n";
         out << QString("")
-            << "\tprepareGeometryChange();\n"
             << "\tupdate();\n"
             << "}\n\n";
 
