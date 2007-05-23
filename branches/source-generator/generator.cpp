@@ -398,7 +398,8 @@ void Generator::genSQLScripts()
             "\tel_id MEDIUMINT NOT NULL,\n"
             "\tcfg VARCHAR(666),"
             "\tx MEDIUMINT,\n"
-            "\ty MEDIUMINT\n"
+            "\ty MEDIUMINT,\n"
+            "\tisExpandable BOOL\n"
             ");\n\n";
                                                                                                                                             
     QString ins = "INSERT INTO `metatable` (id, name, qualifiedName) VALUES (%1, '%2', '%3');\n";
@@ -741,7 +742,7 @@ void Generator::genRealRepoInfo(){
 
     out << "#ifndef REALREPOINFO_H\n#define REALREPOINFO_H\n\n";
 
-    out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n\n";
+    out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n#include <QIcon>\n\n";
 
     out <<  "class RealRepoInfo\n{\n"
             "public:\n"
@@ -754,9 +755,10 @@ void Generator::genRealRepoInfo(){
             "\tQStringList getColumnNames(int type) const;\n"
             "\tQString getColumnName(int type, int role) const;\n\n"
             "\tint roleByIndex(int index) const\n"
-	    "\t\t{ return index+129; };\n"
+	        "\t\t{ return index+129; };\n"
             "\tint indexByRole(int role) const\n"
-	    "\t\t{ return role-129; };\n\n"
+	        "\t\t{ return role-129; };\n\n"
+            "\tQIcon objectIcon( int id ) const; \n\n"
             "private:\n"
             "};\n\n";
   
@@ -781,6 +783,7 @@ void Generator::genRealRepoInfo(){
             "static QList< Category > categories;\n"
             "static QStringList objects;\n"
             "static QStringList descriptions;\n"
+            "static QList< QIcon > icons;\n"
             "static QMap<int, QStringList> map;\n\n";
 
     out2 << "static void initStaticData()\n{\n"
@@ -823,6 +826,19 @@ void Generator::genRealRepoInfo(){
         out2 << "\n";
     }
 
+    // initializing icons
+
+    out2 << "//initializing icons\n\n";
+    out2 << "\ticons";
+
+    for( int k=0; k<objects.size(); k++ ){
+        if( objects.at(k)->height == -1 && objects.at(k)->width == -1 )
+            out2 << "\n\t\t<< QIcon()";
+        else    
+            out2 << QString("\n\t\t<< QIcon(\":/shapes/" + objects.at(k)->id + "Class.svg\")");
+    }
+    out2 << ";\n\n";
+
     out2 << "\tinitCompleted = true;\n"
 	    "}\n\n";
 
@@ -863,6 +879,13 @@ void Generator::genRealRepoInfo(){
 
     out2 << "QStringList RealRepoInfo::getColumnNames(int type) const\n{\n"
             "\treturn map.value(type);\n}\n\n";
+
+    out2 << "QIcon RealRepoInfo::objectIcon( int id ) const\n"
+            "{\n\tif ( id > 0 && id <= icons.size() )\n"
+            "\t\treturn icons.at(id-1);\n"
+            "\telse\n"
+            "\t\treturn QIcon();\n}\n";
+                                                                                                                                                      
 
     file2.close();
 }
