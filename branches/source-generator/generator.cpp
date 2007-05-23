@@ -214,7 +214,6 @@ void Generator::parseNodeGraphics( Edge* cur, QDomNode dnode ){
 }
 
 void Generator::parseLabels( Node* cur, QDomNode dnode ){
-
     QDomNodeList htmls = dnode.toElement().elementsByTagName("html:html");
     for( int i=0; i < htmls.size(); i++ ){
         Label l;
@@ -222,21 +221,23 @@ void Generator::parseLabels( Node* cur, QDomNode dnode ){
         QTextStream stream(&txt);
         l.x = (qreal)htmls.at(i).toElement().attribute("x").toInt()/cur->width;
         l.y = (qreal)htmls.at(i).toElement().attribute("y").toInt()/cur->height;
-        qDebug() << l.x << l.y;
+      
+        QDomNodeList tfrs = htmls.at(i).toElement().elementsByTagName("html:text_from_repo");
+        int x = tfrs.size();
+        for( int j=0; j<x; j++){
+            QDomNode par = tfrs.at(0).parentNode();
+            QString role = tfrs.at(0).toElement().attribute("name");
+            par.removeChild(tfrs.at(0));
         
-        QDomNode tfr = htmls.at(i).toElement().elementsByTagName("html:text_from_repo").at(0);
-        QDomNode par = tfr.parentNode();
-        par.removeChild(tfr);
-        
-        const QDomText data = doc->createTextNode("%1");
-        QString role = tfr.toElement().attribute("name");
-        if( role == "name" )
-            l.arg = "Qt::DisplayRole";
-        else    
-            l.arg = "Unreal::" + cur->id + "::" + role + "Role";
-        par.appendChild(data);
-        
-        htmls.at(0).firstChild().save(stream, 1);
+            const QDomText data = doc->createTextNode("%" + QString::number(j+1));
+            if( role == "name" )
+                l.args << "Qt::DisplayRole";
+            else    
+                l.args << "Unreal::" + cur->id + "::" + role + "Role";
+            par.appendChild(data);
+        }
+        for( int j=0; j<htmls.at(0).childNodes().size(); j++)
+            htmls.at(0).childNodes().at(j).save(stream, 1);
         txt.replace(QString("\n"), QString(" "));
         txt.replace(QString("\""), QString("\\\""));
         txt.replace(QString("html:"), QString(""));
@@ -346,7 +347,7 @@ void Generator::genEnums()
    
     for( int i=0; i < objects.size(); i++ ){
         out << "\tnamespace " + objects.at(i)->id + " {\n";
-	out << "\t\tenum Roles {\n";
+	    out << "\t\tenum Roles {\n";
         for (int j=0; j<objects.at(i)->properties.size(); j++){
             out << "\t\t\t" + objects.at(i)->properties.at(j).first + "Role";
             if( !j )
@@ -544,11 +545,12 @@ void Generator::genClasses(){
             << "\tQTextDocument d;\n"
             << "\td.setHtml(text);\n";
         if( objects.at(i)->labels.size() > 0){
-            out << "\tpainter->save();\n"
-            << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n")
-        //                                .arg(objects.at(i)->labels.at(0).x)
-          //                              .arg(objects.at(i)->labels.at(0).y)
-            << "\td.setTextWidth(m_contents.width());\n"
+            out << "\tpainter->save();\n";
+            if( objects.at(i)->id == "cnClass")    
+                out << QString("\tpainter->translate(QPointF(0, 0));\n");
+            else    
+                out << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n");
+            out << "\td.setTextWidth(m_contents.width());\n"
             << "\td.drawContents(painter, m_contents);\n"
             << "\tpainter->restore();\n";
         }
@@ -562,7 +564,10 @@ void Generator::genClasses(){
             << "\tNodeElement::updateData();\n";
         if( objects.at(i)->labels.size() > 0){
             out << QString("\ttext = QString(\"%1\")").arg(objects.at(i)->labels.at(0).text);
-            out << QString(".arg(dataIndex.data(%2).toString());\n").arg(objects.at(i)->labels.at(0).arg);
+            for( int k=0; k<objects.at(i)->labels.at(0).args.size(); k++)
+                out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
+                                .arg(objects.at(i)->labels.at(0).args.at(k));
+            out << ";\n";                    
         }    
         else
             out << "\ttext = \"\";\n";

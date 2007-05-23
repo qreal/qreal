@@ -71,7 +71,7 @@ public:
     qreal x;
     qreal y;
     QString text;
-    QString arg;
+    QStringList args;
 };
 
 

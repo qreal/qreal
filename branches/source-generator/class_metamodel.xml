@@ -8,11 +8,28 @@
 		<node name="Class" id="cnClass">
 			<graphics>
 				<view>
+					<svg_shape>
+						<svg:svg width="50" height="70" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+						    <rect x="0" y="0" width="50" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="70"/>
+						</svg:svg>
+					</svg_shape>
 					<repo_info>
 						<html:html xmlns:html="http://www.w3.org/html/">
 							<html:b>
-								<html:text_from_repo name="name" />
+                                <html:i>
+                                    <html:center>
+								        <html:text_from_repo name="name" />
+                                    </html:center>    
+                                </html:i>    
 							</html:b>
+                            <html:hr/>
+                            <html:b>
+                                <html:text_from_repo name="vals"/>
+                            </html:b>    
+                            <html:hr/>
+                            <html:b>
+                                <html:text_from_repo name="methods"/>
+                            </html:b>    
 						</html:html>
 					</repo_info>
 				</view>
@@ -23,6 +40,10 @@
 						<parent parent_id="krnnClassifier" />
 					</generalization>
 				</generalizations>
+                <properties>
+					<property name="vals" type="string" />
+					<property name="methods" type="string" />
+                </properties>
 				<containers>
 					<container name="Class-Classifier">
 						<contains idref="krnnClassifier" role="class"></contains>
