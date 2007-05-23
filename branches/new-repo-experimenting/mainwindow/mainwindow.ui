@@ -27,6 +27,7 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionConnect" />
+    <addaction name="actionDisconnect" />
     <addaction name="separator" />
     <addaction name="actionPrint" />
     <addaction name="actionMakeSvg" />
@@ -161,6 +162,9 @@
    <attribute name="toolBarBreak" >
     <bool>false</bool>
    </attribute>
+   <addaction name="actionConnect" />
+   <addaction name="actionDisconnect" />
+   <addaction name="separator" />
    <addaction name="actionPrint" />
   </widget>
   <widget class="QDockWidget" name="minimapDock" >
@@ -296,6 +300,9 @@
    </property>
   </action>
   <action name="actionConnect" >
+   <property name="icon" >
+    <iconset resource="../static.qrc" >:/icons/designer_datatable.png</iconset>
+   </property>
    <property name="text" >
     <string>&amp;Connect</string>
    </property>
@@ -346,6 +353,14 @@
   <action name="actionMakeSvg" >
    <property name="text" >
     <string>Export to SVG</string>
+   </property>
+  </action>
+  <action name="actionDisconnect" >
+   <property name="icon" >
+    <iconset resource="../static.qrc" >:/icons/designer_databrowser.png</iconset>
+   </property>
+   <property name="text" >
+    <string>&amp;Disconnect</string>
    </property>
   </action>
  </widget>

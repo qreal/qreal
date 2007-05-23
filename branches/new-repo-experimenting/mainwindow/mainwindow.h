@@ -21,6 +21,7 @@ public:
 
 public slots:
 	void connectRepo();
+	void closeRepo();
 	void adjustMinimapZoom(int zoom);
 
 	void print();

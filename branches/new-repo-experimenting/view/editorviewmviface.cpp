@@ -82,7 +82,8 @@ void EditorViewMViface::reset()
 {
 	items.clear();
 	scene->clearScene();
-	rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
+	if ( model() )
+		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
 void EditorViewMViface::setRootIndex(const QModelIndex &index)

@@ -86,7 +86,6 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 
 	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)
 		child->close();
-	else {
+	else 
 		child->show();
-	}
 }

@@ -28,6 +28,7 @@ MainWindow::MainWindow()
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
+	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 	
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
@@ -78,12 +79,7 @@ void MainWindow::connectRepo()
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
-	ui.diagramExplorer->setModel(0);
-	ui.objectExplorer->setModel(0);
-	propertyModel.setSourceModel(0);
-
-	if( model )
-		delete model;
+	closeRepo();
 
 	db = QSqlDatabase::addDatabase(dialog.driverName());
     
@@ -114,6 +110,17 @@ void MainWindow::connectRepo()
 	propertyModel.setSourceModel(model);
 
 	view->mvIface()->setModel(model);
+}
+
+void MainWindow::closeRepo()
+{
+	ui.diagramExplorer->setModel(0);
+	ui.objectExplorer->setModel(0);
+	propertyModel.setSourceModel(0);
+	view->mvIface()->setModel(0);
+
+	if( model )
+		delete model;
 }
 
 void MainWindow::print()
