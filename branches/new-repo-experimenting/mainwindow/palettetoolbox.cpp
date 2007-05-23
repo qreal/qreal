@@ -11,7 +11,7 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 	m_id = classid;
 	m_text = info.objectName(classid);
 	m_icon = info.objectIcon(classid);
-	
+
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	QLabel *icon = new QLabel(this);
 	icon->setFixedSize(24,24);
@@ -26,10 +26,10 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-    : QToolBox(parent)
+	: QToolBox(parent)
 {
 	RealRepoInfo info;
-//  setAcceptDrops(true);
+	//  setAcceptDrops(true);
 	QStringList categories = info.getObjectCategories();
 	for (int i = 0; i < categories.size(); i++) {
 		QWidget *tab = new QWidget(this);
@@ -40,7 +40,7 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 			DraggableElement *element = new DraggableElement(classid, this);
 			layout->addWidget(element);
 		}
-		
+
 		tab->setLayout(layout);
 	}
 }
@@ -56,10 +56,10 @@ void PaletteToolbox::dropEvent(QDropEvent *event)
 void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 {
 	QWidget *atMouse = childAt(event->pos());
-	if ( atMouse == this )
+	if ( ! atMouse || atMouse == this )
 		return;
 
-    DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
+	DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
 	if (!child)
 		child = dynamic_cast<DraggableElement *>(atMouse);
 	if (!child)
@@ -72,17 +72,21 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	stream << child->id();		// type
 	stream << child->text();
 
-    QMimeData *mimeData = new QMimeData;
+	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);
 	// mimeData->setText(child->text());
-        
-    QDrag *drag = new QDrag(this);
+
+	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
-    drag->setPixmap(child->icon().pixmap(32,32));
+
+	QPixmap p = child->icon().pixmap(96,96);
+
+	if ( ! p.isNull() )
+		drag->setPixmap(child->icon().pixmap(96,96));
 
 	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)
-        child->close();
-    else {
-        child->show();
-    }
+		child->close();
+	else {
+		child->show();
+	}
 }
