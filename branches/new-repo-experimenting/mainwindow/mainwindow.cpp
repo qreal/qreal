@@ -1,6 +1,7 @@
 #include <QtGui>
 
 #include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 
 #include <QtSvg/QSvgGenerator>
@@ -71,6 +72,34 @@ void MainWindow::adjustMinimapZoom(int zoom)
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
+bool realInitDatabase(QSqlDatabase db)
+{
+	QSqlQuery q(db);
+	QFile scriptFile(":/repo/scripts.sql");
+	
+	if ( !scriptFile.open(QFile::ReadOnly) )
+		return false;
+
+	if ( q.exec("SELECT * FROM metatable ;" ) )
+		return true;
+
+	QTextStream script(&scriptFile);
+
+	QStringList queries = script.readAll().split(";",QString::SkipEmptyParts);
+
+	foreach (QString query, queries) {
+		if ( query.simplified().isEmpty() )
+			continue;
+
+		if ( ! q.exec(query.simplified().append(" ;")) ) {
+			qDebug() << query.simplified().append(" ;");
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void MainWindow::connectRepo()
 {
 	QSqlConnectionDialog dialog(this);
@@ -99,6 +128,12 @@ void MainWindow::connectRepo()
 		return;
 	}
 
+	if ( ! realInitDatabase(db) ) {
+		QMessageBox::warning(0, QObject::tr("Unable to initialize database"),
+				QObject::tr("An error occured while setting up data:\n"));
+		return;
+	}
+
 	model = new RealRepoModel(db,this);
 
 	ui.diagramExplorer->setModel(model);
@@ -121,6 +156,8 @@ void MainWindow::closeRepo()
 
 	if( model )
 		delete model;
+
+	model = 0;
 }
 
 void MainWindow::print()

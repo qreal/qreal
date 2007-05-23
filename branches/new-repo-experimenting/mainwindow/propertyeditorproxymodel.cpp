@@ -25,6 +25,9 @@ Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &index) const
 
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+//	if ( ! targetModel )
+//		return QVariant();
+
 	if ( role == Qt::DisplayRole && orientation == Qt::Vertical )
 		return roleNames.at(section);
 	else
@@ -33,6 +36,9 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 
 QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 {
+//	if ( ! targetModel )
+//		return QVariant();
+
 	if ( role == Qt::DisplayRole && index.column() == 0 ) {
 		return targetObject.data(info.roleByIndex(index.row()));
 	} else
@@ -41,6 +47,9 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	if ( ! targetModel )
+		return false;
+
 	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 0 )
 		return targetModel->setData(targetObject, value, info.roleByIndex(index.row()));
 	else
@@ -50,8 +59,14 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 void PropertyEditorModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	targetModel = sourceModel;
-	connect ( targetModel, SIGNAL( dataChanged (const QModelIndex &, const QModelIndex&) ),
-			this, SLOT( modelReset() ) );
+
+	roleNames.clear();
+
+	if ( targetModel )
+		connect ( targetModel, SIGNAL( dataChanged (const QModelIndex &, const QModelIndex&) ),
+				this, SLOT( modelReset() ) );
+
+	reset();
 }
 
 void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
