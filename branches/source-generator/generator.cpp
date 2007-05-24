@@ -571,13 +571,20 @@ void Generator::genClasses(){
             << "\td.setHtml(text);\n";
         if( objects.at(i)->labels.size() > 0){
             out << "\tpainter->save();\n";
-            if( objects.at(i)->id == "cnClass")    
-                out << QString("\tpainter->translate(QPointF(0, 0));\n");
-            else    
-                out << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n");
-            out << "\td.setTextWidth(m_contents.width());\n"
-            << "\td.drawContents(painter, m_contents);\n"
-            << "\tpainter->restore();\n";
+            if( objects.at(i)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed
+                out << QString("\tpainter->translate(QPointF(0, 0));\n")
+                    << "\td.setTextWidth(m_contents.width());\n"
+                    << "\td.drawContents(painter, m_contents);\n";
+            }        
+            else{    
+                out << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n")
+                    << "\tQRectF conts = m_contents;\n"
+                    << "\tconts.setHeight(15);\n"
+                    << "\td.setTextWidth(m_contents.width());\n"
+                    << "\td.drawContents(painter, conts);\n";
+         
+            }    
+            out << "\tpainter->restore();\n";
         }
         else
             out << "\td.drawContents(painter, m_contents);\n";
