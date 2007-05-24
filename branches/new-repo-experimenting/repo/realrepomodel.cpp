@@ -27,7 +27,6 @@ RealRepoModel::~RealRepoModel()
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 {
-	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return QVariant();
 
@@ -623,7 +622,7 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 	} else {
 		QSqlQuery q(db);
 		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, diagram.x, diagram.y, diagram.cfg,"
-				  " nametable.qualifiedName, COUNT (children.el_id) FROM diagram"
+				  " nametable.qualifiedName, COUNT(children.el_id) FROM diagram"
 				"  LEFT JOIN nametable ON diagram.el_id = nametable.id"
 				"  LEFT JOIN diagram AS children ON children.diagram_id = diagram.el_id"
 				"  WHERE diagram.diagram_id = :type"

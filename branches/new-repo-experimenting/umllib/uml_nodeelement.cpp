@@ -185,7 +185,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 		foreach (QPointF port, pointPorts) {
 			painter->save();
-			painter->setOpacity(0.3);
+			painter->setOpacity(0.7);
 			painter->translate(transform.map(port));
 			painter->setBrush(Qt::gray);
 			painter->setPen(Qt::NoPen);
@@ -200,7 +200,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			QPen pen;
 			pen.setBrush(Qt::gray);
 			pen.setWidth(kvadratik);
-			painter->setOpacity(0.3);
+			painter->setOpacity(0.7);
 			painter->setPen(pen);
 			painter->drawLine(transform.map(port));
 

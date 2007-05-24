@@ -91,6 +91,10 @@ bool realInitDatabase(QSqlDatabase db)
 		if ( query.simplified().isEmpty() )
 			continue;
 
+		// FIXME: small fix for sqlite driver
+		if ( db.driverName() == "QSQLITE" )
+			query.replace("AUTO_INCREMENT", "AUTOINCREMENT");
+
 		if ( ! q.exec(query.simplified().append(" ;")) ) {
 			qDebug() << query.simplified().append(" ;");
 			return false;
