@@ -434,7 +434,8 @@ void Generator::genSQLScripts()
                 
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
-                "\t`id` mediumint NOT NULL";
+                "\t`id` mediumint NOT NULL,"
+                "\t`name` VARCHAR(30)";
         for (int k=0; k<objects.at(i)->properties.size(); k++){
             QString cortege = ",\n\t`%1` %2";
             QString name = objects.at(i)->properties.at(k).first;
