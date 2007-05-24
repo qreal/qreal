@@ -6,13 +6,7 @@
     <edge name="Message" id="cmnMessage">
       <graphics>
         <view>
-          <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-              <svg:line x1="0" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
-            </svg:svg>
-          </svg_shape>
+          <line_type type="solidLine" />
         </view>
       </graphics>
       <logic>
@@ -26,27 +20,20 @@
     <edge name="MessageWithSequenceNumber" id="cmnMessageWithSequenceNumber">
       <graphics>
         <view>
-          <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-              <svg:line x1="0" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="15" y1="35" x2="75" y2="35" stroke="black" stroke-width="2" />
-              <svg:line x1="60" y1="30" x2="75" y2="35" stroke="black" stroke-width="2" />
-              <svg:line x1="60" y1="40" x2="75" y2="35" stroke="black" stroke-width="2" />
-              <svg:text x="24" y="32" style="font-size:12pt;fill:#000000;">:</svg:text>
+          <line_type type="solidLine" />
+          <line_type type="solidLine" />
+          <end_type type="arrow" />
+          <!--тут две линии: одна со стрелочкой, а другая без оной-->
               <!--вообще-то там можно стрелочку масштабировать отдельно от самого message, но как это сделать я не знаю-->
               <!--кроме того, надпись может перемещаться относительно стрелочки-->
-            </svg:svg>
-          </svg_shape>
           <repo_info>
-            <html:html xmlns:html="http://www.w3.org/html/" x="28" y="32" >
+            <html:html xmlns:html="http://www.w3.org/html/">
                 <html:text_from_repo name="name" />
             </html:html>
-            <html:html xmlns:html="http://www.w3.org/html/" x="24" y="32" style="font-size:12pt;fill:#000000;">
+            <html:html xmlns:html="http://www.w3.org/html/">
               <html:text>:</html:text>
             </html:html>
-            <html:html xmlns:html="http://www.w3.org/html/" x="17" y="32" >
+            <html:html xmlns:html="http://www.w3.org/html/">
                 <html:text_from_repo name="order" />
             </html:html>
           </repo_info>
@@ -54,8 +41,11 @@
       </graphics>
       <logic>
         <associations>
-          <association id="cmnaMessageWithSequenceNumber" role="interaction">
+          <association id="cmnaMessageWithSequenceNumber" role="interaction" multiplicity="false">
             <begin idref="cmnnCLifeline"/>
+          </association>
+          <association id="cmnaMessageWithSequenceNumber" role="interaction" multiplicity="false">
+            <end idref="cmnnCLifeline"/>
           </association>
         </associations>
         <properties>
@@ -68,26 +58,35 @@
       <graphics>
         <view>
           <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="82" 
-              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
-              viewBox="0 0 82 27" height="27" preserveAspectRatio="xMidYMid meet"
-              xmlns="http://www.w3.org/2000/svg" version="1.0">
+            <svg:svg width="82" xmlns:xlink="http://www.w3.org/1999/xlink" height="37" version="1.0">
               <svg:rect x="1" y="1" width="80" height="25" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
               <svg:line x1="6" y1="21" x2="76" y2="21" stroke="black" stroke-width="2" />
               <svg:text x="9" y="16" style="font-size:12pt;fill:#000000;">:</svg:text>
             </svg:svg>
           </svg_shape>
           <repo_info>
-            <html:html xmlns:html="http://www.w3.org/html/" x="15" y="16">
+            <html:html xmlns:html="http://www.w3.org/html/">
                 <html:text_from_repo name="name" />
             </html:html>
-            <ports>
-              <port type="line" x1="1" y1="1" x2="89" y2="1" />
-              <port type="line" x1="89" y1="1" x2="89" y2="26" />
-              <port type="line" x1="89" y1="26" x2="1" y2="26" />
-              <port type="line" x1="1" y1="26" x2="1" y2="1" />
-            </ports>
           </repo_info>
+          <ports>
+            <line_port>
+              <start startx="1" starty="1"/>
+              <end endx="89" endy="1"/>
+            </line_port>
+            <line_port>
+              <start startx="89" starty="1"/>
+              <end endx="89" endy="26"/>
+            </line_port>
+            <line_port>
+              <start startx="89" starty="26"/>
+              <end endx="1" endy="26"/>
+            </line_port>
+            <line_port>
+              <start startx="1" starty="26"/>
+              <end endx="1" endy="1"/>
+            </line_port>
+          </ports>
         </view>
       </graphics>
       <logic>
