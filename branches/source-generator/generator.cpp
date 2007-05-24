@@ -403,13 +403,13 @@ void Generator::genSQLScripts()
     resources += res.arg("repo/scripts.sql");
    
     out << "CREATE TABLE nametable (\n"
-            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
             "\ttype MEDIUMINT NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
             "CREATE TABLE metatable (\n"
-            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
