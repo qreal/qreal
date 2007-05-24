@@ -1,17 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <metamodel xmlns="http://schema.real.com/schema/">
-	<include>kernel_metamodel</include>
-	<include>basicbehaviors_metamodel</include>
-	<namespace>UML 2.1</namespace>
-	<diagram name="USE CASE DIAGRAM">
-		<node name="Actor" id="uscnActor">
-			<graphics>
-				<view>
-					<svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="40" 
-              xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" 
-              viewBox="0 0 40 100" height="100" preserveAspectRatio="xMidYMid meet"
-              xmlns="http://www.w3.org/2000/svg" version="1.0">
+  <include>kernel_metamodel</include>
+  <include>basicbehaviors_metamodel</include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="USE CASE DIAGRAM">
+    <node name="Actor" id="uscnActor">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="40" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
               <svg:circle cx="16" cy="16" r="15" stroke="black" stroke-width="2" fill="white"/>
               <svg:line x1="16" y1="31" x2="16" y2="66" stroke="black" stroke-width="2" />
               <svg:line x1="1" y1="45" x2="31" y2="45" stroke="black" stroke-width="2" />
@@ -19,123 +16,127 @@
               <svg:line x1="16" y1="66" x2="31" y2="89" stroke="black" stroke-width="2" />
             </svg:svg>
           </svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/" x="2" y="98">
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
               <html:center>
-                <html:text_from_repo name="name"/>
+                <html:text_from_repo name="name" />
               </html:center>
-						</html:html>
-            <ports>
-              <port type="point" x="1" y="45" />
-              <port type="point" x="31" y="45" />
-              <port type="line" x1="16" y1="50" x2="16" y2="66" />
-            </ports>
-					</repo_info>
-				</view>
-			</graphics>
-			<logic>
-				<generalizations>
-					<generalization>
-						<parent parent_id="bbnBehavioredClassifier"></parent>
-					</generalization>
-				</generalizations>
-				<properties>
-					<property name="name" type="string"></property>
-				</properties>
+            </html:html>
+          </repo_info>
+          <ports>
+            <point_port x="1" y="45" />
+            <point_port x="31" y="45" />
+            <line_port>
+              <start startx="16" starty="50"/>
+              <end endx="16" endy="66"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
         <containers>
           <container>
             <contains idref="uscnUseCase" role="use case"/>
           </container>
         </containers>
-			</logic>
-		</node>
-		<node name="UCClassifier" id="uscnUCClassifier">
-			<graphics>
-				<view>
+      </logic>
+    </node>
+    <node name="UCClassifier" id="uscnUCClassifier">
+      <graphics>
+        <view>
           <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="60" xmlns:xlink="http://www.w3.org/1999/xlink"
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 60 150" height="100" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="110" version="1.0">
               <svg:rect x="1" y="1" width="58" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="98"/>
             </svg:svg>
           </svg_shape>
           <repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/" x="3" y="13">
-								<html:text_from_repo name="name"/>
-						</html:html>
-					</repo_info>
-				</view>
-			</graphics>
-			<logic>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnClassifier"></parent>
-					</generalization>
-				</generalizations>
-				<associations>
-					<assoc_ref idref="uscaClassifier" />
-				</associations>
-				<containers>
-					<container>
-						<contains idref="uscnUseCase" role="use case" />
-					</container>
-				</containers>
-				<properties>
-					<property name="name" type="string"></property>
-				</properties>
-			</logic>
-		</node>
-		<node name="ExtensionPoint" id="uscnExtensionPoint">
-			<graphics>
-				<view>
-					<svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="82" xmlns:xlink="http://www.w3.org/1999/xlink"
-             zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 82 82" height="82"
-             preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-              <svg:circle cx="41" cy="41" r="40" stroke="black" stroke-width="2" fill="white" />
-              <svg:line x1="69" y1="13" x2="13" y2="69" stroke="black" stroke-width="2" />
-              <svg:line x1="13" y1="13" x2="69" y2="69" stroke="black" stroke-width="2" />
-              <!--хотя, вроде, у нее вообще не должно быть графического представления...-->
-            </svg:svg>
-          </svg_shape>
-				</view>
-			</graphics>
-			<logic>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnRedefElement"></parent>
-					</generalization>
-				</generalizations>
-				<properties>
-					<property name="name" type="string"></property>
-				</properties>
-				<containers>
-					<container>
-						<contained_by idref="uscnUseCase" role="use case" />
-					</container>
-				</containers>
-			</logic>
-		</node>
-		<node name="UseCase" id="uscnUseCase">
-			<graphics>
-				<view>
-					<svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 100 50" height="50" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
+            <html:html xmlns:html="http://www.w3.org/html/">
+                <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="uscaClassifier" />
+        </associations>
+        <containers>
+          <container>
+            <contains idref="uscnUseCase" role="use case" />
+          </container>
+        </containers>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+      </logic>
+    </node>
+    <node name="ExtensionPoint" id="uscnExtensionPoint">
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnRedefElement"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <containers>
+          <container>
+            <contained_by idref="uscnUseCase" role="use case" />
+          </container>
+        </containers>
+      </logic>
+    </node>
+    <node name="UseCase" id="uscnUseCase">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
               <svg:ellipse cx="50" cy="25" rx="48" ry="24" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2" />
             </svg:svg>
           </svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/" x="25" y="27">
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
               <html:center>
                 <html:text_from_repo name="name"/>
               </html:center>
             </html:html>
-            <ports>
-              <port type="ellipse" x="50" y="25" rx="48" ry="24" />
-            </ports>
           </repo_info>
+          <ports>
+            <point_port x="72" y="46" />
+            <point_port x="28" y="4" />
+            <point_port x="28" y="46" />
+            <point_port x="72" y="4" />
+
+            <point_port x="90" y="38" />
+            <point_port x="10" y="12" />
+            <point_port x="10" y="38" />
+            <point_port x="90" y="12" />
+
+            <point_port x="80" y="44" />
+            <point_port x="20" y="6" />
+            <point_port x="20" y="44" />
+            <point_port x="80" y="6" />
+
+            <point_port x="98" y="25" />
+            <point_port x="2" y="25" />
+
+            <point_port x="50" y="49" />
+            <point_port x="50" y="1" />
+          </ports>
         </view>
       </graphics>
       <logic>
@@ -167,74 +168,60 @@
     <edge name="Extend" id="uscExtend">
       <graphics>
         <view>
-          <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-              <svg:line x1="0" y1="45" x2="15" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="25" y1="45" x2="40" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="50" y1="45" x2="65" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="75" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="90" y1="45" x2="75" y2="35" stroke="black" stroke-width="2" />
-              <svg:line x1="90" y1="45" x2="75" y2="55" stroke="black" stroke-width="2" />
-            </svg:svg>
-          </svg_shape>
+          <line_type type="dashLine" />
+          <end_line type="arrow" />
           <repo_info>
-            <html:html xmlns:html="http://www.w3.org/html/" x="15" y="40" style="font-size:12pt;fill:#000000;">
+            <html:html xmlns:html="http://www.w3.org/html/">
               <html:text>&#8249;&#8249;extend&#8250;&#8250;</html:text>
             </html:html>
           </repo_info>
         </view>
-			</graphics>
-			<logic>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnNamedElement"></parent>
-						<parent parent_id="krneDirRelationship"></parent>
-					</generalization>
-				</generalizations>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+            <parent parent_id="krneDirRelationship"></parent>
+          </generalization>
+        </generalizations>
         <associations>
-          <association id="uscaExtend" role="extend">
+          <association id="uscaExtend" role="extend" multiplicity="true">
+            <begin idref="uscnUseCase"/>
+          </association>
+          <association id="uscaExtend" role="extend" multiplicity="false">
+            <end idref="uscnUseCase"/>
+          </association>
+        </associations>
+      </logic>
+    </edge>
+    <edge name="Include" id="uscInclude">
+      <graphics>
+        <view>
+          <line_type type="dashLine" />
+          <end_type type="arrow" />
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text>&#8249;&#8249;include&#8250;&#8250;</html:text>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krneDirRelationship"></parent>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="ucsaInclude" role="include" multiplicity="true">
+            <begin idref="uscnUseCase"/>
+          </association>
+          <association id="uscaExtend" role="extend" multiplicity="false">
             <begin idref="uscnUseCase"/>
           </association>
         </associations>
-			</logic>
-		</edge>
-		<edge name="Include" id="uscInclude">
-			<graphics>
-				<view>
-          <svg_shape>
-            <svg:svg contentScriptType="text/ecmascript" width="90" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 90 90" height="90" 
-              preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-              <svg:line x1="0" y1="45" x2="15" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="25" y1="45" x2="40" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="50" y1="45" x2="65" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="75" y1="45" x2="90" y2="45" stroke="black" stroke-width="2" />
-              <svg:line x1="90" y1="45" x2="75" y2="35" stroke="black" stroke-width="2" />
-              <svg:line x1="90" y1="45" x2="75" y2="55" stroke="black" stroke-width="2" />
-            </svg:svg>
-            <repo_info>
-              <html:html xmlns:html="http://www.w3.org/html/" x="15" y="40" style="font-size:12pt;fill:#000000;">
-                <html:text>&#8249;&#8249;include&#8250;&#8250;</html:text>
-              </html:html>
-            </repo_info>
-          </svg_shape>
-          </view>
-			</graphics>
-			<logic>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krneDirRelationship"></parent>
-						<parent parent_id="krnnNamedElement"></parent>
-					</generalization>
-				</generalizations>
-        <associations>
-          <association id="ucsaInclude" role="include">
-            <begin idref="uscnUseCase"/>
-          </association>
-        </associations>
-			</logic>
-		</edge>
-	</diagram>
+      </logic>
+    </edge>
+  </diagram>
 </metamodel>

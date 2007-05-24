@@ -118,7 +118,8 @@ void Generator::parseNode( QDomNode dnode ){
 
     cur->type = NODE;
     objects << cur;
-    categories.at(categories.size()-1)->objects << objectsCount++;    
+    categories.at(categories.size()-1)->objects << objectsCount;    
+    objectsCount++;
 }
 
 void Generator::parseEdge( QDomNode dnode ){
@@ -146,7 +147,8 @@ void Generator::parseEdge( QDomNode dnode ){
     edges << cur;    
     objects << cur;  
 
-    categories.at(categories.size()-1)->objects << objectsCount++;    
+    categories.at(categories.size()-1)->objects << objectsCount;    
+    objectsCount++;
 }
 
 void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
@@ -198,6 +200,21 @@ void Generator::parsePorts( Node* cur, QDomNode dnode ){
         port.vals << (qreal) ports.at(i).toElement().attribute("y").toInt()/cur->height;
         cur->ports << port;
     }
+
+    QDomNodeList lines = dnode.toElement().elementsByTagName("line_port");
+    for( int i=0; i<lines.size(); i++ ){
+        QDomElement start = lines.at(i).firstChildElement("start");
+        QDomElement end   = lines.at(i).firstChildElement("end");
+        Port port;
+        port.type = "line";
+        port.vals << (qreal) start.attribute("startx").toInt()/cur->width;
+        port.vals << (qreal) start.attribute("starty").toInt()/cur->height;
+        port.vals << (qreal) end.attribute("endx").toInt()/cur->width;
+        port.vals << (qreal) end.attribute("endy").toInt()/cur->height;
+        cur->ports << port;
+    }
+
+    
 }
 
 void Generator::parseNodeGraphics( Edge* cur, QDomNode dnode ){
@@ -307,6 +324,9 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
     if( isNode ){
         objects << edge;
         edges << edge;
+        categories.at(categories.size()-1)->objects << objectsCount;    
+        objectsCount++;
+
     }
 }
 
@@ -526,8 +546,12 @@ void Generator::genClasses(){
                                                             .arg(node->ports.at(j).vals.at(0))
                                                             .arg(node->ports.at(j).vals.at(1));
                 }                                         
-                else{
-                //TODO
+                else if (node->ports.at(j).type == "line" ){
+                    out << QString("\tlinePorts << QLineF(%1, %2, %3, %4);\n")
+                                            .arg(node->ports.at(j).vals.at(0))
+                                            .arg(node->ports.at(j).vals.at(1))
+                                            .arg(node->ports.at(j).vals.at(2))
+                                            .arg(node->ports.at(j).vals.at(3));
                 }
             }
         } 

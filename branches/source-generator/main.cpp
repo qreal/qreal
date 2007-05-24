@@ -7,9 +7,9 @@ int main()
         << "basicbehaviors_metamodel.xml" 
         << "trace.xml"
         << "requirements_metamodel.xml" 
-        << "class_metamodel.xml";
+        << "class_metamodel.xml"
 //        << "class_metamodel.xml"
-  //      << "usecase_metamodel.xml"
+        << "usecase_metamodel.xml";
     //    << "sequence_metamodel.xml"
       //  << "communication_metamodel.xml";
     new Generator(l);
