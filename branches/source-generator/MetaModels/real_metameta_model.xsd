@@ -69,10 +69,8 @@
 																	</xs:element>
 																	<xs:element name="end">
 																		<xs:complexType>
-																			<xs:choice maxOccurs="2">
-																				<xs:element name="endx" type="xs:integer" />
-																				<xs:element name="endy" type="xs:integer" />
-																			</xs:choice>
+																			<xs:attribute name="endx" type="xs:integer" />
+																			<xs:attribute name="endy" type="xs:integer" />
 																		</xs:complexType>
 																	</xs:element>
 																</xs:choice>
@@ -89,7 +87,6 @@
 										</xs:complexType>
 									</xs:element>
 								</xs:sequence>
-								<xs:attribute name="line_type" type="line_type" use="optional" />
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>
