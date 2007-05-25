@@ -33,6 +33,7 @@
 				</view>
 			</graphics>
 			<logic>
+			
 				<properties>
 					<property name="name" type="string" />
 					<property name="description" type="text" />
@@ -42,7 +43,7 @@
 						<type>string</type>
 						<description>requirement source value</description>
 					</property>
-					<property name="status" type="string" />
+					<property name="type" type="string" />
 				</properties>
 				<associations>
 					<assoc_ref idref="aP2N_Featured" />
