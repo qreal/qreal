@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+	EndGlobalSection
+	GlobalSection(SolutionItems) = postSolution
+		basicbehaviors_metamodel.xml = basicbehaviors_metamodel.xml
+		class_metamodel.xml = class_metamodel.xml
+		kernel_metamodel.xml = kernel_metamodel.xml
+		real_metameta_model.xsd = real_metameta_model.xsd
+		requirements_metamodel.xml = requirements_metamodel.xml
+		sequence_metamodel.xml = sequence_metamodel.xml
+		statemachines_metamodel.xml = statemachines_metamodel.xml
+		trace.xml = trace.xml
+		usecase_metamodel.xml = usecase_metamodel.xml
+		usecase_metamodel_new.xml = usecase_metamodel_new.xml
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
