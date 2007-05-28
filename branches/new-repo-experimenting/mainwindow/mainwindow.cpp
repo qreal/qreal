@@ -58,6 +58,7 @@ MainWindow::MainWindow()
 			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
 
 	show();
+    resize(1024, 800);
 	connectRepo();
 }
 

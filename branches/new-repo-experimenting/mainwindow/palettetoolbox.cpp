@@ -9,7 +9,7 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 	RealRepoInfo info;
 
 	m_id = classid;
-	m_text = info.objectName(classid);
+	m_text = info.objectDesc(classid);
 	m_icon = info.objectIcon(classid);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
