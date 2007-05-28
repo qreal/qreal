@@ -37,8 +37,8 @@ private:
     //void parseNodeAssociations( Entity*, QDomNode );
     void parseSVG             ( Entity*, QDomNode );
     void parsePorts           ( Node*,   QDomNode );
-    void parseLabels          ( Node*,   QDomNode );
-    void parseNodeGraphics    ( Edge*,   QDomNode );
+    void parseLabels          ( Entity*, QDomNode );
+    void parseEdgeGraphics    ( Edge*,   QDomNode );
 
     void genEnums();
     void genSQLScripts();

@@ -136,11 +136,12 @@ void Generator::parseEdge( QDomNode dnode ){
     cur->properties << QPair<QString, QString>("fromPort", "string");
     cur->properties << QPair<QString, QString>("toPort", "string");
 
-    parseNodeGraphics( cur, dnode );
+    parseEdgeGraphics( cur, dnode );
     parseGeneralizations( cur, logic ); 
     parseProperties( cur, logic );
     parseAssociations( cur, logic, isNode );
-
+    parseLabels( cur, dnode );
+    
     cur->height = -1;
     cur->width = -1;
     cur->type = EDGE;
@@ -217,7 +218,7 @@ void Generator::parsePorts( Node* cur, QDomNode dnode ){
     
 }
 
-void Generator::parseNodeGraphics( Edge* cur, QDomNode dnode ){
+void Generator::parseEdgeGraphics( Edge* cur, QDomNode dnode ){
 
     QDomNode lineType = dnode.toElement().elementsByTagName("line_type").at(0);
     if( lineType != QDomNode() ){
@@ -230,7 +231,7 @@ void Generator::parseNodeGraphics( Edge* cur, QDomNode dnode ){
     
 }
 
-void Generator::parseLabels( Node* cur, QDomNode dnode ){
+void Generator::parseLabels( Entity* cur, QDomNode dnode ){
     QDomNodeList htmls = dnode.toElement().elementsByTagName("html:html");
     for( int i=0; i < htmls.size(); i++ ){
         Label l;
@@ -241,18 +242,36 @@ void Generator::parseLabels( Node* cur, QDomNode dnode ){
       
         QDomNodeList tfrs = htmls.at(i).toElement().elementsByTagName("html:text_from_repo");
         int x = tfrs.size();
-        for( int j=0; j<x; j++){
-            QDomNode par = tfrs.at(0).parentNode();
-            QString role = tfrs.at(0).toElement().attribute("name");
-            par.removeChild(tfrs.at(0));
+        if( x > 0){
+            for( int j=0; j<x; j++){
+                QDomNode par = tfrs.at(0).parentNode();
+                QString role = tfrs.at(0).toElement().attribute("name");
+                par.removeChild(tfrs.at(0));
         
-            const QDomText data = doc->createTextNode("%" + QString::number(j+1));
-            if( role == "name" )
-                l.args << "Qt::DisplayRole";
-            else    
-                l.args << "Unreal::" + cur->id + "::" + role + "Role";
-            par.appendChild(data);
+                const QDomText data = doc->createTextNode("%" + QString::number(j+1));
+                if( role == "name" )
+                    l.args << "Qt::DisplayRole";
+                else    
+                    l.args << "Unreal::" + cur->id + "::" + role + "Role";
+                par.appendChild(data);
+            }
+        } 
+        QDomNodeList texts = htmls.at(i).toElement().elementsByTagName("html:text");
+        int y = texts.size();
+        if( y > 0 ){
+            for( int j=0; j<y; j++){
+                QDomNode par = texts.at(0).parentNode();
+                QString role = texts.at(0).toElement().attribute("text");
+                par.removeChild(texts.at(0));
+        
+                const QDomText data = doc->createTextNode("%" + QString::number(j+1));
+                l.args << role;
+                par.appendChild(data);
+            }
+        
+        
         }
+        
         for( int j=0; j<htmls.at(0).childNodes().size(); j++)
             htmls.at(0).childNodes().at(j).save(stream, 1);
         txt.replace(QString("\n"), QString(" "));
@@ -403,13 +422,13 @@ void Generator::genSQLScripts()
     resources += res.arg("repo/scripts.sql");
    
     out << "CREATE TABLE nametable (\n"
-            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
             "\ttype MEDIUMINT NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
             "CREATE TABLE metatable (\n"
-            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"

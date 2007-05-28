@@ -3,7 +3,7 @@
 	<include>kernel_metamodel</include>
 	<namespace>trace</namespace>
 	<diagram name="TRACE">
-		<edge id="tracenTraceRelationship" name="TraceRelationship">
+		<edge id="traceeTraceRelationship" name="TraceRelationship">
 			<graphics>
 				<view>
 					<svg_shape>
@@ -12,7 +12,16 @@
 							<svg:text x="27" y="37" style="font-size:12pt;fill:#0000ff;">&lt;&lt;Trace&gt;&gt;</svg:text>
 						</svg:svg>
 					</svg_shape>
-					<line_type type="dashLine"></line_type>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text text="Trace" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<line_type type="customDashLine"></line_type>
 				</view>
 			</graphics>
 			<logic>
@@ -21,6 +30,14 @@
 						<parent parent_id="krneDirRelationship" />
 					</generalization>
 				</generalizations>
+				<associations>
+					<association id="traceaElem-Elem-Trace" role="traceSourceElement">
+						<begin idref="krnnElement" />
+					</association>
+					<association id="ktraceaElem-Elem-Trace" role="traceTargetElement">
+						<end idref="krnnElement" />
+					</association>
+				</associations>
 			</logic>
 		</edge>
 	</diagram>
