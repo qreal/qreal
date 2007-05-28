@@ -18,7 +18,7 @@ static double TwoPi = 2.0 * Pi;
 static bool moving = false;
 
 EdgeElement::EdgeElement()
-: src(0), dst(0), portFrom(0), portTo(0), dragState(-1)
+: src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -39,8 +39,8 @@ EdgeElement::~EdgeElement()
 
 QRectF EdgeElement::boundingRect() const
 {
-	return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
-	// return m_line.boundingRect().adjusted(-20,-20,20,20);
+	// return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+	return m_line.boundingRect().adjusted(-20,-20,20,20);
 }
 
 static double lineAngle(const QLineF &line)
@@ -80,6 +80,16 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		foreach( QPointF point, m_line) {
 			painter->drawRect(QRectF(point-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
 		}
+	}
+
+	if ( ! m_text.isEmpty() ) {
+		painter->save();
+		QLineF longest(m_line[longPart],m_line[longPart+1]);
+		painter->translate(m_line[longPart]);
+		painter->rotate(-lineAngle(longest));
+		painter->drawText(0,-15,longest.length(),15,
+				Qt::TextSingleLine | Qt::AlignCenter, m_text);
+		painter->restore();
 	}
 }
 
@@ -127,6 +137,20 @@ int EdgeElement::getPoint( const QPointF &location )
 	return -1;
 }
 
+void EdgeElement::updateLongestPart()
+{
+	qreal maxLen = 0.0;
+	int maxIdx = 0;
+	for ( int i = 0; i < m_line.size() - 1 ; i++ ) {
+		qreal newLen = QLineF(m_line[i],m_line[i+1]).length();
+		if ( newLen > maxLen ) {
+			maxLen = newLen;
+			maxIdx = i;
+		}
+	}
+	longPart = maxIdx;	
+}
+
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 {
 	dragState = -1;
@@ -145,6 +169,7 @@ void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	} else {
 		prepareGeometryChange();
 		m_line[dragState] = event->pos();
+		updateLongestPart();
 	}
 }
 
@@ -216,6 +241,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	im->setData(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
 
 	moving = false;
+
+	updateLongestPart();
 }
 
 NodeElement *EdgeElement::getNodeAt( const QPointF &position )
@@ -281,6 +308,7 @@ void EdgeElement::adjustLink()
 		m_line[0] = mapFromItem(src, src->getPortPos(portFrom) );
 	if ( dst )
 		m_line[m_line.size()-1] = mapFromItem(dst, dst->getPortPos(portTo) );
+	updateLongestPart();
 }
 
 void EdgeElement::updateData()

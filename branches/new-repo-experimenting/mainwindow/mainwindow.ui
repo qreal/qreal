@@ -12,6 +12,9 @@
   <property name="windowTitle" >
    <string>unREAL</string>
   </property>
+  <property name="windowIcon" >
+   <iconset resource="../static.qrc" >:/icons/designer_datatable.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget" />
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >

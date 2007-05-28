@@ -32,8 +32,12 @@ namespace UML {
 			qreal portFrom, portTo;
 			int dragState;
 
+			int longPart;
+
 			QPolygonF m_line;
 			QColor m_color;
+
+			void updateLongestPart();
 		protected:
 			void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
@@ -44,6 +48,7 @@ namespace UML {
 			virtual void drawEndArrow ( QPainter * ) const = 0;
 
 			Qt::PenStyle m_penStyle;
+			QString m_text;
 	};
 };
 
