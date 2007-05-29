@@ -264,8 +264,7 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
                 QString role = texts.at(0).toElement().attribute("text");
                 par.removeChild(texts.at(0));
         
-                const QDomText data = doc->createTextNode("%" + QString::number(j+1));
-                l.args << role;
+                const QDomText data = doc->createTextNode(role);
                 par.appendChild(data);
             }
         
@@ -623,8 +622,9 @@ void Generator::genClasses(){
             << "\tNodeElement::updateData();\n";
         if( objects.at(i)->labels.size() > 0){
             out << QString("\ttext = QString(\"%1\")").arg(objects.at(i)->labels.at(0).text);
-            for( int k=0; k<objects.at(i)->labels.at(0).args.size(); k++)
-                out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
+            if( objects.at(i)->labels.at(0).args.size() > 0)
+                for( int k=0; k<objects.at(i)->labels.at(0).args.size(); k++)
+                    out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
                                 .arg(objects.at(i)->labels.at(0).args.at(k));
             out << ";\n";                    
         }    
@@ -693,7 +693,10 @@ void Generator::genClasses(){
         out << QString("{\n\tm_penStyle = %1;\n").arg(edges.at(i)->lineType);
         if( edges.at(i)->labels.size() > 0){
             out << QString("\tm_text = QString(\"%1\")").arg(edges.at(i)->labels.at(0).text);
-            out << QString(".arg(\"%1\");\n").arg(edges.at(i)->labels.at(0).args.at(0));
+            if( edges.at(i)->labels.at(0).args.size() > 0 )
+                out << QString(".arg(dataIndex.data(%1).toString());\n").arg(edges.at(i)->labels.at(0).args.at(0));
+            else
+                out << ";\n";
         }       
         out << "}\n\n";
 
