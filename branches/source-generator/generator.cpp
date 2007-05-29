@@ -422,13 +422,13 @@ void Generator::genSQLScripts()
     resources += res.arg("repo/scripts.sql");
    
     out << "CREATE TABLE nametable (\n"
-            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
             "\ttype MEDIUMINT NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
             "CREATE TABLE metatable (\n"
-            "\tid INTEGER PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
@@ -591,18 +591,25 @@ void Generator::genClasses(){
             << "\td.setHtml(text);\n";
         if( objects.at(i)->labels.size() > 0){
             out << "\tpainter->save();\n";
-            if( objects.at(i)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed
+            if( objects.at(i)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/ 
                 out << QString("\tpainter->translate(QPointF(0, 0));\n")
                     << "\td.setTextWidth(m_contents.width());\n"
                     << "\td.drawContents(painter, m_contents);\n";
-            }        
+            }
+            else if( objects.at(i)->id == "krnnDiagram"){
+                out << QString("\tpainter->translate(QPointF(0, 2*m_contents.height()/3 ));\n")
+                    << "\tQRectF conts = m_contents;\n"
+                    << "\tconts.setHeight(m_contents.height()/3);\n"
+                    << "\td.setTextWidth(m_contents.width());\n"
+                    << "\td.drawContents(painter, conts);\n";
+             
+            }
             else{    
                 out << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n")
                     << "\tQRectF conts = m_contents;\n"
-                    << "\tconts.setHeight(15);\n"
+                    << "\tconts.setHeight(20);\n"
                     << "\td.setTextWidth(m_contents.width());\n"
                     << "\td.drawContents(painter, conts);\n";
-         
             }    
             out << "\tpainter->restore();\n";
         }
@@ -683,8 +690,13 @@ void Generator::genClasses(){
         //
 
         out << classname << "::" << classname << "()\n";
-        out << QString("{\n\tm_penStyle = %1;\n}\n\n").arg(edges.at(i)->lineType);
-        
+        out << QString("{\n\tm_penStyle = %1;\n").arg(edges.at(i)->lineType);
+        if( edges.at(i)->labels.size() > 0){
+            out << QString("\tm_text = QString(\"%1\")").arg(edges.at(i)->labels.at(0).text);
+            out << QString(".arg(\"%1\");\n").arg(edges.at(i)->labels.at(0).args.at(0));
+        }       
+        out << "}\n\n";
+
         out << classname << "::~" << classname << "()\n";
         out <<   "{\n}\n\n";
 
