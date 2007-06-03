@@ -11,7 +11,8 @@ int main()
         << "class_metamodel.xml"
         << "usecase_metamodel.xml"
         << "sequence_metamodel.xml"
-        << "communication_metamodel.xml";
+        << "communication_metamodel.xml"
+        << "statemachines_metamodel.xml";
     new Generator(l);
     return 0;
 }

@@ -55,9 +55,13 @@ void Generator::parseFile( QString filename ){
         qDebug() << "incorrect filename " << filename;
         return;
     }
-    if( !doc->setContent(&file)){
+    QString error = "";
+    int errorLine = 0;
+    int errorCol = 0;
+    if( !doc->setContent(&file, false, &error, &errorLine, &errorCol)){
         file.close();
-        qDebug() << "cannot set qdomdocument's content in " << filename;
+        qDebug() << "parse error in " << filename << ", error is " << error 
+            << ". error line is " << errorLine << ", column is " << errorCol;
         return;
     }
     file.close();
@@ -421,13 +425,13 @@ void Generator::genSQLScripts()
     resources += res.arg("repo/scripts.sql");
    
     out << "CREATE TABLE nametable (\n"
-            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,\n"
             "\ttype MEDIUMINT NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
             "CREATE TABLE metatable (\n"
-            "\tid INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,\n"
+            "\tid INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,\n"
             "\tname VARCHAR(255),\n"
             "\tqualifiedName VARCHAR(255)\n"
             ");\n\n"
@@ -452,7 +456,7 @@ void Generator::genSQLScripts()
                 
 
         out <<  "CREATE TABLE `el_" << j << "` (\n"
-                "\t`id` mediumint NOT NULL,"
+                "\t`id` mediumint NOT NULL,\n"
                 "\t`name` VARCHAR(30)";
         for (int k=0; k<objects.at(i)->properties.size(); k++){
             QString cortege = ",\n\t`%1` %2";
