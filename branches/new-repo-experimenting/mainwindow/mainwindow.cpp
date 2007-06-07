@@ -77,7 +77,6 @@ bool realInitDatabase(QSqlDatabase db)
 {
 	QSqlQuery q(db);
 	QFile scriptFile(":/repo/scripts.sql");
-	
 	if ( !scriptFile.open(QFile::ReadOnly) )
 		return false;
 
@@ -100,6 +99,7 @@ bool realInitDatabase(QSqlDatabase db)
 			qDebug() << query.simplified().append(" ;");
 			return false;
 		}
+
 	}
 
 	return true;

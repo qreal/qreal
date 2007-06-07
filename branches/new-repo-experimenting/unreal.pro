@@ -45,4 +45,4 @@ SOURCES		+= umllib/uml_edgeelement.cpp \
 
 # Generated UML code
 include (umllib/generated/umllib.pri)
-SOURCES		+= umllib/edges_stuff.cpp
+SOURCES		+= repo/edges_stuff.cpp

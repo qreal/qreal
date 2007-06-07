@@ -38,6 +38,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
+        case Unreal::krnnNamedElement::nameRole:
 			return hashNames[item->id];
 		case Qt::DecorationRole:
 			{
@@ -69,8 +70,9 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 		default:
 			if ( role > Unreal::UserRole ) {
 				if ( hashElementProps.contains(item->id) ) {
-					if ( hashElementProps[item->id].contains(role) )
+					if ( hashElementProps[item->id].contains(role) ){
 						return hashElementProps[item->id][role];
+                    }    
 					else
 						return QVariant();
 				} else {
@@ -100,6 +102,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 
 	switch (role) {
 		case Qt::DisplayRole:
+        case Unreal::krnnNamedElement::nameRole:
 		case Qt::EditRole:
 			{
 				q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");

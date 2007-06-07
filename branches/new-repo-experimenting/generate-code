@@ -6,6 +6,7 @@ GEN=$WD/generated
 pushd $WD
 qmake
 make
+rm -rf generated
 ./code
 popd
 
