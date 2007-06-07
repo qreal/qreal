@@ -417,10 +417,10 @@
 					<property name="isSubstitutable" type="bool" />
 				</properties>
 				<associations>
-					<association id="krnaGereralEnd" role="general">
+					<association id="krnaGeneralEnd" role="general" end_type="empty_arrow">
 						<end idref="krnnClassifier" />
 					</association>
-					<association id="krnaGereralStart">
+					<association id="krnaGeneralStart">
 						<begin idref="krnnClassifier" />
 					</association>
 				</associations>

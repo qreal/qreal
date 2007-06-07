@@ -52,10 +52,14 @@ public:
 
 class Association {
 public:
+    Association() { toArrow = ""; fromArrow = ""; }
+
     QString fromID;
     QString toID;
     QString from;
     QString to;
+    QString fromArrow;
+    QString toArrow;
     //TODO: full schema support
     //QString role;  
 };

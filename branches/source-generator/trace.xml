@@ -17,7 +17,7 @@
 							<html:text text="Trace" />
 						</html:html>
 					</repo_info>
-					<line_type type="customDashLine"></line_type>
+					<line_type type="DotLine"></line_type>
 				</view>
 			</graphics>
 			<logic>

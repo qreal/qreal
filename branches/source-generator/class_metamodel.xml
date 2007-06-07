@@ -32,6 +32,25 @@
                             </html:b>    
 						</html:html>
 					</repo_info>
+                    <ports>
+                        <line_port>
+                            <start startx="0" starty="0"/>
+                            <end endx="50" endy="0"/>
+                        </line_port>
+                        <line_port>
+                            <start startx="50" starty="0"/>
+                            <end endx="50" endy="70"/>
+                        </line_port>
+                        <line_port>
+                            <start startx="50" starty="70"/>
+                            <end endx="0" endy="70"/>
+                        </line_port>
+                        <line_port>
+                            <start startx="0" starty="70"/>
+                            <end endx="0" endy="0"/>
+                        </line_port>
+
+                    </ports>
 				</view>
 			</graphics>
 			<logic>

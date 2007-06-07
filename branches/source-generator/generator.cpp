@@ -167,6 +167,8 @@ void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
 }
 
 void Generator::parseProperties( Entity* cur, QDomNode logic ){
+    
+    cur->addProperty("name", "string");
 
     QDomNodeList props = logic.toElement().elementsByTagName("properties");
     for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> section
@@ -331,15 +333,18 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
     Association* ass = new Association();
     for( int i=0; i < assocs.size(); i++){  
         QString role = assocs.at(i).toElement().attribute("id");
+        QString arrowType = assocs.at(i).toElement().attribute("end_type");
         QDomElement begin = assocs.at(i).firstChildElement("begin");
         QDomElement end = assocs.at(i).firstChildElement("end");
         if( begin != QDomElement() ){
             ass->from = begin.toElement().attribute("idref");
             ass->fromID = role;
+            ass->fromArrow = arrowType;
         }    
         if( end != QDomElement() ){
             ass->to = end.toElement().attribute("idref");
             ass->toID = role;
+            ass->toArrow = arrowType;
         }   
     }
     edge->associations << ass;
@@ -608,10 +613,17 @@ void Generator::genClasses(){
              
             }
             else{    
-                out << QString("\tpainter->translate(QPointF(0, m_contents.height() - 15 ));\n")
-                    << "\tQRectF conts = m_contents;\n"
-                    << "\tconts.setHeight(20);\n"
-                    << "\td.setTextWidth(m_contents.width());\n"
+                if( objects.at(i)->labels.at(0).x != 0  || objects.at(i)->labels.at(0).y != 0)
+                    out << QString("\tpainter->translate(QPointF(%1 * m_contents.width(), %2 * m_contents.height()));\n")
+                            .arg(objects.at(i)->labels.at(0).x).arg(objects.at(i)->labels.at(0).y)
+                        << "\tQRectF conts = m_contents;\n"
+                        << QString("\tconts.setHeight(m_contents.height() * (1 - %1));\n")
+                            .arg(objects.at(i)->labels.at(0).y);
+                else
+                    out << QString("\tpainter->translate(QPointF(0, m_contents.height()-15));\n")
+                        << "\tQRectF conts = m_contents;\n"
+                        << QString("\tconts.setHeight(20);\n");
+                out << "\td.setTextWidth(m_contents.width());\n"
                     << "\td.drawContents(painter, conts);\n";
             }    
             out << "\tpainter->restore();\n";
@@ -710,8 +722,30 @@ void Generator::genClasses(){
         out << "void " << classname << "::drawStartArrow(QPainter *) const\n";
         out <<   "{\n}\n\n";
         
-        out << "void " << classname << "::drawEndArrow(QPainter *) const\n";
-        out <<   "{\n}\n\n";
+        out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n";
+        out <<  "{\n"
+                "\tQBrush old = painter->brush();\n"
+                "\tQBrush brush;\n"
+                "\tbrush.setStyle(Qt::SolidPattern);\n";
+        QString style = edges.at(i)->associations.at(0)->toArrow;
+        if( style.isEmpty() )
+            style = "filled_arrow";
+        if( style == "empty_arrow" || style == "empty_rhomb" )        
+            out << "\tbrush.setColor(Qt::white);\n";
+        if( style == "filled_arrow" || style == "filled_rhomb" )        
+            out << "\tbrush.setColor(Qt::black);\n";
+        out << "\tpainter->setBrush(brush);\n";
+        
+        if( style == "empty_arrow" || style == "filled_arrow" )
+            out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 3);\n";
+        if( style == "empty_rhomb" || style == "filled_rhomb" )
+            out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 4);\n\t";
+        out << "\tpainter->setBrush(old);\n"; 
+        out <<   "}\n\n";
  
     }
     out2 << "}\n";   
