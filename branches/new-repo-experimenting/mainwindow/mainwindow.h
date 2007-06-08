@@ -30,7 +30,6 @@ public slots:
 private:
 	RealRepoModel *model;
 	PropertyEditorModel propertyModel;
-	EditorView *view;
 	QSqlDatabase db;
 	
 	Ui::MainWindowUi ui;

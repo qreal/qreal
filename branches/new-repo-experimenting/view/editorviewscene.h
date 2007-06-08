@@ -20,12 +20,12 @@ public:
     UML::Element *getElem(int uuid);
     
 protected:
-    void dragEnterEvent( QGraphicsSceneDragDropEvent * event );
-    void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
-    void dragLeaveEvent( QGraphicsSceneDragDropEvent * event );
-    void dropEvent ( QGraphicsSceneDragDropEvent * event );
+    void dragEnterEvent( QGraphicsSceneDragDropEvent *event );
+    void dragMoveEvent( QGraphicsSceneDragDropEvent *event );
+    void dragLeaveEvent( QGraphicsSceneDragDropEvent *event );
+    void dropEvent ( QGraphicsSceneDragDropEvent *event );
 
-    void keyPressEvent( QKeyEvent * event );
+    void keyPressEvent( QKeyEvent *event );
 private:
     EditorViewMViface *mv_iface;
     EditorView *view;

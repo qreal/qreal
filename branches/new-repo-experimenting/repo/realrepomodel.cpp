@@ -111,7 +111,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 				if ( q.exec() ) {
 					hashNames[item->id] = value.toString();
 				} else {
-					qDebug() << db.lastError().text();
+					qDebug() << q.executedQuery() << db.lastError().text();
 				}
 			}
 			break;
@@ -127,7 +127,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 					if ( q.exec() ) {
 						hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
 					} else
-						qDebug() << db.lastError().text();
+						qDebug() << q.executedQuery() << db.lastError().text();
 				}
 			}
 		case Unreal::ConfigurationRole:
@@ -149,7 +149,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 					if ( q.exec() ) {
 						hashDiagramElements[item->parent->id][item->id].configuration = value.value<QPolygon>();
 					} else
-						qDebug() << db.lastError().text();
+						qDebug() << q.executedQuery() << db.lastError().text();
 				}
 			}
 		default:
@@ -160,10 +160,12 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 				q.bindValue(":elid", item->id);
 				q.bindValue(":value", value);
 				
-				if ( q.exec() ) 
+				if ( q.exec() ) {
 					if ( hashElementProps.contains(item->id) ) {
 						hashElementProps[item->id][role] = value;
 					}
+				} else
+						qDebug() << q.executedQuery() << db.lastError().text();
 			}
 	}
 
@@ -294,7 +296,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		q.bindValue(":id",  parentItem->children[i]->id );
 
 		if ( !q.exec() )
-			qDebug() << db.lastError().text();
+			qDebug() << q.executedQuery() << db.lastError().text();
 
 		q.clear();
 
@@ -400,7 +402,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 						createItem(parentItem, newid, newtype);
 					} else 
-						qDebug() << db.lastError().text();
+						qDebug() << q.executedQuery() << db.lastError().text();
 
 					endInsertRows();
 				}
@@ -432,7 +434,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 							createItem(rootItem->children.at(newtype-1), newid, newtype);
 						} else 
-							qDebug() << db.lastError().text();
+							qDebug() << q.executedQuery() << db.lastError().text();
 
 						endInsertRows();
 					}
@@ -441,7 +443,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 					q.bindValue(":did",diagram_id);
 					q.bindValue(":elid",newid);
 					if ( !q.exec() )
-						qDebug() << db.lastError().text();
+						qDebug() << q.executedQuery() << db.lastError().text();
 				}
 
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
@@ -523,7 +525,7 @@ void RealRepoModel::updateProperties(int id)
 		else
 			qDebug() << "some weird error";
 	} else
-		qDebug() << db.lastError().text();
+		qDebug() << q.executedQuery() << db.lastError().text();
 
 	hashElementProps[id] = properties;
 }
@@ -539,7 +541,7 @@ void RealRepoModel::updateRootTable()
 			hashChildCount[q.value(0).toInt()] = q.value(3).toInt();
 		}
 	} else
-		qDebug() << db.lastError().text();
+		qDebug() << q.executedQuery() << db.lastError().text();
 }
 
 void RealRepoModel::readRootTable()
@@ -564,7 +566,7 @@ void RealRepoModel::readRootTable()
 
 		hashChildCount[rootItem->id] = rootItem->children.size();
 	} else
-		qDebug() << db.lastError().text();
+		qDebug() << q.executedQuery() << db.lastError().text();
 }
 
 void RealRepoModel::readCategoryTable(RepoTreeItem *parent)
@@ -606,7 +608,7 @@ void RealRepoModel::readCategoryTable(RepoTreeItem *parent)
 			}
 		}
 	} else
-		qDebug() << db.lastError().text();
+		qDebug() << q.executedQuery() << db.lastError().text();
 }
 
 void RealRepoModel::readContainerTable(RepoTreeItem *root)
@@ -663,6 +665,6 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 				hashDiagramElements[root->id][item->id].configuration = newConfig;
 			}
 		} else
-			qDebug() << db.lastError().text();
+			qDebug() << q.executedQuery() << db.lastError().text();
 	}
 }

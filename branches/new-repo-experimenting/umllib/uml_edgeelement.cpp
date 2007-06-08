@@ -89,8 +89,16 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		QLineF longest(m_line[longPart],m_line[longPart+1]);
 		painter->translate(m_line[longPart]);
 		painter->rotate(-lineAngle(longest));
-		painter->drawText(0,-15,longest.length(),15,
-				Qt::TextSingleLine | Qt::AlignCenter, m_text);
+	
+//		painter->drawText(0,-15,longest.length(),15,
+//				Qt::TextSingleLine | Qt::AlignCenter, m_text);
+		
+		QTextDocument d;
+		d.setHtml(m_text);
+		d.setTextWidth(longest.length());
+//		painter->drawRect(QRectF(0,0,longest.length(),20));
+		d.drawContents(painter);
+
 		painter->restore();
 	}
 }
@@ -271,6 +279,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 			if ( i != -1 ) {
 				prepareGeometryChange();
 				m_line.remove(i);
+				longPart = 0;
 				update();
 			}
 		} else if ( selectedAction == addPointAction ) {

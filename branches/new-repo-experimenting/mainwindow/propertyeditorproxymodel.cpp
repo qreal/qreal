@@ -18,7 +18,7 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return 1;
 }
 
-Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &index) const
+Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &/*index*/) const
 {
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }

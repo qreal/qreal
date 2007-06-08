@@ -10,6 +10,8 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
 {
 	//	setSceneRect(-400, -300, 800, 600);
+	setItemIndexMethod(NoIndex);
+//	setBackgroundBrush(gradient);
 }
 
 void EditorViewScene::clearScene()

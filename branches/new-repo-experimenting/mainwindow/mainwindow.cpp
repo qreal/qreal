@@ -18,25 +18,20 @@ MainWindow::MainWindow()
 {
 	ui.setupUi(this);
 
-	view = new EditorView;
-	setCentralWidget(view);
-
-//	delete ui.centralwidget;
-
-	ui.minimapView->setScene(view->scene());
+	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-			view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 	
-	connect(ui.actionZoom_In, SIGNAL( triggered() ), view, SLOT( zoomIn() ) );
-	connect(ui.actionZoom_Out, SIGNAL( triggered() ), view, SLOT( zoomOut() ) );
+	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
+	connect(ui.actionZoom_Out, SIGNAL( triggered() ), ui.view, SLOT( zoomOut() ) );
 
-	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), view, SLOT( toggleAntialiasing(bool) ) );
-	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), view, SLOT( toggleOpenGL(bool) ) );
+	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleAntialiasing(bool) ) );
+	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleOpenGL(bool) ) );
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
@@ -64,7 +59,6 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-	delete view;
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -149,7 +143,7 @@ void MainWindow::connectRepo()
 
 	propertyModel.setSourceModel(model);
 
-	view->mvIface()->setModel(model);
+	ui.view->mvIface()->setModel(model);
 }
 
 void MainWindow::closeRepo()
@@ -157,7 +151,7 @@ void MainWindow::closeRepo()
 	ui.diagramExplorer->setModel(0);
 	ui.objectExplorer->setModel(0);
 	propertyModel.setSourceModel(0);
-	view->mvIface()->setModel(0);
+	ui.view->mvIface()->setModel(0);
 
 	if( model )
 		delete model;
@@ -172,7 +166,7 @@ void MainWindow::print()
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
 //		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
-		view->scene()->render(&painter);
+		ui.view->scene()->render(&painter);
 	}
 }
 
@@ -188,6 +182,6 @@ void MainWindow::makeSvg()
 	newSvg.setSize(QSize(800,600));
 
 	QPainter painter(&newSvg);
-	view->scene()->render(&painter);
+	ui.view->scene()->render(&painter);
 }
 

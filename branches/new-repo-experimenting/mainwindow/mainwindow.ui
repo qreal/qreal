@@ -5,7 +5,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>459</width>
+    <width>577</width>
     <height>482</height>
    </rect>
   </property>
@@ -15,13 +15,31 @@
   <property name="windowIcon" >
    <iconset resource="../static.qrc" >:/icons/designer_datatable.png</iconset>
   </property>
-  <widget class="QWidget" name="centralwidget" />
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" >
+    <property name="leftMargin" >
+     <number>0</number>
+    </property>
+    <property name="topMargin" >
+     <number>0</number>
+    </property>
+    <property name="rightMargin" >
+     <number>0</number>
+    </property>
+    <property name="bottomMargin" >
+     <number>0</number>
+    </property>
+    <item row="0" column="0" >
+     <widget class="EditorView" name="view" />
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>459</width>
+     <width>577</width>
      <height>28</height>
     </rect>
    </property>
@@ -374,6 +392,11 @@
    <extends>QToolBox</extends>
    <header>palettetoolbox.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EditorView</class>
+   <extends>QGraphicsView</extends>
+   <header>editorview.h</header>
   </customwidget>
  </customwidgets>
  <resources>
