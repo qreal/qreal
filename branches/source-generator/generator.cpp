@@ -270,7 +270,6 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
                 QDomNode par = texts.at(0).parentNode();
                 QString role = texts.at(0).toElement().attribute("text");
                 par.removeChild(texts.at(0));
-                qDebug() << role;
                 const QDomText data = doc->createTextNode(role);
                 par.appendChild(data);
             }
