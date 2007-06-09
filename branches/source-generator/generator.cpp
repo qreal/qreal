@@ -113,6 +113,8 @@ void Generator::parseNode( QDomNode dnode ){
     QDomElement logic = dnode.firstChildElement("logic");
     bool isNode = true;
     
+    cur->addProperty("name", "string");
+    
     parseGeneralizations( cur, logic );
     parseProperties( cur, logic );
     parseAssociations( cur, logic, isNode);
@@ -135,10 +137,11 @@ void Generator::parseEdge( QDomNode dnode ){
     bool isNode = false;
     
     // quick hack to make these props be on top
-    cur->properties << QPair<QString, QString>("from", "string");
-    cur->properties << QPair<QString, QString>("to", "string");
-    cur->properties << QPair<QString, QString>("fromPort", "string");
-    cur->properties << QPair<QString, QString>("toPort", "string");
+    cur->addProperty("name", "string");
+    cur->addProperty("from", "string");
+    cur->addProperty("to", "string");
+    cur->addProperty("fromPort", "string");
+    cur->addProperty("toPort", "string");
 
     parseEdgeGraphics( cur, dnode );
     parseGeneralizations( cur, logic ); 
@@ -168,8 +171,6 @@ void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
 
 void Generator::parseProperties( Entity* cur, QDomNode logic ){
     
-    cur->addProperty("name", "string");
-
     QDomNodeList props = logic.toElement().elementsByTagName("properties");
     for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> section
         QDomNodeList property = props.at(i).toElement().elementsByTagName("property");
