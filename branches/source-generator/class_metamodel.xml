@@ -70,5 +70,65 @@
 				</containers>
 			</logic>
 		</node>
+		<edge name="Aggregation" id="ceAggregation">
+			<logic>
+				<associations>
+					<association id="caAggr1" end_type="empty_rhomb">
+						<begin idref="krnnElement" />
+					</association>
+					<association id="acAggr2" end_type="no_arrow">
+						<end idref="krnnElement" />
+					</association>
+				</associations>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneRelationship" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</edge>
+		<edge name="Composition" id="ceComposition">
+			<logic>
+				<associations>
+					<association id="caComp1" end_type="filled_rhomb">
+						<begin idref="krnnElement" />
+					</association>
+					<association id="acComp2" end_type="no_arrow">
+						<end idref="krnnElement" />
+					</association>
+				</associations>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneRelationship" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</edge>
+		<edge name="Dependency" id="ceDependency">
+            <graphics>
+                <view>
+                    <line_type type="dashLine"/>
+                </view>
+            </graphics>
+			<logic>
+				<associations>
+					<association id="caDep1" end_type="no_arrow">
+						<begin idref="krnnElement" />
+					</association>
+					<association id="acAggr2" end_type="open_arrow">
+						<end idref="krnnElement" />
+					</association>
+				</associations>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneRelationship" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</edge>
+
+
+
+        
 	</diagram>
 </metamodel>

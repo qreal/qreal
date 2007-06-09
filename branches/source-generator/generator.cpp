@@ -706,6 +706,8 @@ void Generator::genClasses(){
         // CPP-files
         //
 
+        // constructor
+
         out << classname << "::" << classname << "()\n";
         out << QString("{\n\tm_penStyle = %1;\n").arg(edges.at(i)->lineType);
         if( edges.at(i)->labels.size() > 0){
@@ -717,16 +719,17 @@ void Generator::genClasses(){
         }       
         out << "}\n\n";
 
+        // destructor
+
         out << classname << "::~" << classname << "()\n";
         out <<   "{\n}\n\n";
 
-        out << "void " << classname << "::drawStartArrow(QPainter *) const\n";
-        out <<   "{\n}\n\n";
-        
-        out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n{\n";
-        QString style = edges.at(i)->associations.at(0)->toArrow;
-        if( !style.isEmpty() ){
-            out <<  
+        // drawStartArrow
+
+        QString style = edges.at(i)->associations.at(0)->fromArrow;
+        if( !style.isEmpty() && style != "no_arrow" ){
+            out << "void " << classname << "::drawStartArrow(QPainter *painter) const\n";
+            out <<   "{\n"
                 "\tQBrush old = painter->brush();\n"
                 "\tQBrush brush;\n"
                 "\tbrush.setStyle(Qt::SolidPattern);\n";
@@ -750,9 +753,44 @@ void Generator::genClasses(){
                 out << "\tQPointF points[] = {\n"
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 4);\n\t";
-            out << "\tpainter->setBrush(old);\n"; 
+            out << "\tpainter->setBrush(old);\n}\n\n"; 
         }    
-        out <<   "}\n\n";
+        else
+            out << "void " << classname << "::drawStartArrow(QPainter *) const\n"
+                   "{\n}\n\n";
+       
+        // drawEndArrow
+        style = edges.at(i)->associations.at(0)->toArrow;
+        if( !style.isEmpty() && style != "no_arrow" ){
+            out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n{\n"
+                "\tQBrush old = painter->brush();\n"
+                "\tQBrush brush;\n"
+                "\tbrush.setStyle(Qt::SolidPattern);\n";
+            if( style.isEmpty() )
+                style = "filled_arrow";
+            if( style == "empty_arrow" || style == "empty_rhomb" )        
+                out << "\tbrush.setColor(Qt::white);\n";
+            if( style == "filled_arrow" || style == "filled_rhomb" )        
+                out << "\tbrush.setColor(Qt::black);\n";
+            out << "\tpainter->setBrush(brush);\n";
+        
+            if( style == "empty_arrow" || style == "filled_arrow" )
+                out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 3);\n";
+            if( style == "empty_rhomb" || style == "filled_rhomb" )
+                out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 4);\n\t";
+            if( style == "open_arrow" )
+                out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 4);\n\t";
+            out << "\tpainter->setBrush(old);\n}\n\n"; 
+        }    
+        else
+            out << "void " << classname << "::drawEndArrow(QPainter *) const\n"
+                   "{\n}\n\n";
  
     }
     out2 << "}\n";   

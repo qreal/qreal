@@ -149,7 +149,6 @@
       <graphics>
         <view>
           <line_type type="dashLine" />
-          <end_line type="arrow" />
           <repo_info>
             <html:html xmlns:html="http://www.w3.org/html/">
               <html:center>
@@ -180,11 +179,10 @@
       <graphics>
         <view>
           <line_type type="dashLine" />
-          <end_type type="arrow" />
           <repo_info>
             <html:html xmlns:html="http://www.w3.org/html/">
               <html:center>  
-                <html:text text="&lt;&lt;extend&gt;&gt;"/>
+                <html:text text="&lt;&lt;include&gt;&gt;"/>
               </html:center>  
             </html:html>
           </repo_info>
