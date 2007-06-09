@@ -45,6 +45,10 @@ class RealRepoModel : public QAbstractItemModel
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
 		int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
+		void beginTransaction();
+		void commitTransaction();
+		void rollbackTransaction();
+
 	private:
 		struct RepoTreeItem {
 			int id;

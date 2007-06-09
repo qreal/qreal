@@ -24,6 +24,10 @@ public slots:
 	void closeRepo();
 	void adjustMinimapZoom(int zoom);
 
+	void beginTransaction();
+	void commitTransaction();
+	void rollbackTransaction();
+
 	void print();
 	void makeSvg();
 

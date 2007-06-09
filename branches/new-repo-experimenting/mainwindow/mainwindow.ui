@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>577</width>
-    <height>482</height>
+    <width>579</width>
+    <height>458</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -29,6 +29,12 @@
     <property name="bottomMargin" >
      <number>0</number>
     </property>
+    <property name="horizontalSpacing" >
+     <number>0</number>
+    </property>
+    <property name="verticalSpacing" >
+     <number>0</number>
+    </property>
     <item row="0" column="0" >
      <widget class="EditorView" name="view" />
     </item>
@@ -39,8 +45,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>577</width>
-     <height>28</height>
+     <width>579</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File" >
@@ -161,6 +167,10 @@
    </attribute>
    <addaction name="actionConnect" />
    <addaction name="actionDisconnect" />
+   <addaction name="separator" />
+   <addaction name="actionBeginTransaction" />
+   <addaction name="actionCommitTransaction" />
+   <addaction name="actionRollbackTransaction" />
    <addaction name="separator" />
    <addaction name="actionPrint" />
   </widget>
@@ -358,6 +368,27 @@
    </property>
    <property name="text" >
     <string>&amp;Disconnect</string>
+   </property>
+  </action>
+  <action name="actionBeginTransaction" >
+   <property name="text" >
+    <string>Begin Transaction</string>
+   </property>
+  </action>
+  <action name="actionCommitTransaction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="text" >
+    <string>Commit Transaction</string>
+   </property>
+  </action>
+  <action name="actionRollbackTransaction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
+   <property name="text" >
+    <string>Rollback Transaction</string>
    </property>
   </action>
  </widget>

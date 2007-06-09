@@ -36,6 +36,10 @@ MainWindow::MainWindow()
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
+	connect(ui.actionBeginTransaction, SIGNAL( triggered() ), this, SLOT( beginTransaction() ) );
+	connect(ui.actionCommitTransaction, SIGNAL( triggered() ), this, SLOT( commitTransaction() ) );
+	connect(ui.actionRollbackTransaction, SIGNAL( triggered() ), this, SLOT( rollbackTransaction() ) );
+
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -144,6 +148,10 @@ void MainWindow::connectRepo()
 	propertyModel.setSourceModel(model);
 
 	ui.view->mvIface()->setModel(model);
+	
+	ui.actionBeginTransaction->setEnabled(true);
+	ui.actionCommitTransaction->setEnabled(false);
+	ui.actionRollbackTransaction->setEnabled(false);
 }
 
 void MainWindow::closeRepo()
@@ -153,10 +161,46 @@ void MainWindow::closeRepo()
 	propertyModel.setSourceModel(0);
 	ui.view->mvIface()->setModel(0);
 
+	ui.actionBeginTransaction->setEnabled(false);
+	ui.actionCommitTransaction->setEnabled(false);
+	ui.actionRollbackTransaction->setEnabled(false);
+
 	if( model )
 		delete model;
 
 	model = 0;
+}
+
+void MainWindow::beginTransaction()
+{
+	if ( model ) {
+		model->beginTransaction();
+		ui.actionBeginTransaction->setEnabled(false);
+		ui.actionCommitTransaction->setEnabled(true);
+		ui.actionRollbackTransaction->setEnabled(true);
+	}
+}
+
+void MainWindow::commitTransaction()
+{
+	if ( model ) {
+		model->commitTransaction();
+		ui.actionBeginTransaction->setEnabled(true);
+		ui.actionCommitTransaction->setEnabled(false);
+		ui.actionRollbackTransaction->setEnabled(false);
+	}
+}
+
+void MainWindow::rollbackTransaction()
+{
+	if ( model ) {
+		model->rollbackTransaction();
+		ui.actionBeginTransaction->setEnabled(true);
+		ui.actionCommitTransaction->setEnabled(false);
+		ui.actionRollbackTransaction->setEnabled(false);
+
+		ui.diagramExplorer->setRootIndex(model->index(1,0,QModelIndex()));
+	}
 }
 
 void MainWindow::print()
