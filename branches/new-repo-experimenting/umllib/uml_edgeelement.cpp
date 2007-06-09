@@ -28,7 +28,7 @@ EdgeElement::EdgeElement()
 	m_penStyle = Qt::SolidLine;
 	m_line << QPointF(0,0) << QPointF(200,60);
 
-    m_endArrowStyle = FILLED_ARROW;
+    m_endArrowStyle = NO_ARROW;
 }
 
 EdgeElement::~EdgeElement()

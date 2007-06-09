@@ -270,7 +270,7 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
                 QDomNode par = texts.at(0).parentNode();
                 QString role = texts.at(0).toElement().attribute("text");
                 par.removeChild(texts.at(0));
-        
+                qDebug() << role;
                 const QDomText data = doc->createTextNode(role);
                 par.appendChild(data);
             }
@@ -723,29 +723,35 @@ void Generator::genClasses(){
         out << "void " << classname << "::drawStartArrow(QPainter *) const\n";
         out <<   "{\n}\n\n";
         
-        out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n";
-        out <<  "{\n"
+        out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n{\n";
+        QString style = edges.at(i)->associations.at(0)->toArrow;
+        if( !style.isEmpty() ){
+            out <<  
                 "\tQBrush old = painter->brush();\n"
                 "\tQBrush brush;\n"
                 "\tbrush.setStyle(Qt::SolidPattern);\n";
-        QString style = edges.at(i)->associations.at(0)->toArrow;
-        if( style.isEmpty() )
-            style = "filled_arrow";
-        if( style == "empty_arrow" || style == "empty_rhomb" )        
-            out << "\tbrush.setColor(Qt::white);\n";
-        if( style == "filled_arrow" || style == "filled_rhomb" )        
-            out << "\tbrush.setColor(Qt::black);\n";
-        out << "\tpainter->setBrush(brush);\n";
+            if( style.isEmpty() )
+                style = "filled_arrow";
+            if( style == "empty_arrow" || style == "empty_rhomb" )        
+                out << "\tbrush.setColor(Qt::white);\n";
+            if( style == "filled_arrow" || style == "filled_rhomb" )        
+                out << "\tbrush.setColor(Qt::black);\n";
+            out << "\tpainter->setBrush(brush);\n";
         
-        if( style == "empty_arrow" || style == "filled_arrow" )
-            out << "\tQPointF points[] = {\n"
+            if( style == "empty_arrow" || style == "filled_arrow" )
+                out << "\tQPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 3);\n";
-        if( style == "empty_rhomb" || style == "filled_rhomb" )
-            out << "\tQPointF points[] = {\n"
+            if( style == "empty_rhomb" || style == "filled_rhomb" )
+                out << "\tQPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 4);\n\t";
-        out << "\tpainter->setBrush(old);\n"; 
+            if( style == "open_arrow" )
+                out << "\tQPointF points[] = {\n"
+                    "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
+                    "\tpainter->drawPolygon(points, 4);\n\t";
+            out << "\tpainter->setBrush(old);\n"; 
+        }    
         out <<   "}\n\n";
  
     }

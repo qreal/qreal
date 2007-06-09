@@ -119,10 +119,10 @@
 		<edge name="Relationship" id="krneRelationship">
 			<logic>
 				<associations>
-					<association id="krnaRelEl1" role="relatedElement">
+					<association id="krnaRelEl1" role="relatedElement" end_type="no_arrow">
 						<begin idref="krnnElement" />
 					</association>
-					<association id="krnaRelEl2" role="relatedElement">
+					<association id="krnaRelEl2" role="relatedElement" end_type="no_arrow">
 						<end idref="krnnElement" />
 					</association>
 				</associations>
@@ -142,10 +142,10 @@
 					</generalization>
 				</generalizations>
 				<associations>
-					<association id="krnaDirrelSrc" role="source">
+					<association id="krnaDirrelSrc" role="source" end_type="no_arrow">
 						<begin idref="krnnElement" />
 					</association>
-					<association id="krnaDirrelTarg" role="target">
+					<association id="krnaDirrelTarg" role="target" end_type="no_arrow">
 						<end idref="krnnElement" />
 					</association>
 				</associations>

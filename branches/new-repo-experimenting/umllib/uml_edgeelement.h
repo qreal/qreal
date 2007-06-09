@@ -7,7 +7,7 @@ QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen 
 
 namespace UML {
 
-    enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB };
+    enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
 	
     class NodeElement;
 	class EdgeElement : public Element
