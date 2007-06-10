@@ -70,7 +70,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << -1;				// uuid
 	stream << child->id();		// type
-	stream << child->text();
+	stream << "New Element";
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);

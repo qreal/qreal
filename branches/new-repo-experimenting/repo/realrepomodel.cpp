@@ -462,22 +462,19 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 void RealRepoModel::beginTransaction()
 {
-	QSqlQuery q;
-	if ( ! q.exec("BEGIN TRANSACTION;") )
-		qDebug() << q.executedQuery() << db.lastError().text();
+	if ( ! db.transaction() )
+		qDebug() << db.lastError().text();
 }
 
 void RealRepoModel::commitTransaction()
 {
-	QSqlQuery q;
-	if ( ! q.exec("COMMIT TRANSACTION;") )
-		qDebug() << q.executedQuery() << db.lastError().text();
+	if ( ! db.commit() )
+		qDebug() << db.lastError().text();
 }
 
 void RealRepoModel::rollbackTransaction()
 {
-	QSqlQuery q;
-	if ( q.exec("ROLLBACK TRANSACTION;") ) {
+	if ( db.rollback() ) {
 		// FIXME: find more elegant way
 		hashNames.clear();
 		hashTypes.clear();
@@ -497,7 +494,7 @@ void RealRepoModel::rollbackTransaction()
 
 		reset();
 	} else
-		qDebug() << q.executedQuery() << db.lastError().text();
+		qDebug() << db.lastError().text();
 }
 
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const

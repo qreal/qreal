@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/" >
+        <file>icons/database_commit.png</file>
+        <file>icons/database_connect.png</file>
+        <file>icons/database_connected.png</file>
+        <file>icons/database_disconnect.png</file>
+        <file>icons/database_revert.png</file>
         <file>icons/designer_databrowser.png</file>
         <file>icons/designer_datatable.png</file>
         <file>icons/designer_dataview.png</file>
