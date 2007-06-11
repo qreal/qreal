@@ -784,7 +784,7 @@ void Generator::genClasses(){
             if( style == "open_arrow" )
                 out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
-                    "\tpainter->drawPolygon(points, 3);\n\t";
+                    "\tpainter->drawPolyline(points, 3);\n\t";
             out << "\tpainter->setBrush(old);\n}\n\n"; 
         }    
         else
