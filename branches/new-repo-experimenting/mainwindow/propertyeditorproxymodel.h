@@ -27,6 +27,9 @@ public:
 public slots:
 	void setIndex(const QModelIndex &sourceIndex);
 
+private slots:
+	void rereadData();
+
 private:
 	QAbstractItemModel *targetModel;
 	QPersistentModelIndex targetObject;

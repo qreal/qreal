@@ -27,6 +27,8 @@ protected:
 
     void keyPressEvent( QKeyEvent *event );
 private:
+	QPointF newElementsPosition;
+
     EditorViewMViface *mv_iface;
     EditorView *view;
     

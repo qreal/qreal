@@ -96,8 +96,6 @@ class RealRepoModel : public QAbstractItemModel
 		RepoTreeItem *rootItem;
 
 		RealRepoInfo info;
-
-		int bytesCleaned;
 };
 
 #endif

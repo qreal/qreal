@@ -45,11 +45,11 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 	}
 }
 
-void PaletteToolbox::dragEnterEvent(QDragEnterEvent *event)
+void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
 {
 }
 
-void PaletteToolbox::dropEvent(QDropEvent *event)
+void PaletteToolbox::dropEvent(QDropEvent * /*event*/)
 {
 }
 
@@ -70,7 +70,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << -1;				// uuid
 	stream << child->id();		// type
-	stream << "New Element";
+	stream << QString("(anon element)");
+	stream << QPointF(0,0);
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);

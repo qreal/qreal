@@ -75,8 +75,18 @@
     <addaction name="actionAntialiasing" />
     <addaction name="actionOpenGL_Renderer" />
    </widget>
+   <widget class="QMenu" name="menuHelp" >
+    <property name="title" >
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp" />
+    <addaction name="separator" />
+    <addaction name="actionAbout" />
+    <addaction name="actionAboutQt" />
+   </widget>
    <addaction name="menu_File" />
    <addaction name="menu_View" />
+   <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QDockWidget" name="objectDock" >
@@ -148,6 +158,9 @@
      </property>
      <item>
       <widget class="QTreeView" name="diagramExplorer" >
+       <property name="contextMenuPolicy" >
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
        <property name="acceptDrops" >
         <bool>true</bool>
        </property>
@@ -375,6 +388,9 @@
    </property>
   </action>
   <action name="actionBeginTransaction" >
+   <property name="enabled" >
+    <bool>false</bool>
+   </property>
    <property name="icon" >
     <iconset resource="../static.qrc" >:/icons/database_connect.png</iconset>
    </property>
@@ -402,6 +418,26 @@
    </property>
    <property name="text" >
     <string>Rollback Transaction</string>
+   </property>
+  </action>
+  <action name="actionDeleteFromDiagram" >
+   <property name="text" >
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionHelp" >
+   <property name="text" >
+    <string>Small Help</string>
+   </property>
+  </action>
+  <action name="actionAbout" >
+   <property name="text" >
+    <string>About...</string>
+   </property>
+  </action>
+  <action name="actionAboutQt" >
+   <property name="text" >
+    <string>About Qt...</string>
    </property>
   </action>
  </widget>

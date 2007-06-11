@@ -40,6 +40,12 @@ MainWindow::MainWindow()
 	connect(ui.actionCommitTransaction, SIGNAL( triggered() ), this, SLOT( commitTransaction() ) );
 	connect(ui.actionRollbackTransaction, SIGNAL( triggered() ), this, SLOT( rollbackTransaction() ) );
 
+	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+
+	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
+	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
+	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -52,6 +58,8 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
 	ui.propertyEditor->horizontalHeader()->hide();
 	ui.propertyEditor->setModel(&propertyModel);
+
+	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
@@ -203,6 +211,14 @@ void MainWindow::rollbackTransaction()
 	}
 }
 
+void MainWindow::deleteFromDiagram()
+{
+	if ( model ) {
+		QModelIndex idx = ui.diagramExplorer->currentIndex();
+		model->removeRow( idx.row(), idx.parent() );
+	}
+}
+
 void MainWindow::print()
 {
 	QPrinter printer(QPrinter::HighResolution);
@@ -229,3 +245,22 @@ void MainWindow::makeSvg()
 	ui.view->scene()->render(&painter);
 }
 
+void MainWindow::showAbout()
+{
+     QMessageBox::about(this, tr("About unREAL"),
+             tr("This is <b>unREAL</b><br>"
+				 "Just another CASE tool"));
+}
+
+void MainWindow::showHelp()
+{
+	QMessageBox::about(this, tr("Help"),
+			tr("To begin:\n"
+				"1. Click 'Connect to repository'\n"
+				"2. Choose 'QSQLITE' as engine and 'temp.db' as database name\n     This should create a new unREAL database\n"
+				"3. Drag 'Diagram' from 'KERNEL' tab of Palette to Diagram Explorer\n     This should create a new diagram\n"
+				"4. To rename something on diagram explorer, press F2.\n"
+				"5. To edit diagram visually, press Enter on diagram in Diagram Explorer\n"
+				"6. To add items to diagrams, drag & drop them from Palette to editor or to Diagram Explorer\n"
+				"7. Get more help from author :)"));
+}

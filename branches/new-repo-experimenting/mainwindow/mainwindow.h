@@ -28,6 +28,11 @@ public slots:
 	void commitTransaction();
 	void rollbackTransaction();
 
+	void deleteFromDiagram();
+
+	void showAbout();
+	void showHelp();
+
 	void print();
 	void makeSvg();
 

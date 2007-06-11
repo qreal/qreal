@@ -18,11 +18,8 @@ RealRepoModel::RealRepoModel(QSqlDatabase db, QObject *parent)
 
 RealRepoModel::~RealRepoModel()
 {
-	bytesCleaned = 0;
 	cleanupTree(rootItem);
-	qDebug() << bytesCleaned << "items cleaned,"
-		<< sizeof(RepoTreeItem) << "bytes per tree item,"
-		<< bytesCleaned * sizeof(RepoTreeItem) << "total";
+	delete rootItem;
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
@@ -38,7 +35,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 	switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-        case Unreal::krnnNamedElement::nameRole:
+		case Unreal::krnnNamedElement::nameRole:
 			return hashNames[item->id];
 		case Qt::DecorationRole:
 			{
@@ -56,7 +53,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 				if ( type( item->parent ) == Container )
 					if ( hashDiagramElements[item->parent->id].contains(item->id) )
 						return hashDiagramElements[item->parent->id][item->id].position;
-	
+
 				return QVariant();
 			};
 		case Unreal::ConfigurationRole:
@@ -64,7 +61,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 				if ( type( item->parent ) == Container )
 					if ( hashDiagramElements[item->parent->id].contains(item->id) )
 						return hashDiagramElements[item->parent->id][item->id].configuration;
-	
+
 				return QVariant();
 			};
 		default:
@@ -72,7 +69,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 				if ( hashElementProps.contains(item->id) ) {
 					if ( hashElementProps[item->id].contains(role) ){
 						return hashElementProps[item->id][role];
-                    }    
+					}    
 					else
 						return QVariant();
 				} else {
@@ -102,7 +99,7 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 
 	switch (role) {
 		case Qt::DisplayRole:
-        case Unreal::krnnNamedElement::nameRole:
+		case Unreal::krnnNamedElement::nameRole:
 		case Qt::EditRole:
 			{
 				q.prepare("UPDATE nametable SET name=:name WHERE id=:id ;");
@@ -159,13 +156,13 @@ bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, i
 				q.prepare(sql);
 				q.bindValue(":elid", item->id);
 				q.bindValue(":value", value);
-				
+
 				if ( q.exec() ) {
 					if ( hashElementProps.contains(item->id) ) {
 						hashElementProps[item->id][role] = value;
 					}
 				} else
-						qDebug() << q.executedQuery() << db.lastError().text();
+					qDebug() << q.executedQuery() << db.lastError().text();
 			}
 	}
 
@@ -283,43 +280,46 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		return false;
 	}
 
-	beginRemoveRows(parent,row,row+count-1);
+	if ( type( parentItem ) == Container ) {
+		beginRemoveRows(parent,row,row+count-1);
+		QSqlQuery q(db);
+		q.prepare("DELETE FROM diagram WHERE el_id=:id AND diagram_id=:did ;");
 
-	QSqlQuery q(db);
+			for ( int i = row; i < row+count; i++ ) {
+				// qDebug() << "deleting row" << i << "with id" << parentItem->children[i]->id << row << row+count;
 
-	q.prepare("DELETE FROM nametable WHERE id=:id ;"
-			"DELETE FROM diagram WHERE el_id=:id OR diagram_id=:id ;");
+				q.bindValue(":id",  parentItem->children[i]->id );
+				q.bindValue(":did", parentItem->id);
 
-	for ( int i = row; i < row+count; i++ ) {
-		qDebug() << "deleting row" << i << "with id" << parentItem->children[i]->id << row << row+count;
+				if ( !q.exec() )
+					qDebug() << q.executedQuery() << db.lastError().text();
 
-		q.bindValue(":id",  parentItem->children[i]->id );
+					/*  For complete dezztruction of element :)
+						q.clear();
 
-		if ( !q.exec() )
-			qDebug() << q.executedQuery() << db.lastError().text();
+						q.prepare(QString("DELETE FROM el_%1 WHERE id=%2").arg(hashTypes[parentItem->children[i]->id])
+						.arg(parentItem->children[i]->id));
+						q.exec(); */
+			}
 
-		q.clear();
+			for ( int i = row; i < row+count; i++ ) {
+				hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
 
-		q.prepare(QString("DELETE FROM el_%1 WHERE id=%2").arg(hashTypes[parentItem->children[i]->id])
-				.arg(parentItem->children[i]->id));
-		q.exec();
+				cleanupTree(parentItem->children.at(row));
+				delete parentItem->children.at(row);
+
+				parentItem->children.removeAt(row);
+				hashChildren[parentItem->id].removeAt(row);
+			}
+
+			for ( int i = 0; i < parentItem->children.size(); i++ ) {
+				parentItem->children[i]->row = i;
+			}
+
+			hashChildCount[parentItem->id] -= count;
+
+		endRemoveRows();
 	}
-
-	for ( int i = row; i < row+count; i++ ) {
-		hashTreeItems[parentItem->children[row]->id].removeAll(parentItem->children[row]);
-		cleanupTree(parentItem->children.at(row));
-
-		parentItem->children.removeAt(row);
-		hashChildren[parentItem->id].removeAt(row);
-	}
-
-	for ( int i = 0; i < parentItem->children.size(); i++ ) {
-		parentItem->children[i]->row = i;
-	}
-
-	hashChildCount[parentItem->id] -= count;
-
-	endRemoveRows();
 
 	return false;
 }
@@ -359,10 +359,12 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 	QString name;
 	int newid, newtype;
+	QPointF newPos;
 
 	stream >> newid;
 	stream >> newtype;
 	stream >> name;
+	stream >> newPos;
 
 	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
 
@@ -379,7 +381,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 				q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
 				if ( newid == -1 ) {
 					q.bindValue(":type", newtype);
-					q.bindValue(":name", name);
+					q.bindValue(":name", "(anon element)");
 
 					beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 
@@ -419,7 +421,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 					q.prepare("INSERT INTO nametable (id, type, name) VALUES (null, :type, :name) ;");
 					if ( newid == -1 ) {
 						q.bindValue(":type", newtype);
-						q.bindValue(":name", name);
+						q.bindValue(":name", "(anon element)");
 
 						beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
@@ -439,9 +441,12 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 						endInsertRows();
 					}
 
-					q.prepare("INSERT INTO diagram (diagram_id, el_id) VALUES (:did, :elid) ;");
+					q.prepare("INSERT INTO diagram (diagram_id, el_id, x, y) VALUES (:did, :elid, :x, :y) ;");
 					q.bindValue(":did",diagram_id);
 					q.bindValue(":elid",newid);
+					q.bindValue(":x", newPos.x() );
+					q.bindValue(":y", newPos.y() );
+
 					if ( !q.exec() )
 						qDebug() << q.executedQuery() << db.lastError().text();
 				}
@@ -450,7 +455,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 				createItem(parentItem, newid, newtype);
 				endInsertRows();
 
-				//							updateRootTable();
+				// updateRootTable();
 			}
 			break;
 		default:
@@ -485,11 +490,6 @@ void RealRepoModel::rollbackTransaction()
 		hashDiagramElements.clear();
 
 		cleanupTree(rootItem);
-
-		rootItem = new RepoTreeItem;
-		rootItem->parent = 0;
-		rootItem->id = 0;
-
 		readRootTable();
 
 		reset();
@@ -517,11 +517,11 @@ RealRepoModel::ElementType RealRepoModel::type(const QModelIndex &index) const
 
 void RealRepoModel::cleanupTree(RepoTreeItem *root)
 {
-	bytesCleaned ++;
 	foreach (RepoTreeItem *childItem, root->children) {
 		cleanupTree(childItem);
+		delete childItem;
 	}
-	delete root;
+	root->children.clear();
 }
 
 void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
@@ -534,7 +534,7 @@ void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 
-	hashNames[id] = "New Element";
+	hashNames[id] = "(anon element)";
 	hashTypes[id] = type;
 	hashChildCount[id] = 0;
 
@@ -664,7 +664,7 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 	} else {
 		QSqlQuery q(db);
 		q.prepare("SELECT diagram.el_id, nametable.name, nametable.type, diagram.x, diagram.y, diagram.cfg,"
-				  " nametable.qualifiedName, COUNT(children.el_id) FROM diagram"
+				" nametable.qualifiedName, COUNT(children.el_id) FROM diagram"
 				"  LEFT JOIN nametable ON diagram.el_id = nametable.id"
 				"  LEFT JOIN diagram AS children ON children.diagram_id = diagram.el_id"
 				"  WHERE diagram.diagram_id = :type"
@@ -688,7 +688,7 @@ void RealRepoModel::readContainerTable(RepoTreeItem *root)
 
 				root->children.append(item);
 				hashTreeItems[item->id].append(item);
-				
+
 				hashDiagramElements[root->id][item->id].position = QPoint(q.value(3).toInt(), q.value(4).toInt());
 
 				// FIXME: parse some better way

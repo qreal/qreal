@@ -56,6 +56,11 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		return false;
 }
 
+void PropertyEditorModel::rereadData()
+{
+	reset();
+}
+
 void PropertyEditorModel::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	targetModel = sourceModel;
@@ -64,7 +69,7 @@ void PropertyEditorModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 	if ( targetModel )
 		connect ( targetModel, SIGNAL( dataChanged (const QModelIndex &, const QModelIndex&) ),
-				this, SLOT( modelReset() ) );
+				this, SLOT( rereadData() ) );
 
 	reset();
 }

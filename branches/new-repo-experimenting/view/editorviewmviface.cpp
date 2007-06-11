@@ -128,7 +128,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 {
 	for (int row = start; row <= end; ++row) {
-		int uuid = model()->index(row, 0, parent).data().toInt();
+		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 
 		scene->removeItem(items[uuid]);
 		delete items[uuid];
