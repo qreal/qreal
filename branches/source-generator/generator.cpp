@@ -741,17 +741,17 @@ void Generator::genClasses(){
             out << "\tpainter->setBrush(brush);\n";
         
             if( style == "empty_arrow" || style == "filled_arrow" )
-                out << "\tQPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 3);\n";
             if( style == "empty_rhomb" || style == "filled_rhomb" )
-                out << "\tQPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 4);\n\t";
             if( style == "open_arrow" )
-                out << "\tQPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
-                    "\tpainter->drawPolygon(points, 4);\n\t";
+                    "\tpainter->drawPolyline(points, 3);\n\t";
             out << "\tpainter->setBrush(old);\n}\n\n"; 
         }    
         else
@@ -774,17 +774,17 @@ void Generator::genClasses(){
             out << "\tpainter->setBrush(brush);\n";
         
             if( style == "empty_arrow" || style == "filled_arrow" )
-                out << "\tQPointF points[] = {\n"
+                out << "\ttstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 3);\n";
             if( style == "empty_rhomb" || style == "filled_rhomb" )
-                out << "\tQPointF points[] = {\n"
+                out << "\ttstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 4);\n\t";
             if( style == "open_arrow" )
-                out << "\tQPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
-                    "\tpainter->drawPolygon(points, 4);\n\t";
+                    "\tpainter->drawPolygon(points, 3);\n\t";
             out << "\tpainter->setBrush(old);\n}\n\n"; 
         }    
         else
