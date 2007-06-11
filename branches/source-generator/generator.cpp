@@ -774,11 +774,11 @@ void Generator::genClasses(){
             out << "\tpainter->setBrush(brush);\n";
         
             if( style == "empty_arrow" || style == "filled_arrow" )
-                out << "\ttstatic const QPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 3);\n";
             if( style == "empty_rhomb" || style == "filled_rhomb" )
-                out << "\ttstatic const QPointF points[] = {\n"
+                out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolygon(points, 4);\n\t";
             if( style == "open_arrow" )
