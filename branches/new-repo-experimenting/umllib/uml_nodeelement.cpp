@@ -18,18 +18,9 @@ NodeElement::~NodeElement()
 
 void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 {
-	if ( isSelected() ) {
-		if ( QRectF(m_contents.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
-			dragState = TopLeft;
-		} else if ( QRectF(m_contents.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
-			dragState = TopRight;
-		} else if ( QRectF(m_contents.bottomRight(),QSizeF(-4,-4)).contains(event->pos()) ) {
+	if ( isSelected() && ( QRectF(m_contents.bottomRight(),QSizeF(-15,-15)).contains(event->pos()) ) )
 			dragState = BottomRight;
-		} else if ( QRectF(m_contents.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
-			dragState = BottomLeft;
-		} else 
-			Element::mousePressEvent(event);	
-	} else
+	else
 		Element::mousePressEvent(event);
 }
 
@@ -38,31 +29,18 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
-		if ( ( m_contents.width() < 10 ) || ( m_contents.height() < 10 ) ) {
-			;
-		} else {
-			prepareGeometryChange();
-			switch ( dragState ) {
-				case TopLeft:       m_contents.setTopLeft(event->pos());        break;
-				case Top:           m_contents.setTop(event->pos().y());        break;
-				case TopRight:      m_contents.setTopRight(event->pos());       break;
-				case Left:          m_contents.setLeft(event->pos().x());       break;
-				case Right:         m_contents.setRight(event->pos().x());      break;
-				case BottomLeft:    m_contents.setBottomLeft(event->pos());     break;
-				case Bottom:        m_contents.setBottom(event->pos().y());     break;
-				case BottomRight:   m_contents.setBottomRight(event->pos());    break;
-				case None:														break;
-			}
-
-			setPos(pos() + m_contents.topLeft());
-			m_contents.translate(-m_contents.topLeft());
-
-			transform.reset();
-			transform.scale(m_contents.width(), m_contents.height());
-
-			foreach (EdgeElement *edge, edgeList)
-				edge->adjustLink();
+		if ( ( ( m_contents.width() < 10 ) || ( m_contents.height() < 10 ) ) && m_contents.contains(event->pos()) ) {
+			return;
 		}
+		
+		prepareGeometryChange();
+		m_contents.setBottomRight(event->pos());
+
+		transform.reset();
+		transform.scale(m_contents.width(), m_contents.height());
+
+		foreach (EdgeElement *edge, edgeList)
+			edge->adjustLink();
 	}
 }
 
@@ -174,13 +152,22 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if ( option->levelOfDetail >= 0.5 ) {
 		if ( option->state & QStyle::State_Selected ) {
 			painter->save();
-			painter->drawRect(m_contents);
+//			painter->drawRect(m_contents);
 
-			painter->setBrush(Qt::SolidPattern);
+			QBrush b;
+			b.setColor(Qt::blue);
+			b.setStyle(Qt::SolidPattern);
+			painter->setBrush(b);			
+
 			painter->drawRect(QRectF(m_contents.topLeft(),QSizeF(4,4)));
 			painter->drawRect(QRectF(m_contents.topRight(),QSizeF(-4,4)));
-			painter->drawRect(QRectF(m_contents.bottomRight(),QSizeF(-4,-4)));
 			painter->drawRect(QRectF(m_contents.bottomLeft(),QSizeF(4,-4)));
+
+			painter->translate(m_contents.bottomRight());
+			painter->drawLine(QLineF(-4,0,0,-4));
+			painter->drawLine(QLineF(-8,0,0,-8));
+			painter->drawLine(QLineF(-12,0,0,-12));
+
 			painter->restore();
 		}
 
