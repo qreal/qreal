@@ -319,6 +319,7 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
     if( assocs.size() == 0 )
         return;
     if( isNode ){
+    	return;
         edge = new Edge();
         edge->id = QString("untitledEdge_%1").arg(untitled);
         edge->name = QString("embedded edge #%1").arg(untitled);
@@ -531,7 +532,7 @@ void Generator::genClasses(){
 
 
     for (int i=0; i < objects.size(); i++){
-
+	
         QString classname = objects.at(i)->id + "Class";
 
         if( objects.at(i)->type == EDGE )
@@ -678,7 +679,6 @@ void Generator::genClasses(){
         
         out2 << "};\n\n#endif\n";
     }    
-    
     //
     // II. edges
     //
@@ -725,7 +725,13 @@ void Generator::genClasses(){
 
         // drawStartArrow
 
-        QString style = edges.at(i)->associations.at(0)->fromArrow;
+	QString style;
+	if( edges.at(i)->associations.size() != 0 )
+        	style = edges.at(i)->associations.at(0)->fromArrow;
+	else
+		style = "";
+
+
         if( !style.isEmpty() && style != "no_arrow" ){
             out << "void " << classname << "::drawStartArrow(QPainter *painter) const\n";
             out <<   "{\n"
@@ -753,13 +759,17 @@ void Generator::genClasses(){
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolyline(points, 3);\n\t";
             out << "\tpainter->setBrush(old);\n}\n\n"; 
+	    
         }    
         else
             out << "void " << classname << "::drawStartArrow(QPainter *) const\n"
                    "{\n}\n\n";
        
         // drawEndArrow
-        style = edges.at(i)->associations.at(0)->toArrow;
+	if( edges.at(i)->associations.size() != 0 )
+		style = edges.at(i)->associations.at(0)->toArrow;
+	else
+		style = "";
         if( !style.isEmpty() && style != "no_arrow" ){
             out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n{\n"
                 "\tQBrush old = painter->brush();\n"
@@ -790,7 +800,7 @@ void Generator::genClasses(){
         else
             out << "void " << classname << "::drawEndArrow(QPainter *) const\n"
                    "{\n}\n\n";
- 
+ 	
     }
     out2 << "}\n";   
     file.close();

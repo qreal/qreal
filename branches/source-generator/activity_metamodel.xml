@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>kernel_metamodel</include>
+  <include>basicbehaviors_metamodel</include>
+  <namespace>UML 2.0</namespace>
+  <diagram name="ACTIVITY DIAGRAM" >
+    
+    <node name="Constraint" id="actnConstraint">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="52" version="1.0">
+              <svg:line x1="1" y1="1" x2="88" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="1" x2="1" y2="41" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="41" x2="99" y2="41" stroke="black" stroke-width="2" />
+              <svg:line x1="99" y1="41" x2="99" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="88" y1="1" x2="99" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="88" y1="1" x2="88" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="88" y1="11" x2="99" y2="11" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <assoc_ref idref="actaConstraintEdgeEnd" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="Action" id="actnAction">
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement" />
+            <parent parent_id="actnActivityNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+        <associations>
+          <assoc_ref idref="actaConstraintEdgeBegin" />
+        </associations>
+      </logic>
+    </node>
+	
+	  <node name="ActivityGroup" id="actActivityGroup">
+		  <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+			  <containers>
+				  <container>
+					  <contained_by idref="actnActivity" role="activity" />
+				  </container>
+			  </containers>
+		  </logic>
+	  </node>
+	
+	  <node name="Activity" id="actnActivity">     
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="98" rx="10" ry="10" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text_from_repo name="name" />
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+		  <logic>
+			  <generalizations>
+				  <generalization>
+					  <parent parent_id="bbnBehavior"></parent>
+				  </generalization>
+			  </generalizations>
+			  <containers>
+				  <container>
+					  <contains idfer="actActivityNode" role="node" />
+					  <contains idref="actActivityEdge" role="edge" />
+					  <contains idref="actActivityGroup" role="group" />
+            <contains idref="actStructuredActivityNode" role="structuredActivityNode" />
+				  </container>
+          <container>
+            <contained_by idref="actnExpansionRegion" role="expansionRegion" />
+          </container>
+			  </containers>
+			  <properties>
+				  <property name="name" type="string" />
+			  </properties>
+		  </logic>
+	  </node>
+
+    <node name="ActivityFinalNode" id="actnActivityFinalNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:circle cx="30" cy="30" r="29" stroke="black" stroke-width="2" fill="white"/>
+              <svg:circle cx="30" cy="30" r="20" style="stroke:#000000;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    <node name="ForkNodeWithControlFlows" id="actnForkNodeWithControlFlows">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="30" y2="59" stroke="black" stroke-width="4" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associatios>
+          <assoc_ref idref="actaControlFlowBegin" />
+          <assoc_ref idref="actaControlFlowEnd" />
+        </associatios>
+      </logic>
+    </node>
+    <!--только один входит-->
+    
+    <node name="ForkNodeWithObjectFlows" id="actnForkNodeWithObjectFlows">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="30" y2="59" stroke="black" stroke-width="4" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+    <!--только один входит-->
+
+    <node name="JoinNodeWithControlFlows" id="actnJoinNodeWithControlFlows">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="30" y2="59" stroke="black" stroke-width="4" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="actaControlFlowBegin" />
+          <assoc_ref idref="actaControlFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+    <!--только один выходит-->
+    
+    <node name="JoinNodeWithObjectFlows" id="actnJoinNodeWithObjectFlows">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="30" y2="59" stroke="black" stroke-width="4" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+    <!--только один выходит-->
+
+    <node name="DecisionNode" id="actnDecisionNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="1" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="30" x2="30" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="59" x2="59" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="59" y1="30" x2="30" y2="1" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="actaBehaviorEdgeEnd" />
+        </associations>
+      </logic>
+    </node>
+    <!--только один входит-->
+
+    <node name="MergeNode" id="actnMergeNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="30" y1="1" x2="1" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="30" x2="30" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="59" x2="59" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="59" y1="30" x2="30" y2="1" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+          <assoc_ref idref="actaControlFlowBegin" />
+          <assoc_ref idref="actaControlFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+    <!--только один выходит-->
+
+    <node name="FlowFinalNode" id="actnFlowFinalNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:circle cx="30" cy="30" r="29" stroke="black" stroke-width="2" fill="white"/>
+              <svg:line x1="51" y1="50" x2="11" y2="10" stroke="black" stroke-width="2" />
+              <svg:line x1="11" y1="50" x2="51" y2="10" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    <node name="InitialNode" id="actnInitialFinalNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:circle cx="30" cy="30" r="29" style="stroke:#000000;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+	
+	  <node name="ActivityNode" id="actActivityNode">
+		  <logic>
+			  <generalizations>
+				  <generalization>
+					  <parent parent_id="krnnNamedElement" />
+					  <parent parent_id="krnnRedefElement" />
+				  </generalization>
+			  </generalizations>
+			  <containers>
+				  <container>
+					  <contained_by idref="actnActivity" role="activity" />
+					  <contained_by idref="actActiviityNode" role="redefinedNode" />
+            <contained_by idref="actnActivityPartition" role="inPartition" />
+            <contained_by idref="actnInterruptibleActivityRegion" role="inInterruptableRegion" />
+            <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
+				  </container>
+				  <container>
+					  <contains idref="actActivityNode" role="redefineNode"/>
+				  </container>
+			  </containers>
+			  <associations>
+				  <assoc_ref idref="actaActivityEdgeTarget" />
+				  <assoc_ref idref="actaActivityEdgeSource" />
+			  </associations>
+		  </logic>
+	  </node>
+
+    <node name="DataStoreNode" id="actnDataStoreNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:text x="15" y="16" style="font-size:12pt;fill:#000000;">&#8249;&#8249;database&#8250;&#8250;</svg:text>
+              <svg:rect x="1" y="1" width="98" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="58"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actnObjectNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <associations>
+          <assoc_ref idref="actaEdgeEnd" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="AcceptEventAction" id="actnAcceptEventAction">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="1" y1="1" x2="99" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="99" y1="1" x2="99" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="99" y1="59" x2="1" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="59" x2="15" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="15" y1="30" x2="1" y2="1" stroke="black" stroke-width="2" />
+            </svg:svg>
+            <repo_info>
+              <html:html xmlns:html="http://www.w3.org/html/">
+                <html:center>
+                  <html:text_from_repo name="name"/>
+                </html:center>
+               </html:html>
+            </repo_info>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+      </logic>
+    </node>
+    <!--не пойму, что за линки в него входят :(-->
+    <!--а может быть и такое, что в него никто не входит ;)-->
+    <!--их же еще можно зеркально отражать-->
+
+    <node name="TimeEvent" id="actnTimeEvent">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="80" version="1.0">
+              <svg:line x1="1" y1="1" x2="59" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="79" x2="59" y2="79" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="79" x2="59" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="1" x2="59" y2="79" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    <!--не пойму, что за линки из него выходят :(-->
+
+    <node name="ObjectNode" id="actnObjectNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="80" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:rect x="1" y="1" width="78" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="58"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnTypedElem" />
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+          <assoc_ref idref="actaExceptionHandlerBegin" />
+          <assoc_ref idref="actaExceptionHandlerEnd" />
+        </associations>
+        <containers>
+          <container>
+            <contained_by idref="actnExpansionRegion" role="expansionRegion" />
+            <contained_by idref="actnActionNode" role="actionNode" />
+          </container>
+        </containers>
+      </logic>
+    </node>
+    
+    <node name="ActionNode" id="actnActionNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="80" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:rect x="1" y="1" width="78" rx="10" ry="10" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="58"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnTypedElem" />
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+          <assoc_ref idref="actaExceptionHandlerBegin" />
+          <assoc_ref idref="actaExceptionHandlerEnd" />
+        </associations>
+        <containers>
+          <container>
+            <contained_by idref="actnExpansionRegion" role="expansionRegion" />
+          </container>
+          <container>
+            <contains idref="actnObjectNode" role="node" />
+            <!--он должен рисоваться на границе-->
+          </container>
+        </containers>
+      </logic>
+    </node>
+    
+    <node name="ObjectNodeWithSignal" id="actnObjectNodeWithSignal">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="80" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="1" y1="1" x2="84" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="84" y1="1" x2="99" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="99" y1="30" x2="84" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="84" y1="59" x2="1" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="59" x2="16" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="16" y1="30" x2="1" y2="1" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnTypedElem" />
+            <parent parent_id="actActivityNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="SendSignalAction" id="actnSendSignalAction">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="1" y1="1" x2="84" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="84" y1="1" x2="99" y2="30" stroke="black" stroke-width="2" />
+              <svg:line x1="99" y1="30" x2="84" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="84" y1="59" x2="1" y2="59" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="59" x2="1" y2="1" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"/>
+        </properties>
+      </logic>
+    </node>
+    <!--их же еще можно зеркально отражать-->
+
+    <node name="ActivityPartition" id="actnActivityPartition">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:line x1="3" y1="3" x2="57" y2="3" stroke="black" stroke-width="4" />
+              <svg:line x1="3" y1="57" x2="57" y2="57" stroke="black" stroke-width="4" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityGroup" />
+            <parent parent_id="krnnNamedElement" />
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contains idref="actActivityNode" role="node"/>
+            <contains idref="actActivityEdge" role="edge"/>
+            <contains idref="actnActivityPartition" role="superPartition"/>
+            <contains idref="actnActivityPartition" role="subPartition"/>
+          </container>
+          <container>
+            <contained_by idref="actnActivityPartition" role="superPartition" />
+            <contained_by idref="actnActivityPartition" role="subPartition" />
+          </container>
+        </containers>
+        <associations>
+          <assoc_ref idref="actaActivityEdgeTarget" />
+          <assoc_ref idref="actaActivityEdgeSource" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="InterruptibleActivityRegion" id="actnInterruptibleActivityRegion">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="98" rx="10" ry="10" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityGroup" />
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contains idref="actActivityNode" role="node"/>
+            <contains idref="actActivityEdge" role="interruptingEdge"/>
+          </container>
+        </containers>
+      </logic>
+    </node>
+    <!--тогда edge тут рисуется как молния %)-->
+    <!--и прямоугольник должен быть прерывистой линией-->
+
+    <node name="ExpansionNode" id="actnExpansionNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="42" xmlns:xlink="http://www.w3.org/1999/xlink" height="22" version="1.0">
+              <svg:rect x="1" y="1" width="40" height="20" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"/>
+              <svg:line x1="10" y1="1" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="1" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="1" x2="30" y2="20" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg:shape>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actnObjectNode" />
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contained_by idref="actnExpansionRegion" role="regionAsInput" />
+            <contained_by idref="actnExpansionRegion" role="regionAsOutput" />
+          </container>
+        </containers>
+        <associations>
+          <assoc_ref idref="actaObjectFlowBegin" />
+          <assoc_ref idref="actaObjectFlowEnd" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="ExpansionRegion" id="actnExpansionRegion">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="98" rx="20" ry="20" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text_from_repo name="keyword"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actStructuredActivityNode" />
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="keyword" type="string" />
+        </properties>
+        <containres>
+          <container>
+            <contains idref="actnExpansionNode" role="inputElement" />
+            <contains idref="actnExpansionNode" role="outputElement" />
+            <!--но он их на границе должен расместить-->
+            <contains idref="actActivityNode" role="activityNode" />
+            <contains idref="actObjectFlow" />
+          </container>
+        </containres>
+      </logic>
+    </node>
+    <!--и прямоугольник должен быть прерывистой линией-->
+
+    <node name="StructuredActivityNode" id="actStructuredActivityNode">
+      <graphics>
+        <view>
+          <svg:shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="98" rx="20" ry="20" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"/>
+            </svg:svg>
+          </svg:shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text>&#8249;&#8249;structured&#8250;&#8250;</html:text>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actnAction" />
+            <parent parent_id="actActivityGroup" />
+            <parent parent_id="actnExpansionNode" />
+            <parent parent_id="krnnNamespace" />
+          </generalization>
+        </generalizations>
+        <containers>
+          <container>
+            <contains idref="actActivityNode" role="node" />
+            <contains idref="actActivityEdge" role="edge" />
+          </container>
+          <container>
+            <contained_by idref="actnActivity" role="activity" />
+          </container>
+        </containers>
+      </logic>
+    </node>
+
+    <edge name="ActivityEdge" id="actActivityEdge">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnRedefElement" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="actaActivityEdgeTarget" role="target" multiplicity="true" end_type="arrow">
+            <begin idref="actActivityNode" />
+            <begin idref="actnActivityPartition" />
+          </association>
+        </associations>
+        <associations>
+          <association id="actaActivityEdgeSource" role="source" multiplicity="true">
+            <end idref="actnActivityPartition" />
+            <end idref="actActivityNode" />
+          </association>
+          <!--source and target must be in the same activity as the edge-->
+        </associations>
+        <containers>
+          <container>
+            <contained_by idref="actnActivity" role="activity" />
+            <contained_by idref="actActivityEdge" role="redefinedEdge" />
+            <contained_by idref="actnActivityPartition" role="partition" />
+            <contained_by idref="actnInterruptibleActivityRegion" role="interrupts" />
+            <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
+          </container>
+        </containers>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+      </logic>
+    </edge>
+
+    <edge name="ConstraintEdge" id="actConstraintEdge">
+      <graphics>
+        <view>
+          <line_type type="dashLine" />
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="actaConstraintEdgeBegin" role="constraint">
+            <begin idref="krnnElement" />
+          </association>
+          <association id="actaConstraintEdgeEnd" role="constraint">
+            <end idref="actnConstraint" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+
+    <edge name="ControlFlow" id="actControlFlow">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityEdge" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="actaControlFlowBegin" role="begin" end_type="arrow">
+            <begin id_fer="actnMergeNode" />
+            <begin id_fer="actnJoinNode" />
+            <begin id_fer="actnForkNode" />
+            <begin id_fer="actnForkNodeWithControlFlows" />
+            <begin id_fer="actnJoinNodeWithControlFlows" />
+          </association>
+          <association id="actaControlFlowEnd" role="begin">
+            <end id_fer="actnMergeNode" />
+            <end id_fer="actnJoinNode" />
+            <end id_fer="actnForkNode" />
+            <end id_fer="actnForkNodeWithControlFlows" />
+            <end id_fer="actnJoinNodeWithControlFlows" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+
+    <edge name="ObjectFlow" id="actObjectFlow">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="actActivityEdge" />
+            <parent parent_id="krnnTypedElem" />
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="actaObjectFlowBegin" role="begin" end_type="arrow">
+            <begin idfer="actnObjectNode" />
+            <begin idfer="actnActionNode" />
+            <begin idfer="actnExpansionNode" />
+            <begin idfer="actnMergeNode" />
+            <begin idfer="actnForkNodeWithObjectFlows" />
+            <begin idfer="actnJoinNodeWithObjectFlows" />
+            <begin idref="actnObjectNodeWithSignal" />
+          </association>
+          <association id="actaObjectFlowEnd" role="begin">
+            <end idfer="actnObjectNode" />
+            <end idfer="actnActionNode" />
+            <end idfer="actnExpansionNode" />
+            <end idfer="actnMergeNode" />
+            <end idfer="actnForkNodeWithObjectFlows" />
+            <end idfer="actnJoinNodeWithObjectFlows" />
+            <end idref="actnObjectNodeWithSignal" />
+          </association>
+        </associations>
+        <containers>
+          <container>
+            <contained_by idref="actnExpansionRegion" />
+          </container>
+        </containers>
+      </logic>
+    </edge>
+
+    <edge name="Edge" id="actEdge">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="actaEdgeBegin" role="any leave" end_type="arrow">
+            <begin idref="krnnElement" />
+          </association>
+          <association id="actaEdgeEnd" role="any enter">
+            <end idref="krnnElement" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+
+    <edge name="BehaviorEdge" id="actBehaviorEdge">
+      <logic>
+        <associations>
+          <association id="actaBehaviorEdgeBegin">
+            <begin idref="bbnBehavior" />
+          </association>
+          <association id="actaBehaviorEdgeEnd">
+            <end idref="actnDecisionNode" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+
+    <edge name="ExceptionHandler" id="actExceptionHandler">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="actaExceptionHandlerBegin" end_type="arrow">
+            <begin idref="actnObjectNode" />
+            <begin idref="actnActionNode" />
+          </association>
+          <association id="actaExceptionHandlerEnd">
+            <end idref="actnObjectNode" />
+            <end idref="actnActionNode" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+    <!--вот только она молнией должна быть-->
+
+  </diagram>
+</metamodel>
