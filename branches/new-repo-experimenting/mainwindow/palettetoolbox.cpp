@@ -13,9 +13,10 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 	m_icon = info.objectIcon(classid);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setContentsMargins ( 4,4,4,4 );
 	QLabel *icon = new QLabel(this);
-	icon->setFixedSize(24,24);
-	icon->setPixmap(m_icon.pixmap(24,24));
+	icon->setFixedSize(16,16);
+	icon->setPixmap(m_icon.pixmap(16,16));
 	layout->addWidget(icon);
 
 	QLabel *text = new QLabel(this);
@@ -34,6 +35,10 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 	for (int i = 0; i < categories.size(); i++) {
 		QWidget *tab = new QWidget(this);
 		QVBoxLayout *layout = new QVBoxLayout(this);
+		
+		layout->setSpacing(0);
+		layout->setContentsMargins ( 0,0,0,0 );
+
 		addItem(tab, categories[i]);
 
 		foreach(int classid, info.getObjects(i)) {
