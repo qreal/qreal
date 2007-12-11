@@ -453,6 +453,7 @@ bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				createItem(parentItem, newid, newtype);
+				hashDiagramElements[parentItem->id][newid].position = newPos.toPoint();
 				endInsertRows();
 
 				// updateRootTable();

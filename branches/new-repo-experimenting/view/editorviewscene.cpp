@@ -56,7 +56,33 @@ void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	mv_iface->model()->dropMimeData( event->mimeData(), event->dropAction(),
+	// Transform mime data to include coordinates.
+	const QMimeData *mimeData = event->mimeData();
+	QByteArray itemData = mimeData->data("application/x-real-uml-data");
+
+	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
+
+	int uuid, type_id;
+	QString name;
+	QPointF pos;
+
+	in_stream >> uuid;
+	in_stream >> type_id;
+	in_stream >> name;
+	in_stream >> pos;
+
+	QByteArray newItemData;
+	QDataStream stream(&newItemData, QIODevice::WriteOnly);
+
+	stream << uuid;				// uuid
+	stream << type_id;			// type
+	stream << name;
+	stream << event->scenePos();
+
+	QMimeData *newMimeData = new QMimeData;
+	newMimeData->setData("application/x-real-uml-data", newItemData);
+
+	mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
 			mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
 }			
 
