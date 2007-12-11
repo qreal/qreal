@@ -15,7 +15,7 @@ EditorView::EditorView(QWidget *parent)
     mv_iface = new EditorViewMViface(this,myScene);
     setScene(myScene);
 
-    setAcceptDrops(true);
+	setAcceptDrops(true);
 }
 
 EditorView::~EditorView()

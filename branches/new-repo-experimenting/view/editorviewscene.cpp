@@ -9,9 +9,9 @@
 EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
 {
-	//	setSceneRect(-400, -300, 800, 600);
+//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
-//	setBackgroundBrush(gradient);
+//	setBackgroundBrush(gradient);	
 }
 
 void EditorViewScene::clearScene()

@@ -82,6 +82,10 @@ void EditorViewMViface::reset()
 {
 	items.clear();
 	scene->clearScene();
+
+	// so that our diagram be nicer	
+	scene->removeItem(scene->addRect(QRect(-1000,-1000,2000,2000)));
+	
 	if ( model() )
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
