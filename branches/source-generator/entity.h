@@ -37,6 +37,8 @@ public:
 
     elementsType type;
 
+    bool visible;
+
     bool propsPropagated;
     bool parentsPropagated;
 };
@@ -47,7 +49,7 @@ class Node : public Entity
 public:
     //TODO: containers 
     //QStringList associations; 
-    QList< Port > ports;    
+    QList< Port > ports;   
 };
 
 class Association {

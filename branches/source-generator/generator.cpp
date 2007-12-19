@@ -87,6 +87,9 @@ void Generator::parseFile( QString filename ){
     for( int i=0; i < (int) edgeList.length(); i++ ){
         parseEdge( edgeList.at(i) );
     }
+	
+	if( categories.last()->objects.size() == 0 )
+		categories.removeLast();
 
     delete doc;
 }
@@ -122,10 +125,10 @@ void Generator::parseNode( QDomNode dnode ){
     parsePorts( cur, dnode );
     parseLabels( cur, dnode );
 
-    cur->type = NODE;
-    objects << cur;
-    categories.at(categories.size()-1)->objects << objectsCount;    
-    objectsCount++;
+	cur->type = NODE;
+	objects << cur;
+	categories.at(categories.size()-1)->objects << objectsCount;    
+	objectsCount++;
 }
 
 void Generator::parseEdge( QDomNode dnode ){
@@ -305,10 +308,12 @@ void Generator::parseSVG( Entity* cur, QDomNode dnode ){
         QTextStream stream(&file);
         svg.at(0).save(stream, 1);
         file.close();
+	cur->visible = true;
     }
     else {
         cur->height = -1;
         cur->width = -1;
+	cur->visible = ( cur->id == "krnnNamedElement" );
     }    
 }
 
@@ -949,14 +954,31 @@ void Generator::genRealRepoInfo(){
 	    "\t\treturn;\n\n"
             "\tCategory cat;\n\n";
     for( int i=0; i<categories.size(); i++){
-        out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
-        if( categories.at(i)->objects.size() > 0 )
+    	
+	bool isEmpty = true;	
+	for( int j=0; j<categories.at(i)->objects.size(); j++)
+		if( objects.at(categories.at(i)->objects.at(j))->visible )
+			isEmpty = false;
+	qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
+	if( isEmpty )
+		continue;
+        
+	out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
+        
+	if( categories.at(i)->objects.size() > 0 )
             out2 << QString("\tcat.objects ");
-        for( int j=0; j<categories.at(i)->objects.size(); j++)
-            out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
+
+        for( int j=0; j<categories.at(i)->objects.size(); j++){
+		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->visible;
+		if( objects.at(categories.at(i)->objects.at(j))->visible )
+            		out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
+	}		
+
         out2 << "\t;\n";    
         out2 << "\tcategories << cat;\n\n";
+
     }
+
     if( objects.size() > 0 )
         out2 << "objects ";
     for( int i=0; i<objects.size(); i++ )
