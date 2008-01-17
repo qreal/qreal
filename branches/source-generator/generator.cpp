@@ -968,6 +968,8 @@ void Generator::genRealRepoInfo(){
 	if( categories.at(i)->objects.size() > 0 )
             out2 << QString("\tcat.objects ");
 
+	out2 << " << 2 << 18";
+
         for( int j=0; j<categories.at(i)->objects.size(); j++){
 		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->visible;
 		if( objects.at(categories.at(i)->objects.at(j))->visible )
