@@ -92,6 +92,11 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 			{
 				foreach (EdgeElement *edge, edgeList)
 					edge->adjustLink();
+
+				foreach (QGraphicsItem *item, children ()) {
+					item->moveBy(1,1);
+					item->moveBy(-1,-1);
+				}
 			}
 			return value;
 		default:

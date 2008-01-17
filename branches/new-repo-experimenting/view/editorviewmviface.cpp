@@ -98,14 +98,24 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
-	if ( parent != rootIndex() )
+	qDebug() << "========== rowsInserted";
+
+//	if ( parent != rootIndex() )
+//		return;
+	if ( parent == QModelIndex() )
 		return;
 
-	qDebug() << "rowsInserted: adding items" << parent;
+//	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		int type = model()->index(row, 0, parent).data(Unreal::TypeRole).toInt();
+
+		int parent_uuid;
+		if ( parent != rootIndex() )
+				parent_uuid = parent.data(Unreal::IdRole).toInt();
+		else
+				parent_uuid = -1;
 
 		qDebug() << uuid << type;
 
@@ -116,10 +126,20 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 			scene->addItem(e);
 			e->setIndex(current);
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
+
+			if ( parent_uuid != -1 ) 
+				e->setParentItem(items[parent_uuid]);
+			
 			items[uuid] = e;
 		}
+
+		if ( model()->hasChildren(current) ) {
+			rowsInserted( current, 0, model()->rowCount( current ) );
+		}
 	}
-	qDebug() << "rowsInserted: updating items";
+
+
+//	qDebug() << "rowsInserted: updating items";
 	for (int row = start; row <= end; ++row) {
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		if (items.contains(uuid))
