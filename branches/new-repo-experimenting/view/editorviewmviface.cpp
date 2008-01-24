@@ -7,8 +7,8 @@
 
 #include "realreporoles.h"
 
-#include "uml_element.h"
-#include "uml_guiobjectfactory.h"
+#include "../umllib/uml_element.h"
+#include "../umllib/uml_guiobjectfactory.h"
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)

@@ -23,7 +23,7 @@ public:
     void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
     QModelIndex indexAt(const QPoint &point) const;
 
-    UML::Element* getItem(int uuid) __attribute__ ((deprecated));
+    UML::Element* getItem(int uuid);
     
 public slots:
     void reset();

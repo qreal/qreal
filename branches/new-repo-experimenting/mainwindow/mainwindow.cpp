@@ -8,10 +8,12 @@
 
 #include "mainwindow.h"
 
-#include "qsqlconnectiondialog.h"
+#include "../dialogs/qsqlconnectiondialog.h"
 #include "propertyeditorproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
+
+#include "../GenPADL/GenPADL.h"
 
 MainWindow::MainWindow()
 	: model(0)
@@ -47,7 +49,7 @@ MainWindow::MainWindow()
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
 
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
-	adjustMinimapZoom(ui.minimapZoomSlider->value());
+  adjustMinimapZoom(ui.minimapZoomSlider->value());
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
@@ -64,7 +66,9 @@ MainWindow::MainWindow()
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
 
-	show();
+  connect(ui.actionGenerate_PADL, SIGNAL( triggered() ), this, SLOT( GeneratePADL() ));
+
+  show();
 
 	showMaximized();
 
@@ -266,3 +270,10 @@ void MainWindow::showHelp()
 				"6. To add items to diagrams, drag & drop them from Palette to editor or to Diagram Explorer\n"
 				"7. Get more help from author :)"));
 }
+
+void MainWindow::GeneratePADL()
+{
+  GenPADL::PADLoGenerator Generator;
+  Generator.Generate();
+}
+

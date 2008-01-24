@@ -1,5 +1,5 @@
 #include <QtGui>
-#include <QtSql>
+#include <QtSql/QtSql>
 
 #include "realrepomodel.h"
 #include "realreporoles.h"
@@ -86,7 +86,7 @@ QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 
 bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-	qDebug() << __PRETTY_FUNCTION__;
+//	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return false;
 

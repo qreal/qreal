@@ -3,7 +3,7 @@
 
 #include <QtGui/QGraphicsScene>
 
-#include "uml_element.h"
+#include "../umllib/uml_element.h"
 
 class EditorViewMViface;
 class EditorView;

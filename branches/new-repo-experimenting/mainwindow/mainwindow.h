@@ -36,6 +36,8 @@ public slots:
 	void print();
 	void makeSvg();
 
+  void GeneratePADL();
+
 private:
 	RealRepoModel *model;
 	PropertyEditorModel propertyModel;
