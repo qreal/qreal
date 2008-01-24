@@ -1,10 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <QStringList.h>
-#include <QList.h>
-#include <QPair.h>
-#include <QDebug.h>
+#include <QStringList>
+#include <QList>
+#include <QPair>
+#include <QDebug>
 
 enum elementsType { NODE, EDGE };
 

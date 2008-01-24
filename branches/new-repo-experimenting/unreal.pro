@@ -43,6 +43,10 @@ SOURCES		+= umllib/uml_edgeelement.cpp \
 		   umllib/uml_guiobjectfactory.cpp \
 		   umllib/uml_nodeelement.cpp
 
+# Generators
+HEADERS		+= GenPADL/GenPADL.h
+SOURCES		+= GenPADL/GenPADL.cpp
+
 # Generated UML code
 include (umllib/generated/umllib.pri)
 SOURCES		+= repo/edges_stuff.cpp

@@ -5,8 +5,8 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
-#include <QFile.h>
-#include <QDir.h>
+#include <QFile>
+#include <QDir>
 
 #include "entity.h"
 
