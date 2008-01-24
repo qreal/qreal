@@ -1,5 +1,5 @@
 #include <QtGui>
-#include <QtSql/QtSql>
+#include <QtSql>
 
 #include "realrepomodel.h"
 #include "realreporoles.h"

@@ -273,7 +273,7 @@ void MainWindow::showHelp()
 
 void MainWindow::GeneratePADL()
 {
-  GenPADL::PADLoGenerator Generator;
+  GenPADL::PADLGenerator Generator;
   Generator.Generate();
 }
 

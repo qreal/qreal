@@ -1,4 +1,4 @@
-#include <QDebug.h>
+#include <QDebug>
 
 #include "propertyeditorproxymodel.h"
 #include "realreporoles.h"
