@@ -1,0 +1,26 @@
+#!/bin/sh
+
+WD=../source-generator
+GEN=$WD/generated
+
+pushd $WD
+qmake
+make
+rm -rf generated
+./code
+popd
+
+mkdir -p umllib/generated
+cp -rf $GEN/umllib/generated/* umllib/generated
+
+cp -rf $GEN/umllib/uml_guiobjectfactory.cpp umllib/
+
+cp -rf $GEN/repo/* repo/
+
+mkdir -p reposerver/generated
+cp -rf $GEN/reposerver/* reposerver
+
+rm -rf shapes
+cp -rf $GEN/shapes .
+
+cp -rf $GEN/real_dynamic.qrc .

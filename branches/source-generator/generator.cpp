@@ -428,78 +428,100 @@ void Generator::genEnums()
 
 void Generator::genSQLScripts()
 {
-    QFile file("generated/repo/scripts.sql");
-    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-        return;
-    QTextStream out(&file);
-   
-    resources += res.arg("repo/scripts.sql");
-   
-    out << "CREATE TABLE nametable (\n"
-            "\tid INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,\n"
-            "\ttype MEDIUMINT NOT NULL,\n"
-            "\tname VARCHAR(255),\n"
-            "\tqualifiedName VARCHAR(255)\n"
-            ");\n\n"
-            "CREATE TABLE metatable (\n"
-            "\tid INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,\n"
-            "\tname VARCHAR(255),\n"
-            "\tqualifiedName VARCHAR(255)\n"
-            ");\n\n"
-            "CREATE TABLE diagram (\n"
-            "\tdiagram_id INTEGER NOT NULL,\n"
-            "\tel_id MEDIUMINT NOT NULL,\n"
-            "\tcfg VARCHAR(666),"
-            "\tx MEDIUMINT,\n"
-            "\ty MEDIUMINT,\n"
-            "\tisExpandable BOOL\n"
-            ");\n\n";
-                                                                                                                                            
-    QString ins = "INSERT INTO `metatable` (id, name, qualifiedName) VALUES (%1, '%2', '%3');\n";
-    QString inserts = "";
-    
-    
-//    inserts += ins.arg(10).arg("Diagram");
-    
-    for (int i=0; i<objects.size(); i++){
-        int j = i+NUM;
-        inserts += ins.arg(j).arg(objects.at(i)->id).arg(objects.at(i)->name);
+	if( !dir.exists("reposerver") )
+		dir.mkdir("reposerver");
+	dir.cd("reposerver");
+	if( !dir.exists("generated") )
+ 		dir.mkdir("generated");
+
+	QFile file("generated/reposerver/generated/repotypesinfo.h");
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out(&file);
+ 
+	out << "#ifndef __REPO_TYPES_INFO_H__\n#define __REPO_TYPES_INFO_H__\n\n";
+	out << "#include <QMap>\n#include <QString>\n#include\"../../common/classes.h\"\n"
+		"#include\"../../common/defs.h\"\n\n";
+
+	out << "class RepoTypesInfo\n{\n"
+		"public:\n"
+		"\tRepoTypesInfo();\n"
+		"\t~RepoTypesInfo();\n"
+		"\tint getTypesCount();\n"
+		"\tTypeInfo getTypeInfo( int );\n"
+		"\tint analyseType( int );\n"
+		"\tvoid elementCreated( int );\n"
+		"private:\n"
+		"};\n\n";
+
+	out << "#endif\n\n";
+
+	file.close();
+	
+	QFile file2("generated/reposerver/generated/repotypesinfo.cpp");
+	if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out2(&file2);
+
+	// static inits
+	out2 << "#include \"repotypesinfo.h\"\n\n"
+		"static bool initCompleted = false;\n\n"
+		"static QMap<int, TypeInfo> map;\n\n";
+
+
+	out2 << "static void initStaticData()\n{\n"
+		"\tif ( initCompleted )\n"
+		"\t\treturn;\n\n"
+		"\tTypeInfo info;\n\n";
+
+
+	for (int i=0; i<objects.size(); i++){
+		int j = i+NUM;
+		out2 << "\tinfo.id = " << j << ";\n"
+			<< "\tinfo.count = 0;\n"
+			<< "\tinfo.name = \"" << objects.at(i)->id << "\";\n"
+			<< "\tinfo.qualifiedName = \"" << objects.at(i)->name << "\";\n"
+			<< QString("\tmap[%1] = info;\n\n").arg(j); 
+		
+	}
+
+	out2 << "\tinitCompleted = true;\n"
+		"}\n\n";
+
+	// constructor
+	out2 << "RepoTypesInfo::RepoTypesInfo()\n"
+		"{\n"
+		"\tinitStaticData();\n"
+		"}\n\n";
                 
+	// destructor
+	out2 << "RepoTypesInfo::~RepoTypesInfo()\n{\n}\n\n";
 
-        out <<  "CREATE TABLE `el_" << j << "` (\n"
-                "\t`id` mediumint NOT NULL,\n"
-                "\t`name` VARCHAR(30)";
-        for (int k=0; k<objects.at(i)->properties.size(); k++){
-            QString cortege = ",\n\t`%1` %2";
-            QString name = objects.at(i)->properties.at(k).first;
-            QString type = objects.at(i)->properties.at(k).second;
-            
-            if( name == "name")
-                continue;
-            
-            //TODO: bool and other types support
-            if (type == "string" || type.contains("enum"))
-                type = "VARCHAR(100)";
-            else if (type == "int")
-                type = "INTEGER";
-            else if (type == "positiveInt" || type == "nonNegativeInt")
-                type = "INTEGER UNSIGNED";
-            else if (type == "bool" )    
-                type = "BOOL";
-            else if (type == "text" )    
-                type = "VARCHAR(1000)";
-            else 
-                type = "INTEGER";
-            
-            out << cortege.arg(name).arg(type);
-           // out << "\n";
-        }        
-        out << ");\n\n";    
-    }
+	// getTypeInfo
+	out2 << "TypeInfo RepoTypesInfo::getTypeInfo( int id )\n{\n"
+		"\treturn map[id];\n}\n\n";
 
-    out << inserts;
-    file.close();
-    
+	// getTypesCount
+	out2 << "int RepoTypesInfo::getTypesCount()\n{\n"
+		"\treturn map.size();\n}\n\n";
+	
+	// analyzeType
+	out2 << "int RepoTypesInfo::analyseType( int type )\n{\n"
+		"\tswitch (type)\n\t{\n";
+	for( int i=0; i<objects.size(); i++ ){
+		if( objects[i]->type == EDGE )
+			out2 << "\t\tcase " << i + NUM << ":\n";
+	}	
+	
+	out2 << "\t\t\treturn TYPE_LINK;\n"
+		"\t\tdefault:\n\t\t\treturn TYPE_OBJECT;\n\t}\n}\n\n";
+
+	// elementCreated
+	out2 << "void RepoTypesInfo::elementCreated( int type )\n{\n"
+		"\tmap[type].count++;\n}\n\n";
+
+	file2.close();
+	dir.cdUp();
 }
 
 void Generator::genClasses(){
@@ -959,7 +981,7 @@ void Generator::genRealRepoInfo(){
 	for( int j=0; j<categories.at(i)->objects.size(); j++)
 		if( objects.at(categories.at(i)->objects.at(j))->visible )
 			isEmpty = false;
-	qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
+	//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
 	if( isEmpty )
 		continue;
         
@@ -968,10 +990,11 @@ void Generator::genRealRepoInfo(){
 	if( categories.at(i)->objects.size() > 0 )
             out2 << QString("\tcat.objects ");
 
-	out2 << " << 2 << 18";
+	if( i )
+		out2 << " << 2 << 18";
 
         for( int j=0; j<categories.at(i)->objects.size(); j++){
-		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->visible;
+	//	qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->visible;
 		if( objects.at(categories.at(i)->objects.at(j))->visible )
             		out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
 	}		

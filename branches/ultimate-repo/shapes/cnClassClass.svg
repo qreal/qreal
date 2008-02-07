@@ -1,0 +1,11 @@
+ <svg:svg width="50" version="1.1" height="70" xmlns:svg="http://www.w3.org/2000/svg" >
+  <defs>
+   <linearGradient id="class_gradient" y1="0%" x1="0%" y2="100%" x2="100%" >
+    <stop offset="0%" style="stop-color:rgb(127,127,127);stop-opacity:1" />
+    <stop offset="40%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
+    <stop offset="80%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
+    <stop offset="100%" style="stop-color:rgb(127,127,127);stop-opacity:1" />
+   </linearGradient>
+  </defs>
+  <rect width="50" x="0" y="0" height="70" style="stroke:#000000;fill:url(#class_gradient)" />
+ </svg:svg>
