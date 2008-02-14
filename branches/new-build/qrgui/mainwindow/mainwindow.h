@@ -6,8 +6,6 @@
 
 #include "ui_mainwindow.h"
 
-#include "propertyeditorproxymodel.h"
-
 class RealRepoModel;
 class EditorView;
 
@@ -20,15 +18,14 @@ public:
 	~MainWindow();
 
 public slots:
-	void connectRepo();
-	void closeRepo();
+/*	void connectRepo();
+	void closeRepo();			*/
 	void adjustMinimapZoom(int zoom);
 
-	void beginTransaction();
+/*	void beginTransaction();
 	void commitTransaction();
 	void rollbackTransaction();
-
-	void deleteFromDiagram();
+	void deleteFromDiagram();		*/
 
 	void showAbout();
 	void showHelp();
@@ -36,12 +33,7 @@ public slots:
 	void print();
 	void makeSvg();
 
-  void GeneratePADL();
-
 private:
-	RealRepoModel *model;
-	PropertyEditorModel propertyModel;
-	QSqlDatabase db;
 	
 	Ui::MainWindowUi ui;
 };

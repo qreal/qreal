@@ -1,9 +1,13 @@
+QT		+=	svg
+
 INCLUDEPATH	+=	../qrxml/editors
 
-SOURCES		=	qreal.cpp \
-			plugindialog.cpp \
-			mainwindow.cpp
+RESOURCES	=	qrgui.qrc
 
-HEADERS		=	plugindialog.h \
-			mainwindow.h
-
+SOURCES		= \
+			main.cpp \
+			mainwindow/mainwindow.cpp
+HEADERS		= \
+			mainwindow/mainwindow.h
+FORMS		= \
+			mainwindow/mainwindow.ui
