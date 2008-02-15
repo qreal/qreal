@@ -10,10 +10,10 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>unREAL</string>
+   <string>QReal</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="../static.qrc" >:/icons/designer_datatable.png</iconset>
+   <iconset resource="../qrgui.qrc" >:/icons/designer_datatable.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
@@ -77,15 +77,22 @@
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionHelp" />
     <addaction name="separator" />
     <addaction name="actionAbout" />
     <addaction name="actionAboutQt" />
    </widget>
+   <widget class="QMenu" name="menuSettings" >
+    <property name="title" >
+     <string>&amp;Settings</string>
+    </property>
+    <addaction name="actionPlugins" />
+   </widget>
    <addaction name="menu_File" />
    <addaction name="menu_View" />
+   <addaction name="menuSettings" />
    <addaction name="menuHelp" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
@@ -325,7 +332,7 @@
   </action>
   <action name="actionConnect" >
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/database_connected.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/database_connected.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Connect</string>
@@ -333,7 +340,7 @@
   </action>
   <action name="actionZoom_In" >
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/zoomin.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/zoomin.png</iconset>
    </property>
    <property name="text" >
     <string>Zoom In</string>
@@ -341,7 +348,7 @@
   </action>
   <action name="actionZoom_Out" >
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/zoomout.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/zoomout.png</iconset>
    </property>
    <property name="text" >
     <string>Zoom Out</string>
@@ -368,7 +375,7 @@
   </action>
   <action name="actionPrint" >
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/print.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/print.png</iconset>
    </property>
    <property name="text" >
     <string>Print</string>
@@ -381,7 +388,7 @@
   </action>
   <action name="actionDisconnect" >
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/database_disconnect.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/database_disconnect.png</iconset>
    </property>
    <property name="text" >
     <string>&amp;Disconnect</string>
@@ -392,7 +399,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/database_connect.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/database_connect.png</iconset>
    </property>
    <property name="text" >
     <string>Begin Transaction</string>
@@ -403,7 +410,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/database_commit.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/database_commit.png</iconset>
    </property>
    <property name="text" >
     <string>Commit Transaction</string>
@@ -414,7 +421,7 @@
     <bool>false</bool>
    </property>
    <property name="icon" >
-    <iconset resource="../static.qrc" >:/icons/database_revert.png</iconset>
+    <iconset resource="../qrgui.qrc" >:/icons/database_revert.png</iconset>
    </property>
    <property name="text" >
     <string>Rollback Transaction</string>
@@ -440,15 +447,15 @@
     <string>About Qt...</string>
    </property>
   </action>
-  <action name="actionGenerate_PADL" >
+  <action name="actionPlugins" >
    <property name="text" >
-    <string>Generate PADL</string>
+    <string>Plugins...</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0" />
  <resources>
-  <include location="../static.qrc" />
+  <include location="../qrgui.qrc" />
  </resources>
  <connections/>
 </ui>

@@ -12,4 +12,7 @@
         <file>icons/zoomin.png</file>
         <file>icons/zoomout.png</file>
     </qresource>
+    <qresource prefix="/images" >
+        <file>icons/slavery.jpg</file>
+    </qresource>
 </RCC>

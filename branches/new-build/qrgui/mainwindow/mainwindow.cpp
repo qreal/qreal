@@ -6,6 +6,10 @@
 
 #include <QtSvg/QSvgGenerator>
 
+#include <QtCore/QPluginLoader>
+
+#include "dialogs/plugindialog.h"
+
 #include "mainwindow.h"
 
 MainWindow::MainWindow()
@@ -36,6 +40,8 @@ MainWindow::MainWindow()
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 
+	connect(ui.actionPlugins, SIGNAL( triggered() ), this, SLOT( settingsPlugins() ) );
+
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
@@ -58,6 +64,7 @@ MainWindow::MainWindow()
 //	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 //			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
 
+	loadPlugins();
 	showMaximized();
 
 //	connectRepo();
@@ -65,6 +72,37 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::loadPlugins()
+{
+//    foreach (QObject *plugin, QPluginLoader::staticInstances())
+//        populateMenus(plugin);
+
+    pluginsDir = QDir(qApp->applicationDirPath());
+
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cd("plugins");
+
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        QObject *plugin = loader.instance();
+        if (plugin) {
+//            populateMenus(plugin);
+            pluginFileNames += fileName;
+        } else {
+	    QMessageBox::warning(this, "QReal Plugin", loader.errorString() );
+	}
+    }
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -99,10 +137,17 @@ void MainWindow::makeSvg()
 	ui.view->scene()->render(&painter);
 }
 
+void MainWindow::settingsPlugins()
+{
+    PluginDialog dialog( pluginsDir.path(), pluginFileNames , this);
+    dialog.exec();
+}
+
 void MainWindow::showAbout()
 {
      QMessageBox::about(this, tr("About QReal"),
-             tr("This is <b>QReal</b><br>"
+             tr("<img src=\":/images/icons/slavery.jpg\"><br>"
+		"This is <b>QReal</b><br>"
 		"Just another CASE tool"));
 }
 

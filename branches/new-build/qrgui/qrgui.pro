@@ -6,8 +6,12 @@ RESOURCES	=	qrgui.qrc
 
 SOURCES		= \
 			main.cpp \
-			mainwindow/mainwindow.cpp
+			mainwindow/mainwindow.cpp \
+			dialogs/plugindialog.cpp
+
 HEADERS		= \
-			mainwindow/mainwindow.h
+			mainwindow/mainwindow.h \
+			dialogs/plugindialog.h
+
 FORMS		= \
 			mainwindow/mainwindow.ui

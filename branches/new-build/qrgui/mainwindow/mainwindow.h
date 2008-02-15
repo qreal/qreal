@@ -3,6 +3,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
+#include <QtCore/QDir>
 
 #include "ui_mainwindow.h"
 
@@ -27,6 +28,8 @@ public slots:
 	void rollbackTransaction();
 	void deleteFromDiagram();		*/
 
+	void settingsPlugins();
+
 	void showAbout();
 	void showHelp();
 
@@ -36,6 +39,11 @@ public slots:
 private:
 	
 	Ui::MainWindowUi ui;
+
+	void loadPlugins();
+
+	QDir pluginsDir;
+        QStringList pluginFileNames;
 };
 
 #endif
