@@ -11,8 +11,10 @@ class HandmadePlugin : public QObject, public EditorInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorInterface)
-
+    
 public:
+
+    HandmadePlugin();
     void initPlugin();
     QStringList diagrams() const;
     QStringList elements(int idx) const;

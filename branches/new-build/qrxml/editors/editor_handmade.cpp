@@ -1,5 +1,10 @@
 #include "editor_handmade.h"
 
+HandmadePlugin::HandmadePlugin()
+{
+    initPlugin();
+}
+
 void HandmadePlugin::initPlugin()
 {
     QMessageBox::information(0, "QReal Plugin", "Handmade Plugin loaded");
