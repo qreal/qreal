@@ -1,6 +1,7 @@
 QT		+=	svg
 
-INCLUDEPATH	+=	../qrxml/editors
+INCLUDEPATH	+=	../qrxml/editors \
+			../qrxml
 
 RESOURCES	=	qrgui.qrc
 

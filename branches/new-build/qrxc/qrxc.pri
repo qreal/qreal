@@ -27,4 +27,3 @@ qrxc_moc.input = QRXC_HEADERS
 qrxc_moc.variable_out = SOURCES
 
 QMAKE_EXTRA_COMPILERS   *=      qrxc_decl qrxc_impl qrxc_moc
-

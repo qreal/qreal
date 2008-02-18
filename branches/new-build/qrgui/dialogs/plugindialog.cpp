@@ -11,6 +11,8 @@
 
 #include "plugindialog.h"
 
+#include "editorinterface.h"
+
 PluginDialog::PluginDialog(const QString &path, const QStringList &fileNames,
                            QWidget *parent) :
     QDialog(parent),
@@ -80,7 +82,11 @@ void PluginDialog::populateTreeWidget(QObject *plugin, const QString &text)
 //        BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
 //        if (iBrush)
 //            addItems(pluginItem, "BrushInterface", iBrush->brushes());
-	addItems(pluginItem, "SomeInterface", QStringList() );
+	EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+	if (iEditor)
+	    addItems(pluginItem, "EditorInterface", iEditor->diagrams());
+	else
+	    addItems(pluginItem, "SomeInterface", QStringList() );
     }
 }
 
