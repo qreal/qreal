@@ -16,8 +16,8 @@ PaletteToolbox::DraggableElement::DraggableElement(QString id, QString name,
 
 	QLabel *pic = new QLabel(this);
 	pic->setFrameStyle( QFrame::Box | QFrame::Sunken );
-	pic->setFixedSize(16,16);
-	pic->setPixmap(m_icon.pixmap(16,16));
+	pic->setFixedSize(24,24);
+	pic->setPixmap(m_icon.pixmap(24,24));
 	layout->addWidget(pic);
 
 	QLabel *text = new QLabel(this);

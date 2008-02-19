@@ -1,6 +1,6 @@
 #include <QtGui/QMessageBox>
-
 #include "editor_handmade.h"
+
 Q_EXPORT_PLUGIN2(qreal_editors, HandmadePlugin)
 
 HandmadePlugin::HandmadePlugin()
@@ -10,8 +10,8 @@ HandmadePlugin::HandmadePlugin()
 
 void HandmadePlugin::initPlugin()
 {
-    iconMap["/usecase/ucdiagram/actor"] = QIcon();
-    iconMap["/usecase/ucdiagram/usecase"] = QIcon();
+    iconMap["/usecase/ucdiagram/actor"] = QIcon(":/plugins/usecase/ucdiagram/actor.svg");
+    iconMap["/usecase/ucdiagram/usecase"] = QIcon(":/plugins/usecase/ucdiagram/usecase.svg");
 
     friendlyNameMap["/usecase/ucdiagram"] = "Use case";
     friendlyNameMap["/usecase/ucdiagram/actor"] = "Actor";
