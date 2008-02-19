@@ -270,7 +270,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QToolBox" name="paletteToolbox" />
+      <widget class="PaletteToolbox" name="paletteToolbox" />
      </item>
     </layout>
    </widget>
@@ -454,6 +454,14 @@
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0" />
+ <customwidgets>
+  <customwidget>
+   <class>PaletteToolbox</class>
+   <extends>QToolBox</extends>
+   <header>palettetoolbox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../qrgui.qrc" />
  </resources>

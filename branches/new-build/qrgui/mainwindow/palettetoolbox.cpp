@@ -1,25 +1,27 @@
 #include <QtGui>
 
 #include "palettetoolbox.h"
-#include "realrepoinfo.h"
 
-PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/*0*/)
+PaletteToolbox::DraggableElement::DraggableElement(QString id, QString name,
+					QIcon icon, QWidget *parent/*0*/)
 	: QWidget(parent)
 {
-	RealRepoInfo info;
-
-	m_id = classid;
-	m_text = info.objectDesc(classid);
-	m_icon = info.objectIcon(classid);
+	m_id = id;
+	m_text = name;
+	m_icon = icon;
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins ( 4,4,4,4 );
-	QLabel *icon = new QLabel(this);
-	icon->setFixedSize(16,16);
-	icon->setPixmap(m_icon.pixmap(16,16));
-	layout->addWidget(icon);
+	layout->setContentsMargins ( 0,0,0,0 );
+	layout->setSpacing( 0 );
+
+	QLabel *pic = new QLabel(this);
+	pic->setFrameStyle( QFrame::Box | QFrame::Sunken );
+	pic->setFixedSize(16,16);
+	pic->setPixmap(m_icon.pixmap(16,16));
+	layout->addWidget(pic);
 
 	QLabel *text = new QLabel(this);
+	text->setFrameStyle( QFrame::Box | QFrame::Sunken );
 	text->setText(m_text);
 	layout->addWidget(text);
 
@@ -29,25 +31,32 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 PaletteToolbox::PaletteToolbox(QWidget *parent)
 	: QToolBox(parent)
 {
-	RealRepoInfo info;
-	//  setAcceptDrops(true);
-	QStringList categories = info.getObjectCategories();
-	for (int i = 0; i < categories.size(); i++) {
-		QWidget *tab = new QWidget(this);
-		QVBoxLayout *layout = new QVBoxLayout(this);
-		
-		layout->setSpacing(0);
-		layout->setContentsMargins ( 0,0,0,0 );
+}
 
-		addItem(tab, categories[i]);
-
-		foreach(int classid, info.getObjects(i)) {
-			DraggableElement *element = new DraggableElement(classid, this);
-			layout->addWidget(element);
-		}
-
-		tab->setLayout(layout);
+void PaletteToolbox::addDiagramType( QString id, QString name )
+{
+	if (categories.contains(id)) {
+		qDebug() << "Toolbox already has category " << id;
+		return;
 	}
+
+	QWidget *tab = new QWidget( this );
+
+	QVBoxLayout *layout = new QVBoxLayout(tab);
+        layout->setSpacing(0);
+        layout->setContentsMargins ( 0,0,0,0 );
+	tab->setLayout(layout);
+
+        categories[id] = addItem(tab, name);	
+}
+
+void PaletteToolbox::addItemType( QString id, QString name, QIcon icon )
+{
+	QString category = id.section('/',0,-2);
+	QWidget *tab = widget(categories[category]);
+
+	DraggableElement *element = new DraggableElement(id, name, icon, this);
+	tab->layout()->addWidget(element);
 }
 
 void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
@@ -74,7 +83,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << -1;				// uuid
-	stream << child->id();		// type
+	stream << child->id();			// type
 	stream << QString("(anon element)");
 	stream << QPointF(0,0);
 

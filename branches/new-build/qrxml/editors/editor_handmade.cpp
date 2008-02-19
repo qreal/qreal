@@ -1,4 +1,7 @@
+#include <QtGui/QMessageBox>
+
 #include "editor_handmade.h"
+Q_EXPORT_PLUGIN2(qreal_editors, HandmadePlugin)
 
 HandmadePlugin::HandmadePlugin()
 {
@@ -7,19 +10,37 @@ HandmadePlugin::HandmadePlugin()
 
 void HandmadePlugin::initPlugin()
 {
+    iconMap["/usecase/ucdiagram/actor"] = QIcon();
+    iconMap["/usecase/ucdiagram/usecase"] = QIcon();
+
+    friendlyNameMap["/usecase/ucdiagram"] = "Use case";
+    friendlyNameMap["/usecase/ucdiagram/actor"] = "Actor";
+    friendlyNameMap["/usecase/ucdiagram/usecase"] = "Use case";
+
     QMessageBox::information(0, "QReal Plugin", "Handmade Plugin loaded");
 }
 
 QStringList HandmadePlugin::diagrams() const
 {
     QStringList myElements;
-    myElements << "Use Case";
+    myElements << "/usecase/ucdiagram";
     return myElements;
 }
 
-QStringList HandmadePlugin::elements(int idx) const
+QStringList HandmadePlugin::elements() const
 {
-    return QStringList();
+    QStringList myElements;
+    myElements << "/usecase/ucdiagram/actor"
+		<< "/usecase/ucdiagram/usecase";
+    return myElements;
 }
 
-Q_EXPORT_PLUGIN2(qreal_editors, HandmadePlugin)
+QIcon HandmadePlugin::getIcon(QString element) const
+{
+    return iconMap[element];
+}
+
+QString HandmadePlugin::getName(QString element) const
+{
+    return friendlyNameMap[element];
+}

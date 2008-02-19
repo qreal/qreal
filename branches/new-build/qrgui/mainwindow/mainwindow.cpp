@@ -3,12 +3,12 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
-
 #include <QtSvg/QSvgGenerator>
-
 #include <QtCore/QPluginLoader>
 
 #include "dialogs/plugindialog.h"
+
+#include "editorinterface.h"
 
 #include "mainwindow.h"
 
@@ -47,7 +47,7 @@ MainWindow::MainWindow()
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
 
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
-  adjustMinimapZoom(ui.minimapZoomSlider->value());
+	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
@@ -96,12 +96,23 @@ void MainWindow::loadPlugins()
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         QObject *plugin = loader.instance();
+
         if (plugin) {
-//            populateMenus(plugin);
+	    
+	    EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+	    if (iEditor) {
+    		foreach (QString q, iEditor->diagrams())
+		    ui.paletteToolbox->addDiagramType(q,iEditor->getName(q));
+		
+		foreach (QString q, iEditor->elements())
+		    ui.paletteToolbox->addItemType(q,iEditor->getName(q),iEditor->getIcon(q));
+	    }
+
             pluginFileNames += fileName;
         } else {
 	    QMessageBox::warning(this, "QReal Plugin", loader.errorString() );
 	}
+
     }
 }
 
@@ -147,8 +158,8 @@ void MainWindow::showAbout()
 {
      QMessageBox::about(this, tr("About QReal"),
              tr("<img src=\":/images/icons/slavery.jpg\"><br>"
-		"This is <b>QReal</b><br>"
-		"Just another CASE tool"));
+		"<center>This is <b>QReal</b><br>"
+		"Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
