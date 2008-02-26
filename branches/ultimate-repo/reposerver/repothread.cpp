@@ -167,7 +167,10 @@ dbg;
 					if( Object *obj = root->getObject(id) )
 						resp = QString("%1;%2").arg(obj->getX()).arg(obj->getY());
 					else
-						qDebug() << "incorrect object requested. id" << id;
+						qDebug() << "incorrect object requested. id" << id;			
+				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = root->getLink(id) )
+						resp = link->getPosition();
 				}
 				log += QString(", sending position for obj %1 - [%2]").arg(id).arg(resp);
 				break;
@@ -178,12 +181,19 @@ dbg;
 				int id = data.section("\t",2,2).toInt();
 				int x = data.section("\t",3,3).toInt();
 				int y = data.section("\t",4,4).toInt();
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT )
+				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
 					if( Object *obj = root->getObject(id) ){
 						obj->setX(x);
 						obj->setY(y);
-					}
-				log += QString(", new position - (%1:%2)").arg(x).arg(y);
+					}	
+				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = root->getLink(id) ){
+						link->setPosition(QString("%1;%2").arg(x).arg(y));
+						qDebug() << link->getPosition();
+					}	
+				}
+ 
+				log += QString(", new %1's position - (%2:%3)").arg(id).arg(x).arg(y);
 				resp = QString::number(STATUS_OK);
 				break;
 			}
@@ -197,9 +207,14 @@ dbg;
 						resp = obj->getConfiguration();
 					else
 						qDebug() << "error -- cannot find object " << id;
-				} else
-					qDebug() << "warning - get conf for link requested";
-				log += QString(", sending conf for obj %1 - [%2] ").arg(id).arg(resp);
+				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
+				//	qDebug() << "warning - get conf for link requested";
+					if( Link *link = root->getLink(id) )
+						resp = link->getConfiguration();
+					else
+						qDebug() << "error -- cannot find link " << id;
+				}	
+				log += QString(", sending conf for %1 - [%2] ").arg(id).arg(resp);
 				break;
 			}
 			case CMD_SET_CONFIGURATION:
@@ -210,7 +225,10 @@ dbg;
 				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
 					if( Object *obj = root->getObject(id) )	
 						obj->setConfiguration(conf);
-				}
+				} else 	if ( typesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = root->getLink(id) )	
+						link->setConfiguration(conf);
+				}		
 				resp = QString::number(STATUS_OK);
 				log += QString(", conf %1").arg(conf);
 				break;
@@ -221,12 +239,27 @@ dbg;
 				int id = data.section("\t",2,2).toInt();
 				QString name = data.section("\t",3,3);
 				QString val = data.section("\t",4,4);
+				qDebug() << "set property" << name << val;
+					
 				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )	
+					if( Object *obj = root->getObject(id) ){	
 						obj->setProperty(name, val);
+										}
 				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )	
+					if( Link *link = root->getLink(id) ){
 						link->setProperty(name, val);
+						if( name == "from" || name == "to" ){
+						// присединяем линк к об'екту
+							if( Object *obj = root->getObject(val.toInt()) )
+							// добавляем запись о линке в об'ект
+								obj->addLink(id);
+							// добавляем запись об об'екте в линк	
+							if( name == "from" )	
+								link->addObjectFrom(val.toInt());
+							if( name == "to" )	
+								link->addObjectTo(val.toInt());
+						} 
+					}	
 				}
 				resp = QString::number(STATUS_OK);
 				log += QString(", new property value: %1 - %2").arg(name).arg(val);

@@ -184,6 +184,18 @@ QString Object::toString()
 	return res;
 }
 
+void Object::addLink( int id )
+{
+	if( !links.contains(id) )
+		links << id;
+}
+
+void Object::removeLink( int id )
+{
+	links.removeAll(id);
+}
+
+
 // --------------------------------------------------------------------------- //
 
 Link::Link( int _id, int _type ) 
@@ -225,8 +237,27 @@ QString Link::getProperty( QString name )
 QString Link::getObjects()
 {
 	QString res = "";
-	for( int i=0; i<objects.size(); i++)		
-		res += QString("%1\t").arg(objects.at(i));
+	res += QString("%1\t").arg(objectsTo.size());
+	res += getObjectsTo();
+
+	res += QString("%1\t").arg(objectsFrom.size());
+	res += getObjectsFrom();
+	return res;
+}
+
+QString Link::getObjectsFrom()
+{
+	QString res = "";
+	for( int i=0; i<objectsFrom.size(); i++)		
+		res += QString("%1\t").arg(objectsFrom.at(i));
+	return res;
+}
+
+QString Link::getObjectsTo()
+{
+	QString res = "";
+	for( int i=0; i<objectsTo.size(); i++)		
+		res += QString("%1\t").arg(objectsTo.at(i));
 	return res;
 }
 
@@ -235,7 +266,6 @@ QString Link::toString()
 	QString res = "";
 	res += QString("%1\t%2\t%3\t%4\t").arg(type).arg(id).arg(parent).arg(name);
 	
-	res += QString("%1\t").arg(objects.size());
 	res += getObjects();
 
 	res += QString("%1\t").arg(props.size());
@@ -243,6 +273,38 @@ QString Link::toString()
 		res += QString("%1\%2").arg(props.keys().at(i)).arg(props.value(props.keys().at(i)));
 	}
 	return res;
+}
+
+void Link::addObjectTo( int id )
+{
+	if( !objectsTo.contains( id ) )
+		objectsTo << id;
+}
+
+void Link::addObjectFrom( int id )
+{
+	if( !objectsFrom.contains( id ) )
+		objectsFrom << id;
+}
+
+QString Link::getConfiguration()
+{
+	return configuration;
+}
+
+void Link::setConfiguration( QString arg )
+{
+	configuration = arg;
+}
+
+QString Link::getPosition()
+{
+	return position;
+}
+
+void Link::setPosition( QString arg )
+{
+	position = arg;
 }
 
 // --------------------------------------------------------------------------- //

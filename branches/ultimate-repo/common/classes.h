@@ -66,6 +66,9 @@ public:
 	
 	QString getLinks();
 
+	void addLink( int );
+	void removeLink( int );
+
 private:
 	int x;
 	int y;
@@ -96,14 +99,29 @@ public:
 	QString toString();
 	
 	QString getObjects();
+	
+	void addObjectTo( int );
+	void addObjectFrom( int );
+
+	void setConfiguration( QString arg );
+	QString getConfiguration();
+
+	QString getPosition();
+	void setPosition( QString );
 
 private:
+	QString getObjectsTo();
+	QString getObjectsFrom();
+
 	int id;
 	int type;
 	int parent;
 	QString name;
+	QString configuration;
+	QString position;
 	QMap<QString, QString> props;
-	QList<int> objects;
+	QList<int> objectsFrom;
+	QList<int> objectsTo;
 };
 
 class TypeInfo{
