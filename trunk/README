@@ -16,7 +16,6 @@ Right now we have:
     view/	- view module
 
 
-
 To build this project:
     $ cd build
     $ qmake && make
