@@ -9,9 +9,13 @@
 class Link;
 class Object;
 
-class Root 
+/* root entity to handle all the others ( the parent of all `projects', 
+ * `diagrams', `objects', `links' etc. ). for internal use only.
+ */
+class Root
 {
 public:
+	// called while creating new objects
 	void addObject( int id, Object* obj );
 	void addLink( int id, Link* link );
 
@@ -21,9 +25,13 @@ public:
 	int getObjectsSize();
 	int getLinksSize();
 
+	// return list of objects of type `type'. 
+	// (mostly for object explorer needs)
 	QString getObjectsByType( int type );
 	QString getLinksByType( int type );
 
+	// returns some data, to be updated soon according to 
+	// suggestions made in trac wiki
 	QString getLinkData( int type, int id );
 	QString getObjectData( int type, int id );
 
@@ -33,20 +41,27 @@ private:
 	QMap<int, Link*> links;
 };
 
+/* 
+ * class for all node entities
+ */
+
 class Object
 {
 public:
+	// TODO: remove ID from constructor and generate it by repo server itself
 	Object( int _id, int _type, int _x, int _y );
-
+	
+	// TODO: return QPointF or something like that
 	int getX();
 	int getY();
 	
+	// TODO: add setPointF() method 
 	void setX( int );
 	void setY( int );
 
 	QString getName();
 	void setName( QString arg );
-
+	
 	void setProperty( QString name, QString val );
 	QString getProperty( QString name );
 	
@@ -55,10 +70,13 @@ public:
 	
 	int childrenCount();
 
+	// add child to the children list, nothing more
 	void addChild( int );
 
+	// returns list of children entities' IDs
 	QString childrenToString();
 	
+	// set/get object's size configuration
 	void setConfiguration( QString arg );
 	QString getConfiguration();
 
@@ -82,6 +100,9 @@ private:
 	QList<int> links;
 };
 
+/* class for all edge entities
+ */
+
 class Link
 {
 public:
@@ -103,6 +124,7 @@ public:
 	void addObjectTo( int );
 	void addObjectFrom( int );
 
+	// object's port position
 	void setConfiguration( QString arg );
 	QString getConfiguration();
 
@@ -124,12 +146,15 @@ private:
 	QList<int> objectsTo;
 };
 
+/* types description
+ */
+
 class TypeInfo{
 public:
 	int id;
-	int count;
+	int count; // number of objects created ( for object explorer needs )
 	QString name;
-	QString qualifiedName;
+	QString qualifiedName; // `normal' description
 
 	QString toString();
 	void fromString( QString );
