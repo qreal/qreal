@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QtSql>
+#include <QMessageBox>
 
 #include "realrepomodel.h"
 #include "realreporoles.h"
@@ -7,7 +8,7 @@
 RealRepoModel::RealRepoModel(QObject *parent)
 	: QAbstractItemModel(parent)
 {
-	qDebug() << __PRETTY_FUNCTION__;
+	error = -1;
 	repoClient = new RealRepoClient();
 
 	rootItem = new RepoTreeItem;
@@ -510,7 +511,11 @@ void RealRepoModel::readRootTable()
 {
 
 	int types = repoClient->getTypesCount();
-	qDebug() << "types count" << types;
+	if( types == 0 ){
+		error = repoClient->getLastError();
+		qDebug() << "MODEL: error " << error;
+		return;
+	}
 	for( int i=1; i<=types; i++ ){
 		TypeInfo info = repoClient->getTypeInfo(i);
 		RepoTreeItem *item = new RepoTreeItem;

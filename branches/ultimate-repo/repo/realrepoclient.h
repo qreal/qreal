@@ -14,9 +14,12 @@ public:
 	~RealRepoClient();
 
 	int setName( int type, int id, QString name );
+	
 	void setPosition( int type, int id, int parent, int x, int y);
+	
 	int setConfiguration( int type, int id, QString conf);
 	QString getConfiguration( int type, int id );
+	
 	int setPropValue( int type, int id, QString name, QString value);
 	QString getPropValue( int type, int id, QString name );
 
@@ -39,6 +42,10 @@ public:
 	int setPosition(int type, int id, int x, int y );
 
 	int getLastError();
+
+	int state(){ return socket->state(); }
+
+	int isValid() {return socket->isValid();}
 
 public slots:
 	void displayError( QAbstractSocket::SocketError );

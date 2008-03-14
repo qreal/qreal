@@ -51,6 +51,10 @@ class RealRepoModel : public QAbstractItemModel
 		void commitTransaction();
 		void rollbackTransaction();
 
+		int getLastError() { return error; }
+
+		int getState() { return repoClient->state(); }
+
 	private:
 		RealRepoClient *repoClient;
 
@@ -99,6 +103,8 @@ class RealRepoModel : public QAbstractItemModel
 		RepoTreeItem *rootItem;
 
 		RealRepoInfo info;
+
+		int error;
 };
 
 #endif

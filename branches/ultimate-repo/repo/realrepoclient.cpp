@@ -14,7 +14,9 @@ dbg;
 
 	socket->abort();
 	blockSize = 0;
+	error = -1;
 	socket->connectToHost("127.0.0.1", 6666);
+	error = socket->error();
 }
 
 RealRepoClient::~RealRepoClient()
@@ -27,6 +29,9 @@ dbg;
 QString RealRepoClient::sendData( QString data )
 {
 dbg;
+	if( socket->state() != QAbstractSocket::ConnectedState )
+		return "";
+
 	//QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(id).arg(name);
 	qDebug() << "[CLIENT]: sending" << data;
 	//int bytes = 
@@ -53,7 +58,8 @@ dbg;
 		default:
 			qDebug() << socket->errorString();
 		break;	
-	}	
+	}
+	error = socketError;
 }
 
 int RealRepoClient::setName( int type, int id, QString name )
