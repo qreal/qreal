@@ -13,3 +13,4 @@ void PADLGenerator::Generate() const
   );
   MessageBox.exec();
 } 
+
