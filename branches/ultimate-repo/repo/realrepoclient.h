@@ -30,7 +30,7 @@ public:
 	int createEntity(int type, QString name, int parent);
 
 	int getTypesCount();
-	QIntList getAllTypes(); // вернуть все типы
+	QIntList getAllTypes();  
 	TypeInfo getTypeInfo( int );
 
 	QString getObjectsByType( int type );
@@ -38,7 +38,7 @@ public:
 	
 	QString getObjectData( int id );
 	QString getEntireObject( int type, int id );
-	RealObject* getObjectById( int id); // вернуть по id
+	RealObject* getObjectById( int id); 
 
 	QString getLinksByObject( int type, int id );
 	QString getObjectsByLink( int type, int id );
@@ -56,10 +56,10 @@ public:
 
 	// TODO: implement these calls
 	/* 
-	QIntList getTypesByMetatype(const enum MetaType); // вернуть типы по метатипу
-	RealType* getTypeById(const int id); // вернуть тип по id))
-	int createType(const QString name); //создать тип. Возвращает Id созданного типа.
-	void deleteType(const int id); //удалить тип))
+	QIntList getTypesByMetatype(const enum MetaType); 
+	RealType* getTypeById(const int id); 
+	int createType(const QString name); // returns id of created type
+	void deleteType(const int id);
 	*/
 
 public slots:
