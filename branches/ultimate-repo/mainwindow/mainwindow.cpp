@@ -3,8 +3,9 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
-
 #include <QtSvg/QSvgGenerator>
+#include <QMessageBox>
+#include <QTcpSocket>
 
 #include "mainwindow.h"
 
@@ -86,7 +87,14 @@ void MainWindow::connectRepo()
 	closeRepo();
 	
 	model = new RealRepoModel(this);
-
+	if( model->getState() != QAbstractSocket::ConnectedState ){	
+		qDebug() << "repo model creation failed";
+		QMessageBox::critical(0, "achtung!", "cannot reach repo server at 127.0.0.1:6666.\n"
+					"make sure that it is running and restart qreal");
+		//qApp->exit();
+		closeRepo();
+		return;
+	}
 	ui.diagramExplorer->setModel(model);
 	ui.diagramExplorer->setRootIndex(model->index(1,0,QModelIndex()));
 

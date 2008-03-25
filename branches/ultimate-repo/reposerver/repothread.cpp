@@ -102,6 +102,14 @@ dbg;
 				log += QString(", sending types count: %1").arg(resp);
 				break;
 			}
+			case CMD_GET_ALL_TYPES: // TODO: replace with typesInfo call or something like that
+			{
+				int count = typesInfo->getTypesCount();
+				for( int i=1; i<=count; i++ )
+					resp += QString("%1\t").arg(i);
+				log += QString(", sending types count: %1").arg(resp);
+				break;
+			}
 			case CMD_GET_TYPE_INFO:
 			{
 				int id = data.section("\t",1,1).toInt();

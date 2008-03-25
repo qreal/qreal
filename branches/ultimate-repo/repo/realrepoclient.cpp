@@ -5,6 +5,7 @@
 
 #include <QDataStream>
 #include <QByteArray>
+#include <QStringList>
 
 RealRepoClient::RealRepoClient( QObject *parent) : QObject(parent)
 { 
@@ -118,6 +119,16 @@ dbg;
 	return sendData(QString::number(CMD_GET_TYPES_COUNT)).toInt();
 }
 
+QIntList RealRepoClient::getAllTypes()
+{
+dbg;
+	QString res = sendData(QString::number(CMD_GET_ALL_TYPES));
+	QIntList list;
+	foreach( QString str, res.split('\t') )
+		list += str.toInt();
+	return list;	
+}
+
 TypeInfo RealRepoClient::getTypeInfo( int arg )
 {
 dbg;
@@ -146,6 +157,16 @@ QString RealRepoClient::getObjectsByType( int type )
 	QString cmd = QString("%1\t%2").arg(CMD_GET_OBJECTS_BY_TYPE).arg(type);
 	QString resp = sendData(cmd);
 	return resp;
+}
+
+QIntList RealRepoClient::getObjectsListByType( int type )
+{
+	QString resp = getObjectsByType(type);
+	
+	QIntList list;
+	foreach( QString str, resp.split('\t') )
+		list += str.toInt();
+	return list;	
 }
 
 QString RealRepoClient::getObjectData(int id )

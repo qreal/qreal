@@ -4,6 +4,9 @@
 #include <QTcpSocket>
 #include "../common/defs.h"
 #include "../common/classes.h"
+#include "realrepoapiclasses.h"
+
+using namespace QRealTypes; 
 
 class RealRepoClient : public QObject
 {
@@ -27,11 +30,15 @@ public:
 	int createEntity(int type, QString name, int parent);
 
 	int getTypesCount();
+	QIntList getAllTypes(); // вернуть все типы
 	TypeInfo getTypeInfo( int );
 
 	QString getObjectsByType( int type );
+	QIntList getObjectsListByType( int type );
+	
 	QString getObjectData( int id );
 	QString getEntireObject( int type, int id );
+	RealObject* getObjectById( int id); // вернуть по id
 
 	QString getLinksByObject( int type, int id );
 	QString getObjectsByLink( int type, int id );
@@ -45,7 +52,15 @@ public:
 
 	int state(){ return socket->state(); }
 
-	int isValid() {return socket->isValid();}
+	int isValid() { return socket->isValid();}
+
+	// TODO: implement these calls
+	/* 
+	QIntList getTypesByMetatype(const enum MetaType); // вернуть типы по метатипу
+	RealType* getTypeById(const int id); // вернуть тип по id))
+	int createType(const QString name); //создать тип. Возвращает Id созданного типа.
+	void deleteType(const int id); //удалить тип))
+	*/
 
 public slots:
 	void displayError( QAbstractSocket::SocketError );
