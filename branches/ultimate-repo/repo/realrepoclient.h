@@ -70,7 +70,7 @@ private:
 
 	QTcpSocket *socket;
 	quint16 blockSize;
-	int error;
+	int m_error;
 };
 
 #endif // __Q_REAL_REPO_CLIENT_H__

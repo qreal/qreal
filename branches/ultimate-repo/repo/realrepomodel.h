@@ -51,7 +51,7 @@ class RealRepoModel : public QAbstractItemModel
 		void commitTransaction();
 		void rollbackTransaction();
 
-		int getLastError() { return error; }
+		int getLastError() { return m_error; }
 
 		int getState() { return repoClient->state(); }
 
@@ -104,7 +104,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		RealRepoInfo info;
 
-		int error;
+		int m_error;
 };
 
 #endif

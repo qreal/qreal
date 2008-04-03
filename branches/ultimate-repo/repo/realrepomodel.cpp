@@ -8,7 +8,7 @@
 RealRepoModel::RealRepoModel(QObject *parent)
 	: QAbstractItemModel(parent)
 {
-	error = -1;
+	m_error = -1;
 	repoClient = new RealRepoClient();
 
 	rootItem = new RepoTreeItem;
@@ -512,8 +512,8 @@ void RealRepoModel::readRootTable()
 
 	int types = repoClient->getTypesCount();
 	if( types == 0 ){
-		error = repoClient->getLastError();
-		qDebug() << "MODEL: error " << error;
+		m_error = repoClient->getLastError();
+		qDebug() << "MODEL: error " << m_error;
 		return;
 	}
 	for( int i=1; i<=types; i++ ){

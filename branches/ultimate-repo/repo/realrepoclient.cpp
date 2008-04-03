@@ -15,9 +15,14 @@ dbg;
 
 	socket->abort();
 	blockSize = 0;
-	error = -1;
+	m_error = -1;
 	socket->connectToHost("127.0.0.1", 6666);
-	error = socket->error();
+        if (!socket->waitForConnected(5*1000)) {
+//		emit socket->error(socket->error(), socket->errorString());
+		qDebug() << "nya kawaii" << endl;
+            return;
+        }
+	m_error = socket->error();
 }
 
 RealRepoClient::~RealRepoClient()
@@ -60,7 +65,7 @@ dbg;
 			qDebug() << socket->errorString();
 		break;	
 	}
-	error = socketError;
+	m_error = socketError;
 }
 
 int RealRepoClient::setName( int type, int id, QString name )
@@ -149,7 +154,7 @@ dbg;
 int RealRepoClient::getLastError()
 {
 dbg;
-	return error;
+	return m_error;
 }
 
 QString RealRepoClient::getObjectsByType( int type )
