@@ -539,7 +539,7 @@ void RealRepoModel::readRootTable()
 void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
 {
 	qDebug() << __PRETTY_FUNCTION__;
-	// выборка всех элементов того же типа, что и parent
+	// Select all elements of the same type as the parent
 	
 	QStringList ids = repoClient->getObjectsByType( parent->id ).split("\t");
 	
