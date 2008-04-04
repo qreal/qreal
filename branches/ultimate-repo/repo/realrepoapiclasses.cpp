@@ -7,6 +7,11 @@ int RealNamedEntity::getId()
 	return m_id;
 }
 
+void RealNamedEntity::setId( const int id )
+{
+	m_id = id;
+}
+
 QString RealNamedEntity::getName() const
 {
 	return m_name;

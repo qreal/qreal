@@ -14,6 +14,7 @@ namespace QRealTypes
 	{
 	public:
 		int getId();
+		void setId( const int id ); // to be removed soon
 
 		QString getName() const;
 		void setName( const QString& );

@@ -225,6 +225,76 @@ QString RealRepoClient::getEntireObject( int type, int id )
 	return resp;	
 }
 
+RealObject* RealRepoClient::getObjectById( int type, int id )
+{
+	QString data = getEntireObject(type,id);
+	RealObject *obj = new RealObject(); // really awful way to do that. need to think it over
+	// TODO: add RealObject( const QString& ) constructor to make it creating itself
+	obj->setTypeId(data.section("\t",0,0).toInt());
+	obj->setId(data.section("\t",1,1).toInt());
+	obj->setVisibility(true);
+	obj->setName(data.section("\t",3,3));
+	obj->setConfiguration(data.section("\t",4,4));
+
+	int childCount = data.section("\t",5,5).toInt();
+	int counter = 6;	
+	for( int i=0; i<childCount; i++){
+		obj->addChildElement(data.section("\t",counter,counter).toInt());
+		counter++;
+	}	
+	
+	int linksCount = data.section("\t",counter,counter).toInt();
+	counter++;
+	for( int i=0; i<linksCount; i++){
+		obj->addLink(data.section("\t",counter,counter).toInt());
+		counter++;
+	}
+	
+	int propsCount = data.section("\t",counter,counter).toInt();
+	counter++;
+	for( int i=0; i<propsCount; i++ ){
+		QString pair = data.section("\t",counter,counter);
+		obj->setProperty(pair.section(";",0,0), pair.section(";",1,1));
+		counter++;
+	}
+	return obj; // implement copy constructor
+}
+
+RealLink* RealRepoClient::getLinkById( int type, int id )
+{
+	QString data = getEntireObject(type,id);
+	RealLink *link = new RealLink(); // really awful way to do that. need to think it over
+	// TODO: add RealLink( const QString& ) constructor to make it creating itself
+	link->setTypeId(data.section("\t",0,0).toInt());
+	link->setId(data.section("\t",1,1).toInt());
+	link->setName(data.section("\t",3,3));
+
+	int fromCount = data.section("\t",4,4).toInt();
+	int counter = 5;
+	if( fromCount > 0 )
+		link->setFromId(data.section("\t",counter,counter).toInt());
+	else 	
+		link->setFromId(-1);
+	counter += fromCount;	
+	
+	int toCount = data.section("\t",counter,counter).toInt();
+	counter++;
+	if( toCount > 0 )
+		link->setToId(data.section("\t",counter,counter).toInt());
+	else 	
+		link->setToId(-1);
+	counter += toCount;	
+	
+	int propsCount = data.section("\t",counter,counter).toInt();
+	counter++;
+	for( int i=0; i<propsCount; i++ ){
+		QString pair = data.section("\t",counter,counter);
+		link->setProperty(pair.section(";",0,0), pair.section(";",1,1));
+		counter++;
+	}
+	return link; // implement copy constructor
+}
+
 QString RealRepoClient::getLinksByObject( int type, int id )
 {
 dbg;

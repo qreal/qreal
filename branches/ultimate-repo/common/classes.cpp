@@ -179,7 +179,7 @@ QString Object::toString()
 
 	res += QString("%1\t").arg(props.size());
 	for( int i=0; i<props.keys().size(); i++){
-		res += QString("%1\%2").arg(props.keys().at(i)).arg(props.value(props.keys().at(i)));
+		res += QString("%1;%2").arg(props.keys().at(i)).arg(props.value(props.keys().at(i)));
 	}
 	return res;
 }
