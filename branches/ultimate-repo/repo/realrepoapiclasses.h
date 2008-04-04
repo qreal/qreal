@@ -2,134 +2,120 @@
 #define __REAL_REPO_API_CLASSES_H__
 
 #include <QList>
+#include <QMap>
+#include <QString>
 
 namespace QRealTypes
 {
-        typedef QList<int> QIntList;
+	typedef QList<int> QIntList;
 
-        // Metatype description
-        enum MetaType
-        {
-                object, // types of diagram objects (e.g. invoke, exit, if, foreach, throw, reply)
-                link, // edges
-                dataType, // all common data types: basic (int, double, string, char) and
-			  // defined by user ( records/structs, xsd etc.)
-                rawType // 'raw' string data types (e.g. wsdl, xsd, project configuration stuff etc.)
-        };
+	// common stuff for all classes
+	class RealNamedEntity
+	{
+	public:
+		int getId();
 
-        // Type description
-        class RealType
-        {
-        public:
-                int getId();
+		QString getName() const;
+		void setName( const QString& );
 
-                QString getName() const;
-                void setName(const QString);
+		QString getDescription() const;
+		void setDescription( const QString& );
 
-                QString getDescription() const;
-                void setDescription(const QString);
+		void setProperty( const QString& name, const QString& val );
+		QString getProperty( const QString& name ) const; // returns "" in case of empty property value
+		int getPropertiesCount() const; 
 
-                void setProperty(const QString name, const QString val );
-                QString getProperty(const QString name ) const; // returns "" in case of empty property value
-                int getPropertiesCount(); 
+	private:
+		int m_id;
+		QString m_name;
+		QString m_description;
+		QMap<QString, QString> m_properties;	
+	};
 
-                enum MetaType getMetaType() const; 
-                void setMetaType(const enum MetaType);
+	// Metatype description
+	enum MetaType
+	{
+		object, // types of diagram objects (e.g. invoke, exit, if, foreach, throw, reply)
+		link, // edges
+		dataType, // all common data types: basic (int, double, string, char) and
+			// defined by user ( records/structs, xsd etc.)
+		rawType, // 'raw' string data types (e.g. wsdl, xsd, project configuration stuff etc.)
+	};
 
-                QIntList getObjects() const; // returns all objects of this particular type
+	typedef enum MetaType MetaType;
+
+	// Type description
+	class RealType : public RealNamedEntity
+	{
+	public:
+		MetaType getMetaType() const; 
+		void setMetaType( const MetaType );
+
+		QIntList getObjects() const; // returns all objects of this particular type
 	
 	private:
-		int id;
-		int metatype;
-		QString name;
-		QString description;
-		QMap<QString, QString> properties;
 
-		QIntList objects;
-        };
+		MetaType m_metatype;
+		QIntList m_objects;
+	};
 
 	// Node elements
-        class RealObject
-        {
-        public:
-                int getId();
+	class RealObject : public RealNamedEntity
+	{
+ 	public:
+		int getTypeId() const;
+		void setTypeId( const int );
 
-                QString getName() const;
-                void setName(const QString);
+		bool getVisibility() const; // is it visible on the diagrams or not
+		void setVisibility( const bool );
 
-                QString getDescription() const;
-                void setDescription(const QString);
+		int getContainerId() const; 
+		void setContainerId( const int );
 
-                void setProperty(const QString name, const QString val );
-                QString getProperty(const QString name ) const; // returns "" in case of empty property value
-                int getPropertiesCount();
+		QString getConfiguration() const;
+		void setConfiguration( const QString& );
 
-                int getTypeId() const;
-                void setTypeId(const int);
+		QIntList getChildElements() const;
+		void addChildElement( const int );
+		void deleteChildElement( const int );
 
-                bool getVisibility() const; // is it visible on the diagrams
-                void setVisibility(const bool);
-
-                int getContainerId() const; 
-                void setContainerId(const int);
-
-                QString getConfiguration() const;
-                void setConfiguration(const QString);
-
-                QIntList getChildElements() const;
-                void addChildElement(const int);
-                void deleteChildElement(const int);
-
-                QIntList getAllLinks() const;
-                QIntList getIncomingLinks() const;
-                QIntList getOutcomingLinks() const;
-                void addIncomingLink(const int);
-                void addOutcomingLink(const int);
+		QIntList getAllLinks() const;
+		void addLink( const int id );
+		
+		QIntList getIncomingLinks() const { return QIntList(); };
+ 		QIntList getOutcomingLinks() const { return QIntList(); };
+		void addIncomingLink( const int ) {};
+		void addOutcomingLink( const int ) {};
 
 	private:
-		int id;
-		int typeId;
-		QString name;
-		QString description;
-		QMap<QString, QString> properties;
-		bool isVisible;
-		int containerId;
-		QString configuration;
+		int m_typeId;
+		bool m_visibility;
+		int m_containerId;
+		QString m_configuration;
 
-		QIntList children;
-		QIntList links;
-        };
-        
+		QIntList m_children;
+		QIntList m_links;
+	};
+
 	// Edge elements
-        class RealLink
-        {
-        public:
-                int getId();
+	class RealLink : public RealNamedEntity
+	{
+	public:
+		int getTypeId() const;
+		void setTypeId( const int );
 
-                QString getName() const;
-                void setName(const QString);
+		int getFromId() const;  // source node
+		void setFromId( const int );
 
-                 int getTypeId() const;
-                void setTypeId(const int);
-
-		void setProperty(const QString name, const QString val );
-                QString getProperty(const QString name ) const; // returns "" in case of empty property value
-                int getPropertiesCount(); 
-                
-                int getFromId() const;  // source node
-                void setFromId(const int);
-
-                int getToId() const;    // target node
-                void setToId(const int);
+		int getToId() const;    // target node
+		void setToId( const int );
 	
 	private:
-		int id;
-		int type;
+		int m_type;
 
-		QMap<QString, QString> properties;
-		int fromId;
-		int toId;
-        };
+		int m_fromId;
+		int m_toId;
+	};
 }
 
 #endif // __REAL_REPO_API_CLASSES_H__

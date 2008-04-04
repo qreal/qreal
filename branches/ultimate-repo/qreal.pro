@@ -16,6 +16,7 @@ HEADERS         += dialogs/qsqlconnectiondialog.h \
 
 SOURCES	        += dialogs/qsqlconnectiondialog.cpp \
 		    repo/realrepomodel.cpp \
+		    repo/realrepoapiclasses.cpp \
 		    repo/realrepoclient.cpp \
 		    repo/realrepoinfo.cpp \
 		    common/classes.cpp
