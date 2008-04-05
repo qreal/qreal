@@ -80,11 +80,34 @@ QString RealType::toString() const
 
 	res += QString("%1\t").arg(m_properties.size());
 	for( int i=0; i<m_properties.keys().size(); i++){
-		 res += QString("%1\%2").arg(m_properties.keys().at(i)).arg(m_properties.value(m_properties.keys().at(i)));
+		 res += QString("%1;%2\t").arg(m_properties.keys().at(i)).arg(m_properties.value(m_properties.keys().at(i)));
 	}
 	return res;
 }
 	
+void RealType::loadFromString( const QString& data )
+{
+	m_id = data.section("\t",0,0).toInt();
+	m_name = data.section("\t",1,1);
+	m_description = data.section("\t",2,2);
+	m_metatype = (MetaType) data.section("\t",3,3).toInt();
+	
+	int objCounter = data.section("\t",4,4).toInt();
+	int counter = 5;
+	for( int i=0; i<objCounter; i++ ){
+		m_objects << data.section("\t",counter, counter).toInt();
+		counter++;
+	}	
+	
+	int propsCount = data.section("\t",counter,counter).toInt();
+	counter++;
+	for( int i=0; i<propsCount; i++ ){
+		QString pair = data.section("\t",counter,counter);
+		setProperty(pair.section(";",0,0), pair.section(";",1,1));
+		counter++;
+	}	
+
+}
 
 // ================================================== //
 

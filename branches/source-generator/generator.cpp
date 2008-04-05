@@ -452,6 +452,7 @@ void Generator::genSQLScripts()
 		"\t~RepoTypesInfo();\n"
 		"\tint getTypesCount();\n"
 		"\tRealType getTypeInfo( int );\n"
+		"\tQString getTypesByMetatype( const MetaType );\n"
 		"\tint analyseType( int );\n"
 		"\tvoid elementCreated( int, int );\n"
 		"private:\n"
@@ -509,6 +510,14 @@ void Generator::genSQLScripts()
 	// getTypesCount
 	out2 << "int RepoTypesInfo::getTypesCount()\n{\n"
 		"\treturn map.size();\n}\n\n";
+
+	// getTypesByMetatype
+	out2 << "QString RepoTypesInfo::getTypesByMetatype( const MetaType id )\n{\n"
+		"\tQString res = \"\";\n"
+		"\tforeach( RealType type, map.values() )\n"
+		"\t\tif( type.getMetaType() == id )\n"
+		"\t\t\tres += QString(\"%1\\t\").arg(id);\n"
+		"\treturn res;\n}\n\n";
 	
 	// analyzeType
 	out2 << "int RepoTypesInfo::analyseType( int type )\n{\n"

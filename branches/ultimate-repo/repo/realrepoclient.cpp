@@ -220,6 +220,7 @@ dbg;
 
 QString RealRepoClient::getEntireObject( int type, int id )
 {
+dbg;
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_ENTIRE_OBJECT).arg(type).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
@@ -227,9 +228,10 @@ QString RealRepoClient::getEntireObject( int type, int id )
 
 RealObject* RealRepoClient::getObjectById( int type, int id )
 {
+dbg;
 	QString data = getEntireObject(type,id);
 	RealObject *obj = new RealObject(); // really awful way to do that. need to think it over
-	// TODO: add RealObject( const QString& ) constructor to make it creating itself
+	// TODO: add RealObject( const QString& ) constructor to make it creat itself
 	obj->setTypeId(data.section("\t",0,0).toInt());
 	obj->setId(data.section("\t",1,1).toInt());
 	obj->setVisibility(true);
@@ -262,9 +264,10 @@ RealObject* RealRepoClient::getObjectById( int type, int id )
 
 RealLink* RealRepoClient::getLinkById( int type, int id )
 {
+dbg;
 	QString data = getEntireObject(type,id);
 	RealLink *link = new RealLink(); // really awful way to do that. need to think it over
-	// TODO: add RealLink( const QString& ) constructor to make it creating itself
+	// TODO: add RealLink( const QString& ) constructor to make it creat itself
 	link->setTypeId(data.section("\t",0,0).toInt());
 	link->setId(data.section("\t",1,1).toInt());
 	link->setName(data.section("\t",3,3));
@@ -309,5 +312,28 @@ dbg;
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_OBJECTS_BY_LINK).arg(type).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
+}
+
+QIntList RealRepoClient::getTypesByMetatype( const MetaType arg )
+{
+dbg;
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_TYPES_BY_METATYPE).arg(arg);
+	QString resp = sendData(cmd);
+	QIntList list;
+	foreach( QString str, resp.split('\t') )
+		list += str.toInt();
+	return list;	
+}
+
+RealType* RealRepoClient::getTypeById( const int id )
+{
+dbg;
+	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_INFO).arg(id);
+	QString data = sendData(cmd);
+	RealType * type = new RealType();
+	// FIXME: add RealType( const QString& ) constructor to make it create itself
+	type->loadFromString(data);
+
+	return type;	 // that suxx really hard :D
 }
 

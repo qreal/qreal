@@ -23,10 +23,11 @@ const int CMD_GET_LINKS_BY_OBJECT	= 15;
 const int CMD_GET_OBJECTS_BY_LINK	= 16;
 
 
+const int CMD_GET_TYPES_COUNT		= 21;
+const int CMD_GET_ALL_TYPES		= 22;
+const int CMD_GET_TYPES_BY_METATYPE	= 23;
+const int CMD_GET_TYPE_INFO		= 24;
 
-const int CMD_GET_TYPES_COUNT	= 21;
-const int CMD_GET_ALL_TYPES	= 22;
-const int CMD_GET_TYPE_INFO	= 23;
 
 const int TYPE_OBJECT	= 1;
 const int TYPE_LINK	= 2;

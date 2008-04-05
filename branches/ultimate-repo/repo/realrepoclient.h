@@ -53,12 +53,14 @@ public:
 
 	int state(){ return socket->state(); }
 
-	int isValid() { return socket->isValid();}
+	int isValid() { return socket->isValid(); }
+
+	QIntList getTypesByMetatype( const MetaType );
+	
+	RealType* getTypeById( const int id ); 
 
 	// TODO: implement these calls
 	/* 
-	QIntList getTypesByMetatype(const enum MetaType); 
-	RealType* getTypeById(const int id); 
 	int createType(const QString name); // returns id of created type
 	void deleteType(const int id);
 	*/

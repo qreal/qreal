@@ -66,6 +66,7 @@ namespace QRealTypes
 		void addObject( int id );
 
 		QString toString() const;
+		void loadFromString( const QString& );
 	
 	private:
 

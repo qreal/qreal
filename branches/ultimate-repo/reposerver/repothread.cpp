@@ -117,6 +117,13 @@ dbg;
 				log += QString(", sending type info: [%1]").arg(resp);
 				break;
 			}
+			case CMD_GET_TYPES_BY_METATYPE:
+			{
+				MetaType metatype = (MetaType) data.section("\t",1,1).toInt();
+				resp = typesInfo->getTypesByMetatype(metatype);
+				log += QString(", sending types list: [%1]").arg(resp);
+				break;
+			}
 			case CMD_GET_OBJECTS_BY_TYPE:
 			{
 				int type = data.section("\t",1,1).toInt();
