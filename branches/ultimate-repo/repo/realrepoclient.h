@@ -4,7 +4,7 @@
 #include <QTcpSocket>
 #include "../common/defs.h"
 #include "../common/classes.h"
-#include "realrepoapiclasses.h"
+#include "../common/realrepoapiclasses.h"
 
 using namespace QRealTypes; 
 
@@ -40,7 +40,6 @@ public:
 	QString getEntireObject( int type, int id );
 	RealObject* getObjectById( int type, int id ); // `type' will be removed in a while
 	RealLink* getLinkById( int type, int id );
-
 
 	QString getLinksByObject( int type, int id );
 	QString getObjectsByLink( int type, int id );

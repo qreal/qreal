@@ -12,8 +12,8 @@ OBJECTS_DIR = obj
 MOC_DIR = moc
 
 # Input
-HEADERS += repothread.h server.h dbg.h ../common/classes.h
-SOURCES += main.cpp repothread.cpp server.cpp ../common/classes.cpp
+HEADERS += repothread.h server.h dbg.h ../common/classes.h ../common/realrepoapiclasses.h
+SOURCES += main.cpp repothread.cpp server.cpp ../common/classes.cpp ../common/realrepoapiclasses.cpp
 
 # Generated
 HEADERS += generated/repotypesinfo.h

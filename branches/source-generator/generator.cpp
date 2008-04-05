@@ -440,17 +440,20 @@ void Generator::genSQLScripts()
 	QTextStream out(&file);
  
 	out << "#ifndef __REPO_TYPES_INFO_H__\n#define __REPO_TYPES_INFO_H__\n\n";
-	out << "#include <QMap>\n#include <QString>\n#include\"../../common/classes.h\"\n"
-		"#include\"../../common/defs.h\"\n\n";
+	out << "#include <QMap>\n#include <QString>\n#include \"../../common/classes.h\" //to be removed soon\n"
+		"#include \"../../common/realrepoapiclasses.h\"\n"
+		"#include \"../../common/defs.h\"\n\n";
+
+	out << "\nusing namespace QRealTypes;\n\n";
 
 	out << "class RepoTypesInfo\n{\n"
 		"public:\n"
 		"\tRepoTypesInfo();\n"
 		"\t~RepoTypesInfo();\n"
 		"\tint getTypesCount();\n"
-		"\tTypeInfo getTypeInfo( int );\n"
+		"\tRealType getTypeInfo( int );\n"
 		"\tint analyseType( int );\n"
-		"\tvoid elementCreated( int );\n"
+		"\tvoid elementCreated( int, int );\n"
 		"private:\n"
 		"};\n\n";
 
@@ -466,21 +469,23 @@ void Generator::genSQLScripts()
 	// static inits
 	out2 << "#include \"repotypesinfo.h\"\n\n"
 		"static bool initCompleted = false;\n\n"
-		"static QMap<int, TypeInfo> map;\n\n";
+		"static QMap<int, RealType> map;\n\n";
 
 
 	out2 << "static void initStaticData()\n{\n"
 		"\tif ( initCompleted )\n"
 		"\t\treturn;\n\n"
-		"\tTypeInfo info;\n\n";
+		"\tRealType info;\n\n";
 
+	out2 << "\n\t//metatype will be replaced with real values"
+					" as soon as we start to use it in our XML descriptions\n\n";
 
 	for (int i=0; i<objects.size(); i++){
 		int j = i+NUM;
-		out2 << "\tinfo.id = " << j << ";\n"
-			<< "\tinfo.count = 0;\n"
-			<< "\tinfo.name = \"" << objects.at(i)->id << "\";\n"
-			<< "\tinfo.qualifiedName = \"" << objects.at(i)->name << "\";\n"
+		out2 << "\tinfo.setId(" << j << ");\n"
+			<< "\tinfo.setName(\"" << objects.at(i)->id << "\");\n"
+			<< "\tinfo.setDescription(\"" << objects.at(i)->name << "\");\n"
+			<< "\tinfo.setMetaType(QRealTypes::object);\n"
 			<< QString("\tmap[%1] = info;\n\n").arg(j); 
 		
 	}
@@ -498,7 +503,7 @@ void Generator::genSQLScripts()
 	out2 << "RepoTypesInfo::~RepoTypesInfo()\n{\n}\n\n";
 
 	// getTypeInfo
-	out2 << "TypeInfo RepoTypesInfo::getTypeInfo( int id )\n{\n"
+	out2 << "RealType RepoTypesInfo::getTypeInfo( int id )\n{\n"
 		"\treturn map[id];\n}\n\n";
 
 	// getTypesCount
@@ -512,13 +517,12 @@ void Generator::genSQLScripts()
 		if( objects[i]->type == EDGE )
 			out2 << "\t\tcase " << i + NUM << ":\n";
 	}	
-	
 	out2 << "\t\t\treturn TYPE_LINK;\n"
 		"\t\tdefault:\n\t\t\treturn TYPE_OBJECT;\n\t}\n}\n\n";
 
 	// elementCreated
-	out2 << "void RepoTypesInfo::elementCreated( int type )\n{\n"
-		"\tmap[type].count++;\n}\n\n";
+	out2 << "void RepoTypesInfo::elementCreated( int type, int id )\n{\n"
+		"\tmap[type].addObject(id);\n}\n\n";
 
 	file2.close();
 	dir.cdUp();

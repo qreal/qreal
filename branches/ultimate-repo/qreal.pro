@@ -10,13 +10,13 @@ MOC_DIR		= moc
 HEADERS         += dialogs/qsqlconnectiondialog.h \
 		    repo/realrepomodel.h \
 		    repo/realrepoclient.h \
-		    repo/realrepoapiclasses.h \
+		    common/realrepoapiclasses.h \
 		    repo/realrepoinfo.h \
 		    common/classes.h
 
 SOURCES	        += dialogs/qsqlconnectiondialog.cpp \
 		    repo/realrepomodel.cpp \
-		    repo/realrepoapiclasses.cpp \
+		    common/realrepoapiclasses.cpp \
 		    repo/realrepoclient.cpp \
 		    repo/realrepoinfo.cpp \
 		    common/classes.cpp

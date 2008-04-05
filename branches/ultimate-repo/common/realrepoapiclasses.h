@@ -13,6 +13,13 @@ namespace QRealTypes
 	class RealNamedEntity
 	{
 	public:
+		RealNamedEntity() 
+		{
+			m_name = "noname";
+			m_description = "noname";
+			m_properties.clear();
+		}
+
 		int getId();
 		void setId( const int id ); // to be removed soon
 
@@ -26,7 +33,7 @@ namespace QRealTypes
 		QString getProperty( const QString& name ) const; // returns "" in case of empty property value
 		int getPropertiesCount() const; 
 
-	private:
+	protected:
 		int m_id;
 		QString m_name;
 		QString m_description;
@@ -49,10 +56,16 @@ namespace QRealTypes
 	class RealType : public RealNamedEntity
 	{
 	public:
+		RealType() { m_objects.clear(); }
+
 		MetaType getMetaType() const; 
 		void setMetaType( const MetaType );
 
 		QIntList getObjects() const; // returns all objects of this particular type
+		
+		void addObject( int id );
+
+		QString toString() const;
 	
 	private:
 

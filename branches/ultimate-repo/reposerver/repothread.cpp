@@ -92,7 +92,7 @@ dbg;
 					obj->addChild(id);
 				}
 
-				typesInfo->elementCreated(type);
+				typesInfo->elementCreated(type, id);
 				resp = QString::number(id);
 				break;
 			}
@@ -148,8 +148,8 @@ dbg;
 					qDebug() << "unknown element's data requested, id " << id;
 				
 				if( type != -1 ){
-					TypeInfo info = typesInfo->getTypeInfo(type);
-					resp = res.arg(id).arg(name).arg(type).arg(info.qualifiedName).arg(childCount);
+					RealType info = typesInfo->getTypeInfo(type);
+					resp = res.arg(id).arg(name).arg(type).arg(info.getDescription()).arg(childCount);
 				}	
 				log += QString(", sending object data: [%1]").arg(resp);
 				break;
