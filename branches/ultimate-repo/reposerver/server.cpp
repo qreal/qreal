@@ -1,20 +1,22 @@
+#include "server.h"
+
 #include <QTcpServer>
 //#define _LONG_DEBUG
 #include "dbg.h"
 
-#include "server.h"
-
 #include "repothread.h"
 
-QRealRepoServer::QRealRepoServer(QObject *parent) : QTcpServer(parent)
+using namespace reposerver;
+
+QRealRepoServer::QRealRepoServer(QObject *const parent): QTcpServer(parent)
 {
 dbg;
-	listen( QHostAddress("127.0.0.1"), 6666);
+	listen(QHostAddress("127.0.0.1"), 6666);
 	qDebug() << isListening() << serverAddress() << serverPort();
 
-	root = new Root();
-	typesInfo = new RepoTypesInfo();
-	count = 666;
+	mRoot = new Root();
+	mTypesInfo = new RepoTypesInfo();
+	mCount = 888; // Ia Bel-Shamharoth fhtagn!
 }
 
 QRealRepoServer::~QRealRepoServer()
@@ -22,19 +24,20 @@ QRealRepoServer::~QRealRepoServer()
 dbg;
 }
 
-void QRealRepoServer::incomingConnection(int socketDescriptor)
+void QRealRepoServer::incomingConnection(int const &socketDescriptor)
 {
 dbg;
-	QRealRepoServerThread *thread = new QRealRepoServerThread(socketDescriptor, this, root, typesInfo, count);
+	QRealRepoServerThread *thread = new QRealRepoServerThread(socketDescriptor
+    , this, mRoot, mTypesInfo, mCount);
 	connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
 	connect(thread, SIGNAL(finished()), this, SLOT(killall()));
 	thread->start();
-	count += 10;
+	mCount += 10;
 }
 
-void QRealRepoServer::killall()
+void QRealRepoServer::killall() const
 {
 dbg;
-	qDebug() << "objects: " << root->getObjectsSize();
-	qDebug() << "links: " << root->getLinksSize();
+	qDebug() << "objects: " << mRoot->getObjectsSize();
+	qDebug() << "links: " << mRoot->getLinksSize();
 }

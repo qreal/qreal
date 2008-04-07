@@ -5,64 +5,73 @@
 #include <QtNetwork>
 #include <QByteArray>
 
-QRealRepoServerThread::QRealRepoServerThread(int socketDescriptor,QObject *parent, Root *root, RepoTypesInfo *info, int id)
-		: QThread(parent), socketDescriptor(socketDescriptor), root(root), typesInfo(info), counter(id)
+using namespace reposerver;
+
+QRealRepoServerThread::QRealRepoServerThread(int const &socketDescriptor
+  , QObject *const parent, Root *const root, RepoTypesInfo *const info
+  , int const &id)
+: QThread(parent), mSocketDescriptor(socketDescriptor), mRoot(root)
+  , mTypesInfo(info), mCounter(id)
 {
 dbg;
 }
 
-void QRealRepoServerThread::run( )
+void QRealRepoServerThread::run()
 {
 dbg;
 	QTcpSocket tcpSocket;
 
-	if (!tcpSocket.setSocketDescriptor(socketDescriptor)) {
+	if (!tcpSocket.setSocketDescriptor(mSocketDescriptor)) {
 		emit error(tcpSocket.error());
 		return;
 	}
 	
-	while ( tcpSocket.state() != QAbstractSocket::UnconnectedState ){
+	while (tcpSocket.state() != QAbstractSocket::UnconnectedState ) {
 		
 		//bool res = 
 		tcpSocket.waitForReadyRead();
 		//qDebug() << "ready - " << res;
 
-		while( tcpSocket.bytesAvailable() == 0 && tcpSocket.state() != QAbstractSocket::UnconnectedState ){
+		while (tcpSocket.bytesAvailable() == 0 
+      && tcpSocket.state() != QAbstractSocket::UnconnectedState)
+    {
 			sleep(1);
 			qDebug() << "server is sleeping. state is " << tcpSocket.state();
 			tcpSocket.waitForReadyRead();
 		}		
 
-		if( tcpSocket.state() == QAbstractSocket::UnconnectedState )
+		if (tcpSocket.state() == QAbstractSocket::UnconnectedState)
 			break;
 
 		QByteArray rawdata = tcpSocket.readAll();
 		QString data = QString(rawdata);
 
-		
 		handleCommand(data, &tcpSocket);
 	}
 
 }
 
-void QRealRepoServerThread::handleCommand( QString data, QTcpSocket *socket )
+void QRealRepoServerThread::handleCommand(QString const &data
+, QTcpSocket *const socket)
 {
 dbg;
 		QString log = "";
 		int cmd = data.section("\t",0,0).toInt();
-		log += QString("cmd: %1").arg( cmd);
-		QString resp;
-		switch( cmd ){
+		log += QString("cmd: %1").arg(cmd);
+		QString resp = "";
+    
+    // TODO: Refactor this into many small methods.
+		switch (cmd) {
 			case CMD_SET_NAME:
 			{
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				QString name = data.section("\t",3,3);
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )
+				if (mTypesInfo->analyseType(type) == TYPE_OBJECT) {
+					if (Object *obj = mRoot->getObject(id))
 						obj->setName(name);
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )
 						link->setName(name);
 				} else	
 					qDebug() << "unknown element's name set requesetd, id " << id;
@@ -73,38 +82,38 @@ dbg;
 			case CMD_CREATE_ENTITY:
 			{
 				int type = data.section("\t",1,1).toInt();
-				int id = ++counter;
+				int id = ++mCounter;
 				int parent = data.section("\t",3,3).toInt();
 				log += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
 				QString name = data.section("\t",2,2);
-				if( typesInfo->analyseType(type) == TYPE_OBJECT ){
+				if( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
 					Object *obj = new Object(id, type, 0,0);
 					obj->setName(name);
-					root->addObject(id, obj);
+					mRoot->addObject(id, obj);
 					log += QString(", object created, name %1").arg(name);
-				} else if( typesInfo->analyseType(type) == TYPE_LINK ){
+				} else if( mTypesInfo->analyseType(type) == TYPE_LINK ){
 					Link *link = new Link(id, type);
 					link->setName(name);
-					root->addLink(id, link);
+					mRoot->addLink(id, link);
 					log += QString(", link created, name %1").arg(name);
 				}
-				if( Object *obj = root->getObject(parent) ){
+				if( Object *obj = mRoot->getObject(parent) ){
 					obj->addChild(id);
 				}
 
-				typesInfo->elementCreated(type, id);
+				mTypesInfo->elementCreated(type, id);
 				resp = QString::number(id);
 				break;
 			}
 			case CMD_GET_TYPES_COUNT:
 			{
-				resp = QString::number(typesInfo->getTypesCount());
+				resp = QString::number(mTypesInfo->getTypesCount());
 				log += QString(", sending types count: %1").arg(resp);
 				break;
 			}
 			case CMD_GET_ALL_TYPES: // TODO: replace with typesInfo call or something like that
 			{
-				int count = typesInfo->getTypesCount();
+				int count = mTypesInfo->getTypesCount();
 				for( int i=1; i<=count; i++ )
 					resp += QString("%1\t").arg(i);
 				log += QString(", sending types count: %1").arg(resp);
@@ -113,25 +122,25 @@ dbg;
 			case CMD_GET_TYPE_INFO:
 			{
 				int id = data.section("\t",1,1).toInt();
-				resp = typesInfo->getTypeInfo(id).toString();
+				resp = mTypesInfo->getTypeInfo(id).toString();
 				log += QString(", sending type info: [%1]").arg(resp);
 				break;
 			}
 			case CMD_GET_TYPES_BY_METATYPE:
 			{
 				MetaType metatype = (MetaType) data.section("\t",1,1).toInt();
-				resp = typesInfo->getTypesByMetatype(metatype);
+				resp = mTypesInfo->getTypesByMetatype(metatype);
 				log += QString(", sending types list: [%1]").arg(resp);
 				break;
 			}
 			case CMD_GET_OBJECTS_BY_TYPE:
 			{
 				int type = data.section("\t",1,1).toInt();
-				if( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					resp = root->getObjectsByType(type);
+				if( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					resp = mRoot->getObjectsByType(type);
 				}	
-				else if( typesInfo->analyseType(type) == TYPE_LINK )	{
-					resp = root->getLinksByType(type);
+				else if( mTypesInfo->analyseType(type) == TYPE_LINK )	{
+					resp = mRoot->getLinksByType(type);
 				}	
 				log += QString(", sending objects of type: %1 -- [%2]").arg(type).arg(resp);
 				break;	
@@ -144,18 +153,18 @@ dbg;
 				QString name;
 				QString res = "%1\t%2\t%3\t%4\t%5\t";
 				resp = "\t";
-				if( Object *obj = root->getObject(id) ){
+				if( Object *obj = mRoot->getObject(id) ){
 					name = obj->getName();
 					childCount = obj->childrenCount();
 					type = obj->getType();
-				} else	if( Link *link = root->getLink(id) ){
+				} else	if( Link *link = mRoot->getLink(id) ){
 					name = link->getName();
 					type = link->getType();
 				} else
 					qDebug() << "unknown element's data requested, id " << id;
 				
 				if( type != -1 ){
-					RealType info = typesInfo->getTypeInfo(type);
+					RealType info = mTypesInfo->getTypeInfo(type);
 					resp = res.arg(id).arg(name).arg(type).arg(info.getDescription()).arg(childCount);
 				}	
 				log += QString(", sending object data: [%1]").arg(resp);
@@ -165,8 +174,8 @@ dbg;
 			{
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();				
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					Object *obj = root->getObject(id);
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					Object *obj = mRoot->getObject(id);
 					if( obj )
 						resp = obj->childrenToString();
 				}
@@ -178,13 +187,13 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )
 						resp = QString("%1;%2").arg(obj->getX()).arg(obj->getY());
 					else
 						qDebug() << "incorrect object requested. id" << id;			
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )
 						resp = link->getPosition();
 				}
 				log += QString(", sending position for obj %1 - [%2]").arg(id).arg(resp);
@@ -196,13 +205,13 @@ dbg;
 				int id = data.section("\t",2,2).toInt();
 				int x = data.section("\t",3,3).toInt();
 				int y = data.section("\t",4,4).toInt();
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) ){
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) ){
 						obj->setX(x);
 						obj->setY(y);
 					}	
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) ){
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) ){
 						link->setPosition(QString("%1;%2").arg(x).arg(y));
 						qDebug() << link->getPosition();
 					}	
@@ -217,14 +226,14 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )
 						resp = obj->getConfiguration();
 					else
 						qDebug() << "error -- cannot find object " << id;
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
 				//	qDebug() << "warning - get conf for link requested";
-					if( Link *link = root->getLink(id) )
+					if( Link *link = mRoot->getLink(id) )
 						resp = link->getConfiguration();
 					else
 						qDebug() << "error -- cannot find link " << id;
@@ -237,11 +246,11 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				QString conf = data.section("\t",3,3);
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )	
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )	
 						obj->setConfiguration(conf);
-				} else 	if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )	
+				} else 	if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )	
 						link->setConfiguration(conf);
 				}		
 				resp = QString::number(STATUS_OK);
@@ -256,16 +265,16 @@ dbg;
 				QString val = data.section("\t",4,4);
 				qDebug() << "set property" << name << val;
 					
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) ){	
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) ){	
 						obj->setProperty(name, val);
 										}
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) ){
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) ){
 						link->setProperty(name, val);
 						if( name == "from" || name == "to" ){
 						// присединяем линк к об'екту
-							if( Object *obj = root->getObject(val.toInt()) )
+							if( Object *obj = mRoot->getObject(val.toInt()) )
 							// добавляем запись о линке в об'ект
 								obj->addLink(id);
 							// добавляем запись об об'екте в линк	
@@ -286,11 +295,11 @@ dbg;
 				int id = data.section("\t",2,2).toInt();
 				QString name = data.section("\t",3,3);
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )	
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )	
 						resp = obj->getProperty(name);
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )	
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )	
 						resp = link->getProperty(name);
 				}
 				log += QString(", sent property value: %1 - %2").arg(name).arg(resp);
@@ -301,11 +310,11 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )	
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )	
 						resp = obj->toString();
-				} else if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )	
+				} else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )	
 						resp = link->toString();
 				}
 				log += QString(", sending object %1: %2").arg(id).arg(resp);
@@ -316,8 +325,8 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_OBJECT ){
-					if( Object *obj = root->getObject(id) )
+				if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+					if( Object *obj = mRoot->getObject(id) )
 						resp = obj->getLinks();
 				} else
 					qDebug() << "bad object id";
@@ -329,8 +338,8 @@ dbg;
 				int type = data.section("\t",1,1).toInt();
 				int id = data.section("\t",2,2).toInt();
 				resp = "\t";
-				if ( typesInfo->analyseType(type) == TYPE_LINK ){
-					if( Link *link = root->getLink(id) )
+				if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+					if( Link *link = mRoot->getLink(id) )
 						resp = link->getObjects();
 				} else
 					qDebug() << "bad link id";
@@ -349,5 +358,5 @@ dbg;
 
 int QRealRepoServerThread::getId()
 {
-	return counter++;
+	return mCounter++;
 }

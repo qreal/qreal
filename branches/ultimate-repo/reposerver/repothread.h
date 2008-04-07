@@ -1,6 +1,4 @@
-#ifndef __Q_REAL_REPO_SERVER_THREAD_H__
-#define __Q_REAL_REPO_SERVER_THREAD_H__
-
+#pragma once
 #include <QThread>
 #include <QTcpSocket>
 
@@ -8,30 +6,36 @@
 #include "../common/classes.h"
 #include "generated/repotypesinfo.h"
 
-class QRealRepoServerThread : public QThread
+namespace reposerver
 {
-	Q_OBJECT
-
-public:
-	QRealRepoServerThread(int socketDescriptor,  QObject *parent, Root *root, RepoTypesInfo *, int);
-	
-	void run();
-
-public slots:
-
-signals:
-	void error(QTcpSocket::SocketError socketError);
-			 
-private:
-	void handleCommand( QString cmd, QTcpSocket *socket );
-	int getId();
-
-	int socketDescriptor;
-	bool canRead;
-	Root *root;
-	RepoTypesInfo *typesInfo;
-	int counter;
-};	
-
-
-#endif // __REAL_REPO_SERVER_THREAD_H__
+  
+  class QRealRepoServerThread: public QThread
+  {
+    Q_OBJECT
+    
+  public:
+    QRealRepoServerThread(int const &mSocketDescriptor
+      , QObject *const parent
+      , Root *const mRoot
+      , RepoTypesInfo *const info
+      , int const &id);
+    
+    void run();
+    
+  public slots:
+    
+  signals:
+    void error(QTcpSocket::SocketError socketError);
+    
+  private:
+    void handleCommand(QString const &cmd, QTcpSocket *const socket);
+    int getId();
+    
+    int mSocketDescriptor;
+    bool mCanRead;
+    Root *mRoot;
+    RepoTypesInfo *mTypesInfo;
+    int mCounter;
+  };
+  
+}

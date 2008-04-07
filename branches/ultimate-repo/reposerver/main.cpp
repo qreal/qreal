@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 	QTextCodec::setCodecForCStrings(codec);
 
 	QApplication app(argc, argv);
-	QRealRepoServer repo;
+	reposerver::QRealRepoServer repo;
 
 	return app.exec();
 }	
