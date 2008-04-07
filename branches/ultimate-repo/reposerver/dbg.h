@@ -6,15 +6,15 @@ namespace qreal_debug
 {
   class TepkomDebugger
   {
-    public:
-      TepkomDebugger(const char *name) 
-      { 
-        qDebug(name); 
-      };
-	    ~TepkomDebugger() 
-      { 
-        qDebug("\\---  exit"); 
-      };
+  public:
+    TepkomDebugger(const char *name)
+    {
+      qDebug(name);
+    };
+    ~TepkomDebugger()
+    {
+      qDebug("\\---  exit");
+    };
   };
 }
 
