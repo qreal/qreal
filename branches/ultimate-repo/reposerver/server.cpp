@@ -1,7 +1,7 @@
 #include "server.h"
 
 #include <QTcpServer>
-//#define _LONG_DEBUG
+#define _LONG_DEBUG
 #include "dbg.h"
 
 #include "repothread.h"
@@ -24,7 +24,7 @@ QRealRepoServer::~QRealRepoServer()
   dbg;
 }
 
-void QRealRepoServer::incomingConnection(int const &socketDescriptor)
+void QRealRepoServer::incomingConnection(int socketDescriptor)
 {
   dbg;
   QRealRepoServerThread *thread = new QRealRepoServerThread(socketDescriptor

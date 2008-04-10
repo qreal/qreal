@@ -19,7 +19,7 @@ namespace reposerver
     void killall() const;
     
   protected:
-    void incomingConnection(int const &socketDescriptor);
+    void incomingConnection(int socketDescriptor);
     
   private:
     int mCount;
