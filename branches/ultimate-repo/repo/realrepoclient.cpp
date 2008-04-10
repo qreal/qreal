@@ -19,7 +19,7 @@ dbg;
 	socket->connectToHost("127.0.0.1", 6666);
         if (!socket->waitForConnected(5*1000)) {
 //		emit socket->error(socket->error(), socket->errorString());
-		qDebug() << "nya kawaii" << endl;
+		qDebug() << "cannot connect to the server" << endl;
             return;
         }
 	m_error = socket->error();
