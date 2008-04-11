@@ -556,7 +556,7 @@ dbg;
 	}
 	
 	hashChildCount[rootItem->id] = rootItem->children.size();
-	qDebug() << "root children" << rootItem->children.size()
+	qDebug() << "root children" << rootItem->children.size();
 }
 
 void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
@@ -639,6 +639,7 @@ dbg;
 				newConfig << QPoint(coords.at(0).toInt(), coords.at(1).toInt());
 			}
 			hashDiagramElements[root->id][item->id].configuration = newConfig;
+                }
 	
 	}
 }
