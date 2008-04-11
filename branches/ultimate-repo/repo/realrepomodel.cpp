@@ -246,7 +246,7 @@ dbg;
 
 	if (parentItem == rootItem)
 		return QModelIndex();
-
+		
 	return createIndex(parentItem->row, 0, parentItem);
 }
 
@@ -407,8 +407,6 @@ dbg;
 					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
 				}
-				else
-					qDebug() << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
@@ -440,7 +438,6 @@ void RealRepoModel::rollbackTransaction()
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
 dbg;
-	//qDebug() << "[TYPE]: id" << item->id;
 	if ( item->id >= 100 )
 		return Container;
 	else if ( item->id != 0 )
@@ -475,7 +472,7 @@ dbg;
 	item->parent = parentItem;
 	item->id = id;
 	item->row = parentItem->children.size();
-
+ 
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 
@@ -548,21 +545,18 @@ dbg;
 		int count = info->getObjects().size();
 		qDebug() << "root table: " << info->getId() << count << info->getName() << info->getDescription() << item;
 		item->parent = rootItem;
-		item->row = i;
+		item->row = i-1;
 		item->id = info->getId();
 
 		hashNames[item->id] = info->getName();
-		//qDebug() << "\t setting childcount for " << item->id << "to" << count;
 		hashChildCount[item->id] = count;
 		hashTreeItems[item->id].append(item);
 
 		rootItem->children.append(item);
 	}
 	
-//	qDebug() << "\t setting childcount for rootitem " << rootItem->id << "to" << hashChildCount[rootItem->id];
 	hashChildCount[rootItem->id] = rootItem->children.size();
-	qDebug() << "root children" << rootItem->children.size();
-
+	qDebug() << "root children" << rootItem->children.size()
 }
 
 void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
@@ -629,14 +623,13 @@ dbg;
 			hashTypes[item->id] = data.section("\t",2,2).toInt();
 
 			hashChildCount[item->id] = data.section("\t",4,4).toInt();
-			hashChildren[root->id].append(item->id);
+					hashChildren[root->id].append(item->id);
 
 			root->children.append(item);
 			hashTreeItems[item->id].append(item);
 
 			hashDiagramElements[root->id][item->id].position = 
-					QPoint(coordinates.section(";",0,0).toInt(), coordinates.section(";",1,1).toInt());
-			qDebug() << "1";
+				QPoint(coordinates.section(";",0,0).toInt(), coordinates.section(";",1,1).toInt());
 		
 			// FIXME: parse some better way
 			QPolygon newConfig; 
@@ -646,8 +639,6 @@ dbg;
 				newConfig << QPoint(coords.at(0).toInt(), coords.at(1).toInt());
 			}
 			hashDiagramElements[root->id][item->id].configuration = newConfig;
-			qDebug() << "2";
 	
-		}
 	}
 }

@@ -73,22 +73,16 @@ void RealType::addObject( const int id )
 
 QString RealType::toString() const
 {
-qDebug() << 1;
 	QString res = QString("%1\t%2\t%3\t%4\t").arg(m_id).arg(m_name).arg(m_description).arg(m_metatype);
-qDebug() << 2;
 
 	res += QString("%1\t").arg(m_objects.size());
-qDebug() << 3;
 	for( int i=0; i<m_objects.size(); i++)
 		res += QString("%1\t").arg(m_objects.at(i));
 
-qDebug() << 4;
 	res += QString("%1\t").arg(m_properties.size());
-qDebug() << 5;
 	for( int i=0; i<m_properties.keys().size(); i++){
 		 res += QString("%1;%2\t").arg(m_properties.keys().at(i)).arg(m_properties.value(m_properties.keys().at(i)));
 	}
-qDebug() << 6;
 	return res;
 }
 	
