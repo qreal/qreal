@@ -6,14 +6,12 @@ OBJECTS_DIR 	= obj
 MOC_DIR		= moc
 
 # Model
-HEADERS         +=  ../repo/realrepomodel.h \
-		    ../repo/realrepoclient.h \
-		    ../repo/realrepoinfo.h 
-#		    ../common/realrepoapiclasses.h \
-#		    ../common/classes.h
+HEADERS         += \
+		../common/realrepoapiclasses.h \
+		../common/classes.h \
+		../repo/realrepoclient.h
 
-SOURCES	       += ../repo/realrepomodel.cpp \
-		    ../repo/realrepoclient.cpp \
-		    ../repo/realrepoinfo.cpp \
-
-
+SOURCES	       += \
+		../common/realrepoapiclasses.cpp \
+		../common/classes.cpp \
+		../repo/realrepoclient.cpp
