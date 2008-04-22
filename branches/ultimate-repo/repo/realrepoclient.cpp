@@ -29,7 +29,8 @@ RealRepoClient::~RealRepoClient()
 {
 dbg;
 	socket->disconnectFromHost();
-	socket->waitForDisconnected();
+	if (socket->state() == QAbstractSocket::UnconnectedState ||  socket->waitForDisconnected(1000))
+		qDebug("Disconnected!");
 }
 
 QString RealRepoClient::sendData( QString data )
@@ -131,6 +132,7 @@ dbg;
 	QIntList list;
 	foreach( QString str, res.split('\t') )
 		list += str.toInt();
+	list.removeLast();	
 	return list;	
 }
 
