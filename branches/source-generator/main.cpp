@@ -17,7 +17,8 @@ int main()
 	<< "component_metamodel.xml"
 	<< "timing_metamodel.xml"
 	<< "activity_metamodel.xml"
-	<< "package.xml";
+	<< "package.xml"
+	<< "bpel.xml";
 	new Generator(l);
 	return 0;
 }

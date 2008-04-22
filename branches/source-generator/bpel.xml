@@ -1,0 +1,2425 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>
+    kernel_metamodel
+  </include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="BPEL DIAGRAM">
+    
+    <node name="receive" id="bplreceive">
+          <graphics>
+            <view>
+              <svg_shape>
+                <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+              zoomAndPan="magnify"
+       contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+              preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+
+                  <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+                  <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+                  <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+                  <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+                </svg:svg>
+
+              </svg_shape>
+              <repo_info>
+                <html:html xmlns:html="http://www.w3.org/html/">
+                  <html:b>
+                    <html:text_from_repo name="name" />
+                  </html:b>
+                </html:html>
+              </repo_info>
+              <ports>
+                <line_port>
+                  <start startx="0" starty="40"/>
+                  <end endx="0" endy="80"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="40"/>
+                  <end endx="100" endy="80"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="createInstance" type="string" />
+          <property name="operation" type="string" />
+          <property name="partnerLink" type="string" />
+          <property name="portType" type="string" />
+          <property name="variable" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+        
+        
+      </logic>
+    </node>
+      
+    <node name="invoke" id="bplinvoke">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="inputVariable" type="string" />
+          <property name="operation" type="string" />
+          <property name="outPutVariable" type="string" />
+          <property name="partnerLink" type="string" />
+          <property name="portType" type="string" />
+        </properties>
+        <containers>
+          <container name="invoke">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    
+    <node name="reply" id="bplreply">
+      <graphics>
+        <view>
+
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="partnerLink" type="string" />
+          <property name="portType" type="string" />
+          <property name="variable" type="string" />
+          <property name="faultName" type="string" />
+          <property name="operation" type="string" />
+
+        </properties>
+        <containers>
+          <container name="reply">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="assign" id="bplassign">
+      <graphics>
+        <view>
+
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="assign">
+            <contains idref="bplCopy" role="fromCopy"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="throw" id="bplthrow">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="faultVariable" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="rethrow" id="bplrethrow">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="exit" id="bplexit">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    <node name="empty" id="bplempty">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    <node name="if" id="bplif">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="70" y1="0" x2="70" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="condition" type="string" />
+          <property name="conditionExpressionLanguage" type="string" />
+
+        </properties>
+        <containers>
+          <container name="if">
+            <contains idref="bplthen" role="if"/>
+          </container>
+          <container name="if">
+            <contains idref="bplelse" role="else"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+        
+      </logic>
+      
+    </node>
+    
+    <node name="sequence" id="bplsequence">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="70" y1="0" x2="70" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="80" y1="0" x2="80" y2="20" stroke="black" stroke-width="2" />
+
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="sequence">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="flow" id="bplflow">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="70" y1="0" x2="70" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="80" y1="0" x2="80" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="0" x2="90" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="flow">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="while" id="bplwhile">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="70" y1="0" x2="70" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="80" y1="0" x2="80" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="90" y1="0" x2="90" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="100" y1="0" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+          <property name="condition" type="string" />
+          <property name="conditionExpressionLanguage" type="string" />
+        </properties>
+        <containers>
+          <container name="while">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="while">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="ext:break" id="bplext_break">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+             
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="ext:continue" id="bplext_continue">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+       </logic>
+    </node>
+    
+    <node name="toParts" id="bpltoParts">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="toParts">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+      </logic>
+      <generalizations>
+        <generalization>
+          <parent parent_id="krnnElement" />
+        </generalization>
+      </generalizations>
+    </node>
+    
+    <node name="fromParts" id="bplfromParts">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="fromParts">
+            <contains idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplreply" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplassign" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplThrow" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplrethrow" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplexit" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplempty" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplif" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplflow" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplext:break" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplext:continue" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplCopy" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplthen" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplelse" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bpltoPart" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplfromParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contains idref="bplfromPart" role="toParts"/>
+          </container>
+            <container name="receive">
+              <contained_by idref="bplrecieve" role="toParts"/>
+            </container>
+            <container name="invoke">
+              <contained_by idref="bplinvoke" role="toParts"/>
+            </container>
+            <container name="reply">
+              <contained_by idref="bplreply" role="toParts"/>
+            </container>
+            <container name="sequence">
+              <contained_by idref="bplsequence" role="toParts"/>
+            </container>
+            <container name="flow">
+              <contained_by idref="bplflow" role="toParts"/>
+            </container>
+            <container name="while">
+              <contained_by idref="bplwhile" role="toParts"/>
+            </container>
+            <container name="toParts">
+              <contained_by idref="bpltoParts" role="toParts"/>
+            </container>
+            <container name="fromParts">
+              <contained_by idref="bplfromParts" role="toParts"/>
+            </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="fromPart" id="bplfromPart">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="variable" type="string"/>
+          <property name="fromPart" type="string" />
+                </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="toPart" id="bpltoPart">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+<svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="variable" type="string"/>
+          <property name="toParts" type="string" />
+         
+        </properties>
+        <containers>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+
+    <node name="else" id="bplelse">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="20" x2="60" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+         <containers>
+          <container name="if">
+            <contained_by idref="bplif" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="then" id="bplthen">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="20" x2="60" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+
+              <svg:line x1="70" y1="20" x2="70" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+          <property name="name" type="string"/>
+          <property name="suppressJoinFailure" type="string" />
+          <property name="comment" type="string" />
+          <property name="joinCondition" type="string" />
+          <property name="sources" type="string" />
+          <property name="targets" type="string" />
+        </properties>
+        <containers>
+          <container name="if">
+            <contained_by idref="bplif" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+    </node>
+    
+    <node name="Copy" id="bplCopy">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg contentScriptType="text/ecmascript" width="100" xmlns="http://www.w3.org/1999/xlink"
+          zoomAndPan="magnify"
+   contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
+          preserveAspectRatio="xMidYMid meet"
+   xmlns="http://www.w3.org/2000/svg" version="1.0">
+
+
+              <svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="60" y1="20" x2="60" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="30" y1="20" x2="30" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="20" x2="20" y2="40" stroke="black" stroke-width="2" />
+
+              <svg:line x1="70" y1="20" x2="70" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="80" y1="20" x2="80" y2="40" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+
+              <svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+
+            </svg:svg>
+
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:b>
+                <html:text_from_repo name="name" />
+              </html:b>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="0" starty="40"/>
+              <end endx="0" endy="80"/>
+            </line_port>
+            <line_port>
+              <start startx="100" starty="40"/>
+              <end endx="100" endy="80"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <properties>
+
+          <property name="fromPart" type="string"/>
+          <property name="fromVariable" type="string" />
+          <property name="fromExpression" type="string" />
+          <property name="toPart" type="string" />
+          <property name="toVariable" type="string" />
+          <property name="toExpression" type="string" />
+        </properties>
+
+        <containers>
+          <container name="assign">
+            <contained_by idref="bplassign" role="toParts"/>
+          </container>
+          <container name="receive">
+            <contained_by idref="bplrecieve" role="toParts"/>
+          </container>
+          <container name="invoke">
+            <contained_by idref="bplinvoke" role="toParts"/>
+          </container>
+          <container name="reply">
+            <contained_by idref="bplreply" role="toParts"/>
+          </container>
+          <container name="sequence">
+            <contained_by idref="bplsequence" role="toParts"/>
+          </container>
+          <container name="flow">
+            <contained_by idref="bplflow" role="toParts"/>
+          </container>
+          <container name="while">
+            <contained_by idref="bplwhile" role="toParts"/>
+          </container>
+          <container name="toParts">
+            <contained_by idref="bpltoParts" role="toParts"/>
+          </container>
+          <container name="fromParts">
+            <contained_by idref="bplfromParts" role="toParts"/>
+          </container>
+
+        </containers>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnElement" />
+          </generalization>
+        </generalizations>
+      </logic>
+      
+    </node>
+
+    <edge name="Relationship" id="bplRelationship">
+      <logic>
+        <associations>
+          <association role="relatedElement">
+            <begin idref="krnnElement" />
+          </association>
+          <association role="relatedElement">
+            <end idref="krnnElement" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+    
+  </diagram>
+</metamodel>

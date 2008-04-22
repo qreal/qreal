@@ -913,7 +913,7 @@ void Generator::genFactory()
             "\tswitch ( type ) {\n";
     out << classes;
 
-    out << "\t\tdefault: \t qDebug() << \"not creating\" << type; \n\t}\n";
+    out << "\t\tdefault: return 0;//\t qDebug() << \"not creating\" << type; \n\t}\n";
     out << "\treturn 0;\n}\n";
 
     file.close();
