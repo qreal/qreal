@@ -4,6 +4,7 @@
 #include <QList>
 #include <QMap>
 #include <QString>
+#include <QDebug>
 
 namespace QRealTypes
 {
@@ -57,6 +58,8 @@ namespace QRealTypes
 	{
 	public:
 		RealType() { m_objects.clear(); }
+		// In debug purposes -- subject to be removed. 
+		~RealType() { qDebug() << "-destroying " << getName() << endl; }
 
 		MetaType getMetaType() const; 
 		void setMetaType( const MetaType );

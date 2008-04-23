@@ -13,11 +13,15 @@ int main()
 	out << "getTypesCount: " << repoClient.getTypesCount() << endl;
 	QIntList typesList = repoClient.getAllTypes();
 	out << "count: " << typesList.count() << endl;
+
+	RealType realType;
+
 	for (QIntList::const_iterator i = typesList.begin(); i != typesList.end(); i++)
 	{
-		RealType* realType = repoClient.getTypeById(*i);
-		//out << "Type N" << *i << " has name: " << realType->getName() << endl;
-		delete realType;
+		realType = repoClient.getTypeById(*i);
+		out << "Type N" << *i << " name: " << realType.getName() 
+		<< " desc: " << realType.getDescription() 
+		<< " metatype: " << realType.getMetaType() << endl;
 	}
 	
 	return 0;

@@ -38,8 +38,8 @@ public:
 	
 	QString getObjectData( int id );
 	QString getEntireObject( int type, int id );
-	RealObject* getObjectById( int type, int id ); // `type' will be removed in a while
-	RealLink* getLinkById( int type, int id );
+	RealObject getObjectById( int type, int id ); // `type' will be removed in a while
+	RealLink getLinkById( int type, int id );
 
 	QString getLinksByObject( int type, int id );
 	QString getObjectsByLink( int type, int id );
@@ -57,7 +57,7 @@ public:
 
 	QIntList getTypesByMetatype( const MetaType );
 	
-	RealType* getTypeById( const int id ); 
+	RealType getTypeById( const int id ); 
 
 	// TODO: implement these calls
 	/* 
