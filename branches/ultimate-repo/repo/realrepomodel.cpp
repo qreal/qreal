@@ -540,15 +540,15 @@ dbg;
 		return;
 	}
 	for( int i=1; i<=types; i++ ){
-		RealType *info = repoClient->getTypeById(i);
+		RealType info = repoClient->getTypeById(i);
 		RepoTreeItem *item = new RepoTreeItem;
-		int count = info->getObjects().size();
-		qDebug() << "root table: " << info->getId() << count << info->getName() << info->getDescription() << item;
+		int count = info.getObjects().size();
+		qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
 		item->parent = rootItem;
 		item->row = i-1;
-		item->id = info->getId();
+		item->id = info.getId();
 
-		hashNames[item->id] = info->getName();
+		hashNames[item->id] = info.getName();
 		hashChildCount[item->id] = count;
 		hashTreeItems[item->id].append(item);
 

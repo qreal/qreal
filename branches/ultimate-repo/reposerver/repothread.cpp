@@ -306,16 +306,16 @@ void QRealRepoServerThread::handleCommand(QString const &data
     }
     case CMD_GET_ENTIRE_OBJECT:
     {
-      int type = data.section("\t", 1, 1).toInt();
-      int id = data.section("\t", 2, 2).toInt();
+//      int type = data.section("\t", 1, 1).toInt();
+      int id = data.section("\t", 1, 1).toInt();
       resp = "\t";
-      if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
-        if( Object *obj = mRoot->getObject(id) )
+  //    if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+       if( Object *obj = mRoot->getObject(id) )
           resp = obj->toString();
-      } else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
-        if( Link *link = mRoot->getLink(id) )
+     // } else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+      else if( Link *link = mRoot->getLink(id) )
           resp = link->toString();
-      }
+      //}
       log += QString(", sending object %1: %2").arg(id).arg(resp);
       break;
     }

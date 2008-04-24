@@ -220,18 +220,19 @@ dbg;
 	return resp;	
 }
 
-QString RealRepoClient::getEntireObject( int type, int id )
+QString RealRepoClient::getEntireObject( int id )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_ENTIRE_OBJECT).arg(type).arg(id);
+	//QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_ENTIRE_OBJECT).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_ENTIRE_OBJECT).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
 }
 
-RealObject RealRepoClient::getObjectById( int type, int id )
+RealObject RealRepoClient::getObjectById( int id )
 {
 dbg;
-	QString data = getEntireObject(type,id);
+	QString data = getEntireObject(id);
 	RealObject obj;
 	obj.setTypeId(data.section("\t",0,0).toInt());
 	obj.setId(data.section("\t",1,1).toInt());
@@ -263,10 +264,10 @@ dbg;
 	return obj;
 }
 
-RealLink RealRepoClient::getLinkById( int type, int id )
+RealLink RealRepoClient::getLinkById( int id )
 {
 dbg;
-	QString data = getEntireObject(type,id);
+	QString data = getEntireObject(id);
 	RealLink link;
 	// TODO: add RealLink( const QString& ) constructor to make it creat itself
 	link.setTypeId(data.section("\t",0,0).toInt());
