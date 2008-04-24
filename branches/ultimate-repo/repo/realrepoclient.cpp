@@ -316,7 +316,7 @@ dbg;
 	return resp;	
 }
 
-QIntList RealRepoClient::getTypesByMetatype( const MetaType arg )
+QIntList RealRepoClient::getTypesByMetaType( const MetaType arg )
 {
 dbg;
 	QString cmd = QString("%1\t%2\t").arg(CMD_GET_TYPES_BY_METATYPE).arg(arg);

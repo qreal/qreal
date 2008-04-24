@@ -55,7 +55,7 @@ public:
 
 	int isValid() { return socket->isValid(); }
 
-	QIntList getTypesByMetatype( const MetaType );
+	QIntList getTypesByMetaType( const MetaType );
 	
 	RealType getTypeById( const int id ); 
 
