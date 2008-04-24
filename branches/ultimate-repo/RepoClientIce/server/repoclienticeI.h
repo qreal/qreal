@@ -85,7 +85,8 @@ public:
     virtual int createType(const string&, const Ice::Current&);
     virtual void deleteType(int, const Ice::Current&);
     virtual ::RepoIce::RealObjectIcePrx getObjectById(int, const Ice::Current&);
-    virtual int createObject(const string&, const Ice::Current&);
+    virtual int createEntity(int, const string&, const Ice::Current&);
+    virtual int createEntityWithParent(int, const string&, int, const Ice::Current&);
     virtual void deleteObject(int, const Ice::Current&);
     virtual ::RepoIce::RealLinkIcePrx getLinkById(int, const Ice::Current&);
     virtual int createLink(const string&, const Ice::Current&);

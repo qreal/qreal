@@ -371,12 +371,15 @@ RepoIce::RepoClientIceI::getObjectById(int id,
 }
 
 int
-RepoIce::RepoClientIceI::createObject(const string& name,
-                                      const Ice::Current&)
+RepoIce::RepoClientIceI::createEntity(int type, const string& name, const Ice::Current&)
 {
-		throw "Not Implemented";
-		return 0;
-    //return repoClient.createObject(QString(name.c_str()));
+	return repoClient.createEntity(type, QString(name.c_str()));
+}
+
+int
+RepoIce::RepoClientIceI::createEntityWithParent(int type, const string& name, int parent, const Ice::Current&)
+{
+	return repoClient.createEntityWithParent(type, QString(name.c_str()), parent);
 }
 
 void

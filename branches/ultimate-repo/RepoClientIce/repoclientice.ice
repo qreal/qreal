@@ -94,7 +94,8 @@ module RepoIce
 		void deleteType(int id); //удалить тип
 
 		idempotent RealObjectIce* getObjectById(int id); // вернуть по id
-		int createObject(string name); //создать. Возвращает Id созданного.
+		int createEntity(int type, string name); //создать. Возвращает Id созданного.
+		int createEntityWithParent(int type, string name, int parent); //создать. Возвращает Id созданного.
 		void deleteObject(int id); //удалить
 
 		idempotent RealLinkIce* getLinkById(int id); // вернуть по id

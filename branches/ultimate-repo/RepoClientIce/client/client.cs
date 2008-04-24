@@ -21,11 +21,9 @@ public class Client: Ice.Application
 		{
 			RealTypeIcePrx realType = repoClient.getTypeById(type);
 			Console.WriteLine("Type N" + type + " name: " + realType.getName()
-			                  + " description " + realType.getDescription());
+			                  + " description " + realType.getDescription() 
+			                  + " ident " + realType.ice_getIdentity().name);
 		}
-		// Wait until we are done
-        //
-        //communicator().waitForShutdown();
 
         if (interrupted())
             Console.Error.WriteLine(appName() + ": terminating");
