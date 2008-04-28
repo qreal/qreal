@@ -27,7 +27,7 @@ public:
 	QString getPropValue( int type, int id, QString name );
 
 	int createEntity(int type, QString name);
-	int createEntity(int type, QString name, int parent);
+	int createEntityWithParent(int type, QString name, int parent);
 
 	int getTypesCount();
 	QIntList getAllTypes();  

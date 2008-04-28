@@ -400,7 +400,7 @@ dbg;
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
 					//FIXME
-					id = repoClient->createEntity(newtype,
+					id = repoClient->createEntityWithParent(newtype,
 								"anonymous", parentItem->id);
 					repoClient->setPosition(newtype, id, (int) newPos.x(), (int) newPos.y());
 					repoClient->setConfiguration(newtype, id, "(0,0);(50,0);(50,70);(0,70)");

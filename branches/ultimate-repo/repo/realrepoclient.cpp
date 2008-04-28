@@ -110,7 +110,7 @@ dbg;
 //	qDebug() << "recvd" << resp;
 }
 
-int RealRepoClient::createEntity(int type, QString name, int parent)
+int RealRepoClient::createEntityWithParent(int type, QString name, int parent)
 {
 dbg;
 	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent);
