@@ -253,8 +253,7 @@ void
 RepoIce::RealLinkIceI::setName(const string& name,
                                const Ice::Current&)
 {
-	//realLink.setName(name);
-		throw "Not Implemented";
+	realLink.setName(QString(name.c_str()));
 }
 
 void
@@ -262,25 +261,20 @@ RepoIce::RealLinkIceI::setProperty(const string& name,
                                    const string& val,
                                    const Ice::Current&)
 {
-	//realLink.setProperty(name,val);
-		throw "Not Implemented";
+	realLink.setProperty(QString(name.c_str()),QString(val.c_str()));
 }
 
 string
 RepoIce::RealLinkIceI::getProperty(const string& name,
                                    const Ice::Current&)
 {
-    //return realLink.getProperty(name);
-		throw "Not Implemented";
-		return 0;
+    return realLink.getProperty(QString(name.c_str())).toStdString();
 }
 
 int
 RepoIce::RealLinkIceI::getPropertiesCount(const Ice::Current&)
 {
-    //return realLink.getPropertiesCount()
-		throw "Not Implemented";
-		return 0;
+    return realLink.getPropertiesCount();
 }
 
 int
