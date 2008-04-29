@@ -2408,6 +2408,19 @@
       
     </node>
 
+    <node name="stringData" id="bpelRawString">
+     <logic>
+       <properties>
+         <property name="data" type="string" />
+       </properties>
+			 <generalizations>
+        <generalization>
+				 <parent parent_id="krnnElement" />
+	      </generalization>
+			 </generalizations>
+     </logic>
+   </node>
+
     <edge name="Relationship" id="bplRelationship">
       <logic>
         <associations>
