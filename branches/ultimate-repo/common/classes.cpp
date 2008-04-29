@@ -38,33 +38,36 @@ Link *Root::getLink( int id )
 
 QString Root::getObjectsByType( int type )
 {
-	QString res = "";
-	for( int i=0; i<objects.values().size(); i++ ){
-		if( objects.values().value(i) && objects.values().value(i)->getType() == type ){
-			res += QString("%1\t").arg(objects.values().value(i)->getId());
-		}
-	}	
-	if( !res.isEmpty() )
-		res.chop(1);
-	else
-		res = "\t";
-	return res;		
+ QString res = "";
+ for( int i=0; i<objects.values().size(); i++ ){
+   int key = objects.keys()[i];
+   Object *obj = objects.value(key);
+   if( obj && obj->getType() == type ){
+     res += QString("%1\t").arg(obj->getId());
+   }
+ }
+ if( !res.isEmpty() )
+   res.chop(1);
+ else
+   res = "\t";
+ return res;
 }
 
-QString Root::getLinksByType( int type )
+ QString Root::getLinksByType( int type )
 {
-	QString res = "";
-	qDebug() << "size is " << links.size();
-	for( int i=0; i<links.size(); i++ ){
-		if( links.value(i) && links.value(i)->getType() == type )
-			res += QString("%1\t").arg(links.value(i)->getId());
-	}		
-	
-	if( !res.isEmpty() )
-		res.chop(1);
-	else
-		res = "\t";
-	return res;		
+ QString res = "";
+ for( int i=0; i<links.size(); i++ ){
+   int key = links.keys()[i];
+   Link *link = links.value(key);
+   if( link && link->getType() == type )
+     res += QString("%1\t").arg(link->getId());
+ }
+
+ if( !res.isEmpty() )
+   res.chop(1);
+ else
+   res = "\t";
+return res;
 }
 
 // --------------------------------------------------------------------------- //
