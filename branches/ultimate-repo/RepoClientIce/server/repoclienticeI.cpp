@@ -320,7 +320,7 @@ RepoIce::RepoClientIceI::getTypesByMetaTypeIce(::RepoIce::MetaTypeIce mType,
 RepoIce::RepoClientIceI::getTypeById(int id,
                                      const Ice::Current&)
 {
-	//Todo: не понятно когда будет освобождена память. Нужно проверить.
+	//Todo: утечка памяти
   RealTypeIcePtr servant = new RealTypeIceI(repoClient.getTypeById(id));
   RealTypeIcePrx proxy = RealTypeIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
 
@@ -335,17 +335,16 @@ RepoIce::RepoClientIceI::getObjectsListByType(int typeId,
 }
 
 int
-RepoIce::RepoClientIceI::createType(const string& name,
+RepoIce::RepoClientIceI::createType(const string& /*name*/,
                                     const Ice::Current&)
 {
 		//Seems it's deprecated
     //return repoClient.createType(QString(name.c_str()));
 		throw "Deprecated";
-		//return 0;
 }
 
 void
-RepoIce::RepoClientIceI::deleteType(int id,
+RepoIce::RepoClientIceI::deleteType(int /*id*/,
                                     const Ice::Current&)
 {
 	//Seems it's deprecated
@@ -357,7 +356,7 @@ RepoIce::RepoClientIceI::deleteType(int id,
 RepoIce::RepoClientIceI::getObjectById(int id,
                                        const Ice::Current&)
 {
-	//Todo: не понятно когда будет освобождена память. Нужно проверить.
+	//Todo: утечка памяти
   RealObjectIcePtr servant = new RealObjectIceI(repoClient.getObjectById(id));
   RealObjectIcePrx proxy = RealObjectIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
 
@@ -388,7 +387,7 @@ RepoIce::RepoClientIceI::deleteObject(int id,
 RepoIce::RepoClientIceI::getLinkById(int id,
                                      const Ice::Current&)
 {
-	//Todo: не понятно когда будет освобождена память. Нужно проверить.
+	//Todo: утечка памяти
   RealLinkIcePtr servant = new RealLinkIceI(repoClient.getLinkById(id));
   RealLinkIcePrx proxy = RealLinkIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
 
@@ -399,8 +398,7 @@ int
 RepoIce::RepoClientIceI::createLink(const string& name,
                                     const Ice::Current&)
 {
-		throw "not implemented";
-    //return repoClient.createLink(QString(name.c_str()));
+    return repoClient.createLink(QString(name.c_str()));
 }
 
 void

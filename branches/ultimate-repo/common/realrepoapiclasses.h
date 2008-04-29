@@ -59,7 +59,7 @@ namespace QRealTypes
 	public:
 		RealType() { m_objects.clear(); }
 		// In debug purposes -- subject to be removed. 
-		~RealType() { qDebug() << "-destroying " << getName() << endl; }
+		~RealType() { /*qDebug() << "-destroying " << getName() << endl;*/ }
 
 		MetaType getMetaType() const; 
 		void setMetaType( const MetaType );

@@ -28,6 +28,7 @@ public:
 
 	int createEntity(int type, QString name);
 	int createEntityWithParent(int type, QString name, int parent);
+	int createLink(QString name);
 
 	int getTypesCount();
 	QIntList getAllTypes();  
