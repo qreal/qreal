@@ -183,12 +183,15 @@ QString RealRepoClient::getObjectsByType( int type )
 QIntList RealRepoClient::getObjectsListByType( int type )
 {
 	QString resp = getObjectsByType(type);
-	
+
 	QIntList list;
 	foreach( QString str, resp.split('\t') )
 		list += str.toInt();
-	return list;	
+	if( resp == "\t" )
+		list.clear();
+	return list;
 }
+
 
 QString RealRepoClient::getObjectData(int id )
 {

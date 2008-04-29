@@ -438,7 +438,7 @@ void RealRepoModel::rollbackTransaction()
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
 dbg;
-	if ( item->id >= 100 )
+	if ( item->id >= 200 )
 		return Container;
 	else if ( item->id != 0 )
 		return Category;
