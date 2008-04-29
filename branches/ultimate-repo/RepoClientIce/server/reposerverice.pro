@@ -1,6 +1,8 @@
 QT		+=  sql network
 INCLUDEPATH	+= ../../repo  .
+unix:INCLUDEPATH += /opt/Ice-3.2/include
 LIBS += -lIce -lIceUtil
+unix:LIBS += -L/opt/Ice-3.2/lib/
 SOURCES		= server.cpp repoclienticeI.cpp repoclientice.cpp
 QMAKE_CLEAN += reposerverice
 
