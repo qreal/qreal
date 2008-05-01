@@ -257,8 +257,8 @@ dbg;
 	obj.setName(data.section("\t",3,3));
 	obj.setConfiguration(data.section("\t",4,4));
 
-	int childCount = data.section("\t",5,5).toInt();
-	int counter = 6;	
+	int childCount = data.section("\t",7,7).toInt();
+	int counter = 8;	
 	for( int i=0; i<childCount; i++){
 		obj.addChildElement(data.section("\t",counter,counter).toInt());
 		counter++;
