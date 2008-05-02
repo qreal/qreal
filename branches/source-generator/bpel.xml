@@ -6,7 +6,7 @@
   <namespace>UML 2.1</namespace>
   <diagram name="BPEL DIAGRAM">
     
-    <node name="receive" id="bplreceive">
+    <node name="receive" id="bplReceive">
           <graphics>
             <view>
               <svg_shape>
@@ -63,40 +63,40 @@
         </properties>
         <containers>
           <container name="receive">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="receive">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="receive">
             <contains idref="bplext:break" role="toParts"/>
@@ -108,46 +108,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="receive">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -160,7 +160,7 @@
       </logic>
     </node>
       
-    <node name="invoke" id="bplinvoke">
+    <node name="invoke" id="bplInvoke">
       <graphics>
         <view>
           <svg_shape>
@@ -216,40 +216,40 @@
         </properties>
         <containers>
           <container name="invoke">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="invoke">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="invoke">
             <contains idref="bplext:break" role="toParts"/>
@@ -261,46 +261,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="invoke">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -312,7 +312,7 @@
     </node>
 
     
-    <node name="reply" id="bplreply">
+    <node name="reply" id="bplReply">
       <graphics>
         <view>
 
@@ -371,40 +371,40 @@
         </properties>
         <containers>
           <container name="reply">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="reply">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="reply">
             <contains idref="bplext:break" role="toParts"/>
@@ -416,46 +416,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="reply">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -466,7 +466,7 @@
       </logic>
     </node>
     
-    <node name="assign" id="bplassign">
+    <node name="assign" id="bplAssign">
       <graphics>
         <view>
 
@@ -524,28 +524,28 @@
             <contains idref="bplCopy" role="fromCopy"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -556,7 +556,7 @@
       </logic>
     </node>
     
-    <node name="throw" id="bplthrow">
+    <node name="throw" id="bplThrow">
       <graphics>
         <view>
           <svg_shape>
@@ -611,28 +611,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -644,7 +644,7 @@
       </logic>
     </node>
     
-    <node name="rethrow" id="bplrethrow">
+    <node name="rethrow" id="bplRethrow">
       <graphics>
         <view>
           <svg_shape>
@@ -699,28 +699,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -732,7 +732,7 @@
       </logic>
     </node>
     
-    <node name="exit" id="bplexit">
+    <node name="exit" id="bplExit">
       <graphics>
         <view>
           <svg_shape>
@@ -787,28 +787,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -820,7 +820,7 @@
       </logic>
     </node>
 
-    <node name="empty" id="bplempty">
+    <node name="empty" id="bplEmpty">
       <graphics>
         <view>
           <svg_shape>
@@ -877,28 +877,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -910,7 +910,7 @@
       </logic>
     </node>
 
-    <node name="if" id="bplif">
+    <node name="if" id="bplIf">
       <graphics>
         <view>
           <svg_shape>
@@ -971,34 +971,34 @@
         </properties>
         <containers>
           <container name="if">
-            <contains idref="bplthen" role="if"/>
+            <contains idref="bplThen" role="if"/>
           </container>
           <container name="if">
-            <contains idref="bplelse" role="else"/>
+            <contains idref="bplElse" role="else"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -1011,7 +1011,7 @@
       
     </node>
     
-    <node name="sequence" id="bplsequence">
+    <node name="sequence" id="bplSequence">
       <graphics>
         <view>
           <svg_shape>
@@ -1071,40 +1071,40 @@
         </properties>
         <containers>
           <container name="sequence">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="sequence">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="sequence">
             <contains idref="bplext:break" role="toParts"/>
@@ -1116,46 +1116,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="sequence">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -1166,7 +1166,7 @@
       </logic>
     </node>
     
-    <node name="flow" id="bplflow">
+    <node name="flow" id="bplFlow">
       <graphics>
         <view>
           <svg_shape>
@@ -1226,40 +1226,40 @@
         </properties>
         <containers>
           <container name="flow">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="flow">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="flow">
             <contains idref="bplext:break" role="toParts"/>
@@ -1271,46 +1271,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="flow">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -1321,7 +1321,7 @@
       </logic>
     </node>
     
-    <node name="while" id="bplwhile">
+    <node name="while" id="bplWhile">
       <graphics>
         <view>
           <svg_shape>
@@ -1384,40 +1384,40 @@
         </properties>
         <containers>
           <container name="while">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="while">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="while">
             <contains idref="bplext:break" role="toParts"/>
@@ -1429,46 +1429,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="while">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -1479,7 +1479,7 @@
       </logic>
     </node>
     
-    <node name="ext:break" id="bplext_break">
+    <node name="ext:break" id="bplExt_break">
       <graphics>
         <view>
           <svg_shape>
@@ -1531,28 +1531,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -1564,7 +1564,7 @@
       </logic>
     </node>
     
-    <node name="ext:continue" id="bplext_continue">
+    <node name="ext:continue" id="bplExt_continue">
       <graphics>
         <view>
           <svg_shape>
@@ -1617,28 +1617,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -1650,7 +1650,7 @@
        </logic>
     </node>
     
-    <node name="toParts" id="bpltoParts">
+    <node name="toParts" id="bplToParts">
       <graphics>
         <view>
           <svg_shape>
@@ -1704,40 +1704,40 @@
         </properties>
         <containers>
           <container name="toParts">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="toParts">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
             <contains idref="bplext:break" role="toParts"/>
@@ -1749,46 +1749,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="toParts">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
       </logic>
@@ -1799,7 +1799,7 @@
       </generalizations>
     </node>
     
-    <node name="fromParts" id="bplfromParts">
+    <node name="fromParts" id="bplFromParts">
       <graphics>
         <view>
           <svg_shape>
@@ -1853,40 +1853,40 @@
         </properties>
         <containers>
           <container name="fromParts">
-            <contains idref="bplrecieve" role="toParts"/>
+            <contains idref="bplReceive" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplinvoke" role="toParts"/>
+            <contains idref="bplInvoke" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplreply" role="toParts"/>
+            <contains idref="bplReply" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplassign" role="toParts"/>
+            <contains idref="bplAssign" role="toParts"/>
           </container>
           <container name="fromParts">
             <contains idref="bplThrow" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplrethrow" role="toParts"/>
+            <contains idref="bplRethrow" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplexit" role="toParts"/>
+            <contains idref="bplExit" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplempty" role="toParts"/>
+            <contains idref="bplEmpty" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplif" role="toParts"/>
+            <contains idref="bplIf" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplsequence" role="toParts"/>
+            <contains idref="bplSequence" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplflow" role="toParts"/>
+            <contains idref="bplFlow" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplwhile" role="toParts"/>
+            <contains idref="bplWhile" role="toParts"/>
           </container>
           <container name="fromParts">
             <contains idref="bplext:break" role="toParts"/>
@@ -1898,46 +1898,46 @@
             <contains idref="bplCopy" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplthen" role="toParts"/>
+            <contains idref="bplThen" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplelse" role="toParts"/>
+            <contains idref="bplElse" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bpltoParts" role="toParts"/>
+            <contains idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bpltoPart" role="toParts"/>
+            <contains idref="bplToPart" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplfromParts" role="toParts"/>
+            <contains idref="bplFromParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contains idref="bplfromPart" role="toParts"/>
+            <contains idref="bplFromPart" role="toParts"/>
           </container>
             <container name="receive">
-              <contained_by idref="bplrecieve" role="toParts"/>
+              <contained_by idref="bplReceive" role="toParts"/>
             </container>
             <container name="invoke">
-              <contained_by idref="bplinvoke" role="toParts"/>
+              <contained_by idref="bplInvoke" role="toParts"/>
             </container>
             <container name="reply">
-              <contained_by idref="bplreply" role="toParts"/>
+              <contained_by idref="bplReply" role="toParts"/>
             </container>
             <container name="sequence">
-              <contained_by idref="bplsequence" role="toParts"/>
+              <contained_by idref="bplSequence" role="toParts"/>
             </container>
             <container name="flow">
-              <contained_by idref="bplflow" role="toParts"/>
+              <contained_by idref="bplFlow" role="toParts"/>
             </container>
             <container name="while">
-              <contained_by idref="bplwhile" role="toParts"/>
+              <contained_by idref="bplWhile" role="toParts"/>
             </container>
             <container name="toParts">
-              <contained_by idref="bpltoParts" role="toParts"/>
+              <contained_by idref="bplToParts" role="toParts"/>
             </container>
             <container name="fromParts">
-              <contained_by idref="bplfromParts" role="toParts"/>
+              <contained_by idref="bplFromParts" role="toParts"/>
             </container>
         </containers>
         <generalizations>
@@ -1948,7 +1948,7 @@
       </logic>
     </node>
     
-    <node name="fromPart" id="bplfromPart">
+    <node name="fromPart" id="bplFromPart">
       <graphics>
         <view>
           <svg_shape>
@@ -2000,28 +2000,28 @@
                 </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -2033,7 +2033,7 @@
       </logic>
     </node>
     
-    <node name="toPart" id="bpltoPart">
+    <node name="toPart" id="bplToPart">
       <graphics>
         <view>
           <svg_shape>
@@ -2090,28 +2090,28 @@
         </properties>
         <containers>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -2123,7 +2123,7 @@
       </logic>
     </node>
 
-    <node name="else" id="bplelse">
+    <node name="else" id="bplElse">
       <graphics>
         <view>
           <svg_shape>
@@ -2180,31 +2180,31 @@
         </properties>
          <containers>
           <container name="if">
-            <contained_by idref="bplif" role="toParts"/>
+            <contained_by idref="bplIf" role="toParts"/>
           </container>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
         </containers>
         <generalizations>
@@ -2215,7 +2215,7 @@
       </logic>
     </node>
     
-    <node name="then" id="bplthen">
+    <node name="then" id="bplThen">
       <graphics>
         <view>
           <svg_shape>
@@ -2274,31 +2274,31 @@
         </properties>
         <containers>
           <container name="if">
-            <contained_by idref="bplif" role="toParts"/>
+            <contained_by idref="bplIf" role="toParts"/>
           </container>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -2371,31 +2371,31 @@
 
         <containers>
           <container name="assign">
-            <contained_by idref="bplassign" role="toParts"/>
+            <contained_by idref="bplAssign" role="toParts"/>
           </container>
           <container name="receive">
-            <contained_by idref="bplrecieve" role="toParts"/>
+            <contained_by idref="bplReceive" role="toParts"/>
           </container>
           <container name="invoke">
-            <contained_by idref="bplinvoke" role="toParts"/>
+            <contained_by idref="bplInvoke" role="toParts"/>
           </container>
           <container name="reply">
-            <contained_by idref="bplreply" role="toParts"/>
+            <contained_by idref="bplReply" role="toParts"/>
           </container>
           <container name="sequence">
-            <contained_by idref="bplsequence" role="toParts"/>
+            <contained_by idref="bplSequence" role="toParts"/>
           </container>
           <container name="flow">
-            <contained_by idref="bplflow" role="toParts"/>
+            <contained_by idref="bplFlow" role="toParts"/>
           </container>
           <container name="while">
-            <contained_by idref="bplwhile" role="toParts"/>
+            <contained_by idref="bplWhile" role="toParts"/>
           </container>
           <container name="toParts">
-            <contained_by idref="bpltoParts" role="toParts"/>
+            <contained_by idref="bplToParts" role="toParts"/>
           </container>
           <container name="fromParts">
-            <contained_by idref="bplfromParts" role="toParts"/>
+            <contained_by idref="bplFromParts" role="toParts"/>
           </container>
 
         </containers>
@@ -2408,17 +2408,30 @@
       
     </node>
 
-    <node name="stringData" id="bpelRawString">
+    <node name="stringData" id="bplRawString">
      <logic>
-       <properties>
-         <property name="data" type="string" />
-       </properties>
-			 <generalizations>
-        <generalization>
-				 <parent parent_id="krnnElement" />
-	      </generalization>
-			 </generalizations>
+      <properties>
+       <property name="data" type="string" />
+      </properties>
+      <generalizations>
+       <generalization>
+        <parent parent_id="krnnElement" />
+       </generalization>
+      </generalizations>
      </logic>
+   </node>
+    
+   <node name="variable" id="bplVariable">
+    <logic>
+     <properties>
+      <property name="messageType" type="string" />
+     </properties>
+     <generalizations>
+      <generalization>
+       <parent parent_id="krnnElement" />
+      </generalization>
+     </generalizations>
+    </logic>
    </node>
 
     <edge name="Relationship" id="bplRelationship">
