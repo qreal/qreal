@@ -125,6 +125,13 @@ void QRealRepoServerThread::handleCommand(QString const &data
       log += QString(", sending type info: [%1]").arg(resp);
       break;
     }
+    case CMD_GET_TYPE_BY_NAME:
+    {
+      QString name = data.section("\t", 1, 1);
+      resp = mTypesInfo->getTypeInfo(name).toString();
+      log += QString(", sending type info: [%1]").arg(resp);
+      break;
+    }
     case CMD_GET_TYPES_BY_METATYPE:
     {
       MetaType metatype = (MetaType) data.section("\t", 1, 1).toInt();

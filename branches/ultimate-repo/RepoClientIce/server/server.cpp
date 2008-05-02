@@ -37,7 +37,7 @@ namespace RepoServer
 		return 0;
 		}
 	};
-
+/*
 	void doWork()
 	{
 		QTextStream out(stdout);
@@ -57,6 +57,7 @@ namespace RepoServer
 			<< " metatype: " << realType.getMetaType() << endl;
 		}
 	}
+*/
 }
 
 int main(int argc, char* argv[])

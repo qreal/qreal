@@ -350,9 +350,24 @@ RealType RealRepoClient::getTypeById( const int id )
 dbg;
 	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_INFO).arg(id);
 	QString data = sendData(cmd);
-	RealType  type;
-	// FIXME: add RealType( const QString& ) constructor to make it create itself
+	RealType type;
 	type.loadFromString(data);
 
 	return type;	 
+}
+
+RealType RealRepoClient::getTypeByName( const QString name ) 
+{
+dbg;
+	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_BY_NAME).arg(name);
+	QString data = sendData(cmd);
+	RealType type;
+	type.loadFromString(data);
+
+	return type;	 
+}
+
+int RealRepoClient::getTypeIdByName( const QString name ) 
+{
+	return getTypeByName(name).getId();
 }

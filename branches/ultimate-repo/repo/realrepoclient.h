@@ -59,6 +59,8 @@ public:
 	QIntList getTypesByMetaType( const MetaType );
 	
 	RealType getTypeById( const int id ); 
+	RealType getTypeByName( const QString name ); 
+	int getTypeIdByName( const QString name ); 
 
 	// TODO: implement these calls
 	/* 
