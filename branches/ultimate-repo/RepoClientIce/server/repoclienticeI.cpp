@@ -333,6 +333,22 @@ RepoIce::RepoClientIceI::getObjectsListByType(int typeId,
 {
     return repoClient.getObjectsListByType(typeId).toVector().toStdVector();
 }
+::RepoIce::RealTypeIcePrx 
+RepoIce::RepoClientIceI::getTypeByName(const string& name , const Ice::Current&)
+{
+	//Todo: утечка памяти
+  RealTypeIcePtr servant = new RealTypeIceI(repoClient.getTypeByName(QString(name.c_str())));
+  RealTypeIcePrx proxy = RealTypeIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
+
+	return proxy;
+}
+
+int 
+RepoIce::RepoClientIceI::getTypeIdByName(const string& name, const Ice::Current& )
+{
+	return repoClient.getTypeIdByName(QString(name.c_str()));
+}
+
 
 int
 RepoIce::RepoClientIceI::createType(const string& /*name*/,

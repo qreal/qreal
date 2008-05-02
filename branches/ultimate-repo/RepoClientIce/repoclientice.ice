@@ -90,6 +90,9 @@ module RepoIce
 		idempotent QIntList getTypesByMetaTypeIce(MetaTypeIce mType); // вернуть типы по метатипу
 		idempotent RealTypeIce* getTypeById(int id); // вернуть тип по id
 		idempotent QIntList getObjectsListByType(int id); // вернуть все объекты конкретного типа
+		idempotent RealTypeIce* getTypeByName(string name); // вернуть тип по имени
+		idempotent int getTypeIdByName(string name ); // вернуть id типа по имени
+
 		int createType(string name); //создать тип. Возвращает Id созданного типа.
 		void deleteType(int id); //удалить тип
 

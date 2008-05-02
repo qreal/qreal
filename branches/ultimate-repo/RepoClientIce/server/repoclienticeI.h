@@ -82,6 +82,8 @@ public:
     virtual ::RepoIce::QIntList getTypesByMetaTypeIce(::RepoIce::MetaTypeIce, const Ice::Current&);
     virtual ::RepoIce::RealTypeIcePrx getTypeById(int, const Ice::Current&);
     virtual ::RepoIce::QIntList getObjectsListByType(int, const Ice::Current&);
+		virtual ::RepoIce::RealTypeIcePrx getTypeByName(const string&, const Ice::Current&);
+		virtual int getTypeIdByName(const string&, const Ice::Current& );
     virtual int createType(const string&, const Ice::Current&);
     virtual void deleteType(int, const Ice::Current&);
     virtual ::RepoIce::RealObjectIcePrx getObjectById(int, const Ice::Current&);
