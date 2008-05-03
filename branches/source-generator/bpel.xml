@@ -2435,7 +2435,16 @@
    </node>
 
     <edge name="Relationship" id="bplRelationship">
+      <graphics>
+      <view>
+        <line_type type="solidLine" />
+        <end_type type="arrow" />
+      </view>
+      </graphics>
       <logic>
+        <properties>
+         <property name="transitionCondition" type="string" />
+        </properties>
         <associations>
           <association role="relatedElement">
             <begin idref="krnnElement" />
