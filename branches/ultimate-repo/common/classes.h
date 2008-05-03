@@ -62,6 +62,8 @@ public:
 	QString getName();
 	void setName( QString arg );
 
+	void setParent( int );
+
 	QString getDescription();
 	void setDescription( QString );
 	
@@ -117,6 +119,8 @@ public:
 	
 	QString getName();
 	void setName( QString arg );
+	
+	void setParent( int );
 	
 	QString getDescription();
 	void setDescription( QString );

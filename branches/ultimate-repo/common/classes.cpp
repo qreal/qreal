@@ -110,6 +110,11 @@ QString Object::getName()
 	return name;
 }
 
+void Object::setParent( int id )
+{
+	parent  = id;
+}
+
 void Object::setDescription( QString arg )
 {
 	description = arg;
@@ -235,6 +240,11 @@ QString Link::getName()
 void Link::setName( QString arg )
 {
 	name = arg;
+}
+
+void Link::setParent( int id )
+{
+	parent  = id;
 }
 
 void Link::setDescription( QString arg )

@@ -268,6 +268,7 @@ dbg;
 	RealObject obj;
 	obj.setTypeId(data.section("\t",0,0).toInt());
 	obj.setId(data.section("\t",1,1).toInt());
+	obj.setContainerId(data.section("\t",2,2).toInt());
 	obj.setVisibility(true);
 	obj.setName(data.section("\t",3,3));
 	obj.setConfiguration(data.section("\t",4,4));

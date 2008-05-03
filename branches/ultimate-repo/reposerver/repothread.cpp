@@ -88,11 +88,13 @@ void QRealRepoServerThread::handleCommand(QString const &data
       if( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
         Object *obj = new Object(id, type, 0, 0);
         obj->setName(name);
+	obj->setParent(parent);
         mRoot->addObject(id, obj);
         log += QString(", object created, name %1").arg(name);
       } else if( mTypesInfo->analyseType(type) == TYPE_LINK ){
         Link *link = new Link(id, type);
         link->setName(name);
+	link->setParent(parent);
         mRoot->addLink(id, link);
         log += QString(", link created, name %1").arg(name);
       }
