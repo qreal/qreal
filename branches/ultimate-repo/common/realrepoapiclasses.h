@@ -6,6 +6,8 @@
 #include <QString>
 #include <QDebug>
 
+class RealRepoClient;
+
 namespace QRealTypes
 {
 	typedef QList<int> QIntList;
@@ -19,6 +21,7 @@ namespace QRealTypes
 			m_name = "noname";
 			m_description = "noname";
 			m_properties.clear();
+			client = 0;
 		}
 
 		int getId();
@@ -27,6 +30,9 @@ namespace QRealTypes
 		QString getName() const;
 		void setName( const QString& );
 
+		int getTypeId() const;
+		void setTypeId( const int );
+
 		QString getDescription() const;
 		void setDescription( const QString& );
 
@@ -34,11 +40,15 @@ namespace QRealTypes
 		QString getProperty( const QString& name ) const; // returns "" in case of empty property value
 		int getPropertiesCount() const; 
 
+		void setRepoClient( RealRepoClient * );
+
 	protected:
 		int m_id;
+		int m_type;
 		QString m_name;
 		QString m_description;
 		QMap<QString, QString> m_properties;	
+		RealRepoClient  *client;
 	};
 
 	// Metatype description
@@ -81,9 +91,6 @@ namespace QRealTypes
 	class RealObject : public RealNamedEntity
 	{
  	public:
-		int getTypeId() const;
-		void setTypeId( const int );
-
 		bool getVisibility() const; // is it visible on the diagrams or not
 		void setVisibility( const bool );
 
@@ -106,7 +113,6 @@ namespace QRealTypes
 		void addOutcomingLink( const int ) {};
 
 	private:
-		int m_typeId;
 		bool m_visibility;
 		int m_containerId;
 		QString m_configuration;
@@ -119,9 +125,6 @@ namespace QRealTypes
 	class RealLink : public RealNamedEntity
 	{
 	public:
-		int getTypeId() const;
-		void setTypeId( const int );
-
 		int getFromId() const;  // source node
 		void setFromId( const int );
 
@@ -129,7 +132,6 @@ namespace QRealTypes
 		void setToId( const int );
 	
 	private:
-		int m_type;
 
 		int m_fromId;
 		int m_toId;

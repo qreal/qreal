@@ -61,6 +61,9 @@ public:
 
 	QString getName();
 	void setName( QString arg );
+
+	QString getDescription();
+	void setDescription( QString );
 	
 	void setProperty( QString name, QString val );
 	QString getProperty( QString name );
@@ -94,6 +97,7 @@ private:
 	int type;
 	int parent;
 	QString name;
+	QString description;
 	QString configuration;
 	QList<int> children;
 	QMap<QString, QString> props;
@@ -110,13 +114,16 @@ public:
 
 	int getId();
 	int getType();
-	QString getName();
 	
+	QString getName();
+	void setName( QString arg );
+	
+	QString getDescription();
+	void setDescription( QString );
+
 	void setProperty( QString name, QString val );
 	QString getProperty( QString name );
 
-	void setName( QString arg );
-	
 	QString toString();
 	
 	QString getObjects();
@@ -139,6 +146,7 @@ private:
 	int type;
 	int parent;
 	QString name;
+	QString description;
 	QString configuration;
 	QString position;
 	QMap<QString, QString> props;

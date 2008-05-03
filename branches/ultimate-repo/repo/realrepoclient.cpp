@@ -84,6 +84,21 @@ dbg;
 //	qDebug() << "recvd" << resp;
 }
 
+void RealRepoClient::setDescription( int type, int id, QString desc )
+{
+dbg;
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_DESCRIPTION).arg(type).arg(id).arg(desc);
+	QString resp = sendData(data);
+}
+
+QString RealRepoClient::getDescription( int type, int id )
+{
+dbg;
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_GET_DESCRIPTION).arg(type).arg(id);
+	QString resp = sendData(data);
+	return resp;
+}
+
 int RealRepoClient::setPropValue( int type, int id, QString name, QString value)
 {
 dbg;
@@ -256,9 +271,10 @@ dbg;
 	obj.setVisibility(true);
 	obj.setName(data.section("\t",3,3));
 	obj.setConfiguration(data.section("\t",4,4));
+	obj.setDescription(data.section("\t",7,7));
 
-	int childCount = data.section("\t",7,7).toInt();
-	int counter = 8;	
+	int childCount = data.section("\t",8,8).toInt();
+	int counter = 9;	
 	for( int i=0; i<childCount; i++){
 		obj.addChildElement(data.section("\t",counter,counter).toInt());
 		counter++;
@@ -278,6 +294,7 @@ dbg;
 		obj.setProperty(pair.section(";",0,0), pair.section(";",1,1));
 		counter++;
 	}
+	obj.setRepoClient(this);
 	return obj;
 }
 
@@ -290,9 +307,11 @@ dbg;
 	link.setTypeId(data.section("\t",0,0).toInt());
 	link.setId(data.section("\t",1,1).toInt());
 	link.setName(data.section("\t",3,3));
+	link.setDescription(data.section("\t",4,4));
+	qDebug() << "desc: " << data.section("\t",4,4);
 
-	int fromCount = data.section("\t",4,4).toInt();
-	int counter = 5;
+	int fromCount = data.section("\t",5,5).toInt();
+	int counter = 6;
 	if( fromCount > 0 )
 		link.setFromId(data.section("\t",counter,counter).toInt());
 	else 	
@@ -314,6 +333,7 @@ dbg;
 		link.setProperty(pair.section(";",0,0), pair.section(";",1,1));
 		counter++;
 	}
+	link.setRepoClient(this);
 	return link;
 }
 

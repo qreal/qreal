@@ -110,6 +110,16 @@ QString Object::getName()
 	return name;
 }
 
+void Object::setDescription( QString arg )
+{
+	description = arg;
+}
+
+QString Object::getDescription()
+{
+	return description;
+}
+
 int Object::getId()
 {
 	return id;
@@ -171,8 +181,8 @@ QString Object::getLinks()
 QString Object::toString()
 {
 	QString res = "";
-	res += QString("%1\t%2\t%3\t%4\t%5\t%6\t%7\t")
-			.arg(type).arg(id).arg(parent).arg(name).arg(configuration).arg(x).arg(y);
+	res += QString("%1\t%2\t%3\t%4\t%5\t%6\t%7\t%8\t")
+			.arg(type).arg(id).arg(parent).arg(name).arg(configuration).arg(x).arg(y).arg(description);
 	
 	res += QString("%1\t").arg(children.size());
 	res += childrenToString();
@@ -227,6 +237,16 @@ void Link::setName( QString arg )
 	name = arg;
 }
 
+void Link::setDescription( QString arg )
+{
+	description = arg;
+}
+
+QString Link::getDescription()
+{
+	return description;
+}
+
 void Link::setProperty( QString name, QString val )
 {
 	props[name] = val;
@@ -267,7 +287,7 @@ QString Link::getObjectsTo()
 QString Link::toString()
 {
 	QString res = "";
-	res += QString("%1\t%2\t%3\t%4\t").arg(type).arg(id).arg(parent).arg(name);
+	res += QString("%1\t%2\t%3\t%4\t%5\t").arg(type).arg(id).arg(parent).arg(name).arg(description);
 	
 	res += getObjects();
 

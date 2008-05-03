@@ -1,6 +1,8 @@
 #include "realrepoapiclasses.h"
 #include <QDebug>
 
+#include "../repo/realrepoclient.h"
+
 using namespace QRealTypes;
 
 int RealNamedEntity::getId() 
@@ -23,19 +25,33 @@ void RealNamedEntity::setName( const QString& arg )
 	m_name = arg;
 }
 
+int RealNamedEntity::getTypeId() const
+{
+	return m_type;
+}
+
+void RealNamedEntity::setTypeId( const int arg )
+{
+	m_type = arg;
+}
+
 QString RealNamedEntity::getDescription() const
 {
 	return m_description;
 }
 
 void RealNamedEntity::setDescription( const QString& arg ) 
-{
+{	
 	m_description = arg;
+	if( client )
+		client->setDescription(m_type, m_id, arg);
 }
 
 void RealNamedEntity::setProperty( const QString& name, const QString& val )
 {
 	m_properties[name] = val;
+	if( client )
+		client->setPropValue(m_type, m_id, name, val);
 }
 
 QString RealNamedEntity::getProperty( const QString& name ) const
@@ -46,6 +62,11 @@ QString RealNamedEntity::getProperty( const QString& name ) const
 int RealNamedEntity::getPropertiesCount() const
 {
 	return m_properties.count();
+}
+
+void RealNamedEntity::setRepoClient( RealRepoClient * arg )
+{
+	client = arg;
 }
 
 // ================================================== //
@@ -112,16 +133,6 @@ void RealType::loadFromString( const QString& data )
 
 // ================================================== //
 
-int RealObject::getTypeId() const
-{
-	return m_typeId;
-}
-
-void RealObject::setTypeId( const int arg )
-{
-	m_typeId = arg;
-}
-
 bool RealObject::getVisibility() const 
 {
 	return m_visibility;
@@ -181,16 +192,6 @@ void RealObject::addLink( const int id )
 }
 
 // ================================================== //
-
-int RealLink::getTypeId() const
-{
-	return m_type;
-}
-
-void RealLink::setTypeId( const int arg )
-{
-	m_type = arg;
-}
 
 int RealLink::getFromId() const 
 {

@@ -188,6 +188,45 @@ void QRealRepoServerThread::handleCommand(QString const &data
       log += QString(", sending %1's children - [%2]").arg(id).arg(resp);
       break;
     }
+    case CMD_GET_DESCRIPTION:
+    {
+      int type = data.section("\t", 1, 1).toInt();
+      int id = data.section("\t", 2, 2).toInt();
+      resp = "\t";
+      if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+        if( Object *obj = mRoot->getObject(id) )
+          resp = obj->getDescription();
+        else
+          qDebug() << "incorrect object requested. id" << id;
+      } else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+        if( Link *link = mRoot->getLink(id) )
+          resp = link->getDescription();
+	else
+	  qDebug() << "incorrect link requested. id" << id;
+      }
+      log += QString(", sending description for id %1 - [%2]").arg(id).arg(resp);
+      break;
+    }
+    case CMD_SET_DESCRIPTION:
+    {
+      int type = data.section("\t", 1, 1).toInt();
+      int id = data.section("\t", 2, 2).toInt();
+      QString desc = data.section("\t", 3, 3);
+      resp = "\t";
+      if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+        if( Object *obj = mRoot->getObject(id) )
+          obj->setDescription(desc);
+        else
+          qDebug() << "incorrect object requested. id" << id;
+      } else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
+        if( Link *link = mRoot->getLink(id) )
+          link->setDescription(desc);
+	else
+	  qDebug() << "incorrect link requested. id" << id;
+      }
+      log += QString(", new description for id %1 - [%2]").arg(id).arg(desc);
+      break;
+    }
     case CMD_GET_POSITION:
     {
       int type = data.section("\t", 1, 1).toInt();

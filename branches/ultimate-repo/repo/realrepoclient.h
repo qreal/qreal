@@ -20,6 +20,9 @@ public:
 	
 	void setPosition( int type, int id, int parent, int x, int y);
 	
+	void setDescription( int type, int id, QString desc );
+	QString getDescription( int type, int id );
+	
 	int setConfiguration( int type, int id, QString conf);
 	QString getConfiguration( int type, int id );
 	
