@@ -2438,15 +2438,19 @@
       <graphics>
       <view>
         <line_type type="solidLine" />
-        <end_type type="arrow" />
       </view>
       </graphics>
       <logic>
+			<generalizations>
+			 <generalization>
+			  <parent parent_id="krneDirRelationShip"></parent>
+			 </generalization>
+			</generalizations>
         <properties>
          <property name="transitionCondition" type="string" />
         </properties>
         <associations>
-          <association role="relatedElement">
+          <association role="relatedElement" end_type="open_arrow">
             <begin idref="krnnElement" />
           </association>
           <association role="relatedElement">
