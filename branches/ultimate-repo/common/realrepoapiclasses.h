@@ -104,13 +104,13 @@ namespace QRealTypes
 		void addChildElement( const int );
 		void deleteChildElement( const int );
 
-		QIntList getAllLinks() const;
-		void addLink( const int id );
+		QIntList getAllLinks(int direction) const;
+//		void addLink( const int id );
 		
 		QIntList getIncomingLinks() const { return QIntList(); };
  		QIntList getOutcomingLinks() const { return QIntList(); };
-		void addIncomingLink( const int ) {};
-		void addOutcomingLink( const int ) {};
+		void addIncomingLink( const int );
+		void addOutcomingLink( const int );
 
 	private:
 		bool m_visibility;
@@ -118,7 +118,8 @@ namespace QRealTypes
 		QString m_configuration;
 
 		QIntList m_children;
-		QIntList m_links;
+		QIntList m_incomingLinks;
+		QIntList m_outcomingLinks;
 	};
 
 	// Edge elements

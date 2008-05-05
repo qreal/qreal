@@ -12,7 +12,7 @@ class RealRepoClient : public QObject
 {
 	Q_OBJECT;
 
-public:
+public:	
 	RealRepoClient( QObject *parent = 0);
 	~RealRepoClient();
 
@@ -33,6 +33,8 @@ public:
 	int createEntityWithParent(int type, QString name, int parent);
 	int createLink(QString name);
 
+	void addLink( int type, int id, int link_id, int direction );
+
 	int getTypesCount();
 	QIntList getAllTypes();  
 	TypeInfo getTypeInfo( int );
@@ -45,7 +47,7 @@ public:
 	RealObject getObjectById( int id );
 	RealLink getLinkById( int id );
 
-	QString getLinksByObject( int type, int id );
+	QString getLinksByObject( int type, int id, int direction );
 	QString getObjectsByLink( int type, int id );
 
 	QString getChildren( int type, int id );

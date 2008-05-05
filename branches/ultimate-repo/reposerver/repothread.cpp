@@ -319,17 +319,17 @@ void QRealRepoServerThread::handleCommand(QString const &data
       } else if ( mTypesInfo->analyseType(type) == TYPE_LINK ){
         if( Link *link = mRoot->getLink(id) ){
           link->setProperty(name, val);
-          if( name == "from" || name == "to" ){
-            // присединяем линк к об'екту
-            if( Object *obj = mRoot->getObject(val.toInt()) )
-              // добавляем запись о линке в об'ект
-              obj->addLink(id);
-            // добавляем запись об об'екте в линк
-            if( name == "from" )
-              link->addObjectFrom(val.toInt());
-            if( name == "to" )
-              link->addObjectTo(val.toInt());
-          }
+          if( name == "from"){
+            if( Object *obj = mRoot->getObject(val.toInt()) ){
+              	obj->addLink(id, OUTCOMING_LINK);
+                link->addObjectFrom(val.toInt());		
+	    }	  
+	  } else if( name == "to" ){
+	    if( Object *obj = mRoot->getObject(val.toInt()) ){
+	    	obj->addLink(id, INCOMING_LINK);
+		link->addObjectTo(val.toInt());
+	    }
+	  }
         }
       }
       resp = QString::number(STATUS_OK);
@@ -352,6 +352,31 @@ void QRealRepoServerThread::handleCommand(QString const &data
       log += QString(", sent property value: %1 - %2").arg(name).arg(resp);
       break;
     }
+    case CMD_ADD_LINK:
+    {
+      int type = data.section("\t", 1, 1).toInt();
+      int id = data.section("\t", 2, 2).toInt();
+      int link_id = data.section("\t", 3, 3).toInt();
+      int dir = data.section("\t", 4, 4).toInt();
+      qDebug() << "dir: " << dir;
+      if( Object *obj = mRoot->getObject(id) ){
+        qDebug() << "a1";
+        obj->addLink(link_id, dir);
+        qDebug() << "a2";
+        if( Link *link = mRoot->getLink(link_id) ){
+          if( dir == INCOMING_LINK )
+            link->addObjectTo(id);
+	  else if( dir == OUTCOMING_LINK )
+            link->addObjectFrom(id);
+	  } else
+	  	qDebug() << "incorrect link requested. id: " << id;
+      } else 
+      	qDebug() << "incorrect object requested. type: " << type << ", id: " << id;
+      
+      log += QString(", added new link: %1").arg(link_id);
+      resp = QString::number(STATUS_OK);
+      break;
+    }
     case CMD_GET_ENTIRE_OBJECT:
     {
 //      int type = data.section("\t", 1, 1).toInt();
@@ -371,10 +396,15 @@ void QRealRepoServerThread::handleCommand(QString const &data
     {
       int type = data.section("\t", 1, 1).toInt();
       int id = data.section("\t", 2, 2).toInt();
+      int dir = data.section("\t", 3, 3).toInt();
       resp = "\t";
       if ( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
         if( Object *obj = mRoot->getObject(id) )
-          resp = obj->getLinks();
+	  if( dir == INCOMING_LINK )
+            resp = obj->getIncomingLinks();
+	  else if( dir == OUTCOMING_LINK )
+	    resp = obj->getOutcomingLinks();
+	    
       } else
         qDebug() << "bad object id";
       log += QString(", sending object's links %1: %2").arg(id).arg(resp);

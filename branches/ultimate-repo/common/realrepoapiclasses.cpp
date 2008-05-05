@@ -180,15 +180,34 @@ void RealObject::deleteChildElement( const int arg )
 		m_children.removeAll(arg);
 }
 
-QIntList RealObject::getAllLinks() const 
+QIntList RealObject::getAllLinks( int direction ) const 
 {
-	return m_links;
+	if( direction == INCOMING_LINK )
+		return m_incomingLinks;
+	else 	
+		return m_outcomingLinks;
 }
 
-void RealObject::addLink( const int id )
+/*void RealObject::addLink( const int id )
 {
 	if( !m_links.contains(id) )
 		m_links << id;
+}
+*/
+void RealObject::addIncomingLink( const int id )
+{
+	if( !m_incomingLinks.contains(id) )
+		m_incomingLinks << id;
+	if( client )	
+		client->addLink( m_type, m_id, id, INCOMING_LINK );
+}
+
+void RealObject::addOutcomingLink( const int id )
+{
+	if( !m_outcomingLinks.contains(id) )
+		m_outcomingLinks << id;
+	if( client )	
+		client->addLink( m_type, m_id, id, OUTCOMING_LINK );
 }
 
 // ================================================== //

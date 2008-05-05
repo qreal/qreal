@@ -6,6 +6,8 @@
 #include <QMap>
 #include <QDebug>
 
+#include "defs.h"
+
 class Link;
 class Object;
 
@@ -86,11 +88,11 @@ public:
 	QString getConfiguration();
 
 	QString toString();
+	QString getIncomingLinks();
+	QString getOutcomingLinks();
 	
-	QString getLinks();
-
-	void addLink( int );
-	void removeLink( int );
+	void addLink( int, int );
+	void removeLink( int, int );
 
 private:
 	int x;
@@ -103,7 +105,8 @@ private:
 	QString configuration;
 	QList<int> children;
 	QMap<QString, QString> props;
-	QList<int> links;
+	QList<int> incomingLinks;
+	QList<int> outcomingLinks;
 };
 
 /* class for all edge entities

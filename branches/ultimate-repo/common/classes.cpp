@@ -175,11 +175,19 @@ QString Object::getProperty( QString name )
 	return props.value(name);
 }
 
-QString Object::getLinks()
+QString Object::getIncomingLinks()
 {
-	QString res = "";
-	for( int i=0; i<links.size(); i++)		
-		res += QString("%1\t").arg(links.at(i));
+	QString res;
+	for( int i=0; i<incomingLinks.size(); i++)		
+		res += QString("%1\t").arg(incomingLinks.at(i));
+	return res;
+}
+
+QString Object::getOutcomingLinks()
+{
+	QString res;
+	for( int i=0; i<outcomingLinks.size(); i++)		
+		res += QString("%1\t").arg(outcomingLinks.at(i));
 	return res;
 }
 
@@ -192,8 +200,11 @@ QString Object::toString()
 	res += QString("%1\t").arg(children.size());
 	res += childrenToString();
 
-	res += QString("%1\t").arg(links.size());
-	res += getLinks();
+	res += QString("%1\t").arg(incomingLinks.size());
+	res += getIncomingLinks();
+
+	res += QString("%1\t").arg(outcomingLinks.size());
+	res += getOutcomingLinks();
 
 	res += QString("%1\t").arg(props.size());
 	for( int i=0; i<props.keys().size(); i++){
@@ -202,15 +213,28 @@ QString Object::toString()
 	return res;
 }
 
-void Object::addLink( int id )
+void Object::addLink( int id, int dir )
 {
-	if( !links.contains(id) )
-		links << id;
+	if( dir == INCOMING_LINK ){
+		if( !incomingLinks.contains(id) ){
+			qDebug() << "added inc link" << id;
+			incomingLinks << id;
+		}
+	}	
+	else if ( dir == OUTCOMING_LINK ){
+		if( !outcomingLinks.contains(id) ){
+			qDebug() << "added outc link" << id;
+			outcomingLinks << id;
+		}	
+	}	
 }
 
-void Object::removeLink( int id )
+void Object::removeLink( int id, int dir )
 {
-	links.removeAll(id);
+	if( dir == INCOMING_LINK )
+		incomingLinks.removeAll(id);
+	else if ( dir == OUTCOMING_LINK )	
+		outcomingLinks.removeAll(id);
 }
 
 

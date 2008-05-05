@@ -24,16 +24,21 @@ const int CMD_GET_CHILDREN		= 24;
 const int CMD_GET_LINKS_BY_OBJECT	= 25;
 const int CMD_GET_OBJECTS_BY_LINK	= 26;
 
-
 const int CMD_GET_TYPES_COUNT		= 31;
 const int CMD_GET_ALL_TYPES		= 32;
 const int CMD_GET_TYPES_BY_METATYPE	= 33;
 const int CMD_GET_TYPE_INFO		= 34;
 const int CMD_GET_TYPE_BY_NAME		= 35;
 
+const int CMD_ADD_LINK			= 51;
+
 const int TYPE_OBJECT	= 1;
 const int TYPE_LINK	= 2;
 
 const int INVALID_ID 	= -1;
+
+const int INCOMING_LINK		= 1;
+const int OUTCOMING_LINK	= 2;
+
 
 #endif // __DEFS_H__

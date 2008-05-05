@@ -281,10 +281,19 @@ dbg;
 		counter++;
 	}	
 	
-	int linksCount = data.section("\t",counter,counter).toInt();
+	int incLinksCount = data.section("\t",counter,counter).toInt();
+	qDebug() << "inc links: " << incLinksCount;
 	counter++;
-	for( int i=0; i<linksCount; i++){
-		obj.addLink(data.section("\t",counter,counter).toInt());
+	for( int i=0; i<incLinksCount; i++){
+		obj.addIncomingLink(data.section("\t",counter,counter).toInt());
+		counter++;
+	}
+	
+	int outcLinksCount = data.section("\t",counter,counter).toInt();
+	qDebug() << "out links: " << outcLinksCount;
+	counter++;
+	for( int i=0; i<outcLinksCount; i++){
+		obj.addOutcomingLink(data.section("\t",counter,counter).toInt());
 		counter++;
 	}
 	
@@ -338,10 +347,10 @@ dbg;
 	return link;
 }
 
-QString RealRepoClient::getLinksByObject( int type, int id )
+QString RealRepoClient::getLinksByObject( int type, int id, int direction )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_LINKS_BY_OBJECT).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_GET_LINKS_BY_OBJECT).arg(type).arg(id).arg(direction);
 	QString resp = sendData(cmd);
 	return resp;	
 }
@@ -392,3 +401,11 @@ int RealRepoClient::getTypeIdByName( const QString name )
 {
 	return getTypeByName(name).getId();
 }
+
+void RealRepoClient::addLink( int type, int id, int link_id, int direction )
+{
+dbg;
+	QString cmd = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_ADD_LINK).arg(type).arg(id).arg(link_id).arg(direction);
+	sendData(cmd);
+}
+
