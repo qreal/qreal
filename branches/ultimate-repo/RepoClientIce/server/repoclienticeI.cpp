@@ -208,9 +208,9 @@ RepoIce::RealObjectIceI::deleteChildElement(int elementId,
 }
 
 ::RepoIce::QIntList
-RepoIce::RealObjectIceI::getAllLinks(const Ice::Current&)
+RepoIce::RealObjectIceI::getAllLinks(int direction, const Ice::Current&)
 {
-    return realObject.getAllLinks().toVector().toStdVector(); 
+    return realObject.getAllLinks(direction).toVector().toStdVector(); 
 }
 
 ::RepoIce::QIntList

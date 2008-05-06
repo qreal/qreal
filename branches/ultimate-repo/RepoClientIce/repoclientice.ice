@@ -62,7 +62,7 @@ module RepoIce
 		void addChildElement(int elementId);
 		void deleteChildElement(int elementId);
     
-		idempotent QIntList getAllLinks() ; // получить линки
+		idempotent QIntList getAllLinks(int direction) ; // получить линки
 		idempotent QIntList getIncomingLinks() ;
 		idempotent QIntList getOutcomingLinks() ;
 		void addIncomingLink(int linkId);
