@@ -15,9 +15,9 @@ int main()
 	<< "statemachines_metamodel.xml"
 	<< "deployment.xml"
 	<< "component_metamodel.xml"
-	<< "timing_metamodel.xml"
-	<< "activity_metamodel.xml"
-	<< "package.xml"
+	//<< "timing_metamodel.xml"
+	//<< "activity_metamodel.xml"
+	//<< "package.xml"
 	<< "bpel.xml";
 	new Generator(l);
 	return 0;

@@ -1,5 +1,5 @@
 QT		+= sql svg opengl network 
-CONFIG += qt debug
+
 INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
 RESOURCES	+= real_dynamic.qrc static.qrc
 SOURCES		= main.cpp
