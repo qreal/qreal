@@ -349,7 +349,9 @@ void QRealRepoServerThread::handleCommand(QString const &data
         if( Link *link = mRoot->getLink(id) )
           resp = link->getProperty(name);
       }
-      log += QString(", sent property value: %1 - %2").arg(name).arg(resp);
+      if( resp.isEmpty() )
+        resp = "\t";
+      log += QString(", sent property value: %1 - [%2]").arg(name).arg(resp);
       break;
     }
     case CMD_ADD_LINK:

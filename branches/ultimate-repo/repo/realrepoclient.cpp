@@ -110,7 +110,7 @@ dbg;
 QString RealRepoClient::getPropValue( int type, int id, QString name )
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_GET_PROPERTY).arg(type).arg(id).arg(name);
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_GET_PROPERTY).arg(type).arg(id).arg(name);
 	QString resp = sendData(data);
 	return resp;
 }

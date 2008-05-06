@@ -334,8 +334,13 @@ void EdgeElement::updateData()
 	if ( !newLine.isEmpty() )
 		m_line = newLine;
 
+	qDebug() << "from role: " << Unreal::krneRelationship::fromRole
+		<< "to role: " << Unreal::krneRelationship::toRole;
+
 	int uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toInt();
 	int uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toInt();
+
+	qDebug() << "from: " << uuidFrom << ", to: " << uuidTo;
 
 	if ( src )
 		src->delEdge(this);

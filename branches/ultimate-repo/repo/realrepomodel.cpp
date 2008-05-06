@@ -73,6 +73,12 @@ dbg;
 			};
 		default:
 			if ( role > Unreal::UserRole ) {
+				RealRepoInfo info;
+				QString name = info.getColumnName(hashTypes[item->id], role);
+				qDebug() << "requested role:" << role << name;
+				QString val = repoClient->getPropValue(hashTypes[item->id], item->id, name);
+				return (val == "\t") ? QVariant() : val;
+/*
 				if ( hashElementProps.contains(item->id) ) {
 					if ( hashElementProps[item->id].contains(role) ){
 						return hashElementProps[item->id][role];
@@ -81,8 +87,9 @@ dbg;
 						return QVariant();
 				} else {
 					const_cast<RealRepoModel *>(this)->updateProperties(item->id);
+					qDebug() << "returning" << hashElementProps[item->id][role];
 					return hashElementProps[item->id][role];
-				}
+				}	*/
 			} else {
 				return QVariant(); //for now
 			}
@@ -488,11 +495,10 @@ dbg;
 void RealRepoModel::updateProperties(int /*id*/)
 {
 dbg;
-
 /*
 	int type = hashTypes[id];
 
-	QStringList list = repoClient->getProperties()
+	QStringList list = repoClient->getProperties(id);
 
 	QString sql = QString("SELECT `id`, `%1` FROM el_%2 WHERE id = :id ;")
 		.arg(info.getColumnNames(type).join("`, `")).arg(type);
