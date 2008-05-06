@@ -210,7 +210,7 @@ dbg;
 	else
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
 
-//	qDebug() << "[INDEX]: id: " << parentItem->id << "row" << row << "column" << column;
+	qDebug() << "[INDEX]: id: " << parentItem->id << "row:" << row << "column:" << column << "children:" << parentItem->children.size();
 	
 	if ( parentItem->children.isEmpty() ) {
 		if (type(parentItem) == Container ) {
@@ -220,12 +220,14 @@ dbg;
 		}
 	}
 	
-
-/*	RepoTreeItem *childItem = 0;
-	if( parentItem && parentItem->children.size() >= row )
+qDebug() << "a1";
+	RepoTreeItem *childItem = 0;
+	if( parentItem && parentItem->children.size() > row && row >= 0 )
 		childItem = parentItem->children[row];
-*/
-	RepoTreeItem *childItem = parentItem->children[row];
+
+//	qDebug() << parentItem->children.size() << row << parentItem->id;
+//	RepoTreeItem *childItem = parentItem->children[row];
+qDebug() << "a2";
 
 	if (childItem)
 		return createIndex(row, column, childItem);
@@ -473,6 +475,7 @@ dbg;
 	item->id = id;
 	item->row = parentItem->children.size();
  
+ 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 

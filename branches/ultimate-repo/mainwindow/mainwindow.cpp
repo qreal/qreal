@@ -67,7 +67,8 @@ MainWindow::MainWindow()
 
 	show();
 
-	showMaximized();
+	//showMaximized();
+	resize(1024,800);
 
 	connectRepo();
 }
