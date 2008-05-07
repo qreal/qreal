@@ -5,7 +5,7 @@ QMAKESUBDIRS 		= server
 all: repoclientice.ice $(SUBDIRS) $(QMAKESUBDIRS)
 	slice2cpp  repoclientice.ice
 	slice2cs  repoclientice.ice
-	/bin/mv -f repoclientice.cpp repoclientice.h server
+#	/bin/mv -f repoclientice.cpp repoclientice.h server
 	/bin/mv -f repoclientice.cs client
 
 .PHONY:         all clean $(SUBDIRS) $(QMAKESUBDIRS)

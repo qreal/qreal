@@ -1,6 +1,6 @@
 #ifndef __repoclienticeI_h__
 #define __repoclienticeI_h__
-#include <repoclientice.h>
+#include <../repoclientice.h>
 #include <Ice/Ice.h>
 
 #include "../../common/realrepoapiclasses.h"

@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 #include <QDebug>
+#include "defs.h"
 
 class RealRepoClient;
 
@@ -104,11 +105,11 @@ namespace QRealTypes
 		void addChildElement( const int );
 		void deleteChildElement( const int );
 
-		QIntList getAllLinks(int direction) const;
+		QIntList getAllLinks(int direction) const; // INCOMING_LINK = 1 OUTCOMING_LINK = 2
 //		void addLink( const int id );
 		
-		QIntList getIncomingLinks() const { return QIntList(); };
- 		QIntList getOutcomingLinks() const { return QIntList(); };
+		QIntList getIncomingLinks() const { return getAllLinks( INCOMING_LINK ); };
+ 		QIntList getOutcomingLinks() const { return getAllLinks( OUTCOMING_LINK ); };
 		void addIncomingLink( const int );
 		void addOutcomingLink( const int );
 
