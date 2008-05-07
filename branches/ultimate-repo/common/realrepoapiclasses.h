@@ -114,6 +114,9 @@ namespace QRealTypes
 		void addIncomingLink( const int );
 		void addOutcomingLink( const int );
 
+		void removeIncomingLink( const int );
+		void removeOutcomingLink( const int );
+
 	private:
 		bool m_visibility;
 		int m_containerId;
@@ -133,6 +136,9 @@ namespace QRealTypes
 
 		int getToId() const;    // target node
 		void setToId( const int );
+
+		void removeFrom( const int );
+		void removeTo( const int );
 	
 	private:
 

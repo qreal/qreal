@@ -93,6 +93,12 @@ public:
 	
 	void addLink( int, int );
 	void removeLink( int, int );
+	
+	void print(){
+		qDebug() << "incoming :" << incomingLinks;
+		qDebug() << "outcoming:" << outcomingLinks;
+		qDebug() << "props:" <<  props;
+	}
 
 private:
 	int x;
@@ -138,12 +144,25 @@ public:
 	void addObjectTo( int );
 	void addObjectFrom( int );
 
+	void removeObjectTo( int );
+	void removeObjectFrom( int );
+
 	// object's port position
 	void setConfiguration( QString arg );
 	QString getConfiguration();
 
 	QString getPosition();
 	void setPosition( QString );
+
+	int getFrom();
+	int getTo();
+	
+	void print(){
+		qDebug() << "to: :" << objectsTo;
+		qDebug() << "from:" << objectsFrom;
+		qDebug() << "props:" <<  props;
+	}
+
 
 private:
 	QString getObjectsTo();
@@ -157,8 +176,8 @@ private:
 	QString configuration;
 	QString position;
 	QMap<QString, QString> props;
-	QList<int> objectsFrom;
 	QList<int> objectsTo;
+	QList<int> objectsFrom;
 };
 
 /* types description

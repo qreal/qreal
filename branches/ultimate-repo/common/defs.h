@@ -31,6 +31,7 @@ const int CMD_GET_TYPE_INFO		= 34;
 const int CMD_GET_TYPE_BY_NAME		= 35;
 
 const int CMD_ADD_LINK			= 51;
+const int CMD_REMOVE_LINK		= 52;
 
 const int TYPE_OBJECT	= 1;
 const int TYPE_LINK	= 2;

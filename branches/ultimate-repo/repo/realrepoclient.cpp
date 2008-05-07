@@ -267,7 +267,7 @@ dbg;
 	QString data = getEntireObject(id);
 	RealObject obj;
 	obj.setTypeId(data.section("\t",0,0).toInt());
-	obj.setId(data.section("\t",1,1).toInt());
+	obj.setId(id);
 	obj.setContainerId(data.section("\t",2,2).toInt());
 	obj.setVisibility(true);
 	obj.setName(data.section("\t",3,3));
@@ -402,10 +402,17 @@ int RealRepoClient::getTypeIdByName( const QString name )
 	return getTypeByName(name).getId();
 }
 
-void RealRepoClient::addLink( int id, int link_id, int direction )
+void RealRepoClient::addLink( int obj_id, int link_id, int direction )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_ADD_LINK).arg(id).arg(link_id).arg(direction);
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_ADD_LINK).arg(obj_id).arg(link_id).arg(direction);
+	sendData(cmd);
+}
+
+void RealRepoClient::removeLink( int obj_id, int link_id, int direction )
+{
+dbg;
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_REMOVE_LINK).arg(obj_id).arg(link_id).arg(direction);
 	sendData(cmd);
 }
 

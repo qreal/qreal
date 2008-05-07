@@ -229,11 +229,9 @@ void QRealRepoServerThread::handleCommand(QString const &data
 		int x = data.section("\t", 2, 2).toInt();
 		int y = data.section("\t", 3, 3).toInt();
 		if( Object *obj = mRoot->getObject(id) ){
-			qDebug() << "obj ok";
 			obj->setX(x);
 			obj->setY(y);
 		} else if( Link *link = mRoot->getLink(id) ){
-			qDebug() << "link ok";
 			link->setPosition(QString("%1;%2").arg(x).arg(y));
 		} else
 			qDebug() << "incorrect entity requested. id: " << id;
@@ -273,23 +271,35 @@ void QRealRepoServerThread::handleCommand(QString const &data
 		int id = data.section("\t", 1, 1).toInt();
 		QString name = data.section("\t", 2, 2);
 		QString val = data.section("\t", 3, 3);
-		qDebug() << "set property" << name << val;
         
 		if( Object *obj = mRoot->getObject(id) )
 			obj->setProperty(name, val);
 		else if( Link *link = mRoot->getLink(id) ){
-			link->setProperty(name, val);
+			link->print();
 			if( name == "from"){
 				if( Object *obj = mRoot->getObject(val.toInt()) ){
 					obj->addLink(id, OUTCOMING_LINK);
 					link->addObjectFrom(val.toInt());		
-				}	  
+				} else { // disconnect link from previous object
+					int obj_id = link->getFrom();
+					if( Object *obj = mRoot->getObject(obj_id) ){
+						obj->removeLink(id, OUTCOMING_LINK );
+						link->removeObjectFrom(obj_id);
+					}	
+				} 
 			} else if( name == "to" ){
 				if( Object *obj = mRoot->getObject(val.toInt()) ){
-				obj->addLink(id, INCOMING_LINK);
-				link->addObjectTo(val.toInt());
+					obj->addLink(id, INCOMING_LINK);
+					link->addObjectTo(val.toInt());
+				} else { // disconnect link from previous object
+					int obj_id = link->getTo();
+					if( Object *obj = mRoot->getObject(obj_id) ){
+						obj->removeLink(id, INCOMING_LINK );
+						link->removeObjectTo(obj_id);
+					}	
 				}
-			}
+			} else 
+				link->setProperty(name, val);
 		}
 		resp = QString::number(STATUS_OK);
 		log += QString(", new property value: %1 - %2").arg(name).arg(val);
@@ -301,38 +311,72 @@ void QRealRepoServerThread::handleCommand(QString const &data
 		QString name = data.section("\t", 2, 2);
 		if( Object *obj = mRoot->getObject(id) )
 			resp = obj->getProperty(name);
-		else if( Link *link = mRoot->getLink(id) )
-			resp = link->getProperty(name);
+		else if( Link *link = mRoot->getLink(id) ){
+			link->print();
+			if( name == "from" ){
+				resp = QString::number(link->getFrom());
+			}	
+			else if( name == "to" )	
+				resp = QString::number(link->getTo());
+			else	
+				resp = link->getProperty(name);
+		}	
 		
 		if( resp.isEmpty() )
 			resp = "\t";
 		log += QString(", sent property value: %1 - [%2]").arg(name).arg(resp);
 		break;
 	}
-    case CMD_ADD_LINK:
-    {
-      int id = data.section("\t", 1, 1).toInt();
-      int link_id = data.section("\t", 2, 2).toInt();
-      int dir = data.section("\t", 3, 3).toInt();
-      qDebug() << "dir: " << dir;
-      if( Object *obj = mRoot->getObject(id) ){
-        qDebug() << "a1";
-        obj->addLink(link_id, dir);
-        qDebug() << "a2";
-        if( Link *link = mRoot->getLink(link_id) ){
-          if( dir == INCOMING_LINK )
-            link->addObjectTo(id);
-	  else if( dir == OUTCOMING_LINK )
-            link->addObjectFrom(id);
-	  } else
-	  	qDebug() << "incorrect link requested. id: " << id;
-      } 
-      
-      log += QString(", added new link: %1").arg(link_id);
-      resp = QString::number(STATUS_OK);
-      break;
-    }
-    case CMD_GET_ENTIRE_OBJECT:
+	case CMD_ADD_LINK:
+	{
+		int id = data.section("\t", 1, 1).toInt();
+		int link_id = data.section("\t", 2, 2).toInt();
+		int dir = data.section("\t", 3, 3).toInt();
+//		qDebug() << "adding link";
+		if( Object *obj = mRoot->getObject(id) ){
+//			qDebug() << "\tobject found! searching for link";
+			obj->addLink(link_id, dir);
+			if( Link *link = mRoot->getLink(link_id) ){
+//				qDebug() << "\tlink found!";
+				if( dir == OUTCOMING_LINK )
+					link->addObjectTo(id);
+				else if( dir == INCOMING_LINK )
+					link->addObjectFrom(id);
+				link->print();	
+			}
+			obj->print();
+		} else
+			qDebug() << "incorrect obj requested. id: " << id;
+		log += QString(", added new link %1 to object %2").arg(link_id).arg(id);
+		resp = QString::number(STATUS_OK);
+		break;
+	}
+   	case CMD_REMOVE_LINK:
+	{
+		int id = data.section("\t", 1, 1).toInt();
+		int link_id = data.section("\t", 2, 2).toInt();
+		int dir = data.section("\t", 3, 3).toInt();
+//		qDebug() << "\tremoving link " << id << link_id << dir;
+		if( Object *obj = mRoot->getObject(id) ){
+			obj->removeLink(link_id, dir);
+//			qDebug() << "searching for link" << link_id;
+			if( Link *link = mRoot->getLink(link_id) ){
+//				qDebug() << "\tlink found!, dir" << dir;
+				if( dir == OUTCOMING_LINK )
+					link->removeObjectTo(id);
+				else if( dir == INCOMING_LINK )
+					link->removeObjectFrom(id);
+				link->print();	
+			} else
+				qDebug() << "incorrect link requested. id: " << link_id;
+		}	
+		else
+			qDebug() << "incorrect obj requested. id: " << id;
+		log += QString(", removed link %1 from object %2").arg(link_id).arg(id);
+		resp = QString::number(STATUS_OK);
+		break;
+	}
+	case CMD_GET_ENTIRE_OBJECT:
     {
 //      int type = data.section("\t", 1, 1).toInt();
       int id = data.section("\t", 1, 1).toInt();

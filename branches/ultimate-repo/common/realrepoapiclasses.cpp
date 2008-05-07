@@ -56,7 +56,9 @@ void RealNamedEntity::setProperty( const QString& name, const QString& val )
 
 QString RealNamedEntity::getProperty( const QString& name ) const
 {
-	return m_properties[name];
+	if( client )
+		return client->getPropValue(m_id, name);
+	return "";
 }
 
 int RealNamedEntity::getPropertiesCount() const
@@ -210,25 +212,47 @@ void RealObject::addOutcomingLink( const int id )
 		client->addLink( m_id, id, OUTCOMING_LINK );
 }
 
+void RealObject::removeIncomingLink( const int id )
+{
+	m_incomingLinks.removeAll(id);
+	if( client )
+		client->removeLink( m_id, id, INCOMING_LINK );
+}
+
+void RealObject::removeOutcomingLink( const int id )
+{
+	m_outcomingLinks.removeAll(id);
+	if( client )
+		client->removeLink( m_id, id, OUTCOMING_LINK );
+		
+}
+
 // ================================================== //
 
 int RealLink::getFromId() const 
 {
-	return m_fromId;
+	int val = getProperty("from").toInt();
+	if( val == 0 )
+		return -1;
+	return val;	
 }
 
 int RealLink::getToId() const 
 {
-	return m_toId;
+	int val = getProperty("to").toInt();
+	if( val == 0 )
+		return -1;
+	return val;	
 }
 
 void RealLink::setFromId( const int arg )
 {
 	m_fromId = arg;
+	setProperty("from", QString::number(arg));
 }
 
 void RealLink::setToId( const int arg )
 {
 	m_toId = arg;
+	setProperty("to", QString::number(arg));
 }
-

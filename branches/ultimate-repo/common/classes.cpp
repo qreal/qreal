@@ -217,13 +217,13 @@ void Object::addLink( int id, int dir )
 {
 	if( dir == INCOMING_LINK ){
 		if( !incomingLinks.contains(id) ){
-			qDebug() << "added inc link" << id;
+//			qDebug() << "added inc link" << id;
 			incomingLinks << id;
 		}
 	}	
 	else if ( dir == OUTCOMING_LINK ){
 		if( !outcomingLinks.contains(id) ){
-			qDebug() << "added outc link" << id;
+//			qDebug() << "added outc link" << id;
 			outcomingLinks << id;
 		}	
 	}	
@@ -231,10 +231,16 @@ void Object::addLink( int id, int dir )
 
 void Object::removeLink( int id, int dir )
 {
-	if( dir == INCOMING_LINK )
+	if( dir == INCOMING_LINK ){
+//		qDebug() << "\t\tbefore:" << incomingLinks;
 		incomingLinks.removeAll(id);
-	else if ( dir == OUTCOMING_LINK )	
+//		qDebug() << "\t\tafter:" << incomingLinks;
+	}	
+	else if ( dir == OUTCOMING_LINK ){
+//		qDebug() << "\t\tbefore:" << outcomingLinks;
 		outcomingLinks.removeAll(id);
+//		qDebug() << "\t\tafter:" << outcomingLinks;
+	}	
 }
 
 
@@ -303,7 +309,8 @@ QString Link::getObjects()
 }
 
 QString Link::getObjectsFrom()
-{
+{	
+//	qDebug() << "objects from: " << objectsFrom;
 	QString res = "";
 	for( int i=0; i<objectsFrom.size(); i++)		
 		res += QString("%1\t").arg(objectsFrom.at(i));
@@ -344,6 +351,16 @@ void Link::addObjectFrom( int id )
 		objectsFrom << id;
 }
 
+void Link::removeObjectTo( int id )
+{
+	objectsTo.removeAll(id);
+}
+
+void Link::removeObjectFrom( int id )
+{
+	objectsFrom.removeAll(id);
+}
+
 QString Link::getConfiguration()
 {
 	return configuration;
@@ -362,6 +379,22 @@ QString Link::getPosition()
 void Link::setPosition( QString arg )
 {
 	position = arg;
+}
+
+int Link::getFrom()
+{
+	if( objectsFrom.size() > 0 )
+		return objectsFrom.at(0);
+	
+	return -1;	
+}
+
+int Link::getTo()
+{
+	if( objectsFrom.size() > 0 )
+		return objectsTo.at(0);
+	
+	return -1;	
 }
 
 // --------------------------------------------------------------------------- //
