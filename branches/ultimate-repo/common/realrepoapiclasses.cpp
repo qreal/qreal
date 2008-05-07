@@ -44,14 +44,14 @@ void RealNamedEntity::setDescription( const QString& arg )
 {	
 	m_description = arg;
 	if( client )
-		client->setDescription(m_type, m_id, arg);
+		client->setDescription(m_id, arg);
 }
 
 void RealNamedEntity::setProperty( const QString& name, const QString& val )
 {
 	m_properties[name] = val;
 	if( client )
-		client->setPropValue(m_type, m_id, name, val);
+		client->setPropValue(m_id, name, val);
 }
 
 QString RealNamedEntity::getProperty( const QString& name ) const
@@ -199,7 +199,7 @@ void RealObject::addIncomingLink( const int id )
 	if( !m_incomingLinks.contains(id) )
 		m_incomingLinks << id;
 	if( client )	
-		client->addLink( m_type, m_id, id, INCOMING_LINK );
+		client->addLink( m_id, id, INCOMING_LINK );
 }
 
 void RealObject::addOutcomingLink( const int id )
@@ -207,7 +207,7 @@ void RealObject::addOutcomingLink( const int id )
 	if( !m_outcomingLinks.contains(id) )
 		m_outcomingLinks << id;
 	if( client )	
-		client->addLink( m_type, m_id, id, OUTCOMING_LINK );
+		client->addLink( m_id, id, OUTCOMING_LINK );
 }
 
 // ================================================== //

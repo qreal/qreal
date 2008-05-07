@@ -16,24 +16,24 @@ public:
 	RealRepoClient( QObject *parent = 0);
 	~RealRepoClient();
 
-	int setName( int type, int id, QString name );
+	int setName( int id, QString name );
 	
-	void setPosition( int type, int id, int parent, int x, int y);
+	void setPosition( int id, int parent, int x, int y);
 	
-	void setDescription( int type, int id, QString desc );
-	QString getDescription( int type, int id );
+	void setDescription( int id, QString desc );
+	QString getDescription( int id );
 	
-	int setConfiguration( int type, int id, QString conf);
-	QString getConfiguration( int type, int id );
+	int setConfiguration( int id, QString conf);
+	QString getConfiguration( int id );
 	
-	int setPropValue( int type, int id, QString name, QString value);
-	QString getPropValue( int type, int id, QString name );
+	int setPropValue( int id, QString name, QString value);
+	QString getPropValue(  int id, QString name );
 
-	int createEntity(int type, QString name);
+	int createEntity( int type, QString name );
 	int createEntityWithParent(int type, QString name, int parent);
 	int createLink(QString name);
 
-	void addLink( int type, int id, int link_id, int direction );
+	void addLink( int id, int link_id, int direction );
 
 	int getTypesCount();
 	QIntList getAllTypes();  
@@ -47,13 +47,13 @@ public:
 	RealObject getObjectById( int id );
 	RealLink getLinkById( int id );
 
-	QString getLinksByObject( int type, int id, int direction );
-	QString getObjectsByLink( int type, int id );
+	QString getLinksByObject( int id, int direction );
+	QString getObjectsByLink( int id );
 
-	QString getChildren( int type, int id );
+	QString getChildren( int id );
 
-	QString getPosition(int type, int id );
-	int setPosition(int type, int id, int x, int y );
+	QString getPosition(int id );
+	int setPosition( int id, int x, int y );
 
 	int getLastError();
 
@@ -66,12 +66,6 @@ public:
 	RealType getTypeById( const int id ); 
 	RealType getTypeByName( const QString name ); 
 	int getTypeIdByName( const QString name ); 
-
-	// TODO: implement these calls
-	/* 
-	int createType(const QString name); // returns id of created type
-	void deleteType(const int id);
-	*/
 
 public slots:
 	void displayError( QAbstractSocket::SocketError );

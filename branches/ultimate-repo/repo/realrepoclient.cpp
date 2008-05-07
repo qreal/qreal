@@ -69,48 +69,48 @@ dbg;
 	m_error = socketError;
 }
 
-int RealRepoClient::setName( int type, int id, QString name )
+int RealRepoClient::setName( int id, QString name )
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_NAME).arg(type).arg(id).arg(name);
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_SET_NAME).arg(id).arg(name);
 	return sendData(data).toInt();
 }
 
-void RealRepoClient::setPosition( int type, int id, int /*parent*/, int x, int y)
+void RealRepoClient::setPosition( int id, int /*parent*/, int x, int y)
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_SET_POSITION).arg(type).arg(id).arg(x).arg(y);
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_POSITION).arg(id).arg(x).arg(y);
 	QString resp = sendData(data);
 //	qDebug() << "recvd" << resp;
 }
 
-void RealRepoClient::setDescription( int type, int id, QString desc )
+void RealRepoClient::setDescription( int id, QString desc )
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_DESCRIPTION).arg(type).arg(id).arg(desc);
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_SET_DESCRIPTION).arg(id).arg(desc);
 	QString resp = sendData(data);
 }
 
-QString RealRepoClient::getDescription( int type, int id )
+QString RealRepoClient::getDescription( int id )
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t").arg(CMD_GET_DESCRIPTION).arg(type).arg(id);
+	QString data = QString("%1\t%2\t").arg(CMD_GET_DESCRIPTION).arg(id);
 	QString resp = sendData(data);
 	return resp;
 }
 
-int RealRepoClient::setPropValue( int type, int id, QString name, QString value)
+int RealRepoClient::setPropValue( int id, QString name, QString value)
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_SET_PROPERTY).arg(type).arg(id).arg(name).arg(value);
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_PROPERTY).arg(id).arg(name).arg(value);
 	QString resp = sendData(data);
 	return resp.toInt();
 }
 
-QString RealRepoClient::getPropValue( int type, int id, QString name )
+QString RealRepoClient::getPropValue( int id, QString name )
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_GET_PROPERTY).arg(type).arg(id).arg(name);
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_GET_PROPERTY).arg(id).arg(name);
 	QString resp = sendData(data);
 	return resp;
 }
@@ -215,39 +215,39 @@ QString RealRepoClient::getObjectData(int id )
 	return resp;
 }
 
-QString RealRepoClient::getChildren( int type, int id )
+QString RealRepoClient::getChildren( int id )
 {
-	QString cmd = QString("%1\t%2\t%3").arg(CMD_GET_CHILDREN).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CHILDREN).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
 }
 
-QString RealRepoClient::getPosition( int type, int id )
+QString RealRepoClient::getPosition( int id )
 {
-	QString cmd = QString("%1\t%2\t%3").arg(CMD_GET_POSITION).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_POSITION).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
 }
 
-int RealRepoClient::setPosition(int type, int id, int x, int y )
+int RealRepoClient::setPosition( int id, int x, int y )
 {
-	QString cmd = QString("%1\t%2\t%3\t%4\t%5").arg(CMD_SET_POSITION).arg(type).arg(id).arg(x).arg(y);
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_POSITION).arg(id).arg(x).arg(y);
 	QString resp = sendData(cmd);
 	return resp.toInt();	
 }
 
-int RealRepoClient::setConfiguration( int type, int id, QString conf)
+int RealRepoClient::setConfiguration( int id, QString conf)
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_CONFIGURATION).arg(type).arg(id).arg(conf);
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_SET_CONFIGURATION).arg(id).arg(conf);
 	QString resp = sendData(cmd);
 	return resp.toInt();	
 }
 
-QString RealRepoClient::getConfiguration( int type, int id)
+QString RealRepoClient::getConfiguration( int id)
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_CONFIGURATION).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CONFIGURATION).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
 }
@@ -347,18 +347,18 @@ dbg;
 	return link;
 }
 
-QString RealRepoClient::getLinksByObject( int type, int id, int direction )
+QString RealRepoClient::getLinksByObject( int id, int direction )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_GET_LINKS_BY_OBJECT).arg(type).arg(id).arg(direction);
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_LINKS_BY_OBJECT).arg(id).arg(direction);
 	QString resp = sendData(cmd);
 	return resp;	
 }
 
-QString RealRepoClient::getObjectsByLink( int type, int id )
+QString RealRepoClient::getObjectsByLink( int id )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_OBJECTS_BY_LINK).arg(type).arg(id);
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_OBJECTS_BY_LINK).arg(id);
 	QString resp = sendData(cmd);
 	return resp;	
 }
@@ -402,10 +402,10 @@ int RealRepoClient::getTypeIdByName( const QString name )
 	return getTypeByName(name).getId();
 }
 
-void RealRepoClient::addLink( int type, int id, int link_id, int direction )
+void RealRepoClient::addLink( int id, int link_id, int direction )
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_ADD_LINK).arg(type).arg(id).arg(link_id).arg(direction);
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_ADD_LINK).arg(id).arg(link_id).arg(direction);
 	sendData(cmd);
 }
 

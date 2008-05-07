@@ -76,7 +76,7 @@ dbg;
 				RealRepoInfo info;
 				QString name = info.getColumnName(hashTypes[item->id], role);
 				qDebug() << "requested role:" << role << name;
-				QString val = repoClient->getPropValue(hashTypes[item->id], item->id, name);
+				QString val = repoClient->getPropValue(item->id, name);
 				return (val == "\t") ? QVariant() : val;
 /*
 				if ( hashElementProps.contains(item->id) ) {
@@ -115,7 +115,7 @@ dbg;
 		case Unreal::krnnNamedElement::nameRole:
 		case Qt::EditRole:
 			{
-				repoClient->setName(hashTypes[item->id], item->id, value.toString());
+				repoClient->setName(item->id, value.toString());
 				hashNames[item->id] = value.toString();
 			}
 			break;
@@ -123,8 +123,7 @@ dbg;
 			{
 				if ( type(item->parent) == Container ) {
 					qDebug() << "moving element " << item->id;
-					repoClient->setPosition(hashTypes[item->id], item->id,  
-										value.toPoint().x(), value.toPoint().y());
+					repoClient->setPosition(item->id, value.toPoint().x(), value.toPoint().y());
 				}
 				break;
 			}
@@ -139,7 +138,7 @@ dbg;
 					}
 					result.chop(1);
 
-					repoClient->setConfiguration(hashTypes[item->id],item->id,result);
+					repoClient->setConfiguration(item->id,result);
 
 				}
 				break;
@@ -149,7 +148,7 @@ dbg;
 			if ( role >= Unreal::UserRole ) {
 				
 				// FIXME
-				repoClient->setPropValue( hashTypes[item->id], item->id, 
+				repoClient->setPropValue(item->id, 
 					info.getColumnName(hashTypes[item->id],role), value.toString());
 
 			}
@@ -409,8 +408,8 @@ dbg;
 					//FIXME
 					id = repoClient->createEntityWithParent(newtype,
 								"anonymous", parentItem->id);
-					repoClient->setPosition(newtype, id, (int) newPos.x(), (int) newPos.y());
-					repoClient->setConfiguration(newtype, id, "(0,0);(50,0);(50,70);(0,70)");
+					repoClient->setPosition(id, (int) newPos.x(), (int) newPos.y());
+					repoClient->setConfiguration(id, "(0,0);(50,0);(50,70);(0,70)");
 					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
 				}
@@ -612,14 +611,13 @@ dbg;
 			hashTreeItems[item->id].append(item);
 		}
 	} else {
-		QStringList children = repoClient->getChildren(hashTypes[root->id], 
-								root->id).split("\t", QString::SkipEmptyParts);
+		QStringList children = repoClient->getChildren(root->id).split("\t", QString::SkipEmptyParts);
 		qDebug() << children.size() << children;					
 		for( int i=0; i<children.size(); i++ ){
 			int _id = children[i].toInt();
 			QString data = repoClient->getObjectData(_id);
-			int _type = data.section("\t",2,2).toInt();
-			QString coordinates = repoClient->getPosition(_type, _id);
+//			int _type = data.section("\t",2,2).toInt();
+			QString coordinates = repoClient->getPosition(_id);
 			
 			RepoTreeItem *item = new RepoTreeItem;
 			item->parent = root;
@@ -640,7 +638,7 @@ dbg;
 		
 			// FIXME: parse some better way
 			QPolygon newConfig; 
-			QStringList pointList = repoClient->getConfiguration(_type, _id).split(';',QString::SkipEmptyParts);
+			QStringList pointList = repoClient->getConfiguration(_id).split(';',QString::SkipEmptyParts);
 			foreach ( QString pointData, pointList ) {
 				QStringList coords = pointData.split(QRegExp("\\(|\\)|,"),QString::SkipEmptyParts);
 				newConfig << QPoint(coords.at(0).toInt(), coords.at(1).toInt());
