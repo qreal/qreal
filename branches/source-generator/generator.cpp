@@ -788,7 +788,7 @@ void Generator::genClasses(){
                 "\tbrush.setStyle(Qt::SolidPattern);\n";
             if( style.isEmpty() )
                 style = "filled_arrow";
-            if( style == "empty_arrow" || style == "empty_rhomb" )        
+            if( style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" )        
                 out << "\tbrush.setColor(Qt::white);\n";
             if( style == "filled_arrow" || style == "filled_rhomb" )        
                 out << "\tbrush.setColor(Qt::black);\n";
@@ -806,7 +806,13 @@ void Generator::genClasses(){
                 out << "\tstatic const QPointF points[] = {\n"
                     "\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
                     "\tpainter->drawPolyline(points, 3);\n\t";
-            out << "\tpainter->setBrush(old);\n}\n\n"; 
+            if( style == "complex_arrow" )
+                out << "\tstatic const QPointF points[] = {"
+                    "\n\t\tQPointF(-15,30),\n\t\tQPointF(-10,10),"
+                    "\n\t\tQPointF(0,0),\n\t\tQPointF(10,10),"
+                    "\n\t\tQPointF(15,30),\n\t\tQPointF(0,23),\n\t\tQPointF(-15,30)\n\t};\n"
+                    "\tpainter->drawPolyline(points, 7);\n\t";
+            out << "painter->setBrush(old);\n}\n\n"; 
 	    
         }    
         else
