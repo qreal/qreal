@@ -19,8 +19,7 @@ void EditorViewScene::clearScene()
 	QList < QGraphicsItem * >list = items();
 	QList < QGraphicsItem * >::Iterator it = list.begin();
 	for (; it != list.end(); ++it) {
-		if (*it)
-			delete *it;
+		removeItem(*it);
 	}
 }
 
