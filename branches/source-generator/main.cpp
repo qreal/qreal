@@ -11,14 +11,15 @@ int main()
 	<< "class_metamodel.xml"
 	<< "usecase_metamodel.xml"
 	<< "sequence_metamodel.xml"
-//	<< "communication_metamodel.xml"
-//	<< "statemachines_metamodel.xml"
-//	<< "deployment.xml"
-	<< "component_metamodel.xml"
+	//<< "communication_metamodel.xml"
+	<< "statemachines_metamodel.xml"
+	//<< "deployment.xml"
+	//<< "component_metamodel.xml"
 	//<< "timing_metamodel.xml"
-	//<< "activity_metamodel.xml"
-	//<< "package.xml"
-	<< "bpel.xml";
+	<< "activity_metamodel.xml"
+	<< "package.xml"	
+	<< "bpel.xml"
+	<< "qrealparallel_metamodel.xml";
 	new Generator(l);
 	return 0;
 }
