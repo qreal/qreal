@@ -333,6 +333,13 @@ RepoIce::RepoClientIceI::getObjectsListByType(int typeId,
 {
     return repoClient.getObjectsListByType(typeId).toVector().toStdVector();
 }
+
+::RepoIce::QIntList
+RepoIce::RepoClientIceI::getLinks(const Ice::Current&)
+{
+    return repoClient.getLinks().toVector().toStdVector();
+}
+
 ::RepoIce::RealTypeIcePrx 
 RepoIce::RepoClientIceI::getTypeByName(const string& name , const Ice::Current&)
 {
@@ -380,13 +387,13 @@ RepoIce::RepoClientIceI::getObjectById(int id,
 }
 
 int
-RepoIce::RepoClientIceI::createEntity(int type, const string& name, const Ice::Current&)
+RepoIce::RepoClientIceI::createObject(int type, const string& name, const Ice::Current&)
 {
 	return repoClient.createEntity(type, QString(name.c_str()));
 }
 
 int
-RepoIce::RepoClientIceI::createEntityWithParent(int type, const string& name, int parent, const Ice::Current&)
+RepoIce::RepoClientIceI::createObjectWithParent(int type, const string& name, int parent, const Ice::Current&)
 {
 	return repoClient.createEntityWithParent(type, QString(name.c_str()), parent);
 }
@@ -424,3 +431,4 @@ RepoIce::RepoClientIceI::deleteLink(int id,
 		throw "not implemented";
     //return repoClient.deleteLink(QString(name.c_str()));
 }
+

@@ -6,9 +6,9 @@ module RepoIce
 	enum MetaTypeIce
 	{
 		rObject, //типы объектов на диаграмме (например invoke, exit, if, foreach, throw, reply)
-		link, //Рёбра
-		dataType, //типы данных (например базовые int, double, string, char и расширенные -- записи (структуры), с описаннием в виде xsd)
-		rawType //типы хранимых RAW данных (строк) (например wsdl, xsd, параметры проекта)
+		rLink, //Рёбра
+		rDataType, //типы данных (например базовые int, double, string, char и расширенные -- записи (структуры), с описаннием в виде xsd)
+		rRawType //типы хранимых RAW данных (строк) (например wsdl, xsd, параметры проекта)
 	};
 
 	// Типы данных 
@@ -43,7 +43,7 @@ module RepoIce
 		idempotent void setDescription(string descritption);
     
 		idempotent void setProperty(string name, string val ); //установить свойство
-		idempotent string getProperty(string name ) ; //в случае отсутсвия возвращает пустую строку ""
+		idempotent string getProperty(string name ) ; //в случае отсутствия возвращает пустую строку ""
 		idempotent int getPropertiesCount(); // возвращает кол-во свойств
     
 		idempotent int getTypeId() ; // тип
@@ -65,14 +65,19 @@ module RepoIce
 		idempotent QIntList getAllLinks(int direction) ; // получить линки
 		idempotent QIntList getIncomingLinks() ;
 		idempotent QIntList getOutcomingLinks() ;
+		
 		void addIncomingLink(int linkId);
 		void addOutcomingLink(int linkId);
+
+		void removeIncomingLink(int linkId);
+		void removeOutcomingLink(int linkId);
 	};
 
 	interface RealLinkIce
 	{
 		idempotent int getId();
 		idempotent void setName(string name);
+
 		idempotent void setProperty(string name, string val ); //установить свойство
 		idempotent string getProperty(string name ); //в случае отсутсвия возвращает пустую строку ""
 		idempotent int getPropertiesCount(); // возвращает кол-во свойств
@@ -89,16 +94,18 @@ module RepoIce
 		idempotent QIntList getAllTypes(); // вернуть все типы
 		idempotent QIntList getTypesByMetaTypeIce(MetaTypeIce mType); // вернуть типы по метатипу
 		idempotent RealTypeIce* getTypeById(int id); // вернуть тип по id
-		idempotent QIntList getObjectsListByType(int id); // вернуть все объекты конкретного типа
 		idempotent RealTypeIce* getTypeByName(string name); // вернуть тип по имени
 		idempotent int getTypeIdByName(string name ); // вернуть id типа по имени
+		
+		idempotent QIntList getObjectsListByType(int id); // вернуть все объекты конкретного типа
+		idempotent QIntList getLinks(); //вернуть все линки
 
-		int createType(string name); //создать тип. Возвращает Id созданного типа.
-		void deleteType(int id); //удалить тип
+		//int createType(string name); //создать тип. Возвращает Id созданного типа.
+		//void deleteType(int id); //удалить тип
 
 		idempotent RealObjectIce* getObjectById(int id); // вернуть по id
-		int createEntity(int type, string name); //создать. Возвращает Id созданного.
-		int createEntityWithParent(int type, string name, int parent); //создать. Возвращает Id созданного.
+		int createObject(int type, string name); //создать. Возвращает Id созданного.
+		int createObjectWithParent(int type, string name, int parent); //создать. Возвращает Id созданного.
 		void deleteObject(int id); //удалить
 
 		idempotent RealLinkIce* getLinkById(int id); // вернуть по id

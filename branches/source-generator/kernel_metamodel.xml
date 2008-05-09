@@ -86,7 +86,7 @@
 					</generalization>
 				</generalizations>
 				<properties>
-					<property name="Language" type="string" />
+					<property name="language" type="string" />
 				</properties>
 			</logic>
 		</node>
