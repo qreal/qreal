@@ -94,6 +94,11 @@ void RealType::addObject( const int id )
 		m_objects << id;
 }
 
+void RealType::deleteObject( const int id ) 
+{
+	m_objects.removeAll(id);
+}
+
 QString RealType::toString() const
 {
 	QString res = QString("%1\t%2\t%3\t%4\t").arg(m_id).arg(m_name).arg(m_description).arg(m_metatype);

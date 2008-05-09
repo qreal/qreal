@@ -50,8 +50,7 @@ void QRealRepoServerThread::run()
   
 }
 
-void QRealRepoServerThread::handleCommand(QString const &data
-, QTcpSocket *const socket)
+void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const socket)
 {
   dbg;
   QString log = "";
@@ -77,38 +76,67 @@ void QRealRepoServerThread::handleCommand(QString const &data
 	}
 	case CMD_CREATE_ENTITY:
 	{
-      int type = data.section("\t", 1, 1).toInt();
-      int id = ++mCounter;
-      int parent = data.section("\t", 3, 3).toInt();
-      log += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
-      QString name = data.section("\t", 2, 2);
-      if( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
-        Object *obj = new Object(id, type, 0, 0);
-        obj->setName(name);
-	obj->setParent(parent);
-        mRoot->addObject(id, obj);
-        log += QString(", object created, name %1").arg(name);
-      } else if( mTypesInfo->analyseType(type) == TYPE_LINK ){
-        Link *link = new Link(id, type);
-        link->setName(name);
-	link->setParent(parent);
-        mRoot->addLink(id, link);
-        log += QString(", link created, name %1").arg(name);
-      }
-      if( Object *obj = mRoot->getObject(parent) ){
-        obj->addChild(id);
-      }
+		int type = data.section("\t", 1, 1).toInt();
+		int id = ++mCounter;
+		int parent = data.section("\t", 3, 3).toInt();
+		log += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
+		QString name = data.section("\t", 2, 2);
+		if( mTypesInfo->analyseType(type) == TYPE_OBJECT ){
+			Object *obj = new Object(id, type, 0, 0);
+			obj->setName(name);
+			obj->setParent(parent);
+			obj->setConfiguration("(0,0);(50,0);(50,70);(0,70)");
+			mRoot->addObject(id, obj);
+			log += QString(", object created, name %1").arg(name);
+		} else if( mTypesInfo->analyseType(type) == TYPE_LINK ){
+			Link *link = new Link(id, type);
+			link->setName(name);
+			link->setParent(parent);
+			link->setConfiguration("(0,0);(200,60)");
+			mRoot->addLink(id, link);
+			log += QString(", link created, name %1").arg(name);
+		}
+		if( Object *obj = mRoot->getObject(parent) ){
+			obj->addChild(id);
+		}
       
-      mTypesInfo->elementCreated(type, id);
-      resp = QString::number(id);
-      break;
-    }
-    case CMD_GET_TYPES_COUNT:
-    {
-      resp = QString::number(mTypesInfo->getTypesCount());
-      log += QString(", sending types count: %1").arg(resp);
-      break;
-    }
+		mTypesInfo->elementCreated(type, id);
+		resp = QString::number(id);
+		break;
+	}
+	case CMD_DELETE_ENTITY:
+	{
+		int id = data.section("\t", 1, 1).toInt();
+		if( Object *obj = mRoot->getObject(id) ){
+			if( Object *parent = mRoot->getObject(obj->getParent()) )
+				parent->removeChild(id);
+			if( obj->childrenCount() != 0 ){
+				QStringList children = obj->childrenToString().split("\t");
+				foreach( QString child, children )
+					if( child.toInt() != 0 )
+						handleCommand(QString("%1\t%2\t").arg(CMD_DELETE_ENTITY).arg(child), socket);
+			}
+			mTypesInfo->elementDeleted(obj->getType(), id);
+			mRoot->deleteObject(id);
+		}	
+		else if( Link *link = mRoot->getLink(id) ){
+			if( Object *parent = mRoot->getObject(link->getParent()) )
+				parent->removeChild(id);
+			mTypesInfo->elementDeleted(link->getType(), id);
+			mRoot->deleteLink(id);
+		}	
+		else
+			qDebug() << "incorrect entity requested. id" << id;
+		log += QString(", deleted entity [%1]").arg(id);
+		resp = QString::number(STATUS_OK);
+		break;
+	}
+	case CMD_GET_TYPES_COUNT:
+	{
+		resp = QString::number(mTypesInfo->getTypesCount());
+		log += QString(", sending types count: %1").arg(resp);
+		break;
+	}
     case CMD_GET_ALL_TYPES: // TODO: replace with typesInfo call or something like that
     {
       int count = mTypesInfo->getTypesCount();
@@ -242,13 +270,14 @@ void QRealRepoServerThread::handleCommand(QString const &data
 	case CMD_GET_CONFIGURATION:
 	{
 		int id = data.section("\t", 1, 1).toInt();
-		resp = "\t";
 		if( Object *obj = mRoot->getObject(id) )
 			resp = obj->getConfiguration();
 		else if( Link *link = mRoot->getLink(id) )
 			resp = link->getConfiguration();
 		else
 			qDebug() << "incorrent entity requested. id:  " << id;
+		if( resp.isEmpty() )	
+			resp = "\t";
 		log += QString(", sending conf for %1 - [%2] ").arg(id).arg(resp);
 		break;
 	}

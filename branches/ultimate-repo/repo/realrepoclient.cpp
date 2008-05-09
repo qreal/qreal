@@ -119,10 +119,8 @@ int RealRepoClient::createEntity(int type, QString name)
 {
 dbg;
 	QString data = QString("%1\t%2\t%3\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name);
-//	qDebug() << "requesting for" << type << name;
 	QString resp = sendData(data);
 	return resp.toInt();
-//	qDebug() << "recvd" << resp;
 }
 
 int RealRepoClient::createEntityWithParent(int type, QString name, int parent)
@@ -136,7 +134,6 @@ dbg;
 
 int RealRepoClient::createLink(QString name)
 {
-
 // It seems to me that the problem with types can occur. 
 // It should thoroughly be tested and then this comment removed.
 // Type N18 name: krneRelationship description: Relationship
@@ -147,6 +144,14 @@ int RealRepoClient::createLink(QString name)
 
 	return createEntity(19, name);
 }
+
+void RealRepoClient::deleteEntity(int id)
+{
+dbg;
+	QString data = QString("%1\t%2\t").arg(CMD_DELETE_ENTITY).arg(id);
+	QString resp = sendData(data);
+}
+
 
 int RealRepoClient::getTypesCount()
 {

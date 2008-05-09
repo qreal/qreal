@@ -1,5 +1,15 @@
 #include "classes.h"
 
+Root::~Root()
+{
+	foreach( Object *obj, objects.values() )
+		delete obj;
+	foreach( Link *link, links.values() )
+		delete link;
+	objects.clear();
+	links.clear();
+}
+
 void Root::addObject( int id, Object* obj )
 {
 	objects[id] = obj;
@@ -8,6 +18,18 @@ void Root::addObject( int id, Object* obj )
 void Root::addLink( int id, Link* link )
 {
 	links[id] = link;
+}
+
+void Root::deleteObject( int id )
+{
+	int count = objects.remove(id);
+	qDebug() << "deleted " << count << "objects";
+}
+
+void Root::deleteLink( int id )
+{
+	int count = objects.remove(id);
+	qDebug() << "deleted " << count << "links";
 }
 
 int Root::getObjectsSize()
@@ -110,6 +132,11 @@ QString Object::getName()
 	return name;
 }
 
+int Object::getParent()
+{
+	return parent;
+}
+
 void Object::setParent( int id )
 {
 	parent  = id;
@@ -144,6 +171,12 @@ void Object::addChild( int child )
 {
 	if( !children.contains(child) )
 		children << child;
+}
+
+void Object::removeChild( int child )
+{
+	int count = children.removeAll(child);
+	qDebug() << "removed" << count << "children of element" << id;
 }
 
 QString Object::childrenToString()
@@ -275,6 +308,11 @@ void Link::setName( QString arg )
 void Link::setParent( int id )
 {
 	parent  = id;
+}
+
+int Link::getParent()
+{
+	return parent;
 }
 
 void Link::setDescription( QString arg )

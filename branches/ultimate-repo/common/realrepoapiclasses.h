@@ -80,6 +80,7 @@ namespace QRealTypes
 		QIntList getObjects() const; // returns all objects of this particular type
 		
 		void addObject( int id );
+		void deleteObject( int id );
 
 		QString toString() const;
 		void loadFromString( const QString& );

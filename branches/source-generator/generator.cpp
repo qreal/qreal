@@ -456,6 +456,7 @@ void Generator::genSQLScripts()
 		"\tQString getTypesByMetatype( const MetaType );\n"
 		"\tint analyseType( int );\n"
 		"\tvoid elementCreated( int, int );\n"
+		"\tvoid elementDeleted( int, int );\n"
 		"private:\n"
 		"};\n\n";
 
@@ -540,6 +541,10 @@ void Generator::genSQLScripts()
 	// elementCreated
 	out2 << "void RepoTypesInfo::elementCreated( int type, int id )\n{\n"
 		"\tmap[type].addObject(id);\n}\n\n";
+	
+	// elementDeleted
+	out2 << "void RepoTypesInfo::elementDeleted( int type, int id )\n{\n"
+		"\tmap[type].deleteObject(id);\n}\n\n";
 
 	file2.close();
 	dir.cdUp();

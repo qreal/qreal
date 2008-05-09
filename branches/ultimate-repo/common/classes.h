@@ -17,9 +17,13 @@ class Object;
 class Root
 {
 public:
+	~Root();
+
 	// called while creating new objects
 	void addObject( int id, Object* obj );
 	void addLink( int id, Link* link );
+	void deleteObject( int id );
+	void deleteLink( int id );
 
 	Object * getObject( int );
 	Link * getLink( int );
@@ -64,6 +68,7 @@ public:
 	QString getName();
 	void setName( QString arg );
 
+	int getParent();
 	void setParent( int );
 
 	QString getDescription();
@@ -79,6 +84,7 @@ public:
 
 	// add child to the children list, nothing more
 	void addChild( int );
+	void removeChild( int );
 
 	// returns list of children entities' IDs
 	QString childrenToString();
@@ -129,6 +135,7 @@ public:
 	QString getName();
 	void setName( QString arg );
 	
+	int getParent();
 	void setParent( int );
 	
 	QString getDescription();

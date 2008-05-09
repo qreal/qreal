@@ -275,9 +275,9 @@ dbg;
 	return 1;
 }
 
-bool RealRepoModel::removeRows ( int /*row*/, int /*count*/, const QModelIndex & /*parent*/ )
+bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent )
 {
-/*	RepoTreeItem *parentItem;
+	RepoTreeItem *parentItem;
 
 	if ( parent.isValid() )
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
@@ -285,47 +285,31 @@ bool RealRepoModel::removeRows ( int /*row*/, int /*count*/, const QModelIndex &
 		return false;
 	}
 
-	if ( type( parentItem ) == Container ) {
+	if ( 1 ){ //type( parentItem ) == Container ) {
 		beginRemoveRows(parent,row,row+count-1);
-		QSqlQuery q(db);
-		q.prepare("DELETE FROM diagram WHERE el_id=:id AND diagram_id=:did ;");
+		for ( int i = row; i < row+count; i++ ){ 
+			qDebug() << "deleting element " << parentItem->children[i]->id;
+			repoClient->deleteEntity(parentItem->children[i]->id);
+		}	
 
-			for ( int i = row; i < row+count; i++ ) {
-				// qDebug() << "deleting row" << i << "with id" << parentItem->children[i]->id << row << row+count;
+		for ( int i = row; i < row+count; i++ ) {
+			hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
 
-				q.bindValue(":id",  parentItem->children[i]->id );
-				q.bindValue(":did", parentItem->id);
+			cleanupTree(parentItem->children.at(row));
+			delete parentItem->children.at(row);
 
-				if ( !q.exec() )
-					qDebug() << q.executedQuery() << db.lastError().text();
-*/
-					/*  For complete dezztruction of element :)
-						q.clear();
+			parentItem->children.removeAt(row);
+			hashChildren[parentItem->id].removeAt(row);
+		}
 
-						q.prepare(QString("DELETE FROM el_%1 WHERE id=%2").arg(hashTypes[parentItem->children[i]->id])
-						.arg(parentItem->children[i]->id));
-						q.exec(); */
-/*			}
+		for ( int i = 0; i < parentItem->children.size(); i++ ) 
+			parentItem->children[i]->row = i;
 
-			for ( int i = row; i < row+count; i++ ) {
-				hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
-
-				cleanupTree(parentItem->children.at(row));
-				delete parentItem->children.at(row);
-
-				parentItem->children.removeAt(row);
-				hashChildren[parentItem->id].removeAt(row);
-			}
-
-			for ( int i = 0; i < parentItem->children.size(); i++ ) {
-				parentItem->children[i]->row = i;
-			}
-
-			hashChildCount[parentItem->id] -= count;
+		hashChildCount[parentItem->id] -= count;
 
 		endRemoveRows();
 	}
-*/
+
 	return false;
 }
 
@@ -409,7 +393,6 @@ dbg;
 					id = repoClient->createEntityWithParent(newtype,
 								"anonymous", parentItem->id);
 					repoClient->setPosition(id, (int) newPos.x(), (int) newPos.y());
-					repoClient->setConfiguration(id, "(0,0);(50,0);(50,70);(0,70)");
 					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
 				}

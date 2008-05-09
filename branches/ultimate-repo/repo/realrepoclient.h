@@ -33,6 +33,8 @@ public:
 	int createEntityWithParent(int type, QString name, int parent);
 	int createLink(QString name);
 
+	void deleteEntity( int id );
+
 	void addLink( int obj_id, int link_id, int direction );
 	void removeLink( int obj_id, int link_id, int direction );
 

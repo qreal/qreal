@@ -5,16 +5,17 @@ const int STATUS_ERROR	= -1;
 const int STATUS_OK	= 1;
 
 const int CMD_CREATE_ENTITY		= 1;
-const int CMD_SET_NAME			= 2;
-const int CMD_GET_NAME			= 3;
-const int CMD_SET_POSITION		= 4;
-const int CMD_GET_POSITION		= 5;
-const int CMD_SET_CONFIGURATION		= 6;
-const int CMD_GET_CONFIGURATION		= 7;
-const int CMD_SET_PROPERTY		= 8;
-const int CMD_GET_PROPERTY		= 9;
-const int CMD_SET_DESCRIPTION		= 10;
-const int CMD_GET_DESCRIPTION		= 11;
+const int CMD_DELETE_ENTITY		= 2;
+const int CMD_SET_NAME			= 3;
+const int CMD_GET_NAME			= 4;
+const int CMD_SET_POSITION		= 5;
+const int CMD_GET_POSITION		= 6;
+const int CMD_SET_CONFIGURATION	= 7;
+const int CMD_GET_CONFIGURATION	= 8;
+const int CMD_SET_PROPERTY		= 9;
+const int CMD_GET_PROPERTY		= 10;
+const int CMD_SET_DESCRIPTION	= 11;
+const int CMD_GET_DESCRIPTION	= 12;
 
 const int CMD_GET_ENTITY		= 20;
 const int CMD_GET_OBJECTS_BY_TYPE	= 21;
