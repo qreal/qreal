@@ -77,6 +77,7 @@ module RepoIce
 	{
 		idempotent int getId();
 		idempotent void setName(string name);
+		idempotent string getName();
 
 		idempotent void setProperty(string name, string val ); //установить свойство
 		idempotent string getProperty(string name ); //в случае отсутсвия возвращает пустую строку ""

@@ -134,15 +134,7 @@ dbg;
 
 int RealRepoClient::createLink(QString name)
 {
-// It seems to me that the problem with types can occur. 
-// It should thoroughly be tested and then this comment removed.
-// Type N18 name: krneRelationship description: Relationship
-// Type N19 name: krneDirRelationship description: DirectedRelationship
-// Type N28 name: traceeTraceRelationship description: TraceRelationship
-// Type N38 name: reqeP2N description: Feature P2N Relationship
-// Type N154 name: bplRelationship description: Relationship
-
-	return createObject(19, name);
+	return createObject(getTypeIdByName("krneDirRelationship"), name);
 }
 
 void RealRepoClient::deleteObject(int id)
