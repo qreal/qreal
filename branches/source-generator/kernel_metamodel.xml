@@ -85,6 +85,9 @@
 						<parent parent_id="krnnNamedElement" />
 					</generalization>
 				</generalizations>
+				<properties>
+					<property name="Language" type="string" />
+				</properties>
 			</logic>
 		</node>
 		<!-- Named Element -->
