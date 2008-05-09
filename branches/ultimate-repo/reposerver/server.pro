@@ -10,6 +10,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 OBJECTS_DIR = obj
 MOC_DIR = moc
+CONFIG += console
 
 # Input
 HEADERS += repothread.h server.h dbg.h ../common/classes.h ../common/realrepoapiclasses.h ../repo/realrepoclient.h
