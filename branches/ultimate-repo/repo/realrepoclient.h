@@ -34,6 +34,7 @@ public:
 	int createLink(QString name);
 
 	void deleteObject( int id );
+	void deleteLink( int id );
 
 	void addLink( int obj_id, int link_id, int direction );
 	void removeLink( int obj_id, int link_id, int direction );

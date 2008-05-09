@@ -152,6 +152,11 @@ dbg;
 	QString resp = sendData(data);
 }
 
+void RealRepoClient::deleteLink(int id)
+{
+	deleteObject(id);
+}
+
 
 int RealRepoClient::getTypesCount()
 {

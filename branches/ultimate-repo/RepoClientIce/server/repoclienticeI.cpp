@@ -2,6 +2,10 @@
 
 Ice::ObjectAdapterPtr RepoIce::RepoClientIceI::_adapter;      // static member
 
+/* ****************************************************************** *
+ * RealTypeIceI
+ * ****************************************************************** */
+
 RepoIce::RealTypeIceI::RealTypeIceI (QRealTypes::RealType _realType) : realType(_realType)
 {
 }
@@ -77,7 +81,11 @@ RepoIce::RealTypeIceI::getObjects(const Ice::Current&)
 {
     return realType.getObjects().toVector().toStdVector();
 }
-		
+
+/* ****************************************************************** *
+ * RealObjectIceI
+ * ****************************************************************** */
+
 RepoIce::RealObjectIceI::RealObjectIceI (QRealTypes::RealObject _realObject): realObject(_realObject)
 {
 }
@@ -239,6 +247,24 @@ RepoIce::RealObjectIceI::addOutcomingLink(int linkId,
 	realObject.addOutcomingLink(linkId);
 }
 
+void
+RepoIce::RealObjectIceI::removeIncomingLink(int linkId,
+                                         const Ice::Current&)
+{
+	realObject.removeIncomingLink(linkId);
+}
+
+void
+RepoIce::RealObjectIceI::removeOutcomingLink(int linkId,
+                                          const Ice::Current&)
+{
+	realObject.removeOutcomingLink(linkId);
+}
+
+/* ****************************************************************** *
+ * RealLinkIceI
+ * ****************************************************************** */
+
 RepoIce::RealLinkIceI::RealLinkIceI (QRealTypes::RealLink _realLink) : realLink(_realLink)
 {
 }
@@ -254,6 +280,12 @@ RepoIce::RealLinkIceI::setName(const string& name,
                                const Ice::Current&)
 {
 	realLink.setName(QString(name.c_str()));
+}
+
+string 
+RepoIce::RealLinkIceI::getName(const Ice::Current&)
+{
+	return realLink.getName().toStdString();
 }
 
 void
@@ -303,6 +335,10 @@ RepoIce::RealLinkIceI::setToId(int id,
 	realLink.setToId(id);
 }
 
+/* ****************************************************************** *
+ * RepoClientIceI
+ * ****************************************************************** */
+
 ::RepoIce::QIntList
 RepoIce::RepoClientIceI::getAllTypes(const Ice::Current&)
 {
@@ -320,11 +356,27 @@ RepoIce::RepoClientIceI::getTypesByMetaTypeIce(::RepoIce::MetaTypeIce mType,
 RepoIce::RepoClientIceI::getTypeById(int id,
                                      const Ice::Current&)
 {
-	//Todo: утечка памяти
+	//FIXME: утечка памяти
   RealTypeIcePtr servant = new RealTypeIceI(repoClient.getTypeById(id));
   RealTypeIcePrx proxy = RealTypeIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
 
 	return proxy;
+}
+
+::RepoIce::RealTypeIcePrx 
+RepoIce::RepoClientIceI::getTypeByName(const string& name , const Ice::Current&)
+{
+	//FIXME: утечка памяти
+  RealTypeIcePtr servant = new RealTypeIceI(repoClient.getTypeByName(QString(name.c_str())));
+  RealTypeIcePrx proxy = RealTypeIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
+
+	return proxy;
+}
+
+int 
+RepoIce::RepoClientIceI::getTypeIdByName(const string& name, const Ice::Current& )
+{
+	return repoClient.getTypeIdByName(QString(name.c_str()));
 }
 
 ::RepoIce::QIntList
@@ -340,46 +392,29 @@ RepoIce::RepoClientIceI::getLinks(const Ice::Current&)
     return repoClient.getLinks().toVector().toStdVector();
 }
 
-::RepoIce::RealTypeIcePrx 
-RepoIce::RepoClientIceI::getTypeByName(const string& name , const Ice::Current&)
-{
-	//Todo: утечка памяти
-  RealTypeIcePtr servant = new RealTypeIceI(repoClient.getTypeByName(QString(name.c_str())));
-  RealTypeIcePrx proxy = RealTypeIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
-
-	return proxy;
-}
-
-int 
-RepoIce::RepoClientIceI::getTypeIdByName(const string& name, const Ice::Current& )
-{
-	return repoClient.getTypeIdByName(QString(name.c_str()));
-}
-
-
-int
-RepoIce::RepoClientIceI::createType(const string& /*name*/,
-                                    const Ice::Current&)
-{
+//int
+//RepoIce::RepoClientIceI::createType(const string& /*name*/,
+//                                    const Ice::Current&)
+//{
 		//Seems it's deprecated
     //return repoClient.createType(QString(name.c_str()));
-		throw "Deprecated";
-}
+//		throw "Deprecated";
+//}
 
-void
-RepoIce::RepoClientIceI::deleteType(int /*id*/,
-                                    const Ice::Current&)
-{
+//void
+//RepoIce::RepoClientIceI::deleteType(int /*id*/,
+//                                    const Ice::Current&)
+//{
 	//Seems it's deprecated
 	//repoClient.deleteType(id);
-		throw "Deprecated";
-}
+//		throw "Deprecated";
+//}
 
 ::RepoIce::RealObjectIcePrx
 RepoIce::RepoClientIceI::getObjectById(int id,
                                        const Ice::Current&)
 {
-	//Todo: утечка памяти
+	//FIXME: утечка памяти
   RealObjectIcePtr servant = new RealObjectIceI(repoClient.getObjectById(id));
   RealObjectIcePrx proxy = RealObjectIcePrx::uncheckedCast(_adapter->addWithUUID(servant));
 
@@ -389,21 +424,20 @@ RepoIce::RepoClientIceI::getObjectById(int id,
 int
 RepoIce::RepoClientIceI::createObject(int type, const string& name, const Ice::Current&)
 {
-	return repoClient.createEntity(type, QString(name.c_str()));
+	return repoClient.createObject(type, QString(name.c_str()));
 }
 
 int
 RepoIce::RepoClientIceI::createObjectWithParent(int type, const string& name, int parent, const Ice::Current&)
 {
-	return repoClient.createEntityWithParent(type, QString(name.c_str()), parent);
+	return repoClient.createObjectWithParent(type, QString(name.c_str()), parent);
 }
 
 void
 RepoIce::RepoClientIceI::deleteObject(int id,
                                       const Ice::Current&)
 {
-		throw "Not Implemented";
-    //return repoClient.deleteObject(QString(name.c_str()));
+    return repoClient.deleteObject(id);
 }
 
 ::RepoIce::RealLinkIcePrx
@@ -428,7 +462,6 @@ void
 RepoIce::RepoClientIceI::deleteLink(int id,
                                     const Ice::Current&)
 {
-		throw "not implemented";
-    //return repoClient.deleteLink(QString(name.c_str()));
+    return repoClient.deleteLink(id);
 }
 
