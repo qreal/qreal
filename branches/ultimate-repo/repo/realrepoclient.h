@@ -44,6 +44,7 @@ public:
 
 	QString getObjectsByType( int type );
 	QIntList getObjectsListByType( int type );
+	QIntList getLinks();
 	
 	QString getObjectData( int id );
 	QString getEntireObject( int id );
