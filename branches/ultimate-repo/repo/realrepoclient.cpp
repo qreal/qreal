@@ -115,7 +115,7 @@ dbg;
 	return resp;
 }
 
-int RealRepoClient::createEntity(int type, QString name)
+int RealRepoClient::createObject(int type, QString name)
 {
 dbg;
 	QString data = QString("%1\t%2\t%3\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name);
@@ -123,7 +123,7 @@ dbg;
 	return resp.toInt();
 }
 
-int RealRepoClient::createEntityWithParent(int type, QString name, int parent)
+int RealRepoClient::createObjectWithParent(int type, QString name, int parent)
 {
 dbg;
 	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent);
@@ -142,10 +142,10 @@ int RealRepoClient::createLink(QString name)
 // Type N38 name: reqeP2N description: Feature P2N Relationship
 // Type N154 name: bplRelationship description: Relationship
 
-	return createEntity(19, name);
+	return createObject(19, name);
 }
 
-void RealRepoClient::deleteEntity(int id)
+void RealRepoClient::deleteObject(int id)
 {
 dbg;
 	QString data = QString("%1\t%2\t").arg(CMD_DELETE_ENTITY).arg(id);

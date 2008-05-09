@@ -289,7 +289,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		beginRemoveRows(parent,row,row+count-1);
 		for ( int i = row; i < row+count; i++ ){ 
 			qDebug() << "deleting element " << parentItem->children[i]->id;
-			repoClient->deleteEntity(parentItem->children[i]->id);
+			repoClient->deleteObject(parentItem->children[i]->id);
 		}	
 
 		for ( int i = row; i < row+count; i++ ) {
@@ -373,7 +373,7 @@ dbg;
 				
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				// FIXME
-				int id = repoClient->createEntity(newtype, "anonymous");
+				int id = repoClient->createObject(newtype, "anonymous");
 				qDebug() << "\tcreating new item3" << parentItem->id << id << newtype;
 				createItem(parentItem, id, newtype);
 				endInsertRows();
@@ -390,7 +390,7 @@ dbg;
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
 					//FIXME
-					id = repoClient->createEntityWithParent(newtype,
+					id = repoClient->createObjectWithParent(newtype,
 								"anonymous", parentItem->id);
 					repoClient->setPosition(id, (int) newPos.x(), (int) newPos.y());
 					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;

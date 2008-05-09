@@ -29,11 +29,11 @@ public:
 	int setPropValue( int id, QString name, QString value);
 	QString getPropValue(  int id, QString name );
 
-	int createEntity( int type, QString name );
-	int createEntityWithParent(int type, QString name, int parent);
+	int createObject( int type, QString name );
+	int createObjectWithParent(int type, QString name, int parent);
 	int createLink(QString name);
 
-	void deleteEntity( int id );
+	void deleteObject( int id );
 
 	void addLink( int obj_id, int link_id, int direction );
 	void removeLink( int obj_id, int link_id, int direction );
