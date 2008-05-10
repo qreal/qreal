@@ -225,7 +225,7 @@ QIntList RealRepoClient::getObjectsListByType( int type )
 
 QIntList RealRepoClient::getLinks()
 {
-	return getObjectsListByType(getTypeIdByName("krneRelationship"));
+	return getObjectsListByType(getTypeIdByName("krneDirRelationship"));
 }
 
 
