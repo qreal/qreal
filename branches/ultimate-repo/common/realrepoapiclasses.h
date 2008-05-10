@@ -30,7 +30,7 @@ namespace QRealTypes
 		int getId();
 		void setId( const int id ); // to be removed soon
 
-		QString getName() const;
+		QString getName();
 		void setName( const QString& );
 
 		int getTypeId() const;

@@ -16,8 +16,10 @@ void RealNamedEntity::setId( const int id )
 	m_id = id;
 }
 
-QString RealNamedEntity::getName() const
+QString RealNamedEntity::getName() 
 {
+	if( client )
+		m_name = client->getName(m_id);
 	return m_name;
 }
 
@@ -25,7 +27,7 @@ void RealNamedEntity::setName( const QString& arg )
 {
 	m_name = arg;
 	if( client )
-		client->setName(m_type, arg);
+		client->setName(m_id, arg);
 }
 
 int RealNamedEntity::getTypeId() const

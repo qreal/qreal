@@ -60,6 +60,20 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
   
   // TODO: Refactor this into many small methods.
 	switch (cmd) {
+	case CMD_GET_NAME:
+	{
+		int id = data.section("\t", 1, 1).toInt();
+		if (Object *obj = mRoot->getObject(id))
+			resp = obj->getName();
+		else if( Link *link = mRoot->getLink(id) )
+			resp = link->getName();
+        else 
+			qDebug() << "unknown entity's name requested, id " << id;
+		if( resp.isEmpty() )	
+			resp = "\t";
+		log += QString(", sent %1's name: [%2]").arg(id).arg(resp);
+		break;
+	}
 	case CMD_SET_NAME:
 	{
 		int id = data.section("\t", 1, 1).toInt();
@@ -71,7 +85,7 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
         else 
 			qDebug() << "unknown entity's name set requested, id " << id;
 		resp = QString::number(STATUS_OK);
-		log += QString(", new %1's name is %2").arg(id).arg(name);
+		log += QString(", new %1's name is [%2]").arg(id).arg(name);
 		break;
 	}
 	case CMD_SET_PARENT:

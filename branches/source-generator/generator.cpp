@@ -525,7 +525,7 @@ void Generator::genSQLScripts()
 		"\tQString res = \"\";\n"
 		"\tforeach( RealType type, map.values() )\n"
 		"\t\tif( type.getMetaType() == id )\n"
-		"\t\t\tres += QString(\"%1\\t\").arg(id);\n"
+		"\t\t\tres += QString(\"%1\\t\").arg(type.getId());\n"
 		"\treturn res;\n}\n\n";
 	
 	// analyzeType

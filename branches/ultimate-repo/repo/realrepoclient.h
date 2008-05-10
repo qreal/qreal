@@ -16,6 +16,7 @@ public:
 	RealRepoClient( QObject *parent = 0);
 	~RealRepoClient();
 
+	QString getName( int id );
 	int setName( int id, QString name );
 
 	int setParent( int id, int parent );

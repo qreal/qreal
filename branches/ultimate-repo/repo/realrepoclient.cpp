@@ -69,6 +69,13 @@ dbg;
 	m_error = socketError;
 }
 
+QString RealRepoClient::getName( int id )
+{
+dbg;
+	QString data = QString("%1\t%2\t").arg(CMD_GET_NAME).arg(id);
+	return sendData(data);
+}
+
 int RealRepoClient::setName( int id, QString name )
 {
 dbg;
