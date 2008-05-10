@@ -76,6 +76,13 @@ dbg;
 	return sendData(data).toInt();
 }
 
+int RealRepoClient::setParent( int id, int parent )
+{
+dbg;
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_SET_PARENT).arg(id).arg(parent);
+	return sendData(data).toInt();
+}
+
 void RealRepoClient::setPosition( int id, int /*parent*/, int x, int y)
 {
 dbg;
@@ -377,7 +384,8 @@ dbg;
 	QString resp = sendData(cmd);
 	QIntList list;
 	foreach( QString str, resp.split('\t') )
-		list += str.toInt();
+		if( str.toInt() != 0 )
+			list += str.toInt();
 	return list;	
 }
 

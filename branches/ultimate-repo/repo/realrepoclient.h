@@ -17,6 +17,8 @@ public:
 	~RealRepoClient();
 
 	int setName( int id, QString name );
+
+	int setParent( int id, int parent );
 	
 	void setPosition( int id, int parent, int x, int y);
 	

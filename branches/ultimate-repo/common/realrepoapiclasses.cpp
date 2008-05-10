@@ -23,6 +23,8 @@ QString RealNamedEntity::getName() const
 void RealNamedEntity::setName( const QString& arg ) 
 {
 	m_name = arg;
+	if( client )
+		client->setName(m_type, arg);
 }
 
 int RealNamedEntity::getTypeId() const
@@ -158,6 +160,8 @@ int RealObject::getContainerId() const
 void RealObject::setContainerId( const int arg )
 {
 	m_containerId = arg;
+	if( client )
+		client->setParent(m_id, arg);
 }
 
 QString RealObject::getConfiguration() const 

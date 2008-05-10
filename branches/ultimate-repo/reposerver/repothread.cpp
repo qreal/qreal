@@ -59,9 +59,9 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
   QString resp = "";
   
   // TODO: Refactor this into many small methods.
-  switch (cmd) {
-    case CMD_SET_NAME:
-    {
+	switch (cmd) {
+	case CMD_SET_NAME:
+	{
 		int id = data.section("\t", 1, 1).toInt();
 		QString name = data.section("\t", 2, 2);
 		if (Object *obj = mRoot->getObject(id))
@@ -69,9 +69,33 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 		else if( Link *link = mRoot->getLink(id) )
 			link->setName(name);
         else 
-			qDebug() << "unknown entity's name set requesetd, id " << id;
+			qDebug() << "unknown entity's name set requested, id " << id;
 		resp = QString::number(STATUS_OK);
 		log += QString(", new %1's name is %2").arg(id).arg(name);
+		break;
+	}
+	case CMD_SET_PARENT:
+	{
+		int id = data.section("\t", 1, 1).toInt();
+		int parentId = data.section("\t", 2, 2).toInt();
+		if (Object *obj = mRoot->getObject(id)){
+			if (Object *oldParent = mRoot->getObject(obj->getParent()))
+				oldParent->removeChild(id);
+			if (Object *newParent = mRoot->getObject(parentId))
+				newParent->addChild(id);
+			obj->setParent(parentId);
+		}	
+		else if( Link *link = mRoot->getLink(id) ){
+			if (Object *oldParent = mRoot->getObject(link->getParent()))
+				oldParent->removeChild(id);
+			if (Object *newParent = mRoot->getObject(parentId))
+				newParent->addChild(id);
+			link->setParent(parentId);
+		}	
+        else 
+			qDebug() << "unknown entity's parent setting requested, id " << id;
+		resp = QString::number(STATUS_OK);
+		log += QString(", new %1's parent is %2").arg(id).arg(parentId);
 		break;
 	}
 	case CMD_CREATE_ENTITY:
