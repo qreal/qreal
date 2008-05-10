@@ -139,6 +139,9 @@
 		<!-- Directed relationship -->
 		<edge name="DirectedRelationship" id="krneDirRelationship">
 			<logic>
+				<properties>
+					<property name="condition" type="string" />
+				</properties>
 				<generalizations>
 					<generalization>
 						<parent parent_id="krneRelationship" />
