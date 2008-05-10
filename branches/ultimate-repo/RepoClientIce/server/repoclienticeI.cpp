@@ -349,6 +349,7 @@ RepoIce::RepoClientIceI::getAllTypes(const Ice::Current&)
 RepoIce::RepoClientIceI::getTypesByMetaTypeIce(::RepoIce::MetaTypeIce mType,
                                                const Ice::Current&)
 {
+qDebug() << "XXX METATYPES: " << repoClient.getTypesByMetaType(object).count() << endl;
     return repoClient.getTypesByMetaType((MetaType)mType).toVector().toStdVector();
 }
 

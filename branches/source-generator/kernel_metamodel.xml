@@ -148,7 +148,7 @@
 					<association id="krnaDirrelSrc" role="source" end_type="no_arrow">
 						<begin idref="krnnElement" />
 					</association>
-					<association id="krnaDirrelTarg" role="target" end_type="no_arrow">
+					<association id="krnaDirrelTarg" role="target"  end_type="open_arrow">
 						<end idref="krnnElement" />
 					</association>
 				</associations>

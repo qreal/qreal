@@ -491,6 +491,8 @@
 					<property name="fromPart" type="string" />
 					<property name="toVariable" type="string" />
 					<property name="toPart" type="string" />
+					<property name="ignoreMissingFromData" type="string" />
+
 				</properties>
 				<containers>
 					<container name="assign">
@@ -2511,6 +2513,7 @@
 				</generalizations>
 			</logic>
 		</node>
+		<!--
 		<edge name="Bpelship" id="bplRelationship">
 			<graphics>
 				<view>
@@ -2536,5 +2539,6 @@
 				</associations>
 			</logic>
 		</edge>
+		-->
 	</diagram>
 </metamodel>
