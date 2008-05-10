@@ -330,26 +330,24 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 		else if( Link *link = mRoot->getLink(id) ){
 			link->print();
 			if( name == "from"){
+				int obj_id = link->getFrom();
+				if( Object *obj = mRoot->getObject(obj_id) ){
+					obj->removeLink(id, OUTCOMING_LINK );
+					link->removeObjectFrom();
+				}	
 				if( Object *obj = mRoot->getObject(val.toInt()) ){
 					obj->addLink(id, OUTCOMING_LINK);
-					link->addObjectFrom(val.toInt());		
-				} else { // disconnect link from previous object
-					int obj_id = link->getFrom();
-					if( Object *obj = mRoot->getObject(obj_id) ){
-						obj->removeLink(id, OUTCOMING_LINK );
-						link->removeObjectFrom(obj_id);
-					}	
+					link->setObjectFrom(val.toInt());
 				} 
 			} else if( name == "to" ){
+				int obj_id = link->getTo();
+				if( Object *obj = mRoot->getObject(obj_id) ){
+					obj->removeLink(id, INCOMING_LINK );
+					link->removeObjectTo();
+				}	
 				if( Object *obj = mRoot->getObject(val.toInt()) ){
 					obj->addLink(id, INCOMING_LINK);
-					link->addObjectTo(val.toInt());
-				} else { // disconnect link from previous object
-					int obj_id = link->getTo();
-					if( Object *obj = mRoot->getObject(obj_id) ){
-						obj->removeLink(id, INCOMING_LINK );
-						link->removeObjectTo(obj_id);
-					}	
+					link->setObjectTo(val.toInt());
 				}
 			} else 
 				link->setProperty(name, val);
@@ -392,9 +390,9 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 			if( Link *link = mRoot->getLink(link_id) ){
 //				qDebug() << "\tlink found!";
 				if( dir == OUTCOMING_LINK )
-					link->addObjectTo(id);
+					link->setObjectFrom(id);
 				else if( dir == INCOMING_LINK )
-					link->addObjectFrom(id);
+					link->setObjectTo(id);
 				link->print();	
 			}
 			obj->print();
@@ -416,9 +414,9 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 			if( Link *link = mRoot->getLink(link_id) ){
 //				qDebug() << "\tlink found!, dir" << dir;
 				if( dir == OUTCOMING_LINK )
-					link->removeObjectTo(id);
+					link->removeObjectFrom();
 				else if( dir == INCOMING_LINK )
-					link->removeObjectFrom(id);
+					link->removeObjectTo();
 				link->print();	
 			} else
 				qDebug() << "incorrect link requested. id: " << link_id;
@@ -448,7 +446,6 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 	{
 		int id = data.section("\t", 1, 1).toInt();
 		int dir = data.section("\t", 2, 2).toInt();
-		resp = "\t";
 		if( Object *obj = mRoot->getObject(id) ){
 			if( dir == INCOMING_LINK )
 				resp = obj->getIncomingLinks();
@@ -456,7 +453,9 @@ void QRealRepoServerThread::handleCommand(QString const &data, QTcpSocket *const
 				resp = obj->getOutcomingLinks();
 		} else
 			qDebug() << "bad object id" << id;
-		log += QString(", sending object's links %1: %2").arg(id).arg(resp);
+		if( resp.isEmpty() )
+			resp = "\t";
+		log += QString(", sending object's links %1: [%2]").arg(id).arg(resp);
 		break;
 	}
 	case CMD_GET_OBJECTS_BY_LINK:

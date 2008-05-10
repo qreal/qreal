@@ -1,5 +1,6 @@
 #include "realrepoapiclasses.h"
 #include <QDebug>
+#include <QStringList>
 
 #include "../repo/realrepoclient.h"
 
@@ -191,12 +192,31 @@ void RealObject::deleteChildElement( const int arg )
 		m_children.removeAll(arg);
 }
 
-QIntList RealObject::getAllLinks( int direction ) const 
+QIntList RealObject::getAllLinks( int direction ) 
 {
-	if( direction == INCOMING_LINK )
+	QStringList links;
+	if( client )
+		links = (client->getLinksByObject(m_id, direction)).split("\t");
+
+	if( direction == INCOMING_LINK ){
+		if( client ){
+			m_incomingLinks.clear();
+			foreach( QString link, links )
+				if( link.toInt() != 0 )
+					m_incomingLinks << link.toInt();
+		}	
 		return m_incomingLinks;
-	else 	
+	}	
+	else if( direction == OUTCOMING_LINK ){	
+		if( client ){
+			m_outcomingLinks.clear();
+			foreach( QString link, links )
+				if( link.toInt() != 0 )
+					m_outcomingLinks << link.toInt();
+		}	
 		return m_outcomingLinks;
+	}	
+	return QIntList();
 }
 
 /*void RealObject::addLink( const int id )

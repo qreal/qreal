@@ -148,11 +148,11 @@ public:
 	
 	QString getObjects();
 	
-	void addObjectTo( int );
-	void addObjectFrom( int );
+	void setObjectTo( int );
+	void setObjectFrom( int );
 
-	void removeObjectTo( int );
-	void removeObjectFrom( int );
+	void removeObjectTo();
+	void removeObjectFrom( );
 
 	// object's port position
 	void setConfiguration( QString arg );
@@ -165,8 +165,8 @@ public:
 	int getTo();
 	
 	void print(){
-		qDebug() << "to: :" << objectsTo;
-		qDebug() << "from:" << objectsFrom;
+		qDebug() << "to: :" << to;
+		qDebug() << "from:" << from;
 		qDebug() << "props:" <<  props;
 	}
 
@@ -183,8 +183,8 @@ private:
 	QString configuration;
 	QString position;
 	QMap<QString, QString> props;
-	QList<int> objectsTo;
-	QList<int> objectsFrom;
+	int from;
+	int to;
 };
 
 /* types description

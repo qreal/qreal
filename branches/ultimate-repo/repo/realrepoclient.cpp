@@ -334,21 +334,13 @@ dbg;
 	link.setDescription(data.section("\t",4,4));
 	qDebug() << "desc: " << data.section("\t",4,4);
 
-	int fromCount = data.section("\t",5,5).toInt();
+	int fromId = data.section("\t",5,5).toInt();
 	int counter = 6;
-	if( fromCount > 0 )
-		link.setFromId(data.section("\t",counter,counter).toInt());
-	else 	
-		link.setFromId(-1);
-	counter += fromCount;	
+	link.setFromId(fromId);
 	
-	int toCount = data.section("\t",counter,counter).toInt();
+	int toId = data.section("\t",counter,counter).toInt();
 	counter++;
-	if( toCount > 0 )
-		link.setToId(data.section("\t",counter,counter).toInt());
-	else 	
-		link.setToId(-1);
-	counter += toCount;	
+	link.setToId(toId);
 	
 	int propsCount = data.section("\t",counter,counter).toInt();
 	counter++;

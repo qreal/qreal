@@ -283,6 +283,8 @@ Link::Link( int _id, int _type )
 {
 	id = _id;
 	type = _type;
+	from = -1;
+	to = -1;
 }
 
 int Link::getId()
@@ -338,29 +340,18 @@ QString Link::getProperty( QString name )
 QString Link::getObjects()
 {
 	QString res = "";
-	res += QString("%1\t").arg(objectsTo.size());
-	res += getObjectsTo();
-
-	res += QString("%1\t").arg(objectsFrom.size());
-	res += getObjectsFrom();
+	res += QString("%1\t%2\t").arg(to).arg(from);
 	return res;
 }
 
 QString Link::getObjectsFrom()
 {	
-//	qDebug() << "objects from: " << objectsFrom;
-	QString res = "";
-	for( int i=0; i<objectsFrom.size(); i++)		
-		res += QString("%1\t").arg(objectsFrom.at(i));
-	return res;
+	return QString("%1\t").arg(from);
 }
 
 QString Link::getObjectsTo()
 {
-	QString res = "";
-	for( int i=0; i<objectsTo.size(); i++)		
-		res += QString("%1\t").arg(objectsTo.at(i));
-	return res;
+	return QString("%1\t").arg(to);
 }
 
 QString Link::toString()
@@ -377,26 +368,24 @@ QString Link::toString()
 	return res;
 }
 
-void Link::addObjectTo( int id )
+void Link::setObjectTo( int id )
 {
-	if( !objectsTo.contains( id ) )
-		objectsTo << id;
+	to = id;
 }
 
-void Link::addObjectFrom( int id )
+void Link::setObjectFrom( int id )
 {
-	if( !objectsFrom.contains( id ) )
-		objectsFrom << id;
+	from = id;
 }
 
-void Link::removeObjectTo( int id )
+void Link::removeObjectTo( )
 {
-	objectsTo.removeAll(id);
+	to = -1;
 }
 
-void Link::removeObjectFrom( int id )
+void Link::removeObjectFrom( )
 {
-	objectsFrom.removeAll(id);
+	from = -1;
 }
 
 QString Link::getConfiguration()
@@ -421,18 +410,12 @@ void Link::setPosition( QString arg )
 
 int Link::getFrom()
 {
-	if( objectsFrom.size() > 0 )
-		return objectsFrom.at(0);
-	
-	return -1;	
+	return from;
 }
 
 int Link::getTo()
 {
-	if( objectsFrom.size() > 0 )
-		return objectsTo.at(0);
-	
-	return -1;	
+	return to;
 }
 
 // --------------------------------------------------------------------------- //
