@@ -14,6 +14,7 @@
        contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
               preserveAspectRatio="xMidYMid meet"
        xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplReceive</svg:text>
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
@@ -45,8 +46,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="createInstance" type="string" />
 					<property name="operation" type="string" />
 					<property name="partnerLink" type="string" />
@@ -149,219 +150,6 @@
 				</generalizations>
 			</logic>
 		</node>
-		<!--d-->
-		<!--SQLSelect-->
-		<node name="SQLSelect" id="bplSQLSelect">
-			<graphics>
-				<view>
-					<svg_shape>
-						<svg:svg contentScriptType="text/ecmascript" width="100" 
-              zoomAndPan="magnify"
-       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
-              preserveAspectRatio="xMidYMid meet"
-       xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="red" stroke-width="3" />
-							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
-						</svg:svg>
-					</svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/">
-							<html:b>
-								<html:text_from_repo name="name" />
-							</html:b>
-						</html:html>
-					</repo_info>
-					<ports>
-						<line_port>
-							<start startx="0" starty="40"/>
-							<end endx="0" endy="80"/>
-						</line_port>
-						<line_port>
-							<start startx="100" starty="40"/>
-							<end endx="100" endy="80"/>
-						</line_port>
-					</ports>
-				</view>
-			</graphics>
-			<logic>
-				<properties>
-					<property name="name" type="string"/>
-					<property name="suppressJoinFailure" type="string" />
-					<property name="comment" type="string" />
-					<property name="joinCondition" type="string" />
-					<property name="values" type="string" />
-					<property name="destination" type="string" />
-					<property name="table" type="string" />
-					<property name="condition" type="string" />
-				</properties>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnElement" />
-					</generalization>
-				</generalizations>
-			</logic>
-		</node>
-		<!--SQLInsert-->
-		<node name="SQLInsert" id="bplSQLInsert">
-			<graphics>
-				<view>
-					<svg_shape>
-						<svg:svg contentScriptType="text/ecmascript" width="100" 
-              zoomAndPan="magnify"
-       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
-              preserveAspectRatio="xMidYMid meet"
-       xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="green" stroke-width="3" />
-							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
-						</svg:svg>
-					</svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/">
-							<html:b>
-								<html:text_from_repo name="name" />
-							</html:b>
-						</html:html>
-					</repo_info>
-					<ports>
-						<line_port>
-							<start startx="0" starty="40"/>
-							<end endx="0" endy="80"/>
-						</line_port>
-						<line_port>
-							<start startx="100" starty="40"/>
-							<end endx="100" endy="80"/>
-						</line_port>
-					</ports>
-				</view>
-			</graphics>
-			<logic>
-				<properties>
-					<property name="name" type="string"/>
-					<property name="suppressJoinFailure" type="string" />
-					<property name="comment" type="string" />
-					<property name="joinCondition" type="string" />
-					<property name="values" type="string" />
-					<property name="table" type="string" />
-				</properties>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnElement" />
-					</generalization>
-				</generalizations>
-			</logic>
-		</node>
-		<!--SQLUpdate-->
-		<node name="SQLUpdate" id="bplSQLUpdate">
-			<graphics>
-				<view>
-					<svg_shape>
-						<svg:svg contentScriptType="text/ecmascript" width="100" 
-              zoomAndPan="magnify"
-       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
-              preserveAspectRatio="xMidYMid meet"
-       xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="blue" stroke-width="3" />
-							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
-						</svg:svg>
-					</svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/">
-							<html:b>
-								<html:text_from_repo name="name" />
-							</html:b>
-						</html:html>
-					</repo_info>
-					<ports>
-						<line_port>
-							<start startx="0" starty="40"/>
-							<end endx="0" endy="80"/>
-						</line_port>
-						<line_port>
-							<start startx="100" starty="40"/>
-							<end endx="100" endy="80"/>
-						</line_port>
-					</ports>
-				</view>
-			</graphics>
-			<logic>
-				<properties>
-					<property name="name" type="string"/>
-					<property name="suppressJoinFailure" type="string" />
-					<property name="comment" type="string" />
-					<property name="joinCondition" type="string" />
-					<property name="values" type="string" />
-					<property name="condition" type="string" />
-					<property name="table" type="string" />
-				</properties>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnElement" />
-					</generalization>
-				</generalizations>
-			</logic>
-		</node>
-		<!--SQLDelete-->
-		<node name="SQLDelete" id="bplSQLDelete">
-			<graphics>
-				<view>
-					<svg_shape>
-						<svg:svg contentScriptType="text/ecmascript" width="100" 
-              zoomAndPan="magnify"
-       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
-              preserveAspectRatio="xMidYMid meet"
-       xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="yellow" stroke-width="3" />
-							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
-							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
-						</svg:svg>
-					</svg_shape>
-					<repo_info>
-						<html:html xmlns:html="http://www.w3.org/html/">
-							<html:b>
-								<html:text_from_repo name="name" />
-							</html:b>
-						</html:html>
-					</repo_info>
-					<ports>
-						<line_port>
-							<start startx="0" starty="40"/>
-							<end endx="0" endy="80"/>
-						</line_port>
-						<line_port>
-							<start startx="100" starty="40"/>
-							<end endx="100" endy="80"/>
-						</line_port>
-					</ports>
-				</view>
-			</graphics>
-			<logic>
-				<properties>
-					<property name="name" type="string"/>
-					<property name="suppressJoinFailure" type="string" />
-					<property name="comment" type="string" />
-					<property name="joinCondition" type="string" />
-					<property name="condition" type="string" />
-					<property name="table" type="string" />
-				</properties>
-				<generalizations>
-					<generalization>
-						<parent parent_id="krnnElement" />
-					</generalization>
-				</generalizations>
-			</logic>
-		</node>
-		<!--d-->  
 		<node name="invoke" id="bplInvoke">
 			<graphics>
 				<view>
@@ -371,6 +159,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplInvoke</svg:text>
 							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
@@ -403,8 +192,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="inputVariable" type="string" />
 					<property name="operation" type="string" />
 					<property name="outPutVariable" type="string" />
@@ -516,6 +305,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplReply</svg:text>
 							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
@@ -549,8 +339,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="partnerLink" type="string" />
 					<property name="portType" type="string" />
 					<property name="variable" type="string" />
@@ -662,9 +452,10 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
-							<svg:line x1="20" y1="0" x2="20" y2="20" stroke="black" stroke-width="2" />
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplAssign</svg:text>
+							<svg:line x1="0" y1="0" x2="5" y2="20" stroke="grey" stroke-width="2" />
+							<svg:line x1="10" y1="0" x2="5" y2="20" stroke="grey" stroke-width="2" />
+							<svg:line x1="2" y1="5" x2="7" y2="5" stroke="grey" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
@@ -696,8 +487,10 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					<property name="fromVariable" type="string" />
+					<property name="fromPart" type="string" />
+					<property name="toVariable" type="string" />
+					<property name="toPart" type="string" />
 				</properties>
 				<containers>
 					<container name="assign">
@@ -735,6 +528,223 @@
 				</generalizations>
 			</logic>
 		</node>
+		<!--d-->
+		<!--SQLSelect-->
+		<node name="SQLSelect" id="bplSQLSelect">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg contentScriptType="text/ecmascript" width="100" 
+              zoomAndPan="magnify"
+       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
+              preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">SQLSelect</svg:text>
+							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="red" stroke-width="3" />
+							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+					<ports>
+						<line_port>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="80"/>
+						</line_port>
+						<line_port>
+							<start startx="100" starty="40"/>
+							<end endx="100" endy="80"/>
+						</line_port>
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<properties>
+					<property name="name" type="string"/>
+					<property name="suppressJoinFailure" type="string" />
+					<property name="comment" type="string" />
+					<property name="joinCondition" type="string" />
+					<property name="values" type="string" />
+					<property name="destination" type="string" />
+					<property name="table" type="string" />
+					<property name="condition" type="string" />
+				</properties>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnElement" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<!--SQLInsert-->
+		<node name="SQLInsert" id="bplSQLInsert">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg contentScriptType="text/ecmascript" width="100" 
+              zoomAndPan="magnify"
+       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
+              preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">SQLInsert</svg:text>
+							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="green" stroke-width="3" />
+							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+					<ports>
+						<line_port>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="80"/>
+						</line_port>
+						<line_port>
+							<start startx="100" starty="40"/>
+							<end endx="100" endy="80"/>
+						</line_port>
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<properties>
+					<property name="name" type="string"/>
+					<property name="suppressJoinFailure" type="string" />
+					<property name="comment" type="string" />
+					<property name="joinCondition" type="string" />
+					<property name="values" type="string" />
+					<property name="table" type="string" />
+				</properties>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnElement" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<!--SQLUpdate-->
+		<node name="SQLUpdate" id="bplSQLUpdate">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg contentScriptType="text/ecmascript" width="100" 
+              zoomAndPan="magnify"
+       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
+              preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">SQLUpdate</svg:text>
+							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="blue" stroke-width="3" />
+							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+					<ports>
+						<line_port>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="80"/>
+						</line_port>
+						<line_port>
+							<start startx="100" starty="40"/>
+							<end endx="100" endy="80"/>
+						</line_port>
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<properties>
+					<property name="name" type="string"/>
+					<property name="suppressJoinFailure" type="string" />
+					<property name="comment" type="string" />
+					<property name="joinCondition" type="string" />
+					<property name="values" type="string" />
+					<property name="condition" type="string" />
+					<property name="table" type="string" />
+				</properties>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnElement" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<!--SQLDelete-->
+		<node name="SQLDelete" id="bplSQLDelete">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg contentScriptType="text/ecmascript" width="100" 
+              zoomAndPan="magnify"
+       contentStyleType="text/css" viewBox="0 0 100 100" height="100" 
+              preserveAspectRatio="xMidYMid meet"
+       xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">SQLDelete</svg:text>
+							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="yellow" stroke-width="3" />
+							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="0" y1="20" x2="0" y2="100" stroke="black" stroke-width="2" />
+							<svg:line x1="100" y1="20" x2="100" y2="100" stroke="black" stroke-width="2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:b>
+								<html:text_from_repo name="name" />
+							</html:b>
+						</html:html>
+					</repo_info>
+					<ports>
+						<line_port>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="80"/>
+						</line_port>
+						<line_port>
+							<start startx="100" starty="40"/>
+							<end endx="100" endy="80"/>
+						</line_port>
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<properties>
+					<property name="name" type="string"/>
+					<property name="suppressJoinFailure" type="string" />
+					<property name="comment" type="string" />
+					<property name="joinCondition" type="string" />
+					<property name="condition" type="string" />
+					<property name="table" type="string" />
+				</properties>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnElement" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<!--d-->  
 		<node name="throw" id="bplThrow">
 			<graphics>
 				<view>
@@ -744,6 +754,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplThrow</svg:text>
 							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
@@ -779,8 +790,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="faultVariable" type="string" />
 				</properties>
 				<containers>
@@ -825,6 +836,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplRethrow</svg:text>
 							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="30" y1="0" x2="30" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="10" y1="0" x2="10" y2="20" stroke="black" stroke-width="2" />
@@ -861,8 +873,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="receive">
@@ -906,6 +918,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplExit</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="0" x2="0" y2="20" stroke="black" stroke-width="2" />
@@ -943,8 +956,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="receive">
@@ -988,6 +1001,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplEmpty</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
@@ -1026,8 +1040,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="receive">
@@ -1071,6 +1085,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplIf</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
@@ -1110,8 +1125,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="condition" type="string" />
 					<property name="conditionExpressionLanguage" type="string" />
 				</properties>
@@ -1163,6 +1178,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplSequence</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
@@ -1203,8 +1219,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="sequence">
@@ -1311,6 +1327,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplFlow</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
@@ -1352,8 +1369,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="flow">
@@ -1460,6 +1477,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplWhile</svg:text>
 							<svg:line x1="40" y1="0" x2="40" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="0" x2="50" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="60" y1="0" x2="60" y2="20" stroke="black" stroke-width="2" />
@@ -1502,8 +1520,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 					<property name="condition" type="string" />
 					<property name="conditionExpressionLanguage" type="string" />
 				</properties>
@@ -1612,6 +1630,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplExtBreak</svg:text>
 							<svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
@@ -1644,8 +1663,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="receive">
@@ -1689,6 +1708,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplExtContinue</svg:text>
 							<svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="10" y1="20" x2="10" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="0" y1="20" x2="100" y2="20" stroke="black" stroke-width="2" />
@@ -1722,8 +1742,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="receive">
@@ -1758,6 +1778,7 @@
 				</generalizations>
 			</logic>
 		</node>
+		<!--
 		<node name="toParts" id="bplToParts">
 			<graphics>
 				<view>
@@ -1801,8 +1822,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="toParts">
@@ -1944,8 +1965,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="fromParts">
@@ -2202,6 +2223,7 @@
 				</generalizations>
 			</logic>
 		</node>
+		-->
 		<node name="else" id="bplElse">
 			<graphics>
 				<view>
@@ -2211,6 +2233,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplElse</svg:text>
 							<svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
@@ -2249,8 +2272,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="if">
@@ -2297,6 +2320,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplThen</svg:text>
 							<svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
@@ -2336,8 +2360,8 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					<property name="sources" type="string" />
-					<property name="targets" type="string" />
+					
+					
 				</properties>
 				<containers>
 					<container name="if">
@@ -2384,6 +2408,7 @@
    contentStyleType="text/css" viewBox="0 0 100 100" height="100" width="100"
           preserveAspectRatio="xMidYMid meet"
    xmlns="http://www.w3.org/2000/svg" version="1.0">
+			 				<svg:text x="20" y="10" font-size="15" fill="blue">bplCopy</svg:text>
 							<svg:line x1="0" y1="20" x2="0" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="40" y1="20" x2="40" y2="40" stroke="black" stroke-width="2" />
 							<svg:line x1="50" y1="20" x2="50" y2="40" stroke="black" stroke-width="2" />
