@@ -1080,8 +1080,7 @@
 					<property name="suppressJoinFailure" type="string" />
 					<property name="comment" type="string" />
 					<property name="joinCondition" type="string" />
-					
-					
+					<property name="text" type="string" />
 				</properties>
 				<containers>
 					<container name="receive">
@@ -1245,7 +1244,7 @@
 				</generalizations>
 			</logic>
 		</node>
-		<node name="if-else" id="bplElse">
+		<node name="Else" id="bplElse">
 			<graphics>
 				<view>
 					<svg_shape>
