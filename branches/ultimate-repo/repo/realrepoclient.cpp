@@ -1,7 +1,6 @@
 #include "realrepoclient.h"
 //#define _LONG_DEBUG
 #include "dbg.h"
-#include <unistd.h>
 
 #include <QDataStream>
 #include <QByteArray>

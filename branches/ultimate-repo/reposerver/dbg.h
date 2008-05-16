@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef __USE_GNU
+
 #ifdef _LONG_DEBUG
 
 namespace qreal_debug
@@ -25,3 +27,8 @@ namespace qreal_debug
 #define dbg
 #endif
 
+#else // __USE_GNU
+
+#define dbg
+
+#endif // __USE_GNU
