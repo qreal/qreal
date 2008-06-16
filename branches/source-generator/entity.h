@@ -18,6 +18,7 @@ class Entity
 {
 public:
     Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
+    virtual ~Entity(){};
 
     void addParent( QString );
     void addChild( QString);
