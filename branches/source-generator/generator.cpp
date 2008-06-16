@@ -44,7 +44,18 @@ Generator::Generator( QStringList files ){
 }
 
 Generator::~Generator(){
-   // TODO: delete objects and edges
+    // doc is already deleted.
+
+    // delete each category in the list
+    while (!categories.isEmpty())
+       delete categories.takeFirst();
+
+    // array of references to objects elements, so just clear
+    edges.clear();
+
+    // delete each object in the list
+    while (!objects.isEmpty())
+       delete objects.takeFirst();
 }
 
 void Generator::parseFile( QString filename ){
