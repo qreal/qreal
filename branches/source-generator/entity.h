@@ -17,7 +17,7 @@ class Label;
 class Entity
 {
 public:
-    Entity(){ propsPropagated = false; }
+    Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
 
     void addParent( QString );
     void addChild( QString);
