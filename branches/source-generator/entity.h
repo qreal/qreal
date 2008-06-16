@@ -92,8 +92,8 @@ public:
         lineType = "Qt::SolidLine";
     }
     ~Edge(){
-        for( int i=0; i<associations.size(); i++)   
-            delete associations.at(i);
+        while (!associations.isEmpty())
+            delete associations.takeFirst();
     }
 
     void addAssociation( Association* );
