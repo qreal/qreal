@@ -20,6 +20,6 @@ int main()
 	<< "package.xml"	
 	<< "bpel.xml"
 	<< "qrealparallel_metamodel.xml";
-	delete (new Generator(l));
+	Generator generator(l);
 	return 0;
 }
