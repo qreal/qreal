@@ -1,4 +1,4 @@
 #!/bin/sh
-cd ../source-generator && make clean
-cd ../ultimate-repo && make clean
-cd reposerver && make clean
+cd ../source-generator && make distclean
+cd ../ultimate-repo && make distclean
+cd reposerver && make distclean
