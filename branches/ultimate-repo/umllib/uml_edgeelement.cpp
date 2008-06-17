@@ -12,9 +12,6 @@
 
 using namespace UML;
 
-static const double Pi = 3.14159265358979323846264338327950288419717;
-static double TwoPi = 2.0 * Pi;
-
 static bool moving = false;
 
 EdgeElement::EdgeElement()
@@ -49,9 +46,9 @@ static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
 	if (line.dy() >= 0)
-		angle = TwoPi - angle;
+		angle = 2*M_PI - angle;
 
-	return angle*180/Pi;
+	return angle*180*M_1_PI;
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
