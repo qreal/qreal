@@ -83,7 +83,8 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
 			mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
-}			
+	delete newMimeData;
+}
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
