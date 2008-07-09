@@ -6,7 +6,6 @@ GEN=$WD/generated
 pushd $WD
 qmake
 make
-rm -rf generated
 ./code
 popd
 
@@ -20,7 +19,6 @@ cp -rf $GEN/repo/* repo/
 mkdir -p reposerver/generated
 cp -rf $GEN/reposerver/* reposerver
 
-rm -rf shapes
 cp -rf $GEN/shapes .
 
 cp -rf $GEN/real_dynamic.qrc .
