@@ -5,8 +5,8 @@ INCLUDEPATH	+= view umllib repo dialogs mainwindow umllib/generated
 RESOURCES	+= real_dynamic.qrc static.qrc
 SOURCES		= main.cpp
 
-OBJECTS_DIR 	= obj
-MOC_DIR		= moc
+OBJECTS_DIR 	= .obj
+MOC_DIR		= .moc
 
 # Model
 HEADERS         += dialogs/qsqlconnectiondialog.h \

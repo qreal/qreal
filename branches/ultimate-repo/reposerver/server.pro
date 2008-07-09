@@ -8,8 +8,8 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
-OBJECTS_DIR = obj
-MOC_DIR = moc
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
 CONFIG += console
 
 # Input
