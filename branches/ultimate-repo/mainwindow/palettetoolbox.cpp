@@ -40,7 +40,6 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		layout->setContentsMargins ( 0,0,0,0 );
 
 		addItem(tab, categories[i]);
-
 		foreach(int classid, info.getObjects(i)) {
 			DraggableElement *element = new DraggableElement(classid, this);
 			layout->addWidget(element);

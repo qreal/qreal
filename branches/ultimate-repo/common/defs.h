@@ -1,8 +1,12 @@
 #ifndef __DEFS_H__
 #define __DEFS_H__
 
-const int STATUS_ERROR	= -1;
-const int STATUS_OK	= 1;
+const int ERR_STATUS_OK	        = 1;
+const int ERR_INCORRECT_PARAMS  = 2;
+const int ERR_INCORRECT_REQUEST = 4;
+
+const int ERR_UNKNOWN_ERROR	= 666;
+
 
 const int CMD_CREATE_ENTITY		= 1;
 const int CMD_DELETE_ENTITY		= 2;

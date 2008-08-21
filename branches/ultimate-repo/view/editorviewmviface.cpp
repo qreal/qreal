@@ -98,7 +98,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
 {
-	qDebug() << "========== rowsInserted" << parent << start << end;
+//	qDebug() << "========== rowsInserted" << parent << start << end;
 
 //	if ( parent != rootIndex() )
 //		return;
@@ -117,7 +117,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 		else
 				parent_uuid = -1;
 
-		qDebug() << uuid << type;
+//		qDebug() << uuid << type;
 
 		if ( ! uuid )
 			continue;
@@ -139,7 +139,7 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 	}
 
 
-	qDebug() << "rowsInserted: updating items";
+//	qDebug() << "rowsInserted: updating items";
 	for (int row = start; row <= end; ++row) {
 		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
 		if (items.contains(uuid))

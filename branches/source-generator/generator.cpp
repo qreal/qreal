@@ -1043,8 +1043,9 @@ void Generator::genRealRepoInfo(){
 		out2 << "<< 2 << 18";
 
         for( int j=0; j<categories.at(i)->objects.size(); j++){
-	//	qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->visible;
-		if( objects.at(categories.at(i)->objects.at(j))->visible )
+		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name 
+		<< objects.at(categories.at(i)->objects.at(j))->visible;
+		if( objects.at(categories.at(i)->objects.at(j))->visible || objects.at(categories.at(i)->objects.at(j))->type == EDGE )
             		out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
 	}		
 

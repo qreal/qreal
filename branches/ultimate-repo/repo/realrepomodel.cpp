@@ -75,7 +75,7 @@ dbg;
 			if ( role > Unreal::UserRole ) {
 				RealRepoInfo info;
 				QString name = info.getColumnName(hashTypes[item->id], role);
-				qDebug() << "requested role:" << role << name;
+//				qDebug() << "requested role:" << role << name;
 				QString val = repoClient->getPropValue(item->id, name);
 				return (val == "\t") ? QVariant() : val;
 /*
@@ -109,7 +109,7 @@ dbg;
 		return false;
 
 	RepoTreeItem *item = static_cast<RepoTreeItem*>(index.internalPointer());
-	qDebug() << "role:" << role;
+//	qDebug() << "role:" << role;
 	switch (role) {
 		case Qt::DisplayRole:
 		case Unreal::krnnNamedElement::nameRole:
@@ -122,7 +122,7 @@ dbg;
 		case Unreal::PositionRole:
 			{
 				if ( type(item->parent) == Container ) {
-					qDebug() << "moving element " << item->id;
+//					qDebug() << "moving element " << item->id;
 					repoClient->setPosition(item->id, value.toPoint().x(), value.toPoint().y());
 				}
 				break;
@@ -144,7 +144,7 @@ dbg;
 				break;
 			}
 		default:
-			qDebug() << "role -- " << role;
+//			qDebug() << "role -- " << role;
 			if ( role >= Unreal::UserRole ) {
 				
 				// FIXME
@@ -288,7 +288,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 	if ( 1 ){ //type( parentItem ) == Container ) {
 		beginRemoveRows(parent,row,row+count-1);
 		for ( int i = row; i < row+count; i++ ){ 
-			qDebug() << "deleting element " << parentItem->children[i]->id;
+//			qDebug() << "deleting element " << parentItem->children[i]->id;
 			repoClient->deleteObject(parentItem->children[i]->id);
 		}	
 
@@ -339,7 +339,7 @@ dbg;
 	if (column > 0)
 		return false;
 
-	qDebug() << "parent is valid" << parent.isValid();
+//	qDebug() << "parent is valid" << parent.isValid();
 	RepoTreeItem *parentItem;
 	if ( parent.isValid() ) 
 		parentItem = static_cast<RepoTreeItem *>(parent.internalPointer());
@@ -358,14 +358,14 @@ dbg;
 	stream >> name;
 	stream >> newPos;
 
-	qDebug() << "dropped" << newid << newtype << name << newPos;
+//	qDebug() << "dropped" << newid << newtype << name << newPos;
 
-	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
+//	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
 
 	switch (type(parentItem)) {
 		case Category:
 			{
-				qDebug() << parentItem->id << newtype;
+//				qDebug() << parentItem->id << newtype;
 				if ( parentItem->id != newtype ) {
 					qDebug() << "Object dragged into the wrong category";
 					return false;
@@ -374,7 +374,7 @@ dbg;
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				// FIXME
 				int id = repoClient->createObject(newtype, "anonymous");
-				qDebug() << "\tcreating new item3" << parentItem->id << id << newtype;
+//				qDebug() << "\tcreating new item3" << parentItem->id << id << newtype;
 				createItem(parentItem, id, newtype);
 				endInsertRows();
 
@@ -383,7 +383,7 @@ dbg;
 			break;
 		case Container:
 			{
-				qDebug() << "adding to container";
+//				qDebug() << "adding to container";
 				int id = -1;
 				if ( action == Qt::CopyAction ) {
 					
@@ -393,12 +393,12 @@ dbg;
 					id = repoClient->createObjectWithParent(newtype,
 								"anonymous", parentItem->id);
 					repoClient->setPosition(id, (int) newPos.x(), (int) newPos.y());
-					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
+//					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
 				}
 
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
+//				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
 				createItem(parentItem, id, newtype);
 				hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				endInsertRows();
@@ -462,7 +462,7 @@ dbg;
 	item->id = id;
 	item->row = parentItem->children.size();
  
- 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
+// 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 
@@ -532,7 +532,7 @@ dbg;
 		RealType info = repoClient->getTypeById(i);
 		RepoTreeItem *item = new RepoTreeItem;
 		int count = info.getObjects().size();
-		qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
+	//	qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
 		item->parent = rootItem;
 		item->row = i-1;
 		item->id = info.getId();
@@ -545,7 +545,7 @@ dbg;
 	}
 	
 	hashChildCount[rootItem->id] = rootItem->children.size();
-	qDebug() << "root children" << rootItem->children.size();
+//	qDebug() << "root children" << rootItem->children.size();
 }
 
 void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
@@ -555,10 +555,10 @@ dbg;
 	
 	QStringList ids = repoClient->getObjectsByType( parent->id ).split("\t");
 	
-	qDebug() << "searching for type " << parent->id << ", found " << ids.size() << "elements" << ids;
+//	qDebug() << "searching for type " << parent->id << ", found " << ids.size() << "elements" << ids;
 	for( int i=0; i<ids.size(); i++){
 		QString data = repoClient->getObjectData(ids[i].toInt());
-		qDebug() << "element" << i << data;
+//		qDebug() << "element" << i << data;
 		RepoTreeItem *item = new RepoTreeItem;
 		item->parent = parent;
 		item->id = ids[i].toInt();
@@ -575,13 +575,12 @@ dbg;
 		} 
 
 	}
-	qDebug() << "ok";
 }
 
 void RealRepoModel::readContainerTable(RepoTreeItem * root)
 {
 dbg;
-	qDebug() << "================ READING DIAGRAM =======================";
+//	qDebug() << "================ READING DIAGRAM =======================";
 	if ( hashChildren.contains(root->id) ) {
 		int i = 0;
 		foreach (int childId, hashChildren[root->id]) {
@@ -595,7 +594,7 @@ dbg;
 		}
 	} else {
 		QStringList children = repoClient->getChildren(root->id).split("\t", QString::SkipEmptyParts);
-		qDebug() << children.size() << children;					
+//		qDebug() << children.size() << children;					
 		for( int i=0; i<children.size(); i++ ){
 			int _id = children[i].toInt();
 			QString data = repoClient->getObjectData(_id);

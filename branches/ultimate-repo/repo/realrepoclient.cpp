@@ -39,7 +39,7 @@ dbg;
 		return "";
 
 	//QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(id).arg(name);
-	qDebug() << "[CLIENT]: sending" << data;
+//	qDebug() << "[CLIENT]: sending" << data;
 	//int bytes = 
 	socket->write(data.toUtf8());	
 //	qDebug() << "written " << bytes << " bytes";
@@ -47,7 +47,7 @@ dbg;
 	socket->waitForReadyRead();
 //	qDebug() << "ready - " << res;
 	QByteArray req = socket->readAll();
-	qDebug() << "[CLIENT]: recvd" << req;
+//	qDebug() << "[CLIENT]: recvd" << req;
 	return QString(req);
 }
 
@@ -302,7 +302,6 @@ dbg;
 	}	
 	
 	int incLinksCount = data.section("\t",counter,counter).toInt();
-	qDebug() << "inc links: " << incLinksCount;
 	counter++;
 	for( int i=0; i<incLinksCount; i++){
 		obj.addIncomingLink(data.section("\t",counter,counter).toInt());
@@ -310,7 +309,6 @@ dbg;
 	}
 	
 	int outcLinksCount = data.section("\t",counter,counter).toInt();
-	qDebug() << "out links: " << outcLinksCount;
 	counter++;
 	for( int i=0; i<outcLinksCount; i++){
 		obj.addOutcomingLink(data.section("\t",counter,counter).toInt());
@@ -338,7 +336,6 @@ dbg;
 	link.setId(data.section("\t",1,1).toInt());
 	link.setName(data.section("\t",3,3));
 	link.setDescription(data.section("\t",4,4));
-	qDebug() << "desc: " << data.section("\t",4,4);
 
 	int fromId = data.section("\t",5,5).toInt();
 	int counter = 6;
