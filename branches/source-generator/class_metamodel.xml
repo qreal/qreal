@@ -70,6 +70,8 @@
                 <properties>
 					<property name="vals" type="string" />
 					<property name="methods" type="string" />
+					<property name="logicalName" type="string" />
+					<property name="type" type="string" />
                 </properties>
 				<containers>
 					<container name="Class-Classifier">
