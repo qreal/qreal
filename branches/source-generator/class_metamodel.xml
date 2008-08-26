@@ -97,7 +97,7 @@
 				</generalizations>
 			</logic>
 		</edge>
-		<edge name="ClassRelation" id="ceRelation">
+		<edge name="Relation" id="ceRelation">
 			<logic>
 				<associations>
 					<association id="caAggr1" end_type="no_arrow">
