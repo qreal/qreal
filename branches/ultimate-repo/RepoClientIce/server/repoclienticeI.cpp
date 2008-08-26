@@ -334,6 +334,18 @@ RepoIce::RealLinkIceI::setToId(int id,
 {
 	realLink.setToId(id);
 }
+int
+		RepoIce::RealLinkIceI::getTypeId(const Ice::Current&)
+{
+	return realLink.getTypeId();
+}
+
+void
+		RepoIce::RealLinkIceI::setTypeId(int id,
+																			 const Ice::Current&)
+{
+	realLink.setTypeId(id);
+}
 
 /* ****************************************************************** *
  * RepoClientIceI
@@ -457,6 +469,13 @@ RepoIce::RepoClientIceI::createLink(const string& name,
                                     const Ice::Current&)
 {
     return repoClient.createLink(QString(name.c_str()));
+}
+
+int
+RepoIce::RepoClientIceI::createLinkWithType(const string& name, const string& type,
+																						const Ice::Current&)
+{
+		return repoClient.createLinkWithType(QString(name.c_str()), QString(type.c_str()));
 }
 
 void

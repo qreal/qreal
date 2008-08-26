@@ -111,6 +111,7 @@ module RepoIce
 
 		idempotent RealLinkIce* getLinkById(int id); // вернуть по id
 		int createLink(string name); //создать. Возвращает Id созданного.
+		int createLinkWithType(string name, string type); //создать. Возвращает Id созданного.
 		void deleteLink(int id); //удалить
 	};
 };

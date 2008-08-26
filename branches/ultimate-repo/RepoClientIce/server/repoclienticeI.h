@@ -92,6 +92,9 @@ public:
     virtual string getName(const Ice::Current&);
     virtual void setName(const string&, const Ice::Current&);
 
+    virtual int getTypeId(const Ice::Current&);
+    virtual void setTypeId(int, const Ice::Current&);
+
     virtual void setProperty(const string&, const string&, const Ice::Current&);
     virtual string getProperty(const string&, const Ice::Current&);
     virtual int getPropertiesCount(const Ice::Current&);
@@ -130,6 +133,7 @@ public:
 
     virtual ::RepoIce::RealLinkIcePrx getLinkById(int, const Ice::Current&);
     virtual int createLink(const string&, const Ice::Current&);
+		virtual int createLinkWithType(const string&, const string&, const Ice::Current&);
     virtual void deleteLink(int, const Ice::Current&);
 		
 		static Ice::ObjectAdapterPtr _adapter;

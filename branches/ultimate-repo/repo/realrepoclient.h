@@ -35,6 +35,7 @@ public:
 	int createObject( int type, QString name );
 	int createObjectWithParent(int type, QString name, int parent);
 	int createLink(QString name);
+	int createLinkWithType(QString name, QString type);
 
 	void deleteObject( int id );
 	void deleteLink( int id );

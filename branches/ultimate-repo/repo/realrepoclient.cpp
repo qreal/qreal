@@ -150,6 +150,13 @@ int RealRepoClient::createLink(QString name)
 	return createObject(getTypeIdByName("krneDirRelationship"), name);
 }
 
+int RealRepoClient::createLinkWithType(QString name, QString type)
+{
+	int typeId = getTypeIdByName(type);
+	qDebug() << ">>>>type: "<< typeId << endl;
+	return createObject(typeId, name);
+}
+
 void RealRepoClient::deleteObject(int id)
 {
 dbg;
