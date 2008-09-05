@@ -8,6 +8,7 @@ using namespace UML;
 NodeElement::NodeElement()
 {
 	setAcceptsHoverEvents(true);
+	dragState = None;
 }
 
 NodeElement::~NodeElement()
