@@ -24,6 +24,8 @@ MainWindow::MainWindow()
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
+			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
