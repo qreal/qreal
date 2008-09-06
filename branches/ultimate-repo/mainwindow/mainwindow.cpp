@@ -164,6 +164,8 @@ void MainWindow::deleteFromDiagram()
 	if ( model ) {
 		QModelIndex idx = ui.diagramExplorer->currentIndex();
 		model->removeRow( idx.row(), idx.parent() );
+		/* Brutal, but right now we have no choice */
+		connectRepo();
 	}
 }
 
