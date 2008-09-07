@@ -4,7 +4,7 @@
     kernel_metamodel
   </include>
   <namespace>UML 2.1</namespace>
-  <diagram name="Deployment DIAGRAM">
+  <diagram name="DEPLOYMENT DIAGRAM">
   
     <node name="Artifact" id="DplArtifact">
       <graphics>
