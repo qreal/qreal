@@ -159,13 +159,35 @@ void MainWindow::rollbackTransaction()
 	}
 }
 
+void MainWindow::deleteFromExplorer()
+{
+	QModelIndex idx = ui.diagramExplorer->currentIndex();
+	if (idx.isValid())
+		model->removeRow(idx.row(), idx.parent());
+}
+
+void MainWindow::deleteFromScene()
+{
+	foreach (QGraphicsItem *item, ui.view->scene()->selectedItems()) {
+		if (UML::Element * elem = dynamic_cast < UML::Element * >(item))
+			if (elem->index().isValid())
+				model->removeRow(elem->index().row(), elem->index().parent());
+	}
+}
+
 void MainWindow::deleteFromDiagram()
 {
 	if ( model ) {
-		QModelIndex idx = ui.diagramExplorer->currentIndex();
-		model->removeRow( idx.row(), idx.parent() );
-		/* Brutal, but right now we have no choice */
-		connectRepo();
+		if (ui.diagramExplorer->hasFocus())
+		{
+			deleteFromExplorer();
+			/* Brutal, but right now we have no choice */
+			connectRepo();
+		}
+		else if (ui.view->hasFocus())
+		{
+			deleteFromScene();
+		}
 	}
 }
 

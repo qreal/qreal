@@ -28,6 +28,8 @@ public slots:
 	void commitTransaction();
 	void rollbackTransaction();
 
+	void deleteFromExplorer();
+	void deleteFromScene();
 	void deleteFromDiagram();
 
 	void showAbout();
