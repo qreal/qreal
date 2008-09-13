@@ -194,31 +194,43 @@ void RealObject::deleteChildElement( const int arg )
 		m_children.removeAll(arg);
 }
 
-QIntList RealObject::getAllLinks( int direction ) 
+QIntList RealObject::getIncomingLinks()
 {
 	QStringList links;
+	int direction = INCOMING_LINK;
+
 	if( client )
 		links = (client->getLinksByObject(m_id, direction)).split("\t");
 
-	if( direction == INCOMING_LINK ){
-		if( client ){
-			m_incomingLinks.clear();
-			foreach( QString link, links )
-				if( link.toInt() != 0 )
-					m_incomingLinks << link.toInt();
-		}	
-		return m_incomingLinks;
+	if( client ){
+		m_incomingLinks.clear();
+		foreach( QString link, links )
+			if( link.toInt() != 0 )
+				m_incomingLinks << link.toInt();
 	}	
-	else if( direction == OUTCOMING_LINK ){	
-		if( client ){
-			m_outcomingLinks.clear();
-			foreach( QString link, links )
-				if( link.toInt() != 0 )
-					m_outcomingLinks << link.toInt();
-		}	
-		return m_outcomingLinks;
+	return m_incomingLinks;
+}
+
+QIntList RealObject::getOutcomingLinks()
+{
+	QStringList links;
+	int direction = OUTCOMING_LINK;
+
+	if( client )
+		links = (client->getLinksByObject(m_id, direction)).split("\t");
+
+	if( client ){
+		m_outcomingLinks.clear();
+		foreach( QString link, links )
+			if( link.toInt() != 0 )
+				m_outcomingLinks << link.toInt();
 	}	
-	return QIntList();
+	return m_outcomingLinks;
+}
+
+QIntList RealObject::getAllLinks() 
+{
+	return getIncomingLinks() + getOutcomingLinks();
 }
 
 /*void RealObject::addLink( const int id )

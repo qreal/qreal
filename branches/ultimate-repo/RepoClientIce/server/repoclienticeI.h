@@ -68,7 +68,7 @@ public:
     virtual void addChildElement(int, const Ice::Current&);
     virtual void deleteChildElement(int, const Ice::Current&);
 
-    virtual ::RepoIce::QIntList getAllLinks(int, const Ice::Current&);
+    virtual ::RepoIce::QIntList getAllLinks(const Ice::Current&);
     virtual ::RepoIce::QIntList getIncomingLinks(const Ice::Current&);
     virtual ::RepoIce::QIntList getOutcomingLinks(const Ice::Current&);
 

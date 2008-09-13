@@ -108,9 +108,9 @@ namespace QRealTypes
 		void addChildElement( const int );
 		void deleteChildElement( const int );
 
-		QIntList getAllLinks(int direction); // INCOMING_LINK = 1 OUTCOMING_LINK = 2
-		QIntList getIncomingLinks() { return getAllLinks( INCOMING_LINK ); };
- 		QIntList getOutcomingLinks() { return getAllLinks( OUTCOMING_LINK ); };
+		QIntList getAllLinks();
+		QIntList getIncomingLinks();
+ 		QIntList getOutcomingLinks();
 
 		void addIncomingLink( const int );
 		void addOutcomingLink( const int );
