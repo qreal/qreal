@@ -21,6 +21,7 @@ const int CMD_GET_PROPERTY		= 10;
 const int CMD_SET_DESCRIPTION	= 11;
 const int CMD_GET_DESCRIPTION	= 12;
 const int CMD_SET_PARENT		= 13;
+const int CMD_GET_PARENT		= 14;
 
 const int CMD_GET_ENTITY		= 20;
 const int CMD_GET_OBJECTS_BY_TYPE	= 21;

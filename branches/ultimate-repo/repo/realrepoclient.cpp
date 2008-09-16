@@ -89,6 +89,17 @@ dbg;
 	return sendData(data).toInt();
 }
 
+int RealRepoClient::getParent( int id )
+{
+dbg;
+	QString data = QString("%1\t%2\t").arg(CMD_GET_PARENT).arg(id);
+	QString rawResult = sendData(data);
+	if( rawResult.section("\t", 0, 0).toInt() == ERR_STATUS_OK )
+		return rawResult.section("\t", 1, 1).toInt();
+	else
+		return INVALID_ID;
+}
+
 void RealRepoClient::setPosition( int id, int /*parent*/, int x, int y)
 {
 dbg;

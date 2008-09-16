@@ -36,11 +36,11 @@ namespace QRealTypes
 		int getTypeId() const;
 		void setTypeId( const int );
 
-		QString getDescription() const;
+		QString getDescription();
 		void setDescription( const QString& );
 
 		void setProperty( const QString& name, const QString& val );
-		QString getProperty( const QString& name ) const; // returns "" in case of empty property value
+		QString getProperty( QString name ); // returns "" in case of empty property value
 		int getPropertiesCount() const; 
 
 		void setRepoClient( RealRepoClient * );
@@ -98,13 +98,13 @@ namespace QRealTypes
 		bool getVisibility() const; // is it visible on the diagrams or not
 		void setVisibility( const bool );
 
-		int getContainerId() const; 
+		int getContainerId(); 
 		void setContainerId( const int );
 
-		QString getConfiguration() const;
+		QString getConfiguration();
 		void setConfiguration( const QString& );
 
-		QIntList getChildElements() const;
+		QIntList getChildElements();
 		void addChildElement( const int );
 		void deleteChildElement( const int );
 
@@ -132,10 +132,10 @@ namespace QRealTypes
 	class RealLink : public RealNamedEntity
 	{
 	public:
-		int getFromId() const;  // source node
+		int getFromId() ;  // source node
 		void setFromId( const int );
 
-		int getToId() const;    // target node
+		int getToId() ;    // target node
 		void setToId( const int );
 
 		void removeFrom( const int );

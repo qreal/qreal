@@ -35,6 +35,7 @@ namespace reposerver
     QString handleGetName(QStringVector const &params);
     QString handleSetName(QStringVector const &params);
     QString handleSetParent(QStringVector const &params);
+    QString handleGetParent(QStringVector const &params);
     QString handleCreateEntity(QStringVector const &params);    
     QString handleDeleteEntity(QStringVector const &params);
     QString handleGetTypesCount(QStringVector const &params);

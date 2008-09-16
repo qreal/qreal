@@ -183,6 +183,24 @@ QString QRealRepoServerThread::handleSetParent(QStringVector const &params)
     return QString::number(ERR_STATUS_OK);
 }
 
+QString QRealRepoServerThread::handleGetParent(QStringVector const &params)
+{
+    if (!IsParamsNumberCorrect(params, "GetParent", 1))
+        return QString::number(ERR_INCORRECT_PARAMS);
+
+    int const id = params[0].toInt();
+	QString resp;
+    if (Object * obj = mRoot->getObject(id)){
+        resp = QString("%1\t%2\t").arg(ERR_STATUS_OK).arg(obj->getParent());
+    } else if (Link * link = mRoot->getLink(id)){
+        resp += QString("%1\t%2\t").arg(ERR_STATUS_OK).arg(link->getParent());
+    } else {
+        qDebug() << "unknown entity's parent requested, id " << id;
+        return QString::number(ERR_INCORRECT_REQUEST);
+    }
+    return resp;
+}
+
 QString QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
@@ -208,7 +226,7 @@ QString QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
         mRoot->addLink(id, link);
         mLog += QString(", link created, name %1").arg(name);
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }
 
@@ -249,7 +267,7 @@ QString QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
         mTypesInfo->elementDeleted(link->getType(), id);
         mRoot->deleteLink(id);
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     
@@ -331,7 +349,7 @@ QString QRealRepoServerThread::handleGetObjectsByType(QStringVector const &param
     } else if (mTypesInfo->analyseType(type) == TYPE_LINK){
         resp = mRoot->getLinksByType(type);
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", sending objects of type: %1 -- [%2]").arg(type).arg(resp);
@@ -357,7 +375,7 @@ QString QRealRepoServerThread::handleGetObjectData(QStringVector const &params)
         name = link->getName();
         type = link->getType();
     } else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
 
@@ -397,7 +415,7 @@ QString QRealRepoServerThread::handleGetDescription(QStringVector const &params)
     else if (Link * link = mRoot->getLink(id))
         resp = link->getDescription();
     else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending description for id %1 - [%2]").arg(id).arg(resp);
@@ -416,7 +434,7 @@ QString QRealRepoServerThread::handleSetDescription(QStringVector const &params)
     else if (Link * link = mRoot->getLink(id))
         link->setDescription(desc);
     else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", new description for id %1 - [%2]").arg(id).arg(desc);
@@ -436,7 +454,7 @@ QString QRealRepoServerThread::handleGetPosition(QStringVector const &params)
     else if (Link * link = mRoot->getLink(id))
         resp = link->getPosition();
     else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
@@ -459,7 +477,7 @@ QString QRealRepoServerThread::handleSetPosition(QStringVector const &params)
     } else if (Link * link = mRoot->getLink(id)){
         link->setPosition(QString("%1;%2").arg(x).arg(y));
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", new %1's position - (%2:%3)").arg(id).arg(x).arg(y);
@@ -479,7 +497,7 @@ QString QRealRepoServerThread::handleGetConfiguration(QStringVector const &param
     else if (Link *link = mRoot->getLink(id))
         resp = link->getConfiguration();
     else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
@@ -500,7 +518,7 @@ QString QRealRepoServerThread::handleSetConfiguration(QStringVector const &param
     else if (Link *link = mRoot->getLink(id))
         link->setConfiguration(conf);
     else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", conf %1").arg(conf);
@@ -543,7 +561,7 @@ QString QRealRepoServerThread::handleSetProperty(QStringVector const &params)
         } else
         link->setProperty(name, val);
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", new property value: %1 - %2").arg(name).arg(val);
@@ -570,7 +588,7 @@ QString QRealRepoServerThread::handleGetProperty(QStringVector const &params)
         else
             resp = link->getProperty(name);
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST); 
     }
 
@@ -602,7 +620,7 @@ QString QRealRepoServerThread::handleAddLink(QStringVector const &params)
         }
         obj->print();
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", added new link %1 to object %2").arg(link_id).arg(id);
@@ -629,11 +647,11 @@ QString QRealRepoServerThread::handleRemoveLink(QStringVector const &params)
                 link->removeObjectTo();
             link->print();
         } else {
-            Q_ASSERT(!"Wrong analyseType result");
+            qDebug() << "Wrong analyseType result";
             return QString::number(ERR_INCORRECT_REQUEST);
         }
     } else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", removed link %1 from object %2").arg(link_id).arg(id);
@@ -653,7 +671,7 @@ QString QRealRepoServerThread::handleGetEntireObject(QStringVector const &params
     else if (Link * link = mRoot->getLink(id))
         resp = link->toString();
     else {
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending object %1: %2").arg(id).arg(resp);
@@ -675,7 +693,7 @@ QString QRealRepoServerThread::handleGetLinksByObject(QStringVector const &param
         else if (dir == OUTCOMING_LINK)
             resp = obj->getOutcomingLinks();
     } else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
@@ -695,7 +713,7 @@ QString QRealRepoServerThread::handleGetObjectsByLink(QStringVector const &param
     if (Link * link = mRoot->getLink(id))
         resp = link->getObjects();
     else{
-        Q_ASSERT(!"Wrong analyseType result");
+        qDebug() << "Wrong analyseType result";
         return QString::number(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending link's objects %1: %2").arg(id).arg(resp);
@@ -729,6 +747,11 @@ QString QRealRepoServerThread::handleCommand(QString const &data)
         case CMD_SET_PARENT:
         {
             resp = handleSetParent(command.toVector());
+            break;
+        }
+        case CMD_GET_PARENT:
+        {
+            resp = handleGetParent(command.toVector());
             break;
         }
         case CMD_CREATE_ENTITY:

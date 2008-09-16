@@ -40,8 +40,10 @@ void RealNamedEntity::setTypeId( const int arg )
 	m_type = arg;
 }
 
-QString RealNamedEntity::getDescription() const
+QString RealNamedEntity::getDescription()
 {
+	if( client )
+		m_description = client->getDescription(m_id);
 	return m_description;
 }
 
@@ -59,11 +61,13 @@ void RealNamedEntity::setProperty( const QString& name, const QString& val )
 		client->setPropValue(m_id, name, val);
 }
 
-QString RealNamedEntity::getProperty( const QString& name ) const
+QString RealNamedEntity::getProperty( QString name )
 {
 	if( client )
-		return client->getPropValue(m_id, name);
-	return "";
+		m_properties[name] = client->getPropValue(m_id, name);
+	else	
+		m_properties[name] = "";
+	return m_properties[name];
 }
 
 int RealNamedEntity::getPropertiesCount() const
@@ -155,8 +159,10 @@ void RealObject::setVisibility( const bool arg )
 	m_visibility = arg;
 }
 
-int RealObject::getContainerId() const
+int RealObject::getContainerId() 
 {
+	if( client )
+		m_containerId = client->getParent(m_id);
 	return m_containerId;
 }
 
@@ -167,18 +173,30 @@ void RealObject::setContainerId( const int arg )
 		client->setParent(m_id, arg);
 }
 
-QString RealObject::getConfiguration() const 
+QString RealObject::getConfiguration() 
 {
+	if( client )
+		m_configuration = client->getConfiguration(m_id);
 	return m_configuration;
 }
 
 void RealObject::setConfiguration( const QString& arg )
 {
 	m_configuration = arg;
+	if( client )
+		client->setConfiguration(m_id, arg);
 }
 
-QIntList RealObject::getChildElements() const 
+QIntList RealObject::getChildElements() 
 {
+	// TODO: handle error code
+	if( client ){
+		QString str = client->getChildren(m_id);
+		m_children.clear();
+		foreach( QString el, str.split("\t"))
+			if( el.toInt() != 0 )
+				m_children << el.toInt();
+	}	
 	return m_children;
 }
 
@@ -186,12 +204,16 @@ void RealObject::addChildElement( const int arg )
 {
 	if( !m_children.contains(arg) )
 		m_children << arg;
+	if( client )
+		client->setParent(arg, m_id);
 }
 
 void RealObject::deleteChildElement( const int arg )
 {
 	if( m_children.contains(arg) )
 		m_children.removeAll(arg);
+	if( client )
+		client->setParent(arg, 0);
 }
 
 QIntList RealObject::getIncomingLinks()
@@ -199,10 +221,8 @@ QIntList RealObject::getIncomingLinks()
 	QStringList links;
 	int direction = INCOMING_LINK;
 
-	if( client )
-		links = (client->getLinksByObject(m_id, direction)).split("\t");
-
 	if( client ){
+		links = (client->getLinksByObject(m_id, direction)).split("\t");
 		m_incomingLinks.clear();
 		foreach( QString link, links )
 			if( link.toInt() != 0 )
@@ -216,10 +236,8 @@ QIntList RealObject::getOutcomingLinks()
 	QStringList links;
 	int direction = OUTCOMING_LINK;
 
-	if( client )
-		links = (client->getLinksByObject(m_id, direction)).split("\t");
-
 	if( client ){
+		links = (client->getLinksByObject(m_id, direction)).split("\t");
 		m_outcomingLinks.clear();
 		foreach( QString link, links )
 			if( link.toInt() != 0 )
@@ -272,7 +290,7 @@ void RealObject::removeOutcomingLink( const int id )
 
 // ================================================== //
 
-int RealLink::getFromId() const 
+int RealLink::getFromId() 
 {
 	int val = getProperty("from").toInt();
 	if( val == 0 )
@@ -280,7 +298,7 @@ int RealLink::getFromId() const
 	return val;	
 }
 
-int RealLink::getToId() const 
+int RealLink::getToId()  
 {
 	int val = getProperty("to").toInt();
 	if( val == 0 )
