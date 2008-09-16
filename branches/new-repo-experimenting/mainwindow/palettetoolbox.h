@@ -1,12 +1,12 @@
 #ifndef PALETTETOOLBOX_H
 #define PALETTETOOLBOX_H
 
-#include <QToolBox>
+#include <QTabWidget>
 
 class QDragEnterEvent;
 class QDropEvent;
 
-class PaletteToolbox : public QToolBox
+class PaletteToolbox : public QTabWidget
 {
 	public:
 		PaletteToolbox(QWidget *parent=0);

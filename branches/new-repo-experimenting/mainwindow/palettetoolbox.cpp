@@ -27,19 +27,18 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QToolBox(parent)
+	: QTabWidget(parent)
 {
 	RealRepoInfo info;
 	//  setAcceptDrops(true);
 	QStringList categories = info.getObjectCategories();
 	for (int i = 0; i < categories.size(); i++) {
+		QScrollArea *scroller = new QScrollArea(this);
 		QWidget *tab = new QWidget(this);
-		QVBoxLayout *layout = new QVBoxLayout(this);
+		QVBoxLayout *layout = new QVBoxLayout(tab);
 		
 		layout->setSpacing(0);
 		layout->setContentsMargins ( 0,0,0,0 );
-
-		addItem(tab, categories[i]);
 
 		foreach(int classid, info.getObjects(i)) {
 			DraggableElement *element = new DraggableElement(classid, this);
@@ -47,6 +46,9 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		}
 
 		tab->setLayout(layout);
+		scroller->setWidget(tab);
+
+		addTab(scroller, categories[i]);
 	}
 }
 
@@ -57,6 +59,7 @@ void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
 void PaletteToolbox::dropEvent(QDropEvent * /*event*/)
 {
 }
+
 
 void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 {

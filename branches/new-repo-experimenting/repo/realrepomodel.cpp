@@ -4,12 +4,12 @@
 #include "realrepomodel.h"
 #include "realreporoles.h"
 
-#include "dbg.h"
+//#include "dbg.h"
 
 RealRepoModel::RealRepoModel(QSqlDatabase db, QObject *parent)
 	: QAbstractItemModel(parent)
 {
-dbg;
+//dbg;
 	this->db = db;
 
 	rootItem = new RepoTreeItem;
@@ -21,14 +21,14 @@ dbg;
 
 RealRepoModel::~RealRepoModel()
 {
-dbg;
+//dbg;
 	cleanupTree(rootItem);
 	delete rootItem;
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 {
-dbg;
+//dbg;
 	if (!index.isValid())
 		return QVariant();
 
@@ -91,7 +91,7 @@ dbg;
 
 bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-dbg;
+//dbg;
 //	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return false;
@@ -183,7 +183,7 @@ dbg;
 
 Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
 {
-dbg;
+//dbg;
 	switch ( type(index) ) {
 		case Container:		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable
 							/* | Qt::ItemIsDragEnabled */ | Qt::ItemIsDropEnabled;
@@ -196,7 +196,7 @@ dbg;
 QVariant RealRepoModel::headerData(int section, Qt::Orientation orientation,
 		int role) const
 {
-dbg;
+//dbg;
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0 )
 		return tr("Name");
 
@@ -205,7 +205,7 @@ dbg;
 
 QModelIndex RealRepoModel::index(const RepoTreeItem *item) const
 {
-dbg;
+//dbg;
 	QList <int> rowCoords;
 
 	for ( RepoTreeItem *curItem = const_cast<RepoTreeItem *>(item);
@@ -225,7 +225,7 @@ dbg;
 QModelIndex RealRepoModel::index(int row, int column, const QModelIndex &parent)
 	const
 {
-dbg;
+//dbg;
 	RepoTreeItem *parentItem;
 
 	if (!parent.isValid())
@@ -251,7 +251,7 @@ dbg;
 
 QModelIndex RealRepoModel::parent(const QModelIndex &child) const
 {
-dbg;
+//dbg;
 	if (!child.isValid())
 		return QModelIndex();
 
@@ -266,7 +266,7 @@ dbg;
 
 int RealRepoModel::rowCount(const QModelIndex &parent) const
 {
-dbg;
+//dbg;
 	RepoTreeItem *parentItem;
 
 	if (!parent.isValid())
@@ -279,13 +279,13 @@ dbg;
 
 int RealRepoModel::columnCount(const QModelIndex &/*parent*/) const
 {
-dbg;
+//dbg;
 	return 1;
 }
 
 bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent )
 {
-dbg;
+//dbg;
 	RepoTreeItem *parentItem;
 
 	if ( parent.isValid() )
@@ -340,7 +340,7 @@ dbg;
 
 QStringList RealRepoModel::mimeTypes () const
 {
-dbg;
+//dbg;
 	QStringList types;
 	types << "application/x-real-uml-data";
 	return types;
@@ -348,14 +348,14 @@ dbg;
 
 Qt::DropActions RealRepoModel::supportedDropActions () const
 {
-dbg;
+//dbg;
 	return Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
 }
 
 bool RealRepoModel::dropMimeData(const QMimeData *data, Qt::DropAction action,
 		int row, int column, const QModelIndex &parent)
 {
-dbg;
+//dbg;
 	Q_UNUSED(row);
 
 	if (action == Qt::IgnoreAction)
@@ -485,21 +485,21 @@ dbg;
 
 void RealRepoModel::beginTransaction()
 {
-dbg;
+//dbg;
 	if ( ! db.transaction() )
 		qDebug() << db.lastError().text();
 }
 
 void RealRepoModel::commitTransaction()
 {
-dbg;
+//dbg;
 	if ( ! db.commit() )
 		qDebug() << db.lastError().text();
 }
 
 void RealRepoModel::rollbackTransaction()
 {
-dbg;
+//dbg;
 	if ( db.rollback() ) {
 		// FIXME: find more elegant way
 		hashNames.clear();
@@ -520,7 +520,7 @@ dbg;
 
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
-dbg;
+//dbg;
 	if ( item->id >= 100 )
 		return Container;
 	else if ( item->id != 0 )
@@ -531,7 +531,7 @@ dbg;
 
 RealRepoModel::ElementType RealRepoModel::type(const QModelIndex &index) const
 {
-dbg;
+//dbg;
 	if (index.isValid())
 		return type(static_cast<RepoTreeItem *>(index.internalPointer()));
 	else
@@ -540,7 +540,7 @@ dbg;
 
 void RealRepoModel::cleanupTree(RepoTreeItem *root)
 {
-dbg;
+//dbg;
 	foreach (RepoTreeItem *childItem, root->children) {
 		cleanupTree(childItem);
 		delete childItem;
@@ -550,7 +550,7 @@ dbg;
 
 void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
 {
-dbg;
+//dbg;
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
@@ -569,7 +569,7 @@ dbg;
 
 void RealRepoModel::updateProperties(int id)
 {
-dbg;
+//dbg;
 	QSqlQuery q(db);
 	int type = hashTypes[id];
 
@@ -595,7 +595,7 @@ dbg;
 
 void RealRepoModel::updateRootTable()
 {
-dbg;
+//dbg;
 	// FIXME: call signals!!!! or rewrite the other way
 	QSqlQuery q(db);
 	if ( q.exec( "SELECT metatable.id, metatable.name, metatable.qualifiedName, COUNT(nametable.id)"
@@ -610,7 +610,7 @@ dbg;
 
 void RealRepoModel::readRootTable()
 {
-dbg;
+//dbg;
 	QSqlQuery q(db);
 	if ( q.exec( "SELECT metatable.id, metatable.name, metatable.qualifiedName, COUNT(nametable.id)"
 				"  FROM metatable LEFT JOIN nametable ON nametable.type=metatable.id"
@@ -636,7 +636,7 @@ dbg;
 
 void RealRepoModel::readCategoryTable(RepoTreeItem *parent)
 {
-dbg;
+//dbg;
 	QSqlQuery q(db);
 	q.prepare("SELECT nametable.id, nametable.name, nametable.type, nametable.qualifiedName,"
 			" metatable.name, COUNT(diagram.diagram_id) FROM nametable"
@@ -679,7 +679,7 @@ dbg;
 
 void RealRepoModel::readContainerTable(RepoTreeItem *root)
 {
-dbg;
+//dbg;
 	if ( hashChildren.contains(root->id) ) {
 		int i = 0;
 		foreach (int childId, hashChildren[root->id]) {
