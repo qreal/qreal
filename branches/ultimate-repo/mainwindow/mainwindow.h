@@ -32,6 +32,8 @@ public slots:
 	void deleteFromScene();
 	void deleteFromDiagram();
 
+	void activateItemOrDiagram(const QModelIndex &);
+
 	void showAbout();
 	void showHelp();
 

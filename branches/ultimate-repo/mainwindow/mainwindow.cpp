@@ -25,7 +25,7 @@ MainWindow::MainWindow()
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
-			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+			this, SLOT( activateItemOrDiagram( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
@@ -188,6 +188,26 @@ void MainWindow::deleteFromDiagram()
 		{
 			deleteFromScene();
 		}
+	}
+}
+
+void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
+{
+	QModelIndex parent = idx.parent();
+
+	/* Is level-one diagram? */
+	if (parent == model->index(1,0,QModelIndex()))
+	{
+		/* activate this diagram */
+		ui.view->mvIface()->setRootIndex(idx);
+	}
+	else
+	{
+		/* activate parent diagram */
+		ui.view->mvIface()->setRootIndex(parent);
+		/* select this item on diagram */
+		ui.view->scene()->clearSelection();
+		(dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx)->setSelected(true);
 	}
 }
 
