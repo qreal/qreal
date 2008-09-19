@@ -37,6 +37,19 @@ UML::Element * EditorViewScene::getElem(int uuid)
 	return 0;
 }
 
+UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
+{
+	// FIXME: SLOW!
+	QList < QGraphicsItem * > list = items();
+	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
+		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
+			if (elem->index() == ind)
+				return elem;
+		}
+	}
+	return 0;
+}
+
 void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);

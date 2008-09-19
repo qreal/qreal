@@ -18,6 +18,7 @@ public:
     void clearScene();
     
     UML::Element *getElem(int uuid);
+    UML::Element *getElemByModelIndex(const QModelIndex&);
     
 protected:
     void dragEnterEvent( QGraphicsSceneDragDropEvent *event );
