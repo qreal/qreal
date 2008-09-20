@@ -7,6 +7,7 @@
 #include "ui_mainwindow.h"
 
 #include "propertyeditorproxymodel.h"
+#include "propertyeditordelegate.h"
 
 class RealRepoModel;
 class EditorView;
@@ -46,6 +47,7 @@ private:
 	QSqlDatabase db;
 	
 	Ui::MainWindowUi ui;
+	PropertyEditorDelegate delegate;
 };
 
 #endif

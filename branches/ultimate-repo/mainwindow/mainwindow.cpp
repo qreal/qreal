@@ -61,6 +61,7 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
 	ui.propertyEditor->horizontalHeader()->hide();
 	ui.propertyEditor->setModel(&propertyModel);
+	ui.propertyEditor->setItemDelegate(&delegate);
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
