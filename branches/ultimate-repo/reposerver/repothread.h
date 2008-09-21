@@ -10,6 +10,7 @@ namespace reposerver
 {
   
   typedef QVector<QString> QStringVector;
+  typedef std::pair<int, QString> IntQStringPair;
   
   class QRealRepoServerThread: public QThread
   {
@@ -30,36 +31,38 @@ namespace reposerver
     void error(QTcpSocket::SocketError socketError);
     
   private:
-    QString handleCommand(QString const &cmd);
+    IntQStringPair handleCommand(QString const &cmd);
     
-    QString handleGetName(QStringVector const &params);
-    QString handleSetName(QStringVector const &params);
-    QString handleSetParent(QStringVector const &params);
-    QString handleGetParent(QStringVector const &params);
-    QString handleCreateEntity(QStringVector const &params);    
-    QString handleDeleteEntity(QStringVector const &params);
-    QString handleGetTypesCount(QStringVector const &params);
-    QString handleGetAllTypes(QStringVector const &params);
-    QString handleGetTypeInfo(QStringVector const &params);
-    QString handleGetTypeByName(QStringVector const &params);
-    QString handleGetTypesByMetatype(QStringVector const &params);
-    QString handleGetObjectsByType(QStringVector const &params);
-    QString handleGetObjectData(QStringVector const &params);
-    QString handleGetChildren(QStringVector const &params);
-    QString handleGetDescription(QStringVector const &params);
-    QString handleSetDescription(QStringVector const &params);
-    QString handleGetPosition(QStringVector const &params);
-    QString handleSetPosition(QStringVector const &params);
-    QString handleGetConfiguration(QStringVector const &params);
-    QString handleSetConfiguration(QStringVector const &params);
-    QString handleSetProperty(QStringVector const &params);
-    QString handleGetProperty(QStringVector const &params);
-    QString handleAddLink(QStringVector const &params);
-    QString handleRemoveLink(QStringVector const &params);
-    QString handleGetEntireObject(QStringVector const &params);
-    QString handleGetLinksByObject(QStringVector const &params);
-    QString handleGetObjectsByLink(QStringVector const &params);
-
+    IntQStringPair handleGetName(QStringVector const &params);
+    IntQStringPair handleSetName(QStringVector const &params);
+    IntQStringPair handleSetParent(QStringVector const &params);
+    IntQStringPair handleGetParent(QStringVector const &params);
+    IntQStringPair handleCreateEntity(QStringVector const &params);    
+    IntQStringPair handleDeleteEntity(QStringVector const &params);
+    IntQStringPair handleGetTypesCount(QStringVector const &params);
+    IntQStringPair handleGetAllTypes(QStringVector const &params);
+    IntQStringPair handleGetTypeInfo(QStringVector const &params);
+    IntQStringPair handleGetTypeByName(QStringVector const &params);
+    IntQStringPair handleGetTypesByMetatype(QStringVector const &params);
+    IntQStringPair handleGetObjectsByType(QStringVector const &params);
+    IntQStringPair handleGetObjectData(QStringVector const &params);
+    IntQStringPair handleGetChildren(QStringVector const &params);
+    IntQStringPair handleGetDescription(QStringVector const &params);
+    IntQStringPair handleSetDescription(QStringVector const &params);
+    IntQStringPair handleGetPosition(QStringVector const &params);
+    IntQStringPair handleSetPosition(QStringVector const &params);
+    IntQStringPair handleGetConfiguration(QStringVector const &params);
+    IntQStringPair handleSetConfiguration(QStringVector const &params);
+    IntQStringPair handleSetProperty(QStringVector const &params);
+    IntQStringPair handleGetProperty(QStringVector const &params);
+    IntQStringPair handleAddLink(QStringVector const &params);
+    IntQStringPair handleRemoveLink(QStringVector const &params);
+    IntQStringPair handleGetEntireObject(QStringVector const &params);
+    IntQStringPair handleGetLinksByObject(QStringVector const &params);
+    IntQStringPair handleGetObjectsByLink(QStringVector const &params);
+    
+    IntQStringPair ReportError(const int &errorCode);
+    IntQStringPair ReportSuccess(const QString &data);
     bool IsParamsNumberCorrect(QStringVector const &params, QString const &command
       , int const &paramsNum) const;
     void TryToRestoreState();

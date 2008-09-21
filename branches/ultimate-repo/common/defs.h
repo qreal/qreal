@@ -1,11 +1,10 @@
-#ifndef __DEFS_H__
-#define __DEFS_H__
+#pragma once
 
 const int ERR_STATUS_OK	        = 1;
 const int ERR_INCORRECT_PARAMS  = 2;
 const int ERR_INCORRECT_REQUEST = 4;
 
-const int ERR_UNKNOWN_ERROR	= 666;
+const int ERR_UNKNOWN_ERROR	= 888;
 
 
 const int CMD_CREATE_ENTITY		= 1;
@@ -47,6 +46,3 @@ const int INVALID_ID 	= -1;
 
 const int INCOMING_LINK		= 1;
 const int OUTCOMING_LINK	= 2;
-
-
-#endif // __DEFS_H__

@@ -1,3 +1,6 @@
+
+#include <qstring.h>
+
 #include "repothread.h"
 //#define _LONG_DEBUG
 #include "dbg.h"
@@ -87,8 +90,9 @@ void QRealRepoServerThread::run()
         if (loggedMode)
             commandLog << data << endl;
 
-        QString resp = handleCommand(data);
-        tcpSocket.write(resp.toUtf8());
+        IntQStringPair resp = handleCommand(data);
+        QString response = QString::number(resp.first) + '\t' + resp.second;
+        tcpSocket.write(response.toUtf8());
     }
   
     if (loggedMode)
@@ -115,10 +119,20 @@ bool QRealRepoServerThread::IsParamsNumberCorrect(QStringVector const &params
     return true;
 }
 
-QString QRealRepoServerThread::handleGetName(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::ReportError(const int &errorCode)
+{
+  return IntQStringPair (errorCode, "");
+}
+
+IntQStringPair QRealRepoServerThread::ReportSuccess(const QString &data)
+{
+  return IntQStringPair(ERR_STATUS_OK, data);
+}
+
+IntQStringPair QRealRepoServerThread::handleGetName(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetName", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "";
@@ -129,17 +143,17 @@ QString QRealRepoServerThread::handleGetName(QStringVector const &params)
     else
     {
         qDebug() << "unknown entity's name requested, id " << id;
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
 
     mLog += QString(", sent %1's name: [%2]").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleSetName(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetName", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString name = params[1];
@@ -150,16 +164,16 @@ QString QRealRepoServerThread::handleSetName(QStringVector const &params)
     else
     {
         qDebug() << "unknown entity's name set requested, id " << id;
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", new %1's name is [%2]").arg(id).arg(name);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleSetParent(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetParent(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetParent", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int const id = params[0].toInt();
     int const parentId = params[1].toInt();
@@ -177,16 +191,16 @@ QString QRealRepoServerThread::handleSetParent(QStringVector const &params)
         link->setParent(parentId);
     } else {
         qDebug() << "unknown entity's parent setting requested, id " << id;
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", new %1's parent is %2").arg(id).arg(parentId);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleGetParent(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetParent(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetParent", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int const id = params[0].toInt();
 	QString resp;
@@ -196,15 +210,15 @@ QString QRealRepoServerThread::handleGetParent(QStringVector const &params)
         resp += QString("%1\t%2\t").arg(ERR_STATUS_OK).arg(link->getParent());
     } else {
         qDebug() << "unknown entity's parent requested, id " << id;
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int type = params[0].toInt();
     int id = ++mCounter;
@@ -227,7 +241,7 @@ QString QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
         mLog += QString(", link created, name %1").arg(name);
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
 
     if (Object * obj = mRoot->getObject(parent))
@@ -236,13 +250,13 @@ QString QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
     }
 
     mTypesInfo->elementCreated(type, id);
-    return QString::number(id); // FIXME: error code should always come first, then the args (if there are any) 
+    return ReportSuccess(QString::number(id));
 }
 
-QString QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "DeleteEntity", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     if (Object * obj = mRoot->getObject(id))
@@ -268,28 +282,28 @@ QString QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
         mRoot->deleteLink(id);
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     
     mLog += QString(", deleted entity [%1]").arg(id);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleGetTypesCount(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetTypesCount(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetTypesCount", 0))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     // FIXME: error code should always come first, then the args (if there are any)
     QString resp = QString::number(mTypesInfo->getTypesCount());  
     mLog += QString(", sending types count: %1").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetAllTypes(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetAllTypes(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetAllTypes", 0))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int count = mTypesInfo->getTypesCount();
     QString resp = "";
@@ -297,69 +311,68 @@ QString QRealRepoServerThread::handleGetAllTypes(QStringVector const &params)
     for (int i = 1; i <= count; i++)
         resp += QString("%1\t").arg(i); // It's very informative :)
     mLog += QString(", sending types count: %1").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetTypeInfo(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetTypeInfo(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetTypeInfo", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
-    // FIXME: error code should always come first, then the args (if there are any)
     QString resp = mTypesInfo->getTypeInfo(id).toString();
     mLog += QString(", sending type info: [%1]").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetTypeByName(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetTypeByName(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetTypeByName", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     QString name = params[0];
-    // FIXME: error code should always come first, then the args (if there are any)
     QString resp = mTypesInfo->getTypeInfo(name).toString();
     mLog += QString(", sending type info: [%1]").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetTypesByMetatype(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetTypesByMetatype(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetTypesByMetatype", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     MetaType metatype = static_cast<MetaType>(params[0].toInt());
-    // FIXME: error code should always come first, then the args (if there are any)
     QString resp = mTypesInfo->getTypesByMetatype(metatype);
     mLog += QString(", sending types list: [%1]").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetObjectsByType(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetObjectsByType(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetObjectsByType", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     QString resp = "";
     int type = params[0].toInt();
-    // FIXME: error code should always come first, then the args (if there are any)
-    if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
+    if (mTypesInfo->analyseType(type) == TYPE_OBJECT)
+    {
         resp = mRoot->getObjectsByType(type);
-    } else if (mTypesInfo->analyseType(type) == TYPE_LINK){
+    } else if (mTypesInfo->analyseType(type) == TYPE_LINK)
+    {
         resp = mRoot->getLinksByType(type);
-    } else {
+    } else 
+    {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", sending objects of type: %1 -- [%2]").arg(type).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetObjectData(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetObjectData(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetObjectData", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     int childCount = 0;
@@ -376,7 +389,7 @@ QString QRealRepoServerThread::handleGetObjectData(QStringVector const &params)
         type = link->getType();
     } else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
 
     if (type != -1){
@@ -385,47 +398,45 @@ QString QRealRepoServerThread::handleGetObjectData(QStringVector const &params)
         resp = res.arg(id).arg(name).arg(type).arg(info.getDescription()).arg(childCount);
     }
     mLog += QString(", sending object data: [%1]").arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetChildren(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetChildren(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetChildren", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = QString::number(ERR_UNKNOWN_ERROR);
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id))
         resp = obj->childrenToString();
     mLog += QString(", sending %1's children - [%2]").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetDescription(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetDescription(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetDescription", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "\t";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id))
         resp = obj->getDescription();
     else if (Link * link = mRoot->getLink(id))
         resp = link->getDescription();
     else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending description for id %1 - [%2]").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleSetDescription(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetDescription(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetDescription", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString desc = params[1];
@@ -433,40 +444,40 @@ QString QRealRepoServerThread::handleSetDescription(QStringVector const &params)
         obj->setDescription(desc);
     else if (Link * link = mRoot->getLink(id))
         link->setDescription(desc);
-    else{
+    else
+    {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", new description for id %1 - [%2]").arg(id).arg(desc);
-    return QString::number(ERR_STATUS_OK); 
+    return ReportSuccess(""); 
 }
 
-QString QRealRepoServerThread::handleGetPosition(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetPosition(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetPosition", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id))
         resp = QString("%1;%2").arg(obj->getX()).arg(obj->getY());
     else if (Link * link = mRoot->getLink(id))
         resp = link->getPosition();
     else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
         resp = "\t";
     mLog += QString(", sending position for obj %1 - [%2]").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleSetPosition(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetPosition(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetPosition", 3))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     int x = params[1].toInt();
@@ -478,38 +489,37 @@ QString QRealRepoServerThread::handleSetPosition(QStringVector const &params)
         link->setPosition(QString("%1;%2").arg(x).arg(y));
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", new %1's position - (%2:%3)").arg(id).arg(x).arg(y);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleGetConfiguration(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetConfiguration(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetConfiguration", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object *obj = mRoot->getObject(id))
         resp = obj->getConfiguration();
     else if (Link *link = mRoot->getLink(id))
         resp = link->getConfiguration();
     else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
         resp = "\t";
     mLog += QString(", sending conf for %1 - [%2] ").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleSetConfiguration(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetConfiguration(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetConfiguration", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString conf = params[1];
@@ -519,16 +529,16 @@ QString QRealRepoServerThread::handleSetConfiguration(QStringVector const &param
         link->setConfiguration(conf);
     else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", conf %1").arg(conf);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleSetProperty(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleSetProperty(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "SetProperty", 3))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString name = params[1];
@@ -562,21 +572,20 @@ QString QRealRepoServerThread::handleSetProperty(QStringVector const &params)
         link->setProperty(name, val);
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", new property value: %1 - %2").arg(name).arg(val);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleGetProperty(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetProperty(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetProperty", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString name = params[1];
     QString resp = "";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id))
         resp = obj->getProperty(name);
     else if (Link * link = mRoot->getLink(id)){
@@ -589,19 +598,19 @@ QString QRealRepoServerThread::handleGetProperty(QStringVector const &params)
             resp = link->getProperty(name);
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST); 
+        return ReportError(ERR_INCORRECT_REQUEST); 
     }
 
     if (resp.isEmpty())
         resp = "\t";
     mLog += QString(", sent property value: %1 - [%2]").arg(name).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleAddLink(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleAddLink(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "AddLink", 3))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     int link_id = params[1].toInt();
@@ -621,16 +630,16 @@ QString QRealRepoServerThread::handleAddLink(QStringVector const &params)
         obj->print();
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", added new link %1 to object %2").arg(link_id).arg(id);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleRemoveLink(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleRemoveLink(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "RemoveLink", 3))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     int link_id = params[1].toInt();
@@ -648,45 +657,43 @@ QString QRealRepoServerThread::handleRemoveLink(QStringVector const &params)
             link->print();
         } else {
             qDebug() << "Wrong analyseType result";
-            return QString::number(ERR_INCORRECT_REQUEST);
+            return ReportError(ERR_INCORRECT_REQUEST);
         }
     } else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }
     mLog += QString(", removed link %1 from object %2").arg(link_id).arg(id);
-    return QString::number(ERR_STATUS_OK);
+    return ReportSuccess("");
 }
 
-QString QRealRepoServerThread::handleGetEntireObject(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetEntireObject(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetEntireObject", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "\t";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id))
         resp = obj->toString();
     else if (Link * link = mRoot->getLink(id))
         resp = link->toString();
     else {
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending object %1: %2").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetLinksByObject(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetLinksByObject(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetLinksByObject", 2))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     int dir = params[1].toInt();
     QString resp = "";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Object * obj = mRoot->getObject(id)){
         if (dir == INCOMING_LINK)
             resp = obj->getIncomingLinks();
@@ -694,33 +701,32 @@ QString QRealRepoServerThread::handleGetLinksByObject(QStringVector const &param
             resp = obj->getOutcomingLinks();
     } else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     if (resp.isEmpty())
         resp = "\t";
     mLog += QString(", sending object's links %1: [%2]").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleGetObjectsByLink(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleGetObjectsByLink(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "GetObjectsByLink", 1))
-        return QString::number(ERR_INCORRECT_PARAMS);
+        return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
     QString resp = "\t";
-    // FIXME: error code should always come first, then the args (if there are any)
     if (Link * link = mRoot->getLink(id))
         resp = link->getObjects();
     else{
         qDebug() << "Wrong analyseType result";
-        return QString::number(ERR_INCORRECT_REQUEST);
+        return ReportError(ERR_INCORRECT_REQUEST);
     }    
     mLog += QString(", sending link's objects %1: %2").arg(id).arg(resp);
-    return resp;
+    return ReportSuccess(resp);
 }
 
-QString QRealRepoServerThread::handleCommand(QString const &data)
+IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 {
     dbg;
     QStringList command = data.split("\t");
@@ -728,9 +734,9 @@ QString QRealRepoServerThread::handleCommand(QString const &data)
     command.pop_front();  // Discard command code.
     if (!command.empty() && command.back() == "" && cmd != CMD_CREATE_ENTITY)
         command.pop_back();  // Discard empty string that is sent at the end of nearly
-                         // every command by some reason.
+                             // every command by some reason.
     mLog = QString("cmd: %1").arg(cmd);
-    QString resp = "";
+    IntQStringPair resp = IntQStringPair(ERR_INCORRECT_REQUEST, "");
 
     switch (cmd)
     {
@@ -872,7 +878,6 @@ QString QRealRepoServerThread::handleCommand(QString const &data)
         default:
         {
             qDebug() << "Unknown command: " << data;
-            resp = QString::number(ERR_STATUS_OK);
         }
     }
 

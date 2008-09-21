@@ -1,91 +1,96 @@
-#ifndef __Q_REAL_REPO_CLIENT_H__
-#define __Q_REAL_REPO_CLIENT_H__
+#pragma once
 
 #include <QTcpSocket>
 #include "../common/defs.h"
 #include "../common/classes.h"
 #include "../common/realrepoapiclasses.h"
 
-using namespace QRealTypes; 
+using namespace QRealTypes;
 
 class RealRepoClient : public QObject
 {
-	Q_OBJECT;
+  Q_OBJECT;
 
-public:	
-	RealRepoClient( QObject *parent = 0);
-	~RealRepoClient();
+public:
+  RealRepoClient(QObject *parent = 0);
+  ~RealRepoClient();
 
-	QString getName( int id );
-	int setName( int id, QString name );
+  QString getName(int id);
+  int setName(int id, QString name);
 
-	int setParent( int id, int parent );
-	int getParent( int id );
-	
-	void setPosition( int id, int parent, int x, int y);
-	
-	void setDescription( int id, QString desc );
-	QString getDescription( int id );
-	
-	int setConfiguration( int id, QString conf);
-	QString getConfiguration( int id );
-	
-	int setPropValue( int id, QString name, QString value);
-	QString getPropValue(  int id, QString name );
+  int setParent(int id, int parent);
+  int getParent(int id);
 
-	int createObject( int type, QString name );
-	int createObjectWithParent(int type, QString name, int parent);
-	int createLink(QString name);
-	int createLinkWithType(QString name, QString type);
+  void setPosition(int id, int parent, int x, int y);
 
-	void deleteObject( int id );
-	void deleteLink( int id );
+  void setDescription(int id, QString desc);
+  QString getDescription(int id);
 
-	void addLink( int obj_id, int link_id, int direction );
-	void removeLink( int obj_id, int link_id, int direction );
+  int setConfiguration(int id, QString conf);
+  QString getConfiguration(int id);
 
-	int getTypesCount();
-	QIntList getAllTypes();  
-	TypeInfo getTypeInfo( int );
+  int setPropValue(int id, QString name, QString value);
+  QString getPropValue(int id, QString name);
 
-	QString getObjectsByType( int type );
-	QIntList getObjectsListByType( int type );
-	QIntList getLinks();
-	
-	QString getObjectData( int id );
-	QString getEntireObject( int id );
-	RealObject getObjectById( int id );
-	RealLink getLinkById( int id );
+  int createObject(int type, QString name);
+  int createObjectWithParent(int type, QString name, int parent);
+  int createLink(QString name);
+  int createLinkWithType(QString name, QString type);
 
-	QString getLinksByObject( int id, int direction );
-	QString getObjectsByLink( int id );
+  void deleteObject(int id);
+  void deleteLink(int id);
 
-	QString getChildren( int id );
+  void addLink(int obj_id, int link_id, int direction);
+  void removeLink(int obj_id, int link_id, int direction);
 
-	QString getPosition(int id );
-	int setPosition( int id, int x, int y );
+  int getTypesCount();
+  QIntList getAllTypes();
+  TypeInfo getTypeInfo(int);
 
-	int getLastError();
+  QString getObjectsByType(int type);
+  QIntList getObjectsListByType(int type);
+  QIntList getLinks();
 
-	int state(){ return socket->state(); }
+  QString getObjectData(int id);
+  QString getEntireObject(int id);
+  RealObject getObjectById(int id);
+  RealLink getLinkById(int id);
 
-	int isValid() { return socket->isValid(); }
+  QString getLinksByObject(int id, int direction);
+  QString getObjectsByLink(int id);
 
-	QIntList getTypesByMetaType( const MetaType );
-	
-	RealType getTypeById( const int id ); 
-	RealType getTypeByName( const QString name ); 
-	int getTypeIdByName( const QString name ); 
+  QString getChildren(int id);
+
+  QString getPosition(int id);
+  int setPosition(int id, int x, int y);
+
+  int getLastError();
+
+  int state()
+  {
+    return socket->state();
+  }
+
+  int isValid()
+  {
+    return socket->isValid();
+  }
+
+  QIntList getTypesByMetaType(const MetaType);
+
+  RealType getTypeById(const int id);
+  RealType getTypeByName(const QString name);
+  int getTypeIdByName(const QString name);
 
 public slots:
-	void displayError( QAbstractSocket::SocketError );
+  void displayError(QAbstractSocket::SocketError);
 
 private:
-	QString sendData( QString data ); 
+  QString sendData(QString data);
+  QString extractData(QString const &resp);
 
-	QTcpSocket *socket;
-	quint16 blockSize;
-	int m_error;
+  QTcpSocket *socket;
+  quint16 blockSize;
+  int m_error;
 };
 
-#endif // __Q_REAL_REPO_CLIENT_H__
