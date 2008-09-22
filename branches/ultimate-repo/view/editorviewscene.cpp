@@ -101,14 +101,5 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
-	if ( event->key() == Qt::Key_Delete ) {
-		QList<QGraphicsItem *> list = selectedItems();
-		foreach ( QGraphicsItem *item, list ) {
-			if ( UML::Element *e = dynamic_cast<UML::Element *>(item) ) {
-				
-			}
-		}
-	}
-
 	QGraphicsScene::keyPressEvent(event);
 }
