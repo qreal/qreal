@@ -1,3 +1,6 @@
+/** @file entity.cpp
+ * 	@brief Описания вспомогательных классов сущностей
+ * */
 #include "entity.h"
 
 void Entity::addParent( QString id ){

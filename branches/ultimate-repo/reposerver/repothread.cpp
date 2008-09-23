@@ -1,3 +1,6 @@
+/** @file repothread.cpp
+ * 	@brief Поток, обслуживающий клиента репозитория
+ * */
 
 #include <qstring.h>
 
@@ -552,21 +555,21 @@ IntQStringPair QRealRepoServerThread::handleSetProperty(QStringVector const &par
             int obj_id = link->getFrom();
             if (Object * obj = mRoot->getObject(obj_id)){
                 obj->removeLink(id, OUTCOMING_LINK);
-                link->removeObjectFrom();
+                link->removeObjectFrom(obj_id);
             }
             if (Object * obj = mRoot->getObject(val.toInt())){
                 obj->addLink(id, OUTCOMING_LINK);
-                link->setObjectFrom(val.toInt());
+                link->addObjectFrom(val.toInt());
             }
         } else if (name == "to"){
             int obj_id = link->getTo();
             if (Object * obj = mRoot->getObject(obj_id)){
                 obj->removeLink(id, INCOMING_LINK);
-                link->removeObjectTo();
+                link->removeObjectTo(obj_id);
             }
             if (Object * obj = mRoot->getObject(val.toInt())) {
                 obj->addLink(id, INCOMING_LINK);
-                link->setObjectTo(val.toInt());
+                link->addObjectTo(val.toInt());
             }
         } else
         link->setProperty(name, val);
@@ -622,9 +625,9 @@ IntQStringPair QRealRepoServerThread::handleAddLink(QStringVector const &params)
         if (Link * link = mRoot->getLink(link_id)){
             // qDebug() << "\tlink found!";
             if (dir == OUTCOMING_LINK)
-                link->setObjectFrom(id);
+                link->addObjectFrom(id);
             else if (dir == INCOMING_LINK)
-                link->setObjectTo(id);
+                link->addObjectTo(id);
             link->print();
         }
         obj->print();
@@ -651,9 +654,9 @@ IntQStringPair QRealRepoServerThread::handleRemoveLink(QStringVector const &para
         if (Link * link = mRoot->getLink(link_id)){
         //  qDebug() << "\tlink found!, dir" << dir;
             if (dir == OUTCOMING_LINK)
-                link->removeObjectFrom();
+                link->removeObjectFrom(id);
             else if (dir == INCOMING_LINK)
-                link->removeObjectTo();
+                link->removeObjectTo(id);
             link->print();
         } else {
             qDebug() << "Wrong analyseType result";

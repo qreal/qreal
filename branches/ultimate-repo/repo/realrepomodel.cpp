@@ -1,3 +1,6 @@
+/** @file realrepomodel.cpp
+ *	@brief Основная модель данных
+ * */
 #include <QtGui>
 #include <QtSql>
 #include <QMessageBox>
@@ -124,6 +127,7 @@ dbg;
 				if ( type(item->parent) == Container ) {
 //					qDebug() << "moving element " << item->id;
 					repoClient->setPosition(item->id, value.toPoint().x(), value.toPoint().y());
+                    hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
 				}
 				break;
 			}
@@ -139,7 +143,7 @@ dbg;
 					result.chop(1);
 
 					repoClient->setConfiguration(item->id,result);
-
+                    hashDiagramElements[item->parent->id][item->id].configuration = poly;
 				}
 				break;
 			}
@@ -410,18 +414,6 @@ dbg;
 	}
 
 	return false;
-}
-
-void RealRepoModel::beginTransaction()
-{
-}
-
-void RealRepoModel::commitTransaction()
-{
-}
-
-void RealRepoModel::rollbackTransaction()
-{
 }
 
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const

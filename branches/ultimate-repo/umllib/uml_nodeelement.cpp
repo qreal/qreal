@@ -1,3 +1,6 @@
+/** @file uml_nodeelement.cpp
+ * 	@brief Класс, представляющий объект на диаграмме
+ * */
 #include <QtGui>
 
 #include "uml_nodeelement.h"

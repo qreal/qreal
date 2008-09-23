@@ -1,3 +1,6 @@
+/** @file main.cpp
+ *  @brief Главный файл проекта
+ * */
 #include "generator.h"
 
 int main()
@@ -5,7 +8,7 @@ int main()
 	QStringList l;
 	l
 	<< "kernel_metamodel.xml" 
-	<< "basicbehaviors_metamodel.xml"
+	<< "basicbehaviors_metamodel.xml" 
 	<< "trace.xml"
 	<< "requirements_metamodel.xml" 
 	<< "class_metamodel.xml"
@@ -20,6 +23,6 @@ int main()
 	<< "package.xml"	
 	<< "bpel.xml"
 	<< "qrealparallel_metamodel.xml";
-	Generator generator(l);
+	new Generator(l);
 	return 0;
 }

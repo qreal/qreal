@@ -1,3 +1,6 @@
+/** @file editorviewmviface.cpp
+ * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
+ * */
 #include <QtGui>
 
 #include "editorviewmviface.h"

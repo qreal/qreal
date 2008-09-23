@@ -1,3 +1,6 @@
+/** @file server.h
+ * 	@brief Сервер репозитория
+ * */
 #pragma once
 
 #include <QTcpServer>
@@ -6,8 +9,10 @@
 
 namespace reposerver
 {
-  
-  class QRealRepoServer: public QTcpServer
+  /** @class QRealRepoServer
+   *  @brief Сервер репозитория
+   * */
+  class QRealRepoServer : public QTcpServer
   {
     Q_OBJECT
     
@@ -16,15 +21,20 @@ namespace reposerver
     ~QRealRepoServer();
     
   public slots:
-    void killall() const;
+  	/** @brief Отладочная печать */
+    void printout() const;
     
   protected:
-    void incomingConnection(int socketDescriptor);
+  	/** @brief Обработать входящее соединение */
+    void incomingConnection(int socketDescriptor /**< Дескриптор сокета */);
     
   private:
+  	/** @brief Вспомогательная переменная для генерации идентификаторов элементов */
     int mCount;
     
+  	/** @brief Объект, хранящий описания типов элементов */
     RepoTypesInfo *mTypesInfo;
+  	/** @brief Объект, хранящий все элементы репозитория */
     Root *mRoot;
   };
   

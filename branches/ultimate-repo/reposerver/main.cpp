@@ -1,3 +1,6 @@
+/** @file main.cpp
+ * 	@brief Главный файл сервера репозитория
+ * */
 #include <QApplication>
 #include <QtCore>
 #include <QTextCodec>

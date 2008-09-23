@@ -1,3 +1,6 @@
+/** @file classes.cpp
+ * 	@brief Классы, используемые для хранения элементов диаграмм в репозитории
+ * */
 #include "classes.h"
 
 Root::~Root()
@@ -283,8 +286,6 @@ Link::Link( int _id, int _type )
 {
 	id = _id;
 	type = _type;
-	from = -1;
-	to = -1;
 }
 
 int Link::getId()
@@ -340,18 +341,29 @@ QString Link::getProperty( QString name )
 QString Link::getObjects()
 {
 	QString res = "";
-	res += QString("%1\t%2\t").arg(to).arg(from);
+	res += QString("%1\t").arg(objectsTo.size());
+	res += getObjectsTo();
+
+	res += QString("%1\t").arg(objectsFrom.size());
+	res += getObjectsFrom();
 	return res;
 }
 
 QString Link::getObjectsFrom()
 {	
-	return QString("%1\t").arg(from);
+//	qDebug() << "objects from: " << objectsFrom;
+	QString res = "";
+	for( int i=0; i<objectsFrom.size(); i++)		
+		res += QString("%1\t").arg(objectsFrom.at(i));
+	return res;
 }
 
 QString Link::getObjectsTo()
 {
-	return QString("%1\t").arg(to);
+	QString res = "";
+	for( int i=0; i<objectsTo.size(); i++)		
+		res += QString("%1\t").arg(objectsTo.at(i));
+	return res;
 }
 
 QString Link::toString()
@@ -368,24 +380,26 @@ QString Link::toString()
 	return res;
 }
 
-void Link::setObjectTo( int id )
+void Link::addObjectTo( int id )
 {
-	to = id;
+	if( !objectsTo.contains( id ) )
+		objectsTo << id;
 }
 
-void Link::setObjectFrom( int id )
+void Link::addObjectFrom( int id )
 {
-	from = id;
+	if( !objectsFrom.contains( id ) )
+		objectsFrom << id;
 }
 
-void Link::removeObjectTo( )
+void Link::removeObjectTo( int id )
 {
-	to = -1;
+	objectsTo.removeAll(id);
 }
 
-void Link::removeObjectFrom( )
+void Link::removeObjectFrom( int id )
 {
-	from = -1;
+	objectsFrom.removeAll(id);
 }
 
 QString Link::getConfiguration()
@@ -410,12 +424,18 @@ void Link::setPosition( QString arg )
 
 int Link::getFrom()
 {
-	return from;
+	if( objectsFrom.size() > 0 )
+		return objectsFrom.at(0);
+	
+	return -1;	
 }
 
 int Link::getTo()
 {
-	return to;
+	if( objectsFrom.size() > 0 )
+		return objectsTo.at(0);
+	
+	return -1;	
 }
 
 // --------------------------------------------------------------------------- //

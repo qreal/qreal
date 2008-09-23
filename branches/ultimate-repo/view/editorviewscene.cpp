@@ -1,3 +1,6 @@
+/** @file editorviewscene.cpp
+ * 	@brief Сцена для отрисовки объектов
+ * */
 #include "editorviewscene.h"
 #include "editorviewmviface.h"
 #include "editorview.h"

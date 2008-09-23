@@ -1,3 +1,6 @@
+/** @file realrepomodel.h
+ *	@brief Основная модель данных
+ * */
 #ifndef REALREPOMODEL_H
 #define REALREPOMODEL_H
 
@@ -15,95 +18,201 @@
 
 #include "../common/classes.h"
 
+/** @class RealRepoModel
+ * 	@brief Класс основной модели данных
+ * */
 class RealRepoModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
 	public:
-		RealRepoModel(QObject *parent = 0);
+		/** @brief Конструктор */
+		RealRepoModel(QObject *parent = 0 /**< Родительский объект */);
+		/** @brief Деструктор */
 		~RealRepoModel();
 
-		QModelIndex index(int row, int column,
-				const QModelIndex &parent = QModelIndex()) const;
-		QModelIndex parent(const QModelIndex &child) const;
+		/** @brief Получить индекс элемента
+		 *	@brief @return Индек элемента
+		 * */
+		QModelIndex index(int row, /**< Номер строки */
+						int column, /**< Номер столбца */
+						const QModelIndex &parent = QModelIndex() /**< Индекс родительского элемента */
+						) const;
+		/** @brief Получить индекс родительского элемента 
+		 *	@brief @return Индекс родительского элемента 
+		 * */
+		QModelIndex parent(const QModelIndex &child /**< Индекс элемента */) const;
 
-		QVariant headerData(int section, Qt::Orientation orientation,
-				int role = Qt::DisplayRole) const;
+		/** @brief Получить заголовок 	
+		 *	@brief @return Заголовок
+		 * */
+		QVariant headerData(int section, /**< Номер секции */
+						Qt::Orientation orientation, /**< Ориентация */
+						int role = Qt::DisplayRole /**< Роль */
+						) const;
 
-		QVariant data(const QModelIndex &index, int role) const;
-		bool setData(const QModelIndex & index, const QVariant & value,
-				int role = Qt::EditRole );
+		/** @brief Получить данные элемента
+		 *	@brief @return Данные элемента
+		 * */
+		QVariant data(const QModelIndex &index, /**< Индекс элемента */
+							int role /**< Роль */
+							) const;
+		/** @brief Установить данные элемента 
+		 *	@brief @return Успешность выполнения операции 
+		 * */
+		bool setData(const QModelIndex & index, /**< Индекс элемента */ 
+					const QVariant & value, /**< Сохраняемое значение */
+					int role = Qt::EditRole /**< Роль */
+					);
 		
-		Qt::ItemFlags flags(const QModelIndex &index) const;
+		/** @brief Получить флаги элемента
+		 *	@brief @return Флаги элемента
+		 * */
+		Qt::ItemFlags flags(const QModelIndex &index /**< Индекс элемента */) const;
 
+		/** @brief Получить список типов MIME, которые могут быть использованы для описания индексов 
+		 *	@brief @return Список типов MIME, которые могут быть использованы для описания индексов
+		 * */
 		QStringList mimeTypes () const;
+		/** @brief Получить операции drag'n'drop, поддерживаемые моделью
+		 *	@brief @return Операции drag'n'drop, поддерживаемые моделью
+		 * */
 		Qt::DropActions supportedDropActions () const;
-		bool dropMimeData(const QMimeData *data, Qt::DropAction action,
-				int row, int column, const QModelIndex &parent);
+		/** @brief Обработать событие drag'n'drop
+		 *	@brief @return Успешность выполнения операции 
+		 * */
+		bool dropMimeData(const QMimeData *data, /**< Данные события */
+							Qt::DropAction action, /**< Действие */
+							int row, /**< Номер строки */
+							int column, /**< Номер столбца */
+							const QModelIndex &parent /**< Индекс родительского элемента */
+							);
 		
-		bool removeRows ( int row, int count,
-				const QModelIndex & parent = QModelIndex() );
+		/** @brief Удалить строки модели 
+		 *	@brief @return Успешность выполнения операции 
+		 * */
+		bool removeRows ( int row, /**< Номер первой удаляемой строки */
+						int count, /**< Число удаляемых строк */
+						const QModelIndex & parent = QModelIndex() /**< Индекс родительского элемента */
+						);
 		
-		int rowCount(const QModelIndex &parent = QModelIndex()) const;
-		int columnCount(const QModelIndex &parent = QModelIndex()) const;
+		/** @brief Получить число рядов данного элемента 
+		 *	@brief @return Число рядов данного элемента
+		 * */
+		int rowCount(const QModelIndex &parent = QModelIndex() /**< Индекс элемента */) const;
+		/** @brief Получить число колонок данного элемента 
+		 *	@brief @return Число колонок данного элемента
+		 * */
+		int columnCount(const QModelIndex &parent = QModelIndex() /**< Индекс элемента */) const;
 
-		void beginTransaction();
-		void commitTransaction();
-		void rollbackTransaction();
+		/** @brief Получить код последней ошибки
+		 *	@brief @return Код последней ошибки
+		 * */
+		int getLastError() 
+		{ 
+			return m_error; 
+		}
 
-		int getLastError() { return m_error; }
-
-		int getState() { return repoClient->state(); }
+		/** @brief Получить состояние клиента репозитория 
+		 *	@brief @return Состояние клиента репозитория 
+		 * */
+		int getState() 
+		{ 
+			return repoClient->state(); 
+		}
 
 	private:
+		/** @brief Клиент репозитория */
 		RealRepoClient *repoClient;
 
+		/** @brief Элемент иерерхической структуры модели */
 		struct RepoTreeItem {
-			int id;
-			int row;
-			RepoTreeItem *parent;
-			QList<RepoTreeItem *> children;
+			int id; /**< Идентификатор */
+			int row; /**< Номер строки */
+			RepoTreeItem *parent; /**< Родительский элемент */
+			QList<RepoTreeItem *> children; /**< Список дочерних элементов */
 		};
 
-		enum ElementType { Root, Category, Container };
+		/** @brief Тип элемента */
+		enum ElementType { Root, /**< Корневой элемент*/
+						Category, /**< Тип */
+						Container /**< Контейнер */
+						};
 
-		QModelIndex index(const RepoTreeItem *item) const;
+		/** @brief Получить индекс элемента модели
+		 *	@brief @return Индекс элемента модели
+		 * */
+		QModelIndex index(const RepoTreeItem *item /**< Элемент */) const;
 
+		/** @brief Хэш имен элементов */
 		QHash <int, QString> hashNames;
+		/** @brief Хэш типов элементов */
 		QHash <int, int> hashTypes;
+		/** @brief Хэш дочерних элементов */
 		QHash <int, QList<int> > hashChildren;
+		/** @brief Хэш числа дочерних элементов */
 		QHash <int, int> hashChildCount;
 
+		/** @brief Хэш значений свойств элементов */
 		QHash <int, QMap<int, QVariant> > hashElementProps;
 
+		/** @brief Хэш элементов иерархической структуры модели */
 		QHash <int,QList<RepoTreeItem *> > hashTreeItems;
 
+		/** @brief Параметры элемента на диаграмме */
 		struct ElementOnDiagram {
-			QPoint position;
-			QPolygon configuration;
+			QPoint position; /**< Расположение */
+			QPolygon configuration; /**< Конфигурация */
 		};
 
+		/** @brief Хэш элементов диаграмм */
 		QHash <int, QMap<int, ElementOnDiagram> > hashDiagramElements;
 
+		/** @brief Очистить внутренние иерархические структуры элементов 
+		 * */
 		void cleanupTree(RepoTreeItem *root);
 
+		/** @brief Обновить свойства элемента 
+		 * */
 		void updateProperties(int id);
 
+		/** @brief Обновить корневой элемент
+		 * */
 		void updateRootTable();
 
-		void createItem(RepoTreeItem *, int type, int id);
+		/** @brief Создать элемент
+		 * */
+		void createItem(RepoTreeItem * item, /**< Элемент */
+						int type, /**< Тип */
+						int id /**< Идентификатор */
+						);
 		
+		/** @brief Перечитать данные корневого элемента
+		 * */
 		void readRootTable();
+		/** @brief Перечитать данные о типе элементов
+		 * */
 		void readCategoryTable(RepoTreeItem *root);
+		/** @brief Перечитать данные о диаграмме
+		 * */
 		void readContainerTable(RepoTreeItem *root);
 
+		/** @brief Получить тип элемента 
+		 *	@brief @return Тип элемента 
+		 * */
 		ElementType type(const RepoTreeItem *item) const;
+		/** @brief Получить тип элемента
+		 *	@brief @return Тип элемента
+		 * */
 		ElementType type(const QModelIndex &index) const;
 
+		/** @brief Корневой элемент */
 		RepoTreeItem *rootItem;
 
+		/** @brief Информация о типах репозитория */
 		RealRepoInfo info;
 
+		/** @brief Код последней ошибки */
 		int m_error;
 };
 

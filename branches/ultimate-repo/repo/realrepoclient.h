@@ -1,96 +1,256 @@
-#pragma once
+/** @file realrepoclient.h
+ * 	@brief API для доступа к репозиторию
+ * */
+#ifndef __Q_REAL_REPO_CLIENT_H__
+#define __Q_REAL_REPO_CLIENT_H__
 
 #include <QTcpSocket>
 #include "../common/defs.h"
 #include "../common/classes.h"
 #include "../common/realrepoapiclasses.h"
 
-using namespace QRealTypes;
+using namespace QRealTypes; 
 
+/** @class RealRepoClient
+ * 	@brief Клиент репозитория 
+ * */
 class RealRepoClient : public QObject
 {
-  Q_OBJECT;
+	Q_OBJECT;
 
-public:
-  RealRepoClient(QObject *parent = 0);
-  ~RealRepoClient();
+public:	
+	RealRepoClient( QObject *parent = 0);
+	~RealRepoClient();
+		
+	/** @brief Получить имя элемента
+	 *	@brief @return Имя элемента 
+	 * */
+	QString getName( int id /**< Идентификатор элемента */);
+	/** @brief Установить имя элемента
+	 *	@brief @return Код возврата
+	 * */
+	int setName( int id, /**< Идентификатор элемента */
+				QString name /**< Имя элемента*/
+				);
 
-  QString getName(int id);
-  int setName(int id, QString name);
+	/** @brief Установить родителя элемента 
+	 *	@brief @return Код возврата
+	 * */
+	int setParent( int id, /**< Идентификатор элемента*/
+					int parent /**< Идентификатор родительского элемента */
+					);
+	/** @brief Получить идентфикатор родительского элемента 
+	 *	@brief @return Код возврата 
+	 * */
+	int getParent( int id /**< Идентификатор элемента */);
+	
+	/** @brief Установить позицию элемента */
+	void setPosition( int id, /**< Идентификатор элемента */
+					int parent, /**< Идентификатор родительского элемента */
+						int x, /**< Координата X */
+						int y /**< Координата Y */
+						);
+	
+	/** @brief Установить описание элемента */
+	void setDescription( int id, /**< Идентификатор элемента */ 
+						QString desc /**< Описание элемента */
+						);
+	/** @brief Получить описание элемента 
+	 *	@brief @return Описание элемента 
+	 * */
+	QString getDescription( int id /**< Идентификатор элемента */);
+	
+	/** @brief Установить конфигурацию элемента 
+	 *	@brief @return Код возврата
+	 * */
+	int setConfiguration( int id, /**< Идентификатор элемента */
+						QString conf /**< Конфигурация */
+						);
+	/** @brief Получить конфигурацию элемента
+	 *	@brief @return Конфигурация элемента 
+	 * */
+	QString getConfiguration( int id /**< Идентификатор элемента */);
+	
+	/** @brief Сохранить значение свойства 
+	 *	@brief @return Код возврата
+	 * */
+	int setPropValue( int id, /**< Идентификатор элемента */
+					QString name, /**< Название свойства */
+					QString value /**< Значение свойства */
+					);
+	/** @brief Получить значение свойства 
+	 *	@brief @return Значение свойства 
+	 * */
+	QString getPropValue(  int id, /**< Идентификатор элемента */
+						QString name /**< Название свойства */
+						);
 
-  int setParent(int id, int parent);
-  int getParent(int id);
+	/** @brief Создать объект
+	 *	@brief @return Идентификатор созданного объекта 
+	 * */
+	int createObject( int type, /**< Тип объекта */
+					QString name  /**< Имя объекта */
+					);
+	/** @brief Создать элемент с указанным родителем
+	 *	@brief @return Идентификатор созданного объекта 
+	 * */
+	int createObjectWithParent(int type, /**< Тип объекта*/
+							QString name, /**< Имя */
+							int parent /**< Идентификатор родительского объекта */
+							);
+	/** @brief Создать связь
+	 *	@brief @return Идентификатор созданной связи 
+	 * */
+	int createLink(QString name /**< Имя */);
+	/** @brief Создать связь заданного типа
+	 *	@brief @return Идентификатор созданной связи 
+	 * */
+	int createLinkWithType(QString name, /**< Имя */
+							QString type /**< Тип */
+							);
 
-  void setPosition(int id, int parent, int x, int y);
+	/** @brief Удалить объект */
+	void deleteObject( int id /**< Идентификатор */);
+	/** @brief Удалить связь */
+	void deleteLink( int id /**< Идентификатор */);
 
-  void setDescription(int id, QString desc);
-  QString getDescription(int id);
+	/** @brief Присоединить связь к объекту */
+	void addLink( int obj_id, /**< Идентификатор объекта */
+				int link_id, /**< Идентификатор связи */
+				int direction /**< Направленность связи */
+				);
+	/** @brief Отсоединить связь от объекта */
+	void removeLink( int obj_id, /**< Идентификатор объекта */
+					int link_id, /**< Идентификатор связи */
+					int direction /**< Направленность связи*/
+					);
 
-  int setConfiguration(int id, QString conf);
-  QString getConfiguration(int id);
+	/** @brief Получить число типов
+	 *	@brief @return Число типов
+	 * */
+	int getTypesCount();
+	/** @brief Полчить список идентификаторов типов
+	 *	@brief @return Список идентификаторов типов 
+	 * */
+	QIntList getAllTypes();  
+	/** @brief Получить описание типа
+	 *	@brief @return Описание типа
+	 * */
+	TypeInfo getTypeInfo( int id /**< Идентификтор типа*/);
 
-  int setPropValue(int id, QString name, QString value);
-  QString getPropValue(int id, QString name);
+	/** @brief Получить список объектов заданного типа
+	 *	@brief @return Список объектов заданного типа
+	 * */
+	QString getObjectsByType( int type /**< Идентификатор типа */);
+	/** @brief Получить список объектов заданного типа
+	 *	@brief @return Список объектов заданного типа
+	 * */
+	QIntList getObjectsListByType( int type /**< Идентификатор типа */);
+	/** @brief Получить список связей 
+	 *	@brief @return Список связей
+	 * */
+	QIntList getLinks();
+	
+	/** @brief Получить данные объекта
+	 *	@brief @return Данные объекта
+	 * */
+	QString getObjectData( int id /**< Идентификатор объекта */);
+	/** @brief Получить объект
+	 *	@brief @return Объект
+	 * */
+	QString getEntireObject( int id /**< Идентификатор объекта */);
+	/** @brief Получить объект
+	 *	@brief @return Объект
+	 * */
+	RealObject getObjectById( int id /**< Идентификатор объекта */);
+	/** @brief Получить связь 
+	 *	@brief @return Связь
+	 * */
+	RealLink getLinkById( int id /**< Идентификатор объекта */);
 
-  int createObject(int type, QString name);
-  int createObjectWithParent(int type, QString name, int parent);
-  int createLink(QString name);
-  int createLinkWithType(QString name, QString type);
+	/** @brief Получить список связей, ассоциированных с данным объектом 
+	 *	@brief @return 
+	 * */
+	QString getLinksByObject( int id, /**< Идентификатор объекта */
+							int direction /**< Направленность связи */
+							);
+	/** @brief Получить список объектов, ассоциированных с данной связью
+	 *	@brief @return Список объектов, ассоциированных с данной связью
+	 * */
+	QString getObjectsByLink( int id /**< Идентификатор объекта */);
 
-  void deleteObject(int id);
-  void deleteLink(int id);
+	/** @brief Получить список дочерних элементов 
+	 *	@brief @return Список дочерних элементов
+	 * */
+	QString getChildren( int id /**< Идентификатор объекта */);
 
-  void addLink(int obj_id, int link_id, int direction);
-  void removeLink(int obj_id, int link_id, int direction);
+	/** @brief Получить позицию элемента
+	 *	@brief @return Позиция элемента 
+	 * */
+	QString getPosition(int id /**< Идентификатор объекта */);
+	/** @brief Сохранить позицию элемента
+	 *	@brief @return Код возврата
+	 * */
+	int setPosition( int id, /**< Идентификатор объекта */
+						int x, /**< Координата X*/
+						int y /**< Координата Y*/
+						);
 
-  int getTypesCount();
-  QIntList getAllTypes();
-  TypeInfo getTypeInfo(int);
+	/** @brief Получить код последней ошибки
+	 *	@brief @return код последней ошибки 
+	 * */
+	int getLastError();
 
-  QString getObjectsByType(int type);
-  QIntList getObjectsListByType(int type);
-  QIntList getLinks();
+	/** @brief Получить состояние сокета 
+	 *	@brief @return Состояние сокета 
+	 * */
+	int state()
+	{ 
+		return socket->state(); 
+	}
 
-  QString getObjectData(int id);
-  QString getEntireObject(int id);
-  RealObject getObjectById(int id);
-  RealLink getLinkById(int id);
+	/** @brief Получить статус сокета
+	 *	@brief @return Статус сокета
+	 * */
+	int isValid() 
+	{ 
+		return socket->isValid(); 
+	}
 
-  QString getLinksByObject(int id, int direction);
-  QString getObjectsByLink(int id);
-
-  QString getChildren(int id);
-
-  QString getPosition(int id);
-  int setPosition(int id, int x, int y);
-
-  int getLastError();
-
-  int state()
-  {
-    return socket->state();
-  }
-
-  int isValid()
-  {
-    return socket->isValid();
-  }
-
-  QIntList getTypesByMetaType(const MetaType);
-
-  RealType getTypeById(const int id);
-  RealType getTypeByName(const QString name);
-  int getTypeIdByName(const QString name);
+	/** @brief Получить список типов данного метатипа
+	 *	@brief @return Список типов данного метатипа
+	 * */
+	QIntList getTypesByMetaType( const MetaType /**< Метатип */);
+	
+	/** @brief Получить тип по его идентификатору 
+	 *	@brief @return Тип элементов
+	 * */
+	RealType getTypeById( const int id /**< Идентификатор типа*/); 
+	/** @brief Получить тип по его названию
+	 *	@brief @return Тип элементов 
+	 * */
+	RealType getTypeByName( const QString name /**< Название типа */); 
+	/** @brief Получить идентификатор типа по его имени
+	 *	@brief @return Идентификатор типа 
+	 * */
+	int getTypeIdByName( const QString name /**< Название типа */); 
 
 public slots:
-  void displayError(QAbstractSocket::SocketError);
+	/** @brief Выдать описание ошибки */
+	void displayError( QAbstractSocket::SocketError err/**< Ошибка */);
 
 private:
-  QString sendData(QString data);
-  QString extractData(QString const &resp);
+	/** @brief Послать запрос серверу репозитория 
+	 *	@brief @return Ответ сервера
+	 * */
+	QString sendData( QString data ); 
 
-  QTcpSocket *socket;
-  quint16 blockSize;
-  int m_error;
+	/** @brief Обработать код ошибки */
+	QString extractData(QString const &resp /**< Ответ сервера репозитория */);
+	/** @brief Сокет */
+	QTcpSocket *socket;
+	/** @brief Код последней ошибки */
+	int m_error;
 };
 
+#endif // __Q_REAL_REPO_CLIENT_H__

@@ -1,3 +1,6 @@
+/** @file propertyeditorproxymodel.h
+ *	@brief Модель редактора свойств
+ * */
 #ifndef PROPERTYEDITORPROXYMODEL_H
 #define PROPERTYEDITORPROXYMODEL_H
 
@@ -5,6 +8,9 @@
 
 #include "realrepoinfo.h"
 
+/** @class PropertyEditorModel
+ *	@brief Модель редактора свойств
+ * */
 class PropertyEditorModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -12,30 +18,64 @@ class PropertyEditorModel : public QAbstractTableModel
 public:
     PropertyEditorModel(QObject *parent = 0);
 
-	int rowCount(const QModelIndex &index) const;
-	int columnCount(const QModelIndex &index) const;
+	/** @brief Получить число дочерних элементов
+	 *	@brief @return Число дочерних элементов
+	 * */
+	int rowCount(const QModelIndex &index /**< Индекс элемента*/) const;
+	/** @brief Получить число колонок элемента
+	 *	@brief @return Получить число колонок элемента
+	 * */
+	int columnCount(const QModelIndex &index /**< Индекс элемента*/) const;
 
-	Qt::ItemFlags flags (const QModelIndex &index) const;
+	/** @brief Получить флаги элемента
+	 *	@brief @return Флаги элемента
+	 * */
+	Qt::ItemFlags flags (const QModelIndex &index /**< Индекс элемента*/) const;
 
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	/** @brief Получить заголовок
+	 *	@brief @return Заголовок
+	 * */
+	QVariant headerData(int section, /**< Номер секции */
+						Qt::Orientation orientation, /**< Ориентация */
+						int role = Qt::DisplayRole /**< Роль */
+						) const;
+	/** @brief Получить данные модели
+	 *	@brief @return Данные модели 
+	 * */
+	QVariant data(const QModelIndex &index, /**< Индекс элемента*/
+					int role = Qt::DisplayRole /**< Роль */
+					) const;
 
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	/** @brief Сохранить данные в модели
+	 *	@brief @return Успешность выполнения операции
+	 * */
+	bool setData(const QModelIndex &index, /**< Индекс элемента*/
+					const QVariant &value, /**< Значение */
+					int role = Qt::EditRole /**< Роль */
+					);
 
-	void setSourceModel(QAbstractItemModel *sourceModel);
+	/** @brief Установить укзатель на основую модель*/
+	void setSourceModel(QAbstractItemModel *sourceModel /**< Модель */);
 
 public slots:
-	void setIndex(const QModelIndex &sourceIndex);
+	/** @brief Установить индекс элемента */
+	void setIndex(const QModelIndex &sourceIndex /**< Индекс элемента*/);
 
 private slots:
+	/** @brief Перечитать данные из модели */
 	void rereadData();
 
 private:
+	/** @brief Основная модель */
 	QAbstractItemModel *targetModel;
+	/** @brief Индект объекта */
 	QPersistentModelIndex targetObject;
+	/** @brief Информация о типах */
 	RealRepoInfo info;
 
+	/** @brief Тип элемента */
 	int type;
+	/** @brief Список ролей */
 	QStringList roleNames;
 };
 

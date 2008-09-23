@@ -1,3 +1,6 @@
+/** @file edgeelement.cpp
+ * 	@brief Класс, представляющий связь на диаграмме
+ * */
 #include <QtGui>
 #include <QtGlobal>
 
@@ -13,10 +16,13 @@
 using namespace UML;
 
 #ifndef M_PI
+/** @brief Константа ПИ */
 #define M_PI 3.14159265358979323846264338327950288419717
+/** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
 #endif //M_PI
 
+/** @brief Индикатор перемещения свящи */
 static bool moving = false;
 
 EdgeElement::EdgeElement()

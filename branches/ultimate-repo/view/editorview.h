@@ -1,3 +1,6 @@
+/** @file editorview.h
+ * 	@brief Класс, реализующий представление в схеме Model/View 
+ * */
 #ifndef EDITORVIEW_H
 #define EDITORVIEW_H
 
@@ -8,26 +11,42 @@
 
 class DiagramExplorerModel;
 
+/** @class EditorView
+ * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
+ * */
 class EditorView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    EditorView(QWidget *parent = 0);
+	/** @brief Конструктор */
+    EditorView(QWidget *parent = 0 /**< Родительский объект */);
+	/** @brief Деструктор */
     ~EditorView();
 
-    EditorViewMViface * mvIface() { return mv_iface; };
+	/** @brief Получить указатель на объект, реализующий интерфейс представления
+	 *	@brief @return Указатель на объект, реализующий интерфейс представления 
+	 * */
+    EditorViewMViface * mvIface() 
+	{ 
+		return mv_iface; 
+	};
     
 public slots:
+	/** @brief Включить/выключить сглаживание */
     void toggleAntialiasing(bool);
+	/** @brief Включить/выключить поддержку OpenGL */
     void toggleOpenGL(bool);
+	/** @brief Увеличить масштаб сцены */
     void zoomIn();
+	/** @brief Уменьшить масштаб сцены */
     void zoomOut();
     
 //protected:
 //    void mousePressEvent(QMouseEvent *event);
 
 private:
+	/** @brief Обхект, реализующий интерфейс представления */
     EditorViewMViface * mv_iface;
 };
 

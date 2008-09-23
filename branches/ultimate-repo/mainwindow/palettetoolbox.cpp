@@ -1,3 +1,6 @@
+/** @file palettetoolbox.cpp
+ * 	@brief Класс палитры элементов
+ * */
 #include <QtGui>
 
 #include "palettetoolbox.h"

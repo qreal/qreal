@@ -1,3 +1,6 @@
+/** @file uml_element.cpp
+ * 	@brief Базовый класс элемента на диаграмме
+ * */
 #include <QtGui>
 
 #include "uml_element.h"

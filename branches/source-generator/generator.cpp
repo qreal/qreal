@@ -1,3 +1,6 @@
+/** @file generator.cpp
+ * 	@brief Генератор классов используемых на диаграммах элементов
+*/
 #include "generator.h"
 
 Generator::Generator( QStringList files ){
@@ -23,7 +26,7 @@ Generator::Generator( QStringList files ){
 
     // generate all the stuff needed
     genEnums();
-    genSQLScripts();
+    genTypes();
     genClasses();
     genFactory();
     genRealRepoInfo();
@@ -437,7 +440,7 @@ void Generator::genEnums()
     file.close();
 }
 
-void Generator::genSQLScripts()
+void Generator::genTypes()
 {
 	if( !dir.exists("reposerver") )
 		dir.mkdir("reposerver");

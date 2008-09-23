@@ -1,3 +1,6 @@
+/** @file server.cpp
+ * 	@brief Сервер репозитория
+ * */
 #include "server.h"
 
 #include <QTcpServer>
@@ -30,12 +33,12 @@ void QRealRepoServer::incomingConnection(int socketDescriptor)
   QRealRepoServerThread *thread = new QRealRepoServerThread(socketDescriptor
     , this, mRoot, mTypesInfo, mCount);
   connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-  connect(thread, SIGNAL(finished()), this, SLOT(killall()));
+  connect(thread, SIGNAL(finished()), this, SLOT(printout()));
   thread->start();
   mCount += 10;
 }
 
-void QRealRepoServer::killall() const
+void QRealRepoServer::printout() const
 {
   dbg;
   qDebug() << "objects: " << mRoot->getObjectsSize();

@@ -1,3 +1,6 @@
+/** @file mainwindow.h
+ * 	@brief Главное окно приложения 
+ * */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -12,6 +15,9 @@
 class RealRepoModel;
 class EditorView;
 
+/** @class MainWindow
+ * 	@brief Главное окно приложения
+ * */
 class MainWindow : public QMainWindow
 {
 Q_OBJECT
@@ -21,32 +27,43 @@ public:
 	~MainWindow();
 
 public slots:
+	/** @brief Осуществить соединение с репозиторием */
 	void connectRepo();
+	/** @brief Закрыть репозиторий */
 	void closeRepo();
-	void adjustMinimapZoom(int zoom);
+	/** @brief Настроить minimap */
+	void adjustMinimapZoom(int zoom /**< Значение масштабирования */);
 
-	void beginTransaction();
-	void commitTransaction();
-	void rollbackTransaction();
-
+	/** @brief Осуществить удаление элемента из испектора объектов */
 	void deleteFromExplorer();
+	/** @brief Осуществить удаление элемента со сцены */
 	void deleteFromScene();
+	/** @brief Осуществить удаление элемента из инспектора диаграмм */
 	void deleteFromDiagram();
 
-	void activateItemOrDiagram(const QModelIndex &);
+	/** @brief Активировать элемент */
+	void activateItemOrDiagram(const QModelIndex &index /**< Индекс выделенного элемента */);
 
+	/** @brief Показать справку */
 	void showAbout();
+	/** @brief Показать помощь */
 	void showHelp();
 
+	/** @brief Обработать нажатие на кнопку печати */
 	void print();
+	/** @brief Экспортировать диаграмму в формате SVG */
 	void makeSvg();
 
 private:
+	/** @brief Модель */
 	RealRepoModel *model;
+	/** @brief Модель редактора свойств */
 	PropertyEditorModel propertyModel;
-	QSqlDatabase db;
 	
+	/** @brief Интерфейс главного окна */
 	Ui::MainWindowUi ui;
+	
+	/** @brief Делегат */
 	PropertyEditorDelegate delegate;
 };
 

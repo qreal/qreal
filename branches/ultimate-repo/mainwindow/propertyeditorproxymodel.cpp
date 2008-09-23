@@ -1,3 +1,6 @@
+/** @file propertyeditorproxymodel.cpp
+ *	@brief Модель редактора свойств
+ * */
 #include <QDebug>
 
 #include "propertyeditorproxymodel.h"

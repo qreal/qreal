@@ -1,6 +1,8 @@
+/** @file realrepoapiclasses.cpp
+ * 	@class Классы, используемые в API репозитория
+ * */
 #include "realrepoapiclasses.h"
 #include <QDebug>
-#include <QStringList>
 
 #include "../repo/realrepoclient.h"
 
@@ -16,18 +18,14 @@ void RealNamedEntity::setId( const int id )
 	m_id = id;
 }
 
-QString RealNamedEntity::getName() 
+QString RealNamedEntity::getName() const
 {
-	if( client )
-		m_name = client->getName(m_id);
 	return m_name;
 }
 
 void RealNamedEntity::setName( const QString& arg ) 
 {
 	m_name = arg;
-	if( client )
-		client->setName(m_id, arg);
 }
 
 int RealNamedEntity::getTypeId() const
@@ -40,10 +38,8 @@ void RealNamedEntity::setTypeId( const int arg )
 	m_type = arg;
 }
 
-QString RealNamedEntity::getDescription()
+QString RealNamedEntity::getDescription() const
 {
-	if( client )
-		m_description = client->getDescription(m_id);
 	return m_description;
 }
 
@@ -61,13 +57,11 @@ void RealNamedEntity::setProperty( const QString& name, const QString& val )
 		client->setPropValue(m_id, name, val);
 }
 
-QString RealNamedEntity::getProperty( QString name )
+QString RealNamedEntity::getProperty( const QString& name ) const
 {
 	if( client )
-		m_properties[name] = client->getPropValue(m_id, name);
-	else	
-		m_properties[name] = "";
-	return m_properties[name];
+		return client->getPropValue(m_id, name);
+	return "";
 }
 
 int RealNamedEntity::getPropertiesCount() const
@@ -159,44 +153,28 @@ void RealObject::setVisibility( const bool arg )
 	m_visibility = arg;
 }
 
-int RealObject::getContainerId() 
+int RealObject::getContainerId() const
 {
-	if( client )
-		m_containerId = client->getParent(m_id);
 	return m_containerId;
 }
 
 void RealObject::setContainerId( const int arg )
 {
 	m_containerId = arg;
-	if( client )
-		client->setParent(m_id, arg);
 }
 
-QString RealObject::getConfiguration() 
+QString RealObject::getConfiguration() const 
 {
-	if( client )
-		m_configuration = client->getConfiguration(m_id);
 	return m_configuration;
 }
 
 void RealObject::setConfiguration( const QString& arg )
 {
 	m_configuration = arg;
-	if( client )
-		client->setConfiguration(m_id, arg);
 }
 
-QIntList RealObject::getChildElements() 
+QIntList RealObject::getChildElements() const 
 {
-	// TODO: handle error code
-	if( client ){
-		QString str = client->getChildren(m_id);
-		m_children.clear();
-		foreach( QString el, str.split("\t"))
-			if( el.toInt() != 0 )
-				m_children << el.toInt();
-	}	
 	return m_children;
 }
 
@@ -204,51 +182,20 @@ void RealObject::addChildElement( const int arg )
 {
 	if( !m_children.contains(arg) )
 		m_children << arg;
-	if( client )
-		client->setParent(arg, m_id);
 }
 
 void RealObject::deleteChildElement( const int arg )
 {
 	if( m_children.contains(arg) )
 		m_children.removeAll(arg);
-	if( client )
-		client->setParent(arg, 0);
 }
 
-QIntList RealObject::getIncomingLinks()
+QIntList RealObject::getAllLinks( int direction ) const 
 {
-	QStringList links;
-	int direction = INCOMING_LINK;
-
-	if( client ){
-		links = (client->getLinksByObject(m_id, direction)).split("\t");
-		m_incomingLinks.clear();
-		foreach( QString link, links )
-			if( link.toInt() != 0 )
-				m_incomingLinks << link.toInt();
-	}	
-	return m_incomingLinks;
-}
-
-QIntList RealObject::getOutcomingLinks()
-{
-	QStringList links;
-	int direction = OUTCOMING_LINK;
-
-	if( client ){
-		links = (client->getLinksByObject(m_id, direction)).split("\t");
-		m_outcomingLinks.clear();
-		foreach( QString link, links )
-			if( link.toInt() != 0 )
-				m_outcomingLinks << link.toInt();
-	}	
-	return m_outcomingLinks;
-}
-
-QIntList RealObject::getAllLinks() 
-{
-	return getIncomingLinks() + getOutcomingLinks();
+	if( direction == INCOMING_LINK )
+		return m_incomingLinks;
+	else 	
+		return m_outcomingLinks;
 }
 
 /*void RealObject::addLink( const int id )
@@ -290,7 +237,7 @@ void RealObject::removeOutcomingLink( const int id )
 
 // ================================================== //
 
-int RealLink::getFromId() 
+int RealLink::getFromId() const 
 {
 	int val = getProperty("from").toInt();
 	if( val == 0 )
@@ -298,7 +245,7 @@ int RealLink::getFromId()
 	return val;	
 }
 
-int RealLink::getToId()  
+int RealLink::getToId() const 
 {
 	int val = getProperty("to").toInt();
 	if( val == 0 )
