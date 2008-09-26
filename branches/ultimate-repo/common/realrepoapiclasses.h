@@ -187,21 +187,15 @@ namespace QRealTypes
 		/** @brief Получить список связей, ассоциированных с данным объектом 
 		 *	@brief @return Список связей, ассоциированных с данным объектом 
 		 * */
-		QIntList getAllLinks(int direction /**< Направленность связей */) const; // INCOMING_LINK = 1 OUTCOMING_LINK = 2
-		/** @brief Получить входящие в объект свящи 
+		QIntList getAllLinks() const;
+		/** @brief Получить входящие в объект связи 
 		 *	@brief @return Список входящих связей
 		 * */
-		QIntList getIncomingLinks() const 
-		{ 
-			return getAllLinks( INCOMING_LINK ); 
-		};
+		QIntList getIncomingLinks() const; 
  		/** @brief Получить исходящие из объекта связи 
 		 *	@brief @return Список исходящих связей 
 		 * */
-		QIntList getOutcomingLinks() const 
-		{ 
-			return getAllLinks( OUTCOMING_LINK ); 
-		};
+		QIntList getOutcomingLinks() const; 
 
 		/** @brief Добавить входящую связь */
 		void addIncomingLink( const int id /**< Идентификатор связи */);
