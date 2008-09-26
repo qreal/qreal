@@ -432,7 +432,7 @@ int Link::getFrom()
 
 int Link::getTo()
 {
-	if( objectsFrom.size() > 0 )
+	if( objectsTo.size() > 0 )
 		return objectsTo.at(0);
 	
 	return -1;	
