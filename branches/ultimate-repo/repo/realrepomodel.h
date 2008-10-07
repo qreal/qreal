@@ -74,6 +74,10 @@ class RealRepoModel : public QAbstractItemModel
 		 *	@brief @return Список типов MIME, которые могут быть использованы для описания индексов
 		 * */
 		QStringList mimeTypes () const;
+   		/** @brief Получить сериализованное представление объекта для операции drag'n'drop 
+		 *	@brief @return Сериализованное представление объекта для операции drag'n'drop
+		 * */
+        QMimeData * mimeData ( const QModelIndexList & indexes ) const;
 		/** @brief Получить операции drag'n'drop, поддерживаемые моделью
 		 *	@brief @return Операции drag'n'drop, поддерживаемые моделью
 		 * */
@@ -180,11 +184,18 @@ class RealRepoModel : public QAbstractItemModel
 		 * */
 		void updateRootTable();
 
-		/** @brief Создать элемент
+		/** @brief Создать новый элемент
 		 * */
 		void createItem(RepoTreeItem * item, /**< Элемент */
 						int type, /**< Тип */
 						int id /**< Идентификатор */
+						);
+		/** @brief Создать ссылку на уже имеющийся элемент
+		 * */
+		void createItem(RepoTreeItem * item, /**< Элемент */
+						int type, /**< Тип */
+						int id, /**< Идентификатор */
+                        QString name /**< Имя */
 						);
 		
 		/** @brief Перечитать данные корневого элемента

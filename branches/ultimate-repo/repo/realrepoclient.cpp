@@ -162,6 +162,14 @@ dbg;
 	return resp.toInt();
 }
 
+int RealRepoClient::copyEntity(int type, int id, int newParent)
+{
+dbg;
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_COPY_ENTITY).arg(type).arg(id).arg(newParent);
+	QString resp = sendData(data);
+	return resp.toInt();
+}
+
 int RealRepoClient::createObjectWithParent(int type, QString name, int parent)
 {
 dbg;

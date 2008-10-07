@@ -256,6 +256,20 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
     return ReportSuccess(QString::number(id));
 }
 
+IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &params)
+{
+    if (!IsParamsNumberCorrect(params, "CopyEntity", 3))
+        return ReportError(ERR_INCORRECT_PARAMS);
+
+//    int type = params[0].toInt();
+    int id = params[1].toInt();
+//    int newParent = params[2].toInt();
+//    mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
+
+    // TBD        
+    return ReportSuccess(QString::number(id));
+}
+
 IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
 {
     if (!IsParamsNumberCorrect(params, "DeleteEntity", 1))
@@ -766,6 +780,11 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
         case CMD_CREATE_ENTITY:
         {
             resp = handleCreateEntity(command.toVector());
+            break;
+        }
+        case CMD_COPY_ENTITY:
+        {
+            resp = handleCopyEntity(command.toVector());
             break;
         }
         case CMD_DELETE_ENTITY:

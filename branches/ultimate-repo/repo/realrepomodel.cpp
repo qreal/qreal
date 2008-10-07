@@ -171,7 +171,7 @@ Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
 dbg;
 	switch ( type(index) ) {
 		case Container:		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable
-							/* | Qt::ItemIsDragEnabled */ | Qt::ItemIsDropEnabled;
+							 | Qt::ItemIsDragEnabled  | Qt::ItemIsDropEnabled;
 		case Category:		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 		case Root:			return Qt::ItemIsEnabled;
 		default:			return 0;
@@ -324,6 +324,32 @@ QStringList RealRepoModel::mimeTypes () const
 	return types;
 }
 
+QMimeData * RealRepoModel::mimeData ( const QModelIndexList & indexes ) const
+{
+dbg;
+    qDebug() << "++++++++++++++++++!!!!!!!!!!!!!!!!++++++++++++++++++";
+    qDebug() << "index list size: " << indexes.size();
+
+	RepoTreeItem *item;
+	if ( indexes.at(0).isValid() ) 
+		item = static_cast<RepoTreeItem *>(indexes.at(0).internalPointer());
+	else{
+        qDebug() << "bad item dragged!";
+        return 0;
+    }
+
+    QByteArray itemData;
+    QDataStream stream(&itemData, QIODevice::WriteOnly);
+    stream << item->id;
+    stream << hashTypes[item->id];
+    stream << hashNames[item->id];
+    stream << hashDiagramElements[item->parent->id][item->id].position;
+
+    QMimeData *mimeData = new QMimeData;
+    mimeData->setData("application/x-real-uml-data", itemData);
+    return mimeData;
+}
+
 Qt::DropActions RealRepoModel::supportedDropActions () const
 {
 dbg;
@@ -362,7 +388,7 @@ dbg;
 	stream >> name;
 	stream >> newPos;
 
-//	qDebug() << "dropped" << newid << newtype << name << newPos;
+	qDebug() << "dropped" << newid << newtype << name << newPos;
 
 //	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
 
@@ -387,23 +413,35 @@ dbg;
 			break;
 		case Container:
 			{
-//				qDebug() << "adding to container";
+				qDebug() << "adding to container, action is " << action;
 				int id = -1;
-				if ( action == Qt::CopyAction ) {
-					
+                
+                // drag'n'drop из эксплорера, создаем ссылку на текущий элемент
+                bool newElement = ( name != "(anon element)" );
+
+                // drag'n'drop из палитры, создаем новый элемент
+				if ( action == Qt::CopyAction ) { // дерево инстпектора об'ектов 
+				    qDebug() << "Qt::CopyAction";
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
 					//FIXME
-					id = repoClient->createObjectWithParent(newtype,
-								"anonymous", parentItem->id);
+                    if( newElement )
+                        id = repoClient->copyEntity(newtype, newid, parentItem->id);
+                    else
+					    id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
 					repoClient->setPosition(id, (int) newPos.x(), (int) newPos.y());
-//					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
+					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
+				    endInsertRows();
 				}
 
+				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
+				// дерево инспектора диаграмм
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-//				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
-				createItem(parentItem, id, newtype);
+                if( newElement )
+                    createItem(parentItem, id, newtype, name);
+                else    
+				    createItem(parentItem, id, newtype);
 				hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				endInsertRows();
 
@@ -449,6 +487,7 @@ dbg;
 void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
 {
 dbg;
+    qDebug() << "create item";
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
@@ -461,6 +500,26 @@ dbg;
 	hashNames[id] = "anonymous";
 	hashTypes[id] = type;
 	hashChildCount[id] = 0;
+
+	hashChildren[parentItem->id].append(id);
+	hashChildCount[parentItem->id]++;
+}
+
+void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type, QString name){
+dbg;
+    qDebug() << "creating2 item";
+	RepoTreeItem *item = new RepoTreeItem;
+	item->parent = parentItem;
+	item->id = id;
+	item->row = parentItem->children.size();
+ 
+	parentItem->children.append(item);
+	hashTreeItems[id].append(item);
+
+	hashNames[id] = name;
+	hashTypes[id] = type;
+	// FIXME
+    hashChildCount[id] = 0;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;

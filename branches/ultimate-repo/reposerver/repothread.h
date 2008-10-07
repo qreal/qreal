@@ -66,6 +66,10 @@ namespace reposerver
         *   @brief return Результат выполнения операции
         */
         IntQStringPair handleCreateEntity(QStringVector const &params);    
+        /** @brief Обработать команду "Поместить сущность на другую диаграмму"
+        *   @brief return Результат выполнения операции
+        */
+        IntQStringPair handleCopyEntity(QStringVector const &params);    
         /** @brief Обработать команду "Удалить сущность"
         *   @brief return Результат выполнения операции
         */
