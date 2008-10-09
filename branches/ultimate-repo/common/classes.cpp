@@ -26,13 +26,11 @@ void Root::addLink( int id, Link* link )
 void Root::deleteObject( int id )
 {
 	int count = objects.remove(id);
-	qDebug() << "deleted " << count << "objects";
 }
 
 void Root::deleteLink( int id )
 {
 	int count = objects.remove(id);
-	qDebug() << "deleted " << count << "links";
 }
 
 int Root::getObjectsSize()
@@ -63,19 +61,18 @@ Link *Root::getLink( int id )
 
 QString Root::getObjectsByType( int type )
 {
- QString res = "";
- for( int i=0; i<objects.values().size(); i++ ){
-   int key = objects.keys()[i];
-   Object *obj = objects.value(key);
-   if( obj && obj->getType() == type ){
-     res += QString("%1\t").arg(obj->getId());
-   }
- }
- if( !res.isEmpty() )
-   res.chop(1);
- else
-   res = "\t";
- return res;
+	QString res = "";
+	for( int i=0; i<objects.values().size(); i++ ){
+		int key = objects.keys()[i];
+		Object *obj = objects.value(key);
+		if( obj && obj->getType() == type )
+			res += QString("%1\t").arg(obj->getId());
+	}
+	if( !res.isEmpty() )
+		res.chop(1);
+	else
+		res = "\t";
+	return res;
 }
 
  QString Root::getLinksByType( int type )
@@ -97,32 +94,10 @@ return res;
 
 // --------------------------------------------------------------------------- //
 
-Object::Object( int _id, int _type, int _x, int _y ) 
+Object::Object( int _id, int _type ) 
 {
 	id = _id;
-	x = _x;
-	y = _y;
 	type = _type;
-}
-
-int Object::getX() 
-{
-	return x;
-}	
-
-void Object::setY( int arg )
-{
-	y = arg;
-}
-
-void Object::setX( int arg ) 
-{
-	x = arg;
-}	
-
-int Object::getY()
-{
-	return y;
 }
 
 void Object::setName( QString arg )
@@ -133,16 +108,6 @@ void Object::setName( QString arg )
 QString Object::getName()
 {
 	return name;
-}
-
-int Object::getParent()
-{
-	return parent;
-}
-
-void Object::setParent( int id )
-{
-	parent  = id;
 }
 
 void Object::setDescription( QString arg )
@@ -167,38 +132,47 @@ int Object::getType()
 
 int Object::childrenCount()
 {
-	return children.count();
+	return nodeChildren.count() + edgeChildren.count();
 }
 
-void Object::addChild( int child )
+void Object::addNodeChild( int child )
 {
-	if( !children.contains(child) )
-		children << child;
+	NodeOnDiagram node(child);
+	nodeChildren[child] = node;
 }
 
-void Object::removeChild( int child )
+void Object::addEdgeChild( int child )
 {
-	int count = children.removeAll(child);
-	qDebug() << "removed" << count << "children of element" << id;
+	EdgeOnDiagram edge(child);
+	edgeChildren[child] = edge;
+}
+
+void Object::removeNodeChild( int child )
+{
+	foreach( NodeOnDiagram node, nodeChildren)
+		if( node.getId() == child ){
+			nodeChildren.remove(child);
+//			qDebug() << "removed node with id " << child << " from diagram " << this->id;
+		}	
+}
+
+void Object::removeEdgeChild( int child )
+{
+	foreach( EdgeOnDiagram edge, edgeChildren)
+		if( edge.getId() == child ){
+			edgeChildren.remove(child);
+//			qDebug() << "removed edge with id " << child << " from diagram " << this->id;
+		}	
 }
 
 QString Object::childrenToString()
 {
 	QString res = "";
-	for( int i=0; i<children.size(); i++ )
-		res += QString("%1\t").arg(children[i]);
-		
+	for( int i=0; i<nodeChildren.values().size(); i++ )
+		res += QString("%1\t").arg(nodeChildren.values()[i].getId());
+	for( int i=0; i<edgeChildren.values().size(); i++ )
+		res += QString("%1\t").arg(edgeChildren.values()[i].getId());
 	return res;	
-}
-
-QString Object::getConfiguration()
-{
-	return configuration;
-}
-
-void Object::setConfiguration( QString arg )
-{
-	configuration = arg;
 }
 
 void Object::setProperty( QString name, QString val )
@@ -230,10 +204,10 @@ QString Object::getOutcomingLinks()
 QString Object::toString()
 {
 	QString res = "";
-	res += QString("%1\t%2\t%3\t%4\t%5\t%6\t%7\t%8\t")
-			.arg(type).arg(id).arg(parent).arg(name).arg(configuration).arg(x).arg(y).arg(description);
+	res += QString("%1\t%2\t%3\t%4\t")
+			.arg(type).arg(id).arg(name).arg(description);
 	
-	res += QString("%1\t").arg(children.size());
+	res += QString("%1\t").arg(childrenCount());
 	res += childrenToString();
 
 	res += QString("%1\t").arg(incomingLinks.size());
@@ -279,6 +253,59 @@ void Object::removeLink( int id, int dir )
 	}	
 }
 
+QString Object::getChildPos( int id )
+{
+	if( edgeChildren.contains(id) )
+		return edgeChildren[id].getPosition();
+	else
+		return "";
+}
+
+bool Object::setChildPos( int id, QString pos )
+{
+	if( edgeChildren.contains(id) )
+		edgeChildren[id].setPosition(pos);
+	else
+		return false;
+	return true;
+}
+
+QPoint Object::getChildCoord( int id)
+{
+	if( nodeChildren.contains(id) )
+		return nodeChildren[id].getCoord();
+	return QPoint();
+}
+
+bool Object::setChildCoord( int id, QPoint p)
+{
+	if( nodeChildren.contains(id) )
+		nodeChildren[id].setCoord(p);
+	else
+		return false;
+	return true;
+}
+
+QString Object::getChildConfiguration( int id)
+{
+	if( nodeChildren.contains(id) )
+		return nodeChildren[id].getConfiguration();
+	else if ( edgeChildren.contains(id) )
+		return edgeChildren[id].getConfiguration();
+	else
+		return "";
+}
+
+bool Object::setChildConfiguration( int id, QString conf )
+{
+	if( nodeChildren.contains(id) )
+		nodeChildren[id].setConfiguration(conf);
+	else if( edgeChildren.contains(id) )
+		edgeChildren[id].setConfiguration(conf);
+	else
+		return false;
+	return true;	
+}
 
 // --------------------------------------------------------------------------- //
 
@@ -306,16 +333,6 @@ QString Link::getName()
 void Link::setName( QString arg )
 {
 	name = arg;
-}
-
-void Link::setParent( int id )
-{
-	parent  = id;
-}
-
-int Link::getParent()
-{
-	return parent;
 }
 
 void Link::setDescription( QString arg )
@@ -369,7 +386,7 @@ QString Link::getObjectsTo()
 QString Link::toString()
 {
 	QString res = "";
-	res += QString("%1\t%2\t%3\t%4\t%5\t").arg(type).arg(id).arg(parent).arg(name).arg(description);
+	res += QString("%1\t%2\t%3\t%4\t").arg(type).arg(id).arg(name).arg(description);
 	
 	res += getObjects();
 
@@ -400,26 +417,6 @@ void Link::removeObjectTo( int id )
 void Link::removeObjectFrom( int id )
 {
 	objectsFrom.removeAll(id);
-}
-
-QString Link::getConfiguration()
-{
-	return configuration;
-}
-
-void Link::setConfiguration( QString arg )
-{
-	configuration = arg;
-}
-
-QString Link::getPosition()
-{
-	return position;
-}
-
-void Link::setPosition( QString arg )
-{
-	position = arg;
 }
 
 int Link::getFrom()

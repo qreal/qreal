@@ -97,28 +97,10 @@ dbg;
 	return sendData(data).toInt();
 }
 
-int RealRepoClient::setParent( int id, int parent )
+void RealRepoClient::setPosition( int id, int parent, int x, int y)
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t").arg(CMD_SET_PARENT).arg(id).arg(parent);
-	return sendData(data).toInt();
-}
-
-int RealRepoClient::getParent( int id )
-{
-dbg;
-	QString data = QString("%1\t%2\t").arg(CMD_GET_PARENT).arg(id);
-	QString rawResult = sendData(data);
-	if( rawResult.section("\t", 0, 0).toInt() == ERR_STATUS_OK )
-		return rawResult.section("\t", 1, 1).toInt();
-	else
-		return INVALID_ID;
-}
-
-void RealRepoClient::setPosition( int id, int /*parent*/, int x, int y)
-{
-dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_POSITION).arg(id).arg(x).arg(y);
+	QString data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_SET_POSITION).arg(id).arg(parent).arg(x).arg(y);
 	QString resp = sendData(data);
 //	qDebug() << "recvd" << resp;
 }
@@ -283,32 +265,25 @@ QString RealRepoClient::getChildren( int id )
 	return resp;	
 }
 
-QString RealRepoClient::getPosition( int id )
+QString RealRepoClient::getPosition( int id, int parent )
 {
-	QString cmd = QString("%1\t%2\t").arg(CMD_GET_POSITION).arg(id);
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_POSITION).arg(id).arg(parent);
 	QString resp = sendData(cmd);
 	return resp;	
 }
 
-int RealRepoClient::setPosition( int id, int x, int y )
+int RealRepoClient::setConfiguration( int id, int parent, QString conf)
 {
-	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_POSITION).arg(id).arg(x).arg(y);
+dbg;
+	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_CONFIGURATION).arg(id).arg(parent).arg(conf);
 	QString resp = sendData(cmd);
 	return resp.toInt();	
 }
 
-int RealRepoClient::setConfiguration( int id, QString conf)
+QString RealRepoClient::getConfiguration( int id, int parent)
 {
 dbg;
-	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_SET_CONFIGURATION).arg(id).arg(conf);
-	QString resp = sendData(cmd);
-	return resp.toInt();	
-}
-
-QString RealRepoClient::getConfiguration( int id)
-{
-dbg;
-	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CONFIGURATION).arg(id);
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_CONFIGURATION).arg(id).arg(parent);
 	QString resp = sendData(cmd);
 	return resp;	
 }
@@ -329,14 +304,12 @@ dbg;
 	RealObject obj;
 	obj.setTypeId(data.section("\t",0,0).toInt());
 	obj.setId(id);
-	obj.setContainerId(data.section("\t",2,2).toInt());
 	obj.setVisibility(true);
-	obj.setName(data.section("\t",3,3));
-	obj.setConfiguration(data.section("\t",4,4));
-	obj.setDescription(data.section("\t",7,7));
+	obj.setName(data.section("\t",2,2));
+	obj.setDescription(data.section("\t",3,3));
 
-	int childCount = data.section("\t",8,8).toInt();
-	int counter = 9;	
+	int childCount = data.section("\t",4,4).toInt();
+	int counter = 5;	
 	for( int i=0; i<childCount; i++){
 		obj.addChildElement(data.section("\t",counter,counter).toInt());
 		counter++;
@@ -372,7 +345,6 @@ RealLink RealRepoClient::getLinkById( int id )
 dbg;
 	QString data = getEntireObject(id);
 	RealLink link;
-	// TODO: add RealLink( const QString& ) constructor to make it creat itself
 	link.setTypeId(data.section("\t",0,0).toInt());
 	link.setId(data.section("\t",1,1).toInt());
 	link.setName(data.section("\t",3,3));

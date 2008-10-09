@@ -9,11 +9,14 @@
 #include <QString>
 #include <QMap>
 #include <QDebug>
+#include <QPoint>
 
 #include "defs.h"
 
 class Link;
 class Object;
+class NodeOnDiagram;
+class EdgeOnDiagram;
 
 /* root entity to handle all the others ( the parent of all `projects', 
  * `diagrams', `objects', `links' etc. ). for internal use only.
@@ -98,37 +101,14 @@ class Object
 {
 public:
 	// TODO: remove ID from constructor and generate it by repo server itself
-	Object( int _id, int _type, int _x, int _y );
+	Object( int _id, int _type );
 	
-	// TODO: return QPointF or something like that
-	/** @brief Получить координату Х объекта
-	 *	@brief @return Координата Х
-	 * */
-	int getX();
-	/** @brief Получить координату Y объекта
-	 *	@brief @return Координата Y
-	 * */
-	int getY();
-	
-	// TODO: add setPointF() method 
-	/** @brief Устновить координату X объекта */
-	void setX( int x /**< Координата X*/);
-	/** @brief Установить координату Y объекта */
-	void setY( int y /**< Координата Y*/);
-
 	/** @brief Получить имя объекта 
 	 *	@brief @return Имя объекта
 	 * */
 	QString getName();
 	/** @brief Установить имя объекта */
 	void setName( QString arg /**< Имя */);
-
-	/** @brief Получить идентификатор родителя объекта 
-	 *	@brief @return Идентификатор родитля 
-	 * */
-	int getParent();
-	/** @brief Установить идентификатор родителя объекта */
-	void setParent( int id /**< Идентификатор родительского элемента */);
 
 	/** @brief Получить описание объекта
 	 *	@brief @return Описание объекта 
@@ -161,23 +141,50 @@ public:
 	int childrenCount();
 
 	// add child to the children list, nothing more
-	/** @brief Добавить дочерний элемент */
-	void addChild( int id /**< Идентификатор элемента */);
+	/** @brief Добавить дочерний элемент-объект */
+	void addNodeChild( int id /**< Идентификатор элемента */);
+	/** @brief Добавить дочерний элемент-связь */
+	void addEdgeChild( int id /**< Идентификатор элемента */);
 	/** @brief Убрать элемент из списка дочерних */
-	void removeChild( int id /**< Идентификатор элемента*/);
+	void removeNodeChild( int id /**< Идентификатор элемента*/);
+	/** @brief Убрать связь из списка дочерних */
+	void removeEdgeChild( int id /**< Идентификатор связи*/);
+
+	/** @brief Изменить расположение дочернего элемента
+	 * 	@brief @return Успешность выполнения операции
+	 * */
+	bool setChildPos( int id, /**< Идентификатор элемента */
+					QString pos /**< Расположение элемента */
+					);
+	/** @brief Изменить конфигурацию дочернего элемента
+	 * 	@brief @return Успешность выполнения операции
+	 * */
+	bool setChildConfiguration( int id, /**< Идентификатор элемента */
+							QString conf /**< Конфигурация элемента */
+							);
+	/** @brief Изменить координаты дочернего элемента
+	 * 	@brief @return Успешность выполнения операции
+	 * */
+	bool setChildCoord( int id, /**< Идентификатор элемента */
+						QPoint p /**< Координаты элемента */
+						);
+	/** @brief Получить расположение дочернего элемента
+	 * 	@brief @return Расположение дочернего элемента
+	 * */
+	QString getChildPos( int id /**< Идентификатор элемента */);
+	/** @brief Получить конфигурацию дочернего элемента
+	 * 	@brief @return Конфигурация дочернего элемента
+	 * */
+	QString getChildConfiguration( int id /**< Идентификатор элемента */);
+	/** @brief Получить координаты дочернего элемента
+	 * 	@brief @return Координаты дочернего элемента
+	 * 	* */
+	QPoint getChildCoord( int id /**< Идентификатор элемента */);
 
 	// returns list of children entities' IDs
 	/** @brief Получить список идентификаторов дочерних элементов */
 	QString childrenToString();
 	
-	// set/get object's size configuration
-	/** @brief Установить конфигурацию объекта */
-	void setConfiguration( QString arg /**< Конфигурация*/);
-	/** @brief Получить конфигурацию объекта 
-	 *	@brief @return Конфигурация объекта 
-	 * */
-	QString getConfiguration();
-
 	/** @brief Сериализовать объект в строку
 	 *	@brief @return Сериализованный объект
 	 * */
@@ -208,24 +215,18 @@ public:
 	}
 
 private:
-	/** @brief Координата X */
-	int x;
-	/** @brief Координата Y */
-	int y;
 	/** @brief Идентификатор */
 	int id;
 	/** @brief Тип */
 	int type;
-	/** @brief Родительский элемент */
-	int parent;
 	/** @brief Имя */
 	QString name;
 	/** @brief Описание */
 	QString description;
-	/** @brief Конфигурация */
-	QString configuration;
 	/** @brief Список дочерних элементов */
-	QList<int> children;
+	QMap<int, NodeOnDiagram> nodeChildren;
+	/** @brief Список дочерних линков */
+	QMap<int, EdgeOnDiagram> edgeChildren;
 	/** @brief Свойства и их значения */
 	QMap<QString, QString> props;
 	/** @brief Список входящих связей */
@@ -259,13 +260,6 @@ public:
 	QString getName();
 	/** @brief Установить имя связи */
 	void setName( QString arg /**< Имя */);
-	
-	/** @brief Получить идентификатор родительского элемента
-	 * 	@brief @return Идентификатор родительского элемента 
-	 * 	*/
-	int getParent();
-	/** @brief Установить идентификатор родительского элемента */
-	void setParent( int id /**< Идентификатор родительского элемента */);
 	
 	/** @brief Получить описание связи 
 	 * 	@brief @return Описание связи 
@@ -303,21 +297,6 @@ public:
 	/** @brief Отсоединить объект от конца связи */
 	void removeObjectFrom( int id /**< Идентификатор объекта */);
 
-	// object's port position
-	/** @brief Установить конфигурацию связи*/
-	void setConfiguration( QString arg /**< Конфигурация */);
-	/** @brief Получить конфигурацию связи 
-	 * 	@brief @return Конфигурация связи
-	 * 	*/
-	QString getConfiguration();
-
-	/** @brief Получить расположение связи
-	 * 	@brief @return Расположение связи
-	 * 	*/
-	QString getPosition();
-	/** @brief Установить расположение связи */
-	void setPosition( QString arg /**< Расположение связи */);
-
 	/** @brief Получить идентификатор объекта, присоединенного к началу связи 
 	 * 	@brief @return Идентификатор объекта, присоединенного к началу связи
 	 * 	*/
@@ -345,16 +324,10 @@ private:
 	int id;
 	/** @brief Тип */
 	int type;
-	/** @brief Родительский элемент */
-	int parent;
 	/** @brief Имя */
 	QString name;
 	/** @brief Описание */
 	QString description;
-	/** @brief Конфигурация */
-	QString configuration;
-	/** @brief Расположение */
-	QString position;
 	/** @brief Свойства и их значения */
 	QMap<QString, QString> props;
 	/** @brief Объекты, присоединенные к концу связи */
@@ -385,6 +358,118 @@ public:
 	QString toString();
 	/** @brief Десериализовать описание типа */
 	void fromString( QString arg /**< Сериализованное значение описания типа */);
+};
+
+/** @class ElementOnDiagram
+ * 	@brief Описание абстрактного элемента на диаграмме
+ * */
+class ElementOnDiagram {
+public:
+	/** @brief Конструктор */
+	ElementOnDiagram() : id(0), configuration("") {}
+	ElementOnDiagram( int mId /**< Иднетификатор */ ) : id(mId), configuration("") {}
+	/** @brief Конструктор */
+	ElementOnDiagram( int mId, /**< Иднетификатор */
+						QString conf /**< Конфигурация */
+						) : id(mId), configuration(conf) {}
+
+	/** @brief Изменить конфигурацию элемента */
+	void setConfiguration( QString str /**< Конфигурация */)
+	{
+		this->configuration = str;
+	}
+
+	/** @brief Получить конфигурацию объекта
+	 *	@brief @return Конфигурация объекта
+	 * */
+	QString getConfiguration()
+	{
+		return configuration;
+	}
+
+	/**	@brief Получить идентификатор элемента
+	 * 	@brief @return Идентификатор элемента
+	 * */
+	int getId()
+	{
+		return id;
+	}
+
+private:
+	/** @brief Идентификатор */
+	int id;
+	/** @brief Конфигурация */
+	QString configuration;
+};
+
+/** @class NodeOnDiagram
+ * 	@brief Объект на диаграмме */
+class NodeOnDiagram : public ElementOnDiagram {
+public:
+	/** @brief Конструктор */
+	NodeOnDiagram() : ElementOnDiagram(), point(QPoint(0,0)){}
+	/** @brief Конструктор */
+	NodeOnDiagram( int id1 /**< Идентификатор */) : ElementOnDiagram(id1), point(QPoint(0,0))
+	{
+		setConfiguration(DEFAULT_NODE_CONFIGURATION);	
+	}
+	/** @brief Конструктор */
+	NodeOnDiagram( int id1, /**< Идентификатор */
+					QString conf, /**< Конфигурация */
+					QPoint p /**< Координаты */
+					) : ElementOnDiagram(id1, conf), point(p) {}
+
+	/** @brief Изменить координаты объекта */
+	void setCoord( QPoint p /**< Координаты */)
+	{
+		this->point = p;
+	}
+
+	/** @brief Получить координаты объекта 
+	 * 	@brief @return Координаты объекта
+	 * 	*/
+	QPoint getCoord()
+	{
+		return point;
+	}
+
+private:
+	/** @brief Координаты */
+	QPoint point;
+};
+
+	/** @brief Связь на диаграмме */
+class EdgeOnDiagram : public ElementOnDiagram {
+public:
+	/** @brief Конструктор */
+	EdgeOnDiagram() : ElementOnDiagram(), position("") {}
+	/** @brief Конструктор */
+	EdgeOnDiagram( int id1 /**< Идентификатор */ ) : ElementOnDiagram(id1), position("") 
+	{
+		setConfiguration(DEFAULT_EDGE_CONFIGURATION);
+	}
+	/** @brief Конструктор */
+	EdgeOnDiagram( int id1, /**< Идентификатор */
+					QString conf, /**< Конфигурация */
+					QString pos /**< Расположение */
+					) : ElementOnDiagram(id1, conf), position(pos) {}
+
+	/** @brief Получить расположение связи 
+	 *	@brief @return Расположение связи
+	 * */
+	QString getPosition()
+	{
+		return position;
+	}
+
+	/** @brief Изменить расположение связи */
+	void setPosition( QString pos /**< Расположение связи */)
+	{
+		this->position = pos;
+	}
+private:
+	/** @brief Расположение связи */
+	QString position;
 };
 
 #endif //__CLASSES_H__

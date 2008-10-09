@@ -54,14 +54,6 @@ namespace reposerver
         *   @brief return Результат выполнения операции
         */
         IntQStringPair handleSetName(QStringVector const &params);
-        /** @brief Обработать команду "Установить идентификатор родителя"
-        *   @brief return Результат выполнения операции
-        */
-        IntQStringPair handleSetParent(QStringVector const &params);
-        /** @brief Обработать команду "Получить идентификатор родителя"
-        *   @brief return Результат выполнения операции
-        */
-        IntQStringPair handleGetParent(QStringVector const &params);
         /** @brief Обработать команду "Создать сущность"
         *   @brief return Результат выполнения операции
         */

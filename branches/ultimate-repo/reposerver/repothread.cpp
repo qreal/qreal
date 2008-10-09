@@ -173,84 +173,39 @@ IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
     return ReportSuccess("");
 }
 
-IntQStringPair QRealRepoServerThread::handleSetParent(QStringVector const &params)
-{
-    if (!IsParamsNumberCorrect(params, "SetParent", 2))
-        return ReportError(ERR_INCORRECT_PARAMS);
-
-    int const id = params[0].toInt();
-    int const parentId = params[1].toInt();
-    if (Object * obj = mRoot->getObject(id)){
-        if (Object * oldParent = mRoot->getObject(obj->getParent()))
-            oldParent->removeChild(id);
-        if (Object * newParent = mRoot->getObject(parentId))
-            newParent->addChild(id);
-        obj->setParent(parentId);
-    } else if (Link * link = mRoot->getLink(id)){
-        if (Object * oldParent = mRoot->getObject(link->getParent()))
-            oldParent->removeChild(id);
-        if (Object * newParent = mRoot->getObject(parentId))
-            newParent->addChild(id);
-        link->setParent(parentId);
-    } else {
-        qDebug() << "unknown entity's parent setting requested, id " << id;
-        return ReportError(ERR_INCORRECT_REQUEST);
-    }
-    mLog += QString(", new %1's parent is %2").arg(id).arg(parentId);
-    return ReportSuccess("");
-}
-
-IntQStringPair QRealRepoServerThread::handleGetParent(QStringVector const &params)
-{
-    if (!IsParamsNumberCorrect(params, "GetParent", 1))
-        return ReportError(ERR_INCORRECT_PARAMS);
-
-    int const id = params[0].toInt();
-	QString resp;
-    if (Object * obj = mRoot->getObject(id)){
-        resp = QString("%1\t%2\t").arg(ERR_STATUS_OK).arg(obj->getParent());
-    } else if (Link * link = mRoot->getLink(id)){
-        resp += QString("%1\t%2\t").arg(ERR_STATUS_OK).arg(link->getParent());
-    } else {
-        qDebug() << "unknown entity's parent requested, id " << id;
-        return ReportError(ERR_INCORRECT_REQUEST);
-    }
-    return ReportSuccess(resp);
-}
-
 IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
-    if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
-        return ReportError(ERR_INCORRECT_PARAMS);
+//	if ( !IsParamsNumberCorrect(params, "CreateEntity", 4) && !IsParamsNumberCorrect(params, "CreateEntity", 3))
+//		return ReportError(ERR_INCORRECT_PARAMS);
 
     int type = params[0].toInt();
     int id = ++mCounter;
+    QString name = params[1];
     int parent = params[2].toInt();
     mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
-    QString name = params[1];
+	bool isNode = false;
     if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
-        Object *obj = new Object(id, type, 0, 0);
+        Object *obj = new Object(id, type);
         obj->setName(name);
-        obj->setParent(parent);
-        obj->setConfiguration("(0,0);(50,0);(50,70);(0,70)");
         mRoot->addObject(id, obj);
         mLog += QString(", object created, name %1").arg(name);
+		isNode = true;
     } else if (mTypesInfo->analyseType(type) == TYPE_LINK){
         Link *link = new Link(id, type);
         link->setName(name);
-        link->setParent(parent);
-        link->setConfiguration("(0,0);(200,60)");
         mRoot->addLink(id, link);
         mLog += QString(", link created, name %1").arg(name);
     } else {
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
     }
-
     if (Object * obj = mRoot->getObject(parent))
     {
-        obj->addChild(id);
-    }
+		if( isNode )
+        	obj->addNodeChild(id);
+		else
+			obj->addEdgeChild(id);
+    } 
 
     mTypesInfo->elementCreated(type, id);
     return ReportSuccess(QString::number(id));
@@ -270,9 +225,9 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
     return ReportSuccess(QString::number(id));
 }
 
-IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &/*params*/)
 {
-    if (!IsParamsNumberCorrect(params, "DeleteEntity", 1))
+/*    if (!IsParamsNumberCorrect(params, "DeleteEntity", 1))
         return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
@@ -302,7 +257,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
         return ReportError(ERR_INCORRECT_REQUEST);
     }    
     
-    mLog += QString(", deleted entity [%1]").arg(id);
+    mLog += QString(", deleted entity [%1]").arg(id);*/
     return ReportSuccess("");
 }
 
@@ -472,16 +427,19 @@ IntQStringPair QRealRepoServerThread::handleSetDescription(QStringVector const &
 
 IntQStringPair QRealRepoServerThread::handleGetPosition(QStringVector const &params)
 {
-    if (!IsParamsNumberCorrect(params, "GetPosition", 1))
+    if (!IsParamsNumberCorrect(params, "GetPosition", 2))
         return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
+    int parent = params[1].toInt();
     QString resp = "";
-    if (Object * obj = mRoot->getObject(id))
-        resp = QString("%1;%2").arg(obj->getX()).arg(obj->getY());
-    else if (Link * link = mRoot->getLink(id))
-        resp = link->getPosition();
-    else {
+    if (Object * obj = mRoot->getObject(parent))
+	 	if( mRoot->getObject(id) ){
+			QPoint p = obj->getChildCoord(id);
+        	resp = QString("%1;%2").arg(p.x()).arg(p.y());
+		} else if ( mRoot->getLink(id) ){
+			resp = obj->getChildPos(id);
+    } else {
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
     }    
@@ -493,17 +451,18 @@ IntQStringPair QRealRepoServerThread::handleGetPosition(QStringVector const &par
 
 IntQStringPair QRealRepoServerThread::handleSetPosition(QStringVector const &params)
 {
-    if (!IsParamsNumberCorrect(params, "SetPosition", 3))
+    if (!IsParamsNumberCorrect(params, "SetPosition", 4))
         return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
-    int x = params[1].toInt();
-    int y = params[2].toInt();
-    if (Object * obj = mRoot->getObject(id)){
-        obj->setX(x);
-        obj->setY(y);
-    } else if (Link * link = mRoot->getLink(id)){
-        link->setPosition(QString("%1;%2").arg(x).arg(y));
+    int parent = params[1].toInt();
+    int x = params[2].toInt();
+    int y = params[3].toInt();
+    if (Object * obj = mRoot->getObject(parent)){
+    	if( mRoot->getObject(id) )
+			obj->setChildCoord(id, QPoint(x, y));		
+		else if ( mRoot->getLink(id) )
+			obj->setChildPos(id, QString("%1;%2").arg(x).arg(y));
     } else {
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
@@ -514,15 +473,15 @@ IntQStringPair QRealRepoServerThread::handleSetPosition(QStringVector const &par
 
 IntQStringPair QRealRepoServerThread::handleGetConfiguration(QStringVector const &params)
 {
-    if (!IsParamsNumberCorrect(params, "GetConfiguration", 1))
+    if (!IsParamsNumberCorrect(params, "GetConfiguration", 2))
         return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
+    int parent = params[1].toInt();
     QString resp = "";
-    if (Object *obj = mRoot->getObject(id))
-        resp = obj->getConfiguration();
-    else if (Link *link = mRoot->getLink(id))
-        resp = link->getConfiguration();
+	if (Object *obj = mRoot->getObject(parent)){
+		resp = obj->getChildConfiguration(id);
+	}
     else{
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
@@ -535,15 +494,16 @@ IntQStringPair QRealRepoServerThread::handleGetConfiguration(QStringVector const
 
 IntQStringPair QRealRepoServerThread::handleSetConfiguration(QStringVector const &params)
 {
-    if (!IsParamsNumberCorrect(params, "SetConfiguration", 2))
+    if (!IsParamsNumberCorrect(params, "SetConfiguration", 3))
         return ReportError(ERR_INCORRECT_PARAMS);
 
     int id = params[0].toInt();
-    QString conf = params[1];
-    if (Object *obj = mRoot->getObject(id))
-        obj->setConfiguration(conf);
-    else if (Link *link = mRoot->getLink(id))
-        link->setConfiguration(conf);
+    int parent = params[1].toInt();
+    QString conf = params[2];
+    if (Object *obj = mRoot->getObject(parent)){
+		if( !obj->setChildConfiguration(id, conf) )
+			qDebug() << "setChildConfiguration failed for object " << id;
+	}
     else{
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
@@ -691,11 +651,11 @@ IntQStringPair QRealRepoServerThread::handleGetEntireObject(QStringVector const 
 
     int id = params[0].toInt();
     QString resp = "\t";
-    if (Object * obj = mRoot->getObject(id))
-        resp = obj->toString();
-    else if (Link * link = mRoot->getLink(id))
-        resp = link->toString();
-    else {
+	if( Object * obj = mRoot->getObject(id) )
+		resp = obj->toString();
+	else if( Link * edge = mRoot->getLink(id) )	
+		resp = edge->toString();
+	else {
         qDebug() << "Wrong analyseType result";
         return ReportError(ERR_INCORRECT_REQUEST);
     }    
@@ -765,16 +725,6 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
         case CMD_SET_NAME:
         {
             resp = handleSetName(command.toVector());
-            break;
-        }
-        case CMD_SET_PARENT:
-        {
-            resp = handleSetParent(command.toVector());
-            break;
-        }
-        case CMD_GET_PARENT:
-        {
-            resp = handleGetParent(command.toVector());
             break;
         }
         case CMD_CREATE_ENTITY:

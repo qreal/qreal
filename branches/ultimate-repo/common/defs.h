@@ -88,3 +88,8 @@ const int INCOMING_LINK		= 1;
 /** @brief Тип связи "Исходящая"*/
 const int OUTCOMING_LINK	= 2;
 
+/** @brief Конфигурация элемента по умолчанию*/
+const QString DEFAULT_NODE_CONFIGURATION = "(0,0);(50,0);(50,70);(0,70)";
+/** @brief Конфигурация связи по умолчанию*/
+const QString DEFAULT_EDGE_CONFIGURATION = "(0,0);(200,60)";
+
