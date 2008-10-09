@@ -216,12 +216,22 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
     if (!IsParamsNumberCorrect(params, "CopyEntity", 3))
         return ReportError(ERR_INCORRECT_PARAMS);
 
-//    int type = params[0].toInt();
+    int type = params[0].toInt();
     int id = params[1].toInt();
-//    int newParent = params[2].toInt();
-//    mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
+    int newParent = params[2].toInt();
+    if (Object * obj = mRoot->getObject(newParent))
+    {
+		if( Object * node = mRoot->getObject(id) ){
+        	obj->addNodeChild(id);
+			node->addRef();
+		}	
+		else if( Link* edge = mRoot->getLink(id) ){
+			obj->addEdgeChild(id);
+			edge->addRef();
+		}	
+    } 
 
-    // TBD        
+    mLog += QString("element  with id: %1, type: %2, new parent --  %3").arg(id).arg(type).arg(newParent);
     return ReportSuccess(QString::number(id));
 }
 
