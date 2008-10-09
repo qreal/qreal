@@ -213,6 +213,22 @@ public:
 		qDebug() << "outcoming:" << outcomingLinks;
 		qDebug() << "props:" <<  props;
 	}
+	
+	void addRef()
+	{
+		refs++;
+	}
+
+	void removeRef()
+	{
+		if( refs > 0)
+			refs--;
+	}
+
+	int refCount()
+	{
+		return refs;
+	}
 
 private:
 	/** @brief Идентификатор */
@@ -233,6 +249,8 @@ private:
 	QList<int> incomingLinks;
 	/** @brief Список исходящий связей */
 	QList<int> outcomingLinks;
+	/** @brief Число ссылок на объект */
+	int refs;
 };
 
 /* class for all edge entities
@@ -313,6 +331,21 @@ public:
 		qDebug() << "props:" <<  props;
 	}
 
+	void addRef()
+	{
+		refs++;
+	}
+
+	void removeRef()
+	{
+		if( refs > 0)
+			refs--;
+	}
+
+	int refCount()
+	{
+		return refs;
+	}
 
 private:
 	/** @brief Получить список идентификаторов объектов, присоединенных к концу связи */
@@ -334,6 +367,8 @@ private:
 	QList<int> objectsTo;
 	/** @brief Объекты, присоединенные к началу связи */
 	QList<int> objectsFrom;
+	/** @brief Число ссылок на связь */
+	int refs;
 };
 
 /* types description

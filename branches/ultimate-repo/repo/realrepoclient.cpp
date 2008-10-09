@@ -173,16 +173,16 @@ int RealRepoClient::createLinkWithType(QString name, QString type)
 	return createObject(typeId, name);
 }
 
-void RealRepoClient::deleteObject(int id)
+void RealRepoClient::deleteObject(int id, int parent)
 {
 dbg;
-	QString data = QString("%1\t%2\t").arg(CMD_DELETE_ENTITY).arg(id);
+	QString data = QString("%1\t%2\t%3\t").arg(CMD_DELETE_ENTITY).arg(id).arg(parent);
 	QString resp = sendData(data);
 }
 
-void RealRepoClient::deleteLink(int id)
+void RealRepoClient::deleteLink(int id, int parent)
 {
-	deleteObject(id);
+	deleteObject(id, parent);
 }
 
 

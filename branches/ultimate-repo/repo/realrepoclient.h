@@ -109,9 +109,13 @@ public:
 							);
 
 	/** @brief Удалить объект */
-	void deleteObject( int id /**< Идентификатор */);
+	void deleteObject( int id, /**< Идентификатор */
+					int parent /**< Идентификатор родительского объекта */
+					);
 	/** @brief Удалить связь */
-	void deleteLink( int id /**< Идентификатор */);
+	void deleteLink( int id, /**< Идентификатор */
+					int parent /**< Идентификатор родительского объекта */
+					);
 
 	/** @brief Присоединить связь к объекту */
 	void addLink( int obj_id, /**< Идентификатор объекта */

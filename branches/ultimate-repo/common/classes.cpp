@@ -15,26 +15,30 @@ Root::~Root()
 
 void Root::addObject( int id, Object* obj )
 {
+	obj->addRef();
 	objects[id] = obj;
 }
 	
 void Root::addLink( int id, Link* link )
 {
+	link->addRef();
 	links[id] = link;
 }
 
 void Root::deleteObject( int id )
 {
-	int count = objects.remove(id);
+	objects.remove(id);
 }
 
 void Root::deleteLink( int id )
 {
-	int count = objects.remove(id);
+	objects.remove(id);
 }
 
 int Root::getObjectsSize()
 {
+	foreach( Object* obj, objects)
+		qDebug() << "id: " << obj->getId() << ", name: " << obj->getName();
 	return objects.size();
 }
 
@@ -98,6 +102,7 @@ Object::Object( int _id, int _type )
 {
 	id = _id;
 	type = _type;
+	refs = 0;
 }
 
 void Object::setName( QString arg )
@@ -313,6 +318,7 @@ Link::Link( int _id, int _type )
 {
 	id = _id;
 	type = _type;
+	refs = 0;
 }
 
 int Link::getId()

@@ -293,7 +293,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		beginRemoveRows(parent,row,row+count-1);
 		for ( int i = row; i < row+count; i++ ){ 
 //			qDebug() << "deleting element " << parentItem->children[i]->id;
-			repoClient->deleteObject(parentItem->children[i]->id);
+			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
 		}	
 
 		for ( int i = row; i < row+count; i++ ) {
