@@ -225,40 +225,44 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
     return ReportSuccess(QString::number(id));
 }
 
-IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &/*params*/)
+IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
 {
-/*    if (!IsParamsNumberCorrect(params, "DeleteEntity", 1))
-        return ReportError(ERR_INCORRECT_PARAMS);
+	if (!IsParamsNumberCorrect(params, "DeleteEntity", 2))
+		return ReportError(ERR_INCORRECT_PARAMS);
 
-    int id = params[0].toInt();
-    if (Object * obj = mRoot->getObject(id))
-    {
-        if (Object * parent = mRoot->getObject(obj->getParent()))
-            parent->removeChild(id);
-        if (obj->childrenCount() != 0){
-            QStringList children = obj->childrenToString().split("\t");
-
-            foreach(QString child, children){
-                if (child.toInt() != 0)
-                // TODO: Make sure that no object can be ancestor of itself so we will
-                // not get stack owerflow here.
-                handleDeleteEntity(QStringList(child).toVector());
-            }
-        }
-        mTypesInfo->elementDeleted(obj->getType(), id);
-        mRoot->deleteObject(id);
-    } else if (Link * link = mRoot->getLink(id)){
-        if (Object * parent = mRoot->getObject(link->getParent()))
-            parent->removeChild(id);
-        mTypesInfo->elementDeleted(link->getType(), id);
-        mRoot->deleteLink(id);
-    } else {
-        qDebug() << "Wrong analyseType result";
-        return ReportError(ERR_INCORRECT_REQUEST);
-    }    
+	int id = params[0].toInt();
+	int parent = params[1].toInt();
+	if (Object * obj = mRoot->getObject(parent))
+	{
+		if( Object * child = mRoot->getObject(id) ){
+			obj->removeNodeChild(id);
+			child->removeRef();
+			if( child->refCount() == 0 ){
+				QStringList children = child->childrenToString().split("\t");
+				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
+				foreach(QString childId, children){
+					QStringList l = QStringList(childId);
+					l += QString::number(id);
+                	handleDeleteEntity(l.toVector());
+				}	
+        		mTypesInfo->elementDeleted(child->getType(), id);
+        		mRoot->deleteObject(id);
+			}
+		} else if (Link * child = mRoot->getLink(id)){
+			obj->removeEdgeChild(id);
+			child->removeRef();
+			if( child->refCount() == 0 ){
+				mTypesInfo->elementDeleted(child->getType(), id);
+				mRoot->deleteLink(id);
+			}
+		}	
+	} else {
+		qDebug() << "Wrong analyseType result";
+		return ReportError(ERR_INCORRECT_REQUEST);
+	}    
     
-    mLog += QString(", deleted entity [%1]").arg(id);*/
-    return ReportSuccess("");
+	mLog += QString(", deleted entity [%1]").arg(id);
+	return ReportSuccess("");
 }
 
 IntQStringPair QRealRepoServerThread::handleGetTypesCount(QStringVector const &params)
