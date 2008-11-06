@@ -34,6 +34,7 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 {
 	RealRepoInfo info;
 	//  setAcceptDrops(true);
+	setTabPosition(QTabWidget::West);
 	QStringList categories = info.getObjectCategories();
 	for (int i = 0; i < categories.size(); i++) {
 		QScrollArea *scroller = new QScrollArea(this);
