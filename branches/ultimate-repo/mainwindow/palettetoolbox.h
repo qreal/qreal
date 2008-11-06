@@ -17,6 +17,8 @@ class PaletteToolbox : public QTabWidget
 	public:
 		PaletteToolbox(QWidget *parent=0);
 
+		void setEditors(QVector<bool> const &editors);
+		QVector<bool> getSelectedTabs() const;
 	protected:
 		/** @brief Обработать событие начала операции drag'n'drop */
 		void dragEnterEvent(QDragEnterEvent *event /**< Событие */);
@@ -60,6 +62,9 @@ class PaletteToolbox : public QTabWidget
 				QString m_text;
 		};
 
+		QVector<QWidget*> mTabs;
+		QVector<QString> mTabNames;
+		QVector<bool> mShownTabs;
 };
 
 #endif

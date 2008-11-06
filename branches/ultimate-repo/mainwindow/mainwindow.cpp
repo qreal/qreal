@@ -16,6 +16,7 @@
 #include "propertyeditorproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
+#include "optionsDialog.h"
 
 MainWindow::MainWindow()
 	: model(0)
@@ -43,6 +44,8 @@ MainWindow::MainWindow()
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+
+	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
@@ -210,4 +213,17 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
+	QMessageBox::warning(this, tr("Not implemented"),
+			 tr("This feature is not implemented yet. "));
+}
+
+void MainWindow::showOptions()
+{
+	QReal::OptionsDialog dialog(ui.paletteToolbox->getSelectedTabs());
+	dialog.exec();
+	if (dialog.result() == QDialog::Accepted)
+	{
+		QVector<bool> selectedEditors = dialog.getSelectedEditors();
+		ui.paletteToolbox->setEditors(selectedEditors);
+	}
 }

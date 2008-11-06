@@ -33,9 +33,14 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 	: QTabWidget(parent)
 {
 	RealRepoInfo info;
-	//  setAcceptDrops(true);
+
 	setTabPosition(QTabWidget::West);
+	setTabShape(QTabWidget::Triangular);
+	//  setAcceptDrops(true);
 	QStringList categories = info.getObjectCategories();
+	mTabs.resize(categories.size());
+	mTabNames.resize(categories.size());
+	mShownTabs.resize(categories.size());
 	for (int i = 0; i < categories.size(); i++) {
 		QScrollArea *scroller = new QScrollArea(this);
 		QWidget *tab = new QWidget(this);
@@ -53,7 +58,34 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		scroller->setWidget(tab);
 
 		addTab(scroller, categories[i]);
+		mTabs[i] = scroller;
+		mTabNames[i] = categories[i];
+		mShownTabs[i] = true;
 	}
+}
+
+void PaletteToolbox::setEditors(QVector<bool> const &editors)
+{
+	Q_ASSERT(editors.count() == mTabs.count());
+	for (int i = 0; i < editors.size(); ++i)
+	{
+		if (mShownTabs[i] != editors[i])
+		{
+			if (editors[i])
+			{
+				addTab(mTabs[i], mTabNames[i]);
+			} else
+			{
+				removeTab(indexOf(mTabs[i]));
+			}
+			mShownTabs[i] = editors[i];
+		}
+	}
+}
+
+QVector<bool> PaletteToolbox::getSelectedTabs() const
+{
+	return mShownTabs;
 }
 
 void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)

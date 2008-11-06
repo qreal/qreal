@@ -54,6 +54,9 @@ public slots:
 	/** @brief Экспортировать диаграмму в формате SVG */
 	void makeSvg();
 
+	/** @brief I have no idea how to set an encoding in Qt Creator. Function shows Options modal dialog. */
+	void showOptions();
+
 private:
 	/** @brief Модель */
 	RealRepoModel *model;
