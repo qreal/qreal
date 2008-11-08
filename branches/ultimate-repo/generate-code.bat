@@ -6,7 +6,12 @@ cd %WD%
 qmake
 mingw32-make
 del /s /q generated
-release\code.exe
+if EXIST release\code.exe (
+  release\code.exe
+) else (
+  debug\code.exe
+)
+
 cd ..\ultimate-repo
 
 md umllib\generated
