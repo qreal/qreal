@@ -108,6 +108,7 @@ namespace UML {
 			Qt::PenStyle m_penStyle;
 			/** @brief Текст над линией */
 			QString m_text;
+			QString m_fromMult, m_toMult;
 			/** @brief Тип стрелки начала связи */
             ArrowType m_startArrowStyle;
 			/** @brief Тип стрелки конца связи */

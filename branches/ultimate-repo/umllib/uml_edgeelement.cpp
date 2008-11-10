@@ -75,12 +75,14 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 	painter->save();
 	painter->translate(m_line[0]);
+	painter->drawText(QPointF(10,20), m_fromMult);
 	painter->rotate(90-lineAngle(QLineF(m_line[1],m_line[0])));
 	drawStartArrow(painter);
 	painter->restore();
 
 	painter->save();
 	painter->translate(m_line[m_line.size()-1]);
+	painter->drawText(QPointF(10,20), m_toMult);
 	painter->rotate(90-lineAngle(QLineF(m_line[m_line.size()-2],m_line[m_line.size()-1])));
 	drawEndArrow(painter);
 	painter->restore();
@@ -336,6 +338,8 @@ void EdgeElement::updateData()
 		return;
 
 	Element::updateData();
+	m_fromMult = dataIndex.data(Unreal::krneRelationship::fromMultiplicityRole).toString();
+	m_toMult = dataIndex.data(Unreal::krneRelationship::toMultiplicityRole).toString();
 
 	setPos(dataIndex.data(Unreal::PositionRole).toPointF());
 	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();

@@ -174,10 +174,10 @@
 						<parent parent_id="krneRelationship" />
 					</generalization>
 				</generalizations>
-				<properties>
+<!--				<properties>
 					<property name="fromMultiplicity" type="string" />
 					<property name="toMultiplicity" type="string" />
-				</properties>
+				</properties>								-->
 			</logic>
 		</edge>
 		<edge name="Composition" id="ceComposition">

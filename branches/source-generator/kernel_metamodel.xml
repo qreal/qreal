@@ -134,6 +134,10 @@
 						<parent parent_id="krnnElement" />
 					</generalization>
 				</generalizations>
+				<properties>
+					<property name="fromMultiplicity" type="string" />
+					<property name="toMultiplicity" type="string" />
+				</properties>
 			</logic>
 		</edge>
 		<!-- Directed relationship -->
