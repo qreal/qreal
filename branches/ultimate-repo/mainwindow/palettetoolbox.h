@@ -15,7 +15,8 @@ class QDropEvent;
 class PaletteToolbox : public QTabWidget
 {
 	public:
-		PaletteToolbox(QWidget *parent=0);
+		explicit PaletteToolbox(QWidget *parent = 0);
+        ~PaletteToolbox();
 
 		void setEditors(QVector<bool> const &editors);
 		QVector<bool> getSelectedTabs() const;
@@ -61,6 +62,8 @@ class PaletteToolbox : public QTabWidget
 				/** @brief Надпись элемента */
 				QString m_text;
 		};
+
+		void checkFirstLaunch();
 
 		QVector<QWidget*> mTabs;
 		QVector<QString> mTabNames;

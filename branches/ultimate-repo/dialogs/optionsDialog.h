@@ -6,16 +6,20 @@
 
 namespace QReal
 {
-
 	class OptionsDialog: public QDialog
 	{
 		Q_OBJECT
 	public:
-		OptionsDialog(QVector<bool> const &selected, QWidget *parent = 0);
+		explicit OptionsDialog(
+			QVector<bool> const &selected,
+			QWidget *parent = 0
+		);
 		~OptionsDialog() {}
 		QVector<bool> getSelectedEditors() const;
 	private:
 		Ui::OptionsDialogUi ui;
+	private slots:
+		void selectAll();
+		void unselectAll();
 	};
-
 }

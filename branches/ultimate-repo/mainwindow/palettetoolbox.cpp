@@ -41,6 +41,9 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 	mTabs.resize(categories.size());
 	mTabNames.resize(categories.size());
 	mShownTabs.resize(categories.size());
+
+    QSettings settings("Tercom", "QReal");
+
 	for (int i = 0; i < categories.size(); i++) {
 		QScrollArea *scroller = new QScrollArea(this);
 		QWidget *tab = new QWidget(this);
@@ -57,30 +60,50 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		tab->setLayout(layout);
 		scroller->setWidget(tab);
 
-		addTab(scroller, categories[i]);
+        Q_ASSERT(!categories[i].isEmpty());
+
 		mTabs[i] = scroller;
-		mTabNames[i] = categories[i];
-		mShownTabs[i] = true;
+        mTabNames[i] = categories[i];
+		mShownTabs[i] = settings.contains(categories[i]);
+
+		addTab(scroller, categories[i]);
 	}
+	checkFirstLaunch();
+	setEditors(mShownTabs);
+}
+
+PaletteToolbox::~PaletteToolbox()
+{
+    QSettings settings("Tercom", "QReal");
+    for (int i = 0; i < mTabNames.count(); ++i)
+        if (mShownTabs[i])
+            settings.setValue(mTabNames[i], "Show");
+        else
+            settings.remove(mTabNames[i]);
+}
+
+void PaletteToolbox::checkFirstLaunch()
+{
+	foreach (bool const val, mShownTabs)
+		if (val)
+			return;
+	for (int i = 0; i < mShownTabs.count(); ++i)
+		mShownTabs[i] = true;
 }
 
 void PaletteToolbox::setEditors(QVector<bool> const &editors)
 {
 	Q_ASSERT(editors.count() == mTabs.count());
+	setUpdatesEnabled(false);
 	for (int i = 0; i < editors.size(); ++i)
 	{
-		if (mShownTabs[i] != editors[i])
-		{
-			if (editors[i])
-			{
-				addTab(mTabs[i], mTabNames[i]);
-			} else
-			{
-				removeTab(indexOf(mTabs[i]));
-			}
-			mShownTabs[i] = editors[i];
-		}
+		if (editors[i] && indexOf(mTabs[i]) == -1)
+			addTab(mTabs[i], mTabNames[i]);
+		if (!editors[i] && indexOf(mTabs[i]) != -1)
+			removeTab(indexOf(mTabs[i]));
+		mShownTabs[i] = editors[i];
 	}
+	setUpdatesEnabled(true);
 }
 
 QVector<bool> PaletteToolbox::getSelectedTabs() const

@@ -10,9 +10,13 @@ OptionsDialog::OptionsDialog(QVector<bool> const &selected, QWidget *parent)
 {
 	ui.setupUi(this);
 
+	connect(ui.selectAllButton, SIGNAL(clicked()), SLOT(selectAll()));
+	connect(ui.unselectAllButton, SIGNAL(clicked()), SLOT(unselectAll()));
+
 	RealRepoInfo info;
 
 	QStringList categories = info.getObjectCategories();
+	setUpdatesEnabled(false);
 	for (int i = 0; i < categories.size(); ++i)
 	{
 		QString str = categories[i];
@@ -23,6 +27,7 @@ OptionsDialog::OptionsDialog(QVector<bool> const &selected, QWidget *parent)
 		else
 			item->setCheckState(Qt::Unchecked);
 	}
+	setUpdatesEnabled(true);
 }
 
 QVector<bool> OptionsDialog::getSelectedEditors() const
@@ -34,4 +39,24 @@ QVector<bool> OptionsDialog::getSelectedEditors() const
 		result[i] = item->checkState() == Qt::Checked;
 	}
 	return result;
+}
+
+void OptionsDialog::selectAll()
+{
+	setUpdatesEnabled(false);
+	for (int i = 0; i < ui.editorsListWidget->count(); ++i)
+	{
+		ui.editorsListWidget->item(i)->setCheckState(Qt::Checked);
+	}
+	setUpdatesEnabled(true);
+}
+
+void OptionsDialog::unselectAll()
+{
+	setUpdatesEnabled(false);
+	for (int i = 0; i < ui.editorsListWidget->count(); ++i)
+	{
+		ui.editorsListWidget->item(i)->setCheckState(Qt::Unchecked);
+	}
+	setUpdatesEnabled(true);
 }
