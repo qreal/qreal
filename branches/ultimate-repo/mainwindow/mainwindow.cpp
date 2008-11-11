@@ -208,7 +208,8 @@ void MainWindow::showAbout()
 {
      QMessageBox::about(this, tr("About QReal"),
              tr("This is <b>QReal</b><br>"
-				 "Just another CASE tool"));
+		"Just another CASE tool<br>"
+		"<i>Burning heretics since 1724</i>"));
 }
 
 void MainWindow::showHelp()
