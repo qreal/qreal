@@ -3,6 +3,7 @@ QT += sql \
     opengl \
     network
 
+
 # CONFIG += qt debug
 INCLUDEPATH += view \
     umllib \
