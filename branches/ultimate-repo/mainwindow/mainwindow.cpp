@@ -21,7 +21,7 @@
 MainWindow::MainWindow()
 	: model(0)
 {
-	QPixmap korkodil(":/icons/kroki2.png");
+	QPixmap korkodil(":/icons/kroki2.PNG");
 	splash.setPixmap(korkodil);
 	splash.setWindowFlags(Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	splash.show();
