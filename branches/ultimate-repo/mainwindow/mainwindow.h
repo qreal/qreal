@@ -6,6 +6,7 @@
 
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
+#include <QSplashScreen>
 
 #include "ui_mainwindow.h"
 
@@ -68,6 +69,8 @@ private:
 	
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;
+
+	QSplashScreen splash;
 };
 
 #endif

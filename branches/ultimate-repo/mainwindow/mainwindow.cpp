@@ -21,6 +21,12 @@
 MainWindow::MainWindow()
 	: model(0)
 {
+	QPixmap korkodil(":/icons/kroki2.png");
+	splash.setPixmap(korkodil);
+	splash.setWindowFlags(Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	splash.show();
+	QApplication::processEvents();
+
 	ui.setupUi(this);
 
 	ui.minimapView->setScene(ui.view->scene());
@@ -74,8 +80,11 @@ MainWindow::MainWindow()
 
 	//showMaximized();
 	resize(1024,800);
+	QApplication::processEvents();
 
 	connectRepo();
+
+	splash.close();
 }
 
 MainWindow::~MainWindow()
@@ -95,6 +104,7 @@ void MainWindow::connectRepo()
 	model = new RealRepoModel(this);
 	if( model->getState() != QAbstractSocket::ConnectedState ){	
 		qDebug() << "repo model creation failed";
+		splash.close();
 		QMessageBox::critical(0, "achtung!", "cannot reach repo server at 127.0.0.1:6666.\n"
 					"make sure that it is running and restart qreal");
 		//qApp->exit();
