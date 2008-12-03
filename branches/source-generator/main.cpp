@@ -20,7 +20,8 @@ int main()
 	<< "component_metamodel.xml"
 	<< "timing_metamodel.xml"
 	<< "activity_metamodel.xml"
-	<< "package.xml"	
+	<< "package.xml"
+//	<< "orthodox.xml"
 	<< "bpel.xml"
 	<< "qrealparallel_metamodel.xml";
 	new Generator(l);
