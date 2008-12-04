@@ -33,5 +33,136 @@
         </properties>
       </logic>
     </node>
+    <node name="Unholy Inverted Cross" id="orthInvertedCross">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="50" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:line x2="25" y2="0" x1="25" y1="99" stroke="black" stroke-width="2" />
+              <svg:line x2="0" y2="65" x1="49" y1="65" stroke="black" stroke-width="2" />
+              <svg:line x2="15" y2="80" x1="35" y1="80" stroke="black" stroke-width="2" />
+              <svg:line x2="15" y2="43" x1="35" y1="23" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+        </properties>
+      </logic>
+    </node>
+    <node name="Mogendovid" id="orthMogendovid">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:line x1="93" y1="75" x2="79" y2="50" stroke="black" stroke-width="2" />
+              <svg:line x1="79" y1="50" x2="93" y2="25" stroke="black" stroke-width="2" />
+              <svg:line x1="93" y1="25" x2="64" y2="25" stroke="black" stroke-width="2" />
+              <svg:line x1="64" y1="25" x2="50" y2="0" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="36" y2="25" stroke="black" stroke-width="2" />
+              <svg:line x1="36" y1="25" x2="7" y2="25" stroke="black" stroke-width="2" />
+              <svg:line x1="7" y1="25" x2="21" y2="50" stroke="black" stroke-width="2" />
+              <svg:line x1="21" y1="50" x2="7" y2="75" stroke="black" stroke-width="2" />
+              <svg:line x1="7" y1="75" x2="36" y2="75" stroke="black" stroke-width="2" />
+              <svg:line x1="36" y1="75" x2="50" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="100" x2="64" y2="75" stroke="black" stroke-width="2" />
+              <svg:line x1="64" y1="75" x2="93" y2="75" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+        </properties>
+      </logic>
+    </node>
+    <node name="Pentagram" id="orthPentagram">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:line x1="50" y1="100" x2="20" y2="9" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="9" x2="97" y2="65" stroke="black" stroke-width="2" />
+              <svg:line x1="97" y1="65" x2="2" y2="65" stroke="black" stroke-width="2" />
+              <svg:line x1="2" y1="65" x2="79" y2="9" stroke="black" stroke-width="2" />
+              <svg:line x1="79" y1="9" x2="50" y2="100" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+        </properties>
+      </logic>
+    </node>
+    <node name="Swastika" id="orthSwastika">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:line x1="0" y1="0" x2="50" y2="0" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="0" x2="50" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="50" y1="100" x2="100" y2="100" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="100" x2="0" y2="50" stroke="black" stroke-width="2" />
+              <svg:line x1="0" y1="50" x2="100" y2="50" stroke="black" stroke-width="2" />
+              <svg:line x1="100" y1="50" x2="100" y2="0" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+        </properties>
+      </logic>
+    </node>
   </diagram>
 </metamodel>
