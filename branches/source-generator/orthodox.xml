@@ -132,6 +132,38 @@
         </properties>
       </logic>
     </node>
+    <node name="Circled Pentagram" id="orthCircledPentagram">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:line x1="50" y1="100" x2="20" y2="9" stroke="black" stroke-width="2" />
+              <svg:line x1="20" y1="9" x2="97" y2="65" stroke="black" stroke-width="2" />
+              <svg:line x1="97" y1="65" x2="2" y2="65" stroke="black" stroke-width="2" />
+              <svg:line x1="2" y1="65" x2="79" y2="9" stroke="black" stroke-width="2" />
+              <svg:line x1="79" y1="9" x2="50" y2="100" stroke="black" stroke-width="2" />
+              <svg:ellipse cx="50" cy="50" rx="50" ry="50" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);fill-opacity:0;stroke-width:2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+        </properties>
+      </logic>
+    </node>
     <node name="Swastika" id="orthSwastika">
       <graphics>
         <view>
