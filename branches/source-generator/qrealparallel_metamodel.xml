@@ -155,6 +155,11 @@
         </view>
       </graphics>
       <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krneRelationship"></parent>
+          </generalization>
+        </generalizations>
         <associations>
           <association id="qrpaMessageBegin" role="message" end_type="open_arrow">
             <begin idref="qrpnPort"/>
@@ -168,6 +173,11 @@
 
     <edge name="MessageToAll" id="qrMessageToAll">
       <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krneRelationship"></parent>
+          </generalization>
+        </generalizations>
         <associations>
           <association id="qrpaMessageToAll" role="multiple message" end_type="complex_arrow">
             <begin idref="qrpnPort"/>
@@ -178,6 +188,11 @@
 
     <edge name="MessageFromAll" id="qrMessageFromAll">
       <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krneRelationship"></parent>
+          </generalization>
+        </generalizations>
         <associations>
           <association id="qrpaMessageFromAll" role="multiple message" end_type="complex_arrow">
             <end idref="qrpnPort"/>
