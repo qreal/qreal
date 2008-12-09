@@ -11,7 +11,7 @@ QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen 
 namespace UML {
 	/** @brief Тип стрелки */
     enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
-	
+
     class NodeElement;
 	/** @class EdgeElement
 	 * 	@brief Класс, представляющий связь на диаграмме
@@ -37,28 +37,34 @@ namespace UML {
 			QPainterPath shape() const;
 			/** @brief Отрисовать связь */
 			void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
-						const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */ 
+						const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
 						QWidget* w /**< Виджет, на котором осуществляется отрисовка */
 						);
 
 			/** @brief Перерисовать связь */
 			void adjustLink();
 			/** @brief Отсоединить связь от объекта */
-			void removeLink(UML::NodeElement *from /**< Объект */) 
-			{ 
-				if (src == from) 
-				{ 
-					src = 0; 
-				}; 
-				if (dst == from) 
-				{ 
-					dst = 0; 
-				}; 
+			void removeLink(UML::NodeElement *from /**< Объект */)
+			{
+				if (src == from)
+				{
+					src = 0;
+				};
+				if (dst == from)
+				{
+					dst = 0;
+				};
 			};
 
+     		virtual void connectToPort();
+
 		private:
-			/** @brief Получить точку на ломаной  
-			 *	@brief @return Точка на ломаной 
+
+			NodeElement *beginning;
+			NodeElement *ending;
+
+			/** @brief Получить точку на ломаной
+			 *	@brief @return Точка на ломаной
 			 * */
 			int getPoint( const QPointF &location /**< Расположение точки */ );
 			/** @brief Получить объект, расположенный в данной точке сцены

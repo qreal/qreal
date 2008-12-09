@@ -16,7 +16,7 @@ QRealRepoServer::QRealRepoServer(QObject *const parent): QTcpServer(parent)
   dbg;
   listen(QHostAddress("127.0.0.1"), 6666);
   qDebug() << isListening() << serverAddress() << serverPort();
-  
+
   mRoot = new Root();
   mTypesInfo = new RepoTypesInfo();
   mCount = 888; // Ia Bel-Shamharoth fhtagn!

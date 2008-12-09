@@ -9,6 +9,7 @@
 using namespace UML;
 
 NodeElement::NodeElement()
+: portsVisible(false)
 {
 	setAcceptsHoverEvents(true);
 	dragState = None;
@@ -31,8 +32,8 @@ void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 			dragState = BottomRight;
 		} else if ( QRectF(m_contents.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
 			dragState = BottomLeft;
-		} else 
-			Element::mousePressEvent(event);	
+		} else
+			Element::mousePressEvent(event);
 	} else
 		Element::mousePressEvent(event);
 }
@@ -60,7 +61,7 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				prepareGeometryChange();
 
 				m_contents = newcontents;
-				
+
 				setPos(pos() + m_contents.topLeft());
 				m_contents.translate(-m_contents.topLeft());
 
@@ -97,7 +98,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 				foreach (EdgeElement *edge, edgeList)
 					edge->adjustLink();
 			}
-			return value;
+       		return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
 	}
@@ -125,7 +126,7 @@ void NodeElement::updateData()
 
 		transform.reset();
 		transform.scale(m_contents.width(), m_contents.height());
-	}	
+	}
 }
 
 static int portId(qreal id)
@@ -168,12 +169,39 @@ qreal NodeElement::getPortId(const QPointF &location) const
 
 		path = ps.createStroke(path);
 		if ( path.contains(location) )
-			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999, 
+			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999,
 						QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length()
 						/ linePorts[i].length() ) );
 	}
 
-	return -1.0;
+	if (pointPorts.size()!=0) {
+		int numMinDistance = 0;
+		qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
+		for( int i = 0; i < pointPorts.size(); i++ ) {
+			if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
+				numMinDistance = i;
+				minDistance = QLineF( pointPorts[i], transform.inverted().map(location) ).length();
+			}
+		}
+		return 1.0 * numMinDistance;
+	} else if (linePorts.size()!=0) {
+		int numMinDistance = 0;
+		qreal minDistance = QLineF( linePorts[0].p1(), transform.inverted().map(location) ).length();
+		for( int i = 0; i < linePorts.size(); i++ ) {
+			if (QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length()<minDistance) {
+				numMinDistance = i;
+				minDistance = QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length();
+			}
+		}
+		return 1.0 * (numMinDistance + pointPorts.size());
+	}
+
+    return -1.0;
+}
+
+void NodeElement::setPortsVisible(bool value) {
+	prepareGeometryChange();
+	portsVisible = value;
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -182,10 +210,10 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		if ( option->state & QStyle::State_Selected ) {
 			painter->save();
 //painter->drawRect(m_contents);
-			
+
 			QBrush b;
-			b.setColor(Qt::blue); 
-			b.setStyle(Qt::SolidPattern); 
+			b.setColor(Qt::blue);
+			b.setStyle(Qt::SolidPattern);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
@@ -195,14 +223,14 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->drawRect(QRectF(m_contents.bottomLeft(),QSizeF(4,-4)));
 
 			painter->translate(m_contents.bottomRight());
-			painter->drawLine(QLineF(-4,0,0,-4)); 
+			painter->drawLine(QLineF(-4,0,0,-4));
 			painter->drawLine(QLineF(-8,0,0,-8));
 			painter->drawLine(QLineF(-12,0,0,-12));
 
 			painter->restore();
 		}
 
-		if ( option->state & QStyle::State_MouseOver ) {
+		if (( option->state & QStyle::State_MouseOver )||(portsVisible)) {
 			foreach (QPointF port, pointPorts) {
 				painter->save();
 				painter->setOpacity(0.7);

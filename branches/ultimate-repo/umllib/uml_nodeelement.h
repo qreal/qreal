@@ -31,7 +31,7 @@ namespace UML {
 								QWidget* w /**< Виджет, на котором осуществляется отрисовка */
 								);
 			/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
-			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта 
+			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
 			 * */
 			QRectF boundingRect() const;
 			/** @brief Получить область, в рамках которой возможна параметризация статического SVG
@@ -54,22 +54,27 @@ namespace UML {
 			 * 	@brief @return Является ли этот объект дочерним для данного
 			 * */
 			bool isChildOf(int id /**< Идентификатор объекта */)
-			{ 
-				return parentsList.contains(id); 
+			{
+				return parentsList.contains(id);
 			}
 
 			/** @brief Добавить связь */
-			void addEdge(EdgeElement *edge /**< Связь */) 
-			{ 
-				edgeList << edge; 
+			void addEdge(EdgeElement *edge /**< Связь */)
+			{
+				edgeList << edge;
 			};
 			/** @brief Убрать связь */
-			void delEdge(EdgeElement *edge /**< Связь */) 
-			{ 
-				edgeList.removeAt(edgeList.indexOf(edge)); 
+			void delEdge(EdgeElement *edge /**< Связь */)
+			{
+				edgeList.removeAt(edgeList.indexOf(edge));
 			};
 
+			void setPortsVisible(bool value);
+
 		protected:
+
+			bool portsVisible;
+
 			/** @brief Обработать событие наведения на объект курсора мыши */
 			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
 			/** @brief Обработать событие отпускания кнопки мыши */
@@ -91,10 +96,12 @@ namespace UML {
 			QList<QPointF> pointPorts;
 			/** @brief Список портов-линий */
 			QList<QLineF> linePorts;
-			
+
 			/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 			QRectF m_contents;
+
 		private:
+
 			/** @brief Список ассоциированных с объектом связей */
 			QList<EdgeElement *> edgeList;
 

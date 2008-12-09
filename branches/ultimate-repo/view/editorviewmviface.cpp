@@ -86,9 +86,9 @@ void EditorViewMViface::reset()
 	items.clear();
 	scene->clearScene();
 
-	// so that our diagram be nicer	
+	// so that our diagram be nicer
 	scene->removeItem(scene->addRect(QRect(-1000,-1000,2000,2000)));
-	
+
 	if ( model() )
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
@@ -130,10 +130,11 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 			e->setIndex(current);
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
 
-			if ( parent_uuid != -1 ) 
+			if ( parent_uuid != -1 )
 				e->setParentItem(items[parent_uuid]);
-			
+
 			items[uuid] = e;
+			e->connectToPort();
 		}
 
 		if ( model()->hasChildren(current) ) {

@@ -18,9 +18,9 @@ namespace UML {
 		/** @brief Получить индекс элемента в модели
 		 *	@brief @return Индекс элемента
 		 * */
-		QPersistentModelIndex index() const 
-		{ 
-			return dataIndex; 
+		QPersistentModelIndex index() const
+		{
+			return dataIndex;
 		};
 		/** @brief Установить индекс элемента */
 		void setIndex(QPersistentModelIndex &index /**< Индекс */);
@@ -31,11 +31,14 @@ namespace UML {
 		/** @brief Получить идентификатор элемента
 		 *	@brief @return Идентификатор элемента
 		 * */
-		int uuid() const;    
+		int uuid() const;
 		/** @brief Получить тип элемента
 		 *	@brief @return Тип элемента
 		 * */
 		int type() const;
+
+		virtual void connectToPort() {}
+
 	protected:
 		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );

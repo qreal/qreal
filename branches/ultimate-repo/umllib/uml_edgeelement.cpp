@@ -23,10 +23,10 @@ using namespace UML;
 #endif //M_PI
 
 /** @brief Индикатор перемещения свящи */
-static bool moving = false;
+// static bool moving = false;
 
 EdgeElement::EdgeElement()
-: src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
+: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -99,10 +99,10 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		QLineF longest(m_line[longPart],m_line[longPart+1]);
 		painter->translate(m_line[longPart]);
 		painter->rotate(-lineAngle(longest));
-	
+
 //		painter->drawText(0,-15,longest.length(),15,
 //				Qt::TextSingleLine | Qt::AlignCenter, m_text);
-		
+
 		QTextDocument d;
 		d.setHtml(m_text);
 		d.setTextWidth(longest.length());
@@ -134,7 +134,7 @@ QPainterPath EdgeElement::shape() const
 {
 	QPainterPath path;
 	path.setFillRule(Qt::WindingFill);
-	
+
 	QPainterPathStroker ps;
 	ps.setWidth(kvadratik);
 
@@ -168,7 +168,7 @@ void EdgeElement::updateLongestPart()
 			maxIdx = i;
 		}
 	}
-	longPart = maxIdx;	
+	longPart = maxIdx;
 }
 
 void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
@@ -182,28 +182,11 @@ void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 		Element::mousePressEvent(event);
 }
 
-void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
-{
-	if ( dragState == -1 ) {
-		Element::mouseMoveEvent(event);
-	} else {
-		prepareGeometryChange();
-		m_line[dragState] = event->pos();
-		updateLongestPart();
-	}
-}
-
-void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
-{
+void EdgeElement::connectToPort() {
 	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 
 	setPos(pos()+m_line[0]);
 	m_line.translate(-m_line[0]);
-	
-	if ( dragState == -1 )
-		Element::mouseReleaseEvent(event);
-	else
-		dragState = -1;
 
 	moving = true;
 
@@ -247,7 +230,7 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		dst = new_dst;
 		dst->addEdge(this);
 	}
-	
+
 	if ( dst )
 		im->setData(dataIndex, dst->uuid(), Unreal::krneRelationship::toRole);
 	else
@@ -262,7 +245,54 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	moving = false;
 
-	updateLongestPart();
+	adjustLink();
+}
+
+void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+{
+	NodeElement *new_src = getNodeAt(m_line[0]);
+	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
+	if (beginning) {
+		if (beginning!=new_src) {
+			beginning->setPortsVisible(false);
+		}
+	}
+	if (ending) {
+		if (ending!=new_dst) {
+			ending->setPortsVisible(false);
+		}
+	}
+	beginning = new_src;
+	ending = new_dst;
+	if (beginning) {
+		beginning->setPortsVisible(true);
+	} 
+	if (ending) {
+		ending->setPortsVisible(true);
+	} 
+	
+	if ( dragState == -1 ) {
+		Element::mouseMoveEvent(event);
+	} else {
+		prepareGeometryChange();
+		m_line[dragState] = event->pos();
+		updateLongestPart();
+	}
+}
+
+void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+{
+	if ( dragState == -1 )
+		Element::mouseReleaseEvent(event);
+	else
+		dragState = -1;
+    connectToPort();
+	if (beginning) {
+		beginning->setPortsVisible(false);
+	} 
+	if (ending) {
+		ending->setPortsVisible(false);
+	} 
 }
 
 NodeElement *EdgeElement::getNodeAt( const QPointF &position )
@@ -297,7 +327,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 				QPainterPath path;
 				QPainterPathStroker ps;
 				ps.setWidth(kvadratik);
-	
+
 				path.moveTo(m_line[i]);
 				path.lineTo(m_line[i+1]);
 				if ( ps.createStroke(path).contains(event->pos()) ) {
@@ -309,16 +339,16 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 		} else if ( selectedAction == squarizeAction ) {
 			prepareGeometryChange();
 			for ( int i = 0; i < m_line.size()-1; i++ ) {
-				QLineF line(m_line[i],m_line[i+1]);	
+				QLineF line(m_line[i],m_line[i+1]);
 				if ( qAbs(line.dx()) < qAbs(line.dy()) ) {
-					m_line[i+1].setX(m_line[i].x());		    
+					m_line[i+1].setX(m_line[i].x());
 				} else {
 					m_line[i+1].setY(m_line[i].y());
 				}
 			}
 			adjustLink();
 			update();
-		} 
+		}
 	}
 }
 
@@ -366,7 +396,7 @@ void EdgeElement::updateData()
 		src->addEdge(this);
 	if ( dst )
 		dst->addEdge(this);
-	
+
 	setFlag(ItemIsMovable, !(dst||src) );
 
 	portFrom = dataIndex.data(Unreal::krneRelationship::fromPortRole).toDouble();
