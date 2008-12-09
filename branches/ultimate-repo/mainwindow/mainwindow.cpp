@@ -77,13 +77,27 @@ MainWindow::MainWindow()
 
 	show();
 
-	//showMaximized();
-	resize(1024,800);
+	QSettings settings("Tercom", "QReal");
+	settings.beginGroup("MainWindow");
+	resize(settings.value("size", QSize(1024, 800)).toSize());
+	move(settings.value("pos", QPoint(0, 0)).toPoint());
+	settings.endGroup();
+
 	QApplication::processEvents();
 
 	connectRepo(&splash);
 
 	splash.close();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	QSettings settings("Tercom", "QReal");
+	settings.beginGroup("MainWindow");
+	settings.setValue("size", size());
+	settings.setValue("pos", pos());
+	settings.endGroup();
+	event->accept();
 }
 
 MainWindow::~MainWindow()

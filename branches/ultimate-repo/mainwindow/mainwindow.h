@@ -58,6 +58,9 @@ public slots:
 	/** @brief I have no idea how to set an encoding in Qt Creator. Function shows Options modal dialog. */
 	void showOptions();
 
+protected:
+	virtual void closeEvent(QCloseEvent *event);
+
 private:
 	/** @brief Модель */
 	RealRepoModel *model;
