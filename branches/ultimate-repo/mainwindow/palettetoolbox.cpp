@@ -64,11 +64,11 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 
 		mTabs[i] = scroller;
         mTabNames[i] = categories[i];
-		mShownTabs[i] = settings.contains(categories[i]);
+		mShownTabs[i] = !settings.contains(categories[i])
+			|| settings.value(categories[i]).toString() == "Show";
 
 		addTab(scroller, categories[i]);
 	}
-	checkFirstLaunch();
 	setEditors(mShownTabs);
 }
 
@@ -79,16 +79,7 @@ PaletteToolbox::~PaletteToolbox()
         if (mShownTabs[i])
             settings.setValue(mTabNames[i], "Show");
         else
-            settings.remove(mTabNames[i]);
-}
-
-void PaletteToolbox::checkFirstLaunch()
-{
-	foreach (bool const val, mShownTabs)
-		if (val)
-			return;
-	for (int i = 0; i < mShownTabs.count(); ++i)
-		mShownTabs[i] = true;
+			settings.setValue(mTabNames[i], "Hide");
 }
 
 void PaletteToolbox::setEditors(QVector<bool> const &editors)
@@ -118,7 +109,6 @@ void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
 void PaletteToolbox::dropEvent(QDropEvent * /*event*/)
 {
 }
-
 
 void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 {
