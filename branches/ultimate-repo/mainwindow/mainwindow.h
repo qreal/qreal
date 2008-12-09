@@ -29,7 +29,7 @@ public:
 
 public slots:
 	/** @brief Осуществить соединение с репозиторием */
-	void connectRepo();
+	void connectRepo(QSplashScreen *splash = NULL);
 	/** @brief Закрыть репозиторий */
 	void closeRepo();
 	/** @brief Настроить minimap */
@@ -69,8 +69,6 @@ private:
 	
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;
-
-	QSplashScreen splash;
 };
 
 #endif
