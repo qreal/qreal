@@ -27,6 +27,8 @@ class PaletteToolbox : public QTabWidget
 		void dropEvent(QDropEvent *event /**< Событие */);
 		/** @brief Обработать событие нажатия кнопки мыши*/
 		void mousePressEvent(QMouseEvent *event /**< Событие*/);
+		virtual void wheelEvent(QWheelEvent *event);
+
 	private:
 		/** @class DraggableElement
 		 * 	@brief Элемент палитры объектов */

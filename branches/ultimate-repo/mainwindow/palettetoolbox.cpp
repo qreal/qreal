@@ -147,3 +147,17 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	else 
 		child->show();
 }
+
+void PaletteToolbox::wheelEvent(QWheelEvent *event)
+{
+	if (tabBar()->underMouse())
+	{
+		if (event->delta() < 0 && currentIndex() < count())
+			setCurrentIndex(currentIndex() + 1);
+		else if (event->delta() > 0 && currentIndex() > 0)
+			setCurrentIndex(currentIndex() - 1);
+		event->accept();
+	} else
+		event->ignore();
+}
+
