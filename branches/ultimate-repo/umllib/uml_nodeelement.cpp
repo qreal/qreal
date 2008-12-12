@@ -57,6 +57,13 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				case None:														break;
 			}
 
+			if (event->modifiers() & Qt::ShiftModifier)
+			{
+				qreal size = std::max(newcontents.width(), newcontents.height());
+				newcontents.setWidth(size);
+				newcontents.setHeight(size);
+			}
+
 			if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
 				prepareGeometryChange();
 
