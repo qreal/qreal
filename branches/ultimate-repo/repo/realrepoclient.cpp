@@ -50,7 +50,7 @@ dbg;
 //	qDebug() << "ready - " << res;
 	QByteArray req = socket->readAll();
 //	qDebug() << "[CLIENT]: recvd" << req;
-	return extractData(QString(req));
+	return extractData(QString::fromUtf8(req));
 }
 
 void RealRepoClient::displayError(QAbstractSocket::SocketError socketError)

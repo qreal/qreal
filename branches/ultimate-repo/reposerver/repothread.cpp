@@ -36,14 +36,17 @@ void QRealRepoServerThread::TryToRestoreState()
         {
             qDebug() << "Command log found, restoring";
             QTextStream savedCommands(&file);
+            // QTextStream does not honour setCodecForCStrings(codec).
+            // Set UTF8 explicitly.
+            savedCommands.setCodec("UTF-8");
             while (!savedCommands.atEnd())
             {
                 QString command = savedCommands.readLine();
                 qDebug() << command;
-                handleCommand(command);        
-            }    
+                handleCommand(command);
+            }
             file.close();
-        }    
+        }
     }
 }
 
@@ -68,10 +71,12 @@ void QRealRepoServerThread::run()
     if (!file.open(QIODevice::Append | QIODevice::Text))
         loggedMode = false;
     QTextStream commandLog(&file);
+    // QTextStream does not honour setCodecForCStrings(codec).
+    // Set UTF8 explicitly.
+    commandLog.setCodec("UTF-8");
 
     while (tcpSocket.state() != QAbstractSocket::UnconnectedState)
     {
-
         //bool res =
         tcpSocket.waitForReadyRead();
         //qDebug() << "ready - " << res;
@@ -89,7 +94,7 @@ void QRealRepoServerThread::run()
 
         QByteArray rawdata = tcpSocket.readAll();
         QString data = QString(rawdata);
-    
+
         if (loggedMode)
             commandLog << data << endl;
 
@@ -97,7 +102,7 @@ void QRealRepoServerThread::run()
         QString response = QString::number(resp.first) + '\t' + resp.second;
         tcpSocket.write(response.toUtf8());
     }
-  
+
     if (loggedMode)
         file.close();
 }
