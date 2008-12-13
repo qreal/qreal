@@ -632,7 +632,7 @@ void Generator::genClasses(){
         if( objects.at(i)->type == NODE){       
             Node* node = (Node*) objects.at(i);
             if( node->ports.size() == 0 ){
-                    out << "\tint d = textSize/2 - width/2;\n"
+                    out << "\tint d = /* textSize/2 */ - width/2;\n"
                      <<  "\tpointPorts << QPointF(d, height/2) << QPointF(width/2 + d, height)"
                                    " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
             }          
@@ -739,7 +739,7 @@ void Generator::genClasses(){
 		"private:\n"
                 "\tvoid updatePorts();\n\n"
                 "\tQString text;\n"
-                "\tint textSize;\n"
+                "\t/* int textSize; */\n"
                 "\tint width;\n"
                 "\tint height;\n"
 		"\tQSvgRenderer renderer;\n";
