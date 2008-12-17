@@ -24,6 +24,7 @@ HEADERS += dialogs/qsqlconnectiondialog.h \
     repo/realrepoclient.h \
     common/realrepoapiclasses.h \
     repo/realrepoinfo.h \
+	repo/realrepoundocommands.h \
     common/classes.h \
     dialogs/optionsDialog.h
 SOURCES += dialogs/qsqlconnectiondialog.cpp \
@@ -31,6 +32,7 @@ SOURCES += dialogs/qsqlconnectiondialog.cpp \
     common/realrepoapiclasses.cpp \
     repo/realrepoclient.cpp \
     repo/realrepoinfo.cpp \
+	repo/realrepoundocommands.cpp \
     common/classes.cpp
 FORMS += dialogs/qsqlconnectiondialog.ui \
     dialogs/optionsDialog.ui

@@ -22,6 +22,14 @@ dbg;
 	rootItem->id = 0;
 
 	readRootTable();
+
+	undoStack = new QUndoStack();
+	undoView = new QUndoView(undoStack);
+	undoView->setWindowTitle(tr("Command List"));
+	undoView->show();
+	undoView->setAttribute(Qt::WA_QuitOnClose, false);
+
+	addToStack = true;
 }
 
 RealRepoModel::~RealRepoModel()
@@ -125,7 +133,10 @@ dbg;
 		case Unreal::PositionRole:
 			{
 				if ( type(item->parent) == Container ) {
-//					qDebug() << "moving element " << item->id;
+					if( addToStack ){ 
+						undoStack->push(new ChangePositionCommand(this, index, 
+									QVariant(hashDiagramElements[item->parent->id][item->id].position), value, role));
+					}				
 					repoClient->setPosition(item->id, item->parent->id, value.toPoint().x(), value.toPoint().y());
 					hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
 				}
@@ -142,6 +153,10 @@ dbg;
 					}
 					result.chop(1);
 
+					if( addToStack ){ 
+						undoStack->push(new ChangeConfigurationCommand(this, index, 
+									QVariant(hashDiagramElements[item->parent->id][item->id].configuration), value, role));
+					}				
 					repoClient->setConfiguration(item->id, item->parent->id, result);
 					hashDiagramElements[item->parent->id][item->id].configuration = poly;
 				}
@@ -678,4 +693,25 @@ dbg;
 		}
 	
 	}
+}
+
+void RealRepoModel::undo()
+{
+	qDebug() << "undo";	
+	undoStack->undo();
+}
+
+void RealRepoModel::redo()
+{
+	qDebug() << "redo";	
+	undoStack->redo();
+	
+}
+
+void RealRepoModel::safeSetData(const QModelIndex & index, const QVariant & value, int role)
+{
+	addToStack = false;
+	setData(index, value, role);
+	addToStack = true;
+	emit dataChanged(index,index);
 }

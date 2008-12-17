@@ -55,7 +55,7 @@ MainWindow::MainWindow()
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
-
+	
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -134,6 +134,9 @@ void MainWindow::connectRepo(QSplashScreen *splash)
 	propertyModel.setSourceModel(model);
 
 	ui.view->mvIface()->setModel(model);
+	
+	connect(ui.actionUndo, SIGNAL( triggered() ), model, SLOT( undo() ) );
+	connect(ui.actionRedo, SIGNAL( triggered() ), model, SLOT( redo() ) );
 	
 }
 

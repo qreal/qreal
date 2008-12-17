@@ -12,11 +12,13 @@
 
 #include <QtGui/QPolygon>
 
+#include <QUndoStack>
+#include <QUndoView>
+
 #include "realrepoinfo.h"
-
 #include "realrepoclient.h"
-
 #include "../common/classes.h"
+#include "realrepoundocommands.h"
 
 /** @class RealRepoModel
  * 	@brief Класс основной модели данных
@@ -124,6 +126,19 @@ class RealRepoModel : public QAbstractItemModel
 		{ 
 			return repoClient->state(); 
 		}
+	
+		/** @brief Undo-safe сохраниение данных элемента
+		 * */
+		void safeSetData(const QModelIndex & index, /**< Индекс элемента */ 
+					const QVariant & value, /**< Сохраняемое значение */
+					int role = Qt::EditRole /**< Роль */
+		);
+
+	public slots:
+		/** @brief Отменить последнее действие */
+		void undo();
+		/** @brief Повторить последнее отмененное действие */
+		void redo();
 
 	private:
 		/** @brief Клиент репозитория */
@@ -225,6 +240,14 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Код последней ошибки */
 		int m_error;
+
+		/** @brief Стэк для отката действий над элементами */
+		QUndoStack *undoStack;
+		/** @brief Представление для отображения действий над элементами */
+		QUndoView *undoView;
+
+		/** @brief Вспомогательная переменная для организации undo-стэка */
+		bool addToStack;
 };
 
 #endif
