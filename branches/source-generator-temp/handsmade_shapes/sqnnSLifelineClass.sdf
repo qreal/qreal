@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<picture sizex = "82" sizey = "102">
+
+	<rectangle x1 = "1a" y1 = "1a" x2 = "100%" y2 = "26a" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#ffffff" fill-style = "solid"/>
+
+	<line x1 = "7%" y1 = "21a" x2 = "94%" y2 = "21a" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<text x1 = "9%" y1 = "7a"
+		font-fill = "#000000" font-size = "12a" font-name = "MS Shell Dlg 2" b = "0" i = "0" u = "0"> 
+:
+	</text>
+
+	<line x1 = "50%" y1 = "26a" x2 = "50%" y2 = "100%" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "dash" fill = "#000000" fill-style = "solid"/>
+
+
+</picture>

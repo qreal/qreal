@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<picture sizex = "50" sizey = "70">
+
+	<rectangle x1 = "0" y1 = "0" x2 = "50" y2 = "70" 
+	 stroke = "#000000" stroke-width = "1" stroke-style = "solid" fill = "#ffffff" fill-style = "solid"/>
+	                     
+	<line x1 = "0" y1 = "20a" x2 = "50" y2 = "20a" 
+	 stroke = "#000000" stroke-width = "1" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "0" y1 = "40" x2 = "50" y2 = "40" 
+	 stroke = "#000000" stroke-width = "1" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+</picture>
