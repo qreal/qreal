@@ -319,6 +319,7 @@ void Generator::parseSVG( Entity* cur, QDomNode dnode ){
         cur->width = svg.at(0).toElement().attribute("width").toInt();
 
         resources += res.arg("shapes/" + cur->id + "Class.svg");
+        resources += res.arg("shapes/" + cur->id + "Class.sdf");
 
         QFile file("generated/shapes/" + cur->id + "Class.svg");
         if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -608,6 +609,7 @@ void Generator::genClasses(){
     out2 << "#include <QWidget>\n#include <QtSvg/QSvgRenderer>\n#include <QList>\n\n"
             "#include \"uml_nodeelement.h\"\n"
             "#include \"uml_edgeelement.h\"\n"
+            "#include \"sdfrenderer.h\"\n"
             "#include \"realreporoles.h\"\n"
             "namespace UML {\n";
 
@@ -630,7 +632,7 @@ void Generator::genClasses(){
         out <<   "{\n";
 	    
         out << "\tupdatePorts();\n"
-            << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".svg") 
+            << QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf") 
             << "\ttext = \"\";\n";
         if( objects.at(i)->parents.size() > 0)
             out << "\tparentsList";
@@ -756,7 +758,7 @@ void Generator::genClasses(){
                 "\t/* int textSize; */\n"
                 "\tint width;\n"
                 "\tint height;\n"
-		"\tQSvgRenderer renderer;\n";
+		"\tSdfRenderer renderer;\n";
         
         out2 << "};\n\n#endif\n";
     }    

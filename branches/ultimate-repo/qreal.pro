@@ -1,7 +1,8 @@
 QT += sql \
     svg \
     opengl \
-    network
+    network \
+    xml
 
 
 # CONFIG += qt debug
@@ -60,11 +61,14 @@ SOURCES += view/editorview.cpp \
 HEADERS += umllib/uml_edgeelement.h \
     umllib/uml_element.h \
     umllib/uml_guiobjectfactory.h \
-    umllib/uml_nodeelement.h
+    umllib/uml_nodeelement.h \
+    umllib/sdfrenderer.h
+
 SOURCES += umllib/uml_edgeelement.cpp \
     umllib/uml_element.cpp \
     umllib/uml_guiobjectfactory.cpp \
-    umllib/uml_nodeelement.cpp
+    umllib/uml_nodeelement.cpp \
+    umllib/sdfrenderer.cpp
 
 # Generated UML code
 include (umllib/generated/umllib.pri)
