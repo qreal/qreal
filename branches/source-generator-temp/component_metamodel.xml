@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>kernel_metamodel</include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="COMPONENT DIAGRAM">
+    <node name="Component" id="cmpnComponent">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="58"  style="stroke:#000000;fill:#f8f8f8;"/>
+              <svg:text x="8" y="20" style="font-size:12pt;fill:#000000;">&#8249;&#8249;component&#8250;&#8250;</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" y="45">
+              <html:center>
+                <html:b>
+                  <html:text_from_repo name="ComponentName"/>
+                </html:b>
+              </html:center>
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="1" starty="1"/>
+              <end endx="1" endy="59"/>
+            </line_port>
+            <line_port>
+              <start startx="99" starty="1"/>
+              <end endx="99" endy="59"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+            <parent parent_id="cnClass"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="ComponentName" type="string"></property>
+        </properties>
+        <associations>
+          <assoc_ref idref="cmpaPort" />
+          <assoc_ref idref="cmpaConnectorSource" />
+        </associations>
+      </logic>
+    </node>
+
+    <node name="Port" id="cmpnPort">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="20" xmlns:xlink="http://www.w3.org/1999/xlink" height="20" version="1.0">
+              <svg:rect x="1" y="1" width="18" height="18"  style="stroke:#000000;fill:#f8f8f8;fill-opacity:100;"/>
+            </svg:svg>
+          </svg_shape>
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <!--или лучше container?-->
+          <association id="cmpaPort" role="port">
+            <begin idref="cmpnComponent" />
+          </association>
+        </associations>
+      </logic>
+    </node>
+
+    <!--а надпись (name) поместится в шейп?-->
+    <node name="ProvidedInterface" id="cmpnProvidedInterface">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="22" xmlns:xlink="http://www.w3.org/1999/xlink" height="38" version="1.0">
+              <svg:ellipse cx="11" cy="27" rx="10" ry="10" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="2" y="12">
+              <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+          <ports>
+            <point_port x="1" y="27" />
+            <point_port x="11" y="17" />
+            <point_port x="21" y="27" />
+            <point_port x="11" y="37" />
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <assoc_ref idref="cmpaConnectorTarget" />
+          <association id="cmpaInterface" role="CheckInterfaces">
+            <begin idref="cmpnRequiredInterface" />
+          </association>
+        </associations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+      </logic>
+    </node>
+
+    <!--а надпись (name) поместится в шейп?-->
+    <!--если они нашли друг друга, то надпись должна писаться только один раз-->
+    <node name="RequiredInterface" id="cmpnRequiredInterface">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="22" xmlns:xlink="http://www.w3.org/1999/xlink" height="38" version="1.0">
+              <svg:ellipse cx="0" cy="27" rx="10" ry="10" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="2" y="12">
+              <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+          <ports>
+            <point_port x="10" y="27" />
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <assoc_ref idref="cmpaConnectorTarget" />
+          <assoc_ref idref="cmpaInterface" />
+        </associations>
+        <properties>
+          <property name="name" type="string" />
+        </properties>
+      </logic>
+    </node>
+    
+    <edge name="Connector" id="cmpConnector">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="cmpaConnectorSource" role="source">
+            <begin idref="cmpnComponent"/>
+          </association>
+          <association id="cmpaConnectorTarget" role="target">
+            <end idref="cmpnProvidedInterface" />
+            <end idfer="cmpnRequiredInterface" />
+          </association>
+        </associations>
+      </logic>
+    </edge>
+  </diagram>
+</metamodel>

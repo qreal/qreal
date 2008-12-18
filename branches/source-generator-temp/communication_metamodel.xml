@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>kernel_metamodel</include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="COMMUNICATION DIAGRAM">
+    <edge name="Message" id="cmnMessage">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="cmnaMessage" role="interaction">
+            <begin idref="cmnnCLifeline"/>
+          </association>
+        </associations>
+      </logic>
+    </edge>
+    <edge name="MessageWithSequenceNumber" id="cmnMessageWithSequenceNumber">
+      <graphics>
+        <view>
+          <line_type type="solidLine" />
+          <line_type type="solidLine" />
+          <end_type type="arrow" />
+          <!--тут две линии: одна со стрелочкой, а другая без оной-->
+              <!--вообще-то там можно стрелочку масштабировать отдельно от самого message, но как это сделать я не знаю-->
+              <!--кроме того, надпись может перемещаться относительно стрелочки-->
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+                <html:text_from_repo name="name" />
+            </html:html>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text>:</html:text>
+            </html:html>
+            <html:html xmlns:html="http://www.w3.org/html/">
+                <html:text_from_repo name="order" />
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <associations>
+          <association id="cmnaMessageWithSequenceNumber" role="interaction" multiplicity="false">
+            <begin idref="cmnnCLifeline"/>
+          </association>
+          <association id="cmnaMessageWithSequenceNumber" role="interaction" multiplicity="false">
+            <end idref="cmnnCLifeline"/>
+          </association>
+        </associations>
+        <properties>
+          <property name="name" type="string"></property>
+          <property name="order" type="positiveInt"></property>
+        </properties>
+      </logic>
+    </edge>
+    <node name="CLifeline" id="cmnnCLifeline">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="82" xmlns:xlink="http://www.w3.org/1999/xlink" height="37" version="1.0">
+              <svg:rect x="1" y="1" width="80" height="25" style="fill:white;stroke:black;stroke-width:2;" />
+              <svg:line x1="6" y1="21" x2="76" y2="21" stroke="black" stroke-width="2" />
+              <svg:text x="9" y="16" style="font-size:12pt;fill:#000000;">:</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+                <html:text_from_repo name="name" />
+            </html:html>
+          </repo_info>
+          <ports>
+            <line_port>
+              <start startx="1" starty="1"/>
+              <end endx="89" endy="1"/>
+            </line_port>
+            <line_port>
+              <start startx="89" starty="1"/>
+              <end endx="89" endy="26"/>
+            </line_port>
+            <line_port>
+              <start startx="89" starty="26"/>
+              <end endx="1" endy="26"/>
+            </line_port>
+            <line_port>
+              <start startx="1" starty="26"/>
+              <end endx="1" endy="1"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <associations>
+          <assoc_ref idref ="cmnaMessage"/>
+          <assoc_ref idref ="cmnaMessageWithSequenceNumber"/>
+        </associations>
+      </logic>
+    </node>
+  </diagram>
+</metamodel>

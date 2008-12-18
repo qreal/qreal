@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metamodel xmlns="http://schema.real.com/schema/">
+  <include>kernel_metamodel</include>
+  <include>basicbehaviors_metamodel</include>
+  <namespace>UML 2.1</namespace>
+  <diagram name="USE CASE DIAGRAM">
+    <node name="Actor" id="uscnActor">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="40" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:circle cx="16" cy="16" r="15" stroke="black" stroke-width="2" fill="white"/>
+              <svg:line x1="16" y1="31" x2="16" y2="66" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="45" x2="31" y2="45" stroke="black" stroke-width="2" />
+              <svg:line x1="16" y1="66" x2="1" y2="89" stroke="black" stroke-width="2" />
+              <svg:line x1="16" y1="66" x2="31" y2="89" stroke="black" stroke-width="2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text_from_repo name="name" />
+              </html:center>
+            </html:html>
+          </repo_info>
+          <ports>
+            <point_port x="1" y="45" />
+            <point_port x="31" y="45" />
+            <line_port>
+              <start startx="16" starty="50"/>
+              <end endx="16" endy="66"/>
+            </line_port>
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <containers>
+          <container>
+            <contains idref="uscnUseCase" role="use case"/>
+          </container>
+        </containers>
+      </logic>
+    </node>
+    <node name="UCClassifier" id="uscnUCClassifier">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="110" version="1.0">
+              <svg:rect x="1" y="1" width="58" style="stroke:#000000;fill:#f8f8f8;" height="98"/>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="5" y="5">
+                <html:text_from_repo name="name"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <associations>
+          <assoc_ref idref="uscaClassifier" />
+        </associations>
+        <containers>
+          <container>
+            <contains idref="uscnUseCase" role="use case" />
+          </container>
+        </containers>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+      </logic>
+    </node>
+    <node name="UseCase" id="uscnUseCase">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="60" version="1.0">
+              <svg:ellipse cx="50" cy="25" rx="48" ry="24" style="fill:rgb(255,255,255);stroke:rgb(0,0,0);stroke-width:2" />
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/" x="0" y="20">
+              <html:center>
+                <html:text_from_repo name="name"/>
+              </html:center>
+            </html:html>
+          </repo_info>
+          <ports>
+            <point_port x="72" y="46" />
+            <point_port x="28" y="4" />
+            <point_port x="28" y="46" />
+            <point_port x="72" y="4" />
+
+            <point_port x="90" y="38" />
+            <point_port x="10" y="12" />
+            <point_port x="10" y="38" />
+            <point_port x="90" y="12" />
+
+            <point_port x="80" y="44" />
+            <point_port x="20" y="6" />
+            <point_port x="20" y="44" />
+            <point_port x="80" y="6" />
+
+            <point_port x="98" y="25" />
+            <point_port x="2" y="25" />
+
+            <point_port x="50" y="49" />
+            <point_port x="50" y="1" />
+          </ports>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="bbnBehavioredClassifier"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="name" type="string"></property>
+        </properties>
+        <associations>
+          <assoc_ref idref="uscaExtend"/>
+          <assoc_ref idref="uscaInclude"/>
+        </associations>
+        <containers>
+          <container>
+            <contains idref="uscnExtensionPoint" role="extension point" />
+          </container>
+          <container>
+            <contained_by idref="uscnActor" role="actor"/>
+          </container>
+        </containers>
+      </logic>
+    </node>
+    <edge name="Extend" id="uscaExtend">
+      <graphics>
+        <view>
+          <line_type type="dashLine" />
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>
+                <html:text text="&lt;&lt;extend&gt;&gt;"/>
+              </html:center>  
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krnnNamedElement"></parent>
+            <parent parent_id="krneDirRelationship"></parent>
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="uscaExtend" role="extend" multiplicity="true">
+            <begin idref="uscnUseCase"/>
+          </association>
+          <association id="uscaExtend" role="extend" multiplicity="false" end_type="open_arrow">
+            <end idref="uscnUseCase"/>
+          </association>
+        </associations>
+      </logic>
+    </edge>
+    <edge name="Include" id="uscaInclude">
+      <graphics>
+        <view>
+          <line_type type="dashLine" />
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:center>  
+                <html:text text="&lt;&lt;include&gt;&gt;"/>
+              </html:center>  
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="krneDirRelationship"></parent>
+            <parent parent_id="krnnNamedElement"></parent>
+          </generalization>
+        </generalizations>
+        <associations>
+          <association id="ucsaInclude" role="include" multiplicity="true">
+            <begin idref="uscnUseCase"/>
+          </association>
+          <association id="uscaInclude" role="include" multiplicity="false" end_type="open_arrow">
+            <end idref="uscnUseCase"/>
+          </association>
+        </associations>
+      </logic>
+    </edge>
+  </diagram>
+</metamodel>
