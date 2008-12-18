@@ -82,16 +82,10 @@
     </property>
     <addaction name="actionOptions" />
    </widget>
-   <widget class="QMenu" name="menuAsd" >
-    <property name="title" >
-     <string>asd</string>
-    </property>
-   </widget>
    <addaction name="menu_File" />
    <addaction name="menu_View" />
    <addaction name="menuTools" />
    <addaction name="menuHelp" />
-   <addaction name="menuAsd" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QDockWidget" name="objectDock" >
