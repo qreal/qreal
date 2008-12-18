@@ -1,10 +1,11 @@
-/** @file main.cpp
- *  @brief Главный файл проекта
- * */
+#include <QtGui/QApplication>
+
 #include "generator.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+	QApplication app(argc,argv);
+
 	QStringList l;
 	l
 	<< "kernel_metamodel.xml" 

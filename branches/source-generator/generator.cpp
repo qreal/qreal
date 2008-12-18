@@ -1,7 +1,11 @@
 /** @file generator.cpp
  * 	@brief Генератор классов используемых на диаграммах элементов
 */
+#include <QtGui/QPainter>
+#include <QtSvg/QSvgRenderer>
+
 #include "generator.h"
+#include "pipec.h"
 
 Generator::Generator( QStringList files ){
 
@@ -322,6 +326,16 @@ void Generator::parseSVG( Entity* cur, QDomNode dnode ){
         QTextStream stream(&file);
         svg.at(0).save(stream, 1);
         file.close();
+
+        {
+		pipec canvas( "generated/shapes/" + cur->id + "Class.sdf", QPoint(cur->width, cur->height) );
+                QPainter painterf;
+                QSvgRenderer rend;
+                painterf.begin(&canvas);
+                rend.load("generated/shapes/" + cur->id + "Class.svg");
+                rend.render(&painterf);
+        }
+
 	cur->visible = true;
     }
     else {
@@ -365,7 +379,7 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
             ass->to = end.toElement().attribute("idref");
             ass->toID = role;
             ass->toArrow = arrowType;
-        }   
+        }  
     }
     edge->associations << ass;
     if( isNode ){
