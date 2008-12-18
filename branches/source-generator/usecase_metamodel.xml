@@ -54,7 +54,7 @@
         <view>
           <svg_shape>
             <svg:svg width="60" xmlns:xlink="http://www.w3.org/1999/xlink" height="110" version="1.0">
-              <svg:rect x="1" y="1" width="58" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" height="98"/>
+              <svg:rect x="1" y="1" width="58" style="stroke:#000000;fill:#f8f8f8;" height="98"/>
             </svg:svg>
           </svg_shape>
           <repo_info>

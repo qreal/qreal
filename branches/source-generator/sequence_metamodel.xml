@@ -13,7 +13,7 @@
         <view>
           <svg_shape>
             <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="72" version="1.0">
-              <svg:rect x="1" y="1" width="98" height="60" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="98" height="60" style="fill:white;stroke:black;stroke-width:2;" />
               <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">sd</svg:text>
             </svg:svg>
           </svg_shape>
@@ -54,7 +54,7 @@
         <view>
           <svg_shape>
             <svg:svg width="82" xmlns:xlink="http://www.w3.org/1999/xlink" height="102" version="1.0">
-              <svg:rect x="1" y="1" width="80" height="25" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="80" height="25" style="fill:white;stroke:black;stroke-width:2;" />
               <svg:line x1="6" y1="21" x2="76" y2="21" stroke="black" stroke-width="2" />
               <svg:text x="9" y="16" style="font-size:12pt;fill:#000000;">:</svg:text>
               <svg:line x1="41" y1="26" x2="41" y2="41" stroke="black" stroke-width="2" />
@@ -116,7 +116,7 @@
         <view>
           <svg_shape>
             <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="72" version="1.0">
-              <svg:rect x="1" y="1" width="98" height="60" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="98" height="60" style="fill:white;stroke:black;stroke-width:2;" />
               <svg:line x1="1" y1="21" x2="41" y2="21" stroke="black" stroke-width="2" />
               <svg:line x1="41" y1="21" x2="51" y2="11" stroke="black" stroke-width="2" />
               <svg:line x1="51" y1="11" x2="51" y2="1" stroke="black" stroke-width="2" />
@@ -147,7 +147,7 @@
           <svg_shape>
             <!--если par-->
             <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
-              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;" />
               <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
               <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
               <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
@@ -161,7 +161,7 @@
           <svg_shape>
             <!--если alt-->
             <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
-              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;" />
               <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
               <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
               <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
@@ -276,7 +276,7 @@
         <view>
           <svg_shape>
             <svg:svg width="17" xmlns:xlink="http://www.w3.org/1999/xlink" height="92" version="1.0">
-              <svg:rect x="1" y="1" width="15" height="80" style="fill:white;stroke:black;stroke-width:2;fill-opacity:0;" />
+              <svg:rect x="1" y="1" width="15" height="80" style="fill:white;stroke:black;stroke-width:2;" />
             </svg:svg>
           </svg_shape>
           <ports>

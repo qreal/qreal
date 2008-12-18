@@ -16,22 +16,22 @@
 						<svg:svg contentScriptType="text/ecmascript" width="200" xmlns:xlink="http://www.w3.org/1999/xlink"
 							zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 200 200" height="200" preserveAspectRatio="xMidYMid meet"
 							xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" height="69" id="smnStateMachine0" />
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" height="69" id="smnStateMachine1" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" height="69" id="smnStateMachine2" />
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" height="69" id="smnStateMachine2" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" height="69" id="smnStateMachine3" />
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" height="69" id="smnStateMachine3" />
 							<svg:rect x="9" y="22" transform="matrix( 2.0000000527295474, 0, 0, 2.2280701754385963, -6.5000004482011775, -32.40350877192981)"
-								width="82" style="stroke:#000000;fill:white;fill-opacity:0;" rx="9.0" height="56" />
+								width="82" style="stroke:#000000;fill:white;" rx="9.0" height="56" />
 							<svg:circle transform="matrix( -0.7200000000000001, -0, -0, -0.68, 303.9599959470726, 194.15999310712277)"
 								style="fill:#000000;" r="12.5" cx="180.5" cy="174.5" id="smnStateMachine4" />
 							<svg:circle transform="matrix( 1, 0, 0, 1, 115, 54)" style="fill:#000000;" r="0" cx="29" cy="34"
 								id="smnStateMachine5" />
 							<svg:circle transform="matrix( 0.6744185701513258, 0, 0, 0.6511627355148661, 137.5813964700819, 39.03488527482219)"
-								style="stroke:#000000;fill:white;fill-opacity:0;" r="21" cx="54" cy="56" id="smnStateMachine6" />
+								style="stroke:#000000;fill:white;" r="21" cx="54" cy="56" id="smnStateMachine6" />
 						</svg:svg>
 					</svg_shape>
 					<repo_info>
@@ -93,15 +93,15 @@
 						<svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink"
 							zoomAndPan="magnify" contentStyleType="text/css" viewBox="0 0 100.0 100.0" height="100"
 							preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" height="69" id="smnState0" />
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" height="69" id="smnState1" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" height="69" id="smnState2" />
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" height="69" id="smnState2" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" height="69" id="smnState3" />
-							<svg:rect x="9" y="22" width="82" style="stroke:#000000;fill:white;fill-opacity:0;" rx="9.0"
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" height="69" id="smnState3" />
+							<svg:rect x="9" y="22" width="82" style="stroke:#000000;fill:white;" rx="9.0"
 								height="56" />
 						</svg:svg>
 					</svg_shape>
@@ -193,16 +193,16 @@
 						<svg:svg contentScriptType="text/ecmascript" width="200" xmlns:xlink="http://www.w3.org/1999/xlink"
 							zoomAndPan="magnify" contentStyleType="text/css" height="200" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet"
 							xmlns="http://www.w3.org/2000/svg" version="1.0">
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" id="0" height="69" />
-							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;"
+							<svg:rect x="278" y="234" width="127" style="stroke:#000000;fill:#f8f8f8;"
 								rx="8.0" id="1" height="69" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" id="2" height="69" />
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" id="2" height="69" />
 							<svg:rect x="278" y="234" transform="matrix( 0.3828125, 0, 0, 0.5, 171.26953125, 116.75)"
-								width="127" style="stroke:#000000;fill:#f8f8f8;fill-opacity:0;" rx="8.0" id="3" height="69" />
+								width="127" style="stroke:#000000;fill:#f8f8f8;" rx="8.0" id="3" height="69" />
 							<svg:rect x="9" y="22" transform="matrix( 1.5542168674698795, 0, 0, 1.5964912280701755, 30.289156626506013, 31.175438596491233)"
-								width="82" style="stroke:#000000;fill:white;fill-opacity:0;" rx="9.0" height="56" />
+								width="82" style="stroke:#000000;fill:white;" rx="9.0" height="56" />
 							<svg:polyline style="stroke:black;fill:none;" points="59,65 59,45 96,45 96,66 " />
 							<svg:text x="67" y="54" style="font-size:12pt;fill:#000000;" transform="matrix( 1, 0, 0, 1, 4, 6)">S</svg:text>
 						</svg:svg>
@@ -238,7 +238,7 @@
 							<svg:circle transform="matrix( -1.2000000000000002, -0, -0, -1.2000000000000002, 263.599993245121, 260.3999995045848)"
 								style="fill:#000000;" r="12.5" cx="180.5" cy="174.5" id="smnFinalState0" />
 							<svg:circle r="0" style="fill:#000000;" cx="29" transform="matrix( 1, 0, 0, 1, -8, -4)" cy="34" />
-							<svg:circle r="21" style="stroke:#000000;fill:white;fill-opacity:0;" cx="54" transform="matrix( 1.1395348837209303, 0, 0, 1.1162790697674418, -14.534883720930239, -12.011627906976742)"
+							<svg:circle r="21" style="stroke:#000000;fill:white;" cx="54" transform="matrix( 1.1395348837209303, 0, 0, 1.1162790697674418, -14.534883720930239, -12.011627906976742)"
 								cy="56" />
 						</svg:svg>
 					</svg_shape>
@@ -307,7 +307,7 @@
 					<svg_shape>
 						<svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" height="100" viewBox="0 0 100.0 100.0" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
 							<svg:circle r="0" style="fill:#000000;" cx="29" cy="34" transform="matrix( 1, 0, 0, 1, -8, -4)"/>
-							<svg:circle r="21" style="stroke:#000000;fill:white;fill-opacity:0;" cx="54" cy="56" transform="matrix( -1.0192313738986924, -0.509614714934192, 0.4992144146294125, -0.9984307336150458, 76.08248591692136, 129.9313039958967)"/>
+							<svg:circle r="21" style="stroke:#000000;fill:white;" cx="54" cy="56" transform="matrix( -1.0192313738986924, -0.509614714934192, 0.4992144146294125, -0.9984307336150458, 76.08248591692136, 129.9313039958967)"/>
 							<svg:text x="40" y="48" style="font-size:12pt;fill:#000000;" transform="matrix( 1, 0, 0, 1, 3, 6)">H*</svg:text>
 						</svg:svg>
 					</svg_shape>
@@ -334,7 +334,7 @@
 					<svg_shape>
 						<svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" height="100" viewBox="0 0 100.0 100.0" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
 							<svg:circle r="0" style="fill:#000000;" cx="29" cy="34" transform="matrix( 1, 0, 0, 1, -8, -4)"/>
-							<svg:circle r="21" style="stroke:#000000;fill:white;fill-opacity:0;" cx="54" cy="56" transform="matrix( -1.0192313738986924, -0.509614714934192, 0.4992144146294125, -0.9984307336150458, 76.08248591692136, 129.9313039958967)"/>
+							<svg:circle r="21" style="stroke:#000000;fill:white;" cx="54" cy="56" transform="matrix( -1.0192313738986924, -0.509614714934192, 0.4992144146294125, -0.9984307336150458, 76.08248591692136, 129.9313039958967)"/>
 							<svg:text x="40" y="48" style="font-size:12pt;fill:#000000;" transform="matrix( 1, 0, 0, 1, 3, 6)">H</svg:text>
 						</svg:svg>
 					</svg_shape>
@@ -459,7 +459,7 @@
 					<svg_shape>
 						<svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" height="100" viewBox="0 0 100.0 100.0" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
 							<svg:circle r="0" style="fill:#000000;" cx="29" cy="34" transform="matrix( 1, 0, 0, 1, -8, -4)"/>
-							<svg:circle r="21" style="stroke:#000000;fill:white;fill-opacity:0;" cx="54" cy="56" transform="matrix( 0.0339783125977492, -0.5230087221721624, 0.5450349364728834, 0.0312879214469982, 37.64321340667303, 60.99033749049183)"/>
+							<svg:circle r="21" style="stroke:#000000;fill:white;" cx="54" cy="56" transform="matrix( 0.0339783125977492, -0.5230087221721624, 0.5450349364728834, 0.0312879214469982, 37.64321340667303, 60.99033749049183)"/>
 							<svg:text x="6" y="52" style="font-size:12pt;fill:#000000;" transform="matrix( 1, 0, 0, 1, 7, -1)">again</svg:text>
 						</svg:svg>
 					</svg_shape>
@@ -482,7 +482,7 @@
 					<svg_shape>
 						<svg:svg contentScriptType="text/ecmascript" width="100" xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify" contentStyleType="text/css" height="100" viewBox="0 0 100.0 100.0" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" version="1.0">
 							<svg:circle r="0" style="fill:#000000;" cx="29" cy="34" transform="matrix( 1, 0, 0, 1, -8, -4)"/>
-							<svg:circle r="21" style="stroke:#000000;fill:white;fill-opacity:0;" cx="54" cy="56" transform="matrix( 0.0339783125977492, -0.5010656161493942, 0.5450349364728834, 0.0299752202463526, -8.356786593326973, 85.6289208079099)"/>
+							<svg:circle r="21" style="stroke:#000000;fill:white;" cx="54" cy="56" transform="matrix( 0.0339783125977492, -0.5010656161493942, 0.5450349364728834, 0.0299752202463526, -8.356786593326973, 85.6289208079099)"/>
 							<svg:text x="6" y="52" style="font-size:12pt;fill:#000000;" transform="matrix( 1, 0, 0, 1, 30.000000000000007, -5)">aborted</svg:text>
 							<svg:line transform="matrix( 0.9850363086882384, 0, 0, 1, 2.204201208858754, -2)" x1="14" x2="30" y1="54" y2="70" style="stroke:#000000;"/>
 							<svg:line transform="matrix( 0.9699503375405735, 0, 0, 1.1776942779133153, 0.9651819436082785, -9.260616719283227)" x1="31.8" x2="15.8" y1="52.5" style="stroke:#000000;" y2="65.8" id="smExitPoint0"/>
