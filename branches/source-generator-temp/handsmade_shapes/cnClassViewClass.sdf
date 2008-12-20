@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<picture sizex = "100" sizey = "100">
+
+	<text x1 = "20" y1 = "10"
+		font-fill = "#0000ff" font-size = "15a" font-name = "MS Shell Dlg 2" b = "0" i = "0" u = "0"> 
+View
+	</text>
+
+	<line x1 = "0" y1 = "20" x2 = "100" y2 = "20" 
+	 stroke = "#008000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "0" y1 = "100" x2 = "100" y2 = "100" 
+	 stroke = "#008000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "0" y1 = "20" x2 = "0" y2 = "100" 
+	 stroke = "#008000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "100" y1 = "20" x2 = "100" y2 = "100" 
+	 stroke = "#008000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+</picture>

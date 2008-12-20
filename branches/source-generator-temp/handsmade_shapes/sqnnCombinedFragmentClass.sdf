@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<picture sizex = "100" sizey = "100">
+
+	<rectangle x1 = "1" y1 = "1" x2 = "99" y2 = "89" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#ffffff" fill-style = "solid"/>
+
+	<line x1 = "1" y1 = "21" x2 = "26" y2 = "21" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "26" y1 = "21" x2 = "36" y2 = "11" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "36" y1 = "11" x2 = "36" y2 = "1" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "1" y1 = "46" x2 = "16" y2 = "46" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "26" y1 = "46" x2 = "41" y2 = "46" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "51" y1 = "46" x2 = "66" y2 = "46" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<line x1 = "76" y1 = "46" x2 = "91" y2 = "46" 
+	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+
+	<text x1 = "6" y1 = "16"
+		font-fill = "#000000" font-size = "12a" font-name = "MS Shell Dlg 2" b = "1" i = "0" u = "0"> 
+par
+	</text>
+
+</picture>
