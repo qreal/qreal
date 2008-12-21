@@ -113,7 +113,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 void MainWindow::connectRepo(QSplashScreen *splash)
 {
 	closeRepo();
-	
+
 	model = new RealRepoModel(this);
 	if( model->getState() != QAbstractSocket::ConnectedState ){	
 		qDebug() << "repo model creation failed";
@@ -159,7 +159,17 @@ void MainWindow::deleteFromExplorer()
 {
 	QModelIndex idx = ui.diagramExplorer->currentIndex();
 	if (idx.isValid())
-		model->removeRow(idx.row(), idx.parent());
+	{
+		try
+		{
+			model->removeRow(idx.row(), idx.parent());
+		}
+		catch (QString e)
+		{
+			QMessageBox::warning(this, tr("Operation aborted"),
+				tr("Repository can not delete this element."));
+		}
+	}
 }
 
 void MainWindow::deleteFromScene()
@@ -235,8 +245,8 @@ void MainWindow::makeSvg()
 
 void MainWindow::showAbout()
 {
-     QMessageBox::about(this, tr("About QReal"),
-             tr("This is <b>QReal</b><br>"
+	QMessageBox::about(this, tr("About QReal"),
+		tr("This is <b>QReal</b><br>"
 		"Just another CASE tool<br>"
 		"<i>Burning heretics since 1724</i>"));
 }
