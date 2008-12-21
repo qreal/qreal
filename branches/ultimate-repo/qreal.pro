@@ -4,7 +4,6 @@ QT += sql \
     network \
     xml
 
-
 # CONFIG += qt debug
 INCLUDEPATH += view \
     umllib \
@@ -25,7 +24,7 @@ HEADERS += dialogs/qsqlconnectiondialog.h \
     repo/realrepoclient.h \
     common/realrepoapiclasses.h \
     repo/realrepoinfo.h \
-	repo/realrepoundocommands.h \
+    repo/realrepoundocommands.h \
     common/classes.h \
     dialogs/optionsDialog.h
 SOURCES += dialogs/qsqlconnectiondialog.cpp \
@@ -33,7 +32,7 @@ SOURCES += dialogs/qsqlconnectiondialog.cpp \
     common/realrepoapiclasses.cpp \
     repo/realrepoclient.cpp \
     repo/realrepoinfo.cpp \
-	repo/realrepoundocommands.cpp \
+    repo/realrepoundocommands.cpp \
     common/classes.cpp
 FORMS += dialogs/qsqlconnectiondialog.ui \
     dialogs/optionsDialog.ui
@@ -63,7 +62,6 @@ HEADERS += umllib/uml_edgeelement.h \
     umllib/uml_guiobjectfactory.h \
     umllib/uml_nodeelement.h \
     umllib/sdfrenderer.h
-
 SOURCES += umllib/uml_edgeelement.cpp \
     umllib/uml_element.cpp \
     umllib/uml_guiobjectfactory.cpp \

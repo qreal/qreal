@@ -25,6 +25,7 @@ dbg;
 
 	undoStack = new QUndoStack();
 	undoView = new QUndoView(undoStack);
+	undoView->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
 	undoView->setWindowTitle(tr("Command List"));
 	undoView->show();
 	undoView->setAttribute(Qt::WA_QuitOnClose, false);
@@ -37,6 +38,9 @@ RealRepoModel::~RealRepoModel()
 dbg;
 	cleanupTree(rootItem);
 	delete rootItem;
+	undoView->close();
+	delete undoView;
+	delete undoStack;
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
@@ -697,15 +701,19 @@ dbg;
 
 void RealRepoModel::undo()
 {
-	qDebug() << "undo";	
+	qDebug() << "undo";
 	undoStack->undo();
 }
 
 void RealRepoModel::redo()
 {
-	qDebug() << "redo";	
+	qDebug() << "redo";
 	undoStack->redo();
-	
+}
+
+void RealRepoModel::showCommandList()
+{
+	undoView->show();
 }
 
 void RealRepoModel::safeSetData(const QModelIndex & index, const QVariant & value, int role)

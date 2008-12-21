@@ -134,10 +134,12 @@ void MainWindow::connectRepo(QSplashScreen *splash)
 	propertyModel.setSourceModel(model);
 
 	ui.view->mvIface()->setModel(model);
-	
+
 	connect(ui.actionUndo, SIGNAL( triggered() ), model, SLOT( undo() ) );
 	connect(ui.actionRedo, SIGNAL( triggered() ), model, SLOT( redo() ) );
-	
+
+	connect(ui.actionCommand_list, SIGNAL( triggered() ), model,
+			SLOT( showCommandList() ));
 }
 
 void MainWindow::closeRepo()

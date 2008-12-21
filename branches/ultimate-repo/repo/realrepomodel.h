@@ -1,8 +1,7 @@
 /** @file realrepomodel.h
  *	@brief Основная модель данных
  * */
-#ifndef REALREPOMODEL_H
-#define REALREPOMODEL_H
+#pragma once
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QModelIndex>
@@ -139,7 +138,8 @@ class RealRepoModel : public QAbstractItemModel
 		void undo();
 		/** @brief Повторить последнее отмененное действие */
 		void redo();
-
+		/** @brief Показать окно Command list */
+		void showCommandList();
 	private:
 		/** @brief Клиент репозитория */
 		RealRepoClient *repoClient;
@@ -210,7 +210,7 @@ class RealRepoModel : public QAbstractItemModel
 		void createItem(RepoTreeItem * item, /**< Элемент */
 						int type, /**< Тип */
 						int id, /**< Идентификатор */
-                        QString name /**< Имя */
+						QString name /**< Имя */
 						);
 		
 		/** @brief Перечитать данные корневого элемента
@@ -243,11 +243,10 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Стэк для отката действий над элементами */
 		QUndoStack *undoStack;
+
 		/** @brief Представление для отображения действий над элементами */
 		QUndoView *undoView;
 
 		/** @brief Вспомогательная переменная для организации undo-стэка */
 		bool addToStack;
 };
-
-#endif
