@@ -27,7 +27,6 @@ dbg;
 	undoView = new QUndoView(undoStack);
 	undoView->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
 	undoView->setWindowTitle(tr("Command List"));
-	undoView->show();
 	undoView->setAttribute(Qt::WA_QuitOnClose, false);
 
 	addToStack = true;
