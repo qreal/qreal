@@ -2,10 +2,10 @@
 
 <picture sizex = "100" sizey = "72">
 
-	<rectangle x1 = "1" y1 = "1" x2 = "99" y2 = "61" 
+	<rectangle x1 = "1a" y1 = "1a" x2 = "99" y2 = "61" 
 	 stroke = "#000000" stroke-width = "2" stroke-style = "solid" fill = "#ffffff" fill-style = "solid"/>
 
-	<text x1 = "6" y1 = "16"
+	<text x1 = "6a" y1 = "9a"
 		font-fill = "#000000" font-size = "12a" font-name = "MS Shell Dlg 2" b = "1" i = "0" u = "0"> 
 sd
 	</text>
