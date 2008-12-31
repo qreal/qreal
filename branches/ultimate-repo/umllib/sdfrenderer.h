@@ -12,12 +12,12 @@
 
 class SdfRenderer : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	SdfRenderer();
 	SdfRenderer(const QString path);
-        ~SdfRenderer();
+	~SdfRenderer();
 
 	bool load (const QString &filename);
 	void render(QPainter *painter, const QRectF &bounds);
@@ -38,7 +38,7 @@ private:
 	QFont font;
 	QFile log;
 	QTextStream logtext;
-        QDomDocument doc;
+	QDomDocument doc;
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
 	void parsestyle(QDomElement &element);
@@ -54,7 +54,12 @@ private:
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);
 	float y2_def(QDomElement &element);
-	void logger(QString path,QString string);
+	float coord_def(QDomElement &element, QString coordName, int current_size,
+		int first_size);
+	void logger(QString path, QString string);
+
+	/** @brief Не знаю, что оно делает, но не могу смотреть на копипаст :)*/
+	bool while_condition(QString str, int i);
 };
 
 #endif // SDFRENDERER
