@@ -22,114 +22,114 @@ class Category;
 class Generator
 {
 public:
-    Generator( QStringList );
-    ~Generator();
+	Generator( QStringList );
+	~Generator();
 
 private:
 	/** @brief Начальное значение идентификаторов сущностей */
-    static const int NUM = 1;
+	static const int NUM = 1;
 
 	/** @brief Обработать файл */
-    void parseFile( QString arg /**< Имя файла */);
+	void parseFile( QString arg /**< Имя файла */);
 	/** @brief Осуществить разбор описания перечисления */
-    void parseEnum( QDomNode arg /**< Узел XML-описания */);
+	void parseEnum( QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описания элемента */
-    void parseNode( QDomNode arg /**< Узел XML-описания */);
+	void parseNode( QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описания связи */
-    void parseEdge( QDomNode arg /**< Узел XML-описания */);
-    
+	void parseEdge( QDomNode arg /**< Узел XML-описания */);
+
 	/** @brief Обработать описание наследования */
-    void parseGeneralizations ( Entity* ent, /**< Сущность */
+	void parseGeneralizations ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описаний свойств */
-    void parseProperties      ( Entity* ent, /**< Сущность */
+	void parseProperties      ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описаний ассоциаций */
-    void parseAssociations    ( Entity* ent, /**< Сущность */
+	void parseAssociations    ( Entity* ent, /**< Сущность */
 								QDomNode arg, /**< Узел XML-описания */
 								bool isNode = false /**< Является ли сущность элементом */
 								);
-    //void parseNodeAssociations( Entity*, QDomNode );
+	//void parseNodeAssociations( Entity*, QDomNode );
 	/** @brief Осуществить разбор описания графического представления элемента */
-    void parseSVG             ( Entity* ent, /**< Сущность */
+	void parseSdf             ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний портов */
-    void parsePorts           ( Node* node, /**< Элемент */
+	void parsePorts           ( Node* node, /**< Элемент */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний надписей, параметризующих SVG */
-    void parseLabels          ( Entity* ent,  /**< Сущность */
+	void parseLabels          ( Entity* ent,  /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний графического представления связей */
-    void parseEdgeGraphics    ( Edge* ed,   /**< Связь */
+	void parseEdgeGraphics    ( Edge* ed,   /**< Связь */
 								QDomNode arg /**< Узел XML-описания */
 								);
 
 	/** @brief Сгенерировать перечисления ролей */
-    void genEnums();
+	void genEnums();
 	/** @brief Сгенерировать информацию о типах элементов */
-    void genTypes();
+	void genTypes();
 	/** @brief Сгенерировать классы элементов */
-    void genClasses();
+	void genClasses();
 	/** @brief Сгенерировать фабрику элементов */
-    void genFactory();
+	void genFactory();
 	/** @brief Сгенерировать вспомогательную информацию для репозитория */
-    void genRealRepoInfo();
+	void genRealRepoInfo();
 	/** @brief Сгенерировать вспомогательные средства для проверки корректности соединения элементов */
-    void genEdgesFunction();
+	void genEdgesFunction();
 
 	/** @brief Выполнить все распространения */
-    void propagateAll();
+	void propagateAll();
 	/** @brief Осуществить распространение свойств элементов */
-    void propagateProperties( Entity* arg /**< Сущность*/);
+	void propagateProperties( Entity* arg /**< Сущность*/);
 	/** @brief Осуществить распространение ассоциаций */
-    void propagateAssocs( Edge* arg /**< Связь */);
+	void propagateAssocs( Edge* arg /**< Связь */);
 	/** @brief Осуществить распространение родительских элементов */
-    void propagateParents( Entity* arg /**< Сущность */);
+	void propagateParents( Entity* arg /**< Сущность */);
 //    void findChildren( Entity*, QString );
 
-	/** @brief Найти сущность с заданным идентификатором 
+	/** @brief Найти сущность с заданным идентификатором
 	 * 	@brief @return Сущность
 	 * */
-    Entity* find( QString id /**< Идентифткатор */);
+	Entity* find( QString id /**< Идентифткатор */);
 	/** @brief Найти связь с заданным идентификатором
 	 * 	@brief @return Связь
 	 * */
-    Edge* findEdge( QString id /**< Идентификатор */);
+	Edge* findEdge( QString id /**< Идентификатор */);
 
 	/** @brief Получить номер сущности в списке
 	 * 	@brief @return Номер сузности в списке
 	 * */
-    int position( QString arg /**< Идентификатор */);
-    
+	int position( QString arg /**< Идентификатор */);
+
 	/** @brief Число анонимных ассоциаций */
-    int untitled;
+	int untitled;
 	/** @brief Число всех объектов */
-    int objectsCount;
+	int objectsCount;
 
 	/** @brief DOM-документ */
-    QDomDocument* doc;
+	QDomDocument* doc;
 
 	/** @brief Список элементов */
-    QList< Entity* > objects; 
+	QList< Entity* > objects;
 	/** @brief Список связей */
-    QList< Edge* > edges;
+	QList< Edge* > edges;
 
 	/** @brief Список диаграмм */
-    QList < Category* > categories;
+	QList < Category* > categories;
 
 	/** @brief Ассоциативный массив перечислений */
-    QMap<QString, QStringList> enumerations;
+	QMap<QString, QStringList> enumerations;
 
 	/** @brief Вспомогательная переменная для генерации файла ресурсов */
-    QString res;
+	QString res;
 	/** @brief Вспомогательная переменная для генерации файла ресурсов */
-    QString resources;
+	QString resources;
 
 	/** @brief Директория */
-    QDir dir;
+	QDir dir;
 };
 
 /** @class Category
@@ -138,9 +138,9 @@ private:
 class Category{
 public:
 	/** @brief Название диаграммы */
-    QString name;
+	QString name;
 	/** @brief Список объектов на диаграмме */
-    QList<int> objects;
+	QList<int> objects;
 };
 
 #endif
