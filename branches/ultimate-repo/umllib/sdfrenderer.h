@@ -1,5 +1,4 @@
-#ifndef SDFRENDERER_H
-#define SDFRENDERER_H
+#pragma once
 
 #include <QtGui/QWidget>
 #include <QtXml/QDomDocument>
@@ -9,6 +8,7 @@
 #include <QFont>
 #include <QFile>
 #include <QTextStream>
+#include <QtGui/QIconEngine>
 
 class SdfRenderer : public QObject
 {
@@ -21,12 +21,15 @@ public:
 
 	bool load (const QString &filename);
 	void render(QPainter *painter, const QRectF &bounds);
+	void noScale();
 
 private:
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
 	int current_size_y;
+	int mStartX;
+	int mStartY;
 	int i;
 	int j;
 	int sep;
@@ -39,6 +42,12 @@ private:
 	QFile log;
 	QTextStream logtext;
 	QDomDocument doc;
+
+	/** @brief false, если не надо масштабировать с учётом абсолютного задания
+	*	координат, полезно при отрисовке иконок. True по умолчанию.
+	**/
+	bool mNeedScale;
+
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
 	void parsestyle(QDomElement &element);
@@ -62,4 +71,11 @@ private:
 	bool while_condition(QString str, int i);
 };
 
-#endif // SDFRENDERER
+class SdfIconEngineV2: public QIconEngineV2
+{
+public:
+	SdfIconEngineV2(QString const &file);
+	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+private:
+	SdfRenderer mRenderer;
+};

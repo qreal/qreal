@@ -5,14 +5,20 @@
 #include <QIcon>
 #include <QLineF>
 #include <QTime>
+#include <QDebug>
 
 SdfRenderer::SdfRenderer()
+	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 }
 
 SdfRenderer::SdfRenderer(const QString path)
+	: mStartX(0), mStartY(0), mNeedScale(true)
 {
-	load(path);
+	if (!load(path))
+	{
+		qDebug() << "File " + path + " - loading failed!";
+	}
 }
 
 SdfRenderer::~SdfRenderer()
@@ -31,8 +37,8 @@ bool SdfRenderer::load(const QString &filename)
 	file.close();
 
 	QDomElement docElem = doc.documentElement();
-	first_size_x=docElem.attribute("sizex").toInt();
-	first_size_y=docElem.attribute("sizey").toInt();
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
 
 	return true;
 }
@@ -41,6 +47,8 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 {
 	current_size_x = static_cast<int>(bounds.width());
 	current_size_y = static_cast<int>(bounds.height());
+	mStartX = static_cast<int>(bounds.x());
+	mStartY = static_cast<int>(bounds.y());
 	this->painter = painter;
 	QDomElement docElem = doc.documentElement();
 	QDomNode node = docElem.firstChild();
@@ -132,17 +140,17 @@ void SdfRenderer::draw_text(QDomElement &element)
 
 	// delete "\n" from the beginning of the string
 	if (str[0] == '\n')
-		str.remove(0, 2);
+		str.remove(0, 1);
 
 	// delete "\n" from the end of the string
-	if (str[str.length() - 3] == '\n')
-		str.remove(str.length() - 3, 2);
+	if (str[str.length() - 2] == '\n')
+		str.remove(str.length() - 2, 1);
 
 	while (str.contains('\n'))
 	{
 		int i = str.indexOf('\n');
 		QString temp = str.left(i);
-		str.remove(0, i + 2);
+		str.remove(0, i + 1);
 		painter->drawText(static_cast<int>(x1), static_cast<int>(y1), temp);
 		y1 += painter->font().pixelSize() ;
 	}
@@ -205,27 +213,39 @@ QPoint *SdfRenderer::getpoints(QDomElement &element, int n)
 		if (xnum.endsWith("%"))
 		{
 			xnum.chop(1);
-			x = current_size_x * xnum.toFloat() / 100;
+			x = current_size_x * xnum.toFloat() / 100 + mStartX;
 		}
-		else if (xnum.endsWith("a"))
+		else if (xnum.endsWith("a") && mNeedScale)
 		{
 			xnum.chop(1);
-			x = xnum.toFloat();
+			x = xnum.toFloat() + mStartX;
 		}
-		else x = xnum.toFloat() * current_size_x / first_size_x;
+		else if (xnum.endsWith("a") && !mNeedScale)
+		{
+			xnum.chop(1);
+			x = xnum.toFloat() * current_size_x / first_size_x + mStartX;
+		}
+		else
+			x = xnum.toFloat() * current_size_x / first_size_x + mStartX;
 
 		QString ynum = elem.attribute(QString("y").append(str));
 		if (ynum.endsWith("%"))
 		{
 			ynum.chop(1);
-			y = current_size_y * ynum.toFloat() / 100;
+			y = current_size_y * ynum.toFloat() / 100 + mStartY;
 		}
-		else if (ynum.endsWith("a"))
+		else if (ynum.endsWith("a") && mNeedScale)
 		{
 			ynum.chop(1);
-			y = ynum.toFloat();
+			y = ynum.toFloat() + mStartY;
 		}
-		else y = ynum.toFloat() * current_size_y / first_size_y;
+		else if (ynum.endsWith("a") && !mNeedScale)
+		{
+			ynum.chop(1);
+			y = ynum.toFloat() * current_size_y / first_size_y + mStartY;
+		}
+		else
+			y = ynum.toFloat() * current_size_y / first_size_y + mStartY;
 
 		array[i].setX(static_cast<int>(x));
 		array[i].setY(static_cast<int>(y));
@@ -262,7 +282,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 		d_cont = elem.attribute("d").remove(0, 1);
 		d_cont.append(" Z");
 
-		for (i = 0; i<d_cont.length() - 1;)
+		for (i = 0; i < d_cont.length() - 1;)
 		{
 			if (d_cont[i] == 'M')
 			{
@@ -275,7 +295,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					end_point.setX(s1.toFloat() * current_size_x / first_size_x);
+					end_point.setX(s1.toFloat() * current_size_x / first_size_x + mStartX);
 					s1.clear();
 					++j;
 
@@ -285,7 +305,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					end_point.setY(s1.toFloat() * current_size_y / first_size_y);
+					end_point.setY(s1.toFloat() * current_size_y / first_size_y + mStartY);
 					++j;
 					s1.clear();
 				}
@@ -304,7 +324,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					end_point.setX(s1.toFloat() * current_size_x / first_size_x);
+					end_point.setX(s1.toFloat() * current_size_x / first_size_x + mStartX);
 					s1.clear();
 					++j;
 
@@ -313,7 +333,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						s1.append(d_cont[j]);
 						++j;
 					}
-					end_point.setY(s1.toFloat() * current_size_y / first_size_y);
+					end_point.setY(s1.toFloat() * current_size_y / first_size_y + mStartY);
 					++j;
 					s1.clear();
 				}
@@ -332,7 +352,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					c1.setX(s1.toFloat() * current_size_x / first_size_x);
+					c1.setX(s1.toFloat() * current_size_x / first_size_x + mStartX);
 					s1.clear();
 					++j;
 
@@ -342,7 +362,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					c1.setY(s1.toFloat() * current_size_y / first_size_y);
+					c1.setY(s1.toFloat() * current_size_y / first_size_y + mStartY);
 					s1.clear();
 					++j;
 
@@ -352,7 +372,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					c2.setX(s1.toFloat() * current_size_x / first_size_x);
+					c2.setX(s1.toFloat() * current_size_x / first_size_x + mStartX);
 					s1.clear();
 					++j;
 
@@ -362,7 +382,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					c2.setY(s1.toFloat() * current_size_y / first_size_y);
+					c2.setY(s1.toFloat() * current_size_y / first_size_y + mStartY);
 					s1.clear();
 					++j;
 
@@ -372,7 +392,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					end_point.setX(s1.toFloat() * current_size_x / first_size_x);
+					end_point.setX(s1.toFloat() * current_size_x / first_size_x + mStartX);
 					s1.clear();
 					++j;
 
@@ -382,7 +402,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 						++j;
 					}
 
-					end_point.setY(s1.toFloat() * current_size_y / first_size_y);
+					end_point.setY(s1.toFloat() * current_size_y / first_size_y + mStartY);
 					s1.clear();
 					++j;
 				}
@@ -402,7 +422,6 @@ void SdfRenderer::path_draw(QDomElement &element)
 	painter->drawPath(path);
 }
 
-
 void SdfRenderer::parsestyle(QDomElement &element)
 {
 	QDomElement elem = element;
@@ -410,7 +429,10 @@ void SdfRenderer::parsestyle(QDomElement &element)
 	{
 		if (elem.hasAttribute("stroke-width"))
 		{
-			pen.setWidth(elem.attribute("stroke-width").toInt());
+			if (mNeedScale)
+				pen.setWidth(elem.attribute("stroke-width").toInt());
+			else  // Для отрисовки иконок - ширина всех линий устанавливается в 1.
+				pen.setWidth(1);
 		}
 
 		if (elem.hasAttribute("fill"))
@@ -464,10 +486,15 @@ void SdfRenderer::parsestyle(QDomElement &element)
 				fontsize.chop(1);
 				font.setPixelSize(current_size_y * fontsize.toInt() / 100);
 			}
-			else if (fontsize.endsWith("a"))
+			else if (fontsize.endsWith("a") && mNeedScale)
 			{
 				fontsize.chop(1);
 				font.setPixelSize(fontsize.toInt());
+			}
+			else if (fontsize.endsWith("a") && !mNeedScale)
+			{
+				fontsize.chop(1);
+				font.setPixelSize(fontsize.toInt() * current_size_y / first_size_y);
 			}
 			else
 				font.setPixelSize(fontsize.toInt() * current_size_y / first_size_y);
@@ -511,10 +538,16 @@ float SdfRenderer::coord_def(QDomElement &element, QString coordName,
 		coord = current_size * coordStr.toFloat() / 100;
 		return coord;
 	}
-	else if (coordStr.endsWith("a"))
+	else if (coordStr.endsWith("a") && mNeedScale)
 	{
 		coordStr.chop(1);
 		coord = coordStr.toFloat();
+		return coord;
+	}
+	else if (coordStr.endsWith("a") && !mNeedScale)
+	{
+		coordStr.chop(1);
+		coord = coordStr.toFloat() * current_size / first_size;
 		return coord;
 	}
 	else
@@ -526,22 +559,22 @@ float SdfRenderer::coord_def(QDomElement &element, QString coordName,
 
 float SdfRenderer::x1_def(QDomElement &element)
 {
-	return coord_def(element, "x1", current_size_x, first_size_x);
+	return coord_def(element, "x1", current_size_x, first_size_x) + mStartX;
 }
 
 float SdfRenderer::y1_def(QDomElement &element)
 {
-	return coord_def(element, "y1", current_size_y, first_size_y);
+	return coord_def(element, "y1", current_size_y, first_size_y) + mStartY;
 }
 
 float SdfRenderer::x2_def(QDomElement &element)
 {
-	return coord_def(element, "x2", current_size_x, first_size_x);
+	return coord_def(element, "x2", current_size_x, first_size_x) + mStartX;
 }
 
 float SdfRenderer::y2_def(QDomElement &element)
 {
-	return coord_def(element, "y2", current_size_y, first_size_y);
+	return coord_def(element, "y2", current_size_y, first_size_y) + mStartY;
 }
 
 void SdfRenderer::logger(QString path, QString string)
@@ -550,4 +583,26 @@ void SdfRenderer::logger(QString path, QString string)
 	logtext.setDevice(&log);
 	logtext << string << "\n";
 	log.close();
+}
+
+void SdfRenderer::noScale()
+{
+	mNeedScale = false;
+}
+
+
+SdfIconEngineV2::SdfIconEngineV2(QString const &file)
+{
+	mRenderer.load(file);
+	mRenderer.noScale();
+}
+
+void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
+	QIcon::Mode mode, QIcon::State state)
+{
+	painter->eraseRect(rect);
+	painter->setRenderHint(QPainter::Antialiasing, true);
+//	QRect adjustedRect(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1);
+//	qDebug() << rect;
+	mRenderer.render(painter, rect);
 }
