@@ -21,13 +21,9 @@ SdfExtractor::SdfExtractor(QString const &fileName)
 
 		QDomDocument editor = readXml(fileName);
 		QDomNodeList svgList = editor.elementsByTagName("svg_shape");
-		for (unsigned i = 0; i < svgList.length(); ++i)
-		{
-			QDomNode svg = svgList.at(i);
-			QString const fileName = svg.parentNode().parentNode().parentNode().toElement().attribute("id")
-				+ "Class";
-			generateSdf(svg, fileName, true);
-		}
+		processDomList(svgList);
+		svgList = editor.elementsByTagName("svg:shape");
+		processDomList(svgList);
 	}
 	else if (fileName.endsWith(".svg", Qt::CaseInsensitive))
 	{
@@ -40,6 +36,17 @@ SdfExtractor::SdfExtractor(QString const &fileName)
 	{
 		qDebug() << "Unknown file extension, only .xml (for editors) and "
 			<< ".svg (for svg files) are supported";
+	}
+}
+
+void SdfExtractor::processDomList(QDomNodeList const &list) const
+{
+	for (unsigned i = 0; i < list.length(); ++i)
+	{
+		QDomNode svg = list.at(i);
+		QString const fileName = svg.parentNode().parentNode().parentNode().toElement().attribute("id")
+			+ "Class";
+		generateSdf(svg, fileName, true);
 	}
 }
 

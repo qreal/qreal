@@ -14,6 +14,7 @@ namespace sdfExtractor
 		QDomDocument readXml(QString const &fileName) const;
 		void generateSdf(QDomNode const &svgNode, QString const &fileName,
 			bool generateSvg) const;
+		void processDomList(QDomNodeList const &list) const;
 	};
 
 }
