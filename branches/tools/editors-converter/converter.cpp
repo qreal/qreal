@@ -21,9 +21,11 @@ void Converter::convert(QDomDocument &document, QString const &name)
 	// портит итератор (точнее, его жалкое подобие). Чтобы не париться, я сложил
 	// нужные узлы в отдельный список.
 	for (int i = 0; i < shapesNodeList.size(); ++i)
-	{
 		shapes.append(shapesNodeList.at(i));
-	}
+
+	shapesNodeList = document.elementsByTagName("svg:shape");
+	for (int i = 0; i < shapesNodeList.size(); ++i)
+		shapes.append(shapesNodeList.at(i));
 
 	foreach (QDomNode shape, shapes)
 	{
