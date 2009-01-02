@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+ <include>&#xd;
+    kernel_metamodel&#xd;
+ </include>
+ <namespace>UML 2.1</namespace>
+ <diagram name="PACKAGE DIAGRAM" >
+  <node id="pckPackage" name="Package" >
+   <graphics>
+    <view>
+     <picture sizex="100" sizey="100" >
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="30" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="0" y2="20a" stroke-width="2" x2="100" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="20a" stroke-width="2" x2="30" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid" />
+     </picture>
+     <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:b>
+        <html:text_from_repo name="name" />
+       </html:b>
+      </html:html>
+     </repo_info>
+     <ports>
+      <line_port>
+       <start startx="0" starty="40" />
+       <end endx="0" endy="80" />
+      </line_port>
+      <line_port>
+       <start startx="100" starty="40" />
+       <end endx="100" endy="80" />
+      </line_port>
+     </ports>
+    </view>
+   </graphics>
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krnnPackage" />
+     </generalization>
+    </generalizations>
+    <properties>
+     <property type="string" name="vals" />
+     <property type="string" name="methods" />
+    </properties>
+    <containers>
+     <container name="package" >
+      <contains idref="krnnPackage" role="package" />
+     </container>
+    </containers>
+   </logic>
+  </node>
+ </diagram>
+</metamodel>

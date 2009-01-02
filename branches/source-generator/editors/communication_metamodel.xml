@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+ <include>kernel_metamodel</include>
+ <namespace>UML 2.1</namespace>
+ <diagram name="COMMUNICATION DIAGRAM" >
+  <edge id="cmnMessage" name="Message" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association role="interaction" id="cmnaMessage" >
+      <begin idref="cmnnCLifeline" />
+     </association>
+    </associations>
+   </logic>
+  </edge>
+  <edge id="cmnMessageWithSequenceNumber" name="MessageWithSequenceNumber" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+     <line_type type="solidLine" />
+     <end_type type="arrow" />
+     <!--тут две линии: одна со стрелочкой, а другая без оной-->
+     <!--вообще-то там можно стрелочку масштабировать отдельно от самого message, но как это сделать я не знаю-->
+     <!--кроме того, надпись может перемещаться относительно стрелочки-->
+     <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:text_from_repo name="name" />
+      </html:html>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:text>:</html:text>
+      </html:html>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:text_from_repo name="order" />
+      </html:html>
+     </repo_info>
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association role="interaction" multiplicity="false" id="cmnaMessageWithSequenceNumber" >
+      <begin idref="cmnnCLifeline" />
+     </association>
+     <association role="interaction" multiplicity="false" id="cmnaMessageWithSequenceNumber" >
+      <end idref="cmnnCLifeline" />
+     </association>
+    </associations>
+    <properties>
+     <property type="string" name="name" />
+     <property type="positiveInt" name="order" />
+    </properties>
+   </logic>
+  </edge>
+  <node id="cmnnCLifeline" name="CLifeline" >
+   <graphics>
+    <view>
+     <picture sizex="82" sizey="37" >
+      <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="26" stroke-width="2" x2="81" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="21" x1="6" y2="21" stroke-width="2" x2="76" fill-style="solid" />
+      <text i="0" font-fill="#000000" y1="16" b="0" x1="9" font-name="Helvetica" u="0" font-size="12" > &#xd;
+:&#xd;
+	</text>
+     </picture>
+     <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:text_from_repo name="name" />
+      </html:html>
+     </repo_info>
+     <ports>
+      <line_port>
+       <start startx="1" starty="1" />
+       <end endx="89" endy="1" />
+      </line_port>
+      <line_port>
+       <start startx="89" starty="1" />
+       <end endx="89" endy="26" />
+      </line_port>
+      <line_port>
+       <start startx="89" starty="26" />
+       <end endx="1" endy="26" />
+      </line_port>
+      <line_port>
+       <start startx="1" starty="26" />
+       <end endx="1" endy="1" />
+      </line_port>
+     </ports>
+    </view>
+   </graphics>
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krnnNamedElement" />
+     </generalization>
+    </generalizations>
+    <properties>
+     <property type="string" name="name" />
+    </properties>
+    <associations>
+     <assoc_ref idref="cmnaMessage" />
+     <assoc_ref idref="cmnaMessageWithSequenceNumber" />
+    </associations>
+   </logic>
+  </node>
+ </diagram>
+</metamodel>

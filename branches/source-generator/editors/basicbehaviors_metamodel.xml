@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+ <include>kernel_metamodel</include>
+ <namespace>UML 2.1</namespace>
+ <diagram name="BASIC BEHAVIOURS" >
+  <!-- BasicBehaviors -->
+  <node id="bbnBehavior" name="Behavour" >
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="cnClass" />
+     </generalization>
+    </generalizations>
+    <containers>
+     <container>
+      <contains idref="krnnBehavioralFeature" role="method" />
+     </container>
+     <container>
+      <contains idref="krnnParameter" />
+     </container>
+     <container inherited_from="E-E" >
+      <contained_by idref="bbnBehavioredClassifier" role="ownedBehavior" />
+     </container>
+    </containers>
+   </logic>
+  </node>
+  <node id="bbnBehavioredClassifier" name="Behavour" >
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krnnClassifier" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </node>
+  <node id="bbnOpaqueBehavior" name="Behavour" >
+   <logic>
+    <properties>
+     <property type="text" name="body" />
+     <property type="text" name="language" />
+    </properties>
+    <generalizations>
+     <generalization>
+      <parent parent_id="bbnBehavior" />
+     </generalization>
+    </generalizations>
+    <containers>
+     <container inherited_from="E-E" >
+      <contains idref="bbnBehavior" />
+     </container>
+    </containers>
+   </logic>
+  </node>
+  <node id="bbnFunctionBehavior" name="Behavour" >
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="bbnOpaqueBehavior" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </node>
+ </diagram>
+</metamodel>
