@@ -77,8 +77,8 @@ QDomDocument SdfExtractor::readXml(QString const &fileName) const
 
 void SdfExtractor::generateSdf(QDomNode const &svgNode, QString const &fileName, bool generateSvg) const
 {
-	int width = svgNode.toElement().attribute("width").toInt();
-	int height = svgNode.toElement().attribute("height").toInt();
+	int width = svgNode.childNodes().at(0).toElement().attribute("width").toInt();
+	int height = svgNode.childNodes().at(0).toElement().attribute("height").toInt();
 
 	if (generateSvg)
 	{
