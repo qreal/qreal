@@ -28,10 +28,12 @@ SdfRenderer::~SdfRenderer()
 bool SdfRenderer::load(const QString &filename)
 {
 	QFile file(filename);
-	if (!file.open(QIODevice::ReadOnly))
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
-	if (!doc.setContent(&file))
+	QTextStream in(&file);
+	QString content = in.readAll();
+	if (!doc.setContent(content))
 		return false;
 
 	file.close();
@@ -137,7 +139,6 @@ void SdfRenderer::draw_text(QDomElement &element)
 	float x1 = x1_def(element);
 	float y1 = y1_def(element);
 	QString str = element.text();
-	str = str.replace('\r', "");
 
 	// delete "\n" from the beginning of the string
 	if (str[0] == '\n')
