@@ -9,9 +9,7 @@
    <graphics>
     <view>
      <picture sizex="70" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplReceive&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a" >bplReceive</text>
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
@@ -144,9 +142,7 @@ bplReceive&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplReply&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplReply</text>
       <ellipse fill="#ff0000" stroke-style="solid" stroke="#0000ff" y1="15" x1="15" y2="85" stroke-width="10" x2="85" fill-style="solid" />
      </picture>
      <repo_info>
@@ -280,9 +276,7 @@ bplReply&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplInvoke&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplInvoke</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -419,9 +413,7 @@ bplInvoke&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplCall&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplCall</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -467,9 +459,7 @@ bplCall&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplSource&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplSource</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -513,9 +503,7 @@ bplSource&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplAssign&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplAssign</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -594,9 +582,7 @@ bplAssign&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-SQLSelect&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >SQLSelect</text>
       <line fill="#000000" stroke-style="solid" stroke="#ff0000" y1="0" x1="0" y2="20" stroke-width="3" x2="0" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
@@ -645,9 +631,7 @@ SQLSelect&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-SQLInsert&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >SQLInsert</text>
       <line fill="#000000" stroke-style="solid" stroke="#008000" y1="0" x1="0" y2="20" stroke-width="3" x2="0" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
@@ -694,9 +678,7 @@ SQLInsert&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-SQLUpdate&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >SQLUpdate</text>
       <line fill="#000000" stroke-style="solid" stroke="#0000ff" y1="0" x1="0" y2="20" stroke-width="3" x2="0" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
@@ -744,9 +726,7 @@ SQLUpdate&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-SQLDelete&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >SQLDelete</text>
       <line fill="#000000" stroke-style="solid" stroke="#ffff00" y1="0" x1="0" y2="20" stroke-width="3" x2="0" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
@@ -793,9 +773,7 @@ SQLDelete&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplThrow&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplThrow</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -865,9 +843,7 @@ bplThrow&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplRethrow&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplRethrow</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -936,9 +912,7 @@ bplRethrow&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplExit&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplExit</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1007,9 +981,7 @@ bplExit&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplEmpty&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplEmpty</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1079,9 +1051,7 @@ bplEmpty&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplIf&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplIf</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1156,9 +1126,7 @@ bplIf&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-If&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >If</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1204,9 +1172,7 @@ If&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-Else&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >Else</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1278,9 +1244,7 @@ Else&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplSequence&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplSequence</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1412,9 +1376,7 @@ bplSequence&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplFlow&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplFlow</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1546,9 +1508,7 @@ bplFlow&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplWhile&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplWhile</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1682,9 +1642,7 @@ bplWhile&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplBreak&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplBreak</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
@@ -1753,9 +1711,7 @@ bplBreak&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15" > &#xd;
-bplContinue&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="10" b="0" x1="20" font-name="Helvetica" u="0" font-size="15a" >bplContinue</text>
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="20" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />

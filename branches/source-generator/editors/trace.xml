@@ -8,9 +8,7 @@
     <view>
      <picture sizex="30" sizey="30" >
       <line fill="#000000" stroke-style="solid" stroke="#0000ff" y1="50" x1="3" y2="52" stroke-width="1" x2="99" fill-style="solid" />
-      <text i="0" font-fill="#0000ff" y1="37" b="0" x1="34" font-name="Helvetica" u="0" font-size="12" > &#xd;
-&lt;&lt;Trace>>&#xd;
-	</text>
+      <text i="0" font-fill="#0000ff" y1="37" b="0" x1="34" font-name="Helvetica" u="0" font-size="12a" >&lt;&lt;Trace&gt;&gt;</text>
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >

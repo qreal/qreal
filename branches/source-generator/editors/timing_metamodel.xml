@@ -8,9 +8,7 @@
     <view>
      <picture sizex="100" sizey="72" >
       <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="61" stroke-width="2" x2="99" fill-style="solid" />
-      <text i="0" font-fill="#000000" y1="16" b="1" x1="6" font-name="MS Shell Dlg 2" u="0" font-size="12a" > &#xd;
-sd&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="16" b="1" x1="6" font-name="MS Shell Dlg 2" u="0" font-size="12a" >sd</text>
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >

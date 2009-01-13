@@ -162,9 +162,7 @@
       <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid" />
       <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid" />
       <polygon x4="96" fill="#000000" stroke-style="solid" n="4" stroke="#000000" y1="65" x1="59" y2="45" stroke-width="1" x2="59" y3="45" fill-style="none" x3="96" y4="66" />
-      <text i="0" font-fill="#000000" y1="54" b="0" x1="67" font-name="Helvetica" u="0" font-size="12" > &#xd;
-S&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="54" b="0" x1="67" font-name="Helvetica" u="0" font-size="12a" >S</text>
      </picture>
     </view>
    </graphics>
@@ -249,9 +247,7 @@ S&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12" > &#xd;
-H*&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12a" >H*</text>
      </picture>
      <ports>
       <point_port x="49" y="48" />
@@ -274,9 +270,7 @@ H*&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12" > &#xd;
-H&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12a" >H</text>
      </picture>
      <ports>
       <point_port x="49" y="48" />
@@ -378,9 +372,7 @@ H&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12" > &#xd;
-again&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12a" >again</text>
      </picture>
      <ports>
       <point_port x="70" y="35" />
@@ -399,9 +391,7 @@ again&#xd;
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
-      <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12" > &#xd;
-aborted&#xd;
-	</text>
+      <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12a" >aborted</text>
      </picture>
      <ports>
       <point_port x="25" y="60" />
