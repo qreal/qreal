@@ -137,14 +137,15 @@ void SdfRenderer::draw_text(QDomElement &element)
 	float x1 = x1_def(element);
 	float y1 = y1_def(element);
 	QString str = element.text();
+	str = str.replace('\r', "");
 
 	// delete "\n" from the beginning of the string
 	if (str[0] == '\n')
 		str.remove(0, 1);
 
 	// delete "\n" from the end of the string
-	if (str[str.length() - 2] == '\n')
-		str.remove(str.length() - 2, 1);
+	if (str[str.length() - 1] == '\n')
+		str.remove(str.length() - 1, 1);
 
 	while (str.contains('\n'))
 	{
