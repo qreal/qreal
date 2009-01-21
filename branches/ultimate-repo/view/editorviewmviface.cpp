@@ -134,6 +134,12 @@ void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, in
 				e->setParentItem(items[parent_uuid]);
 
 			items[uuid] = e;
+
+			// TODO: workaround for #92 - connectToPort sets old configuration
+			// to a model, so we can not get it in updateData later.
+			// More accurate fix needed.
+			e->updateData();
+
 			e->connectToPort();
 		}
 
