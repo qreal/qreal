@@ -11,7 +11,7 @@ void RealUndoCommand::undo()
 {
 	model->safeSetData(index, oldval, role);
 }
-	
+
 void RealUndoCommand::redo()
 {
 	model->safeSetData(index, newval, role);

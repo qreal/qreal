@@ -9,7 +9,7 @@
 
 namespace UML {
 	/** @class Element
- 	* 	@brief Базовый класс элемента на диаграмме
+	* 	@brief Базовый класс элемента на диаграмме
 	 * */
 	class Element : public QGraphicsItem
 	{
@@ -37,7 +37,7 @@ namespace UML {
 		 * */
 		int type() const;
 
-		virtual void connectToPort() {}
+		virtual void connectToPort() { }
 
 	protected:
 		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );

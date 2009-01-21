@@ -10,7 +10,7 @@
 #include <QStringList>
 
 RealRepoClient::RealRepoClient( QObject *parent) : QObject(parent)
-{ 
+{
 dbg;
 	socket = new QTcpSocket(this);
 	connect(socket, SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(displayError(QAbstractSocket::SocketError)));
@@ -18,11 +18,11 @@ dbg;
 	socket->abort();
 	m_error = -1;
 	socket->connectToHost("127.0.0.1", 6666);
-        if (!socket->waitForConnected(5*1000)) {
+		if (!socket->waitForConnected(5*1000)) {
 //		emit socket->error(socket->error(), socket->errorString());
 		qDebug() << "cannot connect to the server" << endl;
-            return;
-        }
+			return;
+		}
 	m_error = socket->error();
 }
 
@@ -42,10 +42,10 @@ dbg;
 
 	//QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(id).arg(name);
 //	qDebug() << "[CLIENT]: sending" << data;
-	//int bytes = 
-	socket->write(data.toUtf8());	
+	//int bytes =
+	socket->write(data.toUtf8());
 //	qDebug() << "written " << bytes << " bytes";
-	//bool res = 
+	//bool res =
 	socket->waitForReadyRead();
 //	qDebug() << "ready - " << res;
 	QByteArray req = socket->readAll();
@@ -60,12 +60,12 @@ dbg;
 		case QAbstractSocket::RemoteHostClosedError:
 			qDebug() << "QAbstractSocket::RemoteHostClosedError";
 			break;
-		case QAbstractSocket::ConnectionRefusedError:	
+		case QAbstractSocket::ConnectionRefusedError:
 			qDebug() << "ConnectionRefusedError";
 			break;
 		default:
 			qDebug() << socket->errorString();
-		break;	
+		break;
 	}
 	m_error = socketError;
 }
@@ -80,7 +80,7 @@ QString RealRepoClient::extractData(QString const &resp)
 	} else
 	{
 		return resp.section('\t', 1);
-	}  
+	}
 }
 
 QString RealRepoClient::getName( int id )
@@ -199,8 +199,8 @@ dbg;
 	QIntList list;
 	foreach( QString str, res.split('\t') )
 		list += str.toInt();
-	list.removeLast();	
-	return list;	
+	list.removeLast();
+	return list;
 }
 
 TypeInfo RealRepoClient::getTypeInfo( int arg )
@@ -210,7 +210,7 @@ dbg;
 	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_INFO).arg(arg);
 	QString resp = sendData(cmd);
 	int id = resp.section("\t",0,0).toInt();
-	
+
 	if( id == INVALID_ID ){
 		// handle error
 		// return info;
@@ -262,14 +262,14 @@ QString RealRepoClient::getChildren( int id )
 {
 	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CHILDREN).arg(id);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 QString RealRepoClient::getPosition( int id, int parent )
 {
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_POSITION).arg(id).arg(parent);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 int RealRepoClient::setConfiguration( int id, int parent, QString conf)
@@ -277,7 +277,7 @@ int RealRepoClient::setConfiguration( int id, int parent, QString conf)
 dbg;
 	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_SET_CONFIGURATION).arg(id).arg(parent).arg(conf);
 	QString resp = sendData(cmd);
-	return resp.toInt();	
+	return resp.toInt();
 }
 
 QString RealRepoClient::getConfiguration( int id, int parent)
@@ -285,7 +285,7 @@ QString RealRepoClient::getConfiguration( int id, int parent)
 dbg;
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_CONFIGURATION).arg(id).arg(parent);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 QString RealRepoClient::getEntireObject( int id )
@@ -294,7 +294,7 @@ dbg;
 	//QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_ENTIRE_OBJECT).arg(type).arg(id);
 	QString cmd = QString("%1\t%2\t").arg(CMD_GET_ENTIRE_OBJECT).arg(id);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 RealObject RealRepoClient::getObjectById( int id )
@@ -309,26 +309,26 @@ dbg;
 	obj.setDescription(data.section("\t",3,3));
 
 	int childCount = data.section("\t",4,4).toInt();
-	int counter = 5;	
+	int counter = 5;
 	for( int i=0; i<childCount; i++){
 		obj.addChildElement(data.section("\t",counter,counter).toInt());
 		counter++;
-	}	
-	
+	}
+
 	int incLinksCount = data.section("\t",counter,counter).toInt();
 	counter++;
 	for( int i=0; i<incLinksCount; i++){
 		obj.addIncomingLink(data.section("\t",counter,counter).toInt());
 		counter++;
 	}
-	
+
 	int outcLinksCount = data.section("\t",counter,counter).toInt();
 	counter++;
 	for( int i=0; i<outcLinksCount; i++){
 		obj.addOutcomingLink(data.section("\t",counter,counter).toInt());
 		counter++;
 	}
-	
+
 	int propsCount = data.section("\t",counter,counter).toInt();
 	counter++;
 	for( int i=0; i<propsCount; i++ ){
@@ -353,11 +353,11 @@ dbg;
 	int fromId = data.section("\t",5,5).toInt();
 	int counter = 6;
 	link.setFromId(fromId);
-	
+
 	int toId = data.section("\t",counter,counter).toInt();
 	counter++;
 	link.setToId(toId);
-	
+
 	int propsCount = data.section("\t",counter,counter).toInt();
 	counter++;
 	for( int i=0; i<propsCount; i++ ){
@@ -374,7 +374,7 @@ QString RealRepoClient::getLinksByObject( int id, int direction )
 dbg;
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_GET_LINKS_BY_OBJECT).arg(id).arg(direction);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 QString RealRepoClient::getObjectsByLink( int id )
@@ -382,7 +382,7 @@ QString RealRepoClient::getObjectsByLink( int id )
 dbg;
 	QString cmd = QString("%1\t%2\t").arg(CMD_GET_OBJECTS_BY_LINK).arg(id);
 	QString resp = sendData(cmd);
-	return resp;	
+	return resp;
 }
 
 QIntList RealRepoClient::getTypesByMetaType( const MetaType arg )
@@ -394,7 +394,7 @@ dbg;
 	foreach( QString str, resp.split('\t') )
 		if( str.toInt() != 0 )
 			list += str.toInt();
-	return list;	
+	return list;
 }
 
 
@@ -406,10 +406,10 @@ dbg;
 	RealType type;
 	type.loadFromString(data);
 
-	return type;	 
+	return type;
 }
 
-RealType RealRepoClient::getTypeByName( const QString name ) 
+RealType RealRepoClient::getTypeByName( const QString name )
 {
 dbg;
 	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_BY_NAME).arg(name);
@@ -417,10 +417,10 @@ dbg;
 	RealType type;
 	type.loadFromString(data);
 
-	return type;	 
+	return type;
 }
 
-int RealRepoClient::getTypeIdByName( const QString name ) 
+int RealRepoClient::getTypeIdByName( const QString name )
 {
 	return getTypeByName(name).getId();
 }

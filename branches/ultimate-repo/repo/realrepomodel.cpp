@@ -91,7 +91,7 @@ dbg;
 				QString name = info.getColumnName(hashTypes[item->id], role);
 //				qDebug() << "requested role:" << role << name;
 				QString val = repoClient->getPropValue(item->id, name);
-				return (val == "\t") ? QVariant() : val;
+				return (val == "") ? QVariant() : val;
 /*
 				if ( hashElementProps.contains(item->id) ) {
 					if ( hashElementProps[item->id].contains(role) ){
@@ -136,10 +136,10 @@ dbg;
 		case Unreal::PositionRole:
 			{
 				if ( type(item->parent) == Container ) {
-					if( addToStack ){ 
-						undoStack->push(new ChangePositionCommand(this, index, 
+					if( addToStack ){
+						undoStack->push(new ChangePositionCommand(this, index,
 									QVariant(hashDiagramElements[item->parent->id][item->id].position), value, role));
-					}				
+					}
 					repoClient->setPosition(item->id, item->parent->id, value.toPoint().x(), value.toPoint().y());
 					hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
 				}
@@ -156,10 +156,10 @@ dbg;
 					}
 					result.chop(1);
 
-					if( addToStack ){ 
-						undoStack->push(new ChangeConfigurationCommand(this, index, 
+					if( addToStack ){
+						undoStack->push(new ChangeConfigurationCommand(this, index,
 									QVariant(hashDiagramElements[item->parent->id][item->id].configuration), value, role));
-					}				
+					}
 					repoClient->setConfiguration(item->id, item->parent->id, result);
 					hashDiagramElements[item->parent->id][item->id].configuration = poly;
 				}
@@ -168,9 +168,9 @@ dbg;
 		default:
 //			qDebug() << "role -- " << role;
 			if ( role >= Unreal::UserRole ) {
-				
+
 				// FIXME
-				repoClient->setPropValue(item->id, 
+				repoClient->setPropValue(item->id,
 					info.getColumnName(hashTypes[item->id],role), value.toString());
 
 			}
@@ -215,7 +215,7 @@ dbg;
 			curItem != rootItem; curItem = curItem->parent ) {
 		if( curItem->row != 0){
 			rowCoords.append(curItem->row);
-		}	
+		}
 	}
 
 	QModelIndex result;
@@ -239,7 +239,7 @@ dbg;
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
 
 //	qDebug() << "[INDEX]: id: " << parentItem->id << "row:" << row << "column:" << column << "children:" << parentItem->children.size();
-	
+
 	if ( parentItem->children.isEmpty() ) {
 		if (type(parentItem) == Container ) {
 			const_cast<RealRepoModel *>(this)->readContainerTable(parentItem);
@@ -247,7 +247,7 @@ dbg;
 			const_cast<RealRepoModel *>(this)->readCategoryTable(parentItem);
 		}
 	}
-	
+
 	RepoTreeItem *childItem = 0;
 	if( parentItem && parentItem->children.size() > row && row >= 0 )
 		childItem = parentItem->children[row];
@@ -274,7 +274,7 @@ dbg;
 
 	if (parentItem == rootItem)
 		return QModelIndex();
-		
+
 	return createIndex(parentItem->row, 0, parentItem);
 }
 
@@ -287,7 +287,7 @@ dbg;
 		parentItem = rootItem;
 	else
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
-	
+
 	return hashChildCount[parentItem->id];
 }
 
@@ -309,10 +309,10 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 
 	if ( 1 ){ //type( parentItem ) == Container ) {
 		beginRemoveRows(parent,row,row+count-1);
-		for ( int i = row; i < row+count; i++ ){ 
+		for ( int i = row; i < row+count; i++ ){
 //			qDebug() << "deleting element " << parentItem->children[i]->id;
 			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
-		}	
+		}
 
 		for ( int i = row; i < row+count; i++ ) {
 			hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
@@ -324,7 +324,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 			hashChildren[parentItem->id].removeAt(row);
 		}
 
-		for ( int i = 0; i < parentItem->children.size(); i++ ) 
+		for ( int i = 0; i < parentItem->children.size(); i++ )
 			parentItem->children[i]->row = i;
 
 		hashChildCount[parentItem->id] -= count;
@@ -349,7 +349,7 @@ dbg;
 	qDebug() << "index list size: " << indexes.size();
 
 	RepoTreeItem *item;
-	if ( indexes.at(0).isValid() ) 
+	if ( indexes.at(0).isValid() )
 		item = static_cast<RepoTreeItem *>(indexes.at(0).internalPointer());
 	else{
 		qDebug() << "bad item dragged!";
@@ -389,7 +389,7 @@ dbg;
 
 //	qDebug() << "parent is valid" << parent.isValid();
 	RepoTreeItem *parentItem;
-	if ( parent.isValid() ) 
+	if ( parent.isValid() )
 		parentItem = static_cast<RepoTreeItem *>(parent.internalPointer());
 	else
 		parentItem = rootItem;
@@ -418,7 +418,7 @@ dbg;
 					qDebug() << "Object dragged into the wrong category";
 					return false;
 				}
-				
+
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				// FIXME
 				int id = repoClient->createObject(newtype, "anonymous");
@@ -438,7 +438,7 @@ dbg;
 				bool newElement = ( name != "(anon element)" );
 
 				// drag'n'drop из палитры, создаем новый элемент
-				if ( action == Qt::CopyAction ) { // дерево инстпектора об'ектов 
+				if ( action == Qt::CopyAction ) { // дерево инстпектора об'ектов
 					qDebug() << "Qt::CopyAction";
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
@@ -509,7 +509,7 @@ dbg;
 	item->parent = parentItem;
 	item->id = id;
 	item->row = parentItem->children.size();
- 
+
 // 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
@@ -528,7 +528,7 @@ dbg;
 	item->parent = parentItem;
 	item->id = id;
 	item->row = parentItem->children.size();
- 
+
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 
@@ -544,29 +544,6 @@ dbg;
 void RealRepoModel::updateProperties(int /*id*/)
 {
 dbg;
-/*
-	int type = hashTypes[id];
-
-	QStringList list = repoClient->getProperties(id);
-
-	QString sql = QString("SELECT `id`, `%1` FROM el_%2 WHERE id = :id ;")
-		.arg(info.getColumnNames(type).join("`, `")).arg(type);
-
-	q.prepare(sql);
-	q.bindValue(":id", id);
-
-	QMap <int, QVariant> properties;
-
-	if ( q.exec() ) {
-		if ( q.next() )
-			for ( int i = 1; i < q.record().count(); i++ )
-				properties[info.roleByIndex(i-1)] = q.value(i);
-		else
-			qDebug() << "some weird error";
-	} else
-		qDebug() << q.executedQuery() << db.lastError().text();
-
-	hashElementProps[id] = properties;*/
 }
 
 void RealRepoModel::updateRootTable()
@@ -575,7 +552,7 @@ dbg;
 
 /*
 	// FIXME: call signals!!!! or rewrite the other way
-	
+
 	QList< QPair<int,int> > list = repoClient->getDiagramsChildCount();
 	int i=0;
 
@@ -610,7 +587,7 @@ dbg;
 
 		rootItem->children.append(item);
 	}
-	
+
 	hashChildCount[rootItem->id] = rootItem->children.size();
 //	qDebug() << "root children" << rootItem->children.size();
 }
@@ -619,9 +596,9 @@ void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
 {
 dbg;
 	// Select all elements of the same type as the parent
-	
+
 	QStringList ids = repoClient->getObjectsByType( parent->id ).split("\t");
-	
+
 //	qDebug() << "searching for type " << parent->id << ", found " << ids.size() << "elements" << ids;
 	for( int i=0; i<ids.size(); i++){
 		QString data = repoClient->getObjectData(ids[i].toInt());
@@ -639,7 +616,7 @@ dbg;
 			hashTypes[item->id] = parent->id;
 			hashChildCount[item->id] = data.section("\t",4,4).toInt();
 			hashChildren[parent->id].append(item->id);
-		} 
+		}
 
 	}
 }
@@ -661,13 +638,13 @@ dbg;
 		}
 	} else {
 		QStringList children = repoClient->getChildren(root->id).split("\t", QString::SkipEmptyParts);
-//		qDebug() << children.size() << children;					
+//		qDebug() << children.size() << children;
 		for( int i=0; i<children.size(); i++ ){
 			int _id = children[i].toInt();
 			QString data = repoClient->getObjectData(_id);
 //			int _type = data.section("\t",2,2).toInt();
 			QString coordinates = repoClient->getPosition(_id, root->id);
-			
+
 			RepoTreeItem *item = new RepoTreeItem;
 			item->parent = root;
 			item->row = i;
@@ -682,11 +659,11 @@ dbg;
 			root->children.append(item);
 			hashTreeItems[item->id].append(item);
 
-			hashDiagramElements[root->id][item->id].position = 
+			hashDiagramElements[root->id][item->id].position =
 				QPoint(coordinates.section(";",0,0).toInt(), coordinates.section(";",1,1).toInt());
-		
+
 			// FIXME: parse some better way
-			QPolygon newConfig; 
+			QPolygon newConfig;
 			QStringList pointList = repoClient->getConfiguration(_id, root->id).split(';',QString::SkipEmptyParts);
 			foreach ( QString pointData, pointList ) {
 				QStringList coords = pointData.split(QRegExp("\\(|\\)|,"),QString::SkipEmptyParts);
@@ -694,7 +671,7 @@ dbg;
 			}
 			hashDiagramElements[root->id][item->id].configuration = newConfig;
 		}
-	
+
 	}
 }
 

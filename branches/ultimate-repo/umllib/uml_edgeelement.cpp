@@ -36,7 +36,7 @@ EdgeElement::EdgeElement()
 	m_penStyle = Qt::SolidLine;
 	m_line << QPointF(0,0) << QPointF(200,60);
 
-    m_endArrowStyle = NO_ARROW;
+	m_endArrowStyle = NO_ARROW;
 }
 
 EdgeElement::~EdgeElement()
@@ -266,11 +266,11 @@ void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	ending = new_dst;
 	if (beginning) {
 		beginning->setPortsVisible(true);
-	} 
+	}
 	if (ending) {
 		ending->setPortsVisible(true);
-	} 
-	
+	}
+
 	if ( dragState == -1 ) {
 		Element::mouseMoveEvent(event);
 	} else {
@@ -286,13 +286,13 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		Element::mouseReleaseEvent(event);
 	else
 		dragState = -1;
-    connectToPort();
+	connectToPort();
 	if (beginning) {
 		beginning->setPortsVisible(false);
-	} 
+	}
 	if (ending) {
 		ending->setPortsVisible(false);
-	} 
+	}
 }
 
 NodeElement *EdgeElement::getNodeAt( const QPointF &position )
