@@ -39,12 +39,12 @@ class RealRepoModel : public QAbstractItemModel
 						int column, /**< Номер столбца */
 						const QModelIndex &parent = QModelIndex() /**< Индекс родительского элемента */
 						) const;
-		/** @brief Получить индекс родительского элемента 
-		 *	@brief @return Индекс родительского элемента 
+		/** @brief Получить индекс родительского элемента
+		 *	@brief @return Индекс родительского элемента
 		 * */
 		QModelIndex parent(const QModelIndex &child /**< Индекс элемента */) const;
 
-		/** @brief Получить заголовок 	
+		/** @brief Получить заголовок
 		 *	@brief @return Заголовок
 		 * */
 		QVariant headerData(int section, /**< Номер секции */
@@ -58,33 +58,33 @@ class RealRepoModel : public QAbstractItemModel
 		QVariant data(const QModelIndex &index, /**< Индекс элемента */
 							int role /**< Роль */
 							) const;
-		/** @brief Установить данные элемента 
-		 *	@brief @return Успешность выполнения операции 
+		/** @brief Установить данные элемента
+		 *	@brief @return Успешность выполнения операции
 		 * */
-		bool setData(const QModelIndex & index, /**< Индекс элемента */ 
+		bool setData(const QModelIndex & index, /**< Индекс элемента */
 					const QVariant & value, /**< Сохраняемое значение */
 					int role = Qt::EditRole /**< Роль */
 					);
-		
+
 		/** @brief Получить флаги элемента
 		 *	@brief @return Флаги элемента
 		 * */
 		Qt::ItemFlags flags(const QModelIndex &index /**< Индекс элемента */) const;
 
-		/** @brief Получить список типов MIME, которые могут быть использованы для описания индексов 
+		/** @brief Получить список типов MIME, которые могут быть использованы для описания индексов
 		 *	@brief @return Список типов MIME, которые могут быть использованы для описания индексов
 		 * */
 		QStringList mimeTypes () const;
-   		/** @brief Получить сериализованное представление объекта для операции drag'n'drop 
+		/** @brief Получить сериализованное представление объекта для операции drag'n'drop
 		 *	@brief @return Сериализованное представление объекта для операции drag'n'drop
 		 * */
-        QMimeData * mimeData ( const QModelIndexList & indexes ) const;
+		QMimeData * mimeData ( const QModelIndexList & indexes ) const;
 		/** @brief Получить операции drag'n'drop, поддерживаемые моделью
 		 *	@brief @return Операции drag'n'drop, поддерживаемые моделью
 		 * */
 		Qt::DropActions supportedDropActions () const;
 		/** @brief Обработать событие drag'n'drop
-		 *	@brief @return Успешность выполнения операции 
+		 *	@brief @return Успешность выполнения операции
 		 * */
 		bool dropMimeData(const QMimeData *data, /**< Данные события */
 							Qt::DropAction action, /**< Действие */
@@ -92,20 +92,20 @@ class RealRepoModel : public QAbstractItemModel
 							int column, /**< Номер столбца */
 							const QModelIndex &parent /**< Индекс родительского элемента */
 							);
-		
-		/** @brief Удалить строки модели 
-		 *	@brief @return Успешность выполнения операции 
+
+		/** @brief Удалить строки модели
+		 *	@brief @return Успешность выполнения операции
 		 * */
 		bool removeRows ( int row, /**< Номер первой удаляемой строки */
 						int count, /**< Число удаляемых строк */
 						const QModelIndex & parent = QModelIndex() /**< Индекс родительского элемента */
 						);
-		
-		/** @brief Получить число рядов данного элемента 
+
+		/** @brief Получить число рядов данного элемента
 		 *	@brief @return Число рядов данного элемента
 		 * */
 		int rowCount(const QModelIndex &parent = QModelIndex() /**< Индекс элемента */) const;
-		/** @brief Получить число колонок данного элемента 
+		/** @brief Получить число колонок данного элемента
 		 *	@brief @return Число колонок данного элемента
 		 * */
 		int columnCount(const QModelIndex &parent = QModelIndex() /**< Индекс элемента */) const;
@@ -113,22 +113,22 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Получить код последней ошибки
 		 *	@brief @return Код последней ошибки
 		 * */
-		int getLastError() 
-		{ 
-			return m_error; 
+		int getLastError()
+		{
+			return m_error;
 		}
 
-		/** @brief Получить состояние клиента репозитория 
-		 *	@brief @return Состояние клиента репозитория 
+		/** @brief Получить состояние клиента репозитория
+		 *	@brief @return Состояние клиента репозитория
 		 * */
-		int getState() 
-		{ 
-			return repoClient->state(); 
+		int getState()
+		{
+			return repoClient->state();
 		}
-	
+
 		/** @brief Undo-safe сохраниение данных элемента
 		 * */
-		void safeSetData(const QModelIndex & index, /**< Индекс элемента */ 
+		void safeSetData(const QModelIndex & index, /**< Индекс элемента */
 					const QVariant & value, /**< Сохраняемое значение */
 					int role = Qt::EditRole /**< Роль */
 		);
@@ -187,11 +187,11 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Хэш элементов диаграмм */
 		QHash <int, QMap<int, ElementOnDiagram> > hashDiagramElements;
 
-		/** @brief Очистить внутренние иерархические структуры элементов 
+		/** @brief Очистить внутренние иерархические структуры элементов
 		 * */
 		void cleanupTree(RepoTreeItem *root);
 
-		/** @brief Обновить свойства элемента 
+		/** @brief Обновить свойства элемента
 		 * */
 		void updateProperties(int id);
 
@@ -212,7 +212,7 @@ class RealRepoModel : public QAbstractItemModel
 						int id, /**< Идентификатор */
 						QString name /**< Имя */
 						);
-		
+
 		/** @brief Перечитать данные корневого элемента
 		 * */
 		void readRootTable();
@@ -223,8 +223,8 @@ class RealRepoModel : public QAbstractItemModel
 		 * */
 		void readContainerTable(RepoTreeItem *root);
 
-		/** @brief Получить тип элемента 
-		 *	@brief @return Тип элемента 
+		/** @brief Получить тип элемента
+		 *	@brief @return Тип элемента
 		 * */
 		ElementType type(const RepoTreeItem *item) const;
 		/** @brief Получить тип элемента
@@ -249,4 +249,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Вспомогательная переменная для организации undo-стэка */
 		bool addToStack;
+
+		/** @brief Функция для прогона тестовых запросов к репозиторию */
+		void runTestQueries();
 };

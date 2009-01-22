@@ -23,6 +23,9 @@ dbg;
 
 	readRootTable();
 
+	// Uncomment this when needed. Make sure that splashscreen turned off :)
+	// runTestQueries();
+
 	undoStack = new QUndoStack();
 	undoView = new QUndoView(undoStack);
 	undoView->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint);
@@ -698,4 +701,30 @@ void RealRepoModel::safeSetData(const QModelIndex & index, const QVariant & valu
 	setData(index, value, role);
 	addToStack = true;
 	emit dataChanged(index,index);
+}
+
+void RealRepoModel::runTestQueries()
+{
+
+	qDebug() << "Getting types by metatype 'object'";
+	QIntList result = repoClient->getTypesByMetaType(object);
+	qDebug() << "Result: " << result;
+
+	qDebug() << "Getting types by metatype 'link'";
+	result = repoClient->getTypesByMetaType(link);
+	qDebug() << "Result: " << result;
+
+	qDebug() << "Getting types by metatype 'dataType'";
+	result = repoClient->getTypesByMetaType(dataType);
+	qDebug() << "Result: " << result;
+
+	qDebug() << "Getting types by metatype 'rawType'";
+	result = repoClient->getTypesByMetaType(rawType);
+	qDebug() << "Result: " << result;
+
+	qDebug() << "Getting type ID by name for non-existing (for now!) type 'Cthulhu fhtagn!'";
+	int intResult = repoClient->getTypeIdByName("Cthulhu fhtagn!");
+	qDebug() << "Result: " << intResult;
+
+	qDebug() << "Done";
 }

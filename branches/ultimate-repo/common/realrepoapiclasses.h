@@ -27,12 +27,10 @@ namespace QRealTypes
 	class RealNamedEntity
 	{
 	public:
-		RealNamedEntity() 
+		RealNamedEntity(): m_id(-1),  m_type(-1), m_name("noname"),
+			m_description("noname"), client(NULL)
 		{
-			m_name = "noname";
-			m_description = "noname";
 			m_properties.clear();
-			client = 0;
 		}
 
 		/** @brief Получить идентификатор сущности
@@ -42,7 +40,7 @@ namespace QRealTypes
 		/** @brief Установить идентификатор сущности */
 		void setId( const int id /**< Идентификатор */); // to be removed soon
 
-		/** @brief Получить имя сущности 
+		/** @brief Получить имя сущности
 		 *	@brief @return Имя сущности
 		 * */
 		QString getName() const;
@@ -67,14 +65,14 @@ namespace QRealTypes
 		void setProperty( const QString& name, /**< Название свойства */
 						const QString& val /**< Значение свойства */
 						);
-		/** @brief Получить значение свойства 
-		 *	@brief @return Значение свойства 
+		/** @brief Получить значение свойства
+		 *	@brief @return Значение свойства
 		 * */
 		QString getProperty( const QString& name /**< Название свойства */) const; // returns "" in case of empty property value
-		/** @brief Получить число свойств элемента 
-		 *	@brief @return Число свойств элемента 
+		/** @brief Получить число свойств элемента
+		 *	@brief @return Число свойств элемента
 		 * */
-		int getPropertiesCount() const; 
+		int getPropertiesCount() const;
 
 		/** @brief Установить указатель на клиент репозитория */
 		void setRepoClient( RealRepoClient * repo /**< Указатель на клиент репозитория */);
@@ -89,7 +87,7 @@ namespace QRealTypes
 		/** @brief Описание */
 		QString m_description;
 		/** @brief Свойства и их значения */
-		QMap<QString, QString> m_properties;	
+		QMap<QString, QString> m_properties;
 		/** @brief Клиент репозитория */
 		RealRepoClient  *client;
 	};
@@ -112,14 +110,14 @@ namespace QRealTypes
 	class RealType : public RealNamedEntity
 	{
 	public:
-		RealType() { m_objects.clear(); }
-		// In debug purposes -- subject to be removed. 
+		RealType(): m_metatype(object) { m_objects.clear(); }
+		// In debug purposes -- subject to be removed.
 		~RealType() { /*qDebug() << "-destroying " << getName() << endl;*/ }
 
-		/** @brief Получить метатип 
+		/** @brief Получить метатип
 		 *	@brief @return Метатип
 		 * */
-		MetaType getMetaType() const; 
+		MetaType getMetaType() const;
 		/** @brief Установить метатип */
 		void setMetaType( const MetaType mtype /**< Метатип */ );
 
@@ -127,7 +125,7 @@ namespace QRealTypes
 		 *	@brief @return Список объектов данного типа
 		 * */
 		QIntList getObjects() const; // returns all objects of this particular type
-		
+
 		/** @brief Добавить объект */
 		void addObject( int id /**< Идентификатор объекта */);
 		/** @brief Удалить объект */
@@ -139,7 +137,7 @@ namespace QRealTypes
 		QString toString() const;
 		/** @brief Десериализовать данные о типе*/
 		void loadFromString( const QString& str /**< Строковое представление данных о типе */);
-	
+
 	private:
 
 		/** @brief Метатип */
@@ -153,30 +151,31 @@ namespace QRealTypes
 	 * 	@brief Объект на диаграмме */
 	class RealObject : public RealNamedEntity
 	{
- 	public:
+	public:
+		RealObject(): m_visibility(true), m_containerId(-1) {}
 		/** @brief Узнать, является ли объект визуальным
-		 *	@brief @return Является ли объект визуальным 
+		 *	@brief @return Является ли объект визуальным
 		 * */
 		bool getVisibility() const; // is it visible on the diagrams or not
 		/** @brief */
 		void setVisibility( const bool flag /**< Индикатор визуальности объекта */);
 
-		/** @brief Получить идентификатор контейнера объекта 
+		/** @brief Получить идентификатор контейнера объекта
 		 *	@brief @return Идентификатор контейнера объекта
 		 * */
-		int getContainerId() const; 
+		int getContainerId() const;
 		/** @brief Установить идентификатор контейнера объекта */
 		void setContainerId( const int id);
 
-		/** @brief Получить конфигурацию объекта 
-		 *	@brief @return Конфигурация объекта 
+		/** @brief Получить конфигурацию объекта
+		 *	@brief @return Конфигурация объекта
 		 * */
 		QString getConfiguration() const;
 		/** @brief Устновить конфигурацию объекта */
 		void setConfiguration( const QString& conf /**< Конфигурация объекта */);
 
-		/** @brief Получить список дочерних элементов объекта 
-		 *	@brief @return Список дочерних элементов объекта 
+		/** @brief Получить список дочерних элементов объекта
+		 *	@brief @return Список дочерних элементов объекта
 		 * */
 		QIntList getChildElements() const;
 		/** @brief Добавить дочерний элемент*/
@@ -184,18 +183,18 @@ namespace QRealTypes
 		/** @brief Удалить элемент из списка дочерних*/
 		void deleteChildElement( const int id /**< Идентификатор элемента */);
 
-		/** @brief Получить список связей, ассоциированных с данным объектом 
-		 *	@brief @return Список связей, ассоциированных с данным объектом 
+		/** @brief Получить список связей, ассоциированных с данным объектом
+		 *	@brief @return Список связей, ассоциированных с данным объектом
 		 * */
 		QIntList getAllLinks() const;
-		/** @brief Получить входящие в объект связи 
+		/** @brief Получить входящие в объект связи
 		 *	@brief @return Список входящих связей
 		 * */
-		QIntList getIncomingLinks() const; 
- 		/** @brief Получить исходящие из объекта связи 
-		 *	@brief @return Список исходящих связей 
+		QIntList getIncomingLinks() const;
+		/** @brief Получить исходящие из объекта связи
+		 *	@brief @return Список исходящих связей
 		 * */
-		QIntList getOutcomingLinks() const; 
+		QIntList getOutcomingLinks() const;
 
 		/** @brief Добавить входящую связь */
 		void addIncomingLink( const int id /**< Идентификатор связи */);
@@ -230,15 +229,16 @@ namespace QRealTypes
 	class RealLink : public RealNamedEntity
 	{
 	public:
-		/** @brief Получить идентификатор объекта, присоединенного к началу связи 
+		RealLink(): m_fromId(-1), m_toId(-1) { }
+		/** @brief Получить идентификатор объекта, присоединенного к началу связи
 		 *	@brief @return Идентификатор объекта, присоединенного к началу связи
 		 * */
 		int getFromId() const;  // source node
 		/** @brief Установить идентификатор объекта, присоединенного к началу связи*/
 		void setFromId( const int id /**< Идентификатор объекта, присоединенного к началу связи */ );
 
-		/** @brief Получить идентификатор объекта, присоединенного к концу связи 
-		 *	@brief @return Идентификатор объекта, присоединенного к концу связи 
+		/** @brief Получить идентификатор объекта, присоединенного к концу связи
+		 *	@brief @return Идентификатор объекта, присоединенного к концу связи
 		 * */
 		int getToId() const;    // target node
 		/** @brief Установить идентификатор объекта, присоединенного к концу связи */
@@ -248,7 +248,7 @@ namespace QRealTypes
 		void removeFrom( const int id /**< Идентификатор отсоединяемого объекта */);
 		/** @brief Отсоединить идентификатор от конца связи */
 		void removeTo( const int id /**< Идентификатор отсоединяемого объекта */);
-	
+
 	private:
 
 		/** @brief Идентификатор объекта, присоединенного к началу связи*/
