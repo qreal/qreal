@@ -711,7 +711,7 @@ void RealRepoModel::runTestQueries()
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting types by metatype 'link'";
-	result = repoClient->getTypesByMetaType(link);
+	result = repoClient->getTypesByMetaType(QRealTypes::link);
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting types by metatype 'dataType'";
