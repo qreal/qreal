@@ -5,69 +5,32 @@ QT += sql \
     xml
 
 # CONFIG += qt debug
+
 INCLUDEPATH += view \
     umllib \
     repo \
     dialogs \
     mainwindow \
     umllib/generated
-RESOURCES += real_dynamic.qrc \
-    static.qrc
-SOURCES = main.cpp \
-    dialogs/optionsDialog.cpp
+RESOURCES += static.qrc real_dynamic.qrc
+SOURCES = main.cpp
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
 # Model
-HEADERS += dialogs/qsqlconnectiondialog.h \
-    repo/realrepomodel.h \
-    repo/realrepoclient.h \
-    common/realrepoapiclasses.h \
-    repo/realrepoinfo.h \
-    repo/realrepoundocommands.h \
-    common/classes.h \
-    dialogs/optionsDialog.h
-SOURCES += dialogs/qsqlconnectiondialog.cpp \
-    repo/realrepomodel.cpp \
-    common/realrepoapiclasses.cpp \
-    repo/realrepoclient.cpp \
-    repo/realrepoinfo.cpp \
-    repo/realrepoundocommands.cpp \
-    common/classes.cpp
-FORMS += dialogs/qsqlconnectiondialog.ui \
-    dialogs/optionsDialog.ui
+include (repo/repo.pri)
+
+# Common
+include (common/common.pri)
+
+# Dialogs
+include (dialogs/dialogs.pri)
 
 # Mainwindow
-HEADERS += mainwindow/mainwindow.h \
-    mainwindow/propertyeditorproxymodel.h \
-    mainwindow/propertyeditordelegate.h \
-    mainwindow/palettetoolbox.h
-SOURCES += mainwindow/mainwindow.cpp \
-    mainwindow/propertyeditorproxymodel.cpp \
-    mainwindow/propertyeditordelegate.cpp \
-    mainwindow/palettetoolbox.cpp
-FORMS += mainwindow/mainwindow.ui
+include (mainwindow/mainwindow.pri)
 
 # View
-HEADERS += view/editorview.h \
-    view/editorviewscene.h \
-    view/editorviewmviface.h
-SOURCES += view/editorview.cpp \
-    view/editorviewscene.cpp \
-    view/editorviewmviface.cpp
+include (view/view.pri)
 
 # UML library
-HEADERS += umllib/uml_edgeelement.h \
-    umllib/uml_element.h \
-    umllib/uml_guiobjectfactory.h \
-    umllib/uml_nodeelement.h \
-    umllib/sdfrenderer.h
-SOURCES += umllib/uml_edgeelement.cpp \
-    umllib/uml_element.cpp \
-    umllib/uml_guiobjectfactory.cpp \
-    umllib/uml_nodeelement.cpp \
-    umllib/sdfrenderer.cpp
-
-# Generated UML code
-include (umllib/generated/umllib.pri)
-SOURCES += repo/edges_stuff.cpp
+include (umllib/umllib.pri)
