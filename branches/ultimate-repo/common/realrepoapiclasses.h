@@ -43,7 +43,7 @@ namespace QRealTypes
 		/** @brief Получить имя сущности
 		 *	@brief @return Имя сущности
 		 * */
-		QString getName() const;
+		QString getName();
 		/** @brief Устновить имя сущности */
 		void setName( const QString& name /**< Имя */);
 
@@ -57,7 +57,7 @@ namespace QRealTypes
 		/** @brief Получить описание сущности
 		 *	@brief @return Описание сущности
 		 * */
-		QString getDescription() const;
+		QString getDescription();
 		/** @brief Устновить описание сущности */
 		void setDescription( const QString& desc /**< Описание */);
 
@@ -68,7 +68,7 @@ namespace QRealTypes
 		/** @brief Получить значение свойства
 		 *	@brief @return Значение свойства
 		 * */
-		QString getProperty( const QString& name /**< Название свойства */) const; // returns "" in case of empty property value
+		QString getProperty( const QString& name /**< Название свойства */); // returns "" in case of empty property value
 		/** @brief Получить число свойств элемента
 		 *	@brief @return Число свойств элемента
 		 * */
@@ -170,14 +170,14 @@ namespace QRealTypes
 		/** @brief Получить конфигурацию объекта
 		 *	@brief @return Конфигурация объекта
 		 * */
-		QString getConfiguration() const;
+		QString getConfiguration();
 		/** @brief Устновить конфигурацию объекта */
 		void setConfiguration( const QString& conf /**< Конфигурация объекта */);
 
 		/** @brief Получить список дочерних элементов объекта
 		 *	@brief @return Список дочерних элементов объекта
 		 * */
-		QIntList getChildElements() const;
+		QIntList getChildElements();
 		/** @brief Добавить дочерний элемент*/
 		void addChildElement( const int id /**< Идентификатор элемента */);
 		/** @brief Удалить элемент из списка дочерних*/
@@ -233,14 +233,14 @@ namespace QRealTypes
 		/** @brief Получить идентификатор объекта, присоединенного к началу связи
 		 *	@brief @return Идентификатор объекта, присоединенного к началу связи
 		 * */
-		int getFromId() const;  // source node
+		int getFromId();  // source node
 		/** @brief Установить идентификатор объекта, присоединенного к началу связи*/
 		void setFromId( const int id /**< Идентификатор объекта, присоединенного к началу связи */ );
 
 		/** @brief Получить идентификатор объекта, присоединенного к концу связи
 		 *	@brief @return Идентификатор объекта, присоединенного к концу связи
 		 * */
-		int getToId() const;    // target node
+		int getToId();    // target node
 		/** @brief Установить идентификатор объекта, присоединенного к концу связи */
 		void setToId( const int id /**< Идентификатор объекта, присоединенного к концу связи */);
 

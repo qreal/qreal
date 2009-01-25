@@ -3,6 +3,7 @@
  * */
 #include "realrepoapiclasses.h"
 #include <QDebug>
+#include <QStringList>
 
 #include "../repo/realrepoclient.h"
 
@@ -18,8 +19,10 @@ void RealNamedEntity::setId( const int id )
 	m_id = id;
 }
 
-QString RealNamedEntity::getName() const
+QString RealNamedEntity::getName()
 {
+	if( client )
+		m_name = client->getName(m_id);
 	return m_name;
 }
 
@@ -38,8 +41,10 @@ void RealNamedEntity::setTypeId( const int arg )
 	m_type = arg;
 }
 
-QString RealNamedEntity::getDescription() const
+QString RealNamedEntity::getDescription()
 {
+	if( client )
+		m_description = client->getDescription(m_id);
 	return m_description;
 }
 
@@ -57,11 +62,13 @@ void RealNamedEntity::setProperty( const QString& name, const QString& val )
 		client->setPropValue(m_id, name, val);
 }
 
-QString RealNamedEntity::getProperty( const QString& name ) const
+QString RealNamedEntity::getProperty( const QString& name )
 {
 	if( client )
-		return client->getPropValue(m_id, name);
-	return "";
+		m_properties[name] = client->getPropValue(m_id, name);
+	else
+		return "";
+	return m_properties[name];
 }
 
 int RealNamedEntity::getPropertiesCount() const
@@ -161,10 +168,14 @@ int RealObject::getContainerId() const
 void RealObject::setContainerId( const int arg )
 {
 	m_containerId = arg;
+	if( client )
+		client->copyEntity(m_type, m_id, arg);
 }
 
-QString RealObject::getConfiguration() const 
+QString RealObject::getConfiguration() 
 {
+	if( client )
+		m_configuration = client->getConfiguration(m_id, m_containerId);
 	return m_configuration;
 }
 
@@ -173,8 +184,14 @@ void RealObject::setConfiguration( const QString& arg )
 	m_configuration = arg;
 }
 
-QIntList RealObject::getChildElements() const 
+QIntList RealObject::getChildElements() 
 {
+	if( client ){
+		m_children.clear();
+		QStringList list = client->getChildren(m_id).split("\t", QString::SkipEmptyParts);
+		for( int i=0; i<list.size(); i++ )
+			m_children << list[i].toInt();							
+	}	
 	return m_children;
 }
 
@@ -244,7 +261,7 @@ void RealObject::removeOutcomingLink( const int id )
 
 // ================================================== //
 
-int RealLink::getFromId() const 
+int RealLink::getFromId() 
 {
 	int val = getProperty("from").toInt();
 	if( val == 0 )
@@ -252,7 +269,7 @@ int RealLink::getFromId() const
 	return val;	
 }
 
-int RealLink::getToId() const 
+int RealLink::getToId() 
 {
 	int val = getProperty("to").toInt();
 	if( val == 0 )
