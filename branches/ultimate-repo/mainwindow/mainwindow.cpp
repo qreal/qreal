@@ -1,5 +1,5 @@
 /** @file mainwindow.cpp
- * 	@brief Главное окно приложения 
+ * 	@brief Главное окно приложения
  * */
 #include <QtGui>
 
@@ -38,7 +38,7 @@ MainWindow::MainWindow()
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
-	
+
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
 	connect(ui.actionZoom_Out, SIGNAL( triggered() ), ui.view, SLOT( zoomOut() ) );
 
@@ -55,7 +55,7 @@ MainWindow::MainWindow()
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
-	
+
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -115,7 +115,7 @@ void MainWindow::connectRepo(QSplashScreen *splash)
 	closeRepo();
 
 	model = new RealRepoModel(this);
-	if( model->getState() != QAbstractSocket::ConnectedState ){	
+	if( model->getState() != QAbstractSocket::ConnectedState ){
 		qDebug() << "repo model creation failed";
 		if (splash != NULL)
 			splash->close();
@@ -187,8 +187,6 @@ void MainWindow::deleteFromDiagram()
 		if (ui.diagramExplorer->hasFocus())
 		{
 			deleteFromExplorer();
-			/* Brutal, but right now we have no choice */
-			connectRepo();
 		}
 		else if (ui.view->hasFocus())
 		{
@@ -231,7 +229,7 @@ void MainWindow::print()
 void MainWindow::makeSvg()
 {
 	QSvgGenerator newSvg;
-	
+
 	QString fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty())
 		return;
