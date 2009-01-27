@@ -293,6 +293,8 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (ending) {
 		ending->setPortsVisible(false);
 	}
+	// cleanup after moving/resizing
+	beginning = ending = NULL;
 }
 
 NodeElement *EdgeElement::getNodeAt( const QPointF &position )
