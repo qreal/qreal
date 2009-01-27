@@ -101,11 +101,9 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	switch ( change ) {
 		case ItemPositionHasChanged:
-			{
-				foreach (EdgeElement *edge, edgeList)
-					edge->adjustLink();
-			}
-       		return value;
+			foreach (EdgeElement *edge, edgeList)
+				edge->adjustLink();
+			return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
 	}
@@ -130,6 +128,11 @@ void NodeElement::updateData()
 		QRectF newRect = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>().boundingRect();
 		if ( ! newRect.isEmpty() )
 			m_contents = newRect;
+		else if (!m_contents.isEmpty()) // This a temporary hack
+		{
+			QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+			im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+		}
 
 		transform.reset();
 		transform.scale(m_contents.width(), m_contents.height());
