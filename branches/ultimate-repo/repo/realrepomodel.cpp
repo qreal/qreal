@@ -461,8 +461,15 @@ dbg;
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				if( newElement )
 					createItem(parentItem, id, newtype, name);
-				else
+				else {
+					// Если объект подвесили и в корень, и как сына другого объекта,
+					// надо дать об этом знать репозиторию, иначе будет #95.
+					// TODO: Subject to refactoring.
+					if (action == Qt::CopyAction ) {
+						id = repoClient->copyEntity(newtype, id, parentItem->id);
+					}
 					createItem(parentItem, id, newtype);
+				}
 				hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				endInsertRows();
 
