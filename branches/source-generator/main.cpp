@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	<< "timing_metamodel.xml"
 	<< "activity_metamodel.xml"
 	<< "package.xml"
-	<< "orthodox.xml"
+	// << "orthodox.xml"
 	<< "bpel.xml"
 	<< "qrealparallel_metamodel.xml";
 	new Generator(l);
