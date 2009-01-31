@@ -222,7 +222,7 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 		return ReportError(ERR_INCORRECT_PARAMS);
 
 	int type = params[0].toInt();
-	int id = params[1].toInt();
+	int const id = params[1].toInt();
 	int newParent = params[2].toInt();
 	if (Object * obj = mRoot->getObject(newParent))
 	{

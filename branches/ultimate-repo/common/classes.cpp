@@ -18,7 +18,7 @@ void Root::addObject( int id, Object* obj )
 	obj->addRef();
 	objects[id] = obj;
 }
-	
+
 void Root::addLink( int id, Link* link )
 {
 	link->addRef();
@@ -74,31 +74,27 @@ QString Root::getObjectsByType( int type )
 	}
 	if( !res.isEmpty() )
 		res.chop(1);
-	else
-		res = "\t";
 	return res;
 }
 
- QString Root::getLinksByType( int type )
+QString Root::getLinksByType( int type )
 {
- QString res = "";
- for( int i=0; i<links.size(); i++ ){
-   int key = links.keys()[i];
-   Link *link = links.value(key);
-   if( link && link->getType() == type )
-     res += QString("%1\t").arg(link->getId());
- }
+	QString res = "";
+	for( int i=0; i<links.size(); i++ ){
+		int key = links.keys()[i];
+		Link *link = links.value(key);
+		if( link && link->getType() == type )
+			res += QString("%1\t").arg(link->getId());
+	}
 
- if( !res.isEmpty() )
-   res.chop(1);
- else
-   res = "\t";
-return res;
+	if( !res.isEmpty() )
+		res.chop(1);
+	return res;
 }
 
 // --------------------------------------------------------------------------- //
 
-Object::Object( int _id, int _type ) 
+Object::Object( int _id, int _type )
 {
 	id = _id;
 	type = _type;
@@ -158,7 +154,7 @@ void Object::removeNodeChild( int child )
 		if( node.getId() == child ){
 			nodeChildren.remove(child);
 //			qDebug() << "removed node with id " << child << " from diagram " << this->id;
-		}	
+		}
 }
 
 void Object::removeEdgeChild( int child )
@@ -167,7 +163,7 @@ void Object::removeEdgeChild( int child )
 		if( edge.getId() == child ){
 			edgeChildren.remove(child);
 //			qDebug() << "removed edge with id " << child << " from diagram " << this->id;
-		}	
+		}
 }
 
 QString Object::childrenToString()
@@ -177,7 +173,7 @@ QString Object::childrenToString()
 		res += QString("%1\t").arg(nodeChildren.values()[i].getId());
 	for( int i=0; i<edgeChildren.values().size(); i++ )
 		res += QString("%1\t").arg(edgeChildren.values()[i].getId());
-	return res;	
+	return res;
 }
 
 void Object::setProperty( QString name, QString val )
@@ -193,7 +189,7 @@ QString Object::getProperty( QString name )
 QString Object::getIncomingLinks()
 {
 	QString res;
-	for( int i=0; i<incomingLinks.size(); i++)		
+	for( int i=0; i<incomingLinks.size(); i++)
 		res += QString("%1\t").arg(incomingLinks.at(i));
 	return res;
 }
@@ -201,7 +197,7 @@ QString Object::getIncomingLinks()
 QString Object::getOutcomingLinks()
 {
 	QString res;
-	for( int i=0; i<outcomingLinks.size(); i++)		
+	for( int i=0; i<outcomingLinks.size(); i++)
 		res += QString("%1\t").arg(outcomingLinks.at(i));
 	return res;
 }
@@ -211,7 +207,7 @@ QString Object::toString()
 	QString res = "";
 	res += QString("%1\t%2\t%3\t%4\t")
 			.arg(type).arg(id).arg(name).arg(description);
-	
+
 	res += QString("%1\t").arg(childrenCount());
 	res += childrenToString();
 
@@ -235,13 +231,13 @@ void Object::addLink( int id, int dir )
 //			qDebug() << "added inc link" << id;
 			incomingLinks << id;
 		}
-	}	
+	}
 	else if ( dir == OUTCOMING_LINK ){
 		if( !outcomingLinks.contains(id) ){
 //			qDebug() << "added outc link" << id;
 			outcomingLinks << id;
-		}	
-	}	
+		}
+	}
 }
 
 void Object::removeLink( int id, int dir )
@@ -250,12 +246,12 @@ void Object::removeLink( int id, int dir )
 //		qDebug() << "\t\tbefore:" << incomingLinks;
 		incomingLinks.removeAll(id);
 //		qDebug() << "\t\tafter:" << incomingLinks;
-	}	
+	}
 	else if ( dir == OUTCOMING_LINK ){
 //		qDebug() << "\t\tbefore:" << outcomingLinks;
 		outcomingLinks.removeAll(id);
 //		qDebug() << "\t\tafter:" << outcomingLinks;
-	}	
+	}
 }
 
 QString Object::getChildPos( int id )
@@ -309,12 +305,12 @@ bool Object::setChildConfiguration( int id, QString conf )
 		edgeChildren[id].setConfiguration(conf);
 	else
 		return false;
-	return true;	
+	return true;
 }
 
 // --------------------------------------------------------------------------- //
 
-Link::Link( int _id, int _type ) 
+Link::Link( int _id, int _type )
 {
 	id = _id;
 	type = _type;
@@ -373,10 +369,10 @@ QString Link::getObjects()
 }
 
 QString Link::getObjectsFrom()
-{	
+{
 //	qDebug() << "objects from: " << objectsFrom;
 	QString res = "";
-	for( int i=0; i<objectsFrom.size(); i++)		
+	for( int i=0; i<objectsFrom.size(); i++)
 		res += QString("%1\t").arg(objectsFrom.at(i));
 	return res;
 }
@@ -384,7 +380,7 @@ QString Link::getObjectsFrom()
 QString Link::getObjectsTo()
 {
 	QString res = "";
-	for( int i=0; i<objectsTo.size(); i++)		
+	for( int i=0; i<objectsTo.size(); i++)
 		res += QString("%1\t").arg(objectsTo.at(i));
 	return res;
 }
@@ -393,7 +389,7 @@ QString Link::toString()
 {
 	QString res = "";
 	res += QString("%1\t%2\t%3\t%4\t").arg(type).arg(id).arg(name).arg(description);
-	
+
 	res += getObjects();
 
 	res += QString("%1\t").arg(props.size());
@@ -429,20 +425,20 @@ int Link::getFrom()
 {
 	if( objectsFrom.size() > 0 )
 		return objectsFrom.at(0);
-	
-	return -1;	
+
+	return -1;
 }
 
 int Link::getTo()
 {
 	if( objectsTo.size() > 0 )
 		return objectsTo.at(0);
-	
-	return -1;	
+
+	return -1;
 }
 
 // --------------------------------------------------------------------------- //
-	
+
 QString TypeInfo::toString()
 {
 	return QString("%1\t%2\t%3\t%4\t").arg(id).arg(count).arg(name).arg(qualifiedName);

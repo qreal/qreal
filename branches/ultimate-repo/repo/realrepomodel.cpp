@@ -45,6 +45,21 @@ dbg;
 	delete undoStack;
 }
 
+QModelIndex RealRepoModel::createDefaultTopLevelItem() {
+	RepoTreeItem *diagramCategory = hashTreeItems[UML::krnnDiagram].first();
+	readCategoryTable(diagramCategory);
+	if (diagramCategory->children.empty()) {
+		addElementToModel(diagramCategory, index(diagramCategory), -1,
+			UML::krnnDiagram, "Root diagram", QPointF(), Qt::CopyAction);
+	}
+
+	if (!diagramCategory->children.empty()) {
+		return index(diagramCategory->children[0]);
+	}
+	else
+		return QModelIndex();
+}
+
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
 {
 dbg;
@@ -216,9 +231,9 @@ dbg;
 
 	for ( RepoTreeItem *curItem = const_cast<RepoTreeItem *>(item);
 			curItem != rootItem; curItem = curItem->parent ) {
-		if( curItem->row != 0){
+//		if( curItem->row != 0){
 			rowCoords.append(curItem->row);
-		}
+//		}
 	}
 
 	QModelIndex result;
@@ -391,17 +406,15 @@ dbg;
 		return false;
 
 //	qDebug() << "parent is valid" << parent.isValid();
-	RepoTreeItem *parentItem;
-	if ( parent.isValid() )
+	RepoTreeItem *parentItem = rootItem;
+	if (parent.isValid())
 		parentItem = static_cast<RepoTreeItem *>(parent.internalPointer());
-	else
-		parentItem = rootItem;
 
 	QByteArray dragData = data->data("application/x-real-uml-data");
 	QDataStream stream(&dragData, QIODevice::ReadOnly);
 
 	QString name;
-	int newid, newtype;
+	int newid = 0, newtype = 0;
 	QPointF newPos;
 
 	stream >> newid;
@@ -412,7 +425,14 @@ dbg;
 	qDebug() << "dropped" << newid << newtype << name << newPos;
 
 //	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
+	return addElementToModel(parentItem, parent, newid, newtype, name, newPos,
+		action);
+}
 
+bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
+	const QModelIndex &parent, int const newid, int const newtype,
+	QString const &name, QPointF const &newPos, Qt::DropAction action)
+{
 	switch (type(parentItem)) {
 		case Category:
 			{
@@ -467,6 +487,15 @@ dbg;
 				}
 
 				qDebug() << "\tcreating new item2" << parentItem->id << id << newtype;
+
+				// TODO: What the hell?
+				Q_ASSERT(action == Qt::CopyAction);
+				if (parentItem->id == id) {
+					QMessageBox::warning(NULL, tr("Cognitive hazard"),
+						 tr("This is a diagram element, not a Klein bottle!"));
+					return false;
+				}
+
 				// дерево инспектора диаграмм
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				if( newElement )
@@ -482,7 +511,6 @@ dbg;
 				}
 				hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				endInsertRows();
-
 			}
 			break;
 		default:
@@ -617,7 +645,7 @@ void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
 dbg;
 	// Select all elements of the same type as the parent
 
-	QStringList ids = repoClient->getObjectsByType( parent->id ).split("\t");
+	QStringList ids = repoClient->getObjectsByType( parent->id ).split("\t", QString::SkipEmptyParts);
 
 //	qDebug() << "searching for type " << parent->id << ", found " << ids.size() << "elements" << ids;
 	for( int i=0; i<ids.size(); i++){

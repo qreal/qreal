@@ -99,61 +99,45 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
-void EditorViewMViface::rowsInserted ( const QModelIndex & parent, int start, int end )
+void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-//	qDebug() << "========== rowsInserted" << parent << start << end;
+	qDebug() << "========== rowsInserted" << parent << start << end;
 
-//	if ( parent != rootIndex() )
-//		return;
-	if ( parent == QModelIndex() || parent.parent() == QModelIndex() )
+	if (parent == QModelIndex() || parent.parent() == QModelIndex())
 		return;
 
-//	qDebug() << "rowsInserted: adding items" << parent;
+	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
-		int type = model()->index(row, 0, parent).data(Unreal::TypeRole).toInt();
+		int uuid = current.data(Unreal::IdRole).toInt();
+		int type = current.data(Unreal::TypeRole).toInt();
 
-		int parent_uuid;
-		if ( parent != rootIndex() )
-				parent_uuid = parent.data(Unreal::IdRole).toInt();
-		else
-				parent_uuid = -1;
+		int parent_uuid = -1;
+		if (parent != rootIndex())
+			parent_uuid = parent.data(Unreal::IdRole).toInt();
 
-//		qDebug() << uuid << type;
+		qDebug() << uuid << type;
 
-		if ( ! uuid )
+		if (uuid == 0)
 			continue;
 
-		if ( UML::Element *e = UML::GUIObjectFactory(type) ) {
+		if (UML::Element *e = UML::GUIObjectFactory(type)) {
 			scene->addItem(e);
 			e->setIndex(current);
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
 
-			if ( parent_uuid != -1 )
+			if (parent_uuid != -1)
 				e->setParentItem(items[parent_uuid]);
 
 			items[uuid] = e;
 
-			// TODO: workaround for #92 - connectToPort sets old configuration
-			// to a model, so we can not get it in updateData later.
-			// More accurate fix needed.
 			e->updateData();
-
 			e->connectToPort();
 		}
 
-		if ( model()->hasChildren(current) ) {
-			rowsInserted( current, 0, model()->rowCount( current ) - 1 );
+		if (model()->hasChildren(current)) {
+			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
-	}
-
-
-//	qDebug() << "rowsInserted: updating items";
-	for (int row = start; row <= end; ++row) {
-		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
-		if (items.contains(uuid))
-			items[uuid]->updateData();
 	}
 
 	QAbstractItemView::rowsInserted(parent, start, end);
@@ -173,16 +157,16 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 }
 
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
-		const QModelIndex &bottomRight)
+	const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		int uuid = topLeft.sibling(row, 0).data(Unreal::IdRole).toInt();
 
-		if ( items.contains(uuid) )
+		if (items.contains(uuid)) {
+			Q_ASSERT(items[uuid] != NULL);
 			items[uuid]->updateData();
+		}
 		else
 			rowsInserted(topLeft.parent(),row,row);
-
 	}
 }
-

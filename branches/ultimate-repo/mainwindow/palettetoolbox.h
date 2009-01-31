@@ -16,7 +16,7 @@ class PaletteToolbox : public QTabWidget
 {
 	public:
 		explicit PaletteToolbox(QWidget *parent = 0);
-        ~PaletteToolbox();
+		~PaletteToolbox();
 
 		void setEditors(QVector<bool> const &editors);
 		QVector<bool> getSelectedTabs() const;
@@ -39,23 +39,23 @@ class PaletteToolbox : public QTabWidget
 				 * 	@brief @return Иконка элемента
 				 * 	*/
 				QIcon icon()
-				{ 
-					return m_icon; 
-				};
+				{
+					return m_icon;
+				}
 				/** @brief Получить надпись элемента
 				 *	@brief @return Надпись элемента
 				 * */
 				QString text()
-				{ 
-					return m_text; 
-				};
-				/** @brief Получить идентификатор элемента 
+				{
+					return m_text;
+				}
+				/** @brief Получить идентификатор элемента
 				 *	@brief @return Идентификатор элемента
 				 * */
 				int id()
-				{ 
-					return m_id; 
-				};
+				{
+					return m_id;
+				}
 			private:
 				/** @brief Идентификатор элемента */
 				int m_id;

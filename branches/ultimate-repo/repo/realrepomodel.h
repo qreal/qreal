@@ -133,6 +133,11 @@ class RealRepoModel : public QAbstractItemModel
 					int role = Qt::EditRole /**< Роль */
 		);
 
+		/** @brief Создать корневой элемент диаграммы, чтобы юзеру не пришлось
+		 * тащить krnnDiagram из палитры вручную.
+		 * */
+		QModelIndex RealRepoModel::createDefaultTopLevelItem();
+
 	public slots:
 		/** @brief Отменить последнее действие */
 		void undo();
@@ -231,6 +236,13 @@ class RealRepoModel : public QAbstractItemModel
 		 *	@brief @return Тип элемента
 		 * */
 		ElementType type(const QModelIndex &index) const;
+
+		/** @brief Создать новый элемент и добавить его в модель
+		 *	@brief @return true, если элемент добавлен, иначе false
+		 * */
+		bool addElementToModel(RepoTreeItem *const parentItem,
+			const QModelIndex &parent, int const newid, int const newtype,
+			QString const &name, QPointF const &newPos, Qt::DropAction action);
 
 		/** @brief Корневой элемент */
 		RepoTreeItem *rootItem;

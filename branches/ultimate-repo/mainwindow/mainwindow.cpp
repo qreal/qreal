@@ -135,6 +135,9 @@ void MainWindow::connectRepo(QSplashScreen *splash)
 
 	ui.view->mvIface()->setModel(model);
 
+	QModelIndex rootDiagram = model->createDefaultTopLevelItem();
+	activateItemOrDiagram(rootDiagram);
+
 	connect(ui.actionUndo, SIGNAL( triggered() ), model, SLOT( undo() ) );
 	connect(ui.actionRedo, SIGNAL( triggered() ), model, SLOT( redo() ) );
 
