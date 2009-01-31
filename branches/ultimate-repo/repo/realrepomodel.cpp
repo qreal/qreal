@@ -496,6 +496,14 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					return false;
 				}
 
+				foreach (RepoTreeItem *child, parentItem->children) {
+					if (child->id == id) {
+						QMessageBox::warning(NULL, tr("Warning!"),
+							tr("Making two copies of one element with the same parent is not allowed, use containers instead."));
+						return false;
+					}
+				}
+
 				// дерево инспектора диаграмм
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				if( newElement )
