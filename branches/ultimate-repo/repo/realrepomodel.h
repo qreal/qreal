@@ -136,7 +136,7 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Создать корневой элемент диаграммы, чтобы юзеру не пришлось
 		 * тащить krnnDiagram из палитры вручную.
 		 * */
-		QModelIndex RealRepoModel::createDefaultTopLevelItem();
+		QModelIndex createDefaultTopLevelItem();
 
 	public slots:
 		/** @brief Отменить последнее действие */
