@@ -272,14 +272,13 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
 			for( int j=0; j<x; j++){
 				QDomNode par = tfrs.at(0).parentNode();
 				QString role = tfrs.at(0).toElement().attribute("name");
-				par.removeChild(tfrs.at(0));
 
-				const QDomText data = doc->createTextNode("%" + QString::number(j+1));
+				const QDomText data = doc->createTextNode(" %" + QString::number(j+1));
 				if( role == "name" )
 					l.args << "Qt::DisplayRole";
 				else
 					l.args << "Unreal::" + cur->id + "::" + role + "Role";
-				par.appendChild(data);
+				par.replaceChild(data, tfrs.at(0));
 			}
 		}
 		QDomNodeList texts = htmls.at(i).toElement().elementsByTagName("html:text");
@@ -295,7 +294,6 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
 
 
 		}
-
 		for( int j=0; j<htmls.at(0).childNodes().size(); j++)
 			htmls.at(0).childNodes().at(j).save(stream, 1);
 		txt.replace(QString("\n"), QString(" "));
@@ -1047,8 +1045,8 @@ void Generator::genRealRepoInfo(){
 		out2 << "<< 2 << 18";
 
 		for( int j=0; j<categories.at(i)->objects.size(); j++){
-		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
-		<< objects.at(categories.at(i)->objects.at(j))->visible;
+//		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
+//		<< objects.at(categories.at(i)->objects.at(j))->visible;
 		if( objects.at(categories.at(i)->objects.at(j))->visible || objects.at(categories.at(i)->objects.at(j))->type == EDGE )
 					out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
 	}
