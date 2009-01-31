@@ -200,14 +200,15 @@
   <node id="cnClassMethod" name="Class method" >
    <graphics>
     <view>
-     <picture sizex="100" sizey="100" />
+     <picture sizex="100" sizey="20" />
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
+        <html:text_from_repo name="visibility" />
+        <html:text_from_repo name="name" />
         <html:b>
          <html:text_from_repo name="type" />
         </html:b>
-        <html:text_from_repo name="name" />
        </html:center>
       </html:html>
      </repo_info>
@@ -232,14 +233,15 @@
   <node id="cnClassField" name="Class field" >
    <graphics>
     <view>
-     <picture sizex="100" sizey="100" />
+     <picture sizex="100" sizey="20" />
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
+        <html:text_from_repo name="visibility" />
+        <html:text_from_repo name="name" />
         <html:b>
          <html:text_from_repo name="type" />
         </html:b>
-        <html:text_from_repo name="name" />
        </html:center>
       </html:html>
      </repo_info>
@@ -253,6 +255,7 @@
     </generalizations>
     <properties>
      <property type="string" name="type" />
+     <property type="string" name="defaultValue" />
     </properties>
     <containers>
      <container name="Class-Classifier" >
