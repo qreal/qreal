@@ -639,11 +639,6 @@ void Generator::genClasses(){
 
 		if( objects.at(i)->type == NODE){
 			Node* node = (Node*) objects.at(i);
-			if( node->ports.size() == 0 ){
-					out << "\tint d = /* textSize/2 */ - width/2;\n"
-					 <<  "\tpointPorts << QPointF(d, height/2) << QPointF(width/2 + d, height)"
-								   " << QPointF(width +d, height/2) << QPointF(width/2+d, 0);\n";
-			}
 			for( int j=0; j<node->ports.size(); j++ ){
 				if( node->ports.at(j).type == "point" ){
 						out << QString("\tpointPorts << QPointF(%1, %2);\n")
