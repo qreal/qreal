@@ -33,6 +33,7 @@ MainWindow::MainWindow()
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+	connect(ui.view->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			this, SLOT( activateItemOrDiagram( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
@@ -137,6 +138,7 @@ void MainWindow::connectRepo(QSplashScreen *splash)
 
 	QModelIndex rootDiagram = model->createDefaultTopLevelItem();
 	activateItemOrDiagram(rootDiagram);
+	propertyModel.setIndex(rootDiagram);
 
 	connect(ui.actionUndo, SIGNAL( triggered() ), model, SLOT( undo() ) );
 	connect(ui.actionRedo, SIGNAL( triggered() ), model, SLOT( redo() ) );
@@ -215,6 +217,19 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 		/* select this item on diagram */
 		ui.view->scene()->clearSelection();
 		(dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx)->setSelected(true);
+	}
+}
+
+void MainWindow::sceneSelectionChanged()
+{
+	QList<QGraphicsItem*> graphicsItems =  ui.view->scene()->selectedItems();
+	if (graphicsItems.size() == 1) {
+		QGraphicsItem *item = graphicsItems[0];
+		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
+			if (elem->index().isValid()) {
+				ui.diagramExplorer->setCurrentIndex(elem->index());
+				propertyModel.setIndex(elem->index());
+			}
 	}
 }
 

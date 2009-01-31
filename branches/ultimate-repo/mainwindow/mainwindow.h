@@ -1,5 +1,5 @@
 /** @file mainwindow.h
- * 	@brief Главное окно приложения 
+ * 	@brief Главное окно приложения
  * */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -55,8 +55,12 @@ public slots:
 	/** @brief Экспортировать диаграмму в формате SVG */
 	void makeSvg();
 
-	/** @brief I have no idea how to set an encoding in Qt Creator. Function shows Options modal dialog. */
+	/** @brief Показывает диалог с опциями. */
 	void showOptions();
+
+	/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
+	 * эксплорером. */
+	void sceneSelectionChanged();
 
 protected:
 	virtual void closeEvent(QCloseEvent *event);
@@ -66,10 +70,10 @@ private:
 	RealRepoModel *model;
 	/** @brief Модель редактора свойств */
 	PropertyEditorModel propertyModel;
-	
+
 	/** @brief Интерфейс главного окна */
 	Ui::MainWindowUi ui;
-	
+
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;
 };
