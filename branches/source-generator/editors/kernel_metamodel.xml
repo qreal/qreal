@@ -85,6 +85,7 @@
     </generalizations>
     <properties>
      <property type="string" name="language" />
+     <property type="bool" name="isView" />
     </properties>
    </logic>
   </node>
