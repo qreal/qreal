@@ -129,12 +129,12 @@ public:
     virtual ::RepoIce::RealObjectIcePrx getObjectById(int, const Ice::Current&);
     virtual int createObject(int, const string&, const Ice::Current&);
     virtual int createObjectWithParent(int, const string&, int, const Ice::Current&);
-    virtual void deleteObject(int, const Ice::Current&);
+    virtual void deleteObject(int, int, const Ice::Current&);
 
     virtual ::RepoIce::RealLinkIcePrx getLinkById(int, const Ice::Current&);
     virtual int createLink(const string&, const Ice::Current&);
 		virtual int createLinkWithType(const string&, const string&, const Ice::Current&);
-    virtual void deleteLink(int, const Ice::Current&);
+    virtual void deleteLink(int, int, const Ice::Current&);
 		
 		static Ice::ObjectAdapterPtr _adapter;
 

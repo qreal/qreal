@@ -107,12 +107,12 @@ module RepoIce
 		idempotent RealObjectIce* getObjectById(int id); // вернуть по id
 		int createObject(int type, string name); //создать. Возвращает Id созданного.
 		int createObjectWithParent(int type, string name, int parent); //создать. Возвращает Id созданного.
-		void deleteObject(int id); //удалить
+		void deleteObject(int id, int parent); //удалить
 
 		idempotent RealLinkIce* getLinkById(int id); // вернуть по id
 		int createLink(string name); //создать. Возвращает Id созданного.
 		int createLinkWithType(string name, string type); //создать. Возвращает Id созданного.
-		void deleteLink(int id); //удалить
+		void deleteLink(int id, int parent); //удалить
 	};
 };
 

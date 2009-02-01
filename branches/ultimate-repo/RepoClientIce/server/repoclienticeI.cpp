@@ -447,10 +447,10 @@ RepoIce::RepoClientIceI::createObjectWithParent(int type, const string& name, in
 }
 
 void
-RepoIce::RepoClientIceI::deleteObject(int id,
+RepoIce::RepoClientIceI::deleteObject(int id, int parent,
                                       const Ice::Current&)
 {
-    return repoClient.deleteObject(id);
+    return repoClient.deleteObject(id, parent);
 }
 
 ::RepoIce::RealLinkIcePrx
@@ -479,9 +479,9 @@ RepoIce::RepoClientIceI::createLinkWithType(const string& name, const string& ty
 }
 
 void
-RepoIce::RepoClientIceI::deleteLink(int id,
+RepoIce::RepoClientIceI::deleteLink(int id, int parent,
                                     const Ice::Current&)
 {
-    return repoClient.deleteLink(id);
+    return repoClient.deleteLink(id, parent);
 }
 
