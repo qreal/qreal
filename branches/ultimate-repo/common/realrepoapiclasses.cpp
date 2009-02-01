@@ -9,7 +9,7 @@
 
 using namespace QRealTypes;
 
-int RealNamedEntity::getId() 
+int RealNamedEntity::getId()
 {
 	return m_id;
 }
@@ -26,7 +26,7 @@ QString RealNamedEntity::getName()
 	return m_name;
 }
 
-void RealNamedEntity::setName( const QString& arg ) 
+void RealNamedEntity::setName( const QString& arg )
 {
 	m_name = arg;
 }
@@ -48,8 +48,8 @@ QString RealNamedEntity::getDescription()
 	return m_description;
 }
 
-void RealNamedEntity::setDescription( const QString& arg ) 
-{	
+void RealNamedEntity::setDescription( const QString& arg )
+{
 	m_description = arg;
 	if( client )
 		client->setDescription(m_id, arg);
@@ -93,18 +93,18 @@ void RealType::setMetaType( const MetaType arg )
 	m_metatype = arg;
 }
 
-QIntList RealType::getObjects() const 
+QIntList RealType::getObjects() const
 {
 	return m_objects;
 }
 
-void RealType::addObject( const int id ) 
+void RealType::addObject( const int id )
 {
 	if( !m_objects.contains(id) )
 		m_objects << id;
 }
 
-void RealType::deleteObject( const int id ) 
+void RealType::deleteObject( const int id )
 {
 	m_objects.removeAll(id);
 }
@@ -123,34 +123,34 @@ QString RealType::toString() const
 	}
 	return res;
 }
-	
+
 void RealType::loadFromString( const QString& data )
 {
 	m_id = data.section("\t",0,0).toInt();
 	m_name = data.section("\t",1,1);
 	m_description = data.section("\t",2,2);
 	m_metatype = (MetaType) data.section("\t",3,3).toInt();
-	
+
 	int objCounter = data.section("\t",4,4).toInt();
 	int counter = 5;
 	for( int i=0; i<objCounter; i++ ){
 		m_objects << data.section("\t",counter, counter).toInt();
 		counter++;
-	}	
-	
+	}
+
 	int propsCount = data.section("\t",counter,counter).toInt();
 	counter++;
 	for( int i=0; i<propsCount; i++ ){
 		QString pair = data.section("\t",counter,counter);
 		setProperty(pair.section(";",0,0), pair.section(";",1,1));
 		counter++;
-	}	
+	}
 
 }
 
 // ================================================== //
 
-bool RealObject::getVisibility() const 
+bool RealObject::getVisibility() const
 {
 	return m_visibility;
 }
@@ -160,56 +160,70 @@ void RealObject::setVisibility( const bool arg )
 	m_visibility = arg;
 }
 
-int RealObject::getContainerId() const
+QIntList RealObject::getContainerId() const
 {
-	return m_containerId;
+	// TODO: сделать так, чтобы список контейнеров получался из репозитория.
+	// В таком виде это всё не очень-то полезно.
+	return m_containers;
 }
 
-void RealObject::setContainerId( const int arg )
+void RealObject::addToContainer(const int id)
 {
-	m_containerId = arg;
-	if( client )
-		client->copyEntity(m_type, m_id, arg);
+	if (!m_containers.contains(id)) {
+		m_containers.append(id);
+		if (client)
+			client->copyEntity(m_type, m_id, id);
+	}
 }
 
-QString RealObject::getConfiguration() 
+void RealObject::deleteFromContainer(const int id)
 {
-	if( client )
-		m_configuration = client->getConfiguration(m_id, m_containerId);
-	return m_configuration;
+	int removed = m_containers.removeAll(id);
+	Q_ASSERT(removed == 1);
+	if (client)
+		client->deleteObject(m_id, id);
 }
 
-void RealObject::setConfiguration( const QString& arg )
+void RealObject::setContainerId(const int id)
 {
-	m_configuration = arg;
+	foreach (int containerId, m_containers) {
+		deleteFromContainer(containerId);
+	}
+	m_containers = QIntList();
+	m_containers.append(id);
+	if (client)
+		client->copyEntity(m_type, m_id, id);
 }
 
-QIntList RealObject::getChildElements() 
+QIntList RealObject::getChildElements()
 {
-	if( client ){
-		m_children.clear();
+	if (client) {
+		QIntList children;
 		QStringList list = client->getChildren(m_id).split("\t", QString::SkipEmptyParts);
-		for( int i=0; i<list.size(); i++ )
-			m_children << list[i].toInt();							
-	}	
-	return m_children;
+		foreach (QString child, list)
+			children << child.toInt();
+	}
+	return QIntList();
 }
 
-void RealObject::addChildElement( const int arg )
+void RealObject::addChildElement(const int id)
 {
-	if( !m_children.contains(arg) )
-		m_children << arg;
+	if (client) {
+		RealObject object = client->getObjectById(id);
+		object.setContainerId(m_id);
+	}
 }
 
-void RealObject::deleteChildElement( const int arg )
+void RealObject::deleteChildElement(const int id)
 {
-	if( m_children.contains(arg) )
-		m_children.removeAll(arg);
+	if (client) {
+		client->deleteObject(id, m_id);
+	}
 }
 
-QIntList RealObject::getAllLinks( ) const 
+QIntList RealObject::getAllLinks( ) const
 {
-	return getIncomingLinks() + getOutcomingLinks(); 
+	return getIncomingLinks() + getOutcomingLinks();
 }
 
 QIntList RealObject::getIncomingLinks() const
@@ -232,7 +246,7 @@ void RealObject::addIncomingLink( const int id )
 {
 	if( !m_incomingLinks.contains(id) )
 		m_incomingLinks << id;
-	if( client )	
+	if( client )
 		client->addLink( m_id, id, INCOMING_LINK );
 }
 
@@ -240,7 +254,7 @@ void RealObject::addOutcomingLink( const int id )
 {
 	if( !m_outcomingLinks.contains(id) )
 		m_outcomingLinks << id;
-	if( client )	
+	if( client )
 		client->addLink( m_id, id, OUTCOMING_LINK );
 }
 
@@ -256,25 +270,25 @@ void RealObject::removeOutcomingLink( const int id )
 	m_outcomingLinks.removeAll(id);
 	if( client )
 		client->removeLink( m_id, id, OUTCOMING_LINK );
-		
+
 }
 
 // ================================================== //
 
-int RealLink::getFromId() 
+int RealLink::getFromId()
 {
 	int val = getProperty("from").toInt();
 	if( val == 0 )
 		return -1;
-	return val;	
+	return val;
 }
 
-int RealLink::getToId() 
+int RealLink::getToId()
 {
 	int val = getProperty("to").toInt();
 	if( val == 0 )
 		return -1;
-	return val;	
+	return val;
 }
 
 void RealLink::setFromId( const int arg )

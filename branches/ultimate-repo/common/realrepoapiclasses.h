@@ -152,7 +152,7 @@ namespace QRealTypes
 	class RealObject : public RealNamedEntity
 	{
 	public:
-		RealObject(): m_visibility(true), m_containerId(-1) {}
+		RealObject(): m_visibility(true) {}
 		/** @brief Узнать, является ли объект визуальным
 		 *	@brief @return Является ли объект визуальным
 		 * */
@@ -160,19 +160,17 @@ namespace QRealTypes
 		/** @brief */
 		void setVisibility( const bool flag /**< Индикатор визуальности объекта */);
 
-		/** @brief Получить идентификатор контейнера объекта
-		 *	@brief @return Идентификатор контейнера объекта
+		/** @brief Получить идентификаторы всех контейнеров которым принадлежит объект
+		 *	@brief @return Идентификаторы контейнеров объекта
 		 * */
-		int getContainerId() const;
-		/** @brief Установить идентификатор контейнера объекта */
-		void setContainerId( const int id);
+		QIntList getContainerId() const;
+		/** @brief Добавить объект в указанный контейнер */
+		void addToContainer(const int id);
+		/** @brief Удалить объект из указанного контейнера */
+		void  deleteFromContainer(const int id);
 
-		/** @brief Получить конфигурацию объекта
-		 *	@brief @return Конфигурация объекта
-		 * */
-		QString getConfiguration();
-		/** @brief Устновить конфигурацию объекта */
-		void setConfiguration( const QString& conf /**< Конфигурация объекта */);
+		/** @brief Установить идентификатор контейнера объекта. Deprecated. */
+		void setContainerId(const int id);
 
 		/** @brief Получить список дочерних элементов объекта
 		 *	@brief @return Список дочерних элементов объекта
@@ -209,13 +207,11 @@ namespace QRealTypes
 	private:
 		/** @brief Индикатор визуальности объекта */
 		bool m_visibility;
-		/** @brief Идентификатор контейнера */
-		int m_containerId;
+		/** @brief Идентификаторы контейнеров, в которых лежит элемент */
+		QIntList m_containers;
 		/** @brief Конфигурация */
 		QString m_configuration;
 
-		/** @brief Список дочерних элементов */
-		QIntList m_children;
 		/** @brief Список входящих связей */
 		QIntList m_incomingLinks;
 		/** @brief Список исходящих связей */
