@@ -15,13 +15,11 @@ Root::~Root()
 
 void Root::addObject( int id, Object* obj )
 {
-	obj->addRef();
 	objects[id] = obj;
 }
 
 void Root::addLink( int id, Link* link )
 {
-	link->addRef();
 	links[id] = link;
 }
 
@@ -173,6 +171,15 @@ QString Object::childrenToString()
 		res += QString("%1\t").arg(nodeChildren.values()[i].getId());
 	for( int i=0; i<edgeChildren.values().size(); i++ )
 		res += QString("%1\t").arg(edgeChildren.values()[i].getId());
+	return res;
+}
+
+QString Object::parentsToString()
+{
+	QString res = "";
+	foreach (int parent, parents)
+		res += QString("%1\t").arg(parent);
+	res.chop(1);
 	return res;
 }
 
@@ -396,6 +403,15 @@ QString Link::toString()
 	for( int i=0; i<props.keys().size(); i++){
 		res += QString("%1;%2\t").arg(props.keys().at(i)).arg(props.value(props.keys().at(i)));
 	}
+	return res;
+}
+
+QString Link::parentsToString()
+{
+	QString res = "";
+	foreach (int parent, parents)
+		res += QString("%1\t").arg(parent);
+	res.chop(1);
 	return res;
 }
 

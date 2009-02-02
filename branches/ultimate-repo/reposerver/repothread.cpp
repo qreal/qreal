@@ -228,11 +228,11 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 	{
 		if( Object * node = mRoot->getObject(id) ){
 			obj->addNodeChild(id);
-			node->addRef();
+			node->addRef(newParent);
 		}
 		else if( Link* edge = mRoot->getLink(id) ){
 			obj->addEdgeChild(id);
-			edge->addRef();
+			edge->addRef(newParent);
 		}
 	}
 
@@ -251,7 +251,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 	{
 		if( Object * child = mRoot->getObject(id) ){
 			obj->removeNodeChild(id);
-			child->removeRef();
+			child->removeRef(parent);
 			if( child->refCount() == 0 ){
 				QStringList children = child->childrenToString().split("\t");
 				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
@@ -265,7 +265,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 			}
 		} else if (Link * child = mRoot->getLink(id)){
 			obj->removeEdgeChild(id);
-			child->removeRef();
+			child->removeRef(parent);
 			if( child->refCount() == 0 ){
 				mTypesInfo->elementDeleted(child->getType(), id);
 				mRoot->deleteLink(id);
@@ -402,6 +402,24 @@ IntQStringPair QRealRepoServerThread::handleGetChildren(QStringVector const &par
 	if (Object * obj = mRoot->getObject(id))
 		resp = obj->childrenToString();
 	mLog += QString(", sending %1's children - [%2]").arg(id).arg(resp);
+	return ReportSuccess(resp);
+}
+
+IntQStringPair QRealRepoServerThread::handleGetContainers(QStringVector const &params)
+{
+	if (!IsParamsNumberCorrect(params, "GetContainers", 1))
+		return ReportError(ERR_INCORRECT_PARAMS);
+	int id = params[0].toInt();
+	QString resp = "";
+	if (Object *obj = mRoot->getObject(id)) {
+		resp += obj->parentsToString();
+	} else if (Link *link = mRoot->getLink(id)) {
+		resp += link->parentsToString();
+	} else {
+		qDebug() << "Wrong analyseType result";
+		return ReportError(ERR_INCORRECT_REQUEST);
+	}
+
 	return ReportSuccess(resp);
 }
 
@@ -857,6 +875,10 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		{
 			resp = handleGetObjectsByLink(command.toVector());
 			break;
+		}
+		case CMD_GET_CONTAINERS:
+		{
+			resp = handleGetContainers(command.toVector());
 		}
 		default:
 		{

@@ -18,7 +18,7 @@ class Object;
 class NodeOnDiagram;
 class EdgeOnDiagram;
 
-/* root entity to handle all the others ( the parent of all `projects', 
+/* root entity to handle all the others ( the parent of all `projects',
  * `diagrams', `objects', `links' etc. ). for internal use only.
  */
 /** @class Root
@@ -43,11 +43,11 @@ public:
 	/** @brief Удалить связь */
 	void deleteLink( int id /**< Идентификатор */);
 
-	/** @brief Получить объект 
+	/** @brief Получить объект
 	 * 	@brief @return Объект
 	 * */
 	Object * getObject( int arg /**< Идентификатор */);
-	/** @brief Получить связь 
+	/** @brief Получить связь
 	 * 	@brief @return Связь
 	 * */
 	Link * getLink( int arg /**< Идентификатор */);
@@ -57,33 +57,33 @@ public:
 	/** @brief Получить число связей */
 	int getLinksSize();
 
-	// return list of objects of type `type'. 
+	// return list of objects of type `type'.
 	// (mostly for object explorer needs)
-	/** @brief Получить список идентификаторов объектов данного типа 
+	/** @brief Получить список идентификаторов объектов данного типа
 	 * 	@brief @return Список идентификаторов объектов данного типа
 	 * */
 	QString getObjectsByType( int type /**< Идентификатор типа */);
-	/** @brief Получить список идентификаторов связей данного типа 
+	/** @brief Получить список идентификаторов связей данного типа
 	 *	@brief @return Список идентификаторов связей данного типа
 	 * */
 	QString getLinksByType( int type /**< Идентификатор типа */);
 
-	// returns some data, to be updated soon according to 
+	// returns some data, to be updated soon according to
 	// suggestions made in trac wiki
-	/** @brief Получить данные об объекте 
+	/** @brief Получить данные об объекте
 	 *	@brief @return Данные об объекте
 	 * */
 	QString getLinkData( int type, /**< Идентификатор типа */
 						int id /**< Идентификатор связи */
 						);
-	/** @brief Получить данные о связи 
+	/** @brief Получить данные о связи
 	 *	@brief @return Данные о связи
 	 * */
 	QString getObjectData( int type, /**< Идентификатор типа */
 							int id /**< Идентификатор объекта */
 							);
 
-	
+
 //private:
 	/** @brief Объекты */
 	QMap<int, Object*> objects;
@@ -91,7 +91,7 @@ public:
 	QMap<int, Link*> links;
 };
 
-/* 
+/*
  * class for all node entities
  */
 /** @class Object
@@ -102,8 +102,8 @@ class Object
 public:
 	// TODO: remove ID from constructor and generate it by repo server itself
 	Object( int _id, int _type );
-	
-	/** @brief Получить имя объекта 
+
+	/** @brief Получить имя объекта
 	 *	@brief @return Имя объекта
 	 * */
 	QString getName();
@@ -111,31 +111,31 @@ public:
 	void setName( QString arg /**< Имя */);
 
 	/** @brief Получить описание объекта
-	 *	@brief @return Описание объекта 
+	 *	@brief @return Описание объекта
 	 * */
 	QString getDescription();
 	/** @brief Установить описание объекта */
 	void setDescription( QString desc /**< Описание */);
-	
+
 	/** @brief Установить значние свойства */
 	void setProperty( QString name, /**< Свойство */
 					QString val /**< Значение */
 					);
-	/** @brief Получить значение свойства 
-	 *	@brief @return Значение свойства 
+	/** @brief Получить значение свойства
+	 *	@brief @return Значение свойства
 	 * */
 	QString getProperty( QString name /**< Свойство */);
-	
-	/** @brief Получить идентификатор объекьа 
+
+	/** @brief Получить идентификатор объекьа
 	 *	@brief @return Идентификатор объекта
 	 * */
 	int getId();
-	/** @brief Получить тип объекта 
-	 *	@brief @return Тип объекта 
+	/** @brief Получить тип объекта
+	 *	@brief @return Тип объекта
 	 * */
 	int getType();
-	
-	/** @brief Получить число детей объекта 
+
+	/** @brief Получить число детей объекта
 	 *	@brief @return Число детей объекта
 	 * */
 	int childrenCount();
@@ -184,12 +184,15 @@ public:
 	// returns list of children entities' IDs
 	/** @brief Получить список идентификаторов дочерних элементов */
 	QString childrenToString();
-	
+
+	/** @brief Получить список идентификаторов родителей */
+	QString parentsToString();
+
 	/** @brief Сериализовать объект в строку
 	 *	@brief @return Сериализованный объект
 	 * */
 	QString toString();
-	/** @brief Получить список идентификаторо входящих связей 
+	/** @brief Получить список идентификаторо входящих связей
 	 *	@brief @return Список идентификаторов входящих связей
 	 * */
 	QString getIncomingLinks();
@@ -197,7 +200,7 @@ public:
 	 *	@brief @return Список идентификаторов исходящих связей
 	 * */
 	QString getOutcomingLinks();
-	
+
 	/** @brief Добавить связь */
 	void addLink( int id, /**< Идентификатор связи */
 				int die /**< Направленность связи */
@@ -206,23 +209,29 @@ public:
 	void removeLink( int id, /**< Идентификатор связи */
 					int dir /**< Направленность связи */
 					);
-	
+
 	/** @brief Отладочный вывод */
 	void print(){
 		qDebug() << "incoming :" << incomingLinks;
 		qDebug() << "outcoming:" << outcomingLinks;
 		qDebug() << "props:" <<  props;
 	}
-	
-	void addRef()
+
+	void addRef(int parent)
 	{
 		refs++;
+		if (!parents.contains(parent))
+			parents.append(parent);
 	}
 
-	void removeRef()
+	void removeRef(int parent)
 	{
 		if( refs > 0)
 			refs--;
+		if (parents.contains(parent)) {
+			int removed = parents.removeAll(parent);
+			Q_ASSERT(removed == 1);
+		}
 	}
 
 	int refCount()
@@ -249,8 +258,10 @@ private:
 	QList<int> incomingLinks;
 	/** @brief Список исходящий связей */
 	QList<int> outcomingLinks;
-	/** @brief Число ссылок на объект */
+	/** @brief Число ссылок на объект. Deprecated. */
 	int refs;
+	/** @brief Список родителей объекта */
+	QList<int> parents;
 };
 
 /* class for all edge entities
@@ -261,26 +272,26 @@ private:
 class Link
 {
 public:
-	Link( int _id, int _type ); 
-	
+	Link( int _id, int _type );
+
 	/** @brief Получить идентификатор связи
 	 * 	@brief @return Идентификатор связи
 	 * 	*/
 	int getId();
-	/** @brief Получить тип связи 
+	/** @brief Получить тип связи
 	 * 	@brief @return Тип связи
 	 * 	*/
 	int getType();
-	
-	/** @brief Получить имя связи 
+
+	/** @brief Получить имя связи
 	 * 	@brief @return Имя связи
 	 * 	*/
 	QString getName();
 	/** @brief Установить имя связи */
 	void setName( QString arg /**< Имя */);
-	
-	/** @brief Получить описание связи 
-	 * 	@brief @return Описание связи 
+
+	/** @brief Получить описание связи
+	 * 	@brief @return Описание связи
 	 * 	*/
 	QString getDescription();
 	/** @brief Установить описание связи */
@@ -290,21 +301,21 @@ public:
 	void setProperty( QString name, /**< Свойство */
 						QString val /**< Значение свойства */
 						);
-	/** @brief Получить значение свойства 
+	/** @brief Получить значение свойства
 	 * 	@brief @return Значение свойства
 	 * 	*/
 	QString getProperty( QString name /**< Свойство */);
 
 	/** @brief Сериализовать связь в строку
-	 * 	@brief @return Строковое представление связи 
+	 * 	@brief @return Строковое представление связи
 	 * 	*/
 	QString toString();
-	
-	/** @brief Получить список объектов, к которым присоединена связь 
+
+	/** @brief Получить список объектов, к которым присоединена связь
 	 * 	@brief @return Список объектов, к которым присоединена связь
 	 * 	*/
 	QString getObjects();
-	
+
 	/** @brief Присоединить объект к началу связи */
 	void addObjectTo( int id /**< Идентификатор объекта */);
 	/** @brief Присоединить объект к концу связи */
@@ -314,8 +325,10 @@ public:
 	void removeObjectTo( int id /**< Идентификатор объекта */);
 	/** @brief Отсоединить объект от конца связи */
 	void removeObjectFrom( int id /**< Идентификатор объекта */);
+	/** @brief Получить список идентификаторов родителей */
+	QString parentsToString();
 
-	/** @brief Получить идентификатор объекта, присоединенного к началу связи 
+	/** @brief Получить идентификатор объекта, присоединенного к началу связи
 	 * 	@brief @return Идентификатор объекта, присоединенного к началу связи
 	 * 	*/
 	int getFrom();
@@ -323,7 +336,7 @@ public:
 	 * 	@brief @return Идентификатор объекта, присоединенного к концу связи
 	 * 	*/
 	int getTo();
-	
+
 	/** @brief Отладочная печать */
 	void print(){
 		qDebug() << "to: :" << objectsTo;
@@ -331,15 +344,21 @@ public:
 		qDebug() << "props:" <<  props;
 	}
 
-	void addRef()
+	void addRef(int parent)
 	{
 		refs++;
+		if (!parents.contains(parent))
+			parents.append(parent);
 	}
 
-	void removeRef()
+	void removeRef(int parent)
 	{
 		if( refs > 0)
 			refs--;
+		if (parents.contains(parent)) {
+			int removed = parents.removeAll(parent);
+			Q_ASSERT(removed == 1);
+		}
 	}
 
 	int refCount()
@@ -369,12 +388,14 @@ private:
 	QList<int> objectsFrom;
 	/** @brief Число ссылок на связь */
 	int refs;
+	/** @brief Список родителей связи */
+	QList<int> parents;
 };
 
 /* types description
  */
 /** @class TypeInfo
- * 	@brief Описание типа 
+ * 	@brief Описание типа
  * */
 class TypeInfo{
 public:
@@ -446,7 +467,7 @@ public:
 	/** @brief Конструктор */
 	NodeOnDiagram( int id1 /**< Идентификатор */) : ElementOnDiagram(id1), point(QPoint(0,0))
 	{
-		setConfiguration(DEFAULT_NODE_CONFIGURATION);	
+		setConfiguration(DEFAULT_NODE_CONFIGURATION);
 	}
 	/** @brief Конструктор */
 	NodeOnDiagram( int id1, /**< Идентификатор */
@@ -460,7 +481,7 @@ public:
 		this->point = p;
 	}
 
-	/** @brief Получить координаты объекта 
+	/** @brief Получить координаты объекта
 	 * 	@brief @return Координаты объекта
 	 * 	*/
 	QPoint getCoord()
@@ -479,7 +500,7 @@ public:
 	/** @brief Конструктор */
 	EdgeOnDiagram() : ElementOnDiagram(), position("") {}
 	/** @brief Конструктор */
-	EdgeOnDiagram( int id1 /**< Идентификатор */ ) : ElementOnDiagram(id1), position("") 
+	EdgeOnDiagram( int id1 /**< Идентификатор */ ) : ElementOnDiagram(id1), position("")
 	{
 		setConfiguration(DEFAULT_EDGE_CONFIGURATION);
 	}
@@ -489,7 +510,7 @@ public:
 					QString pos /**< Расположение */
 					) : ElementOnDiagram(id1, conf), position(pos) {}
 
-	/** @brief Получить расположение связи 
+	/** @brief Получить расположение связи
 	 *	@brief @return Расположение связи
 	 * */
 	QString getPosition()

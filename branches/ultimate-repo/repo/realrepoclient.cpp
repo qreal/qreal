@@ -173,6 +173,11 @@ int RealRepoClient::createLinkWithType(QString name, QString type)
 	return createObject(typeId, name);
 }
 
+int RealRepoClient::createLinkWithParent(int type, QString name, int parent)
+{
+	return createObjectWithParent(type, name, parent);
+}
+
 void RealRepoClient::deleteObject(int id, int parent)
 {
 dbg;
@@ -180,11 +185,23 @@ dbg;
 	QString resp = sendData(data);
 }
 
+void RealRepoClient::deleteObject( int id )
+{
+	QIntList parents = getParents(id);
+	foreach (int parent, parents) {
+		deleteObject(id, parent);
+	}
+}
+
 void RealRepoClient::deleteLink(int id, int parent)
 {
 	deleteObject(id, parent);
 }
 
+void RealRepoClient::deleteLink(int id)
+{
+	deleteObject(id);
+}
 
 int RealRepoClient::getTypesCount()
 {
@@ -263,6 +280,16 @@ QString RealRepoClient::getChildren( int id )
 	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CHILDREN).arg(id);
 	QString resp = sendData(cmd);
 	return resp;
+}
+
+QIntList RealRepoClient::getParents(int id)
+{
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_CONTAINERS).arg(id);
+	QString resp = sendData(cmd);
+	QIntList list;
+	foreach (QString str, resp.split('\t', QString::SkipEmptyParts))
+		list += str.toInt();
+	return list;
 }
 
 QString RealRepoClient::getPosition( int id, int parent )

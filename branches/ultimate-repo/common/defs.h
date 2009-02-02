@@ -58,6 +58,8 @@ const int CMD_GET_CHILDREN		= 24;
 const int CMD_GET_LINKS_BY_OBJECT	= 25;
 /** @brief Код команды "Получить объекты, к которым присоединена связь" */
 const int CMD_GET_OBJECTS_BY_LINK	= 26;
+/** @brief Код команды "Получить список контейнеров, содержащих объект" */
+const int CMD_GET_CONTAINERS		= 27;
 
 /** @brief Код команды "Получить число типов" */
 const int CMD_GET_TYPES_COUNT		= 31;

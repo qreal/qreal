@@ -163,7 +163,7 @@ namespace QRealTypes
 		/** @brief Получить идентификаторы всех контейнеров которым принадлежит объект
 		 *	@brief @return Идентификаторы контейнеров объекта
 		 * */
-		QIntList getContainerId() const;
+		QIntList getContainerId();
 		/** @brief Добавить объект в указанный контейнер */
 		void addToContainer(const int id);
 		/** @brief Удалить объект из указанного контейнера */
@@ -207,8 +207,6 @@ namespace QRealTypes
 	private:
 		/** @brief Индикатор визуальности объекта */
 		bool m_visibility;
-		/** @brief Идентификаторы контейнеров, в которых лежит элемент */
-		QIntList m_containers;
 		/** @brief Конфигурация */
 		QString m_configuration;
 

@@ -160,37 +160,32 @@ void RealObject::setVisibility( const bool arg )
 	m_visibility = arg;
 }
 
-QIntList RealObject::getContainerId() const
+QIntList RealObject::getContainerId()
 {
-	// TODO: сделать так, чтобы список контейнеров получался из репозитория.
-	// В таком виде это всё не очень-то полезно.
-	return m_containers;
+	if (client)
+		return client->getParents(m_id);
+	Q_ASSERT(!"No repo client");
+	return QIntList();
 }
 
 void RealObject::addToContainer(const int id)
 {
-	if (!m_containers.contains(id)) {
-		m_containers.append(id);
-		if (client)
-			client->copyEntity(m_type, m_id, id);
-	}
+	if (client)
+		client->copyEntity(m_type, m_id, id);
 }
 
 void RealObject::deleteFromContainer(const int id)
 {
-	int removed = m_containers.removeAll(id);
-	Q_ASSERT(removed == 1);
 	if (client)
 		client->deleteObject(m_id, id);
 }
 
 void RealObject::setContainerId(const int id)
 {
-	foreach (int containerId, m_containers) {
+	QIntList containers = getContainerId();
+	foreach (int containerId, containers) {
 		deleteFromContainer(containerId);
 	}
-	m_containers = QIntList();
-	m_containers.append(id);
 	if (client)
 		client->copyEntity(m_type, m_id, id);
 }
