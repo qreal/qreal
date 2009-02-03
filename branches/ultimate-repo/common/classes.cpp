@@ -124,6 +124,11 @@ int Object::getId()
 	return id;
 }
 
+void Object::setId(int id)
+{
+	this->id = id;
+}
+
 int Object::getType()
 {
 	return type;
@@ -306,6 +311,8 @@ QString Object::getChildConfiguration( int id)
 
 bool Object::setChildConfiguration( int id, QString conf )
 {
+	qDebug() << "looking for" << id << "in " << nodeChildren.keys();
+
 	if( nodeChildren.contains(id) )
 		nodeChildren[id].setConfiguration(conf);
 	else if( edgeChildren.contains(id) )

@@ -144,10 +144,14 @@ dbg;
 	return resp.toInt();
 }
 
-int RealRepoClient::copyEntity(int type, int id, int newParent)
+int RealRepoClient::copyEntity(int type, int id, int newParent, int oldParent, bool full)
 {
-dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_COPY_ENTITY).arg(type).arg(id).arg(newParent);
+dbg;	
+	QString data;
+	if( !full )
+		data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_COPY_ENTITY).arg(type).arg(id).arg(newParent).arg(oldParent);
+	else
+		data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_FULLCOPY_ENTITY).arg(type).arg(id).arg(newParent).arg(oldParent);
 	QString resp = sendData(data);
 	return resp.toInt();
 }

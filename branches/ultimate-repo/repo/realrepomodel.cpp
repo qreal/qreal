@@ -422,7 +422,7 @@ dbg;
 	stream >> name;
 	stream >> newPos;
 
-	qDebug() << "dropped" << newid << newtype << name << newPos;
+//	qDebug() << "dropped" << newid << newtype << name << newPos;
 
 //	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
 	return addElementToModel(parentItem, parent, newid, newtype, name, newPos,
@@ -437,6 +437,8 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 		case Category:
 			{
 //				qDebug() << parentItem->id << newtype;
+				qDebug() << newid << newtype << name << newPos;
+
 
 				if ( parentItem->id != newtype) {
 					qDebug() << "Object dragged into the wrong category";
@@ -456,21 +458,39 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 		case Container:
 			{
 				qDebug() << "adding to container, action is " << action;
-				int id = -1;
+				int id = newid;
 
 				// drag'n'drop из эксплорера, создаем ссылку на текущий элемент
-				bool newElement = ( name != "(anon element)" );
+				bool newElement = ( name == "(anon element)" );
+				qDebug() << newElement << name;
+				CopyType copyType = SYM_LINK_TYPE;
+
+				if( !newElement ){
+				
+					QMenu menu;
+
+					QAction *copyAction = menu.addAction("Perform full copy");
+					QAction *symlinkAction = menu.addAction("Add symlink");
+
+					if ( QAction *selectedAction = menu.exec(QPoint(100,500)) ) { 
+						// hack with coords (model knows nothing about the GUI event)
+						if ( selectedAction == copyAction ) {
+							copyType = FULL_COPY_TYPE;
+						} else if( selectedAction == symlinkAction ){
+							copyType = SYM_LINK_TYPE;
+						} else 
+							return false;
+					} else 
+						return false;
+				}
 
 				// drag'n'drop из палитры, создаем новый элемент
-				if ( action == Qt::CopyAction ) { // дерево инстпектора об'ектов
+				if ( action == Qt::CopyAction && newElement ) { // дерево инстпектора об'ектов
 					qDebug() << "Qt::CopyAction";
+						
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
-					//FIXME
-					if( newElement )
-						id = repoClient->copyEntity(newtype, newid, parentItem->id);
-					else
-						id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
+					id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
 					repoClient->setPosition(id, parentItem->id, (int) newPos.x(), (int) newPos.y());
 					qDebug() << "\tcreating new item" << rootItem->children.at(newtype-1)->id << id << newtype;
 					createItem(rootItem->children.at(newtype-1), id, newtype);
@@ -486,9 +506,8 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						 tr("This is a diagram element, not a Klein bottle!"));
 					return false;
 				}
-
 				foreach (RepoTreeItem *child, parentItem->children) {
-					if (child->id == id) {
+					if (child->id == id && id != -1 ) {
 						QMessageBox::warning(NULL, tr("Warning!"),
 							tr("Making two copies of one element with the same parent is not allowed, use containers instead."));
 						return false;
@@ -504,7 +523,16 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					// надо дать об этом знать репозиторию, иначе будет #95.
 					// TODO: Subject to refactoring.
 					if (action == Qt::CopyAction ) {
-						id = repoClient->copyEntity(newtype, id, parentItem->id);
+						int oldparent = -1;
+						if( hashTreeItems[id].size() > 0 && hashTreeItems[id].at(0)->parent )
+							oldparent = hashTreeItems[id].at(0)->parent->id;
+						if( copyType == SYM_LINK_TYPE )
+							id = repoClient->copyEntity(newtype, id, parentItem->id, oldparent);
+						else if ( copyType == FULL_COPY_TYPE )	{
+							//id++; // i'm gonna burn in hell for that, i know
+							createItem(parentItem, id, newtype, name);
+							id = repoClient->copyEntity(newtype, id, parentItem->id, oldparent, true);
+						}	
 					}
 					createItem(parentItem, id, newtype);
 				}

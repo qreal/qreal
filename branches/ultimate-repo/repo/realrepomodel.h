@@ -163,6 +163,11 @@ class RealRepoModel : public QAbstractItemModel
 						Container /**< Контейнер */
 						};
 
+		typedef enum CopyType { FULL_COPY_TYPE,
+								SYM_LINK_TYPE
+					
+		} CopyType;
+
 		/** @brief Получить индекс элемента модели
 		 *	@brief @return Индекс элемента модели
 		 * */

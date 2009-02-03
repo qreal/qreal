@@ -171,7 +171,7 @@ QIntList RealObject::getContainerId()
 void RealObject::addToContainer(const int id)
 {
 	if (client)
-		client->copyEntity(m_type, m_id, id);
+		client->copyEntity(m_type, m_id, id, -1);
 }
 
 void RealObject::deleteFromContainer(const int id)
@@ -187,7 +187,7 @@ void RealObject::setContainerId(const int id)
 		deleteFromContainer(containerId);
 	}
 	if (client)
-		client->copyEntity(m_type, m_id, id);
+		client->copyEntity(m_type, m_id, id, -1);
 }
 
 QIntList RealObject::getChildElements()

@@ -62,6 +62,7 @@ namespace reposerver
 		*   @brief return Результат выполнения операции
 		*/
 		IntQStringPair handleCopyEntity(QStringVector const &params);
+		IntQStringPair handleFullCopyEntity(QStringVector const &params);
 		/** @brief Обработать команду "Удалить сущность"
 		*   @brief return Результат выполнения операции
 		*/

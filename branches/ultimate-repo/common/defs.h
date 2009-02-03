@@ -43,6 +43,7 @@ const int CMD_SET_PARENT		= 13;
 const int CMD_GET_PARENT		= 14;
 /** @brief Код команды "Добавить существущий объект на другую диаграмму" */
 const int CMD_COPY_ENTITY		= 15;
+const int CMD_FULLCOPY_ENTITY	= 16;
 
 /** @brief Код команды "Получить сущность" */
 const int CMD_GET_ENTITY		= 20;

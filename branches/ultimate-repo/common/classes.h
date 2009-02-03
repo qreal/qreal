@@ -130,6 +130,7 @@ public:
 	 *	@brief @return Идентификатор объекта
 	 * */
 	int getId();
+	void setId(int id);
 	/** @brief Получить тип объекта
 	 *	@brief @return Тип объекта
 	 * */
@@ -210,6 +211,12 @@ public:
 					int dir /**< Направленность связи */
 					);
 
+	void clearChildren()
+	{
+		nodeChildren.clear();
+		edgeChildren.clear();
+	}
+
 	/** @brief Отладочный вывод */
 	void print(){
 		qDebug() << "incoming :" << incomingLinks;
@@ -229,7 +236,7 @@ public:
 		if( refs > 0)
 			refs--;
 		if (parents.contains(parent)) {
-			int removed = parents.removeAll(parent);
+			parents.removeAll(parent);
 			Q_ASSERT(removed == 1);
 		}
 	}
@@ -356,7 +363,7 @@ public:
 		if( refs > 0)
 			refs--;
 		if (parents.contains(parent)) {
-			int removed = parents.removeAll(parent);
+			parents.removeAll(parent);
 			Q_ASSERT(removed == 1);
 		}
 	}
