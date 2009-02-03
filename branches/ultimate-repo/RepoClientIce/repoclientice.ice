@@ -52,8 +52,10 @@ module RepoIce
 		idempotent bool getVisibility() ; // видим ли на диаграмме
 		idempotent void setVisibility(bool is);
     
-		idempotent int getContainerId() ; // id контейнера
-		idempotent void setContainerId(int id);
+		idempotent QIntList getContainerId() ; // возвращает id всех контейнеров, которым принадлежит объект
+		idempotent void addToContainer(int id); // добавляет объект в указанный контейнер, вместо setContainerId, который deprecated 
+		idempotent void setContainerId(int id); //Deprecated!!! 
+		idempotent void deleteFromContainer(int id); // удаляет объект из контейнера  
 
 		idempotent string getConfiguration() ; // конфигурация
 		idempotent void setConfiguration(string configuration);
@@ -106,13 +108,14 @@ module RepoIce
 
 		idempotent RealObjectIce* getObjectById(int id); // вернуть по id
 		int createObject(int type, string name); //создать. Возвращает Id созданного.
-		int createObjectWithParent(int type, string name, int parent); //создать. Возвращает Id созданного.
-		void deleteObject(int id, int parent); //удалить
+		int createObjectWithParent(int type, string name, int parent); // создаёт объект и при этом помещает его в указанный контейнер 
+		void deleteObject(int id, int parent); //удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария 
 
 		idempotent RealLinkIce* getLinkById(int id); // вернуть по id
 		int createLink(string name); //создать. Возвращает Id созданного.
 		int createLinkWithType(string name, string type); //создать. Возвращает Id созданного.
-		void deleteLink(int id, int parent); //удалить
+		int createLinkWithParent(int type, string name, int parent); // создаёт линку и при этом помещает её в указанный контейнер 
+		void deleteLink(int id, int parent); // удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария 
 	};
 };
 

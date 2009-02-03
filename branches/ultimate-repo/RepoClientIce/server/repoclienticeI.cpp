@@ -169,10 +169,10 @@ RepoIce::RealObjectIceI::setVisibility(bool is,
 	realObject.setVisibility(is);
 }
 
-int
+::RepoIce::QIntList
 RepoIce::RealObjectIceI::getContainerId(const Ice::Current&)
 {
-    return realObject.getContainerId();
+	return realObject.getContainerId().toVector().toStdVector();
 }
 
 void
@@ -182,17 +182,30 @@ RepoIce::RealObjectIceI::setContainerId(int id,
 	realObject.setContainerId(id);
 }
 
+void 
+RepoIce::RealObjectIceI::addToContainer(int id, const Ice::Current&)
+{
+	realObject.addToContainer(id);
+}
+
+void 
+RepoIce::RealObjectIceI::deleteFromContainer(int id, const Ice::Current&)
+{
+	realObject.deleteFromContainer(id);
+}
+
 string
 RepoIce::RealObjectIceI::getConfiguration(const Ice::Current&)
 {
-    return realObject.getConfiguration().toStdString();
+    //return realObject.getConfiguration().toStdString();
+		return string();
 }
 
 void
 RepoIce::RealObjectIceI::setConfiguration(const string& configuration,
                                           const Ice::Current&)
 {
-	realObject.setConfiguration(QString(configuration.c_str()));
+	//realObject.setConfiguration(QString(configuration.c_str()));
 }
 
 ::RepoIce::QIntList
@@ -476,6 +489,13 @@ RepoIce::RepoClientIceI::createLinkWithType(const string& name, const string& ty
 																						const Ice::Current&)
 {
 		return repoClient.createLinkWithType(QString(name.c_str()), QString(type.c_str()));
+}
+
+int
+RepoIce::RepoClientIceI::createLinkWithParent(int type, const string& name, int parent, 
+																						const Ice::Current&)
+{
+		return repoClient.createLinkWithParent(type, QString(name.c_str()), parent);
 }
 
 void

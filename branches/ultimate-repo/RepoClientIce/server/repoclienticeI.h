@@ -58,8 +58,10 @@ public:
     virtual bool getVisibility(const Ice::Current&);
     virtual void setVisibility(bool, const Ice::Current&);
 
-    virtual int getContainerId(const Ice::Current&);
+    virtual ::RepoIce::QIntList getContainerId(const Ice::Current&);
     virtual void setContainerId(int, const Ice::Current&);
+		virtual void addToContainer(int, const Ice::Current&);
+		virtual void deleteFromContainer(int, const Ice::Current&);
 
     virtual string getConfiguration(const Ice::Current&);
     virtual void setConfiguration(const string&, const Ice::Current&);
@@ -134,6 +136,7 @@ public:
     virtual ::RepoIce::RealLinkIcePrx getLinkById(int, const Ice::Current&);
     virtual int createLink(const string&, const Ice::Current&);
 		virtual int createLinkWithType(const string&, const string&, const Ice::Current&);
+		virtual int createLinkWithParent(int type, const string& name, int parent, const Ice::Current&);
     virtual void deleteLink(int, int, const Ice::Current&);
 		
 		static Ice::ObjectAdapterPtr _adapter;
