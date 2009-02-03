@@ -180,7 +180,7 @@ IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
 
 IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
-	qDebug() << __PRETTY_FUNCTION__;
+//	qDebug() << __PRETTY_FUNCTION__;
 	qDebug() << params;
 //	if ( !IsParamsNumberCorrect(params, "CreateEntity", 4) && !IsParamsNumberCorrect(params, "CreateEntity", 3))
 //		return ReportError(ERR_INCORRECT_PARAMS);
@@ -244,7 +244,7 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 
 IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &params)
 {
-	qDebug() << __PRETTY_FUNCTION__;
+//	qDebug() << __PRETTY_FUNCTION__;
 	qDebug() << "params: " << params;
 //	if (!IsParamsNumberCorrect(params, "FullCopyEntity", 4))	
 //		return ReportError(ERR_INCORRECT_PARAMS);
