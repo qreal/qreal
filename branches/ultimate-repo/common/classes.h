@@ -237,7 +237,6 @@ public:
 			refs--;
 		if (parents.contains(parent)) {
 			parents.removeAll(parent);
-			Q_ASSERT(removed == 1);
 		}
 	}
 
@@ -364,7 +363,6 @@ public:
 			refs--;
 		if (parents.contains(parent)) {
 			parents.removeAll(parent);
-			Q_ASSERT(removed == 1);
 		}
 	}
 
