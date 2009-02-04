@@ -190,28 +190,31 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 	QString name = params[1];
 	int parent = params[2].toInt();
 	mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
-	bool isNode = false;
 	if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
 		Object *obj = new Object(id, type);
 		obj->setName(name);
+		qDebug() << obj->refCount();
+		if (Object * par = mRoot->getObject(parent))
+		{			
+			par->addNodeChild(id);
+			obj->addRef(parent);
+		} else
+			qDebug() << "invalid parent: " << parent;
+		qDebug() << obj->refCount();
 		mRoot->addObject(id, obj);
 		mLog += QString(", object created, name %1").arg(name);
-		isNode = true;
 	} else if (mTypesInfo->analyseType(type) == TYPE_LINK){
 		Link *link = new Link(id, type);
 		link->setName(name);
+		if (Object * obj = mRoot->getObject(parent)){
+			obj->addEdgeChild(id);
+			link->addRef(parent);
+		}
 		mRoot->addLink(id, link);
 		mLog += QString(", link created, name %1").arg(name);
 	} else {
 		qDebug() << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
-	}
-	if (Object * obj = mRoot->getObject(parent))
-	{
-		if( isNode )
-			obj->addNodeChild(id);
-		else
-			obj->addEdgeChild(id);
 	}
 
 	mTypesInfo->elementCreated(type, id);
@@ -226,11 +229,24 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 	int type = params[0].toInt();
 	int const id = params[1].toInt();
 	int newParent = params[2].toInt();
+	int oldParent = params[3].toInt();
 	if (Object * obj = mRoot->getObject(newParent))
 	{
 		if( Object * node = mRoot->getObject(id) ){
+			qDebug() << node->refCount();
 			obj->addNodeChild(id);
 			node->addRef(newParent);
+			qDebug() << node->refCount();
+			Object * oldparent = mRoot->getObject(oldParent);
+			if( oldparent )
+				qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
+			else
+				qDebug() << "can't get old parent";
+		
+			if( oldparent ){
+				obj->setChildConfiguration(node->getId(), obj->getChildConfiguration(node->getId()));
+				obj->setChildCoord(node->getId(), obj->getChildCoord(node->getId()));
+			} 
 		}
 		else if( Link* edge = mRoot->getLink(id) ){
 			obj->addEdgeChild(id);
@@ -273,6 +289,8 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 		node->setId(newid);
 		node->clearChildren();
 		Object * newparent = mRoot->getObject(parentId);
+			newparent->addNodeChild(newid);
+			node->addRef(parentId);
 		if( newparent )
 			qDebug() << "newparent: " << newparent->getId() << newparent->getName();
 		else
@@ -312,6 +330,7 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 
 IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
 {
+	qDebug() << params;
 	if (!IsParamsNumberCorrect(params, "DeleteEntity", 2))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -322,6 +341,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 		if( Object * child = mRoot->getObject(id) ){
 			obj->removeNodeChild(id);
 			child->removeRef(parent);
+			qDebug() << child->refCount();
 			if( child->refCount() == 0 ){
 				QStringList children = child->childrenToString().split("\t");
 				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
