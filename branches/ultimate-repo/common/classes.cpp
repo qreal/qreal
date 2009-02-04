@@ -92,46 +92,71 @@ QString Root::getLinksByType( int type )
 
 // --------------------------------------------------------------------------- //
 
-Object::Object( int _id, int _type )
+RepoElement::RepoElement(int id, int type)
 {
-	id = _id;
-	type = _type;
-	refs = 0;
+	this->id = id;
+	this->type = type;
 }
 
-void Object::setName( QString arg )
+void RepoElement::setName( QString arg )
 {
 	name = arg;
 }
 
-QString Object::getName()
+QString RepoElement::getName()
 {
 	return name;
 }
 
-void Object::setDescription( QString arg )
+void RepoElement::setDescription( QString arg )
 {
 	description = arg;
 }
 
-QString Object::getDescription()
+QString RepoElement::getDescription()
 {
 	return description;
 }
 
-int Object::getId()
+int RepoElement::getId()
 {
 	return id;
 }
 
-void Object::setId(int id)
+void RepoElement::setId(int id)
 {
 	this->id = id;
 }
 
-int Object::getType()
+int RepoElement::getType()
 {
 	return type;
+}
+
+QString RepoElement::parentsToString()
+{
+	QString res = "";
+	foreach (int parent, parents)
+		res += QString("%1\t").arg(parent);
+	res.chop(1);
+	return res;
+}
+
+void RepoElement::setProperty( QString name, QString val )
+{
+	props[name] = val;
+}
+
+QString RepoElement::getProperty( QString name )
+{
+	return props.value(name);
+}
+
+// --------------------------------------------------------------------------- //
+
+Object::Object(int id, int type)
+	: RepoElement(id, type)
+{
 }
 
 int Object::childrenCount()
@@ -177,25 +202,6 @@ QString Object::childrenToString()
 	for( int i=0; i<edgeChildren.values().size(); i++ )
 		res += QString("%1\t").arg(edgeChildren.values()[i].getId());
 	return res;
-}
-
-QString Object::parentsToString()
-{
-	QString res = "";
-	foreach (int parent, parents)
-		res += QString("%1\t").arg(parent);
-	res.chop(1);
-	return res;
-}
-
-void Object::setProperty( QString name, QString val )
-{
-	props[name] = val;
-}
-
-QString Object::getProperty( QString name )
-{
-	return props.value(name);
 }
 
 QString Object::getIncomingLinks()
@@ -324,51 +330,9 @@ bool Object::setChildConfiguration( int id, QString conf )
 
 // --------------------------------------------------------------------------- //
 
-Link::Link( int _id, int _type )
+Link::Link(int id, int type)
+	: RepoElement(id, type)
 {
-	id = _id;
-	type = _type;
-	refs = 0;
-}
-
-int Link::getId()
-{
-	return id;
-}
-
-int Link::getType()
-{
-	return type;
-}
-
-QString Link::getName()
-{
-	return name;
-}
-
-void Link::setName( QString arg )
-{
-	name = arg;
-}
-
-void Link::setDescription( QString arg )
-{
-	description = arg;
-}
-
-QString Link::getDescription()
-{
-	return description;
-}
-
-void Link::setProperty( QString name, QString val )
-{
-	props[name] = val;
-}
-
-QString Link::getProperty( QString name )
-{
-	return props.value(name);
 }
 
 QString Link::getObjects()
@@ -410,15 +374,6 @@ QString Link::toString()
 	for( int i=0; i<props.keys().size(); i++){
 		res += QString("%1;%2\t").arg(props.keys().at(i)).arg(props.value(props.keys().at(i)));
 	}
-	return res;
-}
-
-QString Link::parentsToString()
-{
-	QString res = "";
-	foreach (int parent, parents)
-		res += QString("%1\t").arg(parent);
-	res.chop(1);
 	return res;
 }
 

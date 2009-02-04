@@ -91,30 +91,27 @@ public:
 	QMap<int, Link*> links;
 };
 
-/*
- * class for all node entities
- */
-/** @class Object
- * 	@brief Класс для хранения информации об объектах
+/** @class RepoElement
+ * 	@brief Базовый класс для объектов и линков в репозитории
  * */
-class Object
+class RepoElement
 {
 public:
 	// TODO: remove ID from constructor and generate it by repo server itself
-	Object( int _id, int _type );
+	RepoElement(int id, int type);
 
-	/** @brief Получить имя объекта
-	 *	@brief @return Имя объекта
+	/** @brief Получить имя элемента
+	 *	@brief @return Имя элемента
 	 * */
 	QString getName();
-	/** @brief Установить имя объекта */
+	/** @brief Установить имя элемента */
 	void setName( QString arg /**< Имя */);
 
-	/** @brief Получить описание объекта
-	 *	@brief @return Описание объекта
+	/** @brief Получить описание элемента
+	 *	@brief @return Описание элемента
 	 * */
 	QString getDescription();
-	/** @brief Установить описание объекта */
+	/** @brief Установить описание элемента */
 	void setDescription( QString desc /**< Описание */);
 
 	/** @brief Установить значние свойства */
@@ -126,15 +123,59 @@ public:
 	 * */
 	QString getProperty( QString name /**< Свойство */);
 
-	/** @brief Получить идентификатор объекьа
-	 *	@brief @return Идентификатор объекта
+	/** @brief Получить идентификатор элемента
+	 *	@brief @return Идентификатор элемента
 	 * */
 	int getId();
 	void setId(int id);
-	/** @brief Получить тип объекта
-	 *	@brief @return Тип объекта
+	/** @brief Получить тип элемента
+	 *	@brief @return Тип элемента
 	 * */
 	int getType();
+
+	/** @brief Получить список идентификаторов родителей */
+	QString parentsToString();
+
+	void addRef(int parent)
+	{
+		if (!parents.contains(parent))
+			parents.append(parent);
+	}
+
+	void removeRef(int parent)
+	{
+		if (parents.contains(parent)) {
+			parents.removeAll(parent);
+		}
+	}
+
+	int refCount()
+	{
+		return parents.count();
+	}
+
+protected:
+	/** @brief Идентификатор */
+	int id;
+	/** @brief Тип */
+	int type;
+	/** @brief Имя */
+	QString name;
+	/** @brief Описание */
+	QString description;
+	/** @brief Свойства и их значения */
+	QMap<QString, QString> props;
+	/** @brief Список родителей элемента */
+	QList<int> parents;
+};
+
+/** @class Object
+ * 	@brief Класс для хранения информации об объектах
+ * */
+class Object: public RepoElement
+{
+public:
+	Object( int id, int type );
 
 	/** @brief Получить число детей объекта
 	 *	@brief @return Число детей объекта
@@ -186,9 +227,6 @@ public:
 	/** @brief Получить список идентификаторов дочерних элементов */
 	QString childrenToString();
 
-	/** @brief Получить список идентификаторов родителей */
-	QString parentsToString();
-
 	/** @brief Сериализовать объект в строку
 	 *	@brief @return Сериализованный объект
 	 * */
@@ -223,51 +261,15 @@ public:
 		qDebug() << "outcoming:" << outcomingLinks;
 		qDebug() << "props:" <<  props;
 	}
-
-	void addRef(int parent)
-	{
-		refs++;
-		if (!parents.contains(parent))
-			parents.append(parent);
-	}
-
-	void removeRef(int parent)
-	{
-		if( refs > 0)
-			refs--;
-		if (parents.contains(parent)) {
-			parents.removeAll(parent);
-		}
-	}
-
-	int refCount()
-	{
-		return refs;
-	}
-
 private:
-	/** @brief Идентификатор */
-	int id;
-	/** @brief Тип */
-	int type;
-	/** @brief Имя */
-	QString name;
-	/** @brief Описание */
-	QString description;
 	/** @brief Список дочерних элементов */
 	QMap<int, NodeOnDiagram> nodeChildren;
 	/** @brief Список дочерних линков */
 	QMap<int, EdgeOnDiagram> edgeChildren;
-	/** @brief Свойства и их значения */
-	QMap<QString, QString> props;
 	/** @brief Список входящих связей */
 	QList<int> incomingLinks;
 	/** @brief Список исходящий связей */
 	QList<int> outcomingLinks;
-	/** @brief Число ссылок на объект. Deprecated. */
-	int refs;
-	/** @brief Список родителей объекта */
-	QList<int> parents;
 };
 
 /* class for all edge entities
@@ -275,42 +277,10 @@ private:
 /** @class Link
  * 	@brief Класс для хранения информации о связях
  * 	*/
-class Link
+class Link: public RepoElement
 {
 public:
-	Link( int _id, int _type );
-
-	/** @brief Получить идентификатор связи
-	 * 	@brief @return Идентификатор связи
-	 * 	*/
-	int getId();
-	/** @brief Получить тип связи
-	 * 	@brief @return Тип связи
-	 * 	*/
-	int getType();
-
-	/** @brief Получить имя связи
-	 * 	@brief @return Имя связи
-	 * 	*/
-	QString getName();
-	/** @brief Установить имя связи */
-	void setName( QString arg /**< Имя */);
-
-	/** @brief Получить описание связи
-	 * 	@brief @return Описание связи
-	 * 	*/
-	QString getDescription();
-	/** @brief Установить описание связи */
-	void setDescription( QString /**< Описание */);
-
-	/** @brief Установить значние свойства */
-	void setProperty( QString name, /**< Свойство */
-						QString val /**< Значение свойства */
-						);
-	/** @brief Получить значение свойства
-	 * 	@brief @return Значение свойства
-	 * 	*/
-	QString getProperty( QString name /**< Свойство */);
+	Link( int id, int type );
 
 	/** @brief Сериализовать связь в строку
 	 * 	@brief @return Строковое представление связи
@@ -331,8 +301,6 @@ public:
 	void removeObjectTo( int id /**< Идентификатор объекта */);
 	/** @brief Отсоединить объект от конца связи */
 	void removeObjectFrom( int id /**< Идентификатор объекта */);
-	/** @brief Получить список идентификаторов родителей */
-	QString parentsToString();
 
 	/** @brief Получить идентификатор объекта, присоединенного к началу связи
 	 * 	@brief @return Идентификатор объекта, присоединенного к началу связи
@@ -349,52 +317,16 @@ public:
 		qDebug() << "from:" << objectsFrom;
 		qDebug() << "props:" <<  props;
 	}
-
-	void addRef(int parent)
-	{
-		refs++;
-		if (!parents.contains(parent))
-			parents.append(parent);
-	}
-
-	void removeRef(int parent)
-	{
-		if( refs > 0)
-			refs--;
-		if (parents.contains(parent)) {
-			parents.removeAll(parent);
-		}
-	}
-
-	int refCount()
-	{
-		return refs;
-	}
-
 private:
 	/** @brief Получить список идентификаторов объектов, присоединенных к концу связи */
 	QString getObjectsTo();
 	/** @brief Получить список идентификаторов объектов, присоединенных к качалу связи */
 	QString getObjectsFrom();
 
-	/** @brief Идентификатор */
-	int id;
-	/** @brief Тип */
-	int type;
-	/** @brief Имя */
-	QString name;
-	/** @brief Описание */
-	QString description;
-	/** @brief Свойства и их значения */
-	QMap<QString, QString> props;
 	/** @brief Объекты, присоединенные к концу связи */
 	QList<int> objectsTo;
 	/** @brief Объекты, присоединенные к началу связи */
 	QList<int> objectsFrom;
-	/** @brief Число ссылок на связь */
-	int refs;
-	/** @brief Список родителей связи */
-	QList<int> parents;
 };
 
 /* types description
