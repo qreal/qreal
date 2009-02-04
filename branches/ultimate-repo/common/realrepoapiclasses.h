@@ -160,6 +160,17 @@ namespace QRealTypes
 		/** @brief */
 		void setVisibility( const bool flag /**< Индикатор визуальности объекта */);
 
+		/** @brief Установить конфигурацию элемента
+		 *	@brief @return Код возврата
+		 * */
+		int setConfiguration(int parent, /**< Идентификатор диаграммы */
+							QString conf /**< Конфигурация */
+							);
+		/** @brief Получить конфигурацию элемента
+		 *	@brief @return Конфигурация элемента
+		 * */
+		QString getConfiguration(int parent /**< Идентификатор диаграммы */ );
+
 		/** @brief Получить идентификаторы всех контейнеров которым принадлежит объект
 		 *	@brief @return Идентификаторы контейнеров объекта
 		 * */

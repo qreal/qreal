@@ -160,6 +160,20 @@ void RealObject::setVisibility( const bool arg )
 	m_visibility = arg;
 }
 
+int RealObject::setConfiguration(int parent, QString conf)
+{
+	if (client)
+		return client->setConfiguration(m_id, parent, conf);
+	return -1;
+}
+
+QString RealObject::getConfiguration(int parent)
+{
+	if (client)
+		return client->getConfiguration(m_id, parent);
+	return "";
+}
+
 QIntList RealObject::getContainerId()
 {
 	if (client)
