@@ -326,11 +326,15 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 	}
 
 	if ( 1 ){ //type( parentItem ) == Container ) {
-		beginRemoveRows(parent,row,row+count-1);
+
+		// Надо сначала попробовать удалить элемент на сервере, потому как если
+		// серверу это не удастся, модель не должна измениться.
 		for ( int i = row; i < row+count; i++ ){
 //			qDebug() << "deleting element " << parentItem->children[i]->id;
 			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
 		}
+
+		beginRemoveRows(parent,row,row+count-1);
 
 		for ( int i = row; i < row+count; i++ ) {
 			hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
@@ -466,28 +470,28 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				CopyType copyType = SYM_LINK_TYPE;
 
 				if( !newElement ){
-				
+
 					QMenu menu;
 
 					QAction *copyAction = menu.addAction("Perform full copy");
 					QAction *symlinkAction = menu.addAction("Add symlink");
 
-					if ( QAction *selectedAction = menu.exec(QPoint(100,500)) ) { 
+					if ( QAction *selectedAction = menu.exec(QPoint(100,500)) ) {
 						// hack with coords (model knows nothing about the GUI event)
 						if ( selectedAction == copyAction ) {
 							copyType = FULL_COPY_TYPE;
 						} else if( selectedAction == symlinkAction ){
 							copyType = SYM_LINK_TYPE;
-						} else 
+						} else
 							return false;
-					} else 
+					} else
 						return false;
 				}
 
 				// drag'n'drop РёР· РїР°Р»РёС‚СЂС‹, СЃРѕР·РґР°РµРј РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚
 				if ( action == Qt::CopyAction && newElement ) { // РґРµСЂРµРІРѕ РёРЅСЃС‚РїРµРєС‚РѕСЂР° РѕР±'РµРєС‚РѕРІ
 					qDebug() << "Qt::CopyAction";
-						
+
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
 								hashChildCount[newtype], hashChildCount[newtype]);
 					id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
@@ -532,7 +536,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 							//id++; // i'm gonna burn in hell for that, i know
 							createItem(parentItem, id, newtype, name);
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldparent, true);
-						}	
+						}
 					}
 					createItem(parentItem, id, newtype);
 				}
