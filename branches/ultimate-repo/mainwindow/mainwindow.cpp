@@ -52,6 +52,7 @@ MainWindow::MainWindow()
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
+	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
 
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
@@ -282,4 +283,13 @@ void MainWindow::showOptions()
 		QVector<bool> selectedEditors = dialog.getSelectedEditors();
 		ui.paletteToolbox->setEditors(selectedEditors);
 	}
+}
+
+void MainWindow::runTestQueries() const
+{
+	RealRepoClient client;
+
+	// Запросы к репозиторию писать здесь.
+
+	qDebug() << "Done.";
 }

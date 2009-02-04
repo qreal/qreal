@@ -195,7 +195,7 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 		obj->setName(name);
 		qDebug() << obj->refCount();
 		if (Object * par = mRoot->getObject(parent))
-		{			
+		{
 			par->addNodeChild(id);
 			obj->addRef(parent);
 		} else
@@ -242,11 +242,11 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 				qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
 			else
 				qDebug() << "can't get old parent";
-		
+
 			if( oldparent ){
 				obj->setChildConfiguration(node->getId(), obj->getChildConfiguration(node->getId()));
 				obj->setChildCoord(node->getId(), obj->getChildCoord(node->getId()));
-			} 
+			}
 		}
 		else if( Link* edge = mRoot->getLink(id) ){
 			obj->addEdgeChild(id);
@@ -262,7 +262,7 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 {
 //	qDebug() << __PRETTY_FUNCTION__;
 	qDebug() << "params: " << params;
-//	if (!IsParamsNumberCorrect(params, "FullCopyEntity", 4))	
+//	if (!IsParamsNumberCorrect(params, "FullCopyEntity", 4))
 //		return ReportError(ERR_INCORRECT_PARAMS);
 
 	qDebug() << params[0] << params[1] << params[2] << params[3];
@@ -300,11 +300,11 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 			qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
 		else
 			qDebug() << "can't get old parent";
-		
+
 		if( oldparent && newparent ){
 			newparent->setChildConfiguration(node->getId(), oldparent->getChildConfiguration(oldnode->getId()));
 			newparent->setChildCoord(node->getId(), oldparent->getChildCoord(oldnode->getId()));
-		} 
+		}
 
 		QStringList list = oldnode->childrenToString().split("\t");
 		qDebug() << "children: " << list;
@@ -317,9 +317,9 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 				QStringVector par;
 				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
 				handleFullCopyEntity(par);
-			}	
+			}
 		}
-	}	
+	}
 	else //if( Link* edge = mRoot->getLink(newid) ){
 		qDebug() << "not implemented yet";
 
@@ -974,6 +974,7 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_GET_CONTAINERS:
 		{
 			resp = handleGetContainers(command.toVector());
+			break;
 		}
 		default:
 		{

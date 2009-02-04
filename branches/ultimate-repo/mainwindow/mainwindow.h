@@ -65,6 +65,10 @@ public slots:
 protected:
 	virtual void closeEvent(QCloseEvent *event);
 
+private slots:
+	/** @brief Исполнить тестовые запросы к репозиторию */
+	void runTestQueries() const;
+
 private:
 	/** @brief Модель */
 	RealRepoModel *model;

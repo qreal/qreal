@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>579</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -83,6 +83,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionOptions"/>
+    <addaction name="actionRun_test_queries"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -434,6 +435,11 @@
    </property>
    <property name="text">
     <string>Show command list</string>
+   </property>
+  </action>
+  <action name="actionRun_test_queries">
+   <property name="text">
+    <string>Run test queries</string>
    </property>
   </action>
  </widget>
