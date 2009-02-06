@@ -327,8 +327,6 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 
 	if ( 1 ){ //type( parentItem ) == Container ) {
 
-		// Надо сначала попробовать удалить элемент на сервере, потому как если
-		// серверу это не удастся, модель не должна измениться.
 		for ( int i = row; i < row+count; i++ ){
 //			qDebug() << "deleting element " << parentItem->children[i]->id;
 			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
@@ -476,7 +474,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					QAction *copyAction = menu.addAction("Perform full copy");
 					QAction *symlinkAction = menu.addAction("Add symlink");
 
-					if ( QAction *selectedAction = menu.exec(QPoint(100,500)) ) {
+					if ( QAction *selectedAction = menu.exec(QCursor::pos()) ) {
 						// hack with coords (model knows nothing about the GUI event)
 						if ( selectedAction == copyAction ) {
 							copyType = FULL_COPY_TYPE;
