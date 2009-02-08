@@ -14,7 +14,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 //	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
-//	setBackgroundBrush(gradient);	
+//	setBackgroundBrush(gradient);
 }
 
 void EditorViewScene::clearScene()
@@ -92,6 +92,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	stream << uuid;				// uuid
 	stream << type_id;			// type
+	stream << oldparent;
 	stream << name;
 	stream << event->scenePos();
 
