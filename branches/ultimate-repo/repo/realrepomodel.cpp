@@ -466,14 +466,14 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 			{
 				qDebug() << "adding to container, action is " << action;
 				int id = newid;
-				qDebug() << "newid: " << newid;	
+				qDebug() << "newid: " << newid;
 
 				// drag'n'drop из эксплорера, создаем ссылку на текущий элемент
-				bool newElement = ( name == "(anon element)" );
+				bool newElement = (id == -1);
 				qDebug() << newElement << name;
 				CopyType copyType = SYM_LINK_TYPE;
 
-				if( !newElement ){
+				if (!newElement) {
 
 					QMenu menu;
 
@@ -482,9 +482,9 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 
 					if ( QAction *selectedAction = menu.exec(QCursor::pos()) ) {
 						// hack with coords (model knows nothing about the GUI event)
-						if ( selectedAction == copyAction ) {
+						if (selectedAction == copyAction) {
 							copyType = FULL_COPY_TYPE;
-						} else if( selectedAction == symlinkAction ){
+						} else if (selectedAction == symlinkAction) {
 							copyType = SYM_LINK_TYPE;
 						} else
 							return false;
@@ -493,7 +493,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				}
 
 				// drag'n'drop из палитры, создаем новый элемент
-				if ( action == Qt::CopyAction && newElement ) { // дерево инстпектора об'ектов
+				if (action == Qt::CopyAction && newElement) { // дерево инспектора объектов
 					qDebug() << "Qt::CopyAction";
 
 					beginInsertRows(index(newtype-1,0,QModelIndex()),
@@ -526,7 +526,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				if( newElement ){
 					createItem(parentItem, id, newtype, name);
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
-				}	
+				}
 				else {
 					// Если объект подвесили и в корень, и как сына другого объекта,
 					// надо дать об этом знать репозиторию, иначе будет #95.
@@ -535,7 +535,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						if( copyType == SYM_LINK_TYPE ){
 							qDebug() << "SYM_LINK_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
-						}	
+						}
 						else if ( copyType == FULL_COPY_TYPE )	{
 							qDebug() << "FULL_COPY_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
@@ -544,11 +544,11 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						hashChildCount[id] = hashChildCount[newid];
 						if ( hashDiagramElements[oldParent].contains(newid) ){
 							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
-							hashDiagramElements[parentItem->id][id].configuration = 
+							hashDiagramElements[parentItem->id][id].configuration =
 								hashDiagramElements[oldParent][newid].configuration;
-							hashDiagramElements[parentItem->id][id].position = 
+							hashDiagramElements[parentItem->id][id].position =
 								hashDiagramElements[oldParent][newid].position;
-						}	
+						}
 					} else
 						createItem(parentItem, id, newtype);
 				}
