@@ -321,7 +321,7 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 
 	qDebug() << result.first << result.second;
 
-	return ReportSuccess(QString::number(id));
+	return ReportSuccess(QString::number(id+15)); // yeah, i gonna burn in hell for that...
 }
 
 IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)

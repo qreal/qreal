@@ -383,6 +383,8 @@ dbg;
 	stream << item->parent->id;
 	stream << hashNames[item->id];
 	stream << hashDiagramElements[item->parent->id][item->id].position;
+	qDebug() << "ID: 	 " << item->id;
+	qDebug() << "TYPE: 	 " << hashTypes[item->id];
 	qDebug() << "PARENT: " << item->parent->id;
 
 	QMimeData *mimeData = new QMimeData;
@@ -464,6 +466,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 			{
 				qDebug() << "adding to container, action is " << action;
 				int id = newid;
+				qDebug() << "newid: " << newid;	
 
 				// drag'n'drop из эксплорера, создаем ссылку на текущий элемент
 				bool newElement = ( name == "(anon element)" );
@@ -529,29 +532,30 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					// надо дать об этом знать репозиторию, иначе будет #95.
 					// TODO: Subject to refactoring.
 					if (action == Qt::CopyAction ) {
-						createItem(parentItem, id, newtype, name);
 						if( copyType == SYM_LINK_TYPE ){
 							qDebug() << "SYM_LINK_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
-							if ( hashDiagramElements[oldParent].contains(id) ){
-								qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
-								hashDiagramElements[parentItem->id][id].configuration = 
-									hashDiagramElements[oldParent][id].configuration;
-								hashDiagramElements[parentItem->id][id].position = 
-									hashDiagramElements[oldParent][id].position;
-							}	
-
 						}	
 						else if ( copyType == FULL_COPY_TYPE )	{
 							qDebug() << "FULL_COPY_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 						}
+						createItem(parentItem, id, newtype, name);
+		// XXX			hashChildCount[id] = hashChildCount[newid];
+						if ( hashDiagramElements[oldParent].contains(newid) ){
+							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
+							hashDiagramElements[parentItem->id][id].configuration = 
+								hashDiagramElements[oldParent][newid].configuration;
+							hashDiagramElements[parentItem->id][id].position = 
+								hashDiagramElements[oldParent][newid].position;
+						}	
 					} else
 						createItem(parentItem, id, newtype);
 				}
 				endInsertRows();
 //				foreach( RepoTreeItem *item, hashTreeItems[id])
 //					emit dataChanged(index(item),index(item));
+			qDebug() << "id: " << id << ", children: " << hashChildCount[id];
 			}
 			break;
 		default:
@@ -610,6 +614,7 @@ dbg;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
+	qDebug() << "parent: " << parentItem->id << ", childcount: " << hashChildCount[parentItem->id];
 //	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
@@ -631,6 +636,7 @@ dbg;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
+	qDebug() << "parent: " << parentItem->id << ", childcount: " << hashChildCount[parentItem->id];
 //	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
