@@ -49,7 +49,7 @@ QModelIndex RealRepoModel::createDefaultTopLevelItem() {
 	RepoTreeItem *diagramCategory = hashTreeItems[UML::krnnDiagram].first();
 	readCategoryTable(diagramCategory);
 	if (diagramCategory->children.empty()) {
-		addElementToModel(diagramCategory, index(diagramCategory), -1,
+		addElementToModel(diagramCategory, index(diagramCategory), -1, -1,
 			UML::krnnDiagram, "Root diagram", QPointF(), Qt::CopyAction);
 	}
 
@@ -380,8 +380,10 @@ dbg;
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << item->id;
 	stream << hashTypes[item->id];
+	stream << item->parent->id;
 	stream << hashNames[item->id];
 	stream << hashDiagramElements[item->parent->id][item->id].position;
+	qDebug() << "PARENT: " << item->parent->id;
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);
@@ -416,23 +418,24 @@ dbg;
 	QDataStream stream(&dragData, QIODevice::ReadOnly);
 
 	QString name;
-	int newid = 0, newtype = 0;
+	int newid = 0, newtype = 0, oldParent = -1;
 	QPointF newPos;
 
 	stream >> newid;
 	stream >> newtype;
+	stream >> oldParent;
 	stream >> name;
 	stream >> newPos;
 
 //	qDebug() << "dropped" << newid << newtype << name << newPos;
 
 //	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
-	return addElementToModel(parentItem, parent, newid, newtype, name, newPos,
+	return addElementToModel(parentItem, parent, oldParent, newid, newtype, name, newPos,
 		action);
 }
 
 bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
-	const QModelIndex &parent, int const newid, int const newtype,
+	const QModelIndex &parent, int oldParent, int const newid, int const newtype,
 	QString const &name, QPointF const &newPos, Qt::DropAction action)
 {
 	switch (type(parentItem)) {
@@ -515,31 +518,40 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						return false;
 					}
 				}
-
 				// дерево инспектора диаграмм
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-				if( newElement )
+				if( newElement ){
 					createItem(parentItem, id, newtype, name);
+					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
+				}	
 				else {
 					// Если объект подвесили и в корень, и как сына другого объекта,
 					// надо дать об этом знать репозиторию, иначе будет #95.
 					// TODO: Subject to refactoring.
 					if (action == Qt::CopyAction ) {
-						int oldparent = -1;
-						if( hashTreeItems[id].size() > 0 && hashTreeItems[id].at(0)->parent )
-							oldparent = hashTreeItems[id].at(0)->parent->id;
-						if( copyType == SYM_LINK_TYPE )
-							id = repoClient->copyEntity(newtype, id, parentItem->id, oldparent);
+						createItem(parentItem, id, newtype, name);
+						if( copyType == SYM_LINK_TYPE ){
+							qDebug() << "SYM_LINK_TYPE";
+							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
+							if ( hashDiagramElements[oldParent].contains(id) ){
+								qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
+								hashDiagramElements[parentItem->id][id].configuration = 
+									hashDiagramElements[oldParent][id].configuration;
+								hashDiagramElements[parentItem->id][id].position = 
+									hashDiagramElements[oldParent][id].position;
+							}	
+
+						}	
 						else if ( copyType == FULL_COPY_TYPE )	{
-							//id++; // i'm gonna burn in hell for that, i know
-							createItem(parentItem, id, newtype, name);
-							id = repoClient->copyEntity(newtype, id, parentItem->id, oldparent, true);
+							qDebug() << "FULL_COPY_TYPE";
+							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 						}
-					}
-					createItem(parentItem, id, newtype);
+					} else
+						createItem(parentItem, id, newtype);
 				}
-				hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				endInsertRows();
+//				foreach( RepoTreeItem *item, hashTreeItems[id])
+//					emit dataChanged(index(item),index(item));
 			}
 			break;
 		default:
@@ -582,6 +594,7 @@ dbg;
 void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type)
 {
 dbg;
+//	qDebug() << "\n\n====================";
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
@@ -597,10 +610,12 @@ dbg;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
+//	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
 void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, int type, QString name){
 dbg;
+//	qDebug() << "\n\n==================== 2";
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
@@ -616,6 +631,7 @@ dbg;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
+//	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
 void RealRepoModel::updateProperties(int /*id*/)

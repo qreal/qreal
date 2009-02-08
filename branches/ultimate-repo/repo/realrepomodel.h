@@ -246,7 +246,7 @@ class RealRepoModel : public QAbstractItemModel
 		 *	@brief @return true, если элемент добавлен, иначе false
 		 * */
 		bool addElementToModel(RepoTreeItem *const parentItem,
-			const QModelIndex &parent, int const newid, int const newtype,
+			const QModelIndex &parent, int oldparent, int const newid, int const newtype,
 			QString const &name, QPointF const &newPos, Qt::DropAction action);
 
 		/** @brief Корневой элемент */

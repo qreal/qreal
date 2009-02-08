@@ -180,8 +180,6 @@ IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
 
 IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
-//	qDebug() << __PRETTY_FUNCTION__;
-	qDebug() << params;
 //	if ( !IsParamsNumberCorrect(params, "CreateEntity", 4) && !IsParamsNumberCorrect(params, "CreateEntity", 3))
 //		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -223,45 +221,43 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 
 IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &params)
 {
-	if (!IsParamsNumberCorrect(params, "CopyEntity", 3))
+	qDebug() << params;
+	if (!IsParamsNumberCorrect(params, "CopyEntity", 4))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
 	int type = params[0].toInt();
 	int const id = params[1].toInt();
-	int newParent = params[2].toInt();
-	int oldParent = params[3].toInt();
-	if (Object * obj = mRoot->getObject(newParent))
+	int newParentId = params[2].toInt();
+	int oldParentId = params[3].toInt();
+	if (Object * newparent = mRoot->getObject(newParentId))
 	{
+		Object * oldparent;
 		if( Object * node = mRoot->getObject(id) ){
-			qDebug() << node->refCount();
-			obj->addNodeChild(id);
-			node->addRef(newParent);
-			qDebug() << node->refCount();
-			Object * oldparent = mRoot->getObject(oldParent);
+			oldparent = mRoot->getObject(oldParentId);
 			if( oldparent )
 				qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
 			else
 				qDebug() << "can't get old parent";
 
+			newparent->addNodeChild(id);
+			node->addRef(newParentId);
 			if( oldparent ){
-				obj->setChildConfiguration(node->getId(), obj->getChildConfiguration(node->getId()));
-				obj->setChildCoord(node->getId(), obj->getChildCoord(node->getId()));
+				newparent->setChildConfiguration(id, oldparent->getChildConfiguration(id));
+				newparent->setChildCoord(id, oldparent->getChildCoord(id));
 			}
 		}
 		else if( Link* edge = mRoot->getLink(id) ){
-			obj->addEdgeChild(id);
-			edge->addRef(newParent);
+			newparent->addEdgeChild(id);
+			edge->addRef(newParentId);
 		}
 	}
 
-	mLog += QString("element  with id: %1, type: %2, new parent --  %3").arg(id).arg(type).arg(newParent);
+	mLog += QString(" element  with id: %1, type: %2, new parent --  %3").arg(id).arg(type).arg(newParentId);
 	return ReportSuccess(QString::number(id));
 }
 
 IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &params)
 {
-//	qDebug() << __PRETTY_FUNCTION__;
-	qDebug() << "params: " << params;
 //	if (!IsParamsNumberCorrect(params, "FullCopyEntity", 4))
 //		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -592,7 +588,7 @@ IntQStringPair QRealRepoServerThread::handleSetPosition(QStringVector const &par
 		qDebug() << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
-	mLog += QString(", new %1's position - (%2:%3)").arg(id).arg(x).arg(y);
+	mLog += QString(", new %1's position within %2 - (%3:%4)").arg(id).arg(parent).arg(x).arg(y);
 	return ReportSuccess("");
 }
 
@@ -631,7 +627,7 @@ IntQStringPair QRealRepoServerThread::handleSetConfiguration(QStringVector const
 		qDebug() << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
-	mLog += QString(", conf %1").arg(conf);
+	mLog += QString(", new %1's config within %2: %3").arg(id).arg(parent).arg(conf);
 	return ReportSuccess("");
 }
 
@@ -701,7 +697,7 @@ IntQStringPair QRealRepoServerThread::handleGetProperty(QStringVector const &par
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
 
-	mLog += QString(", sent property value: %1 - [%2]").arg(name).arg(resp);
+	mLog += QString(", sent %1's property value: %2 - [%3]").arg(id).arg(name).arg(resp);
 	return ReportSuccess(resp);
 }
 

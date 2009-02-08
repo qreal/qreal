@@ -77,12 +77,13 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
-	int uuid, type_id;
+	int uuid, type_id, oldparent;
 	QString name;
 	QPointF pos;
 
 	in_stream >> uuid;
 	in_stream >> type_id;
+	in_stream >> oldparent;
 	in_stream >> name;
 	in_stream >> pos;
 
