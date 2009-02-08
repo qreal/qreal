@@ -541,7 +541,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 						}
 						createItem(parentItem, id, newtype, name);
-		// XXX			hashChildCount[id] = hashChildCount[newid];
+						hashChildCount[id] = hashChildCount[newid];
 						if ( hashDiagramElements[oldParent].contains(newid) ){
 							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
 							hashDiagramElements[parentItem->id][id].configuration = 

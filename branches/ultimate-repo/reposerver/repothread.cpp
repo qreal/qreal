@@ -308,7 +308,15 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 			if( Object * child = mRoot->getObject(list[i].toInt()) ){
 				QStringVector par;
 				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
-				handleFullCopyEntity(par);
+				int newChildId = handleFullCopyEntity(par).second.toInt();
+				if( Object * newChild = mRoot->getObject(newChildId) )
+				{
+					node->addNodeChild(newChildId);
+					newChild->addRef(newid);
+					qDebug() << "id: " << newid << ", children: " << node->childrenCount();
+				} else
+					qDebug() << "INCORRECT CHILD " << newChildId;
+
 			} else if( Link* child = mRoot->getLink(list[i].toInt()) ){
 				QStringVector par;
 				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
@@ -321,7 +329,7 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 
 	qDebug() << result.first << result.second;
 
-	return ReportSuccess(QString::number(id+15)); // yeah, i gonna burn in hell for that...
+	return ReportSuccess(QString::number(newid)); 
 }
 
 IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
