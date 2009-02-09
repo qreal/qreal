@@ -346,7 +346,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 			obj->removeNodeChild(id);
 			child->removeRef(parent);
 			qDebug() << child->refCount();
-			if( child->refCount() == 0 ){
+			if( child->refCount() == 1 ){
 				QStringList children = child->childrenToString().split("\t");
 				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
 				foreach(QString childId, children){
@@ -356,7 +356,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 				}
 				mTypesInfo->elementDeleted(child->getType(), id);
 				mRoot->deleteObject(id);
-			}
+			}	
 		} else if (Link * child = mRoot->getLink(id)){
 			obj->removeEdgeChild(id);
 			child->removeRef(parent);
@@ -364,7 +364,8 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 				mTypesInfo->elementDeleted(child->getType(), id);
 				mRoot->deleteLink(id);
 			}
-		}
+		} else
+			qDebug() << "unknown element";
 	} else {
 		qDebug() << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
