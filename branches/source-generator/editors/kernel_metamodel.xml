@@ -183,6 +183,11 @@
   </node>
   <edge id="krneComLink" name="CommentLink" >
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association id="krnaComLinkCom" >
       <begin idref="krnnComment" />
