@@ -727,6 +727,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association role="constraint" id="actaConstraintEdgeBegin" >
       <begin idref="krnnElement" />
@@ -814,6 +819,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association role="any leave" end_type="arrow" id="actaEdgeBegin" >
       <begin idref="krnnElement" />
@@ -826,6 +836,11 @@
   </edge>
   <edge id="actBehaviorEdge" name="BehaviorEdge" >
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association id="actaBehaviorEdgeBegin" >
       <begin idref="bbnBehavior" />
@@ -843,6 +858,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association end_type="arrow" id="actaExceptionHandlerBegin" >
       <begin idref="actnObjectNode" />

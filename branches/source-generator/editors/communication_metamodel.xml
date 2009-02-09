@@ -10,6 +10,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association role="interaction" id="cmnaMessage" >
       <begin idref="cmnnCLifeline" />
@@ -40,6 +45,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association role="interaction" multiplicity="false" id="cmnaMessageWithSequenceNumber" >
       <begin idref="cmnnCLifeline" />

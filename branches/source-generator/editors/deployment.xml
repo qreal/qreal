@@ -263,6 +263,11 @@
   <edge id="dplManifestation" name="Manifestation" >
    <!-- тоже тире-->
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association labelled="true" end_type="arrow" id="dplManifestation" line_type="dashLine" >
       <begin idref="dplArtifact" />
@@ -384,7 +389,8 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="krnnAssociations" role="association" />
+<!--      <parent parent_id="krnnAssociations" role="association" /> -->
+      <parent parent_id="krneRelationship" />
      </generalization>
     </generalizations>
    </logic>
@@ -392,6 +398,11 @@
   <edge id="dplDeployment" name="Deployment" >
    <!-- тире-тире стрелочка-->
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association labelled="true" multiplicity="false" end_type="arrow" id="dplDeployment" line_type="dashLine" >
       <begin idref="dplArtifact" />
@@ -406,6 +417,11 @@
   <edge id="dplDeployment2" name="Deployment2" >
    <!-- тире-тире стрелочка + ограничение должны нах-ся в 1 ноде-->
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association labelled="false" multiplicity="false" end_type="arrow" id="dplDeployment2" line_type="dashLine" >
       <begin idref="dplArtifact" />

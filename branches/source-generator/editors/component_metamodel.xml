@@ -126,6 +126,11 @@
     </view>
    </graphics>
    <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
     <associations>
      <association role="source" id="cmpaConnectorSource" >
       <begin idref="cmpnComponent" />
