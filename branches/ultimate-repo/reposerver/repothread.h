@@ -27,7 +27,7 @@ namespace reposerver
 		/** @brief Конструктор */
 		QRealRepoServerThread(int const &mSocketDescriptor, /**< Дескриптор сокета */
 								QObject *const parent, /**< Родительский элемент*/
-								Root *const mRoot, /**< Объект, хранящий все элементы репозитория*/
+								RepoData *const repoData, /**< Объект, хранящий все элементы репозитория*/
 								RepoTypesInfo *const info, /**< Информация о типах */
 								int const &id /**< Начальное значение идентификаторов элементов */
 								);
@@ -171,7 +171,7 @@ namespace reposerver
 		/** @brief Дескриптор сокета */
 		int mSocketDescriptor;
 		/** @brief Объект, хранящий данные о всех сущностях */
-		Root *mRoot;
+		RepoData *mRepoData;
 		/** @brief Объект, хранящий данные о всех типах элементов */
 		RepoTypesInfo *mTypesInfo;
 		/** @brief Вспомогательный счетчик */

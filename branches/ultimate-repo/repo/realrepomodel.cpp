@@ -523,7 +523,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				}
 				// дерево инспектора диаграмм
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-				if( newElement ){
+				if (newElement) {
 					createItem(parentItem, id, newtype, name);
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 				}
@@ -542,7 +542,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						}
 						createItem(parentItem, id, newtype, name);
 						hashChildCount[id] = hashChildCount[newid];
-						if ( hashDiagramElements[oldParent].contains(newid) ){
+						if (hashDiagramElements[oldParent].contains(newid)) {
 							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
 							hashDiagramElements[parentItem->id][id].configuration =
 								hashDiagramElements[oldParent][newid].configuration;
@@ -555,7 +555,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				endInsertRows();
 //				foreach( RepoTreeItem *item, hashTreeItems[id])
 //					emit dataChanged(index(item),index(item));
-			qDebug() << "id: " << id << ", children: " << hashChildCount[id];
+				qDebug() << "id: " << id << ", children: " << hashChildCount[id];
 			}
 			break;
 		default:

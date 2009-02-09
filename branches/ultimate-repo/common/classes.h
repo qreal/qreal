@@ -18,16 +18,14 @@ class Object;
 class NodeOnDiagram;
 class EdgeOnDiagram;
 
-/* root entity to handle all the others ( the parent of all `projects',
- * `diagrams', `objects', `links' etc. ). for internal use only.
- */
-/** @class Root
- * 	@brief Корневой элемент, управляет хранением всех остальных
+/** @class RepoData
+ * 	@brief Класс, предоставляющий доступ ко всем объектам в репозитории.
  * */
-class Root
+class RepoData
 {
 public:
-	~Root();
+	RepoData();
+	~RepoData();
 
 	// called while creating new objects
 	/** @brief Добавить объект */
@@ -82,13 +80,18 @@ public:
 	QString getObjectData( int type, /**< Идентификатор типа */
 							int id /**< Идентификатор объекта */
 							);
+	/** @brief Получить корневой объект репозитория
+	 *	@brief @return Корневой объект репозитория. (с) Капитан Очевидность.
+	 * */
+	Object* getRootObject() const;
 
-
-//private:
+private:
 	/** @brief Объекты */
 	QMap<int, Object*> objects;
 	/** @brief Связи */
 	QMap<int, Link*> links;
+	/** @brief Корневой объект репозитория */
+	Object *mRoot;
 };
 
 /** @class RepoElement
@@ -191,6 +194,9 @@ public:
 	void removeNodeChild( int id /**< Идентификатор элемента*/);
 	/** @brief Убрать связь из списка дочерних */
 	void removeEdgeChild( int id /**< Идентификатор связи*/);
+
+	/** @brief Проверить, является ли указанный объект сыном данного */
+	bool isParentOf(int id /**< Идентификатор элемента*/) const;
 
 	/** @brief Изменить расположение дочернего элемента
 	 * 	@brief @return Успешность выполнения операции

@@ -3,7 +3,13 @@
  * */
 #include "classes.h"
 
-Root::~Root()
+RepoData::RepoData()
+{
+	mRoot = new Object(-1, -1);
+	addObject(-1, mRoot);
+}
+
+RepoData::~RepoData()
 {
 	foreach( Object *obj, objects.values() )
 		delete obj;
@@ -11,41 +17,42 @@ Root::~Root()
 		delete link;
 	objects.clear();
 	links.clear();
+	delete mRoot;
 }
 
-void Root::addObject( int id, Object* obj )
+void RepoData::addObject( int id, Object* obj )
 {
 	objects[id] = obj;
 }
 
-void Root::addLink( int id, Link* link )
+void RepoData::addLink( int id, Link* link )
 {
 	links[id] = link;
 }
 
-void Root::deleteObject( int id )
+void RepoData::deleteObject( int id )
 {
 	objects.remove(id);
 }
 
-void Root::deleteLink( int id )
+void RepoData::deleteLink( int id )
 {
 	objects.remove(id);
 }
 
-int Root::getObjectsSize()
+int RepoData::getObjectsSize()
 {
 	foreach( Object* obj, objects)
 		qDebug() << "id: " << obj->getId() << ", name: " << obj->getName();
 	return objects.size();
 }
 
-int Root::getLinksSize()
+int RepoData::getLinksSize()
 {
 	return links.size();
 }
 
-Object *Root::getObject( int id )
+Object *RepoData::getObject( int id )
 {
 	if( objects.contains(id))
 		return objects[id];
@@ -53,7 +60,7 @@ Object *Root::getObject( int id )
 		return 0;
 }
 
-Link *Root::getLink( int id )
+Link *RepoData::getLink( int id )
 {
 	if( links.contains(id) )
 		return links[id];
@@ -61,7 +68,7 @@ Link *Root::getLink( int id )
 		return 0;
 }
 
-QString Root::getObjectsByType( int type )
+QString RepoData::getObjectsByType( int type )
 {
 	QString res = "";
 	for( int i=0; i<objects.values().size(); i++ ){
@@ -75,7 +82,7 @@ QString Root::getObjectsByType( int type )
 	return res;
 }
 
-QString Root::getLinksByType( int type )
+QString RepoData::getLinksByType( int type )
 {
 	QString res = "";
 	for( int i=0; i<links.size(); i++ ){
@@ -88,6 +95,11 @@ QString Root::getLinksByType( int type )
 	if( !res.isEmpty() )
 		res.chop(1);
 	return res;
+}
+
+Object* RepoData::getRootObject() const
+{
+	return mRoot;
 }
 
 // --------------------------------------------------------------------------- //
@@ -326,6 +338,11 @@ bool Object::setChildConfiguration( int id, QString conf )
 	else
 		return false;
 	return true;
+}
+
+bool Object::isParentOf(int id) const
+{
+	return nodeChildren.contains(id) || edgeChildren.contains(id);
 }
 
 // --------------------------------------------------------------------------- //
