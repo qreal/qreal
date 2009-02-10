@@ -29,7 +29,7 @@ class Label;
 class Entity
 {
 public:
-    Entity(){ propsPropagated = false; }
+    Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
 
 	/** @brief Добавить родителя */
     void addParent( QString arg /**< Идентификатор родителя */);
