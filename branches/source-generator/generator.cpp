@@ -141,7 +141,6 @@ void Generator::parseNode( QDomNode dnode ){
 	parsePorts( cur, dnode );
 	parseLabels( cur, dnode );
 
-	cur->type = NODE;
 	objects << cur;
 	categories.at(categories.size()-1)->objects << objectsCount;
 	objectsCount++;
@@ -170,7 +169,6 @@ void Generator::parseEdge( QDomNode dnode ){
 
 	cur->height = -1;
 	cur->width = -1;
-	cur->type = EDGE;
 	edges << cur;
 	objects << cur;
 
@@ -351,7 +349,6 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
 		untitled++;
 		edge->height = -1;
 		edge->width = -1;
-		edge->type = EDGE;
 	}
 	else
 		edge = (Edge*) cur;

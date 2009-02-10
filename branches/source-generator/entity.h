@@ -79,6 +79,8 @@ public:
 class Node : public Entity
 {
 public:
+    Node() { type = NODE; }
+    ~Node() {}
     //TODO: containers 
     //QStringList associations; 
 	/** @brief Список портов */
@@ -145,6 +147,7 @@ public:
         assocsPropagated = false;
         endsPropagated   = false;
         lineType = "Qt::SolidLine";
+        type = EDGE;
     }
     ~Edge(){
 		while (!associations.isEmpty())
