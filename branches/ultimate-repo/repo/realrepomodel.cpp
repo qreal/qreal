@@ -10,12 +10,13 @@
 //#define _LONG_DEBUG
 #include "dbg.h"
 
-RealRepoModel::RealRepoModel(QObject *parent)
+RealRepoModel::RealRepoModel( const QString &addr, const int port, QObject *parent )
 	: QAbstractItemModel(parent)
 {
 dbg;
 	m_error = -1;
-	repoClient = new RealRepoClient();
+	qDebug() << addr << port;
+	repoClient = new RealRepoClient(addr, port, this);
 
 	rootItem = new RepoTreeItem;
 	rootItem->parent = 0;

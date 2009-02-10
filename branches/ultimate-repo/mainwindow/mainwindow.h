@@ -10,6 +10,8 @@
 
 #include "ui_mainwindow.h"
 
+#include "connectiondialog.h"
+
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 
@@ -29,7 +31,7 @@ public:
 
 public slots:
 	/** @brief Осуществить соединение с репозиторием */
-	void connectRepo(QSplashScreen *splash = NULL);
+	void connectRepo(QSplashScreen *splash = NULL, const QString &addr = "127.0.0.1", const int port = 6666);
 	/** @brief Закрыть репозиторий */
 	void closeRepo();
 	/** @brief Настроить minimap */
@@ -68,6 +70,8 @@ protected:
 private slots:
 	/** @brief Исполнить тестовые запросы к репозиторию */
 	void runTestQueries() const;
+	void reconnect();
+	void reconnectRepo(const QString& addr, const int port);
 
 private:
 	/** @brief Модель */
@@ -78,8 +82,13 @@ private:
 	/** @brief Интерфейс главного окна */
 	Ui::MainWindowUi ui;
 
+
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;
+
+	int repoPort;
+	QString repoAddress;
+	ConnectionDialog *connDialog;
 };
 
 #endif

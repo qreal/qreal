@@ -9,7 +9,7 @@
 #include <QByteArray>
 #include <QStringList>
 
-RealRepoClient::RealRepoClient( QObject *parent) : QObject(parent)
+RealRepoClient::RealRepoClient( const QString &addr, const int port, QObject *parent ) : QObject(parent)
 {
 dbg;
 	socket = new QTcpSocket(this);
@@ -17,7 +17,7 @@ dbg;
 
 	socket->abort();
 	m_error = -1;
-	socket->connectToHost("127.0.0.1", 6666);
+	socket->connectToHost(addr, port);
 		if (!socket->waitForConnected(5*1000)) {
 //		emit socket->error(socket->error(), socket->errorString());
 		qDebug() << "cannot connect to the server" << endl;

@@ -28,7 +28,7 @@ class RealRepoModel : public QAbstractItemModel
 
 	public:
 		/** @brief Конструктор */
-		RealRepoModel(QObject *parent = 0 /**< Родительский объект */);
+		RealRepoModel( const QString &addr, const int port, QObject *parent = 0 );
 		/** @brief Деструктор */
 		~RealRepoModel();
 

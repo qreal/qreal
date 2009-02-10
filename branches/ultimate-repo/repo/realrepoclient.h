@@ -19,7 +19,7 @@ class RealRepoClient : public QObject
 	Q_OBJECT;
 
 public:
-	RealRepoClient( QObject *parent = 0);
+	RealRepoClient( const QString& addr, const int port, QObject *parent = 0 );
 	~RealRepoClient();
 
 	/** @brief Получить имя элемента

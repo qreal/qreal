@@ -18,11 +18,10 @@
 #include "editorview.h"
 #include "optionsDialog.h"
 
-MainWindow::MainWindow()
-	: model(0)
+MainWindow::MainWindow() : model(0) 
 {
 	QPixmap korkodil(":/icons/kroki2.PNG");
-	QSplashScreen splash(korkodil, Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	splash.show();
 	QApplication::processEvents();
 
@@ -53,6 +52,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
+	connect(ui.actionReconnect, SIGNAL( triggered() ), this, SLOT( reconnect() ));
 
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
@@ -87,9 +87,19 @@ MainWindow::MainWindow()
 
 	QApplication::processEvents();
 
-	connectRepo(&splash);
+	connDialog = new ConnectionDialog();
+	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
+
+	repoAddress = "127.0.0.1";
+	repoPort = 6666;
+	connectRepo(&splash, repoAddress, repoPort);
 
 	splash.close();
+}
+
+MainWindow::~MainWindow()
+{
+	delete connDialog;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -102,27 +112,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	event->accept();
 }
 
-MainWindow::~MainWindow()
-{
-}
-
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	ui.minimapView->resetMatrix();
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
-void MainWindow::connectRepo(QSplashScreen *splash)
+void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const int port)
 {
 	closeRepo();
-
-	model = new RealRepoModel(this);
+qDebug() << "connecting..." << addr << port;
+	model = new RealRepoModel(addr, port, this);
 	if( model->getState() != QAbstractSocket::ConnectedState ){
 		qDebug() << "repo model creation failed";
 		if (splash != NULL)
 			splash->close();
-		QMessageBox::critical(0, "achtung!", "cannot reach repo server at 127.0.0.1:6666.\n"
-					"make sure that it is running and restart qreal");
+		QMessageBox::critical(0, "achtung!", QString("cannot reach repo server at ") + repoAddress + QString(":") + QString::number(repoPort) + QString("\n") + QString("make sure that it is running and restart qreal"), "AAAAAA!!!!");
 		//qApp->exit();
 		closeRepo();
 		return;
@@ -287,9 +292,22 @@ void MainWindow::showOptions()
 
 void MainWindow::runTestQueries() const
 {
-	RealRepoClient client;
+	RealRepoClient client(repoAddress, repoPort, 0);
 
 	// Запросы к репозиторию писать здесь.
 
 	qDebug() << "Done.";
+}
+
+void MainWindow::reconnect()
+{
+	qDebug() << "OLOLO!!!";
+	connDialog->exec();
+}
+
+void MainWindow::reconnectRepo(const QString& addr, const int port)
+{
+	repoAddress = addr;
+	repoPort = port;
+	connectRepo(0, addr, port);
 }
