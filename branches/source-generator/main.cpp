@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 	// << "orthodox.xml"
 	<< "bpel.xml"
 	<< "qrealparallel_metamodel.xml";
-	Generator generator(l);
-	return 0;
+	Generator generator;
+
+	return generator.work(l);
 }

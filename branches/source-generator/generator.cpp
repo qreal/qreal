@@ -5,14 +5,16 @@
 
 #include "generator.h"
 
-Generator::Generator( QStringList files ){
-
-	// inits
+Generator::Generator()
+{
 	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	res = "\t<file>%1</file>\n";
 
 	untitled = 0;
 	objectsCount = 0;
+}
+
+int Generator::work( QStringList files ){
 
 	// creating directory for generated stuff
 	dir.cd(".");
@@ -37,7 +39,7 @@ Generator::Generator( QStringList files ){
 	// write the resource file
 	QFile file("generated/real_dynamic.qrc");
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
+		return 1;
 	QTextStream out(&file);
 	resources += "</qresource>\n</RCC>";
 
@@ -46,6 +48,7 @@ Generator::Generator( QStringList files ){
 	file.close();
 
 	qDebug() << "done";
+	return 0;
 }
 
 Generator::~Generator(){

@@ -22,8 +22,10 @@ class Category;
 class Generator
 {
 public:
-	Generator( QStringList );
+	Generator();
 	~Generator();
+	/** @brief Обработать все входные файлов и сгенерировать редакторы */
+	int work( QStringList );
 
 private:
 	/** @brief Начальное значение идентификаторов сущностей */
