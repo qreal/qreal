@@ -7,7 +7,13 @@ pushd $WD
 qmake
 make
 ./code
+err=$?
 popd
+
+if [ "$err" != "0" ]; then
+    echo Code generator failed, we have to follow him.
+    exit 1
+fi
 
 mkdir -p umllib/generated
 cp -rf $GEN/umllib/generated/* umllib/generated
