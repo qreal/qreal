@@ -30,6 +30,7 @@ class Entity
 {
 public:
     Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
+    virtual ~Entity(){};
 
 	/** @brief Добавить родителя */
     void addParent( QString arg /**< Идентификатор родителя */);
