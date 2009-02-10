@@ -284,13 +284,13 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 	int newid = result.second.toInt();
 	if( Object * node = mRepoData->getObject(newid) ){
 		Object * oldnode = mRepoData->getObject(id);
-		
+
 		*node = *oldnode; // replace by copy constructor or something else
 		node->setId(newid);
 		node->clearChildren();
 		node->removeAllRefs();
 		node->addRef(parentId);
-		
+
 		Object * newparent = mRepoData->getObject(parentId);
 		Object * oldparent = mRepoData->getObject(oldparentId);
 
@@ -335,21 +335,24 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 	{
 		if( Object * child = mRepoData->getObject(id) ){
 			obj->removeNodeChild(id);
-			child->removeRef(parent);
+			child->removeRef(obj->getId());
 			if( child->refCount() == 0 ){
-				QStringList children = child->childrenToString().split("\t");
-				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
-				foreach(QString childId, children){
-					QStringList l = QStringList(childId);
-					l += QString::number(id);
-					handleDeleteEntity(l.toVector());
+				QString childrenString = child->childrenToString();
+				if (childrenString != "") {
+					QStringList children = childrenString.split("\t");
+					// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
+					foreach(QString childId, children){
+						QStringList l = QStringList(childId);
+						l += QString::number(id);
+						handleDeleteEntity(l.toVector());
+					}
 				}
 				mTypesInfo->elementDeleted(child->getType(), id);
 				mRepoData->deleteObject(id);
 			}
 		} else if (Link * child = mRepoData->getLink(id)){
 			obj->removeEdgeChild(id);
-			child->removeRef(parent);
+			child->removeRef(obj->getId());
 			if( child->refCount() == 0 ){
 				mTypesInfo->elementDeleted(child->getType(), id);
 				mRepoData->deleteLink(id);
