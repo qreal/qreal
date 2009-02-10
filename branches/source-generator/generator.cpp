@@ -98,19 +98,22 @@ bool Generator::parseFile( QString filename ){
 	// I. parsing enums
 	QDomNodeList enumList = doc->elementsByTagName("enumType");
 	for( int i=0; i < (int) enumList.length(); i++){
-		parseEnum( enumList.at(i) );
+		if (!parseEnum( enumList.at(i)))
+			 return false;
 	}
 
 	// II. parsing nodes
 	QDomNodeList nodeList = doc->elementsByTagName("node");
 	for( int i=0; i < (int) nodeList.length(); i++ ){
-		parseNode( nodeList.at(i) );
+		if (!parseNode( nodeList.at(i)))
+			return false;
 	}
 
 	// III. parsing edges
 	QDomNodeList edgeList = doc->elementsByTagName("edge");
 	for( int i=0; i < (int) edgeList.length(); i++ ){
-		parseEdge( edgeList.at(i) );
+		if (!parseEdge( edgeList.at(i)))
+			return false;
 	}
 
 	if( categories.last()->objects.size() == 0 )
@@ -144,12 +147,12 @@ bool Generator::parseNode( QDomNode dnode ){
 
 	cur->addProperty("name", "string");
 
-	parseGeneralizations( cur, logic );
-	parseProperties( cur, logic );
-	parseAssociations( cur, logic, isNode);
-	parseSdf( cur, dnode );
-	parsePorts( cur, dnode );
-	parseLabels( cur, dnode );
+	if (!parseGeneralizations( cur, logic )) return false;
+	if (!parseProperties( cur, logic )) return false;
+	if (!parseAssociations( cur, logic, isNode )) return false;
+	if (!parseSdf( cur, dnode )) return false;
+	if (!parsePorts( cur, dnode )) return false;
+	if (!parseLabels( cur, dnode )) return false;
 
 	objects << cur;
 	categories.at(categories.size()-1)->objects << objectsCount;
@@ -172,11 +175,11 @@ bool Generator::parseEdge( QDomNode dnode ){
 	cur->addProperty("fromPort", "string");
 	cur->addProperty("toPort", "string");
 
-	parseEdgeGraphics( cur, dnode );
-	parseGeneralizations( cur, logic );
-	parseProperties( cur, logic );
-	parseAssociations( cur, logic, isNode );
-	parseLabels( cur, dnode );
+	if (!parseEdgeGraphics( cur, dnode )) return false;
+	if (!parseGeneralizations( cur, logic )) return false;
+	if (!parseProperties( cur, logic )) return false;
+	if (!parseAssociations( cur, logic, isNode )) return false;
+	if (!parseLabels( cur, dnode )) return false;
 
 	cur->height = -1;
 	cur->width = -1;
