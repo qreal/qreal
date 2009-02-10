@@ -145,6 +145,11 @@ public:
 			parents.append(parent);
 	}
 
+	void removeAllRefs()
+	{
+		parents.clear();
+	}
+
 	void removeRef(int parent)
 	{
 		if (parents.contains(parent)) {
@@ -153,7 +158,7 @@ public:
 	}
 
 	int refCount()
-	{
+	{	
 		return parents.count();
 	}
 

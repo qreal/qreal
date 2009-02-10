@@ -180,7 +180,6 @@ IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
 
 IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
-	qDebug() << params;
 	if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -192,7 +191,6 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 	if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
 		Object *obj = new Object(id, type);
 		obj->setName(name);
-		qDebug() << obj->refCount();
 		if (Object * par = mRepoData->getObject(parent))
 		{
 			par->addNodeChild(id);
@@ -206,7 +204,6 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 			obj->addRef(-1);
 			mRepoData->getRootObject()->addNodeChild(id);
 		}
-		qDebug() << obj->refCount();
 		mRepoData->addObject(id, obj);
 		mLog += QString(", object created, name %1").arg(name);
 	} else if (mTypesInfo->analyseType(type) == TYPE_LINK){
@@ -232,7 +229,6 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 
 IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &params)
 {
-	qDebug() << params;
 	if (!IsParamsNumberCorrect(params, "CopyEntity", 4))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -248,11 +244,6 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 		Object * oldparent;
 		if( Object * node = mRepoData->getObject(id) ){
 			oldparent = mRepoData->getObject(oldParentId);
-			if( oldparent )
-				qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
-			else
-				qDebug() << "can't get old parent";
-
 			newparent->addNodeChild(id);
 			node->addRef(newParentId);
 			if( oldparent ){
@@ -275,8 +266,6 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 //	if (!IsParamsNumberCorrect(params, "FullCopyEntity", 4))
 //		return ReportError(ERR_INCORRECT_PARAMS);
 
-	qDebug() << params[0] << params[1] << params[2] << params[3];
-
 	int id = params[1].toInt();
 	int parentId = params[2].toInt();
 	int oldparentId = params[3].toInt();
@@ -295,21 +284,15 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 	int newid = result.second.toInt();
 	if( Object * node = mRepoData->getObject(newid) ){
 		Object * oldnode = mRepoData->getObject(id);
-		*node = *oldnode;
+		
+		*node = *oldnode; // replace by copy constructor or something else
 		node->setId(newid);
 		node->clearChildren();
+		node->removeAllRefs();
+		node->addRef(parentId);
+		
 		Object * newparent = mRepoData->getObject(parentId);
-			newparent->addNodeChild(newid);
-			node->addRef(parentId);
-		if( newparent )
-			qDebug() << "newparent: " << newparent->getId() << newparent->getName();
-		else
-			qDebug() << "can't get new parent";
 		Object * oldparent = mRepoData->getObject(oldparentId);
-		if( oldparent )
-			qDebug() << "oldparent: " << oldparent->getId() << oldparent->getName();
-		else
-			qDebug() << "can't get old parent";
 
 		if( oldparent && newparent ){
 			newparent->setChildConfiguration(node->getId(), oldparent->getChildConfiguration(oldnode->getId()));
@@ -317,20 +300,11 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 		}
 
 		QStringList list = oldnode->childrenToString().split("\t");
-		qDebug() << "children: " << list;
 		for( int i=0; i<list.count()-1; i++ ){
 			if( Object * child = mRepoData->getObject(list[i].toInt()) ){
 				QStringVector par;
 				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
-				int newChildId = handleFullCopyEntity(par).second.toInt();
-				if( Object * newChild = mRepoData->getObject(newChildId) )
-				{
-					node->addNodeChild(newChildId);
-					newChild->addRef(newid);
-					qDebug() << "id: " << newid << ", children: " << node->childrenCount();
-				} else
-					qDebug() << "INCORRECT CHILD " << newChildId;
-
+				handleFullCopyEntity(par).second.toInt();
 			} else if( Link* child = mRepoData->getLink(list[i].toInt()) ){
 				QStringVector par;
 				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
@@ -341,14 +315,11 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 	else //if( Link* edge = mRepoData->getLink(newid) ){
 		qDebug() << "not implemented yet";
 
-	qDebug() << result.first << result.second;
-
 	return ReportSuccess(QString::number(newid));
 }
 
 IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &params)
 {
-	qDebug() << params;
 	if (!IsParamsNumberCorrect(params, "DeleteEntity", 2))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
@@ -365,7 +336,6 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 		if( Object * child = mRepoData->getObject(id) ){
 			obj->removeNodeChild(id);
 			child->removeRef(parent);
-			qDebug() << child->refCount();
 			if( child->refCount() == 0 ){
 				QStringList children = child->childrenToString().split("\t");
 				// TODO: Make sure that no object can be itself's ancestor so we won't get stack overflow here.
@@ -385,7 +355,7 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 				mRepoData->deleteLink(id);
 			}
 		} else
-			qDebug() << "unknown element";
+			qDebug() << "unknown element: " << id;
 	} else {
 		qDebug() << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
