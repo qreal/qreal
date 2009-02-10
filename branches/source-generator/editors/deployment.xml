@@ -5,7 +5,7 @@
   </include>
  <namespace>UML 2.1</namespace>
  <diagram name="DEPLOYMENT DIAGRAM" >
-  <node id="DplArtifact" name="Artifact" >
+  <node id="dplArtifact" name="Artifact" >
    <graphics>
     <view>
      <repo_info>
@@ -58,7 +58,7 @@
     </generalizations>
     <containers>
      <container name="Artifact" >
-      <contains idref="DplArtifact" role="artifact" />
+      <contains idref="dplArtifact" role="artifact" />
      </container>
      <container name="Property" >
       <contains idref="DplProperty" role="property" />
@@ -85,7 +85,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent prent_id=" krnnNamedElement" />
+      <parent parent_id="krnnNamedElement" />
      </generalization>
     </generalizations>
    </logic>
@@ -254,7 +254,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="krnnInstanceSpecification" />
+         <!--      <parent parent_id="krnnInstanceSpecification" /> -->
       <parent parent_id="dplDeployedArtifact" />
      </generalization>
     </generalizations>
@@ -375,7 +375,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="krnProperty" />
+      <parent parent_id="krnnProperty" />
      </generalization>
     </generalizations>
     <properties>
