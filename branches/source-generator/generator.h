@@ -25,47 +25,47 @@ public:
 	Generator();
 	~Generator();
 	/** @brief Обработать все входные файлов и сгенерировать редакторы */
-	int work( QStringList );
+	bool work( QStringList );
 
 private:
 	/** @brief Начальное значение идентификаторов сущностей */
 	static const int NUM = 1;
 
 	/** @brief Обработать файл */
-	void parseFile( QString arg /**< Имя файла */);
+	bool parseFile( QString arg /**< Имя файла */);
 	/** @brief Осуществить разбор описания перечисления */
-	void parseEnum( QDomNode arg /**< Узел XML-описания */);
+	bool parseEnum( QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описания элемента */
-	void parseNode( QDomNode arg /**< Узел XML-описания */);
+	bool parseNode( QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описания связи */
-	void parseEdge( QDomNode arg /**< Узел XML-описания */);
+	bool parseEdge( QDomNode arg /**< Узел XML-описания */);
 
 	/** @brief Обработать описание наследования */
-	void parseGeneralizations ( Entity* ent, /**< Сущность */
+	bool parseGeneralizations ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описаний свойств */
-	void parseProperties      ( Entity* ent, /**< Сущность */
+	bool parseProperties      ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */);
 	/** @brief Осуществить разбор описаний ассоциаций */
-	void parseAssociations    ( Entity* ent, /**< Сущность */
+	bool parseAssociations    ( Entity* ent, /**< Сущность */
 								QDomNode arg, /**< Узел XML-описания */
 								bool isNode = false /**< Является ли сущность элементом */
 								);
 	//void parseNodeAssociations( Entity*, QDomNode );
 	/** @brief Осуществить разбор описания графического представления элемента */
-	void parseSdf             ( Entity* ent, /**< Сущность */
+	bool parseSdf             ( Entity* ent, /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний портов */
-	void parsePorts           ( Node* node, /**< Элемент */
+	bool parsePorts           ( Node* node, /**< Элемент */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний надписей, параметризующих SVG */
-	void parseLabels          ( Entity* ent,  /**< Сущность */
+	bool parseLabels          ( Entity* ent,  /**< Сущность */
 								QDomNode arg /**< Узел XML-описания */
 								);
 	/** @brief Осуществить разбор описаний графического представления связей */
-	void parseEdgeGraphics    ( Edge* ed,   /**< Связь */
+	bool parseEdgeGraphics    ( Edge* ed,   /**< Связь */
 								QDomNode arg /**< Узел XML-описания */
 								);
 

@@ -14,16 +14,22 @@ Generator::Generator()
 	objectsCount = 0;
 }
 
-int Generator::work( QStringList files ){
+bool Generator::work( QStringList files ){
 
 	// creating directory for generated stuff
 	dir.cd(".");
 	dir.mkdir("generated");
-	dir.cd("generated");
+	if (!dir.cd("generated"))
+	{
+		qDebug() << "cannot chdir() to 'generated' directory";
+		return false;
+	}
+
 	// parse all files
 	for (int i=0; i<files.size(); i++){
 		qDebug() << "processing file " << files.at(i);
-		parseFile("editors/" + files.at(i));
+		if (!parseFile("editors/" + files.at(i)))
+			return false;
 	}
 	// propagate properties and other useful things
 	propagateAll();
@@ -39,7 +45,7 @@ int Generator::work( QStringList files ){
 	// write the resource file
 	QFile file("generated/real_dynamic.qrc");
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return 1;
+		return false;
 	QTextStream out(&file);
 	resources += "</qresource>\n</RCC>";
 
@@ -48,7 +54,7 @@ int Generator::work( QStringList files ){
 	file.close();
 
 	qDebug() << "done";
-	return 0;
+	return true;
 }
 
 Generator::~Generator(){
@@ -66,13 +72,13 @@ Generator::~Generator(){
 	   delete objects.takeFirst();
 }
 
-void Generator::parseFile( QString filename ){
+bool Generator::parseFile( QString filename ){
 
 	doc = new QDomDocument("+1"); // :)
 	QFile file(filename);
 	if( !file.open(QIODevice::ReadOnly)){
 		qDebug() << "incorrect filename " << filename;
-		return;
+		return false;
 	}
 	QString error = "";
 	int errorLine = 0;
@@ -81,7 +87,7 @@ void Generator::parseFile( QString filename ){
 		file.close();
 		qDebug() << "parse error in " << filename << ", error is " << error
 			<< ". error line is " << errorLine << ", column is " << errorCol;
-		return;
+		return false;
 	}
 	file.close();
 
@@ -111,9 +117,10 @@ void Generator::parseFile( QString filename ){
 		categories.removeLast();
 
 	delete doc;
+	return true;
 }
 
-void Generator::parseEnum( QDomNode dnode ){
+bool Generator::parseEnum( QDomNode dnode ){
 
 	QDomElement cur = dnode.toElement();
 	QStringList values;
@@ -124,10 +131,10 @@ void Generator::parseEnum( QDomNode dnode ){
 	for( int k = 0; k < (int) vals.length(); k++ )
 		values << vals.at(k).toElement().text();
 	enumerations.insert(name, values);
-
+	return true;
 }
 
-void Generator::parseNode( QDomNode dnode ){
+bool Generator::parseNode( QDomNode dnode ){
 
 	Node *cur = new Node();
 	cur->id  = dnode.toElement().attribute("id");
@@ -147,9 +154,10 @@ void Generator::parseNode( QDomNode dnode ){
 	objects << cur;
 	categories.at(categories.size()-1)->objects << objectsCount;
 	objectsCount++;
+	return true;
 }
 
-void Generator::parseEdge( QDomNode dnode ){
+bool Generator::parseEdge( QDomNode dnode ){
 
 	Edge *cur = new Edge();
 	cur->id  = dnode.toElement().attribute("id");
@@ -177,9 +185,10 @@ void Generator::parseEdge( QDomNode dnode ){
 
 	categories.at(categories.size()-1)->objects << objectsCount;
 	objectsCount++;
+	return true;
 }
 
-void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
+bool Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
 
 	QDomNodeList gens = logic.firstChildElement("generalizations").toElement().elementsByTagName("generalization");
 	// for each <generalization> tag
@@ -187,9 +196,10 @@ void Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
 		QString parentID = gens.at(i).firstChildElement("parent").attribute("parent_id");
 		cur->addParent( parentID );
 	}
+	return true;
 }
 
-void Generator::parseProperties( Entity* cur, QDomNode logic ){
+bool Generator::parseProperties( Entity* cur, QDomNode logic ){
 
 	QDomNodeList props = logic.toElement().elementsByTagName("properties");
 	for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> section
@@ -216,9 +226,10 @@ void Generator::parseProperties( Entity* cur, QDomNode logic ){
 				// TODO: defaults and other missing property stuff support
 		}
 	}
+	return true;
 }
 
-void Generator::parsePorts( Node* cur, QDomNode dnode ){
+bool Generator::parsePorts( Node* cur, QDomNode dnode ){
 
 	QDomNodeList ports = dnode.toElement().elementsByTagName("point_port");
 	for( int i=0; i<ports.size(); i++ ){
@@ -241,11 +252,10 @@ void Generator::parsePorts( Node* cur, QDomNode dnode ){
 		port.vals << (qreal) end.attribute("endy").toInt()/cur->height;
 		cur->ports << port;
 	}
-
-
+	return true;
 }
 
-void Generator::parseEdgeGraphics( Edge* cur, QDomNode dnode ){
+bool Generator::parseEdgeGraphics( Edge* cur, QDomNode dnode ){
 
 	QDomNode lineType = dnode.toElement().elementsByTagName("line_type").at(0);
 	if( lineType != QDomNode() ){
@@ -255,10 +265,10 @@ void Generator::parseEdgeGraphics( Edge* cur, QDomNode dnode ){
 		}
 		cur->lineType = "Qt::" + type.replace(0,1,type.at(0).toUpper());
 	}
-
+	return true;
 }
 
-void Generator::parseLabels( Entity* cur, QDomNode dnode ){
+bool Generator::parseLabels( Entity* cur, QDomNode dnode ){
 	QDomNodeList htmls = dnode.toElement().elementsByTagName("html:html");
 	for( int i=0; i < htmls.size(); i++ ){
 		Label l;
@@ -301,11 +311,12 @@ void Generator::parseLabels( Entity* cur, QDomNode dnode ){
 		txt.replace(QString("\""), QString("\\\""));
 		txt.replace(QString("html:"), QString(""));
 		l.text = txt.simplified();
-		cur->labels <<  l;
+		cur->labels << l;
 	}
+	return true;
 }
 
-void Generator::parseSdf( Entity* cur, QDomNode dnode ){
+bool Generator::parseSdf( Entity* cur, QDomNode dnode ){
 
 	QDomNodeList sdf = dnode.toElement().elementsByTagName("picture");
 	if( !dir.exists("shapes") )
@@ -321,8 +332,8 @@ void Generator::parseSdf( Entity* cur, QDomNode dnode ){
 		QFile file("generated/shapes/" + cur->id + "Class.sdf");
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		{
-			Q_ASSERT(!"Sdf file creation error.");
-			return;
+			qDebug() << "Sdf file creation error";
+			return false;
 		}
 		QTextStream stream(&file);
 		sdf.at(0).save(stream, 1);
@@ -336,16 +347,17 @@ void Generator::parseSdf( Entity* cur, QDomNode dnode ){
 		cur->width = -1;
 		cur->visible = ( cur->id == "krnnNamedElement" );
 	}
+	return true;
 }
 
-void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
+bool Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
 
 	Edge* edge;
 	QDomNodeList assocs = logic.toElement().elementsByTagName("association");
 	if( assocs.size() == 0 )
-		return;
+		return true;
 	if( isNode ){
-		return;
+		return true;
 		edge = new Edge();
 		edge->id = QString("untitledEdge_%1").arg(untitled);
 		edge->name = QString("embedded edge #%1").arg(untitled);
@@ -379,8 +391,8 @@ void Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
 		edges << edge;
 		categories.at(categories.size()-1)->objects << objectsCount;
 		objectsCount++;
-
 	}
+	return true;
 }
 
 void Generator::genEnums()
@@ -443,6 +455,7 @@ void Generator::genEnums()
 	out << "#endif\n";
 
 	file.close();
+	return;
 }
 
 void Generator::genTypes()

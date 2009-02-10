@@ -27,5 +27,7 @@ int main(int argc, char *argv[])
 	<< "qrealparallel_metamodel.xml";
 	Generator generator;
 
-	return generator.work(l);
+	if (!generator.work(l))
+		return 1; // Failure
+	return 0; // Success
 }
