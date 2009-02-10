@@ -7,6 +7,12 @@ qmake
 nmake
 del /s /q generated
 release\code.exe
+
+if %ERRORLEVEL% neq 0 (
+	echo "Generate-code failed!"
+	exit /B 1
+)
+
 cd ..\ultimate-repo
 
 md umllib\generated
@@ -25,4 +31,6 @@ xcopy /y /i /e /c /h /r %GEN%\shapes shapes
 xcopy /y /e /c /h /r %GEN%\real_dynamic.qrc .
 :q
 echo "done"
+exit /B 0
+
 
