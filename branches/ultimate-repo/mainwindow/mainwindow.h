@@ -88,7 +88,7 @@ private:
 
 	int repoPort;
 	QString repoAddress;
-	ConnectionDialog *connDialog;
+	qReal::ConnectionDialog *connDialog;
 };
 
 #endif

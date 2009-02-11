@@ -18,7 +18,9 @@
 #include "editorview.h"
 #include "optionsDialog.h"
 
-MainWindow::MainWindow() : model(0) 
+using namespace qReal;
+
+MainWindow::MainWindow() : model(0)
 {
 	QPixmap korkodil(":/icons/kroki2.PNG");
 	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -90,8 +92,8 @@ MainWindow::MainWindow() : model(0)
 	connDialog = new ConnectionDialog();
 	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
 
-	repoAddress = "127.0.0.1";
-	repoPort = 6666;
+	repoAddress = settings.value("repoAddress", "127.0.0.1").toString();
+	repoPort = settings.value("repoPort", 6666).toInt();
 	connectRepo(&splash, repoAddress, repoPort);
 
 	splash.close();
@@ -109,6 +111,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	settings.setValue("size", size());
 	settings.setValue("pos", pos());
 	settings.endGroup();
+	settings.setValue("repoAddress", repoAddress);
+	settings.setValue("repoPort", repoPort);
 	event->accept();
 }
 
