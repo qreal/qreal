@@ -1,13 +1,15 @@
+#include "connectiondialog.h"
+
 #include <QDebug>
 #include <QMessageBox>
-#include "connectiondialog.h"
+#include <QSettings>
 
 using namespace qReal;
 
-ConnectionDialog::ConnectionDialog()
+ConnectionDialog::ConnectionDialog(QString const &address, int port)
 {
-	mAddrEdit = new QLineEdit("127.0.0.1");
-	mPortEdit = new QLineEdit("6666");
+	mAddrEdit = new QLineEdit(address);
+	mPortEdit = new QLineEdit(QString("%1").arg(port));
 
 	mAddrLabel = new QLabel("Address:");
 	mPortLabel = new QLabel("Port:");

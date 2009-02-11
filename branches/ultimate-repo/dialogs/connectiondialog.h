@@ -14,7 +14,7 @@ namespace qReal {
 		Q_OBJECT;
 
 	public:
-		ConnectionDialog();
+		ConnectionDialog(QString const &address, int port);
 		~ConnectionDialog();
 
 	signals:

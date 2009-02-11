@@ -89,11 +89,12 @@ MainWindow::MainWindow() : model(0)
 
 	QApplication::processEvents();
 
-	connDialog = new ConnectionDialog();
-	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
-
 	repoAddress = settings.value("repoAddress", "127.0.0.1").toString();
 	repoPort = settings.value("repoPort", 6666).toInt();
+
+	connDialog = new ConnectionDialog(repoAddress, repoPort);
+	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
+
 	connectRepo(&splash, repoAddress, repoPort);
 
 	splash.close();
