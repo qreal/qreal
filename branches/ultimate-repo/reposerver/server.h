@@ -17,7 +17,7 @@ namespace reposerver
 	Q_OBJECT
 
   public:
-	QRealRepoServer(QObject *const parent = 0);
+	QRealRepoServer(int port, QObject *const parent = 0);
 	~QRealRepoServer();
 
   public slots:

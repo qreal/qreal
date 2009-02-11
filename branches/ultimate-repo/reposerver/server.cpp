@@ -11,10 +11,10 @@
 
 using namespace reposerver;
 
-QRealRepoServer::QRealRepoServer(QObject *const parent): QTcpServer(parent)
+QRealRepoServer::QRealRepoServer(int port, QObject *const parent): QTcpServer(parent)
 {
 	dbg;
-	listen(QHostAddress::Any, 6666);
+	listen(QHostAddress::Any, port);
 	qDebug() << isListening() << serverAddress() << serverPort();
 
 	mRepoData = new RepoData();
