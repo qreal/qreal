@@ -126,13 +126,17 @@ void MainWindow::adjustMinimapZoom(int zoom)
 void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const int port)
 {
 	closeRepo();
-qDebug() << "connecting..." << addr << port;
+	qDebug() << "connecting..." << addr << port;
 	model = new RealRepoModel(addr, port, this);
 	if( model->getState() != QAbstractSocket::ConnectedState ){
 		qDebug() << "repo model creation failed";
 		if (splash != NULL)
 			splash->close();
-		QMessageBox::critical(0, "achtung!", QString("cannot reach repo server at ") + repoAddress + QString(":") + QString::number(repoPort) + QString("\n") + QString("make sure that it is running and restart qreal"), "AAAAAA!!!!");
+		QMessageBox::critical(0, tr("achtung!"), tr("cannot reach repo server at ")
+			+ repoAddress + QString(":") + QString::number(repoPort)
+			+ QString("\n")
+			+ tr("make sure that it is running or use \"Tools/Setup repo server path\" ")
+			+ tr("to select another server"));
 		//qApp->exit();
 		closeRepo();
 		return;
