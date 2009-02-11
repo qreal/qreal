@@ -14,7 +14,7 @@ using namespace reposerver;
 QRealRepoServer::QRealRepoServer(QObject *const parent): QTcpServer(parent)
 {
 	dbg;
-	listen(QHostAddress("127.0.0.1"), 6666);
+	listen(QHostAddress::Any, 6666);
 	qDebug() << isListening() << serverAddress() << serverPort();
 
 	mRepoData = new RepoData();
