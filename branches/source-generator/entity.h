@@ -10,14 +10,16 @@
 #include <QDebug>
 
 /** @brief Тип сущности */
-enum elementsType { NODE, /**< Элемент */
-					EDGE /**< Связь */
-					};
+enum elementsType {
+	NODE, /**< Элемент */
+	EDGE /**< Связь */
+};
 
 /**< Тип конца связи */
-enum sideType { BEGIN, /**< Начало */
-				END /**< Конец */
-				};
+enum sideType {
+	BEGIN, /**< Начало */
+	END /**< Конец */
+};
 
 class Port;
 class Label;
@@ -29,48 +31,48 @@ class Label;
 class Entity
 {
 public:
-    Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
-    virtual ~Entity(){};
+	Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
+	virtual ~Entity(){};
 
 	/** @brief Добавить родителя */
-    void addParent( QString arg /**< Идентификатор родителя */);
+	void addParent( QString arg /**< Идентификатор родителя */);
 	/** @brief Добавить дочерний элемент */
-    void addChild( QString arg /**< Идентификатор дочернего элемента */);
+	void addChild( QString arg /**< Идентификатор дочернего элемента */);
 	/** @brief Добавить свойство */
-    void addProperty( QString name, /**< Название свойства */
-						QString type /**< Тип свойства */
-						);
+	void addProperty( QString name, /**< Название свойства */
+	                  QString type /**< Тип свойства */
+	                );
 
 	/** @brief Высота графического представления сущности по умолчанию */
-    int height; 
+	int height;
 	/** @brief Ширина графического представления сущности по умолчанию */
-    int width;
+	int width;
 
 	/** @brief Идентификатор */
-    QString id;
+	QString id;
 	/** @brief Имя */
-    QString name;
+	QString name;
 	/** @brief Список родителей */
-    QStringList parents;
+	QStringList parents;
 	/** @brief Список дочерних элементов */
-    QStringList children;
+	QStringList children;
 
 	/** @brief Свойства */
-    QList< QPair<QString, QString> > properties;
+	QList< QPair<QString, QString> > properties;
 
 	/** @brief Список текстовых надписей, параметризующих SVG */
-    QList< Label > labels;
+	QList< Label > labels;
 
 	/** @brief Тип сущности */
-    elementsType type;
+	elementsType type;
 
 	/** @brief Индикатор визуальности сущности */
-    bool visible;
+	bool visible;
 
 	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список свойств */
-    bool propsPropagated;
+	bool propsPropagated;
 	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список родителей */
-    bool parentsPropagated;
+	bool parentsPropagated;
 };
 
 // node class
@@ -80,34 +82,34 @@ public:
 class Node : public Entity
 {
 public:
-    Node() { type = NODE; }
-    ~Node() {}
-    //TODO: containers 
-    //QStringList associations; 
+	Node() { type = NODE; }
+	~Node() {}
+	//TODO: containers 
+	//QStringList associations; 
 	/** @brief Список портов */
-    QList< Port > ports;   
+	QList< Port > ports;
 };
 
 /** @class Association
  * 	@brief Ассоциация */
 class Association {
 public:
-    Association() { toArrow = ""; fromArrow = ""; }
+	Association() { toArrow = ""; fromArrow = ""; }
 
 	/** @brief Идентификатор начала ассоциации */
-    QString fromID;
+	QString fromID;
 	/** @brief Идентификатор конца ассоциации */
-    QString toID;
+	QString toID;
 	/** @brief Идентификатор типа элементов, к которым можно присоединять начало ассоциации */
-    QString from;
+	QString from;
 	/** @brief Идентификатор типа элементов, к которым можно присоединять конец ассоциации */
-    QString to;
+	QString to;
 	/** @brief Тип стрелки начала ассоциации */
-    QString fromArrow;
+	QString fromArrow;
 	/** @brief Тип стрелки конца ассоциации */
-    QString toArrow;
+	QString toArrow;
     //TODO: full schema support
-    //QString role;  
+	//QString role;  
 };
 
 /** @class Port
@@ -116,9 +118,9 @@ public:
 class Port {
 public:
 	/** @brief Тип порта */
-    QString type;
+	QString type;
 	/** @brief Координаты порта */
-    QList< qreal > vals;
+	QList< qreal > vals;
 };
 
 /** @class @Label
@@ -127,13 +129,13 @@ public:
 class Label{
 public:
 	/** @brief Координата х */
-    qreal x;
+	qreal x;
 	/** @brief Координата y */
-    qreal y;
+	qreal y;
 	/** @brief Надпись */
-    QString text;
+	QString text;
 	/** @brief Роль */
-    QStringList args;
+	QStringList args;
 };
 
 
@@ -144,31 +146,29 @@ public:
 class Edge : public Entity
 {
 public:
-    Edge(){
-        assocsPropagated = false;
-        endsPropagated   = false;
-        lineType = "Qt::SolidLine";
-        type = EDGE;
-    }
-    ~Edge(){
+	Edge(){
+		assocsPropagated = false;
+		endsPropagated   = false;
+		lineType = "Qt::SolidLine";
+		type = EDGE;
+	}
+	~Edge(){
 		while (!associations.isEmpty())
 			delete associations.takeFirst();
-    }
+	}
 
-    /** @brief Добавить описание ассоциации */
-    void addAssociation( Association* arg /**< Ассоциация */);
+	/** @brief Добавить описание ассоциации */
+	void addAssociation( Association* arg /**< Ассоциация */);
 
-    /** @brief Список ассоциаций */
-    QList< Association*  > associations;
-    /** @brief Тип линии */
-    QString lineType;
+	/** @brief Список ассоциаций */
+	QList< Association*  > associations;
+	/** @brief Тип линии */
+	QString lineType;
 
-    /** @brief Вспомогательная переменная, определяющая, обработан ли уже список ассоциаций */
-    bool assocsPropagated; // edges' own generalizations
-    /** @brief Вспомогательная переменная, определяющая, обработан ли уже список элементов, к которым может присоединять связь*/
+	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список ассоциаций */
+	bool assocsPropagated; // edges' own generalizations
+	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список элементов, к которым может присоединять связь*/
 	bool endsPropagated; // connected nodes' generalizations
 };
-
-
 
 #endif
