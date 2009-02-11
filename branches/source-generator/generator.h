@@ -83,13 +83,13 @@ private:
 	void genEdgesFunction();
 
 	/** @brief Выполнить все распространения */
-	void propagateAll();
+	bool propagateAll();
 	/** @brief Осуществить распространение свойств элементов */
-	void propagateProperties( Entity* arg /**< Сущность*/);
+	bool propagateProperties( Entity* arg /**< Сущность*/);
 	/** @brief Осуществить распространение ассоциаций */
-	void propagateAssocs( Edge* arg /**< Связь */);
+	bool propagateAssocs( Edge* arg /**< Связь */);
 	/** @brief Осуществить распространение родительских элементов */
-	void propagateParents( Entity* arg /**< Сущность */);
+	bool propagateParents( Entity* arg /**< Сущность */);
 //    void findChildren( Entity*, QString );
 
 	/** @brief Найти сущность с заданным идентификатором

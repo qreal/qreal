@@ -32,7 +32,8 @@ bool Generator::work( QStringList files ){
 			return false;
 	}
 	// propagate properties and other useful things
-	propagateAll();
+	if (!propagateAll())
+		return false;
 
 	// generate all the stuff needed
 	genEnums();
@@ -1263,17 +1264,19 @@ Edge* Generator::findEdge( QString id ){
 	return 0;
 }
 
-void Generator::propagateAll(){
+bool Generator::propagateAll(){
 
 	// propagating objects' properties
 	for( int i=0; i < (int) objects.size(); i++ ){
 		if( !objects.at(i)->propsPropagated )
-			propagateProperties( objects.at(i) );
+			if (!propagateProperties( objects.at(i) ))
+				return false;
 	}
 
 	for( int i=0; i< (int) objects.size(); i++ ){
 		if( !objects.at(i)->parentsPropagated )
-			propagateParents(objects.at(i));
+			if (!propagateParents(objects.at(i)))
+				return false;
 	}
 
 	for( int i=0; i< (int) objects.size(); i++ ){
@@ -1289,25 +1292,26 @@ void Generator::propagateAll(){
 	}
   */
 
-
+	return true;
 }
 
-void Generator::propagateParents( Entity* cur ){
+bool Generator::propagateParents( Entity* cur ){
 
 	for( int j=0; j < cur->parents.size(); j++ ){
 		Entity* par = find(cur->parents.at(j));
 		if( !par ){
-			cur->parentsPropagated = true;
-			return;
+			qDebug() << "Entity " << cur->parents.at(j) << " in a generalizations list of " << cur->id << "not found";
+			return false;
 		}
 		cur->addParent(par->id);
 		if ( !par->parentsPropagated )
-			propagateParents( par );
+			if (!propagateParents( par ))
+				return false;
 		for( int i=0; i<par->parents.size(); i++)
 			cur->addParent(par->parents.at(i));
 	}
 	cur->parentsPropagated = true;
-
+	return true;
 }
 
 /*
@@ -1322,34 +1326,38 @@ void Generator::findChildren(Entity* cur, QString id){
 	}
 }
 */
-void Generator::propagateProperties( Entity* cur ){
+bool Generator::propagateProperties( Entity* cur ){
 
 	for( int j=0; j < cur->parents.size(); j++ ){
 		Entity* par = find(cur->parents.at(j));
 		if( !par){
-			cur->propsPropagated = true;
-			return;
+			qDebug() << "Entity " << cur->parents.at(j) << " in a generalizations list of " << cur->id << "not found";
+			return false;
 		}
 		if ( !par->propsPropagated )
-			propagateProperties( par );
+			if (!propagateProperties( par ))
+				return false;
 		for( int k=0; k < par->properties.size(); k++ )
 			cur->addProperty( par->properties.at(k).first, par->properties.at(k).second );
 	}
 	cur->propsPropagated = true;
+	return true;
 }
 
-void Generator::propagateAssocs( Edge* cur ){
+bool Generator::propagateAssocs( Edge* cur ){
 
 	for( int j=0; j < cur->parents.size(); j++ ){
 		Edge* par = findEdge(cur->parents.at(j));
 		if( !par ){
-			cur->assocsPropagated = true;
-			return;
+			qDebug() << "Edge " << cur->parents.at(j) << " in a associations list of " << cur->id << "not found";
+			return false;
 		}
 		if ( !par->assocsPropagated )
-			propagateAssocs( par );
+			if (!propagateAssocs( par ))
+				return false;
 		for( int k=0; k < par->associations.size(); k++ )
 			cur->addAssociation( par->associations.at(k) );
 	}
 	cur->assocsPropagated = true;
+	return true;
 }
