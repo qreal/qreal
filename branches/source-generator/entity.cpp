@@ -33,10 +33,6 @@ bool Entity::addAllParents( QStringList &list ){
 	return true;
 }
 
-void Entity::addChild( QString id ){
-	if( !children.contains(id) )
-		children << id;
-}
 
 void Entity::addProperty( QString name, QString type ){
 	if( !name.isEmpty())

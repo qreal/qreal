@@ -43,8 +43,6 @@ public:
 	/** @brief Добавить список предков */
 	bool addAllParents( QStringList &arg /**< Список предков */);
 	/** @brief Добавить дочерний элемент */
-	void addChild( QString arg /**< Идентификатор дочернего элемента */);
-	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */
 	                );
@@ -66,8 +64,6 @@ public:
 	QStringList parents;
 	/** @brief Список всех предков (ancestors) */
 	QStringList all_parents;
-	/** @brief Список дочерних элементов */
-	QStringList children;
 
 	/** @brief Свойства непосредственно этого объекта */
 	QList< QPair<QString, QString> > properties;
