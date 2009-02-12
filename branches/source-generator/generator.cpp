@@ -436,11 +436,11 @@ void Generator::genEnums()
 	for( int i=0; i < objects.size(); i++ ){
 		out << "\tnamespace " + objects.at(i)->id + " {\n";
 		out << "\t\tenum Roles {\n";
-		for (int j=0; j<objects.at(i)->properties.size(); j++){
-			out << "\t\t\t" + objects.at(i)->properties.at(j).first + "Role";
+		for (int j=0; j<objects.at(i)->all_properties.size(); j++){
+			out << "\t\t\t" + objects.at(i)->all_properties.at(j).first + "Role";
 			if( !j )
 				out << " = UserRole + 1";
-			if( j != objects.at(i)->properties.size()-1)
+			if( j != objects.at(i)->all_properties.size()-1)
 				out << ",";
 			out << "\n";
 		}
@@ -641,10 +641,10 @@ void Generator::genClasses(){
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
 			<< "\ttext = \"\";\n";
-		if( objects.at(i)->parents.size() > 0)
+		if( objects.at(i)->all_parents.size() > 0)
 			out << "\tparentsList";
-		for( int j=0;j<objects.at(i)->parents.size(); j++ ){
-			out << QString("  << %1").arg(position(objects.at(i)->parents.at(j)) + NUM);
+		for( int j=0;j<objects.at(i)->all_parents.size(); j++ ){
+			out << QString("  << %1").arg(position(objects.at(i)->all_parents.at(j)) + NUM);
 		}
 		out << ";\n";
 		out << QString("\theight = %1;\n").arg(objects.at(i)->height)
@@ -1094,8 +1094,8 @@ void Generator::genRealRepoInfo(){
 
 	for (int i=0; i<objects.size(); i++){
 		out2 << "\tl.clear();\n";
-		for( int j=0; j<objects.at(i)->properties.size(); j++)
-			out2 << QString("\t\tl << \"%1\";\n").arg(objects.at(i)->properties.at(j).first);
+		for( int j=0; j<objects.at(i)->all_properties.size(); j++)
+			out2 << QString("\t\tl << \"%1\";\n").arg(objects.at(i)->all_properties.at(j).first);
 		out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
 		out2 << "\n";
 	}
@@ -1265,85 +1265,23 @@ Edge* Generator::findEdge( QString id ){
 }
 
 bool Generator::propagateAll(){
-
-	// propagating objects' properties
-	for( int i=0; i < (int) objects.size(); i++ ){
-		if( !objects.at(i)->propsPropagated )
-			if (!propagateProperties( objects.at(i) ))
-				return false;
+	for (int i = 0; i < (int) objects.size(); i++)
+	{
+		if (!objects.at(i)->propagateAll(this))
+			return false;
 	}
 
-	for( int i=0; i< (int) objects.size(); i++ ){
-		if( !objects.at(i)->parentsPropagated )
-			if (!propagateParents(objects.at(i)))
-				return false;
-	}
-
-	for( int i=0; i< (int) objects.size(); i++ ){
-//        qDebug() << i + NUM << objects.at(i)->id << objects.at(i)->parents;
-	}
-
-	// is not needed right now
-/*
+#if 0  // FIXME!!!! (was: "is not needed right now")
 	// propagating edges' stuff
 	for( int i=0; i < (int) edges.size(); i++ ){
 		if( !edges.at(i)->assocsPropagated )
 			propagateAssocs( edges.at(i) );
 	}
-  */
-
+#endif
 	return true;
 }
 
-bool Generator::propagateParents( Entity* cur ){
-
-	for( int j=0; j < cur->parents.size(); j++ ){
-		Entity* par = find(cur->parents.at(j));
-		if( !par ){
-			qDebug() << "Entity " << cur->parents.at(j) << " in a generalizations list of " << cur->id << "not found";
-			return false;
-		}
-		cur->addParent(par->id);
-		if ( !par->parentsPropagated )
-			if (!propagateParents( par ))
-				return false;
-		for( int i=0; i<par->parents.size(); i++)
-			cur->addParent(par->parents.at(i));
-	}
-	cur->parentsPropagated = true;
-	return true;
-}
-
-/*
-void Generator::findChildren(Entity* cur, QString id){
-	for( int i=0; i<(int) cur->parents.size(); i++ ){
-		Entity* par = find(cur->parents.at(i));
-		par->addChild(cur->id);
-		for( int ch=0; ch<cur->children.size(); ch++ )
-			par->addChild(cur->children.at(ch));
-		findParents(par, id);
-
-	}
-}
-*/
-bool Generator::propagateProperties( Entity* cur ){
-
-	for( int j=0; j < cur->parents.size(); j++ ){
-		Entity* par = find(cur->parents.at(j));
-		if( !par){
-			qDebug() << "Entity " << cur->parents.at(j) << " in a generalizations list of " << cur->id << "not found";
-			return false;
-		}
-		if ( !par->propsPropagated )
-			if (!propagateProperties( par ))
-				return false;
-		for( int k=0; k < par->properties.size(); k++ )
-			cur->addProperty( par->properties.at(k).first, par->properties.at(k).second );
-	}
-	cur->propsPropagated = true;
-	return true;
-}
-
+#if 0
 bool Generator::propagateAssocs( Edge* cur ){
 
 	for( int j=0; j < cur->parents.size(); j++ ){
@@ -1361,3 +1299,4 @@ bool Generator::propagateAssocs( Edge* cur ){
 	cur->assocsPropagated = true;
 	return true;
 }
+#endif

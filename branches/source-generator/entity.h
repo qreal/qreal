@@ -9,6 +9,8 @@
 #include <QPair>
 #include <QDebug>
 
+class Generator;
+
 /** @brief Тип сущности */
 enum elementsType {
 	NODE, /**< Элемент */
@@ -31,17 +33,25 @@ class Label;
 class Entity
 {
 public:
-	Entity(){ propsPropagated = false; parentsPropagated = false; visible = false; }
+	Entity(){ visible = false; propagated = false; }
 	virtual ~Entity(){};
 
 	/** @brief Добавить родителя */
-	void addParent( QString arg /**< Идентификатор родителя */);
+	bool addParent( QString arg /**< Идентификатор родителя */);
+	/** @brief Добавить одного предка */
+	bool addAllParents( QString arg /**< Идентификатор предка */);
+	/** @brief Добавить список предков */
+	bool addAllParents( QStringList &arg /**< Список предков */);
 	/** @brief Добавить дочерний элемент */
 	void addChild( QString arg /**< Идентификатор дочернего элемента */);
 	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */
 	                );
+	/** @brief Добавить одно родительское свойство */
+	void addAllProperties(QString name, QString type);
+	/** @brief Добавить список родительских свойств */
+	void addAllProperties(QList< QPair<QString, QString> > &arg);
 
 	/** @brief Высота графического представления сущности по умолчанию */
 	int height;
@@ -52,13 +62,17 @@ public:
 	QString id;
 	/** @brief Имя */
 	QString name;
-	/** @brief Список родителей */
+	/** @brief Список непосредственных родителей */
 	QStringList parents;
+	/** @brief Список всех предков (ancestors) */
+	QStringList all_parents;
 	/** @brief Список дочерних элементов */
 	QStringList children;
 
-	/** @brief Свойства */
+	/** @brief Свойства непосредственно этого объекта */
 	QList< QPair<QString, QString> > properties;
+	/** @brief Список всех свойств этого объекта (в т.ч. родительских) */
+	QList< QPair<QString, QString> > all_properties;
 
 	/** @brief Список текстовых надписей, параметризующих SVG */
 	QList< Label > labels;
@@ -69,10 +83,11 @@ public:
 	/** @brief Индикатор визуальности сущности */
 	bool visible;
 
-	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список свойств */
-	bool propsPropagated;
-	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список родителей */
-	bool parentsPropagated;
+	/** @brief Заполняет all_properties и all_parents */
+	bool propagateAll(Generator *);
+
+	/** @brief Закончено ли построение all_{properties|parents}? */
+	bool propagated;
 };
 
 // node class

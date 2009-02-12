@@ -132,6 +132,9 @@ private:
 
 	/** @brief Директория */
 	QDir dir;
+
+
+	friend class Entity;
 };
 
 /** @class Category
