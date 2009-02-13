@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
- <include>&#xd;
-    kernel_metamodel&#xd;
- </include>
+ <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <diagram name="PACKAGE DIAGRAM" >
   <node id="pckPackage" name="Package" >
