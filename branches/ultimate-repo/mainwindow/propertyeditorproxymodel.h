@@ -13,10 +13,10 @@
  * */
 class PropertyEditorModel : public QAbstractTableModel
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    PropertyEditorModel(QObject *parent = 0);
+	PropertyEditorModel(QObject *parent = 0);
 
 	/** @brief Получить число дочерних элементов
 	 *	@brief @return Число дочерних элементов
@@ -40,7 +40,7 @@ public:
 						int role = Qt::DisplayRole /**< Роль */
 						) const;
 	/** @brief Получить данные модели
-	 *	@brief @return Данные модели 
+	 *	@brief @return Данные модели
 	 * */
 	QVariant data(const QModelIndex &index, /**< Индекс элемента*/
 					int role = Qt::DisplayRole /**< Роль */
@@ -77,6 +77,8 @@ private:
 	int type;
 	/** @brief Список ролей */
 	QStringList roleNames;
+	/** @brief Число нередактируемых атрибутов */
+	int mPseudoAttributesCount;
 };
 
 #endif

@@ -7,7 +7,7 @@
 #include "realreporoles.h"
 
 PropertyEditorModel::PropertyEditorModel(QObject *parent)
-    : QAbstractTableModel(parent)
+	: QAbstractTableModel(parent), type(0), mPseudoAttributesCount(0)
 {
 }
 
@@ -21,8 +21,10 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return 1;
 }
 
-Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &/*index*/) const
+Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &index) const
 {
+	if (index.column() == 0 && index.row() == 0)
+		return Qt::NoItemFlags;
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -43,7 +45,10 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 //		return QVariant();
 
 	if ( role == Qt::DisplayRole && index.column() == 0 ) {
-		return targetObject.data(info.roleByIndex(index.row()));
+		if (index.row() != 0)
+			return targetObject.data(info.roleByIndex(index.row() - mPseudoAttributesCount));
+		else
+			return QVariant(info.objectName(type));
 	} else
 		return QVariant();
 }
@@ -54,7 +59,10 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		return false;
 
 	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 0 )
-		return targetModel->setData(targetObject, value, info.roleByIndex(index.row()));
+		if (index.row() != 0)
+			return targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
+		else
+			return true;
 	else
 		return false;
 }
@@ -86,6 +94,9 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	type = targetObject.data(Unreal::TypeRole).toInt();
 
 	roleNames = info.getColumnNames(type);
+
+	roleNames.push_front("metatype");
+	mPseudoAttributesCount = 1;
 
 	reset();
 }
