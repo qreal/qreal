@@ -42,7 +42,7 @@ public:
 	bool addAllParents( QString arg /**< Идентификатор предка */);
 	/** @brief Добавить список предков */
 	bool addAllParents( QStringList &arg /**< Список предков */);
-	/** @brief Добавить дочерний элемент */
+	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */
 	                );
