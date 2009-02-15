@@ -12,7 +12,6 @@
 
 #include "mainwindow.h"
 
-#include "qsqlconnectiondialog.h"
 #include "propertyeditorproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
