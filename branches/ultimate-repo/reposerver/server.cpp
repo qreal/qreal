@@ -9,7 +9,7 @@
 
 #include "repothread.h"
 
-using namespace reposerver;
+using namespace repoServer;
 
 QRealRepoServer::QRealRepoServer(int port, QObject *const parent): QTcpServer(parent)
 {

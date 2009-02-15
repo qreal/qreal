@@ -9,6 +9,8 @@
 #include <QByteArray>
 #include <QStringList>
 
+using namespace qRealTypes;
+
 RealRepoClient::RealRepoClient( const QString &addr, const int port, QObject *parent ) : QObject(parent)
 {
 dbg;
@@ -146,7 +148,7 @@ dbg;
 
 int RealRepoClient::copyEntity(int type, int id, int newParent, int oldParent, bool full)
 {
-dbg;	
+dbg;
 	QString data;
 	if( !full )
 		data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_COPY_ENTITY).arg(type).arg(id).arg(newParent).arg(oldParent);

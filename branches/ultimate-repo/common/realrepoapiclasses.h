@@ -15,7 +15,7 @@
 class RealRepoClient;
 
 /** @brief Пространство имен классов API репозитория */
-namespace QRealTypes
+namespace qRealTypes
 {
 	/** Список целых чисел */
 	typedef QList<int> QIntList;

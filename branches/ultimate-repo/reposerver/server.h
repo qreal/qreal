@@ -7,35 +7,35 @@
 #include "../common/classes.h"
 #include "generated/repotypesinfo.h"
 
-namespace reposerver
+namespace repoServer
 {
-  /** @class QRealRepoServer
-   *  @brief Сервер репозитория
-   * */
-  class QRealRepoServer : public QTcpServer
-  {
-	Q_OBJECT
+	/** @class QRealRepoServer
+	*   @brief Сервер репозитория
+	* */
+	class QRealRepoServer : public QTcpServer
+	{
+		Q_OBJECT
 
-  public:
-	QRealRepoServer(int port, QObject *const parent = 0);
-	~QRealRepoServer();
+	public:
+		QRealRepoServer(int port, QObject *const parent = 0);
+		~QRealRepoServer();
 
-  public slots:
-	/** @brief Отладочная печать */
-	void printout() const;
+	public slots:
+		/** @brief Отладочная печать */
+		void printout() const;
 
-  protected:
-	/** @brief Обработать входящее соединение */
-	void incomingConnection(int socketDescriptor /**< Дескриптор сокета */);
+	protected:
+		/** @brief Обработать входящее соединение */
+		void incomingConnection(int socketDescriptor /**< Дескриптор сокета */);
 
-  private:
-	/** @brief Вспомогательная переменная для генерации идентификаторов элементов */
-	int mCount;
+	private:
+		/** @brief Вспомогательная переменная для генерации идентификаторов элементов */
+		int mCount;  // TODO: Deprecated.
 
-	/** @brief Объект, хранящий описания типов элементов */
-	RepoTypesInfo *mTypesInfo;
-	/** @brief Объект, хранящий все элементы репозитория */
-	RepoData *mRepoData;
-  };
+		/** @brief Объект, хранящий описания типов элементов */
+		RepoTypesInfo *mTypesInfo;
+		/** @brief Объект, хранящий все элементы репозитория */
+		RepoData *mRepoData;
+	};
 
 }

@@ -1,15 +1,12 @@
 /** @file realrepoclient.h
  * 	@brief API для доступа к репозиторию
  * */
-#ifndef __Q_REAL_REPO_CLIENT_H__
-#define __Q_REAL_REPO_CLIENT_H__
+#pragma once
 
 #include <QTcpSocket>
 #include "../common/defs.h"
 #include "../common/classes.h"
 #include "../common/realrepoapiclasses.h"
-
-using namespace QRealTypes;
 
 /** @class RealRepoClient
  * 	@brief Клиент репозитория
@@ -148,7 +145,7 @@ public:
 	/** @brief Полчить список идентификаторов типов
 	 *	@brief @return Список идентификаторов типов
 	 * */
-	QIntList getAllTypes();
+	qRealTypes::QIntList getAllTypes();
 	/** @brief Получить описание типа
 	 *	@brief @return Описание типа
 	 * */
@@ -161,11 +158,11 @@ public:
 	/** @brief Получить список объектов заданного типа
 	 *	@brief @return Список объектов заданного типа
 	 * */
-	QIntList getObjectsListByType( int type /**< Идентификатор типа */);
+	qRealTypes::QIntList getObjectsListByType( int type /**< Идентификатор типа */);
 	/** @brief Получить список связей
 	 *	@brief @return Список связей
 	 * */
-	QIntList getLinks();
+	qRealTypes::QIntList getLinks();
 
 	/** @brief Получить данные объекта
 	 *	@brief @return Данные объекта
@@ -178,11 +175,11 @@ public:
 	/** @brief Получить объект
 	 *	@brief @return Объект
 	 * */
-	RealObject getObjectById( int id /**< Идентификатор объекта */);
+	qRealTypes::RealObject getObjectById( int id /**< Идентификатор объекта */);
 	/** @brief Получить связь
 	 *	@brief @return Связь
 	 * */
-	RealLink getLinkById( int id /**< Идентификатор объекта */);
+	qRealTypes::RealLink getLinkById( int id /**< Идентификатор объекта */);
 
 	/** @brief Получить список связей, ассоциированных с данным объектом
 	 *	@brief @return
@@ -203,7 +200,7 @@ public:
 	/** @brief Получить список элементов, в которых содержится данный
 	 *	@brief @return Список элементов - родителей
 	 * */
-	QIntList getParents( int id /**< Идентификатор объекта */);
+	qRealTypes::QIntList getParents( int id /**< Идентификатор объекта */);
 
 	/** @brief Получить позицию элемента
 	 *	@brief @return Позиция элемента
@@ -235,16 +232,16 @@ public:
 	/** @brief Получить список типов данного метатипа
 	 *	@brief @return Список типов данного метатипа
 	 * */
-	QIntList getTypesByMetaType( const MetaType /**< Метатип */);
+	qRealTypes::QIntList getTypesByMetaType( const qRealTypes::MetaType /**< Метатип */);
 
 	/** @brief Получить тип по его идентификатору
 	 *	@brief @return Тип элементов
 	 * */
-	RealType getTypeById( const int id /**< Идентификатор типа*/);
+	qRealTypes::RealType getTypeById( const int id /**< Идентификатор типа*/);
 	/** @brief Получить тип по его названию
 	 *	@brief @return Тип элементов
 	 * */
-	RealType getTypeByName( const QString name /**< Название типа */);
+	qRealTypes::RealType getTypeByName( const QString name /**< Название типа */);
 	/** @brief Получить идентификатор типа по его имени
 	 *	@brief @return Идентификатор типа
 	 * */
@@ -267,5 +264,3 @@ private:
 	/** @brief Код последней ошибки */
 	int m_error;
 };
-
-#endif // __Q_REAL_REPO_CLIENT_H__

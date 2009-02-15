@@ -9,7 +9,7 @@
 #include "../common/classes.h"
 #include "generated/repotypesinfo.h"
 
-namespace reposerver
+namespace repoServer
 {
 
 	/** @brief Массив строк */

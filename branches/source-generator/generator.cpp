@@ -482,16 +482,14 @@ void Generator::genTypes()
 		"#include \"../../common/realrepoapiclasses.h\"\n"
 		"#include \"../../common/defs.h\"\n\n";
 
-	out << "\nusing namespace QRealTypes;\n\n";
-
 	out << "class RepoTypesInfo\n{\n"
 		"public:\n"
 		"\tRepoTypesInfo();\n"
 		"\t~RepoTypesInfo();\n"
 		"\tint getTypesCount();\n"
-		"\tRealType getTypeInfo( int );\n"
-		"\tRealType getTypeInfo( QString );\n"
-		"\tQString getTypesByMetatype( const MetaType );\n"
+		"\tqRealTypes::RealType getTypeInfo( int );\n"
+		"\tqRealTypes::RealType getTypeInfo( QString );\n"
+		"\tQString getTypesByMetatype( const qRealTypes::MetaType );\n"
 		"\tint analyseType( int );\n"
 		"\tvoid elementCreated( int, int );\n"
 		"\tvoid elementDeleted( int, int );\n"
@@ -509,6 +507,7 @@ void Generator::genTypes()
 
 	// static inits
 	out2 << "#include \"repotypesinfo.h\"\n\n"
+		"using namespace qRealTypes;\n\n"
 		"static bool initCompleted = false;\n\n"
 		"static QMap<int, RealType> map;\n\n";
 
@@ -526,7 +525,7 @@ void Generator::genTypes()
 		out2 << "\tinfo.setId(" << j << ");\n"
 			<< "\tinfo.setName(\"" << objects.at(i)->id << "\");\n"
 			<< "\tinfo.setDescription(\"" << objects.at(i)->name << "\");\n"
-			<< "\tinfo.setMetaType(QRealTypes::object);\n"
+			<< "\tinfo.setMetaType(qRealTypes::object);\n"
 			<< QString("\tmap[%1] = info;\n\n").arg(j);
 
 	}

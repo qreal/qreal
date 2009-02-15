@@ -12,7 +12,8 @@
 #include <QByteArray>
 #include <qstring.h>
 
-using namespace reposerver;
+using namespace repoServer;
+using namespace qRealTypes;
 
 QRealRepoServerThread::QRealRepoServerThread(int const &socketDescriptor
 	, QObject * const parent, RepoData * const repoData, RepoTypesInfo * const info

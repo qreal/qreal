@@ -10,6 +10,8 @@
 //#define _LONG_DEBUG
 #include "dbg.h"
 
+using namespace qRealTypes;
+
 RealRepoModel::RealRepoModel( const QString &addr, const int port, QObject *parent )
 	: QAbstractItemModel(parent)
 {
@@ -808,7 +810,7 @@ void RealRepoModel::runTestQueries()
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting types by metatype 'link'";
-	result = repoClient->getTypesByMetaType(QRealTypes::link);
+	result = repoClient->getTypesByMetaType(qRealTypes::link);
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting types by metatype 'dataType'";

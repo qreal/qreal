@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 		port = QString(argv[1]).toInt();
 	}
 
-	reposerver::QRealRepoServer repo(port);
+	repoServer::QRealRepoServer repo(port);
 
 	return app.exec();
 }

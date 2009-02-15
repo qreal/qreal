@@ -7,7 +7,7 @@
 
 #include "../repo/realrepoclient.h"
 
-using namespace QRealTypes;
+using namespace qRealTypes;
 
 int RealNamedEntity::getId()
 {
