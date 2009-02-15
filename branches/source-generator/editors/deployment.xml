@@ -378,7 +378,7 @@
     </generalizations>
     <properties>
      <property type="string" name="exucution" />
-     <property typr="bool" name="transation" />
+     <property type="bool" name="transation" />
     </properties>
    </logic>
   </node>
