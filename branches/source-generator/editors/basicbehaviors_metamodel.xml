@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
+ <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
  <diagram name="BASIC BEHAVIOURS" >
   <!-- BasicBehaviors -->
