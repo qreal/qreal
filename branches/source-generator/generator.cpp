@@ -410,6 +410,7 @@ void Generator::genEnums()
 
 	int id = NUM;
 
+	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef REALREPOROLES_H\n#define REALREPOROLES_H\n\n";
 
 	QString tmp2 = "#include \"%1\"\n";
@@ -475,6 +476,7 @@ void Generator::genTypes()
 		return;
 	QTextStream out(&file);
 
+	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef __REPO_TYPES_INFO_H__\n#define __REPO_TYPES_INFO_H__\n\n";
 	out << "#include <QMap>\n#include <QString>\n#include \"../../common/classes.h\" //to be removed soon\n"
 		"#include \"../../common/realrepoapiclasses.h\"\n"
@@ -608,11 +610,13 @@ void Generator::genClasses(){
 	QTextStream out2(&file2);
 
 
+	out << "// This file is generated, all manual changes will be lost!\n";
 	out <<  "#include <QtGui>\n"
 			"#include \"objects.h\"\n\n"
 			"using namespace Unreal;\n"
 			"using namespace UML;\n\n";
 
+	out2 << "// This file is generated, all manual changes will be lost!\n";
 	out2 << "#include <QWidget>\n#include <QList>\n\n"
 			"#include \"uml_nodeelement.h\"\n"
 			"#include \"uml_edgeelement.h\"\n"
@@ -993,6 +997,7 @@ void Generator::genRealRepoInfo(){
 		return;
 	QTextStream out(&file);
 
+	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef REALREPOINFO_H\n#define REALREPOINFO_H\n\n";
 
 	out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n#include <QIcon>\n#include \"sdfrenderer.h\"\n\n";
