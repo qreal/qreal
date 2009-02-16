@@ -3,19 +3,63 @@
 */
 #include <QtGui/QPainter>
 
+#include "category.h"
 #include "generator.h"
+
+QString resources;
 
 Generator::Generator()
 {
 	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
-	res = "\t<file>%1</file>\n";
-
-	untitled = 0;
-	objectsCount = 0;
+	srcdir = "";
 }
 
-bool Generator::work( QStringList files ){
+bool Generator::loadFile(QString filename, EditorFile **file)
+{
+	EditorFile *efile;
+	QString uniq_name = filename.split("/").last();
 
+	EditorFile *temp;
+	if (!file) file = &temp;
+	*file = NULL;
+
+	FOR_ALL_FILES(f)
+		if ((*f)->get_uniq_name() == uniq_name)
+		{
+			if ((*f)->isLoaded())
+			{
+				*file = (*f);
+				return true; // Already loaded
+			}
+			else
+			{
+				qDebug() << "Vicious circle detected "
+				         "while loading file" << filename;
+				return false;
+			}
+		}
+
+	efile = new EditorFile(srcdir + "/" + filename, this);
+	if (!efile->load())
+	{
+		qDebug() << "Failed to load file " << filename;
+		delete efile;
+		return false;
+	}
+	loaded_files << efile;
+	*file = efile;
+	return true;
+}
+
+const EditorFile* Generator::findFile(QString name)
+{
+	FOR_ALL_FILES(f)
+		if ((*f)->get_name() == name)
+			return (*f);
+	return NULL;
+}
+
+bool Generator::generate(){
 	// creating directory for generated stuff
 	dir.cd(".");
 	dir.mkdir("generated");
@@ -24,16 +68,6 @@ bool Generator::work( QStringList files ){
 		qDebug() << "cannot chdir() to 'generated' directory";
 		return false;
 	}
-
-	// parse all files
-	for (int i=0; i<files.size(); i++){
-		qDebug() << "processing file " << files.at(i);
-		if (!parseFile("editors/" + files.at(i)))
-			return false;
-	}
-	// propagate properties and other useful things
-	if (!propagateAll())
-		return false;
 
 	// generate all the stuff needed
 	genEnums();
@@ -59,344 +93,8 @@ bool Generator::work( QStringList files ){
 }
 
 Generator::~Generator(){
-	// doc is already deleted.
-
-	// delete each category in the list
-	while (!categories.isEmpty())
-	   delete categories.takeFirst();
-
-	// array of references to objects elements, so just clear
-	edges.clear();
-
-	// delete each object in the list
-	while (!objects.isEmpty())
-	   delete objects.takeFirst();
-}
-
-bool Generator::parseFile( QString filename ){
-
-	doc = new QDomDocument("+1"); // :)
-	QFile file(filename);
-	if( !file.open(QIODevice::ReadOnly)){
-		qDebug() << "incorrect filename " << filename;
-		return false;
-	}
-	QString error = "";
-	int errorLine = 0;
-	int errorCol = 0;
-	if( !doc->setContent(&file, false, &error, &errorLine, &errorCol)){
-		file.close();
-		qDebug() << "parse error in " << filename << ", error is " << error
-			<< ". error line is " << errorLine << ", column is " << errorCol;
-		return false;
-	}
-	file.close();
-
-	Category* cat = new Category();
-	cat->name = doc->elementsByTagName("diagram").at(0).toElement().attribute("name");
-	categories << cat;
-
-	// I. parsing enums
-	QDomNodeList enumList = doc->elementsByTagName("enumType");
-	for( int i=0; i < (int) enumList.length(); i++){
-		if (!parseEnum( enumList.at(i)))
-			 return false;
-	}
-
-	// II. parsing nodes
-	QDomNodeList nodeList = doc->elementsByTagName("node");
-	for( int i=0; i < (int) nodeList.length(); i++ ){
-		if (!parseNode( nodeList.at(i)))
-			return false;
-	}
-
-	// III. parsing edges
-	QDomNodeList edgeList = doc->elementsByTagName("edge");
-	for( int i=0; i < (int) edgeList.length(); i++ ){
-		if (!parseEdge( edgeList.at(i)))
-			return false;
-	}
-
-	if( categories.last()->objects.size() == 0 )
-		categories.removeLast();
-
-	delete doc;
-	return true;
-}
-
-bool Generator::parseEnum( QDomNode dnode ){
-
-	QDomElement cur = dnode.toElement();
-	QStringList values;
-	QString name  = cur.attribute("id");
-	QString qname = cur.attribute("name");
-	QDomNodeList vals = cur.elementsByTagName("enumValue");
-	values << qname;
-	for( int k = 0; k < (int) vals.length(); k++ )
-		values << vals.at(k).toElement().text();
-	enumerations.insert(name, values);
-	return true;
-}
-
-bool Generator::parseNode( QDomNode dnode ){
-
-	Node *cur = new Node();
-	cur->id  = dnode.toElement().attribute("id");
-	cur->name = dnode.toElement().attribute("name");
-	QDomElement logic = dnode.firstChildElement("logic");
-	bool isNode = true;
-
-	cur->addProperty("name", "string");
-
-	if (!parseGeneralizations( cur, logic )) return false;
-	if (!parseProperties( cur, logic )) return false;
-	if (!parseAssociations( cur, logic, isNode )) return false;
-	if (!parseSdf( cur, dnode )) return false;
-	if (!parsePorts( cur, dnode )) return false;
-	if (!parseLabels( cur, dnode )) return false;
-
-	objects << cur;
-	categories.at(categories.size()-1)->objects << objectsCount;
-	objectsCount++;
-	return true;
-}
-
-bool Generator::parseEdge( QDomNode dnode ){
-
-	Edge *cur = new Edge();
-	cur->id  = dnode.toElement().attribute("id");
-	cur->name = dnode.toElement().attribute("name");
-	QDomElement logic = dnode.firstChildElement("logic");
-	bool isNode = false;
-
-	// quick hack to make these props be on top
-	cur->addProperty("name", "string");
-	cur->addProperty("from", "string");
-	cur->addProperty("to", "string");
-	cur->addProperty("fromPort", "string");
-	cur->addProperty("toPort", "string");
-
-	if (!parseEdgeGraphics( cur, dnode )) return false;
-	if (!parseGeneralizations( cur, logic )) return false;
-	if (!parseProperties( cur, logic )) return false;
-	if (!parseAssociations( cur, logic, isNode )) return false;
-	if (!parseLabels( cur, dnode )) return false;
-
-	cur->height = -1;
-	cur->width = -1;
-	edges << cur;
-	objects << cur;
-
-	categories.at(categories.size()-1)->objects << objectsCount;
-	objectsCount++;
-	return true;
-}
-
-bool Generator::parseGeneralizations( Entity* cur, QDomNode logic ){
-
-	QDomNodeList gens = logic.firstChildElement("generalizations").toElement().elementsByTagName("generalization");
-	// for each <generalization> tag
-	for( int i=0; i < (int) gens.size(); i++ ){
-		QString parentID = gens.at(i).firstChildElement("parent").attribute("parent_id");
-		cur->addParent( parentID );
-	}
-	return true;
-}
-
-bool Generator::parseProperties( Entity* cur, QDomNode logic ){
-
-	QDomNodeList props = logic.toElement().elementsByTagName("properties");
-	for( int i=0; i<props.size(); i++){  // for each <properties>...</properties> section
-		QDomNodeList property = props.at(i).toElement().elementsByTagName("property");
-		for( int j=0; j<property.size(); j++ ){   // for each <property ... > tag
-				QDomNamedNodeMap attrs = property.at(j).attributes();
-				QString name;
-				QString type;
-				if( !attrs.isEmpty() ){
-					name = attrs.namedItem("name").toAttr().value();
-					type = attrs.namedItem("type").toAttr().value();
-				}
-				else{
-					name = property.at(j).firstChildElement("name").text();
-					type = property.at(j).firstChildElement("type").text();
-				}
-				if( type == "enum" ){
-					type = "enum " + property.at(j).firstChildElement("enum").attribute("idref");
-				}
-				if( type == "ref" ){
-					type = property.at(j).firstChildElement("ref").attribute("idref");
-				}
-				cur->addProperty( name, type );
-				// TODO: defaults and other missing property stuff support
-		}
-	}
-	return true;
-}
-
-bool Generator::parsePorts( Node* cur, QDomNode dnode ){
-
-	QDomNodeList ports = dnode.toElement().elementsByTagName("point_port");
-	for( int i=0; i<ports.size(); i++ ){
-		Port port;
-		port.type = "point";
-		port.vals << (qreal) ports.at(i).toElement().attribute("x").toInt()/cur->width;
-		port.vals << (qreal) ports.at(i).toElement().attribute("y").toInt()/cur->height;
-		cur->ports << port;
-	}
-
-	QDomNodeList lines = dnode.toElement().elementsByTagName("line_port");
-	for( int i=0; i<lines.size(); i++ ){
-		QDomElement start = lines.at(i).firstChildElement("start");
-		QDomElement end   = lines.at(i).firstChildElement("end");
-		Port port;
-		port.type = "line";
-		port.vals << (qreal) start.attribute("startx").toInt()/cur->width;
-		port.vals << (qreal) start.attribute("starty").toInt()/cur->height;
-		port.vals << (qreal) end.attribute("endx").toInt()/cur->width;
-		port.vals << (qreal) end.attribute("endy").toInt()/cur->height;
-		cur->ports << port;
-	}
-	return true;
-}
-
-bool Generator::parseEdgeGraphics( Edge* cur, QDomNode dnode ){
-
-	QDomNode lineType = dnode.toElement().elementsByTagName("line_type").at(0);
-	if( lineType != QDomNode() ){
-		QString type = lineType.toElement().attribute("type");
-		if( type == "noPan"){ // temporary kludge
-			type = "solidLine";
-		}
-		cur->lineType = "Qt::" + type.replace(0,1,type.at(0).toUpper());
-	}
-	return true;
-}
-
-bool Generator::parseLabels( Entity* cur, QDomNode dnode ){
-	QDomNodeList htmls = dnode.toElement().elementsByTagName("html:html");
-	for( int i=0; i < htmls.size(); i++ ){
-		Label l;
-		QString txt;
-		QTextStream stream(&txt);
-		l.x = (qreal)htmls.at(i).toElement().attribute("x").toInt()/cur->width;
-		l.y = (qreal)htmls.at(i).toElement().attribute("y").toInt()/cur->height;
-
-		QDomNodeList tfrs = htmls.at(i).toElement().elementsByTagName("html:text_from_repo");
-		int x = tfrs.size();
-		if( x > 0){
-			for( int j=0; j<x; j++){
-				QDomNode par = tfrs.at(0).parentNode();
-				QString role = tfrs.at(0).toElement().attribute("name");
-
-				const QDomText data = doc->createTextNode(" %" + QString::number(j+1));
-				if( role == "name" )
-					l.args << "Qt::DisplayRole";
-				else
-					l.args << "Unreal::" + cur->id + "::" + role + "Role";
-				par.replaceChild(data, tfrs.at(0));
-			}
-		}
-		QDomNodeList texts = htmls.at(i).toElement().elementsByTagName("html:text");
-		int y = texts.size();
-		if( y > 0 ){
-			for( int j=0; j<y; j++){
-				QDomNode par = texts.at(0).parentNode();
-				QString role = texts.at(0).toElement().attribute("text");
-				par.removeChild(texts.at(0));
-				const QDomText data = doc->createTextNode(role);
-				par.appendChild(data);
-			}
-
-
-		}
-		for( int j=0; j<htmls.at(0).childNodes().size(); j++)
-			htmls.at(0).childNodes().at(j).save(stream, 1);
-		txt.replace(QString("\n"), QString(" "));
-		txt.replace(QString("\""), QString("\\\""));
-		txt.replace(QString("html:"), QString(""));
-		l.text = txt.simplified();
-		cur->labels << l;
-	}
-	return true;
-}
-
-bool Generator::parseSdf( Entity* cur, QDomNode dnode ){
-
-	QDomNodeList sdf = dnode.toElement().elementsByTagName("picture");
-	if( !dir.exists("shapes") )
-		dir.mkdir("shapes");
-
-	if (!sdf.isEmpty())
-	{
-		cur->height = sdf.at(0).toElement().attribute("sizey").toInt();
-		cur->width = sdf.at(0).toElement().attribute("sizex").toInt();
-
-		resources += res.arg("shapes/" + cur->id + "Class.sdf");
-
-		QFile file("generated/shapes/" + cur->id + "Class.sdf");
-		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		{
-			qDebug() << "Sdf file creation error";
-			return false;
-		}
-		QTextStream stream(&file);
-		sdf.at(0).save(stream, 1);
-		file.close();
-
-		cur->visible = true;
-	}
-	else
-	{
-		cur->height = -1;
-		cur->width = -1;
-		cur->visible = ( cur->id == "krnnNamedElement" );
-	}
-	return true;
-}
-
-bool Generator::parseAssociations( Entity *cur, QDomNode logic, bool isNode ){
-
-	Edge* edge;
-	QDomNodeList assocs = logic.toElement().elementsByTagName("association");
-	if( assocs.size() == 0 )
-		return true;
-	if( isNode ){
-		return true;
-		edge = new Edge();
-		edge->id = QString("untitledEdge_%1").arg(untitled);
-		edge->name = QString("embedded edge #%1").arg(untitled);
-		untitled++;
-		edge->height = -1;
-		edge->width = -1;
-	}
-	else
-		edge = (Edge*) cur;
-	//TODO: multiple associations support
-	Association* ass = new Association();
-	for( int i=0; i < assocs.size(); i++){
-		QString role = assocs.at(i).toElement().attribute("id");
-		QString arrowType = assocs.at(i).toElement().attribute("end_type");
-		QDomElement begin = assocs.at(i).firstChildElement("begin");
-		QDomElement end = assocs.at(i).firstChildElement("end");
-		if( begin != QDomElement() ){
-			ass->from = begin.toElement().attribute("idref");
-			ass->fromID = role;
-			ass->fromArrow = arrowType;
-		}
-		if( end != QDomElement() ){
-			ass->to = end.toElement().attribute("idref");
-			ass->toID = role;
-			ass->toArrow = arrowType;
-		}
-	}
-	edge->associations << ass;
-	if( isNode ){
-		objects << edge;
-		edges << edge;
-		categories.at(categories.size()-1)->objects << objectsCount;
-		objectsCount++;
-	}
-	return true;
+	while (!loaded_files.isEmpty())
+	   delete loaded_files.takeFirst();
 }
 
 void Generator::genEnums()
@@ -410,19 +108,16 @@ void Generator::genEnums()
 
 	int id = NUM;
 
-	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef REALREPOROLES_H\n#define REALREPOROLES_H\n\n";
 
 	QString tmp2 = "#include \"%1\"\n";
 
 	out << "namespace UML {\n";
 	out << "\tenum ElementTypes{\n";
-	for( int i=0; i < objects.size(); i++ ){
-		out << "\t\t" +  objects.at(i)->id +
-						"=" + QString::number(id++);
-		if( i!=objects.size()-1 )
-			out << ",";
-		out << "\n";
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		out << "\t\t" +  (*o)->id + "=" + QString::number(id++);
+		out << ",\n";
 	}
 	out << "\t};\n};\n\n";
 
@@ -434,14 +129,15 @@ void Generator::genEnums()
 		   "\t\tTypeRole,\n"
 		   "\t\tUserRole = Qt::UserRole + 96        // First role available for other types\n\t};\n\n";
 
-	for( int i=0; i < objects.size(); i++ ){
-		out << "\tnamespace " + objects.at(i)->id + " {\n";
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		out << "\tnamespace " + (*o)->id + " {\n";
 		out << "\t\tenum Roles {\n";
-		for (int j=0; j<objects.at(i)->all_properties.size(); j++){
-			out << "\t\t\t" + objects.at(i)->all_properties.at(j).first + "Role";
+		for (int j=0; j<(*o)->properties.size(); j++){
+			out << "\t\t\t" + (*o)->properties.at(j).first + "Role";
 			if( !j )
 				out << " = UserRole + 1";
-			if( j != objects.at(i)->all_properties.size()-1)
+			if( j != (*o)->properties.size()-1)
 				out << ",";
 			out << "\n";
 		}
@@ -476,7 +172,6 @@ void Generator::genTypes()
 		return;
 	QTextStream out(&file);
 
-	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef __REPO_TYPES_INFO_H__\n#define __REPO_TYPES_INFO_H__\n\n";
 	out << "#include <QMap>\n#include <QString>\n#include \"../../common/classes.h\" //to be removed soon\n"
 		"#include \"../../common/realrepoapiclasses.h\"\n"
@@ -520,14 +215,18 @@ void Generator::genTypes()
 	out2 << "\n\t//metatype will be replaced with real values"
 					" as soon as we start to use it in our XML descriptions\n\n";
 
-	for (int i=0; i<objects.size(); i++){
-		int j = i+NUM;
-		out2 << "\tinfo.setId(" << j << ");\n"
-			<< "\tinfo.setName(\"" << objects.at(i)->id << "\");\n"
-			<< "\tinfo.setDescription(\"" << objects.at(i)->name << "\");\n"
-			<< "\tinfo.setMetaType(qRealTypes::object);\n"
-			<< QString("\tmap[%1] = info;\n\n").arg(j);
-
+	{
+		int i = 0;
+		MEGA_FOR_ALL_OBJECTS(f,c,o)
+		{
+			int j = i+NUM;
+			out2 << "\tinfo.setId(" << j << ");\n"
+				<< "\tinfo.setName(\"" << (*o)->id << "\");\n"
+				<< "\tinfo.setDescription(\"" << (*o)->name << "\");\n"
+				<< "\tinfo.setMetaType(qRealTypes::object);\n"
+				<< QString("\tmap[%1] = info;\n\n").arg(j);
+			i++;
+		}
 	}
 
 	out2 << "\tinitCompleted = true;\n"
@@ -568,9 +267,14 @@ void Generator::genTypes()
 	// analyzeType
 	out2 << "int RepoTypesInfo::analyseType( int type )\n{\n"
 		"\tswitch (type)\n\t{\n";
-	for( int i=0; i<objects.size(); i++ ){
-		if( objects[i]->type == EDGE )
-			out2 << "\t\tcase " << i + NUM << ":\n";
+	{
+		int i = 0;
+		MEGA_FOR_ALL_OBJECTS(f,c,o)
+		{
+			if((*o)->type == EDGE)
+				out2 << "\t\tcase " << i + NUM << ":\n";
+			i++;
+		}
 	}
 	out2 << "\t\t\treturn TYPE_LINK;\n"
 		"\t\tdefault:\n\t\t\treturn TYPE_OBJECT;\n\t}\n}\n\n";
@@ -609,13 +313,11 @@ void Generator::genClasses(){
 	QTextStream out2(&file2);
 
 
-	out << "// This file is generated, all manual changes will be lost!\n";
 	out <<  "#include <QtGui>\n"
 			"#include \"objects.h\"\n\n"
 			"using namespace Unreal;\n"
 			"using namespace UML;\n\n";
 
-	out2 << "// This file is generated, all manual changes will be lost!\n";
 	out2 << "#include <QWidget>\n#include <QList>\n\n"
 			"#include \"uml_nodeelement.h\"\n"
 			"#include \"uml_edgeelement.h\"\n"
@@ -624,11 +326,11 @@ void Generator::genClasses(){
 			"namespace UML {\n";
 
 
-	for (int i=0; i < objects.size(); i++){
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		QString classname = (*o)->id + "Class";
 
-		QString classname = objects.at(i)->id + "Class";
-
-		if( objects.at(i)->type == EDGE )
+		if ((*o)->type == EDGE )
 			continue;
 
 		//
@@ -644,19 +346,21 @@ void Generator::genClasses(){
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
 			<< "\ttext = \"\";\n";
-		if( objects.at(i)->all_parents.size() > 0)
+#if 0 // FIXME: Emperor
+		if ((*o)->parents.size() > 0)
 			out << "\tparentsList";
-		for( int j=0;j<objects.at(i)->all_parents.size(); j++ ){
-			out << QString("  << %1").arg(position(objects.at(i)->all_parents.at(j)) + NUM);
+		for( int j=0;j<(*o)->parents.size(); j++ ){
+			out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
 		}
+#endif
 		out << ";\n";
-		out << QString("\theight = %1;\n").arg(objects.at(i)->height)
-			<< QString("\twidth = %1;\n").arg(objects.at(i)->width)
+		out << QString("\theight = %1;\n").arg((*o)->height)
+			<< QString("\twidth = %1;\n").arg((*o)->width)
 		<< "\tm_contents.setWidth(width);\n"
 		<< "\tm_contents.setHeight(height);\n";
 
-		if( objects.at(i)->type == NODE){
-			Node* node = (Node*) objects.at(i);
+		if ((*o)->type == NODE){
+			Node* node = dynamic_cast<Node*>(*o);
 			for( int j=0; j<node->ports.size(); j++ ){
 				if( node->ports.at(j).type == "point" ){
 						out << QString("\tpointPorts << QPointF(%1, %2);\n")
@@ -686,14 +390,14 @@ void Generator::genClasses(){
 			<< QString("\trenderer.render(painter, m_contents);\n\n")
 			<< "\tQTextDocument d;\n"
 			<< "\td.setHtml(text);\n";
-		if( objects.at(i)->labels.size() > 0){
+		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";
-			if( objects.at(i)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
+			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
 				out << QString("\tpainter->translate(QPointF(0, 0));\n")
 					<< "\td.setTextWidth(m_contents.width());\n"
 					<< "\td.drawContents(painter, m_contents);\n";
 			}
-			else if( objects.at(i)->id == "krnnDiagram"){
+			else if ((*o)->id == "krnnDiagram"){
 				out << QString("\tpainter->translate(QPointF(0, 2*m_contents.height()/3 ));\n")
 					<< "\tQRectF conts = m_contents;\n"
 					<< "\tconts.setHeight(m_contents.height()/3);\n"
@@ -702,12 +406,12 @@ void Generator::genClasses(){
 
 			}
 			else{
-				if( objects.at(i)->labels.at(0).x != 0  || objects.at(i)->labels.at(0).y != 0)
+				if ((*o)->labels.at(0).x != 0  || (*o)->labels.at(0).y != 0)
 					out << QString("\tpainter->translate(QPointF(%1 * m_contents.width(), %2 * m_contents.height()));\n")
-							.arg(objects.at(i)->labels.at(0).x).arg(objects.at(i)->labels.at(0).y)
+							.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
 						<< "\tQRectF conts = m_contents;\n"
 						<< QString("\tconts.setHeight(m_contents.height() * (1 - %1));\n")
-							.arg(objects.at(i)->labels.at(0).y);
+							.arg((*o)->labels.at(0).y);
 				else
 					out << QString("\tpainter->translate(QPointF(0, m_contents.height()-15));\n")
 						<< "\tQRectF conts = m_contents;\n"
@@ -725,17 +429,17 @@ void Generator::genClasses(){
 		//updateData
 		out << "void " << classname << "::updateData()\n{\n"
 			<< "\tNodeElement::updateData();\n";
-		if( objects.at(i)->labels.size() > 0){
-			out << QString("\ttext = QString(\"%1\")").arg(objects.at(i)->labels.at(0).text);
-			if( objects.at(i)->labels.at(0).args.size() > 0)
-				for( int k=0; k<objects.at(i)->labels.at(0).args.size(); k++)
+		if ((*o)->labels.size() > 0){
+			out << QString("\ttext = QString(\"%1\")").arg((*o)->labels.at(0).text);
+			if ((*o)->labels.at(0).args.size() > 0)
+				for( int k=0; k<(*o)->labels.at(0).args.size(); k++)
 					out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
-								.arg(objects.at(i)->labels.at(0).args.at(k));
+								.arg((*o)->labels.at(0).args.at(k));
 			out << ";\n";
 		}
 		else
 			out << "\ttext = \"\";\n";
-		out << QString("")
+			out << QString("")
 			<< "\tupdate();\n"
 			<< "}\n\n";
 
@@ -771,13 +475,17 @@ void Generator::genClasses(){
 	// II. edges
 	//
 
-	for ( int i=0; i<edges.size(); i++ ){
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if ((*o)->type == NODE)
+			continue;
+		const Edge *e = dynamic_cast<Edge*>(*o);
 
 		//
 		// 1. H-files
 		//
 
-		QString classname = edges.at(i)->id + "Class";
+		QString classname = e->id + "Class";
 		out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
 
 		out2 << "\tclass " << classname << " : public EdgeElement{\n";
@@ -794,11 +502,11 @@ void Generator::genClasses(){
 		// constructor
 
 		out << classname << "::" << classname << "()\n";
-		out << QString("{\n\tm_penStyle = %1;\n").arg(edges.at(i)->lineType);
-		if( edges.at(i)->labels.size() > 0){
-			out << QString("\tm_text = QString(\"%1\")").arg(edges.at(i)->labels.at(0).text);
-			if( edges.at(i)->labels.at(0).args.size() > 0 )
-				out << QString(".arg(dataIndex.data(%1).toString());\n").arg(edges.at(i)->labels.at(0).args.at(0));
+		out << QString("{\n\tm_penStyle = %1;\n").arg(e->lineType);
+		if (e->labels.size() > 0){
+			out << QString("\tm_text = QString(\"%1\")").arg(e->labels.at(0).text);
+			if (e->labels.at(0).args.size() > 0 )
+				out << QString(".arg(dataIndex.data(%1).toString());\n").arg(e->labels.at(0).args.at(0));
 			else
 				out << ";\n";
 		}
@@ -811,11 +519,11 @@ void Generator::genClasses(){
 
 		// drawStartArrow
 
-	QString style;
-	if( edges.at(i)->associations.size() != 0 )
-			style = edges.at(i)->associations.at(0)->fromArrow;
-	else
-		style = "";
+		QString style;
+		if (e->associations.size() != 0 )
+				style = e->associations.at(0)->fromArrow;
+		else
+			style = "";
 
 
 		if( !style.isEmpty() && style != "no_arrow" ){
@@ -858,8 +566,8 @@ void Generator::genClasses(){
 				   "{\n}\n\n";
 
 		// drawEndArrow
-	if( edges.at(i)->associations.size() != 0 )
-		style = edges.at(i)->associations.at(0)->toArrow;
+	if (e->associations.size() != 0 )
+		style = e->associations.at(0)->toArrow;
 	else
 		style = "";
 		if( !style.isEmpty() && style != "no_arrow" ){
@@ -933,7 +641,6 @@ void Generator::genClasses(){
 
 void Generator::genFactory()
 {
-
 	if( !dir.exists("umllib"))
 		dir.mkdir("umllib");
 	QFile file("generated/umllib/uml_guiobjectfactory.cpp");
@@ -950,18 +657,20 @@ void Generator::genFactory()
 			"#include \"uml_guiobjectfactory.h\"\n\n";
 
 
-	for (int i=0; i<objects.size(); i++){
-		int height = objects.at(i)->height;
-		int width  = objects.at(i)->width;
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		int height = (*o)->height;
+		int width  = (*o)->width;
 
 		if ( height == -1 && width == -1 )
 			continue;
-		classes += tmp.arg(objects.at(i)->id).arg(objects.at(i)->id + "Class") ;
+		classes += tmp.arg((*o)->id).arg((*o)->id + "Class") ;
 	}
 
-	for (int i=0; i<edges.size(); i++){
-
-		classes += tmp.arg(edges.at(i)->id).arg(edges.at(i)->id + "Class");
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if ((*o)->type == NODE) continue;
+		classes += tmp.arg((*o)->id).arg((*o)->id + "Class");
 
 	}
 
@@ -978,15 +687,16 @@ void Generator::genFactory()
 }
 
 int Generator::position( QString id ){
-
 	int result = -1;
-	for( int i=0; i<(int) objects.size(); i++ )
-		if( objects.at(i)->id == id ){
+
+	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
+		if ((*o)->id == id ){
 			result = i;
 			break;
 		}
-   return result;
+	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
 
+	return result;
 }
 
 void Generator::genRealRepoInfo(){
@@ -996,7 +706,6 @@ void Generator::genRealRepoInfo(){
 		return;
 	QTextStream out(&file);
 
-	out << "// This file is generated, all manual changes will be lost!\n";
 	out << "#ifndef REALREPOINFO_H\n#define REALREPOINFO_H\n\n";
 
 	out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n#include <QIcon>\n#include \"sdfrenderer.h\"\n\n";
@@ -1047,46 +756,50 @@ void Generator::genRealRepoInfo(){
 		"\tif ( initCompleted )\n"
 		"\t\treturn;\n\n"
 			"\tCategory cat;\n\n";
-	for( int i=0; i<categories.size(); i++){
+	{
+		int i = 0;
+		int k = 0;
+	FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f),c)
+	{
+		bool isEmpty = true;
+		for( int j=0; j<(*c)->objects.size(); j++)
+			if ((*c)->objects.at(j)->visible)
+				isEmpty = false;
+		//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
+		if( isEmpty )
+			continue;
+		out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg((*c)->get_name());
 
-	bool isEmpty = true;
-	for( int j=0; j<categories.at(i)->objects.size(); j++)
-		if( objects.at(categories.at(i)->objects.at(j))->visible )
-			isEmpty = false;
-	//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
-	if( isEmpty )
-		continue;
+		if ((*c)->objects.size() > 0 )
+				out2 << QString("\tcat.objects ");
 
-	out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg(categories.at(i)->name);
+		if( i )
+			out2 << "<< 2 << 18"; // WTF???
 
-	if( categories.at(i)->objects.size() > 0 )
-			out2 << QString("\tcat.objects ");
-
-	if( i )
-		out2 << "<< 2 << 18";
-
-		for( int j=0; j<categories.at(i)->objects.size(); j++){
-//		qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
-//		<< objects.at(categories.at(i)->objects.at(j))->visible;
-		if( objects.at(categories.at(i)->objects.at(j))->visible || objects.at(categories.at(i)->objects.at(j))->type == EDGE )
-					out2 << QString(" << %1").arg(categories.at(i)->objects.at(j)+NUM);
-	}
+		for( int j=0; j<(*c)->objects.size(); j++){
+//			qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
+//			<< objects.at(categories.at(i)->objects.at(j))->visible;
+			if ((*c)->objects.at(j)->visible || (*c)->objects.at(j)->type == EDGE )
+						out2 << QString(" << %1").arg(k+NUM);
+			k++;
+		}
 
 		out2 << "\t;\n";
 		out2 << "\tcategories << cat;\n\n";
 
+		i++;
+	}
 	}
 
-	if( objects.size() > 0 )
+//	if( objects.size() > 0 )
 		out2 << "objects ";
-	for( int i=0; i<objects.size(); i++ )
-		out2 << QString(" << \"%1\"").arg(objects.at(i)->id);
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+		out2 << QString(" << \"%1\"").arg((*o)->id);
 	out2 << ";\n\n";
-	if( objects.size() > 0 )
+//	if( objects.size() > 0 )
 		out2 << "descriptions ";
-	for( int i=0; i<objects.size(); i++ ){
-		out2 << QString(" << \"%1\"").arg(objects.at(i)->name);
-	}
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+		out2 << QString(" << \"%1\"").arg((*o)->name);
 
 	out2 << ";\n\n";
 
@@ -1096,12 +809,17 @@ void Generator::genRealRepoInfo(){
 	out2 << "// from realreporoles.cpp\n\n";
 	out2 << "\tQStringList l;\n";
 
-	for (int i=0; i<objects.size(); i++){
-		out2 << "\tl.clear();\n";
-		for( int j=0; j<objects.at(i)->all_properties.size(); j++)
-			out2 << QString("\t\tl << \"%1\";\n").arg(objects.at(i)->all_properties.at(j).first);
-		out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
-		out2 << "\n";
+	{
+		int i = 0;
+		MEGA_FOR_ALL_OBJECTS(f,c,o)
+		{
+			out2 << "\tl.clear();\n";
+			for( int j=0; j<(*o)->properties.size(); j++)
+				out2 << QString("\t\tl << \"%1\";\n").arg((*o)->properties.at(j).first);
+			out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
+			out2 << "\n";
+			i++;
+		}
 	}
 
 	// initializing icons
@@ -1109,11 +827,12 @@ void Generator::genRealRepoInfo(){
 	out2 << "//initializing icons\n\n";
 	out2 << "\ticons";
 
-	for( int k=0; k<objects.size(); k++ ){
-		if( objects.at(k)->height == -1 && objects.at(k)->width == -1 )
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if ((*o)->height == -1 && (*o)->width == -1 )
 			out2 << "\n\t\t<< QIcon()";
 		else
-			out2 << QString("\n\t\t<< QIcon(new SdfIconEngineV2(\":/shapes/" + objects.at(k)->id + "Class.sdf\"))");
+			out2 << QString("\n\t\t<< QIcon(new SdfIconEngineV2(\":/shapes/" + (*o)->id + "Class.sdf\"))");
 	}
 	out2 << ";\n\n";
 
@@ -1182,10 +901,15 @@ void Generator::genEdgesFunction(){
 	QString cases = "";
 	QString singleCase = "\t\tcase %1: return check(pars, new %2()); break;\n";
 
-	for( int i=0; i<objects.size(); i++)
-		if( objects.at(i)->type == NODE){
-			cases += singleCase.arg(i+NUM).arg(objects.at(i)->id + "Class");
+	{
+		int i = 0;
+		MEGA_FOR_ALL_OBJECTS(f,c,o)
+		{
+			if ((*o)->type == NODE)
+				cases += singleCase.arg(i+NUM).arg((*o)->id + "Class");
+			i++;
 		}
+	}
 	out << "\n";
 	out <<  "const int ANY = -1;\n"
 			"const int NONE = 0;\n\n";
@@ -1210,9 +934,9 @@ void Generator::genEdgesFunction(){
 		   "\tQMap< int, QHash< int, int > > edges;\n"
 		   "\tQHash< int, int> hash;\n\n";
 
-	for( int i=0; i<(int) objects.size(); i++){
-		if( objects.at(i)->type == EDGE ){
-			Edge* edge = (Edge*) objects.at(i);
+	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
+		if ((*o)->type == EDGE ){
+			Edge* edge = dynamic_cast<Edge *>(*o);
 			for( int j=0; j<(int) edge->associations.size(); j++ ){
 				out << "\thash.clear();\n";
 				int from = position(edge->associations.at(j)->from);
@@ -1225,7 +949,7 @@ void Generator::genEdgesFunction(){
 				out << QString("\tedges.insert(%1, hash);\n\n").arg(i+NUM);
 			}
 		}
-	}
+	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
 
 	out << "\tif( from == ANY && to == ANY )\n"
 		   "\t\treturn true; // (-1, -1)\n\n"
@@ -1253,54 +977,3 @@ void Generator::genEdgesFunction(){
 
 	file.close();
 }
-
-Entity* Generator::find( QString id ){
-	for ( int i=0; i < (int) objects.size(); i++ )
-		if( objects.at(i)->id == id )
-			return objects.at(i);
-	return 0;
-}
-
-Edge* Generator::findEdge( QString id ){
-	for ( int i=0; i < (int) edges.size(); i++ )
-		if( edges.at(i)->id == id )
-			return edges.at(i);
-	return 0;
-}
-
-bool Generator::propagateAll(){
-	for (int i = 0; i < (int) objects.size(); i++)
-	{
-		if (!objects.at(i)->propagateAll(this))
-			return false;
-	}
-
-#if 0  // FIXME!!!! (was: "is not needed right now")
-	// propagating edges' stuff
-	for( int i=0; i < (int) edges.size(); i++ ){
-		if( !edges.at(i)->assocsPropagated )
-			propagateAssocs( edges.at(i) );
-	}
-#endif
-	return true;
-}
-
-#if 0
-bool Generator::propagateAssocs( Edge* cur ){
-
-	for( int j=0; j < cur->parents.size(); j++ ){
-		Edge* par = findEdge(cur->parents.at(j));
-		if( !par ){
-			qDebug() << "Edge " << cur->parents.at(j) << " in a associations list of " << cur->id << "not found";
-			return false;
-		}
-		if ( !par->assocsPropagated )
-			if (!propagateAssocs( par ))
-				return false;
-		for( int k=0; k < par->associations.size(); k++ )
-			cur->addAssociation( par->associations.at(k) );
-	}
-	cur->assocsPropagated = true;
-	return true;
-}
-#endif

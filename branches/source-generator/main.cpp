@@ -5,29 +5,33 @@
 int main(int argc, char *argv[])
 {
 	QApplication app(argc,argv);
+	Generator g;
+	bool ret = true;
 
-	QStringList l;
-	l
-	<< "kernel_metamodel.xml" 
-	<< "basicbehaviors_metamodel.xml" 
-	<< "trace.xml"
-	<< "requirements_metamodel.xml" 
-	<< "class_metamodel.xml"
-	<< "usecase_metamodel.xml"
-	<< "sequence_metamodel.xml"
-	<< "communication_metamodel.xml"
-	<< "statemachines_metamodel.xml"
-	<< "deployment.xml"
-	<< "component_metamodel.xml"
-	<< "timing_metamodel.xml"
-	<< "activity_metamodel.xml"
-	<< "package.xml"
-	// << "orthodox.xml"
-	<< "bpel.xml"
-	<< "qrealparallel_metamodel.xml";
-	Generator generator;
+	g.setSrcDir("editors");
+	// FIXME: get  via args
+	ret = ret && g.loadFile("kernel_metamodel.xml");
+	ret = ret && g.loadFile("basicbehaviors_metamodel.xml");
+	ret = ret && g.loadFile("trace.xml");
+	ret = ret && g.loadFile("requirements_metamodel.xml");
+	ret = ret && g.loadFile("class_metamodel.xml");
+	ret = ret && g.loadFile("usecase_metamodel.xml");
+	ret = ret && g.loadFile("sequence_metamodel.xml");
+	ret = ret && g.loadFile("communication_metamodel.xml");
+	ret = ret && g.loadFile("statemachines_metamodel.xml");
+	ret = ret && g.loadFile("deployment.xml");
+	ret = ret && g.loadFile("component_metamodel.xml");
+	ret = ret && g.loadFile("timing_metamodel.xml");
+	ret = ret && g.loadFile("activity_metamodel.xml");
+	ret = ret && g.loadFile("package.xml");
+	ret = ret && g.loadFile("bpel.xml");
+	ret = ret && g.loadFile("qrealparallel_metamodel.xml");
+//	ret = ret && g.loadFile("orthodox.xml");
 
-	if (!generator.work(l))
+	if (!ret)
+		return 1; // Failure
+
+	if (!g.generate())
 		return 1; // Failure
 	return 0; // Success
 }

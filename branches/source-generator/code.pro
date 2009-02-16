@@ -8,7 +8,12 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += generator.h \
-    entity.h
+    entity.h \
+    editor_file.h \
+    category.h
+
 SOURCES += main.cpp \
     generator.cpp \
-    entity.cpp
+    entity.cpp \
+    editor_file.cpp \
+    category.cpp

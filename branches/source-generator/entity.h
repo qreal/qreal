@@ -7,9 +7,11 @@
 #include <QStringList>
 #include <QList>
 #include <QPair>
+#include <QDomElement>
 #include <QDebug>
 
 class Generator;
+extern QString resources;
 
 /** @brief Тип сущности */
 enum elementsType {
@@ -26,30 +28,37 @@ enum sideType {
 class Port;
 class Label;
 
+class Category;
+
 // parent for nodes and edges class
 /** @class Entity
  * 	@brief Абстрактная сущность
  * */
 class Entity
 {
+	Category *cat;
+	bool resolving_done;
+	QList<QString> parents;
+
 public:
-	Entity(){ visible = false; propagated = false; }
+	Entity(Category *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false;}
 	virtual ~Entity(){};
 
-	/** @brief Добавить родителя */
-	bool addParent( QString arg /**< Идентификатор родителя */);
-	/** @brief Добавить одного предка */
-	bool addAllParents( QString arg /**< Идентификатор предка */);
-	/** @brief Добавить список предков */
-	bool addAllParents( QStringList &arg /**< Список предков */);
+	virtual bool init(QDomElement &) = 0;
+	bool resolve(void);
+	bool isResolved(void) const {return resolving_done;}
+	bool parseGeneralizations(QDomElement&);
+	bool parseProperties(QDomElement&);
+	bool parseAssociations(QDomElement&);
+	bool parseLabels(QDomElement&);
+	bool applyParent(const Entity *);
+
 	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */
 	                );
-	/** @brief Добавить одно родительское свойство */
-	void addAllProperties(QString name, QString type);
 	/** @brief Добавить список родительских свойств */
-	void addAllProperties(QList< QPair<QString, QString> > &arg);
+	void addProperties(const QList< QPair<QString, QString> > &arg);
 
 	/** @brief Высота графического представления сущности по умолчанию */
 	int height;
@@ -60,16 +69,8 @@ public:
 	QString id;
 	/** @brief Имя */
 	QString name;
-	/** @brief Список непосредственных родителей */
-	QStringList parents;
-	/** @brief Список всех предков (ancestors) */
-	QStringList all_parents;
-
 	/** @brief Свойства непосредственно этого объекта */
 	QList< QPair<QString, QString> > properties;
-	/** @brief Список всех свойств этого объекта (в т.ч. родительских) */
-	QList< QPair<QString, QString> > all_properties;
-
 	/** @brief Список текстовых надписей, параметризующих SVG */
 	QList< Label > labels;
 
@@ -79,11 +80,7 @@ public:
 	/** @brief Индикатор визуальности сущности */
 	bool visible;
 
-	/** @brief Заполняет all_properties и all_parents */
-	bool propagateAll(Generator *);
-
-	/** @brief Закончено ли построение all_{properties|parents}? */
-	bool propagated;
+	QString res;
 };
 
 // node class
@@ -93,12 +90,16 @@ public:
 class Node : public Entity
 {
 public:
-	Node() { type = NODE; }
+	Node(Category *cat):Entity(cat) { type = NODE; }
 	~Node() {}
 	//TODO: containers 
 	//QStringList associations; 
 	/** @brief Список портов */
 	QList< Port > ports;
+
+	bool init(QDomElement &);
+	bool parseSdf(QDomElement&);
+	bool parsePorts(QDomElement&);
 };
 
 /** @class Association
@@ -157,7 +158,7 @@ public:
 class Edge : public Entity
 {
 public:
-	Edge(){
+	Edge(Category *cat):Entity(cat){
 		assocsPropagated = false;
 		endsPropagated   = false;
 		lineType = "Qt::SolidLine";
@@ -180,6 +181,9 @@ public:
 	bool assocsPropagated; // edges' own generalizations
 	/** @brief Вспомогательная переменная, определяющая, обработан ли уже список элементов, к которым может присоединять связь*/
 	bool endsPropagated; // connected nodes' generalizations
+
+	bool init(QDomElement&);
+	bool parseEdgeGraphics(QDomElement&);
 };
 
 #endif

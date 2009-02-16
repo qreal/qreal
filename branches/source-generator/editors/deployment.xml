@@ -320,7 +320,6 @@
     <generalizations>
      <generalization>
       <parent parent_id="cnClass" />
-<!--      <parent parent_id="dplDeploymentTarget" /> -->
      </generalization>
     </generalizations>
     <containers>

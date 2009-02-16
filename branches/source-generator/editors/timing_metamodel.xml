@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
- <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
+ <include>basicbehaviors_metamodel</include>
  <diagram name="TIMING DIAGRAM" >
   <node id="tmnnInteraction" name="Interaction" >
    <graphics>
