@@ -87,7 +87,7 @@ bool EditorFile::load(void)
 			         << old_cat->get_editor()->get_name();
 			return false;
 		}
-		cat = new Category(name, this);
+		cat = new Category(cat_name, this);
 		if (!cat->init(child))
 		{
 			delete cat;
