@@ -23,6 +23,7 @@ bool EditorFile::load(void)
 	QFile file(name);
 	QDomDocument *doc;
 	QDomElement child, metamodel;
+	Category *cat;
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;
@@ -75,8 +76,18 @@ bool EditorFile::load(void)
 	for (child = metamodel.firstChildElement("diagram"); !child.isNull();
 	     child = child.nextSiblingElement("diagram"))
 	{
-		name = child.attribute("name");
-		Category *cat = new Category(name, this);
+		const Category *old_cat;
+
+		QString cat_name = child.attribute("name");
+		old_cat = generator->findCategory(cat_name);
+		if (old_cat)
+		{
+			qDebug() << "Error processing file" << name << "Category"
+			         << cat_name << "already loaded from file"
+			         << old_cat->get_editor()->get_name();
+			return false;
+		}
+		cat = new Category(name, this);
 		if (!cat->init(child))
 		{
 			delete cat;
@@ -85,31 +96,28 @@ bool EditorFile::load(void)
 		}
 		categories << cat;
 	}
+	delete doc;
 
 	// III. Load diagram part two:
 	// Resolve all dependencies.
-	FOR_ALL_CATEGORIES(this, f)
-		if (!(*f)->resolve())
-		{
-			delete doc;
+	Q_FOREACH(cat, categories)
+		if (!cat->resolve())
 			return false;
-		}
 
 	loading_done = true;
-	delete doc;
 	return true;
 }
 
 const Entity* EditorFile::findEntityInIncludes(QString id) const
 {
-	QList<EditorFile *>::ConstIterator i;
 	const Entity *res;
+	const EditorFile *f;
 
-	for (i = includes.constBegin(); i != includes.constEnd(); i++)
+	Q_FOREACH(f, includes)
 	{
-		res = (*i)->findEntityInCategories(id);
+		res = f->findEntityInCategories(id);
 		if (res) return res;
-		res = (*i)->findEntityInIncludes(id);
+		res = f->findEntityInIncludes(id);
 		if (res) return res;
 	}
 	return NULL;
@@ -117,13 +125,23 @@ const Entity* EditorFile::findEntityInIncludes(QString id) const
 
 const Entity* EditorFile::findEntityInCategories(QString id) const
 {
-	QList<Category *>::ConstIterator i;
 	const Entity *res;
+	const Category *c;
 
-	for (i = categories.constBegin(); i != categories.constEnd(); i++)
+	Q_FOREACH(c, categories)
 	{
-		res = (*i)->findEntity(id);
+		res = c->findEntity(id);
 		if (res) return res;
 	}
+	return NULL;
+}
+
+const Category* EditorFile::findCategory(QString name) const
+{
+	Category *c;
+
+	Q_FOREACH(c, categories)
+		if (c->get_name() == name)
+			return c;
 	return NULL;
 }

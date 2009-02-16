@@ -36,7 +36,7 @@ bool Category::init(QDomElement &xml_element)
 {
 	QDomElement child;
 
-	qDebug() << "initializing" << name << "category";
+	qDebug() << "Processing category" << name;
 	// I. Parse enums
 	for (child = xml_element.firstChildElement("enumType"); !child.isNull();
 	     child = child.nextSiblingElement("enumType"))
@@ -73,8 +73,10 @@ bool Category::init(QDomElement &xml_element)
 
 bool Category::resolve(void)
 {
-	FOR_ALL_OBJECTS(this, o)
-		if (!(*o)->resolve())
+	Entity *e;
+
+	Q_FOREACH(e, objects)
+		if (!e->resolve())
 			return false;
 	return true;
 }
@@ -82,7 +84,6 @@ bool Category::resolve(void)
 const Entity* Category::findEntityInTree(QString id) const
 {
 	const Entity *res;
-	QList<EditorFile*>::ConstIterator j;
 
 	// Search in this diagram of this file
 	res = findEntity(id);
@@ -96,8 +97,10 @@ const Entity* Category::findEntityInTree(QString id) const
 
 const Entity* Category::findEntity(QString id) const
 {
-	FOR_ALL_OBJECTS(this, o)
-		if ((*o)->id == id)
-			return (*o);
+	Entity *e;
+
+	Q_FOREACH(e, objects)
+		if (e->id == id)
+			return e;
 	return NULL;
 }

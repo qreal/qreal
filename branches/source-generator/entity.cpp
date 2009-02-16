@@ -56,16 +56,17 @@ bool Entity::parseGeneralizations(QDomElement &xml_element)
 bool Entity::resolve(void)
 {
 	const Entity *parent;
+	QString p;
 
 	if (resolving_done) // Already resolved
 		return true;
 
-	for (QList<QString>::Iterator p = parents.begin(); p != parents.end(); p++)
+	Q_FOREACH(p, parents)
 	{
-		parent = cat->findEntityInTree((*p));
+		parent = cat->findEntityInTree(p);
 		if (!parent)
 		{
-			qDebug() << "Cannot find" << (*p) << "as a parent of" << id;
+			qDebug() << "Cannot find" << p << "as a parent of" << id;
 			return false;
 		}
 		// Parent may be unresolved if it is in the same category
@@ -77,7 +78,7 @@ bool Entity::resolve(void)
 		}
 		if (!applyParent(parent))
 		{
-			qDebug() << "Failed to apply parent" << (*p) << "to" << id;
+			qDebug() << "Failed to apply parent" << p << "to" << id;
 			return false;
 		}
 	}
@@ -199,7 +200,6 @@ bool Node::init(QDomElement &xml_element)
 		return false;
 	}
 
-	qDebug() << "initializing node" << id;
 	QDomElement logic = xml_element.firstChildElement("logic");
 	if (logic.isNull())
 	{

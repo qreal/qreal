@@ -48,7 +48,8 @@ public:
 	/** @brief Обработать все входные файлов и сгенерировать редакторы */
 	bool generate();
 	bool loadFile(QString, EditorFile **f = NULL);
-	const EditorFile* findFile(QString);
+	const EditorFile* findFile(QString) const;
+	const Category* findCategory(QString) const;
 	void setSrcDir(QString path) {srcdir = path; }
 
 private:
@@ -78,8 +79,6 @@ private:
 
 	/** @brief Директория */
 	QDir dir;
-
-	friend class Entity;
 };
 
 #endif

@@ -28,6 +28,7 @@ public:
 	bool init(QDomElement &);
 	bool resolve(void);
 	QString get_name(void) const {return name;}
+	const EditorFile* get_editor(void) const {return efile;}
 	const Entity* findEntityInTree(QString) const;
 	const Entity* findEntity(QString) const;
 };

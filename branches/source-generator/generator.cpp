@@ -19,16 +19,16 @@ bool Generator::loadFile(QString filename, EditorFile **file)
 	EditorFile *efile;
 	QString uniq_name = filename.split("/").last();
 
-	EditorFile *temp;
+	EditorFile *temp, *f;
 	if (!file) file = &temp;
 	*file = NULL;
 
-	FOR_ALL_FILES(f)
-		if ((*f)->get_uniq_name() == uniq_name)
+	Q_FOREACH(f, loaded_files)
+		if (f->get_uniq_name() == uniq_name)
 		{
-			if ((*f)->isLoaded())
+			if (f->isLoaded())
 			{
-				*file = (*f);
+				*file = f;
 				return true; // Already loaded
 			}
 			else
@@ -51,11 +51,26 @@ bool Generator::loadFile(QString filename, EditorFile **file)
 	return true;
 }
 
-const EditorFile* Generator::findFile(QString name)
+const EditorFile* Generator::findFile(QString name) const
 {
-	FOR_ALL_FILES(f)
-		if ((*f)->get_name() == name)
-			return (*f);
+	EditorFile *f;
+
+	Q_FOREACH(f, loaded_files)
+		if (f->get_name() == name)
+			return f;
+	return NULL;
+}
+
+const Category* Generator::findCategory(QString name) const
+{
+	const Category *c;
+	const EditorFile *f;
+
+	Q_FOREACH(f, loaded_files)
+	{
+		c = f->findCategory(name);
+		if (c) return c;
+	}
 	return NULL;
 }
 
@@ -215,19 +230,16 @@ void Generator::genTypes()
 	out2 << "\n\t//metatype will be replaced with real values"
 					" as soon as we start to use it in our XML descriptions\n\n";
 
+	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
 	{
-		int i = 0;
-		MEGA_FOR_ALL_OBJECTS(f,c,o)
-		{
-			int j = i+NUM;
-			out2 << "\tinfo.setId(" << j << ");\n"
-				<< "\tinfo.setName(\"" << (*o)->id << "\");\n"
-				<< "\tinfo.setDescription(\"" << (*o)->name << "\");\n"
-				<< "\tinfo.setMetaType(qRealTypes::object);\n"
-				<< QString("\tmap[%1] = info;\n\n").arg(j);
-			i++;
-		}
+		int j = i+NUM;
+		out2 << "\tinfo.setId(" << j << ");\n"
+		     << "\tinfo.setName(\"" << (*o)->id << "\");\n"
+		     << "\tinfo.setDescription(\"" << (*o)->name << "\");\n"
+		     << "\tinfo.setMetaType(qRealTypes::object);\n"
+		     << QString("\tmap[%1] = info;\n\n").arg(j);
 	}
+	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
 
 	out2 << "\tinitCompleted = true;\n"
 		"}\n\n";
@@ -267,15 +279,12 @@ void Generator::genTypes()
 	// analyzeType
 	out2 << "int RepoTypesInfo::analyseType( int type )\n{\n"
 		"\tswitch (type)\n\t{\n";
+	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
 	{
-		int i = 0;
-		MEGA_FOR_ALL_OBJECTS(f,c,o)
-		{
-			if((*o)->type == EDGE)
-				out2 << "\t\tcase " << i + NUM << ":\n";
-			i++;
-		}
+		if((*o)->type == EDGE)
+			out2 << "\t\tcase " << i + NUM << ":\n";
 	}
+	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
 	out2 << "\t\t\treturn TYPE_LINK;\n"
 		"\t\tdefault:\n\t\t\treturn TYPE_OBJECT;\n\t}\n}\n\n";
 
