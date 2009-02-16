@@ -29,7 +29,7 @@
     <generalizations>
      <generalization>
       <parent parent_id="krnnNamedElement" />
-      <parent parent_id="actnActivityNode" />
+      <!--      <parent parent_id="actnActivityNode" /> -->
      </generalization>
     </generalizations>
     <properties>

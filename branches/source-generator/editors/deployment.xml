@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
+ <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
  <diagram name="DEPLOYMENT DIAGRAM" >
   <node id="dplArtifact" name="Artifact" >
@@ -51,7 +52,7 @@
      <generalization>
       <parent parent_id="krnnClassifier" />
       <parent parent_id="krnnNamedElement" />
-      <parent parent_id="dlpDeployedArtifact" />
+      <parent parent_id="dplDeployedArtifact" />
      </generalization>
     </generalizations>
     <containers>
@@ -319,7 +320,7 @@
     <generalizations>
      <generalization>
       <parent parent_id="cnClass" />
-      <parent parent_id="dplDeploymentTarget" />
+<!--      <parent parent_id="dplDeploymentTarget" /> -->
      </generalization>
     </generalizations>
     <containers>
