@@ -296,19 +296,19 @@ bool Node::parseSdf(QDomElement &xml_element)
 
 bool Node::parsePorts(QDomElement &xml_element)
 {
-	QDomNodeList ports_list = xml_element.elementsByTagName("point_port");
-	for( int i=0; i<ports.size(); i++ ){
+	QDomNodeList point_ports_list = xml_element.elementsByTagName("point_port");
+	for( int i=0; i<point_ports_list.size(); i++ ){
 		Port port;
 		port.type = "point";
-		port.vals << (qreal) ports_list.at(i).toElement().attribute("x").toInt()/width;
-		port.vals << (qreal) ports_list.at(i).toElement().attribute("y").toInt()/height;
+		port.vals << (qreal) point_ports_list.at(i).toElement().attribute("x").toInt()/width;
+		port.vals << (qreal) point_ports_list.at(i).toElement().attribute("y").toInt()/height;
 		ports << port;
 	}
 
-	QDomNodeList lines = xml_element.elementsByTagName("line_port");
-	for( int i=0; i<lines.size(); i++ ){
-		QDomElement start = lines.at(i).firstChildElement("start");
-		QDomElement end   = lines.at(i).firstChildElement("end");
+	QDomNodeList line_ports_list = xml_element.elementsByTagName("line_port");
+	for( int i=0; i<line_ports_list.size(); i++ ){
+		QDomElement start = line_ports_list.at(i).firstChildElement("start");
+		QDomElement end   = line_ports_list.at(i).firstChildElement("end");
 		Port port;
 		port.type = "line";
 		port.vals << (qreal) start.attribute("startx").toInt()/width;
