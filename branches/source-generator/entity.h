@@ -10,6 +10,10 @@
 #include <QDomElement>
 #include <QDebug>
 
+#define FOR_ALL_PROPERTIES(o,p) \
+	for (QList<QPair<QString, QString> >::ConstIterator p = o->constPropBegin(); \
+	     p != o->constPropEnd(); p++)
+
 class Generator;
 extern QString resources;
 
@@ -39,6 +43,15 @@ class Entity
 	Category *cat;
 	bool resolving_done;
 	QList<QString> parents;
+	QList<QPair<QString, QString> > properties;
+
+protected:
+	/** @brief Добавить свойство */
+	void addProperty( QString name, /**< Название свойства */
+	                  QString type /**< Тип свойства */
+	                );
+	/** @brief Добавить список родительских свойств */
+	void addProperties(const QList< QPair<QString, QString> > &arg);
 
 public:
 	Entity(Category *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false;}
@@ -53,13 +66,6 @@ public:
 	bool parseLabels(QDomElement&);
 	bool applyParent(const Entity *);
 
-	/** @brief Добавить свойство */
-	void addProperty( QString name, /**< Название свойства */
-	                  QString type /**< Тип свойства */
-	                );
-	/** @brief Добавить список родительских свойств */
-	void addProperties(const QList< QPair<QString, QString> > &arg);
-
 	/** @brief Высота графического представления сущности по умолчанию */
 	int height;
 	/** @brief Ширина графического представления сущности по умолчанию */
@@ -69,8 +75,6 @@ public:
 	QString id;
 	/** @brief Имя */
 	QString name;
-	/** @brief Свойства непосредственно этого объекта */
-	QList< QPair<QString, QString> > properties;
 	/** @brief Список текстовых надписей, параметризующих SVG */
 	QList< Label > labels;
 
@@ -81,6 +85,9 @@ public:
 	bool visible;
 
 	QString res;
+
+	QList<QPair<QString, QString> >::ConstIterator constPropBegin() const {return properties.constBegin();}
+	QList<QPair<QString, QString> >::ConstIterator constPropEnd() const {return properties.constEnd();}
 };
 
 // node class

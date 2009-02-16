@@ -148,13 +148,12 @@ void Generator::genEnums()
 	{
 		out << "\tnamespace " + (*o)->id + " {\n";
 		out << "\t\tenum Roles {\n";
-		for (int j=0; j<(*o)->properties.size(); j++){
-			out << "\t\t\t" + (*o)->properties.at(j).first + "Role";
-			if( !j )
+		FOR_ALL_PROPERTIES((*o),p)
+		{
+			out << "\t\t\t" + (*p).first + "Role";
+			if (p == (*o)->constPropBegin())
 				out << " = UserRole + 1";
-			if( j != (*o)->properties.size()-1)
-				out << ",";
-			out << "\n";
+			out << ",\n";
 		}
 	out << "\t\t};\n";
 		out << "\t};\n\n";
@@ -771,25 +770,26 @@ void Generator::genRealRepoInfo(){
 	FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f),c)
 	{
 		bool isEmpty = true;
-		for( int j=0; j<(*c)->objects.size(); j++)
-			if ((*c)->objects.at(j)->visible)
+		FOR_ALL_OBJECTS((*c),o)
+			if ((*o)->visible)
 				isEmpty = false;
 		//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
 		if( isEmpty )
 			continue;
 		out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg((*c)->get_name());
 
-		if ((*c)->objects.size() > 0 )
+		if ((*c)->constObjBegin() != (*c)->constObjEnd())
 				out2 << QString("\tcat.objects ");
 
 		if( i )
 			out2 << "<< 2 << 18"; // WTF???
 
-		for( int j=0; j<(*c)->objects.size(); j++){
+		FOR_ALL_OBJECTS((*c),o)
+		{
 //			qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
 //			<< objects.at(categories.at(i)->objects.at(j))->visible;
-			if ((*c)->objects.at(j)->visible || (*c)->objects.at(j)->type == EDGE )
-						out2 << QString(" << %1").arg(k+NUM);
+			if ((*o)->visible || (*o)->type == EDGE )
+				out2 << QString(" << %1").arg(k+NUM);
 			k++;
 		}
 
@@ -818,18 +818,13 @@ void Generator::genRealRepoInfo(){
 	out2 << "// from realreporoles.cpp\n\n";
 	out2 << "\tQStringList l;\n";
 
-	{
-		int i = 0;
-		MEGA_FOR_ALL_OBJECTS(f,c,o)
-		{
-			out2 << "\tl.clear();\n";
-			for( int j=0; j<(*o)->properties.size(); j++)
-				out2 << QString("\t\tl << \"%1\";\n").arg((*o)->properties.at(j).first);
-			out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
-			out2 << "\n";
-			i++;
-		}
-	}
+	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
+		out2 << "\tl.clear();\n";
+		FOR_ALL_PROPERTIES((*o),p)
+			out2 << QString("\t\tl << \"%1\";\n").arg((*p).first);
+		out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
+		out2 << "\n";
+	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i);
 
 	// initializing icons
 
