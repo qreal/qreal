@@ -1,10 +1,10 @@
-#include <QtGui/QApplication>
+#include <QCoreApplication>
 
 #include "generator.h"
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc,argv);
+	QCoreApplication app(argc,argv);
 	Generator g;
 	bool ret = true;
 

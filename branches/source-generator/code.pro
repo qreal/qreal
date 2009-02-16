@@ -1,7 +1,6 @@
 QT = core \
     xml \
-    svg \
-    gui
+    svg 
 TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
