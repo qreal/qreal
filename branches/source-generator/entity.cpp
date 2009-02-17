@@ -205,7 +205,7 @@ bool Node::init(QDomElement &xml_element)
 	{
 		// FIXME: statemachines_metamodel.xml/smTimeEvent
 		qDebug() << "WARNING: cannot find <logic> tag of" << id << "entity";
-		return true;
+		return true; // must be false;
 	}
 	// WTF????
 	addProperty("name", "string");
@@ -250,7 +250,6 @@ bool Edge::init(QDomElement &xml_element)
 	if (!parseAssociations(logic)) return false;
 	if (!parseLabels(logic)) return false;
 
-	width = height = -1;
 	return true;
 }
 
@@ -285,11 +284,8 @@ bool Node::parseSdf(QDomElement &xml_element)
 		visible = true;
 	}
 	else
-	{
-		height = -1;
-		width = -1;
 		visible = (id == "krnnNamedElement");
-	}
+
 	dir.cd("..");
 	return true;
 }

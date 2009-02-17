@@ -54,7 +54,7 @@ protected:
 	void addProperties(const QList< QPair<QString, QString> > &arg);
 
 public:
-	Entity(Category *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false;}
+	Entity(Category *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false; width = -1; height = -1; }
 	virtual ~Entity(){};
 
 	virtual bool init(QDomElement &) = 0;
