@@ -770,12 +770,20 @@ void Generator::genRealRepoInfo(){
 	FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f),c)
 	{
 		bool isEmpty = true;
+		int count = 0;
 		FOR_ALL_OBJECTS((*c),o)
+		{
 			if ((*o)->visible)
 				isEmpty = false;
+			count++;
+		}
 		//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
 		if( isEmpty )
+		{
+			i++;
+			k += count;
 			continue;
+		}
 		out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg((*c)->get_name());
 
 		if ((*c)->constObjBegin() != (*c)->constObjEnd())
