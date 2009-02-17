@@ -10,6 +10,8 @@ Category::Category(QString dname, EditorFile *file)
 
 Category::~Category()
 {
+	while (!objects.isEmpty())
+		delete objects.takeFirst();
 }
 
 bool Category::parseEnum(QDomElement &xml_element)
