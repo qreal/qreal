@@ -8,8 +8,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
-#include <QFile>
-#include <QDir>
+#include <QFileInfo>
 
 #include "editor_file.h"
 #include "entity.h"
@@ -58,7 +57,7 @@ private:
 
 	QString srcdir;
 
-	const EditorFile* findFile(QString) const;
+	const EditorFile* findFile(QFileInfo) const;
 
 	/** @brief Сгенерировать перечисления ролей */
 	void genEnums();

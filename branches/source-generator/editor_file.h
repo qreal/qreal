@@ -16,12 +16,13 @@ class EditorFile {
 	bool loading_done;
 
 public:
-	EditorFile(QString, Generator*);
+	EditorFile(QFileInfo, Generator*);
 	~EditorFile();
 
 	bool load(void);
 	bool isLoaded(void) const {return loading_done;};
 	QString fullPath(void) const {return fileinfo.canonicalFilePath();}
+	QFileInfo fileInfo(void) const {return fileinfo;}
 	const Entity* findEntityInIncludes(QString) const;
 	const Entity* findEntityInCategories(QString) const;
 	const Category* findCategory(QString) const;

@@ -22,7 +22,8 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 	if (!file) file = &temp;
 	*file = NULL;
 
-	f = findFile(QFileInfo(srcdir + "/" + filename).canonicalFilePath());
+	QFileInfo fileinfo = QFileInfo(QDir(srcdir), filename);
+	f = findFile(fileinfo);
 	if (f)
 	{
 		if (f->isLoaded())
@@ -32,16 +33,16 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 		}
 		else
 		{
-			qDebug() << "Vicious circle detected "
-			         "while loading file" << filename;
+			qDebug() << "Vicious circle detected while loading file"
+			         << fileinfo.canonicalFilePath();
 			return false;
 		}
 	}
 
-	efile = new EditorFile(srcdir + "/" + filename, this);
+	efile = new EditorFile(fileinfo, this);
 	if (!efile->load())
 	{
-		qDebug() << "Failed to load file " << filename;
+		qDebug() << "Failed to load file " << fileinfo.canonicalFilePath();
 		delete efile;
 		return false;
 	}
@@ -50,12 +51,12 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 	return true;
 }
 
-const EditorFile* Generator::findFile(QString name) const
+const EditorFile* Generator::findFile(QFileInfo fileinfo) const
 {
 	EditorFile *f;
 
 	Q_FOREACH(f, loaded_files)
-		if (f->fullPath() == name)
+		if (f->fileInfo() == fileinfo)
 			return f;
 	return NULL;
 }

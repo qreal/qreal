@@ -4,10 +4,10 @@
 #include "generator.h"
 #include "editor_file.h"
 
-EditorFile::EditorFile(QString filename, Generator *gen)
+EditorFile::EditorFile(QFileInfo filename, Generator *gen)
 {
 	generator = gen;
-	fileinfo.setFile(filename);
+	fileinfo = filename;
 	loading_done = false;
 }
 
