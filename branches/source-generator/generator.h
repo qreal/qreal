@@ -47,8 +47,7 @@ public:
 	~Generator();
 	/** @brief Обработать все входные файлов и сгенерировать редакторы */
 	bool generate();
-	bool loadFile(QString, EditorFile **f = NULL);
-	const EditorFile* findFile(QString) const;
+	bool loadFile(QString, const EditorFile **f = NULL);
 	const Category* findCategory(QString) const;
 	void setSrcDir(QString path) {srcdir = path; }
 
@@ -58,6 +57,8 @@ private:
 	QList<EditorFile *> loaded_files;
 
 	QString srcdir;
+
+	const EditorFile* findFile(QString) const;
 
 	/** @brief Сгенерировать перечисления ролей */
 	void genEnums();

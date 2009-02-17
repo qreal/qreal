@@ -14,30 +14,29 @@ Generator::Generator()
 	srcdir = "";
 }
 
-bool Generator::loadFile(QString filename, EditorFile **file)
+bool Generator::loadFile(QString filename, const EditorFile **file)
 {
 	EditorFile *efile;
-	QString uniq_name = filename.split("/").last();
 
-	EditorFile *temp, *f;
+	const EditorFile *temp, *f;
 	if (!file) file = &temp;
 	*file = NULL;
 
-	Q_FOREACH(f, loaded_files)
-		if (f->get_uniq_name() == uniq_name)
+	f = findFile(QFileInfo(srcdir + "/" + filename).canonicalFilePath());
+	if (f)
+	{
+		if (f->isLoaded())
 		{
-			if (f->isLoaded())
-			{
-				*file = f;
-				return true; // Already loaded
-			}
-			else
-			{
-				qDebug() << "Vicious circle detected "
-				         "while loading file" << filename;
-				return false;
-			}
+			*file = f;
+			return true; // Already loaded
 		}
+		else
+		{
+			qDebug() << "Vicious circle detected "
+			         "while loading file" << filename;
+			return false;
+		}
+	}
 
 	efile = new EditorFile(srcdir + "/" + filename, this);
 	if (!efile->load())
@@ -56,7 +55,7 @@ const EditorFile* Generator::findFile(QString name) const
 	EditorFile *f;
 
 	Q_FOREACH(f, loaded_files)
-		if (f->get_name() == name)
+		if (f->fullPath() == name)
 			return f;
 	return NULL;
 }

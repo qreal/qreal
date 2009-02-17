@@ -7,8 +7,7 @@
 EditorFile::EditorFile(QString filename, Generator *gen)
 {
 	generator = gen;
-	name = filename;
-	uniq_name = name.split("/").last();
+	fileinfo.setFile(filename);
 	loading_done = false;
 }
 
@@ -20,7 +19,7 @@ EditorFile::~EditorFile()
 
 bool EditorFile::load(void)
 {
-	QFile file(name);
+	QFile file(fullPath());
 	QDomDocument *doc;
 	QDomElement child, metamodel;
 	Category *cat;
@@ -30,15 +29,16 @@ bool EditorFile::load(void)
 
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		qDebug() << "cannot open file" << name;
+		qDebug() << "cannot open file" << fullPath();
 		return false;
 	}
 
 	doc = new QDomDocument("+1");
 	if( !doc->setContent(&file, false, &error, &errorLine, &errorCol))
 	{
-		qDebug() << "parse error in " << name << " at ("
-		         << errorLine << "," << errorCol << "): " << error;
+		qDebug() << "parse error in " << fullPath()
+		         << " at (" << errorLine << "," << errorCol
+		         << "): " << error;
 		delete doc;
 		file.close();
 		return false;
@@ -48,7 +48,8 @@ bool EditorFile::load(void)
 	metamodel = doc->firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
-		qDebug() << "metamodel tag not found in" << name << "file";
+		qDebug() << "metamodel tag not found in"
+		         << fullPath() << "file";
 		delete doc;
 		return false;
 	}
@@ -58,13 +59,13 @@ bool EditorFile::load(void)
 	     child = child.nextSiblingElement("include"))
 	{
 		QString inc = child.text();
-		EditorFile *file;
+		const EditorFile *file;
 
 		inc.append(".xml");
 		if (!generator->loadFile(inc, &file))
 		{
 			qDebug() << "Cannot include file" << inc
-			         << "to file " << name;
+			         << "to file " << fullPath();
 			delete doc;
 			return false;
 		}
@@ -82,9 +83,10 @@ bool EditorFile::load(void)
 		old_cat = generator->findCategory(cat_name);
 		if (old_cat)
 		{
-			qDebug() << "Error processing file" << name << "Category"
+			qDebug() << "Error processing file"
+			         << fullPath() << "Category"
 			         << cat_name << "already loaded from file"
-			         << old_cat->get_editor()->get_name();
+			         << old_cat->get_editor()->fullPath();
 			return false;
 		}
 		cat = new Category(cat_name, this);

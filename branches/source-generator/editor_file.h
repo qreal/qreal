@@ -1,6 +1,7 @@
 #ifndef EDITOR_FILE_H
 #define EDITOR_FILE_H
 
+#include <QFileInfo>
 #include "category.h"
 
 #define FOR_ALL_CATEGORIES(f,c) \
@@ -8,10 +9,9 @@
 	     c != f->constCatEnd(); c++)
 
 class EditorFile {
-	QList<EditorFile *> includes;
+	QList<const EditorFile *> includes;
 	QList<Category *> categories;
-	QString name;
-	QString uniq_name;
+	QFileInfo fileinfo;
 	Generator *generator;
 	bool loading_done;
 
@@ -21,8 +21,7 @@ public:
 
 	bool load(void);
 	bool isLoaded(void) const {return loading_done;};
-	QString get_name(void) const {return name;}
-	QString get_uniq_name(void) const {return uniq_name;}
+	QString fullPath(void) const {return fileinfo.canonicalFilePath();}
 	const Entity* findEntityInIncludes(QString) const;
 	const Entity* findEntityInCategories(QString) const;
 	const Category* findCategory(QString) const;
