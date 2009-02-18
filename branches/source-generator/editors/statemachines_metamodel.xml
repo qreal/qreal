@@ -423,6 +423,6 @@
     </generalizations>
    </logic>
   </node>
-  <node id="smTimeEvent" name="TimeEvent" />
+<!--  <node id="smTimeEvent" name="TimeEvent" /> -->
  </diagram>
 </metamodel>
