@@ -40,12 +40,12 @@ class Category;
  * */
 class Entity
 {
-	Category *cat;
 	bool resolving_done;
 	QList<QString> parents;
 	QList<QPair<QString, QString> > properties;
 
 protected:
+	Category *cat;
 	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */

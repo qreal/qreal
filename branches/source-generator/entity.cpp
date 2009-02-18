@@ -203,9 +203,9 @@ bool Node::init(QDomElement &xml_element)
 	QDomElement logic = xml_element.firstChildElement("logic");
 	if (logic.isNull())
 	{
-		// FIXME: statemachines_metamodel.xml/smTimeEvent
-		qDebug() << "WARNING: cannot find <logic> tag of" << id << "entity";
-		return true; // must be false;
+		qDebug() << "cannot find <logic> tag of" << id << "entity"
+		         << "in category" << cat->get_name();
+		return false;
 	}
 	// WTF????
 	addProperty("name", "string");
@@ -234,9 +234,11 @@ bool Edge::init(QDomElement &xml_element)
 	QDomElement logic = xml_element.firstChildElement("logic");
 	if (logic.isNull())
 	{
-		qDebug() << "cannot find <logic> tag of \"" << id << "\" entity";
+		qDebug() << "cannot find <logic> tag of" << id << "edge"
+		         << "in category" << cat->get_name();
 		return false;
 	}
+
 	// WTF????
 	addProperty("name", "string");
 	addProperty("from", "string");
