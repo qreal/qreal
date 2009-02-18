@@ -29,10 +29,10 @@
                 <xs:sequence>
                   <xs:element name="description" type="xs:string" maxOccurs="1" minOccurs="0" />
                   <xs:choice maxOccurs="1" minOccurs="0">
-                    <xs:element name="svg_link" type="xs:string" />
-                    <xs:element name="svg_shape">
+                    <xs:element name="picture">
                       <xs:complexType>
                         <xs:sequence>
+                          <!--FIXME-->
                           <xs:any namespace="http://www.w3.org/2000/svg" minOccurs="1" />
                         </xs:sequence>
                       </xs:complexType>
