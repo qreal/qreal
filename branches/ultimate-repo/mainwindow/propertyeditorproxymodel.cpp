@@ -67,16 +67,21 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	bool ret;
+
 	if ( ! targetModel )
 		return false;
 
 	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1 )
 		if (index.row() != 0)
-			return targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
+			ret = targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
 		else
-			return true;
+			ret = true;
 	else
-		return false;
+		ret = false;
+	if (ret)
+		dataChanged(index, index);
+	return ret;
 }
 
 void PropertyEditorModel::rereadData()
