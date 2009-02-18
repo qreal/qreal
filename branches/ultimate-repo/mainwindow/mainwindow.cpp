@@ -68,9 +68,10 @@ MainWindow::MainWindow() : model(0)
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 
-	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
-	ui.propertyEditor->horizontalHeader()->hide();
 	ui.propertyEditor->setModel(&propertyModel);
+	ui.propertyEditor->verticalHeader()->hide();
+	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
+	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&delegate);
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);

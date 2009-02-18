@@ -268,7 +268,7 @@
         <bool>true</bool>
        </property>
        <property name="showGrid" >
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>

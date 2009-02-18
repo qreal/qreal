@@ -18,13 +18,20 @@ int PropertyEditorModel::rowCount(const QModelIndex&) const
 
 int PropertyEditorModel::columnCount(const QModelIndex&) const
 {
-	return 1;
+	return 2;
 }
 
 Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &index) const
 {
-	if (index.column() == 0 && index.row() == 0)
+	// Property names
+	if (index.column() == 0)
+		return Qt::ItemIsEnabled;
+
+	// Object id
+	if (index.row() == 0)
 		return Qt::NoItemFlags;
+
+	// Other properties
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 }
 
@@ -33,8 +40,8 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 //	if ( ! targetModel )
 //		return QVariant();
 
-	if ( role == Qt::DisplayRole && orientation == Qt::Vertical )
-		return roleNames.at(section);
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+		return QString(section ? "value" : "name");
 	else
 		return QVariant();
 }
@@ -44,7 +51,12 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 //	if ( ! targetModel )
 //		return QVariant();
 
-	if ( role == Qt::DisplayRole && index.column() == 0 ) {
+	if (role != Qt::DisplayRole)
+		return QVariant();
+
+	if (index.column() == 0) {
+		return roleNames.at(index.row());
+	} else if (index.column() == 1) {
 		if (index.row() != 0)
 			return targetObject.data(info.roleByIndex(index.row() - mPseudoAttributesCount));
 		else
@@ -58,7 +70,7 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 	if ( ! targetModel )
 		return false;
 
-	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 0 )
+	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1 )
 		if (index.row() != 0)
 			return targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
 		else
@@ -100,5 +112,3 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 
 	reset();
 }
-
-
