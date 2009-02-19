@@ -1,0 +1,17 @@
+<RCC>
+	<qresource prefix="/" >
+		<file>icons/database_commit.png</file>
+		<file>icons/database_connect.png</file>
+		<file>icons/database_connected.png</file>
+		<file>icons/database_disconnect.png</file>
+		<file>icons/database_revert.png</file>
+		<file>icons/designer_databrowser.png</file>
+		<file>icons/designer_datatable.png</file>
+		<file>icons/designer_dataview.png</file>
+		<file>icons/print.png</file>
+		<file>icons/zoomin.png</file>
+		<file>icons/zoomout.png</file>
+		<file>icons/qreal.png</file>
+		<file>icons/chaotic_system.png</file>
+	</qresource>
+</RCC>

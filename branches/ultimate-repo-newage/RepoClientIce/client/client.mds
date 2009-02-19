@@ -1,0 +1,16 @@
+<Combine name="client" fileversion="2.0" outputpath="./build/bin/">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="client" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="client" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="client" single="True">
+    <Execute type="None" entry="client" />
+  </StartMode>
+  <Entries>
+    <Entry filename="./client.mdp" />
+  </Entries>
+</Combine>
