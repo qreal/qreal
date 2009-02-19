@@ -6,7 +6,7 @@
       <xs:sequence maxOccurs="unbounded" minOccurs="1">
         <xs:element name="include" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
         <xs:element name="namespace" type="xs:string" maxOccurs="1" minOccurs="1" />
-        <xs:element name="diagram">
+        <xs:element name="editor">
           <xs:complexType>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
               <xs:element name="node" type="logic_entity" />

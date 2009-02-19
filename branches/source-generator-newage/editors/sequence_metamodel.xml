@@ -3,7 +3,7 @@
  <include>basicbehaviors_metamodel</include>
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="SEQUENCE DIAGRAM" >
+ <editor name="SEQUENCE DIAGRAM" >
   <enumType id="sqnCombinedFragmentKind" name="CombinedFragmentKind" >
    <enumValue>alt</enumValue>
    <enumValue>par</enumValue>
@@ -273,5 +273,5 @@
     </containers>
    </logic>
   </node>
- </diagram>
+ </editor>
 </metamodel>

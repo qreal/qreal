@@ -2,15 +2,15 @@
 #define EDITOR_FILE_H
 
 #include <QFileInfo>
-#include "category.h"
+#include "editor.h"
 
-#define FOR_ALL_CATEGORIES(f,c) \
-	for (QList<Category *>::ConstIterator c = f->constCatBegin(); \
-	     c != f->constCatEnd(); c++)
+#define FOR_ALL_EDITORS(f,c) \
+	for (QList<Editor *>::ConstIterator c = f->constEdBegin(); \
+	     c != f->constEdEnd(); c++)
 
 class EditorFile {
 	QList<const EditorFile *> includes;
-	QList<Category *> categories;
+	QList<Editor *> editors;
 	QFileInfo fileinfo;
 	Generator *generator;
 	bool loading_done;
@@ -25,10 +25,10 @@ public:
 	QFileInfo fileInfo(void) const {return fileinfo;}
 	const Entity* findEntityInIncludes(QString) const;
 	const Entity* findEntityInCategories(QString) const;
-	const Category* findCategory(QString) const;
+	const Editor* findEditor(QString) const;
 
-	QList<Category*>::ConstIterator constCatBegin() const {return categories.constBegin();}
-	QList<Category*>::ConstIterator constCatEnd() const {return categories.constEnd();}
+	QList<Editor*>::ConstIterator constEdBegin() const {return editors.constBegin();}
+	QList<Editor*>::ConstIterator constEdEnd() const {return editors.constEnd();}
 };
 
 #endif

@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/" >
  <!-- Kernel UML 2.0 package -->
  <namespace>UML 2.1</namespace>
- <diagram name="Kernel" >
+ <editor name="Kernel" >
   <enumType id="krntState" name="State" >
    <enumValue>Created</enumValue>
    <enumValue>Development</enumValue>
@@ -498,7 +498,7 @@
     </containers>
    </logic>
   </node>
-  <!-- Features diagram of the Kernel package -->
+  <!-- Features editor of the Kernel package -->
   <node id="krnnFeature" name="Feature" >
    <logic>
     <properties>
@@ -557,5 +557,5 @@
     </generalizations>
    </logic>
   </node>
- </diagram>
+ </editor>
 </metamodel>

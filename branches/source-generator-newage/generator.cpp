@@ -3,7 +3,7 @@
 */
 #include <QtGui/QPainter>
 
-#include "category.h"
+#include "editor.h"
 #include "generator.h"
 
 QString resources;
@@ -61,14 +61,14 @@ const EditorFile* Generator::findFile(QFileInfo fileinfo) const
 	return NULL;
 }
 
-const Category* Generator::findCategory(QString name) const
+const Editor* Generator::findEditor(QString name) const
 {
-	const Category *c;
+	const Editor *c;
 	const EditorFile *f;
 
 	Q_FOREACH(f, loaded_files)
 	{
-		c = f->findCategory(name);
+		c = f->findEditor(name);
 		if (c) return c;
 	}
 	return NULL;
@@ -767,7 +767,7 @@ void Generator::genRealRepoInfo(){
 	{
 		int i = 0;
 		int k = 0;
-	FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f),c)
+	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c)
 	{
 		bool isEmpty = true;
 		int count = 0;

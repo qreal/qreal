@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="BASIC BEHAVIOURS" >
+ <editor name="BASIC BEHAVIOURS" >
   <!-- BasicBehaviors -->
   <node id="bbnBehavior" name="Behavour" >
    <logic>
@@ -61,5 +61,5 @@
     </generalizations>
    </logic>
   </node>
- </diagram>
+ </editor>
 </metamodel>

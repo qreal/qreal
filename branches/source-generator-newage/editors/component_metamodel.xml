@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="COMPONENT DIAGRAM" >
+ <editor name="COMPONENT DIAGRAM" >
   <node id="cmpnComponent" name="Component" >
    <graphics>
     <view>
@@ -143,5 +143,5 @@
     </associations>
    </logic>
   </edge>
- </diagram>
+ </editor>
 </metamodel>
