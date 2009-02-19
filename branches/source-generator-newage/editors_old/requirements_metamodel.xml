@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>
+	kernel_metamodel
+  </include>
+	<namespace>Requirements</namespace>
+	<diagram name="REQUIREMENTS DIAGRAM">
+		<node id="reqnFeatured" name="Featured Element">
+			<graphics>
+				<view>
+					<description>as leaf - for the possibility of future node extension</description>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<properties>
+					<property name="name" type="string" />
+					<property name="description" type="text" />
+					<property name="priority" type="int" />
+					<property>
+						<name>source</name>
+						<type>string</type>
+						<description>requirement source value</description>
+					</property>
+					<property name="type" type="string" />
+				</properties>
+				<associations>
+					<assoc_ref idref="aP2N_Featured" />
+				</associations>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krnnElement" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnConceptAlternative" name="Concept Alternative">
+			<graphics>
+				<view>
+					<description>concept/leaf/feature graphical representation</description>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnFeatured" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnLeaf" name="Leaf">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/" x="0">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+				
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnFeatured" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnParent" name="Parent Node">
+			<graphics>
+				<view>
+					<description>as leaf - for the possibility of future node extension</description>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+					
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnFeatured" />
+					</generalization>
+				</generalizations>
+				<associations>
+					<assoc_ref idref="aP2N_Parent" />
+				</associations>
+			</logic>
+		</node>
+		<node id="reqnParentMandatory" name="Parent of Mandatory Features">
+			<graphics>
+				<view>
+					<description>parent of mandatory features graphical representation</description>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+				
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnParent" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnParentOr" name="Parent of Or-Features">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:title>Example arcs01 - arc commands in path data</svg:title>
+							<svg:path d="M15,15 h-10 a10,10 270 1,0 10,-10 z" fill="white" stroke="black" stroke-width="2" />
+							<svg:path d="M15,15 v-10 a10,10 270 0,0 -10,10 z" fill="black" stroke="black" stroke-width="2" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+					
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnParent" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnParentOptional" name="Parent of Optional Features">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="white" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+					
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnParent" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnParentAlternative" name="Parent of Alternative Features">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="white" />
+							<svg:circle cx="15" cy="15" r="5" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name" />
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+					
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnParent" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<node id="reqnParentOpAlternative" name="Parent of Optional-Alternative Features">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:circle cx="15" cy="15" r="10" stroke="black" stroke-width="2" fill="white" />
+							<svg:circle cx="15" cy="15" r="5" stroke="black" stroke-width="2" fill="black" />
+						</svg:svg>
+					</svg_shape>
+					<repo_info>
+						<html:html xmlns:html="http://www.w3.org/html/">
+							<html:center>
+								<html:b>
+									<html:text_from_repo name="name"/>
+								</html:b>
+							</html:center>
+						</html:html>
+					</repo_info>
+					<ports>
+						<point_port x="5" y="15" />
+						<point_port x="15" y="5" />
+						<point_port x="25" y="15" />
+						<point_port x="15" y="25" />
+						<point_port x="15" y="15" />
+					</ports>
+				
+				</view>
+			</graphics>
+			<logic>
+				<generalizations>
+					<generalization>
+						<parent parent_id="reqnParent" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</node>
+		<edge id="reqeP2N" name="Feature P2N Relationship">
+			<graphics>
+				<view>
+					<svg_shape>
+						<svg:svg width="30" height="30" version="1.1" xmlns:svg="http://www.w3.org/2000/svg">
+							<svg:line x1="0" y1="0" x2="300" y2="300" style="stroke:rgb(99,99,99);stroke-width:2" />
+						</svg:svg>
+					</svg_shape>
+					<line_type type="noPan"></line_type>
+				</view>
+			</graphics>
+			<logic>
+				<associations>
+					<association id="aP2N_Featured" labelled="false" multiplicity="true" role="target">
+						<begin idref="reqnFeatured" />
+					</association>
+					<association id="aP2N_Parent" labelled="false" multiplicity="true" role="source">
+						<end idref="reqnParent" />
+					</association>
+				</associations>
+				<generalizations>
+					<generalization>
+						<parent parent_id="krneDirRelationship" />
+					</generalization>
+				</generalizations>
+			</logic>
+		</edge>
+	</diagram>
+</metamodel>
