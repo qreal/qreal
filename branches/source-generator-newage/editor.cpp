@@ -1,20 +1,20 @@
 #include <QDomElement>
 #include "editor_file.h"
-#include "category.h"
+#include "editor.h"
 
-Category::Category(QString dname, EditorFile *file)
+Editor::Editor(QString dname, EditorFile *file)
 {
 	efile = file;
 	name = dname;
 }
 
-Category::~Category()
+Editor::~Editor()
 {
 	while (!objects.isEmpty())
 		delete objects.takeFirst();
 }
 
-bool Category::parseEnum(QDomElement &xml_element)
+bool Editor::parseEnum(QDomElement &xml_element)
 {
 	QDomElement child;
 	QStringList values;
@@ -34,7 +34,7 @@ bool Category::parseEnum(QDomElement &xml_element)
 	return true;
 }
 
-bool Category::init(QDomElement &xml_element)
+bool Editor::init(QDomElement &xml_element)
 {
 	QDomElement child;
 
@@ -73,7 +73,7 @@ bool Category::init(QDomElement &xml_element)
 	return true;
 }
 
-bool Category::resolve(void)
+bool Editor::resolve(void)
 {
 	Entity *e;
 
@@ -83,7 +83,7 @@ bool Category::resolve(void)
 	return true;
 }
 
-const Entity* Category::findEntityInTree(QString id) const
+const Entity* Editor::findEntityInTree(QString id) const
 {
 	const Entity *res;
 
@@ -97,7 +97,7 @@ const Entity* Category::findEntityInTree(QString id) const
 	return res;
 }
 
-const Entity* Category::findEntity(QString id) const
+const Entity* Editor::findEntity(QString id) const
 {
 	Entity *e;
 
