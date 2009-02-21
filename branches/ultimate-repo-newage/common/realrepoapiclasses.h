@@ -1,8 +1,7 @@
 /** @file realrepoapiclasses.h
  * 	@class Классы, используемые в API репозитория
  * */
-#ifndef __REAL_REPO_API_CLASSES_H__
-#define __REAL_REPO_API_CLASSES_H__
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -262,6 +261,3 @@ namespace qRealTypes
 		int m_toId;
 	};
 }
-
-#endif // __REAL_REPO_API_CLASSES_H__
-

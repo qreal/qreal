@@ -17,7 +17,7 @@ class Object;
 class NodeOnDiagram;
 class EdgeOnDiagram;
 
-typedef int IdType;
+typedef QString IdType;
 typedef QString TypeIdType;
 
 /** @class RepoData
@@ -89,9 +89,9 @@ public:
 
 private:
 	/** @brief Объекты */
-	QMap<int, Object*> objects;
+	QMap<IdType, Object*> objects;
 	/** @brief Связи */
-	QMap<int, Link*> links;
+	QMap<IdType, Link*> links;
 	/** @brief Корневой объект репозитория */
 	Object *mRoot;
 };
@@ -276,13 +276,13 @@ public:
 	}
 private:
 	/** @brief Список дочерних элементов */
-	QMap<int, NodeOnDiagram> nodeChildren;
+	QMap<IdType, NodeOnDiagram> nodeChildren;
 	/** @brief Список дочерних линков */
-	QMap<int, EdgeOnDiagram> edgeChildren;
+	QMap<IdType, EdgeOnDiagram> edgeChildren;
 	/** @brief Список входящих связей */
-	QList<int> incomingLinks;
+	QList<IdType> incomingLinks;
 	/** @brief Список исходящий связей */
-	QList<int> outcomingLinks;
+	QList<IdType> outcomingLinks;
 };
 
 /* class for all edge entities

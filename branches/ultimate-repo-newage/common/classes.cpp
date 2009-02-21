@@ -5,8 +5,8 @@
 
 RepoData::RepoData()
 {
-	mRoot = new Object(-1, "");
-	addObject(-1, mRoot);
+	mRoot = new Object("-1", "-1");
+	addObject("-1", mRoot);
 }
 
 RepoData::~RepoData()
@@ -71,8 +71,9 @@ Link *RepoData::getLink( IdType const &id )
 QString RepoData::getObjectsByType( TypeIdType const &type )
 {
 	QString res = "";
+	// TODO: гм...
 	for( int i=0; i<objects.values().size(); i++ ){
-		int key = objects.keys()[i];
+		IdType key = objects.keys()[i];
 		Object *obj = objects.value(key);
 		if( obj && obj->getType() == type )
 			res += QString("%1\t").arg(obj->getId());
@@ -86,7 +87,7 @@ QString RepoData::getLinksByType( TypeIdType const &type )
 {
 	QString res = "";
 	for( int i=0; i<links.size(); i++ ){
-		int key = links.keys()[i];
+		IdType key = links.keys()[i];
 		Link *link = links.value(key);
 		if( link && link->getType() == type )
 			res += QString("%1\t").arg(link->getId());
@@ -148,7 +149,7 @@ TypeIdType RepoElement::getType()
 QString RepoElement::parentsToString()
 {
 	QString res = "";
-	foreach (int parent, parents)
+	foreach (IdType parent, parents)
 		res += QString("%1\t").arg(parent);
 	res.chop(1);
 	return res;
@@ -421,7 +422,7 @@ IdType Link::getFrom()
 	if( objectsFrom.size() > 0 )
 		return objectsFrom.at(0);
 
-	return -1;
+	return "-1";
 }
 
 IdType Link::getTo()
@@ -429,7 +430,7 @@ IdType Link::getTo()
 	if( objectsTo.size() > 0 )
 		return objectsTo.at(0);
 
-	return -1;
+	return "-1";
 }
 
 // --------------------------------------------------------------------------- //
