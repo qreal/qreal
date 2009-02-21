@@ -184,7 +184,7 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 	if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	int type = params[0].toInt();
+	TypeIdType type = params[0];
 	int id = ++mCounter;
 	QString name = params[1];
 	int parent = params[2].toInt();
@@ -304,11 +304,11 @@ IntQStringPair QRealRepoServerThread::handleFullCopyEntity(QStringVector const &
 		for( int i=0; i<list.count()-1; i++ ){
 			if( Object * child = mRepoData->getObject(list[i].toInt()) ){
 				QStringVector par;
-				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
+				par << child->getType() << list[i] << QString::number(newid) << QString::number(id);
 				handleFullCopyEntity(par).second.toInt();
 			} else if( Link* child = mRepoData->getLink(list[i].toInt()) ){
 				QStringVector par;
-				par << QString::number(child->getType()) << list[i] << QString::number(newid) << QString::number(id);
+				par << child->getType() << list[i] << QString::number(newid) << QString::number(id);
 				handleFullCopyEntity(par);
 			}
 		}
@@ -399,7 +399,7 @@ IntQStringPair QRealRepoServerThread::handleGetTypeInfo(QStringVector const &par
 	if (!IsParamsNumberCorrect(params, "GetTypeInfo", 1))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	int id = params[0].toInt();
+	TypeIdType id = params[0];
 	QString resp = mTypesInfo->getTypeInfo(id).toString();
 	mLog += QString(", sending type info: [%1]").arg(resp);
 	return ReportSuccess(resp);
@@ -433,7 +433,7 @@ IntQStringPair QRealRepoServerThread::handleGetObjectsByType(QStringVector const
 		return ReportError(ERR_INCORRECT_PARAMS);
 
 	QString resp = "";
-	int type = params[0].toInt();
+	TypeIdType type = params[0];
 	if (mTypesInfo->analyseType(type) == TYPE_OBJECT)
 	{
 		resp = mRepoData->getObjectsByType(type);
@@ -456,7 +456,7 @@ IntQStringPair QRealRepoServerThread::handleGetObjectData(QStringVector const &p
 
 	int id = params[0].toInt();
 	int childCount = 0;
-	int type = -1;
+	TypeIdType type = "";
 	QString name = "";
 	QString res = "%1\t%2\t%3\t%4\t%5\t";
 	QString resp = QString::number(ERR_UNKNOWN_ERROR);
@@ -472,7 +472,7 @@ IntQStringPair QRealRepoServerThread::handleGetObjectData(QStringVector const &p
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
 
-	if (type != -1){
+	if (type != ""){
 		RealType info = mTypesInfo->getTypeInfo(type);
 	// FIXME: error code should always come first, then the args (if there are any)
 		resp = res.arg(id).arg(name).arg(type).arg(info.getDescription()).arg(childCount);

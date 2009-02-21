@@ -1,5 +1,5 @@
 @echo off
-set WD=..\source-generator
+set WD=..\source-generator-newage
 set GEN=%WD%\generated
 
 cd %WD%
@@ -17,7 +17,7 @@ if %ERRORLEVEL% neq 0 (
 	exit /B 1
 )
 
-cd ..\ultimate-repo
+cd ..\ultimate-repo-newage
 
 md umllib\generated
 xcopy /y /e /c /h /r %GEN%\umllib\generated\* umllib\generated
