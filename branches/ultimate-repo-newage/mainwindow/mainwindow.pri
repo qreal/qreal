@@ -7,3 +7,5 @@ SOURCES += mainwindow/mainwindow.cpp \
     mainwindow/propertyeditordelegate.cpp \
     mainwindow/palettetoolbox.cpp
 FORMS += mainwindow/mainwindow.ui 
+
+include (mainwindow/propertyeditor/QPropertyEditor.pri)
