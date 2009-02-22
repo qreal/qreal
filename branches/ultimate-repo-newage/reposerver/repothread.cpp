@@ -400,8 +400,8 @@ IntQStringPair QRealRepoServerThread::handleGetTypeInfo(QStringVector const &par
 	if (!IsParamsNumberCorrect(params, "GetTypeInfo", 1))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	TypeIdType id = params[0];
-	QString resp = mTypesInfo->getTypeInfo(id).toString();
+	int id = params[0].toInt();
+	QString resp = mTypesInfo->getTypeInfoByOrder(id).toString();
 	mLog += QString(", sending type info: [%1]").arg(resp);
 	return ReportSuccess(resp);
 }
@@ -412,7 +412,7 @@ IntQStringPair QRealRepoServerThread::handleGetTypeByName(QStringVector const &p
 		return ReportError(ERR_INCORRECT_PARAMS);
 
 	QString name = params[0];
-	QString resp = mTypesInfo->getTypeInfo(name).toString();
+	QString resp = mTypesInfo->getTypeInfoByName(name).toString();
 	mLog += QString(", sending type info: [%1]").arg(resp);
 	return ReportSuccess(resp);
 }
@@ -474,7 +474,7 @@ IntQStringPair QRealRepoServerThread::handleGetObjectData(QStringVector const &p
 	}
 
 	if (type != ""){
-		RealType info = mTypesInfo->getTypeInfo(type);
+		RealType info = mTypesInfo->getTypeInfoById(type);
 	// FIXME: error code should always come first, then the args (if there are any)
 		resp = res.arg(id).arg(name).arg(type).arg(info.getDescription()).arg(childCount);
 	}

@@ -93,18 +93,18 @@ void RealType::setMetaType( const MetaType arg )
 	m_metatype = arg;
 }
 
-QIntList RealType::getObjects() const
+QList<QString> RealType::getObjects() const
 {
 	return m_objects;
 }
 
-void RealType::addObject( const int id )
+void RealType::addObject( IdType id )
 {
 	if( !m_objects.contains(id) )
 		m_objects << id;
 }
 
-void RealType::deleteObject( const int id )
+void RealType::deleteObject( IdType id )
 {
 	m_objects.removeAll(id);
 }
@@ -134,7 +134,7 @@ void RealType::loadFromString( const QString& data )
 	int objCounter = data.section("\t",4,4).toInt();
 	int counter = 5;
 	for( int i=0; i<objCounter; i++ ){
-		m_objects << data.section("\t",counter, counter).toInt();
+		m_objects << data.section("\t",counter, counter);
 		counter++;
 	}
 

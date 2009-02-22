@@ -9,6 +9,8 @@
 #include <QDebug>
 #include "defs.h"
 
+#include "classes.h"
+
 #include "defs.h"
 
 class RealRepoClient;
@@ -123,12 +125,12 @@ namespace qRealTypes
 		/** @brief Получить список объектов данного типа
 		 *	@brief @return Список объектов данного типа
 		 * */
-		QIntList getObjects() const; // returns all objects of this particular type
+		QList<QString> getObjects() const; // returns all objects of this particular type
 
 		/** @brief Добавить объект */
-		void addObject( int id /**< Идентификатор объекта */);
+		void addObject( IdType id /**< Идентификатор объекта */);
 		/** @brief Удалить объект */
-		void deleteObject( int id /**< Идентификатор объекта */);
+		void deleteObject( IdType id /**< Идентификатор объекта */);
 
 		/** @brief Сериализовать данные о типе в строку
 		 *	@brief @return Строковое представление данных о типе
@@ -142,7 +144,7 @@ namespace qRealTypes
 		/** @brief Метатип */
 		MetaType m_metatype;
 		/** @brief Список объектов данного типа */
-		QIntList m_objects;
+		QList<QString> m_objects;
 	};
 
 	// Node elements
