@@ -388,9 +388,8 @@ IntQStringPair QRealRepoServerThread::handleGetAllTypes(QStringVector const &par
 
 	int count = mTypesInfo->getTypesCount();
 	QString resp = "";
-	// TODO: Теперь так просто не прокатит, переделать.
 	for (int i = 1; i <= count; i++)
-		resp += QString("%1\t").arg(i); // It's very informative :)
+		resp += mTypesInfo->getTypeInfoByOrder(i).getName() + "\t";
 	mLog += QString(", sending types count: %1").arg(resp);
 	return ReportSuccess(resp);
 }
@@ -400,8 +399,7 @@ IntQStringPair QRealRepoServerThread::handleGetTypeInfo(QStringVector const &par
 	if (!IsParamsNumberCorrect(params, "GetTypeInfo", 1))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	int id = params[0].toInt();
-	QString resp = mTypesInfo->getTypeInfoByOrder(id).toString();
+	QString resp = mTypesInfo->getTypeInfoById(params[0]).toString();
 	mLog += QString(", sending type info: [%1]").arg(resp);
 	return ReportSuccess(resp);
 }

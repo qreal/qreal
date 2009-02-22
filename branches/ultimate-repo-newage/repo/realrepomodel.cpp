@@ -24,7 +24,8 @@ dbg;
 	rootItem->parent = 0;
 	rootItem->id = 0;
 
-	readRootTable();
+	if (!readRootTable())
+		exit(1);
 
 	// Uncomment this when needed. Make sure that splashscreen turned off :)
 	// runTestQueries();
@@ -664,23 +665,25 @@ dbg;
 	}*/
 }
 
-void RealRepoModel::readRootTable()
+bool RealRepoModel::readRootTable()
 {
 dbg;
 
-	int types = repoClient->getTypesCount();
-	if( types == 0 ){
+	QList<TypeIdType> types = repoClient->getAllTypes();
+	if (types.isEmpty()){
 		m_error = repoClient->getLastError();
 		qDebug() << "MODEL: error " << m_error;
-		return;
+		return false;
 	}
-	for( int i=1; i<=types; i++ ){
-		RealType info = repoClient->getTypeById(i);
+
+	qDebug() << types;
+	for( int i=0; i<types.size(); i++ ){
+		RealType info = repoClient->getTypeById(types[i]);
 		RepoTreeItem *item = new RepoTreeItem;
 		int count = info.getObjects().size();
 	//	qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
 		item->parent = rootItem;
-		item->row = i-1;
+		item->row = i;
 		item->id = info.getId();
 
 		hashNames[item->id] = info.getName();
@@ -692,6 +695,7 @@ dbg;
 
 	hashChildCount[rootItem->id] = rootItem->children.size();
 //	qDebug() << "root children" << rootItem->children.size();
+	return true;
 }
 
 void RealRepoModel::readCategoryTable(RepoTreeItem * parent)

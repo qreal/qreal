@@ -215,14 +215,14 @@ dbg;
 	return sendData(QString::number(CMD_GET_TYPES_COUNT)).toInt();
 }
 
-QIntList RealRepoClient::getAllTypes()
+QList<TypeIdType> RealRepoClient::getAllTypes()
 {
 dbg;
 	QString res = sendData(QString::number(CMD_GET_ALL_TYPES));
-	QIntList list;
+	QList<TypeIdType> list;
 	foreach( QString str, res.split('\t') )
-		list += str.toInt();
-	list.removeLast();
+		list << str;
+	list.removeLast(); // WTF???
 	return list;
 }
 
@@ -433,7 +433,7 @@ dbg;
 }
 
 
-RealType RealRepoClient::getTypeById( const int id )
+RealType RealRepoClient::getTypeById( const TypeIdType id )
 {
 dbg;
 	QString cmd = QString("%1\t%2").arg(CMD_GET_TYPE_INFO).arg(id);

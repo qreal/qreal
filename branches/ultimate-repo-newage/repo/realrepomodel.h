@@ -225,7 +225,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Перечитать данные корневого элемента
 		 * */
-		void readRootTable();
+		bool readRootTable();
 		/** @brief Перечитать данные о типе элементов
 		 * */
 		void readCategoryTable(RepoTreeItem *root);

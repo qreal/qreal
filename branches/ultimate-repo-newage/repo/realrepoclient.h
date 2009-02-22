@@ -145,7 +145,7 @@ public:
 	/** @brief Полчить список идентификаторов типов
 	 *	@brief @return Список идентификаторов типов
 	 * */
-	qRealTypes::QIntList getAllTypes();
+	QList<TypeIdType> getAllTypes();
 
 #if 0 // UNUSED & CONFUSING
 	/** @brief Получить описание типа
@@ -240,7 +240,7 @@ public:
 	/** @brief Получить тип по его идентификатору
 	 *	@brief @return Тип элементов
 	 * */
-	qRealTypes::RealType getTypeById( const int id /**< Идентификатор типа*/);
+	qRealTypes::RealType getTypeById( const TypeIdType id /**< Идентификатор типа*/);
 	/** @brief Получить тип по его названию
 	 *	@brief @return Тип элементов
 	 * */
