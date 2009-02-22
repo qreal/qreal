@@ -196,12 +196,13 @@ void Generator::genTypes()
 		"\tRepoTypesInfo();\n"
 		"\t~RepoTypesInfo();\n"
 		"\tint getTypesCount();\n"
-		"\tqRealTypes::RealType getTypeInfo( int );\n"
-		"\tqRealTypes::RealType getTypeInfo( QString );\n"
+		"\tqRealTypes::RealType getTypeInfoByOrder( int );\n"
+		"\tqRealTypes::RealType getTypeInfoById( TypeIdType );\n"
+		"\tqRealTypes::RealType getTypeInfoByName( QString );\n"
 		"\tQString getTypesByMetatype( const qRealTypes::MetaType );\n"
-		"\tint analyseType( int );\n"
-		"\tvoid elementCreated( int, int );\n"
-		"\tvoid elementDeleted( int, int );\n"
+		"\tint analyseType( TypeIdType const & );\n"
+		"\tvoid elementCreated( TypeIdType, IdType& );\n"
+		"\tvoid elementDeleted( TypeIdType, IdType& );\n"
 		"private:\n"
 		"};\n\n";
 
@@ -218,7 +219,7 @@ void Generator::genTypes()
 	out2 << "#include \"repotypesinfo.h\"\n\n"
 		"using namespace qRealTypes;\n\n"
 		"static bool initCompleted = false;\n\n"
-		"static QMap<int, RealType> map;\n\n";
+		"static QMap<TypeIdType, RealType> map;\n\n";
 
 
 	out2 << "static void initStaticData()\n{\n"
@@ -236,7 +237,7 @@ void Generator::genTypes()
 		     << "\tinfo.setName(\"" << (*o)->id << "\");\n"
 		     << "\tinfo.setDescription(\"" << (*o)->name << "\");\n"
 		     << "\tinfo.setMetaType(qRealTypes::object);\n"
-		     << QString("\tmap[%1] = info;\n\n").arg(j);
+		     << QString("\tmap[\"%1\"] = info;\n\n").arg((*o)->id);
 	}
 	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
 
@@ -253,10 +254,20 @@ void Generator::genTypes()
 	out2 << "RepoTypesInfo::~RepoTypesInfo()\n{\n}\n\n";
 
 	// getTypeInfo
-	out2 << "RealType RepoTypesInfo::getTypeInfo( int id )\n{\n"
+	out2 << "RealType RepoTypesInfo::getTypeInfoByOrder(int id )\n{\n"
+		"\tqDebug() << \"type requested: \" << id;\n"
+		"\tforeach( RealType type, map.values() )\n"
+		"\t\tif( type.getId() == id )\n"
+		"\t\t\treturn type;\n"
+		"\tqDebug() << \"wrong type requested!\";\n"
+		"\treturn RealType();\n}\n\n";
+
+	out2 << "RealType RepoTypesInfo::getTypeInfoById(TypeIdType id )\n{\n"
+		"\tqDebug() << \"type requested: \" << id;\n"
 		"\treturn map[id];\n}\n\n";
 
-	out2 << "RealType RepoTypesInfo::getTypeInfo( QString name )\n{\n"
+	out2 << "RealType RepoTypesInfo::getTypeInfoByName( QString name )\n{\n"
+		"\tqDebug() << \"type requested: \" << name;\n"
 		"\tforeach( RealType type, map.values() )\n"
 		"\t\tif( type.getName() == name )\n"
 		"\t\t\treturn type;\n"
@@ -275,24 +286,25 @@ void Generator::genTypes()
 		"\t\t\tres += QString(\"%1\\t\").arg(type.getId());\n"
 		"\treturn res;\n}\n\n";
 
-	// analyzeType
-	out2 << "int RepoTypesInfo::analyseType( int type )\n{\n"
-		"\tswitch (type)\n\t{\n";
+	// analyseType
+	out2 << "int RepoTypesInfo::analyseType( TypeIdType const &type )\n{\n";
 	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
 	{
 		if((*o)->type == EDGE)
-			out2 << "\t\tcase " << i + NUM << ":\n";
+		{
+			out2 << "\tif (type == \"" << (*o)->id << "\") ";
+			out2 << "return TYPE_LINK;\n";
+		}
 	}
 	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-	out2 << "\t\t\treturn TYPE_LINK;\n"
-		"\t\tdefault:\n\t\t\treturn TYPE_OBJECT;\n\t}\n}\n\n";
+	out2 << "\treturn TYPE_OBJECT;\n}\n\n";
 
 	// elementCreated
-	out2 << "void RepoTypesInfo::elementCreated( int type, int id )\n{\n"
+	out2 << "void RepoTypesInfo::elementCreated(TypeIdType type, IdType &id )\n{\n"
 		"\tmap[type].addObject(id);\n}\n\n";
 
 	// elementDeleted
-	out2 << "void RepoTypesInfo::elementDeleted( int type, int id )\n{\n"
+	out2 << "void RepoTypesInfo::elementDeleted(TypeIdType type, IdType &id )\n{\n"
 		"\tmap[type].deleteObject(id);\n}\n\n";
 
 	file2.close();
