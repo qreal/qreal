@@ -146,10 +146,13 @@ public:
 	 *	@brief @return Список идентификаторов типов
 	 * */
 	qRealTypes::QIntList getAllTypes();
+
+#if 0 // UNUSED & CONFUSING
 	/** @brief Получить описание типа
 	 *	@brief @return Описание типа
 	 * */
 	TypeInfo getTypeInfo( int id /**< Идентификтор типа*/);
+#endif
 
 	/** @brief Получить список объектов заданного типа
 	 *	@brief @return Список объектов заданного типа

@@ -226,6 +226,7 @@ dbg;
 	return list;
 }
 
+#if 0 // see header file.
 TypeInfo RealRepoClient::getTypeInfo( int arg )
 {
 dbg;
@@ -242,6 +243,7 @@ dbg;
 	info.fromString(resp);
 	return info;
 }
+#endif
 
 int RealRepoClient::getLastError()
 {
