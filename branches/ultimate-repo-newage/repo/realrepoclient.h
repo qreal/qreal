@@ -77,13 +77,13 @@ public:
 	/** @brief Создать объект
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
-	int createObject( int type, /**< Тип объекта */
+	int createObject( TypeIdType type, /**< Тип объекта */
 					QString name  /**< Имя объекта */
 					);
 	/** @brief Поместить существующий объект на другую диаграмму
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
-	int copyEntity( int type, /**< Тип объекта */
+	int copyEntity( TypeIdType type, /**< Тип объекта */
 					int id,  /**< Идентификатор объекта */
 					int newParent, /**< Идентификатор диаграммы, на которую помещаем объект */
 					int oldParent,
@@ -92,7 +92,7 @@ public:
 	/** @brief Создать элемент с указанным родителем
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
-	int createObjectWithParent(int type, /**< Тип объекта*/
+	int createObjectWithParent(TypeIdType type, /**< Тип объекта*/
 							QString name, /**< Имя */
 							int parent /**< Идентификатор родительского объекта */
 							);
@@ -104,12 +104,12 @@ public:
 	 *	@brief @return Идентификатор созданной связи
 	 * */
 	int createLinkWithType(QString name, /**< Имя */
-							QString type /**< Тип */
+							TypeIdType type /**< Тип */
 							);
 	/** @brief Создать связь заданного типа и положить в заданный контейнер
 	 *	@brief @return Идентификатор созданной связи
 	 * */
-	int createLinkWithParent(int type, /**< Тип */
+	int createLinkWithParent(TypeIdType type, /**< Тип */
 								QString name, /**< Имя */
 								int parent
 							);
@@ -157,11 +157,11 @@ public:
 	/** @brief Получить список объектов заданного типа
 	 *	@brief @return Список объектов заданного типа
 	 * */
-	QString getObjectsByType( int type /**< Идентификатор типа */);
+	QString getObjectsByType( TypeIdType type /**< Идентификатор типа */);
 	/** @brief Получить список объектов заданного типа
 	 *	@brief @return Список объектов заданного типа
 	 * */
-	qRealTypes::QIntList getObjectsListByType( int type /**< Идентификатор типа */);
+	QList<int> getObjectsListByType( TypeIdType type /**< Идентификатор типа */);
 	/** @brief Получить список связей
 	 *	@brief @return Список связей
 	 * */

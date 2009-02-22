@@ -7,7 +7,7 @@
 #include "realreporoles.h"
 
 PropertyEditorModel::PropertyEditorModel(QObject *parent)
-	: QAbstractTableModel(parent), type(0), mPseudoAttributesCount(0)
+	: QAbstractTableModel(parent), type(""), mPseudoAttributesCount(0)
 {
 }
 
@@ -60,7 +60,7 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 		if (index.row() != 0)
 			return targetObject.data(info.roleByIndex(index.row() - mPseudoAttributesCount));
 		else
-			return QVariant(info.objectName(type));
+			return QVariant(type);
 	} else
 		return QVariant();
 }
@@ -108,7 +108,7 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 		return;
 
 	targetObject = sourceIndex;
-	type = targetObject.data(Unreal::TypeRole).toInt();
+	type = targetObject.data(Unreal::TypeRole).toString();
 
 	roleNames = info.getColumnNames(type);
 

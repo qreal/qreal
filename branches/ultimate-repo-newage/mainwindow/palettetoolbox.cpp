@@ -6,7 +6,7 @@
 #include "palettetoolbox.h"
 #include "realrepoinfo.h"
 
-PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/*0*/)
+PaletteToolbox::DraggableElement::DraggableElement(TypeIdType classid, QWidget *parent/*0*/)
 	: QWidget(parent)
 {
 	RealRepoInfo info;
@@ -52,7 +52,7 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		layout->setSpacing(0);
 		layout->setContentsMargins ( 0,0,0,0 );
 
-		foreach(int classid, info.getObjects(i)) {
+		foreach(TypeIdType classid, info.getObjects(i)) {
 			DraggableElement *element = new DraggableElement(classid, this);
 			layout->addWidget(element);
 		}

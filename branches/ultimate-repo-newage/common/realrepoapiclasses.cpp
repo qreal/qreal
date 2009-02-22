@@ -31,12 +31,12 @@ void RealNamedEntity::setName( const QString& arg )
 	m_name = arg;
 }
 
-int RealNamedEntity::getTypeId() const
+TypeIdType RealNamedEntity::getTypeId() const
 {
 	return m_type;
 }
 
-void RealNamedEntity::setTypeId( const int arg )
+void RealNamedEntity::setTypeId( const TypeIdType arg )
 {
 	m_type = arg;
 }

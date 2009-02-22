@@ -295,9 +295,14 @@ void Generator::genTypes()
 			out2 << "\tif (type == \"" << (*o)->id << "\") ";
 			out2 << "return TYPE_LINK;\n";
 		}
+		else
+		{
+			out2 << "\tif (type == \"" << (*o)->id << "\") ";
+			out2 << "return TYPE_OBJECT;\n";
+		}
 	}
 	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-	out2 << "\treturn TYPE_OBJECT;\n}\n\n";
+	out2 << "\treturn TYPE_INVALID;\n}\n\n";
 
 	// elementCreated
 	out2 << "void RepoTypesInfo::elementCreated(TypeIdType type, IdType &id )\n{\n"
@@ -667,9 +672,8 @@ void Generator::genFactory()
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
-	QString includes = "";
 	QString classes = "";
-	QString tmp = "\t\tcase UML::%1:\n\t\t\treturn new %2();\n";
+	QString tmp = "\tif (type == \"%1\") return new %2();\n";
 
 	out <<  "#include <QtGui>\n\n"
 			"#include \"realreporoles.h\"\n"
@@ -694,13 +698,10 @@ void Generator::genFactory()
 
 	}
 
-  //  out << includes << "\n\n";
 	out <<  "using namespace UML;\n\n"
-			"Element * UML::GUIObjectFactory(int type){\n"
-			"\tswitch ( type ) {\n";
+			"Element * UML::GUIObjectFactory(TypeIdType type){\n";
 	out << classes;
 
-	out << "\t\tdefault: return 0;//\t qDebug() << \"not creating\" << type; \n\t}\n";
 	out << "\treturn 0;\n}\n";
 
 	file.close();
@@ -728,23 +729,23 @@ void Generator::genRealRepoInfo(){
 
 	out << "#ifndef REALREPOINFO_H\n#define REALREPOINFO_H\n\n";
 
-	out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n#include <QIcon>\n#include \"sdfrenderer.h\"\n\n";
+	out << "#include <QStringList>\n#include <QMap>\n#include <QString>\n#include <QIcon>\n#include \"sdfrenderer.h\"\n#include \"../common/classes.h\"\n";
 
 	out <<  "class RealRepoInfo\n{\n"
 			"public:\n"
 			"\tRealRepoInfo();\n"
 			"\t~RealRepoInfo();\n"
 			"\tQStringList getObjectCategories() const;\n"
-			"\tQList<int> getObjects(int category) const;\n"
-			"\tQString objectDesc(int id) const;\n"
-			"\tQString objectName(int id) const;\n\n"
-			"\tQStringList getColumnNames(int type) const;\n"
-			"\tQString getColumnName(int type, int role) const;\n\n"
+			"\tQList<TypeIdType> getObjects(int category) const;\n"
+			"\tQString objectDesc(TypeIdType id) const;\n"
+//			"\tQString objectName(TypeIdType id) const;\n\n"
+			"\tQStringList getColumnNames(TypeIdType type) const;\n"
+			"\tQString getColumnName(TypeIdType type, int role) const;\n\n"
 			"\tint roleByIndex(int index) const\n"
 			"\t\t{ return index+129; };\n"
 			"\tint indexByRole(int role) const\n"
 			"\t\t{ return role-129; };\n\n"
-			"\tQIcon objectIcon( int id ) const; \n\n"
+			"\tQIcon objectIcon( TypeIdType ) const; \n\n"
 			"private:\n"
 			"};\n\n";
 
@@ -764,13 +765,13 @@ void Generator::genRealRepoInfo(){
 		"class Category\n{\n"
 			"public:\n"
 			"\tQString name;\n"
-			"\tQList<int> objects;\n};\n\n"
+			"\tQList<TypeIdType> objects;\n};\n\n"
 
-			"static QList< Category > categories;\n"
-			"static QStringList objects;\n"
-			"static QStringList descriptions;\n"
-			"static QList< QIcon > icons;\n"
-			"static QMap<int, QStringList> map;\n\n";
+			"static QList<Category> categories;\n"
+			"static QList<TypeIdType> objects;\n"
+			"static QMap<TypeIdType, QString> descriptions;\n"
+			"static QMap<TypeIdType, QIcon> icons;\n"
+			"static QMap<TypeIdType, QStringList> map;\n\n";
 
 	out2 << "static void initStaticData()\n{\n"
 		"\tif ( initCompleted )\n"
@@ -802,14 +803,14 @@ void Generator::genRealRepoInfo(){
 				out2 << QString("\tcat.objects ");
 
 		if( i )
-			out2 << "<< 2 << 18"; // WTF???
+			out2 << "<< \"krnnDiagram\" << \"krneRelationship\"";
 
 		FOR_ALL_OBJECTS((*c),o)
 		{
 //			qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
 //			<< objects.at(categories.at(i)->objects.at(j))->visible;
 			if ((*o)->visible || (*o)->type == EDGE )
-				out2 << QString(" << %1").arg(k+NUM);
+				out2 << QString(" << \"%1\"").arg((*o)->id);
 			k++;
 		}
 
@@ -825,12 +826,10 @@ void Generator::genRealRepoInfo(){
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 		out2 << QString(" << \"%1\"").arg((*o)->id);
 	out2 << ";\n\n";
-//	if( objects.size() > 0 )
-		out2 << "descriptions ";
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-		out2 << QString(" << \"%1\"").arg((*o)->name);
 
-	out2 << ";\n\n";
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+		out2 << QString("descriptions.insert(\"%1\",\"%2\");\n").arg((*o)->id).arg((*o)->name);
+
 
 
 	// from former realreporoles
@@ -838,27 +837,25 @@ void Generator::genRealRepoInfo(){
 	out2 << "// from realreporoles.cpp\n\n";
 	out2 << "\tQStringList l;\n";
 
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
 		out2 << "\tl.clear();\n";
 		FOR_ALL_PROPERTIES((*o),p)
 			out2 << QString("\t\tl << \"%1\";\n").arg((*p).first);
-		out2 << QString("\tmap.insert(%1, l);\n").arg(NUM + i);
+		out2 << QString("\tmap.insert(\"%1\", l);\n").arg((*o)->id);
 		out2 << "\n";
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i);
+	}
 
 	// initializing icons
 
 	out2 << "//initializing icons\n\n";
-	out2 << "\ticons";
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if ((*o)->height == -1 && (*o)->width == -1 )
-			out2 << "\n\t\t<< QIcon()";
-		else
-			out2 << QString("\n\t\t<< QIcon(new SdfIconEngineV2(\":/shapes/" + (*o)->id + "Class.sdf\"))");
+		if (!((*o)->height == -1 && (*o)->width == -1 ))
+			out2 << QString("\ticons.insert(\""+(*o)->id+"\", QIcon(new SdfIconEngineV2(\":/shapes/" + (*o)->id + "Class.sdf\")));\n");
 	}
-	out2 << ";\n\n";
+	out2 << "\n";
 
 	out2 << "\tinitCompleted = true;\n"
 		"}\n\n";
@@ -881,31 +878,28 @@ void Generator::genRealRepoInfo(){
 			"\treturn l;\n}\n\n";
 
 	// getObjects
-	out2 << "QList<int> RealRepoInfo::getObjects(int category) const\n{\n"
+	out2 << "QList<TypeIdType> RealRepoInfo::getObjects(int category) const\n{\n"
 			"\treturn categories.at(category).objects;\n}\n\n";
 
 	// objectName
-	out2 << "QString RealRepoInfo::objectName( int id ) const\n{\n"
-			"\treturn objects.at(id-1);\n}\n\n";
+//	out2 << "QString RealRepoInfo::objectName( TypeIdType id ) const\n{\n"
+//			"\treturn objects.value(id);\n}\n\n";
 
-	out2 << "QString RealRepoInfo::objectDesc( int id ) const\n{\n"
-			"\treturn descriptions.at(id-1);\n}\n\n";
+	out2 << "QString RealRepoInfo::objectDesc( TypeIdType id ) const\n{\n"
+			"\treturn descriptions.value(id);\n}\n\n";
 
 	// getColumnName
 
-	out2 << "QString RealRepoInfo::getColumnName(int type, int role) const\n{\n"
+	out2 << "QString RealRepoInfo::getColumnName(TypeIdType type, int role) const\n{\n"
 			"\treturn map.value(type).at(indexByRole(role));\n}\n\n";
 
 	// getColumnNames
 
-	out2 << "QStringList RealRepoInfo::getColumnNames(int type) const\n{\n"
+	out2 << "QStringList RealRepoInfo::getColumnNames(TypeIdType type) const\n{\n"
 			"\treturn map.value(type);\n}\n\n";
 
-	out2 << "QIcon RealRepoInfo::objectIcon( int id ) const\n"
-			"{\n\tif ( id > 0 && id <= icons.size() )\n"
-			"\t\treturn icons.at(id-1);\n"
-			"\telse\n"
-			"\t\treturn QIcon();\n}\n";
+	out2 << "QIcon RealRepoInfo::objectIcon( TypeIdType id ) const\n"
+		"{\n\treturn icons.value(id);\n}\n";
 
 
 	file2.close();

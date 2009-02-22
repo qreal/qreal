@@ -176,7 +176,7 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Хэш имен элементов */
 		QHash <int, QString> hashNames;
 		/** @brief Хэш типов элементов */
-		QHash <int, int> hashTypes;
+		QHash <int, TypeIdType> hashTypes;
 		/** @brief Хэш дочерних элементов */
 		QHash <int, QList<int> > hashChildren;
 		/** @brief Хэш числа дочерних элементов */
@@ -187,6 +187,9 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Хэш элементов иерархической структуры модели */
 		QHash <int,QList<RepoTreeItem *> > hashTreeItems;
+
+		QMap <TypeIdType, int> typeToId;
+		QMap <int, TypeIdType> idToType;
 
 		/** @brief Параметры элемента на диаграмме */
 		struct ElementOnDiagram {
@@ -212,14 +215,14 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Создать новый элемент
 		 * */
 		void createItem(RepoTreeItem * item, /**< Элемент */
-						int type, /**< Тип */
-						int id /**< Идентификатор */
+						int id, /**< Идентификатор */
+						TypeIdType type /**< Тип */
 						);
 		/** @brief Создать ссылку на уже имеющийся элемент
 		 * */
 		void createItem(RepoTreeItem * item, /**< Элемент */
-						int type, /**< Тип */
 						int id, /**< Идентификатор */
+						TypeIdType type, /**< Тип */
 						QString name /**< Имя */
 						);
 
@@ -246,7 +249,7 @@ class RealRepoModel : public QAbstractItemModel
 		 *	@brief @return true, если элемент добавлен, иначе false
 		 * */
 		bool addElementToModel(RepoTreeItem *const parentItem,
-			const QModelIndex &parent, int oldparent, int const newid, int const newtype,
+			const QModelIndex &parent, int oldparent, int const newid, TypeIdType newtype,
 			QString const &name, QPointF const &newPos, Qt::DropAction action);
 
 		/** @brief Корневой элемент */

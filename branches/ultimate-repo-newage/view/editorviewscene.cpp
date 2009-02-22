@@ -7,6 +7,7 @@
 
 #include <QGraphicsTextItem>
 #include <QtGui>
+#include "../common/classes.h"
 
 
 EditorViewScene::EditorViewScene(QObject * parent)
@@ -77,7 +78,8 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
-	int uuid, type_id, oldparent;
+	int uuid, oldparent;
+	TypeIdType type_id;
 	QString name;
 	QPointF pos;
 

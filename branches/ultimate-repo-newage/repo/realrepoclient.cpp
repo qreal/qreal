@@ -138,15 +138,16 @@ dbg;
 	return resp;
 }
 
-int RealRepoClient::createObject(int type, QString name)
+int RealRepoClient::createObject(TypeIdType type, QString name)
 {
 dbg;
+	qDebug() << "creating a new entity: " << type << name;
 	QString data = QString("%1\t%2\t%3\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name);
 	QString resp = sendData(data);
 	return resp.toInt();
 }
 
-int RealRepoClient::copyEntity(int type, int id, int newParent, int oldParent, bool full)
+int RealRepoClient::copyEntity(TypeIdType type, int id, int newParent, int oldParent, bool full)
 {
 dbg;
 	QString data;
@@ -158,9 +159,10 @@ dbg;
 	return resp.toInt();
 }
 
-int RealRepoClient::createObjectWithParent(int type, QString name, int parent)
+int RealRepoClient::createObjectWithParent(TypeIdType type, QString name, int parent)
 {
 dbg;
+	qDebug() << "creating a new entity: " << type << name << parent;
 	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent);
 	QString resp = sendData(data);
 	return resp.toInt();
@@ -169,17 +171,16 @@ dbg;
 
 int RealRepoClient::createLink(QString name)
 {
-	return createObject(getTypeIdByName("krneDirRelationship"), name);
+	return createObject("krneDirRelationship", name);
 }
 
-int RealRepoClient::createLinkWithType(QString name, QString type)
+int RealRepoClient::createLinkWithType(QString name, TypeIdType type)
 {
-	int typeId = getTypeIdByName(type);
-	qDebug() << ">>>>type: "<< typeId << endl;
-	return createObject(typeId, name);
+	qDebug() << ">>>>type: "<< type << endl;
+	return createObject(type, name);
 }
 
-int RealRepoClient::createLinkWithParent(int type, QString name, int parent)
+int RealRepoClient::createLinkWithParent(TypeIdType type, QString name, int parent)
 {
 	return createObjectWithParent(type, name, parent);
 }
@@ -251,18 +252,18 @@ dbg;
 	return m_error;
 }
 
-QString RealRepoClient::getObjectsByType( int type )
+QString RealRepoClient::getObjectsByType( TypeIdType type )
 {
 	QString cmd = QString("%1\t%2").arg(CMD_GET_OBJECTS_BY_TYPE).arg(type);
 	QString resp = sendData(cmd);
 	return resp;
 }
 
-QIntList RealRepoClient::getObjectsListByType( int type )
+QList<int> RealRepoClient::getObjectsListByType( TypeIdType type )
 {
 	QString resp = getObjectsByType(type);
 
-	QIntList list;
+	QList<int> list;
 	foreach( QString str, resp.split('\t') )
 		list += str.toInt();
 	if( resp == "\t" )
@@ -272,7 +273,7 @@ QIntList RealRepoClient::getObjectsListByType( int type )
 
 QIntList RealRepoClient::getLinks()
 {
-	return getObjectsListByType(getTypeIdByName("krneDirRelationship"));
+	return getObjectsListByType("krneDirRelationship");
 }
 
 
@@ -337,7 +338,7 @@ RealObject RealRepoClient::getObjectById( int id )
 dbg;
 	QString data = getEntireObject(id);
 	RealObject obj;
-	obj.setTypeId(data.section("\t",0,0).toInt());
+	obj.setTypeId(data.section("\t",0,0));
 	obj.setId(id);
 	obj.setVisibility(true);
 	obj.setName(data.section("\t",2,2));
@@ -380,7 +381,7 @@ RealLink RealRepoClient::getLinkById( int id )
 dbg;
 	QString data = getEntireObject(id);
 	RealLink link;
-	link.setTypeId(data.section("\t",0,0).toInt());
+	link.setTypeId(data.section("\t",0,0));
 	link.setId(data.section("\t",1,1).toInt());
 	link.setName(data.section("\t",3,3));
 	link.setDescription(data.section("\t",4,4));

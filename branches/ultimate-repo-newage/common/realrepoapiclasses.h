@@ -28,7 +28,7 @@ namespace qRealTypes
 	class RealNamedEntity
 	{
 	public:
-		RealNamedEntity(): m_id(-1),  m_type(-1), m_name("noname"),
+		RealNamedEntity(): m_id(-1),  m_type(""), m_name("noname"),
 			m_description("noname"), client(NULL)
 		{
 			m_properties.clear();
@@ -51,9 +51,9 @@ namespace qRealTypes
 		/** @brief Получить идентификатор типа сущности
 		 *	@brief @return Идентификатор типа сущности
 		 * */
-		int getTypeId() const;
+		TypeIdType getTypeId() const;
 		/** @brief Устновить идентификатор типа сущности */
-		void setTypeId( const int id /**< Идентификатор типа */);
+		void setTypeId( const TypeIdType id /**< Идентификатор типа */);
 
 		/** @brief Получить описание сущности
 		 *	@brief @return Описание сущности
@@ -82,7 +82,7 @@ namespace qRealTypes
 		/** @brief Идентификатор */
 		int m_id;
 		/** @brief Тип */
-		int m_type;
+		TypeIdType m_type;
 		/** @brief Имя */
 		QString m_name;
 		/** @brief Описание */
