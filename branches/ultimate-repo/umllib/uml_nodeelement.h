@@ -15,7 +15,7 @@ const int kvadratik = 5;
 
 namespace UML {
 	/** @class NodeElement
- 	* 	@brief Класс, представляющий объект на диаграмме
+	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
 	class NodeElement : public Element
 	{
@@ -50,24 +50,17 @@ namespace UML {
 			 *	@brief @return Идентификатор порта
 			 * */
 			qreal getPortId(const QPointF &location /**< Расположение порта */) const;
-			/** @brief Узнать, является ли этот объект дочерним для данного
-			 * 	@brief @return Является ли этот объект дочерним для данного
-			 * */
-			bool isChildOf(int id /**< Идентификатор объекта */)
-			{
-				return parentsList.contains(id);
-			}
 
 			/** @brief Добавить связь */
 			void addEdge(EdgeElement *edge /**< Связь */)
 			{
 				edgeList << edge;
-			};
+			}
 			/** @brief Убрать связь */
 			void delEdge(EdgeElement *edge /**< Связь */)
 			{
 				edgeList.removeAt(edgeList.indexOf(edge));
-			};
+			}
 
 			void setPortsVisible(bool value);
 
@@ -88,9 +81,6 @@ namespace UML {
 			virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
 											const QVariant &value /**< Величина изменения */
 											);
-
-			/** @brief Список родительских объектов */
-			QList<int> parentsList;
 
 			/** @brief Список точечных портов */
 			QList<QPointF> pointPorts;
