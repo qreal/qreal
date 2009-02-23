@@ -13,5 +13,7 @@
 		<file>icons/zoomout.png</file>
 		<file>icons/qreal.png</file>
 		<file>icons/chaotic_system.png</file>
+		<file>icons/kroki2.PNG</file>
+		<file>icons/get.jpg</file>
 	</qresource>
 </RCC>

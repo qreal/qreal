@@ -21,8 +21,9 @@ using namespace qReal;
 
 MainWindow::MainWindow() : model(0)
 {
-	QPixmap korkodil(":/icons/kroki2.PNG");
-	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+//	QPixmap korkodil(":/icons/kroki2.PNG");
+//	QSplashScreen splash(korkodil, Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	QSplashScreen splash(QPixmap(":/icons/get.jpg"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	splash.show();
 	QApplication::processEvents();
 
