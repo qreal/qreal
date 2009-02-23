@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>sequence_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="QREAL PARALLEL DIAGRAM" >
+ <editor name="QREAL PARALLEL DIAGRAM" >
   <enumType id="qrThreadNameType" name="ThreadNameType" >
    <enumValue>number</enumValue>
    <enumValue>string</enumValue>
@@ -187,5 +187,5 @@
     </associations>
    </logic>
   </edge>
- </diagram>
+ </editor>
 </metamodel>

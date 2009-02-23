@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="BPEL DIAGRAM" >
+ <editor name="BPEL DIAGRAM" >
   <node id="bplReceive" name="receive" >
    <graphics>
     <view>
@@ -1903,5 +1903,5 @@
 			</logic>
 		</edge>
 		-->
- </diagram>
+ </editor>
 </metamodel>

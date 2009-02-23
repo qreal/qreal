@@ -9,10 +9,10 @@ INCLUDEPATH += .
 HEADERS += generator.h \
     entity.h \
     editor_file.h \
-    category.h
+    editor.h
 
 SOURCES += main.cpp \
     generator.cpp \
     entity.cpp \
     editor_file.cpp \
-    category.cpp
+    editor.cpp

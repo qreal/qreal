@@ -12,7 +12,7 @@ class EditorFile;
 	for (QList<Entity *>::ConstIterator o = c->constObjBegin(); \
 	     o != c->constObjEnd(); o++)
 
-class Category{
+class Editor{
 	EditorFile *efile;
 	QMap<QString, QStringList> enumerations;
 	QList<Entity *> objects;
@@ -20,8 +20,8 @@ class Category{
 	QString name;
 
 public:
-	Category(QString, EditorFile *);
-	~Category();
+	Editor(QString, EditorFile *);
+	~Editor();
 
 	bool init(QDomElement &);
 	bool resolve(void);

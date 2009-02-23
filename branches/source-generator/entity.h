@@ -32,7 +32,7 @@ enum sideType {
 class Port;
 class Label;
 
-class Category;
+class Editor;
 
 // parent for nodes and edges class
 /** @class Entity
@@ -45,7 +45,7 @@ class Entity
 	QList<QPair<QString, QString> > properties;
 
 protected:
-	Category *cat;
+	Editor *cat;
 	/** @brief Добавить свойство */
 	void addProperty( QString name, /**< Название свойства */
 	                  QString type /**< Тип свойства */
@@ -54,7 +54,7 @@ protected:
 	void addProperties(const QList< QPair<QString, QString> > &arg);
 
 public:
-	Entity(Category *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false; width = -1; height = -1; }
+	Entity(Editor *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false; width = -1; height = -1; }
 	virtual ~Entity(){};
 
 	virtual bool init(QDomElement &) = 0;
@@ -97,7 +97,7 @@ public:
 class Node : public Entity
 {
 public:
-	Node(Category *cat):Entity(cat) { type = NODE; }
+	Node(Editor *cat):Entity(cat) { type = NODE; }
 	~Node() {}
 	//TODO: containers 
 	//QStringList associations; 
@@ -165,7 +165,7 @@ public:
 class Edge : public Entity
 {
 public:
-	Edge(Category *cat):Entity(cat){
+	Edge(Editor *ed):Entity(ed){
 		assocsPropagated = false;
 		endsPropagated   = false;
 		lineType = "Qt::SolidLine";

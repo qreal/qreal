@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
- <diagram name="STATE MACHINES DIAGRAM" >
+ <editor name="STATE MACHINES DIAGRAM" >
   <enumType id="smtTransitionkind" name="TransitionKind" >
    <enumValue>internal</enumValue>
    <enumValue>local</enumValue>
@@ -424,5 +424,5 @@
    </logic>
   </node>
 <!--  <node id="smTimeEvent" name="TimeEvent" /> -->
- </diagram>
+ </editor>
 </metamodel>

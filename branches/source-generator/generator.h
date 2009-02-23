@@ -13,7 +13,7 @@
 #include "editor_file.h"
 #include "entity.h"
 
-class Category;
+class Editor;
 
 /** @brief Вспомогательная переменная для генерации файла ресурсов */
 extern QString resources;
@@ -23,12 +23,12 @@ extern QString resources;
 	     f != loaded_files.constEnd(); f++)
 
 #define MEGA_FOR_ALL_OBJECTS(f,c,o) \
-	FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f), c) FOR_ALL_OBJECTS((*c), o)
+	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f), c) FOR_ALL_OBJECTS((*c), o)
 
 #define MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i) \
 	do { \
 		int i = 0; \
-		FOR_ALL_FILES(f) FOR_ALL_CATEGORIES((*f), c) FOR_ALL_OBJECTS((*c), o) {
+		FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f), c) FOR_ALL_OBJECTS((*c), o) {
 
 #define MEGA_FOR_ALL_OBJECTS_COUNTER_END(i) \
 			i++; \
@@ -47,7 +47,7 @@ public:
 	/** @brief Обработать все входные файлов и сгенерировать редакторы */
 	bool generate();
 	bool loadFile(QString, const EditorFile **f = NULL);
-	const Category* findCategory(QString) const;
+	const Editor* findEditor(QString) const;
 	void setSrcDir(QString path) {srcdir = path; }
 
 private:

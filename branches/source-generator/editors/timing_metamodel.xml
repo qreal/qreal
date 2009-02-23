@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/" >
  <namespace>UML 2.1</namespace>
  <include>basicbehaviors_metamodel</include>
- <diagram name="TIMING DIAGRAM" >
+ <editor name="TIMING DIAGRAM" >
   <node id="tmnnInteraction" name="Interaction" >
    <graphics>
     <view>
@@ -140,5 +140,5 @@
     </properties>
    </logic>
   </edge>
- </diagram>
+ </editor>
 </metamodel>
