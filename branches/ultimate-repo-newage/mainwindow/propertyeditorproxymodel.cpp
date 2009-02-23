@@ -28,7 +28,7 @@ Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &index) const
 		return Qt::ItemIsEnabled;
 
 	// Object id
-	if (index.row() == 0)
+	if (index.row() < mPseudoAttributesCount)
 		return Qt::NoItemFlags;
 
 	// Other properties

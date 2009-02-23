@@ -9,30 +9,39 @@
 
 using namespace UML;
 
+QMap<QString, int> types;
+
 Element::Element()
-    : m_uuid(1234567), moving(false)
+	: m_uuid(""), moving(false)
 {
-    setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape
 			| ItemClipsToShape);
-    setAcceptDrops(true);
-    setCursor(Qt::PointingHandCursor);
+	setAcceptDrops(true);
+	setCursor(Qt::PointingHandCursor);
 }
 
 void Element::setIndex(QPersistentModelIndex &index)
 {
-    dataIndex = index;
+	dataIndex = index;
 //    updateData();
 
-    // this should probably be here, uuid is too important...
-    m_uuid = dataIndex.data(Unreal::IdRole).toInt();
-	m_type = dataIndex.data(Unreal::TypeRole).toInt();
-        
-    update();
+	// this should probably be here, uuid is too important...
+	m_uuid = dataIndex.data(Unreal::IdRole).toString();
+
+	QString type = dataIndex.data(Unreal::TypeRole).toString();
+	if (types.contains(type)) {
+		m_type = types[type];
+	} else {
+		m_type = UserType + types.count();
+		types.insert(type, m_type);
+	}
+
+	update();
 }
 
-int Element::uuid() const
+IdType Element::uuid() const
 {
-    return m_uuid;
+	return m_uuid;
 }
 
 int Element::type() const
@@ -42,6 +51,5 @@ int Element::type() const
 
 void Element::updateData()
 {
-    setToolTip(dataIndex.data(Qt::ToolTipRole).toString());
+	setToolTip(dataIndex.data(Qt::ToolTipRole).toString());
 }
-

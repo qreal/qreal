@@ -1,11 +1,12 @@
 /** @file uml_element.h
  * 	@brief Базовый класс элемента на диаграмме
  * */
-#ifndef UML_ELEMENT_H
-#define UML_ELEMENT_H
+#pragma once
 
 #include <QtGui/QGraphicsItem>
 #include <QtCore/QModelIndex>
+
+#include "../common/classes.h"
 
 namespace UML {
 	/** @class Element
@@ -21,7 +22,7 @@ namespace UML {
 		QPersistentModelIndex index() const
 		{
 			return dataIndex;
-		};
+		}
 		/** @brief Установить индекс элемента */
 		void setIndex(QPersistentModelIndex &index /**< Индекс */);
 
@@ -31,11 +32,11 @@ namespace UML {
 		/** @brief Получить идентификатор элемента
 		 *	@brief @return Идентификатор элемента
 		 * */
-		int uuid() const;
+		IdType uuid() const;
 		/** @brief Получить тип элемента
 		 *	@brief @return Тип элемента
 		 * */
-		int type() const;
+		virtual int type() const;
 
 		virtual void connectToPort() { }
 
@@ -46,13 +47,11 @@ namespace UML {
 		QPersistentModelIndex dataIndex;
 
 		/** @brief Идентификатор элемента */
-		int m_uuid;
+		IdType m_uuid;
 		/** @brief Тип элемента */
 		int m_type;
 
 		/** @brief Индикатор перемещения элемента */
 		bool moving;
 	};
-};
-
-#endif
+}

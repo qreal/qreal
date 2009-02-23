@@ -76,7 +76,7 @@ void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 }
 */
 
-UML::Element* EditorViewMViface::getItem(int uuid)
+UML::Element* EditorViewMViface::getItem(IdType const &uuid)
 {
 	return items[uuid];
 }
@@ -109,16 +109,16 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		int uuid = current.data(Unreal::IdRole).toInt();
+		IdType uuid = current.data(Unreal::IdRole).toString();
 		TypeIdType type = current.data(Unreal::TypeRole).toString();
 
-		int parent_uuid = -1;
+		IdType parent_uuid = "";
 		if (parent != rootIndex())
-			parent_uuid = parent.data(Unreal::IdRole).toInt();
+			parent_uuid = parent.data(Unreal::IdRole).toString();
 
 		qDebug() << uuid << type;
 
-		if (uuid == 0)
+		if (uuid == "")
 			continue;
 
 		if (UML::Element *e = UML::GUIObjectFactory(type)) {
@@ -126,7 +126,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			e->setIndex(current);
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
 
-			if (parent_uuid != -1)
+			if (parent_uuid != "")
 				e->setParentItem(items[parent_uuid]);
 
 			items[uuid] = e;
@@ -146,7 +146,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 {
 	for (int row = start; row <= end; ++row) {
-		int uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toInt();
+		IdType uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toString();
 
 		scene->removeItem(items[uuid]);
 		delete items[uuid];
@@ -160,7 +160,7 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 	const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		int uuid = topLeft.sibling(row, 0).data(Unreal::IdRole).toInt();
+		IdType uuid = topLeft.sibling(row, 0).data(Unreal::IdRole).toString();
 
 		if (items.contains(uuid)) {
 			Q_ASSERT(items[uuid] != NULL);

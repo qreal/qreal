@@ -1,11 +1,10 @@
 /** @file palettetoolbox.h
  * 	@brief Класс палитры элементов
  * */
-#ifndef PALETTETOOLBOX_H
-#define PALETTETOOLBOX_H
-
+#pragma once
+ 
 #include <QTabWidget>
-#include "../common/classes.h"
+#include "../common/realrepoapiclasses.h"
 
 class QDragEnterEvent;
 class QDropEvent;
@@ -35,7 +34,7 @@ class PaletteToolbox : public QTabWidget
 		 * 	@brief Элемент палитры объектов */
 		class DraggableElement : public QWidget {
 			public:
-				DraggableElement(TypeIdType classid, QWidget *parent=0);
+				DraggableElement(TypeIdType const &classid, QWidget *parent = NULL);
 				/** @brief Получить икноку элемента
 				 * 	@brief @return Иконка элемента
 				 * 	*/
@@ -72,5 +71,3 @@ class PaletteToolbox : public QTabWidget
 		QVector<QString> mTabNames;
 		QVector<bool> mShownTabs;
 };
-
-#endif

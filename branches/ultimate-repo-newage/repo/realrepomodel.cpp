@@ -21,8 +21,8 @@ dbg;
 	repoClient = new RealRepoClient(addr, port, this);
 
 	rootItem = new RepoTreeItem;
-	rootItem->parent = 0;
-	rootItem->id = 0;
+	rootItem->parent = NULL;
+	rootItem->id = "root";
 
 	if (!readRootTable())
 		exit(1);
@@ -50,10 +50,10 @@ dbg;
 }
 
 QModelIndex RealRepoModel::createDefaultTopLevelItem() {
-	RepoTreeItem *diagramCategory = hashTreeItems[UML::krnnDiagram].first();
+	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
 	readCategoryTable(diagramCategory);
 	if (diagramCategory->children.empty()) {
-		addElementToModel(diagramCategory, index(diagramCategory), -1, -1,
+		addElementToModel(diagramCategory, index(diagramCategory), "", "",
 			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction);
 	}
 
@@ -254,7 +254,7 @@ QModelIndex RealRepoModel::index(int row, int column, const QModelIndex &parent)
 	const
 {
 dbg;
-	RepoTreeItem *parentItem;
+	RepoTreeItem *parentItem = NULL;
 
 	if (!parent.isValid())
 		parentItem = rootItem;
@@ -425,8 +425,8 @@ dbg;
 	QDataStream stream(&dragData, QIODevice::ReadOnly);
 
 	QString name;
-	int newid = 0, oldParent = -1;
-	TypeIdType newtype;
+	IdType newtype = "", oldParent = "";
+	TypeIdType newid = "";
 	QPointF newPos;
 
 	stream >> newid;
@@ -443,8 +443,9 @@ dbg;
 }
 
 bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
-	const QModelIndex &parent, int oldParent, int const newid, TypeIdType newtype,
-	QString const &name, QPointF const &newPos, Qt::DropAction action)
+	const QModelIndex &parent, IdType const &oldParent, IdType const &newid,
+	TypeIdType const &newtype, QString const &name, QPointF const &newPos,
+	Qt::DropAction action)
 {
 	switch (type(parentItem)) {
 		case Category:
@@ -452,15 +453,14 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 //				qDebug() << parentItem->id << newtype;
 				qDebug() << newid << newtype << name << newPos;
 
-#if 0 // WTF???
 				if ( parentItem->id != newtype) {
 					qDebug() << "Object dragged into the wrong category";
 					return false;
 				}
-#endif
+
 				beginInsertRows(parent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
 				// FIXME
-				int id = repoClient->createObject(newtype, "anonymous");
+				IdType id = repoClient->createObject(newtype, "anonymous");
 //				qDebug() << "\tcreating new item3" << parentItem->id << id << newtype;
 				createItem(parentItem, id, newtype);
 				endInsertRows();
@@ -471,11 +471,11 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 		case Container:
 			{
 				qDebug() << "adding to container, action is " << action;
-				int id = newid;
+				IdType id = newid;
 				qDebug() << "newid: " << newid;
 
 				// drag'n'drop из эксплорера, создаем ссылку на текущий элемент
-				bool newElement = (id == -1);
+				bool newElement = (id == "");
 				qDebug() << newElement << name;
 				CopyType copyType = SYM_LINK_TYPE;
 
@@ -502,12 +502,13 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 				if (action == Qt::CopyAction && newElement) { // дерево инспектора объектов
 					qDebug() << "Qt::CopyAction";
 
-					beginInsertRows(index(typeToId[newtype]-1,0,QModelIndex()),
-								hashChildCount[typeToId[newtype]], hashChildCount[typeToId[newtype]]);
+					int typeIndex = findIndex(newtype);
+					beginInsertRows(index(typeIndex, 0, QModelIndex()),
+								hashChildCount[newtype], hashChildCount[newtype]);
 					id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
-					repoClient->setPosition(id, parentItem->id, (int) newPos.x(), (int) newPos.y());
-					qDebug() << "\tcreating new item" << rootItem->children.at(typeToId[newtype]-1)->id << id << newtype;
-					createItem(rootItem->children.at(typeToId[newtype]-1), id, newtype);
+					repoClient->setPosition(id, parentItem->id, (int)newPos.x(), (int)newPos.y());
+					qDebug() << "\tcreating new item" << rootItem->children.at(typeIndex)->id << id << newtype;
+					createItem(rootItem->children.at(typeIndex), id, newtype);
 					endInsertRows();
 				}
 
@@ -521,7 +522,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					return false;
 				}
 				foreach (RepoTreeItem *child, parentItem->children) {
-					if (child->id == id && id != -1 ) {
+					if (child->id == id && id != "") {
 						QMessageBox::warning(NULL, tr("Warning!"),
 							tr("Making two copies of one element with the same parent is not allowed, use containers instead."));
 						return false;
@@ -537,12 +538,12 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					// Если объект подвесили и в корень, и как сына другого объекта,
 					// надо дать об этом знать репозиторию, иначе будет #95.
 					// TODO: Subject to refactoring.
-					if (action == Qt::CopyAction ) {
-						if( copyType == SYM_LINK_TYPE ){
+					if (action == Qt::CopyAction) {
+						if (copyType == SYM_LINK_TYPE){
 							qDebug() << "SYM_LINK_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
 						}
-						else if ( copyType == FULL_COPY_TYPE )	{
+						else if (copyType == FULL_COPY_TYPE) {
 							qDebug() << "FULL_COPY_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 						}
@@ -574,9 +575,12 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
 dbg;
-	if ( item->id >= 200 )
+	// TODO: Грязный хак. Задача - уметь отличать тип от объекта. У типов строковые
+	// ид-шники совпадают с именами типов, у объектов это просто номера.
+	if (item->id.toInt() != 0)
 		return Container;
-	else if ( item->id != 0 )
+	else
+	if (item->id != "root")
 		return Category;
 	else
 		return Root;
@@ -601,7 +605,7 @@ dbg;
 	root->children.clear();
 }
 
-void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, TypeIdType type)
+void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type)
 {
 dbg;
 //	qDebug() << "\n\n====================";
@@ -624,7 +628,7 @@ dbg;
 //	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
-void RealRepoModel::createItem(RepoTreeItem *parentItem, int id, TypeIdType type, QString name){
+void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type, QString name){
 dbg;
 //	qDebug() << "\n\n==================== 2";
 	RepoTreeItem *item = new RepoTreeItem;
@@ -646,7 +650,7 @@ dbg;
 //	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
-void RealRepoModel::updateProperties(int /*id*/)
+void RealRepoModel::updateProperties(IdType const & /*id*/)
 {
 dbg;
 }
@@ -670,30 +674,25 @@ dbg;
 bool RealRepoModel::readRootTable()
 {
 dbg;
-
-	QList<TypeIdType> types = repoClient->getAllTypes();
-	if (types.isEmpty()){
-		m_error = repoClient->getLastError();
-		qDebug() << "MODEL: error " << m_error;
-		return false;
-	}
-
-	for( int i=0; i<types.size(); i++ ){
-		RealType info = repoClient->getTypeById(types[i]);
+	unsigned count = 0;
+	qRealTypes::TypeIdTypeList types = repoClient->getAllTypes();
+	foreach (TypeIdType type, types) {
+		RealType info = repoClient->getTypeById(type);
 		RepoTreeItem *item = new RepoTreeItem;
-		int count = info.getObjects().size();
-	//	qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
+		// qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
 		item->parent = rootItem;
-		item->row = i;
+		item->row = count;
 		item->id = info.getId();
 
 		hashNames[item->id] = info.getName();
-		hashChildCount[item->id] = count;
+
+		int childrenCount = info.getObjects().size();
+		hashChildCount[item->id] = childrenCount;
+
 		hashTreeItems[item->id].append(item);
-		typeToId[types[i]] = item->id;
-		idToType[item->id] = types[i];
 
 		rootItem->children.append(item);
+		++count;
 	}
 
 	hashChildCount[rootItem->id] = rootItem->children.size();
@@ -706,28 +705,32 @@ void RealRepoModel::readCategoryTable(RepoTreeItem * parent)
 dbg;
 	// Select all elements of the same type as the parent
 
-	QStringList ids = repoClient->getObjectsByType( idToType[parent->id] ).split("\t", QString::SkipEmptyParts);
-//	QStringList ids = repoClient->getObjectsByType("krnnDiagram").split("\t", QString::SkipEmptyParts);
+	IdTypeList ids = repoClient->getObjectsListByType(parent->id);
+	qDebug() << ids;
 
 //	qDebug() << "searching for type " << parent->id << ", found " << ids.size() << "elements" << ids;
-	for( int i=0; i<ids.size(); i++){
-		QString data = repoClient->getObjectData(ids[i].toInt());
+	unsigned count = 0;
+	foreach (IdType id, ids) {
+		// TODO: не должно по идее быть так.
+		if (id == "")
+			continue;
+		QString data = repoClient->getObjectData(id);
 //		qDebug() << "element" << i << data;
 		RepoTreeItem *item = new RepoTreeItem;
 		item->parent = parent;
-		item->id = ids[i].toInt();
-		item->row = i;
+		item->id = id;
+		item->row = count;
 		parent->children.append(item);
 		hashTreeItems[item->id].append(item);
 
 		// Some elements may be already added here - user may open diagrams before us.
-		if ( ! hashNames.contains(item->id) ) {
-			hashNames[item->id] = data.section("\t",1,1);
+		if (!hashNames.contains(item->id)) {
+			hashNames[item->id] = data.section("\t", 1, 1);
 			hashTypes[item->id] = parent->id;
-			hashChildCount[item->id] = data.section("\t",4,4).toInt();
+			hashChildCount[item->id] = data.section("\t", 4, 4).toInt();
 			hashChildren[parent->id].append(item->id);
 		}
-
+		++count;
 	}
 }
 
@@ -735,9 +738,9 @@ void RealRepoModel::readContainerTable(RepoTreeItem * root)
 {
 dbg;
 //	qDebug() << "================ READING DIAGRAM =======================";
-	if ( hashChildren.contains(root->id) ) {
+	if (hashChildren.contains(root->id)) {
 		int i = 0;
-		foreach (int childId, hashChildren[root->id]) {
+		foreach (IdType childId, hashChildren[root->id]) {
 			RepoTreeItem *item = new RepoTreeItem;
 			item->parent = root;
 			item->row = i++;
@@ -749,34 +752,34 @@ dbg;
 	} else {
 		QStringList children = repoClient->getChildren(root->id).split("\t", QString::SkipEmptyParts);
 //		qDebug() << children.size() << children;
-		for( int i=0; i<children.size(); i++ ){
-			int _id = children[i].toInt();
-			QString data = repoClient->getObjectData(_id);
+		for (int i = 0; i < children.size(); ++i) {
+			IdType id = children[i];
+			QString data = repoClient->getObjectData(id);
 //			int _type = data.section("\t",2,2).toInt();
-			QString coordinates = repoClient->getPosition(_id, root->id);
+			QString coordinates = repoClient->getPosition(id, root->id);
 
 			RepoTreeItem *item = new RepoTreeItem;
 			item->parent = root;
 			item->row = i;
-			item->id = _id;
+			item->id = id;
 
-			hashNames[item->id] = data.section("\t",1,1);
-			hashTypes[item->id] = data.section("\t",2,2);
+			hashNames[item->id] = data.section("\t", 1, 1);
+			hashTypes[item->id] = data.section("\t", 2, 2);
 
 			hashChildCount[item->id] = data.section("\t",4,4).toInt();
-					hashChildren[root->id].append(item->id);
+			hashChildren[root->id].append(item->id);
 
 			root->children.append(item);
 			hashTreeItems[item->id].append(item);
 
 			hashDiagramElements[root->id][item->id].position =
-				QPoint(coordinates.section(";",0,0).toInt(), coordinates.section(";",1,1).toInt());
+				QPoint(coordinates.section(";", 0, 0).toInt(), coordinates.section(";", 1, 1).toInt());
 
 			// FIXME: parse some better way
 			QPolygon newConfig;
-			QStringList pointList = repoClient->getConfiguration(_id, root->id).split(';',QString::SkipEmptyParts);
-			foreach ( QString pointData, pointList ) {
-				QStringList coords = pointData.split(QRegExp("\\(|\\)|,"),QString::SkipEmptyParts);
+			QStringList pointList = repoClient->getConfiguration(id, root->id).split(';', QString::SkipEmptyParts);
+			foreach (QString pointData, pointList) {
+				QStringList coords = pointData.split(QRegExp("\\(|\\)|,"), QString::SkipEmptyParts);
 				newConfig << QPoint(coords.at(0).toInt(), coords.at(1).toInt());
 			}
 			hashDiagramElements[root->id][item->id].configuration = newConfig;
@@ -810,11 +813,30 @@ void RealRepoModel::safeSetData(const QModelIndex & index, const QVariant & valu
 	emit dataChanged(index,index);
 }
 
+unsigned RealRepoModel::findIndex(TypeIdType const &id) const
+{
+	unsigned count = 0;
+	foreach (RepoTreeItem *item, rootItem->children) {
+		if (item->id == id)
+			return count;
+		++count;
+	}
+	Q_ASSERT(!"Element not found in the root table");
+	return count;
+}
+
+QModelIndex RealRepoModel::getDiagramCategoryIndex() const
+{
+	// Выглядит как хак, но сама по себе эта функция - хак и не должна пережить
+	// введение плагинов.
+	return index(findIndex("krnnDiagram"), 0, QModelIndex());
+}
+
 void RealRepoModel::runTestQueries()
 {
 
 	qDebug() << "Getting types by metatype 'object'";
-	QIntList result = repoClient->getTypesByMetaType(object);
+	TypeIdTypeList result = repoClient->getTypesByMetaType(object);
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting types by metatype 'link'";
@@ -830,8 +852,8 @@ void RealRepoModel::runTestQueries()
 	qDebug() << "Result: " << result;
 
 	qDebug() << "Getting type ID by name for non-existing (for now!) type 'Cthulhu fhtagn!'";
-	int intResult = repoClient->getTypeIdByName("Cthulhu fhtagn!");
-	qDebug() << "Result: " << intResult;
+	TypeIdType typeIdTypeResult = repoClient->getTypeIdByName("Cthulhu fhtagn!");
+	qDebug() << "Result: " << typeIdTypeResult;
 
 	qDebug() << "Done";
 }

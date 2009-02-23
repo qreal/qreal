@@ -86,7 +86,7 @@ const int TYPE_OBJECT	= 1;
 const int TYPE_LINK	= 2;
 
 /** @brief Некорректный идентификатор */
-const int INVALID_ID 	= -1;
+const QString INVALID_ID 	= "-1";
 
 /** @brief Тип связи "Входящая"*/
 const int INCOMING_LINK		= 1;

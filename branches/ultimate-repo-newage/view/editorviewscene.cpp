@@ -27,7 +27,7 @@ void EditorViewScene::clearScene()
 	}
 }
 
-UML::Element * EditorViewScene::getElem(int uuid)
+UML::Element * EditorViewScene::getElem(IdType const &uuid)
 {
 	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
@@ -38,7 +38,8 @@ UML::Element * EditorViewScene::getElem(int uuid)
 			}
 		}
 	}
-	return 0;
+	Q_ASSERT(!"Element not found");
+	return NULL;
 }
 
 UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
@@ -51,7 +52,8 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 				return elem;
 		}
 	}
-	return 0;
+	Q_ASSERT(!"Element not found");
+	return NULL;
 }
 
 void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
@@ -78,8 +80,8 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
-	int uuid, oldparent;
-	TypeIdType type_id;
+	IdType uuid = "", oldparent = "";
+	TypeIdType type_id = "";
 	QString name;
 	QPointF pos;
 

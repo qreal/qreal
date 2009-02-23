@@ -377,7 +377,7 @@ IntQStringPair QRealRepoServerThread::handleGetTypesCount(QStringVector const &p
 		return ReportError(ERR_INCORRECT_PARAMS);
 
 	// FIXME: error code should always come first, then the args (if there are any)
-	QString resp = QString::number(mTypesInfo->getTypesCount());
+	QString resp = QString::number(mTypesInfo->getTypes().count());
 	mLog += QString(", sending types count: %1").arg(resp);
 	return ReportSuccess(resp);
 }
@@ -387,11 +387,12 @@ IntQStringPair QRealRepoServerThread::handleGetAllTypes(QStringVector const &par
 	if (!IsParamsNumberCorrect(params, "GetAllTypes", 0))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	int count = mTypesInfo->getTypesCount();
+	TypeIdTypeList types = mTypesInfo->getTypes();
 	QString resp = "";
-	for (int i = 1; i <= count; i++)
-		resp += mTypesInfo->getTypeInfoByOrder(i).getName() + "\t";
-	mLog += QString(", sending types count: %1").arg(resp);
+	foreach (TypeIdType type, types) {
+		resp += QString("%1\t").arg(type);
+	}
+	mLog += QString(", sending types: %1").arg(resp);
 	return ReportSuccess(resp);
 }
 
@@ -400,7 +401,8 @@ IntQStringPair QRealRepoServerThread::handleGetTypeInfo(QStringVector const &par
 	if (!IsParamsNumberCorrect(params, "GetTypeInfo", 1))
 		return ReportError(ERR_INCORRECT_PARAMS);
 
-	QString resp = mTypesInfo->getTypeInfoById(params[0]).toString();
+	IdType id = params[0];
+	QString resp = mTypesInfo->getTypeInfoById(id).toString();
 	mLog += QString(", sending type info: [%1]").arg(resp);
 	return ReportSuccess(resp);
 }

@@ -1,8 +1,7 @@
 /** @file edgeelement.h
  * 	@brief Класс, представляющий связь на диаграмме
  * */
-#ifndef UML_EDGEELEMENT_H
-#define UML_EDGEELEMENT_H
+#pragma once
 
 #include "uml_element.h"
 
@@ -10,9 +9,9 @@ QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen 
 
 namespace UML {
 	/** @brief Тип стрелки */
-    enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
+	enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
 
-    class NodeElement;
+	class NodeElement;
 	/** @class EdgeElement
 	 * 	@brief Класс, представляющий связь на диаграмме
 	 * 	*/
@@ -48,15 +47,15 @@ namespace UML {
 			{
 				if (src == from)
 				{
-					src = 0;
+					src = NULL;
 				};
 				if (dst == from)
 				{
-					dst = 0;
+					dst = NULL;
 				};
-			};
+			}
 
-     		virtual void connectToPort();
+			virtual void connectToPort();
 
 		private:
 
@@ -116,10 +115,8 @@ namespace UML {
 			QString m_text;
 			QString m_fromMult, m_toMult;
 			/** @brief Тип стрелки начала связи */
-            ArrowType m_startArrowStyle;
+			ArrowType m_startArrowStyle;
 			/** @brief Тип стрелки конца связи */
-            ArrowType m_endArrowStyle;
+			ArrowType m_endArrowStyle;
 	};
-};
-
-#endif
+}

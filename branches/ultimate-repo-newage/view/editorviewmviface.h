@@ -1,10 +1,11 @@
 /** @file editorviewmviface.h
  * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
  * */
-#ifndef EDITORVIEWMVCIFACE_H
-#define EDITORVIEWMVCIFACE_H
+#pragma once
 
 #include <QtGui/QAbstractItemView>
+
+#include "../common/classes.h"
 
 class QGraphicsItem;
 
@@ -13,7 +14,7 @@ class EditorViewScene;
 
 namespace UML {
 	class Element;
-};
+}
 
 /** @class EditorViewMViface
  * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
@@ -29,30 +30,22 @@ public:
 					);
 
 	/** @brief Получить область, занимаемую объектом с данным индексом
-	 *	@brief @return Область, занимаемая объектом с данным индексом 
+	 *	@brief @return Область, занимаемая объектом с данным индексом
 	 * */
 	QRect visualRect(const QModelIndex &index /**< Индекс элемента в модели */) const;
 	/** @brief Отобразить участок сцены, на котором расположен данный элемент */
 	 void scrollTo(const QModelIndex &index, /**< Индекс элемента в модели */
-	 				ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
+					ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
 					);
 	/** @brief Получить индекс элемента, расположенного в данной точке сцены
 	 *	@brief @return Индекс элемента
 	 * */
 	QModelIndex indexAt(const QPoint &point /**< Точка сцены */) const;
 
-#ifdef __USE_GNU
-		/** @brief Получить элемент с заданным идентификатором 
-		 *	@brief @return Элемент
-	 	* */
-		UML::Element* getItem(int uuid /**< Идентификатор элемента */) __attribute__ ((deprecated));
-#else
-		/** @brief Получить элемент с заданным идентификатором 
-		 *	@brief @return Элемент
-	 	* */
-		UML::Element* getItem(int uuid /**< Идентификатор элемента */) /*__attribute__ ((deprecated))*/;
-#endif
-
+	/** @brief Получить элемент с заданным идентификатором
+	 *	@brief @return Элемент
+	* */
+	UML::Element* getItem(IdType const &uuid /**< Идентификатор элемента */);
 
 public slots:
 	/** @brief Очистить сцену */
@@ -91,7 +84,7 @@ protected slots:
 	 *	@brief @return Горизонтальное смещение представления
 	 * */
 	int horizontalOffset() const;
-	/** @brief Получить вертикальное смещение представления 
+	/** @brief Получить вертикальное смещение представления
 	 *	@brief @return Вертикальное смещение представления
 	 * */
 	int verticalOffset() const;
@@ -102,7 +95,7 @@ protected slots:
 	bool isIndexHidden(const QModelIndex &index /**< Индекс элемента */) const;
 
 	/** @brief Установить выделение элементов */
-	void setSelection(const QRect& rect, /**< Область сцены*/ 
+	void setSelection(const QRect& rect, /**< Область сцены*/
 					QItemSelectionModel::SelectionFlags command /**< Тип выделения */
 					);
 
@@ -110,7 +103,6 @@ protected slots:
 	 *	@brief @return Регион, в который попадают выделенные элементы
 	 * */
 	QRegion visualRegionForSelection(const QItemSelection &selection /**< Выделение */ ) const;
-
 
 private:
 //    int rows(const QModelIndex &index = QModelIndex()) const;
@@ -124,17 +116,13 @@ private:
 //    int validItems;
 //    double totalValue;
 //    QPoint origin;
-    
+
 	/** @brief Сцена */
 	EditorViewScene *scene;
 	/** @brief Представление */
 	EditorView *view;
-	
-	/** @brief Элементы на сцене */
-	QMap<int, UML::Element*> items;
 
-//    friend class EditorView;
-//    friend class EditorViewScene;
+	/** @brief Элементы на сцене */
+	QMap<IdType, UML::Element*> items;
 };
 
-#endif
