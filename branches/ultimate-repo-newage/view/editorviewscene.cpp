@@ -38,7 +38,7 @@ UML::Element * EditorViewScene::getElem(IdType const &uuid)
 			}
 		}
 	}
-	Q_ASSERT(!"Element not found");
+	Q_ASSERT(uuid == "-1");
 	return NULL;
 }
 
