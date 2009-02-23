@@ -184,7 +184,7 @@ IdTypeList RealObject::getContainerId()
 void RealObject::addToContainer(IdType const &id)
 {
 	if (client)
-		client->copyEntity(m_type, m_id, id, "-1");
+		client->copyEntity(m_type, m_id, id, INVALID_ID);
 }
 
 void RealObject::deleteFromContainer(IdType const &id)
@@ -200,7 +200,7 @@ void RealObject::setContainerId(IdType const &id)
 		deleteFromContainer(containerId);
 	}
 	if (client)
-		client->copyEntity(m_type, m_id, id, "-1");
+		client->copyEntity(m_type, m_id, id, INVALID_ID);
 }
 
 IdTypeList RealObject::getChildElements()
@@ -287,7 +287,7 @@ IdType RealLink::getFromId()
 {
 	IdType val = getProperty("from");
 	if (val == "")
-		return "-1";
+		return INVALID_ID;
 	return val;
 }
 
@@ -295,7 +295,7 @@ IdType RealLink::getToId()
 {
 	IdType val = getProperty("to");
 	if (val == "")
-		return "-1";
+		return INVALID_ID;
 	return val;
 }
 

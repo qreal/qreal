@@ -5,8 +5,8 @@
 
 RepoData::RepoData()
 {
-	mRoot = new Object("-1", "-1");
-	addObject("-1", mRoot);
+	mRoot = new Object("repoRoot", "noType");
+	addObject("repoRoot", mRoot);
 }
 
 RepoData::~RepoData()
@@ -422,7 +422,7 @@ IdType Link::getFrom()
 	if( objectsFrom.size() > 0 )
 		return objectsFrom.at(0);
 
-	return "-1";
+	return INVALID_ID;
 }
 
 IdType Link::getTo()
@@ -430,7 +430,7 @@ IdType Link::getTo()
 	if( objectsTo.size() > 0 )
 		return objectsTo.at(0);
 
-	return "-1";
+	return INVALID_ID;
 }
 
 // --------------------------------------------------------------------------- //

@@ -203,7 +203,7 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 			// как в случае корневых диаграмм. Тогда родителем станет искусственный
 			// объект - корень репозитория.
 			Q_ASSERT(parent == 0);
-			obj->addRef("");
+			obj->addRef("repoRoot");
 			mRepoData->getRootObject()->addNodeChild(id);
 		}
 		mRepoData->addObject(id, obj);
