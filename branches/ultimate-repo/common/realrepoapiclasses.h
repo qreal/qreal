@@ -1,14 +1,15 @@
 /** @file realrepoapiclasses.h
  * 	@class Классы, используемые в API репозитория
  * */
-#ifndef __REAL_REPO_API_CLASSES_H__
-#define __REAL_REPO_API_CLASSES_H__
+#pragma once
 
 #include <QList>
 #include <QMap>
 #include <QString>
 #include <QDebug>
 #include "defs.h"
+
+#include "classes.h"
 
 #include "defs.h"
 
@@ -19,6 +20,8 @@ namespace qRealTypes
 {
 	/** Список целых чисел */
 	typedef QList<int> QIntList;
+	typedef QList<IdType> IdTypeList;
+	typedef QList<TypeIdType> TypeIdTypeList;
 
 	// common stuff for all classes
 	/** @class RealNamedEntity
@@ -27,7 +30,7 @@ namespace qRealTypes
 	class RealNamedEntity
 	{
 	public:
-		RealNamedEntity(): m_id(-1),  m_type(-1), m_name("noname"),
+		RealNamedEntity(): m_id(""),  m_type(""), m_name("noname"),
 			m_description("noname"), client(NULL)
 		{
 			m_properties.clear();
@@ -36,9 +39,9 @@ namespace qRealTypes
 		/** @brief Получить идентификатор сущности
 		 *	@brief @return Ищентификатор сущности
 		 * */
-		int getId();
+		IdType getId();
 		/** @brief Установить идентификатор сущности */
-		void setId( const int id /**< Идентификатор */); // to be removed soon
+		void setId( IdType const &id /**< Идентификатор */); // to be removed soon
 
 		/** @brief Получить имя сущности
 		 *	@brief @return Имя сущности
@@ -50,9 +53,9 @@ namespace qRealTypes
 		/** @brief Получить идентификатор типа сущности
 		 *	@brief @return Идентификатор типа сущности
 		 * */
-		int getTypeId() const;
+		TypeIdType getTypeId() const;
 		/** @brief Устновить идентификатор типа сущности */
-		void setTypeId( const int id /**< Идентификатор типа */);
+		void setTypeId( IdType const &id /**< Идентификатор типа */);
 
 		/** @brief Получить описание сущности
 		 *	@brief @return Описание сущности
@@ -79,9 +82,9 @@ namespace qRealTypes
 
 	protected:
 		/** @brief Идентификатор */
-		int m_id;
+		IdType m_id;
 		/** @brief Тип */
-		int m_type;
+		TypeIdType m_type;
 		/** @brief Имя */
 		QString m_name;
 		/** @brief Описание */
@@ -124,12 +127,12 @@ namespace qRealTypes
 		/** @brief Получить список объектов данного типа
 		 *	@brief @return Список объектов данного типа
 		 * */
-		QIntList getObjects() const; // returns all objects of this particular type
+		IdTypeList getObjects() const; // returns all objects of this particular type
 
 		/** @brief Добавить объект */
-		void addObject( int id /**< Идентификатор объекта */);
+		void addObject( IdType const &id /**< Идентификатор объекта */);
 		/** @brief Удалить объект */
-		void deleteObject( int id /**< Идентификатор объекта */);
+		void deleteObject( IdType const &id /**< Идентификатор объекта */);
 
 		/** @brief Сериализовать данные о типе в строку
 		 *	@brief @return Строковое представление данных о типе
@@ -143,7 +146,7 @@ namespace qRealTypes
 		/** @brief Метатип */
 		MetaType m_metatype;
 		/** @brief Список объектов данного типа */
-		QIntList m_objects;
+		IdTypeList m_objects;
 	};
 
 	// Node elements
@@ -163,57 +166,57 @@ namespace qRealTypes
 		/** @brief Установить конфигурацию элемента
 		 *	@brief @return Код возврата
 		 * */
-		int setConfiguration(int parent, /**< Идентификатор диаграммы */
+		int setConfiguration(IdType const &parent, /**< Идентификатор диаграммы */
 							QString conf /**< Конфигурация */
 							);
 		/** @brief Получить конфигурацию элемента
 		 *	@brief @return Конфигурация элемента
 		 * */
-		QString getConfiguration(int parent /**< Идентификатор диаграммы */ );
+		QString getConfiguration(IdType const &parent /**< Идентификатор диаграммы */ );
 
 		/** @brief Получить идентификаторы всех контейнеров которым принадлежит объект
 		 *	@brief @return Идентификаторы контейнеров объекта
 		 * */
-		QIntList getContainerId();
+		IdTypeList getContainerId();
 		/** @brief Добавить объект в указанный контейнер */
-		void addToContainer(const int id);
+		void addToContainer(IdType const &id);
 		/** @brief Удалить объект из указанного контейнера */
-		void  deleteFromContainer(const int id);
+		void  deleteFromContainer(IdType const &id);
 
 		/** @brief Установить идентификатор контейнера объекта. Deprecated. */
-		void setContainerId(const int id);
+		void setContainerId(IdType const &id);
 
 		/** @brief Получить список дочерних элементов объекта
 		 *	@brief @return Список дочерних элементов объекта
 		 * */
-		QIntList getChildElements();
+		IdTypeList getChildElements();
 		/** @brief Добавить дочерний элемент*/
-		void addChildElement( const int id /**< Идентификатор элемента */);
+		void addChildElement(IdType const &id /**< Идентификатор элемента */);
 		/** @brief Удалить элемент из списка дочерних*/
-		void deleteChildElement( const int id /**< Идентификатор элемента */);
+		void deleteChildElement(IdType const &id /**< Идентификатор элемента */);
 
 		/** @brief Получить список связей, ассоциированных с данным объектом
 		 *	@brief @return Список связей, ассоциированных с данным объектом
 		 * */
-		QIntList getAllLinks() const;
+		IdTypeList getAllLinks() const;
 		/** @brief Получить входящие в объект связи
 		 *	@brief @return Список входящих связей
 		 * */
-		QIntList getIncomingLinks() const;
+		IdTypeList getIncomingLinks() const;
 		/** @brief Получить исходящие из объекта связи
 		 *	@brief @return Список исходящих связей
 		 * */
-		QIntList getOutcomingLinks() const;
+		IdTypeList getOutcomingLinks() const;
 
 		/** @brief Добавить входящую связь */
-		void addIncomingLink( const int id /**< Идентификатор связи */);
+		void addIncomingLink( IdType const &id /**< Идентификатор связи */);
 		/** @brief Добавить исходящую связь*/
-		void addOutcomingLink( const int id /**< Идентификатор связи */);
+		void addOutcomingLink( IdType const &id /**< Идентификатор связи */);
 
 		/** @brief Убрать входящую связь */
-		void removeIncomingLink( const int id /**< Идентификатор связи */);
+		void removeIncomingLink( IdType const &id /**< Идентификатор связи */);
 		/** @brief Убрать исходящую связь */
-		void removeOutcomingLink( const int id /**< Идентификатор связи */);
+		void removeOutcomingLink( IdType const &id /**< Идентификатор связи */);
 
 	private:
 		/** @brief Индикатор визуальности объекта */
@@ -222,9 +225,9 @@ namespace qRealTypes
 		QString m_configuration;
 
 		/** @brief Список входящих связей */
-		QIntList m_incomingLinks;
+		IdTypeList m_incomingLinks;
 		/** @brief Список исходящих связей */
-		QIntList m_outcomingLinks;
+		IdTypeList m_outcomingLinks;
 	};
 
 	// Edge elements
@@ -234,34 +237,31 @@ namespace qRealTypes
 	class RealLink : public RealNamedEntity
 	{
 	public:
-		RealLink(): m_fromId(-1), m_toId(-1) { }
+		RealLink(): m_fromId(""), m_toId("") { }
 		/** @brief Получить идентификатор объекта, присоединенного к началу связи
 		 *	@brief @return Идентификатор объекта, присоединенного к началу связи
 		 * */
-		int getFromId();  // source node
+		IdType getFromId();  // source node
 		/** @brief Установить идентификатор объекта, присоединенного к началу связи*/
-		void setFromId( const int id /**< Идентификатор объекта, присоединенного к началу связи */ );
+		void setFromId( IdType const &id /**< Идентификатор объекта, присоединенного к началу связи */ );
 
 		/** @brief Получить идентификатор объекта, присоединенного к концу связи
 		 *	@brief @return Идентификатор объекта, присоединенного к концу связи
 		 * */
-		int getToId();    // target node
+		IdType getToId();    // target node
 		/** @brief Установить идентификатор объекта, присоединенного к концу связи */
-		void setToId( const int id /**< Идентификатор объекта, присоединенного к концу связи */);
+		void setToId( IdType const &id /**< Идентификатор объекта, присоединенного к концу связи */);
 
 		/** @brief Отсоединить объект от начала связи */
-		void removeFrom( const int id /**< Идентификатор отсоединяемого объекта */);
+		void removeFrom( IdType const &id /**< Идентификатор отсоединяемого объекта */);
 		/** @brief Отсоединить идентификатор от конца связи */
-		void removeTo( const int id /**< Идентификатор отсоединяемого объекта */);
+		void removeTo( IdType const &id /**< Идентификатор отсоединяемого объекта */);
 
 	private:
 
 		/** @brief Идентификатор объекта, присоединенного к началу связи*/
-		int m_fromId;
+		IdType m_fromId;
 		/** @brief Идентификатор объекта, присоединенного к концу связи*/
-		int m_toId;
+		IdType m_toId;
 	};
 }
-
-#endif // __REAL_REPO_API_CLASSES_H__
-

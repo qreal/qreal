@@ -6,7 +6,7 @@
 #include "palettetoolbox.h"
 #include "realrepoinfo.h"
 
-PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/*0*/)
+PaletteToolbox::DraggableElement::DraggableElement(TypeIdType const &classid, QWidget *parent)
 	: QWidget(parent)
 {
 	RealRepoInfo info;
@@ -16,10 +16,10 @@ PaletteToolbox::DraggableElement::DraggableElement(int classid, QWidget *parent/
 	m_icon = info.objectIcon(classid);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins ( 4,4,4,4 );
+	layout->setContentsMargins(4, 4, 4, 4);
 	QLabel *icon = new QLabel(this);
-	icon->setFixedSize(16,16);
-	icon->setPixmap(m_icon.pixmap(16,16));
+	icon->setFixedSize(16, 16);
+	icon->setPixmap(m_icon.pixmap(16, 16));
 	layout->addWidget(icon);
 
 	QLabel *text = new QLabel(this);
@@ -42,17 +42,18 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 	mTabNames.resize(categories.size());
 	mShownTabs.resize(categories.size());
 
-    QSettings settings("Tercom", "QReal");
+	QSettings settings("Tercom", "QReal");
 
-	for (int i = 0; i < categories.size(); i++) {
+	unsigned i = 0;
+	foreach (QString category, categories) {
 		QScrollArea *scroller = new QScrollArea(this);
 		QWidget *tab = new QWidget(this);
 		QVBoxLayout *layout = new QVBoxLayout(tab);
-		
-		layout->setSpacing(0);
-		layout->setContentsMargins ( 0,0,0,0 );
 
-		foreach(int classid, info.getObjects(i)) {
+		layout->setSpacing(0);
+		layout->setContentsMargins(0, 0, 0, 0);
+
+		foreach(TypeIdType classid, info.getObjects(category)) {
 			DraggableElement *element = new DraggableElement(classid, this);
 			layout->addWidget(element);
 		}
@@ -60,25 +61,26 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		tab->setLayout(layout);
 		scroller->setWidget(tab);
 
-        Q_ASSERT(!categories[i].isEmpty());
+		Q_ASSERT(!category.isEmpty());
 
 		mTabs[i] = scroller;
-        mTabNames[i] = categories[i];
-		mShownTabs[i] = !settings.contains(categories[i])
-			|| settings.value(categories[i]).toString() == "Show";
+		mTabNames[i] = category;
+		mShownTabs[i] = !settings.contains(category)
+			|| settings.value(category).toString() == "Show";
 
-		addTab(scroller, categories[i]);
+		addTab(scroller, category);
+		++i;
 	}
 	setEditors(mShownTabs);
 }
 
 PaletteToolbox::~PaletteToolbox()
 {
-    QSettings settings("Tercom", "QReal");
-    for (int i = 0; i < mTabNames.count(); ++i)
-        if (mShownTabs[i])
-            settings.setValue(mTabNames[i], "Show");
-        else
+	QSettings settings("Tercom", "QReal");
+	for (int i = 0; i < mTabNames.count(); ++i)
+		if (mShownTabs[i])
+			settings.setValue(mTabNames[i], "Show");
+		else
 			settings.setValue(mTabNames[i], "Hide");
 }
 
@@ -145,7 +147,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 
 	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)
 		child->close();
-	else 
+	else
 		child->show();
 }
 

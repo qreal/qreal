@@ -78,13 +78,15 @@ const int CMD_ADD_LINK			= 51;
 /** @brief Код команды "Убрать связь объекта" */
 const int CMD_REMOVE_LINK		= 52;
 
-/** @brief Тип сущности "Объект */
+/** @brief Cущности не существует */
+const int TYPE_INVALID  = 0;
+/** @brief Тип сущности "Объект" */
 const int TYPE_OBJECT	= 1;
 /** @brief Тип сущности "Связь" */
 const int TYPE_LINK	= 2;
 
 /** @brief Некорректный идентификатор */
-const int INVALID_ID 	= -1;
+const QString INVALID_ID 	= "-1";
 
 /** @brief Тип связи "Входящая"*/
 const int INCOMING_LINK		= 1;

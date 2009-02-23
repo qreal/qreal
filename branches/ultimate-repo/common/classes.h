@@ -2,8 +2,7 @@
  * 	@brief Классы, используемые для хранения элементов диаграмм в репозитории
  * */
 
-#ifndef __CLASSES_H__
-#define __CLASSES_H__
+#pragma once
 
 #include <QList>
 #include <QString>
@@ -18,6 +17,9 @@ class Object;
 class NodeOnDiagram;
 class EdgeOnDiagram;
 
+typedef QString IdType;
+typedef QString TypeIdType;
+
 /** @class RepoData
  * 	@brief Класс, предоставляющий доступ ко всем объектам в репозитории.
  * */
@@ -29,26 +31,26 @@ public:
 
 	// called while creating new objects
 	/** @brief Добавить объект */
-	void addObject( int id, /**< Идентификатор */
+	void addObject( IdType const &id, /**< Идентификатор */
 					Object* obj /**< Объект */
 					);
 	/** @brief Добавить связь */
-	void addLink( int id, /**< Идентификатор */
+	void addLink( IdType const &id, /**< Идентификатор */
 				Link* link /**< Связь */
 				);
 	/** @brief Удалить объект */
-	void deleteObject( int id /**< Идентификатор */);
+	void deleteObject( IdType const &id /**< Идентификатор */);
 	/** @brief Удалить связь */
-	void deleteLink( int id /**< Идентификатор */);
+	void deleteLink( IdType const &id /**< Идентификатор */);
 
 	/** @brief Получить объект
 	 * 	@brief @return Объект
 	 * */
-	Object * getObject( int arg /**< Идентификатор */);
+	Object * getObject( IdType const &id/**< Идентификатор */);
 	/** @brief Получить связь
 	 * 	@brief @return Связь
 	 * */
-	Link * getLink( int arg /**< Идентификатор */);
+	Link * getLink( IdType const &id/**< Идентификатор */);
 
 	/** @brief Получить число объектов */
 	int getObjectsSize();
@@ -60,25 +62,25 @@ public:
 	/** @brief Получить список идентификаторов объектов данного типа
 	 * 	@brief @return Список идентификаторов объектов данного типа
 	 * */
-	QString getObjectsByType( int type /**< Идентификатор типа */);
+	QString getObjectsByType( TypeIdType const &type /**< Идентификатор типа */);
 	/** @brief Получить список идентификаторов связей данного типа
 	 *	@brief @return Список идентификаторов связей данного типа
 	 * */
-	QString getLinksByType( int type /**< Идентификатор типа */);
+	QString getLinksByType( TypeIdType const &type /**< Идентификатор типа */);
 
 	// returns some data, to be updated soon according to
 	// suggestions made in trac wiki
 	/** @brief Получить данные об объекте
 	 *	@brief @return Данные об объекте
 	 * */
-	QString getLinkData( int type, /**< Идентификатор типа */
-						int id /**< Идентификатор связи */
+	QString getLinkData( TypeIdType const &type, /**< Идентификатор типа */
+						IdType const &id /**< Идентификатор связи */
 						);
 	/** @brief Получить данные о связи
 	 *	@brief @return Данные о связи
 	 * */
-	QString getObjectData( int type, /**< Идентификатор типа */
-							int id /**< Идентификатор объекта */
+	QString getObjectData( TypeIdType const &type, /**< Идентификатор типа */
+							IdType const &id /**< Идентификатор объекта */
 							);
 	/** @brief Получить корневой объект репозитория
 	 *	@brief @return Корневой объект репозитория. (с) Капитан Очевидность.
@@ -87,9 +89,9 @@ public:
 
 private:
 	/** @brief Объекты */
-	QMap<int, Object*> objects;
+	QMap<IdType, Object*> objects;
 	/** @brief Связи */
-	QMap<int, Link*> links;
+	QMap<IdType, Link*> links;
 	/** @brief Корневой объект репозитория */
 	Object *mRoot;
 };
@@ -101,14 +103,14 @@ class RepoElement
 {
 public:
 	// TODO: remove ID from constructor and generate it by repo server itself
-	RepoElement(int id, int type);
+	RepoElement(IdType const &id, TypeIdType const &type);
 
 	/** @brief Получить имя элемента
 	 *	@brief @return Имя элемента
 	 * */
 	QString getName();
 	/** @brief Установить имя элемента */
-	void setName( QString arg /**< Имя */);
+	void setName( QString name/**< Имя */);
 
 	/** @brief Получить описание элемента
 	 *	@brief @return Описание элемента
@@ -129,17 +131,17 @@ public:
 	/** @brief Получить идентификатор элемента
 	 *	@brief @return Идентификатор элемента
 	 * */
-	int getId();
-	void setId(int id);
+	IdType getId();
+	void setId(IdType const &id);
 	/** @brief Получить тип элемента
 	 *	@brief @return Тип элемента
 	 * */
-	int getType();
+	TypeIdType getType();
 
 	/** @brief Получить список идентификаторов родителей */
 	QString parentsToString();
 
-	void addRef(int parent)
+	void addRef(IdType const &parent)
 	{
 		if (!parents.contains(parent))
 			parents.append(parent);
@@ -150,7 +152,7 @@ public:
 		parents.clear();
 	}
 
-	void removeRef(int parent)
+	void removeRef(IdType const &parent)
 	{
 		if (parents.contains(parent)) {
 			parents.removeAll(parent);
@@ -158,15 +160,15 @@ public:
 	}
 
 	int refCount()
-	{	
+	{
 		return parents.count();
 	}
 
 protected:
 	/** @brief Идентификатор */
-	int id;
+	IdType id;
 	/** @brief Тип */
-	int type;
+	TypeIdType type;
 	/** @brief Имя */
 	QString name;
 	/** @brief Описание */
@@ -174,7 +176,7 @@ protected:
 	/** @brief Свойства и их значения */
 	QMap<QString, QString> props;
 	/** @brief Список родителей элемента */
-	QList<int> parents;
+	QList<IdType> parents;
 };
 
 /** @class Object
@@ -183,7 +185,7 @@ protected:
 class Object: public RepoElement
 {
 public:
-	Object( int id, int type );
+	Object( IdType const &id, TypeIdType const &type );
 
 	/** @brief Получить число детей объекта
 	 *	@brief @return Число детей объекта
@@ -192,47 +194,47 @@ public:
 
 	// add child to the children list, nothing more
 	/** @brief Добавить дочерний элемент-объект */
-	void addNodeChild( int id /**< Идентификатор элемента */);
+	void addNodeChild( IdType const &id /**< Идентификатор элемента */);
 	/** @brief Добавить дочерний элемент-связь */
-	void addEdgeChild( int id /**< Идентификатор элемента */);
+	void addEdgeChild( IdType const &id /**< Идентификатор элемента */);
 	/** @brief Убрать элемент из списка дочерних */
-	void removeNodeChild( int id /**< Идентификатор элемента*/);
+	void removeNodeChild( IdType const &id /**< Идентификатор элемента*/);
 	/** @brief Убрать связь из списка дочерних */
-	void removeEdgeChild( int id /**< Идентификатор связи*/);
+	void removeEdgeChild( IdType const &id /**< Идентификатор связи*/);
 
 	/** @brief Проверить, является ли указанный объект сыном данного */
-	bool isParentOf(int id /**< Идентификатор элемента*/) const;
+	bool isParentOf(IdType const &id /**< Идентификатор элемента*/) const;
 
 	/** @brief Изменить расположение дочернего элемента
 	 * 	@brief @return Успешность выполнения операции
 	 * */
-	bool setChildPos( int id, /**< Идентификатор элемента */
+	bool setChildPos( IdType const &id, /**< Идентификатор элемента */
 					QString pos /**< Расположение элемента */
 					);
 	/** @brief Изменить конфигурацию дочернего элемента
 	 * 	@brief @return Успешность выполнения операции
 	 * */
-	bool setChildConfiguration( int id, /**< Идентификатор элемента */
+	bool setChildConfiguration( IdType const &id, /**< Идентификатор элемента */
 							QString conf /**< Конфигурация элемента */
 							);
 	/** @brief Изменить координаты дочернего элемента
 	 * 	@brief @return Успешность выполнения операции
 	 * */
-	bool setChildCoord( int id, /**< Идентификатор элемента */
+	bool setChildCoord( IdType const &id, /**< Идентификатор элемента */
 						QPoint p /**< Координаты элемента */
 						);
 	/** @brief Получить расположение дочернего элемента
 	 * 	@brief @return Расположение дочернего элемента
 	 * */
-	QString getChildPos( int id /**< Идентификатор элемента */);
+	QString getChildPos( IdType const &id /**< Идентификатор элемента */);
 	/** @brief Получить конфигурацию дочернего элемента
 	 * 	@brief @return Конфигурация дочернего элемента
 	 * */
-	QString getChildConfiguration( int id /**< Идентификатор элемента */);
+	QString getChildConfiguration( IdType const &id /**< Идентификатор элемента */);
 	/** @brief Получить координаты дочернего элемента
 	 * 	@brief @return Координаты дочернего элемента
 	 * 	* */
-	QPoint getChildCoord( int id /**< Идентификатор элемента */);
+	QPoint getChildCoord( IdType const &id /**< Идентификатор элемента */);
 
 	// returns list of children entities' IDs
 	/** @brief Получить список идентификаторов дочерних элементов */
@@ -252,11 +254,11 @@ public:
 	QString getOutcomingLinks();
 
 	/** @brief Добавить связь */
-	void addLink( int id, /**< Идентификатор связи */
-				int die /**< Направленность связи */
+	void addLink( IdType const &id, /**< Идентификатор связи */
+				int dir /**< Направленность связи */
 				);
 	/** @brief Убрать связь */
-	void removeLink( int id, /**< Идентификатор связи */
+	void removeLink( IdType const &id, /**< Идентификатор связи */
 					int dir /**< Направленность связи */
 					);
 
@@ -274,13 +276,13 @@ public:
 	}
 private:
 	/** @brief Список дочерних элементов */
-	QMap<int, NodeOnDiagram> nodeChildren;
+	QMap<IdType, NodeOnDiagram> nodeChildren;
 	/** @brief Список дочерних линков */
-	QMap<int, EdgeOnDiagram> edgeChildren;
+	QMap<IdType, EdgeOnDiagram> edgeChildren;
 	/** @brief Список входящих связей */
-	QList<int> incomingLinks;
+	QList<IdType> incomingLinks;
 	/** @brief Список исходящий связей */
-	QList<int> outcomingLinks;
+	QList<IdType> outcomingLinks;
 };
 
 /* class for all edge entities
@@ -291,7 +293,7 @@ private:
 class Link: public RepoElement
 {
 public:
-	Link( int id, int type );
+	Link( IdType const &id, TypeIdType const &type );
 
 	/** @brief Сериализовать связь в строку
 	 * 	@brief @return Строковое представление связи
@@ -304,23 +306,23 @@ public:
 	QString getObjects();
 
 	/** @brief Присоединить объект к началу связи */
-	void addObjectTo( int id /**< Идентификатор объекта */);
+	void addObjectTo( IdType const &id /**< Идентификатор объекта */);
 	/** @brief Присоединить объект к концу связи */
-	void addObjectFrom( int id /**< Идентификатор объекта */);
+	void addObjectFrom( IdType const &id /**< Идентификатор объекта */);
 
 	/** @brief Отсоединить объект от начала связи */
-	void removeObjectTo( int id /**< Идентификатор объекта */);
+	void removeObjectTo( IdType const &id /**< Идентификатор объекта */);
 	/** @brief Отсоединить объект от конца связи */
-	void removeObjectFrom( int id /**< Идентификатор объекта */);
+	void removeObjectFrom( IdType const &id /**< Идентификатор объекта */);
 
 	/** @brief Получить идентификатор объекта, присоединенного к началу связи
 	 * 	@brief @return Идентификатор объекта, присоединенного к началу связи
 	 * 	*/
-	int getFrom();
+	IdType getFrom();
 	/** @brief Получить идентификатор объекта, присоединенного к концу связи
 	 * 	@brief @return Идентификатор объекта, присоединенного к концу связи
 	 * 	*/
-	int getTo();
+	IdType getTo();
 
 	/** @brief Отладочная печать */
 	void print(){
@@ -335,9 +337,9 @@ private:
 	QString getObjectsFrom();
 
 	/** @brief Объекты, присоединенные к концу связи */
-	QList<int> objectsTo;
+	QList<IdType> objectsTo;
 	/** @brief Объекты, присоединенные к началу связи */
-	QList<int> objectsFrom;
+	QList<IdType> objectsFrom;
 };
 
 /* types description
@@ -348,7 +350,7 @@ private:
 class TypeInfo{
 public:
 	/** @brief Идентификатор */
-	int id;
+	IdType id;
 	/** @brief Число объектов данного типа */
 	int count; // number of objects created ( for object explorer needs )
 	/** @brief Имя */
@@ -371,9 +373,9 @@ class ElementOnDiagram {
 public:
 	/** @brief Конструктор */
 	ElementOnDiagram() : id(0), configuration("") {}
-	ElementOnDiagram( int mId /**< Иднетификатор */ ) : id(mId), configuration("") {}
+	ElementOnDiagram( IdType const &mId /**< Иднетификатор */ ) : id(mId), configuration("") {}
 	/** @brief Конструктор */
-	ElementOnDiagram( int mId, /**< Иднетификатор */
+	ElementOnDiagram( IdType const &mId, /**< Иднетификатор */
 						QString conf /**< Конфигурация */
 						) : id(mId), configuration(conf) {}
 
@@ -394,14 +396,14 @@ public:
 	/**	@brief Получить идентификатор элемента
 	 * 	@brief @return Идентификатор элемента
 	 * */
-	int getId()
+	IdType getId()
 	{
 		return id;
 	}
 
 private:
 	/** @brief Идентификатор */
-	int id;
+	IdType id;
 	/** @brief Конфигурация */
 	QString configuration;
 };
@@ -413,15 +415,15 @@ public:
 	/** @brief Конструктор */
 	NodeOnDiagram() : ElementOnDiagram(), point(QPoint(0,0)){}
 	/** @brief Конструктор */
-	NodeOnDiagram( int id1 /**< Идентификатор */) : ElementOnDiagram(id1), point(QPoint(0,0))
+	NodeOnDiagram( IdType const &id /**< Идентификатор */) : ElementOnDiagram(id), point(QPoint(0,0))
 	{
 		setConfiguration(DEFAULT_NODE_CONFIGURATION);
 	}
 	/** @brief Конструктор */
-	NodeOnDiagram( int id1, /**< Идентификатор */
+	NodeOnDiagram( IdType const &id, /**< Идентификатор */
 					QString conf, /**< Конфигурация */
 					QPoint p /**< Координаты */
-					) : ElementOnDiagram(id1, conf), point(p) {}
+					) : ElementOnDiagram(id, conf), point(p) {}
 
 	/** @brief Изменить координаты объекта */
 	void setCoord( QPoint p /**< Координаты */)
@@ -448,15 +450,15 @@ public:
 	/** @brief Конструктор */
 	EdgeOnDiagram() : ElementOnDiagram(), position("") {}
 	/** @brief Конструктор */
-	EdgeOnDiagram( int id1 /**< Идентификатор */ ) : ElementOnDiagram(id1), position("")
+	EdgeOnDiagram( IdType const &id /**< Идентификатор */ ) : ElementOnDiagram(id), position("")
 	{
 		setConfiguration(DEFAULT_EDGE_CONFIGURATION);
 	}
 	/** @brief Конструктор */
-	EdgeOnDiagram( int id1, /**< Идентификатор */
+	EdgeOnDiagram( IdType const &id, /**< Идентификатор */
 					QString conf, /**< Конфигурация */
 					QString pos /**< Расположение */
-					) : ElementOnDiagram(id1, conf), position(pos) {}
+					) : ElementOnDiagram(id, conf), position(pos) {}
 
 	/** @brief Получить расположение связи
 	 *	@brief @return Расположение связи
@@ -475,5 +477,3 @@ private:
 	/** @brief Расположение связи */
 	QString position;
 };
-
-#endif //__CLASSES_H__

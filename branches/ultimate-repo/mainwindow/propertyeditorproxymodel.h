@@ -74,7 +74,7 @@ private:
 	RealRepoInfo info;
 
 	/** @brief Тип элемента */
-	int type;
+	TypeIdType type;
 	/** @brief Список ролей */
 	QStringList roleNames;
 	/** @brief Число нередактируемых атрибутов */

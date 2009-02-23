@@ -21,8 +21,9 @@ using namespace qReal;
 
 MainWindow::MainWindow() : model(0)
 {
-	QPixmap korkodil(":/icons/kroki2.PNG");
-	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+//	QPixmap korkodil(":/icons/kroki2.PNG");
+//	QSplashScreen splash(korkodil, Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	QSplashScreen splash(QPixmap(":/icons/get.jpg"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	splash.show();
 	QApplication::processEvents();
 
@@ -142,7 +143,7 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 		return;
 	}
 	ui.diagramExplorer->setModel(model);
-	ui.diagramExplorer->setRootIndex(model->index(1,0,QModelIndex()));
+	ui.diagramExplorer->setRootIndex(model->getDiagramCategoryIndex());
 
 	ui.objectExplorer->setModel(model);
 //	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
@@ -220,18 +221,24 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 	QModelIndex parent = idx.parent();
 
 	/* Is level-one diagram? */
-	if (parent == model->index(1,0,QModelIndex()))
+	if (parent == model->getDiagramCategoryIndex())
 	{
 		/* activate this diagram */
 		ui.view->mvIface()->setRootIndex(idx);
 	}
 	else
 	{
+		UML::Element *e;
+
 		/* activate parent diagram */
 		ui.view->mvIface()->setRootIndex(parent);
 		/* select this item on diagram */
 		ui.view->scene()->clearSelection();
-		(dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx)->setSelected(true);
+		e = (dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
+		if (e)
+			e->setSelected(true);
+		else
+			qDebug() << "shit happened!!!\n";
 	}
 }
 

@@ -5,8 +5,8 @@
 
 RepoData::RepoData()
 {
-	mRoot = new Object(-1, -1);
-	addObject(-1, mRoot);
+	mRoot = new Object("repoRoot", "noType");
+	addObject("repoRoot", mRoot);
 }
 
 RepoData::~RepoData()
@@ -20,22 +20,22 @@ RepoData::~RepoData()
 	delete mRoot;
 }
 
-void RepoData::addObject( int id, Object* obj )
+void RepoData::addObject( IdType const &id, Object* obj )
 {
 	objects[id] = obj;
 }
 
-void RepoData::addLink( int id, Link* link )
+void RepoData::addLink( IdType const &id, Link* link )
 {
 	links[id] = link;
 }
 
-void RepoData::deleteObject( int id )
+void RepoData::deleteObject( IdType const &id )
 {
 	objects.remove(id);
 }
 
-void RepoData::deleteLink( int id )
+void RepoData::deleteLink( IdType const &id )
 {
 	objects.remove(id);
 }
@@ -52,7 +52,7 @@ int RepoData::getLinksSize()
 	return links.size();
 }
 
-Object *RepoData::getObject( int id )
+Object *RepoData::getObject( IdType const &id )
 {
 	if( objects.contains(id))
 		return objects[id];
@@ -60,7 +60,7 @@ Object *RepoData::getObject( int id )
 		return 0;
 }
 
-Link *RepoData::getLink( int id )
+Link *RepoData::getLink( IdType const &id )
 {
 	if( links.contains(id) )
 		return links[id];
@@ -68,11 +68,12 @@ Link *RepoData::getLink( int id )
 		return 0;
 }
 
-QString RepoData::getObjectsByType( int type )
+QString RepoData::getObjectsByType( TypeIdType const &type )
 {
 	QString res = "";
+	// TODO: гм...
 	for( int i=0; i<objects.values().size(); i++ ){
-		int key = objects.keys()[i];
+		IdType key = objects.keys()[i];
 		Object *obj = objects.value(key);
 		if( obj && obj->getType() == type )
 			res += QString("%1\t").arg(obj->getId());
@@ -82,11 +83,11 @@ QString RepoData::getObjectsByType( int type )
 	return res;
 }
 
-QString RepoData::getLinksByType( int type )
+QString RepoData::getLinksByType( TypeIdType const &type )
 {
 	QString res = "";
 	for( int i=0; i<links.size(); i++ ){
-		int key = links.keys()[i];
+		IdType key = links.keys()[i];
 		Link *link = links.value(key);
 		if( link && link->getType() == type )
 			res += QString("%1\t").arg(link->getId());
@@ -104,7 +105,7 @@ Object* RepoData::getRootObject() const
 
 // --------------------------------------------------------------------------- //
 
-RepoElement::RepoElement(int id, int type)
+RepoElement::RepoElement(IdType const &id, TypeIdType const &type)
 {
 	this->id = id;
 	this->type = type;
@@ -130,17 +131,17 @@ QString RepoElement::getDescription()
 	return description;
 }
 
-int RepoElement::getId()
+IdType RepoElement::getId()
 {
 	return id;
 }
 
-void RepoElement::setId(int id)
+void RepoElement::setId(IdType const &id)
 {
 	this->id = id;
 }
 
-int RepoElement::getType()
+TypeIdType RepoElement::getType()
 {
 	return type;
 }
@@ -148,7 +149,7 @@ int RepoElement::getType()
 QString RepoElement::parentsToString()
 {
 	QString res = "";
-	foreach (int parent, parents)
+	foreach (IdType parent, parents)
 		res += QString("%1\t").arg(parent);
 	res.chop(1);
 	return res;
@@ -166,7 +167,7 @@ QString RepoElement::getProperty( QString name )
 
 // --------------------------------------------------------------------------- //
 
-Object::Object(int id, int type)
+Object::Object(IdType const &id, TypeIdType const &type)
 	: RepoElement(id, type)
 {
 }
@@ -176,19 +177,19 @@ int Object::childrenCount()
 	return nodeChildren.count() + edgeChildren.count();
 }
 
-void Object::addNodeChild( int child )
+void Object::addNodeChild( IdType const &child )
 {
 	NodeOnDiagram node(child);
 	nodeChildren[child] = node;
 }
 
-void Object::addEdgeChild( int child )
+void Object::addEdgeChild( IdType const &child )
 {
 	EdgeOnDiagram edge(child);
 	edgeChildren[child] = edge;
 }
 
-void Object::removeNodeChild( int child )
+void Object::removeNodeChild( IdType const &child )
 {
 	foreach( NodeOnDiagram node, nodeChildren)
 		if( node.getId() == child ){
@@ -197,7 +198,7 @@ void Object::removeNodeChild( int child )
 		}
 }
 
-void Object::removeEdgeChild( int child )
+void Object::removeEdgeChild( IdType const &child )
 {
 	foreach( EdgeOnDiagram edge, edgeChildren)
 		if( edge.getId() == child ){
@@ -254,7 +255,7 @@ QString Object::toString()
 	return res;
 }
 
-void Object::addLink( int id, int dir )
+void Object::addLink( IdType const &id, int dir )
 {
 	if( dir == INCOMING_LINK ){
 		if( !incomingLinks.contains(id) ){
@@ -270,7 +271,7 @@ void Object::addLink( int id, int dir )
 	}
 }
 
-void Object::removeLink( int id, int dir )
+void Object::removeLink( IdType const &id, int dir )
 {
 	if( dir == INCOMING_LINK ){
 //		qDebug() << "\t\tbefore:" << incomingLinks;
@@ -284,7 +285,7 @@ void Object::removeLink( int id, int dir )
 	}
 }
 
-QString Object::getChildPos( int id )
+QString Object::getChildPos( IdType const &id )
 {
 	if( edgeChildren.contains(id) )
 		return edgeChildren[id].getPosition();
@@ -292,7 +293,7 @@ QString Object::getChildPos( int id )
 		return "";
 }
 
-bool Object::setChildPos( int id, QString pos )
+bool Object::setChildPos( IdType const &id, QString pos )
 {
 	if( edgeChildren.contains(id) )
 		edgeChildren[id].setPosition(pos);
@@ -301,14 +302,14 @@ bool Object::setChildPos( int id, QString pos )
 	return true;
 }
 
-QPoint Object::getChildCoord( int id)
+QPoint Object::getChildCoord( IdType const &id)
 {
 	if( nodeChildren.contains(id) )
 		return nodeChildren[id].getCoord();
 	return QPoint();
 }
 
-bool Object::setChildCoord( int id, QPoint p)
+bool Object::setChildCoord( IdType const &id, QPoint p)
 {
 	if( nodeChildren.contains(id) )
 		nodeChildren[id].setCoord(p);
@@ -317,7 +318,7 @@ bool Object::setChildCoord( int id, QPoint p)
 	return true;
 }
 
-QString Object::getChildConfiguration( int id)
+QString Object::getChildConfiguration( IdType const &id)
 {
 	if( nodeChildren.contains(id) )
 		return nodeChildren[id].getConfiguration();
@@ -327,7 +328,7 @@ QString Object::getChildConfiguration( int id)
 		return "";
 }
 
-bool Object::setChildConfiguration( int id, QString conf )
+bool Object::setChildConfiguration( IdType const &id, QString conf )
 {
 	qDebug() << "looking for" << id << "in " << nodeChildren.keys();
 
@@ -340,14 +341,14 @@ bool Object::setChildConfiguration( int id, QString conf )
 	return true;
 }
 
-bool Object::isParentOf(int id) const
+bool Object::isParentOf(IdType const &id) const
 {
 	return nodeChildren.contains(id) || edgeChildren.contains(id);
 }
 
 // --------------------------------------------------------------------------- //
 
-Link::Link(int id, int type)
+Link::Link(IdType const &id, TypeIdType const &type)
 	: RepoElement(id, type)
 {
 }
@@ -394,42 +395,42 @@ QString Link::toString()
 	return res;
 }
 
-void Link::addObjectTo( int id )
+void Link::addObjectTo( IdType const &id )
 {
 	if( !objectsTo.contains( id ) )
 		objectsTo << id;
 }
 
-void Link::addObjectFrom( int id )
+void Link::addObjectFrom( IdType const &id )
 {
 	if( !objectsFrom.contains( id ) )
 		objectsFrom << id;
 }
 
-void Link::removeObjectTo( int id )
+void Link::removeObjectTo( IdType const &id )
 {
 	objectsTo.removeAll(id);
 }
 
-void Link::removeObjectFrom( int id )
+void Link::removeObjectFrom( IdType const &id )
 {
 	objectsFrom.removeAll(id);
 }
 
-int Link::getFrom()
+IdType Link::getFrom()
 {
 	if( objectsFrom.size() > 0 )
 		return objectsFrom.at(0);
 
-	return -1;
+	return INVALID_ID;
 }
 
-int Link::getTo()
+IdType Link::getTo()
 {
 	if( objectsTo.size() > 0 )
 		return objectsTo.at(0);
 
-	return -1;
+	return INVALID_ID;
 }
 
 // --------------------------------------------------------------------------- //

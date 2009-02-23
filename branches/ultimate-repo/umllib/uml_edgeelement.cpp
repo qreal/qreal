@@ -366,7 +366,7 @@ void EdgeElement::adjustLink()
 
 void EdgeElement::updateData()
 {
-	if ( moving )
+	if (moving)
 		return;
 
 	Element::updateData();
@@ -375,31 +375,31 @@ void EdgeElement::updateData()
 
 	setPos(dataIndex.data(Unreal::PositionRole).toPointF());
 	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
-	if ( !newLine.isEmpty() )
+	if (!newLine.isEmpty())
 		m_line = newLine;
 
 	qDebug() << "from role: " << Unreal::krneRelationship::fromRole
 		<< "to role: " << Unreal::krneRelationship::toRole;
 
-	int uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toInt();
-	int uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toInt();
+	IdType uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toString();
+	IdType uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toString();
 
 	qDebug() << "from: " << uuidFrom << ", to: " << uuidTo;
 
-	if ( src )
+	if (src)
 		src->delEdge(this);
-	if ( dst )
+	if (dst)
 		dst->delEdge(this);
 
-	src = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidFrom) );
-	dst = dynamic_cast<NodeElement *>( static_cast<EditorViewScene *>(scene())->getElem(uuidTo) );
+	src = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
+	dst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
 
-	if ( src )
+	if (src)
 		src->addEdge(this);
-	if ( dst )
+	if (dst)
 		dst->addEdge(this);
 
-	setFlag(ItemIsMovable, !(dst||src) );
+	setFlag(ItemIsMovable, !(dst || src));
 
 	portFrom = dataIndex.data(Unreal::krneRelationship::fromPortRole).toDouble();
 	portTo = dataIndex.data(Unreal::krneRelationship::toPortRole).toDouble();

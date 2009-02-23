@@ -138,6 +138,11 @@ class RealRepoModel : public QAbstractItemModel
 		 * */
 		QModelIndex createDefaultTopLevelItem();
 
+		/** @brief Получить индекс категории krnnDiagram. Обычно используется,
+		 * чтобы сделать его корневым элементом.
+		 * */
+		QModelIndex getDiagramCategoryIndex() const;
+
 	public slots:
 		/** @brief Отменить последнее действие */
 		void undo();
@@ -151,7 +156,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Элемент иерерхической структуры модели */
 		struct RepoTreeItem {
-			int id; /**< Идентификатор */
+			IdType id; /**< Идентификатор */
 			int row; /**< Номер строки */
 			RepoTreeItem *parent; /**< Родительский элемент */
 			QList<RepoTreeItem *> children; /**< Список дочерних элементов */
@@ -165,7 +170,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		typedef enum CopyType { FULL_COPY_TYPE,
 								SYM_LINK_TYPE
-					
+
 		} CopyType;
 
 		/** @brief Получить индекс элемента модели
@@ -174,19 +179,19 @@ class RealRepoModel : public QAbstractItemModel
 		QModelIndex index(const RepoTreeItem *item /**< Элемент */) const;
 
 		/** @brief Хэш имен элементов */
-		QHash <int, QString> hashNames;
+		QHash<IdType, QString> hashNames;
 		/** @brief Хэш типов элементов */
-		QHash <int, int> hashTypes;
+		QHash<IdType, TypeIdType> hashTypes;
 		/** @brief Хэш дочерних элементов */
-		QHash <int, QList<int> > hashChildren;
+		QHash<IdType, qRealTypes::IdTypeList> hashChildren;
 		/** @brief Хэш числа дочерних элементов */
-		QHash <int, int> hashChildCount;
+		QHash<IdType, int> hashChildCount;
 
 		/** @brief Хэш значений свойств элементов */
-		QHash <int, QMap<int, QVariant> > hashElementProps;
+		QHash<IdType, QMap<int, QVariant> > hashElementProps;
 
 		/** @brief Хэш элементов иерархической структуры модели */
-		QHash <int,QList<RepoTreeItem *> > hashTreeItems;
+		QHash<IdType, QList<RepoTreeItem *> > hashTreeItems;
 
 		/** @brief Параметры элемента на диаграмме */
 		struct ElementOnDiagram {
@@ -195,7 +200,7 @@ class RealRepoModel : public QAbstractItemModel
 		};
 
 		/** @brief Хэш элементов диаграмм */
-		QHash <int, QMap<int, ElementOnDiagram> > hashDiagramElements;
+		QHash<IdType, QMap<IdType, ElementOnDiagram> > hashDiagramElements;
 
 		/** @brief Очистить внутренние иерархические структуры элементов
 		 * */
@@ -203,7 +208,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Обновить свойства элемента
 		 * */
-		void updateProperties(int id);
+		void updateProperties(IdType const &id);
 
 		/** @brief Обновить корневой элемент
 		 * */
@@ -212,20 +217,20 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Создать новый элемент
 		 * */
 		void createItem(RepoTreeItem * item, /**< Элемент */
-						int type, /**< Тип */
-						int id /**< Идентификатор */
+						IdType const &id, /**< Идентификатор */
+						TypeIdType const &type /**< Тип */
 						);
 		/** @brief Создать ссылку на уже имеющийся элемент
 		 * */
 		void createItem(RepoTreeItem * item, /**< Элемент */
-						int type, /**< Тип */
-						int id, /**< Идентификатор */
+						IdType const &id, /**< Идентификатор */
+						TypeIdType const &type, /**< Тип */
 						QString name /**< Имя */
 						);
 
 		/** @brief Перечитать данные корневого элемента
 		 * */
-		void readRootTable();
+		bool readRootTable();
 		/** @brief Перечитать данные о типе элементов
 		 * */
 		void readCategoryTable(RepoTreeItem *root);
@@ -246,8 +251,12 @@ class RealRepoModel : public QAbstractItemModel
 		 *	@brief @return true, если элемент добавлен, иначе false
 		 * */
 		bool addElementToModel(RepoTreeItem *const parentItem,
-			const QModelIndex &parent, int oldparent, int const newid, int const newtype,
+			const QModelIndex &parent, IdType const &oldparent,
+			IdType const &newid, TypeIdType const &newtype,
 			QString const &name, QPointF const &newPos, Qt::DropAction action);
+
+		/** @brief Найти порядковый номер типа в корневой таблице по id. */
+		unsigned findIndex(TypeIdType const &id) const;
 
 		/** @brief Корневой элемент */
 		RepoTreeItem *rootItem;
