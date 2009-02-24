@@ -35,9 +35,9 @@
       <parent parent_id="sqnnInteractionFragment" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!   <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <containers>
      <container>
       <contains idref="sqnnSLifeline" />
@@ -88,9 +88,9 @@
       <contained_by idref="sqnnInteractionFragment" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="sqnnInteractionUse" name="InteractionUse" >
@@ -116,9 +116,9 @@
       <parent parent_id="sqnnInteractionFragment" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="sqnnCombinedFragment" name="CombinedFragment" >
@@ -219,9 +219,9 @@
       <begin idref="sqnnOccurenceSpecification" />
      </association>
     </associations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </edge>
   <node id="sqnnInteractionFragment" name="InteractionFragment" >

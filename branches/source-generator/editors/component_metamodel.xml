@@ -87,9 +87,9 @@
       <begin idref="cmpnRequiredInterface" />
      </association>
     </associations>
-    <properties>
+    <!--    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <!--а надпись (name) поместится в шейп?-->
@@ -115,9 +115,9 @@
      <assoc_ref idref="cmpaConnectorTarget" />
      <assoc_ref idref="cmpaInterface" />
     </associations>
-    <properties>
+    <!--    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <edge id="cmpConnector" name="Connector" >

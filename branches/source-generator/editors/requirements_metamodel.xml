@@ -30,7 +30,7 @@
    </graphics>
    <logic>
     <properties>
-     <property type="string" name="name" />
+	    <!--     <property type="string" name="name" /> -->
      <property type="text" name="description" />
      <property type="int" name="priority" />
      <property>

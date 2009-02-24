@@ -32,9 +32,9 @@
       <!--      <parent parent_id="actnActivityNode" /> -->
      </generalization>
     </generalizations>
-    <properties>
+    <!--  TO DELETE!!!  <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="actaConstraintEdgeBegin" />
     </associations>
@@ -84,9 +84,9 @@
       <contained_by idref="actnExpansionRegion" role="expansionRegion" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="actnActivityFinalNode" name="ActivityFinalNode" >
@@ -318,9 +318,9 @@
       <parent parent_id="actnObjectNode" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="actaEdgeEnd" />
     </associations>
@@ -344,9 +344,9 @@
       <parent parent_id="krnnNamedElement" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <!--не пойму, что за линки в него входят :(-->
@@ -394,9 +394,9 @@
       <parent parent_id="actActivityNode" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="actaObjectFlowBegin" />
      <assoc_ref idref="actaObjectFlowEnd" />
@@ -433,9 +433,9 @@
       <parent parent_id="actActivityNode" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="actaObjectFlowBegin" />
      <assoc_ref idref="actaObjectFlowEnd" />
@@ -480,9 +480,9 @@
       <parent parent_id="actActivityNode" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="actaObjectFlowBegin" />
      <assoc_ref idref="actaObjectFlowEnd" />
@@ -514,9 +514,9 @@
       <parent parent_id="krnnNamedElement" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <!--их же еще можно зеркально отражать-->
@@ -715,9 +715,9 @@
       <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </edge>
   <edge id="actConstraintEdge" name="ConstraintEdge" >

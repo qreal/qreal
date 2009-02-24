@@ -150,7 +150,7 @@ void Generator::genEnums()
 		out << "\t\tenum Roles {\n";
 		FOR_ALL_PROPERTIES((*o),p)
 		{
-			out << "\t\t\t" + (*p).first + "Role";
+			out << "\t\t\t" + (*p)->getName() + "Role";
 			if (p == (*o)->constPropBegin())
 				out << " = UserRole + 1";
 			out << ",\n";
@@ -846,7 +846,7 @@ void Generator::genRealRepoInfo(){
 	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
 		out2 << "\tl.clear();\n";
 		FOR_ALL_PROPERTIES((*o),p)
-			out2 << QString("\t\tl << \"%1\";\n").arg((*p).first);
+			out2 << QString("\t\tl << \"%1\";\n").arg((*p)->getName());
 		out2 << QString("\tmap.insert(\"%1\", l);\n").arg((*o)->id);
 		out2 << "\n";
 	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i);

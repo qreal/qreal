@@ -134,6 +134,12 @@
      </generalization>
     </generalizations>
     <properties>
+    <!-- TO DISCUSS!!! -->
+     <property type="string" name="from" />
+     <property type="string" name="to" />
+     <property type="string" name="fromPort" />
+     <property type="string" name="toPort" />
+     <!-- END TO DISCUSS!!! -->
      <property type="string" name="fromMultiplicity" />
      <property type="string" name="toMultiplicity" />
     </properties>
@@ -227,9 +233,9 @@
    <logic>
     <properties>
      <property type="string" name="alias" />
-     <property type="enum" name="visibility" >
+     <!-- TO DISCUSS!!!     <property type="enum" name="visibility" >
       <enum idref="krntVisibility" />
-     </property>
+     </property> -->
     </properties>
     <generalizations>
      <generalization>
@@ -249,9 +255,9 @@
   <edge id="krnePackageImport" name="PackageImport" >
    <logic>
     <properties>
-     <property type="enum" name="visibility" >
+	    <!--     <property type="enum" name="visibility" >
       <enum idref="krntVisibility" />
-     </property>
+     </property> -->
     </properties>
     <generalizations>
      <generalization>
@@ -298,11 +304,11 @@
   </node>
   <node id="krnnType" name="Type" >
    <logic>
-    <properties>
+   <!--  TO DELETE!!!  <properties>
      <property type="enum" name="visibility" >
       <enum idref="krntVisibility" />
-     </property>
-    </properties>
+     </property> 
+    </properties> -->
     <generalizations>
      <generalization>
       <parent parent_id="krnnPackageableElem" />

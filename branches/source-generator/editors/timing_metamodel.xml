@@ -40,9 +40,9 @@
       <contained_by idref="tmnnInteractionFragment" role="lastInteraction" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="tmnnInteractionFragment" name="InteractionFragment" >
@@ -86,9 +86,9 @@
       <contained_by idref="tmnnLifeline" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE     <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="tmnnLifeline" name="Lifeline" >
@@ -135,9 +135,9 @@
       <contained_by idref="tmnnInteraction" />
      </container>
     </containers>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </edge>
  </editor>

@@ -37,9 +37,9 @@
       <parent parent_id="bbnBehavioredClassifier" />
      </generalization>
     </generalizations>
-    <properties>
+    <!--  TO DELETE!!!  <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <containers>
      <container>
       <contains idref="uscnUseCase" role="use case" />
@@ -74,9 +74,9 @@
       <contains idref="uscnUseCase" role="use case" />
      </container>
     </containers>
-    <properties>
+    <!--  TO DELETE!!!  <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
    </logic>
   </node>
   <node id="uscnUseCase" name="UseCase" >
@@ -118,9 +118,9 @@
       <parent parent_id="bbnBehavioredClassifier" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="uscaExtend" />
      <assoc_ref idref="uscaInclude" />

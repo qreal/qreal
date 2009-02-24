@@ -5,15 +5,61 @@
 #include "entity.h"
 #include "generator.h"
 
-void Entity::addProperty( QString name, QString type ){
-	if( !name.isEmpty())
-		if( !properties.contains(QPair<QString, QString>(name, type)))
-			properties << QPair<QString, QString>(name, type);
+Entity::~Entity()
+{
+	RealProperty *p;
+
+	while (!properties.isEmpty())
+	{
+		p = properties.takeFirst();
+		// Do not free parent properties
+		if (p->getOwner() == this)
+			delete p;
+	}
 }
 
-void Entity::addProperties( const QList< QPair<QString, QString> > &list){
-	for (int i = 0; i < (int) list.size(); i++)
-		addProperty(list.at(i).first, list.at(i).second);
+bool Entity::addProperty(RealProperty *prop){
+	FOR_ALL_PROPERTIES(this, p)
+		if ((*p)->getName() == prop->getName()) // duplicate!
+		{
+			// Different objects?
+			if ((*p)->getOwner() != prop->getOwner())
+			{
+				qDebug() << "Two properties with the same name"
+				         << (*p)->getName() << "of objects"
+				         << prop->getOwner()->id << "and"
+				         << (*p)->getOwner()->id;
+				return false;
+			}
+
+			// The same (this) object
+			if ((*p)->getOwner() == this)
+			{
+				qDebug() << "Two properties with the same name"
+				         << (*p)->getName() << "of object" << id;
+				return false;
+			}
+
+			// These pointers are the same property.
+			// Beware multiple inheritance!
+			if ((*p) == prop)
+				return true;
+
+			qDebug() << "Should not happed, please, report!";
+			return false;
+		}
+	if (prop->getName() == "name")
+		properties.insert(0, prop);
+	else
+		properties << prop;
+	return true;
+}
+
+bool Entity::addParentProperties(const Entity *parent){
+	FOR_ALL_PROPERTIES(parent, p)
+		if (!addProperty((*p)))
+			return false;
+	return true;
 }
 
 void Edge::addAssociation( Association* ass){
@@ -44,10 +90,16 @@ bool Entity::parseGeneralizations(QDomElement &xml_element)
 			QString par_id = par.attribute("parent_id");
 			if (par_id == "")
 			{
-				qDebug() << "Anonymous parent of node \"" << id << "\"";
+				qDebug() << "Anonymous parent of node" << id;
 				return false;
 			}
-			parents << par_id;
+
+			// Not a big error if duplicated
+			if (!parents.contains(par_id))
+				parents << par_id;
+			else
+				qDebug() << "WARNING: parent" << par_id
+				         << "is already specified for" << id;
 		}
 	}
 	return true;
@@ -97,39 +149,18 @@ bool Entity::parseProperties(QDomElement &xml_element)
 	for (prop = props.firstChildElement("property"); !prop.isNull();
 	     prop = prop.nextSiblingElement("property"))
 	{
-		QDomNamedNodeMap attrs = prop.attributes();
-		QString name;
-		QString type;
+		RealProperty *p = new RealProperty(this);
 
-		name = attrs.namedItem("name").toAttr().value();
-		if (name == "") name = prop.firstChildElement("name").text();
-		if (name == "")
+		if (!p->init(prop))
 		{
-			qDebug() << "Anonymous prop of " << id << " entity";
+			delete p;
 			return false;
 		}
-
-		type = attrs.namedItem("type").toAttr().value();
-		if (type == "") type = prop.firstChildElement("type").text();
-		if (type == "")
+		if (!addProperty(p))
 		{
-			qDebug() << "Unspecified type for prop" << name
-			         << "of" << id << "entity";
+			delete p;
 			return false;
 		}
-
-		if (type == "enum")
-			type = "enum " + prop.firstChildElement("enum").attribute("idref");
-		else if (type == "ref")
-			type = prop.firstChildElement("ref").attribute("idref");
-		else if (type != "int" && type != "string" && type != "bool" &&
-		         type != "positiveInt" && type != "nonNegativeInt" && type != "text")
-		{
-			qDebug() << "Unknown type for prop " << name << " of "
-			         << id << " entity";
-			return false;
-		}
-		addProperty(name, type);
 	}
 	return true;
 }
@@ -186,8 +217,7 @@ bool Entity::parseAssociations(QDomElement &xml_element)
 
 bool Entity::applyParent(const Entity *parent)
 {
-	addProperties(parent->properties);
-	return true;
+	return addParentProperties(parent);
 }
 
 bool Node::init(QDomElement &xml_element)
@@ -207,8 +237,11 @@ bool Node::init(QDomElement &xml_element)
 		         << "in category" << cat->get_name();
 		return false;
 	}
-	// WTF????
-	addProperty("name", "string");
+
+	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
+	// FIXME!!!
+	if (id != "krnnNamedElement" && id != "krnnElement")
+		parents << "krnnNamedElement";
 
 	if (!parseGeneralizations(logic)) return false;
 	if (!parseProperties(logic)) return false;
@@ -239,12 +272,10 @@ bool Edge::init(QDomElement &xml_element)
 		return false;
 	}
 
-	// WTF????
-	addProperty("name", "string");
-	addProperty("from", "string");
-	addProperty("to", "string");
-	addProperty("fromPort", "string");
-	addProperty("toPort", "string");
+	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
+	// FIXME!!!
+	if (id != "krneRelationship")
+		parents << "krnnNamedElement" << "krneRelationship";
 
 	if (!parseEdgeGraphics(xml_element)) return false;
 	if (!parseGeneralizations(logic)) return false;

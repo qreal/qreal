@@ -10,8 +10,10 @@
 #include <QDomElement>
 #include <QDebug>
 
+#include "property.h"
+
 #define FOR_ALL_PROPERTIES(o,p) \
-	for (QList<QPair<QString, QString> >::ConstIterator p = o->constPropBegin(); \
+	for (QList<RealProperty*>::ConstIterator p = o->constPropBegin(); \
 	     p != o->constPropEnd(); p++)
 
 class Generator;
@@ -41,21 +43,18 @@ class Editor;
 class Entity
 {
 	bool resolving_done;
-	QList<QString> parents;
-	QList<QPair<QString, QString> > properties;
+	QList<RealProperty *> properties;
 
 protected:
 	Editor *cat;
+	QList<QString> parents;
 	/** @brief Добавить свойство */
-	void addProperty( QString name, /**< Название свойства */
-	                  QString type /**< Тип свойства */
-	                );
-	/** @brief Добавить список родительских свойств */
-	void addProperties(const QList< QPair<QString, QString> > &arg);
+	bool addProperty(RealProperty *);
+	bool addParentProperties(const Entity*);
 
 public:
 	Entity(Editor *category){ cat = category; visible = false; res = "\t<file>%1</file>\n"; resolving_done = false; width = -1; height = -1; }
-	virtual ~Entity(){};
+	virtual ~Entity();
 
 	virtual bool init(QDomElement &) = 0;
 	bool resolve(void);
@@ -86,8 +85,8 @@ public:
 
 	QString res;
 
-	QList<QPair<QString, QString> >::ConstIterator constPropBegin() const {return properties.constBegin();}
-	QList<QPair<QString, QString> >::ConstIterator constPropEnd() const {return properties.constEnd();}
+	QList<RealProperty*>::ConstIterator constPropBegin() const {return properties.constBegin();}
+	QList<RealProperty*>::ConstIterator constPropEnd() const {return properties.constEnd();}
 };
 
 // node class

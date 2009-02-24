@@ -59,7 +59,7 @@
      </association>
     </associations>
     <properties>
-     <property type="string" name="name" />
+	    <!--     <property type="string" name="name" /> -->
      <property type="positiveInt" name="order" />
     </properties>
    </logic>
@@ -103,9 +103,9 @@
       <parent parent_id="krnnNamedElement" />
      </generalization>
     </generalizations>
-    <properties>
+    <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
-    </properties>
+    </properties> -->
     <associations>
      <assoc_ref idref="cmnaMessage" />
      <assoc_ref idref="cmnaMessageWithSequenceNumber" />
