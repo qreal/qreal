@@ -57,10 +57,12 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 	if (index.column() == 0) {
 		return roleNames.at(index.row());
 	} else if (index.column() == 1) {
-		if (index.row() != 0)
+		if (index.row() >= mPseudoAttributesCount)
 			return targetObject.data(info.roleByIndex(index.row() - mPseudoAttributesCount));
-		else
+		else if (index.row() == 0)
 			return QVariant(type);
+		else
+			return targetObject.data(Unreal::IdRole);
 	} else
 		return QVariant();
 }
@@ -112,8 +114,9 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 
 	roleNames = info.getColumnNames(type);
 
+	roleNames.push_front("repo_id");
 	roleNames.push_front("metatype");
-	mPseudoAttributesCount = 1;
+	mPseudoAttributesCount = 2;
 
 	reset();
 }
