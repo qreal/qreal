@@ -265,7 +265,7 @@ IdTypeList RealRepoClient::getObjectsListByType(TypeIdType const &type)
 	QString resp = getObjectsByType(type);
 
 	IdTypeList list;
-	foreach (QString str, resp.split('\t'))
+	foreach (QString str, resp.split('\t', QString::SkipEmptyParts))
 		list += str;
 	if (resp == "\t")
 		list.clear();
