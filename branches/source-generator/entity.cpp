@@ -239,7 +239,6 @@ bool Node::init(QDomElement &xml_element)
 	}
 
 	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
-	// FIXME!!!
 	if (id != "krnnNamedElement" && id != "krnnElement")
 		parents << "krnnNamedElement";
 
@@ -273,7 +272,6 @@ bool Edge::init(QDomElement &xml_element)
 	}
 
 	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
-	// FIXME!!!
 	if (id != "krneRelationship")
 		parents << "krnnNamedElement" << "krneRelationship";
 
