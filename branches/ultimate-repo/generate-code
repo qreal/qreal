@@ -6,6 +6,11 @@ GEN=$WD/generated
 pushd $WD
 qmake
 make
+if [ "$?" != "0" ]; then
+    popd
+    echo Building code generator failed, stopping.
+    exit 1
+fi
 ./code
 err=$?
 popd
