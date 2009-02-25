@@ -5,6 +5,12 @@ set GEN=%WD%\generated
 cd %WD%
 qmake
 mingw32-make
+
+if %ERRORLEVEL% neq 0 (
+	echo "Generate-code failed!"
+	exit /B 1
+)
+
 del /s /q generated
 if EXIST release\code.exe (
   release\code.exe
