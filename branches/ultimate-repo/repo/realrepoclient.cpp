@@ -477,3 +477,13 @@ dbg;
 	QString cmd = QString("%1\t%2\t%3\t%4\t").arg(CMD_REMOVE_LINK).arg(obj_id).arg(link_id).arg(direction);
 	sendData(cmd);
 }
+
+IdTypeList RealRepoClient::getAllObjects()
+{
+	QString cmd = QString("%1\t").arg(CMD_GET_ALL_OBJECTS);
+	QString resp = sendData(cmd);
+	IdTypeList list;
+	foreach (QString str, resp.split('\t', QString::SkipEmptyParts))
+		list += str;
+	return list;
+}

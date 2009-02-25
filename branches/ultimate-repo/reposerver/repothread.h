@@ -155,6 +155,10 @@ namespace repoServer
 		*   @brief return Результат выполнения операции
 		*/
 		IntQStringPair handleGetObjectsByLink(QStringVector const &params);
+		/** @brief Обработать команду "Получить все объекты в репозитории"
+		*   @brief return Результат выполнения операции
+		*/
+		IntQStringPair handleGetAllObjects(QStringVector const &params);
 
 		/** @brief Отправить ответ с кодом ошибки операции */
 		IntQStringPair ReportError(const int &errorCode);

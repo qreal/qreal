@@ -252,6 +252,11 @@ public:
 	 * */
 	IdType getTypeIdByName(QString const &name /**< Название типа */);
 
+	/** @brief Получить все объекты, что есть в репозитории.
+	 *	@brief @return Список объектов в репозитории.
+	 * */
+	qRealTypes::IdTypeList getAllObjects();
+
 public slots:
 	/** @brief Выдать описание ошибки */
 	void displayError( QAbstractSocket::SocketError err/**< Ошибка */);

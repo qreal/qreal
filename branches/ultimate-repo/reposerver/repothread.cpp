@@ -824,6 +824,21 @@ IntQStringPair QRealRepoServerThread::handleGetObjectsByLink(QStringVector const
 	return ReportSuccess(resp);
 }
 
+IntQStringPair QRealRepoServerThread::handleGetAllObjects(QStringVector const &params)
+{
+	if (!IsParamsNumberCorrect(params, "GetAllObjects", 0))
+		return ReportError(ERR_INCORRECT_PARAMS);
+
+	QString resp = "";
+
+	foreach (QString objectId, mRepoData->getAllObjects()) {
+		resp += objectId + '\t';
+	}
+
+	mLog += QString(", sending all objects in repo [%1]").arg(resp);
+	return ReportSuccess(resp);
+}
+
 IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 {
 	dbg;
@@ -976,6 +991,11 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_GET_CONTAINERS:
 		{
 			resp = handleGetContainers(command.toVector());
+			break;
+		}
+		case CMD_GET_ALL_OBJECTS:
+		{
+			resp = handleGetAllObjects(command.toVector());
 			break;
 		}
 		default:

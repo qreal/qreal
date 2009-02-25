@@ -103,6 +103,16 @@ Object* RepoData::getRootObject() const
 	return mRoot;
 }
 
+QList<IdType> RepoData::getAllObjects() const
+{
+	return objects.keys();
+}
+
+QList<IdType> RepoData::getAllLinks() const
+{
+	return links.keys();
+}
+
 // --------------------------------------------------------------------------- //
 
 RepoElement::RepoElement(IdType const &id, TypeIdType const &type)

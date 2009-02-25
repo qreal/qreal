@@ -78,6 +78,10 @@ const int CMD_ADD_LINK			= 51;
 /** @brief Код команды "Убрать связь объекта" */
 const int CMD_REMOVE_LINK		= 52;
 
+// Команды, которые по идее нужны только для отладки.
+/** @brief Код команды "Получить все объекты" */
+const int CMD_GET_ALL_OBJECTS	= 101;
+
 /** @brief Cущности не существует */
 const int TYPE_INVALID  = 0;
 /** @brief Тип сущности "Объект" */

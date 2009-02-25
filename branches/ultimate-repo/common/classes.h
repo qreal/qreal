@@ -87,6 +87,11 @@ public:
 	 * */
 	Object* getRootObject() const;
 
+	/** @brief Получить все объекты в репозитории. */
+	QList<IdType> getAllObjects() const;
+	/** @brief Получить все линки в репозитории. */
+	QList<IdType> getAllLinks() const;
+
 private:
 	/** @brief Объекты */
 	QMap<IdType, Object*> objects;
