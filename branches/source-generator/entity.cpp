@@ -274,6 +274,8 @@ bool Edge::init(QDomElement &xml_element)
 	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
 	if (id != "krneRelationship")
 		parents << "krnnNamedElement" << "krneRelationship";
+	else                                 
+		parents << "krnnNamedElement";
 
 	if (!parseEdgeGraphics(xml_element)) return false;
 	if (!parseGeneralizations(logic)) return false;
