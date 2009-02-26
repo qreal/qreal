@@ -10,6 +10,7 @@
 #include "uml_nodeelement.h"
 
 #include "realreporoles.h"
+#include "realrepoinfo.h"
 
 #include <math.h>
 
@@ -20,6 +21,7 @@ using namespace UML;
 #define M_PI 3.14159265358979323846264338327950288419717
 /** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
+// Реквестирую ещё массу бозона Хиггса!
 #endif //M_PI
 
 /** @brief Индикатор перемещения свящи */
@@ -370,8 +372,12 @@ void EdgeElement::updateData()
 		return;
 
 	Element::updateData();
-	m_fromMult = dataIndex.data(Unreal::krneRelationship::fromMultiplicityRole).toString();
-	m_toMult = dataIndex.data(Unreal::krneRelationship::toMultiplicityRole).toString();
+
+	RealRepoInfo info;
+	TypeIdType type = dataIndex.data(Unreal::TypeRole).toString();
+
+	m_fromMult = dataIndex.data(info.roleByColumnName(type, "fromMultiplicity")).toString();
+	m_toMult = dataIndex.data(info.roleByColumnName(type, "toMultiplicity")).toString();
 
 	setPos(dataIndex.data(Unreal::PositionRole).toPointF());
 	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
@@ -381,8 +387,8 @@ void EdgeElement::updateData()
 	qDebug() << "from role: " << Unreal::krneRelationship::fromRole
 		<< "to role: " << Unreal::krneRelationship::toRole;
 
-	IdType uuidFrom = dataIndex.data(Unreal::krneRelationship::fromRole).toString();
-	IdType uuidTo = dataIndex.data(Unreal::krneRelationship::toRole).toString();
+	IdType uuidFrom = dataIndex.data(info.roleByColumnName(type, "from")).toString();
+	IdType uuidTo = dataIndex.data(info.roleByColumnName(type, "to")).toString();
 
 	qDebug() << "from: " << uuidFrom << ", to: " << uuidTo;
 
@@ -401,8 +407,8 @@ void EdgeElement::updateData()
 
 	setFlag(ItemIsMovable, !(dst || src));
 
-	portFrom = dataIndex.data(Unreal::krneRelationship::fromPortRole).toDouble();
-	portTo = dataIndex.data(Unreal::krneRelationship::toPortRole).toDouble();
+	portFrom = dataIndex.data(info.roleByColumnName(type, "fromPort")).toDouble();
+	portTo = dataIndex.data(info.roleByColumnName(type, "toPort")).toDouble();
 
 	adjustLink();
 }

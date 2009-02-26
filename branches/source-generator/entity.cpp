@@ -273,7 +273,7 @@ bool Edge::init(QDomElement &xml_element)
 
 	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
 	if (id != "krneRelationship")
-		parents << "krnnNamedElement" << "krneRelationship";
+		parents << "krneRelationship";
 	else                                 
 		parents << "krnnNamedElement";
 

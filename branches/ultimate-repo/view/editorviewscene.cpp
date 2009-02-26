@@ -38,6 +38,7 @@ UML::Element * EditorViewScene::getElem(IdType const &uuid)
 			}
 		}
 	}
+	qDebug() << uuid;
 	Q_ASSERT(uuid == INVALID_ID);
 	return NULL;
 }

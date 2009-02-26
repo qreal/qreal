@@ -739,6 +739,7 @@ void Generator::genRealRepoInfo(){
 			"\t\t{ return index+129; }\n"
 			"\tint indexByRole(int role) const\n"
 			"\t\t{ return role-129; }\n\n"
+			"\t\tint roleByColumnName(TypeIdType const &type, QString const &columnName) const;\n\n"
 			"\tQIcon objectIcon(IdType const &id) const; \n\n"
 			"private:\n"
 			"};\n\n";
@@ -901,7 +902,20 @@ void Generator::genRealRepoInfo(){
 			"\tif (icons.contains(id))\n"
 			"\t\treturn icons[id];\n"
 			"\telse\n"
-			"\t\treturn QIcon();\n}\n";
+			"\t\treturn QIcon();\n}\n\n";
+			
+	out2 << "int RealRepoInfo::roleByColumnName(TypeIdType const &type, QString const &columnName) const\n"
+			"{\n"
+			"\tQStringList columns = map.value(type);\n"
+			"\tint index = 0;\n"
+			"\tforeach (QString column, columns) {\n"
+			"\t\tif (column == columnName)\n"
+			"\t\t\treturn roleByIndex(index);\n"
+			"\t\t++index;\n"
+			"\t}\n"
+			"\tQ_ASSERT(!\"Role not found for given type\");\n"
+			"\treturn -1;\n"
+			"}\n";
 
 	file2.close();
 }
