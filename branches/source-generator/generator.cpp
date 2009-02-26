@@ -351,6 +351,7 @@ void Generator::genClasses(){
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
 		QString classname = (*o)->id + "Class";
+		QString portname = (*o)->id + "Ports";
 
 		if ((*o)->type == EDGE )
 			continue;
@@ -367,7 +368,9 @@ void Generator::genClasses(){
 
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
+			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
 			<< "\ttext = \"\";\n";
+			
 #if 0 // FIXME: Emperor
 		if ((*o)->parents.size() > 0)
 			out << "\tparentsList";
@@ -380,24 +383,6 @@ void Generator::genClasses(){
 			<< QString("\twidth = %1;\n").arg((*o)->width)
 		<< "\tm_contents.setWidth(width);\n"
 		<< "\tm_contents.setHeight(height);\n";
-
-		if ((*o)->type == NODE){
-			Node* node = dynamic_cast<Node*>(*o);
-			for( int j=0; j<node->ports.size(); j++ ){
-				if( node->ports.at(j).type == "point" ){
-						out << QString("\tpointPorts << QPointF(%1, %2);\n")
-															.arg(node->ports.at(j).vals.at(0))
-															.arg(node->ports.at(j).vals.at(1));
-				}
-				else if (node->ports.at(j).type == "line" ){
-					out << QString("\tlinePorts << QLineF(%1, %2, %3, %4);\n")
-											.arg(node->ports.at(j).vals.at(0))
-											.arg(node->ports.at(j).vals.at(1))
-											.arg(node->ports.at(j).vals.at(2))
-											.arg(node->ports.at(j).vals.at(3));
-				}
-			}
-		}
 		out  << "}\n\n";
 
 		//destructor
@@ -409,7 +394,8 @@ void Generator::genClasses(){
 		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
 																				"QWidget *widget)\n{\n";
 		out << "\tupdatePorts();\n"
-			<< QString("\trenderer.render(painter, m_contents);\n\n")
+			<< QString("\trenderer.render(painter, m_contents);\n")
+			<<"\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
 			<< "\tQTextDocument d;\n"
 			<< "\td.setHtml(text);\n";
 		if ((*o)->labels.size() > 0){
@@ -442,12 +428,12 @@ void Generator::genClasses(){
 					<< "\td.drawContents(painter, conts);\n";
 			}
 			out << "\tpainter->restore();\n";
-		}
-		else
-			out << "\td.drawContents(painter, m_contents);\n";
-		out << "\tNodeElement::paint(painter, style, widget);\n"
-			<< "}\n\n";
+		} else
+				out << "\td.drawContents(painter, m_contents);\n";
 
+	
+			out<< "}\n\n";
+		
 		//updateData
 		out << "void " << classname << "::updateData()\n{\n"
 			<< "\tNodeElement::updateData();\n";
@@ -489,7 +475,8 @@ void Generator::genClasses(){
 				"\t/* int textSize; */\n"
 				"\tint width;\n"
 				"\tint height;\n"
-		"\tSdfRenderer renderer;\n";
+		"\tSdfRenderer renderer;\n"
+		"\tSdfRenderer portrenderer;\n";
 
 		out2 << "};\n\n#endif\n";
 	}

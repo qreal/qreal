@@ -69,8 +69,8 @@
        <end endx="89" endy="1" />
       </line_port>
       <line_port>
-       <start startx="41" starty="26" />
-       <end endx="41" endy="91" />
+       <start startx="50%" starty="26a" />
+       <end endx="50%" endy="100%" />
       </line_port>
      </ports>
     </view>

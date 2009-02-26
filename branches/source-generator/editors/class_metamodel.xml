@@ -84,20 +84,20 @@
      </repo_info>
      <ports>
       <line_port>
-       <start startx="0" starty="20" />
-       <end endx="100" endy="20" />
+       <start startx="0a" starty="20a" />
+       <end endx="100%" endy="20a" />
       </line_port>
       <line_port>
-       <start startx="0" starty="100" />
-       <end endx="100" endy="100" />
+       <start startx="0a" starty="100%" />
+       <end endx="100%" endy="100%" />
       </line_port>
       <line_port>
-       <start startx="0" starty="20" />
-       <end endx="0" endy="100" />
+       <start startx="0a" starty="20a" />
+       <end endx="0a" endy="100%" />
       </line_port>
       <line_port>
-       <start startx="100" starty="20" />
-       <end endx="100" endy="100" />
+       <start startx="100%" starty="20a" />
+       <end endx="100%" endy="100%" />
       </line_port>
      </ports>
     </view>

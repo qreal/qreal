@@ -5,12 +5,13 @@
 
 #include "uml_nodeelement.h"
 #include "realreporoles.h"
-
+#include <QMessageBox>
 using namespace UML;
 
 NodeElement::NodeElement()
 : portsVisible(false)
 {
+
 	setAcceptsHoverEvents(true);
 	dragState = None;
 }
@@ -214,12 +215,15 @@ void NodeElement::setPortsVisible(bool value) {
 	portsVisible = value;
 }
 
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
+
+
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
 {
-	if ( option->levelOfDetail >= 0.5 ) {
-		if ( option->state & QStyle::State_Selected ) {
+	if ( option->levelOfDetail >= 0.5 ) 
+	{
+		if ( option->state & QStyle::State_Selected ) 
+		{
 			painter->save();
-//painter->drawRect(m_contents);
 
 			QBrush b;
 			b.setColor(Qt::blue);
@@ -229,7 +233,6 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->drawRect(QRectF(m_contents.topLeft(),QSizeF(4,4)));
 			painter->drawRect(QRectF(m_contents.topRight(),QSizeF(-4,4)));
-//			painter->drawRect(QRectF(m_contents.bottomRight(),QSizeF(-4,-4)));
 			painter->drawRect(QRectF(m_contents.bottomLeft(),QSizeF(4,-4)));
 
 			painter->translate(m_contents.bottomRight());
@@ -239,35 +242,16 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->restore();
 		}
-
-		if (( option->state & QStyle::State_MouseOver )||(portsVisible)) {
-			foreach (QPointF port, pointPorts) {
-				painter->save();
-				painter->setOpacity(0.7);
-				painter->translate(transform.map(port));
-				painter->setBrush(Qt::gray);
-				painter->setPen(Qt::NoPen);
-				painter->drawRect(QRectF(-5,-5,10,10));
-				painter->setPen(Qt::darkGray);
-				painter->drawLine(QLineF(-5,-5,5,5));
-				painter->drawLine(QLineF(-5,5,5,-5));
-				painter->restore();
-			}
-
-			foreach (QLineF port, linePorts) {
-				QPen pen;
-				pen.setBrush(Qt::gray);
-				pen.setWidth(kvadratik);
-				painter->setOpacity(0.7);
-				painter->setPen(pen);
-				painter->drawLine(transform.map(port));
-
-				pen.setBrush(Qt::darkGray);
-				pen.setWidth(1);
-				painter->setPen(pen);
-				painter->drawLine(transform.map(port));
-
-			}
+		if (( option->state & QStyle::State_MouseOver )||(portsVisible)) 
+		{
+			painter->save();
+			painter->setOpacity(0.7);
+			portrenderer->render(painter,m_contents);
+			painter->restore();
 		}
 	}
 }
+
+
+
+

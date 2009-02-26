@@ -7,6 +7,7 @@
 
 #include "uml_element.h"
 #include "uml_edgeelement.h"
+#include "sdfrenderer.h"
 
 #include <QtGui/QWidget>
 
@@ -28,8 +29,8 @@ namespace UML {
 			/** @brief Отрисовать объект */
 			virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
 								const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
-								QWidget* w /**< Виджет, на котором осуществляется отрисовка */
-								);
+								QWidget* w, /**< Виджет, на котором осуществляется отрисовка */
+								SdfRenderer* portrenderer);
 			/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
 			 * */
