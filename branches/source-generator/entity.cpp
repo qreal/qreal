@@ -329,7 +329,7 @@ bool Node::parsePorts(QDomElement &xml_element)
 	QDir dir;
 	dir.cd("generated");
 	QDomNodeList sdf = xml_element.elementsByTagName("ports");
-	if(!dir.exists("shapes"))
+	if (!dir.exists("shapes"))
 		dir.mkdir("shapes");
 
 	if (!sdf.isEmpty())
@@ -350,7 +350,7 @@ bool Node::parsePorts(QDomElement &xml_element)
 		stream << ">\n";
 		
 		QDomNodeList ports = xml_element.elementsByTagName("point_port");
-		for(int i = 0; i < ports.size(); ++i)
+		for (int i = 0; i < ports.size(); ++i)
 		{
 			QDomElement portelem = ports.at(i).toElement();
 			stream << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
@@ -363,7 +363,7 @@ bool Node::parsePorts(QDomElement &xml_element)
 		}	
 		
 		QDomNodeList lines = xml_element.elementsByTagName("line_port");
-		for(int i = 0; i < lines.size(); ++i)
+		for (int i = 0; i < lines.size(); ++i)
 		{
 			QDomElement portelem_start = lines.at(i).firstChild().toElement();
 			QDomElement portelem_end = lines.at(i).lastChild().toElement();
@@ -381,7 +381,7 @@ bool Node::parsePorts(QDomElement &xml_element)
 		stream << "</picture>";
 		file.close();
 		
-	}else
+	} else
 	{
 		QFile file("generated/shapes/" + id + "Ports.sdf");
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
