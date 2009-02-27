@@ -95,21 +95,47 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	QByteArray newItemData;
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
 
+	UML::Element *newParent = getElemAt(event->scenePos());
+
 	stream << uuid;				// uuid
 	stream << type_id;			// type
 	stream << oldparent;
 	stream << name;
-	stream << event->scenePos();
+	if (!newParent) {
+		stream << event->scenePos();
+	} else {
+		stream << newParent->mapToItem(newParent, newParent->mapFromScene(event->scenePos()));
+	}
 
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);
 
-	mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
-			mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
+	if (newParent) {
+		mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
+				mv_iface->model()->rowCount(newParent->index()), 0, newParent->index() );
+	} else {
+			mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
+				mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
+	}
 	delete newMimeData;
 }
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
 	QGraphicsScene::keyPressEvent(event);
+}
+
+UML::Element * EditorViewScene::getElemAt( const QPointF &position )
+{
+	foreach( QGraphicsItem *item, items(position) ) {
+		UML::Element *e = dynamic_cast<UML::Element *>(item);
+		if ( e )
+			return e;
+	}
+	return 0;
+}
+
+QPersistentModelIndex EditorViewScene::rootItem()
+{
+	return mv_iface->rootIndex();
 }

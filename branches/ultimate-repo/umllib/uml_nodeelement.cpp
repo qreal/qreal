@@ -4,7 +4,9 @@
 #include <QtGui>
 
 #include "uml_nodeelement.h"
+#include "realrepomodel.h"
 #include "realreporoles.h"
+#include "editorviewscene.h"
 using namespace UML;
 
 NodeElement::NodeElement()
@@ -86,15 +88,22 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	m_contents = m_contents.normalized();
 
 	moving = 1;
-	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
 	im->setData(dataIndex, pos(), Unreal::PositionRole);
 	im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
-
 	if ( dragState != None )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
+	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(scene());
+	if (newParent) {
+		im->changeParent(dataIndex,newParent->dataIndex,
+			mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
+	} else {
+		im->changeParent(dataIndex,evscene->rootItem(),scenePos());
+	}
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -214,13 +223,21 @@ void NodeElement::setPortsVisible(bool value) {
 	portsVisible = value;
 }
 
-
+NodeElement *NodeElement::getNodeAt( const QPointF &position )
+{
+	foreach( QGraphicsItem *item, scene()->items(position) ) {
+		NodeElement *e = dynamic_cast<NodeElement *>(item);
+		if (( e )&&(item!=this))
+			return e;
+	}
+	return 0;
+}
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
 {
-	if (option->levelOfDetail >= 0.5) 
+	if (option->levelOfDetail >= 0.5)
 	{
-		if ( option->state & QStyle::State_Selected ) 
+		if ( option->state & QStyle::State_Selected )
 		{
 			painter->save();
 
@@ -241,7 +258,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->restore();
 		}
-		if ((option->state & QStyle::State_MouseOver) || portsVisible) 
+		if ((option->state & QStyle::State_MouseOver) || portsVisible)
 		{
 			painter->save();
 			painter->setOpacity(0.7);

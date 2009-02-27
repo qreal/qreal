@@ -143,6 +143,8 @@ class RealRepoModel : public QAbstractItemModel
 		 * */
 		QModelIndex getDiagramCategoryIndex() const;
 
+		void changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos);
+
 	public slots:
 		/** @brief Отменить последнее действие */
 		void undo();

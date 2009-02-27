@@ -45,7 +45,7 @@ public:
 	/** @brief Получить элемент с заданным идентификатором
 	 *	@brief @return Элемент
 	* */
-	UML::Element* getItem(IdType const &uuid /**< Идентификатор элемента */);
+//	UML::Element* getItem(IdType const &uuid /**< Идентификатор элемента */);
 
 public slots:
 	/** @brief Очистить сцену */
@@ -123,6 +123,6 @@ private:
 	EditorView *view;
 
 	/** @brief Элементы на сцене */
-	QMap<IdType, UML::Element*> items;
+	QMap<QPersistentModelIndex, UML::Element*> items;
 };
 

@@ -572,6 +572,31 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 	return false;
 }
 
+void RealRepoModel::changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos)
+{
+	if (newParent!=parent(elem)) {
+		setData(elem, newPos, Unreal::PositionRole);
+		IdType oldParent = (static_cast<RepoTreeItem*>(parent(elem).internalPointer()))->id;
+		RepoTreeItem *parentItem = static_cast<RepoTreeItem*>(newParent.internalPointer());
+		IdType newid = (static_cast<RepoTreeItem*>(elem.internalPointer()))->id;
+		TypeIdType newtype = hashTypes[newid];
+		QString name = hashNames[newid];
+		IdType id = newid;
+		beginInsertRows(newParent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
+		id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
+		createItem(parentItem, id, newtype, name);
+		hashChildCount[id] = hashChildCount[newid];
+		if (hashDiagramElements[oldParent].contains(newid)) {
+			hashDiagramElements[parentItem->id][id].configuration =
+				hashDiagramElements[oldParent][newid].configuration;
+			hashDiagramElements[parentItem->id][id].position =
+				hashDiagramElements[oldParent][newid].position;
+		}
+		endInsertRows();
+		removeRows((static_cast<RepoTreeItem*>(elem.internalPointer()))->row,1,parent(elem));
+	}
+}
+
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
 dbg;

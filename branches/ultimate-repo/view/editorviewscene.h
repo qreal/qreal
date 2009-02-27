@@ -34,6 +34,8 @@ public:
 	 * */
 	UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
 
+	QPersistentModelIndex rootItem();
+
 protected:
 	/** @brief Обработать начало события drag'n'drop */
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );
@@ -47,6 +49,9 @@ protected:
 	/** @brief Обработать событие нажатия клавиши */
 	void keyPressEvent( QKeyEvent *event /**< Событие */);
 private:
+
+	UML::Element *getElemAt(const QPointF &position);
+
 	/** @brief Новое положение элемента */
 	QPointF newElementsPosition;
 

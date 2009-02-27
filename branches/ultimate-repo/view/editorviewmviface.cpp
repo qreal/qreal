@@ -74,12 +74,12 @@ void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 	if (e)
 		emit clicked(e->index());
 }
-*/
 
 UML::Element* EditorViewMViface::getItem(IdType const &uuid)
 {
 	return items[uuid];
 }
+*/
 
 void EditorViewMViface::reset()
 {
@@ -127,9 +127,9 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
 
 			if (parent_uuid != "")
-				e->setParentItem(items[parent_uuid]);
+				e->setParentItem(items[parent]);
 
-			items[uuid] = e;
+			items[current] = e;
 
 			e->updateData();
 			e->connectToPort();
@@ -146,11 +146,10 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 {
 	for (int row = start; row <= end; ++row) {
-		IdType uuid = model()->index(row, 0, parent).data(Unreal::IdRole).toString();
-
-		scene->removeItem(items[uuid]);
-		delete items[uuid];
-		items.remove(uuid);
+		QModelIndex curr = model()->index(row, 0, parent);
+		scene->removeItem(items[curr]);
+		delete items[curr];
+		items.remove(curr);
 	}
 
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
@@ -160,11 +159,10 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 	const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		IdType uuid = topLeft.sibling(row, 0).data(Unreal::IdRole).toString();
-
-		if (items.contains(uuid)) {
-			Q_ASSERT(items[uuid] != NULL);
-			items[uuid]->updateData();
+		QModelIndex curr = topLeft.sibling(row, 0);
+		if (items.contains(curr)) {
+			Q_ASSERT(items[curr] != NULL);
+			items[curr]->updateData();
 		}
 		else
 			rowsInserted(topLeft.parent(),row,row);

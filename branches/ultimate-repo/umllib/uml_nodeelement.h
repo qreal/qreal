@@ -93,6 +93,11 @@ namespace UML {
 
 		private:
 
+			/** @brief Получить объект, расположенный в данной точке сцены
+			*	@brief @return Объект, расположенный в данной точке сцены
+			* */
+			NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+
 			/** @brief Список ассоциированных с объектом связей */
 			QList<EdgeElement *> edgeList;
 
