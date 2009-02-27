@@ -5,7 +5,6 @@
 
 #include "uml_nodeelement.h"
 #include "realreporoles.h"
-#include <QMessageBox>
 using namespace UML;
 
 NodeElement::NodeElement()
@@ -219,7 +218,7 @@ void NodeElement::setPortsVisible(bool value) {
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
 {
-	if ( option->levelOfDetail >= 0.5 ) 
+	if (option->levelOfDetail >= 0.5) 
 	{
 		if ( option->state & QStyle::State_Selected ) 
 		{
@@ -242,7 +241,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->restore();
 		}
-		if (( option->state & QStyle::State_MouseOver )||(portsVisible)) 
+		if (( option->state & QStyle::State_MouseOver ) || (portsVisible)) 
 		{
 			painter->save();
 			painter->setOpacity(0.7);

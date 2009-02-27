@@ -67,7 +67,7 @@
   <node id="cmnnCLifeline" name="CLifeline" >
    <graphics>
     <view>
-     <picture sizex="82" sizey="37" >
+     <picture sizex="82" sizey="28" >
       <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="26" stroke-width="2" x2="81" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="6" y2="21a" stroke-width="2" x2="76" fill-style="solid" />
       <text i="0" font-fill="#000000" y1="16a" b="0" x1="9" font-name="Helvetica" u="0" font-size="12a" >:</text>
@@ -79,20 +79,20 @@
      </repo_info>
      <ports>
       <line_port>
-       <start startx="1" starty="1" />
-       <end endx="89" endy="1" />
+       <start startx="1a" starty="1a" />
+       <end endx="99%" endy="0a" />
       </line_port>
       <line_port>
-       <start startx="89" starty="1" />
-       <end endx="89" endy="26" />
+       <start startx="99%" starty="1a" />
+       <end endx="99%" endy="26" />
       </line_port>
       <line_port>
-       <start startx="89" starty="26" />
-       <end endx="1" endy="26" />
+       <start startx="99%" starty="26" />
+       <end endx="1a" endy="26" />
       </line_port>
       <line_port>
-       <start startx="1" starty="26" />
-       <end endx="1" endy="1" />
+       <start startx="1a" starty="26" />
+       <end endx="1a" endy="1a" />
       </line_port>
      </ports>
     </view>

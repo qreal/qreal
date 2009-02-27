@@ -94,7 +94,7 @@ bool Generator::generate(){
 
 	// write the resource file
 	QFile file("generated/real_dynamic.qrc");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return false;
 	QTextStream out(&file);
 	resources += "</qresource>\n</RCC>";
@@ -395,7 +395,7 @@ void Generator::genClasses(){
 																				"QWidget *widget)\n{\n";
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.render(painter, m_contents);\n")
-			<<"\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
+			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
 			<< "\tQTextDocument d;\n"
 			<< "\td.setHtml(text);\n";
 		if ((*o)->labels.size() > 0){
@@ -431,7 +431,6 @@ void Generator::genClasses(){
 		} else
 				out << "\td.drawContents(painter, m_contents);\n";
 
-	
 			out<< "}\n\n";
 		
 		//updateData
