@@ -91,8 +91,22 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 	if (option->state & QStyle::State_Selected) {
 		painter->setBrush(Qt::SolidPattern);
-		foreach( QPointF point, m_line) {
-			painter->drawRect(QRectF(point-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
+		foreach( QPointF point, m_line)
+		{
+			QPen pen;
+			QColor color;
+
+			color.setNamedColor("#c3dcc4");
+			pen.setWidth(11);
+			pen.setColor(color);
+			painter->setPen(pen);
+			painter->drawPoint(point);
+
+			color.setNamedColor("#465945");
+			pen.setWidth(3);
+			pen.setColor(color);
+			painter->setPen(pen);
+			painter->drawPoint(point);
 		}
 	}
 
