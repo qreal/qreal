@@ -4,6 +4,7 @@
 #pragma once
 #include <QThread>
 #include <QTcpSocket>
+#include <QFile>
 
 #include "../common/defs.h"
 #include "../common/classes.h"
@@ -159,6 +160,10 @@ namespace repoServer
 		*   @brief return Результат выполнения операции
 		*/
 		IntQStringPair handleGetAllObjects(QStringVector const &params);
+		/** @brief Обработать команду "Очистить репозиторий"
+		*   @brief return Результат выполнения операции. (Капитан Очевидность)
+		*/
+		IntQStringPair handleClearAll(QStringVector const &params);
 
 		/** @brief Отправить ответ с кодом ошибки операции */
 		IntQStringPair ReportError(const int &errorCode);
@@ -170,7 +175,10 @@ namespace repoServer
 									int const &paramsNum
 									) const;
 		/** @brief Восстановить состояние репозитория */
-		void TryToRestoreState();
+		void tryToRestoreState();
+		/** @brief Очистить лог с командами */
+		void clearLog();
+
 
 		/** @brief Дескриптор сокета */
 		int mSocketDescriptor;
@@ -180,6 +188,11 @@ namespace repoServer
 		RepoTypesInfo *mTypesInfo;
 		/** @brief Вспомогательный счетчик */
 		int mCounter;
+		/** @brief Флаг логируемого режима. Если true, команды пишутся в лог и их
+		* потом можно воспроизвести, восстановив состояние репозитория. */
+		bool mLoggedMode;
+		/** @brief Файл с логом команд репозитория. */
+		QFile mLogFile;
 
 		/** @brief Строка для формирования записи в лог */
 		mutable QString mLog;

@@ -92,6 +92,8 @@ public:
 	/** @brief Получить все линки в репозитории. */
 	QList<IdType> getAllLinks() const;
 
+	/** @brief Удалить всё из репозитория. */
+	void clearAll();
 private:
 	/** @brief Объекты */
 	QMap<IdType, Object*> objects;

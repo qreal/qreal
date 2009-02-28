@@ -24,7 +24,7 @@ QRealRepoServerThread::QRealRepoServerThread(int const &socketDescriptor
 	dbg;
 }
 
-void QRealRepoServerThread::TryToRestoreState()
+void QRealRepoServerThread::tryToRestoreState()
 {
 	// Some means to restore repository contents by reading and applying saved
 	// commands. It will work for only 1 client, and IS INTENDED FOR TESTING ONLY!
@@ -51,6 +51,16 @@ void QRealRepoServerThread::TryToRestoreState()
 	}
 }
 
+void QRealRepoServerThread::clearLog()
+{
+	qDebug() << mLoggedMode << mLogFile.fileName();
+	if (mLoggedMode && mLogFile.exists()) {
+		mLogFile.close();
+		if (!mLogFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
+			mLoggedMode = false;
+	}
+}
+
 void QRealRepoServerThread::run()
 {
 	dbg;
@@ -62,16 +72,15 @@ void QRealRepoServerThread::run()
 		return;
 	}
 
-	TryToRestoreState();
+	tryToRestoreState();
 
 	// Log of commands - to restore repository state in a next run.
 	// Not thread-safe.
-	QFile file("repothread_log.txt");
-
-	bool loggedMode = true;
-	if (!file.open(QIODevice::Append | QIODevice::Text))
-		loggedMode = false;
-	QTextStream commandLog(&file);
+	mLoggedMode = true;
+	mLogFile.setFileName("repothread_log.txt");
+	if (!mLogFile.open(QIODevice::Append | QIODevice::Text))
+		mLoggedMode = false;
+	QTextStream commandLog(&mLogFile);
 	// QTextStream does not honour setCodecForCStrings(codec).
 	// Set UTF8 explicitly.
 	commandLog.setCodec("UTF-8");
@@ -96,7 +105,7 @@ void QRealRepoServerThread::run()
 		QByteArray rawdata = tcpSocket.readAll();
 		QString data = QString(rawdata);
 
-		if (loggedMode)
+		if (mLoggedMode)
 			commandLog << data << endl;
 
 		IntQStringPair resp = handleCommand(data);
@@ -104,8 +113,8 @@ void QRealRepoServerThread::run()
 		tcpSocket.write(response.toUtf8());
 	}
 
-	if (loggedMode)
-		file.close();
+	if (mLoggedMode)
+		mLogFile.close();
 }
 
 bool QRealRepoServerThread::IsParamsNumberCorrect(QStringVector const &params
@@ -839,6 +848,27 @@ IntQStringPair QRealRepoServerThread::handleGetAllObjects(QStringVector const &p
 	return ReportSuccess(resp);
 }
 
+IntQStringPair QRealRepoServerThread::handleClearAll(QStringVector const &params)
+{
+	foreach (IdType id, mRepoData->getAllObjects())
+	{
+		TypeIdType type = mRepoData->getObject(id)->getType();
+		mTypesInfo->elementDeleted(type, id);
+	}
+
+	foreach (IdType id, mRepoData->getAllLinks())
+	{
+		TypeIdType type = mRepoData->getLink(id)->getType();
+		mTypesInfo->elementDeleted(type, id);
+	}
+
+	delete mRepoData;
+	mRepoData = new RepoData();
+	clearLog();
+	mLog += QString(", repository is cleared");
+	return ReportSuccess("");
+}
+
 IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 {
 	dbg;
@@ -996,6 +1026,11 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_GET_ALL_OBJECTS:
 		{
 			resp = handleGetAllObjects(command.toVector());
+			break;
+		}
+		case CMD_CLEAR_ALL:
+		{
+			resp = handleClearAll(command.toVector());
 			break;
 		}
 		default:

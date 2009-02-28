@@ -81,6 +81,8 @@ const int CMD_REMOVE_LINK		= 52;
 // Команды, которые по идее нужны только для отладки.
 /** @brief Код команды "Получить все объекты" */
 const int CMD_GET_ALL_OBJECTS	= 101;
+/** @brief Код команды "Удалить всё из репозитория" */
+const int CMD_CLEAR_ALL			= 102;
 
 /** @brief Cущности не существует */
 const int TYPE_INVALID  = 0;

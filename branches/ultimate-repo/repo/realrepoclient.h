@@ -257,6 +257,9 @@ public:
 	 * */
 	qRealTypes::IdTypeList getAllObjects();
 
+	/** @brief Устроить в репозитории экстерминатус. Разумеется, в целях отладки. */
+	void clearRepository();
+
 public slots:
 	/** @brief Выдать описание ошибки */
 	void displayError( QAbstractSocket::SocketError err/**< Ошибка */);

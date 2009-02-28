@@ -17,7 +17,6 @@ RepoData::~RepoData()
 		delete link;
 	objects.clear();
 	links.clear();
-	delete mRoot;
 }
 
 void RepoData::addObject( IdType const &id, Object* obj )

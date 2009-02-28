@@ -487,3 +487,8 @@ IdTypeList RealRepoClient::getAllObjects()
 		list += str;
 	return list;
 }
+
+void RealRepoClient::clearRepository() {
+	QString cmd = QString("%1\t").arg(CMD_CLEAR_ALL);
+	sendData(cmd);
+}
