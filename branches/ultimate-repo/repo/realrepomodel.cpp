@@ -666,8 +666,6 @@ dbg;
 
 	hashNames[id] = name;
 	hashTypes[id] = type;
-	// FIXME
-	hashChildCount[id] = 0;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
