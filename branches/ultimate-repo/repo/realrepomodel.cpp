@@ -236,9 +236,9 @@ dbg;
 
 	for ( RepoTreeItem *curItem = const_cast<RepoTreeItem *>(item);
 			curItem != rootItem; curItem = curItem->parent ) {
-//		if( curItem->row != 0){
+		if( curItem && curItem->row != 0){
 			rowCoords.append(curItem->row);
-//		}
+		}
 	}
 
 	QModelIndex result;
