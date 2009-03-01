@@ -43,7 +43,8 @@ class Editor;
 class Entity
 {
 	bool resolving_done;
-	QList<RealProperty *> properties;
+	QList<RealProperty *> properties; // All properties, including inherited
+	QList<RealProperty *> own_properties; // This own properties
 
 protected:
 	Editor *cat;

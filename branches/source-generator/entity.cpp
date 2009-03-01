@@ -9,12 +9,10 @@ Entity::~Entity()
 {
 	RealProperty *p;
 
-	while (!properties.isEmpty())
+	while (!own_properties.isEmpty())
 	{
-		p = properties.takeFirst();
-		// Do not free parent properties
-		if (p->getOwner() == this)
-			delete p;
+		p = own_properties.takeFirst();
+		delete p;
 	}
 }
 
@@ -52,6 +50,8 @@ bool Entity::addProperty(RealProperty *prop){
 		properties.insert(0, prop);
 	else
 		properties << prop;
+	if (prop->getOwner() == this)
+		own_properties << prop;
 	return true;
 }
 
