@@ -4,6 +4,8 @@
 #include "editorviewscene.h"
 #include "editorviewmviface.h"
 #include "editorview.h"
+#include "uml_nodeelement.h"
+#include "uml_guiobjectfactory.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -95,12 +97,23 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	QByteArray newItemData;
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
 
-	UML::Element *newParent = getElemAt(event->scenePos());
+	UML::Element *newParent = 0;
+	
+	UML::Element *e = UML::GUIObjectFactory(type_id);
+
+	if (dynamic_cast<UML::NodeElement *>(e)) {
+		newParent= getElemAt(event->scenePos());
+	}
+
+	if (e) {
+		delete e;
+	} 
 
 	stream << uuid;				// uuid
 	stream << type_id;			// type
 	stream << oldparent;
 	stream << name;
+
 	if (!newParent) {
 		stream << event->scenePos();
 	} else {
