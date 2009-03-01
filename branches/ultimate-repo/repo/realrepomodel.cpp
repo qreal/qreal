@@ -236,9 +236,10 @@ dbg;
 
 	for ( RepoTreeItem *curItem = const_cast<RepoTreeItem *>(item);
 			curItem != rootItem; curItem = curItem->parent ) {
-		if( curItem && curItem->row != 0){
+	// WT* is this if?
+//		if( curItem && curItem->row != 0){
 			rowCoords.append(curItem->row);
-		}
+//		}
 	}
 
 	QModelIndex result;
