@@ -341,18 +341,18 @@ bool Node::parsePorts(QDomElement &xml_element)
 			dir.cd("..");
 			return false;
 		}
-		
+
 		QTextStream stream(&file);
-		
+
 		stream << "<picture ";
 		stream << "sizex=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizex").toInt() << "\" ";
 		stream << "sizey=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizey").toInt() << "\" ";
 		stream << ">\n";
 		
-		QDomNodeList ports = xml_element.elementsByTagName("point_port");
-		for (int i = 0; i < ports.size(); ++i)
+		QDomNodeList pointPorts = xml_element.elementsByTagName("point_port");
+		for (int i = 0; i < pointPorts.size(); ++i)
 		{
-			QDomElement portelem = ports.at(i).toElement();
+			QDomElement portelem = pointPorts.at(i).toElement();
 			stream << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 			stream << "x1=\""<<portelem.attribute("x") << "\" y1=\""<<portelem.attribute("y") << "\" ";	
 			stream << "/>\n";
@@ -360,23 +360,36 @@ bool Node::parsePorts(QDomElement &xml_element)
 			stream << "\t<point stroke-width=\"3\" stroke-style=\"solid\" stroke=\"#465945\" ";
 			stream << "x1=\"" << portelem.attribute("x") << "\" y1=\"" << portelem.attribute("y") << "\" ";	
 			stream << "/>\n";
-		}	
-		
-		QDomNodeList lines = xml_element.elementsByTagName("line_port");
-		for (int i = 0; i < lines.size(); ++i)
+
+			Port port;
+			port.type = "point";
+			port.vals << (qreal) portelem.attribute("x").toInt()/width;
+			port.vals << (qreal) portelem.attribute("y").toInt()/height;
+			ports << port;
+		}
+
+		QDomNodeList linePorts = xml_element.elementsByTagName("line_port");
+		for (int i = 0; i < linePorts.size(); ++i)
 		{
-			QDomElement portelem_start = lines.at(i).firstChild().toElement();
-			QDomElement portelem_end = lines.at(i).lastChild().toElement();
+			QDomElement portelem_start = linePorts.at(i).firstChild().toElement();
+			QDomElement portelem_end = linePorts.at(i).lastChild().toElement();
 			stream << "\t<line x1=\"" << portelem_start.attribute("startx") << "\" y1=\"" << portelem_start.attribute("starty") << "\" ";
 			stream << "x2=\"" << portelem_end.attribute("endx") << "\" y2=\"" << portelem_end.attribute("endy") << "\" ";
 			stream << "stroke-width=\"7\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 			stream << "/>\n";
-			
+
 			stream << "\t<line x1=\"" << portelem_start.attribute("startx") << "\" y1=\""<<portelem_start.attribute("starty") << "\" ";
 			stream << "x2=\""<<portelem_end.attribute("endx") << "\" y2=\"" << portelem_end.attribute("endy") << "\" ";
 			stream << "stroke-width=\"1\" stroke-style=\"solid\" stroke=\"#465945\" ";
 			stream << "/>\n";
-		
+
+			Port port;
+			port.type = "line";
+			port.vals << (qreal)portelem_start.attribute("startx").toInt()/width;
+			port.vals << (qreal)portelem_start.attribute("starty").toInt()/height;
+			port.vals << (qreal)portelem_end.attribute("endx").toInt()/width;
+			port.vals << (qreal)portelem_end.attribute("endy").toInt()/height;
+			ports << port;
 		}
 		stream << "</picture>";
 		file.close();
@@ -390,13 +403,12 @@ bool Node::parsePorts(QDomElement &xml_element)
 			dir.cd("..");
 			return false;
 		}
-		
+
 		QTextStream stream(&file);
 		stream << "<picture ";
 		stream << "sizex=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizex").toInt() << "\" ";
 		stream << "sizey=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizey").toInt() << "\" ";
 		stream << "\\>\n";
-	
 	}
 	return true;
 }

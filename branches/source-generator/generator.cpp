@@ -383,6 +383,26 @@ void Generator::genClasses(){
 			<< QString("\twidth = %1;\n").arg((*o)->width)
 		<< "\tm_contents.setWidth(width);\n"
 		<< "\tm_contents.setHeight(height);\n";
+
+		if ((*o)->type == NODE)
+		{
+			Node *node = dynamic_cast<Node*>(*o);
+			for( int j=0; j<node->ports.size(); j++ ){ 
+				if( node->ports.at(j).type == "point" ){ 
+					out << QString("\tpointPorts << QPointF(%1, %2);\n")
+					    .arg(node->ports.at(j).vals.at(0))
+					    .arg(node->ports.at(j).vals.at(1));
+				}
+				else if (node->ports.at(j).type == "line" )
+				{
+					out << QString("\tlinePorts << QLineF(%1, %2, %3, %4);\n")
+					    .arg(node->ports.at(j).vals.at(0))
+					    .arg(node->ports.at(j).vals.at(1))
+					    .arg(node->ports.at(j).vals.at(2))
+					    .arg(node->ports.at(j).vals.at(3));
+				}
+			}
+		}
 		out  << "}\n\n";
 
 		//destructor
