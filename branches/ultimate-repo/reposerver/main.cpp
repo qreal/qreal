@@ -1,8 +1,7 @@
 /** @file main.cpp
  * 	@brief Главный файл сервера репозитория
  * */
-#include <QApplication>
-#include <QtCore>
+#include <QCoreApplication>
 #include <QTextCodec>
 
 #include "server.h"
@@ -12,7 +11,7 @@ int main(int argc, char *argv[])
 	QTextCodec *codec = QTextCodec::codecForName("UTF-8");
 	QTextCodec::setCodecForCStrings(codec);
 
-	QApplication app(argc, argv);
+	QCoreApplication app(argc, argv);
 
 	int port = 6666;
 	if (argc == 2) {
