@@ -363,8 +363,10 @@ bool Node::parsePorts(QDomElement &xml_element)
 
 			Port port;
 			port.type = "point";
-			port.vals << (qreal) portelem.attribute("x").toInt()/width;
-			port.vals << (qreal) portelem.attribute("y").toInt()/height;
+
+                        port.vals << (qreal) portelem.attribute("x").toInt()/width;
+                        port.vals << (qreal) portelem.attribute("y").toInt()/height;
+
 			ports << port;
 		}
 
@@ -385,11 +387,41 @@ bool Node::parsePorts(QDomElement &xml_element)
 
 			Port port;
 			port.type = "line";
-			port.vals << (qreal)portelem_start.attribute("startx").toInt()/width;
-			port.vals << (qreal)portelem_start.attribute("starty").toInt()/height;
-			port.vals << (qreal)portelem_end.attribute("endx").toInt()/width;
-			port.vals << (qreal)portelem_end.attribute("endy").toInt()/height;
-			ports << port;
+
+                        QString startx = portelem_start.attribute("startx");
+                        QString starty = portelem_start.attribute("starty");
+                        QString endx = portelem_end.attribute("endx");
+                        QString endy = portelem_end.attribute("endy");
+
+                        if ((startx.endsWith("a")) || (startx.endsWith("%")))
+                        {
+                            startx.remove(startx.length()-1,1);
+                            port.vals << (qreal)startx.toInt()/width;
+                        } else
+                            port.vals << (qreal)startx.toInt()/width;
+
+                        if ((starty.endsWith("a")) || (starty.endsWith("%")))
+                        {
+                            starty.remove(starty.length()-1,1);
+                            port.vals << (qreal)starty.toInt()/height;
+                        } else
+                            port.vals << (qreal)starty.toInt()/height;
+
+                        if ((endx.endsWith("a")) || (endx.endsWith("%")))
+                        {
+                            endx.remove(endx.length()-1,1);
+                            port.vals << (qreal)endx.toInt()/width;
+                        } else
+                            port.vals << (qreal)endx.toInt()/width;
+
+                        if ((endy.endsWith("a")) || (endy.endsWith("%")))
+                        {
+                             endy.remove(endy.length()-1,1);
+                             port.vals << (qreal)endy.toInt()/height;
+                        } else
+                             port.vals << (qreal)endy.toInt()/width;
+
+                         ports << port;
 		}
 		stream << "</picture>";
 		file.close();
