@@ -199,6 +199,11 @@ class RealRepoModel : public QAbstractItemModel
 		struct ElementOnDiagram {
 			QPoint position; /**< Расположение */
 			QPolygon configuration; /**< Конфигурация */
+			ElementOnDiagram operator=(ElementOnDiagram operand) {
+				position = operand.position;
+				configuration = operand.configuration;
+				return *this;
+			}
 		};
 
 		/** @brief Хэш элементов диаграмм */
@@ -280,4 +285,6 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Функция для прогона тестовых запросов к репозиторию */
 		void runTestQueries();
+
+		void removeChildren(QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count);
 };

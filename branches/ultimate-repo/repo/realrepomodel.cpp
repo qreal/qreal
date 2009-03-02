@@ -331,34 +331,36 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		return false;
 	}
 
-	if ( 1 ){ //type( parentItem ) == Container ) {
-
 		for ( int i = row; i < row+count; i++ ){
 //			qDebug() << "deleting element " << parentItem->children[i]->id;
 			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
 		}
 
-		beginRemoveRows(parent,row,row+count-1);
+	removeChildren(parent,parentItem,row,count);
 
-		for ( int i = row; i < row+count; i++ ) {
-			hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
+	hashChildCount[parentItem->id] -= count;
 
-			cleanupTree(parentItem->children.at(row));
-			delete parentItem->children.at(row);
+	return true;
+}
 
-			parentItem->children.removeAt(row);
-			hashChildren[parentItem->id].removeAt(row);
-		}
+void RealRepoModel::removeChildren( QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count )
+{
+	beginRemoveRows(parent,row,row+count-1);
 
-		for ( int i = 0; i < parentItem->children.size(); i++ )
-			parentItem->children[i]->row = i;
+	for ( int i = row; i < row+count; i++ ) {
+		hashTreeItems[parentItem->children.at(row)->id].removeAll(parentItem->children.at(row));
 
-		hashChildCount[parentItem->id] -= count;
+		cleanupTree(parentItem->children.at(row));
+		delete parentItem->children.at(row);
 
-		endRemoveRows();
+		parentItem->children.removeAt(row);
+		hashChildren[parentItem->id].removeAt(row);
 	}
 
-	return false;
+	for ( int i = 0; i < parentItem->children.size(); i++ )
+		parentItem->children[i]->row = i;
+
+	endRemoveRows();
 }
 
 QStringList RealRepoModel::mimeTypes () const
@@ -552,11 +554,8 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 						hashChildCount[id] = hashChildCount[newid];
 						if (hashDiagramElements[oldParent].contains(newid)) {
 							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
-							hashDiagramElements[parentItem->id][id].configuration =
-								hashDiagramElements[oldParent][newid].configuration;
-							hashDiagramElements[parentItem->id][id].position =
-								hashDiagramElements[oldParent][newid].position;
-						}
+							hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][newid];
+							}
 					} else
 						createItem(parentItem, id, newtype);
 				}
@@ -577,24 +576,25 @@ void RealRepoModel::changeParent(QPersistentModelIndex elem,QPersistentModelInde
 {
 	if (newParent!=parent(elem)) {
 		setData(elem, newPos, Unreal::PositionRole);
-		IdType oldParent = (static_cast<RepoTreeItem*>(parent(elem).internalPointer()))->id;
+
+		RepoTreeItem *item = static_cast<RepoTreeItem*>(elem.internalPointer());
+		IdType oldParent = item->parent->id;
 		RepoTreeItem *parentItem = static_cast<RepoTreeItem*>(newParent.internalPointer());
-		IdType newid = (static_cast<RepoTreeItem*>(elem.internalPointer()))->id;
-		TypeIdType newtype = hashTypes[newid];
-		QString name = hashNames[newid];
-		IdType id = newid;
+		IdType id = item->id;
+
 		beginInsertRows(newParent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
-		id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
-		createItem(parentItem, id, newtype, name);
-		hashChildCount[id] = hashChildCount[newid];
-		if (hashDiagramElements[oldParent].contains(newid)) {
-			hashDiagramElements[parentItem->id][id].configuration =
-				hashDiagramElements[oldParent][newid].configuration;
-			hashDiagramElements[parentItem->id][id].position =
-				hashDiagramElements[oldParent][newid].position;
+
+		id = repoClient->copyEntity(hashTypes[id], id, parentItem->id, oldParent);
+		createItem(parentItem, id, hashTypes[id], hashNames[id]);
+		if (hashDiagramElements[oldParent].contains(id)) {
+			hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][id];
 		}
 		endInsertRows();
-		removeRows((static_cast<RepoTreeItem*>(elem.internalPointer()))->row,1,parent(elem));
+		
+		if (item->children.size()!=0) {
+			removeChildren(elem,item,0,item->children.size());
+		}
+		removeRows(item->row,1,parent(elem));
 	}
 }
 
