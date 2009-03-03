@@ -24,7 +24,7 @@ using namespace UML;
 // Реквестирую ещё массу бозона Хиггса!
 #endif //M_PI
 
-/** @brief Индикатор перемещения свящи */
+/** @brief Индикатор перемещения связи */
 // static bool moving = false;
 
 EdgeElement::EdgeElement()

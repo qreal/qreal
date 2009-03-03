@@ -395,11 +395,39 @@ void Generator::genClasses(){
 				}
 				else if (node->ports.at(j).type == "line" )
 				{
-					out << QString("\tlinePorts << QLineF(%1, %2, %3, %4);\n")
-					    .arg(node->ports.at(j).vals.at(0))
-					    .arg(node->ports.at(j).vals.at(1))
-					    .arg(node->ports.at(j).vals.at(2))
-					    .arg(node->ports.at(j).vals.at(3));
+                                    out<<"\t{\n";
+                                        out << "\t\tstatLine ln;\n";
+                                        out << QString("\t\tln.line = QLineF(%1, %2, %3, %4);\n")
+                                            .arg(node->ports.at(j).vals.at(0))
+                                            .arg(node->ports.at(j).vals.at(1))
+                                            .arg(node->ports.at(j).vals.at(2))
+                                            .arg(node->ports.at(j).vals.at(3));
+                                        out << QString ("\t\tln.px1 = ");
+                                        if (node->ports.at(j).props.at(0))
+                                             out << "true;\n";
+                                        else
+                                             out << "false;\n";
+
+                                        out << QString("\t\tln.py1 = ");
+                                        if (node->ports.at(j).props.at(1))
+                                            out << "true; \n";
+                                        else
+                                            out << "false; \n";
+
+                                        out << QString("\t\tln.px2 = ");
+                                        if (node->ports.at(j).props.at(2))
+                                            out << "true; \n";
+                                        else
+                                            out << "false; \n";
+
+                                        out << QString("\t\tln.py2 = ");
+                                        if (node->ports.at(j).props.at(3))
+                                            out << "true; \n";
+                                        else
+                                            out << "false; \n";
+
+                                        out << QString("\t\tlinePorts << ln;\n");
+                                    out<<"\t};\n";
 				}
 			}
 		}

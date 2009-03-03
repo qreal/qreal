@@ -18,6 +18,7 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
+    class statLine;
 	class NodeElement : public Element
 	{
 		public:
@@ -86,8 +87,7 @@ namespace UML {
 			/** @brief Список точечных портов */
 			QList<QPointF> pointPorts;
 			/** @brief Список портов-линий */
-			QList<QLineF> linePorts;
-
+                        QList<statLine> linePorts;
 			/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 			QRectF m_contents;
 
@@ -108,7 +108,23 @@ namespace UML {
 
 			/** @brief Описание двухмерной трансформации объекта */
 			QTransform transform;
+                        QLineF newTransform(const statLine& port)  const;
+
 	};
+       /** @brief Описание линейного порта, реагирующего на абсолютные координаты */
+        class statLine
+        {
+            public:
+                QLineF line;
+                bool px1;
+                bool py1;
+                bool px2;
+                bool py2;
+            public:
+                statLine() {line = QLineF(0,0,0,0); px1 = false; px2 = false; py1 = false; py2 = false;}
+                operator QLineF () const {return line;}
+                void operator = (QLineF& l) {line = l; px1 = false; px2 = false; py1 = false; py2 = false;}
+        };
 };
 
 #endif

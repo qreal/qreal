@@ -166,9 +166,35 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	if ( id < pointPorts.size() )
 		return transform.map(pointPorts[iid]);
 	if ( id < pointPorts.size() + linePorts.size() )
-		return transform.map(linePorts.at(iid - pointPorts.size()).pointAt(id - 1.0 * iid));
+                return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
 	else
 		return QPointF(0,0);
+}
+
+QLineF NodeElement::newTransform(const statLine& port) const
+{
+    float x1,x2,y1,y2;
+    if (port.px1)
+        x1=port.line.x1()*100;
+    else
+       x1=port.line.x1()*contentsRect().width();
+
+    if (port.py1)
+        y1=port.line.y1()*100;
+    else
+        y1=port.line.y1()*contentsRect().height();
+
+    if (port.px2)
+        x2=port.line.x2()*100;
+    else
+        x2=port.line.x2()*contentsRect().width();
+
+    if (port.py2)
+        y2=port.line.y2()*100;
+    else
+        y2=port.line.y2()*contentsRect().height();
+
+    return QLineF(x1,y1,x2,y2);
 }
 
 qreal NodeElement::getPortId(const QPointF &location) const
@@ -183,21 +209,21 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		ps.setWidth(kvadratik);
 
 		QPainterPath path;
-		path.moveTo(transform.map(linePorts[i].p1()));
-		path.lineTo(transform.map(linePorts[i].p2()));
+                path.moveTo(newTransform(linePorts[i]).p1());
+                path.lineTo(newTransform(linePorts[i]).p2());
 
 		path = ps.createStroke(path);
 		if ( path.contains(location) )
 			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999,
-						QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length()
-						/ linePorts[i].length() ) );
+                                                QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
+                                                / newTransform(linePorts[i]).length() ) );
 	}
 
 	if (pointPorts.size()!=0) {
 		int numMinDistance = 0;
-		qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
+                qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
 		for( int i = 0; i < pointPorts.size(); i++ ) {
-			if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
+                        if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
 				minDistance = QLineF( pointPorts[i], transform.inverted().map(location) ).length();
 			}
@@ -205,11 +231,11 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		return 1.0 * numMinDistance;
 	} else if (linePorts.size()!=0) {
 		int numMinDistance = 0;
-		qreal minDistance = QLineF( linePorts[0].p1(), transform.inverted().map(location) ).length();
+                qreal minDistance = QLineF( QLineF(linePorts[0]).p1(), transform.inverted().map(location) ).length();
 		for( int i = 0; i < linePorts.size(); i++ ) {
-			if (QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length()<minDistance) {
+                        if (QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
-				minDistance = QLineF( linePorts[i].p1(), transform.inverted().map(location) ).length();
+                                minDistance = QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length();
 			}
 		}
 		return 1.0 * (numMinDistance + pointPorts.size());
@@ -238,7 +264,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if (option->levelOfDetail >= 0.5)
 	{
 		if ( option->state & QStyle::State_Selected )
-		{
+                {
 			painter->save();
 
 			QBrush b;

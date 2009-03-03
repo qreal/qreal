@@ -393,37 +393,77 @@ bool Node::parsePorts(QDomElement &xml_element)
                         QString endx = portelem_end.attribute("endx");
                         QString endy = portelem_end.attribute("endy");
 
-                        if ((startx.endsWith("a")) || (startx.endsWith("%")))
+                        if (startx.endsWith("a"))
                         {
-                            startx.remove(startx.length()-1,1);
-                            port.vals << (qreal)startx.toInt()/width;
-                        } else
-                            port.vals << (qreal)startx.toInt()/width;
-
-                        if ((starty.endsWith("a")) || (starty.endsWith("%")))
+                            startx.remove(startx.length() - 1, 1);
+                            port.vals << (qreal)startx.toInt() / width;
+                            port.props << true;
+                        } else if (startx.endsWith("%"))
                         {
-                            starty.remove(starty.length()-1,1);
-                            port.vals << (qreal)starty.toInt()/height;
-                        } else
-                            port.vals << (qreal)starty.toInt()/height;
-
-                        if ((endx.endsWith("a")) || (endx.endsWith("%")))
+                            startx.remove(startx.length() - 1, 1);
+                            port.vals << (qreal)startx.toInt() / 100;
+                            port.props << false;
+                        }  else
                         {
-                            endx.remove(endx.length()-1,1);
-                            port.vals << (qreal)endx.toInt()/width;
-                        } else
-                            port.vals << (qreal)endx.toInt()/width;
+                             port.vals << (qreal)startx.toInt()/width;
+                             port.props << false;
+                        }
 
-                        if ((endy.endsWith("a")) || (endy.endsWith("%")))
+
+                        if (starty.endsWith("a"))
                         {
-                             endy.remove(endy.length()-1,1);
-                             port.vals << (qreal)endy.toInt()/height;
-                        } else
-                             port.vals << (qreal)endy.toInt()/width;
+                            starty.remove(starty.length() - 1, 1);
+                            port.vals << (qreal)starty.toInt() / height;
+                            port.props << true;
+                        } else if (starty.endsWith("%"))
+                        {
+                            starty.remove(starty.length() - 1, 1);
+                            port.vals << (qreal)starty.toInt() / 100;
+                            port.props << false;
+                        }  else
+                        {
+                             port.vals << (qreal)starty.toInt() / height;
+                             port.props << false;
+                        }
 
-                         ports << port;
+
+                        if (endx.endsWith("a"))
+                        {
+                            endx.remove(endx.length() - 1, 1);
+                            port.vals << (qreal)endx.toInt() / width;
+                            port.props << true;
+                        } else if (endx.endsWith("%"))
+                        {
+                            endx.remove(endx.length() - 1, 1);
+                            port.vals << (qreal)endx.toInt() / 100;
+                            port.props << false;
+                        }  else
+                        {
+                             port.vals << (qreal)endx.toInt() / width;
+                             port.props << false;
+                        }
+
+
+                        if (endy.endsWith("a"))
+                        {
+                            endy.remove(endy.length() - 1, 1);
+                            port.vals << (qreal)endy.toInt() / height;
+                            port.props << true;
+                        } else if (endy.endsWith("%"))
+                        {
+                            endy.remove(endy.length() - 1, 1);
+                            port.vals << (qreal)endy.toInt() / 100;
+                            port.props << false;
+                        }  else
+                        {
+                             port.vals << (qreal)endy.toInt() / height;
+                             port.props << false;
+                        }
+
+
+                        ports << port;
 		}
-		stream << "</picture>";
+                stream << "</picture>\n";
 		file.close();
 		
 	} else
