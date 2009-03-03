@@ -104,6 +104,7 @@ MainWindow::MainWindow() : model(0)
 MainWindow::~MainWindow()
 {
 	delete connDialog;
+	closeRepo();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
