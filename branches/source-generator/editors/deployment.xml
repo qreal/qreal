@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+ï»¿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
  <include>class_metamodel</include>
@@ -90,7 +90,7 @@
    </logic>
   </node>
   <node id="dplDeploymentSpecification" name="DeploymentSpecification" >
-   <!--âðîäå òîêî ãðàôèêà îñòàëàñü-->
+   <!--Ð²Ñ€Ð¾Ð´Ðµ Ñ‚Ð¾ÐºÐ¾ Ð³Ñ€Ð°Ñ„Ð¸ÐºÐ° Ð¾ÑÑ‚Ð°Ð»Ð°ÑÑŒ-->
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
@@ -135,7 +135,7 @@
     <properties>
      <property type="string" name="location" />
      <property type="bool" name="execute" />
-     <!-- ãäå äåë-ñÿ ýë-ò òóò èëè äàëåêî-->
+     <!-- Ð³Ð´Ðµ Ð´ÐµÐ»-ÑÑ ÑÐ»-Ñ‚ Ñ‚ÑƒÑ‚ Ð¸Ð»Ð¸ Ð´Ð°Ð»ÐµÐºÐ¾-->
     </properties>
     <associations>
      <assoc_ref idref="dplDeployment2" />
@@ -184,7 +184,7 @@
      </repo_info>
     </view>
    </graphics>
-   <!-- îáû÷íûé íîäå íàâåðõó òîêî íàäïèñü device-->
+   <!-- Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ð½Ð¾Ð´Ðµ Ð½Ð°Ð²ÐµÑ€Ñ…Ñƒ Ñ‚Ð¾ÐºÐ¾ Ð½Ð°Ð´Ð¿Ð¸ÑÑŒ device-->
    <logic>
     <generalizations>
      <generalization>
@@ -237,7 +237,7 @@
      </repo_info>
     </view>
    </graphics>
-   <!-- îáû÷íûé íîäå òîêî íàâåðõó åêñåêóòèîíåíâèðîíìåíò -->
+   <!-- Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ð½Ð¾Ð´Ðµ Ñ‚Ð¾ÐºÐ¾ Ð½Ð°Ð²ÐµÑ€Ñ…Ñƒ ÐµÐºÑÐµÐºÑƒÑ‚Ð¸Ð¾Ð½ÐµÐ½Ð²Ð¸Ñ€Ð¾Ð½Ð¼ÐµÐ½Ñ‚ -->
    <logic>
     <generalizations>
      <generalization>
@@ -260,7 +260,7 @@
    </logic>
   </node>
   <edge id="dplManifestation" name="Manifestation" >
-   <!-- òîæå òèðå-->
+   <!-- Ñ‚Ð¾Ð¶Ðµ Ñ‚Ð¸Ñ€Ðµ-->
    <logic>
     <generalizations>
      <generalization>
@@ -275,7 +275,7 @@
    </logic>
   </edge>
   <node id="dplNode" name="Node" >
-   <!-- ãëàâíûé êóáèê-->
+   <!-- Ð³Ð»Ð°Ð²Ð½Ñ‹Ð¹ ÐºÑƒÐ±Ð¸Ðº-->
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
@@ -369,7 +369,7 @@
      </ports>
     </view>
    </graphics>
-   <!-- câ-âà àðòèôàêòîâ-->
+   <!-- cÐ²-Ð²Ð° Ð°Ñ€Ñ‚Ð¸Ñ„Ð°ÐºÑ‚Ð¾Ð²-->
    <logic>
     <generalizations>
      <generalization>
@@ -383,7 +383,7 @@
    </logic>
   </node>
   <edge id="dplCommunicationPath" name="CommunicationPath" >
-   <!--ïðîñòî ëèíèÿ-->
+   <!--Ð¿Ñ€Ð¾ÑÑ‚Ð¾ Ð»Ð¸Ð½Ð¸Ñ-->
    <logic>
     <generalizations>
      <generalization>
@@ -394,7 +394,7 @@
    </logic>
   </edge>
   <edge id="dplDeployment" name="Deployment" >
-   <!-- òèðå-òèðå ñòðåëî÷êà-->
+   <!-- Ñ‚Ð¸Ñ€Ðµ-Ñ‚Ð¸Ñ€Ðµ ÑÑ‚Ñ€ÐµÐ»Ð¾Ñ‡ÐºÐ°-->
    <logic>
     <generalizations>
      <generalization>
@@ -413,7 +413,7 @@
    </logic>
   </edge>
   <edge id="dplDeployment2" name="Deployment2" >
-   <!-- òèðå-òèðå ñòðåëî÷êà + îãðàíè÷åíèå äîëæíû íàõ-ñÿ â 1 íîäå-->
+   <!-- Ñ‚Ð¸Ñ€Ðµ-Ñ‚Ð¸Ñ€Ðµ ÑÑ‚Ñ€ÐµÐ»Ð¾Ñ‡ÐºÐ° + Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ðµ Ð´Ð¾Ð»Ð¶Ð½Ñ‹ Ð½Ð°Ñ…-ÑÑ Ð² 1 Ð½Ð¾Ð´Ðµ-->
    <logic>
     <generalizations>
      <generalization>

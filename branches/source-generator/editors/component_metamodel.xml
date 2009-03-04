@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+ï»¿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
  <include>class_metamodel</include>
@@ -53,14 +53,14 @@
    </graphics>
    <logic>
     <associations>
-     <!--èëè ëó÷øå container?-->
+     <!--Ð¸Ð»Ð¸ Ð»ÑƒÑ‡ÑˆÐµ container?-->
      <association role="port" id="cmpaPort" >
       <begin idref="cmpnComponent" />
      </association>
     </associations>
    </logic>
   </node>
-  <!--à íàäïèñü (name) ïîìåñòèòñÿ â øåéï?-->
+  <!--Ð° Ð½Ð°Ð´Ð¿Ð¸ÑÑŒ (name) Ð¿Ð¾Ð¼ÐµÑÑ‚Ð¸Ñ‚ÑÑ Ð² ÑˆÐµÐ¹Ð¿?-->
   <node id="cmpnProvidedInterface" name="ProvidedInterface" >
    <graphics>
     <view>
@@ -92,8 +92,8 @@
     </properties> -->
    </logic>
   </node>
-  <!--à íàäïèñü (name) ïîìåñòèòñÿ â øåéï?-->
-  <!--åñëè îíè íàøëè äðóã äðóãà, òî íàäïèñü äîëæíà ïèñàòüñÿ òîëüêî îäèí ðàç-->
+  <!--Ð° Ð½Ð°Ð´Ð¿Ð¸ÑÑŒ (name) Ð¿Ð¾Ð¼ÐµÑÑ‚Ð¸Ñ‚ÑÑ Ð² ÑˆÐµÐ¹Ð¿?-->
+  <!--ÐµÑÐ»Ð¸ Ð¾Ð½Ð¸ Ð½Ð°ÑˆÐ»Ð¸ Ð´Ñ€ÑƒÐ³ Ð´Ñ€ÑƒÐ³Ð°, Ñ‚Ð¾ Ð½Ð°Ð´Ð¿Ð¸ÑÑŒ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð¿Ð¸ÑÐ°Ñ‚ÑŒÑÑ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ñ€Ð°Ð·-->
   <node id="cmpnRequiredInterface" name="RequiredInterface" >
    <graphics>
     <view>

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+ï»¿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <namespace>UML 2.1</namespace>
  <include>basicbehaviors_metamodel</include>
@@ -18,7 +18,7 @@
        <html:line stroke="black" y1="21" x1="1" y2="21" stroke-width="2" x2="41" />
        <html:line stroke="black" y1="21" x1="41" y2="11" stroke-width="2" x2="51" />
        <html:line stroke="black" y1="11" x1="51" y2="1" stroke-width="2" x2="51" />
-       <!--ïðîñòî òóò èìÿ äèàãðàììû, íàïèñàííîå ðÿäîì ñ sd ìîæåò íå âëåçòü â îòâåäåííîå ìåñòî, à ïîòîìó, íàäî óìåòü åãî ðàñòÿãèâàòü-->
+       <!--Ð¿Ñ€Ð¾ÑÑ‚Ð¾ Ñ‚ÑƒÑ‚ Ð¸Ð¼Ñ Ð´Ð¸Ð°Ð³Ñ€Ð°Ð¼Ð¼Ñ‹, Ð½Ð°Ð¿Ð¸ÑÐ°Ð½Ð½Ð¾Ðµ Ñ€ÑÐ´Ð¾Ð¼ Ñ sd Ð¼Ð¾Ð¶ÐµÑ‚ Ð½Ðµ Ð²Ð»ÐµÐ·Ñ‚ÑŒ Ð² Ð¾Ñ‚Ð²ÐµÐ´ÐµÐ½Ð½Ð¾Ðµ Ð¼ÐµÑÑ‚Ð¾, Ð° Ð¿Ð¾Ñ‚Ð¾Ð¼Ñƒ, Ð½Ð°Ð´Ð¾ ÑƒÐ¼ÐµÑ‚ÑŒ ÐµÐ³Ð¾ Ñ€Ð°ÑÑ‚ÑÐ³Ð¸Ð²Ð°Ñ‚ÑŒ-->
       </html:html>
      </repo_info>
     </view>
@@ -67,7 +67,7 @@
   <node id="tmnnStateInvariant" name="StateInvariant" >
    <graphics>
     <view>
-     <!--è êàê îíî ðèñóåòñÿ?-->
+     <!--Ð¸ ÐºÐ°Ðº Ð¾Ð½Ð¾ Ñ€Ð¸ÑÑƒÐµÑ‚ÑÑ?-->
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:text_from_repo name="name" />
@@ -94,7 +94,7 @@
   <node id="tmnnLifeline" name="Lifeline" >
    <graphics>
     <view>
-     <!--íàäî ðèñîâàòü æèðíûì-->
+     <!--Ð½Ð°Ð´Ð¾ Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ð¶Ð¸Ñ€Ð½Ñ‹Ð¼-->
      <line_type type="solidLine" />
     </view>
    </graphics>

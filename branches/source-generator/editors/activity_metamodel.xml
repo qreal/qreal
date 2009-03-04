@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+ï»¿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
  <include>basicbehaviors_metamodel</include>
@@ -126,7 +126,7 @@
     </associatios>
    </logic>
   </node>
-  <!--òîëüêî îäèí âõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnForkNodeWithObjectFlows" name="ForkNodeWithObjectFlows" >
    <graphics>
     <view>
@@ -147,7 +147,7 @@
     </associations>
    </logic>
   </node>
-  <!--òîëüêî îäèí âõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnJoinNodeWithControlFlows" name="JoinNodeWithControlFlows" >
    <graphics>
     <view>
@@ -168,7 +168,7 @@
     </associations>
    </logic>
   </node>
-  <!--òîëüêî îäèí âûõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ‹Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnJoinNodeWithObjectFlows" name="JoinNodeWithObjectFlows" >
    <graphics>
     <view>
@@ -189,7 +189,7 @@
     </associations>
    </logic>
   </node>
-  <!--òîëüêî îäèí âûõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ‹Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnDecisionNode" name="DecisionNode" >
    <graphics>
     <view>
@@ -212,7 +212,7 @@
     </associations>
    </logic>
   </node>
-  <!--òîëüêî îäèí âõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnMergeNode" name="MergeNode" >
    <graphics>
     <view>
@@ -238,7 +238,7 @@
     </associations>
    </logic>
   </node>
-  <!--òîëüêî îäèí âûõîäèò-->
+  <!--Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð´Ð¸Ð½ Ð²Ñ‹Ñ…Ð¾Ð´Ð¸Ñ‚-->
   <node id="actnFlowFinalNode" name="FlowFinalNode" >
    <graphics>
     <view>
@@ -349,9 +349,9 @@
     </properties> -->
    </logic>
   </node>
-  <!--íå ïîéìó, ÷òî çà ëèíêè â íåãî âõîäÿò :(-->
-  <!--à ìîæåò áûòü è òàêîå, ÷òî â íåãî íèêòî íå âõîäèò ;)-->
-  <!--èõ æå åùå ìîæíî çåðêàëüíî îòðàæàòü-->
+  <!--Ð½Ðµ Ð¿Ð¾Ð¹Ð¼Ñƒ, Ñ‡Ñ‚Ð¾ Ð·Ð° Ð»Ð¸Ð½ÐºÐ¸ Ð² Ð½ÐµÐ³Ð¾ Ð²Ñ…Ð¾Ð´ÑÑ‚ :(-->
+  <!--Ð° Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¸ Ñ‚Ð°ÐºÐ¾Ðµ, Ñ‡Ñ‚Ð¾ Ð² Ð½ÐµÐ³Ð¾ Ð½Ð¸ÐºÑ‚Ð¾ Ð½Ðµ Ð²Ñ…Ð¾Ð´Ð¸Ñ‚ ;)-->
+  <!--Ð¸Ñ… Ð¶Ðµ ÐµÑ‰Ðµ Ð¼Ð¾Ð¶Ð½Ð¾ Ð·ÐµÑ€ÐºÐ°Ð»ÑŒÐ½Ð¾ Ð¾Ñ‚Ñ€Ð°Ð¶Ð°Ñ‚ÑŒ-->
   <node id="actnTimeEvent" name="TimeEvent" >
    <graphics>
     <view>
@@ -371,7 +371,7 @@
     </generalizations>
    </logic>
   </node>
-  <!--íå ïîéìó, ÷òî çà ëèíêè èç íåãî âûõîäÿò :(-->
+  <!--Ð½Ðµ Ð¿Ð¾Ð¹Ð¼Ñƒ, Ñ‡Ñ‚Ð¾ Ð·Ð° Ð»Ð¸Ð½ÐºÐ¸ Ð¸Ð· Ð½ÐµÐ³Ð¾ Ð²Ñ‹Ñ…Ð¾Ð´ÑÑ‚ :(-->
   <node id="actnObjectNode" name="ObjectNode" >
    <graphics>
     <view>
@@ -448,7 +448,7 @@
      </container>
      <container>
       <contains idref="actnObjectNode" role="node" />
-      <!--îí äîëæåí ðèñîâàòüñÿ íà ãðàíèöå-->
+      <!--Ð¾Ð½ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒÑÑ Ð½Ð° Ð³Ñ€Ð°Ð½Ð¸Ñ†Ðµ-->
      </container>
     </containers>
    </logic>
@@ -519,7 +519,7 @@
     </properties> -->
    </logic>
   </node>
-  <!--èõ æå åùå ìîæíî çåðêàëüíî îòðàæàòü-->
+  <!--Ð¸Ñ… Ð¶Ðµ ÐµÑ‰Ðµ Ð¼Ð¾Ð¶Ð½Ð¾ Ð·ÐµÑ€ÐºÐ°Ð»ÑŒÐ½Ð¾ Ð¾Ñ‚Ñ€Ð°Ð¶Ð°Ñ‚ÑŒ-->
   <node id="actnActivityPartition" name="ActivityPartition" >
    <graphics>
     <view>
@@ -576,8 +576,8 @@
     </containers>
    </logic>
   </node>
-  <!--òîãäà edge òóò ðèñóåòñÿ êàê ìîëíèÿ %)-->
-  <!--è ïðÿìîóãîëüíèê äîëæåí áûòü ïðåðûâèñòîé ëèíèåé-->
+  <!--Ñ‚Ð¾Ð³Ð´Ð° edge Ñ‚ÑƒÑ‚ Ñ€Ð¸ÑÑƒÐµÑ‚ÑÑ ÐºÐ°Ðº Ð¼Ð¾Ð»Ð½Ð¸Ñ %)-->
+  <!--Ð¸ Ð¿Ñ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð¸ÑÑ‚Ð¾Ð¹ Ð»Ð¸Ð½Ð¸ÐµÐ¹-->
   <node id="actnExpansionNode" name="ExpansionNode" >
    <graphics>
     <view>
@@ -633,14 +633,14 @@
      <container>
       <contains idref="actnExpansionNode" role="inputElement" />
       <contains idref="actnExpansionNode" role="outputElement" />
-      <!--íî îí èõ íà ãðàíèöå äîëæåí ðàñìåñòèòü-->
+      <!--Ð½Ð¾ Ð¾Ð½ Ð¸Ñ… Ð½Ð° Ð³Ñ€Ð°Ð½Ð¸Ñ†Ðµ Ð´Ð¾Ð»Ð¶ÐµÐ½ Ñ€Ð°ÑÐ¼ÐµÑÑ‚Ð¸Ñ‚ÑŒ-->
       <contains idref="actActivityNode" role="activityNode" />
       <contains idref="actObjectFlow" />
      </container>
     </containres>
    </logic>
   </node>
-  <!--è ïðÿìîóãîëüíèê äîëæåí áûòü ïðåðûâèñòîé ëèíèåé-->
+  <!--Ð¸ Ð¿Ñ€ÑÐ¼Ð¾ÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº Ð´Ð¾Ð»Ð¶ÐµÐ½ Ð±Ñ‹Ñ‚ÑŒ Ð¿Ñ€ÐµÑ€Ñ‹Ð²Ð¸ÑÑ‚Ð¾Ð¹ Ð»Ð¸Ð½Ð¸ÐµÐ¹-->
   <node id="actStructuredActivityNode" name="StructuredActivityNode" >
    <graphics>
     <view>
@@ -649,7 +649,7 @@
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text>‹‹structured››</html:text>
+       <html:text>â€¹â€¹structuredâ€ºâ€º</html:text>
       </html:html>
      </repo_info>
     </view>
@@ -875,6 +875,6 @@
     </associations>
    </logic>
   </edge>
-  <!--âîò òîëüêî îíà ìîëíèåé äîëæíà áûòü-->
+  <!--Ð²Ð¾Ñ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð¾Ð½Ð° Ð¼Ð¾Ð»Ð½Ð¸ÐµÐ¹ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ-->
  </editor>
 </metamodel>

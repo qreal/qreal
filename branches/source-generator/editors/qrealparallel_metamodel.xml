@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+ï»¿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>sequence_metamodel</include>
  <namespace>UML 2.1</namespace>
@@ -6,7 +6,7 @@
   <enumType id="qrThreadNameType" name="ThreadNameType" >
    <enumValue>number</enumValue>
    <enumValue>string</enumValue>
-   <!--Îïðåäåëåííàÿ ñòðîêà = "other"-->
+   <!--ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ° = "other"-->
   </enumType>
   <node id="qrpnThread" name="Thread" >
    <graphics>
