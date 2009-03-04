@@ -100,42 +100,42 @@
     </containers>
    </logic>
   </node>
-  <!--
-    <node name="CombinedFragment" id="qrpnCombinedFragment">
-      <graphics>
-        <view>
-          <svg_shape>
-            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
-              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;" />
-              <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
-              <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
-              <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
-              <svg:line x1="1" y1="46" x2="16" y2="46" stroke="black" stroke-width="2" />
-              <svg:line x1="26" y1="46" x2="41" y2="46" stroke="black" stroke-width="2" />
-              <svg:line x1="51" y1="46" x2="66" y2="46" stroke="black" stroke-width="2" />
-              <svg:line x1="76" y1="46" x2="91" y2="46" stroke="black" stroke-width="2" />
-              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">alt</svg:text>
-              <svg:text x="5" y="60" font-weight="bold" style="font-size:12pt;fill:#000000;">[else]</svg:text>
-            </svg:svg>
-          </svg_shape>
-          <repo_info>
-            <html:html xmlns:html="http://www.w3.org/html/">
-              <html:text_from_repo name="alternative"/>
-            </html:html>
-          </repo_info>
-        </view>
-      </graphics>
-      <logic>
-        <generalizations>
-          <generalization>
-            <parent parent_id="sqnnInteractionFragment"></parent>
-          </generalization>
-        </generalizations>
-        <properties>
-          <property name="alternative" type="string"></property>
-        </properties>
-      </logic>
-    </node>
+  <!--
+    <node name="CombinedFragment" id="qrpnCombinedFragment">
+      <graphics>
+        <view>
+          <svg_shape>
+            <svg:svg width="100" xmlns:xlink="http://www.w3.org/1999/xlink" height="100" version="1.0">
+              <svg:rect x="1" y="1" width="98" height="88" style="fill:white;stroke:black;stroke-width:2;" />
+              <svg:line x1="1" y1="21" x2="26" y2="21" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="21" x2="36" y2="11" stroke="black" stroke-width="2" />
+              <svg:line x1="36" y1="11" x2="36" y2="1" stroke="black" stroke-width="2" />
+              <svg:line x1="1" y1="46" x2="16" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="26" y1="46" x2="41" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="51" y1="46" x2="66" y2="46" stroke="black" stroke-width="2" />
+              <svg:line x1="76" y1="46" x2="91" y2="46" stroke="black" stroke-width="2" />
+              <svg:text x="6" y="16" font-weight="bold" style="font-size:12pt;fill:#000000;">alt</svg:text>
+              <svg:text x="5" y="60" font-weight="bold" style="font-size:12pt;fill:#000000;">[else]</svg:text>
+            </svg:svg>
+          </svg_shape>
+          <repo_info>
+            <html:html xmlns:html="http://www.w3.org/html/">
+              <html:text_from_repo name="alternative"/>
+            </html:html>
+          </repo_info>
+        </view>
+      </graphics>
+      <logic>
+        <generalizations>
+          <generalization>
+            <parent parent_id="sqnnInteractionFragment"></parent>
+          </generalization>
+        </generalizations>
+        <properties>
+          <property name="alternative" type="string"></property>
+        </properties>
+      </logic>
+    </node>
     -->
   <edge id="qrMessage" name="Message" >
    <graphics>

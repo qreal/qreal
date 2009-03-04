@@ -150,9 +150,9 @@
       <parent parent_id="krneRelationship" />
      </generalization>
     </generalizations>
-    <!--				<properties>
-					<property name="fromMultiplicity" type="string" />
-					<property name="toMultiplicity" type="string" />
+    <!--				<properties>
+					<property name="fromMultiplicity" type="string" />
+					<property name="toMultiplicity" type="string" />
 				</properties>								-->
    </logic>
   </edge>

@@ -23,7 +23,7 @@
        <html:line stroke="black" y1="21" x1="1" y2="21" stroke-width="2" x2="41" />
        <html:line stroke="black" y1="21" x1="41" y2="11" stroke-width="2" x2="51" />
        <html:line stroke="black" y1="11" x1="51" y2="1" stroke-width="2" x2="51" />
-       <!--������ ��� ��� ���������, ���������� ����� � sd ����� �� ������ � ���������� �����, � ������, ���� ����� ��� �����������-->
+       <!-- просто тут имя диаграммы, написанное рядом с sd может не влезть в отведенное место, а потому, надо уметь его растягивать -->
       </html:html>
      </repo_info>
     </view>
@@ -158,7 +158,7 @@
       <enum idref="sqnCombinedFragmentKind" />
      </property>
      <property type="string" name="alternative" />
-     <!--��� ���� ������ � alt-->
+     <!-- оно есть только у alt-->
     </properties>
    </logic>
   </node>
@@ -189,7 +189,7 @@
     <view>
      <line_type type="solidLine" />
      <end_type type="arrow" />
-     <!--��������� �����������-->
+     <!--стрелочка закрашенная-->
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:b>
@@ -268,7 +268,7 @@
      <container>
       <contains idref="sqnnOccurenceSpecification" role="start" />
       <contains idref="sqnnOccurenceSpecification" role="finish" />
-      <!--��� ������ ���� ���� � �� �� OccurenceSpecification-->
+      <!--это должны быть одни и те же OccurenceSpecification-->
      </container>
     </containers>
    </logic>
