@@ -7,6 +7,7 @@
 #include "realrepomodel.h"
 #include "realreporoles.h"
 #include "editorviewscene.h"
+#include <QVBoxLayout>
 using namespace UML;
 
 NodeElement::NodeElement()
@@ -23,65 +24,96 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 }
 
+void NodeElement::changeName(QString name)
+{
+     QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+      im->setData(dataIndex, name, Qt::DisplayRole);
+
+
+}
+
 void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 {
-	if ( isSelected() ) {
-		if ( QRectF(m_contents.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
-			dragState = TopLeft;
-		} else if ( QRectF(m_contents.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
-			dragState = TopRight;
-		} else if ( QRectF(m_contents.bottomRight(),QSizeF(-12,-12)).contains(event->pos()) ) {
-			dragState = BottomRight;
-		} else if ( QRectF(m_contents.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
-			dragState = BottomLeft;
-		} else
-			Element::mousePressEvent(event);
-	} else
-		Element::mousePressEvent(event);
-}
+    if ( isSelected() ) {
+                if ( QRectF(m_contents.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
+                        dragState = TopLeft;
+                } else if ( QRectF(m_contents.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
+                        dragState = TopRight;
+                } else if ( QRectF(m_contents.bottomRight(),QSizeF(-12,-12)).contains(event->pos()) ) {
+                        dragState = BottomRight;
+                } else if ( QRectF(m_contents.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
+                        dragState = BottomLeft;
+                } else
+                        Element::mousePressEvent(event);
+        } else
+                Element::mousePressEvent(event);
+
+        if (event->button() == Qt::RightButton)
+        {
+             QWidget *w = new QWidget();
+             w->move(400,100);
+             w->setWindowTitle("Name");
+             w->setAttribute(Qt::WA_DeleteOnClose, true);
+             w->setWindowFlags(Qt::FramelessWindowHint);
+             QLineEdit *lineEdit = new QLineEdit();
+
+             QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
+             QObject::connect (lineEdit, SIGNAL(returnPressed()), w, SLOT(close()));
+             QVBoxLayout *layout = new QVBoxLayout(w);
+             layout->addWidget(lineEdit);
+             w->setLayout(layout);
+
+             w->show();
+
+             event->accept();
+
+        }
+    }
+
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	if ( dragState == None ) {
-		Element::mouseMoveEvent(event);
-	} else {
-			QRectF newcontents = m_contents;
+        if ( dragState == None ) {
+                Element::mouseMoveEvent(event);
+        } else {
+                        QRectF newcontents = m_contents;
 
-			switch ( dragState ) {
-				case TopLeft:       newcontents.setTopLeft(event->pos());		break;
-				case Top:           newcontents.setTop(event->pos().y());		break;
-				case TopRight:      newcontents.setTopRight(event->pos());		break;
-				case Left:          newcontents.setLeft(event->pos().x());		break;
-				case Right:         newcontents.setRight(event->pos().x());		break;
-				case BottomLeft:    newcontents.setBottomLeft(event->pos());	break;
-				case Bottom:        newcontents.setBottom(event->pos().y());	break;
-				case BottomRight:   newcontents.setBottomRight(event->pos());	break;
-				case None:														break;
-			}
+                        switch ( dragState ) {
+                                case TopLeft:       newcontents.setTopLeft(event->pos());		break;
+                                case Top:           newcontents.setTop(event->pos().y());		break;
+                                case TopRight:      newcontents.setTopRight(event->pos());		break;
+                                case Left:          newcontents.setLeft(event->pos().x());		break;
+                                case Right:         newcontents.setRight(event->pos().x());		break;
+                                case BottomLeft:    newcontents.setBottomLeft(event->pos());	break;
+                                case Bottom:        newcontents.setBottom(event->pos().y());	break;
+                                case BottomRight:   newcontents.setBottomRight(event->pos());	break;
+                                case None:														break;
+                        }
 
-			if (event->modifiers() & Qt::ShiftModifier)
-			{
-				qreal size = std::max(newcontents.width(), newcontents.height());
-				newcontents.setWidth(size);
-				newcontents.setHeight(size);
-			}
+                        if (event->modifiers() & Qt::ShiftModifier)
+                        {
+                                qreal size = std::max(newcontents.width(), newcontents.height());
+                                newcontents.setWidth(size);
+                                newcontents.setHeight(size);
+                        }
 
-			if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
-				prepareGeometryChange();
+                        if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
+                                prepareGeometryChange();
 
-				m_contents = newcontents;
+                                m_contents = newcontents;
 
-				setPos(pos() + m_contents.topLeft());
-				m_contents.translate(-m_contents.topLeft());
+                                setPos(pos() + m_contents.topLeft());
+                                m_contents.translate(-m_contents.topLeft());
 
-				transform.reset();
-				transform.scale(m_contents.width(), m_contents.height());
+                                transform.reset();
+                                transform.scale(m_contents.width(), m_contents.height());
 
-				foreach (EdgeElement *edge, edgeList)
-					edge->adjustLink();
-			}
-	}
+                                foreach (EdgeElement *edge, edgeList)
+                                        edge->adjustLink();
+                        }
+        }
 }
+
 
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {

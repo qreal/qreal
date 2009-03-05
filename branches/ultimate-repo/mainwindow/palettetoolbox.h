@@ -63,6 +63,7 @@ class PaletteToolbox : public QTabWidget
 				QIcon m_icon;
 				/** @brief Надпись элемента */
 				QString m_text;
+
 		};
 
 		void checkFirstLaunch();

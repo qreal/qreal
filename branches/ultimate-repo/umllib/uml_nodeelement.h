@@ -11,6 +11,7 @@
 
 #include <QtGui/QWidget>
 
+
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
 
@@ -19,8 +20,10 @@ namespace UML {
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
     class statLine;
-	class NodeElement : public Element
-	{
+        class NodeElement :  public QObject, public Element
+        {
+            Q_OBJECT
+
 		public:
 			/** @brief Конструктор */
 			NodeElement();
@@ -66,6 +69,10 @@ namespace UML {
 
 			void setPortsVisible(bool value);
 
+//                        QString PutName();
+           public slots:
+                        void changeName(QString name);
+
 		protected:
 
 			bool portsVisible;
@@ -75,8 +82,9 @@ namespace UML {
 			/** @brief Обработать событие отпускания кнопки мыши */
 			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
 			/** @brief Обработать событие нажатия кнопки мыши */
-			void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
+                        void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
 
+                       //bool sceneEvent ( QEvent * event );
 			/** @brief Обработать изменение данных объекта
 			 *	@brief @return Измененные данные
 			 * */
@@ -90,6 +98,8 @@ namespace UML {
                         QList<statLine> linePorts;
 			/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 			QRectF m_contents;
+
+
 
 		private:
 

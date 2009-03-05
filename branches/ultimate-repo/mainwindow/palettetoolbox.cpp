@@ -5,6 +5,7 @@
 
 #include "palettetoolbox.h"
 #include "realrepoinfo.h"
+#include <QMessageBox>
 
 PaletteToolbox::DraggableElement::DraggableElement(TypeIdType const &classid, QWidget *parent)
 	: QWidget(parent)
@@ -128,9 +129,9 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << -1;				// uuid
-	stream << child->id();		// type
+        stream << child->id();  		// type
 	stream << -1;				// old parent
-	stream << QString("(anon element)");
+        stream << QString("(anon element)");
 	stream << QPointF(0,0);
 
 	QMimeData *mimeData = new QMimeData;
