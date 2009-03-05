@@ -173,7 +173,11 @@ const QPointF NodeElement::getPortPos(qreal id) const
 
 QLineF NodeElement::newTransform(const statLine& port) const
 {
-    float x1, x2, y1, y2;
+    float x1 = 0.0;
+    float x2 = 0.0;
+    float y1 = 0.0;
+    float y2 = 0.0;
+
     if (port.px1)
         x1 = port.line.x1() * 100;
     else
