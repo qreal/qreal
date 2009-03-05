@@ -608,9 +608,10 @@ IntQStringPair QRealRepoServerThread::handleGetPosition(QStringVector const &par
 			resp = QString("%1;%2").arg(p.x()).arg(p.y());
 		} else if ( mRepoData->getLink(id) ){
 			resp = obj->getChildPos(id);
-		} else 
-			qDebug() << __FUNCTION__ << "Wrong analyseType result";
-		return ReportError(ERR_INCORRECT_REQUEST);
+		}else{ 
+			qDebug() << __FUNCTION__ << "Wrong analyseType result";			
+			return ReportError(ERR_INCORRECT_REQUEST);
+		}	
 	}
 	mLog += QString(", sending position for obj %1 - [%2]").arg(id).arg(resp);
 	return ReportSuccess(resp);
