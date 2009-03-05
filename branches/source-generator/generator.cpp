@@ -402,25 +402,25 @@ void Generator::genClasses(){
                                             .arg(node->ports.at(j).vals.at(1))
                                             .arg(node->ports.at(j).vals.at(2))
                                             .arg(node->ports.at(j).vals.at(3));
-                                        out << QString ("\t\tln.px1 = ");
+                                        out << QString ("\t\tln.prop_x1 = ");
                                         if (node->ports.at(j).props.at(0))
                                              out << "true;\n";
                                         else
                                              out << "false;\n";
 
-                                        out << QString("\t\tln.py1 = ");
+                                        out << QString("\t\tln.prop_y1 = ");
                                         if (node->ports.at(j).props.at(1))
                                             out << "true; \n";
                                         else
                                             out << "false; \n";
 
-                                        out << QString("\t\tln.px2 = ");
+                                        out << QString("\t\tln.prop_x2 = ");
                                         if (node->ports.at(j).props.at(2))
                                             out << "true; \n";
                                         else
                                             out << "false; \n";
 
-                                        out << QString("\t\tln.py2 = ");
+                                        out << QString("\t\tln.prop_y2 = ");
                                         if (node->ports.at(j).props.at(3))
                                             out << "true; \n";
                                         else

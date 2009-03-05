@@ -116,14 +116,14 @@ namespace UML {
         {
             public:
                 QLineF line;
-                bool px1;
-                bool py1;
-                bool px2;
-                bool py2;
+                bool prop_x1;
+                bool prop_y1;
+                bool prop_x2;
+                bool prop_y2;
             public:
-                statLine() {line = QLineF(0,0,0,0); px1 = false; px2 = false; py1 = false; py2 = false;}
+                statLine() {line = QLineF(0,0,0,0); prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
                 operator QLineF () const {return line;}
-                void operator = (QLineF& l) {line = l; px1 = false; px2 = false; py1 = false; py2 = false;}
+                void operator = (QLineF& l) {line = l; prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
         };
 };
 

@@ -178,22 +178,22 @@ QLineF NodeElement::newTransform(const statLine& port) const
     float y1 = 0.0;
     float y2 = 0.0;
 
-    if (port.px1)
+    if (port.prop_x1)
         x1 = port.line.x1() * 100;
     else
        x1 = port.line.x1() * contentsRect().width();
 
-    if (port.py1)
+    if (port.prop_y1)
         y1 = port.line.y1() * 100;
     else
         y1 = port.line.y1() * contentsRect().height();
 
-    if (port.px2)
+    if (port.prop_x2)
         x2 = port.line.x2() * 100;
     else
         x2 = port.line.x2() * contentsRect().width();
 
-    if (port.py2)
+    if (port.prop_y2)
         y2 = port.line.y2() * 100;
     else
         y2 = port.line.y2() * contentsRect().height();
