@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WD=../source-generator
+WD=source-generator
 GEN=$WD/generated
 
 pushd $WD

@@ -1,5 +1,5 @@
 @echo off
-set WD=..\source-generator
+set WD=source-generator
 set GEN=%WD%\generated
 
 cd %WD%
