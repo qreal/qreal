@@ -23,7 +23,7 @@ if %ERRORLEVEL% neq 0 (
 	exit /B 1
 )
 
-cd ..\ultimate-repo
+cd ..
 
 md umllib\generated
 xcopy /y /e /c /h /r %GEN%\umllib\generated\* umllib\generated
