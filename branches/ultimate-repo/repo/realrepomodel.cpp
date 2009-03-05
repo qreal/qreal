@@ -331,20 +331,11 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		return false;
 	}
 
-		for ( int i = row; i < row+count; i++ ){
-//			qDebug() << "deleting element " << parentItem->children[i]->id;
-			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
-		}
+	for ( int i = row; i < row+count; i++ ){
+//		qDebug() << "deleting element " << parentItem->children[i]->id;
+		repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
+	}
 
-	removeChildren(parent,parentItem,row,count);
-
-	hashChildCount[parentItem->id] -= count;
-
-	return true;
-}
-
-void RealRepoModel::removeChildren( QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count )
-{
 	beginRemoveRows(parent,row,row+count-1);
 
 	for ( int i = row; i < row+count; i++ ) {
@@ -361,6 +352,10 @@ void RealRepoModel::removeChildren( QPersistentModelIndex parent, RepoTreeItem* 
 		parentItem->children[i]->row = i;
 
 	endRemoveRows();
+
+	hashChildCount[parentItem->id] -= count;
+
+	return true;
 }
 
 QStringList RealRepoModel::mimeTypes () const
@@ -574,29 +569,39 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 
 void RealRepoModel::changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos)
 {
-	if (newParent!=parent(elem)) {
+	QPersistentModelIndex oldParent = parent(elem);
+	if (newParent!=oldParent) {
 		setData(elem, newPos, Unreal::PositionRole);
 
 		RepoTreeItem *item = static_cast<RepoTreeItem*>(elem.internalPointer());
-		IdType oldParent = item->parent->id;
-		RepoTreeItem *parentItem = static_cast<RepoTreeItem*>(newParent.internalPointer());
-		IdType id = item->id;
+		RepoTreeItem *oldParentItem = item->parent;
+		RepoTreeItem *newParentItem = static_cast<RepoTreeItem*>(newParent.internalPointer());
 
-		beginInsertRows(newParent, hashChildCount[parentItem->id], hashChildCount[parentItem->id]);
+		repoClient->reparentEntity(item->id,newParentItem->id,oldParentItem->id);
 
-		id = repoClient->copyEntity(hashTypes[id], id, parentItem->id, oldParent);
-		createItem(parentItem, id, hashTypes[id], hashNames[id]);
-		if (hashDiagramElements[oldParent].contains(id)) {
-			hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][id];
+		beginRemoveRows(oldParent,item->row,item->row);
+		oldParentItem->children.removeAt(item->row);
+		hashChildren[oldParentItem->id].removeAt(item->row);	
+		hashChildCount[oldParentItem->id]--;					
+		for ( int i = 0; i < oldParentItem->children.size(); i++ )
+			oldParentItem->children[i]->row = i;
+		endRemoveRows();
+
+		beginInsertRows(newParent,hashChildCount[newParentItem->id],
+						hashChildCount[newParentItem->id]);
+		item->parent = newParentItem;
+		item->row = newParentItem->children.size();
+		newParentItem->children.append(item);
+		hashChildren[newParentItem->id].append(item->id);
+		hashChildCount[newParentItem->id]++;
+		if (hashDiagramElements[oldParentItem->id].contains(item->id)) {
+			hashDiagramElements[newParentItem->id][item->id] = 
+				hashDiagramElements[oldParentItem->id][item->id];
 		}
 		endInsertRows();
-		
-		if (item->children.size()!=0) {
-			removeChildren(elem,item,0,item->children.size());
-		}
-		removeRows(item->row,1,parent(elem));
 	}
 }
+
 
 RealRepoModel::ElementType RealRepoModel::type(const RepoTreeItem *item) const
 {
@@ -631,47 +636,38 @@ dbg;
 	root->children.clear();
 }
 
-void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type)
+void RealRepoModel::commonCreateItem( RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type )
 {
-dbg;
-//	qDebug() << "\n\n====================";
+	//	qDebug() << "\n\n====================";
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
 	item->row = parentItem->children.size();
 
-// 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
+	// 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
 	parentItem->children.append(item);
 	hashTreeItems[id].append(item);
 
-	hashNames[id] = "anonymous";
 	hashTypes[id] = type;
-	hashChildCount[id] = 0;
 
 	hashChildren[parentItem->id].append(id);
 	hashChildCount[parentItem->id]++;
 	qDebug() << "parent: " << parentItem->id << ", childcount: " << hashChildCount[parentItem->id];
-//	qDebug() << "parent: " << parentItem->id << ", id: " << id;
+	//	qDebug() << "parent: " << parentItem->id << ", id: " << id;
+}
+
+void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type)
+{
+dbg;
+	commonCreateItem(parentItem,id,type);
+	hashNames[id] = "anonymous";
+	hashChildCount[id] = 0;
 }
 
 void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type, QString name){
 dbg;
-//	qDebug() << "\n\n==================== 2";
-	RepoTreeItem *item = new RepoTreeItem;
-	item->parent = parentItem;
-	item->id = id;
-	item->row = parentItem->children.size();
-
-	parentItem->children.append(item);
-	hashTreeItems[id].append(item);
-
+	commonCreateItem(parentItem,id,type);
 	hashNames[id] = name;
-	hashTypes[id] = type;
-
-	hashChildren[parentItem->id].append(id);
-	hashChildCount[parentItem->id]++;
-	qDebug() << "parent: " << parentItem->id << ", childcount: " << hashChildCount[parentItem->id];
-//	qDebug() << "parent: " << parentItem->id << ", id: " << id;
 }
 
 void RealRepoModel::updateProperties(IdType const & /*id*/)

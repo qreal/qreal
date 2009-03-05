@@ -286,5 +286,5 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Функция для прогона тестовых запросов к репозиторию */
 		void runTestQueries();
 
-		void removeChildren(QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count);
+		void commonCreateItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type);
 };
