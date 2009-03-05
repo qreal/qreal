@@ -159,10 +159,17 @@ dbg;
 	return resp;
 }
 
+IdType RealRepoClient::reparentEntity(IdType const &id, IdType const &newParent, IdType const &oldParent)
+{dbg;
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_REPARENT_ENTITY).arg(id).arg(newParent).arg(oldParent);
+	QString resp = sendData(data);
+	return resp;
+	
+}
+
 IdType RealRepoClient::createObjectWithParent(TypeIdType const &type, QString name, IdType const &parent)
 {
 dbg;
-	qDebug() << "creating a new entity: " << type << name << parent;
 	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent);
 	QString resp = sendData(data);
 	return resp;

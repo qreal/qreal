@@ -91,6 +91,9 @@ public:
 					IdType const &oldParent,
 					bool full = false
 					);
+	IdType reparentEntity( IdType const &id, 
+					IdType const &newParent, 
+					IdType const &oldParent );
 	/** @brief Создать элемент с указанным родителем
 	 *	@brief @return Идентификатор созданного объекта
 	 * */

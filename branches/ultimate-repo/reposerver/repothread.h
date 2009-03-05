@@ -62,6 +62,7 @@ namespace repoServer
 		/** @brief Обработать команду "Поместить сущность на другую диаграмму"
 		*   @brief return Результат выполнения операции
 		*/
+		IntQStringPair handleReparentEntity(QStringVector const &params);
 		IntQStringPair handleCopyEntity(QStringVector const &params);
 		IntQStringPair handleFullCopyEntity(QStringVector const &params);
 		/** @brief Обработать команду "Удалить сущность"

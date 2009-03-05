@@ -26,6 +26,9 @@
 #include <QtCore/QMetaProperty>
 #include <QtGui/QSpinBox>
 
+// FIXME
+const int INT_MAX = 666;
+
 Property::Property(const QString& name /*= QString()*/, QObject* propertyObject /*= 0*/, QObject* parent /*= 0*/) : QObject(parent), 
 m_propertyObject(propertyObject)
 {

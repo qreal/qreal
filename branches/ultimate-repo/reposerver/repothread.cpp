@@ -238,6 +238,37 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 	return ReportSuccess(id);
 }
 
+IntQStringPair QRealRepoServerThread::handleReparentEntity(QStringVector const &params)
+{
+	if (!IsParamsNumberCorrect(params, "ReparentEntity", 3))
+		return ReportError(ERR_INCORRECT_PARAMS);
+
+	IdType const id = params[0];
+	IdType const newParentId = params[1];
+	IdType const oldParentId = params[2];
+
+	if (Object * newparent = mRepoData->getObject(newParentId))
+	{
+		if( Object *oldparent = mRepoData->getObject(oldParentId) ){
+			if( mRepoData->getObject(id) ){
+				oldparent->removeNodeChild(id);
+				newparent->addNodeChild(id);
+				if( oldparent ){
+					newparent->setChildConfiguration(id, oldparent->getChildConfiguration(id));
+					newparent->setChildCoord(id, oldparent->getChildCoord(id));
+				}
+			}
+			else if( mRepoData->getLink(id) ){
+				oldparent->removeEdgeChild(id);
+				newparent->addEdgeChild(id);
+			}
+		}	
+	}
+
+	mLog += QString(" element with id: %1, old parent: %2, new parent:  %3").arg(id).arg(oldParentId).arg(newParentId);
+	return ReportSuccess(id);
+}
+
 IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &params)
 {
 	if (!IsParamsNumberCorrect(params, "CopyEntity", 4))
@@ -269,7 +300,7 @@ IntQStringPair QRealRepoServerThread::handleCopyEntity(QStringVector const &para
 		}
 	}
 
-	mLog += QString(" element  with id: %1, new parent --  %3").arg(id)/*.arg(type)*/.arg(newParentId);
+	mLog += QString(" element  with id: %1, new parent --  %2").arg(id).arg(newParentId);
 	return ReportSuccess(id);
 }
 
@@ -571,14 +602,14 @@ IntQStringPair QRealRepoServerThread::handleGetPosition(QStringVector const &par
 	IdType id = params[0];
 	IdType parent = params[1];
 	QString resp = "";
-	if (Object * obj = mRepoData->getObject(parent))
+	if (Object * obj = mRepoData->getObject(parent)){
 		if( mRepoData->getObject(id) ){
 			QPoint p = obj->getChildCoord(id);
 			resp = QString("%1;%2").arg(p.x()).arg(p.y());
 		} else if ( mRepoData->getLink(id) ){
 			resp = obj->getChildPos(id);
-	} else {
-		qDebug() << __FUNCTION__ << "Wrong analyseType result";
+		} else 
+			qDebug() << __FUNCTION__ << "Wrong analyseType result";
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
 	mLog += QString(", sending position for obj %1 - [%2]").arg(id).arg(resp);
@@ -848,7 +879,7 @@ IntQStringPair QRealRepoServerThread::handleGetAllObjects(QStringVector const &p
 	return ReportSuccess(resp);
 }
 
-IntQStringPair QRealRepoServerThread::handleClearAll(QStringVector const &params)
+IntQStringPair QRealRepoServerThread::handleClearAll(QStringVector const &/*params*/)
 {
 	foreach (IdType id, mRepoData->getAllObjects())
 	{
@@ -901,6 +932,11 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_COPY_ENTITY:
 		{
 			resp = handleCopyEntity(command.toVector());
+			break;
+		}
+		case CMD_REPARENT_ENTITY:
+		{
+			resp = handleReparentEntity(command.toVector());
 			break;
 		}
 		case CMD_FULLCOPY_ENTITY:
