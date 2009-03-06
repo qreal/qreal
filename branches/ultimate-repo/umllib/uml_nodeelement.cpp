@@ -32,6 +32,7 @@ void NodeElement::changeName(QString name)
 
 }
 
+
 void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
 {
     if ( isSelected() ) {
@@ -51,17 +52,20 @@ void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
         if (event->button() == Qt::RightButton)
         {
              QWidget *w = new QWidget();
-             w->move(400,100);
-             w->setWindowTitle("Name");
              w->setAttribute(Qt::WA_DeleteOnClose, true);
              w->setWindowFlags(Qt::FramelessWindowHint);
-             QLineEdit *lineEdit = new QLineEdit();
+             QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
+           
 
              QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
              QObject::connect (lineEdit, SIGNAL(returnPressed()), w, SLOT(close()));
+
              QVBoxLayout *layout = new QVBoxLayout(w);
              layout->addWidget(lineEdit);
+             layout->setContentsMargins(0, 0, 0, 0);
              w->setLayout(layout);
+             w->setFixedWidth(boundingRect().width());
+             w->move(pos().x()+240, pos().y()+60);
 
              w->show();
 
