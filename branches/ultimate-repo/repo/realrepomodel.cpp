@@ -47,6 +47,7 @@ dbg;
 	undoView->close();
 	delete undoView;
 	delete undoStack;
+	delete repoClient;
 }
 
 QModelIndex RealRepoModel::createDefaultTopLevelItem() {
