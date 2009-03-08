@@ -72,8 +72,6 @@ private:
 			QString m_text;
 	};
 
-	void checkFirstLaunch();
-
 	QVector<QWidget*> mTabs;
 	QVector<QString> mTabNames;
 	QVector<bool> mShownTabs;
