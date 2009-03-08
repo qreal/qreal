@@ -31,13 +31,22 @@ PaletteToolbox::DraggableElement::DraggableElement(TypeIdType const &classid, QW
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QTabWidget(parent)
+	: QWidget(parent)
 {
 	RealRepoInfo info;
 
-	setTabPosition(QTabWidget::West);
-	setTabShape(QTabWidget::Triangular);
-	//  setAcceptDrops(true);
+	mLayout = new QVBoxLayout;
+	mLayout->setSpacing(6);
+	mLayout->setMargin(0);
+
+	mComboBox = new QComboBox;
+	mLayout->addWidget(mComboBox);
+
+	mScrollArea = new QScrollArea;
+	mLayout->addWidget(mScrollArea);
+
+	setLayout(mLayout);
+
 	QStringList categories = info.getObjectCategories();
 	mTabs.resize(categories.size());
 	mTabNames.resize(categories.size());
@@ -47,32 +56,32 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 
 	unsigned i = 0;
 	foreach (QString category, categories) {
-		QScrollArea *scroller = new QScrollArea(this);
-		QWidget *tab = new QWidget(this);
+		QWidget *tab = new QWidget;
 		QVBoxLayout *layout = new QVBoxLayout(tab);
 
 		layout->setSpacing(0);
 		layout->setContentsMargins(0, 0, 0, 0);
 
 		foreach(TypeIdType classid, info.getObjects(category)) {
-			DraggableElement *element = new DraggableElement(classid, this);
+			DraggableElement *element = new DraggableElement(classid);
 			layout->addWidget(element);
 		}
 
 		tab->setLayout(layout);
-		scroller->setWidget(tab);
 
 		Q_ASSERT(!category.isEmpty());
 
-		mTabs[i] = scroller;
+		mTabs[i] = tab;
 		mTabNames[i] = category;
 		mShownTabs[i] = !settings.contains(category)
 			|| settings.value(category).toString() == "Show";
 
-		addTab(scroller, category);
 		++i;
 	}
+
 	setEditors(mShownTabs);
+	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+	mComboBox->setCurrentIndex(-1);
 }
 
 PaletteToolbox::~PaletteToolbox()
@@ -83,21 +92,55 @@ PaletteToolbox::~PaletteToolbox()
 			settings.setValue(mTabNames[i], "Show");
 		else
 			settings.setValue(mTabNames[i], "Hide");
+
+	mScrollArea->takeWidget();
+	delete mScrollArea;
+	delete mComboBox;
+	delete mLayout;
+}
+
+void PaletteToolbox::setActiveEditor(int comboIndex)
+{
+	mScrollArea->takeWidget(); // Save current editor from extermination.
+	if (comboIndex == -1) return;
+	if (mComboToRepo[comboIndex] == -1) return;
+	mScrollArea->setWidget(mTabs[mComboToRepo[comboIndex]]);
 }
 
 void PaletteToolbox::setEditors(QVector<bool> const &editors)
 {
-	Q_ASSERT(editors.count() == mTabs.count());
-	setUpdatesEnabled(false);
+	int oldComboIndex, oldIndex, curComboIndex = -1;
+	int newComboIndex = -1;
+
+	oldComboIndex = mComboBox->currentIndex();
+	oldIndex = (oldComboIndex==-1)?-1:mComboToRepo[oldComboIndex];
+
+	mComboBox->clear();
+	mComboToRepo.clear();
+	mRepoToCombo.clear();
+
+	// Rebuld vectors
 	for (int i = 0; i < editors.size(); ++i)
 	{
-		if (editors[i] && indexOf(mTabs[i]) == -1)
-			addTab(mTabs[i], mTabNames[i]);
-		if (!editors[i] && indexOf(mTabs[i]) != -1)
-			removeTab(indexOf(mTabs[i]));
+		if (editors[i])
+		{
+			curComboIndex++;
+			mComboToRepo << i;
+			mRepoToCombo << curComboIndex;
+		}
+		else
+			mRepoToCombo << -1;
 		mShownTabs[i] = editors[i];
 	}
-	setUpdatesEnabled(true);
+
+	// Fill Combobox
+	for (int i = 0; i < editors.size(); ++i)
+		if (editors[i])
+			mComboBox->addItem(mTabNames[i]);
+
+	if (oldIndex != -1)
+		newComboIndex = mRepoToCombo[oldIndex];
+	mComboBox->setCurrentIndex(newComboIndex);
 }
 
 QVector<bool> PaletteToolbox::getSelectedTabs() const
@@ -151,17 +194,3 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	else
 		child->show();
 }
-
-void PaletteToolbox::wheelEvent(QWheelEvent *event)
-{
-	if (tabBar()->underMouse())
-	{
-		if (event->delta() < 0 && currentIndex() < count())
-			setCurrentIndex(currentIndex() + 1);
-		else if (event->delta() > 0 && currentIndex() > 0)
-			setCurrentIndex(currentIndex() - 1);
-		event->accept();
-	} else
-		event->ignore();
-}
-

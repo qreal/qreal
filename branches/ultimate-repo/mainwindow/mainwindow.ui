@@ -220,19 +220,7 @@
    <attribute name="dockWidgetArea" >
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_5" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
-      <number>6</number>
-     </property>
-     <property name="margin" >
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="PaletteToolbox" name="paletteToolbox" />
-     </item>
-    </layout>
-   </widget>
+   <widget class="PaletteToolbox" name="paletteToolbox" />
   </widget>
   <widget class="QToolBar" name="viewToolbar" >
    <property name="windowTitle" >
