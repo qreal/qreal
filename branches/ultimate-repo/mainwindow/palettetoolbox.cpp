@@ -91,8 +91,10 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 
 PaletteToolbox::~PaletteToolbox()
 {
+	int i;
+
 	QSettings settings("Tercom", "QReal");
-	for (int i = 0; i < mTabNames.count(); ++i)
+	for (i = 0; i < mTabNames.count(); ++i)
 		if (mShownTabs[i])
 			settings.setValue(mTabNames[i], "Show");
 		else
@@ -102,6 +104,9 @@ PaletteToolbox::~PaletteToolbox()
 	delete mScrollArea;
 	delete mComboBox;
 	delete mLayout;
+
+	for (i = 0; i < mTabs.count(); i++)
+		delete mTabs[i];
 }
 
 void PaletteToolbox::setActiveEditor(int comboIndex)

@@ -901,7 +901,6 @@ void Generator::genRealRepoInfo(){
 		"}\n\n";
 
 	// constructor
-
 	out2 << "RealRepoInfo::RealRepoInfo()\n"
 			"{\n"
 			"\tinitStaticData();\n"
