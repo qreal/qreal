@@ -22,6 +22,8 @@ using namespace UML;
 /** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
 // Реквестирую ещё массу бозона Хиггса!
+// Here you are: The God's particle energy (in GeV)
+#define HIGGS_BOSON_MASS_APPROX 251
 #endif //M_PI
 
 /** @brief Индикатор перемещения связи */
