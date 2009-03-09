@@ -79,9 +79,14 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		++i;
 	}
 
+	mComboBox->setUpdatesEnabled(false);
 	setEditors(mShownTabs);
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+
+	// This sequence changes current editor, so mComboBox will issue signal
 	mComboBox->setCurrentIndex(-1);
+	mComboBox->setCurrentIndex(0);
+	mComboBox->setUpdatesEnabled(true);
 }
 
 PaletteToolbox::~PaletteToolbox()
@@ -103,7 +108,6 @@ void PaletteToolbox::setActiveEditor(int comboIndex)
 {
 	mScrollArea->takeWidget(); // Save current editor from extermination.
 	if (comboIndex == -1) return;
-	if (mComboToRepo[comboIndex] == -1) return;
 	mScrollArea->setWidget(mTabs[mComboToRepo[comboIndex]]);
 }
 
@@ -111,7 +115,10 @@ void PaletteToolbox::setEditors(QVector<bool> const &editors)
 {
 	int oldComboIndex, oldIndex, curComboIndex = -1;
 	int newComboIndex = -1;
+	bool old_updatesEnabled;
 
+	old_updatesEnabled = mComboBox->updatesEnabled();
+	mComboBox->setUpdatesEnabled(false);
 	oldComboIndex = mComboBox->currentIndex();
 	oldIndex = (oldComboIndex==-1)?-1:mComboToRepo[oldComboIndex];
 
@@ -140,7 +147,12 @@ void PaletteToolbox::setEditors(QVector<bool> const &editors)
 
 	if (oldIndex != -1)
 		newComboIndex = mRepoToCombo[oldIndex];
+
+	// Setting empty editor reduces usability, so avoid it
+	if (newComboIndex == -1)
+		newComboIndex = 0;
 	mComboBox->setCurrentIndex(newComboIndex);
+	mComboBox->setUpdatesEnabled(old_updatesEnabled);
 }
 
 QVector<bool> PaletteToolbox::getSelectedTabs() const
