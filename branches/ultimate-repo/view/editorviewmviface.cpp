@@ -87,7 +87,9 @@ void EditorViewMViface::reset()
 	scene->clearScene();
 
 	// so that our diagram be nicer
-	scene->removeItem(scene->addRect(QRect(-1000,-1000,2000,2000)));
+	QGraphicsRectItem *rect = scene->addRect(QRect(-1000,-1000,2000,2000));
+	scene->removeItem(rect);
+	delete rect;
 
 	if ( model() )
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
