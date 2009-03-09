@@ -178,6 +178,7 @@ void SdfRenderer::rectangle(QDomElement &element)
 void SdfRenderer::polygon(QDomElement &element)
 {
 	parsestyle(element);
+	// FIXME: init points array here
 	QPoint *points = NULL;
 	int n = element.attribute("n").toInt();
 	if (!element.isNull())
@@ -187,6 +188,7 @@ void SdfRenderer::polygon(QDomElement &element)
 	if (points != NULL)
 	{
 		painter->drawConvexPolygon(points, n);
+		delete[] points;
 	}
 	defaultstyle();
 }
