@@ -22,10 +22,13 @@ public:
 	explicit PaletteToolbox(QWidget *parent = 0);
 	~PaletteToolbox();
 
+	/** @brief Установить список видимых редакторов */
 	void setEditors(QVector<bool> const &editors);
+	/** @brief Получить список видимых редакторов */
 	QVector<bool> getSelectedTabs() const;
 
 public slots:
+	/** @brief Сделать данный редактор активным */
 	void setActiveEditor(int);
 
 protected:
@@ -72,11 +75,18 @@ private:
 			QString m_text;
 	};
 
+	/** @brief Массив содержимого редакторов */
 	QVector<QWidget*> mTabs;
+	/** @brief Массив имен редакторов */
 	QVector<QString> mTabNames;
+	/** @brief Массив свойства видимости редакторов */
 	QVector<bool> mShownTabs;
+	/** @brief Основной layout */
 	QVBoxLayout *mLayout;
+	/** @brief Выпадающий список видимых редаторов */
 	QComboBox *mComboBox;
+	/** @brief Содержимое активного редактора */
 	QScrollArea *mScrollArea;
+	/** @brief Прямое и обратное отображения между элементами выпадающего списка и списка всех редакторов */
 	QVector<int> mComboToRepo, mRepoToCombo;
 };
