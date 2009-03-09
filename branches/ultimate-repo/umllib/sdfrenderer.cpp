@@ -31,11 +31,11 @@ bool SdfRenderer::load(const QString &filename)
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
-	QTextStream in(&file);
-	QString content = in.readAll();
-	if (!doc.setContent(content))
+	if (!doc.setContent(&file))
+	{
+		file.close();
 		return false;
-
+	}
 	file.close();
 
 	QDomElement docElem = doc.documentElement();
