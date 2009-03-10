@@ -58,7 +58,7 @@ void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
            
 
              QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
-             QObject::connect (lineEdit, SIGNAL(returnPressed()), w, SLOT(close()));
+             QObject::connect (lineEdit, SIGNAL(editingFinished()), w, SLOT(close()));
 
              QVBoxLayout *layout = new QVBoxLayout(w);
              layout->addWidget(lineEdit);
