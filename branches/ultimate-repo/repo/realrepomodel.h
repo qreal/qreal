@@ -184,10 +184,6 @@ class RealRepoModel : public QAbstractItemModel
 		QHash<IdType, QString> hashNames;
 		/** @brief Хэш типов элементов */
 		QHash<IdType, TypeIdType> hashTypes;
-		/** @brief Хэш дочерних элементов */
-		QHash<IdType, qRealTypes::IdTypeList> hashChildren;
-		/** @brief Хэш числа дочерних элементов */
-		QHash<IdType, int> hashChildCount;
 
 		/** @brief Хэш значений свойств элементов */
 		QHash<IdType, QMap<int, QVariant> > hashElementProps;
@@ -229,7 +225,7 @@ class RealRepoModel : public QAbstractItemModel
 						);
 		/** @brief Создать ссылку на уже имеющийся элемент
 		 * */
-		void createItem(RepoTreeItem * item, /**< Элемент */
+		RepoTreeItem* createItem(RepoTreeItem * item, /**< Элемент */
 						IdType const &id, /**< Идентификатор */
 						TypeIdType const &type, /**< Тип */
 						QString name /**< Имя */
@@ -286,5 +282,13 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Функция для прогона тестовых запросов к репозиторию */
 		void runTestQueries();
 
-		void commonCreateItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type);
+		RepoTreeItem* commonCreateItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type);
+
+		void removeChildrenRows(QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count);
+
+		RepoTreeItem* copyElement(QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem);
+
+		void copyChildren(QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem);
+
+		void removeChildren(QPersistentModelIndex elem,RepoTreeItem* item);
 };
