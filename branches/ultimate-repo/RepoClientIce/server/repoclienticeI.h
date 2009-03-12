@@ -8,6 +8,7 @@
 #include "../../repo/realrepoclient.h"
 
 using namespace std;
+using namespace qRealTypes;
 
 namespace RepoIce
 {
@@ -31,7 +32,7 @@ public:
     virtual void setMetaTypeIce(::RepoIce::MetaTypeIce, const Ice::Current&);
     virtual ::RepoIce::QIntList getObjects(const Ice::Current&);
 
-		RealTypeIceI (QRealTypes::RealType);
+		RealTypeIceI (RealType);
 
 private:
 	RealType realType;
@@ -80,7 +81,7 @@ public:
     virtual void removeIncomingLink(int, const Ice::Current&);
     virtual void removeOutcomingLink(int, const Ice::Current&);
 
-		RealObjectIceI (QRealTypes::RealObject);
+		RealObjectIceI (RealObject);
 
 private:
 	RealObject realObject;
@@ -107,7 +108,7 @@ public:
     virtual int getToId(const Ice::Current&);
     virtual void setToId(int, const Ice::Current&);
 
-		RealLinkIceI (QRealTypes::RealLink);
+		RealLinkIceI (RealLink);
 
 private:
 	RealLink realLink;
@@ -116,6 +117,8 @@ private:
 class RepoClientIceI : virtual public RepoClientIce
 {
 public:
+		RepoClientIceI();
+		virtual ~RepoClientIceI();
     virtual ::RepoIce::QIntList getAllTypes(const Ice::Current&);
     virtual ::RepoIce::QIntList getTypesByMetaTypeIce(::RepoIce::MetaTypeIce, const Ice::Current&);
     virtual ::RepoIce::RealTypeIcePrx getTypeById(int, const Ice::Current&);
@@ -142,7 +145,7 @@ public:
 		static Ice::ObjectAdapterPtr _adapter;
 
 protected:
-	RealRepoClient repoClient;
+		RealRepoClient *repoClient;
 };
 }
 

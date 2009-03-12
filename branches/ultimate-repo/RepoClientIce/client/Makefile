@@ -1,6 +1,6 @@
 CSC=gmcs
-CSCFLAGS=/reference:icecs.dll /lib:/usr/lib/cli/libzeroc-ice-3.2/ 
-#/lib:/opt/IceCS-3.2.1/bin/
+#CSCFLAGS=/reference:icecs.dll /lib:/usr/lib/cli/libzeroc-ice-3.2/ 
+CSCFLAGS=/reference:icecs.dll /lib:/opt/IceCS-3.2.1/bin/
 
 all: client.exe
 client.exe: client.cs repoclientice.cs
