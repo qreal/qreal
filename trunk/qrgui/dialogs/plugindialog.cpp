@@ -9,11 +9,14 @@
 #include <QTreeWidgetItem>
 #include <QHeaderView>
 
+#include <QtDebug>
+
 #include "plugindialog.h"
 
 #include "editorinterface.h"
+#include "editormanager.h"
 
-PluginDialog::PluginDialog(const QString &path, const QStringList &fileNames,
+PluginDialog::PluginDialog(const EditorManager &mgr,
                            QWidget *parent) :
     QDialog(parent),
     label(new QLabel),
@@ -44,65 +47,26 @@ PluginDialog::PluginDialog(const QString &path, const QStringList &fileNames,
     featureIcon.addPixmap(style()->standardPixmap(QStyle::SP_FileIcon));
 
     setWindowTitle(tr("Plugin Information"));
-    findPlugins(path, fileNames);
-}
 
-void PluginDialog::findPlugins(const QString &path,
-                               const QStringList &fileNames)
-{
-    label->setText(tr("QReal found the following plugins\n"
-                      "(looked in %1):")
-                   .arg(QDir::toNativeSeparators(path)));
+	foreach (QUrl editor, mgr.editors()) {
+		QTreeWidgetItem *pluginItem = new QTreeWidgetItem(treeWidget);
+		pluginItem->setText(0, mgr.friendlyName(editor));
+		treeWidget->setItemExpanded(pluginItem, true);
 
-    const QDir dir(path);
+		QFont boldFont = pluginItem->font(0);
+		boldFont.setBold(true);
+		pluginItem->setFont(0, boldFont);
 
-    foreach (QObject *plugin, QPluginLoader::staticInstances())
-        populateTreeWidget(plugin, tr("%1 (Static Plugin)")
-                                   .arg(plugin->metaObject()->className()));
+		foreach (QUrl diagram, mgr.diagrams(editor)) {
+			QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
+			interfaceItem->setText(0, mgr.friendlyName(diagram));
+			interfaceItem->setIcon(0, interfaceIcon);
 
-    foreach (QString fileName, fileNames) {
-        QPluginLoader loader(dir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
-        if (plugin)
-            populateTreeWidget(plugin, fileName);
-    }
-}
-
-void PluginDialog::populateTreeWidget(QObject *plugin, const QString &text)
-{
-    QTreeWidgetItem *pluginItem = new QTreeWidgetItem(treeWidget);
-    pluginItem->setText(0, text);
-    treeWidget->setItemExpanded(pluginItem, true);
-
-    QFont boldFont = pluginItem->font(0);
-    boldFont.setBold(true);
-    pluginItem->setFont(0, boldFont);
-
-    if (plugin) {
-//        BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
-//        if (iBrush)
-//            addItems(pluginItem, "BrushInterface", iBrush->brushes());
-	EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-	if (iEditor)
-	    addItems(pluginItem, "EditorInterface", iEditor->diagrams());
-	else
-	    addItems(pluginItem, "SomeInterface", QStringList() );
-    }
-}
-
-void PluginDialog::addItems(QTreeWidgetItem *pluginItem,
-                            const char *interfaceName,
-                            const QStringList &features)
-{
-    QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
-    interfaceItem->setText(0, interfaceName);
-    interfaceItem->setIcon(0, interfaceIcon);
-
-    foreach (QString feature, features) {
-        if (feature.endsWith("..."))
-            feature.chop(3);
-        QTreeWidgetItem *featureItem = new QTreeWidgetItem(interfaceItem);
-        featureItem->setText(0, feature);
-        featureItem->setIcon(0, featureIcon);
-    }
+			foreach (QUrl element, mgr.elements(diagram)) {
+				QTreeWidgetItem *featureItem = new QTreeWidgetItem(interfaceItem);
+				featureItem->setText(0, mgr.friendlyName(element));
+				featureItem->setIcon(0, featureIcon);
+			}
+		}
+	}
 }

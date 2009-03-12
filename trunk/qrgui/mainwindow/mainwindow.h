@@ -7,6 +7,8 @@
 
 #include "ui_mainwindow.h"
 
+#include "editormanager.h"
+
 class RealRepoModel;
 class EditorView;
 
@@ -41,9 +43,7 @@ private:
 	Ui::MainWindowUi ui;
 
 	void loadPlugins();
-
-	QDir pluginsDir;
-        QStringList pluginFileNames;
+	EditorManager mgr;
 };
 
 #endif

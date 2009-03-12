@@ -9,26 +9,31 @@
 
 class HandmadePlugin : public QObject, public EditorInterface
 {
-    Q_OBJECT
-    Q_INTERFACES(EditorInterface)
-    
+	Q_OBJECT
+	Q_INTERFACES(EditorInterface)
+
 public:
 
-    HandmadePlugin();
+	HandmadePlugin();
 
-    void initPlugin();
-    
-    QString name() const { return "usecase"; };
+	void initPlugin();
 
-    QStringList diagrams() const;
-    QStringList elements() const;
+	QString id() const { return "TestEditor"; };
 
-    QIcon getIcon(QString element) const;
-    QString getName(QString element) const;
+	QStringList diagrams() const;
+	QStringList elements(QString diagram) const;
+
+	QIcon getIcon(QString element) const;
+
+	QString editorName() const;
+	QString diagramName(QString diagram) const;
+	QString elementName(QString diagram, QString element) const;
 
 private:
-    QMap<QString, QIcon> iconMap;
-    QMap<QString, QString> friendlyNameMap;
+	QMap<QString, QIcon> iconMap;
+	
+	QMap<QString, QString> diagramNameMap;
+	QMap<QString, QMap<QString, QString> > elementsNameMap;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include <QtGui/QMessageBox>
 #include "editor_handmade.h"
 
+// i.e. qrm:///TestEditor/UseCase/Actor
+
 Q_EXPORT_PLUGIN2(qreal_editors, HandmadePlugin)
 
 HandmadePlugin::HandmadePlugin()
@@ -10,37 +12,44 @@ HandmadePlugin::HandmadePlugin()
 
 void HandmadePlugin::initPlugin()
 {
-    iconMap["/usecase/ucdiagram/actor"] = QIcon(":/plugins/usecase/ucdiagram/actor.svg");
-    iconMap["/usecase/ucdiagram/usecase"] = QIcon(":/plugins/usecase/ucdiagram/usecase.svg");
+	diagramNameMap["UseCase"] = "Use case diagram";
+	diagramNameMap["Orthodox"] = "Orthodox diagram";
 
-    friendlyNameMap["/usecase/ucdiagram"] = "Use case";
-    friendlyNameMap["/usecase/ucdiagram/actor"] = "Actor";
-    friendlyNameMap["/usecase/ucdiagram/usecase"] = "Use case";
+	elementsNameMap["UseCase"]["UseCase"] = "Use case";
+	elementsNameMap["UseCase"]["Actor"] = "Actor";
+	elementsNameMap["Orthodox"]["Reichsadler"] = "Aryan Eagle";
+	elementsNameMap["Orthodox"]["Swastika"] = "Sign of Life";
 
-    QMessageBox::information(0, "QReal Plugin", "Handmade Plugin loaded");
+
+//	QMessageBox::information(0, "I'm a QReal Plugin", "Handmade Plugin loaded");
 }
 
 QStringList HandmadePlugin::diagrams() const
 {
-    QStringList myElements;
-    myElements << "/usecase/ucdiagram";
-    return myElements;
+	return diagramNameMap.keys();
 }
 
-QStringList HandmadePlugin::elements() const
+QStringList HandmadePlugin::elements(QString diagram) const
 {
-    QStringList myElements;
-    myElements << "/usecase/ucdiagram/actor"
-		<< "/usecase/ucdiagram/usecase";
-    return myElements;
+	return elementsNameMap[diagram].keys();
 }
 
 QIcon HandmadePlugin::getIcon(QString element) const
 {
-    return iconMap[element];
+    return QIcon();
 }
 
-QString HandmadePlugin::getName(QString element) const
+QString HandmadePlugin::editorName() const
 {
-    return friendlyNameMap[element];
+    return "Test handmade editor";
+}
+
+QString HandmadePlugin::diagramName(QString diagram) const
+{
+    return diagramNameMap[diagram];
+}
+
+QString HandmadePlugin::elementName(QString diagram, QString element) const
+{
+    return elementsNameMap[diagram][element];
 }

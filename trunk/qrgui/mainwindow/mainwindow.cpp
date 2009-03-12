@@ -76,44 +76,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadPlugins()
 {
-//    foreach (QObject *plugin, QPluginLoader::staticInstances())
-//        populateMenus(plugin);
-
-    pluginsDir = QDir(qApp->applicationDirPath());
-
-#if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS") {
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-    }
-#endif
-    pluginsDir.cd("plugins");
-
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
-
-        if (plugin) {
-	    
-	    EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-	    if (iEditor) {
-    		foreach (QString q, iEditor->diagrams())
-		    ui.paletteToolbox->addDiagramType(q,iEditor->getName(q));
-		
-		foreach (QString q, iEditor->elements())
-		    ui.paletteToolbox->addItemType(q,iEditor->getName(q),iEditor->getIcon(q));
-	    }
-
-            pluginFileNames += fileName;
-        } else {
-	    QMessageBox::warning(this, "QReal Plugin", loader.errorString() );
-	}
-
-    }
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -150,8 +112,8 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-    PluginDialog dialog( pluginsDir.path(), pluginFileNames , this);
-    dialog.exec();
+	PluginDialog dialog( mgr , this);
+	dialog.exec();
 }
 
 void MainWindow::showAbout()
