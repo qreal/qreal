@@ -37,6 +37,8 @@ dbg;
 	undoView->setAttribute(Qt::WA_QuitOnClose, false);
 
 	addToStack = true;
+
+	readItems();
 }
 
 RealRepoModel::~RealRepoModel()
@@ -52,7 +54,6 @@ dbg;
 
 QModelIndex RealRepoModel::createDefaultTopLevelItem() {
 	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
-	readCategoryTable(diagramCategory);
 	if (diagramCategory->children.empty()) {
 		addElementToModel(diagramCategory, index(diagramCategory), "", "",
 			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction);
@@ -63,6 +64,23 @@ QModelIndex RealRepoModel::createDefaultTopLevelItem() {
 	}
 	else
 		return QModelIndex();
+}
+
+void RealRepoModel::readItems()
+{
+	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
+	readCategoryTable(diagramCategory);
+	foreach (RepoTreeItem *diagram, diagramCategory->children) {
+		readItemsRecurse(diagram);
+	}
+}
+
+void RealRepoModel::readItemsRecurse( RepoTreeItem *parent )
+{
+	readContainerTable(parent);
+	foreach (RepoTreeItem *childItem,parent->children) {
+		readItemsRecurse(childItem);
+	}
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
