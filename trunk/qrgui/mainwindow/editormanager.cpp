@@ -89,6 +89,34 @@ QList<QUrl> EditorManager::elements(const QUrl &diagram) const
 	return elements;
 }
 
+bool EditorManager::isEditor(const QUrl &url) const
+{
+	Q_ASSERT( url.scheme() == "qrm" );
+	QStringList path = url.path().split('/');
+	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+
+	return path.size() == 2;
+}
+
+bool EditorManager::isDiagram(const QUrl &url) const
+{
+	Q_ASSERT( url.scheme() == "qrm" );
+	QStringList path = url.path().split('/');
+	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+
+	return path.size() == 2;
+}
+
+bool EditorManager::isElement(const QUrl &url) const
+{
+	Q_ASSERT( url.scheme() == "qrm" );
+	QStringList path = url.path().split('/');
+	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+
+	return path.size() == 2;
+}
+
+
 QString EditorManager::friendlyName(const QUrl &url) const
 {
 	Q_ASSERT( url.scheme() == "qrm" );

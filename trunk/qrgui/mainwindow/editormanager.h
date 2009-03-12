@@ -22,6 +22,10 @@ public:
 	
 	QString friendlyName(const QUrl &url) const;
 
+	bool isEditor(const QUrl &url) const;
+	bool isDiagram(const QUrl &url) const;
+	bool isElement(const QUrl &url) const;
+
 public slots:
 
 private slots:
