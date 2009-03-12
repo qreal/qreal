@@ -56,7 +56,7 @@ QModelIndex RealRepoModel::createDefaultTopLevelItem() {
 	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
 	if (diagramCategory->children.empty()) {
 		addElementToModel(diagramCategory, index(diagramCategory), "", "",
-			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction);
+			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction, -1);
 	}
 
 	if (!diagramCategory->children.empty()) {
@@ -407,6 +407,8 @@ dbg;
 	stream << item->parent->id;
 	stream << hashNames[item->id];
 	stream << hashDiagramElements[item->parent->id][item->id].position;
+	stream << item->row;
+
 	qDebug() << "ID: 	 " << item->id;
 	qDebug() << "TYPE: 	 " << hashTypes[item->id];
 	qDebug() << "PARENT: " << item->parent->id;
@@ -447,24 +449,26 @@ dbg;
 	IdType newtype = "", oldParent = "";
 	TypeIdType newid = "";
 	QPointF newPos;
+	int oldRow;
 
 	stream >> newid;
 	stream >> newtype;
 	stream >> oldParent;
 	stream >> name;
 	stream >> newPos;
+	stream >> oldRow;
 
 //	qDebug() << "dropped" << newid << newtype << name << newPos;
 
 	qDebug() << "dropMimeData" << parentItem->id << newtype << newid;
 	return addElementToModel(parentItem, parent, oldParent, newid, newtype, name, newPos,
-		action);
+		action,oldRow);
 }
 
-bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
-	const QModelIndex &parent, IdType const &oldParent, IdType const &newid,
-	TypeIdType const &newtype, QString const &name, QPointF const &newPos,
-	Qt::DropAction action)
+bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QModelIndex &parent,
+									  IdType const &oldParent, IdType const &newid, 
+									  TypeIdType const &newtype, QString const &name,
+									  QPointF const &newPos, Qt::DropAction action, int oldRow )
 {
 	switch (type(parentItem)) {
 		case Category:
@@ -561,17 +565,32 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 					if (action == Qt::CopyAction) {
 						if (copyType == SYM_LINK_TYPE){
 							qDebug() << "SYM_LINK_TYPE";
+
+							Q_ASSERT(oldRow!=-1);
+							RepoTreeItem *sourceItem;
+							foreach (RepoTreeItem *mbOldParent,hashTreeItems[oldParent]) {
+								foreach (RepoTreeItem *mbItem, mbOldParent->children) {
+									if ((mbItem->id == id) && (mbItem->row==oldRow)) {
+										sourceItem = mbItem;
+									}
+								}
+							}
+							Q_ASSERT(sourceItem);
+
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
+							RepoTreeItem *newItem = copyElement(sourceItem,parent,parentItem);
+							copyChildren(sourceItem,index(newItem),newItem);
 						}
 						else if (copyType == FULL_COPY_TYPE) {
 							qDebug() << "FULL_COPY_TYPE";
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
+							createItem(parentItem, id, newtype, name);
+							if (hashDiagramElements[oldParent].contains(newid)) {
+								qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
+								hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][newid];
+							} 						
 						}
-						createItem(parentItem, id, newtype, name);
-						if (hashDiagramElements[oldParent].contains(newid)) {
-							qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
-							hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][newid];
-							}
+
 					} else
 						createItem(parentItem, id, newtype);
 				}
@@ -587,7 +606,7 @@ bool RealRepoModel::addElementToModel(RepoTreeItem *const parentItem,
 	return false;
 }
 
-RealRepoModel::RepoTreeItem* RealRepoModel::copyElement( QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem )
+RealRepoModel::RepoTreeItem* RealRepoModel::copyElement( RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem )
 {
 	IdType oldParent = item->parent->id;
 	IdType id = item->id;
@@ -604,7 +623,7 @@ RealRepoModel::RepoTreeItem* RealRepoModel::copyElement( QPersistentModelIndex e
 }
 
 
-void RealRepoModel::copyChildren( QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem )
+void RealRepoModel::copyChildren( RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem )
 {
 	foreach (RepoTreeItem *childItem, item->children) {
 		IdTypeList newChildren;
@@ -612,8 +631,8 @@ void RealRepoModel::copyChildren( QPersistentModelIndex elem, RepoTreeItem *item
 			newChildren.append(newChild->id);
 		}
 		if (!newChildren.contains(childItem->id)) {
-			RepoTreeItem *newChildItem = copyElement(index(childItem),childItem,newElem,newItem);
-			copyChildren(index(childItem),childItem,index(newChildItem),newChildItem);
+			RepoTreeItem *newChildItem = copyElement(childItem,newElem,newItem);
+			copyChildren(childItem,index(newChildItem),newChildItem);
 		}
 	}
 }
@@ -644,9 +663,9 @@ void RealRepoModel::changeParent(QPersistentModelIndex elem,QPersistentModelInde
 
 		id = repoClient->copyEntity(hashTypes[id], id, parentItem->id, oldParent);
 
-		RepoTreeItem *newItem = copyElement(elem,item,newParent,parentItem);
+		RepoTreeItem *newItem = copyElement(item,newParent,parentItem);
 
-		copyChildren(elem,item,index(newItem),newItem);
+		copyChildren(item,index(newItem),newItem);
 
 		removeChildren(elem,item);
 

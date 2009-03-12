@@ -253,10 +253,9 @@ class RealRepoModel : public QAbstractItemModel
 		/** @brief Создать новый элемент и добавить его в модель
 		 *	@brief @return true, если элемент добавлен, иначе false
 		 * */
-		bool addElementToModel(RepoTreeItem *const parentItem,
-			const QModelIndex &parent, IdType const &oldparent,
-			IdType const &newid, TypeIdType const &newtype,
-			QString const &name, QPointF const &newPos, Qt::DropAction action);
+		bool addElementToModel(RepoTreeItem *const parentItem, const QModelIndex &parent,
+			IdType const &oldParent, IdType const &newid, TypeIdType const &newtype, 
+			QString const &name, QPointF const &newPos, Qt::DropAction action, int oldRow);
 
 		/** @brief Найти порядковый номер типа в корневой таблице по id. */
 		unsigned findIndex(TypeIdType const &id) const;
@@ -290,9 +289,9 @@ class RealRepoModel : public QAbstractItemModel
 
 		void removeChildrenRows(QPersistentModelIndex parent, RepoTreeItem* parentItem, int row, int count);
 
-		RepoTreeItem* copyElement(QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem);
+		RepoTreeItem* copyElement(RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem);
 
-		void copyChildren(QPersistentModelIndex elem, RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem);
+		void copyChildren(RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem);
 
 		void removeChildren(QPersistentModelIndex elem,RepoTreeItem* item);
 };
