@@ -48,8 +48,11 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 
 QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 {
-//	if ( ! targetModel )
-//		return QVariant();
+	if ( ! targetModel )
+		return QVariant();
+
+	if (!targetObject.isValid())
+		return QVariant();
 
 	if (role != Qt::DisplayRole)
 		return QVariant();
@@ -72,6 +75,9 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 	bool ret;
 
 	if ( ! targetModel )
+		return false;
+
+	if (!targetObject.isValid())
 		return false;
 
 	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1 )
@@ -106,6 +112,15 @@ void PropertyEditorModel::setSourceModel(QAbstractItemModel *sourceModel)
 
 void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 {
+	// Special case - no objects selected
+	if (sourceIndex == QModelIndex())
+	{
+		qDebug() << "empty index assigned!";
+		targetObject = sourceIndex;
+		roleNames.clear();
+		reset();
+		return;
+	}
 	if ( sourceIndex.model() != targetModel )
 		return;
 

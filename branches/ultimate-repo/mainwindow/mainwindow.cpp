@@ -254,6 +254,11 @@ void MainWindow::sceneSelectionChanged()
 				propertyModel.setIndex(elem->index());
 			}
 	}
+	else
+	{
+		ui.diagramExplorer->setCurrentIndex(QModelIndex());
+		propertyModel.setIndex(QModelIndex());
+	}
 }
 
 void MainWindow::print()
