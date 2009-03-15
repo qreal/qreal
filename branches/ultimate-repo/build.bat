@@ -7,6 +7,10 @@ if %ERRORLEVEL% neq 0 (
 )
 qmake 
 nmake 
+if %ERRORLEVEL% neq 0 ( 
+	echo "GUI build failed, aborting."
+	exit /B 1
+)
 cd reposerver 
 qmake 
 nmake

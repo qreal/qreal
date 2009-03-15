@@ -1,5 +1,5 @@
 @echo off
-set WD=..\source-generator
+set WD=.\source-generator
 set GEN=%WD%\generated
 
 cd %WD%
@@ -13,7 +13,7 @@ if %ERRORLEVEL% neq 0 (
 	exit /B 1
 )
 
-cd ..\ultimate-repo
+cd ..\
 
 md umllib\generated
 xcopy /y /e /c /h /r %GEN%\umllib\generated\* umllib\generated
@@ -31,6 +31,6 @@ xcopy /y /i /e /c /h /r %GEN%\shapes shapes
 xcopy /y /e /c /h /r %GEN%\real_dynamic.qrc .
 :q
 echo "done"
-exit /B 0
+exit  0
 
 

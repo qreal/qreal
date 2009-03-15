@@ -15,14 +15,14 @@ public class Client: Ice.Application
 			throw new ApplicationException("Invalid proxy");
 		Console.WriteLine(repoClient.ice_id());
 		
-		int[] typesList = repoClient.getAllTypes();
+		string[] typesList = repoClient.getAllTypes();
 		Console.WriteLine("Count: " + typesList.Length);
-		foreach (int type in typesList)
+		foreach (string type in typesList)
 		{
 			RealTypeIcePrx realType = repoClient.getTypeById(type);
-			Console.WriteLine("Type N" + type + " name: " + realType.getName()
-			                  + " description " + realType.getDescription() 
-			                  + " ident " + realType.ice_getIdentity().name);
+			Console.WriteLine("Type N" + type + ", Name: " + realType.getName()
+			                  + ", Description: " + realType.getDescription() 
+			                  + ", Ident: " + realType.ice_getIdentity().name);
 		}
 
         if (interrupted())
