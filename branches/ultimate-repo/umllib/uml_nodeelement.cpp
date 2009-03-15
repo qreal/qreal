@@ -26,96 +26,94 @@ NodeElement::~NodeElement()
 
 void NodeElement::changeName(QString name)
 {
-     QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-      im->setData(dataIndex, name, Qt::DisplayRole);
+	 QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+	  im->setData(dataIndex, name, Qt::DisplayRole);
 
 
 }
 
-
-void NodeElement::mousePressEvent( QGraphicsSceneMouseEvent * event )
+void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    if ( isSelected() ) {
-                if ( QRectF(m_contents.topLeft(),QSizeF(4,4)).contains(event->pos()) ) {
-                        dragState = TopLeft;
-                } else if ( QRectF(m_contents.topRight(),QSizeF(-4,4)).contains(event->pos()) ) {
-                        dragState = TopRight;
-                } else if ( QRectF(m_contents.bottomRight(),QSizeF(-12,-12)).contains(event->pos()) ) {
-                        dragState = BottomRight;
-                } else if ( QRectF(m_contents.bottomLeft(),QSizeF(4,-4)).contains(event->pos()) ) {
-                        dragState = BottomLeft;
-                } else
-                        Element::mousePressEvent(event);
-        } else
-                Element::mousePressEvent(event);
+	if (isSelected())
+	{
+		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+			dragState = TopLeft;
+		else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+			dragState = TopRight;
+		else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+			dragState = BottomRight;
+		else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+			dragState = BottomLeft;
+		else
+			Element::mousePressEvent(event);
+	} else
+		Element::mousePressEvent(event);
 
-        if (event->button() == Qt::RightButton)
-        {
-             QWidget *w = new QWidget();
-             w->setAttribute(Qt::WA_DeleteOnClose, true);
-             w->setWindowFlags(Qt::FramelessWindowHint);
-             QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
-           
+	if (event->button() == Qt::RightButton)
+	{
+		QWidget *w = new QWidget();
+		w->setAttribute(Qt::WA_DeleteOnClose, true);
+		w->setWindowFlags(Qt::FramelessWindowHint);
+		QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
 
-             QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
-             QObject::connect (lineEdit, SIGNAL(editingFinished()), w, SLOT(close()));
+		QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
+		QObject::connect (lineEdit, SIGNAL(editingFinished()), w, SLOT(close()));
 
-             QVBoxLayout *layout = new QVBoxLayout(w);
-             layout->addWidget(lineEdit);
-             layout->setContentsMargins(0, 0, 0, 0);
-             w->setLayout(layout);
-             w->setFixedWidth(boundingRect().width());
-             w->move(pos().x()+240, pos().y()+60);
+		QVBoxLayout *layout = new QVBoxLayout(w);
+		layout->addWidget(lineEdit);
+		layout->setContentsMargins(0, 0, 0, 0);
+		w->setLayout(layout);
+		w->setFixedWidth(static_cast<int>(boundingRect().width()));
+		w->move(static_cast<int>(pos().x()) + 240, static_cast<int>(pos().y()) + 60);
 
-             w->show();
+		w->show();
 
-             event->accept();
-
-        }
-    }
+		event->accept();
+	}
+}
 
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-        if ( dragState == None ) {
-                Element::mouseMoveEvent(event);
-        } else {
-                        QRectF newcontents = m_contents;
+		if ( dragState == None ) {
+				Element::mouseMoveEvent(event);
+		} else {
+						QRectF newcontents = m_contents;
 
-                        switch ( dragState ) {
-                                case TopLeft:       newcontents.setTopLeft(event->pos());		break;
-                                case Top:           newcontents.setTop(event->pos().y());		break;
-                                case TopRight:      newcontents.setTopRight(event->pos());		break;
-                                case Left:          newcontents.setLeft(event->pos().x());		break;
-                                case Right:         newcontents.setRight(event->pos().x());		break;
-                                case BottomLeft:    newcontents.setBottomLeft(event->pos());	break;
-                                case Bottom:        newcontents.setBottom(event->pos().y());	break;
-                                case BottomRight:   newcontents.setBottomRight(event->pos());	break;
-                                case None:														break;
-                        }
+						switch ( dragState ) {
+								case TopLeft:       newcontents.setTopLeft(event->pos());		break;
+								case Top:           newcontents.setTop(event->pos().y());		break;
+								case TopRight:      newcontents.setTopRight(event->pos());		break;
+								case Left:          newcontents.setLeft(event->pos().x());		break;
+								case Right:         newcontents.setRight(event->pos().x());		break;
+								case BottomLeft:    newcontents.setBottomLeft(event->pos());	break;
+								case Bottom:        newcontents.setBottom(event->pos().y());	break;
+								case BottomRight:   newcontents.setBottomRight(event->pos());	break;
+								case None:														break;
+						}
 
-                        if (event->modifiers() & Qt::ShiftModifier)
-                        {
-                                qreal size = std::max(newcontents.width(), newcontents.height());
-                                newcontents.setWidth(size);
-                                newcontents.setHeight(size);
-                        }
+						if (event->modifiers() & Qt::ShiftModifier)
+						{
+								qreal size = std::max(newcontents.width(), newcontents.height());
+								newcontents.setWidth(size);
+								newcontents.setHeight(size);
+						}
 
-                        if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
-                                prepareGeometryChange();
+						if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
+								prepareGeometryChange();
 
-                                m_contents = newcontents;
+								m_contents = newcontents;
 
-                                setPos(pos() + m_contents.topLeft());
-                                m_contents.translate(-m_contents.topLeft());
+								setPos(pos() + m_contents.topLeft());
+								m_contents.translate(-m_contents.topLeft());
 
-                                transform.reset();
-                                transform.scale(m_contents.width(), m_contents.height());
+								transform.reset();
+								transform.scale(m_contents.width(), m_contents.height());
 
-                                foreach (EdgeElement *edge, edgeList)
-                                        edge->adjustLink();
-                        }
-        }
+								foreach (EdgeElement *edge, edgeList)
+										edge->adjustLink();
+						}
+		}
 }
 
 
@@ -124,6 +122,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	m_contents = m_contents.normalized();
 
 	moving = 1;
+	Q_ASSERT(dataIndex.isValid());
 	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
 	im->setData(dataIndex, pos(), Unreal::PositionRole);
 	im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
@@ -202,39 +201,39 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	if ( id < pointPorts.size() )
 		return transform.map(pointPorts[iid]);
 	if ( id < pointPorts.size() + linePorts.size() )
-                return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
+				return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
 	else
 		return QPointF(0,0);
 }
 
 QLineF NodeElement::newTransform(const statLine& port) const
 {
-    float x1 = 0.0;
-    float x2 = 0.0;
-    float y1 = 0.0;
-    float y2 = 0.0;
+	float x1 = 0.0;
+	float x2 = 0.0;
+	float y1 = 0.0;
+	float y2 = 0.0;
 
-    if (port.prop_x1)
-        x1 = port.line.x1() * 100;
-    else
-       x1 = port.line.x1() * contentsRect().width();
+	if (port.prop_x1)
+		x1 = port.line.x1() * 100;
+	else
+	   x1 = port.line.x1() * contentsRect().width();
 
-    if (port.prop_y1)
-        y1 = port.line.y1() * 100;
-    else
-        y1 = port.line.y1() * contentsRect().height();
+	if (port.prop_y1)
+		y1 = port.line.y1() * 100;
+	else
+		y1 = port.line.y1() * contentsRect().height();
 
-    if (port.prop_x2)
-        x2 = port.line.x2() * 100;
-    else
-        x2 = port.line.x2() * contentsRect().width();
+	if (port.prop_x2)
+		x2 = port.line.x2() * 100;
+	else
+		x2 = port.line.x2() * contentsRect().width();
 
-    if (port.prop_y2)
-        y2 = port.line.y2() * 100;
-    else
-        y2 = port.line.y2() * contentsRect().height();
+	if (port.prop_y2)
+		y2 = port.line.y2() * 100;
+	else
+		y2 = port.line.y2() * contentsRect().height();
 
-    return QLineF(x1, y1, x2, y2);
+	return QLineF(x1, y1, x2, y2);
 }
 
 qreal NodeElement::getPortId(const QPointF &location) const
@@ -249,21 +248,21 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		ps.setWidth(kvadratik);
 
 		QPainterPath path;
-                path.moveTo(newTransform(linePorts[i]).p1());
-                path.lineTo(newTransform(linePorts[i]).p2());
+				path.moveTo(newTransform(linePorts[i]).p1());
+				path.lineTo(newTransform(linePorts[i]).p2());
 
 		path = ps.createStroke(path);
 		if ( path.contains(location) )
 			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999,
-                                                QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
-                                                / newTransform(linePorts[i]).length() ) );
+												QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
+												/ newTransform(linePorts[i]).length() ) );
 	}
 
 	if (pointPorts.size()!=0) {
 		int numMinDistance = 0;
-                qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
+				qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
 		for( int i = 0; i < pointPorts.size(); i++ ) {
-                        if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
+						if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
 				minDistance = QLineF( pointPorts[i], transform.inverted().map(location) ).length();
 			}
@@ -271,17 +270,17 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		return 1.0 * numMinDistance;
 	} else if (linePorts.size()!=0) {
 		int numMinDistance = 0;
-                qreal minDistance = QLineF( QLineF(linePorts[0]).p1(), transform.inverted().map(location) ).length();
+				qreal minDistance = QLineF( QLineF(linePorts[0]).p1(), transform.inverted().map(location) ).length();
 		for( int i = 0; i < linePorts.size(); i++ ) {
-                        if (QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length()<minDistance) {
+						if (QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
-                                minDistance = QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length();
+								minDistance = QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length();
 			}
 		}
 		return 1.0 * (numMinDistance + pointPorts.size());
 	}
 
-    return -1.0;
+	return -1.0;
 }
 
 void NodeElement::setPortsVisible(bool value) {
@@ -304,7 +303,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if (option->levelOfDetail >= 0.5)
 	{
 		if ( option->state & QStyle::State_Selected )
-                {
+				{
 			painter->save();
 
 			QBrush b;
