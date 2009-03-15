@@ -1,6 +1,7 @@
 module RepoIce
 {
 	sequence<int> QIntList;
+	sequence<string> IdTypeList;
 
 	// Метатипы
 	enum MetaTypeIce
@@ -14,7 +15,7 @@ module RepoIce
 	// Типы данных 
 	interface RealTypeIce
 	{
-		idempotent int getId();	// id 
+		idempotent string getId();	// id 
 		
 		idempotent string getName() ;	// название 
 		idempotent void setName(string name);
@@ -29,12 +30,12 @@ module RepoIce
 		idempotent MetaTypeIce getMetaTypeIce() ; // метатип
 		idempotent void setMetaTypeIce(MetaTypeIce mType);
     
-		idempotent QIntList getObjects() ; // вернуть все объекты этого типа
+		idempotent IdTypeList getObjects() ; // вернуть все объекты этого типа
 	};
 
 	interface RealObjectIce
 	{
-		idempotent int getId();	// id 
+		idempotent string getId();	// id
     
 		idempotent string getName() ;	// название 
 		idempotent void setName(string name);
@@ -46,38 +47,37 @@ module RepoIce
 		idempotent string getProperty(string name ) ; //в случае отсутствия возвращает пустую строку ""
 		idempotent int getPropertiesCount(); // возвращает кол-во свойств
     
-		idempotent int getTypeId() ; // тип
-		idempotent void setTypeId(int id);
-    
+		idempotent string getTypeId() ; // тип
+		idempotent void setTypeId(string id);
+
 		idempotent bool getVisibility() ; // видим ли на диаграмме
 		idempotent void setVisibility(bool is);
     
-		idempotent QIntList getContainerId() ; // возвращает id всех контейнеров, которым принадлежит объект
-		idempotent void addToContainer(int id); // добавляет объект в указанный контейнер, вместо setContainerId, который deprecated 
-		idempotent void setContainerId(int id); //Deprecated!!! 
-		idempotent void deleteFromContainer(int id); // удаляет объект из контейнера  
+		idempotent IdTypeList getContainerId() ; // возвращает id всех контейнеров, которым принадлежит объект
+		idempotent void addToContainer(string id); // добавляет объект в указанный контейнер, вместо setContainerId, который deprecated
+		idempotent void deleteFromContainer(string id); // удаляет объект из контейнера
 
 		idempotent string getConfiguration() ; // конфигурация
 		idempotent void setConfiguration(string configuration);
     
-		idempotent QIntList getChildElements() ; // коллекция id внутренних элементов
-		void addChildElement(int elementId);
-		void deleteChildElement(int elementId);
+		idempotent IdTypeList getChildElements() ; // коллекция id внутренних элементов
+		void addChildElement(string elementId);
+		void deleteChildElement(string elementId);
     
-		idempotent QIntList getAllLinks() ; // получить линки
-		idempotent QIntList getIncomingLinks() ;
-		idempotent QIntList getOutcomingLinks() ;
+		idempotent IdTypeList getAllLinks() ; // получить линки
+		idempotent IdTypeList getIncomingLinks() ;
+		idempotent IdTypeList getOutcomingLinks() ;
 		
-		void addIncomingLink(int linkId);
-		void addOutcomingLink(int linkId);
+		void addIncomingLink(string linkId);
+		void addOutcomingLink(string linkId);
 
-		void removeIncomingLink(int linkId);
-		void removeOutcomingLink(int linkId);
+		void removeIncomingLink(string linkId);
+		void removeOutcomingLink(string linkId);
 	};
 
 	interface RealLinkIce
 	{
-		idempotent int getId();
+		idempotent string getId();
 		idempotent void setName(string name);
 		idempotent string getName();
 
@@ -85,37 +85,35 @@ module RepoIce
 		idempotent string getProperty(string name ); //в случае отсутсвия возвращает пустую строку ""
 		idempotent int getPropertiesCount(); // возвращает кол-во свойств
 		
-		idempotent int getFromId();	// элемент-источник
-		idempotent void setFromId(int id);
+		idempotent string getFromId();	// элемент-источник
+		idempotent void setFromId(string id);
 
-		idempotent int getToId() ;	// элемент-приёмник
-		idempotent void setToId(int id);
+		idempotent string getToId() ;	// элемент-приёмник
+		idempotent void setToId(string id);
 	};
 
 	interface RepoClientIce
 	{
-		idempotent QIntList getAllTypes(); // вернуть все типы
-		idempotent QIntList getTypesByMetaTypeIce(MetaTypeIce mType); // вернуть типы по метатипу
-		idempotent RealTypeIce* getTypeById(int id); // вернуть тип по id
+		idempotent IdTypeList getAllTypes(); // вернуть все типы
+		idempotent IdTypeList getTypesByMetaTypeIce(MetaTypeIce mType); // вернуть типы по метатипу
+		idempotent RealTypeIce* getTypeById(string id); // вернуть тип по id
 		idempotent RealTypeIce* getTypeByName(string name); // вернуть тип по имени
-		idempotent int getTypeIdByName(string name ); // вернуть id типа по имени
+		idempotent string getTypeIdByName(string name); // вернуть id типа по имени
 		
-		idempotent QIntList getObjectsListByType(int id); // вернуть все объекты конкретного типа
-		idempotent QIntList getLinks(); //вернуть все линки
+		idempotent IdTypeList getObjectsListByType(string id); // вернуть все объекты конкретного типа
+		idempotent IdTypeList getLinks(); //вернуть все линки
 
-		//int createType(string name); //создать тип. Возвращает Id созданного типа.
-		//void deleteType(int id); //удалить тип
 
-		idempotent RealObjectIce* getObjectById(int id); // вернуть по id
-		int createObject(int type, string name); //создать. Возвращает Id созданного.
-		int createObjectWithParent(int type, string name, int parent); // создаёт объект и при этом помещает его в указанный контейнер 
-		void deleteObject(int id, int parent); //удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария 
+		idempotent RealObjectIce* getObjectById(string id); // вернуть по id
+		string createObject(string type, string name); //создать. Возвращает Id созданного.
+		string createObjectWithParent(string type, string name, string parent); // создаёт объект и при этом помещает его в указанный контейнер
+		void deleteObject(string id, string parent); //удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария
 
-		idempotent RealLinkIce* getLinkById(int id); // вернуть по id
-		int createLink(string name); //создать. Возвращает Id созданного.
-		int createLinkWithType(string name, string type); //создать. Возвращает Id созданного.
-		int createLinkWithParent(int type, string name, int parent); // создаёт линку и при этом помещает её в указанный контейнер 
-		void deleteLink(int id, int parent); // удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария 
+		idempotent RealLinkIce* getLinkById(string id); // вернуть по id
+		string createLink(string name); //создать. Возвращает Id созданного.
+		string createLinkWithType(string name, string type); //создать. Возвращает Id созданного.
+		string createLinkWithParent(string type, string name, string parent); // создаёт линку и при этом помещает её в указанный контейнер
+		void deleteLink(string id, string parent); // удаляет объект совсем из репозитария. Если он содержался в каких-то контейнерах, то сначала удаляет его из них, потом из репозитария
 	};
 };
 
