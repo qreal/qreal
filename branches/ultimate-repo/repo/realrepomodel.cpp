@@ -553,8 +553,8 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 					}
 				}
 				// дерево инспектора диаграмм
-				beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 				if (newElement) {
+					beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 					createItem(parentItem, id, newtype, name);
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 					endInsertRows();
@@ -581,10 +581,10 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
 							RepoTreeItem *newItem = copyElement(sourceItem,parent,parentItem);
 							copyChildren(sourceItem,index(newItem),newItem);
-							endInsertRows();
 						}
 						else if (copyType == FULL_COPY_TYPE) {
 							qDebug() << "FULL_COPY_TYPE";
+							beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 
@@ -598,6 +598,7 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 						}
 
 					} else {
+						beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 						createItem(parentItem, id, newtype);
 						endInsertRows();
 					}
