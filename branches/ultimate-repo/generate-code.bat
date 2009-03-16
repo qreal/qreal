@@ -41,5 +41,5 @@ xcopy /y /i /e /c /h /r %GEN%\shapes shapes
 xcopy /y /e /c /h /r %GEN%\real_dynamic.qrc .
 :q
 echo "done"
-exit  0
+exit /B 0
 
