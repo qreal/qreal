@@ -5,7 +5,7 @@ GEN=$WD/generated
 
 pushd $WD
 qmake
-make
+make -j2
 if [ "$?" != "0" ]; then
     popd
     echo Building code generator failed, stopping.
