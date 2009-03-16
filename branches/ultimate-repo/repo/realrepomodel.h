@@ -294,4 +294,6 @@ class RealRepoModel : public QAbstractItemModel
 		void copyChildren(RepoTreeItem *item, QPersistentModelIndex newElem, RepoTreeItem *newItem);
 
 		void removeChildren(QPersistentModelIndex elem,RepoTreeItem* item);
+
+		void readChildren(RepoTreeItem *item);
 };

@@ -557,6 +557,7 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 				if (newElement) {
 					createItem(parentItem, id, newtype, name);
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
+					endInsertRows();
 				}
 				else {
 					// Если объект подвесили и в корень, и как сына другого объекта,
@@ -580,21 +581,27 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent);
 							RepoTreeItem *newItem = copyElement(sourceItem,parent,parentItem);
 							copyChildren(sourceItem,index(newItem),newItem);
+							endInsertRows();
 						}
 						else if (copyType == FULL_COPY_TYPE) {
 							qDebug() << "FULL_COPY_TYPE";
+
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
-							createItem(parentItem, id, newtype, name);
-							if (hashDiagramElements[oldParent].contains(newid)) {
-								qDebug() << "CONF: " << hashDiagramElements[oldParent][id].configuration;
-								hashDiagramElements[parentItem->id][id] = hashDiagramElements[oldParent][newid];
-							} 						
+
+							RepoTreeItem *newItem = createItem(parentItem, id, newtype, name);
+							if (hashDiagramElements[oldParent].contains(newid)) { 
+								hashDiagramElements[parentItem->id][id]= 
+									 hashDiagramElements[oldParent][newid]; 
+                            }   
+							endInsertRows();
+							readChildren(newItem);
 						}
 
-					} else
+					} else {
 						createItem(parentItem, id, newtype);
+						endInsertRows();
+					}
 				}
-				endInsertRows();
 //				foreach( RepoTreeItem *item, hashTreeItems[id])
 //					emit dataChanged(index(item),index(item));
 			}
@@ -604,6 +611,16 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 	}
 
 	return false;
+}
+
+void RealRepoModel::readChildren( RepoTreeItem *item )
+{
+	readContainerTable(item);
+	beginInsertRows(index(item),0,item->children.size());
+	endInsertRows();
+	foreach (RepoTreeItem *child, item->children) {
+		readChildren(child);
+	}
 }
 
 RealRepoModel::RepoTreeItem* RealRepoModel::copyElement( RepoTreeItem *item, QPersistentModelIndex newParent, RepoTreeItem *parentItem )
@@ -946,4 +963,3 @@ void RealRepoModel::runTestQueries()
 
 	qDebug() << "Done";
 }
-
