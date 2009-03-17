@@ -36,5 +36,16 @@ class ChangeConfigurationCommand : public RealUndoCommand
 public:
 	ChangeConfigurationCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role); 
 };
+class ChangeUserRoleCommand : public RealUndoCommand
+{
+public:
+	ChangeUserRoleCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role);
+};
+
+class ChangeEditCommand : public RealUndoCommand
+{
+public:
+	ChangeEditCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role);
+};
 
 #endif //__REAL_REPO_INDO_CONNAMDS_H__

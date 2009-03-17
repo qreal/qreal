@@ -152,6 +152,11 @@ class RealRepoModel : public QAbstractItemModel
 		void redo();
 		/** @brief Показать окно Command list */
 		void showCommandList();
+
+	signals:
+		void canUndoChanged (bool canUndo);
+		void canRedoChanged (bool canRedo);
+
 	private:
 		/** @brief Клиент репозитория */
 		RealRepoClient *repoClient;

@@ -39,6 +39,10 @@ dbg;
 	addToStack = true;
 
 	readItems();
+
+        // перенаправляем сигналы из undoStack к View. Напрямую это не сделать т.к. undoStack - private
+        connect(undoStack, SIGNAL( canUndoChanged(bool) ), this, SIGNAL( canUndoChanged(bool) ));
+        connect(undoStack, SIGNAL( canRedoChanged(bool) ), this, SIGNAL( canRedoChanged(bool) ));
 }
 
 RealRepoModel::~RealRepoModel()
@@ -171,10 +175,14 @@ dbg;
 		case Unreal::krnnNamedElement::nameRole:
 		case Qt::EditRole:
 			{
+				QVariant old_value = QVariant(repoClient->getName(item->id));
+				if(addToStack){
+					undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
+				}
 				repoClient->setName(item->id, value.toString());
 				hashNames[item->id] = value.toString();
+				break;
 			}
-			break;
 		case Unreal::PositionRole:
 			{
 				if ( type(item->parent) == Container ) {
@@ -209,12 +217,16 @@ dbg;
 			}
 		default:
 //			qDebug() << "role -- " << role;
-			if ( role >= Unreal::UserRole ) {
-
-				// FIXME
-				repoClient->setPropValue(item->id,
-					info.getColumnName(hashTypes[item->id],role), value.toString());
-
+			{
+				// Нужен ли здесь этот if ?
+				if ( type(item->parent) == Container ) {
+					QString column_name = info.getColumnName(hashTypes[item->id],role);
+					QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
+					if (addToStack){
+						undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
+			}
+					repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+	}
 			}
 	}
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {

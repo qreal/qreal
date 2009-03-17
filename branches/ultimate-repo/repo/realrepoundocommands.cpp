@@ -27,3 +27,12 @@ ChangeConfigurationCommand::ChangeConfigurationCommand (RealRepoModel *model, co
 	setText(QString("Changing configuration from (%1) to (%2)").arg(oldval.toString()).arg(newval.toString()));
 }
 
+ChangeUserRoleCommand::ChangeUserRoleCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role) : RealUndoCommand(model, index, oldval, newval, role)
+{
+	setText(QString("Changing UserRole from (%1) to (%2)").arg(oldval.toString()).arg(newval.toString()));
+}
+
+ChangeEditCommand::ChangeEditCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role) : RealUndoCommand(model, index, oldval, newval, role)
+{
+	setText(QString("Changing Edit from (%1) to (%2)").arg(oldval.toString()).arg(newval.toString()));
+}

@@ -162,6 +162,9 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 
 	connect(ui.actionCommand_list, SIGNAL( triggered() ), model,
 			SLOT( showCommandList() ));
+
+	connect(model, SIGNAL( canUndoChanged(bool) ), ui.actionUndo, SLOT( setEnabled(bool) ));
+	connect(model, SIGNAL( canRedoChanged(bool) ), ui.actionRedo, SLOT( setEnabled(bool) ));
 }
 
 void MainWindow::closeRepo()

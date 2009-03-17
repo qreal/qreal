@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0" >
  <class>MainWindowUi</class>
  <widget class="QMainWindow" name="MainWindowUi" >
@@ -35,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>579</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File" >
@@ -234,6 +235,8 @@
    </attribute>
    <addaction name="actionZoom_In" />
    <addaction name="actionZoom_Out" />
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
   </widget>
   <widget class="QDockWidget" name="propertyDock" >
    <property name="windowTitle" >
@@ -405,13 +408,35 @@
    </property>
   </action>
   <action name="actionUndo" >
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/undo.png</normalon>
+    </iconset>
+   </property>
    <property name="text" >
     <string>Undo</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionRedo" >
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/redo.png</normalon>
+    </iconset>
+   </property>
    <property name="text" >
     <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Z</string>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionCommand_list" >
