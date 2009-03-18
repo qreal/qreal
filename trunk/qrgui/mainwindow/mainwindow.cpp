@@ -81,7 +81,7 @@ void MainWindow::loadPlugins()
 			ui.paletteToolbox->addDiagramType( diagram.toString(), mgr.friendlyName(diagram) );
 
 			foreach (QUrl element, mgr.elements(diagram)) {
-				ui.paletteToolbox->addItemType( element.toString(), mgr.friendlyName(element), mgr.icon(element ));
+				ui.paletteToolbox->addItemType( element.toString(), mgr.friendlyName(element), mgr.icon(element));
 			}
 		}
 	}
