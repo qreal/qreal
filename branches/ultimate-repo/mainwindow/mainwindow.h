@@ -44,6 +44,8 @@ public slots:
 	/** @brief Осуществить удаление элемента из инспектора диаграмм */
 	void deleteFromDiagram();
 
+	void toggleShowSplash(bool);
+
 	/** @brief Активировать элемент */
 	void activateItemOrDiagram(const QModelIndex &index /**< Индекс выделенного элемента */);
 

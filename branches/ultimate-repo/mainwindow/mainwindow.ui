@@ -64,6 +64,7 @@
     <addaction name="separator" />
     <addaction name="actionAntialiasing" />
     <addaction name="actionOpenGL_Renderer" />
+    <addaction name="actionShowSplash" />
     <addaction name="separator" />
     <addaction name="actionUndo" />
     <addaction name="actionRedo" />
@@ -315,6 +316,17 @@
    </property>
    <property name="text" >
     <string>OpenGL Renderer</string>
+   </property>
+  </action>
+  <action name="actionShowSplash" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="checked ">
+     <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Show splash screen</string>
    </property>
   </action>
   <action name="actionPrint" >

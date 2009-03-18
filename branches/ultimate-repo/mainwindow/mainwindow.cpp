@@ -21,13 +21,22 @@ using namespace qReal;
 
 MainWindow::MainWindow() : model(0)
 {
+	QSettings settings("Tercom", "QReal");
+	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 //	QPixmap korkodil(":/icons/kroki2.PNG");
 //	QSplashScreen splash(korkodil, Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
-	splash.show();
-	QApplication::processEvents();
+
+	if (showSplash)
+	{
+		splash.show();
+		QApplication::processEvents();
+	}
 
 	ui.setupUi(this);
+
+	if (!showSplash)
+		ui.actionShowSplash->setChecked(false);
 
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
@@ -46,6 +55,7 @@ MainWindow::MainWindow() : model(0)
 
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleOpenGL(bool) ) );
+	connect(ui.actionShowSplash, SIGNAL( toggled(bool) ), this, SLOT (toggleShowSplash(bool) ) );
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
@@ -82,7 +92,6 @@ MainWindow::MainWindow() : model(0)
 
 	show();
 
-	QSettings settings("Tercom", "QReal");
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", QSize(1024, 800)).toSize());
 	move(settings.value("pos", QPoint(0, 0)).toPoint());
@@ -96,9 +105,9 @@ MainWindow::MainWindow() : model(0)
 	connDialog = new ConnectionDialog(repoAddress, repoPort);
 	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
 
-	connectRepo(&splash, repoAddress, repoPort);
+	connectRepo(showSplash?&splash:NULL, repoAddress, repoPort);
 
-	splash.close();
+	if (showSplash) splash.close();
 }
 
 MainWindow::~MainWindow()
@@ -335,4 +344,10 @@ void MainWindow::reconnectRepo(const QString& addr, const int port)
 	repoAddress = addr;
 	repoPort = port;
 	connectRepo(0, addr, port);
+}
+
+void MainWindow::toggleShowSplash(bool show)
+{
+	QSettings settings("Tercom", "QReal");
+	settings.setValue("ShowSplashScreen", show);
 }
