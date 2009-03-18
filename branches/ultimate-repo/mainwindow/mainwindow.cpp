@@ -105,9 +105,13 @@ MainWindow::MainWindow() : model(0)
 	connDialog = new ConnectionDialog(repoAddress, repoPort);
 	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
 
-	connectRepo(showSplash?&splash:NULL, repoAddress, repoPort);
-
-	if (showSplash) splash.close();
+	if (showSplash)
+	{
+		connectRepo(&splash, repoAddress, repoPort);
+		splash.close();
+	}
+	else
+		connectRepo(NULL, repoAddress, repoPort);
 }
 
 MainWindow::~MainWindow()
