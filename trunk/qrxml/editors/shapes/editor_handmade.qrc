@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/plugins/usecase/ucdiagram">
-    <file>actor.svg</file>
-    <file>usecase.svg</file>
+<qresource prefix="/TestEditor/UseCase">
+    <file>Actor.svg</file>
+    <file>UseCase.svg</file>
 </qresource>
 </RCC>

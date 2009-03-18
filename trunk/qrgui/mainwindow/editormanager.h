@@ -2,6 +2,7 @@
 #define EDITORMANAGER_H
 
 class QUrl;
+class QIcon;
 class EditorInterface;
 
 #include <QtCore/QDir>
@@ -21,6 +22,7 @@ public:
 	QList<QUrl> elements(const QUrl &diagram) const;
 	
 	QString friendlyName(const QUrl &url) const;
+	QIcon icon(const QUrl &url) const;
 
 	bool isEditor(const QUrl &url) const;
 	bool isDiagram(const QUrl &url) const;

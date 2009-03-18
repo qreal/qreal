@@ -2,6 +2,7 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QMessageBox>
+#include <QtGui/QIcon>
 
 #include <QtCore/QtDebug>
 
@@ -132,4 +133,17 @@ QString EditorManager::friendlyName(const QUrl &url) const
 				break;
 		default:	Q_ASSERT( true );
 	}
+}
+
+QIcon EditorManager::icon(const QUrl &url) const
+{
+	Q_ASSERT( url.scheme() == "qrm" );
+	QStringList path = url.path().split('/');
+	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+
+	QString s = url.toString();
+	s.remove(0, 3);
+	s.append(".svg");
+	qDebug() << s;
+	return QIcon(s);
 }
