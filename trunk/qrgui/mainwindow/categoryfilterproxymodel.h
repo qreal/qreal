@@ -5,13 +5,13 @@
 
 class CategoryFilterProxyModel : public QSortFilterProxyModel
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    CategoryFilterProxyModel(QObject *parent = 0);
+	public:
+		CategoryFilterProxyModel(QObject *parent = 0);
 
-protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+	protected:
+		bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 };
 
 #endif

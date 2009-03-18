@@ -10,43 +10,43 @@
 #include "editorinterface.h"
 
 EditorManager::EditorManager(QObject *parent)
-    : QObject(parent), root("qrm:/")
+	: QObject(parent), root("qrm:/")
 {
-//    foreach (QObject *plugin, QPluginLoader::staticInstances())
-//        populateMenus(plugin);
+	//    foreach (QObject *plugin, QPluginLoader::staticInstances())
+	//        populateMenus(plugin);
 
-    pluginsDir = QDir(qApp->applicationDirPath());
+	pluginsDir = QDir(qApp->applicationDirPath());
 
 #if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
+	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+		pluginsDir.cdUp();
 #elif defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS") {
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-    }
+	if (pluginsDir.dirName() == "MacOS") {
+		pluginsDir.cdUp();
+		pluginsDir.cdUp();
+		pluginsDir.cdUp();
+	}
 #endif
-    pluginsDir.cd("plugins");
+	pluginsDir.cd("plugins");
 
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
+	foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+		QObject *plugin = loader.instance();
 
-        if (plugin) {
-		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-		if (iEditor) {
-			foreach (QString d, iEditor->diagrams())
-				foreach (QString e, iEditor->elements(d))
+		if (plugin) {
+			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+			if (iEditor) {
+				foreach (QString d, iEditor->diagrams())
+					foreach (QString e, iEditor->elements(d))
 					;
 
-			pluginsLoaded += iEditor->id();
-			pluginIface[iEditor->id()] = iEditor;
-		}
-	} else {
-	    QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
-	} 
-    }
+				pluginsLoaded += iEditor->id();
+				pluginIface[iEditor->id()] = iEditor;
+			}
+		} else {
+			QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
+		} 
+	}
 }
 
 QList<QUrl> EditorManager::editors() const
@@ -126,11 +126,11 @@ QString EditorManager::friendlyName(const QUrl &url) const
 
 	switch ( path.size() ) {
 		case 2:		return pluginIface[path[1]]->editorName();
-				break;
+					break;
 		case 3:		return pluginIface[path[1]]->diagramName(path[2]);
-				break;
+					break;
 		case 4:		return pluginIface[path[1]]->elementName(path[2], path[3]);
-				break;
+					break;
 		default:	Q_ASSERT( true );
 	}
 }

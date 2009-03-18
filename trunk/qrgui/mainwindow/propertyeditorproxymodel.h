@@ -7,36 +7,36 @@
 
 class PropertyEditorModel : public QAbstractTableModel
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    PropertyEditorModel(QObject *parent = 0);
+	public:
+		PropertyEditorModel(QObject *parent = 0);
 
-	int rowCount(const QModelIndex &index) const;
-	int columnCount(const QModelIndex &index) const;
+		int rowCount(const QModelIndex &index) const;
+		int columnCount(const QModelIndex &index) const;
 
-	Qt::ItemFlags flags (const QModelIndex &index) const;
+		Qt::ItemFlags flags (const QModelIndex &index) const;
 
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+		QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+		bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-	void setSourceModel(QAbstractItemModel *sourceModel);
+		void setSourceModel(QAbstractItemModel *sourceModel);
 
-public slots:
-	void setIndex(const QModelIndex &sourceIndex);
+	public slots:
+		void setIndex(const QModelIndex &sourceIndex);
 
-private slots:
-	void rereadData();
+	private slots:
+		void rereadData();
 
-private:
-	QAbstractItemModel *targetModel;
-	QPersistentModelIndex targetObject;
-	RealRepoInfo info;
+	private:
+		QAbstractItemModel *targetModel;
+		QPersistentModelIndex targetObject;
+		RealRepoInfo info;
 
-	int type;
-	QStringList roleNames;
+		int type;
+		QStringList roleNames;
 };
 
 #endif

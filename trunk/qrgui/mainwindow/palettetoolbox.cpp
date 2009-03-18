@@ -3,7 +3,7 @@
 #include "palettetoolbox.h"
 
 PaletteToolbox::DraggableElement::DraggableElement(QString id, QString name,
-					QIcon icon, QWidget *parent/*0*/)
+		QIcon icon, QWidget *parent/*0*/)
 	: QWidget(parent)
 {
 	m_id = id;
@@ -43,11 +43,11 @@ void PaletteToolbox::addDiagramType( QString id, QString name )
 	QWidget *tab = new QWidget( this );
 
 	QVBoxLayout *layout = new QVBoxLayout(tab);
-        layout->setSpacing(0);
-        layout->setContentsMargins ( 0,0,0,0 );
+	layout->setSpacing(0);
+	layout->setContentsMargins ( 0,0,0,0 );
 	tab->setLayout(layout);
 
-        categories[id] = addItem(tab, name);	
+	categories[id] = addItem(tab, name);	
 }
 
 void PaletteToolbox::addItemType( QString id, QString name, QIcon icon )

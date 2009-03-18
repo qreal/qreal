@@ -14,36 +14,35 @@ class EditorView;
 
 class MainWindow : public QMainWindow
 {
-Q_OBJECT
+	Q_OBJECT
 
-public:
-	MainWindow();
-	~MainWindow();
+	public:
+		MainWindow();
+		~MainWindow();
 
-public slots:
-/*	void connectRepo();
-	void closeRepo();			*/
-	void adjustMinimapZoom(int zoom);
+	public slots:
+//		void connectRepo();
+//		void closeRepo();
+		void adjustMinimapZoom(int zoom);
 
-/*	void beginTransaction();
-	void commitTransaction();
-	void rollbackTransaction();
-	void deleteFromDiagram();		*/
+//		void beginTransaction();
+//		void commitTransaction();
+//		void rollbackTransaction();
+//		void deleteFromDiagram();
 
-	void settingsPlugins();
+		void settingsPlugins();
 
-	void showAbout();
-	void showHelp();
+		void showAbout();
+		void showHelp();
 
-	void print();
-	void makeSvg();
+		void print();
+		void makeSvg();
 
-private:
-	
-	Ui::MainWindowUi ui;
+	private:
+		Ui::MainWindowUi ui;
 
-	void loadPlugins();
-	EditorManager mgr;
+		void loadPlugins();
+		EditorManager mgr;
 };
 
 #endif

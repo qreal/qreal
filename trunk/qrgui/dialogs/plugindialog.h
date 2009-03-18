@@ -14,17 +14,17 @@ class EditorManager;
 
 class PluginDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
-public:
-    PluginDialog(const EditorManager &mgr, QWidget *parent = 0);
+	public:
+		PluginDialog(const EditorManager &mgr, QWidget *parent = 0);
 
-private:
-    QLabel *label;
-    QTreeWidget *treeWidget;
-    QPushButton *okButton;
-    QIcon interfaceIcon;
-    QIcon featureIcon;
+	private:
+		QLabel *label;
+		QTreeWidget *treeWidget;
+		QPushButton *okButton;
+		QIcon interfaceIcon;
+		QIcon featureIcon;
 };
 
 #endif

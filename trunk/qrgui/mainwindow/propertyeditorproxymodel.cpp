@@ -4,7 +4,7 @@
 #include "realreporoles.h"
 
 PropertyEditorModel::PropertyEditorModel(QObject *parent)
-    : QAbstractTableModel(parent)
+	: QAbstractTableModel(parent)
 {
 }
 
@@ -25,8 +25,8 @@ Qt::ItemFlags PropertyEditorModel::flags (const QModelIndex &/*index*/) const
 
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-//	if ( ! targetModel )
-//		return QVariant();
+	//	if ( ! targetModel )
+	//		return QVariant();
 
 	if ( role == Qt::DisplayRole && orientation == Qt::Vertical )
 		return roleNames.at(section);
@@ -36,8 +36,8 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 
 QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 {
-//	if ( ! targetModel )
-//		return QVariant();
+	//	if ( ! targetModel )
+	//		return QVariant();
 
 	if ( role == Qt::DisplayRole && index.column() == 0 ) {
 		return targetObject.data(info.roleByIndex(index.row()));

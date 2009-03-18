@@ -19,12 +19,12 @@ MainWindow::MainWindow()
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
-//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-//			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
+	//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
+	//			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
 	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
-	
+
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
 	connect(ui.actionZoom_Out, SIGNAL( triggered() ), ui.view, SLOT( zoomOut() ) );
 
@@ -57,17 +57,17 @@ MainWindow::MainWindow()
 
 	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
 	ui.propertyEditor->horizontalHeader()->hide();
-//	ui.propertyEditor->setModel(&propertyModel);
+	//	ui.propertyEditor->setModel(&propertyModel);
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
-//	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
-//			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
+	//	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
+	//			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
 
 	loadPlugins();
 	showMaximized();
 
-//	connectRepo();
+	//	connectRepo();
 }
 
 MainWindow::~MainWindow()
@@ -99,7 +99,7 @@ void MainWindow::print()
 	QPrintDialog dialog(&printer, this);
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
-//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
+		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
 		ui.view->scene()->render(&painter);
 	}
 }
@@ -107,7 +107,7 @@ void MainWindow::print()
 void MainWindow::makeSvg()
 {
 	QSvgGenerator newSvg;
-	
+
 	QString fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty())
 		return;
@@ -127,10 +127,10 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::showAbout()
 {
-     QMessageBox::about(this, tr("About QReal"),
-             tr("<img src=\":/images/icons/slavery.jpg\"><br>"
-		"<center>This is <b>QReal</b><br>"
-		"Just another CASE tool</center>"));
+	QMessageBox::about(this, tr("About QReal"),
+			tr("<img src=\":/images/icons/slavery.jpg\"><br>"
+				"<center>This is <b>QReal</b><br>"
+				"Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
