@@ -7,7 +7,9 @@
 #include "realrepomodel.h"
 #include "realreporoles.h"
 #include "editorviewscene.h"
-#include <QVBoxLayout>
+#include <QMessageBox>
+#include <QTextCursor>
+
 using namespace UML;
 
 NodeElement::NodeElement()
@@ -48,11 +50,13 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		Element::mousePressEvent(event);
 
 	if (event->button() == Qt::RightButton)
-	{
-		QWidget *w = new QWidget();
-		w->setAttribute(Qt::WA_DeleteOnClose, true);
-		w->setWindowFlags(Qt::FramelessWindowHint);
+        {
+
+                /*QWidget *w = new QWidget();
+                w->setAttribute(Qt::WA_DeleteOnClose, true);
+                w->setWindowFlags(Qt::FramelessWindowHint);
 		QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
+              // QString str = dataIndex.data(Qt::DisplayRole).toString();
 
 		QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
 		QObject::connect (lineEdit, SIGNAL(editingFinished()), w, SLOT(close()));
@@ -64,7 +68,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		w->setFixedWidth(static_cast<int>(boundingRect().width()));
 		w->move(static_cast<int>(pos().x()) + 240, static_cast<int>(pos().y()) + 60);
 
-		w->show();
+                w->show();*/
 
 		event->accept();
 	}

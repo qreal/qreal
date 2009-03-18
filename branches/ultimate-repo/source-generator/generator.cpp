@@ -369,7 +369,7 @@ void Generator::genClasses(){
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
 			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
-			<< "\ttext = \"\";\n";
+                        << "\ttext = \"\";\n";
 
 #if 0 // FIXME: Emperor
 		if ((*o)->parents.size() > 0)
@@ -440,25 +440,38 @@ void Generator::genClasses(){
 
 		//paint
 		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
-																				"QWidget *widget)\n{\n";
+                        "QWidget *widget)\n{\n";
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.render(painter, m_contents);\n")
-			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
-			<< "\tQTextDocument d;\n"
-			<< "\td.setHtml(text);\n";
+                        << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
+                        
+
+//			<< "\t//QTextDocument d;\n"
+//			<< "\td.setHtml(text);\n";
 		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";
 			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
 				out << QString("\tpainter->translate(QPointF(0, 0));\n")
-					<< "\td.setTextWidth(m_contents.width());\n"
-					<< "\td.drawContents(painter, m_contents);\n";
+                                       // << "\tc;\n"
+
+//                                     << "\td.setHtml(text);\n"
+                                       << "\td.setPlainText(\"Ia Ia Cthulhu fhtagn!\");\n"
+                                       << "\td.setParentItem(this);\n"
+                                       << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+                                       << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+                                       << "\td.setPos(10, 10);\n";
 			}
 			else if ((*o)->id == "krnnDiagram"){
 				out << QString("\tpainter->translate(QPointF(0, 2*m_contents.height()/3 ));\n")
 					<< "\tQRectF conts = m_contents;\n"
 					<< "\tconts.setHeight(m_contents.height()/3);\n"
-					<< "\td.setTextWidth(m_contents.width());\n"
-					<< "\td.drawContents(painter, conts);\n";
+
+                                     //       << "\td.setHtml(text);\n"
+                                       << "\td.setPlainText(\"Ia Ia Cthulhu fhtagn!\");\n"
+                                        << "\td.setParentItem(this);\n"
+                                       << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+                                       << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+                                       << "\td.setPos(10, 10);\n";
 
 			}
 			else{
@@ -472,12 +485,28 @@ void Generator::genClasses(){
 					out << QString("\tpainter->translate(QPointF(0, m_contents.height()-15));\n")
 						<< "\tQRectF conts = m_contents;\n"
 						<< QString("\tconts.setHeight(20);\n");
-				out << "\td.setTextWidth(m_contents.width());\n"
-					<< "\td.drawContents(painter, conts);\n";
+
+                                out << "\td.setTextWidth(m_contents.width());\n"
+//                                        << "\td.drawContents(painter, conts);\n";
+
+                                      //         << "\td.setHtml(text);\n"
+                                       << "\td.setPlainText(\"Ia Ia Cthulhu fhtagn!\");\n"
+                                       << "\td.setParentItem(this);\n"
+                                       << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+                                       << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+                                       << "\td.setPos(10, 10);\n";
 			}
 			out << "\tpainter->restore();\n";
 		} else
-				out << "\td.drawContents(painter, m_contents);\n";
+                                out //<< "\td.drawContents(painter, m_contents);\n";
+//                                        << "\td.setTextWidth(m_contents.width());\n"
+
+                                       //         << "\td.setHtml(text);\n"
+                                       << "\td.setPlainText(\"Ia Ia Cthulhu fhtagn!\");\n"
+                                        << "\td.setParentItem(this);\n"
+                                       << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+                                       << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+                                       << "\td.setPos(10, 10);\n";
 
 			out<< "}\n\n";
 

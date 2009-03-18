@@ -8,6 +8,8 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 #include "sdfrenderer.h"
+#include <QGraphicsTextItem>
+#include <QTextCursor>
 
 #include <QtGui/QWidget>
 
@@ -68,6 +70,8 @@ namespace UML {
 			}
 
 			void setPortsVisible(bool value);
+                        QGraphicsTextItem d;
+                       // QTextLayout d;
 
 //                        QString PutName();
            public slots:
