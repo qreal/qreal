@@ -79,10 +79,6 @@ PaletteToolbox::PaletteToolbox(QWidget *parent)
 		++i;
 	}
 
-	if (i == 0)
-	{
-		qDebug() << "OMG WTF?" << categories;
-	}
 	mComboBox->setUpdatesEnabled(false);
 	setEditors(mShownTabs);
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
