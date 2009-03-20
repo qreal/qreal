@@ -9,9 +9,9 @@ if %ERRORLEVEL% neq 0 (
 popd
 echo Building QReal...
 qmake 
-mingw32-make
+mingw32-make -j2
 echo Building reposerver...
 cd reposerver 
 qmake 
-mingw32-make
+mingw32-make -j2
 popd

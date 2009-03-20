@@ -4,7 +4,7 @@ set GEN=%WD%\generated
 
 cd %WD%
 qmake
-mingw32-make
+mingw32-make -j2
 
 if %ERRORLEVEL% neq 0 (
 	echo "Generate-code failed!"
