@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Client.h"
+#include "../Client/Client.h"
 
 #include <QAbstractItemModel>
 

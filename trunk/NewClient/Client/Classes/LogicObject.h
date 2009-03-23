@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.h"
+#include "../Service/definitions.h"
 
 #include <QMap>
 #include <QVariant>

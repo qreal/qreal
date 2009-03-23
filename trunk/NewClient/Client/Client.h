@@ -1,7 +1,7 @@
 #pragma once
 
-#include "definitions.h"
-#include "LogicObject.h"
+#include "../Service/definitions.h"
+#include "Classes/LogicObject.h"
 
 #include <QVariant>
 #include <QHash>
