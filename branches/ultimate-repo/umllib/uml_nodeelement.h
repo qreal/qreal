@@ -21,10 +21,10 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
-    class statLine;
-        class NodeElement :  public QObject, public Element
-        {
-            Q_OBJECT
+	class statLine;
+		class NodeElement :  public QObject, public Element
+		{
+			Q_OBJECT
 
 		public:
 			/** @brief Конструктор */
@@ -70,13 +70,13 @@ namespace UML {
 			}
 
 			void setPortsVisible(bool value);
-                        QGraphicsTextItem d;
-                       // QTextLayout d;
+						QGraphicsTextItem d;
+					   // QTextLayout d;
 
 //                        QString PutName();
 			QString oldName;
-              public slots:
-                        void changeName();
+			  public slots:
+						void changeName();
 
 
 		protected:
@@ -89,10 +89,10 @@ namespace UML {
 			/** @brief Обработать событие отпускания кнопки мыши */
 			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
 			/** @brief Обработать событие нажатия кнопки мыши */
-                        void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
+						void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
 
 
-                       //bool sceneEvent ( QEvent * event );
+					   //bool sceneEvent ( QEvent * event );
 			/** @brief Обработать изменение данных объекта
 			 *	@brief @return Измененные данные
 			 * */
@@ -103,10 +103,12 @@ namespace UML {
 			/** @brief Список точечных портов */
 			QList<QPointF> pointPorts;
 			/** @brief Список портов-линий */
-                        QList<statLine> linePorts;
+						QList<statLine> linePorts;
 			/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 			QRectF m_contents;
 
+			bool mLockChangeName;
+			bool mLockUpdateText;
 
 
 		private:
@@ -126,23 +128,23 @@ namespace UML {
 
 			/** @brief Описание двухмерной трансформации объекта */
 			QTransform transform;
-                        QLineF newTransform(const statLine& port)  const;
+						QLineF newTransform(const statLine& port)  const;
 
 	};
-       /** @brief Описание линейного порта, реагирующего на абсолютные координаты */
-        class statLine
-        {
-            public:
-                QLineF line;
-                bool prop_x1;
-                bool prop_y1;
-                bool prop_x2;
-                bool prop_y2;
-            public:
-                statLine() {line = QLineF(0,0,0,0); prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
-                operator QLineF () const {return line;}
-                void operator = (QLineF& l) {line = l; prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
-        };
+	   /** @brief Описание линейного порта, реагирующего на абсолютные координаты */
+		class statLine
+		{
+			public:
+				QLineF line;
+				bool prop_x1;
+				bool prop_y1;
+				bool prop_x2;
+				bool prop_y2;
+			public:
+				statLine() {line = QLineF(0,0,0,0); prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
+				operator QLineF () const {return line;}
+				void operator = (QLineF& l) {line = l; prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false;}
+		};
 };
 
 #endif

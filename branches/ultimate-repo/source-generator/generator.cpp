@@ -509,15 +509,25 @@ void Generator::genClasses(){
 			<< "\tNodeElement::updateData();\n";
 		if ((*o)->labels.size() > 0){
 			out << QString("\ttext = QString(\"%1\")").arg((*o)->labels.at(0).text);
-			if ((*o)->labels.at(0).args.size() > 0)
+			if ((*o)->labels.at(0).args.size() > 0) {
 				for( int k=0; k<(*o)->labels.at(0).args.size(); k++)
 					out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
 								.arg((*o)->labels.at(0).args.at(k));
-			out << ";\n";
-		}
+								
+				out << ";\n";
+				out << "\tif (!mLockUpdateText) {\n"
+					<< "\t\tmLockChangeName = true;\n"
+					<< "\t\td.setHtml(text);\n"
+					<< "\t\tmLockChangeName = false;\n"
+					<< "\t}\n";
+			} else {
+				out << ";\n";
+			}
+		}		
 		else
 			out << "\ttext = \"\";\n";
-			out << QString("")
+		
+		out << QString("")
 			<< "\tupdate();\n"
 			<< "}\n\n";
 
