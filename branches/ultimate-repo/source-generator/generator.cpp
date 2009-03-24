@@ -515,7 +515,7 @@ void Generator::genClasses(){
 								.arg((*o)->labels.at(0).args.at(k));
 								
 				out << ";\n";
-				out << "\tif (!mLockUpdateText) {\n"
+				out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
 					<< "\t\tmLockChangeName = true;\n"
 					<< "\t\td.setHtml(text);\n"
 					<< "\t\tmLockChangeName = false;\n"
