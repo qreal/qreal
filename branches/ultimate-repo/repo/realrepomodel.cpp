@@ -40,9 +40,9 @@ dbg;
 
 	readItems();
 
-        // перенаправляем сигналы из undoStack к View. Напрямую это не сделать т.к. undoStack - private
-        connect(undoStack, SIGNAL( canUndoChanged(bool) ), this, SIGNAL( canUndoChanged(bool) ));
-        connect(undoStack, SIGNAL( canRedoChanged(bool) ), this, SIGNAL( canRedoChanged(bool) ));
+		// перенаправляем сигналы из undoStack к View. Напрямую это не сделать т.к. undoStack - private
+		connect(undoStack, SIGNAL( canUndoChanged(bool) ), this, SIGNAL( canUndoChanged(bool) ));
+		connect(undoStack, SIGNAL( canRedoChanged(bool) ), this, SIGNAL( canRedoChanged(bool) ));
 }
 
 RealRepoModel::~RealRepoModel()
@@ -478,7 +478,7 @@ dbg;
 }
 
 bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QModelIndex &parent,
-									  IdType const &oldParent, IdType const &newid, 
+									  IdType const &oldParent, IdType const &newid,
 									  TypeIdType const &newtype, QString const &name,
 									  QPointF const &newPos, Qt::DropAction action, int oldRow )
 {
@@ -601,10 +601,10 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 							id = repoClient->copyEntity(newtype, id, parentItem->id, oldParent, true);
 
 							RepoTreeItem *newItem = createItem(parentItem, id, newtype, name);
-							if (hashDiagramElements[oldParent].contains(newid)) { 
-								hashDiagramElements[parentItem->id][id]= 
-									 hashDiagramElements[oldParent][newid]; 
-                            }   
+							if (hashDiagramElements[oldParent].contains(newid)) {
+								hashDiagramElements[parentItem->id][id]=
+									 hashDiagramElements[oldParent][newid];
+							}
 							endInsertRows();
 							readChildren(newItem);
 						}
