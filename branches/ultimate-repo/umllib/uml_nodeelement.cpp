@@ -15,7 +15,7 @@ using namespace UML;
 NodeElement::NodeElement()
 : portsVisible(false)
 {
-
+	oldName="";
 	setAcceptsHoverEvents(true);
 	dragState = None;
 }
@@ -26,14 +26,19 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 }
 
-void NodeElement::changeName(QString name)
+void NodeElement::changeName()
 {
-	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-	im->setData(dataIndex, name, Qt::DisplayRole);
+/*	if(d.toPlainText() != oldName)
+	{*/
+		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+        	im->setData(dataIndex, d.toPlainText(), Qt::DisplayRole);
+/*	}
+	oldName=d.toPlainText();*/
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+   // changeName();
 	if (isSelected())
 	{
 		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -159,6 +164,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	}
 }
 
+
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch ( change ) {
@@ -184,7 +190,6 @@ QRectF NodeElement::boundingRect() const
 void NodeElement::updateData()
 {
 	Element::updateData();
-
 	if (moving == 0) {
 		setPos(dataIndex.data(Unreal::PositionRole).toPointF());
 		QRectF newRect = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>().boundingRect();
@@ -198,7 +203,7 @@ void NodeElement::updateData()
 
 		transform.reset();
 		transform.scale(m_contents.width(), m_contents.height());
-	}
+	} 
 }
 
 static int portId(qreal id)

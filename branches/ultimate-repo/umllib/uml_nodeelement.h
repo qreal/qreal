@@ -74,10 +74,13 @@ namespace UML {
                        // QTextLayout d;
 
 //                        QString PutName();
-           public slots:
-                        void changeName(QString name);
+			QString oldName;
+              public slots:
+                        void changeName();
+
 
 		protected:
+
 
 			bool portsVisible;
 
@@ -87,6 +90,7 @@ namespace UML {
 			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
 			/** @brief Обработать событие нажатия кнопки мыши */
                         void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
+
 
                        //bool sceneEvent ( QEvent * event );
 			/** @brief Обработать изменение данных объекта
