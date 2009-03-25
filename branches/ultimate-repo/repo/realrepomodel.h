@@ -165,6 +165,10 @@ class RealRepoModel : public QAbstractItemModel
 		struct RepoTreeItem {
 			IdType id; /**< Идентификатор */
 			int row; /**< Номер строки */
+			bool is_avatar; /**< аватар ли это, или сам объект? */
+			bool has_avatar; /**< имеет ли данный объект аватар? */
+			RepoTreeItem *inv_avatar; /**< обратный аватар, только объект есть диаграмма и is_avatar == true */
+			RepoTreeItem *avatar; /**< аватар, только если объект есть диаграмма и is_avatar == false */
 			RepoTreeItem *parent; /**< Родительский элемент */
 			QList<RepoTreeItem *> children; /**< Список дочерних элементов */
 		};

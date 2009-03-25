@@ -23,6 +23,7 @@ dbg;
 	rootItem = new RepoTreeItem;
 	rootItem->parent = NULL;
 	rootItem->id = "root";
+	rootItem->is_avatar = false;
 
 	if (!readRootTable())
 		exit(1);
@@ -354,7 +355,7 @@ dbg;
 
 bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent )
 {
-	RepoTreeItem *parentItem;
+	RepoTreeItem *parentItem, *curItem;
 
 	if ( parent.isValid() )
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
@@ -363,7 +364,19 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 	}
 
 	for ( int i = row; i < row+count; i++ ){
-		//                      qDebug() << "deleting element " << parentItem->children[i]->id;
+		// qDebug() << "deleting element " << parentItem->children[i]->id;
+		curItem = static_cast<RepoTreeItem*>(index(i, 0, parent).internalPointer());
+		if (curItem == NULL)
+		{
+			qDebug() << "OMG, shit happened!";
+			*(int*)NULL = 1; // For valgrind sake
+		}
+		if (curItem->is_avatar == true)
+		{
+			// FIXME: Smth better needed
+			throw false;
+		}
+
 		repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
 	}
 
@@ -751,6 +764,7 @@ RealRepoModel::RepoTreeItem* RealRepoModel::commonCreateItem( RepoTreeItem *pare
 	RepoTreeItem *item = new RepoTreeItem;
 	item->parent = parentItem;
 	item->id = id;
+	item->is_avatar = false;
 	item->row = parentItem->children.size();
 
 	// 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
@@ -810,6 +824,7 @@ dbg;
 		// qDebug() << "root table: " << info.getId() << count << info.getName() << info.getDescription() << item;
 		item->parent = rootItem;
 		item->row = count;
+		item->is_avatar = false;
 		item->id = info.getId();
 
 		hashNames[item->id] = info.getName();
@@ -844,6 +859,7 @@ dbg;
 		item->parent = parent;
 		item->id = id;
 		item->row = count;
+		item->is_avatar = false;
 		parent->children.append(item);
 		hashTreeItems[item->id].append(item);
 
@@ -865,7 +881,13 @@ dbg;
 	foreach (RepoTreeItem *idItem, diagramCategory->children)
 	{
 		if (idItem->id == root->id && root != idItem)
+		{
+			idItem->is_avatar = true;
+			idItem->inv_avatar = root;
+			root->avatar = idItem;
+			root->has_avatar = true;
 			return;
+		}
 	}
 
 	IdTypeList idChildren;
@@ -884,6 +906,7 @@ dbg;
 			item->parent = root;
 			item->row = i++;
 			item->id = childId;
+			item->is_avatar = false;
 
 			root->children.append(item);
 			hashTreeItems[item->id].append(item);
@@ -901,6 +924,7 @@ dbg;
 			item->parent = root;
 			item->row = i;
 			item->id = id;
+			item->is_avatar = false;
 
 			hashNames[item->id] = data.section("\t", 1, 1);
 			hashTypes[item->id] = data.section("\t", 2, 2);

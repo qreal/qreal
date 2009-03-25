@@ -202,6 +202,11 @@ void MainWindow::deleteFromExplorer()
 		{
 			model->removeRow(idx.row(), idx.parent());
 		}
+		catch (bool b)
+		{
+			QMessageBox::warning(this, tr("Operation aborted"),
+				tr("Cannot delete avatar"));
+		}
 		catch (QString e)
 		{
 			QMessageBox::warning(this, tr("Operation aborted"),
