@@ -228,7 +228,7 @@ class RealRepoModel : public QAbstractItemModel
 
 		/** @brief Создать новый элемент
 		 * */
-		void createItem(RepoTreeItem * item, /**< Элемент */
+		RepoTreeItem* createItem(RepoTreeItem * item, /**< Элемент */
 						IdType const &id, /**< Идентификатор */
 						TypeIdType const &type /**< Тип */
 						);

@@ -523,6 +523,7 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 				{
 					if (type(parentItem->parent) != Category)
 					{
+						// FIXME: should put them into avatar
 						qDebug() << "cannot put objects here";
 						return false;
 					}
@@ -555,6 +556,8 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 						return false;
 				}
 
+				RepoTreeItem *newTypedItem;
+
 				// drag'n'drop из палитры, создаем новый элемент
 				if (action == Qt::CopyAction && newElement) { // дерево инспектора объектов
 					qDebug() << "Qt::CopyAction";
@@ -566,7 +569,12 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 					id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
 					repoClient->setPosition(id, parentItem->id, (int)newPos.x(), (int)newPos.y());
 					qDebug() << "\tcreating new item" << rootItem->children.at(typeIndex)->id << id << newtype;
-					createItem(rootItem->children.at(typeIndex), id, newtype);
+					RepoTreeItem *newTypedItem = createItem(rootItem->children.at(typeIndex), id, newtype);
+					if (newtype == "krnnDiagram")
+					{
+						// inv_avatar will be later
+						newTypedItem->is_avatar = true;
+					}
 					endInsertRows();
 				}
 
@@ -589,7 +597,9 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 				// дерево инспектора диаграмм
 				if (newElement) {
 					beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
-					createItem(parentItem, id, newtype, name);
+					RepoTreeItem *qq = createItem(parentItem, id, newtype, name);
+					if (action == Qt::CopyAction)
+						newTypedItem->inv_avatar = qq;
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 					endInsertRows();
 				}
@@ -778,11 +788,12 @@ RealRepoModel::RepoTreeItem* RealRepoModel::commonCreateItem( RepoTreeItem *pare
 	return item;
 }
 
-void RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type)
+RealRepoModel::RepoTreeItem* RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type)
 {
 dbg;
-	commonCreateItem(parentItem,id,type);
+	RepoTreeItem *item = commonCreateItem(parentItem,id,type);
 	hashNames[id] = "anonymous";
+	return item;
 }
 
 RealRepoModel::RepoTreeItem* RealRepoModel::createItem(RepoTreeItem *parentItem, IdType const &id, TypeIdType const &type, QString name){
