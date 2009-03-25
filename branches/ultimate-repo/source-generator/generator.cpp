@@ -384,9 +384,7 @@ void Generator::genClasses(){
 		<< "\tm_contents.setWidth(width);\n"
                 << "\tm_contents.setHeight(height);\n"
                 << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
-                << "\td.setTextWidth(m_contents.width());\n"
                 << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
-//					<< "\td.drawContents(painter, m_contents);\n";
                 << "\td.setParentItem(this);\n"
                 << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
 
@@ -453,23 +451,18 @@ void Generator::genClasses(){
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.render(painter, m_contents);\n")
 			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
-                        
-
-//			<< "\t//QTextDocument d;\n"
-//                        << "\td.setHtml(text);\n"
-
-                        << "\td.setTextWidth(m_contents.width());\n";
+                        << "\td.setTextWidth(m_contents.width()-15);\n";
 
 		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";
 			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
-				out << QString("\tpainter->translate(QPointF(0, 0));\n")
-                                     <<"\td.setPos(0,0);\n";
+				out << QString("\tpainter->translate(QPointF(7, 0));\n")
+                                     <<"\td.setPos(7,0);\n";
 
 			}
 			else if ((*o)->id == "krnnDiagram"){
-				out << QString("\tpainter->translate(QPointF(0, 2*m_contents.height()/3 ));\n")
-                                        <<"\td.setPos(0,2*m_contents.height()/3);\n"
+				out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
+                                        <<"\td.setPos(7,2*m_contents.height()/3);\n"
 					<< "\tQRectF conts = m_contents;\n"
 					<< "\tconts.setHeight(m_contents.height()/3);\n"
                                 ;
@@ -477,30 +470,26 @@ void Generator::genClasses(){
 			}
 			else{
 				if ((*o)->labels.at(0).x != 0  || (*o)->labels.at(0).y != 0)
-                                        out << QString("\tpainter->translate(QPointF(%1 * m_contents.width(), %2 * m_contents.height()));\n")
+                                        out << QString("\tpainter->translate(QPointF(%1 * m_contents.width()+7, %2 * m_contents.height()));\n")
 							.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
-                                            <<QString("\td.setPos(%1 * m_contents.width(), %2 * m_contents.height());\n")
+                                            <<QString("\td.setPos(%1 * m_contents.width()+7, %2 * m_contents.height());\n")
                                                         .arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
 						<< "\tQRectF conts = m_contents;\n"
 						<< QString("\tconts.setHeight(m_contents.height() * (1 - %1));\n")
 							.arg((*o)->labels.at(0).y);
 				else
-					out << QString("\tpainter->translate(QPointF(0, m_contents.height()-15));\n")
-                                                <<"\td.setPos(0, m_contents.height()-15);\n"
+					out << QString("\tpainter->translate(QPointF(7, m_contents.height()-15));\n")
+                                                <<"\td.setPos(7, m_contents.height()-15);\n"
 						<< "\tQRectF conts = m_contents;\n"
 						<< QString("\tconts.setHeight(20);\n");
-
-          //                      out << "\td.setTextWidth(m_contents.width());\n";
-//                                     ;
 			}
                         out
                                 << "\td.paint(painter,style,widget);\n"
-                               << "\tpainter->restore();\n";
-		} else
-                                out //<< "\td.drawContents(painter, m_contents);\n";
-                                        << "\td.setTextWidth(m_contents.width());\n"
+                                << "\tpainter->restore();\n";
+		  } else
+                                out  << "\td.setTextWidth(m_contents.width()-15);\n";
 
-                                        ;
+                                       
 
 			out<< "}\n\n";
 
@@ -515,11 +504,9 @@ void Generator::genClasses(){
 								.arg((*o)->labels.at(0).args.at(k));
 								
 				out << ";\n";
-				out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
-					<< "\t\tmLockChangeName = true;\n"
-					<< "\t\td.setHtml(text);\n"
-					<< "\t\tmLockChangeName = false;\n"
-					<< "\t}\n";
+				out << "\t\tmLockChangeName = true;\n"
+				    << "\t\td.setHtml(text);\n"
+				    << "\t\tmLockChangeName = false;\n";
 			} else {
 				out << ";\n";
 			}
