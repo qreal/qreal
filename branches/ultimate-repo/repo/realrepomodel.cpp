@@ -505,6 +505,15 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 			break;
 		case Container:
 			{
+				// In the beginning check validity
+				if (hashTypes[parentItem->id] == "krnnDiagram")
+				{
+					if (type(parentItem->parent) != Category)
+					{
+						qDebug() << "cannot put objects here";
+						return false;
+					}
+				}
 				qDebug() << "adding to container, action is " << action;
 				IdType id = newid;
 				qDebug() << "newid: " << newid;
@@ -851,6 +860,14 @@ void RealRepoModel::readContainerTable(RepoTreeItem * root)
 {
 dbg;
 //	qDebug() << "================ READING DIAGRAM =======================";
+	// If it is not a non-top-level avatar of diagram, do not read children
+	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
+	foreach (RepoTreeItem *idItem, diagramCategory->children)
+	{
+		if (idItem->id == root->id && root != idItem)
+			return;
+	}
+
 	IdTypeList idChildren;
 	foreach (RepoTreeItem *idItem, hashTreeItems[root->id]) {
 		foreach(RepoTreeItem *idChild,idItem->children) {
