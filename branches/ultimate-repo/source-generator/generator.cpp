@@ -385,6 +385,7 @@ void Generator::genClasses(){
                 << "\tm_contents.setHeight(height);\n"
                 << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
                 << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+		<< "\tmLockUpdateText = false;\n"
                 << "\td.setParentItem(this);\n"
                 << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
 
@@ -504,9 +505,14 @@ void Generator::genClasses(){
 								.arg((*o)->labels.at(0).args.at(k));
 								
 				out << ";\n";
-				out << "\t\tmLockChangeName = true;\n"
-				    << "\t\td.setHtml(text);\n"
-				    << "\t\tmLockChangeName = false;\n";
+				 out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n" 
+	 	                                << "\t\tmLockChangeName = true;\n" 
+	 	                                << "\t\td.setHtml(text);\n" 
+	 	                                << "\t\tmLockChangeName = false;\n" 
+	 	                                << "\t} else\n"
+						<< "\t\tmLockChangeName = false;\n"
+						<< "\tmLockChangeName = false;\n"; 
+							//про запас 
 			} else {
 				out << ";\n";
 			}
