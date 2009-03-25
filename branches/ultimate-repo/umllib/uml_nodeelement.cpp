@@ -19,6 +19,7 @@ NodeElement::NodeElement()
 	setAcceptsHoverEvents(true);
 	dragState = None;
 	mLockChangeName = false;
+	mLockUpdateText = false;
 }
 
 NodeElement::~NodeElement()
