@@ -21,8 +21,8 @@ namespace qReal {
 			void addChild(IdType id, IdType child);
 			void removeParent(IdType id, IdType parent);
 			void removeChild(IdType id, IdType child);
-			void setProperty(IdType id, PropertyType type, QVariant value);
-			void property(IdType id, PropertyType type);
+			void setProperty(IdType id, PropertyName type, QVariant value);
+			void property(IdType id, PropertyName type);
 			void svnUpdate();
 			void svnCommit();
 

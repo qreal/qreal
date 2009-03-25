@@ -19,14 +19,14 @@ namespace qReal {
 			void removeChild(IdType child);
 			IdTypeList children();
 			IdTypeList parents();
-			void setProperty(PropertyType type, QVariant value);
-			QVariant property(PropertyType type);
+			void setProperty(PropertyName type, QVariant value);
+			QVariant property(PropertyName type);
 
 		private:
 			const IdType mId;
 			IdTypeList mParents;
 			IdTypeList mChildren;
-			QMap<PropertyType,QVariant> mProperties;
+			QMap<PropertyName,QVariant> mProperties;
 		};
 
 	}

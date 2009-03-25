@@ -60,12 +60,12 @@ IdTypeList LogicObject::parents()
 	return mParents;
 }
 
-void LogicObject::setProperty( PropertyType type, QVariant value )
+void LogicObject::setProperty( PropertyName type, QVariant value )
 {
 	mProperties.insert(type,value);
 }
 
-QVariant LogicObject::property( PropertyType type )
+QVariant LogicObject::property( PropertyName type )
 {
 	if (mProperties.contains(type)) {
 		return mProperties[type];

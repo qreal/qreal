@@ -7,6 +7,6 @@ namespace qReal {
 
 	typedef QList<IdType> IdTypeList;
 
-	typedef int PropertyType;
+	typedef QString PropertyName;
 
 }
