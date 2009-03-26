@@ -61,6 +61,7 @@ MainWindow::MainWindow() : model(0)
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+	connect(ui.actionJumpToAvatar, SIGNAL( triggered() ), this, SLOT( jumpToAvatar() ) );
 
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
@@ -238,6 +239,41 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 
+void MainWindow::jumpToAvatarFromScene()
+{
+	QList<QGraphicsItem *> list = ui.view->scene()->selectedItems();
+
+	if (list.count() != 1)
+		return;
+
+	QGraphicsItem *elem = list.first();
+	UML::Element *e = dynamic_cast < UML::Element * >(elem);
+	if (e->index().isValid())
+	{
+		QModelIndex idx = model->getAvatarIndex(e->index());
+		if (idx.isValid())
+		{
+			qDebug() << "jumping to avatar" << idx;
+			activateItemOrDiagram(idx);
+		}
+	}
+}
+
+void MainWindow::jumpToAvatar()
+{
+	if ( model ) {
+		if (ui.diagramExplorer->hasFocus())
+		{
+			// Maybe, not needed
+//			jumpToAvatarFromExplorer();
+		}
+		else if (ui.view->hasFocus())
+		{
+			jumpToAvatarFromScene();
+		}
+	}
+}
+
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 {
 	QModelIndex parent = idx.parent();
@@ -247,6 +283,7 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 	{
 		/* activate this diagram */
 		ui.view->mvIface()->setRootIndex(idx);
+		ui.diagramExplorer->setCurrentIndex(idx);
 	}
 	else
 	{

@@ -396,6 +396,11 @@
     <string>Del</string>
    </property>
   </action>
+  <action name="actionJumpToAvatar" >
+   <property name="text" >
+    <string>Jump to Avatar</string>
+   </property>
+  </action>
   <action name="actionHelp" >
    <property name="text" >
     <string>Small Help</string>

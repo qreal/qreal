@@ -599,7 +599,11 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 					beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 					RepoTreeItem *qq = createItem(parentItem, id, newtype, name);
 					if (action == Qt::CopyAction)
+					{
 						newTypedItem->inv_avatar = qq;
+						qq->has_avatar = true;
+						qq->avatar = newTypedItem;
+					}
 					hashDiagramElements[parentItem->id][id].position = newPos.toPoint();
 					endInsertRows();
 				}
@@ -1001,6 +1005,14 @@ QModelIndex RealRepoModel::getDiagramCategoryIndex() const
 	// Выглядит как хак, но сама по себе эта функция - хак и не должна пережить
 	// введение плагинов.
 	return index(findIndex("krnnDiagram"), 0, QModelIndex());
+}
+
+QModelIndex RealRepoModel::getAvatarIndex(const QModelIndex &ind) const
+{
+	RepoTreeItem *item = static_cast<RepoTreeItem *>(ind.internalPointer());
+	if ((!item) || (!item->has_avatar)) return QModelIndex();
+
+	return index(item->avatar);
 }
 
 void RealRepoModel::runTestQueries()

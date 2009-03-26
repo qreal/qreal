@@ -158,9 +158,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 		QMenu menu;
 		menu.addAction(window->ui.actionDeleteFromDiagram);
-//		QAction *jumpToAvatar = menu.addAction ("Jump to avatar");
-
+		// FIXME: add check for diagram
+		if (selectedItems().count() == 1)
+			menu.addAction(window->ui.actionJumpToAvatar);
 		menu.exec(QCursor::pos());
+		return;
 	} while (0);
 	QGraphicsScene::mousePressEvent(event);
 }

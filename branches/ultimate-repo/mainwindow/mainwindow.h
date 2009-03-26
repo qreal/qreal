@@ -46,6 +46,8 @@ public:
 	void deleteFromScene();
 	/** @brief Осуществить удаление элемента из инспектора диаграмм */
 	void deleteFromDiagram();
+	void jumpToAvatarFromScene();
+	void jumpToAvatar();
 
 	void toggleShowSplash(bool);
 

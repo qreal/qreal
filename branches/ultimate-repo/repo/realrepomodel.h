@@ -145,6 +145,8 @@ class RealRepoModel : public QAbstractItemModel
 
 		void changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos);
 
+		QModelIndex getAvatarIndex(const QModelIndex&) const;
+
 	public slots:
 		/** @brief Отменить последнее действие */
 		void undo();
@@ -167,8 +169,8 @@ class RealRepoModel : public QAbstractItemModel
 			int row; /**< Номер строки */
 			bool is_avatar; /**< аватар ли это, или сам объект? */
 			bool has_avatar; /**< имеет ли данный объект аватар? */
-			RepoTreeItem *inv_avatar; /**< обратный аватар, только объект есть диаграмма и is_avatar == true */
-			RepoTreeItem *avatar; /**< аватар, только если объект есть диаграмма и is_avatar == false */
+			RepoTreeItem *inv_avatar; /**< обратный аватар, только если is_avatar == true */
+			RepoTreeItem *avatar; /**< аватар, только если has_avatar == true */
 			RepoTreeItem *parent; /**< Родительский элемент */
 			QList<RepoTreeItem *> children; /**< Список дочерних элементов */
 		};
