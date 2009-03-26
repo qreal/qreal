@@ -741,6 +741,13 @@ void RealRepoModel::changeParent(QPersistentModelIndex elem,QPersistentModelInde
 		id = repoClient->copyEntity(hashTypes[id], id, parentItem->id, oldParent);
 
 		RepoTreeItem *newItem = copyElement(item,newParent,parentItem);
+		if (item->has_avatar)
+		{
+			item->avatar->inv_avatar = newItem;
+			newItem->has_avatar = true;
+			newItem->avatar = item->avatar;
+			item->has_avatar = false;
+		}
 
 		copyChildren(item,index(newItem),newItem);
 
