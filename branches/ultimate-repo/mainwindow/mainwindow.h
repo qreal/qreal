@@ -29,7 +29,10 @@ public:
 	MainWindow();
 	~MainWindow();
 
-public slots:
+	/** @brief Интерфейс главного окна */
+	Ui::MainWindowUi ui;
+
+	public slots:
 	/** @brief Осуществить соединение с репозиторием */
 	void connectRepo(QSplashScreen *splash = NULL, const QString &addr = "127.0.0.1", const int port = 6666);
 	/** @brief Закрыть репозиторий */
@@ -80,10 +83,6 @@ private:
 	RealRepoModel *model;
 	/** @brief Модель редактора свойств */
 	PropertyEditorModel propertyModel;
-
-	/** @brief Интерфейс главного окна */
-	Ui::MainWindowUi ui;
-
 
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;

@@ -6,11 +6,13 @@
 #include "editorview.h"
 #include "uml_nodeelement.h"
 #include "uml_guiobjectfactory.h"
+#include "mainwindow.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
 #include "../common/classes.h"
 
+extern MainWindow *window;
 
 EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
@@ -136,6 +138,31 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
 	QGraphicsScene::keyPressEvent(event);
+}
+
+void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	do
+	{
+		if (event->button() != Qt::RightButton)
+			break;
+
+		UML::Element *e = getElemAt(event->scenePos());
+		if (!e)
+			break;
+
+		if (!e->isSelected())
+		{
+			clearSelection();
+			e->setSelected(true);
+		}
+		QMenu menu;
+		menu.addAction(window->ui.actionDeleteFromDiagram);
+//		QAction *jumpToAvatar = menu.addAction ("Jump to avatar");
+
+		menu.exec(QCursor::pos());
+	} while (0);
+	QGraphicsScene::mousePressEvent(event);
 }
 
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )
