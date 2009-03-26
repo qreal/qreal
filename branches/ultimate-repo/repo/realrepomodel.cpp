@@ -569,7 +569,7 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 					id = repoClient->createObjectWithParent(newtype,"anonymous", parentItem->id);
 					repoClient->setPosition(id, parentItem->id, (int)newPos.x(), (int)newPos.y());
 					qDebug() << "\tcreating new item" << rootItem->children.at(typeIndex)->id << id << newtype;
-					RepoTreeItem *newTypedItem = createItem(rootItem->children.at(typeIndex), id, newtype);
+					newTypedItem = createItem(rootItem->children.at(typeIndex), id, newtype);
 					if (newtype == "krnnDiagram")
 					{
 						// inv_avatar will be later
