@@ -169,6 +169,7 @@ class RealRepoModel : public QAbstractItemModel
 			int row; /**< Номер строки */
 			bool is_avatar; /**< аватар ли это, или сам объект? */
 			bool has_avatar; /**< имеет ли данный объект аватар? */
+			bool orphan_avatar; /**< был данный объект аватаром? */
 			RepoTreeItem *inv_avatar; /**< обратный аватар, только если is_avatar == true */
 			RepoTreeItem *avatar; /**< аватар, только если has_avatar == true */
 			RepoTreeItem *parent; /**< Родительский элемент */

@@ -24,6 +24,7 @@ dbg;
 	rootItem->parent = NULL;
 	rootItem->id = "root";
 	rootItem->is_avatar = false;
+	rootItem->orphan_avatar = false;
 
 	if (!readRootTable())
 		exit(1);
@@ -363,6 +364,7 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		return false;
 	}
 
+	qDebug() << "removing objects" << row << count;
 	for ( int i = row; i < row+count; i++ ){
 		// qDebug() << "deleting element " << parentItem->children[i]->id;
 		curItem = static_cast<RepoTreeItem*>(index(i, 0, parent).internalPointer());
@@ -371,13 +373,22 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 			qDebug() << "OMG, shit happened!";
 			*(int*)NULL = 1; // For valgrind sake
 		}
-		if (curItem->is_avatar == true)
+		if (curItem->is_avatar && !curItem->orphan_avatar)
 		{
 			// FIXME: Smth better needed
 			throw false;
 		}
 
-		repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
+		if (curItem->has_avatar)
+		{
+			QModelIndex ava = index(curItem->avatar);
+			curItem->avatar->orphan_avatar = true;
+			removeRows(ava.row(), 1, ava.parent());
+		}
+		else if (curItem->orphan_avatar)
+			repoClient->deleteObject(parentItem->children[i]->id, curItem->inv_avatar->id);
+		else
+			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
 	}
 
 	removeChildrenRows(parent,parentItem,row,count);
@@ -779,6 +790,8 @@ RealRepoModel::RepoTreeItem* RealRepoModel::commonCreateItem( RepoTreeItem *pare
 	item->parent = parentItem;
 	item->id = id;
 	item->is_avatar = false;
+	item->has_avatar = false;
+	item->orphan_avatar = false;
 	item->row = parentItem->children.size();
 
 	// 	qDebug() << "++ id: " << id << ", children: " << item->row+1;
@@ -840,6 +853,8 @@ dbg;
 		item->parent = rootItem;
 		item->row = count;
 		item->is_avatar = false;
+		item->has_avatar = false;
+		item->orphan_avatar = false;
 		item->id = info.getId();
 
 		hashNames[item->id] = info.getName();
@@ -875,6 +890,8 @@ dbg;
 		item->id = id;
 		item->row = count;
 		item->is_avatar = false;
+		item->has_avatar = false;
+		item->orphan_avatar = false;
 		parent->children.append(item);
 		hashTreeItems[item->id].append(item);
 
@@ -922,6 +939,8 @@ dbg;
 			item->row = i++;
 			item->id = childId;
 			item->is_avatar = false;
+			item->has_avatar = false;
+			item->orphan_avatar = false;
 
 			root->children.append(item);
 			hashTreeItems[item->id].append(item);
@@ -940,6 +959,8 @@ dbg;
 			item->row = i;
 			item->id = id;
 			item->is_avatar = false;
+			item->has_avatar = false;
+			item->orphan_avatar = false;
 
 			hashNames[item->id] = data.section("\t", 1, 1);
 			hashTypes[item->id] = data.section("\t", 2, 2);
