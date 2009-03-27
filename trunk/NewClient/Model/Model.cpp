@@ -26,8 +26,10 @@ Qt::ItemFlags Model::flags( const QModelIndex &index ) const
 
 QVariant Model::data( const QModelIndex &index, int role) const
 {
-//	case (role) {
-//		case Qt::DisplayRole:
-//	}
+
+	switch (role) {
+	//	case Qt::DisplayRole:
+	//		return mClient->property()
+	}
 return QVariant();
 }
