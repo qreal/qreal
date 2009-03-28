@@ -9,4 +9,11 @@ namespace qReal {
 
 	typedef QString PropertyName;
 
+	namespace model {
+
+		class ModelTreeItem;
+		typedef QList<ModelTreeItem*> ModelTreeItemPointerList;
+
+	}
+
 }

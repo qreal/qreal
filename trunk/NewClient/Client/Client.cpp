@@ -15,7 +15,7 @@ Client::~Client()
 	saveToDisk();
 }
 
-IdTypeList Client::children( IdType id )
+IdTypeList Client::children( IdType id ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->children();
@@ -24,7 +24,7 @@ IdTypeList Client::children( IdType id )
 	}
 }
 
-IdTypeList Client::parents( IdType id )
+IdTypeList Client::parents( IdType id ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->parents();
@@ -111,10 +111,10 @@ void Client::setProperty( IdType id, PropertyName type, QVariant value )
 	}
 }
 
-void Client::property( IdType id, PropertyName type )
+QVariant Client::property( IdType id, PropertyName type ) const
 {
 	if (mObjects.contains(id)) {
-		mObjects[id]->property(type);
+		return mObjects[id]->property(type);
 	} else {
 		throw Exception("Client: Requesting property of nonexistent object " + id);
 	}

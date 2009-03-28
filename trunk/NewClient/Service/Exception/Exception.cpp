@@ -2,7 +2,7 @@
 
 using namespace qReal;
 
-QString Exception::message()
+QString Exception::message() const
 {
 	return mMessage;
 }

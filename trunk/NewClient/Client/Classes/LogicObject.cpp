@@ -50,12 +50,12 @@ void LogicObject::removeChild( IdType child )
 	}
 }
 
-IdTypeList LogicObject::children()
+IdTypeList LogicObject::children() const
 {
 	return mChildren;
 }
 
-IdTypeList LogicObject::parents()
+IdTypeList LogicObject::parents() const
 {
 	return mParents;
 }
@@ -65,7 +65,7 @@ void LogicObject::setProperty( PropertyName type, QVariant value )
 	mProperties.insert(type,value);
 }
 
-QVariant LogicObject::property( PropertyName type )
+QVariant LogicObject::property( PropertyName type ) const
 {
 	if (mProperties.contains(type)) {
 		return mProperties[type];

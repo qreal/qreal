@@ -17,10 +17,10 @@ namespace qReal {
 			void removeParent(IdType parent);
 			void addChild(IdType child);
 			void removeChild(IdType child);
-			IdTypeList children();
-			IdTypeList parents();
+			IdTypeList children() const;
+			IdTypeList parents() const;
 			void setProperty(PropertyName type, QVariant value);
-			QVariant property(PropertyName type);
+			QVariant property(PropertyName type) const;
 
 		private:
 			const IdType mId;

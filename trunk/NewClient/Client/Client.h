@@ -15,14 +15,14 @@ namespace qReal {
 		public:
 			Client();
 			~Client();
-			IdTypeList children(IdType id);
-			IdTypeList parents(IdType id);
+			IdTypeList children(IdType id) const;
+			IdTypeList parents(IdType id) const;
 			void addParent(IdType id, IdType parent);
 			void addChild(IdType id, IdType child);
 			void removeParent(IdType id, IdType parent);
 			void removeChild(IdType id, IdType child);
 			void setProperty(IdType id, PropertyName type, QVariant value);
-			void property(IdType id, PropertyName type);
+			QVariant property(IdType id, PropertyName type) const;
 			void svnUpdate();
 			void svnCommit();
 
