@@ -508,13 +508,8 @@ void Generator::genClasses(){
 						<< "\t\tmLockChangeName = true;\n" 
 	 	                << "\t\td.setHtml(text);\n" 
 	 	                << "\t\tmLockChangeName = false;\n" 
-	 	                << "\t} else {\n"
-						<< "\t\tQ_ASSERT(mLockChangeName == false);\n"
-						<< "\t\tmLockChangeName = false;\n"
-						<< "\t}\n"
-						<< "\tQ_ASSERT(mLockChangeName == false);\n"
-						<< "\tmLockChangeName = false;\n"; 
-							//про запас 
+	 	                << "\t}\n"
+						;
 			} else {
 				out << ";\n";
 			}
