@@ -10,6 +10,7 @@
 #include "sdfrenderer.h"
 #include <QGraphicsTextItem>
 #include <QTextCursor>
+#include <QGraphicsScene>
 
 #include <QtGui/QWidget>
 
@@ -22,6 +23,23 @@ namespace UML {
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
 	class statLine;
+	// Why subclassing? Because the same is needed for class members, which is already subclassed.
+	class ElementTitle : public QGraphicsTextItem
+	{
+		Q_OBJECT
+	public:
+		ElementTitle(){};
+		~ElementTitle(){};
+	public slots:
+		void mousePressEvent ( QGraphicsSceneMouseEvent * event )
+		{
+			QGraphicsTextItem::mousePressEvent(event);
+			// FIXME: subject to discuss.
+			// Do we really need to reset selection if user clicked on text field?
+			scene()->clearSelection();
+			parentItem()->setSelected(true);
+		}
+	};
 		class NodeElement :  public QObject, public Element
 		{
 			Q_OBJECT
@@ -71,8 +89,7 @@ namespace UML {
 
 			void setPortsVisible(bool value);
 
-						QGraphicsTextItem d;
-					   // QTextLayout d;
+			ElementTitle d;
 
 //                        QString PutName();
 			QString oldName;

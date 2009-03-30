@@ -163,45 +163,24 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
-	do
-	{
-		if (event->button() == Qt::LeftButton)
-		{
-			UML::Element *e = getElemAt(event->scenePos());
-			if (!e)
-				break;
-
-			if (!e->isSelected())
-			{
-				clearSelection();
-				e->setSelected(true);
-			}
-		}
-
-		if (event->button() != Qt::RightButton)
-			break;
-
-		/*UML::Element *e = getElemAt(event->scenePos());
-				if (!e)
-					break;
-
-
-				if (!e->isSelected())
-		{
-			clearSelection();
-			e->setSelected(true);
-				}*/
-		QMenu menu;
-		menu.addAction(window->ui.actionDeleteFromDiagram);
-		// FIXME: add check for diagram
-		if (selectedItems().count() == 1)
-			menu.addAction(window->ui.actionJumpToAvatar);
-
-		menu.exec(QCursor::pos());
-		return;
-	} while (0);
+	// Let scene update selection and perform other operations
 	QGraphicsScene::mousePressEvent(event);
+
+	if (event->button() != Qt::RightButton)
+		return;
+
+	UML::Element *e = getElemAt(event->scenePos());
+	if (!e) return;
+
+	// Menu belongs to scene handler because it can delete elements.
+	// We cannot not allow elements to commit suicide.
+	QMenu menu;
+	menu.addAction(window->ui.actionDeleteFromDiagram);
+	// FIXME: add check for diagram
+	if (selectedItems().count() == 1)
+		menu.addAction(window->ui.actionJumpToAvatar);
+
+	menu.exec(QCursor::pos());
 }
 
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )
