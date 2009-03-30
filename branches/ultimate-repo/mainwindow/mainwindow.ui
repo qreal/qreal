@@ -471,7 +471,10 @@
   </action>
   <action name="actionDeleteFromDiagram">
    <property name="text">
-    <string>deleteFromDiagram</string>
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete</string>
    </property>
    <property name="shortcut">
     <string>Shift+Del</string>

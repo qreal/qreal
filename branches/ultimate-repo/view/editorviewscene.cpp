@@ -138,10 +138,16 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
+    if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
+        this->focusItem()->clearFocus();
+    }
+
+    if ((event->key() == Qt::Key_Delete)&&(this->focusItem()!= NULL)){
         QGraphicsScene::keyPressEvent(event);
-        if ((event->key() == Qt::Key_Delete)&&(this->focusItem()!=NULL)){
+    } else if (event->key() != Qt::Key_Enter){
             QGraphicsScene::keyPressEvent(event);
-        }
+            } else
+                event->ignore();
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
