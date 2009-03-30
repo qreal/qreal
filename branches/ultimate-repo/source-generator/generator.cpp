@@ -450,8 +450,8 @@ void Generator::genClasses(){
                         "QWidget *widget)\n{\n";
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.render(painter, m_contents);\n")
-			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n"
-                        << "\td.setTextWidth(m_contents.width()-15);\n";
+                        << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
+//                      << "\td.setTextWidth(m_contents.width()-15);\n";
 
 		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";

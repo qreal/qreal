@@ -43,7 +43,8 @@ void NodeElement::changeName()
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
+{	
+	d.setTextWidth(boundingRect().width()-25);
    // changeName();
 	if (isSelected())
 	{
@@ -89,6 +90,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
+        d.setTextWidth(boundingRect().width()-30);
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
