@@ -31,7 +31,7 @@ NodeElement::~NodeElement()
 void NodeElement::changeName()
 {
 /*	if(d.toPlainText() != oldName)
-	{*/
+        {*/
 	if (!mLockChangeName) {
 		mLockUpdateText = true;
 		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
@@ -44,6 +44,7 @@ void NodeElement::changeName()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {	
+	d.setTextWidth(boundingRect().width()-25);
    // changeName();
 	if (isSelected())
 	{
@@ -60,8 +61,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	} else
 		Element::mousePressEvent(event);
 
-	if (event->button() == Qt::RightButton)
-	{
+        if (event->button() == Qt::RightButton)
+        {
 		/* Now these events are processed in scene. -- Kirill */
 
 				/*QWidget *w = new QWidget();
@@ -82,7 +83,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 				w->show();*/
 
-		event->accept();
+                event->accept();
 	}
 }
 
@@ -333,7 +334,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
 	if (option->levelOfDetail >= 0.5)
 	{
-		if ( option->state & QStyle::State_Selected )
+		if (option->state & QStyle::State_Selected)
 		{
 			painter->save();
 

@@ -14,7 +14,7 @@
 #include <QtGui/QWidget>
 
 
-/** @brief Размер порта объекта */
+/** @brief � азмер порта объекта */
 const int kvadratik = 5;
 
 namespace UML {
@@ -36,7 +36,7 @@ namespace UML {
 			virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
 								const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
 								QWidget* w, /**< Виджет, на котором осуществляется отрисовка */
-								SdfRenderer* portrenderer /**< Рендерер портов)*/);
+								SdfRenderer* portrenderer /**< � ендерер портов)*/);
 			/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
 			 * */
@@ -56,7 +56,7 @@ namespace UML {
 			/** @brief Получить идентификатор порта
 			 *	@brief @return Идентификатор порта
 			 * */
-			qreal getPortId(const QPointF &location /**< Расположение порта */) const;
+			qreal getPortId(const QPointF &location /**< � асположение порта */) const;
 
 			/** @brief Добавить связь */
 			void addEdge(EdgeElement *edge /**< Связь */)
@@ -70,6 +70,7 @@ namespace UML {
 			}
 
 			void setPortsVisible(bool value);
+
 						QGraphicsTextItem d;
 					   // QTextLayout d;
 

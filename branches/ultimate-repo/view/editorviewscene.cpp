@@ -137,10 +137,10 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 }
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
-{
+{      
     if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
         this->focusItem()->clearFocus();
-    }
+    } else
 
     if (event->key() == Qt::Key_Delete)
     {
@@ -157,37 +157,51 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
             // then uml element has focus, then we can safely delete it.
             window->deleteFromDiagram();
         }
-    } else if (event->key() != Qt::Key_Enter){
-            QGraphicsScene::keyPressEvent(event);
-            } else
-                event->ignore();
+    } else 
+         QGraphicsScene::keyPressEvent(event);
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+
 	do
 	{
-		if (event->button() != Qt::RightButton)
-			break;
+            if (event->button() == Qt::LeftButton)
+            {
+                UML::Element *e = getElemAt(event->scenePos());
+                if (!e)
+                    break;
 
-		UML::Element *e = getElemAt(event->scenePos());
-		if (!e)
-			break;
+                if (!e->isSelected())
+                {
+                        clearSelection();
+                        e->setSelected(true);
+                }
+            }
 
-		if (!e->isSelected())
+            if (event->button() != Qt::RightButton)
+                break;
+
+                /*UML::Element *e = getElemAt(event->scenePos());
+                if (!e)
+                    break;
+
+
+                if (!e->isSelected())
 		{
 			clearSelection();
 			e->setSelected(true);
-		}
-		QMenu menu;
-                menu.addAction(window->ui.actionDeleteFromDiagram);
+                }*/
+            QMenu menu;
+            menu.addAction(window->ui.actionDeleteFromDiagram);
 		// FIXME: add check for diagram
-		if (selectedItems().count() == 1)
-			menu.addAction(window->ui.actionJumpToAvatar);
-		menu.exec(QCursor::pos());
-		return;
-	} while (0);
-	QGraphicsScene::mousePressEvent(event);
+            if (selectedItems().count() == 1)
+                menu.addAction(window->ui.actionJumpToAvatar);
+
+            menu.exec(QCursor::pos());
+            return;
+            } while (0);
+            QGraphicsScene::mousePressEvent(event);
 }
 
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )
