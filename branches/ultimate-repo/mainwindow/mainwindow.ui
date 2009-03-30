@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0" >
+<ui version="4.0">
  <class>MainWindowUi</class>
- <widget class="QMainWindow" name="MainWindowUi" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindowUi">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -10,28 +10,28 @@
     <height>458</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>QReal</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="../static.qrc" >
+  <property name="windowIcon">
+   <iconset resource="../static.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
-  <widget class="QWidget" name="centralwidget" >
-   <layout class="QGridLayout" >
-    <property name="margin" >
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout">
+    <property name="margin">
      <number>0</number>
     </property>
-    <property name="spacing" >
+    <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="0" >
-     <widget class="EditorView" name="view" />
+    <item row="0" column="0">
+     <widget class="EditorView" name="view"/>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
@@ -39,84 +39,84 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_File" >
-    <property name="title" >
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionConnect" />
-    <addaction name="actionDisconnect" />
-    <addaction name="separator" />
-    <addaction name="actionBeginTransaction" />
-    <addaction name="actionCommitTransaction" />
-    <addaction name="actionRollbackTransaction" />
-    <addaction name="separator" />
-    <addaction name="actionPrint" />
-    <addaction name="actionMakeSvg" />
-    <addaction name="separator" />
-    <addaction name="actionQuit" />
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+    <addaction name="separator"/>
+    <addaction name="actionBeginTransaction"/>
+    <addaction name="actionCommitTransaction"/>
+    <addaction name="actionRollbackTransaction"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="actionMakeSvg"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
    </widget>
-   <widget class="QMenu" name="menu_View" >
-    <property name="title" >
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionZoom_In" />
-    <addaction name="actionZoom_Out" />
-    <addaction name="separator" />
-    <addaction name="actionAntialiasing" />
-    <addaction name="actionOpenGL_Renderer" />
-    <addaction name="actionShowSplash" />
-    <addaction name="separator" />
-    <addaction name="actionUndo" />
-    <addaction name="actionRedo" />
-    <addaction name="actionCommand_list" />
+    <addaction name="actionZoom_In"/>
+    <addaction name="actionZoom_Out"/>
+    <addaction name="separator"/>
+    <addaction name="actionAntialiasing"/>
+    <addaction name="actionOpenGL_Renderer"/>
+    <addaction name="actionShowSplash"/>
+    <addaction name="separator"/>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="actionCommand_list"/>
    </widget>
-   <widget class="QMenu" name="menuHelp" >
-    <property name="title" >
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionHelp" />
-    <addaction name="separator" />
-    <addaction name="actionAbout" />
-    <addaction name="actionAboutQt" />
+    <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt"/>
    </widget>
-   <widget class="QMenu" name="menuTools" >
-    <property name="title" >
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionOptions" />
-    <addaction name="actionRun_test_queries" />
-    <addaction name="actionReconnect" />
+    <addaction name="actionOptions"/>
+    <addaction name="actionRun_test_queries"/>
+    <addaction name="actionReconnect"/>
    </widget>
-   <addaction name="menu_File" />
-   <addaction name="menu_View" />
-   <addaction name="menuTools" />
-   <addaction name="menuHelp" />
+   <addaction name="menu_File"/>
+   <addaction name="menu_View"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
-  <widget class="QDockWidget" name="objectDock" >
-   <property name="allowedAreas" >
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="objectDock">
+   <property name="allowedAreas">
     <set>Qt::AllDockWidgetAreas</set>
    </property>
-   <property name="windowTitle" >
+   <property name="windowTitle">
     <string>Object Explorer</string>
    </property>
-   <attribute name="dockWidgetArea" >
+   <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin" >
+     <property name="margin">
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="objectExplorer" >
-       <property name="acceptDrops" >
+      <widget class="QTreeView" name="objectExplorer">
+       <property name="acceptDrops">
         <bool>true</bool>
        </property>
-       <property name="dragDropMode" >
+       <property name="dragDropMode">
         <enum>QAbstractItemView::DragDrop</enum>
        </property>
       </widget>
@@ -124,33 +124,33 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="diagramDock" >
-   <property name="allowedAreas" >
+  <widget class="QDockWidget" name="diagramDock">
+   <property name="allowedAreas">
     <set>Qt::AllDockWidgetAreas</set>
    </property>
-   <property name="windowTitle" >
+   <property name="windowTitle">
     <string>Diagram Explorer</string>
    </property>
-   <attribute name="dockWidgetArea" >
+   <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2" >
-    <layout class="QHBoxLayout" >
-     <property name="spacing" >
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin" >
+     <property name="margin">
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="diagramExplorer" >
-       <property name="contextMenuPolicy" >
+      <widget class="QTreeView" name="diagramExplorer">
+       <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
-       <property name="acceptDrops" >
+       <property name="acceptDrops">
         <bool>true</bool>
        </property>
-       <property name="dragDropMode" >
+       <property name="dragDropMode">
         <enum>QAbstractItemView::DragDrop</enum>
        </property>
       </widget>
@@ -158,56 +158,56 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="fileToolbar" >
-   <property name="orientation" >
+  <widget class="QToolBar" name="fileToolbar">
+   <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionConnect" />
-   <addaction name="actionDisconnect" />
-   <addaction name="separator" />
-   <addaction name="actionBeginTransaction" />
-   <addaction name="actionCommitTransaction" />
-   <addaction name="actionRollbackTransaction" />
-   <addaction name="separator" />
-   <addaction name="actionPrint" />
+   <addaction name="actionConnect"/>
+   <addaction name="actionDisconnect"/>
+   <addaction name="separator"/>
+   <addaction name="actionBeginTransaction"/>
+   <addaction name="actionCommitTransaction"/>
+   <addaction name="actionRollbackTransaction"/>
+   <addaction name="separator"/>
+   <addaction name="actionPrint"/>
   </widget>
-  <widget class="QDockWidget" name="minimapDock" >
-   <property name="windowTitle" >
+  <widget class="QDockWidget" name="minimapDock">
+   <property name="windowTitle">
     <string>Mini Map</string>
    </property>
-   <attribute name="dockWidgetArea" >
+   <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin" >
+     <property name="margin">
       <number>0</number>
      </property>
      <item>
-      <widget class="QGraphicsView" name="minimapView" >
-       <property name="dragMode" >
+      <widget class="QGraphicsView" name="minimapView">
+       <property name="dragMode">
         <enum>QGraphicsView::ScrollHandDrag</enum>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="minimapZoomSlider" >
-       <property name="maximum" >
+      <widget class="QSlider" name="minimapZoomSlider">
+       <property name="maximum">
         <number>50</number>
        </property>
-       <property name="value" >
+       <property name="value">
         <number>25</number>
        </property>
-       <property name="orientation" >
+       <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
@@ -215,51 +215,51 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="paletteDock" >
-   <property name="windowTitle" >
+  <widget class="QDockWidget" name="paletteDock">
+   <property name="windowTitle">
     <string>Palette</string>
    </property>
-   <attribute name="dockWidgetArea" >
+   <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="PaletteToolbox" name="paletteToolbox" />
+   <widget class="PaletteToolbox" name="paletteToolbox"/>
   </widget>
-  <widget class="QToolBar" name="viewToolbar" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="viewToolbar">
+   <property name="windowTitle">
     <string>toolBar</string>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionZoom_In" />
-   <addaction name="actionZoom_Out" />
+   <addaction name="actionZoom_In"/>
+   <addaction name="actionZoom_Out"/>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
   </widget>
-  <widget class="QDockWidget" name="propertyDock" >
-   <property name="windowTitle" >
+  <widget class="QDockWidget" name="propertyDock">
+   <property name="windowTitle">
     <string>Property Editor</string>
    </property>
-   <attribute name="dockWidgetArea" >
+   <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents" >
-    <layout class="QVBoxLayout" >
-     <property name="spacing" >
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
       <number>6</number>
      </property>
-     <property name="margin" >
+     <property name="margin">
       <number>0</number>
      </property>
      <item>
-      <widget class="QTableView" name="propertyEditor" >
-       <property name="alternatingRowColors" >
+      <widget class="QTableView" name="propertyEditor">
+       <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
-       <property name="showGrid" >
+       <property name="showGrid">
         <bool>true</bool>
        </property>
       </widget>
@@ -267,218 +267,218 @@
     </layout>
    </widget>
   </widget>
-  <action name="actionQuit" >
-   <property name="text" >
+  <action name="actionQuit">
+   <property name="text">
     <string>&amp;Quit</string>
    </property>
   </action>
-  <action name="actionConnect" >
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/database_connected.png</normaloff>:/icons/database_connected.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Connect</string>
    </property>
   </action>
-  <action name="actionZoom_In" >
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+  <action name="actionZoom_In">
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Zoom In</string>
    </property>
   </action>
-  <action name="actionZoom_Out" >
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+  <action name="actionZoom_Out">
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Zoom Out</string>
    </property>
   </action>
-  <action name="actionAntialiasing" >
-   <property name="checkable" >
+  <action name="actionAntialiasing">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>false</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Antialiasing</string>
    </property>
   </action>
-  <action name="actionOpenGL_Renderer" >
-   <property name="checkable" >
+  <action name="actionOpenGL_Renderer">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>OpenGL Renderer</string>
    </property>
   </action>
-  <action name="actionShowSplash" >
-   <property name="checkable" >
+  <action name="actionShowSplash">
+   <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked ">
-     <bool>true</bool>
-   </property>
-   <property name="text" >
+   <property name="text">
     <string>Show splash screen</string>
    </property>
+   <property name="checked " stdset="0">
+    <bool>true</bool>
+   </property>
   </action>
-  <action name="actionPrint" >
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Print</string>
    </property>
   </action>
-  <action name="actionMakeSvg" >
-   <property name="text" >
+  <action name="actionMakeSvg">
+   <property name="text">
     <string>Export to SVG</string>
    </property>
   </action>
-  <action name="actionDisconnect" >
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+  <action name="actionDisconnect">
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/database_disconnect.png</normaloff>:/icons/database_disconnect.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>&amp;Disconnect</string>
    </property>
   </action>
-  <action name="actionBeginTransaction" >
-   <property name="enabled" >
+  <action name="actionBeginTransaction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/database_connect.png</normaloff>:/icons/database_connect.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Begin Transaction</string>
    </property>
   </action>
-  <action name="actionCommitTransaction" >
-   <property name="enabled" >
+  <action name="actionCommitTransaction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/database_commit.png</normaloff>:/icons/database_commit.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Commit Transaction</string>
    </property>
   </action>
-  <action name="actionRollbackTransaction" >
-   <property name="enabled" >
+  <action name="actionRollbackTransaction">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="icon" >
-    <iconset resource="../static.qrc" >
+   <property name="icon">
+    <iconset resource="../static.qrc">
      <normaloff>:/icons/database_revert.png</normaloff>:/icons/database_revert.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Rollback Transaction</string>
    </property>
   </action>
-  <action name="actionDeleteFromDiagram" >
-   <property name="text" >
-    <string>Delete</string>
-   </property>
-   <property name="shortcut" >
-    <string>Del</string>
-   </property>
-  </action>
-  <action name="actionJumpToAvatar" >
-   <property name="text" >
+  <action name="actionJumpToAvatar">
+   <property name="text">
     <string>Jump to Avatar</string>
    </property>
   </action>
-  <action name="actionHelp" >
-   <property name="text" >
+  <action name="actionHelp">
+   <property name="text">
     <string>Small Help</string>
    </property>
-   <property name="shortcut" >
+   <property name="shortcut">
     <string>F1</string>
    </property>
   </action>
-  <action name="actionAbout" >
-   <property name="text" >
+  <action name="actionAbout">
+   <property name="text">
     <string>About...</string>
    </property>
   </action>
-  <action name="actionAboutQt" >
-   <property name="text" >
+  <action name="actionAboutQt">
+   <property name="text">
     <string>About Qt...</string>
    </property>
   </action>
-  <action name="actionOptions" >
-   <property name="text" >
+  <action name="actionOptions">
+   <property name="text">
     <string>Palette toolbox options...</string>
    </property>
   </action>
-  <action name="actionUndo" >
+  <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/icons/undo.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Undo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Z</string>
    </property>
+  </action>
+  <action name="actionRedo">
    <property name="enabled">
     <bool>false</bool>
    </property>
-  </action>
-  <action name="actionRedo" >
    <property name="icon">
     <iconset>
      <normalon>:/icons/redo.png</normalon>
     </iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Redo</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
    </property>
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
   </action>
-  <action name="actionCommand_list" >
-   <property name="checkable" >
+  <action name="actionCommand_list">
+   <property name="checkable">
     <bool>false</bool>
    </property>
-   <property name="checked" >
+   <property name="checked">
     <bool>false</bool>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Show command list</string>
    </property>
   </action>
-  <action name="actionRun_test_queries" >
-   <property name="text" >
+  <action name="actionRun_test_queries">
+   <property name="text">
     <string>Run test queries</string>
    </property>
   </action>
-  <action name="actionReconnect" >
-   <property name="text" >
+  <action name="actionReconnect">
+   <property name="text">
     <string>Setup repo server path</string>
    </property>
   </action>
+  <action name="actionDeleteFromDiagram">
+   <property name="text">
+    <string>deleteFromDiagram</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+Del</string>
+   </property>
+  </action>
  </widget>
- <layoutdefault spacing="0" margin="0" />
+ <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
   <customwidget>
    <class>PaletteToolbox</class>
@@ -493,7 +493,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../static.qrc" />
+  <include location="../static.qrc"/>
  </resources>
  <connections/>
 </ui>

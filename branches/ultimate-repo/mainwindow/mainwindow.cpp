@@ -60,7 +60,7 @@ MainWindow::MainWindow() : model(0)
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
-	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+        connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 	connect(ui.actionJumpToAvatar, SIGNAL( triggered() ), this, SLOT( jumpToAvatar() ) );
 
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
@@ -86,7 +86,7 @@ MainWindow::MainWindow() : model(0)
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&delegate);
 
-	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
+        ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );

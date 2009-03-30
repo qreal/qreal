@@ -8,6 +8,7 @@
 #include "uml_guiobjectfactory.h"
 #include "mainwindow.h"
 
+
 #include <QGraphicsTextItem>
 #include <QtGui>
 #include "../common/classes.h"
@@ -137,7 +138,10 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
-	QGraphicsScene::keyPressEvent(event);
+        QGraphicsScene::keyPressEvent(event);
+        if ((event->key() == Qt::Key_Delete)&&(this->focusItem()!=NULL)){
+            QGraphicsScene::keyPressEvent(event);
+        }
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -157,7 +161,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			e->setSelected(true);
 		}
 		QMenu menu;
-		menu.addAction(window->ui.actionDeleteFromDiagram);
+                menu.addAction(window->ui.actionDeleteFromDiagram);
 		// FIXME: add check for diagram
 		if (selectedItems().count() == 1)
 			menu.addAction(window->ui.actionJumpToAvatar);
