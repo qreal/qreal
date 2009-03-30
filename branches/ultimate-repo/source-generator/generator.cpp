@@ -383,6 +383,7 @@ void Generator::genClasses(){
 			<< QString("\twidth = %1;\n").arg((*o)->width)
 		<< "\tm_contents.setWidth(width);\n"
                 << "\tm_contents.setHeight(height);\n"
+				<< "d.setTextWidth(width - 25 + 2 * kvadratik);\n"
                 << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
                 << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
                 << "\td.setParentItem(this);\n"
