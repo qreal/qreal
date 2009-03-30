@@ -476,9 +476,6 @@
    <property name="toolTip">
     <string>Delete</string>
    </property>
-   <property name="shortcut">
-    <string>Shift+Del</string>
-   </property>
   </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
