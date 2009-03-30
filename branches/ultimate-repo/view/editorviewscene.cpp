@@ -18,9 +18,9 @@ extern MainWindow *window;
 EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent)
 {
-//	setSceneRect(-400, -300, 800, 600);
+	//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
-//	setBackgroundBrush(gradient);
+	//	setBackgroundBrush(gradient);
 }
 
 void EditorViewScene::clearScene()
@@ -65,7 +65,7 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
-//	event->setAccepted();
+	//	event->setAccepted();
 }
 
 void EditorViewScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
@@ -101,7 +101,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
 
 	UML::Element *newParent = 0;
-	
+
 	UML::Element *e = UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement *>(e)) {
@@ -110,7 +110,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	if (e) {
 		delete e;
-	} 
+	}
 
 	stream << uuid;				// uuid
 	stream << type_id;			// type
@@ -128,37 +128,37 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	if (newParent) {
 		mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
-				mv_iface->model()->rowCount(newParent->index()), 0, newParent->index() );
+										 mv_iface->model()->rowCount(newParent->index()), 0, newParent->index() );
 	} else {
-			mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
-				mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
+		mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
+										 mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
 	}
 	delete newMimeData;
 }
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
-{      
-    if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
-        this->focusItem()->clearFocus();
-    } else
+{
+	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
+		this->focusItem()->clearFocus();
+	} else
 
-    if (event->key() == Qt::Key_Delete)
-    {
-        QGraphicsTextItem *ti = NULL;
-        if (this->focusItem()!= NULL)
-            ti = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
-        if (ti)
-        {
-            // text item has focus. Just pass key to it
-            QGraphicsScene::keyPressEvent(event);
-        }
-        else // Add more cases if necessary
-        {
-            // then uml element has focus, then we can safely delete it.
-            window->deleteFromDiagram();
-        }
-    } else 
-         QGraphicsScene::keyPressEvent(event);
+		if (event->key() == Qt::Key_Delete)
+		{
+		QGraphicsTextItem *ti = NULL;
+		if (this->focusItem()!= NULL)
+			ti = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
+		if (ti)
+		{
+			// text item has focus. Just pass key to it
+			QGraphicsScene::keyPressEvent(event);
+		}
+		else // Add more cases if necessary
+		{
+			// then uml element has focus, then we can safely delete it.
+			window->deleteFromDiagram();
+		}
+	} else
+		QGraphicsScene::keyPressEvent(event);
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -166,42 +166,42 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	do
 	{
-            if (event->button() == Qt::LeftButton)
-            {
-                UML::Element *e = getElemAt(event->scenePos());
-                if (!e)
-                    break;
+		if (event->button() == Qt::LeftButton)
+		{
+			UML::Element *e = getElemAt(event->scenePos());
+			if (!e)
+				break;
 
-                if (!e->isSelected())
-                {
-                        clearSelection();
-                        e->setSelected(true);
-                }
-            }
+			if (!e->isSelected())
+			{
+				clearSelection();
+				e->setSelected(true);
+			}
+		}
 
-            if (event->button() != Qt::RightButton)
-                break;
+		if (event->button() != Qt::RightButton)
+			break;
 
-                /*UML::Element *e = getElemAt(event->scenePos());
-                if (!e)
-                    break;
+		/*UML::Element *e = getElemAt(event->scenePos());
+				if (!e)
+					break;
 
 
-                if (!e->isSelected())
+				if (!e->isSelected())
 		{
 			clearSelection();
 			e->setSelected(true);
-                }*/
-            QMenu menu;
-            menu.addAction(window->ui.actionDeleteFromDiagram);
+				}*/
+		QMenu menu;
+		menu.addAction(window->ui.actionDeleteFromDiagram);
 		// FIXME: add check for diagram
-            if (selectedItems().count() == 1)
-                menu.addAction(window->ui.actionJumpToAvatar);
+		if (selectedItems().count() == 1)
+			menu.addAction(window->ui.actionJumpToAvatar);
 
-            menu.exec(QCursor::pos());
-            return;
-            } while (0);
-            QGraphicsScene::mousePressEvent(event);
+		menu.exec(QCursor::pos());
+		return;
+	} while (0);
+	QGraphicsScene::mousePressEvent(event);
 }
 
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )
