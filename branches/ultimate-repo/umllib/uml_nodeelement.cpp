@@ -63,8 +63,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
         if (event->button() == Qt::RightButton)
         {
-		/* Now these events are processed in scene. -- Kirill */
-
 				/*QWidget *w = new QWidget();
 				w->setAttribute(Qt::WA_DeleteOnClose, true);
 				w->setWindowFlags(Qt::FramelessWindowHint);
