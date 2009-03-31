@@ -287,13 +287,11 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 	}
 	else
 	{
-		UML::Element *e;
-
 		/* activate parent diagram */
 		ui.view->mvIface()->setRootIndex(parent);
 		/* select this item on diagram */
 		ui.view->scene()->clearSelection();
-		e = (dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
+		UML::Element *e = (dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
 		if (e)
 			e->setSelected(true);
 		else
