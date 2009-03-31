@@ -10,6 +10,7 @@
 #include <QGraphicsTextItem>
 #include <QTextCursor>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 
 #include <QtGui/QWidget>
 
@@ -33,6 +34,8 @@ namespace UML {
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent * event)
 		{
 			QGraphicsTextItem::mousePressEvent(event);
+			if (!(event->modifiers() & Qt::ControlModifier))
+				scene()->clearSelection();
 			parentItem()->setSelected(true);
 		}
 	};
