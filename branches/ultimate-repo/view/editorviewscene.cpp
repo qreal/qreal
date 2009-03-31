@@ -140,10 +140,7 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
 	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
 		this->focusItem()->clearFocus();
-	} else
-
-		if (event->key() == Qt::Key_Delete)
-		{
+	} else if (event->key() == Qt::Key_Delete) {
 		QGraphicsTextItem *ti = NULL;
 		if (this->focusItem()!= NULL)
 			ti = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
@@ -154,7 +151,7 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 		}
 		else // Add more cases if necessary
 		{
-			// then uml element has focus, then we can safely delete it.
+			// then uml element has focus, we can safely delete it.
 			window->deleteFromDiagram();
 		}
 	} else
