@@ -4,17 +4,19 @@
 
 
 #Header files
-HEADERS += ./newclient.h \
-    ./Service/definitions.h \
-    ./Model/Model.h \
-    ./Client/Client.h \
+HEADERS += ./Client/Client.h \
+    ./Service/Exception/Exception.h \
     ./Client/Classes/LogicObject.h \
-    ./Service/Exception/Exception.h
+    ./Model/Model.h \
+    ./Service/definitions.h \
+    ./newclient.h \
+    ./Model/Classes/ModelTreeItem.h
 
 #Source files
-SOURCES += ./main.cpp \
-    ./newclient.cpp \
-    ./Model/Model.cpp \
-    ./Client/Client.cpp \
+SOURCES += ./Client/Client.cpp \
+    ./Service/Exception/Exception.cpp \
     ./Client/Classes/LogicObject.cpp \
-    ./Service/Exception/Exception.cpp
+    ./Model/Model.cpp \
+    ./main.cpp \
+    ./newclient.cpp \
+    ./Model/Classes/ModelTreeItem.cpp

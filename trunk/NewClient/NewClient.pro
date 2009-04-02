@@ -11,9 +11,12 @@ TEMPLATE = app
 TARGET = NewClient
 DESTDIR = ./Debug
 CONFIG += debug
+DEFINES += _WINDOWS QT_LARGEFILE_SUPPORT QT_DLL
 INCLUDEPATH += ./GeneratedFiles \
     ./GeneratedFiles/Debug \
-    .
+    . \
+    ./GeneratedFiles/debug \
+    ./GeneratedFiles
 DEPENDPATH += .
 MOC_DIR += ./GeneratedFiles/debug
 OBJECTS_DIR += debug
