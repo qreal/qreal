@@ -7,6 +7,7 @@ using namespace model;
 Model::Model()
 {
 	mClient = new client::Client();
+	rootItem = new ModelTreeItem(ROOT_ID,NULL);
 }
 
 Model::~Model()
@@ -83,14 +84,12 @@ bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 bool Model::removeRows( int row, int count, const QModelIndex &parent )
 {
 	if (parent.isValid()) {
-		ModelTreeItem *item = static_cast<ModelTreeItem*>(parent.internalPointer());	
-		if (item->children().size() < row + count) {
+		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());	
+		if (parentItem->children().size() < row + count) {
 			return false;
 		} else {
-			ModelTreeItemPointerList children = item->children();
 			for (int i = row; i < row + count; i++) {
-				removeModelItems(children.at(i));
-				item->removeChild(children.at(i));
+				removeModelItems(parentItem->children().at(i));
 			}
 			return true;
 		}
@@ -101,7 +100,15 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 
 void Model::removeModelItems( ModelTreeItem *root )
 {
-	// рекурсивное удаление
+	foreach (ModelTreeItem *child, root->children()) {
+		removeModelItems(child);
+		child->parent()->removeChild(child);
+		treeItems.remove(child->id(),child);
+		// мб надо удалить из клиента его конфигурацию на данной диаграмме.
+		if (treeItems.count(child->id())==0) {
+			mClient->removeChild(root->id(),child->id());
+		}
+	}
 }
 
 QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
@@ -120,8 +127,11 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
 		ModelTreeItem *parentItem = item->parent();
-		// унылый рекурсивный поиск родителей до корня.
-		return QModelIndex();
+		if (parentItem==rootItem) {
+			return QModelIndex();
+		} else{
+			return createIndex(parentItem->row(),0,parentItem);
+		}
 	} else {
 		return QModelIndex();
 	}

@@ -31,6 +31,8 @@ namespace qReal {
 		private:
 			client::Client *mClient;
 			void removeModelItems(ModelTreeItem *root);
+			QMultiHash<IdType,ModelTreeItem*> treeItems;
+			ModelTreeItem *rootItem;
 		};
 
 	}

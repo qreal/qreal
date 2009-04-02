@@ -1,4 +1,6 @@
-﻿#include <QString>
+﻿#pragma once
+
+#include <QString>
 #include <QList>
 
 namespace qReal {
@@ -15,5 +17,7 @@ namespace qReal {
 		typedef QList<ModelTreeItem*> ModelTreeItemPointerList;
 
 	}
+
+	const IdType ROOT_ID = "root";
 
 }

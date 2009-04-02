@@ -49,8 +49,8 @@ void Client::addParent( const IdType &id, const IdType &parent )
 
 void Client::addChild( const IdType &id, const IdType &child )
 {
-	if (id=="") {
-		mObjects.insert(child,new LogicObject(child,""));
+	if (id==ROOT_ID) {
+		mObjects.insert(child,new LogicObject(child,ROOT_ID));
 	} else {
 		if (mObjects.contains(id)) {
 			mObjects[id]->addChild(child);
