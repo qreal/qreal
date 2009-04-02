@@ -1,4 +1,4 @@
-#include "LogicObject.h"
+﻿#include "LogicObject.h"
 #include "../Service/Exception/Exception.h"
 
 using namespace qReal;

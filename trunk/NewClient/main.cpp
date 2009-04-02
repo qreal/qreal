@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+﻿#include <QtGui/QApplication>
 #include "newclient.h"
 
 int main(int argc, char *argv[])

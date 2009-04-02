@@ -1,4 +1,4 @@
-#include "Model.h"
+п»ї#include "Model.h"
 
 using namespace qReal;
 
@@ -101,7 +101,7 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 
 void Model::removeModelItems( ModelTreeItem *root )
 {
-	// рекурсивное удаление
+	// СЂРµРєСѓСЂСЃРёРІРЅРѕРµ СѓРґР°Р»РµРЅРёРµ
 }
 
 QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
@@ -120,7 +120,7 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
 		ModelTreeItem *parentItem = item->parent();
-		// унылый рекурсивный поиск родителей до корня.
+		// СѓРЅС‹Р»С‹Р№ СЂРµРєСѓСЂСЃРёРІРЅС‹Р№ РїРѕРёСЃРє СЂРѕРґРёС‚РµР»РµР№ РґРѕ РєРѕСЂРЅСЏ.
 		return QModelIndex();
 	} else {
 		return QModelIndex();
