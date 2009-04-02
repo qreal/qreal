@@ -60,12 +60,12 @@ IdTypeList LogicObject::parents() const
 	return mParents;
 }
 
-void LogicObject::setProperty( PropertyName type, QVariant value )
+void LogicObject::setProperty( const PropertyName &type, const QVariant &value )
 {
 	mProperties.insert(type,value);
 }
 
-QVariant LogicObject::property( PropertyName type ) const
+QVariant LogicObject::property( const PropertyName &type ) const
 {
 	if (mProperties.contains(type)) {
 		return mProperties[type];

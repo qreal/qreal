@@ -102,7 +102,7 @@ void Client::removeChild( const IdType &id, const IdType &child )
 	}
 }
 
-void Client::setProperty( const IdType &id, PropertyName type, QVariant value )
+void Client::setProperty( const IdType &id, const PropertyName &type, const QVariant &value )
 {
 	if (mObjects.contains(id)) {
 		mObjects[id]->setProperty(type,value);
@@ -111,7 +111,7 @@ void Client::setProperty( const IdType &id, PropertyName type, QVariant value )
 	}
 }
 
-QVariant Client::property( const IdType &id, PropertyName type ) const
+QVariant Client::property( const IdType &id, const PropertyName &type ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(type);
