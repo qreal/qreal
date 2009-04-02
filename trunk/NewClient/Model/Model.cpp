@@ -136,3 +136,25 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 		return QModelIndex();
 	}
 }
+
+Qt::DropActions Model::supportedDropActions() const
+{
+	return Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
+}
+
+QStringList Model::mimeTypes() const
+{
+	QStringList types;
+	types.append("application/x-real-uml-data");
+	return types;
+}
+
+QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
+{
+	return new QMimeData();
+}
+
+bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent )
+{
+	return false;
+}

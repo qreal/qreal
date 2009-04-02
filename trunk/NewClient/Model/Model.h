@@ -6,6 +6,9 @@
 
 #include <QAbstractItemModel>
 #include <QVariant>
+#include <QStringList>
+#include <QMimeData>
+#include <QModelIndexList>
 
 namespace qReal {
 
@@ -27,6 +30,10 @@ namespace qReal {
 			virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());  
 			virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const; 
 			virtual QModelIndex parent(const QModelIndex &index) const;
+			virtual Qt::DropActions supportedDropActions() const;
+			virtual QStringList mimeTypes() const;
+			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
 		private:
 			client::Client *mClient;
