@@ -12,6 +12,49 @@
 #include <QByteArray>
 #include <qstring.h>
 
+#define case_cmdname_to_string(cmd) case cmd: return QString(#cmd); break
+
+static QString cmd_to_string(int cmd)
+{
+	switch (cmd)
+	{
+	case_cmdname_to_string(CMD_GET_NAME);
+	case_cmdname_to_string(CMD_SET_NAME);
+	case_cmdname_to_string(CMD_CREATE_ENTITY);
+	case_cmdname_to_string(CMD_COPY_ENTITY);
+	case_cmdname_to_string(CMD_REPARENT_ENTITY);
+	case_cmdname_to_string(CMD_FULLCOPY_ENTITY);
+	case_cmdname_to_string(CMD_DELETE_ENTITY);
+	case_cmdname_to_string(CMD_GET_TYPES_COUNT);
+	case_cmdname_to_string(CMD_GET_ALL_TYPES);
+	case_cmdname_to_string(CMD_GET_TYPE_INFO);
+	case_cmdname_to_string(CMD_GET_TYPE_BY_NAME);
+	case_cmdname_to_string(CMD_GET_TYPES_BY_METATYPE);
+	case_cmdname_to_string(CMD_GET_OBJECTS_BY_TYPE);
+	case_cmdname_to_string(CMD_GET_OBJECT_DATA);
+	case_cmdname_to_string(CMD_GET_CHILDREN);
+	case_cmdname_to_string(CMD_GET_DESCRIPTION);
+	case_cmdname_to_string(CMD_SET_DESCRIPTION);
+	case_cmdname_to_string(CMD_GET_POSITION);
+	case_cmdname_to_string(CMD_SET_POSITION);
+	case_cmdname_to_string(CMD_GET_CONFIGURATION);
+	case_cmdname_to_string(CMD_SET_CONFIGURATION);
+	case_cmdname_to_string(CMD_SET_PROPERTY);
+	case_cmdname_to_string(CMD_GET_PROPERTY);
+	case_cmdname_to_string(CMD_ADD_LINK);
+	case_cmdname_to_string(CMD_REMOVE_LINK);
+	case_cmdname_to_string(CMD_GET_ENTIRE_OBJECT);
+	case_cmdname_to_string(CMD_GET_LINKS_BY_OBJECT);
+	case_cmdname_to_string(CMD_GET_OBJECTS_BY_LINK);
+	case_cmdname_to_string(CMD_GET_CONTAINERS);
+	case_cmdname_to_string(CMD_GET_ALL_OBJECTS);
+	case_cmdname_to_string(CMD_CLEAR_ALL);
+	default:
+		break;
+	}
+	return QString("UNKNOWN!");
+}
+
 using namespace repoServer;
 using namespace qRealTypes;
 
@@ -910,7 +953,7 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 	if (!command.empty() && command.back() == "" && cmd != CMD_CREATE_ENTITY)
 		command.pop_back();  // Discard empty string that is sent at the end of nearly
 							 // every command by some reason.
-	mLog = QString("cmd: %1").arg(cmd);
+	mLog = QString("cmd: %1(%2)").arg(cmd_to_string(cmd)).arg(cmd);
 	IntQStringPair resp = IntQStringPair(ERR_INCORRECT_REQUEST, "");
 
 	switch (cmd)
