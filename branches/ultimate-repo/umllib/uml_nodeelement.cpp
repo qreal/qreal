@@ -9,6 +9,7 @@
 #include "editorviewscene.h"
 #include <QMessageBox>
 #include <QTextCursor>
+#include <QToolTip>
 
 using namespace UML;
 
@@ -44,7 +45,9 @@ void NodeElement::changeName()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {	
-	d.setTextWidth(boundingRect().width()-25);
+	//d.setTextWidth(boundingRect().width()-25);
+	
+	//complexInlineEditing();
    // changeName();
 	if (isSelected())
 	{
@@ -88,7 +91,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-        d.setTextWidth(boundingRect().width()-25);
+       // d.setTextWidth(boundingRect().width()-25);
+		//complexInlineEditing();
+		
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
@@ -317,6 +322,48 @@ void NodeElement::setPortsVisible(bool value) {
 	prepareGeometryChange();
 	portsVisible = value;
 }
+
+void NodeElement::complexInlineEditing() {
+
+	if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
+		docvis.setTextWidth(0);
+		doctype.setTextWidth(0);
+		d.setPos(15, m_contents.height() - 15); 
+		d.setTextWidth(m_contents.width() - 25);
+	} else 
+	if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
+		docvis.setTextWidth(0);
+		doctype.setPos(1, m_contents.height() - 15);
+		if (typetext.length() * 5 < 6*m_contents.width() / 16)
+			doctype.setTextWidth(typetext.length() * 5);
+		else
+			doctype.setTextWidth(6 * m_contents.width() / 16);
+			
+		d.setPos (doctype.textWidth(), m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+	} else
+	if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
+		doctype.setTextWidth(0);
+		docvis.setPos(1, m_contents.height() - 15);
+		docvis.setTextWidth(11);   
+		d.setPos (16, m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - 37);
+	} else 
+	if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
+		docvis.setPos(1, m_contents.height() - 15);
+		docvis.setTextWidth(11);
+		doctype.setPos (16, m_contents.height() - 15);
+		
+		
+		if (typetext.length() * 5 < 6 * m_contents.width() / 16)
+			doctype.setTextWidth(typetext.length() * 5);
+		else 
+			doctype.setTextWidth(6 * m_contents.width() / 16);	
+			
+		d.setPos(docvis.textWidth() + doctype.textWidth(),  m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+		}    
+}			
 
 NodeElement *NodeElement::getNodeAt( const QPointF &position )
 {

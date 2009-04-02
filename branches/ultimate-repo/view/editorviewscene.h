@@ -7,6 +7,7 @@
 
 #include "uml_element.h"
 #include "../common/classes.h"
+#include "uml_nodeelement.h"
 
 class EditorViewMViface;
 class EditorView;

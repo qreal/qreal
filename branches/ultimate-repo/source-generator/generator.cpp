@@ -365,7 +365,6 @@ void Generator::genClasses(){
 		//constructor
 		out << classname << "::" << classname << "()\n";
 		out <<   "{\n";
-
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
 			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
@@ -385,8 +384,12 @@ void Generator::genClasses(){
                 << "\tm_contents.setHeight(height);\n"
                 << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
                 << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
-                << "\td.setParentItem(this);\n"
-                << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
+                << "\td.setParentItem(this);\n";
+				if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
+					out << "\tdocvis.setParentItem(this);\n"
+						<< "\tdoctype.setParentItem(this);\n";
+				}
+                out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
 
 
 
@@ -451,8 +454,13 @@ void Generator::genClasses(){
 		out << "\tupdatePorts();\n"
 			<< QString("\trenderer.render(painter, m_contents);\n")
                         << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
-//                      << "\td.setTextWidth(m_contents.width()-15);\n";
 
+		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
+			out << "\tpainter->save();\n"
+				<< "\tNodeElement::complexInlineEditing();\n"
+				<< "\tpainter->restore();\n";
+				
+		} else
 		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";
 			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
@@ -496,6 +504,31 @@ void Generator::genClasses(){
 		//updateData
 		out << "void " << classname << "::updateData()\n{\n"
 			<< "\tNodeElement::updateData();\n";
+		
+		
+		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
+			out << QString("\ttext = QString(\"%1\")")
+				<< QString(".arg(dataIndex.data(%1).toString());\n")
+						.arg((*o)->labels.at(0).args.at(1));
+						
+			out << QString("\tvistext = QString(\"%1\")")
+				<< QString(".arg(dataIndex.data(%1).toString());\n")
+						.arg((*o)->labels.at(0).args.at(0));
+
+			out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
+				<< QString(".arg(dataIndex.data(%1).toString());\n")
+						.arg((*o)->labels.at(0).args.at(2));
+
+			out << "\tdocvis.setHtml(vistext);\n"
+				<< "\tdoctype.setHtml(typetext);\n";	
+
+			out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n" 
+				<< "\t\tmLockChangeName = true;\n" 
+	 	        << "\t\td.setHtml(text);\n" 
+	 	        << "\t\tmLockChangeName = false;\n" 
+	 	        << "\t}\n";	
+		} else
+		
 		if ((*o)->labels.size() > 0){
 			out << QString("\ttext = QString(\"%1\")").arg((*o)->labels.at(0).text);
 			if ((*o)->labels.at(0).args.size() > 0) {

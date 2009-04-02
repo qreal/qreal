@@ -48,8 +48,10 @@ namespace UML {
 		/** @brief Конструктор */
 		NodeElement();
 		/** @brief Деструктор */
-		~NodeElement();
+		~NodeElement();    
 
+		void complexInlineEditing();
+		
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
 						   const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
@@ -90,6 +92,10 @@ namespace UML {
 		void setPortsVisible(bool value);
 
 		ElementTitle d;
+		ElementTitle docvis;
+		ElementTitle doctype;
+		QString typetext;
+		QString vistext;
 
 		//                        QString PutName();
 		QString oldName;

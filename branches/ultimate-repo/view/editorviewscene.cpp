@@ -157,7 +157,6 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
-
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	// Let scene update selection and perform other operations
