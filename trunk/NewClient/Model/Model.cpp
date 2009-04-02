@@ -61,7 +61,7 @@ int Model::rowCount( const QModelIndex &parent ) const
 int Model::columnCount( const QModelIndex &parent ) const
 {
 	Q_UNUSED(parent)
-	return 1;
+		return 1;
 }
 
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
@@ -71,7 +71,7 @@ bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 		switch (role) {
 			case Qt::DisplayRole:
 			case Qt::EditRole:
-				mClient->setProperty(item->id(),"Name",value);		
+				mClient->setProperty(item->id(),"Name",value);
 				return true;
 		}
 		return false;
@@ -88,7 +88,7 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 			return false;
 		} else {
 			ModelTreeItemPointerList children = item->children();
-			for (int i = row; i< row + count; i++) {
+			for (int i = row; i < row + count; i++) {
 				removeModelItems(children.at(i));
 				item->removeChild(children.at(i));
 			}
@@ -101,7 +101,7 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 
 void Model::removeModelItems( ModelTreeItem *root )
 {
-// рекурсивное удаление
+	// рекурсивное удаление
 }
 
 QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
@@ -120,7 +120,7 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
 		ModelTreeItem *parentItem = item->parent();
-	// унылый рекурсивный поиск родителей до корня.
+		// унылый рекурсивный поиск родителей до корня.
 		return QModelIndex();
 	} else {
 		return QModelIndex();

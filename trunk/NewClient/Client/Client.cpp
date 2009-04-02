@@ -15,7 +15,7 @@ Client::~Client()
 	saveToDisk();
 }
 
-IdTypeList Client::children( IdType id ) const
+IdTypeList Client::children( const IdType &id ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->children();
@@ -24,7 +24,7 @@ IdTypeList Client::children( IdType id ) const
 	}
 }
 
-IdTypeList Client::parents( IdType id ) const
+IdTypeList Client::parents( const IdType &id ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->parents();
@@ -33,7 +33,7 @@ IdTypeList Client::parents( IdType id ) const
 	}
 }
 
-void Client::addParent( IdType id, IdType parent )
+void Client::addParent( const IdType &id, const IdType &parent )
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {	
@@ -47,7 +47,7 @@ void Client::addParent( IdType id, IdType parent )
 	}
 }
 
-void Client::addChild( IdType id, IdType child )
+void Client::addChild( const IdType &id, const IdType &child )
 {
 	if (id=="") {
 		mObjects.insert(child,new LogicObject(child,""));
@@ -65,7 +65,7 @@ void Client::addChild( IdType id, IdType child )
 	}
 }
 
-void Client::removeParent( IdType id, IdType parent )
+void Client::removeParent( const IdType &id, const IdType &parent )
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
@@ -79,7 +79,7 @@ void Client::removeParent( IdType id, IdType parent )
 	}
 }
 
-void Client::removeChild( IdType id, IdType child )
+void Client::removeChild( const IdType &id, const IdType &child )
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(child)) {
@@ -95,14 +95,14 @@ void Client::removeChild( IdType id, IdType child )
 				}
 			}
 		} else {
-		throw Exception("Client: removing nonexistent child " + child + " from object " + id);
+			throw Exception("Client: removing nonexistent child " + child + " from object " + id);
 		}
 	} else {
 		throw Exception("Client: removing child " + child + " from nonexistent object " + id);
 	}
 }
 
-void Client::setProperty( IdType id, PropertyName type, QVariant value )
+void Client::setProperty( const IdType &id, PropertyName type, QVariant value )
 {
 	if (mObjects.contains(id)) {
 		mObjects[id]->setProperty(type,value);
@@ -111,7 +111,7 @@ void Client::setProperty( IdType id, PropertyName type, QVariant value )
 	}
 }
 
-QVariant Client::property( IdType id, PropertyName type ) const
+QVariant Client::property( const IdType &id, PropertyName type ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(type);

@@ -5,12 +5,12 @@ using namespace qReal;
 
 using namespace client;
 
-LogicObject::LogicObject( IdType id, IdType parent ) : mId(id)
+LogicObject::LogicObject( const IdType &id, const IdType &parent ) : mId(id)
 {
 	addParent(parent);
 }
 
-void LogicObject::addParent( IdType parent )
+void LogicObject::addParent( const IdType &parent )
 {
 	if (!mParents.contains(parent)) {
 		mParents.append(parent);
@@ -19,10 +19,10 @@ void LogicObject::addParent( IdType parent )
 	}
 }
 
-void LogicObject::removeParent( IdType parent )
+void LogicObject::removeParent( const IdType &parent )
 {
 	if (mParents.contains(parent)) {
-		if (mParents.size()!=1) {
+		if (mParents.size() != 1) {
 			mParents.removeAll(parent);
 		} else {
 			throw Exception("Object " + mId + ": removing the only parent " + parent);
@@ -32,7 +32,7 @@ void LogicObject::removeParent( IdType parent )
 	}
 }
 
-void LogicObject::addChild( IdType child )
+void LogicObject::addChild( const IdType &child )
 {
 	if (!mChildren.contains(child)) {
 		mChildren.append(child);
@@ -41,7 +41,7 @@ void LogicObject::addChild( IdType child )
 	}
 }
 
-void LogicObject::removeChild( IdType child )
+void LogicObject::removeChild( const IdType &child )
 {
 	if (mChildren.contains(child)) {
 		mChildren.removeAll(child);

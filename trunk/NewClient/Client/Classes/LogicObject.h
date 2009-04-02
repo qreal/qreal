@@ -12,11 +12,11 @@ namespace qReal {
 		class LogicObject
 		{
 		public:
-			LogicObject(IdType id, IdType parent);
-			void addParent(IdType parent);
-			void removeParent(IdType parent);
-			void addChild(IdType child);
-			void removeChild(IdType child);
+			LogicObject(const IdType &id, const IdType &parent);
+			void addParent(const IdType &parent);
+			void removeParent(const IdType &parent);
+			void addChild(const IdType &child);
+			void removeChild(const IdType &child);
 			IdTypeList children() const;
 			IdTypeList parents() const;
 			void setProperty(PropertyName type, QVariant value);
