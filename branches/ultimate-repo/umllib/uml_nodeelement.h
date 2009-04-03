@@ -92,12 +92,9 @@ namespace UML {
 		void setPortsVisible(bool value);
 
 		ElementTitle d;
-		ElementTitle docvis;
-		ElementTitle doctype;
-		QString typetext;
-		QString vistext;
 
-		//                        QString PutName();
+
+		//QString PutName();
 		QString oldName;
 			  public slots:
 		void changeName();
@@ -133,6 +130,10 @@ namespace UML {
 
 		bool mLockChangeName;
 		bool mLockUpdateText;
+		ElementTitle docvis;
+		ElementTitle doctype;
+		QString typetext;
+		QString vistext;
 
 
 	private:

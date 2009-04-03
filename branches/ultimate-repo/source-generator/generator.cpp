@@ -373,22 +373,22 @@ void Generator::genClasses(){
 #if 0 // FIXME: Emperor
 		if ((*o)->parents.size() > 0)
 			out << "\tparentsList";
-		for( int j=0;j<(*o)->parents.size(); j++ ){
-			out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
+		for (int j=0; j < (*o)->parents.size(); j++ ){
+		    out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
 		}
 #endif
 		out << ";\n";
 		out << QString("\theight = %1;\n").arg((*o)->height)
-			<< QString("\twidth = %1;\n").arg((*o)->width)
-		<< "\tm_contents.setWidth(width);\n"
-                << "\tm_contents.setHeight(height);\n"
-                << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
-                << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
-                << "\td.setParentItem(this);\n";
-				if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-					out << "\tdocvis.setParentItem(this);\n"
-						<< "\tdoctype.setParentItem(this);\n";
-				}
+		    << QString("\twidth = %1;\n").arg((*o)->width)
+		    << "\tm_contents.setWidth(width);\n"
+		    << "\tm_contents.setHeight(height);\n"
+		    << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+		    << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+		    << "\td.setParentItem(this);\n";
+		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
+		    out << "\tdocvis.setParentItem(this);\n"
+			<< "\tdoctype.setParentItem(this);\n";
+		}
                 out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
 
 
@@ -452,14 +452,13 @@ void Generator::genClasses(){
 		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                         "QWidget *widget)\n{\n";
 		out << "\tupdatePorts();\n"
-			<< QString("\trenderer.render(painter, m_contents);\n")
-                        << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
+		    << QString("\trenderer.render(painter, m_contents);\n")
+		    << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
 
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-			out << "\tpainter->save();\n"
-				<< "\tNodeElement::complexInlineEditing();\n"
-				<< "\tpainter->restore();\n";
-				
+		    out << "\tpainter->save();\n"
+			<< "\tNodeElement::complexInlineEditing();\n"
+			<< "\tpainter->restore();\n";
 		} else
 		if ((*o)->labels.size() > 0){
 			out << "\tpainter->save();\n";
@@ -467,14 +466,12 @@ void Generator::genClasses(){
 				out << QString("\tpainter->translate(QPointF(7, 0));\n")
                                      <<"\td.setPos(7,0);\n";
 
-			}
-			else if ((*o)->id == "krnnDiagram"){
-				out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
-                                        <<"\td.setPos(7,2*m_contents.height()/3);\n"
-					<< "\tQRectF conts = m_contents;\n"
-					<< "\tconts.setHeight(m_contents.height()/3);\n"
-                                ;
-
+			} else
+			if ((*o)->id == "krnnDiagram"){
+			    out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
+				<<"\td.setPos(7,2*m_contents.height()/3);\n"
+				<< "\tQRectF conts = m_contents;\n"
+				<< "\tconts.setHeight(m_contents.height()/3);\n";
 			}
 			else{
 				if ((*o)->labels.at(0).x != 0  || (*o)->labels.at(0).y != 0)
@@ -487,43 +484,40 @@ void Generator::genClasses(){
 							.arg((*o)->labels.at(0).y);
 				else
 					out << QString("\tpainter->translate(QPointF(7, m_contents.height()-15));\n")
-                                                <<"\td.setPos(7, m_contents.height()-15);\n"
-						<< "\tQRectF conts = m_contents;\n"
-						<< QString("\tconts.setHeight(20);\n");
+					    <<"\td.setPos(7, m_contents.height()-15);\n"
+					    << "\tQRectF conts = m_contents;\n"
+					    << QString("\tconts.setHeight(20);\n");
 			}
-                        out
-                                << "\td.paint(painter,style,widget);\n"
-                                << "\tpainter->restore();\n";
+			out << "\td.paint(painter,style,widget);\n"
+			    << "\tpainter->restore();\n";
 		  } else
-                                out  << "\td.setTextWidth(m_contents.width()-15);\n";
+		     out  << "\td.setTextWidth(m_contents.width()-15);\n";
 
-                                       
-
-			out<< "}\n\n";
+		out<< "}\n\n";
 
 		//updateData
 		out << "void " << classname << "::updateData()\n{\n"
-			<< "\tNodeElement::updateData();\n";
+		    << "\tNodeElement::updateData();\n";
 		
 		
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-			out << QString("\ttext = QString(\"%1\")")
-				<< QString(".arg(dataIndex.data(%1).toString());\n")
-						.arg((*o)->labels.at(0).args.at(1));
+		    out << QString("\ttext = QString(\"%1\")")
+			<< QString(".arg(dataIndex.data(%1).toString());\n")
+				.arg((*o)->labels.at(0).args.at(1));
 						
-			out << QString("\tvistext = QString(\"%1\")")
-				<< QString(".arg(dataIndex.data(%1).toString());\n")
-						.arg((*o)->labels.at(0).args.at(0));
+		    out << QString("\tvistext = QString(\"%1\")")
+			<< QString(".arg(dataIndex.data(%1).toString());\n")
+				.arg((*o)->labels.at(0).args.at(0));
 
-			out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
-				<< QString(".arg(dataIndex.data(%1).toString());\n")
-						.arg((*o)->labels.at(0).args.at(2));
+		    out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
+			<< QString(".arg(dataIndex.data(%1).toString());\n")
+			    .arg((*o)->labels.at(0).args.at(2));
 
-			out << "\tdocvis.setHtml(vistext);\n"
-				<< "\tdoctype.setHtml(typetext);\n";	
+		    out << "\tdocvis.setHtml(vistext);\n"
+			<< "\tdoctype.setHtml(typetext);\n";
 
-			out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n" 
-				<< "\t\tmLockChangeName = true;\n" 
+		    out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
+			<< "\t\tmLockChangeName = true;\n"
 	 	        << "\t\td.setHtml(text);\n" 
 	 	        << "\t\tmLockChangeName = false;\n" 
 	 	        << "\t}\n";	
