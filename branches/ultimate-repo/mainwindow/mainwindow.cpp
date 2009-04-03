@@ -16,20 +16,26 @@
 #include "realrepomodel.h"
 #include "editorview.h"
 #include "optionsDialog.h"
+#include <QProgressBar>
 
 using namespace qReal;
 
 MainWindow::MainWindow() : model(0)
 {
+
 	QSettings settings("Tercom", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
-//	QPixmap korkodil(":/icons/kroki2.PNG");
-//	QSplashScreen splash(korkodil, Qt::SplashScreen | Qt::WindowStaysOnTopHint);
-	QSplashScreen splash(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
-
+	QSplashScreen* splash =
+	new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+	QProgressBar *progress = new QProgressBar((QWidget*) splash);
+	progress->move(20,270);
+	progress->setFixedWidth(600);
+	progress->setFixedHeight(15);
+	progress->setRange(0, 100);
+	progress->setValue(5);
 	if (showSplash)
 	{
-		splash.show();
+		splash->show();
 		QApplication::processEvents();
 	}
 
@@ -40,6 +46,7 @@ MainWindow::MainWindow() : model(0)
 
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
+	progress->setValue(10);
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
@@ -59,14 +66,13 @@ MainWindow::MainWindow() : model(0)
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
-
-        connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+	progress->setValue(20);
+	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 	connect(ui.actionJumpToAvatar, SIGNAL( triggered() ), this, SLOT( jumpToAvatar() ) );
 
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
 	connect(ui.actionReconnect, SIGNAL( triggered() ), this, SLOT( reconnect() ));
-
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
@@ -86,18 +92,16 @@ MainWindow::MainWindow() : model(0)
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&delegate);
 
-        ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
+	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
-
-	show();
 
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", QSize(1024, 800)).toSize());
 	move(settings.value("pos", QPoint(0, 0)).toPoint());
 	settings.endGroup();
-
+	progress->setValue(60);
 	QApplication::processEvents();
 
 	repoAddress = settings.value("repoAddress", "127.0.0.1").toString();
@@ -105,14 +109,18 @@ MainWindow::MainWindow() : model(0)
 
 	connDialog = new ConnectionDialog(repoAddress, repoPort);
 	connect(connDialog, SIGNAL(dataAccepted(const QString&, const int)), this, SLOT(reconnectRepo(const QString&, const int)));
-
+	progress->setValue(70);
 	if (showSplash)
 	{
-		connectRepo(&splash, repoAddress, repoPort);
-		splash.close();
+		connectRepo(splash, repoAddress, repoPort);
+		progress->setValue(100);
+		splash->close();
 	}
 	else
 		connectRepo(NULL, repoAddress, repoPort);
+
+	show();
+
 }
 
 MainWindow::~MainWindow()
