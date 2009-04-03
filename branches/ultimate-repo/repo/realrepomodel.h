@@ -146,6 +146,7 @@ class RealRepoModel : public QAbstractItemModel
 		void changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos);
 
 		QModelIndex getAvatarIndex(const QModelIndex&) const;
+		RealRepoClient* getRepoClient(void) { return repoClient; }
 
 	public slots:
 		/** @brief Отменить последнее действие */

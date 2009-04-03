@@ -182,6 +182,8 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 	connect(ui.actionUndo, SIGNAL( triggered() ), model, SLOT( undo() ) );
 	connect(ui.actionRedo, SIGNAL( triggered() ), model, SLOT( redo() ) );
 
+	connect(ui.actionClear, SIGNAL( triggered() ), this, SLOT( exterminatus() ));
+
 	connect(ui.actionCommand_list, SIGNAL( triggered() ), model,
 			SLOT( showCommandList() ));
 
@@ -402,4 +404,11 @@ void MainWindow::toggleShowSplash(bool show)
 {
 	QSettings settings("Tercom", "QReal");
 	settings.setValue("ShowSplashScreen", show);
+}
+
+void MainWindow::exterminatus(void)
+{
+	qDebug() << "Activating the Red Rune!!!";
+	model->getRepoClient()->clearRepository();
+	closeRepo();
 }

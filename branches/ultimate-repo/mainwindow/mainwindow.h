@@ -54,6 +54,10 @@ public:
 	/** @brief Активировать элемент */
 	void activateItemOrDiagram(const QModelIndex &index /**< Индекс выделенного элемента */);
 
+	/** @brief Уничтожает содержимое репозитория и делает реконнект */
+	// FIXME: Функцию надо назвать более пристойно, просто лучше я ничего не смог придумать :-(
+	void exterminatus(void);
+
 	/** @brief Показать справку */
 	void showAbout();
 	/** @brief Показать помощь */

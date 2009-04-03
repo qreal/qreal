@@ -68,6 +68,7 @@
     <addaction name="separator"/>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
+    <addaction name="actionClear"/>
     <addaction name="actionCommand_list"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -238,6 +239,7 @@
    <addaction name="actionZoom_Out"/>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
+   <addaction name="actionClear"/>
   </widget>
   <widget class="QDockWidget" name="propertyDock">
    <property name="windowTitle">
@@ -446,6 +448,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/clear.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Clear</string>
    </property>
   </action>
   <action name="actionCommand_list">
