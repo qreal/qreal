@@ -1,4 +1,4 @@
-﻿#ifndef NEWCLIENT_H
+#ifndef NEWCLIENT_H
 #define NEWCLIENT_H
 
 #include <QtGui/QMainWindow>

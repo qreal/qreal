@@ -1,4 +1,4 @@
-﻿#include "Exception.h"
+#include "Exception.h"
 
 using namespace qReal;
 

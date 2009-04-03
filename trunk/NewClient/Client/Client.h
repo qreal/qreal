@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../Service/definitions.h"
 #include "Classes/LogicObject.h"

@@ -1,4 +1,4 @@
-﻿#include "Model.h"
+#include "Model.h"
 
 using namespace qReal;
 

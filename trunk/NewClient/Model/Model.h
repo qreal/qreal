@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../Client/Client.h"
 #include "../Service/definitions.h"

@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "../Service/Exception/Exception.h"
 
 using namespace qReal;

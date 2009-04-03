@@ -1,4 +1,4 @@
-﻿#include "ModelTreeItem.h"
+#include "ModelTreeItem.h"
 #include "../Service/Exception/Exception.h"
 
 using namespace qReal;
