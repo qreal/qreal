@@ -49,6 +49,7 @@ static QString cmd_to_string(int cmd)
 	case_cmdname_to_string(CMD_GET_CONTAINERS);
 	case_cmdname_to_string(CMD_GET_ALL_OBJECTS);
 	case_cmdname_to_string(CMD_CLEAR_ALL);
+	case_cmdname_to_string(CMD_GET_REFERRALS);
 	default:
 		break;
 	}
@@ -946,6 +947,25 @@ IntQStringPair QRealRepoServerThread::handleClearAll(QStringVector const &/*para
 	return ReportSuccess("");
 }
 
+IntQStringPair QRealRepoServerThread::handleGetReferrals(QStringVector const & params)
+{
+	if (!IsParamsNumberCorrect(params, "GetReferrals", 1))
+		return ReportError(ERR_INCORRECT_PARAMS);
+
+	IdType id = params[0];
+	QString resp = "";
+	if( Object * obj = mRepoData->getObject(id) )
+		resp = obj->getReferrals();
+	else if( Link * edge = mRepoData->getLink(id) )
+		resp = edge->getReferrals();
+	else {
+		qDebug() << __FUNCTION__ << "WTF " << id << "is???";
+		return ReportError(ERR_INCORRECT_REQUEST);
+	}
+	mLog += QString(", sending referrals of %1: %2").arg(id).arg(resp);
+	return ReportSuccess(resp);
+}
+
 IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 {
 	dbg;
@@ -1113,6 +1133,11 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_CLEAR_ALL:
 		{
 			resp = handleClearAll(command.toVector());
+			break;
+		}
+		case CMD_GET_REFERRALS:
+		{
+			resp = handleGetReferrals(command.toVector());
 			break;
 		}
 		default:

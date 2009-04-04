@@ -78,6 +78,8 @@ const int CMD_GET_TYPE_BY_NAME		= 35;
 const int CMD_ADD_LINK			= 51;
 /** @brief Код команды "Убрать связь объекта" */
 const int CMD_REMOVE_LINK		= 52;
+/** @brief Получить список рефералов */
+const int CMD_GET_REFERRALS		 = 53;
 
 // Команды, которые по идее нужны только для отладки.
 /** @brief Код команды "Получить все объекты" */

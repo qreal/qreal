@@ -111,6 +111,7 @@ class RepoElement
 public:
 	// TODO: remove ID from constructor and generate it by repo server itself
 	RepoElement(IdType const &id, TypeIdType const &type);
+	virtual ~RepoElement(){}
 
 	/** @brief Получить имя элемента
 	 *	@brief @return Имя элемента
@@ -147,6 +148,13 @@ public:
 
 	/** @brief Получить список идентификаторов родителей */
 	QString parentsToString();
+
+	/** @brief Сериализовать сущность в строку
+	 *	@brief @return Сериализованный объект
+	 * */
+	virtual QString toString() = 0;
+
+	virtual QString getReferrals() { return QString("");}
 
 	void addRef(IdType const &parent)
 	{
@@ -250,7 +258,7 @@ public:
 	/** @brief Сериализовать объект в строку
 	 *	@brief @return Сериализованный объект
 	 * */
-	QString toString();
+	virtual QString toString();
 	/** @brief Получить список идентификаторо входящих связей
 	 *	@brief @return Список идентификаторов входящих связей
 	 * */
@@ -305,7 +313,7 @@ public:
 	/** @brief Сериализовать связь в строку
 	 * 	@brief @return Строковое представление связи
 	 * 	*/
-	QString toString();
+	virtual QString toString();
 
 	/** @brief Получить список объектов, к которым присоединена связь
 	 * 	@brief @return Список объектов, к которым присоединена связь
