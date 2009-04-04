@@ -197,6 +197,7 @@ void RealRepoClient::deleteObject(IdType const &id, IdType const &parent)
 {
 dbg;
 	QString data = QString("%1\t%2\t%3\t").arg(CMD_DELETE_ENTITY).arg(id).arg(parent);
+	qDebug() << "sending" << data;
 	QString resp = sendData(data);
 }
 

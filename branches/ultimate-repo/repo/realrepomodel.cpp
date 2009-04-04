@@ -609,7 +609,7 @@ bool RealRepoModel::addElementToModel( RepoTreeItem *const parentItem, const QMo
 				if (newElement) {
 					beginInsertRows(parent,  parentItem->children.size(), parentItem->children.size());
 					RepoTreeItem *qq = createItem(parentItem, id, newtype, name);
-					if (action == Qt::CopyAction)
+					if (action == Qt::CopyAction && newtype == "krnnDiagram")
 					{
 						newTypedItem->inv_avatar = qq;
 						qq->has_avatar = true;
