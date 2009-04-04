@@ -576,6 +576,8 @@ IntQStringPair QRealRepoServerThread::handleGetChildren(QStringVector const &par
 	QString resp = QString::number(ERR_UNKNOWN_ERROR);
 	if (Object * obj = mRepoData->getObject(id))
 		resp = obj->childrenToString();
+	else if (mRepoData->getLink(id))
+		resp = ""; // No children for link
 	mLog += QString(", sending %1's children - [%2]").arg(id).arg(resp);
 	return ReportSuccess(resp);
 }
