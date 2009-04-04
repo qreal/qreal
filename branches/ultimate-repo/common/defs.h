@@ -11,7 +11,7 @@ const int ERR_INCORRECT_PARAMS  = 2;
 const int ERR_INCORRECT_REQUEST = 4;
 
 /** @brief Самая страшная ошибка вообще*/
-const int ERR_UNKNOWN_ERROR	= 888;
+const int ERR_UNKNOWN_ERROR	= 1488;
 
 /** @brief Команда "Создать сущность" */
 const int CMD_CREATE_ENTITY		= 1;
