@@ -50,6 +50,8 @@ static QString cmd_to_string(int cmd)
 	case_cmdname_to_string(CMD_GET_ALL_OBJECTS);
 	case_cmdname_to_string(CMD_CLEAR_ALL);
 	case_cmdname_to_string(CMD_GET_REFERRALS);
+	case_cmdname_to_string(CMD_INC_REFERRAL);
+	case_cmdname_to_string(CMD_DEC_REFERRAL);
 	default:
 		break;
 	}
@@ -421,6 +423,12 @@ IntQStringPair QRealRepoServerThread::handleDeleteEntity(QStringVector const &pa
 	if (obj)
 	{
 		if( Object * child = mRepoData->getObject(id) ){
+			QString refs = child->referralsToString();
+			if (refs != "")
+			{
+				qDebug() << "cannot delete popular entity" << id << ": " << refs;
+				return ReportError(ERR_INCORRECT_REQUEST);
+			}
 			obj->removeNodeChild(id);
 			child->removeRef(obj->getId());
 			if( child->refCount() == 0 ){
@@ -955,14 +963,53 @@ IntQStringPair QRealRepoServerThread::handleGetReferrals(QStringVector const & p
 	IdType id = params[0];
 	QString resp = "";
 	if( Object * obj = mRepoData->getObject(id) )
-		resp = obj->getReferrals();
+		resp = obj->referralsToString();
 	else if( Link * edge = mRepoData->getLink(id) )
-		resp = edge->getReferrals();
+		resp = edge->referralsToString();
 	else {
 		qDebug() << __FUNCTION__ << "WTF " << id << "is???";
 		return ReportError(ERR_INCORRECT_REQUEST);
 	}
 	mLog += QString(", sending referrals of %1: %2").arg(id).arg(resp);
+	return ReportSuccess(resp);
+}
+
+IntQStringPair QRealRepoServerThread::handleIncReferral(QStringVector const & params)
+{
+	if (!IsParamsNumberCorrect(params, "IncReferral", 2))
+		return ReportError(ERR_INCORRECT_PARAMS);
+
+	IdType id = params[0];
+	IdType ref = params[1];
+	QString resp = "";
+	if( Object * obj = mRepoData->getObject(id) )
+		obj->incReferral(ref);
+	else if( Link * edge = mRepoData->getLink(id) )
+		edge->incReferral(ref);
+	else {
+		qDebug() << __FUNCTION__ << "WTF " << id << "is???";
+		return ReportError(ERR_INCORRECT_REQUEST);
+	}
+	return ReportSuccess(resp);
+}
+
+
+IntQStringPair QRealRepoServerThread::handleDecReferral(QStringVector const & params)
+{
+	if (!IsParamsNumberCorrect(params, "DecReferral", 2))
+		return ReportError(ERR_INCORRECT_PARAMS);
+
+	IdType id = params[0];
+	IdType ref = params[1];
+	QString resp = "";
+	if( Object * obj = mRepoData->getObject(id) )
+		obj->decReferral(ref);
+	else if( Link * edge = mRepoData->getLink(id) )
+		edge->decReferral(ref);
+	else {
+		qDebug() << __FUNCTION__ << "WTF " << id << "is???";
+		return ReportError(ERR_INCORRECT_REQUEST);
+	}
 	return ReportSuccess(resp);
 }
 
@@ -1138,6 +1185,16 @@ IntQStringPair QRealRepoServerThread::handleCommand(QString const &data)
 		case CMD_GET_REFERRALS:
 		{
 			resp = handleGetReferrals(command.toVector());
+			break;
+		}
+		case CMD_INC_REFERRAL:
+		{
+			resp = handleIncReferral(command.toVector());
+			break;
+		}
+		case CMD_DEC_REFERRAL:
+		{
+			resp = handleDecReferral(command.toVector());
 			break;
 		}
 		default:

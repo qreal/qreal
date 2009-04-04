@@ -154,7 +154,19 @@ public:
 	 * */
 	virtual QString toString() = 0;
 
-	virtual QString getReferrals() { return QString("");}
+	/** @brief Получить список идентификаторов рефералов */
+	QString referralsToString();
+	void incReferral(IdType const &ref) { referrals[ref]++; }
+	void decReferral(IdType const &ref)
+	{
+		if (referrals.contains(ref))
+		{
+			referrals[ref]--;
+			// Do not keep zeroes
+			if (referrals[ref] == 0)
+				referrals.remove(ref);
+		}
+	}
 
 	void addRef(IdType const &parent)
 	{
@@ -192,6 +204,7 @@ protected:
 	QMap<QString, QString> props;
 	/** @brief Список родителей элемента */
 	QList<IdType> parents;
+	QMap<IdType, int> referrals;
 };
 
 /** @class Object

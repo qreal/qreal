@@ -80,6 +80,10 @@ const int CMD_ADD_LINK			= 51;
 const int CMD_REMOVE_LINK		= 52;
 /** @brief Получить список рефералов */
 const int CMD_GET_REFERRALS		 = 53;
+/** @brief Увеличить счетчик ссылок реферала */
+const int CMD_INC_REFERRAL		 = 54;
+/** @brief Уменьшить счетчик ссылок реферала */
+const int CMD_DEC_REFERRAL		 = 55;
 
 // Команды, которые по идее нужны только для отладки.
 /** @brief Код команды "Получить все объекты" */

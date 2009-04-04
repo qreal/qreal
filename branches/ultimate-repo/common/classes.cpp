@@ -31,12 +31,20 @@ void RepoData::addLink( IdType const &id, Link* link )
 
 void RepoData::deleteObject( IdType const &id )
 {
-	objects.remove(id);
+	if (objects.contains(id))
+	{
+		if (objects[id]->referralsToString() == "")
+			objects.remove(id);
+	}
 }
 
 void RepoData::deleteLink( IdType const &id )
 {
-	objects.remove(id);
+	if (links.contains(id))
+	{
+		if (links[id]->referralsToString() == "")
+			links.remove(id);
+	}
 }
 
 int RepoData::getObjectsSize()
@@ -160,6 +168,15 @@ QString RepoElement::parentsToString()
 	QString res = "";
 	foreach (IdType parent, parents)
 		res += QString("%1\t").arg(parent);
+	res.chop(1);
+	return res;
+}
+
+QString RepoElement::referralsToString()
+{
+	QString res = "";
+	foreach (IdType ref, referrals.keys())
+		res += QString("%1\t").arg(ref);
 	res.chop(1);
 	return res;
 }

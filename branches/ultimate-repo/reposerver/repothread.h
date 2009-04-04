@@ -171,6 +171,8 @@ namespace repoServer
 		 *  @brief return Результат выполнения операции
 		 */
 		IntQStringPair handleGetReferrals(QStringVector const &params);
+		IntQStringPair handleIncReferral(QStringVector const &params);
+		IntQStringPair handleDecReferral(QStringVector const &params);
 
 		/** @brief Отправить ответ с кодом ошибки операции */
 		IntQStringPair ReportError(const int &errorCode);
