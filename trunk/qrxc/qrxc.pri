@@ -1,5 +1,4 @@
 win32 { 
-    QMAKE_QRXC = $$PWD/release/qrxc.exe
 } else {
     QMAKE_QRXC = $$PWD/qrxc
 }
