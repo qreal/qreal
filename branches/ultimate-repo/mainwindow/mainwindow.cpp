@@ -235,6 +235,17 @@ void MainWindow::deleteFromScene()
 				try{
 					model->removeRow(elem->index().row(), elem->index().parent());
 				}
+				catch (qRealTypes::IdTypeList l)
+				{
+					QString l2 = "";
+					int i;
+
+					l2 = l[0];
+					for (i = 1; i < l.size(); i++)
+						l2 += ", " + l[i];
+					QMessageBox::warning(this, tr("Operation aborted"),
+						QString("element is referred by ") + l2);
+				}
 				catch (QString e)
 				{
 					QMessageBox::warning(this, tr("Operation aborted"),

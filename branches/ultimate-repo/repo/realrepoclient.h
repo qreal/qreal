@@ -263,6 +263,7 @@ public:
 	/** @brief Устроить в репозитории экстерминатус. Разумеется, в целях отладки. */
 	void clearRepository();
 
+	qRealTypes::IdTypeList getReferrals(IdType const &id/**< Идентификатор объекта */);
 	void incReferral(IdType const &master, IdType const &slave);
 	void decReferral(IdType const &master, IdType const &slave);
 

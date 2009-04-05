@@ -501,6 +501,16 @@ void RealRepoClient::clearRepository() {
 	sendData(cmd);
 }
 
+IdTypeList RealRepoClient::getReferrals(IdType const &id)
+{
+	QString cmd = QString("%1\t%2\t").arg(CMD_GET_REFERRALS).arg(id);
+	QString resp = sendData(cmd);
+	IdTypeList list;
+	foreach (QString str, resp.split('\t', QString::SkipEmptyParts))
+		list += str;
+	return list;
+}
+
 void RealRepoClient::incReferral(IdType const &master, IdType const &slave)
 {
 	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_INC_REFERRAL).arg(master).arg(slave);

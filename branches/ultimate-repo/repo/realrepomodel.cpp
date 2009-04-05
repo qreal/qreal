@@ -176,12 +176,14 @@ dbg;
 	case Qt::DisplayRole:
 	case Unreal::krnnNamedElement::nameRole:
 	case Qt::EditRole:
-		QVariant old_value = QVariant(repoClient->getName(item->id));
-		if(addToStack){
-			undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
+		{
+			QVariant old_value = QVariant(repoClient->getName(item->id));
+			if(addToStack){
+				undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
+			}
+			repoClient->setName(item->id, value.toString());
+			hashNames[item->id] = value.toString();
 		}
-		repoClient->setName(item->id, value.toString());
-		hashNames[item->id] = value.toString();
 		break;
 	case Unreal::PositionRole:
 		if ( type(item->parent) == Container ) {
@@ -416,11 +418,15 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 			foreach(QString p, l)
 			{
 				qDebug() << "checking " << p;
-				// When deleting object, remove referrals first
+				// When deleting object, process refs first
 				if (info.isPropertyRef(t, p))
 					setData(index(i, 0, parent), "", info.roleByColumnName(t, p));
 			}
-			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
+			IdTypeList l2 = repoClient->getReferrals(parentItem->children[i]->id);
+			if (l2.empty())
+				repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
+			else
+				throw (l2);
 		}
 	}
 
