@@ -1,6 +1,10 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/TestEditor/UseCase">
-    <file>Actor.svg</file>
-    <file>UseCase.svg</file>
+    <file>Actor.sdf</file>
+    <file>UseCase.sdf</file>
+</qresource>
+<qresource prefix="/TestEditor/Orthodox">
+    <file>Kroki.sdf</file>
+    <file>Swastika.sdf</file>
 </qresource>
 </RCC>

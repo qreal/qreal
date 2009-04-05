@@ -16,22 +16,23 @@ public:
 
 	HandmadePlugin();
 
-	void initPlugin();
+	virtual void initPlugin();
 
-	QString id() const { return "TestEditor"; };
+	virtual QString id() const { return "TestEditor"; }
 
-	QStringList diagrams() const;
-	QStringList elements(QString diagram) const;
+	virtual QStringList diagrams() const;
+	virtual QStringList elements(QString const &diagram) const;
 
-	QIcon getIcon(QString element) const;
+	virtual QIcon getIcon(QString const &diagram, QString const &element) const;
+	virtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;
 
-	QString editorName() const;
-	QString diagramName(QString diagram) const;
-	QString elementName(QString diagram, QString element) const;
+	virtual QString editorName() const;
+	virtual QString diagramName(QString const &diagram) const;
+	virtual QString elementName(QString const &diagram, QString const &element) const;
 
 private:
 	QMap<QString, QIcon> iconMap;
-	
+
 	QMap<QString, QString> diagramNameMap;
 	QMap<QString, QMap<QString, QString> > elementsNameMap;
 };

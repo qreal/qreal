@@ -27,11 +27,11 @@ class PaletteToolbox : public QToolBox
 				DraggableElement(QString id, QString name,
 						QIcon icon, QWidget *parent=0);
 				QIcon icon()
-				{ return m_icon; };
+				{ return m_icon; }
 				QString text()
-				{ return m_text; };
+				{ return m_text; }
 				QString id()
-				{ return m_id; };
+				{ return m_id; }
 			private:
 				QString m_id;
 				QIcon m_icon;

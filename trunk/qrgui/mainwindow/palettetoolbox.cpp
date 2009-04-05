@@ -47,7 +47,7 @@ void PaletteToolbox::addDiagramType( QString id, QString name )
 	layout->setContentsMargins ( 0,0,0,0 );
 	tab->setLayout(layout);
 
-	categories[id] = addItem(tab, name);	
+	categories[id] = addItem(tab, name);
 }
 
 void PaletteToolbox::addItemType( QString id, QString name, QIcon icon )
@@ -94,13 +94,13 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
 
-	QPixmap p = child->icon().pixmap(96,96);
+	QPixmap p = child->icon().pixmap(96, 96);
 
 	if ( ! p.isNull() )
-		drag->setPixmap(child->icon().pixmap(96,96));
+		drag->setPixmap(child->icon().pixmap(96, 96));
 
 	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)
 		child->close();
-	else 
+	else
 		child->show();
 }

@@ -45,7 +45,7 @@ EditorManager::EditorManager(QObject *parent)
 			}
 		} else {
 			QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
-		} 
+		}
 	}
 }
 
@@ -132,6 +132,7 @@ QString EditorManager::friendlyName(const QUrl &url) const
 		case 4:		return pluginIface[path[1]]->elementName(path[2], path[3]);
 					break;
 		default:	Q_ASSERT( true );
+					return "";
 	}
 }
 
@@ -140,10 +141,15 @@ QIcon EditorManager::icon(const QUrl &url) const
 	Q_ASSERT( url.scheme() == "qrm" );
 	QStringList path = url.path().split('/');
 	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+	Q_ASSERT(path.size() == 4);
+	return pluginIface[path[1]]->getIcon(path[2], path[3]);
+}
 
-	QString s = url.toString();
-	s.remove(0, 3);
-	s.append(".svg");
-	qDebug() << s;
-	return QIcon(s);
+UML::Element* EditorManager::graphicalObject(const QUrl &typeId) const
+{
+	Q_ASSERT(typeId.scheme() == "qrm");
+	QStringList path = typeId.path().split('/');
+	Q_ASSERT(pluginsLoaded.contains(path[1]));
+	Q_ASSERT(path.size() == 4);
+	return pluginIface[path[1]]->getGraphicalObject(path[2], path[3]);
 }

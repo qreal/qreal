@@ -1,4 +1,4 @@
-QT		+=	svg
+QT		+=	svg xml
 
 INCLUDEPATH	+=	../qrxml/editors \
 			../qrxml \
@@ -19,3 +19,6 @@ HEADERS		= \
 
 FORMS		= \
 			mainwindow/mainwindow.ui
+
+# Graphical elements
+include (umllib/umllib.pri)

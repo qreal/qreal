@@ -5,3 +5,5 @@ TEMPLATE	=  subdirs
 #		    editors/test3.pro \
 SUBDIRS		= editors/editor_handmade.pro
 
+HEADERS		= \
+			editorinterface.h

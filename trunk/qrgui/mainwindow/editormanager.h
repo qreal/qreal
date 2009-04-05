@@ -10,6 +10,8 @@ class EditorInterface;
 #include <QtCore/QMap>
 #include <QtCore/QUrl>
 
+#include "../umllib/uml_element.h"
+
 class EditorManager : public QObject
 {
 	Q_OBJECT
@@ -23,6 +25,7 @@ class EditorManager : public QObject
 
 		QString friendlyName(const QUrl &url) const;
 		QIcon icon(const QUrl &url) const;
+		UML::Element* graphicalObject(const QUrl &typeId) const;
 
 		bool isEditor(const QUrl &url) const;
 		bool isDiagram(const QUrl &url) const;
