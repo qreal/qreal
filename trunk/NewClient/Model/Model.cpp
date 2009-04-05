@@ -61,8 +61,11 @@ int Model::rowCount( const QModelIndex &parent ) const
 
 int Model::columnCount( const QModelIndex &parent ) const
 {
-	Q_UNUSED(parent)
-		return 1;
+	if (parent.isValid()) {
+		return 1; 
+	} else {
+		return 0;
+	}
 }
 
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
@@ -88,9 +91,11 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 		if (parentItem->children().size() < row + count) {
 			return false;
 		} else {
+			beginRemoveRows(parent,row,row+count-1);
 			for (int i = row; i < row + count; i++) {
 				removeModelItems(parentItem->children().at(i));
 			}
+			endRemoveRows();
 			return true;
 		}
 	} else {
