@@ -173,90 +173,82 @@ dbg;
 	RepoTreeItem *item = static_cast<RepoTreeItem*>(index.internalPointer());
 //	qDebug() << "role:" << role;
 	switch (role) {
-		case Qt::DisplayRole:
-		case Unreal::krnnNamedElement::nameRole:
-		case Qt::EditRole:
-			{
-				QVariant old_value = QVariant(repoClient->getName(item->id));
-				if(addToStack){
-					undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
-				}
-				repoClient->setName(item->id, value.toString());
-				hashNames[item->id] = value.toString();
-				break;
+	case Qt::DisplayRole:
+	case Unreal::krnnNamedElement::nameRole:
+	case Qt::EditRole:
+		QVariant old_value = QVariant(repoClient->getName(item->id));
+		if(addToStack){
+			undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
+		}
+		repoClient->setName(item->id, value.toString());
+		hashNames[item->id] = value.toString();
+		break;
+	case Unreal::PositionRole:
+		if ( type(item->parent) == Container ) {
+			if( addToStack ){
+				undoStack->push(new ChangePositionCommand(this, index,
+							QVariant(hashDiagramElements[item->parent->id][item->id].position), value, role));
 			}
-		case Unreal::PositionRole:
-			{
-				if ( type(item->parent) == Container ) {
-					if( addToStack ){
-						undoStack->push(new ChangePositionCommand(this, index,
-									QVariant(hashDiagramElements[item->parent->id][item->id].position), value, role));
-					}
-					repoClient->setPosition(item->id, item->parent->id, value.toPoint().x(), value.toPoint().y());
-					hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
-				}
-				break;
-			}
-		case Unreal::ConfigurationRole:
-			{
-				if ( type(item->parent) == Container ) {
+			repoClient->setPosition(item->id, item->parent->id, value.toPoint().x(), value.toPoint().y());
+			hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
+		}
+		break;
+	case Unreal::ConfigurationRole:
+		if ( type(item->parent) == Container ) {
 
-					QPolygon poly(value.value<QPolygon>());
-					QString result;
-					foreach ( QPoint point, poly ) {
-						result += QString("(%1,%2);").arg(point.x()).arg(point.y());
-					}
-					result.chop(1);
+			QPolygon poly(value.value<QPolygon>());
+			QString result;
+			foreach ( QPoint point, poly ) {
+				result += QString("(%1,%2);").arg(point.x()).arg(point.y());
+			}
+			result.chop(1);
 
-					if( addToStack ){
-						undoStack->push(new ChangeConfigurationCommand(this, index,
-									QVariant(hashDiagramElements[item->parent->id][item->id].configuration), value, role));
-					}
-					repoClient->setConfiguration(item->id, item->parent->id, result);
-					hashDiagramElements[item->parent->id][item->id].configuration = poly;
-				}
-				break;
+			if( addToStack ){
+				undoStack->push(new ChangeConfigurationCommand(this, index,
+							QVariant(hashDiagramElements[item->parent->id][item->id].configuration), value, role));
 			}
-		default:
-//			qDebug() << "role -- " << role;
+			repoClient->setConfiguration(item->id, item->parent->id, result);
+			hashDiagramElements[item->parent->id][item->id].configuration = poly;
+		}
+		break;
+	default:
+//		qDebug() << "role -- " << role;
+		// Нужен ли здесь этот if ?
+		if ( type(item->parent) == Container ) {
+			QString column_name = info.getColumnName(hashTypes[item->id],role);
+			QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
+			if (!info.isPropertyRef(hashTypes[item->id], column_name))
 			{
-				// Нужен ли здесь этот if ?
-				if ( type(item->parent) == Container ) {
-					QString column_name = info.getColumnName(hashTypes[item->id],role);
-					QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
-					if (!info.isPropertyRef(hashTypes[item->id], column_name))
-					{
-						if (addToStack)
-							undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-						repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
-					}
-					else
-					{
-						// try-catch здесь хак. Пущай поживут, пока клиент не научится обрабатывать ошибки
-						try{
-						qDebug() << "removing ref" << item->id << "from" << old_value.toString();
-						repoClient->decReferral(old_value.toString(), item->id);
-						} catch (QString e)
-						{
-							qDebug() << "error removing referrals";
-							if (old_value.toString() != "")
-								break; // Serious error, breaking
-						}
-						try{
-						qDebug() << "adding ref" << item->id << "to" << value.toString();
-						repoClient->incReferral(value.toString(), item->id);
-						} catch (QString e)
-						{
-							qDebug() << "error adding referrals";
-							if (value.toString() != "")
-								break; // Serious error, breaking
-						}
-						if (addToStack)
-							undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-						repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
-					}
-				}
+				if (addToStack)
+					undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
+				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
 			}
+			else
+			{
+				// try-catch здесь хак. Пущай поживут, пока клиент не научится обрабатывать ошибки
+				try{
+					qDebug() << "removing ref" << item->id << "from" << old_value.toString();
+					repoClient->decReferral(old_value.toString(), item->id);
+				} catch (QString e)
+				{
+					qDebug() << "error removing referrals";
+					if (old_value.toString() != "")
+						break; // Serious error, breaking
+				}
+				try{
+					qDebug() << "adding ref" << item->id << "to" << value.toString();
+					repoClient->incReferral(value.toString(), item->id);
+				} catch (QString e)
+				{
+					qDebug() << "error adding referrals";
+					if (value.toString() != "")
+						break; // Serious error, breaking
+				}
+				if (addToStack)
+					undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
+				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+			}
+		}
 	}
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
 		//		item->updateData();
