@@ -22,6 +22,8 @@ public:
 	bool load (const QString &filename);
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
+	QRectF scrollAreaRect();
+	QRectF scrollrect;
 
 private:
 	int first_size_x;
@@ -43,6 +45,7 @@ private:
 	QTextStream logtext;
 	QDomDocument doc;
 
+
 	/** @brief false, если не надо масштабировать с учётом абсолютного задания
 	*	координат, полезно при отрисовке иконок. True по умолчанию.
 	**/
@@ -55,6 +58,7 @@ private:
 	void draw_text(QDomElement &element);
 	void rectangle(QDomElement &element);
 	void polygon(QDomElement &element);
+	void scrollArea(QDomElement &element);
 	QPoint *getpoints(QDomElement &element, int n);
 	void point (QDomElement &element);
 	void defaultstyle();

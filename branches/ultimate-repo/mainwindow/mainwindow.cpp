@@ -17,12 +17,12 @@
 #include "editorview.h"
 #include "optionsDialog.h"
 #include <QProgressBar>
+#include <QTimer>
 
 using namespace qReal;
 
 MainWindow::MainWindow() : model(0)
 {
-
 	QSettings settings("Tercom", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =

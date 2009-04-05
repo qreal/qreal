@@ -45,10 +45,7 @@ void NodeElement::changeName()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {	
-	//d.setTextWidth(boundingRect().width()-25);
-	
-	//complexInlineEditing();
-   // changeName();
+	d.setTextWidth(boundingRect().width()-25);
 	if (isSelected())
 	{
 		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -91,8 +88,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-       // d.setTextWidth(boundingRect().width()-25);
-		//complexInlineEditing();
+	d.setTextWidth(boundingRect().width()-25);
 		
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
@@ -373,7 +369,7 @@ NodeElement *NodeElement::getNodeAt( const QPointF &position )
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
-{
+{	
 	if (option->levelOfDetail >= 0.5)
 	{
 		if (option->state & QStyle::State_Selected)

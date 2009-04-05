@@ -6,6 +6,7 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
+#include <QGraphicsWidget>
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
@@ -91,6 +92,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 			{
 				path_draw(elem);
 			}
+			else if(elem.tagName() == "scrollarea")
+			{
+				scrollArea(elem);
+			}
 		}
 		node = node.nextSibling();
 	}
@@ -173,6 +178,22 @@ void SdfRenderer::rectangle(QDomElement &element)
 	parsestyle(element);
 	painter->drawRect(rect);
 	defaultstyle();
+}
+
+void SdfRenderer::scrollArea(QDomElement &element)
+{
+	float x1 = x1_def(element);
+	float y1 = y1_def(element);
+	float x2 = x2_def(element);
+	float y2 = y2_def(element);
+	scrollrect.adjust(x1, y1, x2, y2);
+	scrollrect.adjust(x1, y1, x2, y2);
+	painter->drawRect(scrollrect);
+}
+
+QRectF SdfRenderer::scrollAreaRect()
+{
+	return scrollrect;
 }
 
 void SdfRenderer::polygon(QDomElement &element)
