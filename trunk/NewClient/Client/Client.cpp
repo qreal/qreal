@@ -102,21 +102,30 @@ void Client::removeChild( const IdType &id, const IdType &child )
 	}
 }
 
-void Client::setProperty( const IdType &id, const PropertyName &type, const QVariant &value )
+void Client::setProperty( const IdType &id, const PropertyName &name, const QVariant &value )
 {
 	if (mObjects.contains(id)) {
-		mObjects[id]->setProperty(type,value);
+		mObjects[id]->setProperty(name,value);
 	} else {
 		throw Exception("Client: Setting property of nonexistent object " + id);
 	}
 }
 
-QVariant Client::property( const IdType &id, const PropertyName &type ) const
+QVariant Client::property( const IdType &id, const PropertyName &name ) const
 {
 	if (mObjects.contains(id)) {
-		return mObjects[id]->property(type);
+		return mObjects[id]->property(name);
 	} else {
 		throw Exception("Client: Requesting property of nonexistent object " + id);
+	}
+}
+
+void Client::removeProperty( const IdType &id, const PropertyName &name )
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->removeProperty(name);
+	} else {
+		throw Exception("Client: Removing property of nonexistent object " + id);
 	}
 }
 

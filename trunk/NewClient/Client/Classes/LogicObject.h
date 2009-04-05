@@ -19,8 +19,9 @@ namespace qReal {
 			void removeChild(const IdType &child);
 			IdTypeList children() const;
 			IdTypeList parents() const;
-			void setProperty(const PropertyName &type, const QVariant &value);
-			QVariant property(const PropertyName &type) const;
+			void setProperty(const PropertyName &name, const QVariant &value);
+			QVariant property(const PropertyName &name) const;
+			void removeProperty(const PropertyName &name);
 
 		private:
 			const IdType mId;

@@ -103,13 +103,29 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 	}
 }
 
+PropertyName Model::pathToItem( ModelTreeItem *item ) const
+{
+	PropertyName path;
+	do {
+		item = item->parent();
+		path = item->id() + PATH_DIVIDER + path;
+	} while (item!=rootItem);
+	return path;
+}
+
+void Model::removeConfigurationInClient( ModelTreeItem *item )
+{
+	mClient->removeProperty(item->id(),"position + " + pathToItem(item));
+	mClient->removeProperty(item->id(),"configuration + " + pathToItem(item));
+}
+
 void Model::removeModelItems( ModelTreeItem *root )
 {
 	foreach (ModelTreeItem *child, root->children()) {
 		removeModelItems(child);
 		child->parent()->removeChild(child);
 		treeItems.remove(child->id(),child);
-		// мб надо удалить из клиента его конфигурацию на данной диаграмме.
+		removeConfigurationInClient(child);
 		if (treeItems.count(child->id())==0) {
 			mClient->removeChild(root->id(),child->id());
 		}
@@ -150,13 +166,24 @@ Qt::DropActions Model::supportedDropActions() const
 QStringList Model::mimeTypes() const
 {
 	QStringList types;
-	types.append("application/x-real-uml-data");
+	types.append(DEFAULT_MIME_TYPE);
 	return types;
 }
 
 QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 {
-	return new QMimeData();
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	foreach (QModelIndex index, indexes) {
+		if (index.isValid()) {
+			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
+			stream << item->id();
+			stream << pathToItem(item);
+		}
+	}
+	QMimeData *mimeData = new QMimeData();
+	mimeData->setData(DEFAULT_MIME_TYPE, data);
+	return mimeData;
 }
 
 bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent )

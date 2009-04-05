@@ -60,16 +60,25 @@ IdTypeList LogicObject::parents() const
 	return mParents;
 }
 
-void LogicObject::setProperty( const PropertyName &type, const QVariant &value )
+void LogicObject::setProperty( const PropertyName &name, const QVariant &value )
 {
-	mProperties.insert(type,value);
+	mProperties.insert(name,value);
 }
 
-QVariant LogicObject::property( const PropertyName &type ) const
+QVariant LogicObject::property( const PropertyName &name ) const
 {
-	if (mProperties.contains(type)) {
-		return mProperties[type];
+	if (mProperties.contains(name)) {
+		return mProperties[name];
 	} else {
-		throw Exception("Object " + mId + ": requesting nonexistent property " + type);
+		throw Exception("Object " + mId + ": requesting nonexistent property " + name);
+	}
+}
+
+void LogicObject::removeProperty( const PropertyName &name )
+{
+	if (mProperties.contains(name)) {
+		mProperties.remove(name);
+	} else {
+		throw Exception("Object " + mId + ": removing nonexistent property " + name);
 	}
 }

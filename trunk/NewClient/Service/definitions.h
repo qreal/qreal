@@ -20,4 +20,8 @@ namespace qReal {
 
 	const IdType ROOT_ID = "root";
 
+	const char PATH_DIVIDER = '#';
+
+	const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
+
 }
