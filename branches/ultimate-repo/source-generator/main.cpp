@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	ret = ret && g.loadFile("package.xml");
 	ret = ret && g.loadFile("bpel.xml");
 	ret = ret && g.loadFile("qrealparallel_metamodel.xml");
+	ret = ret && g.loadFile("network_metamodel.xml");
 //	ret = ret && g.loadFile("orthodox.xml");
 
 	if (!ret)
