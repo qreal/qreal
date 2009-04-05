@@ -18,6 +18,7 @@ public:
 	~RealProperty(){}
 
 	bool init(QDomElement &);
+	bool isRef(){ return type == "ref"; }
 	QString getName() {return name;}
 	Entity* getOwner() {return entity;}
 };

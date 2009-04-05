@@ -836,7 +836,8 @@ void Generator::genRealRepoInfo(){
 			"\t\t{ return index+129; }\n"
 			"\tint indexByRole(int role) const\n"
 			"\t\t{ return role-129; }\n\n"
-			"\t\tint roleByColumnName(TypeIdType const &type, QString const &columnName) const;\n\n"
+			"\tint roleByColumnName(TypeIdType const &type, QString const &columnName) const;\n"
+			"\tbool isPropertyRef(TypeIdType const &type, QString const &columnName) const;\n"
 			"\tQIcon objectIcon(IdType const &id) const; \n\n"
 			"private:\n"
 			"};\n\n";
@@ -854,6 +855,8 @@ void Generator::genRealRepoInfo(){
 		   // static inits
 	out2 << "#include \"realrepoinfo.h\"\n\n"
 			"using namespace qRealTypes;\n\n"
+			"// to be exterminated...\n"
+			"typedef QPair<QString, bool> QStringBoolPair;\n"
 			"static bool initCompleted = false;\n\n"
 
 		"class Category\n{\n"
@@ -867,7 +870,8 @@ void Generator::genRealRepoInfo(){
 			"static QMap<IdType, QString> objects;\n"
 			"static QMap<IdType, QString> descriptions;\n"
 			"static QMap<IdType, QIcon> icons;\n"
-			"static QMap<IdType, QStringList> map;\n\n";
+			"//Это хак... Но пущай живет, пока не буянит\n"
+			"static QMap<TypeIdType, QList<QStringBoolPair> > map;\n\n";
 
 	out2 << "static void initStaticData()\n{\n"
 		"\tif (initCompleted)\n"
@@ -926,12 +930,12 @@ void Generator::genRealRepoInfo(){
 	// from former realreporoles
 
 	out2 << "// from realreporoles.cpp\n\n";
-	out2 << "\tQStringList l;\n";
+	out2 << "\tQList<QStringBoolPair> l;\n";
 
 	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
 		out2 << "\tl.clear();\n";
 		FOR_ALL_PROPERTIES((*o),p)
-			out2 << QString("\t\tl << \"%1\";\n").arg((*p)->getName());
+			out2 << QString("\t\tl << qMakePair<QString, bool>(\"%1\", %2);\n").arg((*p)->getName()).arg((*p)->isRef());
 		out2 << QString("\tmap.insert(\"%1\", l);\n").arg((*o)->id);
 		out2 << "\n";
 	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i);
@@ -986,32 +990,46 @@ void Generator::genRealRepoInfo(){
 	// getColumnName
 
 	out2 << "QString RealRepoInfo::getColumnName(TypeIdType const &type, int role) const\n{\n"
-			"\treturn map.value(type).at(indexByRole(role));\n}\n\n";
+			"\treturn map.value(type).at(indexByRole(role)).first;\n}\n\n";
 
 	// getColumnNames
 
 	out2 << "QStringList RealRepoInfo::getColumnNames(TypeIdType const &type) const\n{\n"
-			"\treturn map.value(type);\n}\n\n";
+	        "\tQStringList res;\n"
+	        "\tforeach (QStringBoolPair p, map.value(type)){\n"
+	        "\t\tres << p.first;\n"
+	        "\t}\n"
+	        "\treturn res;\n"
+	        "}\n\n";
 
 	out2 << "QIcon RealRepoInfo::objectIcon(TypeIdType const &id) const\n"
-			"{\n"
-			"\tif (icons.contains(id))\n"
-			"\t\treturn icons[id];\n"
-			"\telse\n"
-			"\t\treturn QIcon();\n}\n\n";
+	        "{\n"
+	        "\tif (icons.contains(id))\n"
+	        "\t\treturn icons[id];\n"
+	        "\telse\n"
+	        "\t\treturn QIcon();\n}\n\n";
 
 	out2 << "int RealRepoInfo::roleByColumnName(TypeIdType const &type, QString const &columnName) const\n"
-			"{\n"
-			"\tQStringList columns = map.value(type);\n"
-			"\tint index = 0;\n"
-			"\tforeach (QString column, columns) {\n"
-			"\t\tif (column == columnName)\n"
-			"\t\t\treturn roleByIndex(index);\n"
-			"\t\t++index;\n"
-			"\t}\n"
-			"\tQ_ASSERT(!\"Role not found for given type\");\n"
-			"\treturn -1;\n"
-			"}\n";
+	        "{\n"
+	        "\tQStringList columns = getColumnNames(type);\n"
+	        "\tint index = 0;\n"
+	        "\tforeach (QString column, columns) {\n"
+	        "\t\tif (column == columnName)\n"
+	        "\t\t\treturn roleByIndex(index);\n"
+	        "\t\t++index;\n"
+	        "\t}\n"
+	        "\tQ_ASSERT(!\"Role not found for given type\");\n"
+	        "\treturn -1;\n"
+	        "}\n\n";
+
+	out2 << "bool RealRepoInfo::isPropertyRef(TypeIdType const &type, QString const &columnName) const\n"
+	        "{\n"
+	        "\tforeach (QStringBoolPair p, map.value(type)){\n"
+	        "\t\tif (p.first == columnName)\n"
+	        "\t\t\treturn p.second;\n"
+	        "\t}\n"
+	        "\treturn false;\n"
+	        "}\n\n";
 
 	file2.close();
 }
