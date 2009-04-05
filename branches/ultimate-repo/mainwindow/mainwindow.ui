@@ -327,7 +327,7 @@
    <property name="text">
     <string>Show splash screen</string>
    </property>
-   <property name="checked " stdset="0">
+   <property name="checked" stdset="0">
     <bool>true</bool>
    </property>
   </action>
