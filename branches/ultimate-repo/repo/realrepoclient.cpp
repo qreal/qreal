@@ -500,3 +500,15 @@ void RealRepoClient::clearRepository() {
 	QString cmd = QString("%1\t").arg(CMD_CLEAR_ALL);
 	sendData(cmd);
 }
+
+void RealRepoClient::incReferral(IdType const &master, IdType const &slave)
+{
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_INC_REFERRAL).arg(master).arg(slave);
+	sendData(cmd);
+}
+
+void RealRepoClient::decReferral(IdType const &master, IdType const &slave)
+{
+	QString cmd = QString("%1\t%2\t%3\t").arg(CMD_DEC_REFERRAL).arg(master).arg(slave);
+	sendData(cmd);
+}

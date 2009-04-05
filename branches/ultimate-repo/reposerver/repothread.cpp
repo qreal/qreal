@@ -981,6 +981,8 @@ IntQStringPair QRealRepoServerThread::handleIncReferral(QStringVector const & pa
 
 	IdType id = params[0];
 	IdType ref = params[1];
+	IdType ref = params[1];
+	qDebug() << "Adding" << ref << "to" << id;
 	QString resp = "";
 	if( Object * obj = mRepoData->getObject(id) )
 		obj->incReferral(ref);
@@ -1001,6 +1003,7 @@ IntQStringPair QRealRepoServerThread::handleDecReferral(QStringVector const & pa
 
 	IdType id = params[0];
 	IdType ref = params[1];
+	qDebug() << "Removing" << ref << "from" << id;
 	QString resp = "";
 	if( Object * obj = mRepoData->getObject(id) )
 		obj->decReferral(ref);

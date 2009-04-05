@@ -263,6 +263,9 @@ public:
 	/** @brief Устроить в репозитории экстерминатус. Разумеется, в целях отладки. */
 	void clearRepository();
 
+	void incReferral(IdType const &master, IdType const &slave);
+	void decReferral(IdType const &master, IdType const &slave);
+
 public slots:
 	/** @brief Выдать описание ошибки */
 	void displayError( QAbstractSocket::SocketError err/**< Ошибка */);

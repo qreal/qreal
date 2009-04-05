@@ -224,11 +224,38 @@ dbg;
 				if ( type(item->parent) == Container ) {
 					QString column_name = info.getColumnName(hashTypes[item->id],role);
 					QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
-					if (addToStack){
-						undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-			}
-					repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
-	}
+					if (!info.isPropertyRef(hashTypes[item->id], column_name))
+					{
+						if (addToStack)
+							undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
+						repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+					}
+					else
+					{
+						// try-catch здесь хак. Пущай поживут, пока клиент не научится обрабатывать ошибки
+						try{
+						qDebug() << "removing ref" << item->id << "from" << old_value.toString();
+						repoClient->decReferral(old_value.toString(), item->id);
+						} catch (QString e)
+						{
+							qDebug() << "error removing referrals";
+							if (old_value.toString() != "")
+								break; // Serious error, breaking
+						}
+						try{
+						qDebug() << "adding ref" << item->id << "to" << value.toString();
+						repoClient->incReferral(value.toString(), item->id);
+						} catch (QString e)
+						{
+							qDebug() << "error adding referrals";
+							if (value.toString() != "")
+								break; // Serious error, breaking
+						}
+						if (addToStack)
+							undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
+						repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+					}
+				}
 			}
 	}
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
@@ -388,7 +415,21 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		else if (curItem->orphan_avatar)
 			repoClient->deleteObject(parentItem->children[i]->id, curItem->inv_avatar->id);
 		else
+		{
+			// Еще один хак... Задолбало
+			TypeIdType t = hashTypes[parentItem->children[i]->id];
+			QStringList l = info.getColumnNames(t);
+
+			qDebug() << "Checking for referrals";
+			foreach(QString p, l)
+			{
+				qDebug() << "checking " << p;
+				// When deleting object, remove referrals first
+				if (info.isPropertyRef(t, p))
+					setData(index(i, 0, parent), "", info.roleByColumnName(t, p));
+			}
 			repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
+		}
 	}
 
 	removeChildrenRows(parent,parentItem,row,count);

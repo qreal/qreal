@@ -231,7 +231,16 @@ void MainWindow::deleteFromScene()
 	foreach (QGraphicsItem *item, ui.view->scene()->selectedItems()) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(item))
 			if (elem->index().isValid())
-				model->removeRow(elem->index().row(), elem->index().parent());
+			{
+				try{
+					model->removeRow(elem->index().row(), elem->index().parent());
+				}
+				catch (QString e)
+				{
+					QMessageBox::warning(this, tr("Operation aborted"),
+						tr("Repository can not delete this element."));
+				}
+			}
 	}
 }
 

@@ -7,6 +7,8 @@ bool RealProperty::init(QDomElement &xml_element)
 {
 	QDomNamedNodeMap attrs = xml_element.attributes();
 
+	is_enum = false;
+	is_ref = false;
 	// Fetch property name
 	name = attrs.namedItem("name").toAttr().value();
 	if (name == "") name = xml_element.firstChildElement("name").text();
@@ -42,6 +44,7 @@ bool RealProperty::init(QDomElement &xml_element)
 	else if (type == "ref")
 	{
 		type = xml_element.firstChildElement("ref").attribute("idref");
+		is_ref = true;
 	}
 	else if (type != "int" && type != "string" && type != "bool" &&
 	         type != "positiveInt" && type != "nonNegativeInt" && type != "text")
