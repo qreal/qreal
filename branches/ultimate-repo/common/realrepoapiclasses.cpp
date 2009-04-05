@@ -210,6 +210,7 @@ IdTypeList RealObject::getChildElements()
 		QStringList list = client->getChildren(m_id).split("\t", QString::SkipEmptyParts);
 		foreach (QString child, list)
 			children << child;
+		return children;
 	}
 	return IdTypeList();
 }
