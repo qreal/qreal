@@ -455,7 +455,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 		{
 			if (mNeedScale)
 				pen.setWidth(elem.attribute("stroke-width").toInt());
-			else  // Для отрисовки иконок - ширина всех линий устанавливается в 1.
+			else  // Р”Р»СЏ РѕС‚СЂРёСЃРѕРІРєРё РёРєРѕРЅРѕРє - С€РёСЂРёРЅР° РІСЃРµС… Р»РёРЅРёР№ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ 1.
 				pen.setWidth(1);
 		}
 
