@@ -290,19 +290,3 @@ void NewEngine::drawScrollArea(const QRect *rects) {
 	textstream << "y2 = \"" << rects[i].height() + rects[i].y() << "\" \n";
 	textstream << "/>\n\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

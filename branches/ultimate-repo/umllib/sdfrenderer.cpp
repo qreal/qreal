@@ -6,7 +6,6 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
-#include <QGraphicsWidget>
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)

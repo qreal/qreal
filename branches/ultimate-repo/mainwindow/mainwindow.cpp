@@ -17,7 +17,6 @@
 #include "editorview.h"
 #include "optionsDialog.h"
 #include <QProgressBar>
-#include <QTimer>
 
 using namespace qReal;
 

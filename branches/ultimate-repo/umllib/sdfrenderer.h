@@ -23,7 +23,7 @@ public:
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
 	QRectF scrollAreaRect();
-	QRectF scrollrect;
+	QRect scrollrect;
 
 private:
 	int first_size_x;
@@ -44,7 +44,6 @@ private:
 	QFile log;
 	QTextStream logtext;
 	QDomDocument doc;
-
 
 	/** @brief false, если не надо масштабировать с учётом абсолютного задания
 	*	координат, полезно при отрисовке иконок. True по умолчанию.
