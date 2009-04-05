@@ -119,8 +119,10 @@ MainWindow::MainWindow() : model(0)
 	else
 		connectRepo(NULL, repoAddress, repoPort);
 
-	show();
+	// progressbar will be deleted automatically
+	delete splash;
 
+	show();
 }
 
 MainWindow::~MainWindow()
