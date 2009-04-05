@@ -91,11 +91,9 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 		if (parentItem->children().size() < row + count) {
 			return false;
 		} else {
-			beginRemoveRows(parent,row,row+count-1);
 			for (int i = row; i < row + count; i++) {
 				removeModelItems(parentItem->children().at(i));
 			}
-			endRemoveRows();
 			return true;
 		}
 	} else {
@@ -119,16 +117,24 @@ void Model::removeConfigurationInClient( ModelTreeItem *item )
 	mClient->removeProperty(item->id(),"configuration + " + pathToItem(item));
 }
 
+QModelIndex Model::index( ModelTreeItem *item )
+{
+	return createIndex(item->row(),0,item);
+}
+
 void Model::removeModelItems( ModelTreeItem *root )
 {
 	foreach (ModelTreeItem *child, root->children()) {
 		removeModelItems(child);
-		child->parent()->removeChild(child);
-		treeItems.remove(child->id(),child);
-		removeConfigurationInClient(child);
-		if (treeItems.count(child->id())==0) {
-			mClient->removeChild(root->id(),child->id());
-		}
+		int childRow = child->row();
+		beginRemoveRows(index(root),childRow,childRow);
+			removeConfigurationInClient(child);
+			child->parent()->removeChild(child);
+			treeItems.remove(child->id(),child);
+			if (treeItems.count(child->id())==0) {
+				mClient->removeChild(root->id(),child->id());
+			}
+		endRemoveRows();
 	}
 }
 

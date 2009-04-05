@@ -42,6 +42,7 @@ namespace qReal {
 
 			QString pathToItem(ModelTreeItem *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
+			QModelIndex index(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
 		};
 
