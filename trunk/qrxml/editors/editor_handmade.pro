@@ -13,4 +13,4 @@ HEADERS		= \
 
 RESOURCES	=  shapes/editor_handmade.qrc
 
-include(editors_sdk.pri)
+include(../editors_sdk.pri)
