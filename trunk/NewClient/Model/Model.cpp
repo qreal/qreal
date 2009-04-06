@@ -8,6 +8,7 @@ Model::Model()
 {
 	mClient = new client::Client();
 	rootItem = new ModelTreeItem(ROOT_ID,NULL);
+	treeItems.insert(ROOT_ID,rootItem);
 }
 
 Model::~Model()
@@ -119,7 +120,11 @@ void Model::removeConfigurationInClient( ModelTreeItem *item )
 
 QModelIndex Model::index( ModelTreeItem *item )
 {
-	return createIndex(item->row(),0,item);
+	if (item!=rootItem) {
+		return createIndex(item->row(),0,item);
+	} else {
+		return QModelIndex();
+	}
 }
 
 void Model::removeModelItems( ModelTreeItem *root )
@@ -128,12 +133,13 @@ void Model::removeModelItems( ModelTreeItem *root )
 		removeModelItems(child);
 		int childRow = child->row();
 		beginRemoveRows(index(root),childRow,childRow);
-			removeConfigurationInClient(child);
-			child->parent()->removeChild(child);
-			treeItems.remove(child->id(),child);
-			if (treeItems.count(child->id())==0) {
-				mClient->removeChild(root->id(),child->id());
-			}
+		removeConfigurationInClient(child);
+		child->parent()->removeChild(child);
+		treeItems.remove(child->id(),child);
+		if (treeItems.count(child->id())==0) {
+			mClient->removeChild(root->id(),child->id());
+		}
+		delete child;
 		endRemoveRows();
 	}
 }
@@ -185,6 +191,7 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
 			stream << item->id();
 			stream << pathToItem(item);
+			stream << mClient->property(item->id(),"position + " + pathToItem(item)).toPointF();
 		}
 	}
 	QMimeData *mimeData = new QMimeData();
@@ -194,5 +201,43 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 
 bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent )
 {
-	return false;
+	Q_UNUSED(row)
+	Q_UNUSED(column)
+	if (parent.isValid()) {
+		if (action == Qt::IgnoreAction) {
+			return true;
+		} else {
+			ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+			QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+			QDataStream stream(&dragData, QIODevice::ReadOnly);
+			IdType id;
+			PropertyName pathToItem;
+			QPointF position;
+			stream >> id;
+			stream >> pathToItem;
+			stream >> position;
+			return addElementToModel(parentItem,id,pathToItem,position,action);
+		}
+	} else {
+		return false;
+	}
+}
+
+bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id, 
+		const PropertyName &pathToItem, const QPointF &position, Qt::DropAction action )
+{
+	ModelTreeItem *item = new ModelTreeItem(id,parentItem);
+	parentItem->addChild(item);
+	return true;
+}
+
+void Model::test()
+{
+	beginInsertRows(index(rootItem),0,0);
+	ModelTreeItem *item1 = new ModelTreeItem("item1",rootItem);
+	rootItem->addChild(item1);
+	treeItems.insert("item1",item1);
+	mClient->addChild(ROOT_ID,"item1");
+	mClient->setProperty("item1","Name","anon");
+	endInsertRows();
 }

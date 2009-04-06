@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QMimeData>
 #include <QModelIndexList>
+#include <QPointF>
 
 namespace qReal {
 
@@ -34,16 +35,19 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+			void test();
 
 		private:
 			client::Client *mClient;
 			QMultiHash<IdType,ModelTreeItem*> treeItems;
 			ModelTreeItem *rootItem;
 
-			QString pathToItem(ModelTreeItem *item) const;
+			PropertyName pathToItem(ModelTreeItem *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
 			QModelIndex index(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
+			bool addElementToModel(ModelTreeItem *parentItem, const IdType &id, 
+				const PropertyName &pathToItem, const QPointF &position, Qt::DropAction action);
 		};
 
 	}

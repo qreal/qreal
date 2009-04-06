@@ -1,9 +1,9 @@
 #ifndef NEWCLIENT_H
 #define NEWCLIENT_H
 
-#include <QtGui/QMainWindow>
+#include <QtGui/QWidget>
 
-class NewClient : public QMainWindow
+class NewClient : public QWidget
 {
 	Q_OBJECT
 
