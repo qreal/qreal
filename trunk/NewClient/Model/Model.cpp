@@ -52,23 +52,19 @@ QVariant Model::headerData( int section, Qt::Orientation orientation, int role )
 
 int Model::rowCount( const QModelIndex &parent ) const
 {
+	ModelTreeItem *parentItem;
 	if (parent.isValid()) {
-		ModelTreeItem *item = static_cast<ModelTreeItem*>(parent.internalPointer());
-		return item->children().size();
+		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 	} else {
-		return 0;
+		parentItem = rootItem;
 	}
+	return parentItem->children().size();
 }
 
 int Model::columnCount( const QModelIndex &parent ) const
 {
-	if (parent.isValid()) {
-		return 1;
-	} else {
-		return 0;
-	}
+	return 1; 
 }
-
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 {
 	if (index.isValid()) {

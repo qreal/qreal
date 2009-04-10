@@ -1,6 +1,6 @@
 #include "newclient.h"
 #include "Model/Model.h"
-#include <QTableView>
+#include <QTreeView>
 
 using namespace qReal;
 
@@ -10,10 +10,10 @@ NewClient::NewClient(QWidget *parent)
 	: QWidget(parent)
 {
 	Model *model =  new Model();
-	QTableView *view = new QTableView(this);
+	model->test();
+	QTreeView *view = new QTreeView(this);
 	resize(500,400);
 	view->setModel(model);
-	model->test();
 }
 
 NewClient::~NewClient()
