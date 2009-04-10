@@ -1,5 +1,7 @@
 #include "Model.h"
 
+#include <qDebug>
+
 using namespace qReal;
 
 using namespace model;
@@ -65,6 +67,7 @@ int Model::columnCount( const QModelIndex &parent ) const
 {
 	return 1; 
 }
+
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 {
 	if (index.isValid()) {
@@ -142,13 +145,14 @@ void Model::removeModelItems( ModelTreeItem *root )
 
 QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
 {
+	ModelTreeItem *parentItem;
 	if (parent.isValid()) {
-		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-		ModelTreeItem *item = parentItem->children().at(row);
-		return createIndex(row,column,item);
+		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 	} else {
-		return QModelIndex();
+		parentItem = rootItem;
 	}
+	ModelTreeItem *item = parentItem->children().at(row);
+	return createIndex(row,column,item);
 }
 
 QModelIndex Model::parent( const QModelIndex &index ) const
@@ -235,5 +239,21 @@ void Model::test()
 	treeItems.insert("item1",item1);
 	mClient->addChild(ROOT_ID,"item1");
 	mClient->setProperty("item1","Name","anon");
+	endInsertRows();
+
+	beginInsertRows(index(item1),0,0);
+	ModelTreeItem *item2 = new ModelTreeItem("item2",item1);
+	item1->addChild(item2);
+	treeItems.insert("item2",item2);
+	mClient->addChild(item1->id(),"item2");
+	mClient->setProperty("item2","Name","anon2");
+	endInsertRows();
+
+	beginInsertRows(index(rootItem),1,1);
+	ModelTreeItem *item3 = new ModelTreeItem("item3",rootItem);
+	rootItem->addChild(item3);
+	treeItems.insert("item3",item3);
+	mClient->addChild(ROOT_ID,"item3");
+	mClient->setProperty("item3","Name","anon3");
 	endInsertRows();
 }
