@@ -6,10 +6,18 @@
 #include <QModelIndex>
 #include <QMimeData>
 #include <QByteArray>
+#include <QString>
+#include <QPersistentModelIndex>
+#include <QVariant>
+#include <QMetaType>
 
 using namespace qReal;
 
 using namespace model;
+
+using namespace QTest;
+
+Q_DECLARE_METATYPE(QModelIndex)
 
 class ModelFirstTest : public QObject
 {
@@ -17,7 +25,8 @@ class ModelFirstTest : public QObject
 
 	private slots:
 		void addItem1();
-		void mimeDataRoot();
+		void mimeData_data();
+		void mimeData();
 };
 
 
@@ -29,12 +38,21 @@ void ModelFirstTest::addItem1()
 	delete model;
 }
 
-void ModelFirstTest::mimeDataRoot()
+void ModelFirstTest::mimeData_data()
+{
+	addColumn<QModelIndex>("index");
+	addColumn<QString>("expectedId");
+	newRow("root") << QModelIndex() << ROOT_ID;
+}
+
+void ModelFirstTest::mimeData()
 {
 	Model *model = new Model();
 	model->test();
 	QModelIndexList list;
-	list << QModelIndex();
+	QFETCH(QModelIndex,index);
+	QFETCH(QString,expectedId);
+	list << index;
 	QMimeData *mimeData = model->mimeData(list);
 	QByteArray data = mimeData->data(DEFAULT_MIME_TYPE);
 	QDataStream stream(&data, QIODevice::ReadOnly);
@@ -46,11 +64,12 @@ void ModelFirstTest::mimeDataRoot()
 	stream >> pathToItem;
 	stream >> name;
 	stream >> position;
-	QCOMPARE(id,ROOT_ID);
-	QCOMPARE(pathToItem,QString());
-	QCOMPARE(name,ROOT_ID);	
-	QCOMPARE(position,QPointF());
-	delete model;
+	QCOMPARE(id,expectedId);
+//	QCOMPARE(pathToItem,QString());
+//	QCOMPARE(name,ROOT_ID);	
+//	QCOMPARE(position,QPointF());
+    delete model;
+	
 }
 
 QTEST_MAIN(ModelFirstTest)
