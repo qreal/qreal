@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../Model/Model.h"
 #include "../Service/definitions.h"
 
