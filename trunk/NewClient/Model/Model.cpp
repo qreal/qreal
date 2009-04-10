@@ -103,12 +103,16 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 
 PropertyName Model::pathToItem( ModelTreeItem *item ) const
 {
+	if (item!=rootItem) {
 	PropertyName path;
 	do {
-		item = item->parent();
-		path = item->id() + PATH_DIVIDER + path;
-	} while (item!=rootItem);
-	return path;
+			item = item->parent();
+			path = item->id() + PATH_DIVIDER + path;
+		} while (item!=rootItem);
+		return path;
+	}
+	else return QString();
+
 }
 
 void Model::removeConfigurationInClient( ModelTreeItem *item )
@@ -191,7 +195,13 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 			stream << item->id();
 			stream << pathToItem(item);
+			stream << mClient->property(item->id(),"Name");
 			stream << mClient->property(item->id(),"position + " + pathToItem(item)).toPointF();
+		} else {
+			stream << ROOT_ID;
+			stream << QString();
+			stream << ROOT_ID;
+			stream << QPointF();
 		}
 	}
 	QMimeData *mimeData = new QMimeData();
@@ -212,11 +222,13 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 			QDataStream stream(&dragData, QIODevice::ReadOnly);
 			IdType id;
 			PropertyName pathToItem;
+			QString name;
 			QPointF position;
 			stream >> id;
 			stream >> pathToItem;
+			stream >> name;
 			stream >> position;
-			return addElementToModel(parentItem,id,pathToItem,position,action);
+			return addElementToModel(parentItem,id,pathToItem,name,position,action);
 		}
 	} else {
 		return false;
@@ -224,10 +236,19 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 }
 
 bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
-		const PropertyName &pathToItem, const QPointF &position, Qt::DropAction action )
+		const PropertyName &pathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
 {
-	ModelTreeItem *item = new ModelTreeItem(id,parentItem);
-	parentItem->addChild(item);
+	Q_UNUSED(pathToItem)
+	Q_UNUSED(action)
+
+	int newRow = parentItem->children().size();
+	beginInsertRows(index(parentItem),newRow,newRow);
+		ModelTreeItem *item = new ModelTreeItem(id,parentItem);
+		parentItem->addChild(item);
+		treeItems.insert(id,item);
+		mClient->addChild(parentItem->id(),id);
+		mClient->setProperty(id,"Name",name);
+	endInsertRows();
 	return true;
 }
 

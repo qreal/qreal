@@ -47,7 +47,7 @@ namespace qReal {
 			QModelIndex index(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
 			bool addElementToModel(ModelTreeItem *parentItem, const IdType &id, 
-				const PropertyName &pathToItem, const QPointF &position, Qt::DropAction action);
+				const PropertyName &pathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 		};
 
 	}

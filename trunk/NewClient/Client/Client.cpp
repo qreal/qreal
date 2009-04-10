@@ -8,10 +8,14 @@ using namespace client;
 Client::Client()
 {
 	loadFromDisk();
+	mObjects.insert(ROOT_ID,new LogicObject(ROOT_ID,NULL));
+	mObjects[ROOT_ID]->setProperty("Name",ROOT_ID);
 }
 
 Client::~Client()
 {
+	delete mObjects[ROOT_ID];
+	mObjects.remove(ROOT_ID);
 	saveToDisk();
 }
 
