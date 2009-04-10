@@ -36,7 +36,7 @@ IdTypeList Client::parents( const IdType &id ) const
 void Client::addParent( const IdType &id, const IdType &parent )
 {
 	if (mObjects.contains(id)) {
-		if (mObjects.contains(parent)) {	
+		if (mObjects.contains(parent)) {
 			mObjects[id]->addParent(parent);
 			mObjects[parent]->addChild(id);
 		} else {

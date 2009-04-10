@@ -63,7 +63,7 @@ int Model::rowCount( const QModelIndex &parent ) const
 int Model::columnCount( const QModelIndex &parent ) const
 {
 	if (parent.isValid()) {
-		return 1; 
+		return 1;
 	} else {
 		return 0;
 	}
@@ -72,7 +72,7 @@ int Model::columnCount( const QModelIndex &parent ) const
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 {
 	if (index.isValid()) {
-		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
+		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		switch (role) {
 			case Qt::DisplayRole:
 			case Qt::EditRole:
@@ -88,7 +88,7 @@ bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
 bool Model::removeRows( int row, int count, const QModelIndex &parent )
 {
 	if (parent.isValid()) {
-		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());	
+		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 		if (parentItem->children().size() < row + count) {
 			return false;
 		} else {
@@ -147,7 +147,7 @@ void Model::removeModelItems( ModelTreeItem *root )
 QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
 {
 	if (parent.isValid()) {
-		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());	
+		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 		ModelTreeItem *item = parentItem->children().at(row);
 		return createIndex(row,column,item);
 	} else {
@@ -158,7 +158,7 @@ QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
 QModelIndex Model::parent( const QModelIndex &index ) const
 {
 	if (index.isValid()) {
-		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
+		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		ModelTreeItem *parentItem = item->parent();
 		if (parentItem==rootItem) {
 			return QModelIndex();
@@ -188,7 +188,7 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
-			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());	
+			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 			stream << item->id();
 			stream << pathToItem(item);
 			stream << mClient->property(item->id(),"position + " + pathToItem(item)).toPointF();
@@ -223,7 +223,7 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 	}
 }
 
-bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id, 
+bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
 		const PropertyName &pathToItem, const QPointF &position, Qt::DropAction action )
 {
 	ModelTreeItem *item = new ModelTreeItem(id,parentItem);
