@@ -4,7 +4,8 @@
 
 
 #Header files
-HEADERS += ./Client/Client.h \
+HEADERS += ./Test/SubModel.h \
+    ./Client/Client.h \
     ./Service/definitions.h \
     ./Service/Exception/Exception.h \
     ./Client/Classes/LogicObject.h \
@@ -19,5 +20,4 @@ SOURCES += ./Client/Client.cpp \
     ./Model/Model.cpp \
     ./Test/ModelFirstTest.cpp \
     ./Model/Classes/ModelTreeItem.cpp \
-    ./newclient.cpp \
-    ./Test/SubModel.cpp
+    ./newclient.cpp

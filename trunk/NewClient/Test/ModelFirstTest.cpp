@@ -1,4 +1,4 @@
-#include "SubModel.cpp"
+#include "SubModel.h"
 #include "../Service/definitions.h"
 
 #include <QtTest>
