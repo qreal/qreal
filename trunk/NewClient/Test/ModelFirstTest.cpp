@@ -10,11 +10,11 @@
 
 using namespace QTest;
 
+Q_DECLARE_METATYPE(QModelIndex)
+
 namespace qReal {
 
 	namespace test {
-
-		Q_DECLARE_METATYPE(QModelIndex)
 
 		class ModelFirstTest : public QObject
 		{
