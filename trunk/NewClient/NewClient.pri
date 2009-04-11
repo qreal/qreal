@@ -19,4 +19,5 @@ SOURCES += ./Client/Client.cpp \
     ./Model/Model.cpp \
     ./Test/ModelFirstTest.cpp \
     ./Model/Classes/ModelTreeItem.cpp \
-    ./newclient.cpp
+    ./newclient.cpp \
+    ./Test/SubModel.cpp

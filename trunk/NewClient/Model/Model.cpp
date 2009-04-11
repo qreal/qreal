@@ -1,7 +1,5 @@
 #include "Model.h"
 
-#include <qDebug>
-
 using namespace qReal;
 
 using namespace model;
@@ -11,6 +9,7 @@ Model::Model()
 	mClient = new client::Client();
 	rootItem = new ModelTreeItem(ROOT_ID,NULL);
 	treeItems.insert(ROOT_ID,rootItem);
+	mClient->setProperty(ROOT_ID,"Name",ROOT_ID);
 }
 
 Model::~Model()
@@ -65,6 +64,7 @@ int Model::rowCount( const QModelIndex &parent ) const
 
 int Model::columnCount( const QModelIndex &parent ) const
 {
+	Q_UNUSED(parent)
 	return 1; 
 }
 
@@ -236,9 +236,9 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 }
 
 bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
-		const PropertyName &pathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
+		const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
 {
-	Q_UNUSED(pathToItem)
+	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
 
 	int newRow = parentItem->children().size();
@@ -248,33 +248,7 @@ bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
 		treeItems.insert(id,item);
 		mClient->addChild(parentItem->id(),id);
 		mClient->setProperty(id,"Name",name);
+		mClient->setProperty(id,"position + " + pathToItem(item),position);
 	endInsertRows();
 	return true;
-}
-
-void Model::test()
-{
-	beginInsertRows(index(rootItem),0,0);
-	ModelTreeItem *item1 = new ModelTreeItem("item1",rootItem);
-	rootItem->addChild(item1);
-	treeItems.insert("item1",item1);
-	mClient->addChild(ROOT_ID,"item1");
-	mClient->setProperty("item1","Name","anon");
-	endInsertRows();
-
-	beginInsertRows(index(item1),0,0);
-	ModelTreeItem *item2 = new ModelTreeItem("item2",item1);
-	item1->addChild(item2);
-	treeItems.insert("item2",item2);
-	mClient->addChild(item1->id(),"item2");
-	mClient->setProperty("item2","Name","anon2");
-	endInsertRows();
-
-	beginInsertRows(index(rootItem),1,1);
-	ModelTreeItem *item3 = new ModelTreeItem("item3",rootItem);
-	rootItem->addChild(item3);
-	treeItems.insert("item3",item3);
-	mClient->addChild(ROOT_ID,"item3");
-	mClient->setProperty("item3","Name","anon3");
-	endInsertRows();
 }

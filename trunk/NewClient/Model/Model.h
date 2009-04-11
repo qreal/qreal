@@ -35,19 +35,20 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-			void test();
+
+		protected:
+			QMultiHash<IdType,ModelTreeItem*> treeItems;
+			QModelIndex index(ModelTreeItem *item);
+			bool addElementToModel(ModelTreeItem *parentItem, const IdType &id, 
+				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
 			client::Client *mClient;
-			QMultiHash<IdType,ModelTreeItem*> treeItems;
 			ModelTreeItem *rootItem;
 
 			PropertyName pathToItem(ModelTreeItem *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
-			QModelIndex index(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
-			bool addElementToModel(ModelTreeItem *parentItem, const IdType &id, 
-				const PropertyName &pathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 		};
 
 	}
