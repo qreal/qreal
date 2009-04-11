@@ -1,5 +1,4 @@
-#ifndef PLUGINDIALOG_H
-#define PLUGINDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QIcon>
@@ -10,11 +9,13 @@ class QStringList;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class EditorManager;
+namespace qReal {
 
-class PluginDialog : public QDialog
-{
-	Q_OBJECT
+	class EditorManager;
+
+	class PluginDialog : public QDialog
+	{
+		Q_OBJECT
 
 	public:
 		PluginDialog(const EditorManager &mgr, QWidget *parent = 0);
@@ -25,6 +26,6 @@ class PluginDialog : public QDialog
 		QPushButton *okButton;
 		QIcon interfaceIcon;
 		QIcon featureIcon;
-};
+	};
 
-#endif
+}

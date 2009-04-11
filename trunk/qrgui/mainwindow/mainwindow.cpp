@@ -12,6 +12,8 @@
 
 #include "mainwindow.h"
 
+using namespace qReal;
+
 MainWindow::MainWindow()
 {
 	ui.setupUi(this);
@@ -76,11 +78,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadPlugins()
 {
-	foreach (QUrl editor, mgr.editors()) {
-		foreach (QUrl diagram, mgr.diagrams(editor)) {
+	foreach (Id editor, mgr.editors()) {
+		foreach (Id diagram, mgr.diagrams(editor)) {
 			ui.paletteToolbox->addDiagramType( diagram.toString(), mgr.friendlyName(diagram) );
 
-			foreach (QUrl element, mgr.elements(diagram)) {
+			foreach (Id element, mgr.elements(diagram)) {
 				ui.paletteToolbox->addItemType( element.toString(), mgr.friendlyName(element), mgr.icon(element));
 			}
 		}

@@ -15,3 +15,6 @@ include (dialogs/dialogs.pri)
 
 # Main window
 include (mainwindow/mainwindow.pri)
+
+# Stuff used in all places
+include (kernel/kernel.pri)

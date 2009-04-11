@@ -16,12 +16,14 @@
 #include "editorinterface.h"
 #include "editormanager.h"
 
+using namespace qReal;
+
 PluginDialog::PluginDialog(const EditorManager &mgr,
 		QWidget *parent) :
 	QDialog(parent),
 	label(new QLabel),
 	treeWidget(new QTreeWidget),
-	okButton(new QPushButton(tr("OK")))    
+	okButton(new QPushButton(tr("OK")))
 {
 	treeWidget->setAlternatingRowColors(false);
 	treeWidget->setSelectionMode(QAbstractItemView::NoSelection);
@@ -48,7 +50,7 @@ PluginDialog::PluginDialog(const EditorManager &mgr,
 
 	setWindowTitle(tr("Plugin Information"));
 
-	foreach (QUrl editor, mgr.editors()) {
+	foreach (Id editor, mgr.editors()) {
 		QTreeWidgetItem *pluginItem = new QTreeWidgetItem(treeWidget);
 		pluginItem->setText(0, mgr.friendlyName(editor));
 		treeWidget->setItemExpanded(pluginItem, true);
@@ -57,12 +59,12 @@ PluginDialog::PluginDialog(const EditorManager &mgr,
 		boldFont.setBold(true);
 		pluginItem->setFont(0, boldFont);
 
-		foreach (QUrl diagram, mgr.diagrams(editor)) {
+		foreach (Id diagram, mgr.diagrams(editor)) {
 			QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
 			interfaceItem->setText(0, mgr.friendlyName(diagram));
 			interfaceItem->setIcon(0, interfaceIcon);
 
-			foreach (QUrl element, mgr.elements(diagram)) {
+			foreach (Id element, mgr.elements(diagram)) {
 				QTreeWidgetItem *featureItem = new QTreeWidgetItem(interfaceItem);
 				featureItem->setText(0, mgr.friendlyName(element));
 				featureItem->setIcon(0, featureIcon);

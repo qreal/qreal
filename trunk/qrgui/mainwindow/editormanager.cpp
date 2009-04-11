@@ -1,4 +1,5 @@
-#include <QtCore/QUrl>
+#include "editormanager.h"
+
 #include <QtCore/QPluginLoader>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QMessageBox>
@@ -6,31 +7,27 @@
 
 #include <QtCore/QtDebug>
 
-#include "editormanager.h"
 #include "editorinterface.h"
+#include "../kernel/ids.h"
+
+using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
-	: QObject(parent), root("qrm:/")
+	: QObject(parent), mRoot(IdParser::createId())
 {
 	//    foreach (QObject *plugin, QPluginLoader::staticInstances())
 	//        populateMenus(plugin);
 
-	pluginsDir = QDir(qApp->applicationDirPath());
+	mPluginsDir = QDir(qApp->applicationDirPath());
 
-#if defined(Q_OS_WIN)
-	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-		pluginsDir.cdUp();
-#elif defined(Q_OS_MAC)
-	if (pluginsDir.dirName() == "MacOS") {
-		pluginsDir.cdUp();
-		pluginsDir.cdUp();
-		pluginsDir.cdUp();
+	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
+		mPluginsDir.cdUp();
 	}
-#endif
-	pluginsDir.cd("plugins");
 
-	foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+	mPluginsDir.cd("plugins");
+
+	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
+		QPluginLoader loader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 
 		if (plugin) {
@@ -40,116 +37,94 @@ EditorManager::EditorManager(QObject *parent)
 					foreach (QString e, iEditor->elements(d))
 					;
 
-				pluginsLoaded += iEditor->id();
-				pluginIface[iEditor->id()] = iEditor;
+				mPluginsLoaded += iEditor->id();
+				mPluginIface[iEditor->id()] = iEditor;
 			}
 		} else {
-			QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
+			qDebug() << "Plugin loading failed: " << loader.errorString();
+			// Keep silent.
+			// QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
 		}
 	}
 }
 
-QList<QUrl> EditorManager::editors() const
+QList<Id> EditorManager::editors() const
 {
-	QList<QUrl> editors;
-	foreach (QString e, pluginsLoaded) {
-		QUrl u = root;
-		u.setPath(u.path() + e);
-		editors.append(u);
+	QList<Id> editors;
+	foreach (QString e, mPluginsLoaded) {
+		editors.append(IdParser::append(mRoot, e));
 	}
 	return editors;
 }
 
-QList<QUrl> EditorManager::diagrams(const QUrl &editor) const
+QList<Id> EditorManager::diagrams(const Id &editor) const
 {
-	QList<QUrl> diagrams;
-	QStringList path = editor.path().split('/');
-	Q_ASSERT ( path.size() == 2 );
-	Q_ASSERT ( pluginsLoaded.contains(path[1]) );
+	QList<Id> diagrams;
+	QString editorName = IdParser::getEditor(editor);
+	Q_ASSERT(mPluginsLoaded.contains(editorName));
 
-	foreach (QString e, pluginIface[path[1]]->diagrams()) {
-		QUrl u = editor;
-		u.setPath(u.path() + "/" + e);
-		diagrams.append(u);
+	foreach (QString e, mPluginIface[editorName]->diagrams()) {
+		diagrams.append(IdParser::append(editor, e));
 	}
 	return diagrams;
 }
 
-QList<QUrl> EditorManager::elements(const QUrl &diagram) const
+QList<Id> EditorManager::elements(const Id &diagram) const
 {
-	QList<QUrl> elements;
-	QStringList path = diagram.path().split('/');
-	Q_ASSERT ( path.size() == 3 );
-	Q_ASSERT ( pluginsLoaded.contains(path[1]) );
+	QList<Id> elements;
+	QString editor = IdParser::getEditor(diagram);
+	Q_ASSERT(mPluginsLoaded.contains(editor));
 
-	foreach (QString e, pluginIface[path[1]]->elements(path[2])) {
-		QUrl u = diagram;
-		u.setPath(u.path() + "/" + e);
-		elements.append(u);
+	foreach (QString e, mPluginIface[editor]->elements(IdParser::getDiagram(diagram))) {
+		elements.append(IdParser::append(diagram, e));
 	}
 	return elements;
 }
 
-bool EditorManager::isEditor(const QUrl &url) const
+bool EditorManager::isEditor(const Id &id) const
 {
-	Q_ASSERT( url.scheme() == "qrm" );
-	QStringList path = url.path().split('/');
-	Q_ASSERT( pluginsLoaded.contains(path[1]) );
-
-	return path.size() == 2;
+	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
+	return IdParser::getIdSize(id) == 1;
 }
 
-bool EditorManager::isDiagram(const QUrl &url) const
+bool EditorManager::isDiagram(const Id &id) const
 {
-	Q_ASSERT( url.scheme() == "qrm" );
-	QStringList path = url.path().split('/');
-	Q_ASSERT( pluginsLoaded.contains(path[1]) );
-
-	return path.size() == 2;
+	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
+	return IdParser::getIdSize(id) == 2;
 }
 
-bool EditorManager::isElement(const QUrl &url) const
+bool EditorManager::isElement(const Id &id) const
 {
-	Q_ASSERT( url.scheme() == "qrm" );
-	QStringList path = url.path().split('/');
-	Q_ASSERT( pluginsLoaded.contains(path[1]) );
-
-	return path.size() == 2;
+	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
+	return IdParser::getIdSize(id) == 3;
 }
 
-
-QString EditorManager::friendlyName(const QUrl &url) const
+QString EditorManager::friendlyName(const Id &id) const
 {
-	Q_ASSERT( url.scheme() == "qrm" );
-	QStringList path = url.path().split('/');
-	Q_ASSERT( pluginsLoaded.contains(path[1]) );
+	QString editor = IdParser::getEditor(id);
+	Q_ASSERT(mPluginsLoaded.contains(editor));
 
-	switch ( path.size() ) {
-		case 2:		return pluginIface[path[1]]->editorName();
-					break;
-		case 3:		return pluginIface[path[1]]->diagramName(path[2]);
-					break;
-		case 4:		return pluginIface[path[1]]->elementName(path[2], path[3]);
-					break;
-		default:	Q_ASSERT( true );
-					return "";
+	switch (IdParser::getIdSize(id)) {
+		case 2:
+			return mPluginIface[editor]->editorName();
+		case 3:
+			return mPluginIface[editor]->diagramName(IdParser::getDiagram(id));
+		case 4:
+			return mPluginIface[editor]->elementName(IdParser::getDiagram(id), IdParser::getElement(id));
+		default:
+			Q_ASSERT(!"Malformed Id");
+			return "";
 	}
 }
 
-QIcon EditorManager::icon(const QUrl &url) const
+QIcon EditorManager::icon(const Id &id) const
 {
-	Q_ASSERT( url.scheme() == "qrm" );
-	QStringList path = url.path().split('/');
-	Q_ASSERT( pluginsLoaded.contains(path[1]) );
-	Q_ASSERT(path.size() == 4);
-	return pluginIface[path[1]]->getIcon(path[2], path[3]);
+	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
+	return mPluginIface[IdParser::getEditor(id)]->getIcon(IdParser::getDiagram(id), IdParser::getElement(id));
 }
 
-UML::Element* EditorManager::graphicalObject(const QUrl &typeId) const
+UML::Element* EditorManager::graphicalObject(const Id &typeId) const
 {
-	Q_ASSERT(typeId.scheme() == "qrm");
-	QStringList path = typeId.path().split('/');
-	Q_ASSERT(pluginsLoaded.contains(path[1]));
-	Q_ASSERT(path.size() == 4);
-	return pluginIface[path[1]]->getGraphicalObject(path[2], path[3]);
+	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(typeId)));
+	return mPluginIface[IdParser::getEditor(typeId)]->getGraphicalObject(IdParser::getDiagram(typeId), IdParser::getElement(typeId));
 }

@@ -1,46 +1,45 @@
-#ifndef EDITORMANAGER_H
-#define EDITORMANAGER_H
+#pragma once
 
-class QUrl;
 class QIcon;
 class EditorInterface;
 
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
-#include <QtCore/QUrl>
 
 #include "../umllib/uml_element.h"
+#include "../kernel/ids.h"
 
-class EditorManager : public QObject
-{
-	Q_OBJECT
+namespace qReal {
+
+	class EditorManager : public QObject
+	{
+		Q_OBJECT
 
 	public:
 		EditorManager(QObject *parent = 0);
 
-		QList<QUrl> editors() const;
-		QList<QUrl> diagrams(const QUrl &editor) const;
-		QList<QUrl> elements(const QUrl &diagram) const;
+		QList<Id> editors() const;
+		QList<Id> diagrams(const Id &editor) const;
+		QList<Id> elements(const Id &diagram) const;
 
-		QString friendlyName(const QUrl &url) const;
-		QIcon icon(const QUrl &url) const;
-		UML::Element* graphicalObject(const QUrl &typeId) const;
+		QString friendlyName(const Id &id) const;
+		QIcon icon(const Id &id) const;
+		UML::Element* graphicalObject(const Id &id) const;
 
-		bool isEditor(const QUrl &url) const;
-		bool isDiagram(const QUrl &url) const;
-		bool isElement(const QUrl &url) const;
+		bool isEditor(const Id &id) const;
+		bool isDiagram(const Id &id) const;
+		bool isElement(const Id &id) const;
 
 	private:
-		QStringList pluginsLoaded;
-		QMap<QString, QString> pluginFileName;
-		QMap<QString, EditorInterface *> pluginIface;
-		//	parseUrl(QUrl &url);
+		QStringList mPluginsLoaded;
+		QMap<QString, QString> mPluginFileName;
+		QMap<QString, EditorInterface *> mPluginIface;
 
-		QDir pluginsDir;
-		QStringList pluginFileNames;
+		QDir mPluginsDir;
+		QStringList mPluginFileNames;
 
-		const QUrl root;
-};
+		const Id mRoot;
+	};
 
-#endif
+}

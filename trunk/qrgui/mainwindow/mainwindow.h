@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
@@ -9,26 +8,23 @@
 
 #include "editormanager.h"
 
-class RealRepoModel;
-class EditorView;
+namespace qReal {
 
-class MainWindow : public QMainWindow
-{
-	Q_OBJECT
+	class RealRepoModel;
+	class EditorView;
+
+	class MainWindow : public QMainWindow
+	{
+		Q_OBJECT
 
 	public:
 		MainWindow();
 		~MainWindow();
 
 	public slots:
-//		void connectRepo();
-//		void closeRepo();
+		//		void connectRepo();
+		//		void closeRepo();
 		void adjustMinimapZoom(int zoom);
-
-//		void beginTransaction();
-//		void commitTransaction();
-//		void rollbackTransaction();
-//		void deleteFromDiagram();
 
 		void settingsPlugins();
 
@@ -43,6 +39,6 @@ class MainWindow : public QMainWindow
 
 		void loadPlugins();
 		EditorManager mgr;
-};
+	};
 
-#endif
+}
