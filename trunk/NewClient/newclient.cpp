@@ -10,7 +10,6 @@ NewClient::NewClient(QWidget *parent)
 	: QWidget(parent)
 {
 	Model *model =  new Model();
-//	model->test();
 	QTreeView *view = new QTreeView(this);
 	resize(500,400);
 	view->setModel(model);
