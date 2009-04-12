@@ -42,12 +42,12 @@ namespace qReal {
 
 		void ModelFirstTest::addTestItems()
 		{
-			model->addItem("item1",ROOT_ID,"item1",QPointF(10,10));
-			model->addItem("item2",ROOT_ID,"item2",QPointF(20,20));
-			model->addItem("item3","item2","item3",QPointF(30,30));
-			model->addItem("item4","item1","item4",QPointF(40,40));
-			model->addItem("item5","item3","item5",QPointF(50,50));
-			model->addItem("item6","item3","item6",QPointF(60,60));
+			model->addItem(Id::loadFromString("qrm:/item1"),ROOT_ID,"item1",QPointF(10,10));
+			model->addItem(Id::loadFromString("qrm:/item2"),ROOT_ID,"item2",QPointF(20,20));
+			model->addItem(Id::loadFromString("qrm:/item3"),Id::loadFromString("qrm:/item2"),"item3",QPointF(30,30));
+			model->addItem(Id::loadFromString("qrm:/item4"),Id::loadFromString("qrm:/item1"),"item4",QPointF(40,40));
+			model->addItem(Id::loadFromString("qrm:/item5"),Id::loadFromString("qrm:/item3"),"item5",QPointF(50,50));
+			model->addItem(Id::loadFromString("qrm:/item6"),Id::loadFromString("qrm:/item3"),"item6",QPointF(60,60));
 		}
 
 
@@ -57,11 +57,11 @@ namespace qReal {
 			addColumn<QString>("expectedName");
 			newRow("root") << model->index(0,0) << "item1";
 		}
-		
+
 		void ModelFirstTest::data()
-		{	
+		{
 			QFETCH(QModelIndex,index);
-			QFETCH(QString,expectedName);			
+			QFETCH(QString,expectedName);
 			QCOMPARE(model->data(index).toString(),expectedName);
 		}
 
@@ -69,7 +69,7 @@ namespace qReal {
 		{
 			addColumn<QModelIndex>("index");
 			addColumn<QString>("expectedId");
-			newRow("root") << QModelIndex() << ROOT_ID;
+			newRow("root") << QModelIndex() << ROOT_ID.toString();
 		}
 
 		void ModelFirstTest::mimeData()
@@ -81,17 +81,19 @@ namespace qReal {
 			QMimeData *mimeData = model->mimeData(list);
 			QByteArray data = mimeData->data(DEFAULT_MIME_TYPE);
 			QDataStream stream(&data, QIODevice::ReadOnly);
-			IdType id;
+			QString idString;
 			PropertyName pathToItem;
 			QString name;
 			QPointF position;
-			stream >> id;
+			stream >> idString;
 			stream >> pathToItem;
 			stream >> name;
 			stream >> position;
-			QCOMPARE(id,expectedId);
+
+			IdType id = Id::loadFromString(idString);
+			QCOMPARE(id.toString(),expectedId);
 		//	QCOMPARE(pathToItem,QString());
-		//	QCOMPARE(name,ROOT_ID);	
+		//	QCOMPARE(name,ROOT_ID);
 		//	QCOMPARE(position,QPointF());
 		}
 

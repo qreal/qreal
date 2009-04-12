@@ -12,6 +12,7 @@ namespace qReal {
 		class LogicObject
 		{
 		public:
+			explicit LogicObject(const IdType &id);
 			LogicObject(const IdType &id, const IdType &parent);
 			void addParent(const IdType &parent);
 			void removeParent(const IdType &parent);

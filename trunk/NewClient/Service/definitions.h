@@ -2,10 +2,11 @@
 
 #include <QString>
 #include <QList>
+#include "../../qrgui/kernel/ids.h"
 
 namespace qReal {
 
-	typedef QString IdType;
+	typedef Id IdType;
 
 	typedef QList<IdType> IdTypeList;
 
@@ -18,7 +19,7 @@ namespace qReal {
 
 	}
 
-	const IdType ROOT_ID = "root";
+	const IdType ROOT_ID = Id();
 
 	const char PATH_DIVIDER = '#';
 

@@ -7,6 +7,7 @@
 HEADERS += ./Test/SubModel.h \
     ./Client/Client.h \
     ./Service/definitions.h \
+    ./../qrgui/kernel/ids.h \
     ./Service/Exception/Exception.h \
     ./Client/Classes/LogicObject.h \
     ./Model/Model.h \
@@ -16,6 +17,7 @@ HEADERS += ./Test/SubModel.h \
 #Source files
 SOURCES += ./Client/Client.cpp \
     ./Service/Exception/Exception.cpp \
+    ./../qrgui/kernel/ids.cpp \
     ./Client/Classes/LogicObject.cpp \
     ./Model/Model.cpp \
     ./Test/ModelFirstTest.cpp \

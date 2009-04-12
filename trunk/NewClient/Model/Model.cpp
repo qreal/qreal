@@ -9,7 +9,7 @@ Model::Model()
 	mClient = new client::Client();
 	rootItem = new ModelTreeItem(ROOT_ID,NULL);
 	treeItems.insert(ROOT_ID,rootItem);
-	mClient->setProperty(ROOT_ID,"Name",ROOT_ID);
+	mClient->setProperty(ROOT_ID,"Name",ROOT_ID.toString());
 }
 
 Model::~Model()
@@ -65,7 +65,7 @@ int Model::rowCount( const QModelIndex &parent ) const
 int Model::columnCount( const QModelIndex &parent ) const
 {
 	Q_UNUSED(parent)
-	return 1; 
+	return 1;
 }
 
 bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
@@ -104,10 +104,10 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 PropertyName Model::pathToItem( ModelTreeItem *item ) const
 {
 	if (item!=rootItem) {
-	PropertyName path;
-	do {
+		PropertyName path;
+		do {
 			item = item->parent();
-			path = item->id() + PATH_DIVIDER + path;
+			path = item->id().toString() + PATH_DIVIDER + path;
 		} while (item!=rootItem);
 		return path;
 	}
@@ -193,14 +193,14 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
-			stream << item->id();
+			stream << item->id().toString();
 			stream << pathToItem(item);
 			stream << mClient->property(item->id(),"Name");
 			stream << mClient->property(item->id(),"position + " + pathToItem(item)).toPointF();
 		} else {
-			stream << ROOT_ID;
+			stream << ROOT_ID.toString();
 			stream << QString();
-			stream << ROOT_ID;
+			stream << ROOT_ID.toString();
 			stream << QPointF();
 		}
 	}
@@ -220,14 +220,16 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 			ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 			QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 			QDataStream stream(&dragData, QIODevice::ReadOnly);
-			IdType id;
+			QString idString;
 			PropertyName pathToItem;
 			QString name;
 			QPointF position;
-			stream >> id;
+			stream >> idString;
 			stream >> pathToItem;
 			stream >> name;
 			stream >> position;
+
+			IdType id = Id::loadFromString(idString);
 			return addElementToModel(parentItem,id,pathToItem,name,position,action);
 		}
 	} else {

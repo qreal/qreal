@@ -11,7 +11,7 @@ namespace qReal {
 		class ModelTreeItem
 		{
 		public:
-			ModelTreeItem(IdType id, ModelTreeItem *parent);
+			ModelTreeItem(IdType const &id, ModelTreeItem *parent);
 			IdType id() const;
 			ModelTreeItem *parent() const;
 			void setParent(ModelTreeItem *parent);

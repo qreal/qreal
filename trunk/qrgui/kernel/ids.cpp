@@ -2,6 +2,28 @@
 
 using namespace qReal;
 
+Id Id::loadFromString(QString const &string)
+{
+	QStringList path = string.split('/');
+	Q_ASSERT(path.count() > 0 && path.count() <= 5);
+	Q_ASSERT(path[0] == "qrm:");
+
+	Id result;
+	switch (path.count()) {
+		case 5: result.mId = path[4];
+			// Fall-thru
+		case 4: result.mElement = path[3];
+			// Fall-thru
+		case 3: result.mDiagram = path[2];
+			// Fall-thru
+		case 2: result.mEditor = path[1];
+			// Fall-thru
+	}
+	Q_ASSERT(string == result.toString());
+	Q_ASSERT(string == result.toUrl().toString());
+	return result;
+}
+
 Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)
 	: mEditor(editor), mDiagram(diagram), mElement(element), mId(id)
 {

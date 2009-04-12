@@ -5,7 +5,7 @@ using namespace qReal;
 
 using namespace model;
 
-ModelTreeItem::ModelTreeItem( IdType id, ModelTreeItem *parent ) : mId(id)
+ModelTreeItem::ModelTreeItem( IdType const &id, ModelTreeItem *parent ) : mId(id)
 {
 	mParent = parent;
 }
@@ -35,7 +35,7 @@ void ModelTreeItem::addChild( ModelTreeItem *child )
 	if (!mChildren.contains(child)) {
 		mChildren.append(child);
 	} else {
-		throw Exception("Model: Adding already existing child " + child->id() + "  to object " + mId);
+		throw Exception("Model: Adding already existing child " + child->id().toString() + "  to object " + mId.toString());
 	}
 }
 
@@ -44,7 +44,7 @@ void ModelTreeItem::removeChild( ModelTreeItem *child )
 	if (!mChildren.contains(child)) {
 		mChildren.removeAll(child);
 	} else {
-		throw Exception("Model: Removing nonexistent child " + child->id() + "  from object " + mId);
+		throw Exception("Model: Removing nonexistent child " + child->id().toString() + "  from object " + mId.toString());
 	}
 }
 
