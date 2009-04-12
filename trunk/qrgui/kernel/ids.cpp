@@ -2,9 +2,32 @@
 
 using namespace qReal;
 
-Id::Id(QString editor, QString diagram, QString element, QString id)
+Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)
 	: mEditor(editor), mDiagram(diagram), mElement(element), mId(id)
 {
+	Q_ASSERT(checkIntegrity());
+}
+
+Id::Id(Id const &base, QString const &additional)
+	: mEditor(base.mEditor), mDiagram(base.mDiagram), mElement(base.mElement), mId(base.mId)
+{
+	unsigned baseSize = base.idSize();
+	switch (baseSize) {
+		case 0:
+			mEditor = additional;
+			break;
+		case 1:
+			mDiagram = additional;
+			break;
+		case 2:
+			mElement = additional;
+			break;
+		case 3:
+			mId = additional;
+			break;
+		default:
+			Q_ASSERT(!"Can not add a part to Id, it will be too long");
+	}
 	Q_ASSERT(checkIntegrity());
 }
 

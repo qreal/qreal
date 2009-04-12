@@ -8,7 +8,9 @@ namespace qReal {
 
 	class Id {
 	public:
-		explicit Id(QString editor = "", QString diagram = "", QString element = "", QString id = "");
+		explicit Id(QString const &editor = "", QString  const &diagram = "",
+			QString  const &element = "", QString  const &id = "");
+		Id(Id const &base, QString const &additional);
 		QString editor() const;
 		QString diagram() const;
 		QString element() const;

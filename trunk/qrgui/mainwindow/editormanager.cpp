@@ -63,7 +63,7 @@ QList<Id> EditorManager::diagrams(const Id &editor) const
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
 	foreach (QString e, mPluginIface[editor.editor()]->diagrams()) {
-		diagrams.append(Id(editor.editor(), e));
+		diagrams.append(Id(editor, e));
 	}
 	return diagrams;
 }
@@ -74,7 +74,7 @@ QList<Id> EditorManager::elements(const Id &diagram) const
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+		elements.append(Id(diagram, e));
 	}
 	return elements;
 }
