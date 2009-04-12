@@ -6,21 +6,26 @@
 
 namespace qReal {
 
-	typedef QUrl Id;
-
-	class IdParser {
+	class Id {
 	public:
-		static Id createId();
-		static Id append(Id const &source, QString part);
-
-		static QString getEditor(Id const &id);
-		static QString getDiagram(Id const &id);
-		static QString getElement(Id const &id);
-		static QString getId(Id const &id);
-		static unsigned getIdSize(Id const &id);
+		explicit Id(QString editor = "", QString diagram = "", QString element = "", QString id = "");
+		QString editor() const;
+		QString diagram() const;
+		QString element() const;
+		QString id() const;
+		unsigned idSize() const;
+		QUrl toUrl() const;
+		QString toString() const;
+		// Деструктор по умолчанию ок.
+		// Конструктор копирования по умолчанию ок.
 	private:
-		static QStringList getPath(Id const &id);
-		static QString getPathElement(Id const & id, int const &index);
+		QString mEditor;
+		QString mDiagram;
+		QString mElement;
+		QString mId;
+
+		// Проверка корректности ид-шника (нужные имена непусты). Используется только для отладки.
+		bool checkIntegrity() const;
 	};
 
 }

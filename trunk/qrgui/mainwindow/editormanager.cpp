@@ -13,7 +13,7 @@
 using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
-	: QObject(parent), mRoot(IdParser::createId())
+	: QObject(parent), mRoot()
 {
 	//    foreach (QObject *plugin, QPluginLoader::staticInstances())
 	//        populateMenus(plugin);
@@ -52,7 +52,7 @@ QList<Id> EditorManager::editors() const
 {
 	QList<Id> editors;
 	foreach (QString e, mPluginsLoaded) {
-		editors.append(IdParser::append(mRoot, e));
+		editors.append(Id(e));
 	}
 	return editors;
 }
@@ -60,11 +60,10 @@ QList<Id> EditorManager::editors() const
 QList<Id> EditorManager::diagrams(const Id &editor) const
 {
 	QList<Id> diagrams;
-	QString editorName = IdParser::getEditor(editor);
-	Q_ASSERT(mPluginsLoaded.contains(editorName));
+	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
-	foreach (QString e, mPluginIface[editorName]->diagrams()) {
-		diagrams.append(IdParser::append(editor, e));
+	foreach (QString e, mPluginIface[editor.editor()]->diagrams()) {
+		diagrams.append(Id(editor.editor(), e));
 	}
 	return diagrams;
 }
@@ -72,45 +71,43 @@ QList<Id> EditorManager::diagrams(const Id &editor) const
 QList<Id> EditorManager::elements(const Id &diagram) const
 {
 	QList<Id> elements;
-	QString editor = IdParser::getEditor(diagram);
-	Q_ASSERT(mPluginsLoaded.contains(editor));
+	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[editor]->elements(IdParser::getDiagram(diagram))) {
-		elements.append(IdParser::append(diagram, e));
+	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+		elements.append(Id(diagram.editor(), diagram.diagram(), e));
 	}
 	return elements;
 }
 
 bool EditorManager::isEditor(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
-	return IdParser::getIdSize(id) == 1;
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return id.idSize() == 1;
 }
 
 bool EditorManager::isDiagram(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
-	return IdParser::getIdSize(id) == 2;
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return id.idSize() == 2;
 }
 
 bool EditorManager::isElement(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
-	return IdParser::getIdSize(id) == 3;
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return id.idSize() == 3;
 }
 
 QString EditorManager::friendlyName(const Id &id) const
 {
-	QString editor = IdParser::getEditor(id);
-	Q_ASSERT(mPluginsLoaded.contains(editor));
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	switch (IdParser::getIdSize(id)) {
+	switch (id.idSize()) {
 		case 2:
-			return mPluginIface[editor]->editorName();
+			return mPluginIface[id.editor()]->editorName();
 		case 3:
-			return mPluginIface[editor]->diagramName(IdParser::getDiagram(id));
+			return mPluginIface[id.editor()]->diagramName(id.diagram());
 		case 4:
-			return mPluginIface[editor]->elementName(IdParser::getDiagram(id), IdParser::getElement(id));
+			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
 		default:
 			Q_ASSERT(!"Malformed Id");
 			return "";
@@ -119,12 +116,12 @@ QString EditorManager::friendlyName(const Id &id) const
 
 QIcon EditorManager::icon(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(id)));
-	return mPluginIface[IdParser::getEditor(id)]->getIcon(IdParser::getDiagram(id), IdParser::getElement(id));
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getIcon(id.diagram(), id.element());
 }
 
-UML::Element* EditorManager::graphicalObject(const Id &typeId) const
+UML::Element* EditorManager::graphicalObject(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(IdParser::getEditor(typeId)));
-	return mPluginIface[IdParser::getEditor(typeId)]->getGraphicalObject(IdParser::getDiagram(typeId), IdParser::getElement(typeId));
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
 }

@@ -2,54 +2,81 @@
 
 using namespace qReal;
 
-Id IdParser::createId()
+Id::Id(QString editor, QString diagram, QString element, QString id)
+	: mEditor(editor), mDiagram(diagram), mElement(element), mId(id)
 {
-	return Id("qrm:");
+	Q_ASSERT(checkIntegrity());
 }
 
-Id IdParser::append(Id const &source, QString part)
+QString Id::editor() const
 {
-	Id result = source;
-	result.setPath(result.path() + "/" + part);
-	Q_ASSERT(getIdSize(result) <= 4);
-	return result;
+	return mEditor;
 }
 
-QString IdParser::getEditor(Id const &id)
+QString Id::diagram() const
 {
-	return getPathElement(id, 1);
+	return mDiagram;
 }
 
-QString IdParser::getDiagram(Id const &id)
+QString Id::element() const
 {
-	return getPathElement(id, 2);
+	return mElement;
 }
 
-QString IdParser::getElement(Id const &id)
+QString Id::id() const
 {
-	return getPathElement(id, 3);
+	return mId;
 }
 
-QString IdParser::getId(Id const &id)
+unsigned Id::idSize() const
 {
-	return getPathElement(id, 4);
+	if (mId != "")
+		return 4;
+	if (mElement != "")
+		return 3;
+	if (mDiagram != "")
+		return 2;
+	if (mEditor != "")
+		return 1;
+	return 0;
 }
 
-unsigned IdParser::getIdSize(Id const &id) {
-	unsigned pathSize = getPath(id).size();
-	Q_ASSERT(pathSize >= 1);
-	return pathSize - 1;
+QUrl Id::toUrl() const
+{
+	return QUrl(toString());
 }
 
-QStringList IdParser::getPath(Id const &id)
+QString Id::toString() const
 {
-	Q_ASSERT(id.scheme() == "qrm");
-	return id.path().split('/');
+	QString path = "qrm:/" + mEditor;
+	if (mDiagram != "")
+		path += "/" + mDiagram;
+	if (mElement != "")
+		path += "/" + mElement;
+	if (mId != "")
+		path += "/" + mId;
+	return path;
 }
 
-QString IdParser::getPathElement(Id const & id, int const &index)
+bool Id::checkIntegrity() const
 {
-	QStringList path = getPath(id);
-	Q_ASSERT(path.size() >= index + 1);
-	return path[index];
+	bool emptyPartsAllowed = true;
+
+	if (mId != "")
+		emptyPartsAllowed = false;
+
+	if (mElement != "")
+		emptyPartsAllowed = false;
+	else if (!emptyPartsAllowed)
+		return false;
+
+	if (mDiagram != "")
+		emptyPartsAllowed = false;
+	else if (!emptyPartsAllowed)
+		return false;
+
+	if (mEditor == "" && !emptyPartsAllowed)
+		return false;
+
+	return true;
 }
