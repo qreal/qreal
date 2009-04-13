@@ -86,3 +86,14 @@ void LogicObject::removeProperty(const PropertyName &name)
 		throw Exception("Object " + mId.toString() + ": removing nonexistent property " + name);
 	}
 }
+
+IdType LogicObject::id() const
+{
+	return mId;
+}
+
+QMapIterator<PropertyName, QVariant> LogicObject::propertiesIterator()
+{
+	return QMapIterator<PropertyName, QVariant>(mProperties);
+}
+

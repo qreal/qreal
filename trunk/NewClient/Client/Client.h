@@ -5,6 +5,7 @@
 
 #include <QVariant>
 #include <QHash>
+#include <QtXml/QDomDocument>
 
 namespace qReal {
 
@@ -30,7 +31,17 @@ namespace qReal {
 		private:
 			void loadFromDisk();
 			void saveToDisk();
-			QHash<IdType,LogicObject*> mObjects;
+
+			// TODO: Вынести всё, что относится к сериализации, в отдельный класс,
+			// как только это переложат в qrgui.
+			static void clearDir(QString const &path);
+			static QString serializeQVariant(QVariant const &v);
+			static QString serializeQPointF(QPointF const &p);
+			static QString createDirectory(Id const &id);
+			static QDomElement idListToXml(QString const &attributeName, IdTypeList const &idList, QDomDocument &doc);
+			static QDomElement propertiesToXml(LogicObject * const object, QDomDocument &doc);
+
+			QHash<IdType, LogicObject*> mObjects;
 		};
 
 	}

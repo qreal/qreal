@@ -5,6 +5,7 @@
 # This is a reminder that you are using a generated .pro file.
 # Remove it when you are finished editing this file.
 
+QT	+= xml
 TEMPLATE = app
 TARGET = NewClient
 DESTDIR = ./Debug

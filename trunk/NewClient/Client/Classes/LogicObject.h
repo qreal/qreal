@@ -23,6 +23,8 @@ namespace qReal {
 			void setProperty(const PropertyName &name, const QVariant &value);
 			QVariant property(const PropertyName &name) const;
 			void removeProperty(const PropertyName &name);
+			IdType id() const;
+			QMapIterator<PropertyName, QVariant> propertiesIterator();
 
 		private:
 			const IdType mId;
