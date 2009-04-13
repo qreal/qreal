@@ -102,11 +102,11 @@ QString EditorManager::friendlyName(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	switch (id.idSize()) {
-		case 2:
+		case 1:
 			return mPluginIface[id.editor()]->editorName();
-		case 3:
+		case 2:
 			return mPluginIface[id.editor()]->diagramName(id.diagram());
-		case 4:
+		case 3:
 			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
 		default:
 			Q_ASSERT(!"Malformed Id");
