@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	while (argc > 1)
 	{
 		argc--;
-		if (!strcmp(argv[argc], "-e"))
+		if (!strcmp(argv[argc], "-ie"))
 		{
 			QFile::remove("repothread_log.txt");
 			continue;
