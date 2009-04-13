@@ -3,6 +3,7 @@
  * */
 #include <QCoreApplication>
 #include <QTextCodec>
+#include <QFile>
 
 #include "server.h"
 
@@ -14,8 +15,17 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 
 	int port = 6666;
-	if (argc == 2) {
-		port = QString(argv[1]).toInt();
+	while (argc > 1)
+	{
+		argc--;
+		if (!strcmp(argv[argc], "-e"))
+		{
+			QFile::remove("repothread_log.txt");
+			continue;
+		}
+		port = QString(argv[argc]).toInt();
+		if (port == 0)
+			port = 6666;
 	}
 
 	repoServer::QRealRepoServer repo(port);
