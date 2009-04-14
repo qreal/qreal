@@ -146,6 +146,8 @@ class RealRepoModel : public QAbstractItemModel
 		void changeParent(QPersistentModelIndex elem,QPersistentModelIndex newParent, QPointF newPos);
 
 		QModelIndex getAvatarIndex(const QModelIndex&) const;
+		bool canBeDeleted(const QModelIndex &) const;
+		void deleteElementSafe(QModelIndex);
 		RealRepoClient* getRepoClient(void) { return repoClient; }
 
 	public slots:

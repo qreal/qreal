@@ -375,9 +375,89 @@ dbg;
 	return 1;
 }
 
+bool RealRepoModel::canBeDeleted(const QModelIndex &ind) const
+{
+	RepoTreeItem *item = static_cast<RepoTreeItem*>(ind.internalPointer());
+	// Check for avatar
+	if (item->is_avatar && !item->orphan_avatar)
+		return false;
+
+	// Check for referrals
+	IdTypeList l = repoClient->getReferrals(item->id);
+	if (!l.empty())
+		return false;
+
+	// Has avatar. Then we should check avatar's children, not this
+	if (item->has_avatar)
+		item = item->avatar;
+
+	// Ask children, whether they are ready to be removed
+	foreach (RepoTreeItem *cur, item->children)
+	{
+		if (!canBeDeleted(index(cur)))
+			return false;
+	}
+	return true;
+}
+
+void RealRepoModel::deleteElementSafe(QModelIndex ind)
+{
+	RepoTreeItem *item = static_cast<RepoTreeItem*>(ind.internalPointer());
+	RepoTreeItem *parentItem = static_cast<RepoTreeItem*>(ind.parent().internalPointer());
+	QModelIndex *i, ava;
+
+	i = &ind;
+	if (item->has_avatar)
+	{
+		// This is diagram inv avatar. Remove it IMMEDIATELY
+		beginRemoveRows(ind.parent(), ind.row(), ind.row());
+		ava = index(item->avatar);
+		item->avatar->orphan_avatar = true;
+		endRemoveRows();
+		i = &ava;
+		item = static_cast<RepoTreeItem*>(ava.internalPointer());
+		parentItem = static_cast<RepoTreeItem*>(ava.parent().internalPointer());
+	}
+
+//	if (item->orphan_avatar)
+//		repoClient->deleteObject(parentItem->children[i]->id, curItem->inv_avatar->id);
+
+	// Delete children
+	foreach (RepoTreeItem *cur, item->children)
+		deleteElementSafe(index(cur));
+
+	// Delete this element
+	beginRemoveRows(i->parent(), i->row(), i->row());
+
+	TypeIdType t = hashTypes[item->id];
+	QStringList l = info.getColumnNames(t);
+
+	qDebug() << "Processing referrals";
+	foreach(QString p, l)
+	{
+		// When deleting object, process refs first
+		if (info.isPropertyRef(t, p))
+			setData(*i, "", info.roleByColumnName(t, p));
+	}
+
+	qDebug() << "id:" << item->id << "parent id:" << parentItem->id << "row1: " << i->row() << "row2:" << item->row;
+	repoClient->deleteObject(item->id, parentItem->id);
+
+	hashTreeItems[item->id].removeAll(parentItem->children.at(i->row()));
+
+	delete parentItem->children.at(i->row());
+	parentItem->children.removeAt(i->row());
+
+	for ( int j = 0; j < parentItem->children.size(); j++ )
+		parentItem->children[j]->row = j;
+
+	endRemoveRows();
+}
+
 bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent )
 {
-	RepoTreeItem *parentItem, *curItem;
+	RepoTreeItem *parentItem;
+	int i;
 
 	if ( parent.isValid() )
 		parentItem = static_cast<RepoTreeItem*>(parent.internalPointer());
@@ -385,53 +465,18 @@ bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent 
 		return false;
 	}
 
-	qDebug() << "removing objects" << row << count;
-	for ( int i = row; i < row+count; i++ ){
-		// qDebug() << "deleting element " << parentItem->children[i]->id;
-		curItem = static_cast<RepoTreeItem*>(index(i, 0, parent).internalPointer());
-		if (curItem == NULL)
-		{
-			qDebug() << "OMG, shit happened!";
-			*(int*)NULL = 1; // For valgrind sake
-		}
-		if (curItem->is_avatar && !curItem->orphan_avatar)
-		{
-			// FIXME: Smth better needed
-			throw false;
-		}
+	qDebug() << "attempt to remove objects" << row << count;
 
-		if (curItem->has_avatar)
-		{
-			QModelIndex ava = index(curItem->avatar);
-			curItem->avatar->orphan_avatar = true;
-			removeRows(ava.row(), 1, ava.parent());
-		}
-		else if (curItem->orphan_avatar)
-			repoClient->deleteObject(parentItem->children[i]->id, curItem->inv_avatar->id);
-		else
-		{
-			// Еще один хак... Задолбало
-			TypeIdType t = hashTypes[parentItem->children[i]->id];
-			QStringList l = info.getColumnNames(t);
-
-			qDebug() << "Checking for referrals";
-			foreach(QString p, l)
-			{
-				qDebug() << "checking " << p;
-				// When deleting object, process refs first
-				if (info.isPropertyRef(t, p))
-					setData(index(i, 0, parent), "", info.roleByColumnName(t, p));
-			}
-			IdTypeList l2 = repoClient->getReferrals(parentItem->children[i]->id);
-			if (l2.empty())
-				repoClient->deleteObject(parentItem->children[i]->id, parentItem->id);
-			else
-				throw (l2);
-		}
+	// Check preconditions.
+	for (i = row; i < row+count; i++)
+	{
+		if (!canBeDeleted(index(i, 0, parent)))
+			return false;
 	}
 
-	removeChildrenRows(parent,parentItem,row,count);
-
+	// Perform deletion
+	for (i = row; i < row+count; i++)
+		deleteElementSafe(index(row, 0, parent));
 	return true;
 }
 
