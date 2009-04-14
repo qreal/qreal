@@ -101,60 +101,53 @@ dbg;
 	RepoTreeItem *item = static_cast<RepoTreeItem *>(index.internalPointer());
 
 	switch (role) {
-		case Qt::DisplayRole:
-		case Qt::EditRole:
-		case Unreal::krnnNamedElement::nameRole:
-			return hashNames[item->id];
-		case Qt::DecorationRole:
-			{
-				if ( hashTypes.contains(item->id) )
-					return info.objectIcon(hashTypes.value(item->id));
-				else
-//					return info.objectIcon(item->id);
-					return QIcon();
-			};
-		case Unreal::IdRole:
-			return item->id;
-		case Unreal::TypeRole:
-			return hashTypes[item->id];
-		case Unreal::PositionRole:
-			{
-				if ( type( item->parent ) == Container )
-					if ( hashDiagramElements[item->parent->id].contains(item->id) )
-						return hashDiagramElements[item->parent->id][item->id].position;
+	case Qt::DisplayRole:
+	case Qt::EditRole:
+	case Unreal::krnnNamedElement::nameRole:
+		return hashNames[item->id];
+	case Qt::DecorationRole:
+		if ( hashTypes.contains(item->id) )
+			return info.objectIcon(hashTypes.value(item->id));
+		else
+//			return info.objectIcon(item->id);
+			return QIcon();
+	case Unreal::IdRole:
+		return item->id;
+	case Unreal::TypeRole:
+		return hashTypes[item->id];
+	case Unreal::PositionRole:
+		if ( type( item->parent ) == Container )
+			if ( hashDiagramElements[item->parent->id].contains(item->id) )
+				return hashDiagramElements[item->parent->id][item->id].position;
 
-				return QVariant();
-			};
-		case Unreal::ConfigurationRole:
-			{
-				if ( type( item->parent ) == Container )
-					if ( hashDiagramElements[item->parent->id].contains(item->id) )
-						return hashDiagramElements[item->parent->id][item->id].configuration;
+		return QVariant();
+	case Unreal::ConfigurationRole:
+		if ( type( item->parent ) == Container )
+			if ( hashDiagramElements[item->parent->id].contains(item->id) )
+				return hashDiagramElements[item->parent->id][item->id].configuration;
 
-				return QVariant();
-			};
-		default:
-			if ( role > Unreal::UserRole ) {
-				RealRepoInfo info;
-				QString name = info.getColumnName(hashTypes[item->id], role);
-//				qDebug() << "requested role:" << role << name;
-				QString val = repoClient->getPropValue(item->id, name);
-				return (val == "") ? QVariant() : val;
+		return QVariant();
+	default:
+		if ( role > Unreal::UserRole ) {
+			RealRepoInfo info;
+			QString name = info.getColumnName(hashTypes[item->id], role);
+//			qDebug() << "requested role:" << role << name;
+			QString val = repoClient->getPropValue(item->id, name);
+			return (val == "") ? QVariant() : val;
 /*
-				if ( hashElementProps.contains(item->id) ) {
-					if ( hashElementProps[item->id].contains(role) ){
-						return hashElementProps[item->id][role];
-					}
-					else
-						return QVariant();
-				} else {
-					const_cast<RealRepoModel *>(this)->updateProperties(item->id);
-					qDebug() << "returning" << hashElementProps[item->id][role];
+			if ( hashElementProps.contains(item->id) ) {
+				if ( hashElementProps[item->id].contains(role) ){
 					return hashElementProps[item->id][role];
-				}	*/
+				}
+				else
+					return QVariant();
 			} else {
-				return QVariant(); //for now
-			}
+				const_cast<RealRepoModel *>(this)->updateProperties(item->id);
+				qDebug() << "returning" << hashElementProps[item->id][role];
+				return hashElementProps[item->id][role];
+			}	*/
+		} else
+			return QVariant(); //for now
 	}
 
 	return QVariant();
@@ -263,13 +256,17 @@ dbg;
 
 Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const
 {
-dbg;
 	switch ( type(index) ) {
-		case Container:		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable
-							 | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
-		case Category:		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
-		case Root:			return Qt::ItemIsEnabled;
-		default:			return 0;
+	case Container:
+		return Qt::ItemIsEnabled | Qt::ItemIsSelectable |
+		       Qt::ItemIsEditable | Qt::ItemIsDragEnabled |
+		       Qt::ItemIsDropEnabled;
+	case Category:
+		return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+	case Root:
+		return Qt::ItemIsEnabled;
+	default:
+		return 0;
 	}
 }
 
