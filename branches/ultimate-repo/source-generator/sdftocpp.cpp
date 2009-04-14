@@ -510,7 +510,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 		{
 			if (mNeedScale)
 				toGen << "\tpen.setWidth(" << elem.attribute("stroke-width").toInt() << ");\n";
-				else  // Äëÿ îòðèñîâêè èêîíîê - øèðèíà âñåõ ëèíèé óñòàíàâëèâàåòñÿ â 1.
+				else  // Ð”Ð»Ñ Ð¾Ñ‚Ñ€Ð¸ÑÐ¾Ð²ÐºÐ¸ Ð¸ÐºÐ¾Ð½Ð¾Ðº - ÑˆÐ¸Ñ€Ð¸Ð½Ð° Ð²ÑÐµÑ… Ð»Ð¸Ð½Ð¸Ð¹ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ÑÑ Ð² 1.
 				toGen << "\tpen.setWidth(1);\n";
 		}
 
