@@ -158,7 +158,7 @@ public:
 	qreal y;
 	/** @brief Надпись */
 	QString text;
-	/** @brief � оль */
+	/** @brief Роль */
 	QStringList args;
 };
 

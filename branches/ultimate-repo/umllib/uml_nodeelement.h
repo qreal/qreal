@@ -1,5 +1,6 @@
 /** @file uml_nodeelement.h
- * 	@brief РљР»Р°СЃСЃ, РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‰РёР№ РѕР±СЉРµРєС‚ РЅР° РґРёР°РіСЂР°РјРјРµ
+ * 	@brief Класс, представляющий объект на диаграмме
+
  * */
 
 #pragma once
@@ -11,16 +12,19 @@
 #include <QTextCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsProxyWidget>
+
+#include <QGraphicsProxyWidget> 
 
 #include <QtGui/QWidget>
 
-/** @brief Р Р°Р·РјРµСЂ РїРѕСЂС‚Р° РѕР±СЉРµРєС‚Р° */
+/** @brief Размер порта объекта */
+
 const int kvadratik = 5;
 
 namespace UML {
 	/** @class NodeElement
-	* 	@brief РљР»Р°СЃСЃ, РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‰РёР№ РѕР±СЉРµРєС‚ РЅР° РґРёР°РіСЂР°РјРјРµ
+	* 	@brief Класс, представляющий объект на диаграмме
+
 	 * */
 	class statLine;
 
@@ -46,46 +50,68 @@ namespace UML {
 		Q_OBJECT
 
 	public:
-		/** @brief РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ */
+		/** @brief Конструктор */
+
 		NodeElement();
-		/** @brief Р”РµСЃС‚СЂСѓРєС‚РѕСЂ */
+		/** @brief Деструктор */
+
 		~NodeElement();    
 
 		void complexInlineEditing();
 		
-		/** @brief РћС‚СЂРёСЃРѕРІР°С‚СЊ РѕР±СЉРµРєС‚ */
-		virtual void paint(QPainter* p, /**< РћР±СЉРµРєС‚, РѕСЃСѓС‰РµСЃС‚РІР»СЏСЋС‰РёР№ РѕС‚СЂРёСЃРѕРІРєСѓ СЌР»РµРјРµРЅС‚РѕРІ */
-						   const QStyleOptionGraphicsItem* opt, /**< РќР°СЃС‚СЂРѕР№РєРё РѕС‚СЂРёСЃРѕРІРєРё */
-						   QWidget* w, /**< Р’РёРґР¶РµС‚, РЅР° РєРѕС‚РѕСЂРѕРј РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚СЃСЏ РѕС‚СЂРёСЃРѕРІРєР° */
-						   SdfRenderer* portrenderer /**< Р РµРЅРґРµСЂРµСЂ РїРѕСЂС‚РѕРІ)*/);
-		/** @brief РџРѕР»СѓС‡РёС‚СЊ РѕР±Р»Р°СЃС‚СЊ, РІ СЂР°РјРєР°С… РєРѕС‚РѕСЂРѕР№ РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚СЃСЏ РѕС‚СЂРёСЃРѕРІРєР° РѕР±СЉРµРєС‚Р°
-			 *	@brief @return РћР±Р»Р°СЃС‚СЊ, РІ СЂР°РјРєР°С… РєРѕС‚РѕСЂРѕР№ РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚СЃСЏ РѕС‚СЂРёСЃРѕРІРєР° РѕР±СЉРµРєС‚Р°
+		/** @brief Отрисовать объект */
+		virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
+						   const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
+						   QWidget* w, /**< Виджет, на котором осуществляется отрисовка */
+						   SdfRenderer* portrenderer /**< Рендерер портов)*/);
+		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
+			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
+
+
+
+
+
+
+
 			 * */
 		QRectF boundingRect() const;
-		/** @brief РџРѕР»СѓС‡РёС‚СЊ РѕР±Р»Р°СЃС‚СЊ, РІ СЂР°РјРєР°С… РєРѕС‚РѕСЂРѕР№ РІРѕР·РјРѕР¶РЅР° РїР°СЂР°РјРµС‚СЂРёР·Р°С†РёСЏ СЃС‚Р°С‚РёС‡РµСЃРєРѕРіРѕ SVG
-			 *	@brief @return РћР±Р»Р°СЃС‚СЊ, РІ СЂР°РјРєР°С… РєРѕС‚РѕСЂРѕР№ РІРѕР·РјРѕР¶РЅР° РїР°СЂР°РјРµС‚СЂРёР·Р°С†РёСЏ СЃС‚Р°С‚РёС‡РµСЃРєРѕРіРѕ SVG
+		/** @brief Получить область, в рамках которой возможна параметризация статического SVG
+			 *	@brief @return Область, в рамках которой возможна параметризация статического SVG
+
+
 			 * */
 		QRectF contentsRect() const;
 
-		/** @brief РћР±РЅРѕРІРёС‚СЊ РґР°РЅРЅС‹Рµ СЌР»РµРјРµРЅС‚Р° */
+		/** @brief Обновить данные элемента */
+
 		virtual void updateData();
 
-		/** @brief РџРѕР»СѓС‡РёС‚СЊ СЂР°СЃРїРѕР»РѕР¶РµРЅРёРµ РїРѕСЂС‚Р°
-			 *	@brief @return РљРѕРѕСЂРґРёРЅР°С‚С‹ РїРѕСЂС‚Р°
-			 * */
-		const QPointF getPortPos(qreal id /**< РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕСЂС‚Р° */) const;
-		/** @brief РџРѕР»СѓС‡РёС‚СЊ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕСЂС‚Р°
-			 *	@brief @return РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕСЂС‚Р°
-			 * */
-		qreal getPortId(const QPointF &location /**< Р Р°СЃРїРѕР»РѕР¶РµРЅРёРµ РїРѕСЂС‚Р° */) const;
+		/** @brief Получить расположение порта
+			 *	@brief @return Координаты порта
 
-		/** @brief Р”РѕР±Р°РІРёС‚СЊ СЃРІСЏР·СЊ */
-		void addEdge(EdgeElement *edge /**< РЎРІСЏР·СЊ */)
+
+			 * */
+		const QPointF getPortPos(qreal id /**< Идентификатор порта */) const;
+		/** @brief Получить идентификатор порта
+			 *	@brief @return Идентификатор порта
+
+
+
+			 * */
+		qreal getPortId(const QPointF &location /**< Расположение порта */) const;
+
+
+		/** @brief Добавить связь */
+		void addEdge(EdgeElement *edge /**< Связь */)
+
+
 		{
 			edgeList << edge;
 		}
-		/** @brief РЈР±СЂР°С‚СЊ СЃРІСЏР·СЊ */
-		void delEdge(EdgeElement *edge /**< РЎРІСЏР·СЊ */)
+		/** @brief Убрать связь */
+		void delEdge(EdgeElement *edge /**< Связь */)
+
+
 		{
 			edgeList.removeAt(edgeList.indexOf(edge));
 		}
@@ -106,29 +132,43 @@ namespace UML {
 
 		bool portsVisible;
 		QRectF scrollRect;
-		QGraphicsProxyWidget scroll;
 
-		/** @brief РћР±СЂР°Р±РѕС‚Р°С‚СЊ СЃРѕР±С‹С‚РёРµ РЅР°РІРµРґРµРЅРёСЏ РЅР° РѕР±СЉРµРєС‚ РєСѓСЂСЃРѕСЂР° РјС‹С€Рё */
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< РЎРѕР±С‹С‚РёРµ */);
-		/** @brief РћР±СЂР°Р±РѕС‚Р°С‚СЊ СЃРѕР±С‹С‚РёРµ РѕС‚РїСѓСЃРєР°РЅРёСЏ РєРЅРѕРїРєРё РјС‹С€Рё */
-		void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< РЎРѕР±С‹С‚РёРµ */);
-		/** @brief РћР±СЂР°Р±РѕС‚Р°С‚СЊ СЃРѕР±С‹С‚РёРµ РЅР°Р¶Р°С‚РёСЏ РєРЅРѕРїРєРё РјС‹С€Рё */
-		void mousePressEvent( QGraphicsSceneMouseEvent * event /**< РЎРѕР±С‹С‚РёРµ */);
+		QGraphicsProxyWidget scroll; 
+
+		/** @brief Обработать событие наведения на объект курсора мыши */
+		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		/** @brief Обработать событие отпускания кнопки мыши */
+		void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		/** @brief Обработать событие нажатия кнопки мыши */
+		void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
+
+
+
+
+
+
 
 
 		//bool sceneEvent ( QEvent * event );
-		/** @brief РћР±СЂР°Р±РѕС‚Р°С‚СЊ РёР·РјРµРЅРµРЅРёРµ РґР°РЅРЅС‹С… РѕР±СЉРµРєС‚Р°
-			 *	@brief @return РР·РјРµРЅРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ
+		/** @brief Обработать изменение данных объекта
+			 *	@brief @return Измененные данные
+
+
 			 * */
-		virtual QVariant itemChange(GraphicsItemChange change, /**< РўРёРї РёР·РјРµРЅРµРЅРёР№ */
-									const QVariant &value /**< Р’РµР»РёС‡РёРЅР° РёР·РјРµРЅРµРЅРёСЏ */
+		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
+									const QVariant &value /**< Величина изменения */
+
+
 									);
 
-		/** @brief РЎРїРёСЃРѕРє С‚РѕС‡РµС‡РЅС‹С… РїРѕСЂС‚РѕРІ */
+		/** @brief Список точечных портов */
+
 		QList<QPointF> pointPorts;
-		/** @brief РЎРїРёСЃРѕРє РїРѕСЂС‚РѕРІ-Р»РёРЅРёР№ */
+		/** @brief Список портов-линий */
+
 		QList<statLine> linePorts;
-		/** @brief РћР±Р»Р°СЃС‚СЊ, РІ РєРѕС‚РѕСЂРѕР№ РІРѕР·РјРѕР¶РЅРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ С‚РµРєСЃС‚Р°, РїР°СЂР°РјРµС‚СЂРёР·СѓСЋС‰РµРіРѕ SVG */
+		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
+
 		QRectF m_contents;
 
 		bool mLockChangeName;
@@ -137,35 +177,44 @@ namespace UML {
 		ElementTitle doctype;
 		QString typetext;
 		QString vistext;
-		float coord_def(QString , float ,float);
-		float x_def(QString );
-		float y_def(QString );
 		
-		float first_size_x;
-		float first_size_y;
+		float coord_def(QString , float ,float); 
+		float x_def(QString ); 
+		float y_def(QString ); 
+		float first_size_x; 
+		float first_size_y; 
+
 
 	private:
 
-		/** @brief РџРѕР»СѓС‡РёС‚СЊ РѕР±СЉРµРєС‚, СЂР°СЃРїРѕР»РѕР¶РµРЅРЅС‹Р№ РІ РґР°РЅРЅРѕР№ С‚РѕС‡РєРµ СЃС†РµРЅС‹
-			*	@brief @return РћР±СЉРµРєС‚, СЂР°СЃРїРѕР»РѕР¶РµРЅРЅС‹Р№ РІ РґР°РЅРЅРѕР№ С‚РѕС‡РєРµ СЃС†РµРЅС‹
-			* */
-		NodeElement *getNodeAt( const QPointF &position /**< РўРѕС‡РєР° РЅР° СЃС†РµРЅРµ */);
+		/** @brief Получить объект, расположенный в данной точке сцены
+			*	@brief @return Объект, расположенный в данной точке сцены
 
-		/** @brief РЎРїРёСЃРѕРє Р°СЃСЃРѕС†РёРёСЂРѕРІР°РЅРЅС‹С… СЃ РѕР±СЉРµРєС‚РѕРј СЃРІСЏР·РµР№ */
+
+			* */
+		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+
+
+		/** @brief Список ассоциированных с объектом связей */
+
 		QList<EdgeElement *> edgeList;
 
-		/** @brief РќР°РїСЂР°РІР»РµРЅРёРµ СЂР°СЃС‚СЏР¶РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° */
+		/** @brief Направление растяжения элемента */
+
 		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
-		/** @brief РќР°РїСЂР°РІР»РµРЅРёРµ СЂР°СЃС‚СЏР¶РµРЅРёСЏ */
+		/** @brief Направление растяжения */
+
 		DragState dragState;
 
-		/** @brief РћРїРёСЃР°РЅРёРµ РґРІСѓС…РјРµСЂРЅРѕР№ С‚СЂР°РЅСЃС„РѕСЂРјР°С†РёРё РѕР±СЉРµРєС‚Р° */
+		/** @brief Описание двухмерной трансформации объекта */
+
 		QTransform transform;
 		QLineF newTransform(const statLine& port)  const;
 
 	};
 
-	/** @brief РћРїРёСЃР°РЅРёРµ Р»РёРЅРµР№РЅРѕРіРѕ РїРѕСЂС‚Р°, СЂРµР°РіРёСЂСѓСЋС‰РµРіРѕ РЅР° Р°Р±СЃРѕР»СЋС‚РЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ */
+	/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
+
 	class statLine
 	{
 	public:
