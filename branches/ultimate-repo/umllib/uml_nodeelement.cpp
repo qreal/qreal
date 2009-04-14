@@ -402,3 +402,40 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		}
 	}
 }
+
+
+
+///////////////////////////////////////////////////////////////////
+float NodeElement::coord_def(QString coordStr,
+	float current_size, float first_size)
+{
+	float coord = 0;
+
+	if (coordStr.endsWith("%"))
+	{
+		coordStr.chop(1);
+		coord = current_size * coordStr.toFloat() / 100;
+		return coord;
+	}
+	else if (coordStr.endsWith("a"))
+	{
+		coordStr.chop(1);
+		coord = coordStr.toFloat();
+		return coord;
+	}
+	else
+	{
+		coord = coordStr.toFloat() * current_size / first_size;
+		return coord;
+	}
+}
+
+float NodeElement::x_def(QString str)
+{
+	return coord_def(str, m_contents.width(), first_size_x)+m_contents.topLeft().x();
+}
+
+float NodeElement::y_def(QString str)
+{
+	return coord_def(str, m_contents.height(), first_size_y)+m_contents.topLeft().y();
+}

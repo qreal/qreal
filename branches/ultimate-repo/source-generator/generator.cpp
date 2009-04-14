@@ -5,6 +5,7 @@
 
 #include "editor.h"
 #include "generator.h"
+#include <QMessageBox>
 
 QString resources;
 
@@ -355,7 +356,6 @@ void Generator::genClasses(){
 
 		if ((*o)->type == EDGE )
 			continue;
-
 		//
 		// 1. CPP-file
 		//
@@ -366,7 +366,6 @@ void Generator::genClasses(){
 		out << classname << "::" << classname << "()\n";
 		out <<   "{\n";
 		out << "\tupdatePorts();\n"
-			<< QString("\trenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + classname + ".sdf")
 			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
                         << "\ttext = \"\";\n";
 
@@ -380,6 +379,8 @@ void Generator::genClasses(){
 		out << ";\n";
 		out << QString("\theight = %1;\n").arg((*o)->height)
 		    << QString("\twidth = %1;\n").arg((*o)->width)
+		    << "\tfirst_size_x = width;\n"
+		    << "\tfirst_size_y = height;\n"
 		    << "\tm_contents.setWidth(width);\n"
 		    << "\tm_contents.setHeight(height);\n"
 		    << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
@@ -451,9 +452,12 @@ void Generator::genClasses(){
 		//paint
 		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
                         "QWidget *widget)\n{\n";
-		out << "\tupdatePorts();\n"
-		    << QString("\trenderer.render(painter, m_contents);\n")
+		QDomNodeList sdflist = (*o)->elem.elementsByTagName("picture");
+		SdfRenderer rend(sdflist.at(0));
+		QString str = rend.render();
+		out << "\tupdatePorts();\n" << str
 		    << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
+
 
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
 		    out << "\tpainter->save();\n"

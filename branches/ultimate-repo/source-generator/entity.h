@@ -88,6 +88,7 @@ public:
 
 	QList<RealProperty*>::ConstIterator constPropBegin() const {return properties.constBegin();}
 	QList<RealProperty*>::ConstIterator constPropEnd() const {return properties.constEnd();}
+	QDomElement elem;
 };
 
 // node class
@@ -157,7 +158,7 @@ public:
 	qreal y;
 	/** @brief Надпись */
 	QString text;
-	/** @brief Роль */
+	/** @brief � оль */
 	QStringList args;
 };
 

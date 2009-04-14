@@ -9,7 +9,7 @@
 #include <QDomElement>
 #include <QDomNode>
 #include <QFileInfo>
-
+#include "sdftocpp.h"
 #include "editor_file.h"
 #include "entity.h"
 

@@ -222,6 +222,7 @@ bool Entity::applyParent(const Entity *parent)
 
 bool Node::init(QDomElement &xml_element)
 {
+    elem = xml_element;
 	id = xml_element.attribute("id");
 	name = xml_element.attribute("name");
 	if (id == "" || name == "")
