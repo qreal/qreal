@@ -11,6 +11,8 @@ namespace qReal {
 
 	namespace client {
 
+		const QString saveDirName = "./save";
+
 		class Client
 		{
 		public:
@@ -34,6 +36,14 @@ namespace qReal {
 
 			// TODO: Вынести всё, что относится к сериализации, в отдельный класс,
 			// как только это переложат в qrgui.
+			void loadFromDisk(QString const &currentPath);
+			QDomDocument loadXmlDocument(QString const &path);
+
+			static LogicObject *parseLogicObject(QDomElement const &elem);
+			static QVariant parseValue(QString const &typeName, QString const &valueStr);
+			static IdTypeList loadIdList(QDomElement const &elem, QString const &name);
+			static bool loadProperties(QDomElement const &elem, LogicObject &object);
+
 			static void clearDir(QString const &path);
 			static QString serializeQVariant(QVariant const &v);
 			static QString serializeQPointF(QPointF const &p);

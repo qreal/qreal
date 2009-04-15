@@ -139,12 +139,147 @@ void Client::removeProperty( const IdType &id, const PropertyName &name )
 
 void Client::loadFromDisk()
 {
+	loadFromDisk(saveDirName);
+	qDebug() << mObjects.count() << " objects loaded";
+}
 
+void Client::loadFromDisk(QString const &currentPath)
+{
+	QDir dir(currentPath);
+	if (dir.exists()) {
+		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+			QString path = fileInfo.filePath();
+			if (fileInfo.isDir())
+				loadFromDisk(path);
+			else if (fileInfo.isFile()) {
+				QDomDocument doc = loadXmlDocument(path);
+				LogicObject *object = parseLogicObject(doc.documentElement());
+				if (object != NULL)
+					mObjects.insert(object->id(), object);
+			}
+		}
+	}
+}
+
+QDomDocument Client::loadXmlDocument(QString const &path)
+{
+	QFile file(path);
+	if (!file.open(QIODevice::ReadOnly)) {
+		qDebug() << "cannot open file" << path;
+		return QDomDocument();
+	}
+
+	QDomDocument doc;
+	QString error = "";
+	int errorLine = 0;
+	int errorCol = 0;
+
+	if (!doc.setContent(&file, false, &error, &errorLine, &errorCol))
+	{
+		qDebug() << "parse error in " << path
+				<< " at (" << errorLine << "," << errorCol
+				<< "): " << error;
+		file.close();
+		return QDomDocument();
+	}
+	file.close();
+	return doc;
+}
+
+LogicObject *Client::parseLogicObject(QDomElement const &elem)
+{
+	QString id = elem.attribute("id", "");
+	if (id == "")
+		return NULL;
+
+	LogicObject object(Id::loadFromString(id));
+
+	foreach (IdType parent, loadIdList(elem, "parents"))
+		object.addParent(parent);
+
+	foreach (IdType child, loadIdList(elem, "children"))
+		object.addChild(child);
+
+	if (!loadProperties(elem, object))
+		return NULL;
+
+	return new LogicObject(object);
+}
+
+bool Client::loadProperties(QDomElement const &elem, LogicObject &object)
+{
+	QDomNodeList propertiesList = elem.elementsByTagName("properties");
+	if (propertiesList.count() != 1) {
+		qDebug() << "Incorrect element: children list must appear once";
+		return false;
+	}
+
+	QDomElement properties = propertiesList.at(0).toElement();
+	QDomElement property = properties.firstChildElement();
+	while (!property.isNull()) {
+		QString type = property.tagName();
+		QString key = property.attribute("key", "");
+		if (key == "")
+			return false;
+
+		QString valueStr = property.attribute("value", "");
+		QVariant value = parseValue(type, valueStr);
+		object.setProperty(key, value);
+		property = property.nextSiblingElement();
+	}
+	return true;
+}
+
+IdTypeList Client::loadIdList(QDomElement const &elem, QString const &name)
+{
+	QDomNodeList list = elem.elementsByTagName(name);
+	if (list.count() != 1) {
+		qDebug() << "Incorrect element: " + name + " list must appear once";
+		return IdTypeList();
+	}
+
+	IdTypeList result;
+
+	QDomElement elements = list.at(0).toElement();
+	QDomElement element = elements.firstChildElement();
+	while (!element.isNull()) {
+		QString elementStr = element.attribute("id", "");
+		if (elementStr == "") {
+			qDebug() << "Incorrect Child XML node";
+			return IdTypeList();
+		}
+		result.append(Id::loadFromString(elementStr));
+		element = element.nextSiblingElement();
+	}
+	return result;
+}
+
+QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
+{
+	if (typeName == "Int") {
+		return QVariant(valueStr.toInt());
+	} else if (typeName == "UInt") {
+		return QVariant(valueStr.toUInt());
+	} else if (typeName == "Double") {
+		return QVariant(valueStr.toDouble());
+	} else if (typeName == "Bool") {
+		return QVariant(valueStr.toUpper() == "TRUE");
+	} else if (typeName == "QString") {
+		return QVariant(valueStr);
+	} else if (typeName == "Char") {
+		return QVariant(valueStr[0]);
+	} else if (typeName == "PointF") {
+		double x = valueStr.section(", ", 0, 0).toDouble();
+		double y = valueStr.section(", ", 1, 1).toDouble();
+		return QVariant(QPointF(x, y));
+	} else {
+		return QVariant();
+	}
 }
 
 void Client::saveToDisk()
 {
-	clearDir("./save");
+	clearDir(saveDirName);
 	foreach (LogicObject *object, mObjects.values()) {
 		QString filePath = createDirectory(object->id());
 
@@ -167,7 +302,7 @@ void Client::saveToDisk()
 
 QString Client::createDirectory(Id const &id)
 {
-	QString dirName = "./save";
+	QString dirName = saveDirName;
 	QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
@@ -175,7 +310,7 @@ QString Client::createDirectory(Id const &id)
 	}
 
 	QDir dir;
-	dir.rmdir("./save");
+	dir.rmdir(saveDirName);
 	dir.mkpath(dirName);
 
 	return dirName + "/" + partsList[partsList.size() - 1];
@@ -206,7 +341,6 @@ QDomElement Client::propertiesToXml(LogicObject * const object, QDomDocument &do
 	}
 	return result;
 }
-
 
 void Client::clearDir(QString const &path)
 {
