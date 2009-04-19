@@ -30,6 +30,8 @@ namespace qReal {
 			void svnUpdate();
 			void svnCommit();
 
+			void printDebug() const;
+
 		private:
 			void loadFromDisk();
 			void saveToDisk();
@@ -38,6 +40,7 @@ namespace qReal {
 			// как только это переложат в qrgui.
 			void loadFromDisk(QString const &currentPath);
 			QDomDocument loadXmlDocument(QString const &path);
+			void addChildrenToRootObject();
 
 			static LogicObject *parseLogicObject(QDomElement const &elem);
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);

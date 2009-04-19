@@ -27,9 +27,9 @@ namespace qReal {
 			virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 			virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 			virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-			virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole); 
-			virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());  
-			virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const; 
+			virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+			virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+			virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 			virtual QModelIndex parent(const QModelIndex &index) const;
 			virtual Qt::DropActions supportedDropActions() const;
 			virtual QStringList mimeTypes() const;
@@ -39,7 +39,7 @@ namespace qReal {
 		protected:
 			QMultiHash<IdType,ModelTreeItem*> treeItems;
 			QModelIndex index(ModelTreeItem *item);
-			bool addElementToModel(ModelTreeItem *parentItem, const IdType &id, 
+			ModelTreeItem* addElementToModel(ModelTreeItem *parentItem, const IdType &id,
 				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
@@ -49,6 +49,7 @@ namespace qReal {
 			PropertyName pathToItem(ModelTreeItem *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
+			void loadSubtreeFromClient(ModelTreeItem * const parent);
 		};
 
 	}

@@ -1,6 +1,8 @@
 #include "LogicObject.h"
 #include "../Service/Exception/Exception.h"
 
+#include <QDebug>
+
 using namespace qReal;
 
 using namespace client;
@@ -66,6 +68,11 @@ IdTypeList LogicObject::parents() const
 
 void LogicObject::setProperty(const PropertyName &name, const QVariant &value)
 {
+	if (value == QVariant()) {
+		qDebug() << "Empty QVariant set as a property for " << id().toString();
+		qDebug() << ", property name " << name;
+		Q_ASSERT(!"Empty QVariant set as a property");
+	}
 	mProperties.insert(name,value);
 }
 

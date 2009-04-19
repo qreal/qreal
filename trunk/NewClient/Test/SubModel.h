@@ -15,7 +15,10 @@ namespace qReal {
 					const PropertyName &name, const QPointF &position) {
 				addElementToModel(treeItems.value(parent),
 					id,"",name,position,Qt::MoveAction);
-			};
+			}
+			unsigned count() const {
+				return treeItems.count();
+			}
 		};
 
 	}

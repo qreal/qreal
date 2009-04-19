@@ -11,9 +11,9 @@ using namespace qReal;
 using namespace client;
 Client::Client()
 {
-	loadFromDisk();
 	mObjects.insert(ROOT_ID,new LogicObject(ROOT_ID));
 	mObjects[ROOT_ID]->setProperty("Name",ROOT_ID.toString());
+	loadFromDisk();
 }
 
 Client::~Client()
@@ -140,7 +140,16 @@ void Client::removeProperty( const IdType &id, const PropertyName &name )
 void Client::loadFromDisk()
 {
 	loadFromDisk(saveDirName);
-	qDebug() << mObjects.count() << " objects loaded";
+	addChildrenToRootObject();
+}
+
+void Client::addChildrenToRootObject()
+{
+	foreach (LogicObject *object, mObjects.values()) {
+		if (object->parents().contains(ROOT_ID)) {
+			mObjects[ROOT_ID]->addChild(object->id());
+		}
+	}
 }
 
 void Client::loadFromDisk(QString const &currentPath)
@@ -268,11 +277,12 @@ QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
 		return QVariant(valueStr);
 	} else if (typeName == "Char") {
 		return QVariant(valueStr[0]);
-	} else if (typeName == "PointF") {
+	} else if (typeName == "QPointF") {
 		double x = valueStr.section(", ", 0, 0).toDouble();
 		double y = valueStr.section(", ", 1, 1).toDouble();
 		return QVariant(QPointF(x, y));
 	} else {
+		Q_ASSERT(!"Unknown property type");
 		return QVariant();
 	}
 }
@@ -375,6 +385,7 @@ QString Client::serializeQVariant(QVariant const &v)
 	case QVariant::PointF:
 		return serializeQPointF(v.toPointF());
 	default:
+		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
 		return "";
 	}
@@ -383,4 +394,19 @@ QString Client::serializeQVariant(QVariant const &v)
 QString Client::serializeQPointF(QPointF const &p)
 {
 	return QString("%1").arg(p.x()) + ", " + QString("%1").arg(p.y());
+}
+
+void Client::printDebug() const
+{
+	qDebug() << mObjects.count() << " objects in repository";
+	foreach (LogicObject *object, mObjects.values()) {
+		qDebug() << object->id().toString();
+		qDebug() << "Children:";
+		foreach (IdType id, object->children())
+			qDebug() << id.toString();
+		qDebug() << "Parents:";
+		foreach (IdType id, object->parents())
+			qDebug() << id.toString();
+		qDebug() << "============";
+	}
 }

@@ -1,4 +1,5 @@
 #include "Model.h"
+#include <QDebug>
 
 using namespace qReal;
 
@@ -10,6 +11,7 @@ Model::Model()
 	rootItem = new ModelTreeItem(ROOT_ID,NULL);
 	treeItems.insert(ROOT_ID,rootItem);
 	mClient->setProperty(ROOT_ID,"Name",ROOT_ID.toString());
+	loadSubtreeFromClient(rootItem);
 }
 
 Model::~Model()
@@ -103,7 +105,7 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 
 PropertyName Model::pathToItem( ModelTreeItem *item ) const
 {
-	if (item!=rootItem) {
+	if (item != rootItem) {
 		PropertyName path;
 		do {
 			item = item->parent();
@@ -111,8 +113,8 @@ PropertyName Model::pathToItem( ModelTreeItem *item ) const
 		} while (item!=rootItem);
 		return path;
 	}
-	else return QString();
-
+	else
+		return "qrm:/";
 }
 
 void Model::removeConfigurationInClient( ModelTreeItem *item )
@@ -230,14 +232,14 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 			stream >> position;
 
 			IdType id = Id::loadFromString(idString);
-			return addElementToModel(parentItem,id,pathToItem,name,position,action);
+			return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 		}
 	} else {
 		return false;
 	}
 }
 
-bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
+ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
 		const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
 {
 	Q_UNUSED(oldPathToItem)
@@ -252,5 +254,17 @@ bool Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
 		mClient->setProperty(id,"Name",name);
 		mClient->setProperty(id,"position + " + pathToItem(item),position);
 	endInsertRows();
-	return true;
+	return item;
+}
+
+void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
+{
+	foreach (IdType childId, mClient->children(parent->id())) {
+		PropertyName path = pathToItem(parent);
+		ModelTreeItem * child = addElementToModel(parent, childId, "",
+			mClient->property(childId, "Name").toString(),
+			mClient->property(childId, "position + " + path + PATH_DIVIDER).toPointF(),
+			Qt::MoveAction);
+		loadSubtreeFromClient(child);
+	}
 }

@@ -42,12 +42,14 @@ namespace qReal {
 
 		void ModelFirstTest::addTestItems()
 		{
-			model->addItem(Id::loadFromString("qrm:/item1"),ROOT_ID,"item1",QPointF(10,10));
-			model->addItem(Id::loadFromString("qrm:/item2"),ROOT_ID,"item2",QPointF(20,20));
-			model->addItem(Id::loadFromString("qrm:/item3"),Id::loadFromString("qrm:/item2"),"item3",QPointF(30,30));
-			model->addItem(Id::loadFromString("qrm:/editor1/diagram1/element1/someid"),Id::loadFromString("qrm:/item1"),"item4",QPointF(40,40));
-			model->addItem(Id::loadFromString("qrm:/item5"),Id::loadFromString("qrm:/item3"),"item5",QPointF(50,50));
-			model->addItem(Id::loadFromString("qrm:/item6"),Id::loadFromString("qrm:/item3"),"item6",QPointF(60,60));
+			if (model->count() == 1) {
+				model->addItem(Id::loadFromString("qrm:/item1"),ROOT_ID,"item1",QPointF(10,10));
+				model->addItem(Id::loadFromString("qrm:/item2"),ROOT_ID,"item2",QPointF(20,20));
+				model->addItem(Id::loadFromString("qrm:/item3"),Id::loadFromString("qrm:/item2"),"item3",QPointF(30,30));
+				model->addItem(Id::loadFromString("qrm:/editor1/diagram1/element1/someid"),Id::loadFromString("qrm:/item1"),"item4",QPointF(40,40));
+				model->addItem(Id::loadFromString("qrm:/item5"),Id::loadFromString("qrm:/item3"),"item5",QPointF(50,50));
+				model->addItem(Id::loadFromString("qrm:/item6"),Id::loadFromString("qrm:/item3"),"item6",QPointF(60,60));
+			}
 		}
 
 
