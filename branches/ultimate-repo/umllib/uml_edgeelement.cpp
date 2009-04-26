@@ -11,6 +11,7 @@
 
 #include "realreporoles.h"
 #include "realrepoinfo.h"
+#include "realrepomodel.h"
 
 #include <math.h>
 
@@ -201,7 +202,8 @@ void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 void EdgeElement::connectToPort() {
-	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+	//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
 
 	setPos(pos()+m_line[0]);
 	m_line.translate(-m_line[0]);
@@ -226,11 +228,11 @@ void EdgeElement::connectToPort() {
 	}
 
 	if ( src )
-		im->setData(dataIndex, src->uuid(), Unreal::krneRelationship::fromRole);
+		im->changeRole(dataIndex, src->uuid(), Unreal::krneRelationship::fromRole);
 	else
-		im->setData(dataIndex, 0, Unreal::krneRelationship::fromRole);
+		im->changeRole(dataIndex, 0, Unreal::krneRelationship::fromRole);
 
-	im->setData(dataIndex, portFrom, Unreal::krneRelationship::fromPortRole);
+	im->changeRole(dataIndex, portFrom, Unreal::krneRelationship::fromPortRole);
 
 
 	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
@@ -250,16 +252,16 @@ void EdgeElement::connectToPort() {
 	}
 
 	if ( dst )
-		im->setData(dataIndex, dst->uuid(), Unreal::krneRelationship::toRole);
+		im->changeRole(dataIndex, dst->uuid(), Unreal::krneRelationship::toRole);
 	else
-		im->setData(dataIndex, 0, Unreal::krneRelationship::toRole);
+		im->changeRole(dataIndex, 0, Unreal::krneRelationship::toRole);
 
-	im->setData(dataIndex, portTo, Unreal::krneRelationship::toPortRole);
+	im->changeRole(dataIndex, portTo, Unreal::krneRelationship::toPortRole);
 
 	setFlag(ItemIsMovable, !(dst||src) );
 
-	im->setData(dataIndex, pos(), Unreal::PositionRole);
-	im->setData(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
+	im->changeRole(dataIndex, pos(), Unreal::PositionRole);
+	im->changeRole(dataIndex, m_line.toPolygon(), Unreal::ConfigurationRole);
 
 	moving = false;
 

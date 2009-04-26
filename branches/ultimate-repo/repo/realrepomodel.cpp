@@ -12,6 +12,7 @@
 
 using namespace qRealTypes;
 
+////------------------------------------///
 RealRepoModel::RealRepoModel( const QString &addr, const int port, QObject *parent )
 	: QAbstractItemModel(parent)
 {
@@ -56,37 +57,6 @@ dbg;
 	delete undoView;
 	delete undoStack;
 	delete repoClient;
-}
-
-QModelIndex RealRepoModel::createDefaultTopLevelItem() {
-	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
-	if (diagramCategory->children.empty()) {
-		addElementToModel(diagramCategory, index(diagramCategory), "", "",
-			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction, -1);
-	}
-
-	if (!diagramCategory->children.empty()) {
-		return index(diagramCategory->children[0]);
-	}
-	else
-		return QModelIndex();
-}
-
-void RealRepoModel::readItems()
-{
-	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
-	readCategoryTable(diagramCategory);
-	foreach (RepoTreeItem *diagram, diagramCategory->children) {
-		readItemsRecurse(diagram);
-	}
-}
-
-void RealRepoModel::readItemsRecurse( RepoTreeItem *parent )
-{
-	readContainerTable(parent);
-	foreach (RepoTreeItem *childItem,parent->children) {
-		readItemsRecurse(childItem);
-	}
 }
 
 QVariant RealRepoModel::data(const QModelIndex &index, int role) const
@@ -156,7 +126,6 @@ dbg;
 bool RealRepoModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
 dbg;
-//	qDebug() << __PRETTY_FUNCTION__;
 	if (!index.isValid())
 		return false;
 
@@ -164,59 +133,136 @@ dbg;
 		return false;
 
 	RepoTreeItem *item = static_cast<RepoTreeItem*>(index.internalPointer());
-//	qDebug() << "role:" << role;
+
 	switch (role) {
 	case Qt::DisplayRole:
 	case Unreal::krnnNamedElement::nameRole:
 	case Qt::EditRole:
 		{
-			QVariant old_value = QVariant(repoClient->getName(item->id));
-			if(addToStack){
-				undoStack->push(new ChangeEditCommand(this, index, old_value, value, role));
-			}
 			repoClient->setName(item->id, value.toString());
 			hashNames[item->id] = value.toString();
 		}
 		break;
 	case Unreal::PositionRole:
-		if ( type(item->parent) == Container ) {
-			if( addToStack ){
-				undoStack->push(new ChangePositionCommand(this, index,
-							QVariant(hashDiagramElements[item->parent->id][item->id].position), value, role));
-			}
+		{
 			repoClient->setPosition(item->id, item->parent->id, value.toPoint().x(), value.toPoint().y());
 			hashDiagramElements[item->parent->id][item->id].position = value.toPoint();
 		}
 		break;
 	case Unreal::ConfigurationRole:
-		if ( type(item->parent) == Container ) {
-
+		{
 			QPolygon poly(value.value<QPolygon>());
 			QString result;
 			foreach ( QPoint point, poly ) {
 				result += QString("(%1,%2);").arg(point.x()).arg(point.y());
 			}
 			result.chop(1);
-
-			if( addToStack ){
-				undoStack->push(new ChangeConfigurationCommand(this, index,
-							QVariant(hashDiagramElements[item->parent->id][item->id].configuration), value, role));
-			}
 			repoClient->setConfiguration(item->id, item->parent->id, result);
 			hashDiagramElements[item->parent->id][item->id].configuration = poly;
 		}
 		break;
 	default:
-//		qDebug() << "role -- " << role;
+		if ( type(item->parent) == Container ) {
+			QString column_name = info.getColumnName(hashTypes[item->id],role);
+			QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
+			if (!info.isPropertyRef(hashTypes[item->id], column_name))
+			{
+				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+			}
+			else
+			{
+				// try-catch Хак. Пусть поживет.
+				try{
+					qDebug() << "removing ref" << item->id << "from" << old_value.toString();
+					repoClient->decReferral(old_value.toString(), item->id);
+				} catch (QString e)
+				{
+					qDebug() << "error removing referrals";
+					if (old_value.toString() != "")
+						break; // Serious error, breaking
+				}
+				try{
+					qDebug() << "adding ref" << item->id << "to" << value.toString();
+					repoClient->incReferral(value.toString(), item->id);
+				} catch (QString e)
+				{
+					qDebug() << "error adding referrals";
+					if (value.toString() != "")
+						break; // Serious error, breaking
+				}
+				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+			}
+		}
+		break;
+	}
+
+	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
+		//		item->updateData();
+		QModelIndex index = this->index(item);
+		emit dataChanged(index,index);
+	}
+
+	return true;
+}
+
+
+//--------------------View Interface------------------//
+
+bool RealRepoModel::changeRole(const QModelIndex & index, const QVariant & value, int role)
+{
+dbg;
+	qDebug() << "New role in changeRole:  " << role;
+	if (!index.isValid())
+		return false;
+
+	if (index.column() != 0)
+		return false;
+
+	RepoTreeItem *item = static_cast<RepoTreeItem*>(index.internalPointer());
+
+	switch (role) {
+	case Qt::DisplayRole:
+		//qDebug() << "DisplayRole";
+		//break;
+	case Unreal::krnnNamedElement::nameRole:
+	case Qt::EditRole:
+		{
+		QVariant old_value = QVariant(repoClient->getName(item->id));
+		undoStack->push(new ChangeEditRoleCommand(this, index, old_value, value, role));
+		}
+		break;
+	case Unreal::PositionRole:
+		if ( type(item->parent) == Container ) {
+			QVariant old_value = QVariant(hashDiagramElements[item->parent->id][item->id].position);
+			if(old_value.toPoint().x() != value.toPoint().x() || old_value.toPoint().x() != value.toPoint().x()){
+				undoStack->push(new ChangePositionCommand(this, index, old_value, value, role));
+			}
+		}
+		break;
+	case Unreal::ConfigurationRole:
+		if ( type(item->parent) == Container ) {
+			QVariant old_value = QVariant(hashDiagramElements[item->parent->id][item->id].configuration);
+			QPolygon old_poly(old_value.value<QPolygon>());
+			QPolygon poly(value.value<QPolygon>());
+			if(poly != old_poly){
+				QString result;
+				foreach ( QPoint point, poly ) {
+					result += QString("(%1,%2);").arg(point.x()).arg(point.y());
+				}
+				result.chop(1);
+				undoStack->push(new ChangeConfigurationCommand(this, index, old_value, value, role));
+				}
+		}
+		break;
+	default:
+		qDebug() << "New role in changeRole:  " << role;
 		// Нужен ли здесь этот if ?
 		if ( type(item->parent) == Container ) {
 			QString column_name = info.getColumnName(hashTypes[item->id],role);
 			QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
 			if (!info.isPropertyRef(hashTypes[item->id], column_name))
 			{
-				if (addToStack)
-					undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
+				undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
 			}
 			else
 			{
@@ -239,12 +285,12 @@ dbg;
 					if (value.toString() != "")
 						break; // Serious error, breaking
 				}
-				if (addToStack)
 					undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-				repoClient->setPropValue(item->id,info.getColumnName(hashTypes[item->id],role), value.toString());
 			}
 		}
+		break;
 	}
+
 	foreach(RepoTreeItem *item, hashTreeItems[item->id]) {
 		//		item->updateData();
 		QModelIndex index = this->index(item);
@@ -252,6 +298,43 @@ dbg;
 	}
 
 	return true;
+}
+
+
+
+
+
+
+
+QModelIndex RealRepoModel::createDefaultTopLevelItem() {
+	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
+	if (diagramCategory->children.empty()) {
+		addElementToModel(diagramCategory, index(diagramCategory), "", "",
+			"krnnDiagram", "Root diagram", QPointF(), Qt::CopyAction, -1);
+	}
+
+	if (!diagramCategory->children.empty()) {
+		return index(diagramCategory->children[0]);
+	}
+	else
+		return QModelIndex();
+}
+
+void RealRepoModel::readItems()
+{
+	RepoTreeItem *diagramCategory = hashTreeItems["krnnDiagram"].first();
+	readCategoryTable(diagramCategory);
+	foreach (RepoTreeItem *diagram, diagramCategory->children) {
+		readItemsRecurse(diagram);
+	}
+}
+
+void RealRepoModel::readItemsRecurse( RepoTreeItem *parent )
+{
+	readContainerTable(parent);
+	foreach (RepoTreeItem *childItem,parent->children) {
+		readItemsRecurse(childItem);
+	}
 }
 
 Qt::ItemFlags RealRepoModel::flags(const QModelIndex &index) const

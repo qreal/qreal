@@ -5,6 +5,7 @@
 
 #include "propertyeditorproxymodel.h"
 #include "realreporoles.h"
+#include "realrepomodel.h"
 
 PropertyEditorModel::PropertyEditorModel(QObject *parent)
 	: QAbstractTableModel(parent), type(""), mPseudoAttributesCount(0)
@@ -81,8 +82,11 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		return false;
 
 	if ( ( role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1 )
-		if (index.row() != 0)
-			ret = targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
+		if (index.row() != 0){
+			RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(targetModel));
+			ret = im->changeRole(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
+			//ret = targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
+		    }
 		else
 			ret = true;
 	else

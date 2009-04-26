@@ -65,6 +65,10 @@ class RealRepoModel : public QAbstractItemModel
 					const QVariant & value, /**< Сохраняемое значение */
 					int role = Qt::EditRole /**< Роль */
 					);
+		bool changeRole(const QModelIndex & index, /**< Индекс элемента */
+					const QVariant & value, /**< Сохраняемое значение */
+					int role = Qt::EditRole /**< Роль */
+					);
 
 		/** @brief Получить флаги элемента
 		 *	@brief @return Флаги элемента

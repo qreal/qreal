@@ -35,8 +35,10 @@ void NodeElement::changeName()
         {*/
 	if (!mLockChangeName) {
 		mLockUpdateText = true;
-		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex, d.toPlainText(), Qt::DisplayRole);
+		//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+		//RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
+		RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
+		im->changeRole(dataIndex, d.toPlainText(), Qt::DisplayRole);
 		mLockUpdateText = false;
 	}
 /*	}
@@ -155,8 +157,8 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	moving = 1;
 	Q_ASSERT(dataIndex.isValid());
 	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
-	im->setData(dataIndex, pos(), Unreal::PositionRole);
-	im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+	im->changeRole(dataIndex, pos(), Unreal::PositionRole);
+	im->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
 	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
 	if ( dragState != None )
@@ -205,8 +207,10 @@ void NodeElement::updateData()
 			m_contents = newRect;
 		else if (!m_contents.isEmpty()) // This a temporary hack
 		{
-			QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+			//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
+			//RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
+			RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
+			im->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
 		}
 
 		transform.reset();
