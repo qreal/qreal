@@ -138,11 +138,11 @@ dbg;
 	return resp;
 }
 
-IdType RealRepoClient::createObject(TypeIdType const &type, QString name)
+IdType RealRepoClient::createObject(TypeIdType const &type, QString name, IdType id)
 {
 dbg;
-	qDebug() << "creating a new entity: " << type << name;
-	QString data = QString("%1\t%2\t%3\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name);
+	qDebug() << "creating a new entity: " << type << name << id;
+	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(id);
 	QString resp = sendData(data);
 	return resp;
 }
@@ -167,10 +167,10 @@ IdType RealRepoClient::reparentEntity(IdType const &id, IdType const &newParent,
 	
 }
 
-IdType RealRepoClient::createObjectWithParent(TypeIdType const &type, QString name, IdType const &parent)
+IdType RealRepoClient::createObjectWithParent(TypeIdType const &type, QString name, IdType const &parent, IdType id)
 {
 dbg;
-	QString data = QString("%1\t%2\t%3\t%4\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent);
+	QString data = QString("%1\t%2\t%3\t%4\t%5\t").arg(CMD_CREATE_ENTITY).arg(type).arg(name).arg(parent).arg(id);
 	QString resp = sendData(data);
 	return resp;
 //	qDebug() << "recvd" << resp;

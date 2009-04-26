@@ -237,15 +237,21 @@ IntQStringPair QRealRepoServerThread::handleSetName(QStringVector const &params)
 IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &params)
 {
 	qDebug() << params;
-	if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
-		return ReportError(ERR_INCORRECT_PARAMS);
+//	if (!IsParamsNumberCorrect(params, "CreateEntity", 3))
+//	if (params.size() != 3 && params.size() != 4)
+//		return ReportError(ERR_INCORRECT_PARAMS);
 
 	TypeIdType type = params[0];
-	IdType id = QString::number(++mCounter);
 	QString name = params[1];
 	IdType parent = params[2];
+	IdType id = (params.size()>3)?(QString::number(++mCounter)):params[3];
 	mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
 	if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
+		if (mRepoData->getObject(id) != 0)
+		{
+			qDebug() << "Object" << id << "already exists";
+			return ReportError(ERR_INCORRECT_PARAMS);
+		}
 		Object *obj = new Object(id, type);
 		obj->setName(name);
 		if (Object * par = mRepoData->getObject(parent))
@@ -264,6 +270,11 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 		mRepoData->addObject(id, obj);
 		mLog += QString(", object created, name %1").arg(name);
 	} else if (mTypesInfo->analyseType(type) == TYPE_LINK){
+		if (mRepoData->getLink(id) != 0)
+		{
+			qDebug() << "Link" << id << "already exists";
+			return ReportError(ERR_INCORRECT_PARAMS);
+		}
 		Link *link = new Link(id, type);
 		link->setName(name);
 		if (Object * obj = mRepoData->getObject(parent)){

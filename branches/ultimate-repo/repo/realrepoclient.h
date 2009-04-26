@@ -80,8 +80,9 @@ public:
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
 	IdType createObject(TypeIdType const &type, /**< Тип объекта */
-					QString name  /**< Имя объекта */
-					);
+	                    QString name,  /**< Имя объекта */
+	                    IdType const id="" /** Предполагаемый id */
+	                    );
 	/** @brief Поместить существующий объект на другую диаграмму
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
@@ -97,10 +98,11 @@ public:
 	/** @brief Создать элемент с указанным родителем
 	 *	@brief @return Идентификатор созданного объекта
 	 * */
-	IdType createObjectWithParent(TypeIdType const &type, /**< Тип объекта*/
-							QString name, /**< Имя */
-							IdType const &parent /**< Идентификатор родительского объекта */
-							);
+	IdType createObjectWithParent(TypeIdType const &type, /** Тип объекта*/
+	                              QString name, /**< Имя */
+	                              IdType const &parent, /**< Идентификатор родительского объекта */
+	                              IdType const id="" /** Предполагаемый id */
+	                             );
 	/** @brief Создать связь
 	 *	@brief @return Идентификатор созданной связи
 	 * */
