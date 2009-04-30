@@ -244,7 +244,7 @@ IntQStringPair QRealRepoServerThread::handleCreateEntity(QStringVector const &pa
 	TypeIdType type = params[0];
 	QString name = params[1];
 	IdType parent = params[2];
-	IdType id = (params.size()>3)?(QString::number(++mCounter)):params[3];
+	IdType id = (params[3]=="")?(QString::number(++mCounter)):params[3];
 	mLog += QString(", id: %1, type: %2, parent: %3 ").arg(id).arg(type).arg(parent);
 	if (mTypesInfo->analyseType(type) == TYPE_OBJECT){
 		if (mRepoData->getObject(id) != 0)
