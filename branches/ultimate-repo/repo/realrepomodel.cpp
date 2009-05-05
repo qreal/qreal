@@ -300,6 +300,23 @@ dbg;
 	return true;
 }
 
+void RealRepoModel::deleteElement(QModelIndex index)
+{
+	undoStack->beginMacro("Delete Element");
+
+	internalDeleteElement(index);
+
+	undoStack->endMacro();
+}
+
+void RealRepoModel::internalDeleteElement(QModelIndex ind)
+{
+	RepoTreeItem *item = static_cast<RepoTreeItem*>(ind.internalPointer());
+	foreach (RepoTreeItem *cur, item->children){
+		internalDeleteElement(index(cur));
+	}
+	undoStack->push(new DeleteElementCommand(this,ind));
+}
 
 
 
@@ -482,6 +499,9 @@ bool RealRepoModel::canBeDeleted(const QModelIndex &ind) const
 
 void RealRepoModel::deleteElementSafe(QModelIndex ind)
 {
+	deleteElement(ind);
+}
+/*{
 	RepoTreeItem *item = static_cast<RepoTreeItem*>(ind.internalPointer());
 	RepoTreeItem *parentItem = static_cast<RepoTreeItem*>(ind.parent().internalPointer());
 	QModelIndex *i, ava;
@@ -532,7 +552,7 @@ void RealRepoModel::deleteElementSafe(QModelIndex ind)
 		parentItem->children[j]->row = j;
 
 	endRemoveRows();
-}
+}*/
 
 bool RealRepoModel::removeRows ( int row, int count, const QModelIndex & parent )
 {
@@ -1170,14 +1190,6 @@ void RealRepoModel::redo()
 void RealRepoModel::showCommandList()
 {
 	undoView->show();
-}
-
-void RealRepoModel::safeSetData(const QModelIndex & index, const QVariant & value, int role)
-{
-	addToStack = false;
-	setData(index, value, role);
-	addToStack = true;
-	emit dataChanged(index,index);
 }
 
 unsigned RealRepoModel::findIndex(TypeIdType const &id) const

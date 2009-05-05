@@ -62,14 +62,20 @@ public:
 class DeleteElementCommand : public UndoCommand
 {
 public:
-	DeleteElementCommand(RealRepoModel *model, IdType id);
+	DeleteElementCommand(RealRepoModel *model, QModelIndex index);
 
 	virtual void undo();
 	virtual void redo();
 protected:
 	RealRepoModel *model;
-	IdType id;
+	IdType repoId;
 	TypeIdType type;
+	IdType parentId;
+
+	QVariant name;
+	QVariant configuration;
+	QVariant position;
+	QMap<int, QVariant> roleValues;
 };
 
 class AddElementCommand : public UndoCommand

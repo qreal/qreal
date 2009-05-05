@@ -26,6 +26,13 @@ class RealRepoModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
+	friend class ChangeRoleCommand;
+	friend class ChangePositionCommand;
+	friend class ChangeConfigurationCommand;
+	friend class ChangeEditRoleCommand;
+	friend class ChangeUserRoleCommand;
+	friend class DeleteElementCommand;
+
 	public:
 		/** @brief Конструктор */
 		RealRepoModel( const QString &addr, const int port, QObject *parent = 0 );
@@ -69,7 +76,8 @@ class RealRepoModel : public QAbstractItemModel
 					const QVariant & value, /**< Сохраняемое значение */
 					int role = Qt::EditRole /**< Роль */
 					);
-
+		void deleteElement(QModelIndex index);
+		void internalDeleteElement(QModelIndex ind);
 		/** @brief Получить флаги элемента
 		 *	@brief @return Флаги элемента
 		 * */
@@ -129,13 +137,6 @@ class RealRepoModel : public QAbstractItemModel
 		{
 			return repoClient->state();
 		}
-
-		/** @brief Undo-safe сохраниение данных элемента
-		 * */
-		void safeSetData(const QModelIndex & index, /**< Индекс элемента */
-					const QVariant & value, /**< Сохраняемое значение */
-					int role = Qt::EditRole /**< Роль */
-		);
 
 		/** @brief Создать корневой элемент диаграммы, чтобы юзеру не пришлось
 		 * тащить krnnDiagram из палитры вручную.
