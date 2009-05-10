@@ -1,1 +1,1 @@
-start reposerver/debug/server.exe 6666
+start reposerver/debug/server.exe 6666 -ie

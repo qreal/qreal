@@ -204,6 +204,9 @@ void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 void EdgeElement::connectToPort() {
 	//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
 	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
+	RealRepoInfo info;
+
+	TypeIdType type = dataIndex.data(Unreal::TypeRole).toString();
 
 	setPos(pos()+m_line[0]);
 	m_line.translate(-m_line[0]);
@@ -228,11 +231,11 @@ void EdgeElement::connectToPort() {
 	}
 
 	if ( src )
-		im->changeRole(dataIndex, src->uuid(), Unreal::krneRelationship::fromRole);
+		im->changeRole(dataIndex, src->uuid(), info.roleByColumnName(type, "from"));
 	else
-		im->changeRole(dataIndex, 0, Unreal::krneRelationship::fromRole);
+		im->changeRole(dataIndex, 0, info.roleByColumnName(type, "from"));
 
-	im->changeRole(dataIndex, portFrom, Unreal::krneRelationship::fromPortRole);
+	im->changeRole(dataIndex, portFrom, info.roleByColumnName(type, "fromPort"));
 
 
 	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
@@ -252,11 +255,11 @@ void EdgeElement::connectToPort() {
 	}
 
 	if ( dst )
-		im->changeRole(dataIndex, dst->uuid(), Unreal::krneRelationship::toRole);
+		im->changeRole(dataIndex, dst->uuid(), info.roleByColumnName(type, "to"));
 	else
-		im->changeRole(dataIndex, 0, Unreal::krneRelationship::toRole);
+		im->changeRole(dataIndex, 0, info.roleByColumnName(type, "to"));
 
-	im->changeRole(dataIndex, portTo, Unreal::krneRelationship::toPortRole);
+	im->changeRole(dataIndex, portTo, info.roleByColumnName(type, "toPort"));
 
 	setFlag(ItemIsMovable, !(dst||src) );
 
@@ -401,9 +404,6 @@ void EdgeElement::updateData()
 	QPolygonF newLine = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
 	if (!newLine.isEmpty())
 		m_line = newLine;
-
-	qDebug() << "from role: " << Unreal::krneRelationship::fromRole
-		<< "to role: " << Unreal::krneRelationship::toRole;
 
 	IdType uuidFrom = dataIndex.data(info.roleByColumnName(type, "from")).toString();
 	IdType uuidTo = dataIndex.data(info.roleByColumnName(type, "to")).toString();

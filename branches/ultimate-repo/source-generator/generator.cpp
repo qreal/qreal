@@ -162,12 +162,6 @@ void Generator::genEnums()
 
 	out << "};\n\n";
 
-	out <<
-		   "namespace Unreal {\n\t"
-		   "enum ClassRoles {\n\t\tFieldsRole = UserRole + 1,\n\t\tMethodsRole\n\t};\n\n\t"
-		   "enum LinkRoles {\n\t\tFromRole = UserRole + 1,\n\t\tToRole,\n\t\tFromPortRole,\n\t\tToPortRole\n\t};\n};\n";
-
-
 	out << "#endif\n";
 
 	file.close();
@@ -874,7 +868,7 @@ void Generator::genRealRepoInfo(){
 			"static QMap<IdType, QString> objects;\n"
 			"static QMap<IdType, QString> descriptions;\n"
 			"static QMap<IdType, QIcon> icons;\n"
-			"//Это хак... Но пущай живет, пока не буянит\n"
+			"// Это хак... Но пущай живет, пока не буянит\n"
 			"static QMap<TypeIdType, QList<QStringBoolPair> > map;\n\n";
 
 	out2 << "static void initStaticData()\n{\n"
