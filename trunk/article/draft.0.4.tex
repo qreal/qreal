@@ -244,18 +244,11 @@ QReal они представлены следующими
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=14.704cm,height=10.918cm]{draft04-img1.png}
+    \includegraphics[width=\textwidth]{draft04-img1.png}
     \caption{Главное окно QReal}
     \label{mainWindow}
   \end{center}
 \end{figure}
-
-% {\centering 
-% \includegraphics[width=14.704cm,height=10.918cm]{draft04-img1.png}
-% \par}
-% {\centering\selectlanguage{russian}
-% Рис. 1. Главное окно QReal}
-% \par}
 
 Следует заметить, что реализация подобного рода элементов графического
 интерфейса в общем случае является платформо-зависимой задачей, т.е.
@@ -523,37 +516,13 @@ CASE-пакет стало возможным, в нем была реализована следующая инфраструктура:
 В соответствии с предлагаемой инфраструктурой для интеграции редакторов
 в CASE-пакет была создана следующая иерархия классов:
 
-% TODO: разобраться, как привести в божеский вид. Пока решил не трогать.
-{\centering 
-\includegraphics[width=10.786cm,height=9.038cm]{draft04-img2.png} \par}
-
-\begin{figure}
-\begin{center}
-\begin{minipage}{2.849cm}
-
-``Ядро''
-\end{minipage}
-\end{center}
+\begin{figure} [ht]
+  \begin{center}
+		\includegraphics[width=\textwidth]{draft04-img2.png}
+    \caption{Иерархия классов элементов графических редакторов}
+    \label{hierarchy}
+  \end{center}
 \end{figure}
-\begin{figure}
-\begin{center}
-\begin{minipage}{6.024cm}
-{\selectlanguage{english}
-Qt Graphics View Framework}
-\end{minipage}
-\end{center}
-\end{figure}
-\begin{figure}
-\begin{center}
-\begin{minipage}{3.801cm}
-
-``Специфика''
-\end{minipage}
-\end{center}
-\end{figure}
-\subparagraph[Рис. 2. Иерархия классов элементов графических
-редакторов]{Рис. 2. Иерархия классов элементов графических редакторов}
-
 
 Класс QGraphicsItem является базовым классом всех графических элементов Qt
 Graphics View Framework. На его основе строятся все
@@ -807,7 +776,7 @@ ZeroC ICE~\cite{ice}.
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=7.35cm,height=5.295cm]{draft04-img3.jpg}
+    \includegraphics[width=0.5\textwidth]{draft04-img3.jpg}
     \caption{Элемент до (слева) и после (справа) масштабирования}
     \label{scaling}
   \end{center}
@@ -827,11 +796,11 @@ SVG не предоставляет средств для его
 \begin{itemize}
   \item Абсолютное --- размер графического примитива задается в явном виде и при
         масштабировании не меняется;\newline
-    \includegraphics[width=11.622cm,height=5.646cm]{draft04-img4.jpg}
+    \includegraphics[width=0.7\textwidth]{draft04-img4.jpg}
   \item Процентное --- размер графического примитива задается в процентах от
         общего размера элемента (сюда же входит и ``обычное'' пропорциональное
         масштабирование).\newline
-    \includegraphics[width=11.582cm,height=5.927cm]{draft04-img5.jpg}
+    \includegraphics[width=0.7\textwidth]{draft04-img5.jpg}
 \end{itemize}
 
 Кроме того, были созданы средства конвертации SVG-описаний в формат SDF
