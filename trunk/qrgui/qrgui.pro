@@ -16,5 +16,14 @@ include (dialogs/dialogs.pri)
 # Main window
 include (mainwindow/mainwindow.pri)
 
+# Client
+include (client/client.pri)
+
+# Model
+include (model/model.pri)
+
+# View
+include (view/view.pri)
+
 # Stuff used in all places
 include (kernel/kernel.pri)

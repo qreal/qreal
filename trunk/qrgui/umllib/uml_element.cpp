@@ -19,8 +19,17 @@ Element::Element()
 void Element::setIndex(QPersistentModelIndex &index)
 {
 	dataIndex = index;
+//    updateData();
+
+	// this should probably be here, uuid is too important...
+//	m_uuid = dataIndex.data(Qt::DisplayRole);
 
 	update();
+}
+
+IdType Element::uuid() const
+{
+	return m_uuid;
 }
 
 void Element::updateData()

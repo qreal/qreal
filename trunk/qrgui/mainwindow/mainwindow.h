@@ -20,6 +20,7 @@ namespace qReal {
 	public:
 		MainWindow();
 		~MainWindow();
+		Ui::MainWindowUi ui;
 
 	public slots:
 		//		void connectRepo();
@@ -35,7 +36,7 @@ namespace qReal {
 		void makeSvg();
 
 	private:
-		Ui::MainWindowUi ui;
+
 
 		void loadPlugins();
 		EditorManager mgr;

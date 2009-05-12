@@ -6,6 +6,10 @@
 #include <QtGui/QGraphicsItem>
 #include <QtCore/QModelIndex>
 
+#include "../kernel/definitions.h"
+
+using namespace qReal;
+
 namespace UML {
 	/** @class Element
 	* 	@brief Базовый класс элемента на диаграмме
@@ -27,11 +31,22 @@ namespace UML {
 		/** @brief Обновить данные элемента */
 		virtual void updateData();
 
+		/** @brief Получить идентификатор элемента
+		 *	@brief @return Идентификатор элемента
+		 * */
+		IdType uuid() const;
+
 		virtual void connectToPort() { }
 
 	protected:
+		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 		/** @brief Индекс элемента в модели */
 		QPersistentModelIndex dataIndex;
+
+		/** @brief Идентификатор элемента */
+		IdType m_uuid;
+		/** @brief Тип элемента */
 
 		/** @brief Индикатор перемещения элемента */
 		bool moving;
