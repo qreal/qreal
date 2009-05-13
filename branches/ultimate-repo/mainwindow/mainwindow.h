@@ -83,6 +83,7 @@ private slots:
 	void runTestQueries() const;
 	void reconnect();
 	void reconnectRepo(const QString& addr, const int port);
+	void generator_editor();
 
 private:
 	/** @brief Модель */

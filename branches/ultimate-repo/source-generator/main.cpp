@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
 	ret = ret && g.loadFile("bpel.xml");
 	ret = ret && g.loadFile("qrealparallel_metamodel.xml");
 //	ret = ret && g.loadFile("orthodox.xml");
+	ret = ret && g.loadFile("meta_editor.xml");
+	ret = ret && g.loadFile("NEW_Meta_editor.xml");
 
 	if (!ret)
 		return 1; // Failure

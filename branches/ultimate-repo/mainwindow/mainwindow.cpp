@@ -16,6 +16,7 @@
 #include "realrepomodel.h"
 #include "editorview.h"
 #include "optionsDialog.h"
+#include "meta_generator.h"
 #include <QProgressBar>
 
 using namespace qReal;
@@ -72,6 +73,8 @@ MainWindow::MainWindow() : model(0)
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
 	connect(ui.actionReconnect, SIGNAL( triggered() ), this, SLOT( reconnect() ));
+	connect(ui.actionGenerate_editor, SIGNAL( triggered() ), this, SLOT( generator_editor() ));	
+//
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
@@ -416,6 +419,14 @@ void MainWindow::reconnect()
 	qDebug() << "OLOLO!!!";
 	connDialog->exec();
 }
+
+void MainWindow::generator_editor() {
+	qDebug() << "generator_editor run";
+	qReal::meta_generator editorGeneratorDialog;
+	editorGeneratorDialog.exec();
+}
+
+
 
 void MainWindow::reconnectRepo(const QString& addr, const int port)
 {
