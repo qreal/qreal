@@ -24,6 +24,11 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 	*file = NULL;
 
 	QFileInfo fileinfo = QFileInfo(QDir(srcdir), filename);
+	if (!fileinfo.exists())
+	{
+		qDebug() << "Cannot file file" << filename;
+		return false;
+	}
 	f = findFile(fileinfo);
 	if (f)
 	{
