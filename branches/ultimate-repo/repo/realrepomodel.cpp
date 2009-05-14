@@ -260,33 +260,7 @@ dbg;
 		if ( type(item->parent) == Container ) {
 			QString column_name = info.getColumnName(hashTypes[item->id],role);
 			QVariant old_value = QVariant(repoClient->getPropValue(item->id, column_name));
-			if (!info.isPropertyRef(hashTypes[item->id], column_name))
-			{
-				undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-			}
-			else
-			{
-				// try-catch здесь хак. Пущай поживут, пока клиент не научится обрабатывать ошибки
-				try{
-					qDebug() << "removing ref" << item->id << "from" << old_value.toString();
-					repoClient->decReferral(old_value.toString(), item->id);
-				} catch (QString e)
-				{
-					qDebug() << "error removing referrals";
-					if (old_value.toString() != "")
-						break; // Serious error, breaking
-				}
-				try{
-					qDebug() << "adding ref" << item->id << "to" << value.toString();
-					repoClient->incReferral(value.toString(), item->id);
-				} catch (QString e)
-				{
-					qDebug() << "error adding referrals";
-					if (value.toString() != "")
-						break; // Serious error, breaking
-				}
-					undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
-			}
+			undoStack->push(new ChangeUserRoleCommand(this, index, old_value, value, role));
 		}
 		break;
 	}

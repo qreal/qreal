@@ -25,7 +25,7 @@ void ChangeRoleCommand::redo()
 ChangePositionCommand::ChangePositionCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role):
 	ChangeRoleCommand(model, index, oldval, newval, role)
 {
-	setText(QString("Changing position from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
+	setText(QString("Changing Position from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
 }
 bool ChangePositionCommand::mergeWith(const QUndoCommand* command)
 {
@@ -37,6 +37,7 @@ bool ChangePositionCommand::mergeWith(const QUndoCommand* command)
 	return false;
 
 	newval = other->newval;
+	setText(QString("Changing Position from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
 	return true;
 }
 int ChangePositionCommand::id() const
@@ -47,7 +48,14 @@ int ChangePositionCommand::id() const
 ChangeConfigurationCommand::ChangeConfigurationCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role):
 	ChangeRoleCommand(model, index, oldval, newval, role)
 {
-	setText(QString("Changing configuration from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
+	QString commandDescription = "Changing Configuration from ";
+	QPolygon poly(oldval.value<QPolygon>());
+	foreach ( QPoint point, poly ) commandDescription += QString("(%1,%2);").arg(point.x()).arg(point.y());
+	commandDescription += " to ";
+	poly = newval.value<QPolygon>();
+	foreach ( QPoint point, poly ) commandDescription += QString("(%1,%2);").arg(point.x()).arg(point.y());
+
+	setText(commandDescription);
 }
 bool ChangeConfigurationCommand::mergeWith(const QUndoCommand* command)
 {
@@ -59,6 +67,18 @@ bool ChangeConfigurationCommand::mergeWith(const QUndoCommand* command)
 	return false;
 
 	newval = other->newval;
+
+	//дублируется код конструктора.
+
+	QString commandDescription = "Changing Configuration from ";
+	QPolygon poly(oldval.value<QPolygon>());
+	foreach ( QPoint point, poly ) commandDescription += QString("(%1,%2);").arg(point.x()).arg(point.y());
+	commandDescription += " to ";
+	poly = newval.value<QPolygon>();
+	foreach ( QPoint point, poly ) commandDescription += QString("(%1,%2);").arg(point.x()).arg(point.y());
+	setText(commandDescription);
+	//----
+
 	return true;
 }
 int ChangeConfigurationCommand::id() const
@@ -69,7 +89,7 @@ int ChangeConfigurationCommand::id() const
 ChangeUserRoleCommand::ChangeUserRoleCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role):
 	ChangeRoleCommand(model, index, oldval, newval, role)
 {
-	setText(QString("Changing UserRole from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
+	setText(QString("Changing Property from \"%1\" to \"%2\"").arg(oldval.toString()).arg(newval.toString()));
 }
 bool ChangeUserRoleCommand::mergeWith(const QUndoCommand* command)
 {
@@ -81,6 +101,7 @@ bool ChangeUserRoleCommand::mergeWith(const QUndoCommand* command)
 	return false;
 
 	newval = other->newval;
+	setText(QString("Changing Property from \"%1\" to \"%2\"").arg(oldval.toString()).arg(newval.toString()));
 	return true;
 }
 int ChangeUserRoleCommand::id() const
@@ -91,7 +112,7 @@ int ChangeUserRoleCommand::id() const
 ChangeEditRoleCommand::ChangeEditRoleCommand (RealRepoModel *model, const QModelIndex& index, QVariant oldval,const QVariant& newval,int role):
 	ChangeRoleCommand(model, index, oldval, newval, role)
 {
-	setText(QString("Changing EditRole from (%1:%2) to (%3:%4)").arg(oldval.toPoint().x()).arg(oldval.toPoint().y()).arg(newval.toPoint().x()).arg(newval.toPoint().y()));
+	setText(QString("Changing Name from \"%1\" to \"%2\"").arg(oldval.toString()).arg(newval.toString()));
 }
 bool ChangeEditRoleCommand::mergeWith(const QUndoCommand* command)
 {
@@ -103,6 +124,7 @@ bool ChangeEditRoleCommand::mergeWith(const QUndoCommand* command)
 	return false;
 
 	newval = other->newval;
+	setText(QString("Changing Name from \"%1\" to (%2)").arg(oldval.toString()).arg(newval.toString()));
 	return true;
 }
 int ChangeEditRoleCommand::id() const
