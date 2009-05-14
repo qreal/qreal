@@ -32,7 +32,7 @@ NodeElement::~NodeElement()
 void NodeElement::changeName()
 {
 /*	if(d.toPlainText() != oldName)
-        {*/
+		{*/
 	if (!mLockChangeName) {
 		mLockUpdateText = true;
 		//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
@@ -46,7 +46,7 @@ void NodeElement::changeName()
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{	
+{
 	d.setTextWidth(boundingRect().width()-25);
 	if (isSelected())
 	{
@@ -63,8 +63,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	} else
 		Element::mousePressEvent(event);
 
-        if (event->button() == Qt::RightButton)
-        {
+		if (event->button() == Qt::RightButton)
+		{
 				/*QWidget *w = new QWidget();
 				w->setAttribute(Qt::WA_DeleteOnClose, true);
 				w->setWindowFlags(Qt::FramelessWindowHint);
@@ -83,7 +83,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 				w->show();*/
 
-                event->accept();
+				event->accept();
 	}
 }
 
@@ -91,7 +91,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	d.setTextWidth(boundingRect().width()-25);
-		
+
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
@@ -144,9 +144,20 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			transform.reset();
 			transform.scale(m_contents.width(), m_contents.height());
 
-			foreach (EdgeElement *edge, edgeList)
-				edge->adjustLink();
+			adjustEdges();
 		}
+	}
+}
+
+void NodeElement::adjustEdges()
+{
+	foreach (EdgeElement *edge, edgeList)
+		edge->adjustLink();
+
+	foreach (QGraphicsItem *child, childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element)
+			element->adjustEdges();
 	}
 }
 
@@ -179,8 +190,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	switch ( change ) {
 		case ItemPositionHasChanged:
-			foreach (EdgeElement *edge, edgeList)
-				edge->adjustLink();
+			adjustEdges();
 			return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
@@ -324,42 +334,42 @@ void NodeElement::setPortsVisible(bool value) {
 }
 
 void NodeElement::complexInlineEditing() {
-    if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
+	if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
 	docvis.setTextWidth(0);
 	doctype.setTextWidth(0);
 	d.setPos(15, m_contents.height() - 15);
 	d.setTextWidth(m_contents.width() - 25);
-    } else
-    if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
+	} else
+	if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
 	docvis.setTextWidth(0);
 	doctype.setPos(1, m_contents.height() - 15);
 	if (typetext.length() * 5 < 6*m_contents.width() / 16)
-	    doctype.setTextWidth(typetext.length() * 5);
+		doctype.setTextWidth(typetext.length() * 5);
 	else
-	    doctype.setTextWidth(6 * m_contents.width() / 16);
-			
+		doctype.setTextWidth(6 * m_contents.width() / 16);
+
 	d.setPos(doctype.textWidth(), m_contents.height() - 15);
 	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
-    } else
-    if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
+	} else
+	if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
 	doctype.setTextWidth(0);
 	docvis.setPos(1, m_contents.height() - 15);
 	docvis.setTextWidth(11);
 	d.setPos(16, m_contents.height() - 15);
 	d.setTextWidth(m_contents.width() - 37);
-    } else
-    if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
+	} else
+	if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
 	docvis.setPos(1, m_contents.height() - 15);
 	docvis.setTextWidth(11);
 	doctype.setPos (16, m_contents.height() - 15);
 	if (typetext.length() * 5 < 6 * m_contents.width() / 16)
-	    doctype.setTextWidth(typetext.length() * 5);
+		doctype.setTextWidth(typetext.length() * 5);
 	else
-	    doctype.setTextWidth(6 * m_contents.width() / 16);
-			
+		doctype.setTextWidth(6 * m_contents.width() / 16);
+
 	d.setPos(docvis.textWidth() + doctype.textWidth(),  m_contents.height() - 15);
 	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
-    }
+	}
 }
 
 NodeElement *NodeElement::getNodeAt( const QPointF &position )
@@ -373,7 +383,7 @@ NodeElement *NodeElement::getNodeAt( const QPointF &position )
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
-{	
+{
 	if (option->levelOfDetail >= 0.5)
 	{
 		if (option->state & QStyle::State_Selected)

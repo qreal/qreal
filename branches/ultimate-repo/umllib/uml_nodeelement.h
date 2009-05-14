@@ -13,7 +13,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 
-#include <QGraphicsProxyWidget> 
+#include <QGraphicsProxyWidget>
 
 #include <QtGui/QWidget>
 
@@ -55,10 +55,10 @@ namespace UML {
 		NodeElement();
 		/** @brief Деструктор */
 
-		~NodeElement();    
+		~NodeElement();
 
 		void complexInlineEditing();
-		
+
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
 						   const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
@@ -133,7 +133,7 @@ namespace UML {
 		bool portsVisible;
 		QRectF scrollRect;
 
-		QGraphicsProxyWidget scroll; 
+		QGraphicsProxyWidget scroll;
 
 		/** @brief Обработать событие наведения на объект курсора мыши */
 		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
@@ -177,12 +177,12 @@ namespace UML {
 		ElementTitle doctype;
 		QString typetext;
 		QString vistext;
-		
-		float coord_def(QString , float ,float); 
-		float x_def(QString ); 
-		float y_def(QString ); 
-		float first_size_x; 
-		float first_size_y; 
+
+		float coord_def(QString , float ,float);
+		float x_def(QString );
+		float y_def(QString );
+		float first_size_x;
+		float first_size_y;
 
 
 	private:
@@ -210,6 +210,7 @@ namespace UML {
 
 		QTransform transform;
 		QLineF newTransform(const statLine& port)  const;
+		void adjustEdges();
 
 	};
 
