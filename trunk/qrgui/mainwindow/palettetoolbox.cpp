@@ -1,6 +1,9 @@
 #include <QtGui>
 
 #include "palettetoolbox.h"
+#include "../kernel/definitions.h"
+
+using namespace qReal;
 
 PaletteToolbox::DraggableElement::DraggableElement(QString id, QString name,
 		QIcon icon, QWidget *parent/*0*/)
@@ -82,8 +85,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QByteArray itemData;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << -1;				// uuid
-	stream << child->id();			// type
+	stream << child->id();				// uuid
+	stream << ROOT_ID.toString();				// pathToItem
 	stream << QString("(anon element)");
 	stream << QPointF(0,0);
 

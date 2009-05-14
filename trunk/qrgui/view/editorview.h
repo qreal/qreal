@@ -5,8 +5,8 @@
 
 #include <QGraphicsView>
 
-//#include "editorviewscene.h"
-//#include "editorviewmviface.h"
+#include "editorviewscene.h"
+#include "editorviewmviface.h"
 
 //class DiagramExplorerModel;
 class EditorViewMViface;

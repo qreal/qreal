@@ -8,10 +8,17 @@
 #include "editorview.h"
 #include "editorviewscene.h"
 
+#include "../kernel/definitions.h"
 //#include "realreporoles.h"
 
 #include "../umllib/uml_element.h"
 //#include "uml_guiobjectfactory.h"
+
+
+#include "editormanager.h"
+#include "../mainwindow/mainwindow.h"
+
+using namespace qReal;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
@@ -103,7 +110,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-/*
+
 	qDebug() << "========== rowsInserted" << parent << start << end;
 
 	if (parent == QModelIndex() || parent.parent() == QModelIndex())
@@ -112,24 +119,27 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		IdType uuid = current.data(Unreal::IdRole).toString();
-		TypeIdType type = current.data(Unreal::TypeRole).toString();
+		IdType uuid = Id::loadFromString(current.data().toString());
+	//	TypeIdType type = current.data(Unreal::TypeRole).toString();
 
-		IdType parent_uuid = "";
+		IdType parent_uuid;
 		if (parent != rootIndex())
-			parent_uuid = parent.data(Unreal::IdRole).toString();
+			parent_uuid = Id::loadFromString(parent.data().toString());
 
-		qDebug() << uuid << type;
+		qDebug() << uuid.toString();
 
-		if (uuid == "")
+		if (uuid == Id())
 			continue;
 
-		if (UML::Element *e = UML::GUIObjectFactory(type)) {
+		//if (UML::Element *e = UML::GUIObjectFactory(type)) {
+		extern MainWindow *window;
+		UML::Element *e  = window->manager()->graphicalObject(uuid);
+		if ( e ) {
 			scene->addItem(e);
 			e->setIndex(current);
-			e->setPos(current.data(Unreal::PositionRole).toPointF());
+	//		e->setPos(current.data(Unreal::PositionRole).toPointF());
 
-			if (parent_uuid != "")
+			if (!(parent_uuid == Id()))
 				e->setParentItem(items[parent]);
 
 			items[current] = e;
@@ -142,7 +152,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
 	}
-*/
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 

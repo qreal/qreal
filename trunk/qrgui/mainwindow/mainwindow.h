@@ -10,8 +10,8 @@
 
 namespace qReal {
 
-	class RealRepoModel;
-	class EditorView;
+//	class RealRepoModel;
+//	class EditorView;
 
 	class MainWindow : public QMainWindow
 	{
@@ -21,6 +21,9 @@ namespace qReal {
 		MainWindow();
 		~MainWindow();
 		Ui::MainWindowUi ui;
+		EditorManager *manager() {
+			return &mgr;
+		};
 
 	public slots:
 		//		void connectRepo();

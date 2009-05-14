@@ -6,7 +6,7 @@
 #include <QGraphicsScene>
 
 #include "../umllib/uml_element.h"
-//#include "../common/classes.h"
+#include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
 
 class EditorViewMViface;

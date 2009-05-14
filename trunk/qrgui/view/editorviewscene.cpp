@@ -80,21 +80,19 @@ void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	/*
 	// Transform mime data to include coordinates.
 	const QMimeData *mimeData = event->mimeData();
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
-	IdType uuid = "", oldparent = "";
-	TypeIdType type_id = "";
+	QString uuid = "";
+	QString pathToItem = "";
 	QString name;
 	QPointF pos;
 
 	in_stream >> uuid;
-	in_stream >> type_id;
-	in_stream >> oldparent;
+	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
 
@@ -103,7 +101,8 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	UML::Element *newParent = 0;
 
-	UML::Element *e = UML::GUIObjectFactory(type_id);
+	UML::Element *e = window->manager()->graphicalObject(Id::loadFromString(uuid));
+//	= UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement *>(e)) {
 		newParent= getElemAt(event->scenePos());
@@ -114,8 +113,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	}
 
 	stream << uuid;				// uuid
-	stream << type_id;			// type
-	stream << oldparent;
+	stream << pathToItem;		
 	stream << name;
 
 	if (!newParent) {
@@ -135,7 +133,6 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 										 mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
 	}
 	delete newMimeData;
-	*/
 }
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
