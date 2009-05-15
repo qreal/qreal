@@ -9,8 +9,8 @@ namespace UML {
 		Kroki() {
 			renderer.load(QString(":/TestEditor/Orthodox/Kroki.sdf"));
 			text = "";
-			height = -1;
-			width = -1;
+			height = 100;
+			width = 100;
 			m_contents.setWidth(width);
 			m_contents.setHeight(height);
 			d.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());
