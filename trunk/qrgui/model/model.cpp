@@ -157,9 +157,10 @@ QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
 	if (parent.isValid()) {
 		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 	} else {
-		//hack
-		return createIndex(row,column,rootItem);
 		parentItem = rootItem;
+	}
+	if (parentItem->children().size()<=row) {
+		return QModelIndex();
 	}
 	ModelTreeItem *item = parentItem->children().at(row);
 	return createIndex(row,column,item);
@@ -170,7 +171,6 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		ModelTreeItem *parentItem = item->parent();
-		//hack
 		if ((parentItem==rootItem)||(parentItem==NULL)) {
 			return QModelIndex();
 		} else{
@@ -220,35 +220,28 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 {
 	Q_UNUSED(row)
 	Q_UNUSED(column)
-	//hack
-//	if (parent.isValid()) {
-		if (action == Qt::IgnoreAction) {
-			return true;
+	if (action == Qt::IgnoreAction) {
+		return true;
+	} else {
+		ModelTreeItem *parentItem;
+		if (parent.isValid()) {
+			parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 		} else {
-			ModelTreeItem *parentItem;
-			if (parent.isValid()) {
-				parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-			} else {
-				parentItem = rootItem;
-			}
-
-			QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
-			QDataStream stream(&dragData, QIODevice::ReadOnly);
-			QString idString;
-			PropertyName pathToItem;
-			QString name;
-			QPointF position;
-			stream >> idString;
-			stream >> pathToItem;
-			stream >> name;
-			stream >> position;
-
-			IdType id = Id::loadFromString(idString);
-			return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
+			parentItem = rootItem;
 		}
-//	} else {
-//		return false;
-//	}
+		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+		QDataStream stream(&dragData, QIODevice::ReadOnly);
+		QString idString;
+		PropertyName pathToItem;
+		QString name;
+		QPointF position;
+		stream >> idString;
+		stream >> pathToItem;
+		stream >> name;
+		stream >> position;
+		IdType id = Id::loadFromString(idString);
+		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
+	}
 }
 
 ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
@@ -279,4 +272,9 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 			Qt::MoveAction);
 		loadSubtreeFromClient(child);
 	}
+}
+
+QPersistentModelIndex Model::rootIndex()
+{
+	return index(rootItem);
 }

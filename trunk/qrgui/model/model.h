@@ -10,6 +10,7 @@
 #include <QMimeData>
 #include <QModelIndexList>
 #include <QPointF>
+#include <QPersistentModelIndex>
 
 namespace qReal {
 
@@ -22,6 +23,7 @@ namespace qReal {
 		public:
 			Model();
 			~Model();
+			QPersistentModelIndex rootIndex();
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 			virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 			virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

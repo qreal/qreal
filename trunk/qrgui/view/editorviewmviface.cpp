@@ -128,7 +128,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 		qDebug() << uuid.toString();
 
-		if (uuid == Id())
+		if (uuid == ROOT_ID)
 			continue;
 
 		//if (UML::Element *e = UML::GUIObjectFactory(type)) {
@@ -138,6 +138,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			scene->addItem(e);
 			e->setIndex(current);
 	//		e->setPos(current.data(Unreal::PositionRole).toPointF());
+			e->setPos(0,0);
 
 			if (!(parent_uuid == Id()))
 				e->setParentItem(items[parent]);

@@ -19,7 +19,7 @@ namespace qReal {
 
 	}
 
-	const IdType ROOT_ID = Id();
+	const IdType ROOT_ID = Id("ROOT_ID","ROOT_ID","ROOT_ID","ROOT_ID");
 
 	const char PATH_DIVIDER = '#';
 

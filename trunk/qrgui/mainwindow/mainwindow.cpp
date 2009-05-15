@@ -79,6 +79,7 @@ MainWindow::MainWindow()
 
 	ui.diagramExplorer->setModel(mModel);
 	ui.view->mvIface()->setModel(mModel);	
+	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
 	//	connectRepo();
 }
 
