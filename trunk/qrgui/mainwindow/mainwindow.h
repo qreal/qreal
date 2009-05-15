@@ -8,10 +8,13 @@
 
 #include "editormanager.h"
 
+class EditorView;
+
 namespace qReal {
 
-//	class RealRepoModel;
-//	class EditorView;
+	namespace model  {
+		class Model;
+	}
 
 	class MainWindow : public QMainWindow
 	{
@@ -21,6 +24,7 @@ namespace qReal {
 		MainWindow();
 		~MainWindow();
 		Ui::MainWindowUi ui;
+
 		EditorManager *manager() {
 			return &mgr;
 		};
@@ -39,7 +43,7 @@ namespace qReal {
 		void makeSvg();
 
 	private:
-
+		model::Model *mModel;
 
 		void loadPlugins();
 		EditorManager mgr;

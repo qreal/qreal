@@ -37,6 +37,8 @@ QVariant Model::data( const QModelIndex &index, int role) const
 			case Qt::DisplayRole:
 			case Qt::EditRole:
 				return mClient->property(item->id(),"Name");
+			case Qt::UserRole:
+				return item->id().toString();
 		}
 		return QVariant();
 	} else {
@@ -155,6 +157,8 @@ QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
 	if (parent.isValid()) {
 		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
 	} else {
+		//hack
+		return createIndex(row,column,rootItem);
 		parentItem = rootItem;
 	}
 	ModelTreeItem *item = parentItem->children().at(row);
@@ -166,7 +170,8 @@ QModelIndex Model::parent( const QModelIndex &index ) const
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		ModelTreeItem *parentItem = item->parent();
-		if (parentItem==rootItem) {
+		//hack
+		if ((parentItem==rootItem)||(parentItem==NULL)) {
 			return QModelIndex();
 		} else{
 			return createIndex(parentItem->row(),0,parentItem);
@@ -215,11 +220,18 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 {
 	Q_UNUSED(row)
 	Q_UNUSED(column)
-	if (parent.isValid()) {
+	//hack
+//	if (parent.isValid()) {
 		if (action == Qt::IgnoreAction) {
 			return true;
 		} else {
-			ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+			ModelTreeItem *parentItem;
+			if (parent.isValid()) {
+				parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+			} else {
+				parentItem = rootItem;
+			}
+
 			QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 			QDataStream stream(&dragData, QIODevice::ReadOnly);
 			QString idString;
@@ -234,9 +246,9 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 			IdType id = Id::loadFromString(idString);
 			return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 		}
-	} else {
-		return false;
-	}
+//	} else {
+//		return false;
+//	}
 }
 
 ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,

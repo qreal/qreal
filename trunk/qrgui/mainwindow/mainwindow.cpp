@@ -12,7 +12,13 @@
 
 #include "mainwindow.h"
 
+#include "../model/model.h"
+
+#include "../view/editorview.h"
+
 using namespace qReal;
+
+using namespace model;
 
 MainWindow::MainWindow()
 {
@@ -69,6 +75,10 @@ MainWindow::MainWindow()
 	loadPlugins();
 	showMaximized();
 
+	mModel = new Model();
+
+	ui.diagramExplorer->setModel(mModel);
+	ui.view->mvIface()->setModel(mModel);	
 	//	connectRepo();
 }
 

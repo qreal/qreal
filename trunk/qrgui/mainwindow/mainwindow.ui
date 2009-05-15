@@ -26,7 +26,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QGraphicsView" name="view"/>
+     <widget class="EditorView" name="view"/>
     </item>
    </layout>
   </widget>
@@ -383,7 +383,12 @@
    <header>palettetoolbox.h</header>
    <container>1</container>
   </customwidget>
- </customwidgets>
+  <customwidget>
+   <class>EditorView</class>
+   <extends>QGraphicsView</extends>
+   <header>../view/editorview.h</header>
+  </customwidget>
+  </customwidgets>
  <resources>
   <include location="../qrgui.qrc"/>
  </resources>
