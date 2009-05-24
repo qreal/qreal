@@ -88,6 +88,7 @@
     <addaction name="actionRun_test_queries"/>
     <addaction name="actionReconnect"/>
     <addaction name="actionGenerate_editor"/>
+    <addaction name="actionExport"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -493,6 +494,14 @@
   <action name="actionGenerate_editor">
    <property name="text">
     <string>Generate editor</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export to XMI</string>
+   </property>
+   <property name="toolTip">
+    <string>Export to XMI</string>
    </property>
   </action>
  </widget>

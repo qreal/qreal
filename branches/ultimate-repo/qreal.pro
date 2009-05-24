@@ -11,6 +11,7 @@ INCLUDEPATH += view \
     repo \
     dialogs \
     mainwindow \
+    XmiHandler \
     umllib/generated
 RESOURCES += static.qrc real_dynamic.qrc
 SOURCES = main.cpp
@@ -34,3 +35,6 @@ include (view/view.pri)
 
 # UML library
 include (umllib/umllib.pri)
+
+# Xmi Import_Export
+include (xmiHandler/xmiHandler.pri)

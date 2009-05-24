@@ -23,7 +23,7 @@ class EditorView;
  * */
 class MainWindow : public QMainWindow
 {
-Q_OBJECT
+	Q_OBJECT
 
 public:
 	MainWindow();
@@ -32,7 +32,7 @@ public:
 	/** @brief Интерфейс главного окна */
 	Ui::MainWindowUi ui;
 
-	public slots:
+public slots:
 	/** @brief Осуществить соединение с репозиторием */
 	void connectRepo(QSplashScreen *splash = NULL, const QString &addr = "127.0.0.1", const int port = 6666);
 	/** @brief Закрыть репозиторий */
@@ -74,6 +74,8 @@ public:
 	/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
 	 * эксплорером. */
 	void sceneSelectionChanged();
+
+	void exportToXmi();
 
 protected:
 	virtual void closeEvent(QCloseEvent *event);

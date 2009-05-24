@@ -18,6 +18,7 @@
 #include "optionsDialog.h"
 #include "meta_generator.h"
 #include <QProgressBar>
+#include "../XmiHandler/XmiHandler.h"
 
 using namespace qReal;
 
@@ -66,6 +67,8 @@ MainWindow::MainWindow() : model(0)
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
+	connect(ui.actionExport, SIGNAL( triggered() ), this, SLOT( exportToXmi() ) );
+
 	progress->setValue(20);
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 	connect(ui.actionJumpToAvatar, SIGNAL( triggered() ), this, SLOT( jumpToAvatar() ) );
@@ -73,7 +76,7 @@ MainWindow::MainWindow() : model(0)
 	connect(ui.actionOptions, SIGNAL( triggered() ), this, SLOT( showOptions() ) );
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
 	connect(ui.actionReconnect, SIGNAL( triggered() ), this, SLOT( reconnect() ));
-	connect(ui.actionGenerate_editor, SIGNAL( triggered() ), this, SLOT( generator_editor() ));	
+	connect(ui.actionGenerate_editor, SIGNAL( triggered() ), this, SLOT( generator_editor() ));
 //
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
@@ -426,8 +429,6 @@ void MainWindow::generator_editor() {
 	editorGeneratorDialog.exec();
 }
 
-
-
 void MainWindow::reconnectRepo(const QString& addr, const int port)
 {
 	repoAddress = addr;
@@ -446,4 +447,12 @@ void MainWindow::exterminatus(void)
 	qDebug() << "Activating the Red Rune!!!";
 	model->getRepoClient()->clearRepository();
 	closeRepo();
+}
+
+void MainWindow::exportToXmi()
+{
+		XmiHandler *xmi = new XmiHandler(repoAddress, repoPort);
+		xmi->exportToXmi("test");
+
+		qDebug() << "Done.";
 }
