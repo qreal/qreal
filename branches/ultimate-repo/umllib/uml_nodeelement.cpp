@@ -14,7 +14,7 @@
 using namespace UML;
 
 NodeElement::NodeElement()
-: portsVisible(false)
+	: portsVisible(false)
 {
 	oldName="";
 	setAcceptsHoverEvents(true);
@@ -31,7 +31,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::changeName()
 {
-/*	if(d.toPlainText() != oldName)
+	/*	if(d.toPlainText() != oldName)
 		{*/
 	if (!mLockChangeName) {
 		mLockUpdateText = true;
@@ -41,7 +41,7 @@ void NodeElement::changeName()
 		im->changeRole(dataIndex, d.toPlainText(), Qt::DisplayRole);
 		mLockUpdateText = false;
 	}
-/*	}
+	/*	}
 	oldName=d.toPlainText();*/
 }
 
@@ -63,9 +63,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	} else
 		Element::mousePressEvent(event);
 
-		if (event->button() == Qt::RightButton)
-		{
-				/*QWidget *w = new QWidget();
+	if (event->button() == Qt::RightButton)
+	{
+		/*QWidget *w = new QWidget();
 				w->setAttribute(Qt::WA_DeleteOnClose, true);
 				w->setWindowFlags(Qt::FramelessWindowHint);
 		QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
@@ -83,7 +83,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 				w->show();*/
 
-				event->accept();
+		event->accept();
 	}
 }
 
@@ -179,7 +179,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(scene());
 	if (newParent) {
 		im->changeParent(dataIndex,newParent->dataIndex,
-			mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
+						 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
 	} else {
 		im->changeParent(dataIndex,evscene->rootItem(),scenePos());
 	}
@@ -189,11 +189,13 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch ( change ) {
-		case ItemPositionHasChanged:
-			adjustEdges();
-			return value;
-		default:
-			return QGraphicsItem::itemChange(change, value);
+	case ItemPositionHasChanged:
+		EditorViewScene* sc = static_cast<EditorViewScene*>(scene());
+		sc->updateLinks();
+		adjustEdges();
+		return value;
+	default:
+		return QGraphicsItem::itemChange(change, value);
 	}
 }
 
@@ -246,7 +248,7 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	if ( id < pointPorts.size() )
 		return transform.map(pointPorts[iid]);
 	if ( id < pointPorts.size() + linePorts.size() )
-				return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
+		return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
 	else
 		return QPointF(0,0);
 }
@@ -299,8 +301,8 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		path = ps.createStroke(path);
 		if ( path.contains(location) )
 			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999,
-				QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
-				/ newTransform(linePorts[i]).length() ) );
+															 QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
+															 / newTransform(linePorts[i]).length() ) );
 	}
 
 	if (pointPorts.size()!=0) {
@@ -335,40 +337,40 @@ void NodeElement::setPortsVisible(bool value) {
 
 void NodeElement::complexInlineEditing() {
 	if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
-	docvis.setTextWidth(0);
-	doctype.setTextWidth(0);
-	d.setPos(15, m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - 25);
+		docvis.setTextWidth(0);
+		doctype.setTextWidth(0);
+		d.setPos(15, m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - 25);
 	} else
-	if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
-	docvis.setTextWidth(0);
-	doctype.setPos(1, m_contents.height() - 15);
-	if (typetext.length() * 5 < 6*m_contents.width() / 16)
-		doctype.setTextWidth(typetext.length() * 5);
-	else
-		doctype.setTextWidth(6 * m_contents.width() / 16);
+		if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
+		docvis.setTextWidth(0);
+		doctype.setPos(1, m_contents.height() - 15);
+		if (typetext.length() * 5 < 6*m_contents.width() / 16)
+			doctype.setTextWidth(typetext.length() * 5);
+		else
+			doctype.setTextWidth(6 * m_contents.width() / 16);
 
-	d.setPos(doctype.textWidth(), m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+		d.setPos(doctype.textWidth(), m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
 	} else
-	if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
-	doctype.setTextWidth(0);
-	docvis.setPos(1, m_contents.height() - 15);
-	docvis.setTextWidth(11);
-	d.setPos(16, m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - 37);
+		if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
+		doctype.setTextWidth(0);
+		docvis.setPos(1, m_contents.height() - 15);
+		docvis.setTextWidth(11);
+		d.setPos(16, m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - 37);
 	} else
-	if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
-	docvis.setPos(1, m_contents.height() - 15);
-	docvis.setTextWidth(11);
-	doctype.setPos (16, m_contents.height() - 15);
-	if (typetext.length() * 5 < 6 * m_contents.width() / 16)
-		doctype.setTextWidth(typetext.length() * 5);
-	else
-		doctype.setTextWidth(6 * m_contents.width() / 16);
+		if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
+		docvis.setPos(1, m_contents.height() - 15);
+		docvis.setTextWidth(11);
+		doctype.setPos (16, m_contents.height() - 15);
+		if (typetext.length() * 5 < 6 * m_contents.width() / 16)
+			doctype.setTextWidth(typetext.length() * 5);
+		else
+			doctype.setTextWidth(6 * m_contents.width() / 16);
 
-	d.setPos(docvis.textWidth() + doctype.textWidth(),  m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+		d.setPos(docvis.textWidth() + doctype.textWidth(),  m_contents.height() - 15);
+		d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
 	}
 }
 
@@ -421,7 +423,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 ///////////////////////////////////////////////////////////////////
 float NodeElement::coord_def(QString coordStr,
-	float current_size, float first_size)
+							 float current_size, float first_size)
 {
 	float coord = 0;
 

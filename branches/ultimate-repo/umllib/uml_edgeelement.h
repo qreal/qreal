@@ -17,106 +17,107 @@ namespace UML {
 	 * 	*/
 	class EdgeElement : public Element
 	{
-		public:
-			/** @brief Конструктор */
-			EdgeElement();
-			/** @brief Деструктор */
-			~EdgeElement();
+	public:
+		/** @brief Конструктор */
+		EdgeElement();
+		/** @brief Деструктор */
+		~EdgeElement();
 
-			/** @brief Обновить данные связи */
-			void updateData();
+		/** @brief Обновить данные связи */
+		void updateData();
 
-			/** @brief Получить область, в рамках которой производится отрисовка связи
+		/** @brief Получить область, в рамках которой производится отрисовка связи
 			 *	@brief @return Область, в рамках которой производится отрисовка связи
 			 * */
-			QRectF boundingRect() const;
-			/** @brief Получить ломаную для отрисовки связи
+		QRectF boundingRect() const;
+		/** @brief Получить ломаную для отрисовки связи
 			 *	@brief @return Ломаня для отрисовки связи
 			 * */
-			QPainterPath shape() const;
-			/** @brief Отрисовать связь */
-			void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
-						const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
-						QWidget* w /**< Виджет, на котором осуществляется отрисовка */
-						);
+		QPainterPath shape() const;
+		/** @brief Отрисовать связь */
+		void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
+				   const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
+				   QWidget* w /**< Виджет, на котором осуществляется отрисовка */
+				   );
 
-			/** @brief Перерисовать связь */
-			void adjustLink();
-			/** @brief Отсоединить связь от объекта */
-			void removeLink(UML::NodeElement *from /**< Объект */)
+		/** @brief Перерисовать связь */
+		void adjustLink();
+		/** @brief Отсоединить связь от объекта */
+		void removeLink(UML::NodeElement *from /**< Объект */)
+		{
+			if (src == from)
 			{
-				if (src == from)
-				{
-					src = NULL;
-				};
-				if (dst == from)
-				{
-					dst = NULL;
-				};
-			}
+				src = NULL;
+			};
+			if (dst == from)
+			{
+				dst = NULL;
+			};
+		}
 
-			virtual void connectToPort();
+		virtual void connectToPort();
+		void makeRightAngle();
 
-		private:
+	private:
 
-			NodeElement *beginning;
-			NodeElement *ending;
+		NodeElement *beginning;
+		NodeElement *ending;
 
-			/** @brief Получить точку на ломаной
+		/** @brief Получить точку на ломаной
 			 *	@brief @return Точка на ломаной
 			 * */
-			int getPoint( const QPointF &location /**< Расположение точки */ );
-			/** @brief Получить объект, расположенный в данной точке сцены
+		int getPoint( const QPointF &location /**< Расположение точки */ );
+		/** @brief Получить объект, расположенный в данной точке сцены
 			 *	@brief @return Объект, расположенный в данной точке сцены
 			 * */
-			NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
-//			void checkConnection();
-			/** @brief Объект, присоединенный к началу связи */
-			NodeElement *src;
-			/** @brief Объект, присоединенный к концу связи */
-			NodeElement *dst;
-			//	QPointF srcPoint, dstPoint;
+		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+		//			void checkConnection();
+		/** @brief Объект, присоединенный к началу связи */
+		NodeElement *src;
+		/** @brief Объект, присоединенный к концу связи */
+		NodeElement *dst;
+		//	QPointF srcPoint, dstPoint;
 
-			/** @brief Идентификатор порта объекта, к которому присоединено начало связи */
-			qreal portFrom;
-			/** @brief Идентификатор порта объекта, к которому присоединен конец связи */
-			qreal portTo;
-			/** @brief Состояние перемещения */
-			int dragState;
+		/** @brief Идентификатор порта объекта, к которому присоединено начало связи */
+		qreal portFrom;
+		/** @brief Идентификатор порта объекта, к которому присоединен конец связи */
+		qreal portTo;
+		/** @brief Состояние перемещения */
+		int dragState;
 
-			/** @brief Номер самой длинной части ломаной */
-			int longPart;
+		/** @brief Номер самой длинной части ломаной */
+		int longPart;
 
-			/** @brief Массив точек для отрисовки связи */
-			QPolygonF m_line;
-			/** @brief Цвет линии */
-			QColor m_color;
+		/** @brief Массив точек для отрисовки связи */
+		QPolygonF m_line;
+		/** @brief Цвет линии */
+		QColor m_color;
 
-			/** @brief Обновить номер самой длинной части ломаной */
-			void updateLongestPart();
-		protected:
-			/** @brief Обработать нажатие кнопки мыши */
-			void mousePressEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
-			/** @brief Обработать движение курсора мыши */
-			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
-			/** @brief Обработать отпускание кнопки мыши */
-			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
-			/** @brief Обработать открытие контекстного меню */
-			void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event /**< Событие */);
+		/** @brief Обновить номер самой длинной части ломаной */
+		void updateLongestPart();
+	protected:
+		/** @brief Обработать нажатие кнопки мыши */
+		void mousePressEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		/** @brief Обработать движение курсора мыши */
+		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		/** @brief Обработать отпускание кнопки мыши */
+		void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		/** @brief Обработать открытие контекстного меню */
+		void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event /**< Событие */);
 
-			/** @brief Отрисовать начало связи */
-			virtual void drawStartArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
-			/** @brief Отрисовать конец связи */
-			virtual void drawEndArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+		/** @brief Отрисовать начало связи */
+		virtual void drawStartArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+		/** @brief Отрисовать конец связи */
+		virtual void drawEndArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
 
-			/** @brief Стиль линии */
-			Qt::PenStyle m_penStyle;
-			/** @brief Текст над линией */
-			QString m_text;
-			QString m_fromMult, m_toMult;
-			/** @brief Тип стрелки начала связи */
-			ArrowType m_startArrowStyle;
-			/** @brief Тип стрелки конца связи */
-			ArrowType m_endArrowStyle;
+		/** @brief Стиль линии */
+		Qt::PenStyle m_penStyle;
+		/** @brief Текст над линией */
+		QString m_text;
+		QString m_fromMult, m_toMult;
+		/** @brief Тип стрелки начала связи */
+		ArrowType m_startArrowStyle;
+		/** @brief Тип стрелки конца связи */
+		ArrowType m_endArrowStyle;
 	};
 }

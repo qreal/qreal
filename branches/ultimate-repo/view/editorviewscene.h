@@ -36,6 +36,7 @@ public:
 	UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
 
 	QPersistentModelIndex rootItem();
+	void updateLinks();
 
 protected:
 	/** @brief Обработать начало события drag'n'drop */

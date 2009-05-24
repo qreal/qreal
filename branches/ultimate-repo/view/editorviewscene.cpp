@@ -20,7 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
-	//	setBackgroundBrush(gradient);
+		//	setBackgroundBrush(gradient);
 }
 
 void EditorViewScene::clearScene()
@@ -134,6 +134,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 										 mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
 	}
 	delete newMimeData;
+	updateLinks();
 }
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
@@ -195,4 +196,14 @@ UML::Element * EditorViewScene::getElemAt( const QPointF &position )
 QPersistentModelIndex EditorViewScene::rootItem()
 {
 	return mv_iface->rootIndex();
+}
+
+void EditorViewScene::updateLinks()
+{
+	foreach (QGraphicsItem *item, items())
+	{
+		UML::EdgeElement *e = dynamic_cast<UML::EdgeElement *>(item);
+		if (e)
+			e->makeRightAngle();
+	}
 }

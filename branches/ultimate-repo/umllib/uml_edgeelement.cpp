@@ -13,6 +13,8 @@
 #include "realrepoinfo.h"
 #include "realrepomodel.h"
 
+#include "pathCreator.h"
+
 #include <math.h>
 
 using namespace UML;
@@ -31,7 +33,7 @@ using namespace UML;
 // static bool moving = false;
 
 EdgeElement::EdgeElement()
-: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
+	: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -119,13 +121,13 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		painter->translate(m_line[longPart]);
 		painter->rotate(-lineAngle(longest));
 
-//		painter->drawText(0,-15,longest.length(),15,
-//				Qt::TextSingleLine | Qt::AlignCenter, m_text);
+		//		painter->drawText(0,-15,longest.length(),15,
+		//				Qt::TextSingleLine | Qt::AlignCenter, m_text);
 
 		QTextDocument d;
 		d.setHtml(m_text);
 		d.setTextWidth(longest.length());
-//		painter->drawRect(QRectF(0,0,longest.length(),20));
+		//		painter->drawRect(QRectF(0,0,longest.length(),20));
 		d.drawContents(painter);
 
 		painter->restore();
@@ -337,6 +339,7 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 	QAction *addPointAction = menu.addAction("Add point");
 	QAction *delPointAction = menu.addAction("Remove point");
 	QAction *squarizeAction = menu.addAction("Squarize :)");
+	QAction *unbendAction = menu.addAction("Unbend");
 
 	if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
 		if ( selectedAction == delPointAction ) {
@@ -372,6 +375,11 @@ void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
 				}
 			}
 			adjustLink();
+			update();
+		}
+		else if (selectedAction == unbendAction)
+		{
+			makeRightAngle();
 			update();
 		}
 	}
@@ -429,4 +437,18 @@ void EdgeElement::updateData()
 	portTo = dataIndex.data(info.roleByColumnName(type, "toPort")).toDouble();
 
 	adjustLink();
+}
+
+void EdgeElement::makeRightAngle()
+{
+	PathCreator d(this, m_line[m_line.size() - 1], m_line[0]);
+	QList<QPointF> road = d.createPath();
+	if (!road.isEmpty())
+	{
+		m_line.clear();
+		for (int i = 0; i < road.size(); ++i)
+			m_line << road.at(i);
+		update();
+		scene()->update();
+	}
 }
