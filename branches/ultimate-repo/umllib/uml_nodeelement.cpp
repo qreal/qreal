@@ -189,13 +189,15 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch ( change ) {
-	case ItemPositionHasChanged:
-		EditorViewScene* sc = static_cast<EditorViewScene*>(scene());
-		sc->updateLinks();
-		adjustEdges();
-		return value;
-	default:
-		return QGraphicsItem::itemChange(change, value);
+		case ItemPositionHasChanged:
+		{
+			EditorViewScene* sc = static_cast<EditorViewScene*>(scene());
+			sc->updateLinks();
+			adjustEdges();
+			return value;
+		}
+		default:
+			return QGraphicsItem::itemChange(change, value);
 	}
 }
 

@@ -1,4 +1,4 @@
-#include "XmiHandler.h"
+#include "xmiHandler.h"
 #include "realrepoclient.h"
 #include "dbg.h"
 

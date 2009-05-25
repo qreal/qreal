@@ -18,7 +18,7 @@
 #include "optionsDialog.h"
 #include "meta_generator.h"
 #include <QProgressBar>
-#include "../XmiHandler/XmiHandler.h"
+#include "../xmiHandler/xmiHandler.h"
 
 using namespace qReal;
 
