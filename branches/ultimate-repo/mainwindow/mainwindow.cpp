@@ -27,7 +27,7 @@ MainWindow::MainWindow() : model(0)
 	QSettings settings("Tercom", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =
-	new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20,270);
 	progress->setFixedWidth(600);
@@ -77,7 +77,7 @@ MainWindow::MainWindow() : model(0)
 	connect(ui.actionRun_test_queries, SIGNAL( triggered() ), this, SLOT( runTestQueries() ));
 	connect(ui.actionReconnect, SIGNAL( triggered() ), this, SLOT( reconnect() ));
 	connect(ui.actionGenerate_editor, SIGNAL( triggered() ), this, SLOT( generator_editor() ));
-//
+	//
 	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
 	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
 	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
@@ -164,10 +164,10 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 		if (splash != NULL)
 			splash->close();
 		QMessageBox::critical(0, tr("achtung!"), tr("cannot reach repo server at ")
-			+ repoAddress + QString(":") + QString::number(repoPort)
-			+ QString("\n")
-			+ tr("make sure that it is running or use \"Tools/Setup repo server path\" ")
-			+ tr("to select another server"));
+							  + repoAddress + QString(":") + QString::number(repoPort)
+							  + QString("\n")
+							  + tr("make sure that it is running or use \"Tools/Setup repo server path\" ")
+							  + tr("to select another server"));
 		//qApp->exit();
 		closeRepo();
 		return;
@@ -176,7 +176,7 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 	ui.diagramExplorer->setRootIndex(model->getDiagramCategoryIndex());
 
 	ui.objectExplorer->setModel(model);
-//	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
+	//	ui.objectExplorer->setRowHidden(1,QModelIndex(),true);
 
 	propertyModel.setSourceModel(model);
 
@@ -223,12 +223,12 @@ void MainWindow::deleteFromExplorer()
 		catch (bool b)
 		{
 			QMessageBox::warning(this, tr("Operation aborted"),
-				tr("Cannot delete avatar"));
+								 tr("Cannot delete avatar"));
 		}
 		catch (QString e)
 		{
 			QMessageBox::warning(this, tr("Operation aborted"),
-				tr("Repository can not delete this element."));
+								 tr("Repository can not delete this element."));
 		}
 	}
 }
@@ -239,26 +239,26 @@ void MainWindow::deleteFromScene()
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(item))
 			if (elem->index().isValid())
 			{
-				try{
-					model->removeRow(elem->index().row(), elem->index().parent());
-				}
-				catch (qRealTypes::IdTypeList l)
-				{
-					QString l2 = "";
-					int i;
-
-					l2 = l[0];
-					for (i = 1; i < l.size(); i++)
-						l2 += ", " + l[i];
-					QMessageBox::warning(this, tr("Operation aborted"),
-						QString("element is referred by ") + l2);
-				}
-				catch (QString e)
-				{
-					QMessageBox::warning(this, tr("Operation aborted"),
-						tr("Repository can not delete this element."));
-				}
+			try{
+				model->removeRow(elem->index().row(), elem->index().parent());
 			}
+			catch (qRealTypes::IdTypeList l)
+			{
+				QString l2 = "";
+				int i;
+
+				l2 = l[0];
+				for (i = 1; i < l.size(); i++)
+					l2 += ", " + l[i];
+				QMessageBox::warning(this, tr("Operation aborted"),
+									 QString("element is referred by ") + l2);
+			}
+			catch (QString e)
+			{
+				QMessageBox::warning(this, tr("Operation aborted"),
+									 tr("Repository can not delete this element."));
+			}
+		}
 	}
 }
 
@@ -302,7 +302,7 @@ void MainWindow::jumpToAvatar()
 		if (ui.diagramExplorer->hasFocus())
 		{
 			// Maybe, not needed
-//			jumpToAvatarFromExplorer();
+			//			jumpToAvatarFromExplorer();
 		}
 		else if (ui.view->hasFocus())
 		{
@@ -346,9 +346,9 @@ void MainWindow::sceneSelectionChanged()
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
 			if (elem->index().isValid()) {
-				ui.diagramExplorer->setCurrentIndex(elem->index());
-				propertyModel.setIndex(elem->index());
-			}
+			ui.diagramExplorer->setCurrentIndex(elem->index());
+			propertyModel.setIndex(elem->index());
+		}
 	}
 	else
 	{
@@ -363,7 +363,7 @@ void MainWindow::print()
 	QPrintDialog dialog(&printer, this);
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
-//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
+		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
 		ui.view->scene()->render(&painter);
 	}
 }
@@ -386,15 +386,15 @@ void MainWindow::makeSvg()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-		tr("This is <b>QReal</b><br>"
-		"Just another CASE tool<br>"
-		"<i>Burning heretics since 1724</i>"));
+					   tr("This is <b>QReal</b><br>"
+						  "Just another CASE tool<br>"
+						  "<i>Burning heretics since 1724</i>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::warning(this, tr("Not implemented"),
-			 tr("This feature is not implemented yet. "));
+						 tr("This feature is not implemented yet. "));
 }
 
 void MainWindow::showOptions()
@@ -451,8 +451,19 @@ void MainWindow::exterminatus(void)
 
 void MainWindow::exportToXmi()
 {
-		XmiHandler *xmi = new XmiHandler(repoAddress, repoPort);
-		xmi->exportToXmi("test");
+	XmiHandler xmi(repoAddress, repoPort);
 
-		qDebug() << "Done.";
+	QString fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
+
+	QString errors = xmi.exportToXmi(fileName);
+
+	if (errors.length() != 0) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may not be correct. Errors' list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Export is finished");
+	}
+
+	qDebug() << "Done.";
 }

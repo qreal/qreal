@@ -9,11 +9,13 @@ XmiHandler::XmiHandler (QString const &addr, const int port)
 	client = new RealRepoClient(addr, port, 0);
 }
 
-void XmiHandler::exportToXmi(QString const &pathToFile)
+QString XmiHandler::exportToXmi(QString const &pathToFile)
 {
-	QFile file("test.xmi");
+	errorText = "";
+
+	QFile file(pathToFile);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
+		return "";
 
 	QTextStream out(&file);
 
@@ -32,9 +34,13 @@ void XmiHandler::exportToXmi(QString const &pathToFile)
 	//  --------------  end of header --------------- //
 
 	//  --------------  content --------------- //
-	out << "<uml:Package xmi:id=\"1\" xmi:uuid=\"1\" name=\"RootDiagram\">" << "\n";
+	QString repoId = "repoRoot";
 
-	qRealTypes::RealObject root = client->getObjectById("repoRoot");
+	out << "<uml:Package xmi:id=\"" + repoId + "\" xmi:uuid=\"" + repoId + "\" name=\"RootDiagram\">" << "\n";
+
+	out << this->initPrimitiveTypes();
+
+	qRealTypes::RealObject root = client->getObjectById(repoId);
 	qRealTypes::IdTypeList rootDiagrams = root.getChildElements();
 
 	foreach (const QString typeDiagram, rootDiagrams) {
@@ -46,6 +52,7 @@ void XmiHandler::exportToXmi(QString const &pathToFile)
 
 	out << "</xmi:XMI>" << "\n";
 	qDebug() << "Done.";
+	return errorText;
 }
 
 QString XmiHandler::serializeChildren(QString const &idParent)
@@ -56,7 +63,7 @@ QString XmiHandler::serializeChildren(QString const &idParent)
 
 	if (childElems.size() > 0) {
 		foreach (const QString id, childElems) {
-			result = result + this->serializeObject(id);
+			result = result + this->serializeObject(id, idParent);
 		}
 	}
 
@@ -79,10 +86,11 @@ QString XmiHandler::serializeChildren(QString const &idParent)
 	return result;
 }
 
-QString XmiHandler::serializeObject(QString const &id)
+QString XmiHandler::serializeObject(QString const &id, QString const &parentId)
 {
 	QString result = "";
 	qRealTypes::RealObject object = client->getObjectById(id);
+	qRealTypes::RealObject parent = client->getObjectById(parentId);
 
 	QString typeOfElem = "";
 	QString typeOfTag = "";
@@ -102,11 +110,19 @@ QString XmiHandler::serializeObject(QString const &id)
 		typeOfTag = "ownedMember";
 		typeOfElem = "uml:Package";
 	}else if (object.getTypeId() == "cnClassMethod") {
-		typeOfTag = "ownedOperation";
-		typeOfElem = "uml:Operation";
+		if (parent.getTypeId() == "cnClass") {
+			typeOfTag = "ownedOperation";
+			typeOfElem = "uml:Operation";
+		} else {
+			this->addError("unable to serrialize object " + object.getTypeId() + " with id: " + object.getId() + ". Move it inside some cnClass");
+		}
 	} else if (object.getTypeId() == "cnClassField") {
-		typeOfTag = "ownedAttribute";
-		typeOfElem = "uml:Property";
+		if (parent.getTypeId() == "cnClass"){
+			typeOfTag = "ownedAttribute";
+			typeOfElem = "uml:Property";
+		} else {
+			this->addError("unable to serrialize object " + object.getTypeId() + " with id: " + object.getId() + ". Move it inside some cnClass");
+		}
 	}
 
 	//use case diagram
@@ -133,15 +149,27 @@ QString XmiHandler::serializeObject(QString const &id)
 	if (object.getProperty("visibility").size() > 0) {
 		QString visibility = object.getProperty("visibility");
 
-		if (visibility == "public" || visibility == "private" || visibility == "protected" || visibility == "package") {
+		if (this->isVisibilitySuitable(visibility)) {
 			additionalParams = additionalParams + "visibility=\"" + object.getProperty("visibility") + "\"";
+		} else {
+			this->addError("object " + object.getTypeId() + " with id  " + object.getId() + " has invalid visibility property: " + visibility);
+		}
+	}
+
+	if (object.getProperty("type").size() > 0){
+		QString type = object.getProperty("type");
+
+		if (this->isTypeSuitable(type)) {
+			additionalParams = additionalParams + "type=\"" + type + "\"";
+		}else {
+			this->addError("object " + object.getTypeId() + " with id " + object.getId() + " has invalid type: " + type);
 		}
 	}
 
 	if (typeOfElem.size() != 0 && typeOfTag.size() != 0) {
 		result = result + "<" + typeOfTag + " xmi:type=\"" + typeOfElem + "\" xmi:id=\""
-			+ id + "\" xmi:uuid=\"" + id + "\" name=\"" + object.getName()
-			+ "\" " + additionalParams + ">" + "\n";
+				 + id + "\" xmi:uuid=\"" + id + "\" name=\"" + object.getName()
+				 + "\" " + additionalParams + ">" + "\n";
 		result = result + this->serializeChildren(id);
 		result = result + "</" + typeOfTag + ">" + "\n";
 		result = result + this->serializeLinkBodies(id);
@@ -156,41 +184,24 @@ QString XmiHandler::serializeOutcomingLink(QString const &id)
 
 	// kernel diagram
 	if (link.getTypeId() == "krnePackageImport") {
-		result =
-			result + "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
-			+ link.getId() + "\" xmi:uuid=\"" + link.getId()
-			+ "\"  importedPackage=\"" + link.getToId() + "\" />";
+		result = result + "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
+				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+				 + "\"  importedPackage=\"" + link.getToId() + "\" />";
 	} else if (link.getTypeId() == "krneElementImport") {
-		result =
-			result + "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
-			+ link.getId() + "\" xmi:uuid=\"" + link.getId()
-			+ "\"  importedElement=\"" + link.getToId() + "\" />";
+		result = result + "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
+				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+				 + "\"  importedElement=\"" + link.getToId() + "\" />";
 	} else if (link.getTypeId() == "krneGeneralization") {
-		result =
-			result + "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
-			+ link.getId() + "\" xmi:uuid=\"" + link.getId()
-			+ "\" general=\"" + link.getToId() +  "\"/>";
+		result = result + "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
+				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+				 + "\" general=\"" + link.getToId() +  "\"/>";
 	} else if (link.getTypeId() == "krneDirRelationship") {
 		result = result + "<ownedAttribute xmi:type=\"uml:Property\" xmi:id=\""
-			+ "ToEnd" + id + "\" xmi:uuid=\"" + "ToEnd" + id
-			+ "\" visibility=\"protected\" type=\"" + link.getToId() + "\">" + "\n";
+				 + "ToEnd" + id + "\" xmi:uuid=\"" + "ToEnd" + id
+				 + "\" visibility=\"protected\" type=\"" + link.getToId() + "\">" + "\n";
 
 		QString toMult = link.getProperty("toMultiplicity");
-		if (toMult.size() > 0) {
-			QPair<QString, QString> multValues = multiplicityValues(toMult);
-
-			QString valueLover = multValues.first;
-			QString valueUpper = multValues.second;
-
-			if (valueLover.size() > 0 && valueUpper.size() > 0) {
-				result = result + "<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-					+ "loverValueTo" + id + "\" xmi:uuid=\"" + "loverValueTo"
-					+ id + "\" visibility=\"public\" value=\"" + valueLover + "\"/>" + "\n";
-				result = result + "<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-					+ "upperValueTo" + id + "\" xmi:uuid=\"" + "upperValueTo"
-					+ id + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>" + "\n";
-			}
-		}
+		result = result + serializeMultiplicity(id, toMult);
 
 		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 		result = result + "</ownedAttribute>" + "\n";
@@ -200,20 +211,19 @@ QString XmiHandler::serializeOutcomingLink(QString const &id)
 
 	else if (link.getTypeId() == "ceDependency") {
 		result = result +
-			"<clientDependency xmi:idref=\"" + link.getId()  + "\"/>" + "\n";
+				 "<clientDependency xmi:idref=\"" + link.getId()  + "\"/>" + "\n";
 	}
 
 	// use case diagram
 
 	else if (link.getTypeId() == "uscaExtend") {
 		result = result + "<extend xmi:type=\"uml:Extend\" xmi:id=\"" + id
-			+ "\" xmi:uuid=\"" + id + "\" extendedCase=\"" + link.getToId() + "\">" + "\n";
+				 + "\" xmi:uuid=\"" + id + "\" extendedCase=\"" + link.getToId() + "\">" + "\n";
 		result = result +  "<extension xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
 		result = result + "</extend>" + "\n";
 	} else if (link.getTypeId() == "uscaInclude"){
-		result =
-			result + "<include xmi:type=\"uml:Include\" xmi:id=\"" + id +
-			"\" xmi:uuid=\"" + id + "\" addition=\"" + link.getToId() + "\"/>" + "\n";
+		result = result + "<include xmi:type=\"uml:Include\" xmi:id=\"" + id +
+				 "\" xmi:uuid=\"" + id + "\" addition=\"" + link.getToId() + "\"/>" + "\n";
 	}
 
 	return result;
@@ -255,32 +265,18 @@ QString XmiHandler::serializeLink(QString const &id)
 		}
 
 		result = result + "<ownedMember xmi:type=\"uml:Association\" xmi:id=\""
-			+ id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
+				 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
 
 		// FromEnd
 
 		result = result + "<memberEnd xmi:idref=\"" + "FromEnd" + id + "\"/>"  + "\n";
 		result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\""
-			+ "FromEnd" + id + "\" xmi:uuid=\"" + "FromEnd" + id
-			+ "\" visibility=\"protected\" type=\"" + link.getFromId() + "\">" + "\n";
+				 + "FromEnd" + id + "\" xmi:uuid=\"" + "FromEnd" + id
+				 + "\" visibility=\"protected\" type=\"" + link.getFromId() + "\">" + "\n";
 		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 
 		QString fromMult = link.getProperty("fromMultiplicity");
-		if (fromMult.size() > 0) {
-			QPair<QString, QString> multValues = multiplicityValues(fromMult);
-
-			QString valueLover = multValues.first;
-			QString valueUpper = multValues.second;
-
-			if (valueLover.size() > 0 && valueUpper.size() > 0){
-				result = result + "<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-					+ "loverValueFrom" + id + "\" xmi:uuid=\"" + "loverValueFrom"
-					+ id + "\" visibility=\"public\" value=\"" + valueLover + "\"/>" + "\n";
-				result = result + "<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-					+ "upperValueFrom" + id + "\" xmi:uuid=\"" + "upperValueFrom"
-					+ id + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>" + "\n";
-			}
-		}
+		result = result + this->serializeMultiplicity(id, fromMult);
 
 		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 		result = result + "</ownedEnd>" + "\n";
@@ -292,25 +288,11 @@ QString XmiHandler::serializeLink(QString const &id)
 		if (link.getTypeId() != "krneDirRelationship") {
 
 			result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\"" + "ToEnd"
-				+ id + "\" xmi:uuid=\"" + "ToEnd" + id + "\" visibility=\"protected\" "
-				+ aggregation + " type=\"" + link.getToId() + "\">" + "\n";
+					 + id + "\" xmi:uuid=\"" + "ToEnd" + id + "\" visibility=\"protected\" "
+					 + aggregation + " type=\"" + link.getToId() + "\">" + "\n";
 
 			QString toMult = link.getProperty("toMultiplicity");
-			if (toMult.size() > 0){
-				QPair<QString, QString> multValues = multiplicityValues(toMult);
-
-				QString valueLover = multValues.first;
-				QString valueUpper = multValues.second;
-
-				if (valueLover.size() > 0 && valueUpper.size() > 0){
-					result = result + "<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-						+ "loverValueTo" + id + "\" xmi:uuid=\"" + "loverValueTo"
-						+ id + "\" visibility=\"public\" value=\"" + valueLover + "\"/>" + "\n";
-					result = result + "<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\""
-						+ "upperValueTo" + id + "\" xmi:uuid=\"" + "upperValueTo"
-						+ id + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>" + "\n";
-				}
-			}
+			result = result + this->serializeMultiplicity(id, toMult);
 
 			result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 			result = result + "</ownedEnd>" + "\n";
@@ -319,7 +301,7 @@ QString XmiHandler::serializeLink(QString const &id)
 		result = result + "</ownedMember>" + "\n";
 	} else if (link.getTypeId() == "ceDependency"){
 		result = result + "<ownedMember xmi:type=\"uml:Dependency\" xmi:id=\""
-			+ id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
+				 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
 		result = result + "<supplier xmi:idref=\"" + link.getToId() + "\"/>" + "\n";
 		result = result + "<client xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
 		result = result + "</ownedMember>" + "\n";
@@ -328,13 +310,14 @@ QString XmiHandler::serializeLink(QString const &id)
 	return result;
 }
 
-QString XmiHandler::serializeLinkBodies(QString const &id){
+QString XmiHandler::serializeLinkBodies(QString const &id)
+{
 	QString result = "";
 	qRealTypes::RealObject object = client->getObjectById(id);
 
 	qRealTypes::IdTypeList links = object.getIncomingLinks();
 
-	if (links.size() > 0){
+	if (links.size() > 0) {
 		foreach (const QString id, links) {
 			result = result + this->serializeLink(id);
 		}
@@ -342,17 +325,66 @@ QString XmiHandler::serializeLinkBodies(QString const &id){
 	return result;
 }
 
-QPair<QString, QString> XmiHandler::multiplicityValues(QString const &multiplicity) const
+QString XmiHandler::serializeMultiplicity(QString const &id, QString const &multiplicity) const
 {
-	if (multiplicity == "1..*"){
-		return QPair<QString, QString>("1", "*");
-	} else if (multiplicity == "0..1") {
-		return QPair<QString, QString>("0", "1");
-	} else if (multiplicity == "1") {
-		return QPair<QString, QString>("1", "1");
-	} else if (multiplicity == "*") {
-		return QPair<QString, QString>("*", "*");
-	} else {
-		return QPair<QString, QString>();
+	QString result = "";
+	if (multiplicity.size() > 0){
+		QString valueLover = "";
+		QString valueUpper = "";
+
+		if (multiplicity == "1..*"){
+			valueLover = "1";
+			valueUpper = "*";
+		} else if (multiplicity == "0..1") {
+			valueLover = "0";
+			valueUpper = "1";
+		} else if (multiplicity == "1") {
+			valueLover = "1";
+			valueUpper = "1";
+		} else if (multiplicity == "*") {
+			valueLover = "*";
+			valueUpper = "*";
+		}
+
+		if (valueLover.size() > 0 && valueUpper.size() > 0){
+			result = result + "<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\""
+					 + "loverValueTo" + id + "\" xmi:uuid=\"" + "loverValueTo" + id
+					 + "\" visibility=\"public\" value=\"" + valueLover + "\"/>" + "\n";
+			result = result + "<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\""
+					 + "upperValueTo" + id + "\" xmi:uuid=\"" + "upperValueTo" + id
+					 + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>" + "\n";
+		}
 	}
+
+	return result;
+}
+
+QString XmiHandler::initPrimitiveTypes() const
+{
+	QString result = "";
+
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"int\" xmi:uuid=\"int\" name=\"int\" visibility=\"public\"/>" + "\n";
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"float\" xmi:uuid=\"float\" name=\"float\" visibility=\"public\"/>" + "\n";
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"double\" xmi:uuid=\"double\" name=\"double\" visibility=\"public\"/>" + "\n";
+
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"char\" xmi:uuid=\"char\" name=\"char\" visibility=\"public\"/>" + "\n";
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"boolean\" xmi:uuid=\"boolean\" name=\"boolean\" visibility=\"public\"/>" + "\n";
+	result = result + "<ownedMember xmi:type=\"uml:PrimitiveType\" xmi:id=\"byte\" xmi:uuid=\"byte\" name=\"byte\" visibility=\"public\"/>" + "\n";
+
+	return result;
+}
+
+bool XmiHandler::isTypeSuitable(QString const &type) const
+{
+	return type == "int" || type == "float" || type == "double" || type == "boolean" || type == "char" || type == "byte";
+}
+
+bool XmiHandler::isVisibilitySuitable(QString const &visibility) const
+{
+	return visibility == "public" || visibility == "private" || visibility == "protected" || visibility == "package";
+}
+
+void XmiHandler::addError(QString const &errorText)
+{
+	this->errorText = this->errorText + errorText + "\n";
 }

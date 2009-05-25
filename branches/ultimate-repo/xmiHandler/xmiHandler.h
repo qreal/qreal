@@ -12,16 +12,23 @@ class XmiHandler : public QObject
 public:
 	XmiHandler(QString const &addr, const int port);
 
-	void exportToXmi(QString const &pathToFile);
+	QString exportToXmi(QString const &pathToFile);
 private:
 	RealRepoClient *client;
+	QString errorText;
 
-	QString serializeObject(QString const &id);
+
+	QString serializeObject(QString const &id, QString const &parentId);
 	QString serializeChildren(QString const &id);
 	QString serializeOutcomingLink(QString const &id);
 	QString serializeIncomingLink(QString const &id);
 	QString serializeLinkBodies(QString const &id);
 	QString serializeLink(QString const &id);
+	QString initPrimitiveTypes() const;
 
-	QPair<QString, QString> multiplicityValues(QString const &multiplicity) const;
+	QString serializeMultiplicity(QString const &id, QString const &multiplicity) const;
+	bool isTypeSuitable(QString const &type) const;
+	bool isVisibilitySuitable(QString const &type) const;
+
+	void addError(QString const &errorText);
 };
