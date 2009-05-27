@@ -34,7 +34,7 @@ namespace sdfExtractor
 		void updateState(const QPaintEngineState &state) {}
 		bool hasFeature(PaintEngineFeatures feature) const;
 		bool end() { return true; }
-		void drawScrollArea (const QRectF *rects);
+//		void drawScrollArea (const QRectF *rects);
 		Type type() const { return SVG; }
 	private:
 		void stylePrint();

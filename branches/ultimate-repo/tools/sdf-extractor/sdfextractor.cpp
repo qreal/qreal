@@ -103,6 +103,8 @@ void SdfExtractor::generateSdf(QDomNode const &svgNode, QString const &fileName,
 	QPainter painterf;
 	QSvgRenderer rend;
 	painterf.begin(&canvas);
-	rend.load("svgs/" + fileName + ".svg");
+
+	QString dir = generateSvg ? "svgs/" : "";
+	rend.load(dir + fileName + ".svg");
 	rend.render(&painterf);
 }

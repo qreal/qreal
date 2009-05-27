@@ -283,10 +283,12 @@ bool NewEngine::hasFeature(PaintEngineFeatures feature) const
 	return true;
 }
 
-void NewEngine::drawScrollArea(const QRect *rects) {
+/*
+void NewEngine::drawScrollArea(const QRectF *rects) {
 	textstream << "\t<scrollarea x1 = \"" << rects[i].x() << "\" ";
 	textstream << "y1 = \"" << rects[i].y() << "\" ";
 	textstream << "x2 = \"" << rects[i].width() + rects[i].x() << "\" ";
 	textstream << "y2 = \"" << rects[i].height() + rects[i].y() << "\" \n";
 	textstream << "/>\n\n";
 }
+*/
