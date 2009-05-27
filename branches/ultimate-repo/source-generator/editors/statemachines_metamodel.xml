@@ -12,9 +12,8 @@
   <node id="smnStateMachine" name="StateMachine" >
    <graphics>
     <view>
-     <picture sizex="200" sizey="200" >
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid" />
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid" />
+     <picture sizex="100" sizey="100" >
+      <path fill="#ffffff" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 17.61 22 C 12.8548 22 9 26.0115 9 30.96 L 9 69.04 C 9 73.9885 12.8548 78 17.61 78 L 82.39 78 C 87.1452 78 91 73.9885 91 69.04 L 91 30.96 C 91 26.0115 87.1452 22 82.39 22 L 17.61 22" fill-style="solid" />
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
@@ -24,14 +23,14 @@
       </html:html>
      </repo_info>
      <ports>
-      <point_port x="12" y="75" />
+      <point_port x="9" y="50" />
       <line_port>
-       <start startx="25" starty="17" />
-       <end endx="163" endy="17" />
+       <start startx="15" starty="22" />
+       <end endx="86" endy="22" />
       </line_port>
       <line_port>
-       <start startx="25" starty="140" />
-       <end endx="163" endy="140" />
+       <start startx="15" starty="78" />
+       <end endx="86" endy="78" />
       </line_port>
      </ports>
     </view>
@@ -297,7 +296,10 @@
   <node id="smJoinPS" name="JoinPS" >
    <graphics>
     <view>
-     <picture sizex="50" sizey="8" />
+	 <picture sizex = "50" sizey = "8">
+	  <line x1 = "1" y1 = "3" x2 = "50" y2 = "3" 
+	   stroke = "#000000" stroke-width = "3" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+	 </picture>
      <ports>
       <line_port>
        <start startx="1" starty="3" />
@@ -317,7 +319,10 @@
   <node id="smForkPS" name="ForkPS" >
    <graphics>
     <view>
-     <picture sizex="50" sizey="8" />
+	 <picture sizex = "50" sizey = "8">
+	  <line x1 = "1" y1 = "3" x2 = "50" y2 = "3" 
+	   stroke = "#000000" stroke-width = "3" stroke-style = "solid" fill = "#000000" fill-style = "solid"/>
+	 </picture>
      <ports>
       <line_port>
        <start startx="1" starty="3" />
