@@ -27,25 +27,54 @@ bool Editor::parseEnum(QDomElement &xml_element)
 		return false;
 	}
 	values << qname; // WTF???
-	for (child = xml_element.firstChildElement("enumValue"); !child.isNull();
-	     child = child.nextSiblingElement("enumValue"))
+	for (child = xml_element.firstChildElement("value"); !child.isNull();
+	     child = child.nextSiblingElement("value"))
 		values << child.text();
 	enumerations.insert(name, values);
 	return true;
 }
 
-bool Editor::init(QDomElement &xml_element)
+bool Editor::parseNumeric(QDomElement &xml_element)
+{
+	// STUB
+	return true;
+}
+
+bool Editor::parseString(QDomElement &xml_element)
+{
+	// STUB
+	return true;
+}
+
+bool Editor::parseNGT(QDomElement &xml_element)
 {
 	QDomElement child;
 
-	qDebug() << "Processing category" << name;
 	// I. Parse enums
-	for (child = xml_element.firstChildElement("enumType"); !child.isNull();
-	     child = child.nextSiblingElement("enumType"))
+	for (child = xml_element.firstChildElement("enum"); !child.isNull();
+	     child = child.nextSiblingElement("enum"))
 		if (!parseEnum(child))
 			return false;
 
-	// II. Parse nodes
+	// II. Parse numeric types
+	for (child = xml_element.firstChildElement("numeric"); !child.isNull();
+	     child = child.nextSiblingElement("numeric"))
+		if (!parseNumeric(child))
+			return false;
+
+	// III. Parse string types
+	for (child = xml_element.firstChildElement("string"); !child.isNull();
+	     child = child.nextSiblingElement("string"))
+		if (!parseString(child))
+			return false;
+	return true;
+}
+
+bool Editor::parseGT(QDomElement &xml_element)
+{
+	QDomElement child;
+
+	// I. Parse nodes
 	for (child = xml_element.firstChildElement("node"); !child.isNull();
 	     child = child.nextSiblingElement("node"))
 	{
@@ -58,7 +87,7 @@ bool Editor::init(QDomElement &xml_element)
 		objects << node;
 	}
 
-	// III. Parse edges
+	// II. Parse edges
 	for (child = xml_element.firstChildElement("edge"); !child.isNull();
 	     child = child.nextSiblingElement("edge"))
 	{
@@ -70,6 +99,23 @@ bool Editor::init(QDomElement &xml_element)
 		}
 		objects << edge;
 	}
+	return true;
+}
+
+bool Editor::init(QDomElement &xml_element)
+{
+	QDomElement child;
+
+	qDebug() << "Processing" << name << "editor";
+
+	child = xml_element.firstChildElement("ngt");
+	if (!parseNGT(child))
+		return false;
+
+	child = xml_element.firstChildElement("gt");
+	if (!parseGT(child))
+		return false;
+
 	return true;
 }
 

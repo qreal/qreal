@@ -3,6 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="COMMUNICATION DIAGRAM" >
+ <gt>
   <edge id="cmnMessage" name="Message" >
    <graphics>
     <view>
@@ -112,5 +113,6 @@
     </associations>
    </logic>
   </node>
+  </gt>
  </editor>
 </metamodel>

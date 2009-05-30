@@ -4,6 +4,7 @@
  <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="COMPONENT DIAGRAM" >
+  <gt>
   <node id="cmpnComponent" name="Component" >
    <graphics>
     <view>
@@ -143,5 +144,6 @@
     </associations>
    </logic>
   </edge>
+  </gt>
  </editor>
 </metamodel>

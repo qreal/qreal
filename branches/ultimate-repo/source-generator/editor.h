@@ -17,6 +17,10 @@ class Editor{
 	QMap<QString, QStringList> enumerations;
 	QList<Entity *> objects;
 	bool parseEnum(QDomElement &);
+	bool parseNumeric(QDomElement &);
+	bool parseString(QDomElement &);
+	bool parseNGT(QDomElement &);
+	bool parseGT(QDomElement &);
 	QString name;
 
 public:

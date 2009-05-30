@@ -3,6 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="NETWORK DIAGRAM" >
+   <gt>
   <node id="nwVlan" name="Vlan" >
    <graphics>
     <view>
@@ -96,5 +97,6 @@
     </properties>
    </logic>
   </node>
+   </gt>
  </editor>
 </metamodel>

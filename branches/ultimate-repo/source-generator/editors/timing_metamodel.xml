@@ -3,6 +3,7 @@
  <namespace>UML 2.1</namespace>
  <include>basicbehaviors_metamodel</include>
  <editor name="TIMING DIAGRAM" >
+   <gt>
   <node id="tmnnInteraction" name="Interaction" >
    <graphics>
     <view>
@@ -140,5 +141,6 @@
     </properties> -->
    </logic>
   </edge>
+   </gt>
  </editor>
 </metamodel>

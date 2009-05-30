@@ -3,6 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>orthodox</namespace>
  <editor name="ORTHODOX" >
+   <gt>
   <node id="orthCross" name="Cross" >
    <graphics>
     <view>
@@ -363,5 +364,6 @@
     <properties/>
    </logic>
   </node>
+   </gt>
  </editor>
 </metamodel>

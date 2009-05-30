@@ -3,11 +3,14 @@
  <include>sequence_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="QREAL PARALLEL DIAGRAM" >
+   <ngt>
   <enumType id="qrThreadNameType" name="ThreadNameType" >
    <enumValue>number</enumValue>
    <enumValue>string</enumValue>
    <!--Определенная строка = "other"-->
   </enumType>
+   </ngt>
+   <gt>
   <node id="qrpnThread" name="Thread" >
    <graphics>
     <view>
@@ -187,5 +190,6 @@
     </associations>
    </logic>
   </edge>
+   </gt>
  </editor>
 </metamodel>

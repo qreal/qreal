@@ -3,6 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="CLASS DIAGRAM" >
+  <gt>
   <node id="cnClass" name="Class" >
    <graphics>
     <view>
@@ -262,5 +263,6 @@
     </containers>
    </logic>
   </node>
+  </gt>
  </editor>
 </metamodel>
