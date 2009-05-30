@@ -4,7 +4,7 @@
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.0</namespace>
  <editor name="ACTIVITY DIAGRAM" >
-  <graphical_type>
+  <graph_types>
   <node id="actnConstraint" name="Constraint" >
    <graphics>
     <view>
@@ -876,7 +876,7 @@
     </associations>
    </logic>
   </edge>
-  </graphical_type>
+  </graph_types>
   <!--вот только она молнией должна быть-->
  </editor>
 </metamodel>

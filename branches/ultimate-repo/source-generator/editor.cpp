@@ -46,7 +46,7 @@ bool Editor::parseString(QDomElement &xml_element)
 	return true;
 }
 
-bool Editor::parseNonGraphicalType(QDomElement &xml_element)
+bool Editor::parseNonGraphTypes(QDomElement &xml_element)
 {
 	QDomElement child;
 
@@ -70,7 +70,7 @@ bool Editor::parseNonGraphicalType(QDomElement &xml_element)
 	return true;
 }
 
-bool Editor::parseGraphicalType(QDomElement &xml_element)
+bool Editor::parseGraphTypes(QDomElement &xml_element)
 {
 	QDomElement child;
 
@@ -108,12 +108,12 @@ bool Editor::init(QDomElement &xml_element)
 
 	qDebug() << "Processing" << name << "editor";
 
-	child = xml_element.firstChildElement("non_graphical_type");
-	if (!parseNonGraphicalType(child))
+	child = xml_element.firstChildElement("non_graph_types");
+	if (!parseNonGraphTypes(child))
 		return false;
 
-	child = xml_element.firstChildElement("graphical_type");
-	if (!parseGraphicalType(child))
+	child = xml_element.firstChildElement("graph_types");
+	if (!parseGraphTypes(child))
 		return false;
 
 	return true;

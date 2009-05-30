@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="BPEL DIAGRAM" >
- <graphical_type>
+ <graph_types>
   <node id="bplReceive" name="receive" >
    <graphics>
     <view>
@@ -1904,6 +1904,6 @@
 			</logic>
 		</edge>
 		-->
-</graphical_type>
+</graph_types>
  </editor>
 </metamodel>

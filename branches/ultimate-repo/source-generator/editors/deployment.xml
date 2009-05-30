@@ -4,7 +4,7 @@
  <include>class_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="DEPLOYMENT DIAGRAM" >
- <graphical_type>
+ <graph_types>
   <node id="dplArtifact" name="Artifact" >
    <graphics>
     <view>
@@ -431,6 +431,6 @@
     </associations>
    </logic>
   </edge>
-   </graphical_type>
+   </graph_types>
  </editor>
 </metamodel>

@@ -4,13 +4,13 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="SEQUENCE DIAGRAM" >
-   <non_graphical_type>
+   <non_graph_types>
   <enumType id="sqnCombinedFragmentKind" name="CombinedFragmentKind" >
    <enumValue>alt</enumValue>
    <enumValue>par</enumValue>
   </enumType>
-   </non_graphical_type>
-   <graphical_type>
+   </non_graph_types>
+   <graph_types>
   <node id="sqnnInteraction" name="Interaction" >
    <graphics>
     <view>
@@ -276,6 +276,6 @@
     </containers>
    </logic>
   </node>
-   </graphical_type>
+   </graph_types>
  </editor>
 </metamodel>

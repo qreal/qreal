@@ -19,8 +19,8 @@ class Editor{
 	bool parseEnum(QDomElement &);
 	bool parseNumeric(QDomElement &);
 	bool parseString(QDomElement &);
-	bool parseNonGraphicalType(QDomElement &);
-	bool parseGraphicalType(QDomElement &);
+	bool parseNonGraphTypes(QDomElement &);
+	bool parseGraphTypes(QDomElement &);
 	QString name;
 
 public:

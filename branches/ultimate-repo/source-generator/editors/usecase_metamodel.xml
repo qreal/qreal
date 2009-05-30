@@ -4,7 +4,7 @@
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="USE CASE DIAGRAM" >
-   <graphical_type>
+   <graph_types>
   <node id="uscnActor" name="Actor" >
    <graphics>
     <view>
@@ -196,6 +196,6 @@
     </associations>
    </logic>
   </edge>
-   </graphical_type>
+   </graph_types>
  </editor>
 </metamodel>

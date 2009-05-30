@@ -3,14 +3,14 @@
  <include>kernel_metamodel</include>
  <namespace>Meta_editor</namespace>
  <editor name="Meta_editor" >
- <non_graphical_type>
+ <non_graph_types>
    <enumType id="medtMetaEntityType" name="MetaEntityType" >
 	 <enumValue>enumType</enumValue>
 	 <enumValue>node</enumValue>
 	 <enumValue>edge</enumValue>
    </enumType>
-   </non_graphical_type>
- <graphical_type>
+   </non_graph_types>
+ <graph_types>
    <node id="mednMetaEditor" name="MetaEditor">
 	   <graphics>
 		   <view>
@@ -180,6 +180,6 @@
 	</generalizations>
      </logic>
    </edge>
-   </graphical_type>
+   </graph_types>
  </editor>
 </metamodel>
