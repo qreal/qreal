@@ -5,10 +5,10 @@
  <namespace>UML 2.1</namespace>
  <editor name="SEQUENCE DIAGRAM" >
    <non_graph_types>
-  <enumType id="sqnCombinedFragmentKind" name="CombinedFragmentKind" >
-   <enumValue>alt</enumValue>
-   <enumValue>par</enumValue>
-  </enumType>
+  <enum id="sqnCombinedFragmentKind" name="CombinedFragmentKind" >
+   <value>alt</value>
+   <value>par</value>
+  </enum>
    </non_graph_types>
    <graph_types>
   <node id="sqnnInteraction" name="Interaction" >

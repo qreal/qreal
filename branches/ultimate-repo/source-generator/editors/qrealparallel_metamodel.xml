@@ -4,11 +4,11 @@
  <namespace>UML 2.1</namespace>
  <editor name="QREAL PARALLEL DIAGRAM" >
    <non_graph_types>
-  <enumType id="qrThreadNameType" name="ThreadNameType" >
-   <enumValue>number</enumValue>
-   <enumValue>string</enumValue>
+  <enum id="qrThreadNameType" name="ThreadNameType" >
+   <value>number</value>
+   <value>string</value>
    <!--Определенная строка = "other"-->
-  </enumType>
+  </enum>
    </non_graph_types>
    <graph_types>
   <node id="qrpnThread" name="Thread" >

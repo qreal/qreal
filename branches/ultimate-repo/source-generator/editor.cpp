@@ -48,74 +48,85 @@ bool Editor::parseString(QDomElement &xml_element)
 
 bool Editor::parseNonGraphTypes(QDomElement &xml_element)
 {
-	QDomElement child;
+	QDomElement child = xml_element.firstChildElement();
 
-	// I. Parse enums
-	for (child = xml_element.firstChildElement("enum"); !child.isNull();
-	     child = child.nextSiblingElement("enum"))
-		if (!parseEnum(child))
-			return false;
+	while (!child.isNull())
+	{
+		if (child.nodeName() == "enum")
+		{
+			if (!parseEnum(child))
+				return false;
+		}
+		else if (child.nodeName() == "numeric")
+		{
+			if (!parseNumeric(child))
+				return false;
+		}
+		else if (child.nodeName() == "string")
+		{
+			if (!parseString(child))
+				return false;
+		}
+		else
+			qDebug() << "WARNING: unknown non-graph metatype" << child.nodeName();
+		child = child.nextSiblingElement();
+	}
 
-	// II. Parse numeric types
-	for (child = xml_element.firstChildElement("numeric"); !child.isNull();
-	     child = child.nextSiblingElement("numeric"))
-		if (!parseNumeric(child))
-			return false;
-
-	// III. Parse string types
-	for (child = xml_element.firstChildElement("string"); !child.isNull();
-	     child = child.nextSiblingElement("string"))
-		if (!parseString(child))
-			return false;
 	return true;
 }
 
 bool Editor::parseGraphTypes(QDomElement &xml_element)
 {
-	QDomElement child;
+	QDomElement child = xml_element.firstChildElement();
 
-	// I. Parse nodes
-	for (child = xml_element.firstChildElement("node"); !child.isNull();
-	     child = child.nextSiblingElement("node"))
+	while (!child.isNull())
 	{
-		Node *node = new Node(this);
-		if (!node->init(child))
+		if (child.nodeName() == "node")
 		{
-			delete node;
-			return false;
+			Node *node = new Node(this);
+			if (!node->init(child))
+			{
+				delete node;
+				return false;
+			}
+			objects << node;
 		}
-		objects << node;
-	}
-
-	// II. Parse edges
-	for (child = xml_element.firstChildElement("edge"); !child.isNull();
-	     child = child.nextSiblingElement("edge"))
-	{
-		Edge *edge = new Edge(this);
-		if (!edge->init(child))
+		else if (child.nodeName() == "edge")
 		{
-			delete edge;
-			return false;
+			Edge *edge = new Edge(this);
+			if (!edge->init(child))
+			{
+				delete edge;
+				return false;
+			}
+			objects << edge;
 		}
-		objects << edge;
+		else
+			qDebug() << "WARNING: unknown tag" << child.nodeName();
+		child = child.nextSiblingElement();
 	}
 	return true;
 }
 
 bool Editor::init(QDomElement &xml_element)
 {
-	QDomElement child;
+	QDomElement child = xml_element.firstChildElement();
 
 	qDebug() << "Processing" << name << "editor";
-
-	child = xml_element.firstChildElement("non_graph_types");
-	if (!parseNonGraphTypes(child))
-		return false;
-
-	child = xml_element.firstChildElement("graph_types");
-	if (!parseGraphTypes(child))
-		return false;
-
+	while (!child.isNull())
+	{
+		if (child.nodeName() == "non_graph_types")
+		{
+			if (!parseNonGraphTypes(child)) return false;
+		}
+		else if (child.nodeName() == "graph_types")
+		{
+			if (!parseGraphTypes(child)) return false;
+		}
+		else
+			qDebug() << "WARNING: unknown tag" << child.nodeName();
+		child = child.nextSiblingElement();
+	}
 	return true;
 }
 

@@ -5,11 +5,11 @@
  <namespace>UML 2.1</namespace>
  <editor name="STATE MACHINES DIAGRAM" >
    <non_graph_types>
-  <enumType id="smtTransitionkind" name="TransitionKind" >
-   <enumValue>internal</enumValue>
-   <enumValue>local</enumValue>
-   <enumValue>external</enumValue>
-  </enumType>
+  <enum id="smtTransitionkind" name="TransitionKind" >
+   <value>internal</value>
+   <value>local</value>
+   <value>external</value>
+  </enum>
    </non_graph_types>
    <graph_types>
   <node id="smnStateMachine" name="StateMachine" >

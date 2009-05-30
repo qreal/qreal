@@ -4,11 +4,11 @@
  <namespace>Meta_editor</namespace>
  <editor name="Meta_editor" >
  <non_graph_types>
-   <enumType id="medtMetaEntityType" name="MetaEntityType" >
-	 <enumValue>enumType</enumValue>
-	 <enumValue>node</enumValue>
-	 <enumValue>edge</enumValue>
-   </enumType>
+   <enum id="medtMetaEntityType" name="MetaEntityType" >
+	 <value>enumType</value>
+	 <value>node</value>
+	 <value>edge</value>
+   </enum>
    </non_graph_types>
  <graph_types>
    <node id="mednMetaEditor" name="MetaEditor">
