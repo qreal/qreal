@@ -4,14 +4,14 @@
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="STATE MACHINES DIAGRAM" >
-   <ngt>
+   <non_graphical_type>
   <enumType id="smtTransitionkind" name="TransitionKind" >
    <enumValue>internal</enumValue>
    <enumValue>local</enumValue>
    <enumValue>external</enumValue>
   </enumType>
-   </ngt>
-   <gt>
+   </non_graphical_type>
+   <graphical_type>
   <node id="smnStateMachine" name="StateMachine" >
    <graphics>
     <view>
@@ -436,6 +436,6 @@
     </generalizations>
    </logic>
   </node>
-   </gt>
+   </graphical_type>
  </editor>
 </metamodel>

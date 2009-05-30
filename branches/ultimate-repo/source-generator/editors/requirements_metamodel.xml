@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>Requirements</namespace>
  <editor name="REQUIREMENTS DIAGRAM" >
-   <gt>
+   <graphical_type>
   <node id="reqnFeatured" name="Featured Element" >
    <graphics>
     <view>
@@ -341,6 +341,6 @@
     </generalizations>
    </logic>
   </edge>
-   </gt>
+   </graphical_type>
  </editor>
 </metamodel>

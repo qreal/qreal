@@ -3,7 +3,7 @@
  <!-- Kernel UML 2.0 package -->
  <namespace>UML 2.1</namespace>
  <editor name="Kernel" >
-  <ngt>
+  <non_graphical_type>
     <enum id="krntState" name="State" >
      <value>Created</value>
      <value>Development</value>
@@ -28,8 +28,8 @@
      <value>out</value>
      <value>return</value>
     </enum>
-  </ngt>
-  <gt>
+  </non_graphical_type>
+  <graphical_type>
    <!-- The main element -->
    <node id="krnnElement" name="Element" >
     <logic>
@@ -531,6 +531,6 @@
      </generalizations>
     </logic>
    </node>
-  </gt>
+  </graphical_type>
  </editor>
 </metamodel>

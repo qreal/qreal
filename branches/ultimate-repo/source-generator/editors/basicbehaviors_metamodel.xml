@@ -5,7 +5,7 @@
  <namespace>UML 2.1</namespace>
  <editor name="BASIC BEHAVIOURS" >
   <!-- BasicBehaviors -->
-  <gt>
+  <graphical_type>
   <node id="bbnBehavior" name="Behavour" >
    <logic>
     <generalizations>
@@ -62,6 +62,6 @@
     </generalizations>
    </logic>
   </node>
-  </gt>
+  </graphical_type>
  </editor>
 </metamodel>

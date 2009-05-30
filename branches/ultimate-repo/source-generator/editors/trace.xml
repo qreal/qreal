@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>trace</namespace>
  <editor name="TRACE" >
-   <gt>
+   <graphical_type>
   <edge id="traceeTraceRelationship" name="TraceRelationship" >
    <graphics>
     <view>
@@ -35,6 +35,6 @@
     </associations>
    </logic>
   </edge>
-   </gt>
+   </graphical_type>
  </editor>
 </metamodel>

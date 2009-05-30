@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <namespace>UML 2.1</namespace>
  <editor name="PACKAGE DIAGRAM" >
-   <gt>
+   <graphical_type>
   <node id="pckPackage" name="Package" >
    <graphics>
     <view>
@@ -51,6 +51,6 @@
     </containers>
    </logic>
   </node>
-   </gt>
+   </graphical_type>
  </editor>
 </metamodel>
