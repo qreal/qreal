@@ -2,6 +2,8 @@
 
 #include "../../qrgui/umllib/uml_nodeelement.h"
 
+#include <QDebug>
+
 namespace UML {
 
 	class Kroki : public NodeElement {
@@ -13,15 +15,19 @@ namespace UML {
 			width = 100;
 			m_contents.setWidth(width);
 			m_contents.setHeight(height);
-			d.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());
-			d.setTextInteractionFlags(Qt::TextEditorInteraction);
-			d.setParentItem(this);
+			// d.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());
+			// d.setTextInteractionFlags(Qt::TextEditorInteraction);
+			// d.setParentItem(this);
 		}
 
 		virtual ~Kroki() {}
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 		{
+			// static int paintCount = 0;
+			// ++paintCount;
+			// qDebug() << "Paint " << paintCount;
+
 			renderer.render(painter, m_contents);
 			d.setTextWidth(m_contents.width() - 15);
 		}

@@ -21,7 +21,7 @@ void HandmadePlugin::initPlugin()
 	elementsNameMap["UseCase"]["UseCase"] = "Use case";
 	elementsNameMap["UseCase"]["Actor"] = "Actor";
 	elementsNameMap["Orthodox"]["Kroki"] = "Kroki";
-	elementsNameMap["Orthodox"]["Swastika"] = "Sign of Life";
+//	elementsNameMap["Orthodox"]["Swastika"] = "Sign of Life";
 
 //	QMessageBox::information(0, "I'm a QReal Plugin", "Handmade Plugin loaded");
 }
