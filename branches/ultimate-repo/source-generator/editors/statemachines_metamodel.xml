@@ -202,11 +202,11 @@
       </html:html>
      </repo_info>
      <ports>
-      <point_port x="47" y="52" />
-      <point_port x="47" y="27" />
-      <point_port x="47" y="74" />
-      <point_port x="23" y="52" />
-      <point_port x="71" y="52" />
+      <point_port x="5" y="15" />
+      <point_port x="15" y="5" />
+      <point_port x="25" y="15" />
+      <point_port x="15" y="25" />
+      <point_port x="15" y="15" />
      </ports>
     </view>
    </graphics>
@@ -234,11 +234,11 @@
       <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
      </picture>
      <ports>
-      <point_port x="47" y="51" />
-      <point_port x="47" y="36" />
-      <point_port x="47" y="66" />
-      <point_port x="32" y="51" />
-      <point_port x="62" y="51" />
+      <point_port x="5" y="15" />
+      <point_port x="15" y="5" />
+      <point_port x="25" y="15" />
+      <point_port x="15" y="25" />
+      <point_port x="15" y="15" />
      </ports>
     </view>
    </graphics>
