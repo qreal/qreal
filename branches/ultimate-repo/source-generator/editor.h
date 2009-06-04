@@ -1,9 +1,9 @@
-#ifndef CATEGORY_H
-#define CATEGORY_H
+#pragma once
 
 #include <QList>
 #include <QDomNode>
 
+#include "non_graph_type.h"
 #include "entity.h"
 
 class EditorFile;
@@ -15,10 +15,8 @@ class EditorFile;
 class Editor{
 	EditorFile *efile;
 	QMap<QString, QStringList> enumerations;
+	QList<NonGraphType *> types_ng;
 	QList<Entity *> objects;
-	bool parseEnum(QDomElement &);
-	bool parseNumeric(QDomElement &);
-	bool parseString(QDomElement &);
 	bool parseNonGraphTypes(QDomElement &);
 	bool parseGraphTypes(QDomElement &);
 	QString name;
@@ -37,5 +35,3 @@ public:
 	QList<Entity*>::ConstIterator constObjBegin() const {return objects.constBegin();}
 	QList<Entity*>::ConstIterator constObjEnd() const {return objects.constEnd();}
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef PROPERTY_H
-#define PROPERTY_H
+#pragma once
 
 #include <QDomElement>
 
@@ -23,5 +22,3 @@ public:
 	QString getName() {return name;}
 	Entity* getOwner() {return entity;}
 };
-
-#endif

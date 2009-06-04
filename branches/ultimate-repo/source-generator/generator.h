@@ -1,8 +1,7 @@
 /** @file generator.h
  * 	@brief Генератор классов используемых на диаграммах элементов
 */
-#ifndef GENERATOR_H
-#define GENERATOR_H
+#pragma once
 
 #include <QtXml>
 #include <QDomDocument>
@@ -80,5 +79,3 @@ private:
 	/** @brief Директория */
 	QDir dir;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef EDITOR_FILE_H
-#define EDITOR_FILE_H
+#pragma once
 
 #include <QFileInfo>
 #include "editor.h"
@@ -30,5 +29,3 @@ public:
 	QList<Editor*>::ConstIterator constEdBegin() const {return editors.constBegin();}
 	QList<Editor*>::ConstIterator constEdEnd() const {return editors.constEnd();}
 };
-
-#endif

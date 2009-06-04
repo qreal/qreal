@@ -1,8 +1,8 @@
 /** @file entity.h
  * 	@brief Описания вспомогательных классов сущностей
  * */
-#ifndef ENTITY_H
-#define ENTITY_H
+
+#pragma once
 
 #include <QStringList>
 #include <QList>
@@ -197,5 +197,3 @@ public:
 	bool init(QDomElement&);
 	bool parseEdgeGraphics(QDomElement&);
 };
-
-#endif

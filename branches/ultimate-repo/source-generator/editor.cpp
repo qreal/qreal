@@ -14,38 +14,6 @@ Editor::~Editor()
 		delete objects.takeFirst();
 }
 
-bool Editor::parseEnum(QDomElement &xml_element)
-{
-	QDomElement child;
-	QStringList values;
-	QString name = xml_element.attribute("id");
-	QString qname = xml_element.attribute("name");
-
-	if (name == "" || qname == "")
-	{
-		qDebug() << "anonymous enum found";
-		return false;
-	}
-	values << qname; // WTF???
-	for (child = xml_element.firstChildElement("value"); !child.isNull();
-	     child = child.nextSiblingElement("value"))
-		values << child.text();
-	enumerations.insert(name, values);
-	return true;
-}
-
-bool Editor::parseNumeric(QDomElement &xml_element)
-{
-	// STUB
-	return true;
-}
-
-bool Editor::parseString(QDomElement &xml_element)
-{
-	// STUB
-	return true;
-}
-
 bool Editor::parseNonGraphTypes(QDomElement &xml_element)
 {
 	QDomElement child = xml_element.firstChildElement();
@@ -54,18 +22,36 @@ bool Editor::parseNonGraphTypes(QDomElement &xml_element)
 	{
 		if (child.nodeName() == "enum")
 		{
-			if (!parseEnum(child))
+			EnumType *t = new EnumType;
+			if (!t->init(child))
+			{
+				delete t;
 				return false;
+			}
+			NonGraphType *ngt = new NonGraphType(t);
+			types_ng << ngt;
 		}
 		else if (child.nodeName() == "numeric")
 		{
-			if (!parseNumeric(child))
+			NumericType *t = new NumericType;
+			if (!t->init(child))
+			{
+				delete t;
 				return false;
+			}
+			NonGraphType *ngt = new NonGraphType(t);
+			types_ng << ngt;
 		}
 		else if (child.nodeName() == "string")
 		{
-			if (!parseString(child))
+			StringType *t = new StringType;
+			if (!t->init(child))
+			{
+				delete t;
 				return false;
+			}
+			NonGraphType *ngt = new NonGraphType(t);
+			types_ng << ngt;
 		}
 		else
 			qDebug() << "WARNING: unknown non-graph metatype" << child.nodeName();
