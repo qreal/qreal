@@ -3,7 +3,15 @@
 #include <QDomElement>
 #include <QStringList>
 
+enum {
+	QREAL_NG_NUMERIC_INT,
+	QREAL_NG_NUMERIC_BOOL,
+	QREAL_NG_NUMERIC_FLOAT,
+};
+
 class NumericType {
+	QString name;
+	int base_type;
 public:
 	NumericType(){}
 	~NumericType(){}
@@ -11,6 +19,8 @@ public:
 };
 
 class StringType {
+	QString name;
+	QString regexp;
 public:
 	StringType(){}
 	~StringType(){}
@@ -18,6 +28,7 @@ public:
 };
 
 class EnumType {
+	QString name;
 	QStringList values;
 public:
 	EnumType(){}
