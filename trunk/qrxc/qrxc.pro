@@ -1,9 +1,13 @@
 QT = core \
      xml \
      gui
+
+CONFIG = debug
+
 include ( qrxc.pri )
 
 TARGET = $$QMAKE_QRXC
+
 HEADERS += generator.h \
     entity.h \
     editor_file.h \
@@ -11,6 +15,7 @@ HEADERS += generator.h \
     non_graph_type.h \
     property.h \
     sdftocpp.h
+
 SOURCES += generator.cpp \
     entity.cpp \
     editor_file.cpp \
@@ -19,3 +24,5 @@ SOURCES += generator.cpp \
     property.cpp \
     sdftocpp.cpp \
     qrxc.cpp
+
+QREAL_XML += editors/class_metamodel.xml
