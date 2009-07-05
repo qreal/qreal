@@ -21,31 +21,34 @@ int main (int argc, char *argv[])
 	{
 		if (args[i] == "-h")
 		{
-			i++;
+			++i;
 			if (i == args.size())
 			{
 				qDebug() << "-h needs an argument";
 				return 1;
 			}
 			header_out = args[i];
+			++i;
 			continue;
 		}
 		if (args[i] == "-o")
 		{
-			i++;
+			++i;
 			if (i == args.size())
 			{
 				qDebug() << "-o needs an argument";
 				return 1;
 			}
 			source_out = args[i];
+			++i;
 			continue;
 		}
-		if (infile == "")
+		if (infile == "") {
 			infile = args[i];
-		else
+			++i;
+		} else
 		{
-			qDebug() << "wtf is" << infile;
+			qDebug() << "wtf is " << infile << "?";
 			return 1;
 		}
 	}

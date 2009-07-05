@@ -19,7 +19,7 @@ extern QString resources;
 
 #define FOR_ALL_FILES(f) \
 	for (QList<EditorFile *>::ConstIterator f = loaded_files.constBegin(); \
-	     f != loaded_files.constEnd(); f++)
+		 f != loaded_files.constEnd(); f++)
 
 #define MEGA_FOR_ALL_OBJECTS(f,c,o) \
 	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f), c) FOR_ALL_OBJECTS((*c), o)
@@ -41,9 +41,9 @@ extern QString resources;
 class Generator
 {
 public:
-	Generator(QString, QString, QString);
+	Generator(QString const &inputXml, QString const &sourceOutFileName, QString const &headerOutFileName);
 	~Generator();
-	/** @brief Обработать все входные файлов и сгенерировать редакторы */
+	/** @brief Обработать все входные файлы и сгенерировать редакторы */
 	bool generate();
 	bool loadFile(QString, const EditorFile **f = NULL);
 	const Editor* findEditor(QString) const;

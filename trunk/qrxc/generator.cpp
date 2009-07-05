@@ -9,7 +9,7 @@
 
 QString resources;
 
-Generator::Generator(QString inf, QString sout, QString hout)
+Generator::Generator(QString const &inf, QString const &sout, QString const &hout)
 {
 	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	infile = inf;
@@ -369,30 +369,30 @@ void Generator::genClasses(){
 		out <<   "{\n";
 		out << "\tupdatePorts();\n"
 			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
-                        << "\ttext = \"\";\n";
+						<< "\ttext = \"\";\n";
 
 #if 0 // FIXME: Emperor
 		if ((*o)->parents.size() > 0)
 			out << "\tparentsList";
 		for (int j=0; j < (*o)->parents.size(); j++ ){
-		    out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
+			out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
 		}
 #endif
 		out << ";\n";
 		out << QString("\theight = %1;\n").arg((*o)->height)
-		    << QString("\twidth = %1;\n").arg((*o)->width)
-		    << "\tfirst_size_x = width;\n"
-		    << "\tfirst_size_y = height;\n"
-		    << "\tm_contents.setWidth(width);\n"
-		    << "\tm_contents.setHeight(height);\n"
-		    << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
-		    << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
-		    << "\td.setParentItem(this);\n";
+			<< QString("\twidth = %1;\n").arg((*o)->width)
+			<< "\tfirst_size_x = width;\n"
+			<< "\tfirst_size_y = height;\n"
+			<< "\tm_contents.setWidth(width);\n"
+			<< "\tm_contents.setHeight(height);\n"
+			<< "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
+			<< "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+			<< "\td.setParentItem(this);\n";
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-		    out << "\tdocvis.setParentItem(this);\n"
+			out << "\tdocvis.setParentItem(this);\n"
 			<< "\tdoctype.setParentItem(this);\n";
 		}
-                out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
+				out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
 
 
 
@@ -400,47 +400,47 @@ void Generator::genClasses(){
 		if ((*o)->type == NODE)
 		{
 			Node *node = dynamic_cast<Node*>(*o);
-			for( int j=0; j<node->ports.size(); j++ ){ 
-				if( node->ports.at(j).type == "point" ){ 
+			for( int j=0; j<node->ports.size(); j++ ){
+				if( node->ports.at(j).type == "point" ){
 					out << QString("\tpointPorts << QPointF(%1, %2);\n")
-					    .arg(node->ports.at(j).vals.at(0))
-					    .arg(node->ports.at(j).vals.at(1));
+						.arg(node->ports.at(j).vals.at(0))
+						.arg(node->ports.at(j).vals.at(1));
 				}
 				else if (node->ports.at(j).type == "line" )
 				{
-                                    out<<"\t{\n";
-                                        out << "\t\tstatLine ln;\n";
-                                        out << QString("\t\tln.line = QLineF(%1, %2, %3, %4);\n")
-                                            .arg(node->ports.at(j).vals.at(0))
-                                            .arg(node->ports.at(j).vals.at(1))
-                                            .arg(node->ports.at(j).vals.at(2))
-                                            .arg(node->ports.at(j).vals.at(3));
-                                        out << QString ("\t\tln.prop_x1 = ");
-                                        if (node->ports.at(j).props.at(0))
-                                             out << "true;\n";
-                                        else
-                                             out << "false;\n";
+									out<<"\t{\n";
+										out << "\t\tstatLine ln;\n";
+										out << QString("\t\tln.line = QLineF(%1, %2, %3, %4);\n")
+											.arg(node->ports.at(j).vals.at(0))
+											.arg(node->ports.at(j).vals.at(1))
+											.arg(node->ports.at(j).vals.at(2))
+											.arg(node->ports.at(j).vals.at(3));
+										out << QString ("\t\tln.prop_x1 = ");
+										if (node->ports.at(j).props.at(0))
+											 out << "true;\n";
+										else
+											 out << "false;\n";
 
-                                        out << QString("\t\tln.prop_y1 = ");
-                                        if (node->ports.at(j).props.at(1))
-                                            out << "true; \n";
-                                        else
-                                            out << "false; \n";
+										out << QString("\t\tln.prop_y1 = ");
+										if (node->ports.at(j).props.at(1))
+											out << "true; \n";
+										else
+											out << "false; \n";
 
-                                        out << QString("\t\tln.prop_x2 = ");
-                                        if (node->ports.at(j).props.at(2))
-                                            out << "true; \n";
-                                        else
-                                            out << "false; \n";
+										out << QString("\t\tln.prop_x2 = ");
+										if (node->ports.at(j).props.at(2))
+											out << "true; \n";
+										else
+											out << "false; \n";
 
-                                        out << QString("\t\tln.prop_y2 = ");
-                                        if (node->ports.at(j).props.at(3))
-                                            out << "true; \n";
-                                        else
-                                            out << "false; \n";
+										out << QString("\t\tln.prop_y2 = ");
+										if (node->ports.at(j).props.at(3))
+											out << "true; \n";
+										else
+											out << "false; \n";
 
-                                        out << QString("\t\tlinePorts << ln;\n");
-                                    out<<"\t};\n";
+										out << QString("\t\tlinePorts << ln;\n");
+									out<<"\t};\n";
 				}
 			}
 		}
@@ -453,16 +453,16 @@ void Generator::genClasses(){
 
 		//paint
 		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
-                        "QWidget *widget)\n{\n";
+						"QWidget *widget)\n{\n";
 		QDomNodeList sdflist = (*o)->elem.elementsByTagName("picture");
 		SdfRenderer rend(sdflist.at(0));
 		QString str = rend.render();
 		out << "\tupdatePorts();\n" << str
-		    << "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
+			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
 
 
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-		    out << "\tpainter->save();\n"
+			out << "\tpainter->save();\n"
 			<< "\tNodeElement::complexInlineEditing();\n"
 			<< "\tpainter->restore();\n";
 		} else
@@ -470,86 +470,86 @@ void Generator::genClasses(){
 			out << "\tpainter->save();\n";
 			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
 				out << QString("\tpainter->translate(QPointF(7, 0));\n")
-                                     <<"\td.setPos(7,0);\n";
+									 <<"\td.setPos(7,0);\n";
 
 			} else
 			if ((*o)->id == "krnnDiagram"){
-			    out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
+				out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
 				<<"\td.setPos(7,2*m_contents.height()/3);\n"
 				<< "\tQRectF conts = m_contents;\n"
 				<< "\tconts.setHeight(m_contents.height()/3);\n";
 			}
 			else{
 				if ((*o)->labels.at(0).x != 0  || (*o)->labels.at(0).y != 0)
-                                        out << QString("\tpainter->translate(QPointF(%1 * m_contents.width()+7, %2 * m_contents.height()));\n")
+										out << QString("\tpainter->translate(QPointF(%1 * m_contents.width()+7, %2 * m_contents.height()));\n")
 							.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
-                                            <<QString("\td.setPos(%1 * m_contents.width()+7, %2 * m_contents.height());\n")
-                                                        .arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
+											<<QString("\td.setPos(%1 * m_contents.width()+7, %2 * m_contents.height());\n")
+														.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
 						<< "\tQRectF conts = m_contents;\n"
 						<< QString("\tconts.setHeight(m_contents.height() * (1 - %1));\n")
 							.arg((*o)->labels.at(0).y);
 				else
 					out << QString("\tpainter->translate(QPointF(7, m_contents.height()-15));\n")
-					    <<"\td.setPos(7, m_contents.height()-15);\n"
-					    << "\tQRectF conts = m_contents;\n"
-					    << QString("\tconts.setHeight(20);\n");
+						<<"\td.setPos(7, m_contents.height()-15);\n"
+						<< "\tQRectF conts = m_contents;\n"
+						<< QString("\tconts.setHeight(20);\n");
 			}
 			out << "\td.paint(painter,style,widget);\n"
-			    << "\tpainter->restore();\n";
+				<< "\tpainter->restore();\n";
 		  } else
-		     out  << "\td.setTextWidth(m_contents.width()-15);\n";
+			 out  << "\td.setTextWidth(m_contents.width()-15);\n";
 
 		out<< "}\n\n";
 
 		//updateData
 		out << "void " << classname << "::updateData()\n{\n"
-		    << "\tNodeElement::updateData();\n";
-		
-		
+			<< "\tNodeElement::updateData();\n";
+
+
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-		    out << QString("\ttext = QString(\"%1\")")
+			out << QString("\ttext = QString(\"%1\")")
 			<< QString(".arg(dataIndex.data(%1).toString());\n")
 				.arg((*o)->labels.at(0).args.at(1));
-						
-		    out << QString("\tvistext = QString(\"%1\")")
+
+			out << QString("\tvistext = QString(\"%1\")")
 			<< QString(".arg(dataIndex.data(%1).toString());\n")
 				.arg((*o)->labels.at(0).args.at(0));
 
-		    out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
+			out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
 			<< QString(".arg(dataIndex.data(%1).toString());\n")
-			    .arg((*o)->labels.at(0).args.at(2));
+				.arg((*o)->labels.at(0).args.at(2));
 
-		    out << "\tdocvis.setHtml(vistext);\n"
+			out << "\tdocvis.setHtml(vistext);\n"
 			<< "\tdoctype.setHtml(typetext);\n";
 
-		    out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
+			out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
 			<< "\t\tmLockChangeName = true;\n"
-	 	        << "\t\td.setHtml(text);\n" 
-	 	        << "\t\tmLockChangeName = false;\n" 
-	 	        << "\t}\n";	
+				<< "\t\td.setHtml(text);\n"
+				<< "\t\tmLockChangeName = false;\n"
+				<< "\t}\n";
 		} else
-		
+
 		if ((*o)->labels.size() > 0){
 			out << QString("\ttext = QString(\"%1\")").arg((*o)->labels.at(0).text);
 			if ((*o)->labels.at(0).args.size() > 0) {
 				for( int k=0; k<(*o)->labels.at(0).args.size(); k++)
 					out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
 								.arg((*o)->labels.at(0).args.at(k));
-								
+
 				out << ";\n";
-				 out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n" 
-						<< "\t\tmLockChangeName = true;\n" 
-	 	                << "\t\td.setHtml(text);\n" 
-	 	                << "\t\tmLockChangeName = false;\n" 
-	 	                << "\t}\n"
+				 out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
+						<< "\t\tmLockChangeName = true;\n"
+						<< "\t\td.setHtml(text);\n"
+						<< "\t\tmLockChangeName = false;\n"
+						<< "\t}\n"
 						;
 			} else {
 				out << ";\n";
 			}
-		}		
+		}
 		else
 			out << "\ttext = \"\";\n";
-		
+
 		out << QString("")
 			<< "\tupdate();\n"
 			<< "}\n\n";
@@ -1001,41 +1001,41 @@ void Generator::genRealRepoInfo(){
 	// getColumnNames
 
 	out2 << "QStringList RealRepoInfo::getColumnNames(TypeIdType const &type) const\n{\n"
-	        "\tQStringList res;\n"
-	        "\tforeach (QStringBoolPair p, map.value(type)){\n"
-	        "\t\tres << p.first;\n"
-	        "\t}\n"
-	        "\treturn res;\n"
-	        "}\n\n";
+			"\tQStringList res;\n"
+			"\tforeach (QStringBoolPair p, map.value(type)){\n"
+			"\t\tres << p.first;\n"
+			"\t}\n"
+			"\treturn res;\n"
+			"}\n\n";
 
 	out2 << "QIcon RealRepoInfo::objectIcon(TypeIdType const &id) const\n"
-	        "{\n"
-	        "\tif (icons.contains(id))\n"
-	        "\t\treturn icons[id];\n"
-	        "\telse\n"
-	        "\t\treturn QIcon();\n}\n\n";
+			"{\n"
+			"\tif (icons.contains(id))\n"
+			"\t\treturn icons[id];\n"
+			"\telse\n"
+			"\t\treturn QIcon();\n}\n\n";
 
 	out2 << "int RealRepoInfo::roleByColumnName(TypeIdType const &type, QString const &columnName) const\n"
-	        "{\n"
-	        "\tQStringList columns = getColumnNames(type);\n"
-	        "\tint index = 0;\n"
-	        "\tforeach (QString column, columns) {\n"
-	        "\t\tif (column == columnName)\n"
-	        "\t\t\treturn roleByIndex(index);\n"
-	        "\t\t++index;\n"
-	        "\t}\n"
-	        "\tQ_ASSERT(!\"Role not found for given type\");\n"
-	        "\treturn -1;\n"
-	        "}\n\n";
+			"{\n"
+			"\tQStringList columns = getColumnNames(type);\n"
+			"\tint index = 0;\n"
+			"\tforeach (QString column, columns) {\n"
+			"\t\tif (column == columnName)\n"
+			"\t\t\treturn roleByIndex(index);\n"
+			"\t\t++index;\n"
+			"\t}\n"
+			"\tQ_ASSERT(!\"Role not found for given type\");\n"
+			"\treturn -1;\n"
+			"}\n\n";
 
 	out2 << "bool RealRepoInfo::isPropertyRef(TypeIdType const &type, QString const &columnName) const\n"
-	        "{\n"
-	        "\tforeach (QStringBoolPair p, map.value(type)){\n"
-	        "\t\tif (p.first == columnName)\n"
-	        "\t\t\treturn p.second;\n"
-	        "\t}\n"
-	        "\treturn false;\n"
-	        "}\n\n";
+			"{\n"
+			"\tforeach (QStringBoolPair p, map.value(type)){\n"
+			"\t\tif (p.first == columnName)\n"
+			"\t\t\treturn p.second;\n"
+			"\t}\n"
+			"\treturn false;\n"
+			"}\n\n";
 
 	file2.close();
 }

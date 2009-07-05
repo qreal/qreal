@@ -2,7 +2,7 @@ QT = core \
      xml \
      gui
 
-CONFIG = debug
+CONFIG = qt debug
 
 include ( qrxc.pri )
 
@@ -24,5 +24,3 @@ SOURCES += generator.cpp \
     property.cpp \
     sdftocpp.cpp \
     qrxc.cpp
-
-QREAL_XML += editors/class_metamodel.xml
