@@ -1,8 +1,3 @@
-include ( ../../qrxc/qrxc.pri )
+include (../editors_common.pri)
 
-TEMPLATE        =  lib
-CONFIG          += plugin
-DESTDIR		=  ../../qrgui/plugins/
-INCLUDEPATH	+= ..
-
-QREAL_XML       =  xml/usecase_metamodel.xml
+QREAL_XML = xml/usecase_metamodel.xml

@@ -1,16 +1,12 @@
-QT		+= xml
-TEMPLATE        =  lib
-CONFIG          += plugin
-DESTDIR		=  ../../qrgui/plugins
-INCLUDEPATH	+= ..
+include (../editors_common.pri)
 
-SOURCES		= \
+QT		+= xml
+
+SOURCES		+= \
 			editor_handmade.cpp
 
-HEADERS		= \
+HEADERS		+= \
 			editor_handmade.h \
 			kroki.h
 
-RESOURCES	=  shapes/editor_handmade.qrc
-
-include(../editors_sdk.pri)
+RESOURCES	+=  shapes/editor_handmade.qrc
