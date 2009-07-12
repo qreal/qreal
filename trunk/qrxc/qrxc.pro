@@ -2,7 +2,7 @@ QT = core \
      xml \
      gui
 
-CONFIG = qt debug
+CONFIG += qt debug
 
 include ( qrxc.pri )
 

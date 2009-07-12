@@ -1,7 +1,13 @@
 win32 { 
-    QMAKE_QRXC = $$PWD/debug/qrxc.exe
+	debug {
+		QMAKE_QRXC = $$PWD/debug/qrxc.exe
+	} else:release {
+		QMAKE_QRXC = $$PWD/release/qrxc.exe
+	} else {
+		error(Windows build definitely needs to be fixed)
+	}
 } else {
-    QMAKE_QRXC = $$PWD/qrxc
+	QMAKE_QRXC = $$PWD/qrxc
 }
 
 qrxc_impl.name = QRXC Impl
