@@ -6,7 +6,8 @@ CONFIG = qt debug
 
 include ( qrxc.pri )
 
-TARGET = $$basename($$QMAKE_QRXC)
+DESTDIR = $$dirname(QMAKE_QRXC)
+OBJECTS_DIR = $$DESTDIR
 
 HEADERS += generator.h \
     entity.h \
