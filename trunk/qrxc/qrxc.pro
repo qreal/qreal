@@ -2,8 +2,6 @@ QT = core \
      xml \
      gui
 
-CONFIG += qt debug
-
 include ( qrxc.pri )
 
 DESTDIR = $$dirname(QMAKE_QRXC)
