@@ -6,7 +6,7 @@ CONFIG = qt debug
 
 include ( qrxc.pri )
 
-TARGET = $$QMAKE_QRXC
+TARGET = $$basename($$QMAKE_QRXC)
 
 HEADERS += generator.h \
     entity.h \

@@ -1,7 +1,6 @@
 #include <QtGui/QMessageBox>
-#include "editor_handmade.h"
+#include "handmadeEditor.h"
 
-#include "../../qrgui/umllib/uml_nodeelement.h"
 #include "kroki.h"
 
 // i.e. qrm:///TestEditor/UseCase/Actor

@@ -5,4 +5,4 @@ CONFIG          += plugin
 DESTDIR		=  ../../qrgui/plugins/
 INCLUDEPATH	+= ..
 
-include (../editors_sdk.pri)
+include (editorsSdk.pri)

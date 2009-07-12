@@ -1,7 +1,7 @@
 TEMPLATE	=  subdirs
 
-SUBDIRS		= editors/editor_handmade.pro \
-                  editors/usecase_editor.pro
+SUBDIRS		= handmadeEditor/handmadeEditor.pro \
+                  usecaseEditor/usecaseEditor.pro
 
 HEADERS		= \
 			editorinterface.h

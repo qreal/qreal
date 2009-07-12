@@ -5,14 +5,14 @@ win32 {
 }
 
 qrxc_impl.name = QRXC Impl
-qrxc_impl.depends = plugin_template.cpp $$QMAKE_QRXC
+qrxc_impl.depends = ../pluginTemplate.cpp $$QMAKE_QRXC
 qrxc_impl.commands = $$QMAKE_QRXC -h ${QMAKE_FILE_OUT_BASE}.h -o ${QMAKE_FILE_OUT_BASE}.cpp ${QMAKE_FILE_IN}
 qrxc_impl.input = QREAL_XML
 qrxc_impl.output = ${QMAKE_FILE_IN_BASE}.cpp
 qrxc_impl.variable_out = SOURCES
 
 qrxc_decl.name = QRXC Decl
-qrxc_decl.depends = plugin_template.h $$QMAKE_QRXC
+qrxc_decl.depends = ../pluginTemplate.h $$QMAKE_QRXC
 qrxc_decl.commands = $$QMAKE_QRXC -h ${QMAKE_FILE_OUT_BASE}.h -o ${QMAKE_FILE_OUT_BASE}.cpp ${QMAKE_FILE_IN}
 qrxc_decl.input = QREAL_XML
 qrxc_decl.output = ${QMAKE_FILE_IN_BASE}.h
