@@ -8,7 +8,7 @@ qrxc.output = generated/${QMAKE_FILE_IN_BASE}.pro
 qrxc.variable_out = QRXC_PROJECTS
 
 project_compiler.name = QRXC Project compiler
-project_compiler.commands = cd generated && qmake ${QMAKE_FILE_IN_BASE}.pro && $(MAKE)
+project_compiler.commands = cd generated && $(QMAKE) ${QMAKE_FILE_IN_BASE}.pro && $(MAKE)
 project_compiler.input = QRXC_PROJECTS
 project_compiler.output = generated/Makefile
 
@@ -22,3 +22,5 @@ QMAKE_EXTRA_COMPILERS *= qrxc project_compiler
 QMAKE_LINK = $$QMAKE_QRXC
 QMAKE_LFLAGS = -fake_linker
 
+# При операции clean должны удаляться все сгенерённые файлы
+QMAKE_CLEAN += generated/*
