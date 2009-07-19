@@ -1,35 +1,24 @@
-win32 { 
-	CONFIG(debug, debug|release) {
-		QMAKE_QRXC = $$PWD/debug/qrxc.exe
-	} else:CONFIG(release, debug|release){
-		QMAKE_QRXC = $$PWD/release/qrxc.exe
-	} else {
-		error(Windows build definitely needs to be fixed)
-	}
-} else {
-	QMAKE_QRXC = $$PWD/qrxc
-}
+include (qmakeQrxc.pri)
 
-qrxc_impl.name = QRXC Impl
-qrxc_impl.depends = ../pluginTemplate.cpp $$QMAKE_QRXC
-qrxc_impl.commands = $$QMAKE_QRXC -h ${QMAKE_FILE_OUT_BASE}.h -o ${QMAKE_FILE_OUT_BASE}.cpp ${QMAKE_FILE_IN}
-qrxc_impl.input = QREAL_XML
-qrxc_impl.output = ${QMAKE_FILE_IN_BASE}.cpp
-qrxc_impl.variable_out = SOURCES
+qrxc.name = QRXC
+qrxc.depends = ../pluginTemplate.cpp $$QMAKE_QRXC
+qrxc.commands = $$QMAKE_QRXC ${QMAKE_FILE_IN} generated/${QMAKE_FILE_IN_BASE}.pro 
+qrxc.input = QREAL_XML
+qrxc.output = generated/${QMAKE_FILE_IN_BASE}.pro
+qrxc.variable_out = QRXC_PROJECTS
 
-qrxc_decl.name = QRXC Decl
-qrxc_decl.depends = ../pluginTemplate.h $$QMAKE_QRXC
-qrxc_decl.commands = $$QMAKE_QRXC -h ${QMAKE_FILE_OUT_BASE}.h -o ${QMAKE_FILE_OUT_BASE}.cpp ${QMAKE_FILE_IN}
-qrxc_decl.input = QREAL_XML
-qrxc_decl.output = ${QMAKE_FILE_IN_BASE}.h
-qrxc_decl.variable_out = QRXC_HEADERS
+project_compiler.name = QRXC Project compiler
+project_compiler.commands = cd generated && qmake ${QMAKE_FILE_IN_BASE}.pro && $(MAKE)
+project_compiler.input = QRXC_PROJECTS
+project_compiler.output = generated/Makefile
 
-load(moc)
-qrxc_moc.name = QRXC MOC
-qrxc_moc.commands = $$moc_header.commands
-qrxc_moc.output = $$moc_header.output
-qrxc_moc.depends = $$qrxc_decl.output
-qrxc_moc.input = QRXC_HEADERS
-qrxc_moc.variable_out = SOURCES
+QMAKE_EXTRA_COMPILERS *= qrxc project_compiler
 
-QMAKE_EXTRA_COMPILERS   *=      qrxc_decl qrxc_impl qrxc_moc
+# Хак - qmake генерит мэйкфайл, который всегда пытается собрать TARGET, для
+# чего вызывает линковщик. Проекты генерируемых редакторов собираются в сгенерированные 
+# проекты, и линковать их бессмысленно. Убедить qmake не вызывать линкер не удалось,
+# так что мы подсовываем ему в качестве линковщика наш генератор с параметром
+# -fake_linker, который просто возвращает 0.
+QMAKE_LINK = $$QMAKE_QRXC
+QMAKE_LFLAGS = -fake_linker
+

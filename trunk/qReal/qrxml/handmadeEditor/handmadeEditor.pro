@@ -1,12 +1,20 @@
-include (../editorsCommon.pri)
+!include (../editorsSdk.pri) {
+	message("editorsSdk.pri not found at ..")
+}
 
-QT		+= xml
+QT += xml
 
-SOURCES		+= \
-			handmadeEditor.cpp
+TEMPLATE = lib
+CONFIG += plugin
+DESTDIR =  ../../qrgui/plugins/
+INCLUDEPATH += ..
 
-HEADERS		+= \
-			handmadeEditor.h \
-			kroki.h
+OBJECTS_DIR = ../obj/
+MOC_DIR = ../moc/
 
-RESOURCES	+=  shapes/handmadeEditor.qrc
+SOURCES	+= handmadeEditor.cpp
+
+HEADERS	+= handmadeEditor.h \
+	kroki.h
+
+RESOURCES += shapes/handmadeEditor.qrc

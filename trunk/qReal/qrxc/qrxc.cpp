@@ -14,6 +14,51 @@ int main (int argc, char *argv[])
 {
 	QCoreApplication app(argc,argv);
 	QStringList args = app.arguments(); // QString is better than char*
+
+	if (args.count() > 1 && args[1] == "-fake_linker") {
+		qDebug() << "qrxc: fake linling mode, will return 0 regardless of arguments";
+		return 0;
+	}
+
+	if (args.count() != 3) {
+		usage();
+		return 1;
+	}
+
+	QString targetProFile = args[2];
+	QFile outFile(targetProFile);
+	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&outFile);
+
+	out << "message(\"Goodbye, world!\")" << '\n';
+	out << "\n";
+	out << "# TEMPLATE        =  lib\n";
+	out << "CONFIG          += console\n";
+	// out << "CONFIG          += plugin\n";
+	out << "# DESTDIR		=  ../../../qrgui/plugins/\n";
+	out << "INCLUDEPATH	+= ../..\n";
+	out << "\n";
+	out << "OBJECTS_DIR = ../../obj/\n";
+	out << "MOC_DIR = ../../moc/\n";
+	out << "\n";
+	out << "include (editorsSdk.pri)\n";
+	out << "SOURCES += main.cpp\n";
+
+	outFile.close();
+
+	{
+	        QFile cppFile("generated/main.cpp");
+		cppFile.open(QIODevice::WriteOnly | QIODevice::Text);
+		QTextStream out(&cppFile);
+	
+	        out << "#include <stdio.h>\n";
+	        out << "int main (int argc, char *argv[]) { printf(\"Goodbye, world!\"); }\n";
+	
+		cppFile.close();
+	}
+
+	return 0;
+/*
 	int i = 1;
 	QString header_out, source_out, infile;
 
@@ -76,4 +121,5 @@ int main (int argc, char *argv[])
 //	if (!g.generate())
 //		return 1;
 	return 0;
+*/
 }
