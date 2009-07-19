@@ -1,7 +1,7 @@
 include (qmakeQrxc.pri)
 
 qrxc.name = QRXC
-qrxc.depends = ../pluginTemplate.cpp $$QMAKE_QRXC
+qrxc.depends = ../pluginTemplate.cpp $$QMAKE_QRXC $$QREAL_XML_DEPENDS
 qrxc.commands = $$QMAKE_QRXC ${QMAKE_FILE_IN} generated/${QMAKE_FILE_IN_BASE}.pro 
 qrxc.input = QREAL_XML
 qrxc.output = generated/${QMAKE_FILE_IN_BASE}.pro
