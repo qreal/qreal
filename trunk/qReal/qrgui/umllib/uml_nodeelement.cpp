@@ -350,7 +350,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->restore();
 		}
-		if ((option->state & QStyle::State_MouseOver) || portsVisible)
+		if (((option->state & QStyle::State_MouseOver) || portsVisible) && portrenderer)
 		{
 			painter->save();
 			painter->setOpacity(0.7);

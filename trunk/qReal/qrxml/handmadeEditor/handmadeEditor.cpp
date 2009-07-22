@@ -2,6 +2,7 @@
 #include "handmadeEditor.h"
 
 #include "kroki.h"
+#include "actor.h"
 
 // i.e. qrm:///TestEditor/UseCase/Actor
 
@@ -59,5 +60,7 @@ UML::Element* HandmadePlugin::getGraphicalObject(QString const &diagram, QString
 {
 	if (element == "Kroki")
 		return new UML::Kroki();
+	if (element == "Actor")
+		return new UML::Actor();
 	return new UML::Kroki();
 }

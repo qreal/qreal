@@ -9,40 +9,30 @@ namespace UML {
 	class Kroki : public NodeElement {
 	public:
 		Kroki() {
-			renderer.load(QString(":/TestEditor/Orthodox/Kroki.sdf"));
-			text = "";
-			height = 100;
-			width = 100;
-			m_contents.setWidth(width);
-			m_contents.setHeight(height);
-			// d.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());
-			// d.setTextInteractionFlags(Qt::TextEditorInteraction);
-			// d.setParentItem(this);
+			mRenderer.load(QString(":/TestEditor/Orthodox/Kroki.sdf"));
+			mText = "";
+			m_contents.setWidth(100);
+			m_contents.setHeight(100);
 		}
 
 		virtual ~Kroki() {}
 
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 		{
-			// static int paintCount = 0;
-			// ++paintCount;
-			// qDebug() << "Paint " << paintCount;
-
-			renderer.render(painter, m_contents);
+			mRenderer.render(painter, m_contents);
+			NodeElement::paint(painter, style, widget, NULL);
 			d.setTextWidth(m_contents.width() - 15);
 		}
 
 		void updateData()
 		{
 			NodeElement::updateData();
-			text = "";
+			mText = "";
 			update();
 		}
 
 	private:
-		QString text;
-		int width;
-		int height;
-		SdfRenderer renderer;
+		QString mText;
+		SdfRenderer mRenderer;
 	};
 }
