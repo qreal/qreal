@@ -14,6 +14,7 @@ SOURCES += handmadeEditor.cpp
 
 HEADERS += handmadeEditor.h \
 	kroki.h \
-	actor.h
+	actor.h \
+	connection.h
 
 RESOURCES += shapes/handmadeEditor.qrc

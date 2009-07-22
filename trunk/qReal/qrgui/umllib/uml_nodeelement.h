@@ -94,7 +94,7 @@ namespace UML {
 
 		//QString PutName();
 		QString oldName;
-			  public slots:
+	public slots:
 		void changeName();
 
 	protected:

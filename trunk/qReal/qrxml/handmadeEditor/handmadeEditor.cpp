@@ -3,6 +3,7 @@
 
 #include "kroki.h"
 #include "actor.h"
+#include "connection.h"
 
 // i.e. qrm:///TestEditor/UseCase/Actor
 
@@ -20,6 +21,7 @@ void HandmadePlugin::initPlugin()
 
 	elementsNameMap["UseCase"]["UseCase"] = "Use case";
 	elementsNameMap["UseCase"]["Actor"] = "Actor";
+	elementsNameMap["UseCase"]["Connection"] = "Connection";
 	elementsNameMap["Orthodox"]["Kroki"] = "Kroki";
 //	elementsNameMap["Orthodox"]["Swastika"] = "Sign of Life";
 
@@ -38,7 +40,11 @@ QStringList HandmadePlugin::elements(QString const &diagram) const
 
 QIcon HandmadePlugin::getIcon(QString const &diagram, QString const &element) const
 {
-	return QIcon(new SdfIconEngineV2(":/TestEditor/" + diagram + "/" + element + ".sdf"));
+	// TODO: Хак, тут надо генерить что-то более вменяемое.
+	if (element != "Connection")
+		return QIcon(new SdfIconEngineV2(":/TestEditor/" + diagram + "/" + element + ".sdf"));
+	else
+		return QIcon();
 }
 
 QString HandmadePlugin::editorName() const
@@ -62,5 +68,7 @@ UML::Element* HandmadePlugin::getGraphicalObject(QString const &diagram, QString
 		return new UML::Kroki();
 	if (element == "Actor")
 		return new UML::Actor();
+	if (element == "Connection")
+		return new UML::Connection();
 	return new UML::Kroki();
 }
