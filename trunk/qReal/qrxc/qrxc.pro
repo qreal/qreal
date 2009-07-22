@@ -7,7 +7,8 @@ QT = core \
 CONFIG += console
 
 DESTDIR = $$dirname(QMAKE_QRXC)
-OBJECTS_DIR = $$DESTDIR
+OBJECTS_DIR = $$DESTDIR/obj
+MOC_DIR = $$DESTDIR/moc
 
 HEADERS += generator.h \
     entity.h \

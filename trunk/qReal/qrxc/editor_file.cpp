@@ -54,23 +54,25 @@ bool EditorFile::load(void)
 		return false;
 	}
 
+	
 	// I. Load include dependencies
 	for (child = metamodel.firstChildElement("include"); !child.isNull();
 	     child = child.nextSiblingElement("include"))
 	{
 		QString inc = child.text();
-		const EditorFile *file;
+		const EditorFile *edfile = 0;
 
 		inc.append(".xml");
-		if (!generator->loadFile(inc, &file))
+		if (!generator->loadFile(inc, &edfile))
 		{
 			qDebug() << "Cannot include file" << inc
 			         << "to file " << fullPath();
 			delete doc;
 			return false;
 		}
-		includes << file;
+		includes << edfile;
 	}
+	
 
 	// II. Load diagrams part one:
 	// Do not process inherited properties.
@@ -117,6 +119,8 @@ const Entity* EditorFile::findEntityInIncludes(QString id) const
 
 	Q_FOREACH(f, includes)
 	{
+		if( !f )
+			continue;
 		res = f->findEntityInCategories(id);
 		if (res) return res;
 		res = f->findEntityInIncludes(id);

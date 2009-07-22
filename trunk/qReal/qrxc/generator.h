@@ -41,7 +41,7 @@ extern QString resources;
 class Generator
 {
 public:
-	Generator(QString const &inputXml, QString const &sourceOutFileName, QString const &headerOutFileName);
+	Generator(QString const &inputXml);
 	~Generator();
 	/** @brief Обработать все входные файлы и сгенерировать редакторы */
 	bool generate();
@@ -58,6 +58,11 @@ private:
 	QString infile, header_out, source_out;
 
 	const EditorFile* findFile(QFileInfo) const;
+
+	void genPluginHeader(QString name);
+	void genPluginSource(QString name);
+
+	QString normalizeName( QString name );
 
 	/** @brief Сгенерировать перечисления ролей */
 	void genEnums();
@@ -76,6 +81,8 @@ private:
 	 * 	@brief @return Номер сузности в списке
 	 * */
 	int position( QString arg /**< Идентификатор */);
+
+	QString upperFirst(const QString str);
 
 	/** @brief Директория */
 	QDir dir;

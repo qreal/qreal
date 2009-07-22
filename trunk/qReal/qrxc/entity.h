@@ -58,6 +58,7 @@ public:
 	virtual ~Entity();
 
 	virtual bool init(QDomElement &) = 0;
+	Editor *getEditor() { return cat; }
 	bool resolve(void);
 	bool isResolved(void) const {return resolving_done;}
 	bool parseGeneralizations(QDomElement&);

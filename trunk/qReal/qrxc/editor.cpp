@@ -113,6 +113,7 @@ bool Editor::init(QDomElement &xml_element)
 			qDebug() << "WARNING: unknown tag" << child.nodeName();
 		child = child.nextSiblingElement();
 	}
+	qDebug() << "editor's inits done";
 	return true;
 }
 

@@ -9,17 +9,18 @@
 
 QString resources;
 
-Generator::Generator(QString const &inf, QString const &sout, QString const &hout)
+Generator::Generator(QString const &inf)
 {
 	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	infile = inf;
-	source_out = sout;
-	header_out = hout;
 	srcdir = "";
+	loadFile(infile);
+	qDebug() << "loading files complete";
 }
 
 bool Generator::loadFile(QString filename, const EditorFile **file)
 {
+	qDebug() << "trying to load file " << filename << "in " << srcdir;
 	EditorFile *efile;
 
 	const EditorFile *temp, *f;
@@ -28,9 +29,13 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 
 	QFileInfo fileinfo = QFileInfo(QDir(srcdir), filename);
 	if (!fileinfo.exists())
-	{
-		qDebug() << "Cannot file file" << filename;
-		return false;
+	{	
+		setSrcDir("commonXml");
+		if( !loadFile(filename, file )){
+			qDebug() << "Cannot find file" << filename;
+			return false;
+		}
+		return true;
 	}
 	f = findFile(fileinfo);
 	if (f)
@@ -83,6 +88,14 @@ const Editor* Generator::findEditor(QString name) const
 	return NULL;
 }
 
+QString Generator::normalizeName(QString name)
+{
+	name = upperFirst(name.toLower().remove("diagram").simplified().replace(" ", "_"));
+	while( name.endsWith("_") )
+		name.chop(1);
+	return name;	
+}
+
 bool Generator::generate(){
 	// creating directory for generated stuff
 	dir.cd(".");
@@ -93,8 +106,13 @@ bool Generator::generate(){
 		return false;
 	}
 
+	QString pluginName = normalizeName((*(loaded_files.last()->constEdBegin()))->get_name());
+
 	// generate all the stuff needed
-	genEnums();
+	genPluginHeader(pluginName);
+	genPluginSource(pluginName);
+
+/*	genEnums();
 	genTypes();
 	genClasses();
 	genFactory();
@@ -110,7 +128,7 @@ bool Generator::generate(){
 
 	out << resources;
 
-	file.close();
+	file.close();*/
 
 	qDebug() << "done";
 	return true;
@@ -1129,4 +1147,140 @@ void Generator::genEdgesFunction(){
 	out << "}\n";
 
 	file.close();
+}
+
+QString Generator::upperFirst(const QString str) 
+{
+	if (str.size() < 1) 
+		return "";
+
+	QStringList tokens = str.split(" ");
+	QList<QString>::iterator tokItr = tokens.begin();
+					
+	for (tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) 
+		(*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
+	
+	return tokens.join(" ");
+}											
+										
+
+void Generator::genPluginHeader(QString pluginName)
+{
+		
+//	qDebug() << pluginName;
+	QFile file(QString("generated/%1Interface.h").arg(pluginName));
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out(&file);
+
+	out << "#ifndef __" << pluginName.toUpper() <<  "_INTERFACE_H__\n" 
+		<< "#define __" << pluginName.toUpper() << "_INTERFACE_H__\n\n"
+		<< "#include <QtCore/QStringList>\n"
+		<< "#include <QtCore/QMap>\n"
+		<< "#include <QtGui/QIcon>\n\n"
+		<< "#include \"editorinterface.h\"\n\n"
+		<< "class " << pluginName << "Plugin : public QObject, public EditorInterface\n"
+		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(EditorInterface)\n\n"
+		<< "public:\n\n"
+		<< "\t" << pluginName << "();\n\n"
+		<< "\tvirtual void initPlugin();\n\n"
+		<< "\tvirtual QString id() const { return \"" << pluginName << "Editor\"; }\n\n"
+		<< "\tvirtual QStringList diagrams() const;\n"
+		<< "\tvirtual QStringList elements(QString const &diagram) const;\n\n"
+		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n\n"
+		<< "\tvirtual QString editorName() const;\n"
+		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
+		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n\n"
+		<< "private:\n"
+		<< "\tQMap<QString, QIcon> iconMap;\n"
+		<< "\tQMap<QString, QString> diagramNameMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
+		<< "}\n\n";	
+
+	out << "#endif";
+	
+	file.close();	
+
+}
+
+void Generator::genPluginSource(QString pluginName)
+{
+		
+//	qDebug() << pluginName;
+	QFile file(QString("generated/%1Interface.cpp").arg(pluginName));
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out(&file);
+
+	out << "#include \"" << pluginName << "Interface.h\"\n\n"
+		<< "Q_EXPORT_PLUGIN2(qreal_editors, " << pluginName << "Plugin)\n\n"
+		<< pluginName << "Plugin::" << pluginName << "Plugin(){\n"
+		<< "\tinitPlugin();\n"
+		<< "}\n\n"
+		
+		<< "void " << pluginName << "Plugin::initPlugin(){\n";
+
+	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c){
+		QString name = normalizeName((*c)->get_name());
+		out << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
+	}
+	
+	out << "\n";
+
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if( !(*o)->visible )
+			continue;
+		QString ename = normalizeName((*c)->get_name());
+		out << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
+	}
+	out << "}\n\n"
+
+		<< "QStringList " << pluginName << "Plugin::diagrams() const\n{\n"
+		<< "\treturn diagramNameMap.keys();\n"
+		<< "}\n\n"
+
+		<< "QStringList " << pluginName << "Plugin::elements(QString const &diagram) const\n{\n"
+		<< "\treturn elementsNameMap[diagram].keys();\n"
+		<< "}\n\n"
+
+		<< "QIcon " << pluginName << "Plugin::getIcon(QString const &diagram, QString const &element) const\n{\n"
+		<< "\treturn QIcon(new SdfIconEngineV2(\":/" << pluginName << "Editor/\" + diagram + \"/\" + element + \".sdf\"));\n"
+		<< "}\n\n"
+
+		<< "QString " << pluginName << "Plugin::editorName() const\n{\n"
+		<< "\t return \"" << pluginName << " Editor\";\n"
+		<< "}\n\n"
+
+		<< "QString " << pluginName << "Plugin::diagramName(QString const &diagram) const\n{\n"
+		<< "\treturn diagramNameMap[diagram];\n"
+		<< "}\n\n"
+
+		<< "QString " << pluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"
+		<< "\treturn elementsNameMap[diagram][element];\n"
+		<< "}\n\n"
+	
+		<< "UML::Element* " << pluginName << "Plugin::getGraphicalObject(QString const &diagram, QString const &element) const\n{\n";
+
+	bool isFirst = true;
+
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if( !(*o)->visible )
+			continue;
+		if( isFirst ){
+			out << "\tif (element == \"" << (*o)->id << "\")\n"
+				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
+			isFirst = false;
+		}		
+		else 		
+			out << "\telse if (element == \"" << (*o)->id << "\")\n"
+				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
+	}		
+	
+	out << "}\n\n";
+
+	file.close();	
+
 }

@@ -7,7 +7,7 @@
 
 void usage(void)
 {
-	qDebug() << "qrxc -h header_out.h -o source_out.cpp infile.xml";
+	qDebug() << "Usage: ./qrxc infile.xml targetProFile.pro";
 }
 
 int main (int argc, char *argv[])
@@ -25,6 +25,7 @@ int main (int argc, char *argv[])
 		return 1;
 	}
 
+	QString xmlFile = args[1];
 	QString targetProFile = args[2];
 	QFile outFile(targetProFile);
 	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -55,6 +56,9 @@ int main (int argc, char *argv[])
 	        out << "int main (int argc, char *argv[]) { printf(\"Goodbye, world!\"); }\n";
 	
 		cppFile.close();
+
+		Generator g(xmlFile);
+		g.generate();
 	}
 
 	return 0;
