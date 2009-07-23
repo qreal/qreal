@@ -59,8 +59,11 @@ private:
 
 	const EditorFile* findFile(QFileInfo) const;
 
-	void genPluginHeader(QString name);
-	void genPluginSource(QString name);
+	void genPluginHeader(QString plugin);
+	void genPluginSource(QString plugin);
+	void genElementClasses(QString plugin);
+	void genNodeClass(Node* node, QString plugin);
+	void genEdgeClass(Edge* edge, QString plugin);
 
 	QString normalizeName( QString name );
 
@@ -86,4 +89,6 @@ private:
 
 	/** @brief Директория */
 	QDir dir;
+
+	bool recursive;
 };

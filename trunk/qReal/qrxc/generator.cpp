@@ -14,6 +14,7 @@ Generator::Generator(QString const &inf)
 	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	infile = inf;
 	srcdir = "";
+	recursive = false;
 	loadFile(infile);
 	qDebug() << "loading files complete";
 }
@@ -29,10 +30,18 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 
 	QFileInfo fileinfo = QFileInfo(QDir(srcdir), filename);
 	if (!fileinfo.exists())
-	{	
-		setSrcDir("commonXml");
-		if( !loadFile(filename, file )){
-			qDebug() << "Cannot find file" << filename;
+	{
+		if( !recursive ){
+			recursive = true;
+			setSrcDir("commonXml");
+			if( !loadFile(filename, file )){
+				qDebug() << "Cannot find file" << filename;
+				return false;
+				
+			}
+		} else {
+			qDebug() << "Vicious circle detected while loading file"
+					 << fileinfo.canonicalFilePath();
 			return false;
 		}
 		return true;
@@ -111,6 +120,7 @@ bool Generator::generate(){
 	// generate all the stuff needed
 	genPluginHeader(pluginName);
 	genPluginSource(pluginName);
+	genElementClasses(pluginName);
 
 /*	genEnums();
 	genTypes();
@@ -1267,7 +1277,7 @@ void Generator::genPluginSource(QString pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if( !(*o)->visible )
+		if( (*o)->type == NODE && !(*o)->visible )
 			continue;
 		if( isFirst ){
 			out << "\tif (element == \"" << (*o)->id << "\")\n"
@@ -1283,4 +1293,106 @@ void Generator::genPluginSource(QString pluginName)
 
 	file.close();	
 
+}
+
+void Generator::genElementClasses(QString pluginName)
+{
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if( (*o)->type == NODE ){
+			if( !(*o)->visible )
+				continue;
+			genNodeClass((Node*)*o, pluginName);
+		}	
+		else 
+			genEdgeClass((Edge*)*o, pluginName);
+	}
+}
+
+void Generator::genNodeClass(Node *node, QString pluginName)
+{
+	QString classname = node->id;
+	QString uClassname = upperFirst(classname);
+
+	QFile file(QString("generated/%1.h").arg(classname));
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out(&file);
+
+	out << "#pragme once\n\n"
+		<< "#include \"../../qrgui/umllib/uml_nodeelement.h\"\n\n"
+		<< "namespace UML {\n\n"
+		<< "\tclass " << uClassname << " : public NodeElement {\n"
+		<< "\tpublic:\n"
+		<< "\t\t" << uClassname << "() {\n";
+			
+	bool hasSdf, hasPorts = hasSdf = false;
+
+	QFile sdffile("generated/shapes/" + classname + "Class.sdf");
+	if( sdffile.exists() ){
+		out << "\t\t\tmRenderer.load(QString(\":/" << pluginName << "/" << classname << "/Class.sdf\"));\n";
+		hasSdf = true;
+	} 
+
+	sdffile.setFileName("generated/shapes/" + classname + "Ports.sdf");
+	if( sdffile.exists() ){
+		out << "\t\t\tmPortRenderer.load(QString(\":/" << pluginName << "/" << classname << "Ports.sdf\"));\n";
+		hasPorts = true;
+	} 
+			
+	out << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
+		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n"
+		<< "\t\t}\n\n"
+		
+		<< "\t\t~" << uClassname << "() {}\n\n"
+
+		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n"
+		<< "\t\t\tmRenderer.render(painter, m_contents);\n";
+	if( hasPorts )	
+		out << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
+	else	
+		out << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
+	out << "\t\t}\n\n"
+
+		<< "\t\tvoid updateData()\n\t\t{\n"
+		<< "\t\t\tNodeElement::updateData();\n"
+		<< "\t\t\tupdate();\n"
+		<< "\t\t}\n\n"
+
+		<< "\tprivate:\n";
+	if( hasSdf )	
+		out << "\t\tSdfRenderer mRenderer;\n";
+	if( hasPorts )
+		out << "\t\tSdfRenderer mPortRenderer;\n";
+	out << "\t};"
+		<< "}";
+
+}
+
+void Generator::genEdgeClass(Edge *edge, QString pluginName)
+{
+	QString classname = edge->id;
+	QString uClassname = upperFirst(classname);
+
+	QFile file(QString("generated/%1.h").arg(classname));
+	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+		return;
+	QTextStream out(&file);
+
+	out << "#pragme once\n\n"
+		<< "#include \"../../qrgui/umllib/uml_edgeelement.h\"\n\n"
+		<< "namespace UML {\n\n"
+		<< "\tclass " << uClassname << " : public EdgeElement {\n"
+		<< "\tpublic:\n"
+		<< "\t\t" << uClassname << "() {\n"
+		<< "\t\t\tm_penStyle = Qt::SolidLine;\n"
+		<< "\t\t}\n\n"
+
+		<< "\t\tvirtual ~" << uClassname << "() {}\n\n"
+
+		<< "\tprotected:\n"
+		<< "\t\tvirtual void drawStartArrow(QPainter * p) const {}\n"
+		<< "\t\tvirtual void drawEndArrow(QPainter * p) const {}\n"
+		<< "\t};\n"
+		<< "}";
 }
