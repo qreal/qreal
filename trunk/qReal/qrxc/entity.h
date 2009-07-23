@@ -14,10 +14,9 @@
 
 #define FOR_ALL_PROPERTIES(o,p) \
 	for (QList<RealProperty*>::ConstIterator p = o->constPropBegin(); \
-	     p != o->constPropEnd(); p++)
+		 p != o->constPropEnd(); p++)
 
 class Generator;
-extern QString resources;
 
 /** @brief Тип сущности */
 enum elementsType {
@@ -101,8 +100,8 @@ class Node : public Entity
 public:
 	Node(Editor *cat):Entity(cat) { type = NODE; }
 	~Node() {}
-	//TODO: containers 
-	//QStringList associations; 
+	//TODO: containers
+	//QStringList associations;
 	/** @brief Список портов */
 	QList< Port > ports;
 
@@ -125,14 +124,14 @@ public:
 	QString from;
 
 
-      /** @brief Идентификатор типа элементов, к которым можно присоединять конец ассоциации */
+	  /** @brief Идентификатор типа элементов, к которым можно присоединять конец ассоциации */
 	QString to;
 	/** @brief Тип стрелки начала ассоциации */
 	QString fromArrow;
 	/** @brief Тип стрелки конца ассоциации */
 	QString toArrow;
-    //TODO: full schema support
-	//QString role;  
+	//TODO: full schema support
+	//QString role;
 };
 
 /** @class Port
@@ -144,12 +143,12 @@ public:
 	QString type;
 	/** @brief Координаты порта */
 	QList< qreal > vals;
-        QList< bool > props;
+		QList< bool > props;
 
 };
 
 /** @class @Label
- * 	@brief Надпись, параметризующая визуальное представление элемента в формате SVG 
+ * 	@brief Надпись, параметризующая визуальное представление элемента в формате SVG
 */
 class Label{
 public:

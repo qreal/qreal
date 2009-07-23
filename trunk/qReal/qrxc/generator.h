@@ -14,12 +14,9 @@
 
 class Editor;
 
-/** @brief Вспомогательная переменная для генерации файла ресурсов */
-extern QString resources;
-
 #define FOR_ALL_FILES(f) \
-	for (QList<EditorFile *>::ConstIterator f = loaded_files.constBegin(); \
-		 f != loaded_files.constEnd(); f++)
+	for (QList<EditorFile *>::ConstIterator f = mLoadedFiles.constBegin(); \
+		 f != mLoadedFiles.constEnd(); f++)
 
 #define MEGA_FOR_ALL_OBJECTS(f,c,o) \
 	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f), c) FOR_ALL_OBJECTS((*c), o)
@@ -44,53 +41,38 @@ public:
 	Generator(QString const &inputXml);
 	~Generator();
 	/** @brief Обработать все входные файлы и сгенерировать редакторы */
-	bool generate();
-	bool loadFile(QString, const EditorFile **f = NULL);
-	const Editor* findEditor(QString) const;
-	void setSrcDir(QString path) {srcdir = path; }
+	bool generate(QString const &outputFileName);
+	bool loadFile(QString const &fileName, const EditorFile **f = NULL);
+	const Editor* findEditor(QString const &editorName) const;
+	void addResource(QString const &resourceXml);
 
 private:
 	/** @brief Начальное значение идентификаторов сущностей */
 	static const int NUM = 1;
-	QList<EditorFile *> loaded_files;
 
-	QString srcdir;
-	QString infile, header_out, source_out;
-
+	void setSrcDir(QString const &path) { mSrcDir = path; }
 	const EditorFile* findFile(QFileInfo const &file) const;
 
-	void genPluginHeader(QString const &plugin) const;
-	void genPluginSource(QString const &plugin) const;
-	void genElementClasses(QString const &plugin) const;
-	void genNodeClass(Node* node, QString const &plugin) const;
-	void genEdgeClass(Edge* edge, QString const &plugin) const;
+	void genPluginHeader(QString const &plugin);
+	void genPluginSource(QString const &plugin);
+	void genElementClasses(QString const &plugin);
+	void genNodeClass(Node* node, QString const &plugin);
+	void genEdgeClass(Edge* edge, QString const &plugin);
+	void genProFile(QString const &plugin) const;
 
 	QString normalizeName(QString const &name) const;
-
-	/** @brief Сгенерировать перечисления ролей */
-	void genEnums();
-	/** @brief Сгенерировать информацию о типах элементов */
-	void genTypes();
-	/** @brief Сгенерировать классы элементов */
-	void genClasses();
-	/** @brief Сгенерировать фабрику элементов */
-	void genFactory();
-	/** @brief Сгенерировать вспомогательную информацию для репозитория */
-	void genRealRepoInfo();
-	/** @brief Сгенерировать вспомогательные средства для проверки корректности соединения элементов */
-	void genEdgesFunction();
-
-	/** @brief Получить номер сущности в списке
-	 * 	@brief @return Номер сузности в списке
-	 * */
-	int position( QString arg /**< Идентификатор */);
-
 	QString upperFirst(const QString &str) const;
 
 	void reportViciousCircle(QFileInfo const &fileInfo) const;
+	static void printFiles(QStringList const &files, QTextStream &out);
 
 	/** @brief Директория */
-	QDir dir;
+	QDir mDir;
+	QString mSrcDir;
 
-	bool recursive;
+	bool mRecursive;
+	QStringList mSources;
+	QStringList mHeaders;
+	QList<EditorFile *> mLoadedFiles;
+	QString mResources;
 };

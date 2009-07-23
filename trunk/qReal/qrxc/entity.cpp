@@ -24,9 +24,9 @@ bool Entity::addProperty(RealProperty *prop){
 			if ((*p)->getOwner() != prop->getOwner())
 			{
 				qDebug() << "Two properties with the same name"
-				         << (*p)->getName() << "of objects"
-				         << prop->getOwner()->id << "and"
-				         << (*p)->getOwner()->id;
+						 << (*p)->getName() << "of objects"
+						 << prop->getOwner()->id << "and"
+						 << (*p)->getOwner()->id;
 				return false;
 			}
 
@@ -34,7 +34,7 @@ bool Entity::addProperty(RealProperty *prop){
 			if ((*p)->getOwner() == this)
 			{
 				qDebug() << "Two properties with the same name"
-				         << (*p)->getName() << "of object" << id;
+						 << (*p)->getName() << "of object" << id;
 				return false;
 			}
 
@@ -82,10 +82,10 @@ bool Entity::parseGeneralizations(QDomElement &xml_element)
 		return true;
 
 	for (gen = gens.firstChildElement("generalization"); !gen.isNull();
-	     gen = gen.nextSiblingElement("generalization"))
+		 gen = gen.nextSiblingElement("generalization"))
 	{
 		for (par = gen.firstChildElement("parent"); !par.isNull();
-		     par = par.nextSiblingElement("parent"))
+			 par = par.nextSiblingElement("parent"))
 		{
 			QString par_id = par.attribute("parent_id");
 			if (par_id == "")
@@ -99,7 +99,7 @@ bool Entity::parseGeneralizations(QDomElement &xml_element)
 				parents << par_id;
 			else
 				qDebug() << "WARNING: parent" << par_id
-				         << "is already specified for" << id;
+						 << "is already specified for" << id;
 		}
 	}
 	return true;
@@ -147,7 +147,7 @@ bool Entity::parseProperties(QDomElement &xml_element)
 		return true;
 
 	for (prop = props.firstChildElement("property"); !prop.isNull();
-	     prop = prop.nextSiblingElement("property"))
+		 prop = prop.nextSiblingElement("property"))
 	{
 		RealProperty *p = new RealProperty(this);
 
@@ -189,7 +189,7 @@ bool Entity::parseAssociations(QDomElement &xml_element)
 	//TODO: multiple associations support
 	Association* ass = new Association();
 	for (child = assocs.firstChildElement("association"); !child.isNull();
-	     child = child.nextSiblingElement("association"))
+		 child = child.nextSiblingElement("association"))
 	{
 		QString role = child.attribute("id");
 		QString arrowType = child.attribute("end_type");
@@ -207,7 +207,7 @@ bool Entity::parseAssociations(QDomElement &xml_element)
 		}
 	}
 	for (child = assocs.firstChildElement("assoc_ref"); !child.isNull();
-	     child = child.nextSiblingElement("assoc_ref"))
+		 child = child.nextSiblingElement("assoc_ref"))
 	{
 		// sanity is for the weak!
 	}
@@ -222,7 +222,7 @@ bool Entity::applyParent(const Entity *parent)
 
 bool Node::init(QDomElement &xml_element)
 {
-    elem = xml_element;
+	elem = xml_element;
 	id = xml_element.attribute("id");
 	name = xml_element.attribute("name");
 	if (id == "" || name == "")
@@ -235,7 +235,7 @@ bool Node::init(QDomElement &xml_element)
 	if (logic.isNull())
 	{
 		qDebug() << "cannot find <logic> tag of" << id << "entity"
-		         << "in category" << cat->get_name();
+				 << "in category" << cat->get_name();
 		return false;
 	}
 
@@ -268,14 +268,14 @@ bool Edge::init(QDomElement &xml_element)
 	if (logic.isNull())
 	{
 		qDebug() << "cannot find <logic> tag of" << id << "edge"
-		         << "in category" << cat->get_name();
+				 << "in category" << cat->get_name();
 		return false;
 	}
 
 	// Baptizo te in nomine Patris et Filii et Spiritus Sancti
 	if (id != "krneRelationship")
 		parents << "krneRelationship";
-	else                                 
+	else
 		parents << "krnnNamedElement";
 
 	if (!parseEdgeGraphics(xml_element)) return false;
@@ -301,9 +301,10 @@ bool Node::parseSdf(QDomElement &xml_element)
 	{
 		height = sdf.at(0).toElement().attribute("sizey").toInt();
 		width = sdf.at(0).toElement().attribute("sizex").toInt();
-		resources += res.arg("shapes/" + id + "Ports.sdf");
-		resources += res.arg("shapes/" + id + "Class.sdf");
-		
+
+		Generator *generator = cat->get_editor()->getGenerator();
+		generator->addResource(res.arg("shapes/" + id + "Ports.sdf"));
+		generator->addResource(res.arg("shapes/" + id + "Class.sdf"));
 
 		QFile file("generated/shapes/" + id + "Class.sdf");
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -349,24 +350,24 @@ bool Node::parsePorts(QDomElement &xml_element)
 		stream << "sizex=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizex").toInt() << "\" ";
 		stream << "sizey=\"" << xml_element.elementsByTagName("picture").at(0).toElement().attribute("sizey").toInt() << "\" ";
 		stream << ">\n";
-		
+
 		QDomNodeList pointPorts = xml_element.elementsByTagName("point_port");
 		for (int i = 0; i < pointPorts.size(); ++i)
 		{
 			QDomElement portelem = pointPorts.at(i).toElement();
 			stream << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
-			stream << "x1=\""<<portelem.attribute("x") << "\" y1=\""<<portelem.attribute("y") << "\" ";	
+			stream << "x1=\""<<portelem.attribute("x") << "\" y1=\""<<portelem.attribute("y") << "\" ";
 			stream << "/>\n";
-			
+
 			stream << "\t<point stroke-width=\"3\" stroke-style=\"solid\" stroke=\"#465945\" ";
-			stream << "x1=\"" << portelem.attribute("x") << "\" y1=\"" << portelem.attribute("y") << "\" ";	
+			stream << "x1=\"" << portelem.attribute("x") << "\" y1=\"" << portelem.attribute("y") << "\" ";
 			stream << "/>\n";
 
 			Port port;
 			port.type = "point";
 
-                        port.vals << (qreal) portelem.attribute("x").toInt()/width;
-                        port.vals << (qreal) portelem.attribute("y").toInt()/height;
+						port.vals << (qreal) portelem.attribute("x").toInt()/width;
+						port.vals << (qreal) portelem.attribute("y").toInt()/height;
 
 			ports << port;
 		}
@@ -389,84 +390,84 @@ bool Node::parsePorts(QDomElement &xml_element)
 			Port port;
 			port.type = "line";
 
-                        QString startx = portelem_start.attribute("startx");
-                        QString starty = portelem_start.attribute("starty");
-                        QString endx = portelem_end.attribute("endx");
-                        QString endy = portelem_end.attribute("endy");
+						QString startx = portelem_start.attribute("startx");
+						QString starty = portelem_start.attribute("starty");
+						QString endx = portelem_end.attribute("endx");
+						QString endy = portelem_end.attribute("endy");
 
-                        if (startx.endsWith("a"))
-                        {
-                            startx.remove(startx.length() - 1, 1);
-                            port.vals << (qreal)startx.toInt() / width;
-                            port.props << true;
-                        } else if (startx.endsWith("%"))
-                        {
-                            startx.remove(startx.length() - 1, 1);
-                            port.vals << (qreal)startx.toInt() / 100;
-                            port.props << false;
-                        }  else
-                        {
-                             port.vals << (qreal)startx.toInt()/width;
-                             port.props << false;
-                        }
-
-
-                        if (starty.endsWith("a"))
-                        {
-                            starty.remove(starty.length() - 1, 1);
-                            port.vals << (qreal)starty.toInt() / height;
-                            port.props << true;
-                        } else if (starty.endsWith("%"))
-                        {
-                            starty.remove(starty.length() - 1, 1);
-                            port.vals << (qreal)starty.toInt() / 100;
-                            port.props << false;
-                        }  else
-                        {
-                             port.vals << (qreal)starty.toInt() / height;
-                             port.props << false;
-                        }
+						if (startx.endsWith("a"))
+						{
+							startx.remove(startx.length() - 1, 1);
+							port.vals << (qreal)startx.toInt() / width;
+							port.props << true;
+						} else if (startx.endsWith("%"))
+						{
+							startx.remove(startx.length() - 1, 1);
+							port.vals << (qreal)startx.toInt() / 100;
+							port.props << false;
+						}  else
+						{
+							 port.vals << (qreal)startx.toInt()/width;
+							 port.props << false;
+						}
 
 
-                        if (endx.endsWith("a"))
-                        {
-                            endx.remove(endx.length() - 1, 1);
-                            port.vals << (qreal)endx.toInt() / width;
-                            port.props << true;
-                        } else if (endx.endsWith("%"))
-                        {
-                            endx.remove(endx.length() - 1, 1);
-                            port.vals << (qreal)endx.toInt() / 100;
-                            port.props << false;
-                        }  else
-                        {
-                             port.vals << (qreal)endx.toInt() / width;
-                             port.props << false;
-                        }
+						if (starty.endsWith("a"))
+						{
+							starty.remove(starty.length() - 1, 1);
+							port.vals << (qreal)starty.toInt() / height;
+							port.props << true;
+						} else if (starty.endsWith("%"))
+						{
+							starty.remove(starty.length() - 1, 1);
+							port.vals << (qreal)starty.toInt() / 100;
+							port.props << false;
+						}  else
+						{
+							 port.vals << (qreal)starty.toInt() / height;
+							 port.props << false;
+						}
 
 
-                        if (endy.endsWith("a"))
-                        {
-                            endy.remove(endy.length() - 1, 1);
-                            port.vals << (qreal)endy.toInt() / height;
-                            port.props << true;
-                        } else if (endy.endsWith("%"))
-                        {
-                            endy.remove(endy.length() - 1, 1);
-                            port.vals << (qreal)endy.toInt() / 100;
-                            port.props << false;
-                        }  else
-                        {
-                             port.vals << (qreal)endy.toInt() / height;
-                             port.props << false;
-                        }
+						if (endx.endsWith("a"))
+						{
+							endx.remove(endx.length() - 1, 1);
+							port.vals << (qreal)endx.toInt() / width;
+							port.props << true;
+						} else if (endx.endsWith("%"))
+						{
+							endx.remove(endx.length() - 1, 1);
+							port.vals << (qreal)endx.toInt() / 100;
+							port.props << false;
+						}  else
+						{
+							 port.vals << (qreal)endx.toInt() / width;
+							 port.props << false;
+						}
 
 
-                        ports << port;
+						if (endy.endsWith("a"))
+						{
+							endy.remove(endy.length() - 1, 1);
+							port.vals << (qreal)endy.toInt() / height;
+							port.props << true;
+						} else if (endy.endsWith("%"))
+						{
+							endy.remove(endy.length() - 1, 1);
+							port.vals << (qreal)endy.toInt() / 100;
+							port.props << false;
+						}  else
+						{
+							 port.vals << (qreal)endy.toInt() / height;
+							 port.props << false;
+						}
+
+
+						ports << port;
 		}
-                stream << "</picture>\n";
+				stream << "</picture>\n";
 		file.close();
-		
+
 	} else
 	{
 		QFile file("generated/shapes/" + id + "Ports.sdf");

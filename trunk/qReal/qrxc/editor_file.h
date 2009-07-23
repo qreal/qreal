@@ -5,7 +5,7 @@
 
 #define FOR_ALL_EDITORS(f,c) \
 	for (QList<Editor *>::ConstIterator c = f->constEdBegin(); \
-	     c != f->constEdEnd(); c++)
+		 c != f->constEdEnd(); c++)
 
 class EditorFile {
 	QList<const EditorFile *> includes;
@@ -19,12 +19,13 @@ public:
 	~EditorFile();
 
 	bool load(void);
-	bool isLoaded(void) const {return loading_done;};
+	bool isLoaded(void) const {return loading_done;}
 	QString fullPath(void) const {return fileinfo.canonicalFilePath();}
 	QFileInfo fileInfo(void) const {return fileinfo;}
 	const Entity* findEntityInIncludes(QString) const;
 	const Entity* findEntityInCategories(QString) const;
 	const Editor* findEditor(QString) const;
+	Generator * getGenerator() const { return generator; }
 
 	QList<Editor*>::ConstIterator constEdBegin() const {return editors.constBegin();}
 	QList<Editor*>::ConstIterator constEdEnd() const {return editors.constEnd();}

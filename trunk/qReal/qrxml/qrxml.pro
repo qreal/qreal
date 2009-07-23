@@ -1,7 +1,8 @@
-TEMPLATE	=  subdirs
+TEMPLATE = subdirs
 
-SUBDIRS		= handmadeEditor/handmadeEditor.pro \
-#                  usecaseEditor/usecaseEditor.pro
+SUBDIRS	= \
+#	handmadeEditor/handmadeEditor.pro \
+	usecaseEditor/usecaseEditor.pro
 
-HEADERS		= \
-			editorinterface.h
+HEADERS	= \
+	editorinterface.h

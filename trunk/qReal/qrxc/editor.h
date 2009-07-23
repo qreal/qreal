@@ -10,17 +10,9 @@ class EditorFile;
 
 #define FOR_ALL_OBJECTS(c,o) \
 	for (QList<Entity *>::ConstIterator o = c->constObjBegin(); \
-	     o != c->constObjEnd(); o++)
+		 o != c->constObjEnd(); o++)
 
 class Editor{
-	EditorFile *efile;
-	QMap<QString, QStringList> enumerations;
-	QList<NonGraphType *> types_ng;
-	QList<Entity *> objects;
-	bool parseNonGraphTypes(QDomElement &);
-	bool parseGraphTypes(QDomElement &);
-	QString name;
-
 public:
 	Editor(QString, EditorFile *);
 	~Editor();
@@ -34,4 +26,12 @@ public:
 
 	QList<Entity*>::ConstIterator constObjBegin() const {return objects.constBegin();}
 	QList<Entity*>::ConstIterator constObjEnd() const {return objects.constEnd();}
+private:
+	EditorFile *efile;
+	QMap<QString, QStringList> enumerations;
+	QList<NonGraphType *> types_ng;
+	QList<Entity *> objects;
+	bool parseNonGraphTypes(QDomElement &);
+	bool parseGraphTypes(QDomElement &);
+	QString name;
 };

@@ -7,15 +7,12 @@
 #include "generator.h"
 #include <QMessageBox>
 
-QString resources;
-
 Generator::Generator(QString const &inf)
 {
-	resources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
-	infile = inf;
-	srcdir = "";
-	recursive = false;
-	loadFile(infile);
+	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
+	mSrcDir = "";
+	mRecursive = false;
+	loadFile(inf);
 	qDebug() << "loading files complete";
 }
 
@@ -25,23 +22,24 @@ void Generator::reportViciousCircle(QFileInfo const &fileInfo) const
 		 << fileInfo.canonicalFilePath();
 }
 
-bool Generator::loadFile(QString filename, const EditorFile **file)
+bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 {
-	qDebug() << "trying to load file " << filename << "in " << srcdir;
-	EditorFile *efile;
+	qDebug() << "trying to load file " << fileName << "in " << mSrcDir;
+	EditorFile *efile = NULL;
 
-	const EditorFile *temp, *f;
-	if (!file) file = &temp;
+	const EditorFile *temp = NULL, *f = NULL;
+	if (!file)
+		file = &temp;
 	*file = NULL;
 
-	QFileInfo fileInfo = QFileInfo(QDir(srcdir), filename);
+	QFileInfo const fileInfo = QFileInfo(QDir(mSrcDir), fileName);
 	if (!fileInfo.exists())
 	{
-		if (!recursive) {
-			recursive = true;
+		if (!mRecursive) {
+			mRecursive = true;
 			setSrcDir("commonXml");
-			if (!loadFile(filename, file)) {
-				qDebug() << "Cannot find file" << filename;
+			if (!loadFile(fileName, file)) {
+				qDebug() << "Cannot find file" << fileName;
 				return false;
 
 			}
@@ -73,28 +71,28 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 		delete efile;
 		return false;
 	}
-	loaded_files << efile;
+	mLoadedFiles << efile;
 	*file = efile;
 	return true;
 }
 
-const EditorFile* Generator::findFile(QFileInfo const &fileinfo) const
+const EditorFile* Generator::findFile(QFileInfo const &fileInfo) const
 {
-	Q_FOREACH(EditorFile *f, loaded_files)
-		if (f->fileInfo() == fileinfo)
+	Q_FOREACH (const EditorFile *f, mLoadedFiles)
+		if (f->fileInfo() == fileInfo)
 			return f;
 	return NULL;
 }
 
-const Editor* Generator::findEditor(QString name) const
+const Editor* Generator::findEditor(QString const &name) const
 {
 	const Editor *c;
-	const EditorFile *f;
 
-	Q_FOREACH(f, loaded_files)
+	Q_FOREACH (const EditorFile *f, mLoadedFiles)
 	{
 		c = f->findEditor(name);
-		if (c) return c;
+		if (c)
+			return c;
 	}
 	return NULL;
 }
@@ -108,1058 +106,35 @@ QString Generator::normalizeName(QString const &name) const
 	return result;
 }
 
-bool Generator::generate(){
+bool Generator::generate(QString const &outputFileName)
+{
 	// creating directory for generated stuff
-	dir.cd(".");
-	dir.mkdir("generated");
-	if (!dir.cd("generated"))
+	mDir.cd(".");
+	mDir.mkdir("generated");
+	if (!mDir.cd("generated"))
 	{
 		qDebug() << "cannot chdir() to 'generated' directory";
 		return false;
 	}
 
-	QString pluginName = normalizeName((*(loaded_files.last()->constEdBegin()))->get_name());
+	QString pluginName = normalizeName((*(mLoadedFiles.last()->constEdBegin()))->get_name());
 
 	// generate all the stuff needed
-	genPluginHeader(pluginName);
-	genPluginSource(pluginName);
+	// Порядок важен, т.к. функции модифицируют и используют поля mHeaders и
+	// mSources. TODO: ликвидировать безобразие.
 	genElementClasses(pluginName);
-
-/*	genEnums();
-	genTypes();
-	genClasses();
-	genFactory();
-	genRealRepoInfo();
-	genEdgesFunction();
-
-	// write the resource file
-	QFile file("generated/real_dynamic.qrc");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return false;
-	QTextStream out(&file);
-	resources += "</qresource>\n</RCC>";
-
-	out << resources;
-
-	file.close();*/
+	genPluginSource(pluginName);
+	genPluginHeader(pluginName);
+	genProFile(outputFileName);
 
 	qDebug() << "done";
 	return true;
 }
 
-Generator::~Generator(){
-	while (!loaded_files.isEmpty())
-	   delete loaded_files.takeFirst();
-}
-
-void Generator::genEnums()
+Generator::~Generator()
 {
-	if( !dir.exists("repo") )
-		dir.mkdir("repo");
-	QFile file("generated/repo/realreporoles.h");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out(&file);
-
-	int id = NUM;
-
-	out << "#ifndef REALREPOROLES_H\n#define REALREPOROLES_H\n\n";
-
-	QString tmp2 = "#include \"%1\"\n";
-
-	out << "namespace UML {\n";
-	out << "\tenum ElementTypes{\n";
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		out << "\t\t" +  (*o)->id + "=" + QString::number(id++);
-		out << ",\n";
-	}
-	out << "\t};\n};\n\n";
-
-	out << "namespace Unreal {\n";
-	out << "\tenum Roles {\n"
-		   "\t\tPositionRole = Qt::UserRole + 64,   // Position on a diagram\n"
-		   "\t\tConfigurationRole,          // Configuration (e.g. for link)\n"
-		   "\t\tIdRole,\n"
-		   "\t\tTypeRole,\n"
-		   "\t\tUserRole = Qt::UserRole + 96        // First role available for other types\n\t};\n\n";
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		out << "\tnamespace " + (*o)->id + " {\n";
-		out << "\t\tenum Roles {\n";
-		FOR_ALL_PROPERTIES((*o),p)
-		{
-			out << "\t\t\t" + (*p)->getName() + "Role";
-			if (p == (*o)->constPropBegin())
-				out << " = UserRole + 1";
-			out << ",\n";
-		}
-	out << "\t\t};\n";
-		out << "\t};\n\n";
-   }
-
-	out << "};\n\n";
-
-	out << "#endif\n";
-
-	file.close();
-	return;
-}
-
-void Generator::genTypes()
-{
-	if( !dir.exists("reposerver") )
-		dir.mkdir("reposerver");
-	dir.cd("reposerver");
-	if( !dir.exists("generated") )
-		dir.mkdir("generated");
-
-	QFile file("generated/reposerver/generated/repotypesinfo.h");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out(&file);
-
-	out << "// This file is generated by qReal source generator, all changes will\n"
-		   "// be lost on a next build\n\n";
-
-	out << "#pragma once\n\n";
-
-	out << "#include <QMap>\n"
-		"#include <QString>\n"
-		"#include \"../../common/classes.h\" //to be removed soon\n"
-		"#include \"../../common/realrepoapiclasses.h\"\n"
-		"#include \"../../common/defs.h\"\n\n";
-
-	out << "class RepoTypesInfo\n{\n"
-		"public:\n"
-		"\tRepoTypesInfo();\n"
-		"\t~RepoTypesInfo();\n"
-		"\tqRealTypes::TypeIdTypeList getTypes();\n"
-		"\tqRealTypes::RealType getTypeInfoById(TypeIdType const &type);\n"
-		"\tqRealTypes::RealType getTypeInfoByName(QString const &name);\n"
-		"\tQString getTypesByMetatype(qRealTypes::MetaType const &metatype);\n"
-		"\tint analyseType(TypeIdType const &type);\n"
-		"\tvoid elementCreated(TypeIdType const &type, IdType const &id);\n"
-		"\tvoid elementDeleted(TypeIdType const &type, IdType const &id);\n"
-		"private:\n"
-		"};\n\n";
-
-	file.close();
-
-	QFile file2("generated/reposerver/generated/repotypesinfo.cpp");
-	if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out2(&file2);
-
-	// static inits
-	out2 << "#include \"repotypesinfo.h\"\n\n"
-		"using namespace qRealTypes;\n\n"
-		"static bool initCompleted = false;\n\n"
-		"static QMap<TypeIdType, RealType> map;\n\n";
-
-
-	out2 << "static void initStaticData()\n{\n"
-		"\tif ( initCompleted )\n"
-		"\t\treturn;\n\n"
-		"\tRealType info;\n\n";
-
-	out2 << "\n\t//metatype will be replaced with real values"
-					" as soon as we start to use it in our XML descriptions\n\n";
-
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
-	{
-		out2 << "\tinfo.setId(\"" << (*o)->id << "\");\n"
-			 << "\tinfo.setName(\"" << (*o)->id << "\");\n"
-			 << "\tinfo.setDescription(\"" << (*o)->name << "\");\n"
-			 << "\tinfo.setMetaType(qRealTypes::object);\n"
-			 << QString("\tmap[\"%1\"] = info;\n\n").arg((*o)->id);
-	}
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-
-	out2 << "\tinitCompleted = true;\n"
-		"}\n\n";
-
-	// constructor
-	out2 << "RepoTypesInfo::RepoTypesInfo()\n"
-		"{\n"
-		"\tinitStaticData();\n"
-		"}\n\n";
-
-	// destructor
-	out2 << "RepoTypesInfo::~RepoTypesInfo()\n{\n}\n\n";
-
-	// getTypeInfo
-	out2 << "RealType RepoTypesInfo::getTypeInfoById(TypeIdType const &id)\n{\n"
-		"\tqDebug() << \"type requested: \" << id;\n"
-		"\treturn map[id];\n}\n\n";
-
-	out2 << "RealType RepoTypesInfo::getTypeInfoByName(QString const &name)\n{\n"
-		"\tqDebug() << \"type requested: \" << name;\n"
-		"\tforeach( RealType type, map.values() )\n"
-		"\t\tif( type.getName() == name )\n"
-		"\t\t\treturn type;\n"
-		"\tqDebug() << \"wrong type requested!\";\n"
-		"\treturn RealType();\n}\n\n";
-
-	// getTypesCount
-	out2 << "qRealTypes::TypeIdTypeList RepoTypesInfo::getTypes()\n{\n"
-		"\tqRealTypes::TypeIdTypeList result;\n"
-		"\tforeach(TypeIdType type, map.keys())\n"
-		"\t\tresult << type;\n"
-		"\treturn result;\n}\n\n";
-
-	// getTypesByMetatype
-	out2 << "QString RepoTypesInfo::getTypesByMetatype(MetaType const &id)\n{\n"
-		"\tQString res = \"\";\n"
-		"\tforeach( RealType type, map.values() )\n"
-		"\t\tif( type.getMetaType() == id )\n"
-		"\t\t\tres += QString(\"%1\\t\").arg(type.getId());\n"
-		"\treturn res;\n}\n\n";
-
-	// analyseType
-	out2 << "int RepoTypesInfo::analyseType( TypeIdType const &type )\n{\n";
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
-	{
-		if((*o)->type == EDGE)
-		{
-			out2 << "\tif (type == \"" << (*o)->id << "\") ";
-			out2 << "return TYPE_LINK;\n";
-		}
-		else
-		{
-			out2 << "\tif (type == \"" << (*o)->id << "\") ";
-			out2 << "return TYPE_OBJECT;\n";
-		}
-	}
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-	out2 << "\treturn TYPE_INVALID;\n}\n\n";
-
-	// elementCreated
-	out2 << "void RepoTypesInfo::elementCreated(TypeIdType const &type, IdType const &id )\n{\n"
-		"\tmap[type].addObject(id);\n}\n\n";
-
-	// elementDeleted
-	out2 << "void RepoTypesInfo::elementDeleted(TypeIdType const &type, IdType const &id )\n{\n"
-		"\tmap[type].deleteObject(id);\n}\n\n";
-
-	file2.close();
-	dir.cdUp();
-}
-
-void Generator::genClasses(){
-
-	//
-	// I. elements
-	//
-	if( !dir.exists("umllib") )
-		dir.mkdir("umllib");
-	dir.cd("umllib");
-	if( !dir.exists("generated") )
-		dir.mkdir("generated");
-
-	QFile file("generated/umllib/generated/objects.cpp");
-		if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-			return;
-	QTextStream out(&file);
-
-	QFile file2("generated/umllib/generated/objects.h");
-		if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
-			return;
-	QTextStream out2(&file2);
-
-
-	out <<  "#include <QtGui>\n"
-			"#include \"objects.h\"\n\n"
-			"using namespace Unreal;\n"
-			"using namespace UML;\n\n";
-
-	out2 << "#include <QWidget>\n#include <QList>\n\n"
-			"#include \"uml_nodeelement.h\"\n"
-			"#include \"uml_edgeelement.h\"\n"
-			"#include \"sdfrenderer.h\"\n"
-			"#include \"realreporoles.h\"\n"
-			"namespace UML {\n";
-
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		QString classname = (*o)->id + "Class";
-		QString portname = (*o)->id + "Ports";
-
-		if ((*o)->type == EDGE )
-			continue;
-		//
-		// 1. CPP-file
-		//
-
-		out << "// " << classname << "\n";
-
-		//constructor
-		out << classname << "::" << classname << "()\n";
-		out <<   "{\n";
-		out << "\tupdatePorts();\n"
-			<< QString("\tportrenderer.load(QString(\"%1\"));\n").arg(":/shapes/" + portname + ".sdf")
-						<< "\ttext = \"\";\n";
-
-#if 0 // FIXME: Emperor
-		if ((*o)->parents.size() > 0)
-			out << "\tparentsList";
-		for (int j=0; j < (*o)->parents.size(); j++ ){
-			out << QString("  << %1").arg(position((*o)->parents.at(j)) + NUM);
-		}
-#endif
-		out << ";\n";
-		out << QString("\theight = %1;\n").arg((*o)->height)
-			<< QString("\twidth = %1;\n").arg((*o)->width)
-			<< "\tfirst_size_x = width;\n"
-			<< "\tfirst_size_y = height;\n"
-			<< "\tm_contents.setWidth(width);\n"
-			<< "\tm_contents.setHeight(height);\n"
-			<< "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
-			<< "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
-			<< "\td.setParentItem(this);\n";
-		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-			out << "\tdocvis.setParentItem(this);\n"
-			<< "\tdoctype.setParentItem(this);\n";
-		}
-				out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
-
-
-
-
-		if ((*o)->type == NODE)
-		{
-			Node *node = dynamic_cast<Node*>(*o);
-			for( int j=0; j<node->ports.size(); j++ ){
-				if( node->ports.at(j).type == "point" ){
-					out << QString("\tpointPorts << QPointF(%1, %2);\n")
-						.arg(node->ports.at(j).vals.at(0))
-						.arg(node->ports.at(j).vals.at(1));
-				}
-				else if (node->ports.at(j).type == "line" )
-				{
-									out<<"\t{\n";
-										out << "\t\tstatLine ln;\n";
-										out << QString("\t\tln.line = QLineF(%1, %2, %3, %4);\n")
-											.arg(node->ports.at(j).vals.at(0))
-											.arg(node->ports.at(j).vals.at(1))
-											.arg(node->ports.at(j).vals.at(2))
-											.arg(node->ports.at(j).vals.at(3));
-										out << QString ("\t\tln.prop_x1 = ");
-										if (node->ports.at(j).props.at(0))
-											 out << "true;\n";
-										else
-											 out << "false;\n";
-
-										out << QString("\t\tln.prop_y1 = ");
-										if (node->ports.at(j).props.at(1))
-											out << "true; \n";
-										else
-											out << "false; \n";
-
-										out << QString("\t\tln.prop_x2 = ");
-										if (node->ports.at(j).props.at(2))
-											out << "true; \n";
-										else
-											out << "false; \n";
-
-										out << QString("\t\tln.prop_y2 = ");
-										if (node->ports.at(j).props.at(3))
-											out << "true; \n";
-										else
-											out << "false; \n";
-
-										out << QString("\t\tlinePorts << ln;\n");
-									out<<"\t};\n";
-				}
-			}
-		}
-		out  << "}\n\n";
-
-		//destructor
-		out << classname << "::~" << classname << "()\n";
-		out <<   "{\n}\n\n";
-
-
-		//paint
-		out << "void " << classname << "::paint(QPainter *painter, const QStyleOptionGraphicsItem *style,"
-						"QWidget *widget)\n{\n";
-		QDomNodeList sdflist = (*o)->elem.elementsByTagName("picture");
-		SdfRenderer rend(sdflist.at(0));
-		QString str = rend.render();
-		out << "\tupdatePorts();\n" << str
-			<< "\tNodeElement::paint(painter, style, widget, &portrenderer);\n";
-
-
-		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-			out << "\tpainter->save();\n"
-			<< "\tNodeElement::complexInlineEditing();\n"
-			<< "\tpainter->restore();\n";
-		} else
-		if ((*o)->labels.size() > 0){
-			out << "\tpainter->save();\n";
-			if ((*o)->id == "cnClass"){     // yeah, hate me. but no coordinates for labels allowed :/
-				out << QString("\tpainter->translate(QPointF(7, 0));\n")
-									 <<"\td.setPos(7,0);\n";
-
-			} else
-			if ((*o)->id == "krnnDiagram"){
-				out << QString("\tpainter->translate(QPointF(7, 2*m_contents.height()/3 ));\n")
-				<<"\td.setPos(7,2*m_contents.height()/3);\n"
-				<< "\tQRectF conts = m_contents;\n"
-				<< "\tconts.setHeight(m_contents.height()/3);\n";
-			}
-			else{
-				if ((*o)->labels.at(0).x != 0  || (*o)->labels.at(0).y != 0)
-										out << QString("\tpainter->translate(QPointF(%1 * m_contents.width()+7, %2 * m_contents.height()));\n")
-							.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
-											<<QString("\td.setPos(%1 * m_contents.width()+7, %2 * m_contents.height());\n")
-														.arg((*o)->labels.at(0).x).arg((*o)->labels.at(0).y)
-						<< "\tQRectF conts = m_contents;\n"
-						<< QString("\tconts.setHeight(m_contents.height() * (1 - %1));\n")
-							.arg((*o)->labels.at(0).y);
-				else
-					out << QString("\tpainter->translate(QPointF(7, m_contents.height()-15));\n")
-						<<"\td.setPos(7, m_contents.height()-15);\n"
-						<< "\tQRectF conts = m_contents;\n"
-						<< QString("\tconts.setHeight(20);\n");
-			}
-			out << "\td.paint(painter,style,widget);\n"
-				<< "\tpainter->restore();\n";
-		  } else
-			 out  << "\td.setTextWidth(m_contents.width()-15);\n";
-
-		out<< "}\n\n";
-
-		//updateData
-		out << "void " << classname << "::updateData()\n{\n"
-			<< "\tNodeElement::updateData();\n";
-
-
-		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
-			out << QString("\ttext = QString(\"%1\")")
-			<< QString(".arg(dataIndex.data(%1).toString());\n")
-				.arg((*o)->labels.at(0).args.at(1));
-
-			out << QString("\tvistext = QString(\"%1\")")
-			<< QString(".arg(dataIndex.data(%1).toString());\n")
-				.arg((*o)->labels.at(0).args.at(0));
-
-			out << QString("\ttypetext = QString(\"<b> %1 </b>\")")
-			<< QString(".arg(dataIndex.data(%1).toString());\n")
-				.arg((*o)->labels.at(0).args.at(2));
-
-			out << "\tdocvis.setHtml(vistext);\n"
-			<< "\tdoctype.setHtml(typetext);\n";
-
-			out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
-			<< "\t\tmLockChangeName = true;\n"
-				<< "\t\td.setHtml(text);\n"
-				<< "\t\tmLockChangeName = false;\n"
-				<< "\t}\n";
-		} else
-
-		if ((*o)->labels.size() > 0){
-			out << QString("\ttext = QString(\"%1\")").arg((*o)->labels.at(0).text);
-			if ((*o)->labels.at(0).args.size() > 0) {
-				for( int k=0; k<(*o)->labels.at(0).args.size(); k++)
-					out << QString("\n\t\t\t.arg(dataIndex.data(%2).toString())")
-								.arg((*o)->labels.at(0).args.at(k));
-
-				out << ";\n";
-				 out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
-						<< "\t\tmLockChangeName = true;\n"
-						<< "\t\td.setHtml(text);\n"
-						<< "\t\tmLockChangeName = false;\n"
-						<< "\t}\n"
-						;
-			} else {
-				out << ";\n";
-			}
-		}
-		else
-			out << "\ttext = \"\";\n";
-
-		out << QString("")
-			<< "\tupdate();\n"
-			<< "}\n\n";
-
-		// updatePorts
-		out << "void " + classname + "::updatePorts(){\n";
-			   //"\tports.clear();\n";
-		out << "}\n";
-
-		out << "// " + classname  << "\n";
-
-		//
-		//2. H-files
-		//
-
-		out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
-
-		out2 << "class " << classname << " : public NodeElement{\n";
-		out2 << "\tpublic:\n\t\t" << classname << "();\n";
-		out2 << "\t\t~" << classname << "();\n";
-		out2 <<  "\tvirtual void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*);\n"
-				"\tvirtual void updateData();\n\n"
-		"private:\n"
-				"\tvoid updatePorts();\n\n"
-				"\tQString text;\n"
-				"\t/* int textSize; */\n"
-				"\tint width;\n"
-				"\tint height;\n"
-		"\tSdfRenderer renderer;\n"
-		"\tSdfRenderer portrenderer;\n";
-
-		out2 << "};\n\n#endif\n";
-	}
-	//
-	// II. edges
-	//
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		if ((*o)->type == NODE)
-			continue;
-		const Edge *e = dynamic_cast<Edge*>(*o);
-
-		//
-		// 1. H-files
-		//
-
-		QString classname = e->id + "Class";
-		out2 << "#ifndef " << classname.toUpper() << "_H\n#define " << classname.toUpper() << "_H\n\n";
-
-		out2 << "\tclass " << classname << " : public EdgeElement{\n";
-		out2 << "\tpublic:\n\t\t" << classname << "();\n";
-		out2 << "\t\t~" << classname << "();\n";
-		out2 <<  "\t\tvirtual void drawStartArrow(QPainter *) const;\n"
-				"\t\tvirtual void drawEndArrow(QPainter *) const;\n";
-		out2 << "};\n\n#endif\n";
-
-		//
-		// CPP-files
-		//
-
-		// constructor
-
-		out << classname << "::" << classname << "()\n";
-		out << QString("{\n\tm_penStyle = %1;\n").arg(e->lineType);
-		if (e->labels.size() > 0){
-			out << QString("\tm_text = QString(\"%1\")").arg(e->labels.at(0).text);
-			if (e->labels.at(0).args.size() > 0 )
-				out << QString(".arg(dataIndex.data(%1).toString());\n").arg(e->labels.at(0).args.at(0));
-			else
-				out << ";\n";
-		}
-		out << "}\n\n";
-
-		// destructor
-
-		out << classname << "::~" << classname << "()\n";
-		out <<   "{\n}\n\n";
-
-		// drawStartArrow
-
-		QString style;
-		if (e->associations.size() != 0 )
-				style = e->associations.at(0)->fromArrow;
-		else
-			style = "";
-
-
-		if( !style.isEmpty() && style != "no_arrow" ){
-			out << "void " << classname << "::drawStartArrow(QPainter *painter) const\n";
-			out <<   "{\n"
-				"\tQBrush old = painter->brush();\n"
-				"\tQBrush brush;\n"
-				"\tbrush.setStyle(Qt::SolidPattern);\n";
-			if( style.isEmpty() )
-				style = "filled_arrow";
-			if( style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" )
-				out << "\tbrush.setColor(Qt::white);\n";
-			if( style == "filled_arrow" || style == "filled_rhomb" )
-				out << "\tbrush.setColor(Qt::black);\n";
-			out << "\tpainter->setBrush(brush);\n";
-
-			if( style == "empty_arrow" || style == "filled_arrow" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolygon(points, 3);\n";
-			if( style == "empty_rhomb" || style == "filled_rhomb" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolygon(points, 4);\n\t";
-			if( style == "open_arrow" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolyline(points, 3);\n\t";
-			if( style == "complex_arrow" )
-				out << "\tstatic const QPointF points[] = {"
-					"\n\t\tQPointF(-15,30),\n\t\tQPointF(-10,10),"
-					"\n\t\tQPointF(0,0),\n\t\tQPointF(10,10),"
-					"\n\t\tQPointF(15,30),\n\t\tQPointF(0,23),\n\t\tQPointF(-15,30)\n\t};\n"
-					"\tpainter->drawPolyline(points, 7);\n\t";
-			out << "painter->setBrush(old);\n}\n\n";
-
-		}
-		else
-			out << "void " << classname << "::drawStartArrow(QPainter *) const\n"
-				   "{\n}\n\n";
-
-		// drawEndArrow
-	if (e->associations.size() != 0 )
-		style = e->associations.at(0)->toArrow;
-	else
-		style = "";
-		if( !style.isEmpty() && style != "no_arrow" ){
-			out << "void " << classname << "::drawEndArrow(QPainter * painter) const\n{\n"
-				"\tQBrush old = painter->brush();\n"
-				"\tQBrush brush;\n"
-				"\tbrush.setStyle(Qt::SolidPattern);\n";
-			if( style.isEmpty() )
-				style = "filled_arrow";
-			if( style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" )
-				out << "\tbrush.setColor(Qt::white);\n";
-			if( style == "filled_arrow" || style == "filled_rhomb" )
-				out << "\tbrush.setColor(Qt::black);\n";
-			out << "\tpainter->setBrush(brush);\n";
-
-			if( style == "empty_arrow" || style == "filled_arrow" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolygon(points, 3);\n";
-			if( style == "empty_rhomb" || style == "filled_rhomb" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(0,0),\n\t\tQPointF(-5,10),\n\t\tQPointF(0,20),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolygon(points, 4);\n\t";
-			if( style == "open_arrow" )
-				out << "\tstatic const QPointF points[] = {\n"
-					"\t\tQPointF(-5,10),\n\t\tQPointF(0,0),\n\t\tQPointF(5,10)\n\t};\n"
-					"\tpainter->drawPolyline(points, 3);\n\t";
-			if( style == "complex_arrow" )
-				out << "\tstatic const QPointF points[] = {"
-					"\n\t\tQPointF(-15,30),\n\t\tQPointF(-10,10),"
-					"\n\t\tQPointF(0,0),\n\t\tQPointF(10,10),"
-					"\n\t\tQPointF(15,30),\n\t\tQPointF(0,23),\n\t\tQPointF(-15,30)\n\t};\n"
-					"\tpainter->drawPolyline(points, 7);\n\t";
-			out << "\tpainter->setBrush(old);\n}\n\n";
-		}
-		else
-			out << "void " << classname << "::drawEndArrow(QPainter *) const\n"
-				   "{\n}\n\n";
-
-	}
-	out2 << "}\n";
-	file.close();
-	file2.close();
-	dir.cdUp();
-
-	//
-	// IV. pri-file
-	//
-
-	QFile file3("generated/umllib/generated/umllib.pri");
-	if( !file3.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out3(&file3);
-	QString headers = "HEADERS += umllib/generated/objects.h\n";
-	QString sources = "SOURCES += umllib/generated/objects.cpp\n";
-	/*QString prefix = "umllib/generated/";
-
-	for (int i=0; i < objects.size(); i++){
-
-		headers += " \\ \n\t" + prefix + objects.at(i)->id + "Class.h";
-		sources += " \\ \n\t" + prefix + objects.at(i)->id + "Class.cpp";
-
-	}
-	*/
-	out3 << headers << "\n\n";
-	out3 << sources << "\n";
-	file3.close();
-}
-
-void Generator::genFactory()
-{
-	if( !dir.exists("umllib"))
-		dir.mkdir("umllib");
-	QFile file("generated/umllib/uml_guiobjectfactory.cpp");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out(&file);
-	QString classes = "";
-	QString tmp = "\tif (type == \"%1\") {\n\t\treturn new %2();\n\t}\n";
-
-	out <<  "#include <QtGui>\n\n"
-			"#include \"realreporoles.h\"\n"
-			"#include \"objects.h\"\n"
-			"#include \"uml_guiobjectfactory.h\"\n\n";
-
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		int height = (*o)->height;
-		int width  = (*o)->width;
-
-		if ( height == -1 && width == -1 )
-			continue;
-		classes += tmp.arg((*o)->id).arg((*o)->id + "Class") ;
-	}
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		if ((*o)->type == NODE) continue;
-		classes += tmp.arg((*o)->id).arg((*o)->id + "Class");
-
-	}
-
-  //  out << includes << "\n\n";
-	out <<  "using namespace UML;\n\n"
-			"Element * UML::GUIObjectFactory(TypeIdType const &type){\n";
-	out << classes;
-
-	out << "\tQ_ASSERT(!\"Unknown type, graphic element will not be created\");\n";
-	out << "\treturn NULL;\n}\n";
-
-	file.close();
-}
-
-int Generator::position( QString id ){
-	int result = -1;
-
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
-		if ((*o)->id == id ){
-			result = i;
-			break;
-		}
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-
-	return result;
-}
-
-void Generator::genRealRepoInfo(){
-
-	QFile file("generated/repo/realrepoinfo.h");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out(&file);
-
-	out << "// This file is generated by qReal source generator, all changes will\n"
-		   "// be lost on a next build\n\n";
-
-	out << "#pragma once\n"
-		   "\n";
-
-	out << "#include <QStringList>\n"
-			"#include <QMap>\n"
-			"#include <QString>\n"
-			"#include <QIcon>\n"
-			"#include \"sdfrenderer.h\"\n"
-			"#include \"../common/realrepoapiclasses.h\"\n\n";
-
-	out <<  "class RealRepoInfo\n"
-			"{\n"
-			"public:\n"
-			"\tRealRepoInfo();\n"
-			"\t~RealRepoInfo();\n"
-			"\tQStringList getObjectCategories() const;\n"
-			"\tqRealTypes::IdTypeList getObjects(QString const &category) const;\n"
-			"\tQString objectDesc(IdType const &id) const;\n"
-			"\tQString objectName(IdType const &id) const;\n\n"
-			"\tQStringList getColumnNames(TypeIdType const &type) const;\n"
-			"\tQString getColumnName(TypeIdType const &type, int role) const;\n\n"
-			"\tint roleByIndex(int index) const\n"
-			"\t\t{ return index+129; }\n"
-			"\tint indexByRole(int role) const\n"
-			"\t\t{ return role-129; }\n\n"
-			"\tint roleByColumnName(TypeIdType const &type, QString const &columnName) const;\n"
-			"\tbool isPropertyRef(TypeIdType const &type, QString const &columnName) const;\n"
-			"\tQIcon objectIcon(IdType const &id) const; \n\n"
-			"private:\n"
-			"};\n\n";
-
-	file.close();
-
-	QFile file2("generated/repo/realrepoinfo.cpp");
-	if( !file2.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out2(&file2);
-
-	out << "// This file is generated by qReal source generator, all changes will\n"
-		   "// be lost on a next build\n\n";
-
-		   // static inits
-	out2 << "#include \"realrepoinfo.h\"\n\n"
-			"using namespace qRealTypes;\n\n"
-			"// to be exterminated...\n"
-			"typedef QPair<QString, bool> QStringBoolPair;\n"
-			"static bool initCompleted = false;\n\n"
-
-		"class Category\n{\n"
-			"public:\n"
-			"\tQString name;\n"
-			"\tIdTypeList objects;\n};\n\n"
-
-			"static QList<Category> categories;\n"
-
-			"// Now objects have the same id as their name, so this map seem to be useless.\n"
-			"static QMap<IdType, QString> objects;\n"
-			"static QMap<IdType, QString> descriptions;\n"
-			"static QMap<IdType, QIcon> icons;\n"
-			"// Р­С‚Рѕ С…Р°Рє... РќРѕ РїСѓС‰Р°Р№ Р¶РёРІРµС‚, РїРѕРєР° РЅРµ Р±СѓСЏРЅРёС‚\n"
-			"static QMap<TypeIdType, QList<QStringBoolPair> > map;\n\n";
-
-	out2 << "static void initStaticData()\n{\n"
-		"\tif (initCompleted)\n"
-		"\t\treturn;\n\n"
-			"\tCategory cat;\n\n";
-	{
-		int i = 0;
-		int k = 0;
-	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c)
-	{
-		bool isEmpty = true;
-		int count = 0;
-		FOR_ALL_OBJECTS((*c),o)
-		{
-			if ((*o)->visible)
-				isEmpty = false;
-			count++;
-		}
-		//qDebug() << "cat " << categories.at(i)->name << ", empty " << isEmpty;
-		if( isEmpty )
-		{
-			i++;
-			k += count;
-			continue;
-		}
-		out2 << QString("\tcat.objects.clear();\n\tcat.name = \"%1\";\n").arg((*c)->get_name());
-
-		if ((*c)->constObjBegin() != (*c)->constObjEnd())
-				out2 << QString("\tcat.objects ");
-
-		if( i )
-			out2 << "<< \"krnnDiagram\" << \"krneRelationship\"";
-
-		FOR_ALL_OBJECTS((*c),o)
-		{
-//			qDebug() << categories.at(i)->objects.at(j)+NUM << objects.at(categories.at(i)->objects.at(j))->name
-//			<< objects.at(categories.at(i)->objects.at(j))->visible;
-			if ((*o)->visible || (*o)->type == EDGE )
-				out2 << QString(" << \"%1\"").arg((*o)->id);
-			k++;
-		}
-
-		out2 << "\t;\n";
-		out2 << "\tcategories << cat;\n\n";
-
-		i++;
-	}
-	}
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-		out2 << "\tobjects.insert(\"" + (*o)->id + "\", \"" + (*o)->id + "\");\n"; // Р’С‹РіР»Р°РґРёС‚ РіР»СѓРїРѕ, Рё РЅР° СЃР°РјРѕРј РґРµР»Рµ СЌС‚Рѕ РіР»СѓРїРѕ. Nobody cares.
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-		out2 << "\tdescriptions.insert(\"" + (*o)->id + "\", \"" + (*o)->name + "\");\n";
-
-	// from former realreporoles
-
-	out2 << "// from realreporoles.cpp\n\n";
-	out2 << "\tQList<QStringBoolPair> l;\n";
-
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
-		out2 << "\tl.clear();\n";
-		FOR_ALL_PROPERTIES((*o),p)
-			out2 << QString("\t\tl << qMakePair<QString, bool>(\"%1\", %2);\n").arg((*p)->getName()).arg((*p)->isRef());
-		out2 << QString("\tmap.insert(\"%1\", l);\n").arg((*o)->id);
-		out2 << "\n";
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i);
-
-	// initializing icons
-
-	out2 << "//initializing icons\n\n";
-
-	MEGA_FOR_ALL_OBJECTS(f,c,o)
-	{
-		if ((*o)->height != -1 || (*o)->width != -1 )
-			out2 << "\ticons.insert(\"" + (*o)->id + "\", QIcon(new SdfIconEngineV2(\":/shapes/" + (*o)->id + "Class.sdf\")));\n";
-	}
-	out2 << "\n";
-
-	out2 << "\tinitCompleted = true;\n"
-		"}\n\n";
-
-	// constructor
-	out2 << "RealRepoInfo::RealRepoInfo()\n"
-			"{\n"
-			"\tinitStaticData();\n"
-			"}\n\n";
-
-	// destructor
-	out2 << "RealRepoInfo::~RealRepoInfo()\n{\n}\n\n";
-
-	// getObjectCategories
-	out2 << "QStringList RealRepoInfo::getObjectCategories() const\n{\n"
-			"\tQStringList l;\n"
-			"\tforeach (Category category, categories)\n"
-			"\t\tl << category.name;\n"
-			"\treturn l;\n}\n\n";
-
-	// getObjects
-	out2 << "IdTypeList RealRepoInfo::getObjects(QString const &category) const\n{\n"
-			"\tforeach(Category cat, categories) {\n"
-			"\t\tif (cat.name == category)\n"
-			"\t\t\treturn cat.objects;\n"
-			"\t}\n"
-			"\tQ_ASSERT(!\"Category not found\");\n"
-			"\treturn IdTypeList();\n"
-			"}\n\n";
-
-	// objectName
-	out2 << "QString RealRepoInfo::objectName(TypeIdType const &id) const\n{\n"
-			"\treturn objects[id];\n}\n\n";
-
-	out2 << "QString RealRepoInfo::objectDesc(TypeIdType const &id) const\n{\n"
-			"\treturn descriptions[id];\n}\n\n";
-
-	// getColumnName
-
-	out2 << "QString RealRepoInfo::getColumnName(TypeIdType const &type, int role) const\n{\n"
-			"\treturn map.value(type).at(indexByRole(role)).first;\n}\n\n";
-
-	// getColumnNames
-
-	out2 << "QStringList RealRepoInfo::getColumnNames(TypeIdType const &type) const\n{\n"
-			"\tQStringList res;\n"
-			"\tforeach (QStringBoolPair p, map.value(type)){\n"
-			"\t\tres << p.first;\n"
-			"\t}\n"
-			"\treturn res;\n"
-			"}\n\n";
-
-	out2 << "QIcon RealRepoInfo::objectIcon(TypeIdType const &id) const\n"
-			"{\n"
-			"\tif (icons.contains(id))\n"
-			"\t\treturn icons[id];\n"
-			"\telse\n"
-			"\t\treturn QIcon();\n}\n\n";
-
-	out2 << "int RealRepoInfo::roleByColumnName(TypeIdType const &type, QString const &columnName) const\n"
-			"{\n"
-			"\tQStringList columns = getColumnNames(type);\n"
-			"\tint index = 0;\n"
-			"\tforeach (QString column, columns) {\n"
-			"\t\tif (column == columnName)\n"
-			"\t\t\treturn roleByIndex(index);\n"
-			"\t\t++index;\n"
-			"\t}\n"
-			"\tQ_ASSERT(!\"Role not found for given type\");\n"
-			"\treturn -1;\n"
-			"}\n\n";
-
-	out2 << "bool RealRepoInfo::isPropertyRef(TypeIdType const &type, QString const &columnName) const\n"
-			"{\n"
-			"\tforeach (QStringBoolPair p, map.value(type)){\n"
-			"\t\tif (p.first == columnName)\n"
-			"\t\t\treturn p.second;\n"
-			"\t}\n"
-			"\treturn false;\n"
-			"}\n\n";
-
-	file2.close();
-}
-
-
-void Generator::genEdgesFunction(){
-
-	QFile file("generated/repo/edges_stuff.cpp");
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
-		return;
-	QTextStream out(&file);
-
-	out <<  "#include <QMap>\n#include <QHash>\n#include <QDebug>\n\n"
-			"#include \"uml_nodeelement.h\"\n"
-			"#include \"objects.h\"\n";
-	QString cases = "";
-	QString singleCase = "\t\tcase %1: return check(pars, new %2()); break;\n";
-
-	{
-		int i = 0;
-		MEGA_FOR_ALL_OBJECTS(f,c,o)
-		{
-			if ((*o)->type == NODE)
-				cases += singleCase.arg(i+NUM).arg((*o)->id + "Class");
-			i++;
-		}
-	}
-	out << "\n";
-	out <<  "const int ANY = -1;\n"
-			"const int NONE = 0;\n\n";
-
-	out << "using namespace UML;\n";
-
-	out << "int check(QList<int> pars, NodeElement* el){\n"
-		   "\tfor( int i=0; i<pars.size(); i++)\n"
-		   "\t\tif( el->isChildOf(pars.at(i)) ){\n"
-		   "\t\t\treturn pars.at(i);\t\t\n\t}\n\n"
-		   "\treturn NONE;\n}\n\n";
-
-	out << "int checkParents(QList<int> pars, int id){\n"
-		   "\tswitch(id){\n"
-		   "\t\tcase -1: return -1; break;\n";
-	out << cases;
-	out << "\t\tdefault: return NONE; break;\n\t}\n\n";
-	out << "}\n\n";
-
-
-	out << "bool canBeConnected( int linkID, int from, int to ){\n"
-		   "\tQMap< int, QHash< int, int > > edges;\n"
-		   "\tQHash< int, int> hash;\n\n";
-
-	MEGA_FOR_ALL_OBJECTS_COUNTER(f,c,o,i)
-		if ((*o)->type == EDGE ){
-			Edge* edge = dynamic_cast<Edge *>(*o);
-			for( int j=0; j<(int) edge->associations.size(); j++ ){
-				out << "\thash.clear();\n";
-				int from = position(edge->associations.at(j)->from);
-				int to = position(edge->associations.at(j)->to);
-				if( from != -1)
-					from += 12;
-				 if( to != -1)
-					to += 12;
-				out << QString("\thash.insertMulti(%1, %2);\n").arg(from).arg(to);
-				out << QString("\tedges.insert(%1, hash);\n\n").arg(i+NUM);
-			}
-		}
-	MEGA_FOR_ALL_OBJECTS_COUNTER_END(i)
-
-	out << "\tif( from == ANY && to == ANY )\n"
-		   "\t\treturn true; // (-1, -1)\n\n"
-		   "\tQHash<int, int> h;\n"
-		   "\tbool res;\n"
-		   "\tint fromID = NONE;\n"
-		   "\tint toID = NONE;\n"
-		   "\th = edges.value(linkID);\n\n"
-		   "\tif( h.keys().contains(from) )\n"
-		   "\t\tfromID = from;\n"
-		   "\telse\n"
-		   "\t\tfromID = checkParents(h.keys(), from);\n\n"
-		   "\tif( h.values().contains(to) )\n"
-		   "\t\ttoID = to;\n"
-		   "\telse\n"
-		   "\t\ttoID = checkParents(h.values(), to);\n\n"
-		   "\tif( fromID == ANY && toID != NONE)\n"
-		   "\t\treturn h.values().contains(toID);\n\n"
-		   "\tif( toID == ANY && fromID != NONE)\n"
-		   "\t\treturn h.keys().contains(fromID);\n\n"
-		   "\tres = h.values(fromID).contains(toID);\n\n"
-		   "\treturn res;\n";
-
-	out << "}\n";
-
-	file.close();
+	while (!mLoadedFiles.isEmpty())
+		delete mLoadedFiles.takeFirst();
 }
 
 QString Generator::upperFirst(QString const &str) const
@@ -1178,57 +153,79 @@ QString Generator::upperFirst(QString const &str) const
 	return tokens.join(" ");
 }
 
-void Generator::genPluginHeader(QString const &pluginName) const
+void Generator::genPluginHeader(QString const &pluginName)
 {
+	QString fileName = pluginName + "Interface.h";
+	mHeaders << fileName;
 
-//	qDebug() << pluginName;
-	QFile file(QString("generated/%1Interface.h").arg(pluginName));
+	fileName = "generated/" + fileName;
+
+	QFile file(fileName);
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
 
-	out << "#ifndef __" << pluginName.toUpper() <<  "_INTERFACE_H__\n"
-		<< "#define __" << pluginName.toUpper() << "_INTERFACE_H__\n\n"
+	out << "#pragma once\n"
+		<< "\n"
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
-		<< "#include <QtGui/QIcon>\n\n"
-		<< "#include \"editorinterface.h\"\n\n"
+		<< "#include <QtGui/QIcon>\n"
+		<< "\n"
+		<< "#include \"editorinterface.h\"\n"
+		<< "\n"
 		<< "class " << pluginName << "Plugin : public QObject, public EditorInterface\n"
-		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(EditorInterface)\n\n"
-		<< "public:\n\n"
-		<< "\t" << pluginName << "();\n\n"
-		<< "\tvirtual void initPlugin();\n\n"
-		<< "\tvirtual QString id() const { return \"" << pluginName << "Editor\"; }\n\n"
+		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(EditorInterface)\n"
+		<< "\n"
+		<< "public:\n"
+		<< "\n"
+		<< "\t" << pluginName << "Plugin();\n"
+		<< "\n"
+		<< "\tvirtual void initPlugin();\n"
+		<< "\n"
+		<< "\tvirtual QString id() const { return \"" << pluginName << "Editor\"; }\n"
+		<< "\n"
 		<< "\tvirtual QStringList diagrams() const;\n"
-		<< "\tvirtual QStringList elements(QString const &diagram) const;\n\n"
+		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
+		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n\n"
+		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
-		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n\n"
+		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
+		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
-		<< "}\n\n";
-
-	out << "#endif";
+		<< "};\n"
+		<< "\n";
 
 	file.close();
 
 }
 
-void Generator::genPluginSource(QString const &pluginName) const
+void Generator::genPluginSource(QString const &pluginName)
 {
+	QString fileName = pluginName + "Interface.cpp";
+	mSources << fileName;
 
-//	qDebug() << pluginName;
-	QFile file(QString("generated/%1Interface.cpp").arg(pluginName));
+	fileName = "generated/" + fileName;
+
+	QFile file(fileName);
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
 
-	out << "#include \"" << pluginName << "Interface.h\"\n\n"
-		<< "Q_EXPORT_PLUGIN2(qreal_editors, " << pluginName << "Plugin)\n\n"
+	out << "#include \"" << pluginName << "Interface.h\"\n"
+		<< "\n";
+
+	foreach (QString const include, mHeaders) {
+		out << "#include \"" << include << "\"\n";
+	}
+	out << "\n";
+
+	out << "Q_EXPORT_PLUGIN2(qreal_editors, " << pluginName << "Plugin)\n\n"
 		<< pluginName << "Plugin::" << pluginName << "Plugin(){\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n"
@@ -1299,7 +296,7 @@ void Generator::genPluginSource(QString const &pluginName) const
 
 }
 
-void Generator::genElementClasses(QString const &pluginName) const
+void Generator::genElementClasses(QString const &pluginName)
 {
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
@@ -1313,17 +310,21 @@ void Generator::genElementClasses(QString const &pluginName) const
 	}
 }
 
-void Generator::genNodeClass(Node *node, QString const &pluginName) const
+void Generator::genNodeClass(Node *node, QString const &pluginName)
 {
 	QString const classname = node->id;
 	QString const uClassname = upperFirst(classname);
 
-	QFile file(QString("generated/%1.h").arg(classname));
+	QString fileName = classname + ".h";
+	mHeaders << fileName;
+
+	fileName = "generated/" + fileName;
+	QFile file(fileName);
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
 
-	out << "#pragme once\n\n"
+	out << "#pragma once\n\n"
 		<< "#include \"../../qrgui/umllib/uml_nodeelement.h\"\n\n"
 		<< "namespace UML {\n\n"
 		<< "\tclass " << uClassname << " : public NodeElement {\n"
@@ -1333,13 +334,13 @@ void Generator::genNodeClass(Node *node, QString const &pluginName) const
 	bool hasSdf, hasPorts = hasSdf = false;
 
 	QFile sdffile("generated/shapes/" + classname + "Class.sdf");
-	if( sdffile.exists() ){
+	if (sdffile.exists()) {
 		out << "\t\t\tmRenderer.load(QString(\":/" << pluginName << "/" << classname << "/Class.sdf\"));\n";
 		hasSdf = true;
 	}
 
 	sdffile.setFileName("generated/shapes/" + classname + "Ports.sdf");
-	if( sdffile.exists() ){
+	if (sdffile.exists()) {
 		out << "\t\t\tmPortRenderer.load(QString(\":/" << pluginName << "/" << classname << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
@@ -1350,12 +351,16 @@ void Generator::genNodeClass(Node *node, QString const &pluginName) const
 
 		<< "\t\t~" << uClassname << "() {}\n\n"
 
-		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n"
-		<< "\t\t\tmRenderer.render(painter, m_contents);\n";
-	if( hasPorts )
+		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n";
+
+	if (hasSdf)
+		out << "\t\t\tmRenderer.render(painter, m_contents);\n";
+
+	if (hasPorts)
 		out << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
 	else
 		out << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
+
 	out << "\t\t}\n\n"
 
 		<< "\t\tvoid updateData()\n\t\t{\n"
@@ -1364,26 +369,30 @@ void Generator::genNodeClass(Node *node, QString const &pluginName) const
 		<< "\t\t}\n\n"
 
 		<< "\tprivate:\n";
-	if( hasSdf )
+	if (hasSdf)
 		out << "\t\tSdfRenderer mRenderer;\n";
-	if( hasPorts )
+	if (hasPorts)
 		out << "\t\tSdfRenderer mPortRenderer;\n";
 	out << "\t};"
-		<< "}";
-
+		<< "}\n";
 }
 
-void Generator::genEdgeClass(Edge *edge, QString const &pluginName) const
+void Generator::genEdgeClass(Edge *edge, QString const &pluginName)
 {
 	QString classname = edge->id;
 	QString uClassname = upperFirst(classname);
 
-	QFile file(QString("generated/%1.h").arg(classname));
+	QString fileName = classname + ".h";
+	mHeaders << fileName;
+
+	fileName = "generated/" + fileName;
+
+	QFile file(fileName);
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
 
-	out << "#pragme once\n\n"
+	out << "#pragma once\n\n"
 		<< "#include \"../../qrgui/umllib/uml_edgeelement.h\"\n\n"
 		<< "namespace UML {\n\n"
 		<< "\tclass " << uClassname << " : public EdgeElement {\n"
@@ -1398,5 +407,49 @@ void Generator::genEdgeClass(Edge *edge, QString const &pluginName) const
 		<< "\t\tvirtual void drawStartArrow(QPainter * p) const {}\n"
 		<< "\t\tvirtual void drawEndArrow(QPainter * p) const {}\n"
 		<< "\t};\n"
-		<< "}";
+		<< "}\n";
+}
+
+void Generator::addResource(QString const &resourceXml) {
+	mResources += resourceXml;
+}
+
+void Generator::genProFile(QString const &plugin) const
+{
+	QFile outFile(plugin);
+	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&outFile);
+
+	out << "message(\"Building generated editor " + QFileInfo(outFile).fileName() + "\")" << '\n'
+		<< "\n"
+		<< "!include (../../editorsSdk.pri) {\n"
+		<< "	message(\"editorsSdk.pri not found at ../..\")\n"
+		<< "}\n"
+		<< "\n"
+		<< "QT += xml\n"
+		<< "\n"
+		<< "TEMPLATE =  lib\n"
+		<< "CONFIG += plugin\n"
+		<< "DESTDIR = ../../../qrgui/plugins/\n"
+		<< "INCLUDEPATH += ../..\n"
+		<< "\n"
+		<< "OBJECTS_DIR = ../../obj/\n"
+		<< "MOC_DIR = ../../moc/\n"
+		<< "\n"
+		<< "include (editorsSdk.pri)\n"
+		<< "\n"
+		<< "HEADERS += \\\n";
+	printFiles(mHeaders, out);
+
+	out << "SOURCES += \\\n";
+	printFiles(mSources, out);
+
+	outFile.close();
+}
+
+void Generator::printFiles(QStringList const &files, QTextStream &out) {
+	foreach (QString const file, files) {
+		out << "	" + file + "\\\n";
+	}
+	out << "\n";
 }

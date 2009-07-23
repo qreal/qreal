@@ -22,7 +22,7 @@ bool EditorFile::load(void)
 	QFile file(fullPath());
 	QDomDocument *doc;
 	QDomElement child, metamodel;
-	Editor *cat;
+	Editor *cat = NULL;
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;
@@ -37,8 +37,8 @@ bool EditorFile::load(void)
 	if( !doc->setContent(&file, false, &error, &errorLine, &errorCol))
 	{
 		qDebug() << "parse error in " << fullPath()
-		         << " at (" << errorLine << "," << errorCol
-		         << "): " << error;
+				 << " at (" << errorLine << "," << errorCol
+				 << "): " << error;
 		delete doc;
 		file.close();
 		return false;
@@ -49,15 +49,15 @@ bool EditorFile::load(void)
 	if (metamodel.isNull())
 	{
 		qDebug() << "metamodel tag not found in"
-		         << fullPath() << "file";
+				 << fullPath() << "file";
 		delete doc;
 		return false;
 	}
 
-	
+
 	// I. Load include dependencies
 	for (child = metamodel.firstChildElement("include"); !child.isNull();
-	     child = child.nextSiblingElement("include"))
+		 child = child.nextSiblingElement("include"))
 	{
 		QString inc = child.text();
 		const EditorFile *edfile = 0;
@@ -66,29 +66,27 @@ bool EditorFile::load(void)
 		if (!generator->loadFile(inc, &edfile))
 		{
 			qDebug() << "Cannot include file" << inc
-			         << "to file " << fullPath();
+					 << "to file " << fullPath();
 			delete doc;
 			return false;
 		}
 		includes << edfile;
 	}
-	
+
 
 	// II. Load diagrams part one:
 	// Do not process inherited properties.
 	for (child = metamodel.firstChildElement("editor"); !child.isNull();
-	     child = child.nextSiblingElement("editor"))
+		 child = child.nextSiblingElement("editor"))
 	{
-		const Editor *old_cat;
-
 		QString cat_name = child.attribute("name");
-		old_cat = generator->findEditor(cat_name);
+		Editor const *old_cat = generator->findEditor(cat_name);
 		if (old_cat)
 		{
 			qDebug() << "Error processing file"
-			         << fullPath() << "Editor"
-			         << cat_name << "already loaded from file"
-			         << old_cat->get_editor()->fullPath();
+					 << fullPath() << "Editor"
+					 << cat_name << "already loaded from file"
+					 << old_cat->get_editor()->fullPath();
 			return false;
 		}
 		cat = new Editor(cat_name, this);
