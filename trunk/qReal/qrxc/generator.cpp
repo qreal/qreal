@@ -19,6 +19,12 @@ Generator::Generator(QString const &inf)
 	qDebug() << "loading files complete";
 }
 
+void Generator::reportViciousCircle(QFileInfo const &fileInfo) const
+{
+	qDebug() << "Vicious circle detected while loading file"
+		 << fileInfo.canonicalFilePath();
+}
+
 bool Generator::loadFile(QString filename, const EditorFile **file)
 {
 	qDebug() << "trying to load file " << filename << "in " << srcdir;
@@ -28,25 +34,24 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 	if (!file) file = &temp;
 	*file = NULL;
 
-	QFileInfo fileinfo = QFileInfo(QDir(srcdir), filename);
-	if (!fileinfo.exists())
+	QFileInfo fileInfo = QFileInfo(QDir(srcdir), filename);
+	if (!fileInfo.exists())
 	{
-		if( !recursive ){
+		if (!recursive) {
 			recursive = true;
 			setSrcDir("commonXml");
-			if( !loadFile(filename, file )){
+			if (!loadFile(filename, file)) {
 				qDebug() << "Cannot find file" << filename;
 				return false;
-				
+
 			}
 		} else {
-			qDebug() << "Vicious circle detected while loading file"
-					 << fileinfo.canonicalFilePath();
+			reportViciousCircle(fileInfo);
 			return false;
 		}
 		return true;
 	}
-	f = findFile(fileinfo);
+	f = findFile(fileInfo);
 	if (f)
 	{
 		if (f->isLoaded())
@@ -56,16 +61,15 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 		}
 		else
 		{
-			qDebug() << "Vicious circle detected while loading file"
-					 << fileinfo.canonicalFilePath();
+			reportViciousCircle(fileInfo);
 			return false;
 		}
 	}
 
-	efile = new EditorFile(fileinfo, this);
+	efile = new EditorFile(fileInfo, this);
 	if (!efile->load())
 	{
-		qDebug() << "Failed to load file " << fileinfo.canonicalFilePath();
+		qDebug() << "Failed to load file " << fileInfo.canonicalFilePath();
 		delete efile;
 		return false;
 	}
@@ -74,11 +78,9 @@ bool Generator::loadFile(QString filename, const EditorFile **file)
 	return true;
 }
 
-const EditorFile* Generator::findFile(QFileInfo fileinfo) const
+const EditorFile* Generator::findFile(QFileInfo const &fileinfo) const
 {
-	EditorFile *f;
-
-	Q_FOREACH(f, loaded_files)
+	Q_FOREACH(EditorFile *f, loaded_files)
 		if (f->fileInfo() == fileinfo)
 			return f;
 	return NULL;
@@ -97,12 +99,13 @@ const Editor* Generator::findEditor(QString name) const
 	return NULL;
 }
 
-QString Generator::normalizeName(QString name)
+QString Generator::normalizeName(QString const &name) const
 {
-	name = upperFirst(name.toLower().remove("diagram").simplified().replace(" ", "_"));
-	while( name.endsWith("_") )
-		name.chop(1);
-	return name;	
+	QString result = name;
+	result = upperFirst(name.toLower().remove("diagram").simplified().replace(" ", "_"));
+	while (result.endsWith("_"))
+		result.chop(1);
+	return result;
 }
 
 bool Generator::generate(){
@@ -1159,31 +1162,32 @@ void Generator::genEdgesFunction(){
 	file.close();
 }
 
-QString Generator::upperFirst(const QString str) 
+QString Generator::upperFirst(QString const &str) const
 {
-	if (str.size() < 1) 
+	if (str.size() < 1)
 		return "";
 
 	QStringList tokens = str.split(" ");
-	QList<QString>::iterator tokItr = tokens.begin();
-					
-	for (tokItr = tokens.begin(); tokItr != tokens.end(); ++tokItr) 
-		(*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
-	
-	return tokens.join(" ");
-}											
-										
 
-void Generator::genPluginHeader(QString pluginName)
+	for (QList<QString>::iterator tokItr = tokens.begin();
+		tokItr != tokens.end(); ++tokItr)
+	{
+		(*tokItr) = (*tokItr).at(0).toUpper() + (*tokItr).mid(1);
+	}
+
+	return tokens.join(" ");
+}
+
+void Generator::genPluginHeader(QString const &pluginName) const
 {
-		
+
 //	qDebug() << pluginName;
 	QFile file(QString("generated/%1Interface.h").arg(pluginName));
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		return;
 	QTextStream out(&file);
 
-	out << "#ifndef __" << pluginName.toUpper() <<  "_INTERFACE_H__\n" 
+	out << "#ifndef __" << pluginName.toUpper() <<  "_INTERFACE_H__\n"
 		<< "#define __" << pluginName.toUpper() << "_INTERFACE_H__\n\n"
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
@@ -1206,17 +1210,17 @@ void Generator::genPluginHeader(QString pluginName)
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
-		<< "}\n\n";	
+		<< "}\n\n";
 
 	out << "#endif";
-	
-	file.close();	
+
+	file.close();
 
 }
 
-void Generator::genPluginSource(QString pluginName)
+void Generator::genPluginSource(QString const &pluginName) const
 {
-		
+
 //	qDebug() << pluginName;
 	QFile file(QString("generated/%1Interface.cpp").arg(pluginName));
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -1228,14 +1232,14 @@ void Generator::genPluginSource(QString pluginName)
 		<< pluginName << "Plugin::" << pluginName << "Plugin(){\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n"
-		
+
 		<< "void " << pluginName << "Plugin::initPlugin(){\n";
 
 	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c){
 		QString name = normalizeName((*c)->get_name());
 		out << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
 	}
-	
+
 	out << "\n";
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
@@ -1270,7 +1274,7 @@ void Generator::genPluginSource(QString pluginName)
 		<< "QString " << pluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"
 		<< "\treturn elementsNameMap[diagram][element];\n"
 		<< "}\n\n"
-	
+
 		<< "UML::Element* " << pluginName << "Plugin::getGraphicalObject(QString const &diagram, QString const &element) const\n{\n";
 
 	bool isFirst = true;
@@ -1283,36 +1287,36 @@ void Generator::genPluginSource(QString pluginName)
 			out << "\tif (element == \"" << (*o)->id << "\")\n"
 				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
 			isFirst = false;
-		}		
-		else 		
+		}
+		else
 			out << "\telse if (element == \"" << (*o)->id << "\")\n"
 				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
-	}		
-	
+	}
+
 	out << "}\n\n";
 
-	file.close();	
+	file.close();
 
 }
 
-void Generator::genElementClasses(QString pluginName)
+void Generator::genElementClasses(QString const &pluginName) const
 {
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if( (*o)->type == NODE ){
-			if( !(*o)->visible )
+		if ((*o)->type == NODE) {
+			if (!(*o)->visible)
 				continue;
-			genNodeClass((Node*)*o, pluginName);
-		}	
-		else 
-			genEdgeClass((Edge*)*o, pluginName);
+			genNodeClass(static_cast<Node*>(*o), pluginName);
+		}
+		else
+			genEdgeClass(static_cast<Edge*>(*o), pluginName);
 	}
 }
 
-void Generator::genNodeClass(Node *node, QString pluginName)
+void Generator::genNodeClass(Node *node, QString const &pluginName) const
 {
-	QString classname = node->id;
-	QString uClassname = upperFirst(classname);
+	QString const classname = node->id;
+	QString const uClassname = upperFirst(classname);
 
 	QFile file(QString("generated/%1.h").arg(classname));
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
@@ -1325,32 +1329,32 @@ void Generator::genNodeClass(Node *node, QString pluginName)
 		<< "\tclass " << uClassname << " : public NodeElement {\n"
 		<< "\tpublic:\n"
 		<< "\t\t" << uClassname << "() {\n";
-			
+
 	bool hasSdf, hasPorts = hasSdf = false;
 
 	QFile sdffile("generated/shapes/" + classname + "Class.sdf");
 	if( sdffile.exists() ){
 		out << "\t\t\tmRenderer.load(QString(\":/" << pluginName << "/" << classname << "/Class.sdf\"));\n";
 		hasSdf = true;
-	} 
+	}
 
 	sdffile.setFileName("generated/shapes/" + classname + "Ports.sdf");
 	if( sdffile.exists() ){
 		out << "\t\t\tmPortRenderer.load(QString(\":/" << pluginName << "/" << classname << "Ports.sdf\"));\n";
 		hasPorts = true;
-	} 
-			
+	}
+
 	out << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
 		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n"
 		<< "\t\t}\n\n"
-		
+
 		<< "\t\t~" << uClassname << "() {}\n\n"
 
 		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n"
 		<< "\t\t\tmRenderer.render(painter, m_contents);\n";
-	if( hasPorts )	
+	if( hasPorts )
 		out << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
-	else	
+	else
 		out << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
 	out << "\t\t}\n\n"
 
@@ -1360,7 +1364,7 @@ void Generator::genNodeClass(Node *node, QString pluginName)
 		<< "\t\t}\n\n"
 
 		<< "\tprivate:\n";
-	if( hasSdf )	
+	if( hasSdf )
 		out << "\t\tSdfRenderer mRenderer;\n";
 	if( hasPorts )
 		out << "\t\tSdfRenderer mPortRenderer;\n";
@@ -1369,7 +1373,7 @@ void Generator::genNodeClass(Node *node, QString pluginName)
 
 }
 
-void Generator::genEdgeClass(Edge *edge, QString pluginName)
+void Generator::genEdgeClass(Edge *edge, QString const &pluginName) const
 {
 	QString classname = edge->id;
 	QString uClassname = upperFirst(classname);

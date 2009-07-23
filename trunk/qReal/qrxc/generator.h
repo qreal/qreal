@@ -57,15 +57,15 @@ private:
 	QString srcdir;
 	QString infile, header_out, source_out;
 
-	const EditorFile* findFile(QFileInfo) const;
+	const EditorFile* findFile(QFileInfo const &file) const;
 
-	void genPluginHeader(QString plugin);
-	void genPluginSource(QString plugin);
-	void genElementClasses(QString plugin);
-	void genNodeClass(Node* node, QString plugin);
-	void genEdgeClass(Edge* edge, QString plugin);
+	void genPluginHeader(QString const &plugin) const;
+	void genPluginSource(QString const &plugin) const;
+	void genElementClasses(QString const &plugin) const;
+	void genNodeClass(Node* node, QString const &plugin) const;
+	void genEdgeClass(Edge* edge, QString const &plugin) const;
 
-	QString normalizeName( QString name );
+	QString normalizeName(QString const &name) const;
 
 	/** @brief Сгенерировать перечисления ролей */
 	void genEnums();
@@ -85,7 +85,9 @@ private:
 	 * */
 	int position( QString arg /**< Идентификатор */);
 
-	QString upperFirst(const QString str);
+	QString upperFirst(const QString &str) const;
+
+	void reportViciousCircle(QFileInfo const &fileInfo) const;
 
 	/** @brief Директория */
 	QDir dir;
