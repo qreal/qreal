@@ -63,7 +63,6 @@ private:
 	QString normalizeName(QString const &name) const;
 	QString upperFirst(const QString &str) const;
 
-	void reportViciousCircle(QFileInfo const &fileInfo) const;
 	static void printFiles(QStringList const &files, QTextStream &out);
 
 	/** @brief Директория */

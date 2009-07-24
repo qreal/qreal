@@ -16,12 +16,6 @@ Generator::Generator(QString const &inf)
 	qDebug() << "loading files complete";
 }
 
-void Generator::reportViciousCircle(QFileInfo const &fileInfo) const
-{
-	qDebug() << "Vicious circle detected while loading file"
-		 << fileInfo.canonicalFilePath();
-}
-
 bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 {
 	qDebug() << "trying to load file " << fileName << "in " << mSrcDir;
@@ -43,10 +37,8 @@ bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 				return false;
 
 			}
-		} else {
-			reportViciousCircle(fileInfo);
+		} else
 			return false;
-		}
 		return true;
 	}
 	f = findFile(fileInfo);
@@ -59,7 +51,8 @@ bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 		}
 		else
 		{
-			reportViciousCircle(fileInfo);
+			qDebug() << "Vicious circle detected while loading file"
+				<< fileInfo.canonicalFilePath();
 			return false;
 		}
 	}
