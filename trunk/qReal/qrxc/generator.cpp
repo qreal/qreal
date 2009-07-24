@@ -18,7 +18,7 @@ Generator::Generator(QString const &inf)
 
 bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 {
-	qDebug() << "trying to load file " << fileName << "in " << mSrcDir;
+	qDebug() << "trying to load file " << fileName << "in " << QDir(mSrcDir).absolutePath();
 	EditorFile *efile = NULL;
 
 	const EditorFile *temp = NULL, *f = NULL;
@@ -31,7 +31,7 @@ bool Generator::loadFile(QString const &fileName, const EditorFile **file)
 	{
 		if (!mRecursive) {
 			mRecursive = true;
-			setSrcDir("commonXml");
+			setSrcDir("../commonXml");
 			if (!loadFile(fileName, file)) {
 				qDebug() << "Cannot find file" << fileName;
 				return false;
