@@ -1,4 +1,4 @@
-/** @file generator.cpp
+п»ї/** @file generator.cpp
  * 	@brief Р“РµРЅРµСЂР°С‚РѕСЂ РєР»Р°СЃСЃРѕРІ РёСЃРїРѕР»СЊР·СѓРµРјС‹С… РЅР° РґРёР°РіСЂР°РјРјР°С… СЌР»РµРјРµРЅС‚РѕРІ
 */
 #include <QtGui/QPainter>
@@ -120,8 +120,8 @@ bool Generator::generate(QString const &outputFileName)
 	QString pluginName = normalizeName((*(mLoadedFiles.last()->constEdBegin()))->get_name());
 
 	// generate all the stuff needed
-	// Порядок важен, т.к. функции модифицируют и используют поля mHeaders и
-	// mSources. TODO: ликвидировать безобразие.
+	// РџРѕСЂСЏРґРѕРє РІР°Р¶РµРЅ, С‚.Рє. С„СѓРЅРєС†РёРё РјРѕРґРёС„РёС†РёСЂСѓСЋС‚ Рё РёСЃРїРѕР»СЊР·СѓСЋС‚ РїРѕР»СЏ mHeaders Рё
+	// mSources. TODO: Р»РёРєРІРёРґРёСЂРѕРІР°С‚СЊ Р±РµР·РѕР±СЂР°Р·РёРµ.
 	genElementClasses(pluginName);
 	genPluginSource(pluginName);
 	genPluginHeader(pluginName);
