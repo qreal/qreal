@@ -25,4 +25,9 @@ namespace qReal {
 
 	const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
+	namespace roles {
+		enum {
+			positionRole = Qt::UserRole + 1,
+		};
+	}
 }

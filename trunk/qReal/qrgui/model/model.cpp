@@ -39,6 +39,8 @@ QVariant Model::data( const QModelIndex &index, int role) const
 				return mClient->property(item->id(),"Name");
 			case Qt::UserRole:
 				return item->id().toString();
+			case roles::positionRole:
+				return mClient->property(item->id(), "position + " + pathToItem(item));
 		}
 		return QVariant();
 	} else {

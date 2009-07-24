@@ -99,13 +99,14 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	QByteArray newItemData;
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
 
-	UML::Element *newParent = 0;
+	UML::Element *newParent = NULL;
 
+	// TODO: это можно сделать проще
 	UML::Element *e = window->manager()->graphicalObject(Id::loadFromString(uuid));
 //	= UML::GUIObjectFactory(type_id);
 
-	if (dynamic_cast<UML::NodeElement *>(e)) {
-		newParent= getElemAt(event->scenePos());
+	if (dynamic_cast<UML::NodeElement*>(e)) {
+		newParent = getElemAt(event->scenePos());
 	}
 
 	if (e) {
@@ -113,7 +114,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	}
 
 	stream << uuid;				// uuid
-	stream << pathToItem;		
+	stream << pathToItem;
 	stream << name;
 
 	if (!newParent) {
