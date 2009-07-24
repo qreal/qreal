@@ -1,4 +1,4 @@
-﻿/** @file generator.cpp
+/** @file generator.cpp
  * 	@brief Генератор классов используемых на диаграммах элементов
 */
 #include <QtGui/QPainter>
@@ -86,11 +86,9 @@ const EditorFile* Generator::findFile(QFileInfo const &fileInfo) const
 
 const Editor* Generator::findEditor(QString const &name) const
 {
-	const Editor *c;
-
 	Q_FOREACH (const EditorFile *f, mLoadedFiles)
 	{
-		c = f->findEditor(name);
+		const Editor *c = f->findEditor(name);
 		if (c)
 			return c;
 	}
@@ -117,7 +115,7 @@ bool Generator::generate(QString const &outputFileName)
 		return false;
 	}
 
-	QString pluginName = normalizeName((*(mLoadedFiles.last()->constEdBegin()))->get_name());
+	QString const pluginName = normalizeName((*(mLoadedFiles.last()->constEdBegin()))->get_name());
 
 	// generate all the stuff needed
 	// Порядок важен, т.к. функции модифицируют и используют поля mHeaders и
@@ -161,7 +159,7 @@ void Generator::genPluginHeader(QString const &pluginName)
 	fileName = "generated/" + fileName;
 
 	QFile file(fileName);
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&file);
 
@@ -202,7 +200,6 @@ void Generator::genPluginHeader(QString const &pluginName)
 		<< "\n";
 
 	file.close();
-
 }
 
 void Generator::genPluginSource(QString const &pluginName)
@@ -213,7 +210,7 @@ void Generator::genPluginSource(QString const &pluginName)
 	fileName = "generated/" + fileName;
 
 	QFile file(fileName);
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&file);
 
@@ -241,7 +238,7 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if( !(*o)->visible )
+		if (!(*o)->visible)
 			continue;
 		QString ename = normalizeName((*c)->get_name());
 		out << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
@@ -293,7 +290,6 @@ void Generator::genPluginSource(QString const &pluginName)
 	out << "}\n\n";
 
 	file.close();
-
 }
 
 void Generator::genElementClasses(QString const &pluginName)
@@ -320,7 +316,7 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 
 	fileName = "generated/" + fileName;
 	QFile file(fileName);
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&file);
 
@@ -388,7 +384,7 @@ void Generator::genEdgeClass(Edge *edge, QString const &pluginName)
 	fileName = "generated/" + fileName;
 
 	QFile file(fileName);
-	if( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream out(&file);
 

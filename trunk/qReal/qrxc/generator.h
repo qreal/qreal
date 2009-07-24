@@ -38,7 +38,7 @@ class Editor;
 class Generator
 {
 public:
-	Generator(QString const &inputXml);
+	explicit Generator(QString const &inputXml);
 	~Generator();
 	/** @brief Обработать все входные файлы и сгенерировать редакторы */
 	bool generate(QString const &outputFileName);
