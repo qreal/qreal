@@ -279,8 +279,12 @@ void Generator::genPluginSource(QString const &pluginName)
 			out << "\telse if (element == \"" << (*o)->id << "\")\n"
 				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
 	}
-
-	out << "}\n\n";
+	out << "	else {\n"
+		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
+		<< "		return NULL;\n"
+		<< "	}\n";
+	out << "}\n"
+		<< "\n";
 
 	file.close();
 }
