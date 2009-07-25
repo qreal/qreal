@@ -45,6 +45,9 @@ namespace qReal {
 				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
+			Model(Model const &);  // Копировать модель нельзя
+			Model& operator =(Model const &);  // Присваивать тоже
+
 			client::Client *mClient;
 			ModelTreeItem *rootItem;
 

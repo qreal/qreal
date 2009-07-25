@@ -247,6 +247,8 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 		stream >> name;
 		stream >> position;
 		IdType id = Id::loadFromString(idString);
+		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
+
 		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 	}
 }

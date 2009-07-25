@@ -1,43 +1,59 @@
-#ifndef PALETTETOOLBOX_H
-#define PALETTETOOLBOX_H
+#pragma once
 
-#include <QtCore/QMap>
+#include <QtCore/QHash>
 #include <QtGui/QToolBox>
+
+#include "../kernel/ids.h"
 
 class QDragEnterEvent;
 class QDropEvent;
 
-class PaletteToolbox : public QToolBox
-{
-	public:
-		PaletteToolbox(QWidget *parent=0);
+namespace qReal {
 
-		void addDiagramType( QString id, QString name );
-		void addItemType( QString id, QString name, QIcon icon );
+	namespace gui {
 
-	protected:
-		void dragEnterEvent(QDragEnterEvent *event);
-		void dropEvent(QDropEvent *event);
-		void mousePressEvent(QMouseEvent *event);
-	private:
-		QMap<QString, int> categories;
+		class PaletteToolbox : public QToolBox
+		{
+		public:
+			explicit PaletteToolbox(QWidget *parent = NULL);
 
-		class DraggableElement : public QWidget {
+			void addDiagramType(Id const &id, QString const &name);
+			void addItemType(Id const &id, QString const &name, QIcon const &icon);
+
+		private:
+			class DraggableElement : public QWidget {
 			public:
-				DraggableElement(QString id, QString name,
-						QIcon icon, QWidget *parent=0);
-				QIcon icon()
-				{ return m_icon; }
-				QString text()
-				{ return m_text; }
-				QString id()
-				{ return m_id; }
+				DraggableElement(Id const &id, QString const &name,
+								 QIcon const &icon, QWidget *parent = NULL);
+
+				QIcon icon() const
+				{
+					return mIcon;
+				}
+
+				QString text() const
+				{
+					return mText;
+				}
+
+				Id id() const
+				{
+					return mId;
+				}
+
 			private:
-				QString m_id;
-				QIcon m_icon;
-				QString m_text;
+				Id mId;
+				QIcon mIcon;
+				QString mText;
+			};
+
+			virtual void dragEnterEvent(QDragEnterEvent *event);
+			virtual void dropEvent(QDropEvent *event);
+			virtual void mousePressEvent(QMouseEvent *event);
+
+			QHash<Id, int> mCategories;
 		};
 
-};
+	}
 
-#endif
+}

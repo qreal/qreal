@@ -78,7 +78,7 @@ MainWindow::MainWindow()
 	mModel = new Model();
 
 	ui.diagramExplorer->setModel(mModel);
-	ui.view->mvIface()->setModel(mModel);	
+	ui.view->mvIface()->setModel(mModel);
 	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
 	//	connectRepo();
 }
@@ -89,12 +89,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadPlugins()
 {
-	foreach (Id editor, mgr.editors()) {
-		foreach (Id diagram, mgr.diagrams(editor)) {
-			ui.paletteToolbox->addDiagramType( diagram.toString(), mgr.friendlyName(diagram) );
+	foreach (Id const editor, mgr.editors()) {
+		foreach (Id const diagram, mgr.diagrams(editor)) {
+			ui.paletteToolbox->addDiagramType(diagram, mgr.friendlyName(diagram) );
 
-			foreach (Id element, mgr.elements(diagram)) {
-				ui.paletteToolbox->addItemType( element.toString(), mgr.friendlyName(element), mgr.icon(element));
+			foreach (Id const element, mgr.elements(diagram)) {
+				ui.paletteToolbox->addItemType(element, mgr.friendlyName(element), mgr.icon(element));
 			}
 		}
 	}
