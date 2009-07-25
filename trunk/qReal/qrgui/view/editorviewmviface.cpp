@@ -119,12 +119,12 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		IdType uuid = Id::loadFromString(current.data(Qt::UserRole).toString());
+		IdType uuid = current.data(roles::idRole).value<Id>();
 	//	TypeIdType type = current.data(Unreal::TypeRole).toString();
 
 		IdType parent_uuid;
 		if (parent != rootIndex())
-			parent_uuid = Id::loadFromString(parent.data().toString());
+			parent_uuid = parent.data(roles::idRole).value<Id>();
 
 		qDebug() << uuid.toString();
 

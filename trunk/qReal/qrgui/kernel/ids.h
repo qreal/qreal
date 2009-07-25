@@ -4,6 +4,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
+#include <QtCore/QMetaType>
 
 namespace qReal {
 
@@ -48,3 +49,6 @@ namespace qReal {
 	}
 
 }
+
+// qReal::Id может напрямую использоваться в QVariant.
+Q_DECLARE_METATYPE(qReal::Id)

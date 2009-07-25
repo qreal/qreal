@@ -29,19 +29,24 @@ Qt::ItemFlags Model::flags( const QModelIndex &index ) const
 	}
 }
 
-QVariant Model::data( const QModelIndex &index, int role) const
+QVariant Model::data(QModelIndex const &index, int role) const
 {
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+		Q_ASSERT(item);
 		switch (role) {
 			case Qt::DisplayRole:
 			case Qt::EditRole:
-				return mClient->property(item->id(),"Name");
-			case Qt::UserRole:
-				return item->id().toString();
+				return mClient->property(item->id(), "Name");
+			case roles::idRole: {
+				QVariant v;
+				v.setValue(item->id());
+				return v;
+			}
 			case roles::positionRole:
 				return mClient->property(item->id(), "position + " + pathToItem(item));
 		}
+		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {
 		return QVariant();
