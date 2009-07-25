@@ -1,9 +1,9 @@
 HEADERS += mainwindow/mainwindow.h \
     mainwindow/editormanager.h \
-    mainwindow/palettetoolbox.h  
+    mainwindow/paletteToolbox.h  
 
 SOURCES += mainwindow/mainwindow.cpp \
     mainwindow/editormanager.cpp \
-    mainwindow/palettetoolbox.cpp
+    mainwindow/paletteToolbox.cpp
 
 FORMS += mainwindow/mainwindow.ui 

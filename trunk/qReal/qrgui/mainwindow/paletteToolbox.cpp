@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QtCore/QUuid>
 
-#include "palettetoolbox.h"
+#include "paletteToolbox.h"
 #include "../kernel/definitions.h"
 
 using namespace qReal;
