@@ -20,12 +20,20 @@ using namespace qReal;
 
 MainWindow::MainWindow()
 {
+	QSettings settings("Tercom", "QReal");
+
 	ui.setupUi(this);
 
 	ui.view->setMainWindow(this);
 
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
+
+	connect(ui.diagramExplorer, SIGNAL(activated(const QModelIndex &)),
+		ui.view->mvIface(), SLOT(setRootIndex(const QModelIndex &)));
+	connect(ui.view->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
+		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
 
 	//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
 	//			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
@@ -67,25 +75,46 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->hide();
 	//	ui.propertyEditor->setModel(&propertyModel);
 
+	ui.propertyEditor->setModel(&mPropertyModel);
+	ui.propertyEditor->verticalHeader()->hide();
+	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
+	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+	ui.propertyEditor->setItemDelegate(&mDelegate);
+
+	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
+		&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
+
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
-	//	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
-	//			&propertyModel, SLOT( setIndex( const QModelIndex & ) ) );
+	settings.beginGroup("MainWindow");
+	resize(settings.value("size", QSize(1024, 800)).toSize());
+	move(settings.value("pos", QPoint(0, 0)).toPoint());
+	settings.endGroup();
 
 	loadPlugins();
 	showMaximized();
 
 	mModel = new model::Model();
 
+	mPropertyModel.setSourceModel(mModel);
 	ui.diagramExplorer->setModel(mModel);
 	ui.view->mvIface()->setModel(mModel);
 	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
-	//	connectRepo();
 }
 
 MainWindow::~MainWindow()
 {
 	delete mModel;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.beginGroup("MainWindow");
+	settings.setValue("size", size());
+	settings.setValue("pos", pos());
+	settings.endGroup();
+	event->accept();
 }
 
 void MainWindow::loadPlugins()
@@ -105,6 +134,25 @@ void MainWindow::adjustMinimapZoom(int zoom)
 {
 	ui.minimapView->resetMatrix();
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
+}
+
+void MainWindow::sceneSelectionChanged()
+{
+	QList<QGraphicsItem*> graphicsItems =  ui.view->scene()->selectedItems();
+	if (graphicsItems.size() == 1) {
+		QGraphicsItem *item = graphicsItems[0];
+		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
+			if (elem->index().isValid()) {
+				ui.diagramExplorer->setCurrentIndex(elem->index());
+				mPropertyModel.setIndex(elem->index());
+			}
+		}
+	}
+	else
+	{
+		ui.diagramExplorer->setCurrentIndex(QModelIndex());
+		mPropertyModel.setIndex(QModelIndex());
+	}
 }
 
 void MainWindow::print()

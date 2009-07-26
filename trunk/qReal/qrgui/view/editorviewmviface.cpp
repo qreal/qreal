@@ -183,4 +183,3 @@ EditorViewScene *EditorViewMViface::scene() const
 {
 	return mScene;
 }
-

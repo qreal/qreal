@@ -7,6 +7,8 @@
 #include "ui_mainwindow.h"
 
 #include "editormanager.h"
+#include "propertyeditorproxymodel.h"
+#include "propertyeditordelegate.h"
 
 class EditorView;
 
@@ -23,12 +25,13 @@ namespace qReal {
 	public:
 		MainWindow();
 		~MainWindow();
-		Ui::MainWindowUi ui;
 
 		EditorManager *manager() {
 			return &mgr;
 		}
 
+		/** @brief Интерфейс главного окна */
+		Ui::MainWindowUi ui;
 	public slots:
 		//		void connectRepo();
 		//		void closeRepo();
@@ -42,11 +45,20 @@ namespace qReal {
 		void print();
 		void makeSvg();
 
+		/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
+		 * эксплорером. */
+		void sceneSelectionChanged();
 	private:
 		model::Model *mModel;
+		/** @brief Модель редактора свойств */
+		PropertyEditorModel mPropertyModel;
+
+		/** @brief Делегат */
+		PropertyEditorDelegate mDelegate;
+		EditorManager mgr;
 
 		void loadPlugins();
-		EditorManager mgr;
+		virtual void closeEvent(QCloseEvent *event);
 	};
 
 }
