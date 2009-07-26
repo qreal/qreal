@@ -63,6 +63,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 				return true;
 			case roles::positionRole:
 				mClient->setProperty(item->id(), positionPropertyName(item), value);
+				return true;
 		}
 		Q_ASSERT(role < Qt::UserRole);
 		return false;
