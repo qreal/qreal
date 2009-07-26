@@ -1,5 +1,6 @@
 #include "model.h"
-#include <QDebug>
+#include <QtCore/QDebug>
+#include <QtGui/QPolygon>
 
 using namespace qReal;
 using namespace model;
@@ -44,6 +45,8 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			}
 			case roles::positionRole:
 				return mClient->property(item->id(), positionPropertyName(item));
+			case roles::configurationRole:
+				return mClient->property(item->id(), configurationPropertyName(item));
 		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
@@ -63,6 +66,9 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 				return true;
 			case roles::positionRole:
 				mClient->setProperty(item->id(), positionPropertyName(item), value);
+				return true;
+			case roles::configurationRole:
+				mClient->setProperty(item->id(), configurationPropertyName(item), value);
 				return true;
 		}
 		Q_ASSERT(role < Qt::UserRole);
@@ -270,6 +276,7 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 		mClient->addChild(parentItem->id(),id);
 		mClient->setProperty(id, "Name", name);
 		mClient->setProperty(id, positionPropertyName(item), position);
+		mClient->setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
 	endInsertRows();
 	return item;
 }
@@ -278,12 +285,20 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
 	foreach (IdType childId, mClient->children(parent->id())) {
 		PropertyName path = pathToItem(parent);
-		ModelTreeItem * child = addElementToModel(parent, childId, "",
-			mClient->property(childId, "Name").toString(),
-			mClient->property(childId, "position + " + path + PATH_DIVIDER).toPointF(),
-			Qt::MoveAction);
+		ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}
+}
+
+ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const IdType &id)
+{
+	int newRow = parentItem->children().size();
+	beginInsertRows(index(parentItem), newRow, newRow);
+		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
+		parentItem->addChild(item);
+		treeItems.insert(id, item);
+	endInsertRows();
+	return item;
 }
 
 QPersistentModelIndex Model::rootIndex()

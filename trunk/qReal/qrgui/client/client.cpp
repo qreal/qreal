@@ -5,6 +5,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
+#include <QtGui/QPolygon>
 
 using namespace qReal;
 
@@ -278,13 +279,26 @@ QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
 	} else if (typeName == "Char") {
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
-		double x = valueStr.section(", ", 0, 0).toDouble();
-		double y = valueStr.section(", ", 1, 1).toDouble();
-		return QVariant(QPointF(x, y));
+		return QVariant(parsePointF(valueStr));
+	} else if (typeName == "QPolygon") {
+		QStringList const points = valueStr.split(" : ", QString::SkipEmptyParts);
+		QPolygon result;
+		foreach (QString str, points) {
+			QPointF point = parsePointF(str);
+			result << point.toPoint();
+		}
+		return QVariant(result);
 	} else {
 		Q_ASSERT(!"Unknown property type");
 		return QVariant();
 	}
+}
+
+QPointF Client::parsePointF(QString const &str)
+{
+	double x = str.section(", ", 0, 0).toDouble();
+	double y = str.section(", ", 1, 1).toDouble();
+	return QPointF(x, y);
 }
 
 void Client::saveToDisk()
@@ -384,6 +398,8 @@ QString Client::serializeQVariant(QVariant const &v)
 		return v.toChar();
 	case QVariant::PointF:
 		return serializeQPointF(v.toPointF());
+	case QVariant::Polygon:
+		return serializeQPolygon(v.value<QPolygon>());
 	default:
 		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
@@ -394,6 +410,15 @@ QString Client::serializeQVariant(QVariant const &v)
 QString Client::serializeQPointF(QPointF const &p)
 {
 	return QString("%1").arg(p.x()) + ", " + QString("%1").arg(p.y());
+}
+
+QString Client::serializeQPolygon(QPolygon const &p)
+{
+	QString result("");
+	foreach (QPoint point, p) {
+		result += serializeQPointF(point) + " : ";
+	}
+	return result;
 }
 
 void Client::printDebug() const

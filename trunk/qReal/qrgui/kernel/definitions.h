@@ -29,6 +29,7 @@ namespace qReal {
 		enum {
 			idRole = Qt::UserRole + 1,
 			positionRole,
+			configurationRole,
 		};
 	}
 }

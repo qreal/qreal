@@ -3,13 +3,14 @@
  * */
 #include <QtGui>
 #include <QtGlobal>
+#include <math.h>
 
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
-
-#include <math.h>
+#include "../model/model.h"
 
 using namespace UML;
+using namespace qReal;
 
 #ifndef M_PI
 /** @brief Константа ПИ */
@@ -177,6 +178,8 @@ void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 void EdgeElement::connectToPort() {
+	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG!
+
 	setPos(pos()+m_line[0]);
 	m_line.translate(-m_line[0]);
 
@@ -215,7 +218,19 @@ void EdgeElement::connectToPort() {
 		dst->addEdge(this);
 	}
 
+	/*
+	if ( dst )
+		im->changeRole(dataIndex, dst->uuid(), info.roleByColumnName(type, "to"));
+	else
+		im->changeRole(dataIndex, 0, info.roleByColumnName(type, "to"));
+	*/
+
+	// im->changeRole(dataIndex, portTo, info.roleByColumnName(type, "toPort"));
+
 	setFlag(ItemIsMovable, !(dst||src) );
+
+	model->setData(dataIndex, pos(), roles::positionRole);
+	model->setData(dataIndex, m_line.toPolygon(), roles::configurationRole);
 
 	moving = false;
 
@@ -344,6 +359,11 @@ void EdgeElement::updateData()
 		return;
 
 	Element::updateData();
+
+	setPos(dataIndex.data(roles::positionRole).toPointF());
+	QPolygonF newLine = dataIndex.data(roles::configurationRole).value<QPolygon>();
+	if (!newLine.isEmpty())
+		m_line = newLine;
 
 	setFlag(ItemIsMovable, !(dst || src));
 

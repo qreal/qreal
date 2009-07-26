@@ -55,6 +55,7 @@ namespace qReal {
 			void removeConfigurationInClient(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
 			void loadSubtreeFromClient(ModelTreeItem * const parent);
+			ModelTreeItem *loadElement(ModelTreeItem *parentItem, const IdType &id);
 
 			PropertyName positionPropertyName(ModelTreeItem const *item) const;
 			PropertyName configurationPropertyName(ModelTreeItem const *item) const;

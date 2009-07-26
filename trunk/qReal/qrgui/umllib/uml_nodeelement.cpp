@@ -6,6 +6,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtGui/QToolTip>
+#include <QtCore/QDebug>
 
 #include "uml_nodeelement.h"
 #include "../model/model.h"
@@ -48,7 +49,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	//d.setTextWidth(boundingRect().width()-25);
 
 	//complexInlineEditing();
-   // changeName();
+	// changeName();
+
 	if (isSelected())
 	{
 		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -130,7 +132,7 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 }
 
-void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	m_contents = m_contents.normalized();
 
@@ -138,8 +140,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	Q_ASSERT(dataIndex.isValid());
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG.
 	itemModel->setData(dataIndex, pos(), roles::positionRole);
-	// TODO: Сделать конфигурацию.
-	// itemModel->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+	itemModel->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), roles::configurationRole);
 	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
 
@@ -185,6 +186,10 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (moving == 0) {
+		setPos(dataIndex.data(roles::positionRole).toPointF());
+		QRectF newRect = dataIndex.data(roles::configurationRole).value<QPolygon>().boundingRect();
+		if (!newRect.isEmpty())
+			m_contents = newRect;
 		transform.reset();
 		transform.scale(m_contents.width(), m_contents.height());
 	}
@@ -290,12 +295,14 @@ qreal NodeElement::getPortId(const QPointF &location) const
 	return -1.0;
 }
 
-void NodeElement::setPortsVisible(bool value) {
+void NodeElement::setPortsVisible(bool value)
+{
 	prepareGeometryChange();
 	portsVisible = value;
 }
 
-void NodeElement::complexInlineEditing() {
+void NodeElement::complexInlineEditing()
+{
 	if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
 	docvis.setTextWidth(0);
 	doctype.setTextWidth(0);

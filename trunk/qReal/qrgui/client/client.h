@@ -46,10 +46,12 @@ namespace qReal {
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);
 			static IdTypeList loadIdList(QDomElement const &elem, QString const &name);
 			static bool loadProperties(QDomElement const &elem, LogicObject &object);
+			static QPointF parsePointF(QString const &str);
 
 			static void clearDir(QString const &path);
 			static QString serializeQVariant(QVariant const &v);
 			static QString serializeQPointF(QPointF const &p);
+			static QString serializeQPolygon(QPolygon const &p);
 			static QString createDirectory(Id const &id);
 			static QDomElement idListToXml(QString const &attributeName, IdTypeList const &idList, QDomDocument &doc);
 			static QDomElement propertiesToXml(LogicObject * const object, QDomDocument &doc);
