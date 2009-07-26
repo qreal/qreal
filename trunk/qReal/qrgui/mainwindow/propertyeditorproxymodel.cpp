@@ -8,8 +8,9 @@
 
 using namespace qReal;
 
-PropertyEditorModel::PropertyEditorModel(QObject *parent)
-	: QAbstractTableModel(parent), mPseudoAttributesCount(0)
+PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManager,
+										 QObject *parent)
+	: QAbstractTableModel(parent), mPseudoAttributesCount(0), mEditorManager(editorManager)
 {
 }
 
@@ -39,9 +40,6 @@ Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
 
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-//	if ( ! targetModel )
-//		return QVariant();
-
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
 		return QString(section ? "value" : "name");
 	else
@@ -62,9 +60,9 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	if (index.column() == 0) {
 		return mFieldNames.at(index.row());
 	} else if (index.column() == 1) {
-/*		if (index.row() >= mPseudoAttributesCount)
-			return targetObject.data(info.roleByIndex(index.row() - mPseudoAttributesCount));
-		else*/ if (index.row() == 0) {
+		if (index.row() >= mPseudoAttributesCount)
+			return targetObject.data(roleByIndex(index.row()));
+		else if (index.row() == 0) {
 			Id id = targetObject.data(roles::idRole).value<Id>();
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
 		}
@@ -87,10 +85,9 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 
 	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1)
 		if (index.row() != 0) {
-			// model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-			// ret = im->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
-			//ret = targetModel->setData(targetObject, value, info.roleByIndex(index.row() - mPseudoAttributesCount));
-			}
+			 model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+			 ret = im->setData(targetObject, value, roleByIndex(index.row()));
+		}
 		else
 			ret = true;
 	else
@@ -98,6 +95,11 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 	if (ret)
 		dataChanged(index, index);
 	return ret;
+}
+
+int PropertyEditorModel::roleByIndex(int const index) const
+{
+	return index - mPseudoAttributesCount + roles::customPropertiesBeginRole;
 }
 
 void PropertyEditorModel::rereadData()
@@ -134,10 +136,9 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 		return;
 
 	targetObject = sourceIndex;
-//	type = targetObject.data(Unreal::TypeRole).toString();
 
-	mFieldNames.clear();
-//	roleNames = info.getColumnNames(type);
+	Id id = targetObject.data(roles::idRole).value<Id>();
+	mFieldNames = mEditorManager.getPropertyNames(id.type());
 
 	mFieldNames.push_front("repo_id");
 	mFieldNames.push_front("metatype");

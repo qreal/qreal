@@ -73,6 +73,11 @@ QString Id::id() const
 	return mId;
 }
 
+Id Id::type() const
+{
+	return Id(mEditor, mDiagram, mElement);
+}
+
 unsigned Id::idSize() const
 {
 	if (mId != "")

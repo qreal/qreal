@@ -19,6 +19,7 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
+		: mPropertyModel(mgr)
 {
 	QSettings settings("Tercom", "QReal");
 
@@ -94,7 +95,7 @@ MainWindow::MainWindow()
 	loadPlugins();
 	showMaximized();
 
-	mModel = new model::Model();
+	mModel = new model::Model(mgr);
 
 	mPropertyModel.setSourceModel(mModel);
 	ui.diagramExplorer->setModel(mModel);

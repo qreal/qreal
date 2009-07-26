@@ -125,3 +125,10 @@ UML::Element* EditorManager::graphicalObject(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
 }
+
+QStringList EditorManager::getPropertyNames(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}

@@ -32,6 +32,8 @@ namespace qReal {
 		bool isDiagram(const Id &id) const;
 		bool isElement(const Id &id) const;
 
+		QStringList getPropertyNames(const Id &id) const;
+
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

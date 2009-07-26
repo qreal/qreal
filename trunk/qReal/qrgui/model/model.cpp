@@ -5,7 +5,8 @@
 using namespace qReal;
 using namespace model;
 
-Model::Model()
+Model::Model(EditorManager const &editorManager)
+		: mEditorManager(editorManager)
 {
 	mClient = new client::Client();
 	rootItem = new ModelTreeItem(ROOT_ID, NULL);
@@ -48,6 +49,10 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			case roles::configurationRole:
 				return mClient->property(item->id(), configurationPropertyName(item));
 		}
+		if (role >= roles::customPropertiesBeginRole) {
+			QString selectedProperty = findPropertyName(item->id(), role);
+			return mClient->property(item->id(), selectedProperty);
+		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {
@@ -71,11 +76,26 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 				mClient->setProperty(item->id(), configurationPropertyName(item), value);
 				return true;
 		}
+		if (role >= roles::customPropertiesBeginRole) {
+			QString selectedProperty = findPropertyName(item->id(), role);
+			mClient->setProperty(item->id(), selectedProperty, value);
+			return true;
+		}
 		Q_ASSERT(role < Qt::UserRole);
 		return false;
 	} else {
 		return false;
 	}
+}
+
+PropertyName Model::findPropertyName(Id const &id, int const role) const
+{
+	// В случае свойства, описанного в самом элементе, роль - просто
+	// порядковый номер свойства в списке свойств. Этого соглашения
+	// надо всюду придерживаться, а то роли "поедут".
+	QStringList properties = mEditorManager.getPropertyNames(id.type());
+	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
+	return properties[role - roles::customPropertiesBeginRole];
 }
 
 QVariant Model::headerData( int section, Qt::Orientation orientation, int role ) const
@@ -277,6 +297,14 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 		mClient->setProperty(id, "Name", name);
 		mClient->setProperty(id, positionPropertyName(item), position);
 		mClient->setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
+
+		QStringList properties = mEditorManager.getPropertyNames(id.type());
+		foreach (QString property, properties) {
+			// Здесь должна быть инициализация значениями по умолчанию
+			// (а ещё лучше, если не здесь). Считать этот код временным хаком,
+			// пока нет системы типов.
+			mClient->setProperty(id, property, "");
+		}
 	endInsertRows();
 	return item;
 }

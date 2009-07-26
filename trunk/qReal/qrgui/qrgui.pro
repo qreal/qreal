@@ -27,3 +27,5 @@ include (view/view.pri)
 
 # Stuff used in all places
 include (kernel/kernel.pri)
+
+HEADERS += ../qrxml/editorinterface.h

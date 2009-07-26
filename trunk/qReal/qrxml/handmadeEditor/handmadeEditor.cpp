@@ -72,3 +72,15 @@ UML::Element* HandmadePlugin::getGraphicalObject(QString const &diagram, QString
 		return new UML::Connection();
 	return new UML::Kroki();
 }
+
+QStringList HandmadePlugin::getPropertyNames(QString const &diagram, QString const &element) const
+{
+	QStringList result;
+	if (element == "Kroki")
+		result << "Eaten people";
+	else if (element == "Actor")
+		result << "Test property 1" << "Test property 2";
+	else if (element == "Connection")
+		;  // Попробуем без пропертей
+	return result;
+}

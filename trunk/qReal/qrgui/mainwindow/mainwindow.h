@@ -50,12 +50,13 @@ namespace qReal {
 		void sceneSelectionChanged();
 	private:
 		model::Model *mModel;
+		EditorManager mgr;
+
 		/** @brief Модель редактора свойств */
 		PropertyEditorModel mPropertyModel;
 
 		/** @brief Делегат */
 		PropertyEditorDelegate mDelegate;
-		EditorManager mgr;
 
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);

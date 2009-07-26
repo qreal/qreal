@@ -6,6 +6,8 @@
 #include <QAbstractTableModel>
 #include <QtCore/QStringList>
 
+#include "editormanager.h"
+
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств
  * */
@@ -14,7 +16,8 @@ class PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(QObject *parent = 0);
+	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
+								 QObject *parent = 0);
 
 	/** @brief Получить число дочерних элементов
 	 *	@brief @return Число дочерних элементов
@@ -74,4 +77,8 @@ private:
 
 	/** @brief Число нередактируемых атрибутов */
 	int mPseudoAttributesCount;
+
+	qReal::EditorManager const &mEditorManager;
+
+	int roleByIndex(int const index) const;
 };

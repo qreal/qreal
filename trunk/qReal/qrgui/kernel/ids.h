@@ -22,6 +22,11 @@ namespace qReal {
 		unsigned idSize() const;
 		QUrl toUrl() const;
 		QString toString() const;
+
+		// Метод применим только к ид-шникам элементов, возвращает ид типа
+		// элемента (т.е. отбрасывает id).
+		Id type() const;
+
 		// Деструктор по умолчанию ок.
 		// Конструктор копирования по умолчанию ок.
 	private:

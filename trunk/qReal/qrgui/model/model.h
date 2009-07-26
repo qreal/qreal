@@ -1,9 +1,5 @@
 #pragma once
 
-#include "../client/client.h"
-#include "../kernel/definitions.h"
-#include "classes/modelTreeItem.h"
-
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QStringList>
@@ -11,6 +7,11 @@
 #include <QModelIndexList>
 #include <QPointF>
 #include <QPersistentModelIndex>
+
+#include "../client/client.h"
+#include "../kernel/definitions.h"
+#include "classes/modelTreeItem.h"
+#include "../mainwindow/editormanager.h"
 
 namespace qReal {
 
@@ -21,7 +22,7 @@ namespace qReal {
 			Q_OBJECT
 
 		public:
-			Model();
+			explicit Model(EditorManager const &editorManager);
 			~Model();
 			QPersistentModelIndex rootIndex();
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -47,6 +48,7 @@ namespace qReal {
 		private:
 			client::Client *mClient;
 			ModelTreeItem *rootItem;
+			EditorManager const &mEditorManager;
 
 			Model(Model const &);  // Копировать модель нельзя
 			Model& operator =(Model const &);  // Присваивать тоже
@@ -59,6 +61,7 @@ namespace qReal {
 
 			PropertyName positionPropertyName(ModelTreeItem const *item) const;
 			PropertyName configurationPropertyName(ModelTreeItem const *item) const;
+			PropertyName findPropertyName(Id const &id, int const role) const;
 		};
 
 	}
