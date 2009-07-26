@@ -1,7 +1,6 @@
 #pragma once
 
 class QIcon;
-class EditorInterface;
 
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
@@ -11,6 +10,8 @@ class EditorInterface;
 #include "../kernel/ids.h"
 
 namespace qReal {
+
+	class EditorInterface;
 
 	class EditorManager : public QObject
 	{

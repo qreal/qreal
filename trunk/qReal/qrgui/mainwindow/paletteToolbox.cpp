@@ -9,12 +9,8 @@ using namespace qReal::gui;
 
 PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name,
 	QIcon const &icon, QWidget *parent)
-: QWidget(parent)
+: QWidget(parent), mId(id), mIcon(icon), mText(name)
 {
-	mId = id;
-	mText = name;
-	mIcon = icon;
-
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);

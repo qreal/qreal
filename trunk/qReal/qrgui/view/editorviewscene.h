@@ -12,6 +12,10 @@
 class EditorViewMViface;
 class EditorView;
 
+namespace qReal {
+	class MainWindow;
+}
+
 /** @class EditorViewScene
  *	@brief Сцена для отрисовки объектов
  * */
@@ -21,7 +25,7 @@ class EditorViewScene : public QGraphicsScene
 
 public:
 	/** @brief Конструктор  */
-	EditorViewScene(QObject *parent = 0 /**< Родительский объект*/);
+	explicit EditorViewScene(QObject *parent = 0 /**< Родительский объект*/);
 
 	/** @brief Очистить сцену */
 	void clearScene();
@@ -36,6 +40,8 @@ public:
 	UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
 
 	QPersistentModelIndex rootItem();
+	void setMainWindow(MainWindow *mainWindow);
+	MainWindow *mainWindow() const;
 
 protected:
 	/** @brief Обработать начало события drag'n'drop */
@@ -63,6 +69,8 @@ private:
 	EditorViewMViface *mv_iface;
 	/** @brief Объект, реализующей представление в схеме Model/View */
 	EditorView *view;
+
+	MainWindow *mWindow;
 
 	friend class EditorViewMViface;
 };

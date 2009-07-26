@@ -11,7 +11,7 @@ Model::Model()
 	rootItem = new ModelTreeItem(ROOT_ID,NULL);
 	treeItems.insert(ROOT_ID,rootItem);
 	mClient->setProperty(ROOT_ID,"Name",ROOT_ID.toString());
-	loadSubtreeFromClient(rootItem);
+//	loadSubtreeFromClient(rootItem);
 }
 
 Model::~Model()
@@ -44,12 +44,31 @@ QVariant Model::data(QModelIndex const &index, int role) const
 				return v;
 			}
 			case roles::positionRole:
-				return mClient->property(item->id(), "position + " + pathToItem(item));
+				return mClient->property(item->id(), positionPropertyName(item));
 		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {
 		return QVariant();
+	}
+}
+
+bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
+{
+	if (index.isValid()) {
+		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+		switch (role) {
+			case Qt::DisplayRole:
+			case Qt::EditRole:
+				mClient->setProperty(item->id(), "Name", value);
+				return true;
+			case roles::positionRole:
+				mClient->setProperty(item->id(), positionPropertyName(item), value);
+		}
+		Q_ASSERT(role < Qt::UserRole);
+		return false;
+	} else {
+		return false;
 	}
 }
 
@@ -79,22 +98,6 @@ int Model::columnCount( const QModelIndex &parent ) const
 	return 1;
 }
 
-bool Model::setData( const QModelIndex &index, const QVariant &value, int role )
-{
-	if (index.isValid()) {
-		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
-		switch (role) {
-			case Qt::DisplayRole:
-			case Qt::EditRole:
-				mClient->setProperty(item->id(),"Name",value);
-				return true;
-		}
-		return false;
-	} else {
-		return false;
-	}
-}
-
 bool Model::removeRows( int row, int count, const QModelIndex &parent )
 {
 	if (parent.isValid()) {
@@ -112,7 +115,7 @@ bool Model::removeRows( int row, int count, const QModelIndex &parent )
 	}
 }
 
-PropertyName Model::pathToItem( ModelTreeItem *item ) const
+PropertyName Model::pathToItem(ModelTreeItem const *item) const
 {
 	if (item != rootItem) {
 		PropertyName path;
@@ -128,8 +131,8 @@ PropertyName Model::pathToItem( ModelTreeItem *item ) const
 
 void Model::removeConfigurationInClient( ModelTreeItem *item )
 {
-	mClient->removeProperty(item->id(),"position + " + pathToItem(item));
-	mClient->removeProperty(item->id(),"configuration + " + pathToItem(item));
+	mClient->removeProperty(item->id(), positionPropertyName(item));
+	mClient->removeProperty(item->id(), configurationPropertyName(item));
 }
 
 QModelIndex Model::index( ModelTreeItem *item )
@@ -209,8 +212,8 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 			stream << item->id().toString();
 			stream << pathToItem(item);
-			stream << mClient->property(item->id(),"Name");
-			stream << mClient->property(item->id(),"position + " + pathToItem(item)).toPointF();
+			stream << mClient->property(item->id(), "Name");
+			stream << mClient->property(item->id(), positionPropertyName(item)).toPointF();
 		} else {
 			stream << ROOT_ID.toString();
 			stream << QString();
@@ -261,12 +264,12 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem),newRow,newRow);
-		ModelTreeItem *item = new ModelTreeItem(id,parentItem);
+		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		parentItem->addChild(item);
 		treeItems.insert(id,item);
 		mClient->addChild(parentItem->id(),id);
-		mClient->setProperty(id,"Name",name);
-		mClient->setProperty(id,"position + " + pathToItem(item),position);
+		mClient->setProperty(id, "Name", name);
+		mClient->setProperty(id, positionPropertyName(item), position);
 	endInsertRows();
 	return item;
 }
@@ -286,4 +289,14 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 QPersistentModelIndex Model::rootIndex()
 {
 	return index(rootItem);
+}
+
+PropertyName Model::positionPropertyName(ModelTreeItem const *item) const
+{
+	return "position + " + pathToItem(item);
+}
+
+PropertyName Model::configurationPropertyName(ModelTreeItem const *item) const
+{
+	return "configuration + " + pathToItem(item);
 }

@@ -1,14 +1,17 @@
 /** @file uml_nodeelement.cpp
  * 	@brief Класс, представляющий объект на диаграмме
  * */
-#include <QtGui>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtGui/QMessageBox>
+#include <QtGui/QTextCursor>
+#include <QtGui/QToolTip>
 
 #include "uml_nodeelement.h"
-#include <QMessageBox>
-#include <QTextCursor>
-#include <QToolTip>
+#include "../model/model.h"
 
 using namespace UML;
+using namespace qReal;
 
 NodeElement::NodeElement()
 : portsVisible(false)
@@ -133,11 +136,27 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	moving = 1;
 	Q_ASSERT(dataIndex.isValid());
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG.
+	itemModel->setData(dataIndex, pos(), roles::positionRole);
+	// TODO: Сделать конфигурацию.
+	// itemModel->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
+	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
+
 	if ( dragState != None )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
+
+	/*
+	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(scene());
+	if (newParent) {
+		itemModel->changeParent(dataIndex,newParent->dataIndex,
+						 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
+	} else {
+		itemModel->changeParent(dataIndex,evscene->rootItem(),scenePos());
+	}
+	*/
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

@@ -1,5 +1,5 @@
 /** @file editorview.cpp
- * 	@brief Класс, реализующий представление в схеме Model/View 
+ * 	@brief Класс, реализующий представление в схеме Model/View
  * */
 #include <QtGui>
 
@@ -10,12 +10,12 @@
 #include "editorview.h"
 
 EditorView::EditorView(QWidget *parent)
-    : QGraphicsView(parent)
+	: QGraphicsView(parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	EditorViewScene *myScene = new EditorViewScene(this);
-	mv_iface = new EditorViewMViface(this,myScene);
+	mv_iface = new EditorViewMViface(this, myScene);
 	setScene(myScene);
 
 	setAcceptDrops(true);
@@ -31,30 +31,35 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 //	mv_iface->raiseClick(item);
 //    }
 
-    QGraphicsView::mousePressEvent(event);
+	QGraphicsView::mousePressEvent(event);
 }
 */
 void EditorView::toggleAntialiasing(bool checked)
 {
-    setRenderHint(QPainter::Antialiasing, checked);
-    setRenderHint(QPainter::SmoothPixmapTransform, checked);
+	setRenderHint(QPainter::Antialiasing, checked);
+	setRenderHint(QPainter::SmoothPixmapTransform, checked);
 }
 
 void EditorView::toggleOpenGL(bool checked)
 {
 	Q_UNUSED(checked)
 #ifdef QT_OPENGL_LIB
-    setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
+	setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
 #endif
 }
 
 void EditorView::zoomIn()
 {
-    scale(1.5,1.5);
+	scale(1.5,1.5);
 }
 
 void EditorView::zoomOut()
 {
-    scale(0.666,0.666);
+	scale(0.666,0.666);
 }
+
+void EditorView::setMainWindow(MainWindow *mainWindow) {
+	mv_iface->scene()->setMainWindow(mainWindow);
+}
+
 

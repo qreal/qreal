@@ -46,6 +46,7 @@ public:
 	 *	@brief @return Элемент
 	* */
 //	UML::Element* getItem(IdType const &uuid /**< Идентификатор элемента */);
+	EditorViewScene *scene() const;
 
 public slots:
 	/** @brief Очистить сцену */
@@ -70,7 +71,7 @@ protected slots:
 								);
 //    void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
 
-//protected:
+protected:
 //    bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
 
 	/** @brief Изменить положение курсора
@@ -118,7 +119,7 @@ private:
 //    QPoint origin;
 
 	/** @brief Сцена */
-	EditorViewScene *scene;
+	EditorViewScene *mScene;
 	/** @brief Представление */
 	EditorView *view;
 

@@ -27,7 +27,7 @@ namespace qReal {
 
 		EditorManager *manager() {
 			return &mgr;
-		};
+		}
 
 	public slots:
 		//		void connectRepo();

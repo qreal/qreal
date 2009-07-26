@@ -45,16 +45,19 @@ namespace qReal {
 				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
-			Model(Model const &);  // Копировать модель нельзя
-			Model& operator =(Model const &);  // Присваивать тоже
-
 			client::Client *mClient;
 			ModelTreeItem *rootItem;
 
-			PropertyName pathToItem(ModelTreeItem *item) const;
+			Model(Model const &);  // Копировать модель нельзя
+			Model& operator =(Model const &);  // Присваивать тоже
+
+			PropertyName pathToItem(ModelTreeItem const *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
 			void loadSubtreeFromClient(ModelTreeItem * const parent);
+
+			PropertyName positionPropertyName(ModelTreeItem const *item) const;
+			PropertyName configurationPropertyName(ModelTreeItem const *item) const;
 		};
 
 	}

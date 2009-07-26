@@ -18,11 +18,11 @@
 
 using namespace qReal;
 
-using namespace model;
-
 MainWindow::MainWindow()
 {
 	ui.setupUi(this);
+
+	ui.view->setMainWindow(this);
 
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
@@ -75,7 +75,7 @@ MainWindow::MainWindow()
 	loadPlugins();
 	showMaximized();
 
-	mModel = new Model();
+	mModel = new model::Model();
 
 	ui.diagramExplorer->setModel(mModel);
 	ui.view->mvIface()->setModel(mModel);
@@ -85,6 +85,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+	delete mModel;
 }
 
 void MainWindow::loadPlugins()

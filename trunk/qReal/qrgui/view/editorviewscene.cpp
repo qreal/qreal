@@ -13,10 +13,8 @@
 #include <QtGui>
 //#include "../common/classes.h"
 
-extern MainWindow *window;
-
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent)
+	:  QGraphicsScene(parent), mWindow(NULL)
 {
 	//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
@@ -78,8 +76,12 @@ void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 	Q_UNUSED(event);
 }
 
-void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
+void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
+	Q_ASSERT(mWindow);  // Значение mWindow должно быть инициализировано
+						// отдельно, через конструктор это делать нехорошо,
+						// поскольку сцена создаётся в сгенерённом ui-шнике.
+
 	// Transform mime data to include coordinates.
 	const QMimeData *mimeData = event->mimeData();
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
@@ -90,6 +92,7 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	QString pathToItem = "";
 	QString name;
 	QPointF pos;
+	QString metatype;
 
 	in_stream >> uuid;
 	in_stream >> pathToItem;
@@ -101,8 +104,8 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 	UML::Element *newParent = NULL;
 
-	// TODO: это можно сделать проще
-	UML::Element *e = window->manager()->graphicalObject(Id::loadFromString(uuid));
+	// TODO: возможно, это можно сделать проще
+	UML::Element *e = mWindow->manager()->graphicalObject(Id::loadFromString(uuid));
 //	= UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement*>(e)) {
@@ -141,10 +144,10 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
 		this->focusItem()->clearFocus();
 	} else if (event->key() == Qt::Key_Delete) {
-		QGraphicsTextItem *ti = NULL;
-		if (this->focusItem()!= NULL)
-			ti = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
-		if (ti)
+		QGraphicsTextItem *textItem = NULL;
+		if (this->focusItem() !=  NULL)
+			textItem = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
+		if (textItem)
 		{
 			// text item has focus. Just pass key to it
 			QGraphicsScene::keyPressEvent(event);
@@ -152,11 +155,12 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 		else // Add more cases if necessary
 		{
 			// then uml element has focus, we can safely delete it.
-		//	window->deleteFromDiagram();
+			// window->deleteFromDiagram();
 		}
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
+
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	// Let scene update selection and perform other operations
@@ -171,7 +175,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	// Menu belongs to scene handler because it can delete elements.
 	// We cannot not allow elements to commit suicide.
 	QMenu menu;
-	menu.addAction(window->ui.actionDeleteFromDiagram);
+	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
 	// FIXME: add check for diagram
 //	if (selectedItems().count() == 1)
 //		menu.addAction(window->ui.actionJumpToAvatar);
@@ -192,4 +196,14 @@ UML::Element * EditorViewScene::getElemAt( const QPointF &position )
 QPersistentModelIndex EditorViewScene::rootItem()
 {
 	return mv_iface->rootIndex();
+}
+
+void EditorViewScene::setMainWindow(MainWindow *mainWindow)
+{
+	mWindow = mainWindow;
+}
+
+MainWindow *EditorViewScene::mainWindow() const
+{
+	return mWindow;
 }

@@ -24,11 +24,11 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
 {
 	this->view = view;
-	this->scene = scene;
+	this->mScene = scene;
 
 	//    view->mv_iface = this;
-	scene->mv_iface = this;
-	scene->view = view;
+	mScene ->mv_iface = this;
+	mScene ->view = view;
 }
 
 QRect EditorViewMViface::visualRect(const QModelIndex &) const
@@ -91,15 +91,15 @@ UML::Element* EditorViewMViface::getItem(IdType const &uuid)
 void EditorViewMViface::reset()
 {
 	items.clear();
-	scene->clearScene();
+	mScene->clearScene();
 
 	// so that our diagram be nicer
-	QGraphicsRectItem *rect = scene->addRect(QRect(-1000,-1000,2000,2000));
-	scene->removeItem(rect);
+	QGraphicsRectItem *rect = mScene->addRect(QRect(-1000, -1000, 2000, 2000));
+	mScene->removeItem(rect);
 	delete rect;
 
 	if ( model() )
-		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
+		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
 }
 
 void EditorViewMViface::setRootIndex(const QModelIndex &index)
@@ -132,10 +132,9 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			continue;
 
 		//if (UML::Element *e = UML::GUIObjectFactory(type)) {
-		extern MainWindow *window;
-		UML::Element *e  = window->manager()->graphicalObject(uuid);
-		if ( e ) {
-			scene->addItem(e);
+		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
+		if (e) {
+			mScene->addItem(e);
 			e->setIndex(current);
 			e->setPos(current.data(roles::positionRole).toPointF());
 
@@ -159,7 +158,7 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		scene->removeItem(items[curr]);
+		mScene->removeItem(items[curr]);
 		delete items[curr];
 		items.remove(curr);
 	}
@@ -180,3 +179,9 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 			rowsInserted(topLeft.parent(),row,row);
 	}
 }
+
+EditorViewScene *EditorViewMViface::scene() const
+{
+	return mScene;
+}
+

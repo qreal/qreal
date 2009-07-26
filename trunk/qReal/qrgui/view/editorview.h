@@ -1,5 +1,5 @@
 /** @file editorview.h
- * 	@brief Класс, реализующий представление в схеме Model/View 
+ * 	@brief Класс, реализующий представление в схеме Model/View
  * */
 #pragma once
 
@@ -11,41 +11,47 @@
 //class DiagramExplorerModel;
 class EditorViewMViface;
 
+namespace qReal {
+	class MainWindow;
+}
+
 /** @class EditorView
  * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
  * */
 class EditorView : public QGraphicsView
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 	/** @brief Конструктор */
-    EditorView(QWidget *parent = 0 /**< Родительский объект */);
+	explicit EditorView(QWidget *parent = 0);
 	/** @brief Деструктор */
-    ~EditorView();
+	~EditorView();
 
 	/** @brief Получить указатель на объект, реализующий интерфейс представления
-	 *	@brief @return Указатель на объект, реализующий интерфейс представления 
+	 *	@brief @return Указатель на объект, реализующий интерфейс представления
 	 * */
-    EditorViewMViface * mvIface() 
-	{ 
-		return mv_iface; 
-	};
-    
+	EditorViewMViface * mvIface()
+	{
+		return mv_iface;
+	}
+
+	void setMainWindow(MainWindow *mainWindow);
+
 public slots:
 	/** @brief Включить/выключить сглаживание */
-    void toggleAntialiasing(bool);
+	void toggleAntialiasing(bool);
 	/** @brief Включить/выключить поддержку OpenGL */
-    void toggleOpenGL(bool);
+	void toggleOpenGL(bool);
 	/** @brief Увеличить масштаб сцены */
-    void zoomIn();
+	void zoomIn();
 	/** @brief Уменьшить масштаб сцены */
-    void zoomOut();
-    
+	void zoomOut();
+
 //protected:
 //    void mousePressEvent(QMouseEvent *event);
 
 private:
 	/** @brief Обхект, реализующий интерфейс представления */
-    EditorViewMViface * mv_iface;
+	EditorViewMViface * mv_iface;
 };

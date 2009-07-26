@@ -23,7 +23,7 @@ Client::~Client()
 	saveToDisk();
 }
 
-IdTypeList Client::children( const IdType &id ) const
+IdTypeList Client::children(const IdType &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->children();
@@ -55,9 +55,9 @@ void Client::addParent( const IdType &id, const IdType &parent )
 	}
 }
 
-void Client::addChild( const IdType &id, const IdType &child )
+void Client::addChild(const IdType &id, const IdType &child)
 {
-	if (id==ROOT_ID) {
+	if (id == ROOT_ID) {
 		mObjects.insert(child,new LogicObject(child,ROOT_ID));
 	} else {
 		if (mObjects.contains(id)) {
@@ -73,7 +73,7 @@ void Client::addChild( const IdType &id, const IdType &child )
 	}
 }
 
-void Client::removeParent( const IdType &id, const IdType &parent )
+void Client::removeParent(const IdType &id, const IdType &parent)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
@@ -87,7 +87,7 @@ void Client::removeParent( const IdType &id, const IdType &parent )
 	}
 }
 
-void Client::removeChild( const IdType &id, const IdType &child )
+void Client::removeChild(const IdType &id, const IdType &child)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(child)) {
