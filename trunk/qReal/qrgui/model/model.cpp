@@ -2,16 +2,15 @@
 #include <QDebug>
 
 using namespace qReal;
-
 using namespace model;
 
 Model::Model()
 {
 	mClient = new client::Client();
-	rootItem = new ModelTreeItem(ROOT_ID,NULL);
-	treeItems.insert(ROOT_ID,rootItem);
-	mClient->setProperty(ROOT_ID,"Name",ROOT_ID.toString());
-//	loadSubtreeFromClient(rootItem);
+	rootItem = new ModelTreeItem(ROOT_ID, NULL);
+	treeItems.insert(ROOT_ID, rootItem);
+	mClient->setProperty(ROOT_ID, "Name", ROOT_ID.toString());
+	loadSubtreeFromClient(rootItem);
 }
 
 Model::~Model()
@@ -126,7 +125,7 @@ PropertyName Model::pathToItem(ModelTreeItem const *item) const
 		return path;
 	}
 	else
-		return "qrm:/";
+		return ROOT_ID.toString();
 }
 
 void Model::removeConfigurationInClient( ModelTreeItem *item )
