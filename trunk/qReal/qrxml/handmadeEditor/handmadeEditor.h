@@ -7,10 +7,10 @@
 
 #include "editorinterface.h"
 
-class HandmadePlugin : public QObject, public EditorInterface
+class HandmadePlugin : public QObject, public qReal::EditorInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(EditorInterface)
+	Q_INTERFACES(qReal::EditorInterface)
 
 public:
 

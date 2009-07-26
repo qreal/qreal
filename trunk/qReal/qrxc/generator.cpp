@@ -415,6 +415,8 @@ void Generator::genProFile(QString const &plugin) const
 
 	out << "message(\"Building generated editor " + QFileInfo(outFile).fileName() + "\")" << '\n'
 		<< "\n"
+		<< "QRXML_ROOT = ../..\n"
+		<< "\n"
 		<< "!include (../../editorsSdk.pri) {\n"
 		<< "	message(\"editorsSdk.pri not found at ../..\")\n"
 		<< "}\n"

@@ -1,3 +1,5 @@
+QRXML_ROOT = ..
+
 !include (../editorsSdk.pri):message("editorsSdk.pri not found at ..")
 
 QT += xml

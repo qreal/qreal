@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
 	QStringList args = app.arguments(); // QString is better than char*
 
 	if (args.count() > 1 && args[1] == "-fake_linker") {
-		qDebug() << "qrxc: fake linling mode, will return 0 regardless of arguments";
+		qDebug() << "qrxc: fake linking mode, will return 0 regardless of arguments";
 		return 0;
 	}
 
