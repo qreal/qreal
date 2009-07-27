@@ -9,6 +9,30 @@
 
 const int MAX_LINE_LENGTH = 60;
 
+class OutFile
+{
+public:
+	explicit OutFile(QString const &fileName)
+			: mFile(fileName)
+	{
+		mFile.open(QIODevice::WriteOnly | QIODevice::Text);
+		mOut.setDevice(&mFile);
+	}
+
+	~OutFile()
+	{
+		mFile.close();
+	}
+
+	QTextStream& operator()()
+	{
+		return mOut;
+	}
+private:
+	QTextStream mOut;
+	QFile mFile;
+};
+
 Generator::Generator(QString const &inf)
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
@@ -154,12 +178,9 @@ void Generator::genPluginHeader(QString const &pluginName)
 
 	fileName = "generated/" + fileName;
 
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
-	QTextStream out(&file);
+	OutFile outFile(fileName);
 
-	out << "#pragma once\n"
+	outFile() << "#pragma once\n"
 		<< "\n"
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
@@ -195,8 +216,6 @@ void Generator::genPluginHeader(QString const &pluginName)
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
 		<< "};\n"
 		<< "\n";
-
-	file.close();
 }
 
 void Generator::genPluginSource(QString const &pluginName)
@@ -206,20 +225,17 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	fileName = "generated/" + fileName;
 
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
-	QTextStream out(&file);
+	OutFile out(fileName);
 
-	out << "#include \"" << pluginName << "Interface.h\"\n"
+	out() << "#include \"" << pluginName << "Interface.h\"\n"
 		<< "\n";
 
 	foreach (QString const include, mHeaders) {
-		out << "#include \"" << include << "\"\n";
+		out() << "#include \"" << include << "\"\n";
 	}
-	out << "\n";
+	out() << "\n";
 
-	out << "Q_EXPORT_PLUGIN2(qreal_editors, " << pluginName << "Plugin)\n\n"
+	out() << "Q_EXPORT_PLUGIN2(qreal_editors, " << pluginName << "Plugin)\n\n"
 		<< pluginName << "Plugin::" << pluginName << "Plugin(){\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n"
@@ -228,19 +244,19 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c){
 		QString name = normalizeName((*c)->get_name());
-		out << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
+		out() << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
 	}
 
-	out << "\n";
+	out() << "\n";
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
 		if (!(*o)->visible)
 			continue;
 		QString ename = normalizeName((*c)->get_name());
-		out << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
+		out() << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
 	}
-	out << "}\n\n"
+	out() << "}\n\n"
 
 		<< "QStringList " << pluginName << "Plugin::diagrams() const\n{\n"
 		<< "\treturn diagramNameMap.keys();\n"
@@ -275,21 +291,21 @@ void Generator::genPluginSource(QString const &pluginName)
 		if ((*o)->type == NODE && !(*o)->visible)
 			continue;
 		if (isFirst) {
-			out << "\tif (element == \"" << (*o)->id << "\")\n";
+			out() << "\tif (element == \"" << (*o)->id << "\")\n";
 			isFirst = false;
 		}
 		else
-			out << "\telse if (element == \"" << (*o)->id << "\")\n";
+			out() << "\telse if (element == \"" << (*o)->id << "\")\n";
 
-		out << "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
+		out() << "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
 	}
-	out << "	else {\n"
+	out() << "	else {\n"
 		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
 		<< "		return NULL;\n"
 		<< "	}\n";
-	out << "}\n\n";
+	out() << "}\n\n";
 
-	out << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &diagram, QString const &element) const\n"
+	out() << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &diagram, QString const &element) const\n"
 		<< "{\n"
 		<< "\tQStringList result;\n";
 
@@ -301,33 +317,31 @@ void Generator::genPluginSource(QString const &pluginName)
 		bool isFirstProperty = true;
 		if (isFirst)
 		{
-			out << "\tif (element == \"" << (*o)->id << "\")\n";
+			out() << "\tif (element == \"" << (*o)->id << "\")\n";
 			isFirst = false;
 		} else
-			out << "\telse if (element == \"" << (*o)->id << "\")\n";
+			out() << "\telse if (element == \"" << (*o)->id << "\")\n";
 
 		QString props = "";
 		FOR_ALL_PROPERTIES((*o),p)
 		{
 			if (isFirstProperty){
-				out << "\t\tresult ";
+				out() << "\t\tresult ";
 				isFirstProperty = false;
 			}
 			props += QString(" << \"" +(*p)->getName() + "\"");
 			if( props.length() >= MAX_LINE_LENGTH ){
-				out << props;
+				out() << props;
 				props = "\n\t\t";
 			}
 		}
 		if( !props.trimmed().isEmpty())
-			out << props;
-		out << ";\n";
+			out() << props;
+		out() << ";\n";
 		isFirst = false;
 	}
-	out << "\treturn result;\n"
+	out() << "\treturn result;\n"
 		<< "}\n";
-
-	file.close();
 }
 
 void Generator::genElementClasses(QString const &pluginName)
@@ -353,33 +367,31 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 	mHeaders << fileName;
 
 	fileName = "generated/" + fileName;
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
-	QTextStream out(&file);
+	OutFile out(fileName);
 
-	out << "#pragma once\n\n"
+	out() << "#pragma once\n\n"
 		<< "#include \"../../qrgui/umllib/uml_nodeelement.h\"\n\n"
 		<< "namespace UML {\n\n"
 		<< "\tclass " << uClassname << " : public NodeElement {\n"
 		<< "\tpublic:\n"
 		<< "\t\t" << uClassname << "() {\n";
 
-	bool hasSdf, hasPorts = hasSdf = false;
+	bool hasSdf = false;
+	bool hasPorts = false;
 
 	QFile sdffile("generated/shapes/" + classname + "Class.sdf");
 	if (sdffile.exists()) {
-		out << "\t\t\tmRenderer.load(QString(\":/" << classname << "Class.sdf\"));\n";
+		out() << "\t\t\tmRenderer.load(QString(\":/" << classname << "Class.sdf\"));\n";
 		hasSdf = true;
 	}
 
 	sdffile.setFileName("generated/shapes/" + classname + "Ports.sdf");
 	if (sdffile.exists()) {
-		out << "\t\t\tmPortRenderer.load(QString(\":/" << classname << "Ports.sdf\"));\n";
+		out() << "\t\t\tmPortRenderer.load(QString(\":/" << classname << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
 
-	out << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
+	out() << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
 		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n"
 		<< "\t\t}\n\n"
 
@@ -388,14 +400,14 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n";
 
 	if (hasSdf)
-		out << "\t\t\tmRenderer.render(painter, m_contents);\n";
+		out() << "\t\t\tmRenderer.render(painter, m_contents);\n";
 
 	if (hasPorts)
-		out << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
+		out() << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
 	else
-		out << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
+		out() << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
 
-	out << "\t\t}\n\n"
+	out() << "\t\t}\n\n"
 
 		<< "\t\tvoid updateData()\n\t\t{\n"
 		<< "\t\t\tNodeElement::updateData();\n"
@@ -404,10 +416,10 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 
 		<< "\tprivate:\n";
 	if (hasSdf)
-		out << "\t\tSdfRenderer mRenderer;\n";
+		out() << "\t\tSdfRenderer mRenderer;\n";
 	if (hasPorts)
-		out << "\t\tSdfRenderer mPortRenderer;\n";
-	out << "\t};"
+		out() << "\t\tSdfRenderer mPortRenderer;\n";
+	out() << "\t};"
 		<< "}\n";
 }
 
@@ -421,12 +433,9 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 
 	fileName = "generated/" + fileName;
 
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return;
-	QTextStream out(&file);
+	OutFile out(fileName);
 
-	out << "#pragma once\n\n"
+	out() << "#pragma once\n\n"
 		<< "#include \"../../qrgui/umllib/uml_edgeelement.h\"\n\n"
 		<< "namespace UML {\n\n"
 		<< "\tclass " << uClassname << " : public EdgeElement {\n"
@@ -450,11 +459,9 @@ void Generator::addResource(QString const &resourceXml) {
 
 void Generator::genProFile(QString const &plugin) const
 {
-	QFile outFile(plugin);
-	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
-	QTextStream out(&outFile);
+	OutFile out(plugin);
 
-	out << "message(\"Building generated editor " + QFileInfo(outFile).fileName() + "\")" << '\n'
+	out() << "message(\"Building generated editor " + QFileInfo(plugin).fileName() + "\")" << '\n'
 		<< "\n"
 		<< "QRXML_ROOT = ../..\n"
 		<< "\n"
@@ -475,28 +482,22 @@ void Generator::genProFile(QString const &plugin) const
 		<< "include (editorsSdk.pri)\n"
 		<< "\n"
 		<< "HEADERS += \\\n";
-	printFiles(mHeaders, out);
+	printFiles(mHeaders, out());
 
-	out << "SOURCES += \\\n";
-	printFiles(mSources, out);
+	out() << "SOURCES += \\\n";
+	printFiles(mSources, out());
 
-	out << "\n"
+	out() << "\n"
 		<< "RESOURCES += shapes/" + QFileInfo(plugin).baseName() + ".qrc\n";
-
-	outFile.close();
 }
 
 void Generator::genQrcFile(QString const &plugin) const
 {
-	QFile outFile(QFileInfo(plugin).absolutePath() + "/shapes/" + QFileInfo(plugin).baseName() + ".qrc");
-	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
-	QTextStream out(&outFile);
+	OutFile out(QFileInfo(plugin).absolutePath() + "/shapes/" + QFileInfo(plugin).baseName() + ".qrc");
 
-	out << mResources
+	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";
-
-	outFile.close();
 }
 
 void Generator::printFiles(QStringList const &files, QTextStream &out) {
