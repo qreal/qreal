@@ -7,6 +7,8 @@
 #include "generator.h"
 #include <QMessageBox>
 
+const int MAX_LINE_LENGTH = 60;
+
 Generator::Generator(QString const &inf)
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
@@ -180,6 +182,7 @@ void Generator::genPluginHeader(QString const &pluginName)
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
@@ -268,23 +271,60 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if( (*o)->type == NODE && !(*o)->visible )
+		if ((*o)->type == NODE && !(*o)->visible)
 			continue;
-		if( isFirst ){
-			out << "\tif (element == \"" << (*o)->id << "\")\n"
-				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
+		if (isFirst) {
+			out << "\tif (element == \"" << (*o)->id << "\")\n";
 			isFirst = false;
 		}
 		else
-			out << "\telse if (element == \"" << (*o)->id << "\")\n"
-				<< "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
+			out << "\telse if (element == \"" << (*o)->id << "\")\n";
+
+		out << "\t\treturn new UML::" << upperFirst((*o)->id) << "();\n";
 	}
 	out << "	else {\n"
 		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
 		<< "		return NULL;\n"
 		<< "	}\n";
-	out << "}\n"
-		<< "\n";
+	out << "}\n\n";
+
+	out << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &diagram, QString const &element) const\n"
+		<< "{\n"
+		<< "\tQStringList result;\n";
+	
+	isFirst = true;
+	MEGA_FOR_ALL_OBJECTS(f,c,o)
+	{
+		if ((*o)->type == NODE && !(*o)->visible)
+			continue;
+		bool isFirstProperty = true;
+		if (isFirst)
+		{
+			out << "\tif (element == \"" << (*o)->id << "\")\n";
+			isFirst = false;
+		} else
+			out << "\telse if (element == \"" << (*o)->id << "\")\n";
+
+		QString props = "";
+		FOR_ALL_PROPERTIES((*o),p)
+		{
+			if (isFirstProperty){
+				out << "\t\tresult ";
+				isFirstProperty = false;
+			}  
+			props += QString(" << \"" +(*p)->getName() + "\"");
+			if( props.length() >= MAX_LINE_LENGTH ){
+				out << props;
+				props = "\n\t\t";
+			}	
+		}
+		if( !props.trimmed().isEmpty())
+			out << props;
+		out << ";\n";
+		isFirst = false;
+	}
+	out << "\treturn result;\n"
+		<< "}\n";
 
 	file.close();
 }
@@ -370,7 +410,7 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 		<< "}\n";
 }
 
-void Generator::genEdgeClass(Edge *edge, QString const &pluginName)
+void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 {
 	QString classname = edge->id;
 	QString uClassname = upperFirst(classname);
