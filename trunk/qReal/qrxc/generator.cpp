@@ -119,6 +119,7 @@ bool Generator::generate(QString const &outputFileName)
 	genPluginSource(pluginName);
 	genPluginHeader(pluginName);
 	genProFile(outputFileName);
+	genQrcFile(outputFileName);
 
 	qDebug() << "done";
 	return true;
@@ -250,7 +251,7 @@ void Generator::genPluginSource(QString const &pluginName)
 		<< "}\n\n"
 
 		<< "QIcon " << pluginName << "Plugin::getIcon(QString const &diagram, QString const &element) const\n{\n"
-		<< "\treturn QIcon(new SdfIconEngineV2(\":/" << pluginName << "Editor/\" + diagram + \"/\" + element + \".sdf\"));\n"
+		<< "\treturn QIcon(new SdfIconEngineV2(\":/\" + element + \"Class.sdf\"));\n"
 		<< "}\n\n"
 
 		<< "QString " << pluginName << "Plugin::editorName() const\n{\n"
@@ -291,7 +292,7 @@ void Generator::genPluginSource(QString const &pluginName)
 	out << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &diagram, QString const &element) const\n"
 		<< "{\n"
 		<< "\tQStringList result;\n";
-	
+
 	isFirst = true;
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
@@ -311,12 +312,12 @@ void Generator::genPluginSource(QString const &pluginName)
 			if (isFirstProperty){
 				out << "\t\tresult ";
 				isFirstProperty = false;
-			}  
+			}
 			props += QString(" << \"" +(*p)->getName() + "\"");
 			if( props.length() >= MAX_LINE_LENGTH ){
 				out << props;
 				props = "\n\t\t";
-			}	
+			}
 		}
 		if( !props.trimmed().isEmpty())
 			out << props;
@@ -368,13 +369,13 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 
 	QFile sdffile("generated/shapes/" + classname + "Class.sdf");
 	if (sdffile.exists()) {
-		out << "\t\t\tmRenderer.load(QString(\":/" << pluginName << "/" << classname << "/Class.sdf\"));\n";
+		out << "\t\t\tmRenderer.load(QString(\":/" << classname << "Class.sdf\"));\n";
 		hasSdf = true;
 	}
 
 	sdffile.setFileName("generated/shapes/" + classname + "Ports.sdf");
 	if (sdffile.exists()) {
-		out << "\t\t\tmPortRenderer.load(QString(\":/" << pluginName << "/" << classname << "Ports.sdf\"));\n";
+		out << "\t\t\tmPortRenderer.load(QString(\":/" << classname << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
 
@@ -478,6 +479,22 @@ void Generator::genProFile(QString const &plugin) const
 
 	out << "SOURCES += \\\n";
 	printFiles(mSources, out);
+
+	out << "\n"
+		<< "RESOURCES += shapes/" + QFileInfo(plugin).baseName() + ".qrc\n";
+
+	outFile.close();
+}
+
+void Generator::genQrcFile(QString const &plugin) const
+{
+	QFile outFile(QFileInfo(plugin).absolutePath() + "/shapes/" + QFileInfo(plugin).baseName() + ".qrc");
+	outFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&outFile);
+
+	out << mResources
+		<< "</qresource>\n"
+		<< "</RCC>\n";
 
 	outFile.close();
 }

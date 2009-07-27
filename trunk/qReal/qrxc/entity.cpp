@@ -303,8 +303,8 @@ bool Node::parseSdf(QDomElement &xml_element)
 		width = sdf.at(0).toElement().attribute("sizex").toInt();
 
 		Generator *generator = cat->get_editor()->getGenerator();
-		generator->addResource(res.arg("shapes/" + id + "Ports.sdf"));
-		generator->addResource(res.arg("shapes/" + id + "Class.sdf"));
+		generator->addResource(res.arg(id + "Ports.sdf"));
+		generator->addResource(res.arg(id + "Class.sdf"));
 
 		QFile file("generated/shapes/" + id + "Class.sdf");
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))

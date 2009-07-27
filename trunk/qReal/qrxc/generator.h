@@ -59,6 +59,7 @@ private:
 	void genNodeClass(Node* node, QString const &plugin);
 	void genEdgeClass(Edge* edge, QString const &plugin);
 	void genProFile(QString const &plugin) const;
+	void genQrcFile(QString const &plugin) const;
 
 	QString normalizeName(QString const &name) const;
 	QString upperFirst(const QString &str) const;
