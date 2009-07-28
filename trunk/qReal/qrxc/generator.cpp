@@ -251,7 +251,8 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if (!(*o)->visible || (*o)->getEditor()->get_name() != currentEditor )
+		if (((*o)->type == NODE && !(*o)->visible) || (*o)->getEditor()->get_name() != currentEditor )
+		//if (!(*o)->visible || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
 	
 	QString ename = normalizeName((*c)->get_name());
