@@ -96,6 +96,8 @@ bool EditorFile::load(void)
 			delete doc;
 			return false;
 		}
+		generator->setCurrentEditor(cat_name);
+		qDebug() << "current:" << cat_name;
 		editors << cat;
 	}
 	delete doc;

@@ -45,6 +45,10 @@ public:
 	bool loadFile(QString const &fileName, const EditorFile **f = NULL);
 	const Editor* findEditor(QString const &editorName) const;
 	void addResource(QString const &resourceXml);
+	inline void setCurrentEditor(QString const &name) 
+	{
+		currentEditor = name;
+	}
 
 private:
 	/** @brief Начальное значение идентификаторов сущностей */
@@ -75,4 +79,5 @@ private:
 	QStringList mHeaders;
 	QList<EditorFile *> mLoadedFiles;
 	QString mResources;
+	QString currentEditor;
 };

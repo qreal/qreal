@@ -251,9 +251,10 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if (!(*o)->visible)
+		if (!(*o)->visible || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
-		QString ename = normalizeName((*c)->get_name());
+	
+	QString ename = normalizeName((*c)->get_name());
 		out() << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
 	}
 	out() << "}\n\n"
@@ -288,7 +289,7 @@ void Generator::genPluginSource(QString const &pluginName)
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if ((*o)->type == NODE && !(*o)->visible)
+		if (((*o)->type == NODE && !(*o)->visible) || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
 		if (isFirst) {
 			out() << "\tif (element == \"" << (*o)->id << "\")\n";
@@ -312,8 +313,9 @@ void Generator::genPluginSource(QString const &pluginName)
 	isFirst = true;
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
-		if ((*o)->type == NODE && !(*o)->visible)
+		if (((*o)->type == NODE && !(*o)->visible) || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
+		
 		bool isFirstProperty = true;
 		if (isFirst)
 		{
@@ -348,6 +350,8 @@ void Generator::genElementClasses(QString const &pluginName)
 {
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
 	{
+		if( (*o)->getEditor()->get_name() != currentEditor )
+			continue;
 		if ((*o)->type == NODE) {
 			if (!(*o)->visible)
 				continue;
@@ -362,7 +366,7 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 {
 	QString const classname = node->id;
 	QString const uClassname = upperFirst(classname);
-
+	
 	QString fileName = classname + ".h";
 	mHeaders << fileName;
 
