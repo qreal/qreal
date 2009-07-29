@@ -26,6 +26,8 @@ public:
 
 	QList<Entity*>::ConstIterator constObjBegin() const {return objects.constBegin();}
 	QList<Entity*>::ConstIterator constObjEnd() const {return objects.constEnd();}
+
+	int getObjectsCount() { return types_ng.size(); } 
 private:
 	EditorFile *efile;
 	QMap<QString, QStringList> enumerations;

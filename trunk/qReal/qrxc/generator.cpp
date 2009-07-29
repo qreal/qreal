@@ -242,11 +242,10 @@ void Generator::genPluginSource(QString const &pluginName)
 
 		<< "void " << pluginName << "Plugin::initPlugin(){\n";
 
-	FOR_ALL_FILES(f) FOR_ALL_EDITORS((*f),c){
-		QString name = normalizeName((*c)->get_name());
-		out() << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
-	}
 
+	QString name = normalizeName(currentEditor);
+	qDebug() << name;
+	out() << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
 	out() << "\n";
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
