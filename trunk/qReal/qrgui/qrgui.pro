@@ -7,6 +7,9 @@ INCLUDEPATH	+=	../qrxml/editors \
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 
+OBJECTS_DIR = obj
+MOC_DIR = moc
+
 # Graphical elements
 include (umllib/umllib.pri)
 
