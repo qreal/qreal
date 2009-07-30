@@ -11,7 +11,9 @@
 \usepackage{array}
 \usepackage{hhline}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=1, pdfauthor=, pdfsubject=, pdfkeywords=}
-\usepackage[pdftex]{graphicx}
+% Раскомментировать для генерации pdf-ки (и закомментировать следующую строчку).
+% \usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
 % Раскомментировать тем, у кого этот пакет есть. Шрифт станет заметно красивее.
 % \usepackage{literat}
 \usepackage{indentfirst}
@@ -332,7 +334,7 @@ SVN\footnote{http://subversion.tigris.org/}-сервер. Доступ к нему осуществляется
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=\textwidth]{qRealArchitecture.png}
+    \includegraphics[width=\textwidth, bb=0 0 798 531]{qRealArchitecture.png}
     \caption{Архитектура QReal}
     \label{qRealArchitecture}
   \end{center}
@@ -368,7 +370,7 @@ QReal они представлены следующими компонентами (см. рис.~\ref{mainWindow}):
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=\textwidth]{draft04-img1.png}
+    \includegraphics[width=\textwidth, bb=0 0 1280 948]{draft04-img1.png}
     \caption{Главное окно QReal}
     \label{mainWindow}
   \end{center}
@@ -705,7 +707,7 @@ ZeroC ICE~\cite{ice}.
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=0.5\textwidth]{draft04-img3.jpg}
+    \includegraphics[width=0.5\textwidth, bb=0 0 544 390]{draft04-img3.jpg}
     \caption{Элемент до (слева) и после (справа) масштабирования}
     \label{scaling}
   \end{center}
@@ -725,11 +727,11 @@ SVG не предоставляет средств для его
 \begin{itemize}
   \item Абсолютное --- размер графического примитива задается в явном виде и при
         масштабировании не меняется;\newline
-    \includegraphics[width=0.7\textwidth]{draft04-img4.jpg}
+    \includegraphics[width=0.7\textwidth, bb=0 0 1152 656]{draft04-img4.jpg}
   \item Процентное --- размер графического примитива задается в процентах от
         общего размера элемента (сюда же входит и ``обычное'' пропорциональное
         масштабирование).\newline
-    \includegraphics[width=0.7\textwidth]{draft04-img5.jpg}
+    \includegraphics[width=0.7\textwidth, bb=0 0 1152 659]{draft04-img5.jpg}
 \end{itemize}
 
 Кроме того, были созданы средства конвертации SVG-описаний в формат SDF
