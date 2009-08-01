@@ -30,8 +30,9 @@ MainWindow::MainWindow()
 	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
-	connect(ui.diagramExplorer, SIGNAL(activated(const QModelIndex &)),
-		ui.view->mvIface(), SLOT(setRootIndex(const QModelIndex &)));
+	// activated под линуксом - одинарный клик, что очень плохо.
+	// connect(ui.diagramExplorer, SIGNAL(activated(const QModelIndex &)),
+	//	ui.view->mvIface(), SLOT(setRootIndex(const QModelIndex &)));
 	connect(ui.view->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
 		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
