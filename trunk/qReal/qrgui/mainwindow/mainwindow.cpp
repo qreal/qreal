@@ -66,8 +66,8 @@ MainWindow::MainWindow()
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 
-	ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
-	ui.propertyEditor->horizontalHeader()->hide();
+	//ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
+	//ui.propertyEditor->horizontalHeader()->hide();
 	//	ui.propertyEditor->setModel(&propertyModel);
 
 	ui.propertyEditor->setModel(&mPropertyModel);
