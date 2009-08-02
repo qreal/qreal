@@ -46,7 +46,7 @@ public slots:
 //    void mousePressEvent(QMouseEvent *event);
 
 private:
-	/** @brief Обхект, реализующий интерфейс представления */
+	/** @brief Объект, реализующий интерфейс представления */
     EditorViewMViface * mv_iface;
 };
 
