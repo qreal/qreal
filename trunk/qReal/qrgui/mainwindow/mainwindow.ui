@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../qrgui.qrc">
-    <normaloff>:/icons/designer_datatable.png</normaloff>:/icons/designer_datatable.png</iconset>
+    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
@@ -43,13 +43,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionConnect"/>
-    <addaction name="actionDisconnect"/>
-    <addaction name="separator"/>
-    <addaction name="actionBeginTransaction"/>
-    <addaction name="actionCommitTransaction"/>
-    <addaction name="actionRollbackTransaction"/>
-    <addaction name="separator"/>
     <addaction name="actionPrint"/>
     <addaction name="actionMakeSvg"/>
     <addaction name="separator"/>
@@ -130,13 +123,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionConnect"/>
-   <addaction name="actionDisconnect"/>
-   <addaction name="separator"/>
-   <addaction name="actionBeginTransaction"/>
-   <addaction name="actionCommitTransaction"/>
-   <addaction name="actionRollbackTransaction"/>
-   <addaction name="separator"/>
    <addaction name="actionPrint"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">

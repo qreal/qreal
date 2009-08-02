@@ -48,6 +48,8 @@ namespace qReal {
 		/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
 		 * эксплорером. */
 		void sceneSelectionChanged();
+	private slots:
+		void activateItemOrDiagram(QModelIndex const &idx);
 	private:
 		model::Model *mModel;
 		EditorManager mgr;

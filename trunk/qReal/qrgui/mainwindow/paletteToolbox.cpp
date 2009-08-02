@@ -1,5 +1,9 @@
-#include <QtGui>
 #include <QtCore/QUuid>
+#include <QtGui/QLabel>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QComboBox>
+#include <QtGui/QScrollArea>
 
 #include "paletteToolbox.h"
 #include "../kernel/definitions.h"
@@ -12,17 +16,14 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 : QWidget(parent), mId(id), mIcon(icon), mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->setSpacing(0);
+	layout->setContentsMargins(4, 4, 4, 4);
 
 	QLabel *pic = new QLabel(this);
-	pic->setFrameStyle(QFrame::Box | QFrame::Sunken);
 	pic->setFixedSize(24, 24);
-	pic->setPixmap(mIcon.pixmap(24, 24));
+	pic->setPixmap(mIcon.pixmap(22, 22));  // 24 - "рамочка"
 	layout->addWidget(pic);
 
 	QLabel *text = new QLabel(this);
-	text->setFrameStyle(QFrame::Box | QFrame::Sunken);
 	text->setText(mText);
 	layout->addWidget(text);
 
@@ -30,33 +31,73 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
-	: QToolBox(parent)
+	: QWidget(parent)
 {
+	mLayout = new QVBoxLayout;
+	mLayout->setSpacing(6);
+	mLayout->setMargin(0);
+
+	mComboBox = new QComboBox;
+	mLayout->addWidget(mComboBox);
+
+	mScrollArea = new QScrollArea;
+	mLayout->addWidget(mScrollArea);
+
+	setLayout(mLayout);
+}
+
+PaletteToolbox::~PaletteToolbox()
+{
+	mScrollArea->takeWidget();
+	delete mScrollArea;
+	delete mComboBox;
+	delete mLayout;
+
+	for (int i = 0; i < mTabs.count(); i++)
+		delete mTabs[i];
+}
+
+void PaletteToolbox::setActiveEditor(int const comboIndex)
+{
+	mScrollArea->takeWidget(); // Save current editor from extermination.
+	mScrollArea->setWidget(mTabs[comboIndex]);
 }
 
 void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 {
-	Q_ASSERT(!mCategories.contains(id));
-
-	QWidget *tab = new QWidget(this);
-
+	QWidget *tab = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(tab);
+
 	layout->setSpacing(0);
-	layout->setContentsMargins (0, 0, 0, 0);
+	layout->setContentsMargins(0, 0, 0, 0);
+
 	tab->setLayout(layout);
 
+	mTabs.append(tab);
+	mTabNames.append(name);
+
 	Q_ASSERT(id.idSize() == 2);  // Это должна быть диаграмма
-	mCategories[id] = addItem(tab, name);
+	mCategories[id] = mTabs.size() - 1;
+
+	mComboBox->addItem(name);
+
+	Q_ASSERT(mTabNames.size() == mTabs.size());
 }
 
 void PaletteToolbox::addItemType(Id const &id, QString const &name, QIcon const &icon)
 {
 	Id category(id.editor(), id.diagram());
-	QWidget *tab = widget(mCategories[category]);
+	QWidget *tab = mTabs[mCategories[category]];
 	Q_ASSERT(tab);
 
 	DraggableElement *element = new DraggableElement(id, name, icon, this);
 	tab->layout()->addWidget(element);
+}
+
+void PaletteToolbox::initDone()
+{
+	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+	setActiveEditor(0);
 }
 
 void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
@@ -90,7 +131,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
 	stream << ROOT_ID.toString();  // pathToItem
-	stream << QString("(anon element)");
+	stream << QString("(anonymous " + child->text() + ")");
 	stream << QPointF(0, 0);
 
 	QMimeData *mimeData = new QMimeData;

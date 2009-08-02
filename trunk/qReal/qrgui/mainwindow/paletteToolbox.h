@@ -1,10 +1,14 @@
 #pragma once
 
 #include <QtCore/QHash>
-#include <QtGui/QToolBox>
+#include <QtGui/QWidget>
+#include <QtGui/QIcon>
 
 #include "../kernel/ids.h"
 
+class QVBoxLayout;
+class QComboBox;
+class QScrollArea;
 class QDragEnterEvent;
 class QDropEvent;
 
@@ -12,13 +16,21 @@ namespace qReal {
 
 	namespace gui {
 
-		class PaletteToolbox : public QToolBox
+		class PaletteToolbox : public QWidget
 		{
+			Q_OBJECT
+
 		public:
 			explicit PaletteToolbox(QWidget *parent = NULL);
+			~PaletteToolbox();
 
 			void addDiagramType(Id const &id, QString const &name);
 			void addItemType(Id const &id, QString const &name, QIcon const &icon);
+			void initDone();
+
+		public slots:
+			/** @brief Сделать данный редактор активным */
+			void setActiveEditor(int const editorIndex);
 
 		private:
 			class DraggableElement : public QWidget {
@@ -52,6 +64,16 @@ namespace qReal {
 			virtual void mousePressEvent(QMouseEvent *event);
 
 			QHash<Id, int> mCategories;
+			/** @brief Массив содержимого редакторов */
+			QVector<QWidget*> mTabs;
+			/** @brief Массив имен редакторов */
+			QVector<QString> mTabNames;
+			/** @brief Основной layout */
+			QVBoxLayout *mLayout;
+			/** @brief Выпадающий список видимых редаторов */
+			QComboBox *mComboBox;
+			/** @brief Содержимое активного редактора */
+			QScrollArea *mScrollArea;
 		};
 
 	}

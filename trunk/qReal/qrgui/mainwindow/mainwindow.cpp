@@ -37,10 +37,6 @@ MainWindow::MainWindow()
 	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
 		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
 
-	//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-	//			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
-	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
-	connect(ui.actionDisconnect, SIGNAL( triggered() ), this, SLOT( closeRepo() ) );
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
@@ -51,10 +47,6 @@ MainWindow::MainWindow()
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
-
-	connect(ui.actionBeginTransaction, SIGNAL( triggered() ), this, SLOT( beginTransaction() ) );
-	connect(ui.actionCommitTransaction, SIGNAL( triggered() ), this, SLOT( commitTransaction() ) );
-	connect(ui.actionRollbackTransaction, SIGNAL( triggered() ), this, SLOT( rollbackTransaction() ) );
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
 
@@ -130,12 +122,42 @@ void MainWindow::loadPlugins()
 			}
 		}
 	}
+	ui.paletteToolbox->initDone();
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	ui.minimapView->resetMatrix();
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
+}
+
+void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
+{
+	QModelIndex parent = idx.parent();
+
+	// Is level-one diagram?
+	if (!parent.isValid())
+	{
+		// Показать "корневую диаграмму". На самом деле, её, вероятно, не будет,
+		// будет набор корневых диаграмм.
+		ui.view->mvIface()->setRootIndex(mModel->rootIndex());
+		ui.diagramExplorer->setCurrentIndex(mModel->rootIndex());
+	}
+	else
+	{
+		if (ui.view->mvIface()->rootIndex() != parent)
+		{
+			// activate parent diagram
+			ui.view->mvIface()->setRootIndex(parent);
+		}
+		// select this item on diagram
+		ui.view->scene()->clearSelection();
+		UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
+		if (e)
+			e->setSelected(true);
+		else
+			qDebug() << "shit happened!!!\n";
+	}
 }
 
 void MainWindow::sceneSelectionChanged()
