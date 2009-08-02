@@ -10,7 +10,7 @@
 #include "editorview.h"
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent)
+		: QGraphicsView(parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -44,7 +44,7 @@ void EditorView::toggleOpenGL(bool checked)
 {
 	Q_UNUSED(checked)
 #ifdef QT_OPENGL_LIB
-	setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
+			setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
 #endif
 }
 
@@ -58,7 +58,7 @@ void EditorView::zoomOut()
 	scale(0.666,0.666);
 }
 
-void EditorView::setMainWindow(MainWindow *mainWindow) {
+void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
 	mv_iface->scene()->setMainWindow(mainWindow);
 }
 

@@ -8,8 +8,6 @@
 
 #include "../kernel/definitions.h"
 
-using namespace qReal;
-
 namespace UML {
 	/** @class Element
 	* 	@brief Базовый класс элемента на диаграмме
@@ -34,7 +32,7 @@ namespace UML {
 		/** @brief Получить идентификатор элемента
 		 *	@brief @return Идентификатор элемента
 		 * */
-		IdType uuid() const;
+		qReal::IdType uuid() const;
 
 		virtual void connectToPort() { }
 
@@ -45,7 +43,7 @@ namespace UML {
 		QPersistentModelIndex dataIndex;
 
 		/** @brief Идентификатор элемента */
-		IdType m_uuid;
+		qReal::IdType m_uuid;
 		/** @brief Тип элемента */
 
 		/** @brief Индикатор перемещения элемента */

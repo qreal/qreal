@@ -5,6 +5,7 @@
 
 #include "uml_element.h"
 
+using namespace qReal;
 using namespace UML;
 
 Element::Element()

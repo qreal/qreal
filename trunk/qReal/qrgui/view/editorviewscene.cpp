@@ -14,7 +14,7 @@
 //#include "../common/classes.h"
 
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent), mWindow(NULL)
+		:  QGraphicsScene(parent), mWindow(NULL)
 {
 	//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
@@ -30,7 +30,7 @@ void EditorViewScene::clearScene()
 	}
 }
 
-UML::Element * EditorViewScene::getElem(IdType const &uuid)
+UML::Element * EditorViewScene::getElem(qReal::IdType const &uuid)
 {
 	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
@@ -41,8 +41,8 @@ UML::Element * EditorViewScene::getElem(IdType const &uuid)
 			}
 		}
 	}
-//	qDebug() << uuid;
-//	Q_ASSERT(uuid == INVALID_ID);
+	//	qDebug() << uuid;
+	//	Q_ASSERT(uuid == INVALID_ID);
 	return NULL;
 }
 
@@ -79,8 +79,8 @@ void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 {
 	Q_ASSERT(mWindow);  // Значение mWindow должно быть инициализировано
-						// отдельно, через конструктор это делать нехорошо,
-						// поскольку сцена создаётся в сгенерённом ui-шнике.
+	// отдельно, через конструктор это делать нехорошо,
+	// поскольку сцена создаётся в сгенерённом ui-шнике.
 
 	// Transform mime data to include coordinates.
 	const QMimeData *mimeData = event->mimeData();
@@ -105,8 +105,8 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 	UML::Element *newParent = NULL;
 
 	// TODO: возможно, это можно сделать проще
-	UML::Element *e = mWindow->manager()->graphicalObject(Id::loadFromString(uuid));
-//	= UML::GUIObjectFactory(type_id);
+	UML::Element *e = mWindow->manager()->graphicalObject(qReal::Id::loadFromString(uuid));
+	//	= UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement*>(e)) {
 		newParent = getElemAt(event->scenePos());
@@ -177,8 +177,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QMenu menu;
 	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
 	// FIXME: add check for diagram
-//	if (selectedItems().count() == 1)
-//		menu.addAction(window->ui.actionJumpToAvatar);
+	//	if (selectedItems().count() == 1)
+	//		menu.addAction(window->ui.actionJumpToAvatar);
 
 	menu.exec(QCursor::pos());
 }
@@ -198,12 +198,12 @@ QPersistentModelIndex EditorViewScene::rootItem()
 	return mv_iface->rootIndex();
 }
 
-void EditorViewScene::setMainWindow(MainWindow *mainWindow)
+void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 }
 
-MainWindow *EditorViewScene::mainWindow() const
+qReal::MainWindow *EditorViewScene::mainWindow() const
 {
 	return mWindow;
 }

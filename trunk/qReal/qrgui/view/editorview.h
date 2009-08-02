@@ -36,7 +36,7 @@ public:
 		return mv_iface;
 	}
 
-	void setMainWindow(MainWindow *mainWindow);
+	void setMainWindow(qReal::MainWindow *mainWindow);
 
 public slots:
 	/** @brief Включить/выключить сглаживание */
@@ -48,8 +48,8 @@ public slots:
 	/** @brief Уменьшить масштаб сцены */
 	void zoomOut();
 
-//protected:
-//    void mousePressEvent(QMouseEvent *event);
+	//protected:
+	//    void mousePressEvent(QMouseEvent *event);
 
 private:
 	/** @brief Обхект, реализующий интерфейс представления */

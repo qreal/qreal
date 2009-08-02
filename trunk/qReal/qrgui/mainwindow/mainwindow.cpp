@@ -15,6 +15,7 @@
 #include "../model/model.h"
 
 #include "../view/editorview.h"
+#include "../umllib/uml_element.h"
 
 using namespace qReal;
 

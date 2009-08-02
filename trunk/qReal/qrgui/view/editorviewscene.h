@@ -5,7 +5,6 @@
 
 #include <QGraphicsScene>
 
-#include "../umllib/uml_element.h"
 #include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
 
@@ -33,15 +32,15 @@ public:
 	/** @brief Получить элемент сцены по его идентификатору
 	 *	@brief @return Элемент сцены
 	 * */
-	UML::Element *getElem(IdType const &uuid /**< Идентификатор элемента */);
+	UML::Element *getElem(qReal::IdType const &uuid);
 	/** @brief Получить элемент сцены по его индексу в модели
 	 *	@brief @return
 	 * */
 	UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
 
 	QPersistentModelIndex rootItem();
-	void setMainWindow(MainWindow *mainWindow);
-	MainWindow *mainWindow() const;
+	void setMainWindow(qReal::MainWindow *mainWindow);
+	qReal::MainWindow *mainWindow() const;
 
 protected:
 	/** @brief Обработать начало события drag'n'drop */
@@ -70,7 +69,7 @@ private:
 	/** @brief Объект, реализующей представление в схеме Model/View */
 	EditorView *view;
 
-	MainWindow *mWindow;
+	qReal::MainWindow *mWindow;
 
 	friend class EditorViewMViface;
 };
