@@ -37,7 +37,6 @@ namespace UML {
 
 		virtual void connectToPort() { }
 
-		virtual int type() const {return UserType + 1;}
 	protected:
 		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
 		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );

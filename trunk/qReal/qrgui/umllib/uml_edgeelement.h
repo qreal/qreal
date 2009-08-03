@@ -57,8 +57,6 @@ namespace UML {
 
 			virtual void connectToPort();
 
-			virtual int type() const {return UserType + 2;}
-
 		private:
 
 			NodeElement *beginning;

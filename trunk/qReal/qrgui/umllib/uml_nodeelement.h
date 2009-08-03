@@ -94,8 +94,6 @@ namespace UML {
 
 		//QString PutName();
 		QString oldName;
-
-		virtual int type() const {return UserType + 3;}
 	public slots:
 		void changeName();
 

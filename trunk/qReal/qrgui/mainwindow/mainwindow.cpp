@@ -166,7 +166,7 @@ void MainWindow::sceneSelectionChanged()
 	QList<QGraphicsItem*> graphicsItems =  ui.view->scene()->selectedItems();
 	if (graphicsItems.size() == 1) {
 		QGraphicsItem *item = graphicsItems[0];
-		if (UML::Element *elem = qgraphicsitem_cast<UML::Element *>(item)) {
+		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
 			if (elem->index().isValid()) {
 				ui.diagramExplorer->setCurrentIndex(elem->index());
 				mPropertyModel.setIndex(elem->index());
