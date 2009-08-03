@@ -21,7 +21,7 @@ namespace UML {
 			/** @brief Конструктор */
 			EdgeElement();
 			/** @brief Деструктор */
-			~EdgeElement();
+			virtual ~EdgeElement();
 
 			/** @brief Обновить данные связи */
 			void updateData();

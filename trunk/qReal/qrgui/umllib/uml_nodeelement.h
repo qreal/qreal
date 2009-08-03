@@ -47,7 +47,7 @@ namespace UML {
 		/** @brief Конструктор */
 		NodeElement();
 		/** @brief Деструктор */
-		~NodeElement();
+		virtual ~NodeElement();
 
 		void complexInlineEditing();
 

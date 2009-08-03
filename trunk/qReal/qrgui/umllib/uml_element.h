@@ -16,6 +16,7 @@ namespace UML {
 	{
 	public:
 		Element();
+		virtual ~Element(){}
 		/** @brief Получить индекс элемента в модели
 		 *	@brief @return Индекс элемента
 		 * */
