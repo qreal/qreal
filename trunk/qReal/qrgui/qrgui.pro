@@ -10,6 +10,10 @@ SOURCES		=	main.cpp
 OBJECTS_DIR = obj
 MOC_DIR = moc
 
+if (equals(QMAKE_CXX, "g++")) {
+    QMAKE_LFLAGS += -Wl,-E
+}
+
 # Graphical elements
 include (umllib/umllib.pri)
 
