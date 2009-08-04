@@ -3,6 +3,7 @@
 #include <QtGui/QMainWindow>
 #include <QtSql/QSqlDatabase>
 #include <QtCore/QDir>
+#include <QSplashScreen>
 
 #include "ui_mainwindow.h"
 
@@ -36,6 +37,7 @@ namespace qReal {
 		//		void connectRepo();
 		//		void closeRepo();
 		void adjustMinimapZoom(int zoom);
+		void toggleShowSplash(bool show);
 
 		void settingsPlugins();
 

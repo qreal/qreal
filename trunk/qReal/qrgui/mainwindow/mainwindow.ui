@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>678</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -57,6 +57,7 @@
     <addaction name="separator"/>
     <addaction name="actionAntialiasing"/>
     <addaction name="actionOpenGL_Renderer"/>
+    <addaction name="actionShowSplash"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -232,7 +233,7 @@
   </action>
   <action name="actionConnect">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/database_connected.png</normaloff>:/icons/database_connected.png</iconset>
    </property>
    <property name="text">
@@ -240,6 +241,9 @@
    </property>
   </action>
   <action name="actionZoom_In">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
@@ -292,7 +296,7 @@
   </action>
   <action name="actionDisconnect">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/database_disconnect.png</normaloff>:/icons/database_disconnect.png</iconset>
    </property>
    <property name="text">
@@ -304,7 +308,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/database_connect.png</normaloff>:/icons/database_connect.png</iconset>
    </property>
    <property name="text">
@@ -316,7 +320,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/database_commit.png</normaloff>:/icons/database_commit.png</iconset>
    </property>
    <property name="text">
@@ -328,7 +332,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/database_revert.png</normaloff>:/icons/database_revert.png</iconset>
    </property>
    <property name="text">
@@ -358,6 +362,14 @@
   <action name="actionPlugins">
    <property name="text">
     <string>Plugins...</string>
+   </property>
+  </action>
+  <action name="actionShowSplash">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show splashscreen</string>
    </property>
   </action>
  </widget>

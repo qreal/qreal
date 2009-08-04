@@ -17,14 +17,35 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 
+#include <QProgressBar>
+
 using namespace qReal;
 
 MainWindow::MainWindow()
 		: mPropertyModel(mgr)
 {
 	QSettings settings("Tercom", "QReal");
+	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
+	QSplashScreen* splash =
+			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+
+	QProgressBar *progress = new QProgressBar((QWidget*) splash);
+	progress->move(20,270);
+	progress->setFixedWidth(600);
+	progress->setFixedHeight(15);
+	progress->setRange(0, 100);
+	progress->setValue(5);
+	if (showSplash)
+	{
+		splash->show();
+		QApplication::processEvents();
+	}
 
 	ui.setupUi(this);
+
+	if (!showSplash)
+		ui.actionShowSplash->setChecked(false);
+			
 
 	ui.view->setMainWindow(this);
 
@@ -38,6 +59,8 @@ MainWindow::MainWindow()
 	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
 		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
 
+	progress->setValue(20);
+
 	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
 
 	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
@@ -45,6 +68,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleOpenGL(bool) ) );
+	connect(ui.actionShowSplash, SIGNAL( toggled(bool) ), this, SLOT (toggleShowSplash(bool) ) );	
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
@@ -59,6 +83,8 @@ MainWindow::MainWindow()
 
 	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
+
+	progress->setValue(40);
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
@@ -85,16 +111,25 @@ MainWindow::MainWindow()
 	resize(settings.value("size", QSize(1024, 800)).toSize());
 	move(settings.value("pos", QPoint(0, 0)).toPoint());
 	settings.endGroup();
+	progress->setValue(60);
 
 	loadPlugins();
 	showMaximized();
+	
+	progress->setValue(70);
 
 	mModel = new model::Model(mgr);
+	
+	progress->setValue(80);
 
 	mPropertyModel.setSourceModel(mModel);
 	ui.diagramExplorer->setModel(mModel);
 	ui.view->mvIface()->setModel(mModel);
 	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
+	progress->setValue(100);
+	if( showSplash )
+		splash->close();
+	delete splash;	
 }
 
 MainWindow::~MainWindow()
@@ -232,3 +267,10 @@ void MainWindow::showHelp()
 				"6. To add items to diagrams, drag & drop them from Palette to editor or to Diagram Explorer\n"
 				"7. Get more help from author :)"));
 }
+
+void MainWindow::toggleShowSplash(bool show)
+{
+	QSettings settings("Tercom", "QReal");
+	settings.setValue("ShowSplashScreen", show);
+}
+
