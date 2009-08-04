@@ -5,6 +5,7 @@
 #include <QtGlobal>
 #include <math.h>
 
+#include "../view/editorviewscene.h"
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 #include "../model/model.h"
@@ -189,7 +190,7 @@ void EdgeElement::connectToPort() {
 	NodeElement *new_src = getNodeAt(m_line[0]);
 	if ( new_src )
 		portFrom = new_src->getPortId( mapToItem(new_src, m_line[0]) );
-	else
+	else 
 		portFrom = -1.0;
 
 	if ( src ) {
@@ -201,6 +202,17 @@ void EdgeElement::connectToPort() {
 		src = new_src;
 		src->addEdge(this);
 	}
+
+	QVariant v;
+
+	if (src){
+		v.setValue(src->uuid());
+		model->setData(dataIndex, v, roles::fromRole);
+	}	
+	else	
+		model->setData(dataIndex, 0, roles::fromRole);
+	
+	model->setData(dataIndex, portFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
 	if ( new_dst )
@@ -218,14 +230,15 @@ void EdgeElement::connectToPort() {
 		dst->addEdge(this);
 	}
 
-	/*
-	if ( dst )
-		im->changeRole(dataIndex, dst->uuid(), info.roleByColumnName(type, "to"));
-	else
-		im->changeRole(dataIndex, 0, info.roleByColumnName(type, "to"));
-	*/
 
-	// im->changeRole(dataIndex, portTo, info.roleByColumnName(type, "toPort"));
+	if (dst){
+		v.setValue( dst->uuid());
+		model->setData(dataIndex, v, roles::toRole);
+	}	
+	else	
+		model->setData(dataIndex, 0, roles::toRole);
+	
+	model->setData(dataIndex, portTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(dst||src) );
 
@@ -290,8 +303,9 @@ NodeElement *EdgeElement::getNodeAt( const QPointF &position )
 {
 	foreach( QGraphicsItem *item, scene()->items(mapToScene(position)) ) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
-		if ( e )
+		if ( e ){
 			return e;
+		}	
 	}
 	return 0;
 }
@@ -365,7 +379,27 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		m_line = newLine;
 
+	qReal::IdType uuidFrom = dataIndex.data(roles::fromRole).value<Id>();	
+	qReal::IdType uuidTo = dataIndex.data(roles::toRole).value<Id>();	
+
+
+	if (src)
+		src->delEdge(this);
+	if (dst)
+		dst->delEdge(this);
+						
+	src = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
+	dst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
+
+	if (src)
+		src->addEdge(this);
+	if (dst)
+		dst->addEdge(this);
+	
 	setFlag(ItemIsMovable, !(dst || src));
+
+	portFrom = dataIndex.data(roles::fromPortRole).toDouble();
+	portTo = dataIndex.data(roles::toPortRole).toDouble();
 
 	adjustLink();
 }

@@ -267,7 +267,7 @@ void Generator::genPluginSource(QString const &pluginName)
 		<< "\treturn elementsNameMap[diagram].keys();\n"
 		<< "}\n\n"
 
-		<< "QIcon " << pluginName << "Plugin::getIcon(QString const &diagram, QString const &element) const\n{\n"
+		<< "QIcon " << pluginName << "Plugin::getIcon(QString const &/*diagram*/, QString const &element) const\n{\n"
 		<< "\treturn QIcon(new SdfIconEngineV2(\":/\" + element + \"Class.sdf\"));\n"
 		<< "}\n\n"
 
@@ -283,7 +283,7 @@ void Generator::genPluginSource(QString const &pluginName)
 		<< "\treturn elementsNameMap[diagram][element];\n"
 		<< "}\n\n"
 
-		<< "UML::Element* " << pluginName << "Plugin::getGraphicalObject(QString const &diagram, QString const &element) const\n{\n";
+		<< "UML::Element* " << pluginName << "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
 	bool isFirst = true;
 
@@ -306,7 +306,7 @@ void Generator::genPluginSource(QString const &pluginName)
 		<< "	}\n";
 	out() << "}\n\n";
 
-	out() << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &diagram, QString const &element) const\n"
+	out() << "QStringList " << pluginName << "Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const\n"
 		<< "{\n"
 		<< "\tQStringList result;\n";
 
@@ -362,7 +362,7 @@ void Generator::genElementClasses(QString const &pluginName)
 	}
 }
 
-void Generator::genNodeClass(Node *node, QString const &pluginName)
+void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 {
 	QString const classname = node->id;
 	QString const uClassname = upperFirst(classname);
@@ -396,8 +396,35 @@ void Generator::genNodeClass(Node *node, QString const &pluginName)
 	}
 
 	out() << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
-		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n"
-		<< "\t\t}\n\n"
+		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n";
+	
+	for (int j=0; j<node->ports.size(); j++)
+	{
+		if (node->ports.at(j).type == "point")
+		{
+			out() << QString("\t\t\tpointPorts << QPointF(%1, %2);\n")
+					.arg(node->ports.at(j).vals.at(0)).arg(node->ports.at(j).vals.at(1));
+		} else if (node->ports.at(j).type == "line" )
+		{
+			out() <<"\t\t\t{\n"
+				<< "\t\t\t\tstatLine ln;\n"
+				<< QString("\t\t\t\tln.line = QLineF(%1, %2, %3, %4);\n")
+						.arg(node->ports.at(j).vals.at(0)).arg(node->ports.at(j).vals.at(1))
+						.arg(node->ports.at(j).vals.at(2)).arg(node->ports.at(j).vals.at(3))
+				<< "\t\t\t\tln.prop_x1 = "
+				<< ((node->ports.at(j).props.at(0)) ? "true;\n" : "false;\n")
+				<< "\t\t\t\tln.prop_y1 = "
+				<< ((node->ports.at(j).props.at(1)) ? "true; \n" : "false; \n")
+				<< "\t\t\t\tln.prop_x2 = "
+				<< ((node->ports.at(j).props.at(2)) ? "true; \n" : "false; \n")
+				<< "\t\t\t\tln.prop_y2 = "
+				<< ((node->ports.at(j).props.at(3)) ? "true; \n" : "false; \n")
+				<< "\t\t\t\tlinePorts << ln;\n"
+				<< "\t\t\t};\n";
+		}
+	}
+
+	out() << "\t\t}\n\n"
 
 		<< "\t\t~" << uClassname << "() {}\n\n"
 
@@ -451,8 +478,8 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 		<< "\t\tvirtual ~" << uClassname << "() {}\n\n"
 
 		<< "\tprotected:\n"
-		<< "\t\tvirtual void drawStartArrow(QPainter * p) const {}\n"
-		<< "\t\tvirtual void drawEndArrow(QPainter * p) const {}\n"
+		<< "\t\tvirtual void drawStartArrow(QPainter * /*p*/) const {}\n"
+		<< "\t\tvirtual void drawEndArrow(QPainter * /*p*/) const {}\n"
 		<< "\t};\n"
 		<< "}\n";
 }

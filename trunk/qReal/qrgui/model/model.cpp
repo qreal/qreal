@@ -46,6 +46,14 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			}
 			case roles::positionRole:
 				return mClient->property(item->id(), positionPropertyName(item));
+			case roles::fromRole:
+				return mClient->property(item->id(), "from");
+			case roles::toRole:
+				return mClient->property(item->id(), "to");
+			case roles::fromPortRole:
+				return mClient->property(item->id(), "fromPort");
+			case roles::toPortRole:
+				return mClient->property(item->id(), "toPort");
 			case roles::configurationRole:
 				return mClient->property(item->id(), configurationPropertyName(item));
 		}
@@ -74,6 +82,18 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 				return true;
 			case roles::configurationRole:
 				mClient->setProperty(item->id(), configurationPropertyName(item), value);
+				return true;
+			case roles::fromRole:
+				mClient->setProperty(item->id(), "from", value);
+				return true;
+			case roles::toRole:
+				mClient->setProperty(item->id(), "to", value);
+				return true;
+			case roles::fromPortRole:
+				mClient->setProperty(item->id(), "fromPort", value);
+				return true;
+			case roles::toPortRole:
+				mClient->setProperty(item->id(), "toPort", value);
 				return true;
 		}
 		if (role >= roles::customPropertiesBeginRole) {
@@ -295,6 +315,10 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 		treeItems.insert(id,item);
 		mClient->addChild(parentItem->id(),id);
 		mClient->setProperty(id, "Name", name);
+		mClient->setProperty(id, "from", "");
+		mClient->setProperty(id, "to", "");
+		mClient->setProperty(id, "fromPort", "");
+		mClient->setProperty(id, "toPort", "");
 		mClient->setProperty(id, positionPropertyName(item), position);
 		mClient->setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
 

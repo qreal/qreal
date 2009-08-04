@@ -141,7 +141,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG.
 	itemModel->setData(dataIndex, pos(), roles::positionRole);
 	itemModel->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), roles::configurationRole);
-	NodeElement *newParent = getNodeAt(event->scenePos());
+//	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
 
 	if ( dragState != None )
@@ -254,7 +254,6 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		if ( QRectF(transform.map(pointPorts[i])-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
 			return 1.0 * i;
 	}
-
 	for( int i = 0; i < linePorts.size(); i++ ) {
 		QPainterPathStroker ps;
 		ps.setWidth(kvadratik);
@@ -291,7 +290,6 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		}
 		return 1.0 * (numMinDistance + pointPorts.size());
 	}
-
 	return -1.0;
 }
 

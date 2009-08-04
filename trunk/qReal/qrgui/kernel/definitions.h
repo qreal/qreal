@@ -30,6 +30,10 @@ namespace qReal {
 			idRole = Qt::UserRole + 1,
 			positionRole,
 			configurationRole,
+			fromRole,
+			toRole,
+			fromPortRole,
+			toPortRole,
 			customPropertiesBeginRole,
 		};
 	}

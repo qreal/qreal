@@ -587,8 +587,8 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
-	QIcon::Mode mode, QIcon::State state)
+void SdfIconEngineV2::paint(QPainter* /*painter*/, QRect const &/*rect*/,
+	QIcon::Mode /*mode*/, QIcon::State /*state*/)
 {
 /*	painter->eraseRect(rect);
 	painter->setRenderHint(QPainter::Antialiasing, true);
