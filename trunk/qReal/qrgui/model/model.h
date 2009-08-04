@@ -38,6 +38,8 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+		public slots:
+			void exterminate();
 
 		protected:
 			QMultiHash<IdType,ModelTreeItem*> treeItems;
@@ -62,6 +64,9 @@ namespace qReal {
 			PropertyName positionPropertyName(ModelTreeItem const *item) const;
 			PropertyName configurationPropertyName(ModelTreeItem const *item) const;
 			PropertyName findPropertyName(Id const &id, int const role) const;
+
+			void init();
+			void cleanupTree(ModelTreeItem *root);
 		};
 
 	}

@@ -32,9 +32,12 @@ namespace qReal {
 
 			void printDebug() const;
 
+			void exterminate();
+
 		private:
 			void loadFromDisk();
 			void saveToDisk();
+			void init();
 
 			// TODO: Вынести всё, что относится к сериализации, в отдельный класс,
 			// как только это переложат в qrgui.

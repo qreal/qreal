@@ -58,6 +58,7 @@
     <addaction name="actionAntialiasing"/>
     <addaction name="actionOpenGL_Renderer"/>
     <addaction name="actionShowSplash"/>
+    <addaction name="actionClear"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -370,6 +371,15 @@
    </property>
    <property name="text">
     <string>Show splashscreen</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exterminatus</string>
    </property>
   </action>
  </widget>

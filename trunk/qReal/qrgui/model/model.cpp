@@ -10,14 +10,21 @@ Model::Model(EditorManager const &editorManager)
 {
 	mClient = new client::Client();
 	rootItem = new ModelTreeItem(ROOT_ID, NULL);
-	treeItems.insert(ROOT_ID, rootItem);
-	mClient->setProperty(ROOT_ID, "Name", ROOT_ID.toString());
-	loadSubtreeFromClient(rootItem);
+	init();
 }
 
 Model::~Model()
 {
+	cleanupTree(rootItem);
+	treeItems.clear();
 	delete mClient;
+}
+
+void Model::init()
+{
+	treeItems.insert(ROOT_ID, rootItem);
+	mClient->setProperty(ROOT_ID, "Name", ROOT_ID.toString());
+	loadSubtreeFromClient(rootItem);
 }
 
 Qt::ItemFlags Model::flags( const QModelIndex &index ) const
@@ -367,3 +374,22 @@ PropertyName Model::configurationPropertyName(ModelTreeItem const *item) const
 {
 	return "configuration + " + pathToItem(item);
 }
+
+void Model::exterminate()
+{
+	mClient->exterminate();
+	cleanupTree(rootItem);
+	treeItems.clear();
+	init();
+}
+
+void Model::cleanupTree(ModelTreeItem *root)
+{
+	foreach (ModelTreeItem *childItem, root->children()) 
+	{
+		cleanupTree(childItem);
+		delete childItem;
+	}
+	root->clearChildren();
+}
+							

@@ -12,9 +12,14 @@ using namespace qReal;
 using namespace client;
 Client::Client()
 {
+	init();
+	loadFromDisk();
+}
+
+void Client::init()
+{
 	mObjects.insert(ROOT_ID,new LogicObject(ROOT_ID));
 	mObjects[ROOT_ID]->setProperty("Name",ROOT_ID.toString());
-	loadFromDisk();
 }
 
 Client::~Client()
@@ -423,7 +428,7 @@ QString Client::serializeQPolygon(QPolygon const &p)
 
 void Client::printDebug() const
 {
-	qDebug() << mObjects.count() << " objects in repository";
+	qDebug() << mObjects.size() << " objects in repository";
 	foreach (LogicObject *object, mObjects.values()) {
 		qDebug() << object->id().toString();
 		qDebug() << "Children:";
@@ -434,4 +439,13 @@ void Client::printDebug() const
 			qDebug() << id.toString();
 		qDebug() << "============";
 	}
+}
+
+void Client::exterminate()
+{
+	printDebug();
+	mObjects.clear();
+	init();
+	saveToDisk();
+	printDebug();
 }

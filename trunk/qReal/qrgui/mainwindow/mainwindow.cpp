@@ -119,6 +119,7 @@ MainWindow::MainWindow()
 	progress->setValue(70);
 
 	mModel = new model::Model(mgr);
+	connect(ui.actionClear, SIGNAL( triggered() ), mModel, SLOT( exterminate() ));
 	
 	progress->setValue(80);
 

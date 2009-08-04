@@ -19,6 +19,7 @@ namespace qReal {
 			void addChild(ModelTreeItem *child);
 			void removeChild(ModelTreeItem *child);
 			int row();
+			void clearChildren() { mChildren.clear(); }
 
 		private:
 			ModelTreeItem *mParent;
