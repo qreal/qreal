@@ -175,7 +175,7 @@ bool Entity::parseAssociations(QDomElement &xml_element)
 		return true;
 
 	if(type == NODE){
-		return true; // WTF???
+		return true; // анонимные линки не обратабываем :(
 #if 0
 		edge = new Edge(cat);
 		edge->id = QString("untitledEdge_%1").arg(untitled);
@@ -278,11 +278,16 @@ bool Edge::init(QDomElement &xml_element)
 	else
 		parents << "krnnNamedElement";
 
-	if (!parseEdgeGraphics(xml_element)) return false;
-	if (!parseGeneralizations(logic)) return false;
-	if (!parseProperties(logic)) return false;
-	if (!parseAssociations(logic)) return false;
-	if (!parseLabels(logic)) return false;
+	if (!parseEdgeGraphics(xml_element)) 
+		return false;
+	if (!parseGeneralizations(logic)) 
+		return false;
+	if (!parseProperties(logic)) 
+		return false;
+	if (!parseAssociations(logic)) 
+		return false;
+	if (!parseLabels(logic)) 
+		return false;
 
 	return true;
 }
