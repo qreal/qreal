@@ -6,7 +6,7 @@
 #include "uml_nodeelement.h"
 #include "realrepomodel.h"
 #include "realreporoles.h"
-#include "editorviewscene.h"
+#include "editorscene.h"
 #include <QMessageBox>
 #include <QTextCursor>
 #include <QToolTip>
@@ -163,6 +163,8 @@ void NodeElement::adjustEdges()
 
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
+// Prevent suicide
+#if 0
 	m_contents = m_contents.normalized();
 
 	moving = 1;
@@ -176,13 +178,14 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
-	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(scene());
+	EditorScene *evscene = static_cast<EditorScene *>(scene());
 	if (newParent) {
 		im->changeParent(dataIndex,newParent->dataIndex,
-						 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
+		                 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
 	} else {
 		im->changeParent(dataIndex,evscene->rootItem(),scenePos());
 	}
+#endif
 }
 
 
@@ -191,7 +194,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 	switch ( change ) {
 		case ItemPositionHasChanged:
 		{
-			EditorViewScene* sc = static_cast<EditorViewScene*>(scene());
+			EditorScene* sc = static_cast<EditorScene*>(scene());
 			sc->updateLinks();
 			adjustEdges();
 			return value;

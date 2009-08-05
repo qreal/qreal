@@ -15,6 +15,7 @@
 #include "propertyeditorproxymodel.h"
 #include "realrepomodel.h"
 #include "editorview.h"
+#include "editorscene.h"
 #include "optionsDialog.h"
 #include "meta_generator.h"
 #include <QProgressBar>
@@ -45,13 +46,15 @@ MainWindow::MainWindow() : model(0)
 	if (!showSplash)
 		ui.actionShowSplash->setChecked(false);
 
-	ui.minimapView->setScene(ui.view->scene());
+	scene = new EditorScene;
+	ui.view->setScene(scene);
+	ui.minimapView->setScene(scene);
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 	progress->setValue(10);
 
 	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-			ui.view->mvIface(), SLOT( setRootIndex( const QModelIndex & ) ) );
-	connect(ui.view->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+			scene, SLOT( setRootIndex( const QModelIndex & ) ) );
+	connect(scene, SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			this, SLOT( activateItemOrDiagram( const QModelIndex & ) ) );
 	connect(ui.actionConnect, SIGNAL( triggered() ), this, SLOT( connectRepo() ) );
@@ -180,7 +183,7 @@ void MainWindow::connectRepo(QSplashScreen *splash, const QString &addr, const i
 
 	propertyModel.setSourceModel(model);
 
-	ui.view->mvIface()->setModel(model);
+	scene->setModel(model);
 
 	QModelIndex rootDiagram = model->createDefaultTopLevelItem();
 	activateItemOrDiagram(rootDiagram);
@@ -203,7 +206,7 @@ void MainWindow::closeRepo()
 	ui.diagramExplorer->setModel(0);
 	ui.objectExplorer->setModel(0);
 	propertyModel.setSourceModel(0);
-	ui.view->mvIface()->setModel(0);
+	scene->setModel(0);
 
 	if( model )
 		delete model;
@@ -235,7 +238,7 @@ void MainWindow::deleteFromExplorer()
 
 void MainWindow::deleteFromScene()
 {
-	foreach (QGraphicsItem *item, ui.view->scene()->selectedItems()) {
+	foreach (QGraphicsItem *item, scene->selectedItems()) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(item))
 			if (elem->index().isValid())
 			{
@@ -278,7 +281,7 @@ void MainWindow::deleteFromDiagram()
 
 void MainWindow::jumpToAvatarFromScene()
 {
-	QList<QGraphicsItem *> list = ui.view->scene()->selectedItems();
+	QList<QGraphicsItem *> list = scene->selectedItems();
 
 	if (list.count() != 1)
 		return;
@@ -315,33 +318,15 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 {
 	QModelIndex parent = idx.parent();
 
-	/* Is level-one diagram? */
-	if (parent == model->getDiagramCategoryIndex())
-	{
-		/* activate this diagram */
-		ui.view->mvIface()->setRootIndex(idx);
-		ui.diagramExplorer->setCurrentIndex(idx);
-	}
-	else
-	{
-		if (ui.view->mvIface()->rootIndex() != parent)
-		{
-			/* activate parent diagram */
-			ui.view->mvIface()->setRootIndex(parent);
-		}
-		/* select this item on diagram */
-		ui.view->scene()->clearSelection();
-		UML::Element *e = (dynamic_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
-		if (e)
-			e->setSelected(true);
-		else
-			qDebug() << "shit happened!!!\n";
-	}
+	/* activate this diagram */
+	scene->setRootIndex(idx);
+	ui.diagramExplorer->setCurrentIndex(idx);
+
 }
 
 void MainWindow::sceneSelectionChanged()
 {
-	QList<QGraphicsItem*> graphicsItems =  ui.view->scene()->selectedItems();
+	QList<QGraphicsItem*> graphicsItems = scene->selectedItems();
 	if (graphicsItems.size() == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
@@ -364,7 +349,7 @@ void MainWindow::print()
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
 		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
-		ui.view->scene()->render(&painter);
+		scene->render(&painter);
 	}
 }
 
@@ -380,7 +365,7 @@ void MainWindow::makeSvg()
 	newSvg.setSize(QSize(800,600));
 
 	QPainter painter(&newSvg);
-	ui.view->scene()->render(&painter);
+	scene->render(&painter);
 }
 
 void MainWindow::showAbout()

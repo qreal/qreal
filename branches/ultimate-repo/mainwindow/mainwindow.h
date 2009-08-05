@@ -12,6 +12,7 @@
 
 #include "connectiondialog.h"
 
+#include "editorscene.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 
@@ -92,6 +93,8 @@ private:
 	RealRepoModel *model;
 	/** @brief Модель редактора свойств */
 	PropertyEditorModel propertyModel;
+	/** @brief Сцена. Она же графическая модель */
+	EditorScene *scene;
 
 	/** @brief Делегат */
 	PropertyEditorDelegate delegate;

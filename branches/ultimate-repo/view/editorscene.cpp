@@ -1,10 +1,11 @@
-/** @file editorviewscene.cpp
+/** @file editorscene.cpp
  * 	@brief Сцена для отрисовки объектов
  * */
 #include "editorscene.h"
 #include "editorview.h"
 #include "uml_nodeelement.h"
 #include "uml_guiobjectfactory.h"
+#include "realreporoles.h"
 #include "mainwindow.h"
 
 #include <QGraphicsTextItem>
@@ -16,6 +17,12 @@ extern MainWindow *window;
 EditorScene::EditorScene(QObject *parent) : QGraphicsScene(parent)
 {
 	setItemIndexMethod(NoIndex);
+	mv_iface = new EditorScenePrivate::EditorViewMViface(this);
+}
+
+EditorScene::~EditorScene()
+{
+	delete mv_iface;
 }
 
 #if 0
@@ -63,7 +70,8 @@ void EditorScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 	UML::Element *e = UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement *>(e)) {
-		newParent= getElemAt(event->scenePos());
+		// Do not care if casting fails
+		newParent = dynamic_cast<UML::NodeElement *>(itemAt(event->scenePos()));
 	}
 
 	if (e) {
@@ -159,66 +167,23 @@ void EditorScene::setModel(QAbstractItemModel *model)
 	mv_iface->setModel(model);
 }
 
+void EditorScene::setRootIndex(const QModelIndex &index)
+{
+	mv_iface->setRootIndex(index);
+}
+
 /* {{{ EditorViewMViface*/
-EditorScene::EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
+namespace EditorScenePrivate {
+EditorViewMViface::EditorViewMViface(EditorScene *scene)
 	: QAbstractItemView(0)
 {
-	this->view = view;
 	this->scene = scene;
-
-	//    view->mv_iface = this;
-	scene->mv_iface = this;
-	scene->view = view;
 }
 
-QRect EditorScene::EditorViewMViface::visualRect(const QModelIndex &) const
-{
-	return QRect();
-}
-
-void EditorScene::EditorViewMViface::scrollTo(const QModelIndex &, ScrollHint)
-{
-}
-
-QModelIndex EditorScene::EditorViewMViface::indexAt(const QPoint &) const
-{
-	return QModelIndex();
-}
-
-QModelIndex EditorScene::EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
-		Qt::KeyboardModifiers)
-{
-	return QModelIndex();
-}
-
-int EditorScene::EditorViewMViface::horizontalOffset() const
-{
-	return 0;
-}
-
-int EditorScene::EditorViewMViface::verticalOffset() const
-{
-	return 0;
-}
-
-bool EditorScene::EditorViewMViface::isIndexHidden(const QModelIndex &) const
-{
-	return false;
-}
-
-void EditorScene::EditorViewMViface::setSelection(const QRect&, QItemSelectionModel::SelectionFlags )
-{
-}
-
-QRegion EditorScene::EditorViewMViface::visualRegionForSelection(const QItemSelection &) const
-{
-	return QRegion();
-}
-
-void EditorScene::EditorViewMViface::reset()
+void EditorViewMViface::reset()
 {
 	items.clear();
-	scene->clearScene();
+	scene->clear();
 
 	// so that our diagram be nicer
 	QGraphicsRectItem *rect = scene->addRect(QRect(-1000,-1000,2000,2000));
@@ -229,13 +194,13 @@ void EditorScene::EditorViewMViface::reset()
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1 );
 }
 
-void EditorScene::EditorViewMViface::setRootIndex(const QModelIndex &index)
+void EditorViewMViface::setRootIndex(const QModelIndex &index)
 {
 	QAbstractItemView::setRootIndex(index);
 	reset();
 }
 
-void EditorScene::EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
+void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	qDebug() << "========== rowsInserted" << parent << start << end;
 
@@ -279,7 +244,7 @@ void EditorScene::EditorViewMViface::rowsInserted(const QModelIndex &parent, int
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 
-void EditorScene::EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
+void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
@@ -291,7 +256,7 @@ void EditorScene::EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & 
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void EditorScene::EditorViewMViface::dataChanged(const QModelIndex &topLeft,
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 	const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
@@ -303,5 +268,6 @@ void EditorScene::EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 		else
 			rowsInserted(topLeft.parent(),row,row);
 	}
+}
 }
 /* }}} */

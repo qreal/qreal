@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtGlobal>
 
-#include "editorviewscene.h"
+#include "editorscene.h"
 
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
@@ -423,8 +423,8 @@ void EdgeElement::updateData()
 	if (dst)
 		dst->delEdge(this);
 
-	src = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
-	dst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
+	src = dynamic_cast<NodeElement *>(static_cast<EditorScene *>(scene())->getElem(uuidFrom));
+	dst = dynamic_cast<NodeElement *>(static_cast<EditorScene *>(scene())->getElem(uuidTo));
 
 	if (src)
 		src->addEdge(this);
