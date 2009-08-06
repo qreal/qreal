@@ -180,50 +180,55 @@ QString XmiHandler::serializeObject(QString const &id, QString const &parentId)
 QString XmiHandler::serializeOutcomingLink(QString const &id)
 {
 	QString result = "";
-	qRealTypes::RealLink link = client->getLinkById(id);
+	try {
+		qRealTypes::RealLink link = client->getLinkById(id);
 
-	// kernel diagram
-	if (link.getTypeId() == "krnePackageImport") {
-		result = result + "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
-				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
-				 + "\"  importedPackage=\"" + link.getToId() + "\" />";
-	} else if (link.getTypeId() == "krneElementImport") {
-		result = result + "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
-				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
-				 + "\"  importedElement=\"" + link.getToId() + "\" />";
-	} else if (link.getTypeId() == "krneGeneralization") {
-		result = result + "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
-				 + link.getId() + "\" xmi:uuid=\"" + link.getId()
-				 + "\" general=\"" + link.getToId() +  "\"/>";
-	} else if (link.getTypeId() == "krneDirRelationship") {
-		result = result + "<ownedAttribute xmi:type=\"uml:Property\" xmi:id=\""
-				 + "ToEnd" + id + "\" xmi:uuid=\"" + "ToEnd" + id
-				 + "\" visibility=\"protected\" type=\"" + link.getToId() + "\">" + "\n";
+		// kernel diagram
+		if (link.getTypeId() == "krnePackageImport") {
+			result = result + "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
+					 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+					 + "\"  importedPackage=\"" + link.getToId() + "\" />";
+		} else if (link.getTypeId() == "krneElementImport") {
+			result = result + "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
+					 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+					 + "\"  importedElement=\"" + link.getToId() + "\" />";
+		} else if (link.getTypeId() == "krneGeneralization") {
+			result = result + "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
+					 + link.getId() + "\" xmi:uuid=\"" + link.getId()
+					 + "\" general=\"" + link.getToId() +  "\"/>";
+		} else if (link.getTypeId() == "krneDirRelationship") {
+			result = result + "<ownedAttribute xmi:type=\"uml:Property\" xmi:id=\""
+					 + "ToEnd" + id + "\" xmi:uuid=\"" + "ToEnd" + id
+					 + "\" visibility=\"protected\" type=\"" + link.getToId() + "\">" + "\n";
 
-		QString toMult = link.getProperty("toMultiplicity");
-		result = result + serializeMultiplicity(id, toMult);
+			QString toMult = link.getProperty("toMultiplicity");
+			result = result + serializeMultiplicity(id, toMult);
 
-		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
-		result = result + "</ownedAttribute>" + "\n";
+			result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
+			result = result + "</ownedAttribute>" + "\n";
+		}
+
+		// class diagram
+
+		else if (link.getTypeId() == "ceDependency") {
+			result = result +
+					 "<clientDependency xmi:idref=\"" + link.getId()  + "\"/>" + "\n";
+		}
+
+		// use case diagram
+
+		else if (link.getTypeId() == "uscaExtend") {
+			result = result + "<extend xmi:type=\"uml:Extend\" xmi:id=\"" + id
+					 + "\" xmi:uuid=\"" + id + "\" extendedCase=\"" + link.getToId() + "\">" + "\n";
+			result = result +  "<extension xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
+			result = result + "</extend>" + "\n";
+		} else if (link.getTypeId() == "uscaInclude"){
+			result = result + "<include xmi:type=\"uml:Include\" xmi:id=\"" + id +
+					 "\" xmi:uuid=\"" + id + "\" addition=\"" + link.getToId() + "\"/>" + "\n";
+		}
 	}
+	catch (...) {
 
-	// class diagram
-
-	else if (link.getTypeId() == "ceDependency") {
-		result = result +
-				 "<clientDependency xmi:idref=\"" + link.getId()  + "\"/>" + "\n";
-	}
-
-	// use case diagram
-
-	else if (link.getTypeId() == "uscaExtend") {
-		result = result + "<extend xmi:type=\"uml:Extend\" xmi:id=\"" + id
-				 + "\" xmi:uuid=\"" + id + "\" extendedCase=\"" + link.getToId() + "\">" + "\n";
-		result = result +  "<extension xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
-		result = result + "</extend>" + "\n";
-	} else if (link.getTypeId() == "uscaInclude"){
-		result = result + "<include xmi:type=\"uml:Include\" xmi:id=\"" + id +
-				 "\" xmi:uuid=\"" + id + "\" addition=\"" + link.getToId() + "\"/>" + "\n";
 	}
 
 	return result;
@@ -232,11 +237,16 @@ QString XmiHandler::serializeOutcomingLink(QString const &id)
 QString XmiHandler::serializeIncomingLink(QString const &id)
 {
 	QString result = "";
-	qRealTypes::RealLink link = client->getLinkById(id);
+	try {
+		qRealTypes::RealLink link = client->getLinkById(id);
 
-	if (link.getTypeId() == "ceDependency") {
-		result = result +
-				 "<supplierDependency xmi:idref=\"" + link.getId()  + "\"/>";
+		if (link.getTypeId() == "ceDependency") {
+			result = result +
+					 "<supplierDependency xmi:idref=\"" + link.getId()  + "\"/>";
+		}
+	}
+	catch (...) {
+
 	}
 
 	return result;
@@ -245,66 +255,71 @@ QString XmiHandler::serializeIncomingLink(QString const &id)
 QString XmiHandler::serializeLink(QString const &id)
 {
 	QString result = "";
-	qRealTypes::RealLink link = client->getLinkById(id);
-	QString additionalParams = "";
+	try {
+		qRealTypes::RealLink link = client->getLinkById(id);
+		QString additionalParams = "";
 
-	if (link.getProperty("visibility").size() > 0) {
-		additionalParams = additionalParams + "visibility=\"" + link.getProperty("visibility") + "\"";
-	}
-
-	if (link.getTypeId() == "ceComposition" || link.getTypeId() == "ceAggregation"
-		|| link.getTypeId() == "krneRelationship" || link.getTypeId() == "ceRelation"
-		|| link.getTypeId() == "krneDirRelationship")
-	{
-		QString aggregation = "";
-
-		if (link.getTypeId() == "ceComposition") {
-			aggregation = "aggregation=\"composite\"";
-		} else if (link.getTypeId() == "ceAggregation") {
-			aggregation = "aggregation=\"shared\"";
+		if (link.getProperty("visibility").size() > 0) {
+			additionalParams = additionalParams + "visibility=\"" + link.getProperty("visibility") + "\"";
 		}
 
-		result = result + "<ownedMember xmi:type=\"uml:Association\" xmi:id=\""
-				 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
+		if (link.getTypeId() == "ceComposition" || link.getTypeId() == "ceAggregation"
+			|| link.getTypeId() == "krneRelationship" || link.getTypeId() == "ceRelation"
+			|| link.getTypeId() == "krneDirRelationship")
+		{
+			QString aggregation = "";
 
-		// FromEnd
+			if (link.getTypeId() == "ceComposition") {
+				aggregation = "aggregation=\"composite\"";
+			} else if (link.getTypeId() == "ceAggregation") {
+				aggregation = "aggregation=\"shared\"";
+			}
 
-		result = result + "<memberEnd xmi:idref=\"" + "FromEnd" + id + "\"/>"  + "\n";
-		result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\""
-				 + "FromEnd" + id + "\" xmi:uuid=\"" + "FromEnd" + id
-				 + "\" visibility=\"protected\" type=\"" + link.getFromId() + "\">" + "\n";
-		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
+			result = result + "<ownedMember xmi:type=\"uml:Association\" xmi:id=\""
+					 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
 
-		QString fromMult = link.getProperty("fromMultiplicity");
-		result = result + this->serializeMultiplicity(id, fromMult);
+			// FromEnd
 
-		result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
-		result = result + "</ownedEnd>" + "\n";
+			result = result + "<memberEnd xmi:idref=\"" + "FromEnd" + id + "\"/>"  + "\n";
+			result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\""
+					 + "FromEnd" + id + "\" xmi:uuid=\"" + "FromEnd" + id
+					 + "\" visibility=\"protected\" type=\"" + link.getFromId() + "\">" + "\n";
+			result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 
-		// ToEnd
-
-		result = result + "<memberEnd xmi:idref=\"" + "ToEnd" + id + "\"/>"  + "\n";
-
-		if (link.getTypeId() != "krneDirRelationship") {
-
-			result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\"" + "ToEnd"
-					 + id + "\" xmi:uuid=\"" + "ToEnd" + id + "\" visibility=\"protected\" "
-					 + aggregation + " type=\"" + link.getToId() + "\">" + "\n";
-
-			QString toMult = link.getProperty("toMultiplicity");
-			result = result + this->serializeMultiplicity(id, toMult);
+			QString fromMult = link.getProperty("fromMultiplicity");
+			result = result + this->serializeMultiplicity(id, fromMult);
 
 			result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
 			result = result + "</ownedEnd>" + "\n";
-		}
 
-		result = result + "</ownedMember>" + "\n";
-	} else if (link.getTypeId() == "ceDependency"){
-		result = result + "<ownedMember xmi:type=\"uml:Dependency\" xmi:id=\""
-				 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
-		result = result + "<supplier xmi:idref=\"" + link.getToId() + "\"/>" + "\n";
-		result = result + "<client xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
-		result = result + "</ownedMember>" + "\n";
+			// ToEnd
+
+			result = result + "<memberEnd xmi:idref=\"" + "ToEnd" + id + "\"/>"  + "\n";
+
+			if (link.getTypeId() != "krneDirRelationship") {
+
+				result = result + "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\"" + "ToEnd"
+						 + id + "\" xmi:uuid=\"" + "ToEnd" + id + "\" visibility=\"protected\" "
+						 + aggregation + " type=\"" + link.getToId() + "\">" + "\n";
+
+				QString toMult = link.getProperty("toMultiplicity");
+				result = result + this->serializeMultiplicity(id, toMult);
+
+				result = result + "<association xmi:idref=\"" + id +  "\"/>" + "\n";
+				result = result + "</ownedEnd>" + "\n";
+			}
+
+			result = result + "</ownedMember>" + "\n";
+		} else if (link.getTypeId() == "ceDependency"){
+			result = result + "<ownedMember xmi:type=\"uml:Dependency\" xmi:id=\""
+					 + id + "\" xmi:uuid=\"" + id + "\" " + additionalParams + ">" + "\n";
+			result = result + "<supplier xmi:idref=\"" + link.getToId() + "\"/>" + "\n";
+			result = result + "<client xmi:idref=\"" + link.getFromId() + "\"/>" + "\n";
+			result = result + "</ownedMember>" + "\n";
+		}
+	}
+	catch (...) {
+
 	}
 
 	return result;
