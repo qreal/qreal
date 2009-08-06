@@ -163,8 +163,6 @@ void NodeElement::adjustEdges()
 
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-// Prevent suicide
-#if 0
 	m_contents = m_contents.normalized();
 
 	moving = 1;
@@ -178,6 +176,8 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		dragState = None;
 	else
 		Element::mouseReleaseEvent(event);
+// Prevent suicide
+#if 0
 	EditorScene *evscene = static_cast<EditorScene *>(scene());
 	if (newParent) {
 		im->changeParent(dataIndex,newParent->dataIndex,
