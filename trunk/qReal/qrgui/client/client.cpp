@@ -271,17 +271,17 @@ IdTypeList Client::loadIdList(QDomElement const &elem, QString const &name)
 
 QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
 {
-	if (typeName == "Int") {
+	if (typeName.toLower() == "int") {
 		return QVariant(valueStr.toInt());
-	} else if (typeName == "UInt") {
+	} else if (typeName.toLower() == "uint") {
 		return QVariant(valueStr.toUInt());
-	} else if (typeName == "Double") {
+	} else if (typeName.toLower() == "double") {
 		return QVariant(valueStr.toDouble());
-	} else if (typeName == "Bool") {
-		return QVariant(valueStr.toUpper() == "TRUE");
+	} else if (typeName.toLower() == "bool") {
+		return QVariant(valueStr.toLower() == "true");
 	} else if (typeName == "QString") {
 		return QVariant(valueStr);
-	} else if (typeName == "Char") {
+	} else if (typeName.toLower() == "char") {
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
 		return QVariant(parsePointF(valueStr));
@@ -293,6 +293,11 @@ QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
 			result << point.toPoint();
 		}
 		return QVariant(result);
+	} else if (typeName == "qReal::Id") {
+		QVariant v;
+		Id id = Id::loadFromString(valueStr);
+		v.setValue(id);
+		return v;
 	} else {
 		Q_ASSERT(!"Unknown property type");
 		return QVariant();
@@ -405,6 +410,10 @@ QString Client::serializeQVariant(QVariant const &v)
 		return serializeQPointF(v.toPointF());
 	case QVariant::Polygon:
 		return serializeQPolygon(v.value<QPolygon>());
+	case QVariant::UserType:
+		if (v.userType() == QMetaType::type("qReal::Id"))
+			return v.value<qReal::Id>().toString();
+		// Если нет, идём в default и там ругаемся.
 	default:
 		qDebug() << v;
 		Q_ASSERT(!"Unsupported QVariant type.");
