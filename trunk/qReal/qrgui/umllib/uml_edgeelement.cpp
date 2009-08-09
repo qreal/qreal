@@ -27,7 +27,7 @@ using namespace qReal;
 // static bool moving = false;
 
 EdgeElement::EdgeElement()
-: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
+		: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -51,7 +51,7 @@ EdgeElement::~EdgeElement()
 QRectF EdgeElement::boundingRect() const
 {
 	// return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
-	return m_line.boundingRect().adjusted(-20,-20,20,20);
+	return m_line.boundingRect().adjusted(-20, -20, 20, 20);
 }
 
 static double lineAngle(const QLineF &line)
@@ -190,7 +190,7 @@ void EdgeElement::connectToPort() {
 	NodeElement *new_src = getNodeAt(m_line[0]);
 	if ( new_src )
 		portFrom = new_src->getPortId( mapToItem(new_src, m_line[0]) );
-	else 
+	else
 		portFrom = -1.0;
 
 	if ( src ) {
@@ -208,10 +208,10 @@ void EdgeElement::connectToPort() {
 	if (src){
 		v.setValue(src->uuid());
 		model->setData(dataIndex, v, roles::fromRole);
-	}	
-	else	
+	}
+	else
 		model->setData(dataIndex, 0, roles::fromRole);
-	
+
 	model->setData(dataIndex, portFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
@@ -234,10 +234,10 @@ void EdgeElement::connectToPort() {
 	if (dst){
 		v.setValue( dst->uuid());
 		model->setData(dataIndex, v, roles::toRole);
-	}	
-	else	
+	}
+	else
 		model->setData(dataIndex, 0, roles::toRole);
-	
+
 	model->setData(dataIndex, portTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(dst||src) );
@@ -299,18 +299,18 @@ void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	beginning = ending = NULL;
 }
 
-NodeElement *EdgeElement::getNodeAt( const QPointF &position )
+NodeElement *EdgeElement::getNodeAt(const QPointF &position)
 {
 	foreach( QGraphicsItem *item, scene()->items(mapToScene(position)) ) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if ( e ){
 			return e;
-		}	
+		}
 	}
 	return 0;
 }
 
-void EdgeElement::contextMenuEvent ( QGraphicsSceneContextMenuEvent * event )
+void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 {
 	QMenu menu;
 
@@ -379,15 +379,14 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		m_line = newLine;
 
-	qReal::IdType uuidFrom = dataIndex.data(roles::fromRole).value<Id>();	
-	qReal::IdType uuidTo = dataIndex.data(roles::toRole).value<Id>();	
-
+	qReal::IdType uuidFrom = dataIndex.data(roles::fromRole).value<Id>();
+	qReal::IdType uuidTo = dataIndex.data(roles::toRole).value<Id>();
 
 	if (src)
 		src->delEdge(this);
 	if (dst)
 		dst->delEdge(this);
-						
+
 	src = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
 	dst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
 
@@ -395,7 +394,7 @@ void EdgeElement::updateData()
 		src->addEdge(this);
 	if (dst)
 		dst->addEdge(this);
-	
+
 	setFlag(ItemIsMovable, !(dst || src));
 
 	portFrom = dataIndex.data(roles::fromPortRole).toDouble();

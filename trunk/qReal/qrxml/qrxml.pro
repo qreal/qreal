@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 
 SUBDIRS	= \
 	usecaseEditor/usecaseEditor.pro \
-	requirementsEditor/requirementsEditor.pro
+	requirementsEditor/requirementsEditor.pro \
+#	handmadeEditor/handmadeEditor.pro \
 
 
 HEADERS	= \
