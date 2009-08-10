@@ -183,6 +183,14 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	menu.exec(QCursor::pos());
 }
 
+void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	UML::ElementTitle *t = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()));
+	if (event->button() == Qt::LeftButton && t)
+		t->setTextInteractionFlags(Qt::TextEditorInteraction);
+	QGraphicsScene::mouseDoubleClickEvent(event);
+}
+
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )
 {
 	foreach( QGraphicsItem *item, items(position) ) {
