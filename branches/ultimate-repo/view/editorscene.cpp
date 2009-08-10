@@ -25,13 +25,13 @@ EditorScene::~EditorScene()
 	delete mv_iface;
 }
 
-#if 0
 void EditorScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
 	//	event->setAccepted();
 }
 
+#if 1
 void EditorScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
@@ -150,6 +150,15 @@ void EditorScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		menu.addAction(window->ui.actionJumpToAvatar);
 
 	menu.exec(QCursor::pos());
+}
+
+void EditorScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	UML::ElementTitle *t = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()));
+	// Double click on title activates it
+	if (t)
+		t->setTextInteractionFlags(Qt::TextEditorInteraction);
+	QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 void EditorScene::updateLinks()

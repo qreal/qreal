@@ -39,9 +39,9 @@ public:
 	UML::Element* getElem(IdType &id) { return 0; }
 
 protected:
-#if 0
 	/** @brief Обработать начало события drag'n'drop */
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );
+#if 1
 	/** @brief Обработать перемещение элемента при drag'n'drop */
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event /**< Событие */);
 	/** @brief Обработать завершение события drag'n'drop */
@@ -55,6 +55,9 @@ protected:
 
 	/** @brief Обработать событие нажатия кнопок мыши */
 	void mousePressEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+
+	/** @brief Обработать событие нажатия кнопок мыши */
+	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
 
 public slots:
 	/** @brief Установить индекс корневого элемента представления */

@@ -382,8 +382,8 @@ void Generator::genClasses(){
 		    << "\tfirst_size_y = height;\n"
 		    << "\tm_contents.setWidth(width);\n"
 		    << "\tm_contents.setHeight(height);\n"
-		    << "\td.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());\n"
-		    << "\td.setTextInteractionFlags(Qt::TextEditorInteraction);\n"
+		    << "\td.setFlags(0);\n"
+		    << "\td.setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		    << "\td.setParentItem(this);\n";
 		if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")){
 		    out << "\tdocvis.setParentItem(this);\n"

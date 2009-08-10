@@ -26,7 +26,14 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="EditorView" name="view"/>
+     <widget class="QGraphicsView" name="view">
+      <property name="dragMode">
+       <enum>QGraphicsView::RubberBandDrag</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

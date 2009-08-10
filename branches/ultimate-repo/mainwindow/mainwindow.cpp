@@ -48,12 +48,13 @@ MainWindow::MainWindow() : model(0)
 
 	scene = new EditorScene;
 	ui.view->setScene(scene);
+	ui.view->setAcceptDrops(true);
 	ui.minimapView->setScene(scene);
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 	progress->setValue(10);
 
-	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
-			scene, SLOT( setRootIndex( const QModelIndex & ) ) );
+//	connect(ui.diagramExplorer, SIGNAL( activated( const QModelIndex & ) ),
+//			scene, SLOT( setRootIndex( const QModelIndex & ) ) );
 	connect(scene, SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.diagramExplorer, SIGNAL( clicked( const QModelIndex & ) ),
 			this, SLOT( activateItemOrDiagram( const QModelIndex & ) ) );

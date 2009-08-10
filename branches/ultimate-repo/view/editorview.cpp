@@ -7,7 +7,6 @@
 EditorView::EditorView(QWidget *parent) : QGraphicsView(parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
-//	setAcceptDrops(true);
 }
 
 EditorView::~EditorView()

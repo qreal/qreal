@@ -43,6 +43,10 @@ namespace UML {
 				scene()->clearSelection();
 			parentItem()->setSelected(true);
 		}
+		virtual void focusOutEvent(QFocusEvent *event)
+		{
+			setTextInteractionFlags(Qt::NoTextInteraction);
+		}
 	};
 
 	class NodeElement :  public QObject, public Element
