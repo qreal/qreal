@@ -9,8 +9,8 @@ Kroki::Kroki() {
 	mText = "";
 	m_contents.setWidth(100);
 	m_contents.setHeight(100);
-	d.setFlags(QGraphicsItem::ItemIsSelectable | d.flags());
-	d.setTextInteractionFlags(Qt::TextEditorInteraction);
+	d.setFlags(0);
+	d.setTextInteractionFlags(Qt::NoTextInteraction);
 	d.setParentItem(this);
 	QObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));
 }
@@ -28,5 +28,5 @@ void Kroki::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWid
 	NodeElement::paint(painter, style, widget, NULL);
 	d.setTextWidth(m_contents.width() - 15);
 	d.setPos(7,0);
-	d.paint(painter, style, widget);
+//	d.paint(painter, style, widget);
 }
