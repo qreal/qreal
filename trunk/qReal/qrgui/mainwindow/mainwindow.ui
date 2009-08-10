@@ -198,6 +198,7 @@
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
+   <addaction name="actionClear"/>
   </widget>
   <widget class="QDockWidget" name="propertyDock">
    <property name="windowTitle">
