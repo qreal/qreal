@@ -327,10 +327,19 @@ void Generator::genPluginSource(QString const &pluginName)
 		QString props = "";
 		FOR_ALL_PROPERTIES((*o),p)
 		{
+			// Хак: не генерить предопределённые свойства, иначе они затрут
+			// настоящие и линки будут цепляться к чему попало.
+			if ((*p)->getName() == "fromPort" || (*p)->getName() == "toPort"
+				|| (*p)->getName() == "from" || (*p)->getName() == "to")
+			{
+				continue;
+			}
+
 			if (isFirstProperty){
 				out() << "\t\tresult ";
 				isFirstProperty = false;
 			}
+
 			props += QString(" << \"" +(*p)->getName() + "\"");
 			if( props.length() >= MAX_LINE_LENGTH ){
 				out() << props;
