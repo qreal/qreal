@@ -7,8 +7,8 @@ INCLUDEPATH	+=	../qrxml/editors \
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 
-OBJECTS_DIR = obj
-MOC_DIR = moc
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++")) {
     QMAKE_LFLAGS += -Wl,-E
