@@ -45,6 +45,7 @@ namespace UML {
 		}
 		virtual void focusOutEvent(QFocusEvent *event)
 		{
+			QGraphicsTextItem::focusOutEvent(event);
 			setTextInteractionFlags(Qt::NoTextInteraction);
 		}
 	};
