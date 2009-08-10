@@ -253,7 +253,7 @@ void Generator::genPluginSource(QString const &pluginName)
 		if (((*o)->type == NODE && !(*o)->visible) || (*o)->getEditor()->get_name() != currentEditor )
 		//if (!(*o)->visible || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
-	
+
 	QString ename = normalizeName((*c)->get_name());
 		out() << "\telementsNameMap[\"" << ename << "\"][\"" << (*o)->id << "\"] = \"" << (*o)->name << "\";\n";
 	}
@@ -315,7 +315,7 @@ void Generator::genPluginSource(QString const &pluginName)
 	{
 		if (((*o)->type == NODE && !(*o)->visible) || (*o)->getEditor()->get_name() != currentEditor )
 			continue;
-		
+
 		bool isFirstProperty = true;
 		if (isFirst)
 		{
@@ -366,7 +366,7 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 {
 	QString const classname = node->id;
 	QString const uClassname = upperFirst(classname);
-	
+
 	QString fileName = classname + ".h";
 	mHeaders << fileName;
 
@@ -397,7 +397,7 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 
 	out() << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
 		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n";
-	
+
 	for (int j=0; j<node->ports.size(); j++)
 	{
 		if (node->ports.at(j).type == "point")
@@ -472,7 +472,7 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 		<< "\tclass " << uClassname << " : public EdgeElement {\n"
 		<< "\tpublic:\n"
 		<< "\t\t" << uClassname << "() {\n"
-		<< "\t\t\tm_penStyle = Qt::SolidLine;\n"
+		<< "\t\t\tmPenStyle = Qt::SolidLine;\n"
 		<< "\t\t}\n\n"
 
 		<< "\t\tvirtual ~" << uClassname << "() {}\n\n"
