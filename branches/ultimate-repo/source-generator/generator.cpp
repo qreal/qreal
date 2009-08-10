@@ -491,8 +491,7 @@ void Generator::genClasses(){
 					    << "\tQRectF conts = m_contents;\n"
 					    << QString("\tconts.setHeight(20);\n");
 			}
-			out << "\td.paint(painter,style,widget);\n"
-			    << "\tpainter->restore();\n";
+			out << "\tpainter->restore();\n";
 		  } else
 		     out  << "\td.setTextWidth(m_contents.width()-15);\n";
 
