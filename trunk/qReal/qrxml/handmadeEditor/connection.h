@@ -9,7 +9,7 @@ namespace UML {
 	class Connection: public EdgeElement {
 	public:
 		Connection() {
-			m_penStyle = Qt::SolidLine;
+			mPenStyle = Qt::SolidLine;
 		}
 
 		virtual ~Connection() {}

@@ -12,7 +12,8 @@ INCLUDEPATH += ..
 OBJECTS_DIR = ../obj/
 MOC_DIR = ../moc/
 
-SOURCES += handmadeEditor.cpp
+SOURCES += handmadeEditor.cpp \
+	kroki.cpp \
 
 HEADERS += handmadeEditor.h \
 	kroki.h \
