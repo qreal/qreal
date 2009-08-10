@@ -35,7 +35,7 @@ namespace UML {
 			 * */
 			QPainterPath shape() const;
 			/** @brief Отрисовать связь */
-			void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
+			virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
 						const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
 						QWidget* w /**< Виджет, на котором осуществляется отрисовка */
 						);
@@ -43,80 +43,69 @@ namespace UML {
 			/** @brief Перерисовать связь */
 			void adjustLink();
 			/** @brief Отсоединить связь от объекта */
-			void removeLink(UML::NodeElement *from /**< Объект */)
-			{
-				if (src == from)
-				{
-					src = NULL;
-				};
-				if (dst == from)
-				{
-					dst = NULL;
-				};
-			}
+			void removeLink(UML::NodeElement const *from /**< Объект */);
 
 			virtual void connectToPort();
 
-		private:
-
-			NodeElement *beginning;
-			NodeElement *ending;
-
-			/** @brief Получить точку на ломаной
-			 *	@brief @return Точка на ломаной
-			 * */
-			int getPoint( const QPointF &location /**< Расположение точки */ );
-			/** @brief Получить объект, расположенный в данной точке сцены
-			 *	@brief @return Объект, расположенный в данной точке сцены
-			 * */
-			NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
-//			void checkConnection();
-			/** @brief Объект, присоединенный к началу связи */
-			NodeElement *src;
-			/** @brief Объект, присоединенный к концу связи */
-			NodeElement *dst;
-			//	QPointF srcPoint, dstPoint;
-
-			/** @brief Идентификатор порта объекта, к которому присоединено начало связи */
-			qreal portFrom;
-			/** @brief Идентификатор порта объекта, к которому присоединен конец связи */
-			qreal portTo;
-			/** @brief Состояние перемещения */
-			int dragState;
-
-			/** @brief Номер самой длинной части ломаной */
-			int longPart;
-
-			/** @brief Массив точек для отрисовки связи */
-			QPolygonF m_line;
-			/** @brief Цвет линии */
-			QColor m_color;
-
-			/** @brief Обновить номер самой длинной части ломаной */
-			void updateLongestPart();
 		protected:
 			/** @brief Обработать нажатие кнопки мыши */
-			void mousePressEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 			/** @brief Обработать движение курсора мыши */
-			void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 			/** @brief Обработать отпускание кнопки мыши */
-			void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+			virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 			/** @brief Обработать открытие контекстного меню */
-			void contextMenuEvent ( QGraphicsSceneContextMenuEvent * event /**< Событие */);
+			virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 			/** @brief Отрисовать начало связи */
-			virtual void drawStartArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+			virtual void drawStartArrow(QPainter *p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
 			/** @brief Отрисовать конец связи */
-			virtual void drawEndArrow ( QPainter * p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+			virtual void drawEndArrow(QPainter *p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
 
 			/** @brief Стиль линии */
-			Qt::PenStyle m_penStyle;
+			Qt::PenStyle mPenStyle;
 			/** @brief Текст над линией */
-			QString m_text;
-			QString m_fromMult, m_toMult;
+			QString mText;
+			QString mFromMult, mToMult;
 			/** @brief Тип стрелки начала связи */
-			ArrowType m_startArrowStyle;
+			ArrowType mStartArrowStyle;
 			/** @brief Тип стрелки конца связи */
-			ArrowType m_endArrowStyle;
+			ArrowType mEndArrowStyle;
+
+		private:
+
+			/** @brief Получить точку на ломаной
+			 * */
+			int getPoint(const QPointF &location /**< Расположение точки */);
+			/** @brief Получить объект, расположенный в данной точке сцены
+			 * */
+			NodeElement *getNodeAt(const QPointF &position /**< Точка на сцене */);
+			/** @brief Обновить номер самой длинной части ломаной */
+			void updateLongestPart();
+			/** @brief Получить прямоугольник порта вокруг заданной точки */
+			static QRectF getPortRect(QPointF const &point);
+
+			/** @brief Объект, присоединенный к началу связи */
+			NodeElement *mSrc;
+			/** @brief Объект, присоединенный к концу связи */
+			NodeElement *mDst;
+
+			/** @brief Идентификатор порта объекта, к которому присоединено начало связи */
+			qreal mPortFrom;
+			/** @brief Идентификатор порта объекта, к которому присоединен конец связи */
+			qreal mPortTo;
+			/** @brief Состояние перемещения */
+			int mDragState;
+
+			/** @brief Номер самой длинной части ломаной */
+			int mLongPart;
+
+			/** @brief Массив точек для отрисовки связи */
+			QPolygonF mLine;
+			/** @brief Цвет линии */
+			QColor mColor;
+
+			NodeElement *mBeginning;
+			NodeElement *mEnding;
 	};
 }

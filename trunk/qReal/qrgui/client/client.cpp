@@ -294,10 +294,7 @@ QVariant Client::parseValue(QString const &typeName, QString const &valueStr)
 		}
 		return QVariant(result);
 	} else if (typeName == "qReal::Id") {
-		QVariant v;
-		Id id = Id::loadFromString(valueStr);
-		v.setValue(id);
-		return v;
+		return Id::loadFromString(valueStr).toVariant();
 	} else {
 		Q_ASSERT(!"Unknown property type");
 		return QVariant();

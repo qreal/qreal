@@ -1,5 +1,7 @@
 #include "ids.h"
 
+#include <QtCore/QVariant>
+
 using namespace qReal;
 
 Id Id::loadFromString(QString const &string)
@@ -129,4 +131,11 @@ bool Id::checkIntegrity() const
 		return false;
 
 	return true;
+}
+
+QVariant Id::toVariant() const
+{
+	QVariant result;
+	result.setValue(*this);
+	return result;
 }

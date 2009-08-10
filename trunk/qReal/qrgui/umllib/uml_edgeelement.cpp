@@ -1,8 +1,10 @@
 /** @file edgeelement.cpp
  * 	@brief Класс, представляющий связь на диаграмме
  * */
-#include <QtGui>
-#include <QtGlobal>
+#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtGui/QStyle>
+#include <QtGui/QTextDocument>
+#include <QtGui/QMenu>
 #include <math.h>
 
 #include "../view/editorviewscene.h"
@@ -27,71 +29,68 @@ using namespace qReal;
 // static bool moving = false;
 
 EdgeElement::EdgeElement()
-		: beginning(0), ending(0), src(0), dst(0), portFrom(0), portTo(0), dragState(-1), longPart(0)
+	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
+	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
+	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
 	setFlag(ItemClipsToShape, false);
 
-	m_penStyle = Qt::SolidLine;
-	m_line << QPointF(0,0) << QPointF(200,60);
-
-	m_endArrowStyle = NO_ARROW;
+	mLine << QPointF(0, 0) << QPointF(200, 60);
 }
 
 EdgeElement::~EdgeElement()
 {
-	if (src)
-		src->delEdge(this);
-	if (dst)
-		dst->delEdge(this);
+	if (mSrc)
+		mSrc->delEdge(this);
+	if (mDst)
+		mDst->delEdge(this);
 }
 
 QRectF EdgeElement::boundingRect() const
 {
-	// return m_line.boundingRect().adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
-	return m_line.boundingRect().adjusted(-20, -20, 20, 20);
+	return mLine.boundingRect().adjusted(-20, -20, 20, 20);
 }
 
 static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
 	if (line.dy() >= 0)
-		angle = 2*M_PI - angle;
+		angle = 2 * M_PI - angle;
 
-	return angle*180*M_1_PI;
+	return angle * 180 * M_1_PI;
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	painter->save();
 	QPen pen = painter->pen();
-	pen.setColor(m_color);
-	pen.setStyle(m_penStyle);
+	pen.setColor(mColor);
+	pen.setStyle(mPenStyle);
 	pen.setWidth(1);
 	painter->setPen(pen);
-	painter->drawPolyline(m_line);
+	painter->drawPolyline(mLine);
 	painter->restore();
 
 	painter->save();
-	painter->translate(m_line[0]);
-	painter->drawText(QPointF(10,20), m_fromMult);
-	painter->rotate(90-lineAngle(QLineF(m_line[1],m_line[0])));
+	painter->translate(mLine[0]);
+	painter->drawText(QPointF(10, 20), mFromMult);
+	painter->rotate(90 - lineAngle(QLineF(mLine[1], mLine[0])));
 	drawStartArrow(painter);
 	painter->restore();
 
 	painter->save();
-	painter->translate(m_line[m_line.size()-1]);
-	painter->drawText(QPointF(10,20), m_toMult);
-	painter->rotate(90-lineAngle(QLineF(m_line[m_line.size()-2],m_line[m_line.size()-1])));
+	painter->translate(mLine[mLine.size() - 1]);
+	painter->drawText(QPointF(10, 20), mToMult);
+	painter->rotate(90 - lineAngle(QLineF(mLine[mLine.size() - 2], mLine[mLine.size() - 1])));
 	drawEndArrow(painter);
 	painter->restore();
 
 	if (option->state & QStyle::State_Selected) {
 		painter->setBrush(Qt::SolidPattern);
-		foreach( QPointF point, m_line)
-		{
+		foreach (QPointF const point, mLine) {
 			QPen pen;
 			QColor color;
 
@@ -109,22 +108,22 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		}
 	}
 
-	if ( ! m_text.isEmpty() ) {
+	if (!mText.isEmpty()) {
 		painter->save();
-		QLineF longest(m_line[longPart],m_line[longPart+1]);
-		painter->translate(m_line[longPart]);
+		QLineF longest(mLine[mLongPart], mLine[mLongPart + 1]);
+		painter->translate(mLine[mLongPart]);
 		painter->rotate(-lineAngle(longest));
 
-		QTextDocument d;
-		d.setHtml(m_text);
-		d.setTextWidth(longest.length());
-		d.drawContents(painter);
+		QTextDocument text;
+		text.setHtml(mText);
+		text.setTextWidth(longest.length());
+		text.drawContents(painter);
 
 		painter->restore();
 	}
 }
 
-bool canBeConnected( int linkID, int from, int to );
+bool canBeConnected(int linkID, int from, int to);
 
 QPainterPath EdgeElement::shape() const
 {
@@ -134,20 +133,25 @@ QPainterPath EdgeElement::shape() const
 	QPainterPathStroker ps;
 	ps.setWidth(kvadratik);
 
-	path.addPolygon(m_line);
+	path.addPolygon(mLine);
 	path = ps.createStroke(path);
 
-	foreach( QPointF point, m_line) {
-		path.addRect(QRectF(point-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)));
+	foreach (QPointF const point, mLine) {
+		path.addRect(getPortRect(point));
 	}
 
 	return path;
 }
 
-int EdgeElement::getPoint( const QPointF &location )
+QRectF EdgeElement::getPortRect(QPointF const &point)
 {
-	for ( int i = 0 ; i < m_line.size() ; i++ )
-		if ( QRectF(m_line[i]-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
+	return QRectF(point - QPointF(kvadratik, kvadratik), QSizeF(kvadratik * 2, kvadratik * 2));
+}
+
+int EdgeElement::getPoint(const QPointF &location)
+{
+	for (int i = 0; i < mLine.size(); ++i)
+		if (getPortRect(mLine[i]).contains(location))
 			return i;
 
 	return -1;
@@ -157,160 +161,145 @@ void EdgeElement::updateLongestPart()
 {
 	qreal maxLen = 0.0;
 	int maxIdx = 0;
-	for ( int i = 0; i < m_line.size() - 1 ; i++ ) {
-		qreal newLen = QLineF(m_line[i],m_line[i+1]).length();
-		if ( newLen > maxLen ) {
+	for (int i = 0; i < mLine.size() - 1; ++i) {
+		qreal newLen = QLineF(mLine[i], mLine[i + 1]).length();
+		if (newLen > maxLen) {
 			maxLen = newLen;
 			maxIdx = i;
 		}
 	}
-	longPart = maxIdx;
+	mLongPart = maxIdx;
 }
 
-void EdgeElement::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	dragState = -1;
+	mDragState = -1;
 
-	if ( isSelected() )
-		dragState = getPoint( event->pos() );
+	if (isSelected())
+		mDragState = getPoint(event->pos());
 
-	if ( dragState == -1 )
+	if (mDragState == -1)
 		Element::mousePressEvent(event);
 }
 
-void EdgeElement::connectToPort() {
+void EdgeElement::connectToPort()
+{
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG!
 
-	setPos(pos()+m_line[0]);
-	m_line.translate(-m_line[0]);
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
 
 	moving = true;
 
 	// Now we check whether start or end have been connected
-	NodeElement *new_src = getNodeAt(m_line[0]);
-	if ( new_src )
-		portFrom = new_src->getPortId( mapToItem(new_src, m_line[0]) );
-	else
-		portFrom = -1.0;
+	NodeElement *new_src = getNodeAt(mLine.first());
+	mPortFrom = new_src ? new_src->getPortId(mapToItem(new_src, mLine.first())) : -1.0;
 
-	if ( src ) {
-		src->delEdge(this);
-		src = 0;
+	if (mSrc) {
+		mSrc->delEdge(this);
+		mSrc = 0;
 	}
 
-	if ( portFrom >= 0.0 ) {
-		src = new_src;
-		src->addEdge(this);
+	if (mPortFrom >= 0.0) {
+		mSrc = new_src;
+		mSrc->addEdge(this);
 	}
 
-	QVariant v;
+	model->setData(dataIndex, (mSrc ? mSrc->uuid() : ROOT_ID).toVariant(), roles::fromRole);
+	model->setData(dataIndex, mPortFrom, roles::fromPortRole);
 
-	if (src){
-		v.setValue(src->uuid());
-		model->setData(dataIndex, v, roles::fromRole);
-	}
-	else
-		model->setData(dataIndex, 0, roles::fromRole);
+	NodeElement *new_dst = getNodeAt(mLine.last());
+	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
 
-	model->setData(dataIndex, portFrom, roles::fromPortRole);
-
-	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
-	if ( new_dst )
-		portTo = new_dst->getPortId( mapToItem(new_dst, m_line[m_line.size()-1]) );
-	else
-		portTo = -1.0;
-
-	if ( dst ) {
-		dst->delEdge(this);
-		dst = 0;
+	if (mDst) {
+		mDst->delEdge(this);
+		mDst = 0;
 	}
 
-	if ( portTo >= 0.0 ) {
-		dst = new_dst;
-		dst->addEdge(this);
+	if (mPortTo >= 0.0) {
+		mDst = new_dst;
+		mDst->addEdge(this);
 	}
 
+	model->setData(dataIndex, (mDst ? mDst->uuid() : ROOT_ID).toVariant(), roles::toRole);
+	model->setData(dataIndex, mPortTo, roles::toPortRole);
 
-	if (dst){
-		v.setValue( dst->uuid());
-		model->setData(dataIndex, v, roles::toRole);
-	}
-	else
-		model->setData(dataIndex, 0, roles::toRole);
-
-	model->setData(dataIndex, portTo, roles::toPortRole);
-
-	setFlag(ItemIsMovable, !(dst||src) );
+	setFlag(ItemIsMovable, !(mDst || mSrc));
 
 	model->setData(dataIndex, pos(), roles::positionRole);
-	model->setData(dataIndex, m_line.toPolygon(), roles::configurationRole);
+	model->setData(dataIndex, mLine.toPolygon(), roles::configurationRole);
 
 	moving = false;
 
 	adjustLink();
 }
 
-void EdgeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	NodeElement *new_src = getNodeAt(m_line[0]);
-	NodeElement *new_dst = getNodeAt(m_line[m_line.size()-1]);
-	if (beginning) {
-		if (beginning!=new_src) {
-			beginning->setPortsVisible(false);
+	NodeElement *new_src = getNodeAt(mLine.first());
+	NodeElement *new_dst = getNodeAt(mLine.back());
+
+	if (mBeginning) {
+		if (mBeginning != new_src) {
+			mBeginning->setPortsVisible(false);
 		}
-	}
-	if (ending) {
-		if (ending!=new_dst) {
-			ending->setPortsVisible(false);
-		}
-	}
-	beginning = new_src;
-	ending = new_dst;
-	if (beginning) {
-		beginning->setPortsVisible(true);
-	}
-	if (ending) {
-		ending->setPortsVisible(true);
 	}
 
-	if ( dragState == -1 ) {
+	if (mEnding) {
+		if (mEnding != new_dst) {
+			mEnding->setPortsVisible(false);
+		}
+	}
+
+	mBeginning = new_src;
+	mEnding = new_dst;
+
+	if (mBeginning)
+		mBeginning->setPortsVisible(true);
+
+	if (mEnding)
+		mEnding->setPortsVisible(true);
+
+	if (mDragState == -1) {
 		Element::mouseMoveEvent(event);
 	} else {
 		prepareGeometryChange();
-		m_line[dragState] = event->pos();
+		mLine[mDragState] = event->pos();
 		updateLongestPart();
 	}
 }
 
-void EdgeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if ( dragState == -1 )
+	if (mDragState == -1)
 		Element::mouseReleaseEvent(event);
 	else
-		dragState = -1;
+		mDragState = -1;
+
 	connectToPort();
-	if (beginning) {
-		beginning->setPortsVisible(false);
-	}
-	if (ending) {
-		ending->setPortsVisible(false);
-	}
+
+	if (mBeginning)
+		mBeginning->setPortsVisible(false);
+
+	if (mEnding)
+		mEnding->setPortsVisible(false);
+
 	// cleanup after moving/resizing
-	beginning = ending = NULL;
+	mBeginning = mEnding = NULL;
 }
 
-NodeElement *EdgeElement::getNodeAt(const QPointF &position)
+NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 {
-	foreach( QGraphicsItem *item, scene()->items(mapToScene(position)) ) {
+	foreach (QGraphicsItem *item, scene()->items(mapToScene(position))) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
-		if ( e ){
+		if (e) {
 			return e;
 		}
 	}
-	return 0;
+	return NULL;
 }
 
-void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
+void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu menu;
 
@@ -318,37 +307,37 @@ void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 	QAction *delPointAction = menu.addAction("Remove point");
 	QAction *squarizeAction = menu.addAction("Squarize");
 
-	if ( QAction *selectedAction = menu.exec(event->screenPos()) ) {
-		if ( selectedAction == delPointAction ) {
-			int i = getPoint( event->pos() );
-			if ( i != -1 ) {
+	if (QAction *selectedAction = menu.exec(event->screenPos())) {
+		if (selectedAction == delPointAction) {
+			int pointIndex = getPoint(event->pos());
+			if (pointIndex != -1) {
 				prepareGeometryChange();
-				m_line.remove(i);
-				longPart = 0;
+				mLine.remove(pointIndex);
+				mLongPart = 0;
 				update();
 			}
-		} else if ( selectedAction == addPointAction ) {
-			for ( int i = 0; i < m_line.size()-1; i++ ) {
+		} else if (selectedAction == addPointAction) {
+			for (int i = 0; i < mLine.size() - 1; ++i) {
 				QPainterPath path;
 				QPainterPathStroker ps;
 				ps.setWidth(kvadratik);
 
-				path.moveTo(m_line[i]);
-				path.lineTo(m_line[i+1]);
-				if ( ps.createStroke(path).contains(event->pos()) ) {
-					m_line.insert(i+1,event->pos());
+				path.moveTo(mLine[i]);
+				path.lineTo(mLine[i+1]);
+				if (ps.createStroke(path).contains(event->pos())) {
+					mLine.insert(i + 1, event->pos());
 					update();
 					break;
 				}
 			}
-		} else if ( selectedAction == squarizeAction ) {
+		} else if (selectedAction == squarizeAction) {
 			prepareGeometryChange();
-			for ( int i = 0; i < m_line.size()-1; i++ ) {
-				QLineF line(m_line[i],m_line[i+1]);
-				if ( qAbs(line.dx()) < qAbs(line.dy()) ) {
-					m_line[i+1].setX(m_line[i].x());
+			for (int i = 0; i < mLine.size() - 1; ++i) {
+				QLineF line(mLine[i], mLine[i + 1]);
+				if (qAbs(line.dx()) < qAbs(line.dy())) {
+					mLine[i + 1].setX(mLine[i].x());
 				} else {
-					m_line[i+1].setY(m_line[i].y());
+					mLine[i + 1].setY(mLine[i].y());
 				}
 			}
 			adjustLink();
@@ -360,10 +349,10 @@ void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 void EdgeElement::adjustLink()
 {
 	prepareGeometryChange();
-	if ( src )
-		m_line[0] = mapFromItem(src, src->getPortPos(portFrom) );
-	if ( dst )
-		m_line[m_line.size()-1] = mapFromItem(dst, dst->getPortPos(portTo) );
+	if (mSrc)
+		mLine.first() = mapFromItem(mSrc, mSrc->getPortPos(mPortFrom));
+	if (mDst)
+		mLine.last() = mapFromItem(mDst, mDst->getPortPos(mPortTo));
 	updateLongestPart();
 }
 
@@ -377,28 +366,37 @@ void EdgeElement::updateData()
 	setPos(dataIndex.data(roles::positionRole).toPointF());
 	QPolygonF newLine = dataIndex.data(roles::configurationRole).value<QPolygon>();
 	if (!newLine.isEmpty())
-		m_line = newLine;
+		mLine = newLine;
 
 	qReal::IdType uuidFrom = dataIndex.data(roles::fromRole).value<Id>();
 	qReal::IdType uuidTo = dataIndex.data(roles::toRole).value<Id>();
 
-	if (src)
-		src->delEdge(this);
-	if (dst)
-		dst->delEdge(this);
+	if (mSrc)
+		mSrc->delEdge(this);
+	if (mDst)
+		mDst->delEdge(this);
 
-	src = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
-	dst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
+	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
+	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
 
-	if (src)
-		src->addEdge(this);
-	if (dst)
-		dst->addEdge(this);
+	if (mSrc)
+		mSrc->addEdge(this);
+	if (mDst)
+		mDst->addEdge(this);
 
-	setFlag(ItemIsMovable, !(dst || src));
+	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	portFrom = dataIndex.data(roles::fromPortRole).toDouble();
-	portTo = dataIndex.data(roles::toPortRole).toDouble();
+	mPortFrom = dataIndex.data(roles::fromPortRole).toDouble();
+	mPortTo = dataIndex.data(roles::toPortRole).toDouble();
 
 	adjustLink();
+}
+
+void EdgeElement::removeLink(UML::NodeElement const *from)
+{
+	if (mSrc == from)
+		mSrc = NULL;
+
+	if (mDst == from)
+		mDst = NULL;
 }

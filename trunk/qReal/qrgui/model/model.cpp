@@ -47,9 +47,7 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			case Qt::EditRole:
 				return mClient->property(item->id(), "Name");
 			case roles::idRole: {
-				QVariant v;
-				v.setValue(item->id());
-				return v;
+				return item->id().toVariant();
 			}
 			case roles::positionRole:
 				return mClient->property(item->id(), positionPropertyName(item));
@@ -322,10 +320,10 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 		treeItems.insert(id,item);
 		mClient->addChild(parentItem->id(),id);
 		mClient->setProperty(id, "Name", name);
-		mClient->setProperty(id, "from", "");
-		mClient->setProperty(id, "to", "");
-		mClient->setProperty(id, "fromPort", "");
-		mClient->setProperty(id, "toPort", "");
+		mClient->setProperty(id, "from", ROOT_ID.toVariant());
+		mClient->setProperty(id, "to", ROOT_ID.toVariant());
+		mClient->setProperty(id, "fromPort", 0);
+		mClient->setProperty(id, "toPort", 0);
 		mClient->setProperty(id, positionPropertyName(item), position);
 		mClient->setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
 
@@ -385,11 +383,10 @@ void Model::exterminate()
 
 void Model::cleanupTree(ModelTreeItem *root)
 {
-	foreach (ModelTreeItem *childItem, root->children()) 
+	foreach (ModelTreeItem *childItem, root->children())
 	{
 		cleanupTree(childItem);
 		delete childItem;
 	}
 	root->clearChildren();
 }
-							
