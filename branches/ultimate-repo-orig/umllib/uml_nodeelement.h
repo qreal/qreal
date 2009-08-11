@@ -28,21 +28,18 @@ namespace UML {
 	 * */
 	class statLine;
 
-	// Why subclassing? Because the same is needed for class members, which is already subclassed.
 	class ElementTitle : public QGraphicsTextItem
 	{
 		Q_OBJECT
+		QString oldText;
 	public:
 		ElementTitle() {}
 		~ElementTitle() {}
 	protected:
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent * event)
-		{
-			QGraphicsTextItem::mousePressEvent(event);
-			if (!(event->modifiers() & Qt::ControlModifier))
-				scene()->clearSelection();
-			parentItem()->setSelected(true);
-		}
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
+		virtual void focusInEvent(QFocusEvent *event);
+		virtual void focusOutEvent(QFocusEvent *event);
+		virtual void keyPressEvent(QKeyEvent *event);
 	};
 
 	class NodeElement :  public QObject, public Element

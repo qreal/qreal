@@ -139,8 +139,9 @@ void EditorViewScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
-	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
-		this->focusItem()->clearFocus();
+	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
+		// Forward event to text editor
+		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
 		QGraphicsTextItem *ti = NULL;
 		if (this->focusItem()!= NULL)
@@ -181,6 +182,15 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		menu.addAction(window->ui.actionJumpToAvatar);
 
 	menu.exec(QCursor::pos());
+}
+
+void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	UML::ElementTitle *t = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()));
+	// Double click on title activates it
+	if (event->button() == Qt::LeftButton && t)
+		t->setTextInteractionFlags(Qt::TextEditorInteraction);
+	QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 UML::Element * EditorViewScene::getElemAt( const QPointF &position )

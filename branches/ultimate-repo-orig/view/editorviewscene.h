@@ -53,6 +53,10 @@ protected:
 
 	/** @brief Обработать событие нажатия кнопок мыши */
 	void mousePressEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+
+	/** @brief Обработать событие нажатия кнопок мыши */
+	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+
 private:
 
 	UML::Element *getElemAt(const QPointF &position);
