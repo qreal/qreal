@@ -322,8 +322,8 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 		mClient->setProperty(id, "Name", name);
 		mClient->setProperty(id, "from", ROOT_ID.toVariant());
 		mClient->setProperty(id, "to", ROOT_ID.toVariant());
-		mClient->setProperty(id, "fromPort", 0);
-		mClient->setProperty(id, "toPort", 0);
+		mClient->setProperty(id, "fromPort", 0.0);
+		mClient->setProperty(id, "toPort", 0.0);
 		mClient->setProperty(id, positionPropertyName(item), position);
 		mClient->setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
 

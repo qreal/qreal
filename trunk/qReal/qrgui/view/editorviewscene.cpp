@@ -2,23 +2,20 @@
  * 	@brief Сцена для отрисовки объектов
  * */
 #include "editorviewscene.h"
-#include "editorviewmviface.h"
-#include "editorview.h"
-//#include "../umllib/uml_nodeelement.h"
-//#include "uml_guiobjectfactory.h"
-#include "../mainwindow/mainwindow.h"
-
 
 #include <QGraphicsTextItem>
 #include <QtGui>
-//#include "../common/classes.h"
+
+#include "editorviewmviface.h"
+#include "editorview.h"
+#include "../mainwindow/mainwindow.h"
+
+using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
 		:  QGraphicsScene(parent), mWindow(NULL)
 {
-	//	setSceneRect(-400, -300, 800, 600);
 	setItemIndexMethod(NoIndex);
-	//	setBackgroundBrush(gradient);
 }
 
 void EditorViewScene::clearScene()
@@ -32,6 +29,9 @@ void EditorViewScene::clearScene()
 
 UML::Element * EditorViewScene::getElem(qReal::IdType const &uuid)
 {
+	if (uuid == ROOT_ID)
+		return NULL;
+
 	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
@@ -41,8 +41,7 @@ UML::Element * EditorViewScene::getElem(qReal::IdType const &uuid)
 			}
 		}
 	}
-	//	qDebug() << uuid;
-	//	Q_ASSERT(uuid == INVALID_ID);
+
 	return NULL;
 }
 

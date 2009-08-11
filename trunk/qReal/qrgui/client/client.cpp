@@ -119,7 +119,10 @@ void Client::removeChild(const IdType &id, const IdType &child)
 void Client::setProperty( const IdType &id, const PropertyName &name, const QVariant &value )
 {
 	if (mObjects.contains(id)) {
-		mObjects[id]->setProperty(name,value);
+		Q_ASSERT(mObjects[id]->hasProperty(name)
+				 ? mObjects[id]->property(name).userType() == value.userType()
+				 : true);
+		mObjects[id]->setProperty(name, value);
 	} else {
 		throw Exception("Client: Setting property of nonexistent object " + id.toString());
 	}

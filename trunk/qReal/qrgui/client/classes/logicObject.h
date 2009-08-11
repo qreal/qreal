@@ -22,6 +22,7 @@ namespace qReal {
 			IdTypeList parents() const;
 			void setProperty(const PropertyName &name, const QVariant &value);
 			QVariant property(const PropertyName &name) const;
+			bool hasProperty(const PropertyName &name) const;
 			void removeProperty(const PropertyName &name);
 			IdType id() const;
 			QMapIterator<PropertyName, QVariant> propertiesIterator();

@@ -85,6 +85,11 @@ QVariant LogicObject::property(const PropertyName &name) const
 	}
 }
 
+bool LogicObject::hasProperty(const PropertyName &name) const
+{
+	return mProperties.contains(name);
+}
+
 void LogicObject::removeProperty(const PropertyName &name)
 {
 	if (mProperties.contains(name)) {
