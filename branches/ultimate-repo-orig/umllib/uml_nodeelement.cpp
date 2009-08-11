@@ -183,6 +183,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	} else {
 		im->changeParent(dataIndex,evscene->rootItem(),scenePos());
 	}
+	qDebug() << "am i zombie?";
 }
 
 
