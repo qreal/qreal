@@ -404,19 +404,19 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 		hasPorts = true;
 	}
 
-	out() << "\t\t\tm_contents.setWidth(" << node->width << ");\n"
-		<< "\t\t\tm_contents.setHeight(" << node->height << ");\n";
+	out() << "\t\t\tmContents.setWidth(" << node->width << ");\n"
+		<< "\t\t\tmContents.setHeight(" << node->height << ");\n";
 
 	for (int j=0; j<node->ports.size(); j++)
 	{
 		if (node->ports.at(j).type == "point")
 		{
-			out() << QString("\t\t\tpointPorts << QPointF(%1, %2);\n")
+			out() << QString("\t\t\tmPointPorts << QPointF(%1, %2);\n")
 					.arg(node->ports.at(j).vals.at(0)).arg(node->ports.at(j).vals.at(1));
 		} else if (node->ports.at(j).type == "line" )
 		{
 			out() <<"\t\t\t{\n"
-				<< "\t\t\t\tstatLine ln;\n"
+				<< "\t\t\t\tStatLine ln;\n"
 				<< QString("\t\t\t\tln.line = QLineF(%1, %2, %3, %4);\n")
 						.arg(node->ports.at(j).vals.at(0)).arg(node->ports.at(j).vals.at(1))
 						.arg(node->ports.at(j).vals.at(2)).arg(node->ports.at(j).vals.at(3))
@@ -428,7 +428,7 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 				<< ((node->ports.at(j).props.at(2)) ? "true; \n" : "false; \n")
 				<< "\t\t\t\tln.prop_y2 = "
 				<< ((node->ports.at(j).props.at(3)) ? "true; \n" : "false; \n")
-				<< "\t\t\t\tlinePorts << ln;\n"
+				<< "\t\t\t\tmLinePorts << ln;\n"
 				<< "\t\t\t};\n";
 		}
 	}
@@ -440,7 +440,7 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n";
 
 	if (hasSdf)
-		out() << "\t\t\tmRenderer.render(painter, m_contents);\n";
+		out() << "\t\t\tmRenderer.render(painter, mContents);\n";
 
 	if (hasPorts)
 		out() << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";

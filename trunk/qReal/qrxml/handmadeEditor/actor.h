@@ -11,8 +11,8 @@ namespace UML {
 		Actor() {
 			mRenderer.load(QString(":/TestEditor/UseCase/Actor.sdf"));
 			mPortRenderer.load(QString(":/TestEditor/UseCase/ActorPorts.sdf"));
-			m_contents.setWidth(100);
-			m_contents.setHeight(100);
+			mContents.setWidth(100);
+			mContents.setHeight(100);
 		}
 
 		virtual ~Actor() {}
@@ -23,7 +23,7 @@ namespace UML {
 			// ++paintCount;
 			// qDebug() << "Paint " << paintCount;
 
-			mRenderer.render(painter, m_contents);
+			mRenderer.render(painter, mContents);
 			NodeElement::paint(painter, style, widget, &mPortRenderer);
 		}
 

@@ -1,15 +1,15 @@
 /** @file uml_element.cpp
  * 	@brief Базовый класс элемента на диаграмме
  * */
-#include <QtGui>
-
 #include "uml_element.h"
+
+#include <QtGui>
 
 using namespace qReal;
 using namespace UML;
 
 Element::Element()
-	: moving(false)
+	: mMoving(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape
 			| ItemClipsToShape);
@@ -19,21 +19,22 @@ Element::Element()
 
 void Element::setIndex(QPersistentModelIndex &index)
 {
-	dataIndex = index;
-//    updateData();
-
-	// this should probably be here, uuid is too important...
-	m_uuid = dataIndex.data(roles::idRole).value<Id>();
-
+	mDataIndex = index;
+	mUuid = mDataIndex.data(roles::idRole).value<Id>();
 	update();
 }
 
 IdType Element::uuid() const
 {
-	return m_uuid;
+	return mUuid;
 }
 
 void Element::updateData()
 {
-	setToolTip(dataIndex.data(Qt::ToolTipRole).toString());
+	setToolTip(mDataIndex.data(Qt::ToolTipRole).toString());
+}
+
+QPersistentModelIndex Element::index() const
+{
+	return mDataIndex;
 }

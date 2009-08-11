@@ -21,7 +21,7 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
-	class statLine;
+	class StatLine;
 
 	class ElementTitle : public QGraphicsTextItem
 	{
@@ -30,7 +30,7 @@ namespace UML {
 		ElementTitle() {}
 		~ElementTitle() {}
 	protected:
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent * event)
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event)
 		{
 			QGraphicsTextItem::mousePressEvent(event);
 			if (!(event->modifiers() & Qt::ControlModifier))
@@ -51,20 +51,23 @@ namespace UML {
 	public:
 		/** @brief Конструктор */
 		NodeElement();
+
 		/** @brief Деструктор */
 		virtual ~NodeElement();
 
 		void complexInlineEditing();
 
 		/** @brief Отрисовать объект */
-		virtual void paint(QPainter* p, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
-						   QWidget* w, /**< Виджет, на котором осуществляется отрисовка */
-						   SdfRenderer* portrenderer /**< Рендерер портов)*/);
+		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
+						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
+						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
+						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
+
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
 			 * */
 		QRectF boundingRect() const;
+
 		/** @brief Получить область, в рамках которой возможна параметризация статического SVG
 			 *	@brief @return Область, в рамках которой возможна параметризация статического SVG
 			 * */
@@ -77,43 +80,33 @@ namespace UML {
 			 *	@brief @return Координаты порта
 			 * */
 		const QPointF getPortPos(qreal id /**< Идентификатор порта */) const;
+
 		/** @brief Получить идентификатор порта
 			 *	@brief @return Идентификатор порта
 			 * */
 		qreal getPortId(const QPointF &location /**< Расположение порта */) const;
 
 		/** @brief Добавить связь */
-		void addEdge(EdgeElement *edge /**< Связь */)
-		{
-			edgeList << edge;
-		}
+		void addEdge(EdgeElement *edge);
+
 		/** @brief Убрать связь */
-		void delEdge(EdgeElement *edge /**< Связь */)
-		{
-			edgeList.removeAt(edgeList.indexOf(edge));
-		}
+		void delEdge(EdgeElement *edge);
 
 		void setPortsVisible(bool value);
 
-		ElementTitle d;
-
-		//QString PutName();
-		QString oldName;
 	public slots:
 		void changeName();
 
 	protected:
-		bool portsVisible;
-
 		/** @brief Обработать событие наведения на объект курсора мыши */
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
+
 		/** @brief Обработать событие отпускания кнопки мыши */
-		void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event /**< Событие */);
+		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
+
 		/** @brief Обработать событие нажатия кнопки мыши */
-		void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
+		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
 
-
-		//bool sceneEvent ( QEvent * event );
 		/** @brief Обработать изменение данных объекта
 			 *	@brief @return Измененные данные
 			 * */
@@ -121,54 +114,73 @@ namespace UML {
 									const QVariant &value /**< Величина изменения */
 									);
 
+		bool mPortsVisible;
+
 		/** @brief Список точечных портов */
-		QList<QPointF> pointPorts;
+		QList<QPointF> mPointPorts;
 		/** @brief Список портов-линий */
-		QList<statLine> linePorts;
+		QList<StatLine> mLinePorts;
 		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
-		QRectF m_contents;
+		QRectF mContents;
 
 		bool mLockChangeName;
 		bool mLockUpdateText;
-		ElementTitle docvis;
-		ElementTitle doctype;
-		QString typetext;
-		QString vistext;
+
+		// TODO: Этого тут вообще быть не должно.
+		ElementTitle mDocVis;
+		ElementTitle mDocType;
+		QString mTypeText;
+		QString mVisText;
+
+		ElementTitle mTitle;
 
 	private:
+		/** @brief Направление растяжения элемента */
+		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 
 		/** @brief Получить объект, расположенный в данной точке сцены
 			*	@brief @return Объект, расположенный в данной точке сцены
 			* */
 		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
 
-		/** @brief Список ассоциированных с объектом связей */
-		QList<EdgeElement *> edgeList;
+		QLineF newTransform(const StatLine& port)  const;
 
-		/** @brief Направление растяжения элемента */
-		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
+		/** @brief Список ассоциированных с объектом связей */
+		QList<EdgeElement *> mEdgeList;
 
 		/** @brief Направление растяжения */
-		DragState dragState;
+		DragState mDragState;
 
 		/** @brief Описание двухмерной трансформации объекта */
-		QTransform transform;
-		QLineF newTransform(const statLine& port)  const;
-
+		QTransform mTransform;
 	};
 
 	/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
-	class statLine
+	struct StatLine
 	{
-	public:
 		QLineF line;
 		bool prop_x1;
 		bool prop_y1;
 		bool prop_x2;
 		bool prop_y2;
-	public:
-		statLine() { line = QLineF(0,0,0,0); prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false; }
-		operator QLineF () const { return line; }
-		void operator = (QLineF& l) { line = l; prop_x1 = false; prop_x2 = false; prop_y1 = false; prop_y2 = false; }
+
+		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
+			prop_x2(false), prop_y2(false)
+		{
+		}
+
+		operator QLineF () const
+		{
+			return line;
+		}
+
+		void operator = (QLineF const &l)
+		{
+			line = l;
+			prop_x1 = false;
+			prop_x2 = false;
+			prop_y1 = false;
+			prop_y2 = false;
+		}
 	};
 }

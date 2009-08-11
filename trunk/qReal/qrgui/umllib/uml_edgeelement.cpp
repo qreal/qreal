@@ -184,12 +184,12 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::connectToPort()
 {
-	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG!
+	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
 
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
 
-	moving = true;
+	mMoving = true;
 
 	// Now we check whether start or end have been connected
 	NodeElement *new_src = getNodeAt(mLine.first());
@@ -205,8 +205,8 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	model->setData(dataIndex, (mSrc ? mSrc->uuid() : ROOT_ID).toVariant(), roles::fromRole);
-	model->setData(dataIndex, mPortFrom, roles::fromPortRole);
+	model->setData(mDataIndex, (mSrc ? mSrc->uuid() : ROOT_ID).toVariant(), roles::fromRole);
+	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
 	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
@@ -221,15 +221,15 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	model->setData(dataIndex, (mDst ? mDst->uuid() : ROOT_ID).toVariant(), roles::toRole);
-	model->setData(dataIndex, mPortTo, roles::toPortRole);
+	model->setData(mDataIndex, (mDst ? mDst->uuid() : ROOT_ID).toVariant(), roles::toRole);
+	model->setData(mDataIndex, mPortTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	model->setData(dataIndex, pos(), roles::positionRole);
-	model->setData(dataIndex, mLine.toPolygon(), roles::configurationRole);
+	model->setData(mDataIndex, pos(), roles::positionRole);
+	model->setData(mDataIndex, mLine.toPolygon(), roles::configurationRole);
 
-	moving = false;
+	mMoving = false;
 
 	adjustLink();
 }
@@ -358,18 +358,18 @@ void EdgeElement::adjustLink()
 
 void EdgeElement::updateData()
 {
-	if (moving)
+	if (mMoving)
 		return;
 
 	Element::updateData();
 
-	setPos(dataIndex.data(roles::positionRole).toPointF());
-	QPolygonF newLine = dataIndex.data(roles::configurationRole).value<QPolygon>();
+	setPos(mDataIndex.data(roles::positionRole).toPointF());
+	QPolygonF newLine = mDataIndex.data(roles::configurationRole).value<QPolygon>();
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-	qReal::IdType uuidFrom = dataIndex.data(roles::fromRole).value<Id>();
-	qReal::IdType uuidTo = dataIndex.data(roles::toRole).value<Id>();
+	qReal::IdType uuidFrom = mDataIndex.data(roles::fromRole).value<Id>();
+	qReal::IdType uuidTo = mDataIndex.data(roles::toRole).value<Id>();
 
 	if (mSrc)
 		mSrc->delEdge(this);
@@ -386,8 +386,8 @@ void EdgeElement::updateData()
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	mPortFrom = dataIndex.data(roles::fromPortRole).toDouble();
-	mPortTo = dataIndex.data(roles::toPortRole).toDouble();
+	mPortFrom = mDataIndex.data(roles::fromPortRole).toDouble();
+	mPortTo = mDataIndex.data(roles::toPortRole).toDouble();
 
 	adjustLink();
 }

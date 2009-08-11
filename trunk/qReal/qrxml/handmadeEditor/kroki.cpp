@@ -7,12 +7,12 @@ using namespace UML;
 Kroki::Kroki() {
 	mRenderer.load(QString(":/TestEditor/Orthodox/Kroki.sdf"));
 	mText = "";
-	m_contents.setWidth(100);
-	m_contents.setHeight(100);
-	d.setFlags(0);
-	d.setTextInteractionFlags(Qt::NoTextInteraction);
-	d.setParentItem(this);
-	QObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));
+	mContents.setWidth(100);
+	mContents.setHeight(100);
+	mTitle.setFlags(0);
+	mTitle.setTextInteractionFlags(Qt::NoTextInteraction);
+	mTitle.setParentItem(this);
+	QObject::connect(mTitle.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));
 }
 
 void Kroki::updateData()
@@ -24,9 +24,9 @@ void Kroki::updateData()
 
 void Kroki::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
-	mRenderer.render(painter, m_contents);
+	mRenderer.render(painter, mContents);
 	NodeElement::paint(painter, style, widget, NULL);
-	d.setTextWidth(m_contents.width() - 15);
-	d.setPos(7,0);
-//	d.paint(painter, style, widget);
+	mTitle.setTextWidth(mContents.width() - 15);
+	mTitle.setPos(7,0);
+//	mTitle.paint(painter, style, widget);
 }

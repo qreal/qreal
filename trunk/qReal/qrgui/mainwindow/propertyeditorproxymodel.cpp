@@ -125,7 +125,6 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	// Special case - no objects selected
 	if (sourceIndex == QModelIndex())
 	{
-		qDebug() << "empty index assigned!";
 		targetObject = sourceIndex;
 		mFieldNames.clear();
 		reset();

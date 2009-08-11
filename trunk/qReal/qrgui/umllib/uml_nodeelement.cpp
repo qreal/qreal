@@ -15,52 +15,44 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement()
-: portsVisible(false)
+: mPortsVisible(false), mLockChangeName(false), mLockUpdateText(false), mDragState(None)
 {
-	oldName="";
 	setAcceptsHoverEvents(true);
-	dragState = None;
-	mLockChangeName = false;
-	mLockUpdateText = false;
 }
 
 NodeElement::~NodeElement()
 {
-	foreach (EdgeElement *edge, edgeList)
+	foreach (EdgeElement *edge, mEdgeList)
 		edge->removeLink(this);
 }
 
 void NodeElement::changeName()
 {
-/*	if(d.toPlainText() != oldName)
-		{*/
 	if (!mLockChangeName) {
 		mLockUpdateText = true;
-		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			im->setData(dataIndex, d.toPlainText(), Qt::DisplayRole);
+		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
+		im->setData(mDataIndex, mTitle.toPlainText(), Qt::DisplayRole);
 		mLockUpdateText = false;
 	}
-/*	}
-	oldName=d.toPlainText();*/
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	//d.setTextWidth(boundingRect().width()-25);
+	//mTitle.setTextWidth(boundingRect().width()-25);
 
 	//complexInlineEditing();
 	// changeName();
 
 	if (isSelected())
 	{
-		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
-			dragState = TopLeft;
-		else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
-			dragState = TopRight;
-		else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
-			dragState = BottomRight;
-		else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
-			dragState = BottomLeft;
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+			mDragState = TopLeft;
+		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+			mDragState = TopRight;
+		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+			mDragState = BottomRight;
+		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+			mDragState = BottomLeft;
 		else
 			Element::mousePressEvent(event);
 	} else
@@ -72,14 +64,14 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
-void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if ( dragState == None ) {
+	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 	} else {
-		QRectF newcontents = m_contents;
+		QRectF newcontents = mContents;
 
-		switch ( dragState ) {
+		switch (mDragState) {
 		case TopLeft:
 			newcontents.setTopLeft(event->pos());
 			break;
@@ -115,37 +107,36 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			newcontents.setHeight(size);
 		}
 
-		if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
+		if (!((newcontents.width() < 10) || (newcontents.height() < 10))) {
 			prepareGeometryChange();
 
-			m_contents = newcontents;
+			mContents = newcontents;
 
-			setPos(pos() + m_contents.topLeft());
-			m_contents.translate(-m_contents.topLeft());
+			setPos(pos() + mContents.topLeft());
+			mContents.translate(-mContents.topLeft());
 
-			transform.reset();
-			transform.scale(m_contents.width(), m_contents.height());
-
-			foreach (EdgeElement *edge, edgeList)
+			mTransform.reset();
+			mTransform.scale(mContents.width(), mContents.height());
+			foreach (EdgeElement *edge, mEdgeList)
 				edge->adjustLink();
 		}
 	}
 }
 
-void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	m_contents = m_contents.normalized();
+	mContents = mContents.normalized();
 
-	moving = 1;
-	Q_ASSERT(dataIndex.isValid());
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(dataIndex.model()));  // TODO: OMG.
-	itemModel->setData(dataIndex, pos(), roles::positionRole);
-	itemModel->setData(dataIndex, QPolygon(m_contents.toAlignedRect()), roles::configurationRole);
+	mMoving = 1;
+	Q_ASSERT(mDataIndex.isValid());
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG.
+	itemModel->setData(mDataIndex, pos(), roles::positionRole);
+	itemModel->setData(mDataIndex, QPolygon(mContents.toAlignedRect()), roles::configurationRole);
 //	NodeElement *newParent = getNodeAt(event->scenePos());
-	moving = 0;
+	mMoving = 0;
 
-	if ( dragState != None )
-		dragState = None;
+	if (mDragState != None)
+		mDragState = None;
 	else
 		Element::mouseReleaseEvent(event);
 
@@ -164,7 +155,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	switch (change) {
 		case ItemPositionHasChanged:
-			foreach (EdgeElement *edge, edgeList)
+			foreach (EdgeElement *edge, mEdgeList)
 				edge->adjustLink();
 			return value;
 		default:
@@ -174,24 +165,24 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 
 QRectF NodeElement::contentsRect() const
 {
-	return m_contents;
+	return mContents;
 }
 
 QRectF NodeElement::boundingRect() const
 {
-	return m_contents.adjusted(-kvadratik,-kvadratik,kvadratik,kvadratik);
+	return mContents.adjusted(-kvadratik, -kvadratik, kvadratik, kvadratik);
 }
 
 void NodeElement::updateData()
 {
 	Element::updateData();
-	if (moving == 0) {
-		setPos(dataIndex.data(roles::positionRole).toPointF());
-		QRectF newRect = dataIndex.data(roles::configurationRole).value<QPolygon>().boundingRect();
+	if (mMoving == 0) {
+		setPos(mDataIndex.data(roles::positionRole).toPointF());
+		QRectF newRect = mDataIndex.data(roles::configurationRole).value<QPolygon>().boundingRect();
 		if (!newRect.isEmpty())
-			m_contents = newRect;
-		transform.reset();
-		transform.scale(m_contents.width(), m_contents.height());
+			mContents = newRect;
+		mTransform.reset();
+		mTransform.scale(mContents.width(), mContents.height());
 	}
 }
 
@@ -209,16 +200,16 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	int iid = portId(id);
 
 	if (id < 0.0)
-		return QPointF(0,0);
-	if (id < pointPorts.size())
-		return transform.map(pointPorts[iid]);
-	if (id < pointPorts.size() + linePorts.size())
-		return newTransform(linePorts.at(iid - pointPorts.size())).pointAt(id - 1.0 * iid);
+		return QPointF(0, 0);
+	if (id < mPointPorts.size())
+		return mTransform.map(mPointPorts[iid]);
+	if (id < mPointPorts.size() + mLinePorts.size())
+		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
 	else
-		return QPointF(0,0);
+		return QPointF(0, 0);
 }
 
-QLineF NodeElement::newTransform(const statLine& port) const
+QLineF NodeElement::newTransform(const StatLine& port) const
 {
 	float x1 = 0.0;
 	float x2 = 0.0;
@@ -250,45 +241,47 @@ QLineF NodeElement::newTransform(const statLine& port) const
 
 qreal NodeElement::getPortId(const QPointF &location) const
 {
-	for( int i = 0; i < pointPorts.size(); i++ ) {
-		if ( QRectF(transform.map(pointPorts[i])-QPointF(kvadratik,kvadratik),QSizeF(kvadratik*2,kvadratik*2)).contains( location ) )
+	for (int i = 0; i < mPointPorts.size(); ++i) {
+		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
+				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 			return 1.0 * i;
 	}
-	for( int i = 0; i < linePorts.size(); i++ ) {
+
+	for( int i = 0; i < mLinePorts.size(); i++ ) {
 		QPainterPathStroker ps;
 		ps.setWidth(kvadratik);
 
 		QPainterPath path;
-		path.moveTo(newTransform(linePorts[i]).p1());
-		path.lineTo(newTransform(linePorts[i]).p2());
+		path.moveTo(newTransform(mLinePorts[i]).p1());
+		path.lineTo(newTransform(mLinePorts[i]).p2());
 
 		path = ps.createStroke(path);
-		if ( path.contains(location) )
-			return ( 1.0 * ( i + pointPorts.size() ) + qMin( 0.9999,
-				QLineF( QLineF(newTransform(linePorts[i])).p1(),location).length()
-				/ newTransform(linePorts[i]).length() ) );
+		if (path.contains(location))
+			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
+				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
+				/ newTransform(mLinePorts[i]).length() ) );
 	}
 
-	if (pointPorts.size()!=0) {
+	if (mPointPorts.size()!=0) {
 		int numMinDistance = 0;
-		qreal minDistance = QLineF( pointPorts[0], transform.inverted().map(location) ).length();
-		for( int i = 0; i < pointPorts.size(); i++ ) {
-			if (QLineF( pointPorts[i], transform.inverted().map(location) ).length()<minDistance) {
+		qreal minDistance = QLineF( mPointPorts[0], mTransform.inverted().map(location) ).length();
+		for( int i = 0; i < mPointPorts.size(); i++ ) {
+			if (QLineF( mPointPorts[i], mTransform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
-				minDistance = QLineF( pointPorts[i], transform.inverted().map(location) ).length();
+				minDistance = QLineF( mPointPorts[i], mTransform.inverted().map(location) ).length();
 			}
 		}
 		return 1.0 * numMinDistance;
-	} else if (linePorts.size()!=0) {
+	} else if (mLinePorts.size()!=0) {
 		int numMinDistance = 0;
-		qreal minDistance = QLineF( QLineF(linePorts[0]).p1(), transform.inverted().map(location) ).length();
-		for( int i = 0; i < linePorts.size(); i++ ) {
-			if (QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length()<minDistance) {
+		qreal minDistance = QLineF( QLineF(mLinePorts[0]).p1(), mTransform.inverted().map(location) ).length();
+		for( int i = 0; i < mLinePorts.size(); i++ ) {
+			if (QLineF( QLineF(mLinePorts[i]).p1(), mTransform.inverted().map(location) ).length()<minDistance) {
 				numMinDistance = i;
-				minDistance = QLineF( QLineF(linePorts[i]).p1(), transform.inverted().map(location) ).length();
+				minDistance = QLineF( QLineF(mLinePorts[i]).p1(), mTransform.inverted().map(location) ).length();
 			}
 		}
-		return 1.0 * (numMinDistance + pointPorts.size());
+		return 1.0 * (numMinDistance + mPointPorts.size());
 	}
 	return -1.0;
 }
@@ -296,46 +289,46 @@ qreal NodeElement::getPortId(const QPointF &location) const
 void NodeElement::setPortsVisible(bool value)
 {
 	prepareGeometryChange();
-	portsVisible = value;
+	mPortsVisible = value;
 }
 
 void NodeElement::complexInlineEditing()
 {
-	if ((docvis.toPlainText() == "") && (doctype.toPlainText() == "")){
-	docvis.setTextWidth(0);
-	doctype.setTextWidth(0);
-	d.setPos(15, m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - 25);
+	if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() == "")){
+	mDocVis.setTextWidth(0);
+	mDocType.setTextWidth(0);
+	mTitle.setPos(15, mContents.height() - 15);
+	mTitle.setTextWidth(mContents.width() - 25);
 	} else
-	if ((docvis.toPlainText() == "") && (doctype.toPlainText() != "")){
-	docvis.setTextWidth(0);
-	doctype.setPos(1, m_contents.height() - 15);
-	if (typetext.length() * 5 < 6*m_contents.width() / 16)
-		doctype.setTextWidth(typetext.length() * 5);
+	if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() != "")){
+	mDocVis.setTextWidth(0);
+	mDocType.setPos(1, mContents.height() - 15);
+	if (mTypeText.length() * 5 < 6*mContents.width() / 16)
+		mDocType.setTextWidth(mTypeText.length() * 5);
 	else
-		doctype.setTextWidth(6 * m_contents.width() / 16);
+		mDocType.setTextWidth(6 * mContents.width() / 16);
 
-	d.setPos(doctype.textWidth(), m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+	mTitle.setPos(mDocType.textWidth(), mContents.height() - 15);
+	mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
 	} else
-	if ((docvis.toPlainText() != "") && (doctype.toPlainText() == "")){
-	doctype.setTextWidth(0);
-	docvis.setPos(1, m_contents.height() - 15);
-	docvis.setTextWidth(11);
-	d.setPos(16, m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - 37);
+	if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() == "")){
+	mDocType.setTextWidth(0);
+	mDocVis.setPos(1, mContents.height() - 15);
+	mDocVis.setTextWidth(11);
+	mTitle.setPos(16, mContents.height() - 15);
+	mTitle.setTextWidth(mContents.width() - 37);
 	} else
-	if ((docvis.toPlainText() != "") && (doctype.toPlainText() != "")){
-	docvis.setPos(1, m_contents.height() - 15);
-	docvis.setTextWidth(11);
-	doctype.setPos (16, m_contents.height() - 15);
-	if (typetext.length() * 5 < 6 * m_contents.width() / 16)
-		doctype.setTextWidth(typetext.length() * 5);
+	if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() != "")){
+	mDocVis.setPos(1, mContents.height() - 15);
+	mDocVis.setTextWidth(11);
+	mDocType.setPos (16, mContents.height() - 15);
+	if (mTypeText.length() * 5 < 6 * mContents.width() / 16)
+		mDocType.setTextWidth(mTypeText.length() * 5);
 	else
-		doctype.setTextWidth(6 * m_contents.width() / 16);
+		mDocType.setTextWidth(6 * mContents.width() / 16);
 
-	d.setPos(docvis.textWidth() + doctype.textWidth(),  m_contents.height() - 15);
-	d.setTextWidth(m_contents.width() - doctype.textWidth() - 30);
+	mTitle.setPos(mDocVis.textWidth() + mDocType.textWidth(),  mContents.height() - 15);
+	mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
 	}
 }
 
@@ -363,23 +356,33 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
-			painter->drawRect(QRectF(m_contents.topLeft(),QSizeF(4,4)));
-			painter->drawRect(QRectF(m_contents.topRight(),QSizeF(-4,4)));
-			painter->drawRect(QRectF(m_contents.bottomLeft(),QSizeF(4,-4)));
+			painter->drawRect(QRectF(mContents.topLeft(),QSizeF(4,4)));
+			painter->drawRect(QRectF(mContents.topRight(),QSizeF(-4,4)));
+			painter->drawRect(QRectF(mContents.bottomLeft(),QSizeF(4,-4)));
 
-			painter->translate(m_contents.bottomRight());
+			painter->translate(mContents.bottomRight());
 			painter->drawLine(QLineF(-4,0,0,-4));
 			painter->drawLine(QLineF(-8,0,0,-8));
 			painter->drawLine(QLineF(-12,0,0,-12));
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || portsVisible) && portrenderer)
+		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portrenderer)
 		{
 			painter->save();
 			painter->setOpacity(0.7);
-			portrenderer->render(painter,m_contents);
+			portrenderer->render(painter,mContents);
 			painter->restore();
 		}
 	}
+}
+
+void NodeElement::addEdge(EdgeElement *edge)
+{
+	mEdgeList << edge;
+}
+
+void NodeElement::delEdge(EdgeElement *edge)
+{
+	mEdgeList.removeAt(mEdgeList.indexOf(edge));
 }

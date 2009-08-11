@@ -20,10 +20,8 @@ namespace UML {
 		/** @brief Получить индекс элемента в модели
 		 *	@brief @return Индекс элемента
 		 * */
-		QPersistentModelIndex index() const
-		{
-			return dataIndex;
-		}
+		QPersistentModelIndex index() const;
+
 		/** @brief Установить индекс элемента */
 		void setIndex(QPersistentModelIndex &index /**< Индекс */);
 
@@ -38,16 +36,13 @@ namespace UML {
 		virtual void connectToPort() { }
 
 	protected:
-		//       void mousePressEvent ( QGraphicsSceneMouseEvent * event );
-		//       void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 		/** @brief Индекс элемента в модели */
-		QPersistentModelIndex dataIndex;
+		QPersistentModelIndex mDataIndex;
 
 		/** @brief Идентификатор элемента */
-		qReal::IdType m_uuid;
-		/** @brief Тип элемента */
+		qReal::IdType mUuid;
 
 		/** @brief Индикатор перемещения элемента */
-		bool moving;
+		bool mMoving;
 	};
 }
