@@ -23,12 +23,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthInvertedCross" name="Unholy Inverted Cross" >
@@ -50,12 +44,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthMogendovid" name="Mogendovid" >
@@ -79,12 +67,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthPentagram" name="Pentagram" >
@@ -107,12 +89,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthCircledPentagram" name="Circled Pentagram" >
@@ -136,12 +112,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthSwastika" name="Swastika" >
@@ -165,12 +135,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthSwastikaTR" name="NS Swastika" >
@@ -190,12 +154,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthEagle" name="NS Eagle" >
@@ -212,12 +170,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthChaosStar" name="Chaos Star" >
@@ -234,12 +186,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthTaijitu" name="Taijitu" >
@@ -256,12 +202,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthHnS" name="Hammer_n_sickle" >
@@ -278,12 +218,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
   <node id="orthKroki" name="Kroki" >
@@ -356,12 +290,6 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <properties/>
    </logic>
   </node>
    </graph_types>
