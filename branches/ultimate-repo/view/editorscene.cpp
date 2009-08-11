@@ -105,8 +105,9 @@ void EditorScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 
 void EditorScene::keyPressEvent( QKeyEvent * event )
 {
-	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
-		this->focusItem()->clearFocus();
+	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
+		// Forward event to text editor
+		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
 		QGraphicsTextItem *ti = NULL;
 		if (this->focusItem()!= NULL)

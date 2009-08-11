@@ -389,9 +389,6 @@ void Generator::genClasses(){
 		    out << "\tdocvis.setParentItem(this);\n"
 			<< "\tdoctype.setParentItem(this);\n";
 		}
-                out << "\tQObject::connect(d.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));\n";
-
-
 
 
 		if ((*o)->type == NODE)

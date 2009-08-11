@@ -13,6 +13,46 @@
 
 using namespace UML;
 
+void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsTextItem::mousePressEvent(event);
+	if (!(event->modifiers() & Qt::ControlModifier))
+		scene()->clearSelection();
+	parentItem()->setSelected(true);
+}
+
+void ElementTitle::focusInEvent(QFocusEvent *event)
+{
+	oldText = toHtml();
+	QGraphicsTextItem::focusInEvent(event);
+}
+
+void ElementTitle::focusOutEvent(QFocusEvent *event)
+{
+	QGraphicsTextItem::focusOutEvent(event);
+	setTextInteractionFlags(Qt::NoTextInteraction);
+}
+
+void ElementTitle::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape)
+	{
+		// Restore previous text and loose focus
+		setHtml(oldText);
+		clearFocus();
+		return;
+	}
+	if (event->key() == Qt::Key_Enter ||
+	    event->key() == Qt::Key_Return)
+	{
+		// Update name and loose focus
+		(static_cast<NodeElement*>(parentItem()))->changeName();
+		clearFocus();
+		return;
+	}
+	QGraphicsTextItem::keyPressEvent(event);
+}
+
 NodeElement::NodeElement()
 	: portsVisible(false)
 {
@@ -191,17 +231,19 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	switch ( change ) {
-		case ItemPositionHasChanged:
+	switch (change)
+	{
+	case ItemPositionHasChanged:
 		{
 			EditorScene* sc = static_cast<EditorScene*>(scene());
 			sc->updateLinks();
 			adjustEdges();
-			return value;
 		}
-		default:
-			return QGraphicsItem::itemChange(change, value);
+		break;
+	default:
+		break;
 	}
+	return QGraphicsItem::itemChange(change, value);
 }
 
 QRectF NodeElement::contentsRect() const
