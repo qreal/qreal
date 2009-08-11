@@ -234,11 +234,8 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 	switch (change)
 	{
 	case ItemPositionHasChanged:
-		{
-			EditorScene* sc = static_cast<EditorScene*>(scene());
-			sc->updateLinks();
-			adjustEdges();
-		}
+		static_cast<EditorScene*>(scene())->updateLinks();
+		adjustEdges();
 		break;
 	default:
 		break;

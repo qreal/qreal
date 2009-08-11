@@ -28,7 +28,6 @@ namespace UML {
 	 * */
 	class statLine;
 
-	// Why subclassing? Because the same is needed for class members, which is already subclassed.
 	class ElementTitle : public QGraphicsTextItem
 	{
 		Q_OBJECT
