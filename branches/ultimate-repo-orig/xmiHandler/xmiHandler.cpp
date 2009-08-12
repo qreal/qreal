@@ -148,9 +148,18 @@ QString XmiHandler::serializeObject(QString const &id, QString const &parentId)
 	// additional params
 	if (object.getProperty("visibility").size() > 0) {
 		QString visibility = object.getProperty("visibility");
+		if (visibility == "+"){
+		    visibility = "public";
+		} else if (visibility == "-"){
+		    visibility = "private";
+		} else if (visibility == "#"){
+		    visibility = "protected";
+		} else if (visibility == "~"){
+		    visibility = "package";
+		}
 
 		if (this->isVisibilitySuitable(visibility)) {
-			additionalParams = additionalParams + "visibility=\"" + object.getProperty("visibility") + "\"";
+			additionalParams = additionalParams + "visibility=\"" + visibility + "\"";
 		} else {
 			this->addError("object " + object.getTypeId() + " with id  " + object.getId() + " has invalid visibility property: " + visibility);
 		}
