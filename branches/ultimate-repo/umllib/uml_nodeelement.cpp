@@ -87,7 +87,6 @@ void NodeElement::changeName()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	d.setTextWidth(boundingRect().width()-25);
 	if (isSelected())
 	{
 		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -127,11 +126,21 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
+void NodeElement::setDimensions(QRectF size, bool store)
+{
+	prepareGeometryChange();
+	m_contents = size;
+	setPos(pos() + m_contents.topLeft());
+	m_contents.translate(-m_contents.topLeft());
+	transform.reset();
+	transform.scale(m_contents.width(), m_contents.height());
+	adjustEdges();
+	d.setTextWidth(m_contents.width()-15);
+	//FIXME: update model if store==true
+}
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	d.setTextWidth(boundingRect().width()-25);
-
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
 	} else {
@@ -173,19 +182,8 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			newcontents.setHeight(size);
 		}
 
-		if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) ) {
-			prepareGeometryChange();
-
-			m_contents = newcontents;
-
-			setPos(pos() + m_contents.topLeft());
-			m_contents.translate(-m_contents.topLeft());
-
-			transform.reset();
-			transform.scale(m_contents.width(), m_contents.height());
-
-			adjustEdges();
-		}
+		if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) )
+			setDimensions(newcontents, false);
 	}
 }
 
@@ -204,6 +202,7 @@ void NodeElement::adjustEdges()
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	m_contents = m_contents.normalized();
+	setDimensions(m_contents, true);
 
 	moving = 1;
 	Q_ASSERT(dataIndex.isValid());

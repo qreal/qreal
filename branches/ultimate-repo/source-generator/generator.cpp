@@ -489,8 +489,7 @@ void Generator::genClasses(){
 					    << QString("\tconts.setHeight(20);\n");
 			}
 			out << "\tpainter->restore();\n";
-		  } else
-		     out  << "\td.setTextWidth(m_contents.width()-15);\n";
+		}
 
 		out<< "}\n\n";
 

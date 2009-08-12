@@ -83,6 +83,9 @@ namespace UML {
 
 		virtual void updateData();
 
+		/** Установить новые размеры */
+		void setDimensions(QRectF size, bool store);
+
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта
 
