@@ -13,6 +13,7 @@
 
 using namespace UML;
 
+/* {{{ Element title */
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsTextItem::mousePressEvent(event);
@@ -52,6 +53,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	}
 	QGraphicsTextItem::keyPressEvent(event);
 }
+/* }}} */
 
 NodeElement::NodeElement()
 	: portsVisible(false)
@@ -129,7 +131,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void NodeElement::setDimensions(QRectF size, bool store)
 {
 	prepareGeometryChange();
-	m_contents = size;
+	if (size.isValid()) m_contents = size;
 	setPos(pos() + m_contents.topLeft());
 	m_contents.translate(-m_contents.topLeft());
 	transform.reset();
@@ -202,7 +204,7 @@ void NodeElement::adjustEdges()
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	m_contents = m_contents.normalized();
-	setDimensions(m_contents, true);
+	setDimensions(QRectF(), true);
 
 	moving = 1;
 	Q_ASSERT(dataIndex.isValid());
