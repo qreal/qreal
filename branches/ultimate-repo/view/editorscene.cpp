@@ -27,8 +27,11 @@ EditorScene::~EditorScene()
 
 void EditorScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	Q_UNUSED(event);
-	//	event->setAccepted();
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasFormat("application/x-real-uml-data"))
+		QGraphicsScene::dragEnterEvent(event);
+	else
+		event->ignore();
 }
 
 #if 1
