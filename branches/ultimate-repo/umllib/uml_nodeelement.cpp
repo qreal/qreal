@@ -128,17 +128,28 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
-void NodeElement::setDimensions(QRectF size, bool store)
+void NodeElement::setGeometry(QRectF geom)
 {
 	prepareGeometryChange();
-	if (size.isValid()) m_contents = size;
-	setPos(pos() + m_contents.topLeft());
-	m_contents.translate(-m_contents.topLeft());
+	if (geom.isValid())
+	{
+		m_contents = geom.translated(-geom.topLeft());
+		setPos(geom.topLeft());
+	}
 	transform.reset();
 	transform.scale(m_contents.width(), m_contents.height());
 	adjustEdges();
 	d.setTextWidth(m_contents.width()-15);
-	//FIXME: update model if store==true
+}
+
+void NodeElement::storeGeometry(void)
+{
+	QRectF tmp = m_contents; // store current size
+	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
+	im->changeRole(dataIndex, pos(), Unreal::PositionRole);
+	// Here model emits signal dataChanged, and m_contents gets overwritten.
+	// That's why we store it before.
+	im->changeRole(dataIndex, QPolygon(tmp.toAlignedRect()), Unreal::ConfigurationRole);
 }
 
 void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
@@ -184,8 +195,9 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			newcontents.setHeight(size);
 		}
 
+		newcontents.translate(pos());
 		if ( ! ( ( newcontents.width() < 10 ) || ( newcontents.height() < 10 ) ) )
-			setDimensions(newcontents, false);
+			setGeometry(newcontents);
 	}
 }
 
@@ -204,13 +216,10 @@ void NodeElement::adjustEdges()
 void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	m_contents = m_contents.normalized();
-	setDimensions(QRectF(), true);
+	storeGeometry();
 
 	moving = 1;
 	Q_ASSERT(dataIndex.isValid());
-	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
-	im->changeRole(dataIndex, pos(), Unreal::PositionRole);
-	im->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
 	NodeElement *newParent = getNodeAt(event->scenePos());
 	moving = 0;
 	if ( dragState != None )
@@ -258,20 +267,9 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (moving == 0) {
-		setPos(dataIndex.data(Unreal::PositionRole).toPointF());
+		QPointF newpos = dataIndex.data(Unreal::PositionRole).toPointF();
 		QRectF newRect = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>().boundingRect();
-		if ( ! newRect.isEmpty() )
-			m_contents = newRect;
-		else if (!m_contents.isEmpty()) // This a temporary hack
-		{
-			//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-			//RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
-			RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
-			im->changeRole(dataIndex, QPolygon(m_contents.toAlignedRect()), Unreal::ConfigurationRole);
-		}
-
-		transform.reset();
-		transform.scale(m_contents.width(), m_contents.height());
+		setGeometry(newRect.translated(pos()));
 	}
 }
 

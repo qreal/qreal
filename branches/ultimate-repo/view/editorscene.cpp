@@ -239,8 +239,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			scene->addItem(e);
 			e->setIndex(current);
 			e->setPos(current.data(Unreal::PositionRole).toPointF());
-			if (dynamic_cast<UML::NodeElement*>(e))
-				dynamic_cast<UML::NodeElement*>(e)->setDimensions(QRectF(), false);
 
 			if (parent_uuid != "")
 				e->setParentItem(items[parent]);
