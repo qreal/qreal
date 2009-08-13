@@ -108,11 +108,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void NodeElement::setGeometry(QRectF geom)
 {
 	prepareGeometryChange();
+	setPos(geom.topLeft());
 	if (geom.isValid())
-	{
 		m_contents = geom.translated(-geom.topLeft());
-		setPos(geom.topLeft());
-	}
 	transform.reset();
 	transform.scale(m_contents.width(), m_contents.height());
 	adjustEdges();
@@ -122,7 +120,7 @@ void NodeElement::setGeometry(QRectF geom)
 void NodeElement::storeGeometry(void)
 {
 	QRectF tmp = m_contents; // store current size
-	RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
+	RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
 	im->changeRole(dataIndex, pos(), Unreal::PositionRole);
 	// Here model emits signal dataChanged, and m_contents gets overwritten.
 	// That's why we store it before.
@@ -195,10 +193,10 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	m_contents = m_contents.normalized();
 	storeGeometry();
 
-	moving = 1;
-	Q_ASSERT(dataIndex.isValid());
-	NodeElement *newParent = getNodeAt(event->scenePos());
-	moving = 0;
+//	moving = 1;
+//	Q_ASSERT(dataIndex.isValid());
+//	NodeElement *newParent = getNodeAt(event->scenePos());
+//	moving = 0;
 	if ( dragState != None )
 		dragState = None;
 	else
@@ -246,19 +244,27 @@ void NodeElement::updateData()
 	if (moving == 0) {
 		QPointF newpos = dataIndex.data(Unreal::PositionRole).toPointF();
 		QPolygon newpoly = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
+		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
-		int minx, miny, maxx, maxy;
-		minx = maxx = newpoly[0].x();
-		miny = maxy = newpoly[0].y();
-		for (int i = 1; i < 4; i++)
+		if (!newpoly.isEmpty())
 		{
-			if (minx < newpoly[i].x()) minx = newpoly[i].x();
-			if (maxx < newpoly[i].x()) maxx = newpoly[i].x();
-			if (miny < newpoly[i].y()) miny = newpoly[i].y();
-			if (maxy < newpoly[i].y()) maxy = newpoly[i].y();
+			int minx, miny, maxx, maxy;
+			minx = maxx = newpoly[0].x();
+			miny = maxy = newpoly[0].y();
+			for (int i = 1; i < newpoly.size(); i++)
+			{
+				if (minx > newpoly[i].x())
+					minx = newpoly[i].x();
+				if (maxx < newpoly[i].x())
+					maxx = newpoly[i].x();
+				if (miny > newpoly[i].y())
+					miny = newpoly[i].y();
+				if (maxy < newpoly[i].y())
+					maxy = newpoly[i].y();
+			}
+			newRect = QRectF(QPoint(minx, miny), QSize(maxx-minx, maxy-miny));
 		}
-		QRectF newRect = QRectF(QPoint(minx, miny), QSize(maxx-minx, maxy-miny));
-		setGeometry(newRect.translated(pos()));
+		setGeometry(newRect.translated(newpos));
 	}
 }
 

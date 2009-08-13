@@ -236,15 +236,12 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			continue;
 
 		if (UML::Element *e = UML::GUIObjectFactory(type)) {
-			scene->addItem(e);
 			e->setIndex(current);
-			e->setPos(current.data(Unreal::PositionRole).toPointF());
-
 			if (parent_uuid != "")
 				e->setParentItem(items[parent]);
-
+			else
+				scene->addItem(e);
 			items[current] = e;
-
 			e->updateData();
 			e->connectToPort();
 		}

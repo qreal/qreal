@@ -4,7 +4,7 @@ QT += sql \
     network \
     xml
 
-CONFIG += qt debug
+CONFIG += qt
 
 INCLUDEPATH += view \
     umllib \
