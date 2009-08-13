@@ -34,7 +34,6 @@ void EditorScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 		event->ignore();
 }
 
-#if 1
 void EditorScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
@@ -44,7 +43,6 @@ void EditorScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
 }
-#endif
 
 void EditorScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
@@ -112,19 +110,8 @@ void EditorScene::keyPressEvent( QKeyEvent * event )
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
-		QGraphicsTextItem *ti = NULL;
-		if (this->focusItem()!= NULL)
-			ti = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
-		if (ti)
-		{
-			// text item has focus. Just pass key to it
-			QGraphicsScene::keyPressEvent(event);
-		}
-		else // Add more cases if necessary
-		{
-			// then uml element has focus, we can safely delete it.
-			window->deleteFromDiagram();
-		}
+		// Delete selected elements from scene
+		window->deleteFromDiagram();
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }

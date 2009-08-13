@@ -41,12 +41,10 @@ public:
 protected:
 	/** @brief Обработать начало события drag'n'drop */
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );
-#if 1
 	/** @brief Обработать перемещение элемента при drag'n'drop */
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event /**< Событие */);
 	/** @brief Обработать завершение события drag'n'drop */
 	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event /**< Событие */);
-#endif
 	/** @brief Обработать событие drag'n'drop */
 	void dropEvent ( QGraphicsSceneDragDropEvent *event /**< Событие */);
 
