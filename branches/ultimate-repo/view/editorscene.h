@@ -86,15 +86,15 @@ public:
 	/** @brief Получить область, занимаемую объектом с данным индексом
 	 *	@brief @return Область, занимаемая объектом с данным индексом
 	 * */
-	QRect visualRect(const QModelIndex &index /**< Индекс элемента в модели */) const {return QRect();}
+	QRect visualRect(const QModelIndex &index /**< Индекс элемента в модели */) const {Q_UNUSED(index); return QRect();}
 	/** @brief Отобразить участок сцены, на котором расположен данный элемент */
 	void scrollTo(const QModelIndex &index, /**< Индекс элемента в модели */
 		      ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
-		     ){}
+		     ){Q_UNUSED(index); Q_UNUSED(hint);}
 	/** @brief Получить индекс элемента, расположенного в данной точке сцены
 	 *	@brief @return Индекс элемента
 	 * */
-	QModelIndex indexAt(const QPoint &point /**< Точка сцены */) const {return QModelIndex();}
+	QModelIndex indexAt(const QPoint &point /**< Точка сцены */) const {Q_UNUSED(point); return QModelIndex();}
 
 public slots:
 	/** @brief Очистить сцену */
@@ -123,7 +123,7 @@ protected slots:
 	 * */
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, /**< Действие курсора */
 			       Qt::KeyboardModifiers modifiers /**< Модификаторы */
-			      ) {return QModelIndex();}
+			      ) {Q_UNUSED(cursorAction); Q_UNUSED(modifiers); return QModelIndex();}
 
 	/** @brief Получить горизонтальное смещение представления
 	 *	@brief @return Горизонтальное смещение представления
@@ -137,17 +137,17 @@ protected slots:
 	/** @brief Узнать, является ли элемент с заданным индексом невидимым
 	 *	@brief @return Является ли элемент с заданным индексом невидимым
 	 * */
-	bool isIndexHidden(const QModelIndex &index /**< Индекс элемента */) const {return false;}
+	bool isIndexHidden(const QModelIndex &index /**< Индекс элемента */) const {Q_UNUSED(index); return false;}
 
 	/** @brief Установить выделение элементов */
 	void setSelection(const QRect& rect, /**< Область сцены*/
 			  QItemSelectionModel::SelectionFlags command /**< Тип выделения */
-			 ){}
+			 ){Q_UNUSED(rect); Q_UNUSED(command);}
 
 	/** @brief Возвращает регион, в который попадают выделенные элементы
 	 *	@brief @return Регион, в который попадают выделенные элементы
 	 * */
-	QRegion visualRegionForSelection(const QItemSelection &selection /**< Выделение */ ) const {return QRegion();}
+	QRegion visualRegionForSelection(const QItemSelection &selection /**< Выделение */ ) const {Q_UNUSED(selection); return QRegion();}
 
 private:
 	/** @brief Сцена */
