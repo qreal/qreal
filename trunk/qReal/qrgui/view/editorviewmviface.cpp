@@ -134,14 +134,12 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		//if (UML::Element *e = UML::GUIObjectFactory(type)) {
 		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
-			mScene->addItem(e);
 			e->setIndex(current);
-
 			if (!(parent_uuid == Id()))
 				e->setParentItem(items[parent]);
-
+			else
+				mScene->addItem(e);
 			items[current] = e;
-
 			e->updateData();
 			e->connectToPort();
 		}

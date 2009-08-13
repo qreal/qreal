@@ -12,7 +12,6 @@ Kroki::Kroki() {
 	mTitle.setFlags(0);
 	mTitle.setTextInteractionFlags(Qt::NoTextInteraction);
 	mTitle.setParentItem(this);
-	QObject::connect(mTitle.document(), SIGNAL(contentsChanged()), this, SLOT(changeName()));
 }
 
 void Kroki::updateData()
@@ -26,7 +25,4 @@ void Kroki::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWid
 {
 	mRenderer.render(painter, mContents);
 	NodeElement::paint(painter, style, widget, NULL);
-	mTitle.setTextWidth(mContents.width() - 15);
-	mTitle.setPos(7,0);
-//	mTitle.paint(painter, style, widget);
 }

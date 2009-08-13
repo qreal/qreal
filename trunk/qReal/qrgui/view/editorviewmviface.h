@@ -34,9 +34,9 @@ public:
 	 * */
 	QRect visualRect(const QModelIndex &index /**< Индекс элемента в модели */) const;
 	/** @brief Отобразить участок сцены, на котором расположен данный элемент */
-	 void scrollTo(const QModelIndex &index, /**< Индекс элемента в модели */
-					ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
-					);
+	void scrollTo(const QModelIndex &index, /**< Индекс элемента в модели */
+	              ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
+	             );
 	/** @brief Получить индекс элемента, расположенного в данной точке сцены
 	 *	@brief @return Индекс элемента
 	 * */
@@ -57,18 +57,18 @@ public slots:
 protected slots:
 	/** @brief Обработать изменение данных элемента модели */
 	void dataChanged(const QModelIndex &topLeft, /**< Индекс верхнего левого элемента */
-						const QModelIndex &bottomRight /**< Индекс нижнего правого элемента */
-						);
+	                 const QModelIndex &bottomRight /**< Индекс нижнего правого элемента */
+	                );
 	/** @brief Обработать удаление рядов из модели */
 	void rowsAboutToBeRemoved ( const QModelIndex & parent, /**< Индекс элемента модели, ряды которого удаляются */
-											int start, /**< Номер первого удаляемого ряда */
-											int end /**< Номер последнего удаляемого ряда */
-											);
+	                            int start, /**< Номер первого удаляемого ряда */
+	                            int end /**< Номер последнего удаляемого ряда */
+	                          );
 	/** @brief обработать добавление рядов в модели */
 	void rowsInserted ( const QModelIndex & parent, /**< Индекс элемента модели, к которому добавляются ряды */
-								int start, /**< Номер первого добавленного ряда */
-								int end /**< Номер последнего добавленного ряда */
-								);
+	                    int start, /**< Номер первого добавленного ряда */
+	                    int end /**< Номер последнего добавленного ряда */
+	                  );
 //    void selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected );
 
 protected:
@@ -78,8 +78,8 @@ protected:
 	 *	@brief @return Индекс модели
 	 * */
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, /**< Действие курсора */
-						Qt::KeyboardModifiers modifiers /**< Модификаторы */
-						);
+	                       Qt::KeyboardModifiers modifiers /**< Модификаторы */
+	                      );
 
 	/** @brief Получить горизонтальное смещение представления
 	 *	@brief @return Горизонтальное смещение представления
@@ -97,8 +97,8 @@ protected:
 
 	/** @brief Установить выделение элементов */
 	void setSelection(const QRect& rect, /**< Область сцены*/
-					QItemSelectionModel::SelectionFlags command /**< Тип выделения */
-					);
+	                  QItemSelectionModel::SelectionFlags command /**< Тип выделения */
+	                 );
 
 	/** @brief Возвращает регион, в который попадают выделенные элементы
 	 *	@brief @return Регион, в который попадают выделенные элементы

@@ -14,6 +14,48 @@
 using namespace UML;
 using namespace qReal;
 
+/* {{{ Element title */
+void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+	QGraphicsTextItem::mousePressEvent(event);
+	if (!(event->modifiers() & Qt::ControlModifier))
+		scene()->clearSelection();
+	parentItem()->setSelected(true);
+}
+
+void ElementTitle::focusInEvent(QFocusEvent *event)
+{
+	oldText = toHtml();
+	QGraphicsTextItem::focusInEvent(event);
+}
+
+void ElementTitle::focusOutEvent(QFocusEvent *event)
+{
+	QGraphicsTextItem::focusOutEvent(event);
+	setTextInteractionFlags(Qt::NoTextInteraction);
+}
+
+void ElementTitle::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Escape)
+	{
+		// Restore previous text and loose focus
+		setHtml(oldText);
+		clearFocus();
+		return;
+	}
+	if (event->key() == Qt::Key_Enter ||
+	    event->key() == Qt::Key_Return)
+	{
+		// Update name and loose focus
+		(static_cast<NodeElement*>(parentItem()))->changeName();
+		clearFocus();
+		return;
+	}
+	QGraphicsTextItem::keyPressEvent(event);
+}
+/* }}} */
+
 NodeElement::NodeElement()
 : mPortsVisible(false), mLockChangeName(false), mLockUpdateText(false), mDragState(None)
 {
@@ -38,11 +80,6 @@ void NodeElement::changeName()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	//mTitle.setTextWidth(boundingRect().width()-25);
-
-	//complexInlineEditing();
-	// changeName();
-
 	if (isSelected())
 	{
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -62,6 +99,27 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	{
 		event->accept();
 	}
+}
+
+void NodeElement::setGeometry(QRectF geom)
+{
+	prepareGeometryChange();
+	setPos(geom.topLeft());
+	if (geom.isValid())
+		mContents = geom.translated(-geom.topLeft());
+	mTransform.reset();
+	mTransform.scale(mContents.width(), mContents.height());
+	foreach (EdgeElement *edge, mEdgeList)
+		edge->adjustLink();
+	mTitle.setTextWidth(mContents.width()-15);
+}
+
+void NodeElement::storeGeometry(void)
+{
+	QRectF tmp = mContents;
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
+	itemModel->setData(mDataIndex, pos(), roles::positionRole);
+	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -107,33 +165,18 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newcontents.setHeight(size);
 		}
 
-		if (!((newcontents.width() < 10) || (newcontents.height() < 10))) {
-			prepareGeometryChange();
-
-			mContents = newcontents;
-
-			setPos(pos() + mContents.topLeft());
-			mContents.translate(-mContents.topLeft());
-
-			mTransform.reset();
-			mTransform.scale(mContents.width(), mContents.height());
-			foreach (EdgeElement *edge, mEdgeList)
-				edge->adjustLink();
-		}
+		newcontents.translate(pos());
+		if (!((newcontents.width() < 10) || (newcontents.height() < 10)))
+			setGeometry(newcontents);
 	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mContents = mContents.normalized();
+	storeGeometry();
 
-	mMoving = 1;
-	Q_ASSERT(mDataIndex.isValid());
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG.
-	itemModel->setData(mDataIndex, pos(), roles::positionRole);
-	itemModel->setData(mDataIndex, QPolygon(mContents.toAlignedRect()), roles::configurationRole);
 //	NodeElement *newParent = getNodeAt(event->scenePos());
-	mMoving = 0;
 
 	if (mDragState != None)
 		mDragState = None;
@@ -177,12 +220,29 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
-		setPos(mDataIndex.data(roles::positionRole).toPointF());
-		QRectF newRect = mDataIndex.data(roles::configurationRole).value<QPolygon>().boundingRect();
-		if (!newRect.isEmpty())
-			mContents = newRect;
-		mTransform.reset();
-		mTransform.scale(mContents.width(), mContents.height());
+		QPointF newpos = mDataIndex.data(roles::positionRole).toPointF();
+		QPolygon newpoly = mDataIndex.data(roles::configurationRole).value<QPolygon>();
+		QRectF newRect; // Use default ((0,0)-(0,0))
+		// QPolygon::boundingRect is buggy :-(
+		if (!newpoly.isEmpty())
+		{
+			int minx, miny, maxx, maxy;
+			minx = maxx = newpoly[0].x();
+			miny = maxy = newpoly[0].y();
+			for (int i = 1; i < newpoly.size(); i++)
+			{
+				if (minx > newpoly[i].x())
+					minx = newpoly[i].x();
+				if (maxx < newpoly[i].x())
+					maxx = newpoly[i].x();
+				if (miny > newpoly[i].y())
+					miny = newpoly[i].y();
+				if (maxy < newpoly[i].y())
+					maxy = newpoly[i].y();
+			}
+			newRect = QRectF(QPoint(minx, miny), QSize(maxx-minx, maxy-miny));
+		}
+		setGeometry(newRect.translated(newpos));
 	}
 }
 

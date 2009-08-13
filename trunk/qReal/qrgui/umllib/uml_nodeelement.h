@@ -11,6 +11,7 @@
 #include <QTextCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
 
 #include <QtGui/QWidget>
 
@@ -26,22 +27,15 @@ namespace UML {
 	class ElementTitle : public QGraphicsTextItem
 	{
 		Q_OBJECT
+		QString oldText;
 	public:
 		ElementTitle() {}
 		~ElementTitle() {}
 	protected:
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event)
-		{
-			QGraphicsTextItem::mousePressEvent(event);
-			if (!(event->modifiers() & Qt::ControlModifier))
-				scene()->clearSelection();
-			parentItem()->setSelected(true);
-		}
-		virtual void focusOutEvent(QFocusEvent *event)
-		{
-			QGraphicsTextItem::focusOutEvent(event);
-			setTextInteractionFlags(Qt::NoTextInteraction);
-		}
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+		virtual void focusInEvent(QFocusEvent *event);
+		virtual void focusOutEvent(QFocusEvent *event);
+		virtual void keyPressEvent(QKeyEvent *event);
 	};
 
 	class NodeElement :  public QObject, public Element
@@ -59,9 +53,9 @@ namespace UML {
 
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
-						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
+		                   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
+		                   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
+		                   SdfRenderer *portrenderer /**< Рендерер портов)*/);
 
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
@@ -75,6 +69,10 @@ namespace UML {
 
 		/** @brief Обновить данные элемента */
 		virtual void updateData();
+		/** @brief Установить новые размеры и позицию (не сохраняя в модель) */
+		void setGeometry(QRectF geom);
+		/** @brief Сохранить текущие размеры и позицию в модель */
+		void storeGeometry(void);
 
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта

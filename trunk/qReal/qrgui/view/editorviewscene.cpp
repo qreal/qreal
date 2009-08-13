@@ -61,8 +61,11 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 
 void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	Q_UNUSED(event);
-	//	event->setAccepted();
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasFormat("application/x-real-uml-data"))
+		QGraphicsScene::dragEnterEvent(event);
+	else
+		event->ignore();
 }
 
 void EditorViewScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
@@ -140,22 +143,12 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 
 void EditorViewScene::keyPressEvent( QKeyEvent * event )
 {
-	if ((event->key() == Qt::Key_Return) && (this->focusItem()!= NULL)){
-		this->focusItem()->clearFocus();
+	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
+		// Forward event to text editor
+		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
-		QGraphicsTextItem *textItem = NULL;
-		if (this->focusItem() !=  NULL)
-			textItem = dynamic_cast<QGraphicsTextItem *>(this->focusItem());
-		if (textItem)
-		{
-			// text item has focus. Just pass key to it
-			QGraphicsScene::keyPressEvent(event);
-		}
-		else // Add more cases if necessary
-		{
-			// then uml element has focus, we can safely delete it.
-			// window->deleteFromDiagram();
-		}
+		// Delete selected elements from scene
+		// window->deleteFromDiagram();
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
@@ -185,6 +178,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	UML::ElementTitle *t = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()));
+	// Double click on title activates it
 	if (event->button() == Qt::LeftButton && t)
 		t->setTextInteractionFlags(Qt::TextEditorInteraction);
 	QGraphicsScene::mouseDoubleClickEvent(event);
