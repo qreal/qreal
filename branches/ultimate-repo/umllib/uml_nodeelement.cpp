@@ -103,29 +103,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 			Element::mousePressEvent(event);
 	} else
 		Element::mousePressEvent(event);
-
-	if (event->button() == Qt::RightButton)
-	{
-		/*QWidget *w = new QWidget();
-				w->setAttribute(Qt::WA_DeleteOnClose, true);
-				w->setWindowFlags(Qt::FramelessWindowHint);
-		QLineEdit *lineEdit = new QLineEdit(dataIndex.data(Qt::DisplayRole).toString());
-			  // QString str = dataIndex.data(Qt::DisplayRole).toString();
-
-		QObject::connect (lineEdit, SIGNAL(textChanged(QString)), this, SLOT(changeName(QString)));
-		QObject::connect (lineEdit, SIGNAL(editingFinished()), w, SLOT(close()));
-
-		QVBoxLayout *layout = new QVBoxLayout(w);
-		layout->addWidget(lineEdit);
-		layout->setContentsMargins(0, 0, 0, 0);
-		w->setLayout(layout);
-		w->setFixedWidth(static_cast<int>(boundingRect().width()));
-		w->move(static_cast<int>(pos().x()) + 240, static_cast<int>(pos().y()) + 60);
-
-				w->show();*/
-
-		event->accept();
-	}
 }
 
 void NodeElement::setGeometry(QRectF geom)
@@ -268,7 +245,19 @@ void NodeElement::updateData()
 	Element::updateData();
 	if (moving == 0) {
 		QPointF newpos = dataIndex.data(Unreal::PositionRole).toPointF();
-		QRectF newRect = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>().boundingRect();
+		QPolygon newpoly = dataIndex.data(Unreal::ConfigurationRole).value<QPolygon>();
+		// QPolygon::boundingRect is buggy :-(
+		int minx, miny, maxx, maxy;
+		minx = maxx = newpoly[0].x();
+		miny = maxy = newpoly[0].y();
+		for (int i = 1; i < 4; i++)
+		{
+			if (minx < newpoly[i].x()) minx = newpoly[i].x();
+			if (maxx < newpoly[i].x()) maxx = newpoly[i].x();
+			if (miny < newpoly[i].y()) miny = newpoly[i].y();
+			if (maxy < newpoly[i].y()) maxy = newpoly[i].y();
+		}
+		QRectF newRect = QRectF(QPoint(minx, miny), QSize(maxx-minx, maxy-miny));
 		setGeometry(newRect.translated(pos()));
 	}
 }
