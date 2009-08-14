@@ -15,7 +15,7 @@ using namespace UML;
 using namespace qReal;
 
 /* {{{ Element title */
-void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent * event)
+void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsTextItem::mousePressEvent(event);
 	if (!(event->modifiers() & Qt::ControlModifier))
@@ -25,7 +25,7 @@ void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void ElementTitle::focusInEvent(QFocusEvent *event)
 {
-	oldText = toHtml();
+	mOldText = toHtml();
 	QGraphicsTextItem::focusInEvent(event);
 }
 
@@ -40,12 +40,12 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	if (event->key() == Qt::Key_Escape)
 	{
 		// Restore previous text and loose focus
-		setHtml(oldText);
+		setHtml(mOldText);
 		clearFocus();
 		return;
 	}
 	if (event->key() == Qt::Key_Enter ||
-	    event->key() == Qt::Key_Return)
+		event->key() == Qt::Key_Return)
 	{
 		// Update name and loose focus
 		(static_cast<NodeElement*>(parentItem()))->changeName();
@@ -101,7 +101,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
-void NodeElement::setGeometry(QRectF geom)
+void NodeElement::setGeometry(QRectF const &geom)
 {
 	prepareGeometryChange();
 	setPos(geom.topLeft());
@@ -111,7 +111,7 @@ void NodeElement::setGeometry(QRectF geom)
 	mTransform.scale(mContents.width(), mContents.height());
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->adjustLink();
-	mTitle.setTextWidth(mContents.width()-15);
+	mTitle.setTextWidth(mContents.width() - 15);
 }
 
 void NodeElement::storeGeometry(void)
@@ -224,13 +224,12 @@ void NodeElement::updateData()
 		QPolygon newpoly = mDataIndex.data(roles::configurationRole).value<QPolygon>();
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
-		if (!newpoly.isEmpty())
-		{
-			int minx, miny, maxx, maxy;
-			minx = maxx = newpoly[0].x();
-			miny = maxy = newpoly[0].y();
-			for (int i = 1; i < newpoly.size(); i++)
-			{
+		if (!newpoly.isEmpty()) {
+			int minx = newpoly[0].x();
+			int miny = newpoly[0].y();
+			int maxx = newpoly[0].x();
+			int maxy = newpoly[0].y();;
+			for (int i = 1; i < newpoly.size(); ++i) {
 				if (minx > newpoly[i].x())
 					minx = newpoly[i].x();
 				if (maxx < newpoly[i].x())
@@ -240,7 +239,7 @@ void NodeElement::updateData()
 				if (maxy < newpoly[i].y())
 					maxy = newpoly[i].y();
 			}
-			newRect = QRectF(QPoint(minx, miny), QSize(maxx-minx, maxy-miny));
+			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
 		setGeometry(newRect.translated(newpos));
 	}

@@ -27,7 +27,7 @@ namespace UML {
 	class ElementTitle : public QGraphicsTextItem
 	{
 		Q_OBJECT
-		QString oldText;
+		QString mOldText;
 	public:
 		ElementTitle() {}
 		~ElementTitle() {}
@@ -53,9 +53,9 @@ namespace UML {
 
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-		                   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-		                   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
-		                   SdfRenderer *portrenderer /**< Рендерер портов)*/);
+						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
+						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
+						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
 
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
@@ -70,9 +70,9 @@ namespace UML {
 		/** @brief Обновить данные элемента */
 		virtual void updateData();
 		/** @brief Установить новые размеры и позицию (не сохраняя в модель) */
-		void setGeometry(QRectF geom);
+		void setGeometry(QRectF const &geom);
 		/** @brief Сохранить текущие размеры и позицию в модель */
-		void storeGeometry(void);
+		void storeGeometry();
 
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта
