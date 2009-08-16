@@ -50,13 +50,28 @@ namespace qReal {
 			&& i1.id() == i2.id();
 	}
 
+	inline bool operator!=(const Id &i1, const Id &i2)
+	{
+		return !(i1 == i2);
+	}
+
 	inline uint qHash(const Id &key)
 	{
 		return qHash(key.editor()) ^ qHash(key.diagram()) ^ qHash(key.element())
 				^ qHash(key.id());
 	}
 
+	typedef QList<Id> IdList;
+
+	class IdListHelper {
+	public:
+		static QVariant toVariant(IdList const &list);
+	};
+
 }
 
 // qReal::Id может напрямую использоваться в QVariant.
 Q_DECLARE_METATYPE(qReal::Id)
+
+// Список идентификаторов тоже.
+Q_DECLARE_METATYPE(qReal::IdList)

@@ -5,7 +5,7 @@
 
 using namespace qReal;
 
-using namespace client;
+using namespace client::details;
 
 LogicObject::LogicObject(const IdType &id, const IdType &parent) : mId(id)
 {

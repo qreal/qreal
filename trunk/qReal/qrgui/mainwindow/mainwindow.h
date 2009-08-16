@@ -50,6 +50,8 @@ namespace qReal {
 		/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
 		 * эксплорером. */
 		void sceneSelectionChanged();
+
+		void exportToXmi();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 	private:

@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QPersistentModelIndex>
 
-#include "../client/client.h"
+#include "../client/repoApi.h"
 #include "../kernel/definitions.h"
 #include "classes/modelTreeItem.h"
 #include "../mainwindow/editormanager.h"
@@ -38,6 +38,7 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+			client::RepoApi const &api() const;
 		public slots:
 			void exterminate();
 
@@ -48,7 +49,7 @@ namespace qReal {
 				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
-			client::Client *mClient;
+			client::RepoApi mApi;
 			ModelTreeItem *rootItem;
 			EditorManager const &mEditorManager;
 

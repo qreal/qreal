@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>678</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -58,7 +58,6 @@
     <addaction name="actionAntialiasing"/>
     <addaction name="actionOpenGL_Renderer"/>
     <addaction name="actionShowSplash"/>
-    <addaction name="actionClear"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -75,8 +74,16 @@
     </property>
     <addaction name="actionPlugins"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionClear"/>
+    <addaction name="actionExport_to_XMI"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
+   <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -381,6 +388,11 @@
    </property>
    <property name="text">
     <string>Exterminatus</string>
+   </property>
+  </action>
+  <action name="actionExport_to_XMI">
+   <property name="text">
+    <string>Export to XMI</string>
    </property>
   </action>
  </widget>

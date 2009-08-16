@@ -8,8 +8,8 @@
 #include <QtGui/QPolygon>
 
 using namespace qReal;
+using namespace client::details;
 
-using namespace client;
 Client::Client()
 {
 	init();
@@ -18,8 +18,8 @@ Client::Client()
 
 void Client::init()
 {
-	mObjects.insert(ROOT_ID,new LogicObject(ROOT_ID));
-	mObjects[ROOT_ID]->setProperty("Name",ROOT_ID.toString());
+	mObjects.insert(ROOT_ID, new LogicObject(ROOT_ID));
+	mObjects[ROOT_ID]->setProperty("name", ROOT_ID.toString());
 }
 
 Client::~Client()
@@ -146,6 +146,15 @@ void Client::removeProperty( const IdType &id, const PropertyName &name )
 	}
 }
 
+bool Client::hasProperty(const IdType &id, const PropertyName &name) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->hasProperty(name);
+	} else {
+		throw Exception("Client: Checking the existence of a property of nonexistent object " + id.toString());
+	}
+}
+
 void Client::loadFromDisk()
 {
 	loadFromDisk(saveDirName);
@@ -172,6 +181,7 @@ void Client::loadFromDisk(QString const &currentPath)
 			else if (fileInfo.isFile()) {
 				QDomDocument doc = loadXmlDocument(path);
 				LogicObject *object = parseLogicObject(doc.documentElement());
+				Q_ASSERT(object);  // Пока требуем, что все объекты в репозитории загружаемы.
 				if (object != NULL)
 					mObjects.insert(object->id(), object);
 			}
@@ -235,14 +245,26 @@ bool Client::loadProperties(QDomElement const &elem, LogicObject &object)
 	QDomElement properties = propertiesList.at(0).toElement();
 	QDomElement property = properties.firstChildElement();
 	while (!property.isNull()) {
-		QString type = property.tagName();
-		QString key = property.attribute("key", "");
-		if (key == "")
-			return false;
+		if (property.hasAttribute("type")) {
+			// Тогда это список. Немного кривовато, зато унифицировано со
+			// списками детей/родителей.
+			if (property.attribute("type", "") == "qReal::IdList") {
+				QString key = property.tagName();
+				IdList value = loadIdList(properties, property.tagName());
+				object.setProperty(key, IdListHelper::toVariant(value));
+			} else {
+				Q_ASSERT(!"Unknown list type");
+			}
+		} else {
+			QString type = property.tagName();
+			QString key = property.attribute("key", "");
+			if (key == "")
+				return false;
 
-		QString valueStr = property.attribute("value", "");
-		QVariant value = parseValue(type, valueStr);
-		object.setProperty(key, value);
+			QString valueStr = property.attribute("value", "");
+			QVariant value = parseValue(type, valueStr);
+			object.setProperty(key, value);
+		}
 		property = property.nextSiblingElement();
 	}
 	return true;
@@ -367,11 +389,18 @@ QDomElement Client::propertiesToXml(LogicObject * const object, QDomDocument &do
 	QMapIterator<PropertyName, QVariant> i = object->propertiesIterator();
 	while (i.hasNext()) {
 		i.next();
-		QDomElement property = doc.createElement(i.value().typeName());
-		property.setAttribute("key", i.key());
-		QString value = serializeQVariant(i.value());
-		property.setAttribute("value", value);
-		result.appendChild(property);
+		QString typeName = i.value().typeName();
+		if (typeName == "qReal::IdList") {
+			QDomElement list = idListToXml(i.key(), i.value().value<IdList>(), doc);
+			list.setAttribute("type", "qReal::IdList");
+			result.appendChild(list);
+		} else {
+			QDomElement property = doc.createElement(i.value().typeName());
+			property.setAttribute("key", i.key());
+			QString value = serializeQVariant(i.value());
+			property.setAttribute("value", value);
+			result.appendChild(property);
+		}
 	}
 	return result;
 }

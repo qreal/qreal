@@ -1,23 +1,25 @@
-#include <QtGui>
+#include "mainwindow.h"
 
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
 #include <QtSvg/QSvgGenerator>
 #include <QtCore/QPluginLoader>
+#include <QtGui/QProgressBar>
+#include <QtCore/QSettings>
+#include <QtGui/QPrinter>
+#include <QtGui/QPrintDialog>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
+
+#include <QtCore/QDebug>
 
 #include "dialogs/plugindialog.h"
-
 #include "editorinterface.h"
-
-#include "mainwindow.h"
-
 #include "../model/model.h"
-
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
-
-#include <QProgressBar>
+#include "../generators/xmi/xmiHandler.h"
 
 using namespace qReal;
 
@@ -45,7 +47,7 @@ MainWindow::MainWindow()
 
 	if (!showSplash)
 		ui.actionShowSplash->setChecked(false);
-			
+
 
 	ui.view->setMainWindow(this);
 
@@ -68,12 +70,14 @@ MainWindow::MainWindow()
 
 	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleAntialiasing(bool) ) );
 	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleOpenGL(bool) ) );
-	connect(ui.actionShowSplash, SIGNAL( toggled(bool) ), this, SLOT (toggleShowSplash(bool) ) );	
+	connect(ui.actionShowSplash, SIGNAL( toggled(bool) ), this, SLOT (toggleShowSplash(bool) ) );
 
 	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
 	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+
+	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 
 	connect(ui.actionPlugins, SIGNAL( triggered() ), this, SLOT( settingsPlugins() ) );
 
@@ -115,12 +119,12 @@ MainWindow::MainWindow()
 
 	loadPlugins();
 	showMaximized();
-	
+
 	progress->setValue(70);
 
 	mModel = new model::Model(mgr);
 	connect(ui.actionClear, SIGNAL( triggered() ), mModel, SLOT( exterminate() ));
-	
+
 	progress->setValue(80);
 
 	mPropertyModel.setSourceModel(mModel);
@@ -130,7 +134,7 @@ MainWindow::MainWindow()
 	progress->setValue(100);
 	if( showSplash )
 		splash->close();
-	delete splash;	
+	delete splash;
 }
 
 MainWindow::~MainWindow()
@@ -275,3 +279,21 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("ShowSplashScreen", show);
 }
 
+void MainWindow::exportToXmi()
+{
+	generators::XmiHandler xmi(mModel->api());
+
+	QString const fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
+
+	QString const errors = xmi.exportToXmi(fileName);
+
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Export is finished");
+	}
+
+	qDebug() << "Done.";
+}

@@ -407,6 +407,15 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 
 	out() << "\t\t\tmContents.setWidth(" << node->width << ");\n"
 		<< "\t\t\tmContents.setHeight(" << node->height << ");\n";
+		<< "\tmTitle.setFlags(0);\n"
+		<< "\tmTitle.setTextInteractionFlags(Qt::NoTextInteraction);\n"
+		<< "\tmTitle.setParentItem(this);\n";
+
+	// True horror:
+	if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")) {
+		out << "\tdocvis.setParentItem(this);\n"
+			<< "\tdoctype.setParentItem(this);\n";
+	}
 
 	for (int j=0; j<node->ports.size(); j++)
 	{

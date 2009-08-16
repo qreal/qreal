@@ -139,3 +139,10 @@ QVariant Id::toVariant() const
 	result.setValue(*this);
 	return result;
 }
+
+QVariant IdListHelper::toVariant(IdList const &list)
+{
+	QVariant v;
+	v.setValue(list);
+	return v;
+}

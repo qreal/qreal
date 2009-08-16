@@ -35,4 +35,7 @@ include (view/view.pri)
 # Stuff used in all places
 include (kernel/kernel.pri)
 
+# "Встроенные" генераторы
+include (generators/generators.pri)
+
 HEADERS += ../qrxml/editorinterface.h
