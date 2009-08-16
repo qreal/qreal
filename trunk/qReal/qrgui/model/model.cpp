@@ -376,6 +376,9 @@ void Model::exterminate()
 	mApi.exterminate();
 	cleanupTree(rootItem);
 	treeItems.clear();
+	delete rootItem;
+	rootItem = new ModelTreeItem(ROOT_ID, NULL);
+	reset();
 	init();
 }
 
