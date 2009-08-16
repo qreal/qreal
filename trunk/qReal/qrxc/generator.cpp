@@ -330,7 +330,8 @@ void Generator::genPluginSource(QString const &pluginName)
 			// Хак: не генерить предопределённые свойства, иначе они затрут
 			// настоящие и линки будут цепляться к чему попало.
 			if ((*p)->getName() == "fromPort" || (*p)->getName() == "toPort"
-				|| (*p)->getName() == "from" || (*p)->getName() == "to")
+				|| (*p)->getName() == "from" || (*p)->getName() == "to"
+				|| (*p)->getName() == "name")
 			{
 				continue;
 			}
