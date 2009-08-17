@@ -61,6 +61,9 @@ public slots:
 	/** @brief Установить индекс корневого элемента представления */
 	void setRootIndex(const QModelIndex &index /**< Индекс */);
 
+	/** @brief Удалить выделенные элементы со сцены */
+	void deleteCurrentSelection();
+
 private:
 	// Emulate multiple inheritance
 	// We need EditorScene : public QGraphicsScene, public QAbstractItemView

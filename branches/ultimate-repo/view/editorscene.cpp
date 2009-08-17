@@ -111,7 +111,7 @@ void EditorScene::keyPressEvent( QKeyEvent * event )
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
-		window->deleteFromDiagram();
+		deleteCurrentSelection();
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
@@ -135,12 +135,10 @@ void EditorScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	// Menu belongs to scene handler because it can delete elements.
 	// We cannot not allow elements to commit suicide.
 	QMenu menu;
-	menu.addAction(window->ui.actionDeleteFromDiagram);
-	// FIXME: add check for diagram
-	if (selectedItems().count() == 1)
-		menu.addAction(window->ui.actionJumpToAvatar);
-
-	menu.exec(QCursor::pos());
+	QAction *delAction = menu.addAction("Delete");
+	connect(delAction, SIGNAL(triggered()), this, SLOT(deleteCurrentSelection()));
+	menu.exec(event->screenPos());
+	delete delAction;
 }
 
 void EditorScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
@@ -170,6 +168,24 @@ void EditorScene::setModel(QAbstractItemModel *model)
 void EditorScene::setRootIndex(const QModelIndex &index)
 {
 	mv_iface->setRootIndex(index);
+}
+
+void EditorScene::deleteCurrentSelection()
+{
+	foreach (QGraphicsItem *item, selectedItems()) {
+		if (UML::Element * elem = dynamic_cast < UML::Element * >(item))
+			if (elem->index().isValid())
+			{
+			try{
+				mv_iface->model()->removeRow(elem->index().row(), elem->index().parent());
+			}
+			catch (QString e)
+			{
+				QMessageBox::warning(window, tr("Operation aborted"),
+					 tr("Repository can not delete this element."));
+			}
+			}
+	}
 }
 
 /* {{{ EditorViewMViface*/

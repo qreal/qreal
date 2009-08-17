@@ -273,10 +273,10 @@ void MainWindow::deleteFromDiagram()
 		{
 			deleteFromExplorer();
 		}
-		else if (ui.view->hasFocus())
-		{
-			deleteFromScene();
-		}
+//		else if (ui.view->hasFocus())
+//		{
+//			deleteFromScene();
+//		}
 	}
 }
 
