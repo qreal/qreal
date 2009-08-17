@@ -30,29 +30,31 @@ void ElementTitle::focusInEvent(QFocusEvent *event)
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
-	// Restore old title by force. It will be updated automatically
-	// if needed via model update.
-	setHtml(oldText);
+	QString name = toPlainText();
+	QString tmp = toHtml();
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
+	// FIXME: Reset selection
+	setHtml("");
+	setHtml(tmp);
+	if (oldText != toHtml())
+		(static_cast<NodeElement*>(parentItem()))->setName(name);
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
 	{
-		// Just loose focus
+		// Restore old text and loose focus
+		setHtml(oldText);
 		clearFocus();
 		return;
 	}
 	if (event->key() == Qt::Key_Enter ||
 	    event->key() == Qt::Key_Return)
 	{
-		QString name = toPlainText();
-		// Loose focus: now old text will be restored for a second
+		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
-		// Update name: and now new text will be shown.
-		(static_cast<NodeElement*>(parentItem()))->setName(name);
 		return;
 	}
 	QGraphicsTextItem::keyPressEvent(event);
