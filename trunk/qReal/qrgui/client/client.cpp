@@ -63,19 +63,15 @@ void Client::addParent( const IdType &id, const IdType &parent )
 
 void Client::addChild(const IdType &id, const IdType &child)
 {
-	if (id == ROOT_ID) {
-		mObjects.insert(child,new LogicObject(child,ROOT_ID));
-	} else {
-		if (mObjects.contains(id)) {
-			mObjects[id]->addChild(child);
-			if (mObjects.contains(child)) {
-				mObjects[child]->addParent(id);
-			} else {
-				mObjects.insert(child,new LogicObject(child,id));
-			}
+	if (mObjects.contains(id)) {
+		mObjects[id]->addChild(child);
+		if (mObjects.contains(child)) {
+			mObjects[child]->addParent(id);
 		} else {
-			throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
+			mObjects.insert(child,new LogicObject(child,id));
 		}
+	} else {
+		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
 	}
 }
 
@@ -411,8 +407,8 @@ void Client::clearDir(QString const &path)
 	if (dir.exists()) {
 		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 			if (fileInfo.isDir()) {
-				dir.rmdir(fileInfo.filePath());
 				clearDir(fileInfo.filePath());
+				dir.rmdir(fileInfo.fileName());
 			}
 			else
 				dir.remove(fileInfo.fileName());
@@ -483,7 +479,7 @@ void Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
-	init();
 	saveToDisk();
+	init();
 	printDebug();
 }
