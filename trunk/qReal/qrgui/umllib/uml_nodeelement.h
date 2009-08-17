@@ -67,12 +67,14 @@ namespace UML {
 			 * */
 		QRectF contentsRect() const;
 
-		/** @brief Обновить данные элемента */
+		/** @brief Обновить данные элемента из модели */
 		virtual void updateData();
 		/** @brief Установить новые размеры и позицию (не сохраняя в модель) */
 		void setGeometry(QRectF const &geom);
 		/** @brief Сохранить текущие размеры и позицию в модель */
 		void storeGeometry();
+		/** @brief Установить новое имя и сохранить его в модель */
+		void setName(QString name);
 
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта
@@ -91,9 +93,6 @@ namespace UML {
 		void delEdge(EdgeElement *edge);
 
 		void setPortsVisible(bool value);
-
-	public slots:
-		void changeName();
 
 	protected:
 		/** @brief Обработать событие наведения на объект курсора мыши */
@@ -120,9 +119,6 @@ namespace UML {
 		QList<StatLine> mLinePorts;
 		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF mContents;
-
-		bool mLockChangeName;
-		bool mLockUpdateText;
 
 		// TODO: Этого тут вообще быть не должно.
 		ElementTitle mDocVis;

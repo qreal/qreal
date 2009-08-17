@@ -31,8 +31,15 @@ void ElementTitle::focusInEvent(QFocusEvent *event)
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
+	QString name = toPlainText();
+	QString tmp = toHtml();
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
+	// FIXME: Reset selection
+	setHtml("");
+	setHtml(tmp);
+	if (mOldText != toHtml())
+		(static_cast<NodeElement*>(parentItem()))->setName(name);
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
@@ -47,8 +54,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	if (event->key() == Qt::Key_Enter ||
 		event->key() == Qt::Key_Return)
 	{
-		// Update name and loose focus
-		(static_cast<NodeElement*>(parentItem()))->changeName();
+		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
 	}
@@ -57,7 +63,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 /* }}} */
 
 NodeElement::NodeElement()
-: mPortsVisible(false), mLockChangeName(false), mLockUpdateText(false), mDragState(None)
+: mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
 }
@@ -68,14 +74,10 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 }
 
-void NodeElement::changeName()
+void NodeElement::setName(QString name)
 {
-	if (!mLockChangeName) {
-		mLockUpdateText = true;
-		QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
-		im->setData(mDataIndex, mTitle.toPlainText(), Qt::DisplayRole);
-		mLockUpdateText = false;
-	}
+	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
+	im->setData(mDataIndex, name, Qt::DisplayRole);
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)

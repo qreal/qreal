@@ -75,39 +75,41 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		switch (role) {
-			case Qt::DisplayRole:
-			case Qt::EditRole:
-				mApi.setName(item->id(), value.toString());
-				return true;
-			case roles::positionRole:
-				mApi.setProperty(item->id(), positionPropertyName(item), value);
-				return true;
-			case roles::configurationRole:
-				mApi.setProperty(item->id(), configurationPropertyName(item), value);
-				return true;
-			case roles::fromRole:
-				mApi.setFrom(item->id(), value.value<Id>());
-				return true;
-			case roles::toRole:
-				mApi.setTo(item->id(), value.value<Id>());
-				return true;
-			case roles::fromPortRole:
-				mApi.setFromPort(item->id(), value.toDouble());
-				return true;
-			case roles::toPortRole:
-				mApi.setToPort(item->id(), value.toDouble());
-				return true;
+		case Qt::DisplayRole:
+		case Qt::EditRole:
+			mApi.setName(item->id(), value.toString());
+			break;
+		case roles::positionRole:
+			mApi.setProperty(item->id(), positionPropertyName(item), value);
+			break;
+		case roles::configurationRole:
+			mApi.setProperty(item->id(), configurationPropertyName(item), value);
+			break;
+		case roles::fromRole:
+			mApi.setFrom(item->id(), value.value<Id>());
+			break;
+		case roles::toRole:
+			mApi.setTo(item->id(), value.value<Id>());
+			break;
+		case roles::fromPortRole:
+			mApi.setFromPort(item->id(), value.toDouble());
+			break;
+		case roles::toPortRole:
+			mApi.setToPort(item->id(), value.toDouble());
+			break;
+		default:
+			if (role >= roles::customPropertiesBeginRole) {
+				QString selectedProperty = findPropertyName(item->id(), role);
+				mApi.setProperty(item->id(), selectedProperty, value);
+				break;
+			}
+			Q_ASSERT(role < Qt::UserRole);
+			return false;
 		}
-		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
-			mApi.setProperty(item->id(), selectedProperty, value);
-			return true;
-		}
-		Q_ASSERT(role < Qt::UserRole);
-		return false;
-	} else {
-		return false;
+		emit dataChanged(index, index);
+		return true;
 	}
+	return false;
 }
 
 PropertyName Model::findPropertyName(Id const &id, int const role) const
