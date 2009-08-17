@@ -203,11 +203,11 @@
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
-        <html:text_from_repo name="visibility" />
+        <!--html:text_from_repo name="visibility" /-->
         <html:text_from_repo name="name" />
-        <html:b>
+        <!--html:b>
          <html:text_from_repo name="type" />
-        </html:b>
+        </html:b-->
        </html:center>
       </html:html>
      </repo_info>
@@ -236,11 +236,11 @@
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
-        <html:text_from_repo name="visibility" />
+        <!--html:text_from_repo name="visibility" /-->
         <html:text_from_repo name="name" />
-        <html:b>
+        <!--html:b>
          <html:text_from_repo name="type" />
-        </html:b>
+        </html:b-->
        </html:center>
       </html:html>
      </repo_info>

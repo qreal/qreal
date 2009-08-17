@@ -407,9 +407,9 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 
 	out() << "\t\t\tmContents.setWidth(" << node->width << ");\n"
 		<< "\t\t\tmContents.setHeight(" << node->height << ");\n"
-		<< "\tmTitle.setFlags(0);\n"
-		<< "\tmTitle.setTextInteractionFlags(Qt::NoTextInteraction);\n"
-		<< "\tmTitle.setParentItem(this);\n";
+		<< "\t\t\tmTitle.setFlags(0);\n"
+		<< "\t\t\tmTitle.setTextInteractionFlags(Qt::NoTextInteraction);\n"
+		<< "\t\t\tmTitle.setParentItem(this);\n";
 
 	// True horror:
 	if ((classname == "cnClassMethodClass") || (classname == "cnClassFieldClass")) {
@@ -458,13 +458,26 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 		out() << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
 
 	out() << "\t\t}\n\n"
-
 		<< "\t\tvoid updateData()\n\t\t{\n"
-		<< "\t\t\tNodeElement::updateData();\n"
-		<< "\t\t\tupdate();\n"
-		<< "\t\t}\n\n"
+		<< "\t\t\tNodeElement::updateData();\n";
 
-		<< "\tprivate:\n";
+	if (node->labels.size() > 0)
+	{
+		out() << QString("\tQString text = QString(\"%1\")").arg(node->labels.at(0).text);
+		if (node->labels.at(0).args.size() > 0)
+		{
+			for( int k=0; k<node->labels.at(0).args.size(); k++)
+			{
+				out() << QString("\n\t\t\t.arg(mDataIndex.data(%2).toString())")
+					.arg(node->labels.at(0).args.at(k));
+			}
+			out() << ";\n";
+			out() << "mTitle.setHtml(text);\n";
+		}
+	}
+	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
+
+	out() << "\tprivate:\n";
 	if (hasSdf)
 		out() << "\t\tSdfRenderer mRenderer;\n";
 	if (hasPorts)
