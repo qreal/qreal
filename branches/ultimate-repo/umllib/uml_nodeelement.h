@@ -89,6 +89,9 @@ namespace UML {
 		/** @brief Сохранить текущие размеры и позицию в модель */
 		void storeGeometry(void);
 
+		/** @brief Установить новое имя и обновить модель */
+		void setName(QString name);
+
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта
 
@@ -123,16 +126,7 @@ namespace UML {
 
 		ElementTitle d;
 
-
-		//QString PutName();
-		QString oldName;
-			  public slots:
-		void changeName();
-
-
 	protected:
-
-
 		bool portsVisible;
 		QRectF scrollRect;
 
@@ -174,8 +168,6 @@ namespace UML {
 
 		QRectF m_contents;
 
-		bool mLockChangeName;
-		bool mLockUpdateText;
 		ElementTitle docvis;
 		ElementTitle doctype;
 		QString typetext;

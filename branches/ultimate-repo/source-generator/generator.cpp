@@ -514,11 +514,7 @@ void Generator::genClasses(){
 		    out << "\tdocvis.setHtml(vistext);\n"
 			<< "\tdoctype.setHtml(typetext);\n";
 
-		    out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n"
-			<< "\t\tmLockChangeName = true;\n"
-	 	        << "\t\td.setHtml(text);\n" 
-	 	        << "\t\tmLockChangeName = false;\n" 
-	 	        << "\t}\n";	
+		    out << "\td.setHtml(text);\n";
 		} else
 		
 		if ((*o)->labels.size() > 0){
@@ -529,12 +525,7 @@ void Generator::genClasses(){
 								.arg((*o)->labels.at(0).args.at(k));
 								
 				out << ";\n";
-				 out << "\tif (!mLockUpdateText && d.toHtml() != text) {\n" 
-						<< "\t\tmLockChangeName = true;\n" 
-	 	                << "\t\td.setHtml(text);\n" 
-	 	                << "\t\tmLockChangeName = false;\n" 
-	 	                << "\t}\n"
-						;
+				out << "\td.setHtml(text);\n";
 			} else {
 				out << ";\n";
 			}

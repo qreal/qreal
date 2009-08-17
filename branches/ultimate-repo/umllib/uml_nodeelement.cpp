@@ -30,6 +30,9 @@ void ElementTitle::focusInEvent(QFocusEvent *event)
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
+	// Restore old title by force. It will be updated automatically
+	// if needed via model update.
+	setHtml(oldText);
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
 }
@@ -38,17 +41,18 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
 	{
-		// Restore previous text and loose focus
-		setHtml(oldText);
+		// Just loose focus
 		clearFocus();
 		return;
 	}
 	if (event->key() == Qt::Key_Enter ||
 	    event->key() == Qt::Key_Return)
 	{
-		// Update name and loose focus
-		(static_cast<NodeElement*>(parentItem()))->changeName();
+		QString name = toPlainText();
+		// Loose focus: now old text will be restored for a second
 		clearFocus();
+		// Update name: and now new text will be shown.
+		(static_cast<NodeElement*>(parentItem()))->setName(name);
 		return;
 	}
 	QGraphicsTextItem::keyPressEvent(event);
@@ -58,11 +62,8 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 NodeElement::NodeElement()
 	: portsVisible(false)
 {
-	oldName="";
 	setAcceptsHoverEvents(true);
 	dragState = None;
-	mLockChangeName = false;
-	mLockUpdateText = false;
 }
 
 NodeElement::~NodeElement()
@@ -71,20 +72,10 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 }
 
-void NodeElement::changeName()
+void NodeElement::setName(QString name)
 {
-	/*	if(d.toPlainText() != oldName)
-		{*/
-	if (!mLockChangeName) {
-		mLockUpdateText = true;
-		//QAbstractItemModel *im = const_cast<QAbstractItemModel *>(dataIndex.model());
-		//RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
-		RealRepoModel *im = (RealRepoModel *)(dataIndex.model());
-		im->changeRole(dataIndex, d.toPlainText(), Qt::DisplayRole);
-		mLockUpdateText = false;
-	}
-	/*	}
-	oldName=d.toPlainText();*/
+	RealRepoModel *im = const_cast<RealRepoModel*>(static_cast<const RealRepoModel *>(dataIndex.model()));
+	im->changeRole(dataIndex, name, Qt::DisplayRole);
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
