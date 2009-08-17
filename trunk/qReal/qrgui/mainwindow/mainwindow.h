@@ -54,6 +54,7 @@ namespace qReal {
 		void exportToXmi();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
+		void deleteFromDiagram();
 	private:
 		model::Model *mModel;
 		EditorManager mgr;
@@ -66,6 +67,8 @@ namespace qReal {
 
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
+		void deleteFromExplorer();
+		void deleteFromScene();
 	};
 
 }

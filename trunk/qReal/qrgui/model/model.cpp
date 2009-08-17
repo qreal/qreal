@@ -150,18 +150,30 @@ int Model::columnCount(QModelIndex const &parent) const
 
 bool Model::removeRows(int row, int count, QModelIndex const &parent)
 {
+	ModelTreeItem *parentItem = rootItem;
 	if (parent.isValid()) {
-		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-		if (parentItem->children().size() < row + count) {
-			return false;
-		} else {
-			for (int i = row; i < row + count; ++i) {
-				removeModelItems(parentItem->children().at(i));
-			}
-			return true;
-		}
-	} else {
+		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+	}
+
+	if (parentItem->children().size() < row + count) {
 		return false;
+	} else {
+		for (int i = row; i < row + count; ++i) {
+			removeModelItems(parentItem->children().at(i));
+
+			// TODO: Убрать копипасту.
+			ModelTreeItem *child = parentItem->children().at(i);
+			int childRow = child->row();
+			beginRemoveRows(parent, childRow, childRow);
+			child->parent()->removeChild(child);
+			treeItems.remove(child->id(), child);
+			if (treeItems.count(child->id()) == 0) {
+				mApi.removeChild(parentItem->id(), child->id());
+			}
+			delete child;
+			endRemoveRows();
+		}
+		return true;
 	}
 }
 
@@ -185,13 +197,23 @@ void Model::removeConfigurationInClient( ModelTreeItem *item )
 	mApi.removeProperty(item->id(), configurationPropertyName(item));
 }
 
-QModelIndex Model::index( ModelTreeItem *item )
+QModelIndex Model::index(ModelTreeItem *item)
 {
-	if (item!=rootItem) {
-		return createIndex(item->row(),0,item);
-	} else {
-		return QModelIndex();
+	QList<int> rowCoords;
+
+	for (ModelTreeItem const *curItem = item;
+		curItem != rootItem; curItem = curItem->parent())
+	{
+		rowCoords.append(const_cast<ModelTreeItem *>(curItem)->row());
 	}
+
+	QModelIndex result;
+
+	for (int i = rowCoords.size() - 1; i >= 0; --i) {
+		result = index(rowCoords[i], 0, result);
+	}
+
+	return result;
 }
 
 void Model::removeModelItems( ModelTreeItem *root )

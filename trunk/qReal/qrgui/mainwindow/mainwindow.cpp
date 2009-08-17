@@ -252,6 +252,32 @@ void MainWindow::settingsPlugins()
 	dialog.exec();
 }
 
+void MainWindow::deleteFromExplorer()
+{
+	QModelIndex idx = ui.diagramExplorer->currentIndex();
+	if (idx.isValid())
+		mModel->removeRow(idx.row(), idx.parent());
+}
+
+void MainWindow::deleteFromScene()
+{
+	foreach (QGraphicsItem *item, ui.view->scene()->selectedItems())
+		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
+			if (elem->index().isValid())
+				mModel->removeRow(elem->index().row(), elem->index().parent());
+}
+
+void MainWindow::deleteFromDiagram()
+{
+	if (mModel) {
+		if (ui.diagramExplorer->hasFocus()) {
+			deleteFromExplorer();
+		} else if (ui.view->hasFocus()) {
+			deleteFromScene();
+		}
+	}
+}
+
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),

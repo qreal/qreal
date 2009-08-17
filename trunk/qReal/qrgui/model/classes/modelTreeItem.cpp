@@ -41,7 +41,7 @@ void ModelTreeItem::addChild( ModelTreeItem *child )
 
 void ModelTreeItem::removeChild( ModelTreeItem *child )
 {
-	if (!mChildren.contains(child)) {
+	if (mChildren.contains(child)) {
 		mChildren.removeAll(child);
 	} else {
 		throw Exception("Model: Removing nonexistent child " + child->id().toString() + "  from object " + mId.toString());
