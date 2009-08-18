@@ -12,7 +12,6 @@
 #include "../mainwindow/mainwindow.h"
 
 using namespace qReal;
-extern MainWindow *window;
 
 EditorViewScene::EditorViewScene(QObject * parent)
 		:  QGraphicsScene(parent), mWindow(NULL)
@@ -150,7 +149,7 @@ void EditorViewScene::keyPressEvent( QKeyEvent * event )
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
 		// Delete selected elements from scene
-		window->deleteFromScene();
+		mainWindow()->deleteFromScene();
 	} else
 		QGraphicsScene::keyPressEvent(event);
 }
