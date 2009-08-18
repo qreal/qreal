@@ -52,6 +52,7 @@ namespace qReal {
 		void sceneSelectionChanged();
 
 		void exportToXmi();
+		void deleteFromScene();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();
@@ -68,7 +69,6 @@ namespace qReal {
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
-		void deleteFromScene();
 	};
 
 }
