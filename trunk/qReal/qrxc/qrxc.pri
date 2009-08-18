@@ -1,9 +1,9 @@
 include (qmakeQrxc.pri)
 
 CONFIG(debug, debug|release) {
-	QR_GENERATOR_CONFIG = CONFIG+=debug
+	QR_PLUGIN_CONFIG = CONFIG+=debug
 } else:CONFIG(release, debug|release){
-	QR_GENERATOR_CONFIG = CONFIG+=release
+	QR_PLUGIN_CONFIG = CONFIG+=release
 } else {
 	error(CONFIG is wrong, can not determine build configuration for plugins)
 }
@@ -16,7 +16,7 @@ qrxc.output = generated/${QMAKE_FILE_IN_BASE}.pro
 qrxc.variable_out = QRXC_PROJECTS
 
 project_compiler.name = QRXC Project compiler
-project_compiler.commands = cd generated && $(QMAKE) $$QR_GENERATOR_CONFIG ${QMAKE_FILE_IN_BASE}.pro && $(MAKE)
+project_compiler.commands = cd generated && $(QMAKE) $$QR_PLUGIN_CONFIG ${QMAKE_FILE_IN_BASE}.pro && $(MAKE)
 project_compiler.input = QRXC_PROJECTS
 project_compiler.output = generated/Makefile
 
