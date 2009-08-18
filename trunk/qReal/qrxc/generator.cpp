@@ -463,17 +463,19 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 
 	if (node->labels.size() > 0)
 	{
-		out() << QString("\tQString text = QString(\"%1\")").arg(node->labels.at(0).text);
+		out() << QString("\t\t\tQString text = QString(\"%1\")").arg(node->labels.at(0).text);
 		if (node->labels.at(0).args.size() > 0)
 		{
-			for( int k=0; k<node->labels.at(0).args.size(); k++)
+			for (int k = 0; k < node->labels.at(0).args.size(); ++k)
 			{
-				out() << QString("\n\t\t\t.arg(mDataIndex.data(%2).toString())")
-					.arg(node->labels.at(0).args.at(k));
+				// Хак, убираем метки со старыми ролями.
+				if (!node->labels.at(0).args.at(k).contains("Unreal"))
+					out() << QString("\n\t\t\t\t.arg(mDataIndex.data(%2).toString())")
+						.arg(node->labels.at(0).args.at(k));
 			}
-			out() << ";\n";
-			out() << "mTitle.setHtml(text);\n";
 		}
+		out() << ";\n";
+		out() << "\t\t\tmTitle.setHtml(text);\n";
 	}
 	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
 
