@@ -234,7 +234,7 @@ dbg;
 	case Unreal::PositionRole:
 		if ( type(item->parent) == Container ) {
 			QVariant old_value = QVariant(hashDiagramElements[item->parent->id][item->id].position);
-			if(old_value.toPoint().x() != value.toPoint().x() || old_value.toPoint().x() != value.toPoint().x()){
+			if(old_value.toPoint().x() != value.toPoint().x() || old_value.toPoint().y() != value.toPoint().y()){
 				undoStack->push(new ChangePositionCommand(this, index, old_value, value, role));
 			}
 		}
