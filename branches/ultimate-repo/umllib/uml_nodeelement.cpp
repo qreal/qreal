@@ -487,38 +487,36 @@ float NodeElement::y_def(QString str)
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Element::hoverEnterEvent(event);
-
-	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
-		setCursor(Qt::SizeFDiagCursor);
-	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
-		setCursor(Qt::SizeBDiagCursor);
-	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
-		setCursor(Qt::SizeFDiagCursor);
-	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
-		setCursor(Qt::SizeBDiagCursor);
-	else
-		setCursor(Qt::OpenHandCursor);
+	updateMousePointer(event->pos());
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Element::hoverMoveEvent(event);
-
-	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
-		setCursor(Qt::SizeFDiagCursor);
-	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
-		setCursor(Qt::SizeBDiagCursor);
-	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
-		setCursor(Qt::SizeFDiagCursor);
-	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
-		setCursor(Qt::SizeBDiagCursor);
-	else
-		setCursor(Qt::OpenHandCursor);
+	updateMousePointer(event->pos());
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Element::hoverLeaveEvent(event);
-
 	setCursor(Qt::ArrowCursor);
+}
+
+void NodeElement::updateMousePointer(const QPointF &pos)
+{
+	Qt::CursorShape oldShape = cursor().shape();
+	Qt::CursorShape newShape = oldShape;
+
+	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(pos))
+		newShape = Qt::SizeFDiagCursor;
+	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(pos))
+		newShape = Qt::SizeBDiagCursor;
+	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(pos))
+		newShape = Qt::SizeFDiagCursor;
+	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(pos))
+		newShape = Qt::SizeBDiagCursor;
+	else
+		newShape = Qt::OpenHandCursor;
+	if (oldShape != newShape)
+		setCursor(newShape);
 }

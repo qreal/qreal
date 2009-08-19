@@ -143,32 +143,20 @@ namespace UML {
 		void hoverMoveEvent ( QGraphicsSceneHoverEvent * event /**< Событие */);
 		void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event /**< Событие */);
 
-
-
-
-
-
-
-		// virtual bool sceneEvent ( QEvent * event );
 		/** @brief Обработать изменение данных объекта
-			 *	@brief @return Измененные данные
-
-
-			 * */
+		 *  @brief @return Измененные данные
+		 * */
 		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-									const QVariant &value /**< Величина изменения */
-
-
-									);
+		                            const QVariant &value /**< Величина изменения */
+		                           );
 
 		/** @brief Список точечных портов */
-
 		QList<QPointF> pointPorts;
+
 		/** @brief Список портов-линий */
-
 		QList<statLine> linePorts;
-		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 
+		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF m_contents;
 
 		ElementTitle docvis;
@@ -186,19 +174,17 @@ namespace UML {
 	private:
 
 		/** @brief Получить объект, расположенный в данной точке сцены
-			*	@brief @return Объект, расположенный в данной точке сцены
-
-
-			* */
+			*	@brief @return Объект, расположенный в данной точке сцены * */
 		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
 
 
-		/** @brief Список ассоциированных с объектом связей */
+		/** @brief Обновить форму указателя мыши */
+		void updateMousePointer(const QPointF &pos);
 
+		/** @brief Список ассоциированных с объектом связей */
 		QList<EdgeElement *> edgeList;
 
 		/** @brief Направление растяжения элемента */
-
 		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 		/** @brief Направление растяжения */
 
