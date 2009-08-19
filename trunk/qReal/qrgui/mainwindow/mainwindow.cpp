@@ -281,8 +281,7 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-			tr("<img src=\":/images/icons/slavery.jpg\"><br>"
-				"<center>This is <b>QReal</b><br>"
+			tr("<center>This is <b>QReal</b><br>"
 				"Just another CASE tool</center>"));
 }
 
@@ -290,13 +289,8 @@ void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
 			tr("To begin:\n"
-				"1. Click 'Connect to repository'\n"
-				"2. Choose 'QSQLITE' as engine and 'temp.db' as database name\n     This should create a new unREAL database\n"
-				"3. Drag 'Diagram' from 'KERNEL' tab of Palette to Diagram Explorer\n     This should create a new diagram\n"
-				"4. To rename something on diagram explorer, press F2.\n"
-				"5. To edit diagram visually, press Enter on diagram in Diagram Explorer\n"
-				"6. To add items to diagrams, drag & drop them from Palette to editor or to Diagram Explorer\n"
-				"7. Get more help from author :)"));
+				"1. To add items to diagrams, drag & drop them from Palette to editor\n"
+				"2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
