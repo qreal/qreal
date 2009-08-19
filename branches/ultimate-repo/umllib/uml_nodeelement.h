@@ -139,6 +139,9 @@ namespace UML {
 		/** @brief Обработать событие нажатия кнопки мыши */
 		void mousePressEvent( QGraphicsSceneMouseEvent * event /**< Событие */);
 
+		void hoverEnterEvent ( QGraphicsSceneHoverEvent * event /**< Событие */);
+		void hoverMoveEvent ( QGraphicsSceneHoverEvent * event /**< Событие */);
+		void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event /**< Событие */);
 
 
 
@@ -146,7 +149,7 @@ namespace UML {
 
 
 
-		//bool sceneEvent ( QEvent * event );
+		// virtual bool sceneEvent ( QEvent * event );
 		/** @brief Обработать изменение данных объекта
 			 *	@brief @return Измененные данные
 

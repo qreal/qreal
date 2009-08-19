@@ -82,20 +82,17 @@ void NodeElement::setName(QString name)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	if (isSelected())
-	{
-		if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
-			dragState = TopLeft;
-		else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
-			dragState = TopRight;
-		else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
-			dragState = BottomRight;
-		else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
-			dragState = BottomLeft;
-		else
-			Element::mousePressEvent(event);
-	} else
-		Element::mousePressEvent(event);
+	Element::mousePressEvent(event);
+	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+		dragState = TopLeft;
+	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+		dragState = TopRight;
+	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+		dragState = BottomRight;
+	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+		dragState = BottomLeft;
+	else
+		setCursor(Qt::ClosedHandCursor);
 }
 
 void NodeElement::setGeometry(QRectF geom)
@@ -485,4 +482,43 @@ float NodeElement::x_def(QString str)
 float NodeElement::y_def(QString str)
 {
 	return coord_def(str, m_contents.height(), first_size_y)+m_contents.topLeft().y();
+}
+
+void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	Element::hoverEnterEvent(event);
+
+	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+		setCursor(Qt::SizeFDiagCursor);
+	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+		setCursor(Qt::SizeBDiagCursor);
+	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+		setCursor(Qt::SizeFDiagCursor);
+	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+		setCursor(Qt::SizeBDiagCursor);
+	else
+		setCursor(Qt::OpenHandCursor);
+}
+
+void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+	Element::hoverMoveEvent(event);
+
+	if (QRectF(m_contents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+		setCursor(Qt::SizeFDiagCursor);
+	else if (QRectF(m_contents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+		setCursor(Qt::SizeBDiagCursor);
+	else if (QRectF(m_contents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+		setCursor(Qt::SizeFDiagCursor);
+	else if (QRectF(m_contents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+		setCursor(Qt::SizeBDiagCursor);
+	else
+		setCursor(Qt::OpenHandCursor);
+}
+
+void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	Element::hoverLeaveEvent(event);
+
+	setCursor(Qt::ArrowCursor);
 }
