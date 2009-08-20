@@ -29,7 +29,7 @@ MainWindow::MainWindow()
 	QSettings settings("Tercom", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+		new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20,270);
@@ -48,7 +48,6 @@ MainWindow::MainWindow()
 	if (!showSplash)
 		ui.actionShowSplash->setChecked(false);
 
-
 	ui.view->setMainWindow(this);
 
 	ui.minimapView->setScene(ui.view->scene());
@@ -63,29 +62,29 @@ MainWindow::MainWindow()
 
 	progress->setValue(20);
 
-	connect(ui.actionQuit, SIGNAL( triggered() ), this, SLOT( close() ) );
+	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
-	connect(ui.actionZoom_In, SIGNAL( triggered() ), ui.view, SLOT( zoomIn() ) );
-	connect(ui.actionZoom_Out, SIGNAL( triggered() ), ui.view, SLOT( zoomOut() ) );
+	connect(ui.actionZoom_In, SIGNAL(triggered()), ui.view, SLOT(zoomIn()));
+	connect(ui.actionZoom_Out, SIGNAL(triggered()), ui.view, SLOT(zoomOut()));
 
-	connect(ui.actionAntialiasing, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleAntialiasing(bool) ) );
-	connect(ui.actionOpenGL_Renderer, SIGNAL( toggled(bool) ), ui.view, SLOT( toggleOpenGL(bool) ) );
-	connect(ui.actionShowSplash, SIGNAL( toggled(bool) ), this, SLOT (toggleShowSplash(bool) ) );
+	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), ui.view, SLOT(toggleAntialiasing(bool)));
+	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), ui.view, SLOT(toggleOpenGL(bool)));
+	connect(ui.actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
-	connect(ui.actionPrint, SIGNAL( triggered() ), this, SLOT( print() ) );
-	connect(ui.actionMakeSvg, SIGNAL( triggered() ), this, SLOT( makeSvg() ) );
+	connect(ui.actionPrint, SIGNAL(triggered()), this, SLOT(print()));
+	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
-	connect(ui.actionDeleteFromDiagram, SIGNAL( triggered() ), this, SLOT( deleteFromDiagram() ) );
+	connect(ui.actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 
-	connect(ui.actionPlugins, SIGNAL( triggered() ), this, SLOT( settingsPlugins() ) );
+	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
-	connect(ui.actionHelp, SIGNAL( triggered() ), this, SLOT( showHelp() ) );
-	connect(ui.actionAbout, SIGNAL( triggered() ), this, SLOT( showAbout() ) );
-	connect(ui.actionAboutQt, SIGNAL( triggered() ), qApp, SLOT( aboutQt() ) );
+	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
+	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
+	connect(ui.actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	connect(ui.minimapZoomSlider, SIGNAL( valueChanged(int) ), this, SLOT( adjustMinimapZoom(int) ) );
+	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
 	progress->setValue(40);

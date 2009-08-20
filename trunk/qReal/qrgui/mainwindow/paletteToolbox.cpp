@@ -59,8 +59,10 @@ PaletteToolbox::~PaletteToolbox()
 
 void PaletteToolbox::setActiveEditor(int const comboIndex)
 {
-	mScrollArea->takeWidget(); // Save current editor from extermination.
-	mScrollArea->setWidget(mTabs[comboIndex]);
+	if (mTabs.size() > 0) {
+		mScrollArea->takeWidget(); // Save current editor from extermination.
+		mScrollArea->setWidget(mTabs[comboIndex]);
+	}
 }
 
 void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
