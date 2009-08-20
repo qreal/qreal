@@ -112,7 +112,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 	return false;
 }
 
-PropertyName Model::findPropertyName(Id const &id, int const role) const
+QString Model::findPropertyName(Id const &id, int const role) const
 {
 	// В случае свойства, описанного в самом элементе, роль - просто
 	// порядковый номер свойства в списке свойств. Этого соглашения
@@ -177,10 +177,10 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-PropertyName Model::pathToItem(ModelTreeItem const *item) const
+QString Model::pathToItem(ModelTreeItem const *item) const
 {
 	if (item != rootItem) {
-		PropertyName path;
+		QString path;
 		do {
 			item = item->parent();
 			path = item->id().toString() + PATH_DIVIDER + path;
@@ -314,22 +314,22 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 		QDataStream stream(&dragData, QIODevice::ReadOnly);
 		QString idString;
-		PropertyName pathToItem;
+		QString pathToItem;
 		QString name;
 		QPointF position;
 		stream >> idString;
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
-		IdType id = Id::loadFromString(idString);
+		Id id = Id::loadFromString(idString);
 		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
 		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 	}
 }
 
-ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType &id,
-		const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
+ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id,
+		const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
@@ -362,14 +362,14 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const IdType
 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
-	foreach (IdType childId, mApi.children(parent->id())) {
-		PropertyName path = pathToItem(parent);
+	foreach (Id childId, mApi.children(parent->id())) {
+		QString path = pathToItem(parent);
 		ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}
 }
 
-ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const IdType &id)
+ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const Id &id)
 {
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
@@ -385,12 +385,12 @@ QPersistentModelIndex Model::rootIndex()
 	return index(rootItem);
 }
 
-PropertyName Model::positionPropertyName(ModelTreeItem const *item) const
+QString Model::positionPropertyName(ModelTreeItem const *item) const
 {
 	return "position + " + pathToItem(item);
 }
 
-PropertyName Model::configurationPropertyName(ModelTreeItem const *item) const
+QString Model::configurationPropertyName(ModelTreeItem const *item) const
 {
 	return "configuration + " + pathToItem(item);
 }

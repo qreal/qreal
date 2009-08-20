@@ -31,7 +31,7 @@ namespace UML {
 		/** @brief Получить идентификатор элемента
 		 *	@brief @return Идентификатор элемента
 		 * */
-		qReal::IdType uuid() const;
+		qReal::Id uuid() const;
 
 		virtual void connectToPort() { }
 
@@ -40,7 +40,7 @@ namespace UML {
 		QPersistentModelIndex mDataIndex;
 
 		/** @brief Идентификатор элемента */
-		qReal::IdType mUuid;
+		qReal::Id mUuid;
 
 		/** @brief Индикатор перемещения элемента */
 		bool mMoving;

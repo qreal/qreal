@@ -82,7 +82,7 @@ void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
 		emit clicked(e->index());
 }
 
-UML::Element* EditorViewMViface::getItem(IdType const &uuid)
+UML::Element* EditorViewMViface::getItem(Id const &uuid)
 {
 	return items[uuid];
 }
@@ -113,16 +113,12 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 	qDebug() << "========== rowsInserted" << parent << start << end;
 
-//	if (parent == QModelIndex() || parent.parent() == QModelIndex())
-//		return;
-
 	qDebug() << "rowsInserted: adding items" << parent;
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		IdType uuid = current.data(roles::idRole).value<Id>();
-	//	TypeIdType type = current.data(Unreal::TypeRole).toString();
+		Id uuid = current.data(roles::idRole).value<Id>();
 
-		IdType parent_uuid;
+		Id parent_uuid;
 		if (parent != rootIndex())
 			parent_uuid = parent.data(roles::idRole).value<Id>();
 
@@ -131,7 +127,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		if (uuid == ROOT_ID)
 			continue;
 
-		//if (UML::Element *e = UML::GUIObjectFactory(type)) {
 		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
 			e->setIndex(current);

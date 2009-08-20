@@ -43,10 +43,10 @@ namespace qReal {
 			void exterminate();
 
 		protected:
-			QMultiHash<IdType,ModelTreeItem*> treeItems;
+			QMultiHash<Id, ModelTreeItem*> treeItems;
 			QModelIndex index(ModelTreeItem *item);
-			ModelTreeItem* addElementToModel(ModelTreeItem *parentItem, const IdType &id,
-				const PropertyName &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
+			ModelTreeItem* addElementToModel(ModelTreeItem *parentItem, const Id &id,
+				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
 			client::RepoApi mApi;
@@ -56,15 +56,15 @@ namespace qReal {
 			Model(Model const &);  // Копировать модель нельзя
 			Model& operator =(Model const &);  // Присваивать тоже
 
-			PropertyName pathToItem(ModelTreeItem const *item) const;
+			QString pathToItem(ModelTreeItem const *item) const;
 			void removeConfigurationInClient(ModelTreeItem *item);
 			void removeModelItems(ModelTreeItem *root);
 			void loadSubtreeFromClient(ModelTreeItem * const parent);
-			ModelTreeItem *loadElement(ModelTreeItem *parentItem, const IdType &id);
+			ModelTreeItem *loadElement(ModelTreeItem *parentItem, const Id &id);
 
-			PropertyName positionPropertyName(ModelTreeItem const *item) const;
-			PropertyName configurationPropertyName(ModelTreeItem const *item) const;
-			PropertyName findPropertyName(Id const &id, int const role) const;
+			QString positionPropertyName(ModelTreeItem const *item) const;
+			QString configurationPropertyName(ModelTreeItem const *item) const;
+			QString findPropertyName(Id const &id, int const role) const;
 
 			void init();
 			void cleanupTree(ModelTreeItem *root);

@@ -24,7 +24,7 @@ void Element::setIndex(QPersistentModelIndex &index)
 	update();
 }
 
-IdType Element::uuid() const
+Id Element::uuid() const
 {
 	return mUuid;
 }

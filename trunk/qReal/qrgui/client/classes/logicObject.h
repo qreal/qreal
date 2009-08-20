@@ -14,26 +14,26 @@ namespace qReal {
 			class LogicObject
 			{
 			public:
-				explicit LogicObject(const IdType &id);
-				LogicObject(const IdType &id, const IdType &parent);
-				void addParent(const IdType &parent);
-				void removeParent(const IdType &parent);
-				void addChild(const IdType &child);
-				void removeChild(const IdType &child);
-				IdTypeList children() const;
-				IdTypeList parents() const;
-				void setProperty(const PropertyName &name, const QVariant &value);
-				QVariant property(const PropertyName &name) const;
-				bool hasProperty(const PropertyName &name) const;
-				void removeProperty(const PropertyName &name);
-				IdType id() const;
-				QMapIterator<PropertyName, QVariant> propertiesIterator();
+				explicit LogicObject(const Id &id);
+				LogicObject(const Id &id, const Id &parent);
+				void addParent(const Id &parent);
+				void removeParent(const Id &parent);
+				void addChild(const Id &child);
+				void removeChild(const Id &child);
+				IdList children() const;
+				IdList parents() const;
+				void setProperty(const QString &name, const QVariant &value);
+				QVariant property(const QString &name) const;
+				bool hasProperty(const QString &name) const;
+				void removeProperty(const QString &name);
+				Id id() const;
+				QMapIterator<QString, QVariant> propertiesIterator();
 
 			private:
-				const IdType mId;
-				IdTypeList mParents;
-				IdTypeList mChildren;
-				QMap<PropertyName,QVariant> mProperties;
+				const Id mId;
+				IdList mParents;
+				IdList mChildren;
+				QMap<QString, QVariant> mProperties;
 			};
 
 		}

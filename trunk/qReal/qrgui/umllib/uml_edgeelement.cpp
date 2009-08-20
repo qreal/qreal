@@ -368,8 +368,8 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-	qReal::IdType uuidFrom = mDataIndex.data(roles::fromRole).value<Id>();
-	qReal::IdType uuidTo = mDataIndex.data(roles::toRole).value<Id>();
+	qReal::Id uuidFrom = mDataIndex.data(roles::fromRole).value<Id>();
+	qReal::Id uuidTo = mDataIndex.data(roles::toRole).value<Id>();
 
 	if (mSrc)
 		mSrc->delEdge(this);

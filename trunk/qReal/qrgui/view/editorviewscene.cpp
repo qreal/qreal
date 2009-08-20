@@ -28,7 +28,7 @@ void EditorViewScene::clearScene()
 	}
 }
 
-UML::Element * EditorViewScene::getElem(qReal::IdType const &uuid)
+UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
 {
 	if (uuid == ROOT_ID)
 		return NULL;

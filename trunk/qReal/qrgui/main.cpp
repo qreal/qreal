@@ -10,5 +10,8 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	MainWindow window;
-	return app.exec();
+	if (window.isVisible())
+		return app.exec();
+	else  // Окно решило в конструкторе не показывать себя, выходим сразу.
+		return 0;
 }

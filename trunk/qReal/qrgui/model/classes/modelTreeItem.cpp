@@ -5,12 +5,12 @@ using namespace qReal;
 
 using namespace model;
 
-ModelTreeItem::ModelTreeItem( IdType const &id, ModelTreeItem *parent ) : mId(id)
+ModelTreeItem::ModelTreeItem( Id const &id, ModelTreeItem *parent ) : mId(id)
 {
 	mParent = parent;
 }
 
-IdType ModelTreeItem::id() const
+Id ModelTreeItem::id() const
 {
 	return mId;
 }
@@ -25,7 +25,7 @@ void ModelTreeItem::setParent( ModelTreeItem *parent )
 	mParent = parent;
 }
 
-ModelTreeItemPointerList ModelTreeItem::children() const
+ModelTreeItem::PointerList ModelTreeItem::children() const
 {
 	return mChildren;
 }

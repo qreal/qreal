@@ -29,7 +29,7 @@ Client::~Client()
 	saveToDisk();
 }
 
-IdTypeList Client::children(const IdType &id) const
+IdList Client::children(Id const &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->children();
@@ -38,7 +38,7 @@ IdTypeList Client::children(const IdType &id) const
 	}
 }
 
-IdTypeList Client::parents( const IdType &id ) const
+IdList Client::parents(Id const &id) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->parents();
@@ -47,7 +47,7 @@ IdTypeList Client::parents( const IdType &id ) const
 	}
 }
 
-void Client::addParent( const IdType &id, const IdType &parent )
+void Client::addParent(Id const &id, Id const &parent)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
@@ -61,7 +61,7 @@ void Client::addParent( const IdType &id, const IdType &parent )
 	}
 }
 
-void Client::addChild(const IdType &id, const IdType &child)
+void Client::addChild(const Id &id, const Id &child)
 {
 	if (mObjects.contains(id)) {
 		mObjects[id]->addChild(child);
@@ -75,7 +75,7 @@ void Client::addChild(const IdType &id, const IdType &child)
 	}
 }
 
-void Client::removeParent(const IdType &id, const IdType &parent)
+void Client::removeParent(const Id &id, const Id &parent)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
@@ -89,7 +89,7 @@ void Client::removeParent(const IdType &id, const IdType &parent)
 	}
 }
 
-void Client::removeChild(const IdType &id, const IdType &child)
+void Client::removeChild(const Id &id, const Id &child)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(child)) {
@@ -112,7 +112,7 @@ void Client::removeChild(const IdType &id, const IdType &child)
 	}
 }
 
-void Client::setProperty( const IdType &id, const PropertyName &name, const QVariant &value )
+void Client::setProperty(const Id &id, const QString &name, const QVariant &value )
 {
 	if (mObjects.contains(id)) {
 		Q_ASSERT(mObjects[id]->hasProperty(name)
@@ -124,7 +124,7 @@ void Client::setProperty( const IdType &id, const PropertyName &name, const QVar
 	}
 }
 
-QVariant Client::property( const IdType &id, const PropertyName &name ) const
+QVariant Client::property( const Id &id, const QString &name ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
@@ -133,7 +133,7 @@ QVariant Client::property( const IdType &id, const PropertyName &name ) const
 	}
 }
 
-void Client::removeProperty( const IdType &id, const PropertyName &name )
+void Client::removeProperty( const Id &id, const QString &name )
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
@@ -142,7 +142,7 @@ void Client::removeProperty( const IdType &id, const PropertyName &name )
 	}
 }
 
-bool Client::hasProperty(const IdType &id, const PropertyName &name) const
+bool Client::hasProperty(const Id &id, const QString &name) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name);
@@ -218,10 +218,10 @@ LogicObject *Client::parseLogicObject(QDomElement const &elem)
 
 	LogicObject object(Id::loadFromString(id));
 
-	foreach (IdType parent, loadIdList(elem, "parents"))
+	foreach (Id parent, loadIdList(elem, "parents"))
 		object.addParent(parent);
 
-	foreach (IdType child, loadIdList(elem, "children"))
+	foreach (Id child, loadIdList(elem, "children"))
 		object.addChild(child);
 
 	if (!loadProperties(elem, object))
@@ -266,15 +266,15 @@ bool Client::loadProperties(QDomElement const &elem, LogicObject &object)
 	return true;
 }
 
-IdTypeList Client::loadIdList(QDomElement const &elem, QString const &name)
+IdList Client::loadIdList(QDomElement const &elem, QString const &name)
 {
 	QDomNodeList list = elem.elementsByTagName(name);
 	if (list.count() != 1) {
 		qDebug() << "Incorrect element: " + name + " list must appear once";
-		return IdTypeList();
+		return IdList();
 	}
 
-	IdTypeList result;
+	IdList result;
 
 	QDomElement elements = list.at(0).toElement();
 	QDomElement element = elements.firstChildElement();
@@ -282,7 +282,7 @@ IdTypeList Client::loadIdList(QDomElement const &elem, QString const &name)
 		QString elementStr = element.attribute("id", "");
 		if (elementStr == "") {
 			qDebug() << "Incorrect Child XML node";
-			return IdTypeList();
+			return IdList();
 		}
 		result.append(Id::loadFromString(elementStr));
 		element = element.nextSiblingElement();
@@ -368,10 +368,10 @@ QString Client::createDirectory(Id const &id)
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QDomElement Client::idListToXml(QString const &attributeName, IdTypeList const &idList, QDomDocument &doc)
+QDomElement Client::idListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)
 {
 	QDomElement result = doc.createElement(attributeName);
-	foreach (IdType id, idList) {
+	foreach (Id id, idList) {
 		QDomElement element = doc.createElement("object");
 		element.setAttribute("id", id.toString());
 		result.appendChild(element);
@@ -382,7 +382,7 @@ QDomElement Client::idListToXml(QString const &attributeName, IdTypeList const &
 QDomElement Client::propertiesToXml(LogicObject * const object, QDomDocument &doc)
 {
 	QDomElement result = doc.createElement("properties");
-	QMapIterator<PropertyName, QVariant> i = object->propertiesIterator();
+	QMapIterator<QString, QVariant> i = object->propertiesIterator();
 	while (i.hasNext()) {
 		i.next();
 		QString typeName = i.value().typeName();
@@ -466,10 +466,10 @@ void Client::printDebug() const
 	foreach (LogicObject *object, mObjects.values()) {
 		qDebug() << object->id().toString();
 		qDebug() << "Children:";
-		foreach (IdType id, object->children())
+		foreach (Id id, object->children())
 			qDebug() << id.toString();
 		qDebug() << "Parents:";
-		foreach (IdType id, object->parents())
+		foreach (Id id, object->parents())
 			qDebug() << id.toString();
 		qDebug() << "============";
 	}
