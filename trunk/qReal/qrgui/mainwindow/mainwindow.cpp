@@ -122,7 +122,18 @@ MainWindow::MainWindow()
 	progress->setValue(70);
 
 	mModel = new model::Model(mgr);
-	connect(ui.actionClear, SIGNAL( triggered() ), mModel, SLOT( exterminate() ));
+	IdList missingPlugins = mgr.checkNeededPlugins(mModel->api());
+	if (!missingPlugins.isEmpty()) {
+		QString text = "These plugins are not present, but needed to load the save:\n";
+		foreach (Id const id, missingPlugins) {
+			text += id.editor() + "\n";
+		}
+		QMessageBox::warning(this, tr("Some plugins are missing"), text);
+		close();  // Всё, собственно.
+		return;
+	}
+
+	connect(ui.actionClear, SIGNAL(triggered()), mModel, SLOT(exterminate()));
 
 	progress->setValue(80);
 
@@ -131,7 +142,7 @@ MainWindow::MainWindow()
 	ui.view->mvIface()->setModel(mModel);
 	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
 	progress->setValue(100);
-	if( showSplash )
+	if (showSplash)
 		splash->close();
 	delete splash;
 }

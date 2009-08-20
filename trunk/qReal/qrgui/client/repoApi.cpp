@@ -34,6 +34,54 @@ void RepoApi::removeChild(Id const &id, Id const &child)
 	mClient.removeChild(id, child);
 }
 
+void RepoApi::removeElement(Id const &id)
+{
+	Q_ASSERT(id != ROOT_ID);
+
+	foreach (Id const child, children(id)) {
+		removeElement(child);
+	}
+
+	foreach (Id const parent, parents(id)) {
+		removeChild(parent, id);
+	}
+
+	if (hasProperty(id, "links")) {
+		IdList links = property(id, "links").value<IdList>();
+		foreach (Id const link, links) {
+			if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
+				setProperty(link, "from", ROOT_ID.toVariant());
+			if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
+				setProperty(link, "to", ROOT_ID.toVariant());
+		}
+	}
+
+	removeLinkEnds("from", id);
+	removeLinkEnds("to", id);
+
+	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
+	// Впрочем, может, этого делать и не надо.
+}
+
+void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
+	if (hasProperty(id, endName)) {
+		Id target = property(id, endName).value<Id>();
+		if (hasProperty(target, "links")) {
+			removeFromList(target, "links", id);
+		}
+	}
+}
+
+IdList RepoApi::parents(Id const &id) const
+{
+	return mClient.parents(id);
+}
+
+void RepoApi::addParent(Id const &id, Id const &parent)
+{
+	mClient.addParent(id, parent);
+}
+
 IdList RepoApi::links(Id const &id, QString const &direction) const
 {
 	IdList links = mClient.property(id, "links").value<IdList>();

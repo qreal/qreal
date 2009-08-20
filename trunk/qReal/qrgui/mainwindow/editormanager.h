@@ -11,6 +11,10 @@ class QIcon;
 
 namespace qReal {
 
+	namespace client {
+		class RepoApi;
+	}
+
 	class EditorInterface;
 
 	class EditorManager : public QObject
@@ -18,23 +22,27 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		EditorManager(QObject *parent = 0);
+		explicit EditorManager(QObject *parent = NULL);
 
 		QList<Id> editors() const;
-		QList<Id> diagrams(const Id &editor) const;
-		QList<Id> elements(const Id &diagram) const;
+		QList<Id> diagrams(Id const &editor) const;
+		QList<Id> elements(Id const &diagram) const;
 
-		QString friendlyName(const Id &id) const;
-		QIcon icon(const Id &id) const;
-		UML::Element* graphicalObject(const Id &id) const;
+		QString friendlyName(Id const &id) const;
+		QIcon icon(Id const &id) const;
+		UML::Element* graphicalObject(Id const &id) const;
 
-		bool isEditor(const Id &id) const;
-		bool isDiagram(const Id &id) const;
-		bool isElement(const Id &id) const;
+		bool isEditor(Id const &id) const;
+		bool isDiagram(Id const &id) const;
+		bool isElement(Id const &id) const;
 
-		QStringList getPropertyNames(const Id &id) const;
+		QStringList getPropertyNames(Id const &id) const;
+
+		IdList checkNeededPlugins(client::RepoApi const &api) const;
 
 	private:
+		void checkNeededPluginsRecursive(client::RepoApi const &api, Id const &id, IdList &result) const;
+
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
 		QMap<QString, EditorInterface *> mPluginIface;

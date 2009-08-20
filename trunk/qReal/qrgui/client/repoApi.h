@@ -19,6 +19,11 @@ namespace qReal {
 			void addChild(Id const &id, Id const &child);
 			void removeChild(Id const &id, Id const &child);
 
+			void removeElement(Id const &id);
+
+			IdList parents(Id const &id) const;
+			void addParent(Id const &id, Id const &parent);
+
 			IdList outcomingLinks(Id const &id) const;
 			IdList incomingLinks(Id const &id) const;
 
@@ -52,6 +57,7 @@ namespace qReal {
 			void removeFromList(Id const &target, QString const &listName, Id const &data);
 
 			IdList links(Id const &id, QString const &direction) const;
+			void removeLinkEnds(QString const &endName, Id const &id);
 
 			details::Client mClient;
 		};

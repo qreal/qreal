@@ -9,6 +9,7 @@
 
 #include "editorinterface.h"
 #include "../kernel/ids.h"
+#include "../client/repoApi.h"
 
 using namespace qReal;
 
@@ -131,4 +132,24 @@ QStringList EditorManager::getPropertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+IdList EditorManager::checkNeededPlugins(client::RepoApi const &api) const
+{
+	IdList result;
+	checkNeededPluginsRecursive(api, ROOT_ID, result);
+	return result;
+}
+
+void EditorManager::checkNeededPluginsRecursive(client::RepoApi const &api, Id const &id, IdList &result) const
+{
+	if (id != ROOT_ID && !mPluginsLoaded.contains(id.editor())) {
+		Id missingEditor = Id(id.editor());
+		if (!result.contains(missingEditor))
+			result.append(missingEditor);
+	}
+
+	foreach (Id child, api.children(id)) {
+		checkNeededPluginsRecursive(api, child, result);
+	}
 }
