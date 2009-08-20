@@ -9,30 +9,6 @@
 
 const int MAX_LINE_LENGTH = 60;
 
-class OutFile
-{
-public:
-	explicit OutFile(QString const &fileName)
-			: mFile(fileName)
-	{
-		mFile.open(QIODevice::WriteOnly | QIODevice::Text);
-		mOut.setDevice(&mFile);
-	}
-
-	~OutFile()
-	{
-		mFile.close();
-	}
-
-	QTextStream& operator()()
-	{
-		return mOut;
-	}
-private:
-	QTextStream mOut;
-	QFile mFile;
-};
-
 Generator::Generator(QString const &inf)
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
@@ -488,6 +464,47 @@ void Generator::genNodeClass(Node *node, QString const &/*pluginName*/)
 		<< "}\n";
 }
 
+void Generator::genEdgeStyle(QString style, OutFile &out)
+{
+	if (style.isEmpty())
+		style = "filled_arrow";
+			
+	out() << "\t\t\tQBrush old = painter->brush();\n"
+		"\t\t\tQBrush brush;\n"
+		"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
+
+	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow")
+		out() << "\t\t\tbrush.setColor(Qt::white);\n";
+
+	if (style == "filled_arrow" || style == "filled_rhomb")
+		out() << "\t\t\tbrush.setColor(Qt::black);\n";
+	out() << "\t\t\tpainter->setBrush(brush);\n";
+
+	if (style == "empty_arrow" || style == "filled_arrow")
+		out() << "\t\t\tstatic const QPointF points[] = {\n"
+			"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
+			"\t\t\tpainter->drawPolygon(points, 3);\n";
+
+	if (style == "empty_rhomb" || style == "filled_rhomb")
+		out() << "\t\t\tstatic const QPointF points[] = {\n"
+			"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,20),\n\t\t\t\tQPointF(5,10)\n\t\t\t"
+			"};\n"
+			"\t\t\tpainter->drawPolygon(points, 4);\n";
+
+	if (style == "open_arrow")
+		out() << "\t\t\tstatic const QPointF points[] = {\n"
+			"\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
+			"\t\t\tpainter->drawPolyline(points, 3);\n";
+
+	if (style == "complex_arrow")
+		out() << "\t\t\tstatic const QPointF points[] = {"
+			"\n\t\t\t\tQPointF(-15,30),\n\t\t\t\tQPointF(-10,10),"
+			"\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(10,10),"
+			"\n\t\t\t\tQPointF(15,30),\n\t\t\t\tQPointF(0,23),\n\t\t\t\tQPointF(-15,30)\n\t\t\t};\n"
+			"\t\t\tpainter->drawPolyline(points, 7);\n";
+	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
+}
+
 void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 {
 	QString classname = edge->id;
@@ -497,24 +514,45 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 	mHeaders << fileName;
 
 	fileName = "generated/" + fileName;
+	QString style;
 
 	OutFile out(fileName);
 
 	out() << "#pragma once\n\n"
 		<< "#include \"../../qrgui/umllib/uml_edgeelement.h\"\n\n"
+		<< "#include <QBrush>\n\n"
+		<< "#include <QPainter>\n\n"
 		<< "namespace UML {\n\n"
 		<< "\tclass " << uClassname << " : public EdgeElement {\n"
 		<< "\tpublic:\n"
 		<< "\t\t" << uClassname << "() {\n"
-		<< "\t\t\tmPenStyle = Qt::SolidLine;\n"
+		<< "\t\t\tmPenStyle = " << edge->lineType <<  ";\n"
 		<< "\t\t}\n\n"
 
 		<< "\t\tvirtual ~" << uClassname << "() {}\n\n"
 
 		<< "\tprotected:\n"
-		<< "\t\tvirtual void drawStartArrow(QPainter * /*p*/) const {}\n"
-		<< "\t\tvirtual void drawEndArrow(QPainter * /*p*/) const {}\n"
-		<< "\t};\n"
+		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {";
+	
+	if (edge->associations.size() != 0 )
+			style = edge->associations.at(0)->fromArrow;
+	else
+		style = "";
+
+	if (!style.isEmpty()){
+		out() << "\n";
+		genEdgeStyle(style, out);	
+	} else 
+		out() << "};\n\n";
+
+	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const {\n";
+	if (edge->associations.size() != 0 )
+			style = edge->associations.at(0)->toArrow;
+	else
+		style = "";
+	genEdgeStyle(style, out);	
+
+	out()<< "\t};\n"
 		<< "}\n";
 }
 

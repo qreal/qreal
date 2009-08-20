@@ -13,6 +13,7 @@
 #include "entity.h"
 
 class Editor;
+class OutFile;
 
 #define FOR_ALL_FILES(f) \
 	for (QList<EditorFile *>::ConstIterator f = mLoadedFiles.constBegin(); \
@@ -64,6 +65,7 @@ private:
 	void genEdgeClass(Edge* edge, QString const &plugin);
 	void genProFile(QString const &plugin) const;
 	void genQrcFile(QString const &plugin) const;
+	void genEdgeStyle(QString style, OutFile &out);
 
 	QString normalizeName(QString const &name) const;
 	QString upperFirst(const QString &str) const;
@@ -81,3 +83,29 @@ private:
 	QString mResources;
 	QString currentEditor;
 };
+
+class OutFile
+{
+public:
+	explicit OutFile(QString const &fileName)
+			: mFile(fileName)
+	{
+		mFile.open(QIODevice::WriteOnly | QIODevice::Text);
+		mOut.setDevice(&mFile);
+	}
+
+	~OutFile()
+	{
+		mFile.close();
+	}
+
+	QTextStream& operator()()
+	{
+		return mOut;
+	}
+private:
+	QTextStream mOut;
+	QFile mFile;
+};
+
+
