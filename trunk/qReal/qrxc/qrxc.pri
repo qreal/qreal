@@ -29,6 +29,7 @@ QMAKE_EXTRA_COMPILERS *= qrxc project_compiler
 # -fake_linker, который просто возвращает 0.
 QMAKE_LINK = $$QMAKE_QRXC
 QMAKE_LFLAGS = -fake_linker
+CONFIG -= embed_manifest_exe
 
 # При операции clean должны удаляться все сгенерённые файлы
 QMAKE_CLEAN += generated/*
