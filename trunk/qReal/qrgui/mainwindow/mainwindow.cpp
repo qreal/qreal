@@ -26,7 +26,7 @@ using namespace qReal;
 MainWindow::MainWindow()
 		: mPropertyModel(mgr)
 {
-	QSettings settings("Tercom", "QReal");
+	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =
 		new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
@@ -91,7 +91,6 @@ MainWindow::MainWindow()
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
-	// ui.objectDock->setWidget(ui.objectExplorer);
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 
@@ -139,6 +138,8 @@ MainWindow::MainWindow()
 
 	mPropertyModel.setSourceModel(mModel);
 	ui.diagramExplorer->setModel(mModel);
+	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
+
 	ui.view->mvIface()->setModel(mModel);
 	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
 	progress->setValue(100);
@@ -305,7 +306,7 @@ void MainWindow::showHelp()
 
 void MainWindow::toggleShowSplash(bool show)
 {
-	QSettings settings("Tercom", "QReal");
+	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ShowSplashScreen", show);
 }
 

@@ -31,7 +31,7 @@ Qt::ItemFlags Model::flags(QModelIndex const &index) const
 		return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled
 			| Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
 	} else {
-		return Qt::NoItemFlags;
+		return Qt::ItemIsDropEnabled;  // У нас rootItem представляется невалидным индексом, а в него надо уметь кидать элементы.
 	}
 }
 
@@ -420,4 +420,3 @@ client::RepoApi const & Model::api() const
 {
 	return mApi;
 }
-
