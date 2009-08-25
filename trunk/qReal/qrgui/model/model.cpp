@@ -1,6 +1,7 @@
 #include "model.h"
 #include <QtCore/QDebug>
 #include <QtGui/QPolygon>
+#include <QtGui/QIcon>
 
 using namespace qReal;
 using namespace model;
@@ -44,6 +45,8 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			case Qt::DisplayRole:
 			case Qt::EditRole:
 				return mApi.name(item->id());
+			case Qt::DecorationRole:
+				return mEditorManager.icon(item->id());
 			case roles::idRole:
 				return item->id().toVariant();
 			case roles::positionRole:
