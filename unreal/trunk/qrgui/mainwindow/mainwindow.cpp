@@ -202,14 +202,15 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 			// activate parent diagram
 			ui.view->mvIface()->setRootIndex(parent);
 		}
-		// select this item on diagram
-		ui.view->scene()->clearSelection();
-		UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
-		if (e)
-			e->setSelected(true);
-		else
-			qDebug() << "shit happened!!!\n";
 	}
+
+	// select this item on diagram
+	ui.view->scene()->clearSelection();
+	UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
+	if (e)
+		e->setSelected(true);
+	else
+		qDebug() << "shit happened!!!\n";
 }
 
 void MainWindow::sceneSelectionChanged()
