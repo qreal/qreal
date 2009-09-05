@@ -120,6 +120,11 @@
    </logic>
   </node>
   <edge id="ceAggregation" name="Aggregation" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <logic>
     <associations>
      <association end_type="empty_rhomb" id="caAggr1" >
@@ -137,6 +142,11 @@
    </logic>
   </edge>
   <edge id="ceRelation" name="Relation" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <logic>
     <associations>
      <association end_type="no_arrow" id="caAggr1" >
@@ -158,6 +168,11 @@
    </logic>
   </edge>
   <edge id="ceComposition" name="Composition" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <logic>
     <associations>
      <association end_type="filled_rhomb" id="caComp1" >

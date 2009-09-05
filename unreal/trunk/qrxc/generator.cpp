@@ -7,6 +7,8 @@
 #include "generator.h"
 #include <QMessageBox>
 
+class OutFile;
+
 const int MAX_LINE_LENGTH = 60;
 
 Generator::Generator(QString const &inf)

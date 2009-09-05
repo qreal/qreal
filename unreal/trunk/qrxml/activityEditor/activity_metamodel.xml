@@ -836,6 +836,11 @@
    </logic>
   </edge>
   <edge id="actBehaviorEdge" name="BehaviorEdge" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <logic>
     <generalizations>
      <generalization>

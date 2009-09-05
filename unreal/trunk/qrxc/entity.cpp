@@ -278,15 +278,9 @@ bool Edge::init(QDomElement &xml_element)
 	else
 		parents << "krnnNamedElement";
 
-	if (!parseEdgeGraphics(xml_element)) 
-		return false;
-	if (!parseGeneralizations(logic)) 
-		return false;
-	if (!parseProperties(logic)) 
-		return false;
-	if (!parseAssociations(logic)) 
-		return false;
-	if (!parseLabels(logic)) 
+	if (!parseEdgeGraphics(xml_element) || !parseGeneralizations(logic) || !parseProperties(logic) ||
+		!parseAssociations(logic) || !parseLabels(logic) 
+	) 
 		return false;
 
 	return true;
@@ -501,6 +495,19 @@ bool Edge::parseEdgeGraphics(QDomElement &xml_element)
 		if( type == "noPan"){ // temporary kludge
 			type = "solidLine";
 		}
+		QString sdfType = type;
+		sdfType.remove("Line").toLower();
+		qDebug() << name << type << sdfType;
+
+		OutFile out("generated/shapes/" + id + "Class.sdf");
+		out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
+				"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
+				"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
+				"</picture>";
+
+		Generator *generator = cat->get_editor()->getGenerator();
+		generator->addResource(res.arg(id + "Class.sdf"));
+
 		lineType = "Qt::" + type.replace(0,1,type.at(0).toUpper());
 	}
 	return true;

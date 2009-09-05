@@ -18,7 +18,7 @@ SUBDIRS	= \
 	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
 	usecaseEditor/usecaseEditor.pro \
-#	handmadeEditor/handmadeEditor.pro \
+#	handmadeEditor/handmadeEditor.pro 
 
 
 HEADERS	= \

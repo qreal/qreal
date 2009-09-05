@@ -261,6 +261,11 @@
    </logic>
   </node>
   <edge id="dplManifestation" name="Manifestation" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <!-- тоже тире-->
    <logic>
     <generalizations>
@@ -384,6 +389,11 @@
    </logic>
   </node>
   <edge id="dplCommunicationPath" name="CommunicationPath" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
    <!--просто линия-->
    <logic>
     <generalizations>
@@ -395,7 +405,11 @@
    </logic>
   </edge>
   <edge id="dplDeployment" name="Deployment" >
-   <!-- тире-тире стрелочка-->
+   <graphics>
+    <view>
+     <line_type type="dashLine" />
+    </view>
+   </graphics>
    <logic>
     <generalizations>
      <generalization>
@@ -415,6 +429,11 @@
   </edge>
   <edge id="dplDeployment2" name="Deployment2" >
    <!-- тире-тире стрелочка + ограничение должны нах-ся в 1 ноде-->
+   <graphics>
+    <view>
+     <line_type type="dashLine" />
+    </view>
+   </graphics>
    <logic>
     <generalizations>
      <generalization>
