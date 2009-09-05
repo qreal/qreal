@@ -425,6 +425,24 @@
        </html:center>
       </html:html>
      </repo_info>
+	 <ports>
+      <line_port>
+       <start startx="79" starty="10" />
+       <end endx="79" endy="50" />
+      </line_port>
+      <line_port>
+       <start startx="1" starty="10" />
+       <end endx="1" endy="50" />
+      </line_port>
+	  <line_port>
+       <start startx="10" starty="1" />
+       <end endx="70" endy="1" />
+      </line_port>
+	  <line_port>
+       <start startx="10" starty="59" />
+       <end endx="70" endy="59" />
+      </line_port>
+	 </ports>
     </view>
    </graphics>
    <logic>
