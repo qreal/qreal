@@ -213,9 +213,23 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 		qDebug() << "shit happened!!!\n";
 }
 
+void MainWindow::activateSubdiagram(QModelIndex const &idx) {
+	QModelIndex diagramToActivate = idx;
+	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
+		&& diagramToActivate.parent() != ui.view->mvIface()->rootIndex())
+	{
+		diagramToActivate = diagramToActivate.parent();
+	}
+
+	if (diagramToActivate.model()->rowCount(diagramToActivate) > 0) {
+		QModelIndex childIndex = diagramToActivate.model()->index(0, 0, diagramToActivate);
+		activateItemOrDiagram(childIndex);
+	}
+}
+
 void MainWindow::sceneSelectionChanged()
 {
-	QList<QGraphicsItem*> graphicsItems =  ui.view->scene()->selectedItems();
+	QList<QGraphicsItem*> graphicsItems = ui.view->scene()->selectedItems();
 	if (graphicsItems.size() == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {

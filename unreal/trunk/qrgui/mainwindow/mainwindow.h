@@ -53,6 +53,10 @@ namespace qReal {
 
 		void exportToXmi();
 		void deleteFromScene();
+
+		/** @brief Активирует ближайшую к текущей поддиаграмму, содержащую указанный
+		 * элемент, если в ней есть элементы. */
+		void activateSubdiagram(QModelIndex const &idx);
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();

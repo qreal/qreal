@@ -178,21 +178,26 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	UML::ElementTitle *t = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()));
-	// Double click on title activates it
-	if (event->button() == Qt::LeftButton && t)
-		t->setTextInteractionFlags(Qt::TextEditorInteraction);
+	if (event->button() == Qt::LeftButton) {
+		// Double click on title activates it
+		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos())))
+			title->setTextInteractionFlags(Qt::TextEditorInteraction);
+		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
+			mainWindow()->activateSubdiagram(element->index());
+		}
+	}
+
 	QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
-UML::Element * EditorViewScene::getElemAt( const QPointF &position )
+UML::Element* EditorViewScene::getElemAt(QPointF const &position)
 {
-	foreach( QGraphicsItem *item, items(position) ) {
+	foreach (QGraphicsItem *item, items(position)) {
 		UML::Element *e = dynamic_cast<UML::Element *>(item);
-		if ( e )
+		if (e)
 			return e;
 	}
-	return 0;
+	return NULL;
 }
 
 QPersistentModelIndex EditorViewScene::rootItem()
