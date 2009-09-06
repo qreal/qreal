@@ -327,6 +327,9 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 		Id id = Id::loadFromString(idString);
 		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
+		if (treeItems.contains(id))  // Пока контейнеры не работают, бросать существующие элементы нельзя.
+			return false;
+
 		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 	}
 }
