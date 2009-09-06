@@ -22,7 +22,7 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
-	class StatLine;
+	struct StatLine;
 
 	class ElementTitle : public QGraphicsTextItem
 	{
@@ -136,6 +136,8 @@ namespace UML {
 			*	@brief @return Объект, расположенный в данной точке сцены
 			* */
 		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+
+		void adjustLinks();
 
 		QLineF newTransform(const StatLine& port)  const;
 

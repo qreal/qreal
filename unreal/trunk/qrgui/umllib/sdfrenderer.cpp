@@ -604,6 +604,8 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	QIcon::Mode mode, QIcon::State state)
 {
+	Q_UNUSED(mode)
+	Q_UNUSED(state)
 	painter->eraseRect(rect);
 	painter->setRenderHint(QPainter::Antialiasing, true);
 //	QRect adjustedRect(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1);

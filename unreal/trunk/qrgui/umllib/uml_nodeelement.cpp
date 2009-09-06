@@ -111,9 +111,20 @@ void NodeElement::setGeometry(QRectF const &geom)
 		mContents = geom.translated(-geom.topLeft());
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
+	adjustLinks();
+	mTitle.setTextWidth(mContents.width() - 15);
+}
+
+void NodeElement::adjustLinks() 
+{
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->adjustLink();
-	mTitle.setTextWidth(mContents.width() - 15);
+
+	foreach (QGraphicsItem *child, childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element)
+			element->adjustLinks();
+	}
 }
 
 void NodeElement::storeGeometry(void)
@@ -200,8 +211,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	switch (change) {
 		case ItemPositionHasChanged:
-			foreach (EdgeElement *edge, mEdgeList)
-				edge->adjustLink();
+			adjustLinks();
 			return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
