@@ -352,7 +352,15 @@ qreal NodeElement::getPortId(const QPointF &location) const
 				minDistance = QLineF( QLineF(mLinePorts[i]).p1(), mTransform.inverted().map(location) ).length();
 			}
 		}
-		return 1.0 * (numMinDistance + mPointPorts.size());
+
+		// the nearest point of line port
+		QLineF nearestLinePort = mLinePorts[numMinDistance];
+		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+		QPointF p0 = mTransform.inverted().map(location);
+		qreal x = (-k*k*nearestLinePort.x1() + k*nearestLinePort.y1() - k*p0.y() - p0.x()) / (k*k + 1);
+		qreal nearestPointOfLinePort = (x - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+
+		return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
 	}
 	return -1.0;
 }
