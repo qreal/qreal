@@ -3,7 +3,7 @@
  <include>kernel_metamodel</include>
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
- <editor name="USE CASE DIAGRAM" >
+ <editor name="Use Case Diagram" >
    <graph_types>
   <node id="uscnActor" name="Actor" >
    <graphics>

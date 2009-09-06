@@ -221,9 +221,8 @@ void Generator::genPluginSource(QString const &pluginName)
 		<< "void " << pluginName << "Plugin::initPlugin(){\n";
 
 
-	QString name = normalizeName(currentEditor);
-	qDebug() << name;
-	out() << "\tdiagramNameMap[\"" << name << "\"] = \"" << name << " Diagram\"" << ";\n";
+	qDebug() << currentEditor;
+	out() << "\tdiagramNameMap[\"" << normalizeName(currentEditor) << "\"] = \"" << currentEditor << " \"" << ";\n";
 	out() << "\n";
 
 	MEGA_FOR_ALL_OBJECTS(f,c,o)
@@ -470,7 +469,7 @@ void Generator::genEdgeStyle(QString style, OutFile &out)
 {
 	if (style.isEmpty())
 		style = "filled_arrow";
-			
+
 	out() << "\t\t\tQBrush old = painter->brush();\n"
 		"\t\t\tQBrush brush;\n"
 		"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
@@ -535,7 +534,7 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 
 		<< "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {";
-	
+
 	if (edge->associations.size() != 0 )
 			style = edge->associations.at(0)->fromArrow;
 	else
@@ -543,8 +542,8 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 
 	if (!style.isEmpty()){
 		out() << "\n";
-		genEdgeStyle(style, out);	
-	} else 
+		genEdgeStyle(style, out);
+	} else
 		out() << "};\n\n";
 
 	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const {\n";
@@ -552,7 +551,7 @@ void Generator::genEdgeClass(Edge *edge, QString const &/*pluginName*/)
 			style = edge->associations.at(0)->toArrow;
 	else
 		style = "";
-	genEdgeStyle(style, out);	
+	genEdgeStyle(style, out);
 
 	out()<< "\t};\n"
 		<< "}\n";
