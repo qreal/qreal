@@ -1,0 +1,2 @@
+include (../../qrxc/qrxc.pri)
+
