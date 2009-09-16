@@ -10,6 +10,7 @@
 
 #include "uml_nodeelement.h"
 #include "../model/model.h"
+#include <math.h>
 
 using namespace UML;
 using namespace qReal;
@@ -310,6 +311,23 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	return QLineF(x1, y1, x2, y2);
 }
 
+qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF location) const
+{
+	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
+	qreal a = linePort.length();
+	qreal b = QLineF(linePort.p1(), location).length();
+	qreal c = QLineF(linePort.p2(), location).length();
+	qreal p = (a + b + c) / 2;
+	qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
+	qreal minDistance = 2 * triangleSquare / a;
+	return minDistance;
+}
+
+qreal NodeElement::distanceFromPointPort(int pointPortNumber, QPointF location) const
+{
+	return QLineF(mTransform.map(mPointPorts[pointPortNumber]), location).length();
+}
+
 qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
@@ -333,34 +351,75 @@ qreal NodeElement::getPortId(const QPointF &location) const
 				/ newTransform(mLinePorts[i]).length() ) );
 	}
 
-	if (mPointPorts.size()!=0) {
-		int numMinDistance = 0;
-		qreal minDistance = QLineF( mPointPorts[0], mTransform.inverted().map(location) ).length();
-		for( int i = 0; i < mPointPorts.size(); i++ ) {
-			if (QLineF( mPointPorts[i], mTransform.inverted().map(location) ).length()<minDistance) {
+	qreal minDistance;
+	int numMinDistance = -1;
+	if (mPointPorts.size() != 0)
+	{
+		numMinDistance = 0;
+		minDistance = distanceFromPointPort(0, location);
+		for(int i = 1; i < mPointPorts.size(); i++)
+		{
+			qreal currentDistance = distanceFromPointPort(i, location);
+			if (currentDistance < minDistance)
+			{
 				numMinDistance = i;
-				minDistance = QLineF( mPointPorts[i], mTransform.inverted().map(location) ).length();
+				minDistance = currentDistance;
 			}
 		}
+	}
+
+	if (mLinePorts.size() != 0) 
+	{
+		bool linePort = false;
+		if (numMinDistance == -1)
+		{
+			numMinDistance = 0;
+			minDistance = minDistanceFromLinePort(0, location);
+			linePort = true;
+		}
+		for(int i = 0; i < mLinePorts.size(); i++) 
+		{
+			qreal currentDistance = minDistanceFromLinePort(i, location);
+			if (currentDistance < minDistance)
+			{
+				numMinDistance = i;
+				minDistance = currentDistance;
+				linePort = true;
+			}
+		}
+		if (linePort)
+		{
+			qreal nearestPointOfLinePort = 0;
+			QLineF nearestLinePort = newTransform(mLinePorts[numMinDistance]);
+			if (nearestLinePort.x1() == nearestLinePort.x2())
+			{
+				nearestPointOfLinePort = (location.y() - nearestLinePort.y1()) / (nearestLinePort.y2() - nearestLinePort.y1());
+			} else if (nearestLinePort.y1() == nearestLinePort.y2())
+			{
+				nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+			} else 
+			{
+				qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+				qreal b2 = location.y() + 1 / k * location.x();
+				qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
+				qreal x3 = k / (1 + k * k) * (b2 - b);
+				nearestPointOfLinePort = (x3 - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+			}
+			if (nearestPointOfLinePort < 0)
+			{
+				nearestPointOfLinePort = 0;
+			} else if (nearestPointOfLinePort > 0.9999)
+			{
+				nearestPointOfLinePort = 0.9999;
+			}
+			return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
+		} else
+		{
+			return 1.0 * numMinDistance;
+		}
+	} else if (numMinDistance >= 0)
+	{
 		return 1.0 * numMinDistance;
-	} else if (mLinePorts.size()!=0) {
-		int numMinDistance = 0;
-		qreal minDistance = QLineF( QLineF(mLinePorts[0]).p1(), mTransform.inverted().map(location) ).length();
-		for( int i = 0; i < mLinePorts.size(); i++ ) {
-			if (QLineF( QLineF(mLinePorts[i]).p1(), mTransform.inverted().map(location) ).length()<minDistance) {
-				numMinDistance = i;
-				minDistance = QLineF( QLineF(mLinePorts[i]).p1(), mTransform.inverted().map(location) ).length();
-			}
-		}
-
-		// the nearest point of line port
-		QLineF nearestLinePort = mLinePorts[numMinDistance];
-		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-		QPointF p0 = mTransform.inverted().map(location);
-		qreal x = (-k*k*nearestLinePort.x1() + k*nearestLinePort.y1() - k*p0.y() - p0.x()) / (k*k + 1);
-		qreal nearestPointOfLinePort = (x - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-
-		return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
 	}
 	return -1.0;
 }

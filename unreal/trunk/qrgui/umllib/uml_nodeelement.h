@@ -141,6 +141,9 @@ namespace UML {
 
 		QLineF newTransform(const StatLine& port)  const;
 
+		qreal minDistanceFromLinePort(int linePortNumber, QPointF location) const;
+		qreal distanceFromPointPort(int pointPortNumber, QPointF location) const;
+
 		/** @brief Список ассоциированных с объектом связей */
 		QList<EdgeElement *> mEdgeList;
 
