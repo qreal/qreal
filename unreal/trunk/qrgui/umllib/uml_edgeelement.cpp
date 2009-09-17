@@ -290,7 +290,9 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 {
-	foreach (QGraphicsItem *item, scene()->items(mapToScene(position))) {
+	QPainterPath circlePath;
+	circlePath.addEllipse(mapToScene(position), 12, 12);
+	foreach (QGraphicsItem *item, scene()->items(circlePath)) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {
 			return e;
