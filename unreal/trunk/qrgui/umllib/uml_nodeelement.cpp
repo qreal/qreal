@@ -311,21 +311,50 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	return QLineF(x1, y1, x2, y2);
 }
 
-qreal NodeElement::minDistanceFromLinePort(int linePortNumber, QPointF location) const
+qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
 {
 	QLineF linePort = newTransform(mLinePorts[linePortNumber]);
 	qreal a = linePort.length();
 	qreal b = QLineF(linePort.p1(), location).length();
 	qreal c = QLineF(linePort.p2(), location).length();
-	qreal p = (a + b + c) / 2;
-	qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
-	qreal minDistance = 2 * triangleSquare / a;
-	return minDistance;
+
+	qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
+	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999))
+	{
+		return qMin(b, c);
+	} else 
+	{
+		qreal p = (a + b + c) / 2;
+		qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
+		qreal minDistance = 2 * triangleSquare / a;
+		return minDistance;
+	}
 }
 
-qreal NodeElement::distanceFromPointPort(int pointPortNumber, QPointF location) const
+qreal NodeElement::distanceFromPointPort(int pointPortNumber, const QPointF &location) const
 {
 	return QLineF(mTransform.map(mPointPorts[pointPortNumber]), location).length();
+}
+
+qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const
+{
+	qreal nearestPointOfLinePort = 0;
+	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
+	if (nearestLinePort.x1() == nearestLinePort.x2())
+	{
+		nearestPointOfLinePort = (location.y() - nearestLinePort.y1()) / (nearestLinePort.y2() - nearestLinePort.y1());
+	} else if (nearestLinePort.y1() == nearestLinePort.y2())
+	{
+		nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+	} else 
+	{
+		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+		qreal b2 = location.y() + 1 / k * location.x();
+		qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
+		qreal x3 = k / (1 + k * k) * (b2 - b);
+		nearestPointOfLinePort = (x3 - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+	}
+	return nearestPointOfLinePort;
 }
 
 qreal NodeElement::getPortId(const QPointF &location) const
@@ -389,22 +418,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		}
 		if (linePort)
 		{
-			qreal nearestPointOfLinePort = 0;
-			QLineF nearestLinePort = newTransform(mLinePorts[numMinDistance]);
-			if (nearestLinePort.x1() == nearestLinePort.x2())
-			{
-				nearestPointOfLinePort = (location.y() - nearestLinePort.y1()) / (nearestLinePort.y2() - nearestLinePort.y1());
-			} else if (nearestLinePort.y1() == nearestLinePort.y2())
-			{
-				nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-			} else 
-			{
-				qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-				qreal b2 = location.y() + 1 / k * location.x();
-				qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
-				qreal x3 = k / (1 + k * k) * (b2 - b);
-				nearestPointOfLinePort = (x3 - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-			}
+			qreal nearestPointOfLinePort = getNearestPointOfLinePort(numMinDistance, location);
 			if (nearestPointOfLinePort < 0)
 			{
 				nearestPointOfLinePort = 0;
