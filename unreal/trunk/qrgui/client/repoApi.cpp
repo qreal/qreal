@@ -190,6 +190,11 @@ void RepoApi::exterminate()
 	mClient.exterminate();
 }
 
+void RepoApi::save() const
+{
+	mClient.save();
+}
+
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {
 	if (target == ROOT_ID)

@@ -329,7 +329,12 @@ QPointF Client::parsePointF(QString const &str)
 	return QPointF(x, y);
 }
 
-void Client::saveToDisk()
+void Client::save() const
+{
+	saveToDisk();
+}
+
+void Client::saveToDisk() const
 {
 	clearDir(saveDirName);
 	foreach (LogicObject *object, mObjects.values()) {

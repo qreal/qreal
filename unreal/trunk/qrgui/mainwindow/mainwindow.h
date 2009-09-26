@@ -44,6 +44,7 @@ namespace qReal {
 		void showAbout();
 		void showHelp();
 
+		void save();
 		void print();
 		void makeSvg();
 

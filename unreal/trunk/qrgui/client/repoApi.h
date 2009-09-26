@@ -48,6 +48,7 @@ namespace qReal {
 			void setToPort(Id const &id, double toPort);
 
 			void exterminate();
+			void save() const;
 
 		private:
 			RepoApi(RepoApi const &other);  // Копировать нельзя.

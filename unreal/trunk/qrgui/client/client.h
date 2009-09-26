@@ -36,10 +36,11 @@ namespace qReal {
 				void printDebug() const;
 
 				void exterminate();
+				void save() const;
 
 			private:
 				void loadFromDisk();
-				void saveToDisk();
+				void saveToDisk() const;
 				void init();
 
 				// TODO: Вынести всё, что относится к сериализации, в отдельный класс,

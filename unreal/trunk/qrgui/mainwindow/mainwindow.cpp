@@ -72,14 +72,14 @@ MainWindow::MainWindow()
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), ui.view, SLOT(toggleOpenGL(bool)));
 	connect(ui.actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
 	connect(ui.actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-
-        connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
+	connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -249,6 +249,11 @@ void MainWindow::sceneSelectionChanged()
 	}
 }
 
+void MainWindow::save()
+{
+	mModel->api().save();
+}
+
 void MainWindow::print()
 {
 	QPrinter printer(QPrinter::HighResolution);
@@ -349,19 +354,19 @@ void MainWindow::exportToXmi()
 
 void MainWindow::exportToJava()
 {
-        generators::JavaHandler java(mModel->api());
+		generators::JavaHandler java(mModel->api());
 
-        QString const fileName = QFileDialog::getSaveFileName(this);
-        if (fileName.isEmpty())
-                return;
+		QString const fileName = QFileDialog::getSaveFileName(this);
+		if (fileName.isEmpty())
+				return;
 
-        QString const errors = java.exportToJava(fileName);
+		QString const errors = java.exportToJava(fileName);
 
-        if (!errors.isEmpty()) {
-                QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-        } else {
-                QMessageBox::information(this, tr("finished"), "Export is finished");
-        }
+		if (!errors.isEmpty()) {
+				QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+		} else {
+				QMessageBox::information(this, tr("finished"), "Export is finished");
+		}
 
-        qDebug() << "Done.";
+		qDebug() << "Done.";
 }

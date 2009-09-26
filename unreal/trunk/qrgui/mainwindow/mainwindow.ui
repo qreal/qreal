@@ -36,13 +36,14 @@
      <x>0</x>
      <y>0</y>
      <width>678</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionSave"/>
     <addaction name="actionPrint"/>
     <addaction name="actionMakeSvg"/>
     <addaction name="separator"/>
@@ -402,6 +403,11 @@
   <action name="actionExport_to_Java">
    <property name="text">
     <string>Export to Java</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>
