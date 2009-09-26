@@ -175,8 +175,8 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	mDragState = -1;
 
-	if (isSelected())
-		mDragState = getPoint(event->pos());
+	mDragState = getPoint(event->pos());
+	setSelected(true);
 
 	if (mDragState == -1)
 		Element::mousePressEvent(event);
