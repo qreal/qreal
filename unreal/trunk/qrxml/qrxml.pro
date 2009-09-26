@@ -7,6 +7,7 @@ SUBDIRS	= \
 	communicationEditor/communicationEditor.pro \
 	componentEditor/componentEditor.pro \
 	deploymentEditor/deploymentEditor.pro \
+	kernelEditor/kernelEditor.pro \
 	metaEditor/metaEditor.pro \
 	networkEditor/networkEditor.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
