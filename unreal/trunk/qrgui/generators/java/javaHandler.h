@@ -12,12 +12,12 @@ namespace qReal {
 
 	namespace generators {
 
-		class XmiHandler
+		class JavaHandler
 		{
 		public:
-			explicit XmiHandler(client::RepoApi const &api);
+			explicit JavaHandler(client::RepoApi const &api);
 
-			QString exportToXmi(QString const &pathToFile);
+			QString exportToJava(QString const &pathToFile);
 		private:
 			QString serializeObject(Id const &id, Id const &parentId);
 			QString serializeChildren(Id const &id);

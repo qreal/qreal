@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>678</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -80,6 +80,7 @@
     </property>
     <addaction name="actionClear"/>
     <addaction name="actionExport_to_XMI"/>
+    <addaction name="actionExport_to_Java"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -396,6 +397,11 @@
   <action name="actionExport_to_XMI">
    <property name="text">
     <string>Export to XMI</string>
+   </property>
+  </action>
+  <action name="actionExport_to_Java">
+   <property name="text">
+    <string>Export to Java</string>
    </property>
   </action>
  </widget>

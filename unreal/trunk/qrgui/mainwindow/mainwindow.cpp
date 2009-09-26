@@ -20,6 +20,7 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../generators/xmi/xmiHandler.h"
+#include "../generators/java/javaHandler.h"
 
 using namespace qReal;
 
@@ -77,6 +78,8 @@ MainWindow::MainWindow()
 	connect(ui.actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
+
+        connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -342,4 +345,23 @@ void MainWindow::exportToXmi()
 	}
 
 	qDebug() << "Done.";
+}
+
+void MainWindow::exportToJava()
+{
+        generators::JavaHandler java(mModel->api());
+
+        QString const fileName = QFileDialog::getSaveFileName(this);
+        if (fileName.isEmpty())
+                return;
+
+        QString const errors = java.exportToJava(fileName);
+
+        if (!errors.isEmpty()) {
+                QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+        } else {
+                QMessageBox::information(this, tr("finished"), "Export is finished");
+        }
+
+        qDebug() << "Done.";
 }
