@@ -170,6 +170,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	UML::Element *e = getElemAt(event->scenePos());
 	if (!e) return;
+	if (!e->isSelected())
+	{
+		clearSelection();
+		e->setSelected(true);
+	}
 
 	// Menu belongs to scene handler because it can delete elements.
 	// We cannot not allow elements to commit suicide.
