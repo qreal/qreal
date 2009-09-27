@@ -17,6 +17,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 		:  QGraphicsScene(parent), mWindow(NULL)
 {
 	setItemIndexMethod(NoIndex);
+	setBackgroundBrush(Qt::gray);
 }
 
 void EditorViewScene::clearScene()
@@ -85,6 +86,11 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 	// отдельно, через конструктор это делать нехорошо,
 	// поскольку сцена создаётся в сгенерённом ui-шнике.
 
+	//если нет ни одной диаграммы, то ниего не создаем.
+	if (mv_iface->model()->rowCount(QModelIndex()) == 0)
+	{
+		return;
+	}
 	// Transform mime data to include coordinates.
 	const QMimeData *mimeData = event->mimeData();
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");

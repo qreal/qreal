@@ -65,6 +65,7 @@ namespace qReal {
 			QString positionPropertyName(ModelTreeItem const *item) const;
 			QString configurationPropertyName(ModelTreeItem const *item) const;
 			QString findPropertyName(Id const &id, int const role) const;
+			bool isDiagram(const Id &id);
 
 			void init();
 			void cleanupTree(ModelTreeItem *root);

@@ -110,7 +110,6 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
-
 	qDebug() << "========== rowsInserted" << parent << start << end;
 
 	qDebug() << "rowsInserted: adding items" << parent;
@@ -121,6 +120,15 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		Id parent_uuid;
 		if (parent != rootIndex())
 			parent_uuid = parent.data(roles::idRole).value<Id>();
+		
+		mScene->setBackgroundBrush(Qt::white);
+
+		//если добавляем диаграмму в корень
+		if (!parent.isValid())
+		{
+			setRootIndex(current);
+			continue;
+		}
 
 		qDebug() << uuid.toString();
 
@@ -154,7 +162,11 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 		delete items[curr];
 		items.remove(curr);
 	}
-
+	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
+	if ((parent == QModelIndex()) && (model()->rowCount(parent) == start - end + 1))
+	{
+		mScene->setBackgroundBrush(Qt::gray);
+	}
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 

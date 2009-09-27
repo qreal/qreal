@@ -334,11 +334,33 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 	}
 }
 
+bool Model::isDiagram(const Id &id)
+{
+	return ((id.editor() == "KernelEditor") && (id.diagram() == "Kernel") && (id.element() == "krnnDiagram"));
+}
+
 ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id,
 		const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
+	
+	if (isDiagram(id))
+	{
+		if ((!isDiagram(parentItem->id())) && (parentItem != rootItem))
+		{
+			qDebug() << "Диаграмму нельзя добавить в элемент.";
+			return NULL;
+		}
+	} 
+	else
+	{
+		if (parentItem == rootItem)
+		{
+			qDebug() << "Элемент можно добавить только на диаграмму";
+			return NULL;
+		}
+	}
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem),newRow,newRow);

@@ -190,30 +190,21 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 {
 	QModelIndex parent = idx.parent();
 
-	// Is level-one diagram?
-	if (!parent.isValid())
+	if (parent == mModel->rootIndex())
 	{
-		// Показать "корневую диаграмму". На самом деле, её, вероятно, не будет,
-		// будет набор корневых диаграмм.
-		ui.view->mvIface()->setRootIndex(mModel->rootIndex());
-		ui.diagramExplorer->setCurrentIndex(mModel->rootIndex());
-	}
+		ui.view->mvIface()->setRootIndex(idx);
+	} 
 	else
 	{
-		if (ui.view->mvIface()->rootIndex() != parent)
-		{
-			// activate parent diagram
-			ui.view->mvIface()->setRootIndex(parent);
-		}
+		ui.view->mvIface()->setRootIndex(parent);
+		// select this item on diagram
+		ui.view->scene()->clearSelection();
+		UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
+		if (e)
+			e->setSelected(true);
+		else
+			qDebug() << "shit happened!!!\n";
 	}
-
-	// select this item on diagram
-	ui.view->scene()->clearSelection();
-	UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
-	if (e)
-		e->setSelected(true);
-	else
-		qDebug() << "shit happened!!!\n";
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
