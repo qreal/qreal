@@ -2,6 +2,7 @@
 #include <QtCore/QDebug>
 #include <QtGui/QPolygon>
 #include <QtGui/QIcon>
+#include <QUuid>
 
 using namespace qReal;
 using namespace model;
@@ -11,6 +12,11 @@ Model::Model(EditorManager const &editorManager)
 {
 	rootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
+	if (rootItem->children().count() == 0)
+	{
+		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel/krnnDiagram"), QUuid::createUuid().toString());
+		addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
+	}
 }
 
 Model::~Model()

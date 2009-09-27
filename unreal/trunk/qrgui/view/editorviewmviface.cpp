@@ -92,6 +92,11 @@ void EditorViewMViface::reset()
 {
 	items.clear();
 	mScene->clearScene();
+	//для того, чтобы работало с экстерминатусом.
+	if (model()->rowCount(QModelIndex()) == 0)
+	{
+		mScene->setBackgroundBrush(Qt::gray);
+	}
 
 	// so that our diagram be nicer
 	QGraphicsRectItem *rect = mScene->addRect(QRect(-1000, -1000, 2000, 2000));
