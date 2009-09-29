@@ -93,6 +93,12 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		    QString visibility = getVisibility(id);
 		    QString type = getType(id);
 		    QString operationFactors = getOperationFactors(id);
+		    QString isFinalField = isFinal(id);
+		    QString isAbstractField = isAbstract(id);
+		    QString isStaticField = isStatic(id);
+		    if ( (isAbstractField != "" && isFinalField != "") || (isAbstractField != "" && isStaticField != "") ){
+			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
+		    }
 		    result += visibility + type  + mApi.name(id) + "(" + operationFactors + ");" + "\n";
 		} else {
 			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
@@ -194,6 +200,69 @@ QString JavaHandler::getType(Id const &id)
     return result;
 }
 
+QString JavaHandler::isAbstract(Id const &id)
+{
+    QString result = "";
+
+    QString const objectType = mApi.typeName(id);
+
+    if (mApi.hasProperty(id, "isAbstract")) {
+	QString isAbstract = mApi.stringProperty(id, "isAbstract");
+
+	if (isAbstract == "true" || isAbstract == "false") {
+		result = isAbstract;
+		if (result != "")
+		    result += " ";
+	} else {
+		addError("object " + objectType + " with id " + id.toString() + " has invalid isAbstract value: " + isAbstract);
+    	}
+    }
+
+    return result;
+}
+
+QString JavaHandler::isStatic(Id const &id)
+{
+    QString result = "";
+
+    QString const objectType = mApi.typeName(id);
+
+    if (mApi.hasProperty(id, "isStatic")) {
+	QString isStatic = mApi.stringProperty(id, "isStatic");
+
+	if (isStatic == "true" || isStatic == "false") {
+		result = isStatic;
+		if (result != "")
+		    result += " ";
+	} else {
+		addError("object " + objectType + " with id " + id.toString() + " has invalid isStatic value: " + isStatic);
+    	}
+    }
+
+    return result;
+}
+
+QString JavaHandler::isFinal(Id const &id)
+{
+    QString result = "";
+
+    QString const objectType = mApi.typeName(id);
+
+    if (mApi.hasProperty(id, "isFinal")) {
+	QString isFinal = mApi.stringProperty(id, "isLeaf");
+
+	if (isFinal == "true" || isFinal == "false") {
+		result = isFinal;
+		if (result != "")
+		    result += " ";
+	} else {
+		addError("object " + objectType + " with id " + id.toString() + " has invalid isFinal value: " + isFinal);
+    	}
+    }
+
+    return result;
+}
+
 QString JavaHandler::getOperationFactors(Id const &id)
 {
     QString result = "";
@@ -203,7 +272,7 @@ QString JavaHandler::getOperationFactors(Id const &id)
     if (mApi.hasProperty(id, "type")) {
 	QString operationFactors = mApi.stringProperty(id, "operationFactors");
 
-//	проверка корректности
+//	to check for the corract data
 //	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
 		result = operationFactors;
 //	} else {
@@ -224,7 +293,7 @@ QString JavaHandler::getDefaultValue(Id const &id)
 	QString defaultValue = mApi.stringProperty(id, "defaultValue");
 
 //	if (isTypeSuitable(defaultValue)) {
-//	РїСЂРѕРІРµСЂРєР°, С‡С‚Рѕ С‚РёРїС‹ default Рё РїРѕР»СЏ СЃРѕРІРїР°РґР°СЋС‚
+//	to check for the corract data
 		result = defaultValue;
 //	} else {
 //		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
