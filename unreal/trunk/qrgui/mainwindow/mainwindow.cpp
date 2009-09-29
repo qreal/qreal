@@ -45,19 +45,13 @@ MainWindow::MainWindow()
 	}
 
 	ui.setupUi(this);
+	ui.tabs->setTabsClosable(true);
 
 	if (!showSplash)
 		ui.actionShowSplash->setChecked(false);
 
-	ui.view->setMainWindow(this);
-
-	ui.minimapView->setScene(ui.view->scene());
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
-	// activated под линуксом - одинарный клик, что очень плохо.
-	// connect(ui.diagramExplorer, SIGNAL(activated(const QModelIndex &)),
-	//	ui.view->mvIface(), SLOT(setRootIndex(const QModelIndex &)));
-	connect(ui.view->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
 		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
 
@@ -65,11 +59,6 @@ MainWindow::MainWindow()
 
 	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
-	connect(ui.actionZoom_In, SIGNAL(triggered()), ui.view, SLOT(zoomIn()));
-	connect(ui.actionZoom_Out, SIGNAL(triggered()), ui.view, SLOT(zoomOut()));
-
-	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), ui.view, SLOT(toggleAntialiasing(bool)));
-	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), ui.view, SLOT(toggleOpenGL(bool)));
 	connect(ui.actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
@@ -77,6 +66,10 @@ MainWindow::MainWindow()
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connect(ui.openNewTab, SIGNAL(triggered()), this, SLOT(openNewTab()));
+
+	connect(ui.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
+	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
@@ -111,6 +104,7 @@ MainWindow::MainWindow()
 		&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
+	ui.diagramExplorer->addAction(ui.openNewTab);
 
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", QSize(1024, 800)).toSize());
@@ -143,12 +137,40 @@ MainWindow::MainWindow()
 	ui.diagramExplorer->setModel(mModel);
 	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
 
-	ui.view->mvIface()->setModel(mModel);
-	ui.view->mvIface()->setRootIndex(mModel->rootIndex());
+	openNewTab();
+
 	progress->setValue(100);
 	if (showSplash)
 		splash->close();
 	delete splash;
+}
+
+void MainWindow::openNewTab()
+{
+	EditorView *view = new EditorView();
+	ui.tabs->addTab(view,"test");
+	ui.tabs->setCurrentWidget(view);
+
+	QModelIndex idx = ui.diagramExplorer->currentIndex();
+	if (!idx.isValid())
+		idx = mModel->rootIndex();
+	initCurrentTab(idx);
+}
+
+void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
+{
+	getCurrentTab()->setMainWindow(this);
+
+	changeMiniMapSource(ui.tabs->currentIndex());
+
+	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(ui.actionZoom_In, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomIn()));
+	connect(ui.actionZoom_Out, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomOut()));
+	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
+	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
+
+	getCurrentTab()->mvIface()->setModel(mModel);
+	getCurrentTab()->mvIface()->setRootIndex(rootIndex);
 }
 
 MainWindow::~MainWindow()
@@ -189,28 +211,31 @@ void MainWindow::adjustMinimapZoom(int zoom)
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 {
 	QModelIndex parent = idx.parent();
-
-	if (parent == mModel->rootIndex())
+	
+	if (ui.tabs->isEnabled())
 	{
-		ui.view->mvIface()->setRootIndex(idx);
-	} 
-	else
-	{
-		ui.view->mvIface()->setRootIndex(parent);
-		// select this item on diagram
-		ui.view->scene()->clearSelection();
-		UML::Element *e = (static_cast<EditorViewScene *>(ui.view->scene()))->getElemByModelIndex(idx);
-		if (e)
-			e->setSelected(true);
+		if (parent == mModel->rootIndex())
+		{
+			getCurrentTab()->mvIface()->setRootIndex(idx);
+		} 
 		else
-			qDebug() << "shit happened!!!\n";
+		{
+			getCurrentTab()->mvIface()->setRootIndex(parent);
+			// select this item on diagram
+			getCurrentTab()->scene()->clearSelection();
+			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElemByModelIndex(idx);
+			if (e)
+				e->setSelected(true);
+			else
+				qDebug() << "shit happened!!!\n";
+		}
 	}
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-		&& diagramToActivate.parent() != ui.view->mvIface()->rootIndex())
+		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
 	{
 		diagramToActivate = diagramToActivate.parent();
 	}
@@ -223,7 +248,7 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
-	QList<QGraphicsItem*> graphicsItems = ui.view->scene()->selectedItems();
+	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
 	if (graphicsItems.size() == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
@@ -252,7 +277,7 @@ void MainWindow::print()
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
 		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
-		ui.view->scene()->render(&painter);
+		getCurrentTab()->scene()->render(&painter);
 	}
 }
 
@@ -268,7 +293,7 @@ void MainWindow::makeSvg()
 	newSvg.setSize(QSize(800,600));
 
 	QPainter painter(&newSvg);
-	ui.view->scene()->render(&painter);
+	getCurrentTab()->scene()->render(&painter);
 }
 
 void MainWindow::settingsPlugins()
@@ -286,7 +311,7 @@ void MainWindow::deleteFromExplorer()
 
 void MainWindow::deleteFromScene()
 {
-	foreach (QGraphicsItem *item, ui.view->scene()->selectedItems())
+	foreach (QGraphicsItem *item, getCurrentTab()->scene()->selectedItems())
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
 			if (elem->index().isValid())
 				mModel->removeRow(elem->index().row(), elem->index().parent());
@@ -297,7 +322,7 @@ void MainWindow::deleteFromDiagram()
 	if (mModel) {
 		if (ui.diagramExplorer->hasFocus()) {
 			deleteFromExplorer();
-		} else if (ui.view->hasFocus()) {
+		} else if (getCurrentTab()->hasFocus()) {
 			deleteFromScene();
 		}
 	}
@@ -360,4 +385,27 @@ void MainWindow::exportToJava()
 		}
 
 		qDebug() << "Done.";
+}
+
+EditorView * MainWindow::getCurrentTab()
+{
+	return static_cast<EditorView *>(ui.tabs->currentWidget());
+}
+
+void MainWindow::changeMiniMapSource( int index )
+{
+	if (index != -1)
+	{
+		ui.tabs->setEnabled(true);
+		ui.minimapView->setScene(getCurrentTab()->scene());
+	}
+	else
+	{
+		ui.tabs->setEnabled(false);
+	}
+}
+
+void qReal::MainWindow::closeTab( int index )
+{
+	ui.tabs->removeTab(index);
 }

@@ -26,7 +26,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="EditorView" name="view"/>
+     <widget class="QTabWidget" name="tabs"/>
     </item>
    </layout>
   </widget>
@@ -355,6 +355,11 @@
     <string>Delete</string>
    </property>
   </action>
+  <action name="openNewTab">
+   <property name="text">
+    <string>Open in new tab</string>
+   </property>
+  </action>
   <action name="actionHelp">
    <property name="text">
     <string>Small Help</string>
@@ -413,11 +418,6 @@
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
-  <customwidget>
-   <class>EditorView</class>
-   <extends>QGraphicsView</extends>
-   <header>../view/editorview.h</header>
-  </customwidget>
   <customwidget>
    <class>qReal::gui::PaletteToolbox</class>
    <extends>QToolBox</extends>

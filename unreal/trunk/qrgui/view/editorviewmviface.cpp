@@ -93,7 +93,7 @@ void EditorViewMViface::reset()
 	items.clear();
 	mScene->clearScene();
 	//для того, чтобы работало с экстерминатусом.
-	if (model()->rowCount(QModelIndex()) == 0)
+	if ((model()) && (model()->rowCount(QModelIndex()) == 0))
 	{
 		mScene->setEnabled(false);
 	}
@@ -125,7 +125,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		Id parent_uuid;
 		if (parent != rootIndex())
 			parent_uuid = parent.data(roles::idRole).value<Id>();
-		
+
 		mScene->setEnabled(true);
 
 		//если добавляем диаграмму в корень
@@ -143,7 +143,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
 			e->setIndex(current);
-			if (!(parent_uuid == Id()))
+			if ((!(parent_uuid == Id())) && (items.contains(parent)))
 				e->setParentItem(items[parent]);
 			else
 				mScene->addItem(e);
@@ -184,8 +184,8 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 			Q_ASSERT(items[curr] != NULL);
 			items[curr]->updateData();
 		}
-		else
-			rowsInserted(topLeft.parent(),row,row);
+//		else
+//			rowsInserted(topLeft.parent(),row,row);
 	}
 }
 

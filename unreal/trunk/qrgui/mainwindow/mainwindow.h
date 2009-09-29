@@ -59,9 +59,14 @@ namespace qReal {
 		/** @brief Активирует ближайшую к текущей поддиаграмму, содержащую указанный
 		 * элемент, если в ней есть элементы. */
 		void activateSubdiagram(QModelIndex const &idx);
+
+		EditorView *getCurrentTab();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();
+		void openNewTab();
+		void changeMiniMapSource(int index);
+		void closeTab(int index);
 	private:
 		model::Model *mModel;
 		EditorManager mgr;
@@ -75,6 +80,7 @@ namespace qReal {
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
+		void initCurrentTab(const QModelIndex &rootIndex);
 	};
 
 }
