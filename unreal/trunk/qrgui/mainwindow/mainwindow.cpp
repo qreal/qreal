@@ -147,14 +147,35 @@ MainWindow::MainWindow()
 
 void MainWindow::openNewTab()
 {
-	EditorView *view = new EditorView();
-	ui.tabs->addTab(view,"test");
-	ui.tabs->setCurrentWidget(view);
+	QModelIndex index = QModelIndex();
+	if (ui.diagramExplorer->hasFocus())
+	{
+		index = ui.diagramExplorer->currentIndex();
+	} 
+	int tabNumber = -1;
+	for (int i = 0; i < ui.tabs->count(); i++)
+	{
+		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab->mvIface()->rootIndex() == index)
+		{
+			tabNumber = i;
+			break;
+		}
+	}
+	if (tabNumber > 0)
+	{
+		ui.tabs->setCurrentIndex(tabNumber);
+	}
+	else
+	{
+		EditorView *view = new EditorView();
+		ui.tabs->addTab(view,"test");
+		ui.tabs->setCurrentWidget(view);
 
-	QModelIndex idx = ui.diagramExplorer->currentIndex();
-	if (!idx.isValid())
-		idx = mModel->rootIndex();
-	initCurrentTab(idx);
+		if (!index.isValid())
+			index = mModel->rootIndex();
+		initCurrentTab(index);
+	}
 }
 
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
