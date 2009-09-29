@@ -26,6 +26,10 @@ namespace qReal {
 			QString serializeLinkBodies(Id const &id);
 			QString serializeLink(Id const &id);
 			QString initPrimitiveTypes() const;
+			QString JavaHandler::getVisibility(Id const &id);
+			QString JavaHandler::getType(Id const &id);
+			QString JavaHandler::getDefaultValue(Id const &id);
+			QString JavaHandler::getOperationFactors(Id const &id);
 
 			QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
 			bool isTypeSuitable(QString const &type) const;
