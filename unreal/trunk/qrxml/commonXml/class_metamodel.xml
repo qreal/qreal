@@ -52,8 +52,7 @@
     <properties>
      <property type="string" name="vals" />
      <property type="string" name="methods" />
-     <property type="string" name="logicalName" />
-     <property type="string" name="type" />
+     <property type="string" name="logicalName" />     
     </properties>
     <containers>
      <container name="Class-Classifier" >
@@ -236,6 +235,10 @@
     </generalizations>
     <properties>
      <property type="string" name="type" />
+	 <property type="string" name="operation factors" />
+	 <property type="string" name="isStatic" />
+	 <property type="string" name="isSynchronized" />
+	 <property type="string" name="isNative" />
     </properties>
     <containers>
      <container name="Class-Classifier" >
@@ -270,6 +273,8 @@
     <properties>
      <property type="string" name="type" />
      <property type="string" name="defaultValue" />
+	 <property type="string" name="isTransient" />
+	 <property type="string" name="isVolatile" />
     </properties>
     <containers>
      <container name="Class-Classifier" >
