@@ -14,7 +14,7 @@ EditorView::EditorView(QWidget *parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
-	EditorViewScene *myScene = new EditorViewScene(this);
+	myScene = new EditorViewScene(this);
 	mv_iface = new EditorViewMViface(this, myScene);
 	setScene(myScene);
 
@@ -25,6 +25,8 @@ EditorView::EditorView(QWidget *parent)
 
 EditorView::~EditorView()
 {
+	delete mv_iface;
+	delete myScene;
 }
 /*
 void EditorView::mousePressEvent(QMouseEvent *event)

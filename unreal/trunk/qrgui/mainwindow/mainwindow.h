@@ -53,7 +53,7 @@ namespace qReal {
 		void sceneSelectionChanged();
 
 		void exportToXmi();
-				void exportToJava();
+		void exportToJava();
 		void deleteFromScene();
 
 		/** @brief Активирует ближайшую к текущей поддиаграмму, содержащую указанный
@@ -67,6 +67,7 @@ namespace qReal {
 		void openNewTab();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
+		void exterminate();
 	private:
 		model::Model *mModel;
 		EditorManager mgr;

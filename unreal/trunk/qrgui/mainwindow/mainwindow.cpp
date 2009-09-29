@@ -129,7 +129,7 @@ MainWindow::MainWindow()
 		return;
 	}
 
-	connect(ui.actionClear, SIGNAL(triggered()), mModel, SLOT(exterminate()));
+	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
 	progress->setValue(80);
 
@@ -428,5 +428,14 @@ void MainWindow::changeMiniMapSource( int index )
 
 void qReal::MainWindow::closeTab( int index )
 {
+	QWidget *widget = ui.tabs->currentWidget();
 	ui.tabs->removeTab(index);
+	delete widget;
+}
+
+void MainWindow::exterminate()
+{
+	ui.tabs->clear();
+	openNewTab();
+	mModel->exterminate();
 }

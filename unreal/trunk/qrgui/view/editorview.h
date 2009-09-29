@@ -54,4 +54,5 @@ public slots:
 private:
 	/** @brief Обхект, реализующий интерфейс представления */
 	EditorViewMViface * mv_iface;
+	EditorViewScene *myScene;
 };
