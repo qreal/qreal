@@ -17,7 +17,15 @@ EditorViewScene::EditorViewScene(QObject * parent)
 		:  QGraphicsScene(parent), mWindow(NULL)
 {
 	setItemIndexMethod(NoIndex);
-	setBackgroundBrush(Qt::gray);
+	setEnabled(false);
+}
+
+void EditorViewScene::setEnabled(bool enabled)
+{
+	foreach (QGraphicsView *view, views())
+	{
+		view->setEnabled(enabled);
+	}
 }
 
 void EditorViewScene::clearScene()

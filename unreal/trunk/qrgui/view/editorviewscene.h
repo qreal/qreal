@@ -43,6 +43,7 @@ public:
 	QPersistentModelIndex rootItem();
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
+	void setEnabled(bool enabled);
 
 protected:
 	/** @brief Обработать начало события drag'n'drop */

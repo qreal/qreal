@@ -95,7 +95,7 @@ void EditorViewMViface::reset()
 	//для того, чтобы работало с экстерминатусом.
 	if (model()->rowCount(QModelIndex()) == 0)
 	{
-		mScene->setBackgroundBrush(Qt::gray);
+		mScene->setEnabled(false);
 	}
 
 	// so that our diagram be nicer
@@ -126,7 +126,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		if (parent != rootIndex())
 			parent_uuid = parent.data(roles::idRole).value<Id>();
 		
-		mScene->setBackgroundBrush(Qt::white);
+		mScene->setEnabled(true);
 
 		//если добавляем диаграмму в корень
 		if (!parent.isValid())
@@ -170,7 +170,7 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
 	if ((parent == QModelIndex()) && (model()->rowCount(parent) == start - end + 1))
 	{
-		mScene->setBackgroundBrush(Qt::gray);
+		mScene->setEnabled(false);
 	}
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
