@@ -32,7 +32,11 @@ namespace qReal {
 			QString JavaHandler::getOperationFactors(Id const &id);
 			QString JavaHandler::isFinal(Id const &id);
 			QString JavaHandler::isStatic(Id const &id);
+			QString JavaHandler::isNative(Id const &id);
+			QString JavaHandler::isSynchronized(Id const &id);
 			QString JavaHandler::isAbstract(Id const &id);
+			QString JavaHandler::isVolatile(Id const &id);
+			QString JavaHandler::isTransient(Id const &id);
 
 			QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
 			bool isTypeSuitable(QString const &type) const;
