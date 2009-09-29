@@ -92,9 +92,8 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		if (parentType == "cnClass") {
 		    QString visibility = getVisibility(id);
 		    QString type = getType(id);
-//		    QString operationFactors = getOperationFactors(id);
-//		    todo: РёСЃРїСЂР°РІРёС‚СЊ РіРµРЅРµСЂР°С†РёСЋ РїР°СЂР°РјРµС‚СЂРѕРІ
-		    result += visibility + type  + mApi.name(id) + "();" + "\n";
+		    QString operationFactors = getOperationFactors(id);
+		    result += visibility + type  + mApi.name(id) + "(" + operationFactors + ");" + "\n";
 		} else {
 			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
@@ -201,7 +200,16 @@ QString JavaHandler::getOperationFactors(Id const &id)
 
     QString const objectType = mApi.typeName(id);
 
-//    todo
+    if (mApi.hasProperty(id, "type")) {
+	QString operationFactors = mApi.stringProperty(id, "operationFactors");
+
+//	проверка корректности
+//	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
+		result = operationFactors;
+//	} else {
+//		addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+//    	}
+    }
 
     return result;
 }

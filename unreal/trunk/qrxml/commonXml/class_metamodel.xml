@@ -235,7 +235,7 @@
     </generalizations>
     <properties>
      <property type="string" name="type" />
-	 <property type="string" name="operation factors" />
+	 <property type="string" name="operationFactors" />
 	 <property type="string" name="isStatic" />
 	 <property type="string" name="isSynchronized" />
 	 <property type="string" name="isNative" />
