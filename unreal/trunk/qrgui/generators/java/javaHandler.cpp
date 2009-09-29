@@ -30,7 +30,7 @@ QString JavaHandler::exportToJava(QString const &pathToFile)
 
 	out << serializeChildren(repoId);
 
-	/* Это нам потребуется, когда к корню можно будет цеплять только диаграммы.
+	/* Р­С‚Рѕ РЅР°Рј РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ, РєРѕРіРґР° Рє РєРѕСЂРЅСЋ РјРѕР¶РЅРѕ Р±СѓРґРµС‚ С†РµРїР»СЏС‚СЊ С‚РѕР»СЊРєРѕ РґРёР°РіСЂР°РјРјС‹.
 	IdList rootDiagrams = mApi.children(repoId);
 
 	foreach (Id const typeDiagram, rootDiagrams) {
@@ -95,7 +95,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		    QString visibility = getVisibility(id);
 		    QString type = getType(id);
 //		    QString operationFactors = getOperationFactors(id);
-//		    todo: исправить генерацию параметров
+//		    todo: РёСЃРїСЂР°РІРёС‚СЊ РіРµРЅРµСЂР°С†РёСЋ РїР°СЂР°РјРµС‚СЂРѕРІ
 		    result += visibility + type  + mApi.name(id) + "();" + "\n";
 		} else {
 			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
@@ -218,7 +218,7 @@ QString JavaHandler::getDefaultValue(Id const &id)
 	QString defaultValue = mApi.stringProperty(id, "defaultValue");
 
 //	if (isTypeSuitable(defaultValue)) {
-//	проверка, что типы default и поля совпадают
+//	РїСЂРѕРІРµСЂРєР°, С‡С‚Рѕ С‚РёРїС‹ default Рё РїРѕР»СЏ СЃРѕРІРїР°РґР°СЋС‚
 		result = defaultValue;
 //	} else {
 //		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
@@ -234,7 +234,7 @@ QString JavaHandler::serializeOutcomingLink(Id const &id)
 	QString linkType = mApi.typeName(id);
 
 	// kernel diagram
-	// TODO: РљРѕС€РјР°СЂРЅР°СЏ РєРѕРїРёРїР°СЃС‚Р° СЃ РёРґС€РЅРёРєР°РјРё
+	// TODO: Р С™Р С•РЎв‚¬Р СР В°РЎР‚Р Р…Р В°РЎРЏ Р С”Р С•Р С—Р С‘Р С—Р В°РЎРѓРЎвЂљР В° РЎРѓ Р С‘Р Т‘РЎв‚¬Р Р…Р С‘Р С”Р В°Р СР С‘
 	if (linkType == "krnePackageImport") {
 		result += "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
 			+ id.toString() + "\" xmi:uuid=\"" + id.toString()
@@ -409,7 +409,7 @@ QString JavaHandler::serializeMultiplicity(Id const &id, QString const &multipli
 
 bool JavaHandler::isTypeSuitable(QString const &type) const
 {
-//    Добавить в рассмотрение все классы-оболочки и пользователем созданные классы
+//    Р”РѕР±Р°РІРёС‚СЊ РІ СЂР°СЃСЃРјРѕС‚СЂРµРЅРёРµ РІСЃРµ РєР»Р°СЃСЃС‹-РѕР±РѕР»РѕС‡РєРё Рё РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј СЃРѕР·РґР°РЅРЅС‹Рµ РєР»Р°СЃСЃС‹
     return type == "int" || type == "float" || type == "double" || type == "boolean"
 		|| type == "char" || type == "byte" || type == "long" || type == "short";
 }
