@@ -30,13 +30,11 @@ QString JavaHandler::exportToJava(QString const &pathToFile)
 
 	out << serializeChildren(repoId);
 
-	/* Это нам потребуется, когда к корню можно будет цеплять только диаграммы.
 	IdList rootDiagrams = mApi.children(repoId);
 
 	foreach (Id const typeDiagram, rootDiagrams) {
 		out << serializeChildren(typeDiagram);
 	}
-	*/
 
 	qDebug() << "Done.";
 	return mErrorText;
@@ -78,7 +76,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	QString const parentType = mApi.typeName(parentId);
 
 	if (objectType == "krnnDiagram") {
-//	    to do something
+//	    result += serializeChildren(id);
 	}
 
 	// class diagramm
@@ -234,7 +232,7 @@ QString JavaHandler::serializeOutcomingLink(Id const &id)
 	QString linkType = mApi.typeName(id);
 
 	// kernel diagram
-	// TODO: РљРѕС€РјР°СЂРЅР°СЏ РєРѕРїРёРїР°СЃС‚Р° СЃ РёРґС€РЅРёРєР°РјРё
+	// TODO: � љ� ѕС€� ј� °СЂ� Ѕ� °СЏ � є� ѕ� ї� ё� ї� °СЃС‚� ° СЃ � ё� ґС€� Ѕ� ё� є� °� ј� ё
 	if (linkType == "krnePackageImport") {
 		result += "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
 			+ id.toString() + "\" xmi:uuid=\"" + id.toString()
