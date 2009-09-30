@@ -156,13 +156,13 @@ void MainWindow::openNewTab()
 	for (int i = 0; i < ui.tabs->count(); i++)
 	{
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index)
+		if ((tab->mvIface()->rootIndex() == index) && (ui.tabs->currentIndex() != i))
 		{
 			tabNumber = i;
 			break;
 		}
 	}
-	if (tabNumber > 0)
+	if (tabNumber != -1)
 	{
 		ui.tabs->setCurrentIndex(tabNumber);
 	}
@@ -428,14 +428,17 @@ void MainWindow::changeMiniMapSource( int index )
 
 void qReal::MainWindow::closeTab( int index )
 {
-	QWidget *widget = ui.tabs->currentWidget();
+	QWidget *widget = ui.tabs->widget(index);
 	ui.tabs->removeTab(index);
 	delete widget;
 }
 
 void MainWindow::exterminate()
 {
-	ui.tabs->clear();
-	openNewTab();
+	int tabCount = ui.tabs->count();
+	for (int i = 1; i < tabCount; i++)
+	{
+		closeTab(i);
+	}
 	mModel->exterminate();
 }
