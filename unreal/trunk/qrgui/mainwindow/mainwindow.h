@@ -68,6 +68,7 @@ namespace qReal {
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
 		void exterminate();
+		void generateEditor();
 	private:
 		model::Model *mModel;
 		EditorManager mgr;

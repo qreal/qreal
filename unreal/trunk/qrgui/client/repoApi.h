@@ -26,6 +26,7 @@ namespace qReal {
 
 			IdList outcomingLinks(Id const &id) const;
 			IdList incomingLinks(Id const &id) const;
+			IdList links(Id const &id) const;
 
 			QString typeName(Id const &id) const;
 

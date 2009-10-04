@@ -21,6 +21,7 @@
 #include "../umllib/uml_element.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
+#include "dialogs/editorGeneratorDialog.h"
 
 using namespace qReal;
 
@@ -73,6 +74,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
+	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -151,7 +153,7 @@ void MainWindow::openNewTab()
 	if (ui.diagramExplorer->hasFocus())
 	{
 		index = ui.diagramExplorer->currentIndex();
-	} 
+	}
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++)
 	{
@@ -232,13 +234,13 @@ void MainWindow::adjustMinimapZoom(int zoom)
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 {
 	QModelIndex parent = idx.parent();
-	
+
 	if (ui.tabs->isEnabled())
 	{
 		if (parent == mModel->rootIndex())
 		{
 			getCurrentTab()->mvIface()->setRootIndex(idx);
-		} 
+		}
 		else
 		{
 			getCurrentTab()->mvIface()->setRootIndex(parent);
@@ -441,4 +443,11 @@ void MainWindow::exterminate()
 		closeTab(i);
 	}
 	mModel->exterminate();
+}
+
+void MainWindow::generateEditor()
+{
+	EditorGeneratorDialog editorGeneratorDialog(mModel->api());
+	editorGeneratorDialog.exec();
+
 }

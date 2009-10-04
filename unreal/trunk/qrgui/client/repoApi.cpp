@@ -104,6 +104,11 @@ IdList RepoApi::incomingLinks(Id const &id) const
 	return links(id, "to");
 }
 
+IdList RepoApi::links(Id const &id) const
+{
+	return incomingLinks(id) << outcomingLinks(id);
+}
+
 QString RepoApi::typeName(Id const &id) const
 {
 	return id.element();
