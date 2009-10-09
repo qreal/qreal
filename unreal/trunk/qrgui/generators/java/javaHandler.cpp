@@ -1,4 +1,4 @@
-#include "JavaHandler.h"
+#include "javaHandler.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>

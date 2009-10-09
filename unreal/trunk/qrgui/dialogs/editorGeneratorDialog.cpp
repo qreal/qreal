@@ -1,5 +1,5 @@
 #include "editorGeneratorDialog.h"
-#include "ui_EditorGeneratorDialog.h"
+#include "ui_editorGeneratorDialog.h"
 
 #include <QListWidgetItem>
 #include <QDebug>

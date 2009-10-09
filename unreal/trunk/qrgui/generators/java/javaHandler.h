@@ -26,17 +26,17 @@ namespace qReal {
 			QString serializeLinkBodies(Id const &id);
 			QString serializeLink(Id const &id);
 			QString initPrimitiveTypes() const;
-			QString JavaHandler::getVisibility(Id const &id);
-			QString JavaHandler::getType(Id const &id);
-			QString JavaHandler::getDefaultValue(Id const &id);
-			QString JavaHandler::getOperationFactors(Id const &id);
-			QString JavaHandler::isFinal(Id const &id);
-			QString JavaHandler::isStatic(Id const &id);
-			QString JavaHandler::isNative(Id const &id);
-			QString JavaHandler::isSynchronized(Id const &id);
-			QString JavaHandler::isAbstract(Id const &id);
-			QString JavaHandler::isVolatile(Id const &id);
-			QString JavaHandler::isTransient(Id const &id);
+			QString getVisibility(Id const &id);
+			QString getType(Id const &id);
+			QString getDefaultValue(Id const &id);
+			QString getOperationFactors(Id const &id);
+			QString isFinal(Id const &id);
+			QString isStatic(Id const &id);
+			QString isNative(Id const &id);
+			QString isSynchronized(Id const &id);
+			QString isAbstract(Id const &id);
+			QString isVolatile(Id const &id);
+			QString isTransient(Id const &id);
 
 			QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
 			bool isTypeSuitable(QString const &type) const;
