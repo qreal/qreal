@@ -11,9 +11,9 @@
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 
-class EditorView;
-
 namespace qReal {
+
+	class EditorView;
 
 	namespace model  {
 		class Model;

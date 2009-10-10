@@ -4,17 +4,10 @@
 #include <QtGui>
 
 #include "editorviewmviface.h"
-
 #include "editorview.h"
 #include "editorviewscene.h"
-
 #include "../kernel/definitions.h"
-//#include "realreporoles.h"
-
 #include "../umllib/uml_element.h"
-//#include "uml_guiobjectfactory.h"
-
-
 #include "editormanager.h"
 #include "../mainwindow/mainwindow.h"
 
@@ -23,12 +16,11 @@ using namespace qReal;
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
 {
-	this->view = view;
-	this->mScene = scene;
+	mView = view;
+	mScene = scene;
 
-	//    view->mv_iface = this;
-	mScene ->mv_iface = this;
-	mScene ->view = view;
+	mScene->mv_iface = this;
+	mScene->view = mView;
 }
 
 QRect EditorViewMViface::visualRect(const QModelIndex &) const
@@ -74,23 +66,10 @@ QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &) cons
 {
 	return QRegion();
 }
-/*
-void EditorViewMViface::raiseClick ( const QGraphicsItem * item )
-{
-	const UML::Element *e = qgraphicsitem_cast<const UML::Element *>(item);
-	if (e)
-		emit clicked(e->index());
-}
-
-UML::Element* EditorViewMViface::getItem(Id const &uuid)
-{
-	return items[uuid];
-}
-*/
 
 void EditorViewMViface::reset()
 {
-	items.clear();
+	mItems.clear();
 	mScene->clearScene();
 	//для того, чтобы работало с экстерминатусом.
 	if ((model()) && (model()->rowCount(QModelIndex()) == 0))
@@ -143,11 +122,11 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
 			e->setIndex(current);
-			if ((!(parent_uuid == Id())) && (items.contains(parent)))
-				e->setParentItem(items[parent]);
+			if ((!(parent_uuid == Id())) && (mItems.contains(parent)))
+				e->setParentItem(mItems[parent]);
 			else
 				mScene->addItem(e);
-			items[current] = e;
+			mItems[current] = e;
 			e->updateData();
 			e->connectToPort();
 		}
@@ -163,9 +142,9 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		mScene->removeItem(items[curr]);
-		delete items[curr];
-		items.remove(curr);
+		mScene->removeItem(mItems[curr]);
+		delete mItems[curr];
+		mItems.remove(curr);
 	}
 	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
 	if ((parent == QModelIndex()) && (model()->rowCount(parent) == start - end + 1))
@@ -180,12 +159,10 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);
-		if (items.contains(curr)) {
-			Q_ASSERT(items[curr] != NULL);
-			items[curr]->updateData();
+		if (mItems.contains(curr)) {
+			Q_ASSERT(mItems[curr] != NULL);
+			mItems[curr]->updateData();
 		}
-//		else
-//			rowsInserted(topLeft.parent(),row,row);
 	}
 }
 

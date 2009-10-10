@@ -8,10 +8,10 @@
 #include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
 
-class EditorViewMViface;
-class EditorView;
 
 namespace qReal {
+	class EditorViewMViface;
+	class EditorView;
 	class MainWindow;
 }
 
@@ -71,11 +71,11 @@ private:
 	QPointF newElementsPosition;
 
 	/** @brief Объект, реализующий интерфейс представления в схеме Model/View */
-	EditorViewMViface *mv_iface;
+	qReal::EditorViewMViface *mv_iface;
 	/** @brief Объект, реализующей представление в схеме Model/View */
-	EditorView *view;
+	qReal::EditorView *view;
 
 	qReal::MainWindow *mWindow;
 
-	friend class EditorViewMViface;
+	friend class qReal::EditorViewMViface;
 };

@@ -9,14 +9,16 @@
 
 #include "editorview.h"
 
+using namespace qReal;
+
 EditorView::EditorView(QWidget *parent)
 		: QGraphicsView(parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
-	myScene = new EditorViewScene(this);
-	mv_iface = new EditorViewMViface(this, myScene);
-	setScene(myScene);
+	mScene = new EditorViewScene(this);
+	mMVIface = new EditorViewMViface(this, mScene);
+	setScene(mScene);
 
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
@@ -25,19 +27,10 @@ EditorView::EditorView(QWidget *parent)
 
 EditorView::~EditorView()
 {
-	delete mv_iface;
-	delete myScene;
+	delete mMVIface;
+	delete mScene;
 }
-/*
-void EditorView::mousePressEvent(QMouseEvent *event)
-{
-//    if (QGraphicsItem *item = itemAt(event->pos())) {
-//	mv_iface->raiseClick(item);
-//    }
 
-	QGraphicsView::mousePressEvent(event);
-}
-*/
 void EditorView::toggleAntialiasing(bool checked)
 {
 	setRenderHint(QPainter::Antialiasing, checked);
@@ -63,7 +56,7 @@ void EditorView::zoomOut()
 }
 
 void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
-	mv_iface->scene()->setMainWindow(mainWindow);
+	mMVIface->scene()->setMainWindow(mainWindow);
 }
 
 
