@@ -210,6 +210,50 @@
     </generalizations>
    </logic>
   </edge>
+  <edge id="ceRealization" name="Realization" >
+   <graphics>
+    <view>
+     <line_type type="dashLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="no_arrow" id="caReal1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="arrow" id="acReal2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
+  <edge id="ceInheritance" name="Inheritance" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="no_arrow" id="caInh1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="arrow" id="acInh2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
   <node id="cnClassMethod" name="Class method" >
    <graphics>
     <view>
@@ -273,8 +317,68 @@
     <properties>
      <property type="string" name="type" />
      <property type="string" name="defaultValue" />
+	 <property type="string" name="isStatic" />
 	 <property type="string" name="isTransient" />
 	 <property type="string" name="isVolatile" />
+    </properties>
+    <containers>
+     <container name="Class-Classifier" >
+      <contains idref="krnnClassifier" role="class" />
+     </container>
+    </containers>
+   </logic>
+  </node>
+  <node id="cnInterface" name="Interface" >
+   <graphics>
+    <view>
+     <picture sizex="150" sizey="210" >
+      <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210" stroke-width="1" x2="150" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="1" x2="150" fill-style="solid" />
+	  <text i="0" font-fill="#000000" y1="16a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >&lt;&lt;interface>></text>
+	  <!-- Хорошо бы текст по центру и чтобы название было на новой строке -->
+     </picture>
+     <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:b>
+        <html:i>
+         <html:center>
+          <html:text_from_repo name="name" />
+         </html:center>
+        </html:i>
+       </html:b>
+      </html:html>
+     </repo_info>
+     <ports>
+      <line_port>
+       <start startx="0" starty="0" />
+       <end endx="150" endy="0" />
+      </line_port>
+      <line_port>
+       <start startx="150" starty="0" />
+       <end endx="150" endy="210" />
+      </line_port>
+      <line_port>
+       <start startx="150" starty="210" />
+       <end endx="0" endy="210" />
+      </line_port>
+      <line_port>
+       <start startx="0" starty="210" />
+       <end endx="0" endy="0" />
+      </line_port>
+     </ports>
+    </view>
+   </graphics>
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krnnClassifier" />
+     </generalization>
+    </generalizations>
+    <properties>
+     <property type="string" name="vals" />
+     <property type="string" name="methods" />
+     <property type="string" name="logicalName" />     
     </properties>
     <containers>
      <container name="Class-Classifier" >

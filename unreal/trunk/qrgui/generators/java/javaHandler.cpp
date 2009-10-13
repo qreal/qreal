@@ -84,7 +84,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	    QString visibility = getVisibility(id);
 	    QString isFinalField = isFinal(id);
 	    QString isAbstractField = isAbstract(id);
-	    if (isAbstractField == "true" && isFinalField == "true"){
+	    if (isAbstractField == "abstract " && isFinalField == "final "){
 		addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
 	    }
 	    result += isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + " {" + "\n";
@@ -102,11 +102,12 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		    QString isStaticField = isStatic(id);
 		    QString isSynchronizedField = isSynchronized(id);
 		    QString isNativeField = isNative(id);
-		    if ( (isAbstractField == "true" && isFinalField == "true") || (isAbstractField == "true" && isStaticField == "true") ){
+		    if ( (isAbstractField == "abstract " && isFinalField == "final ")
+			|| (isAbstractField == "abstract " && isStaticField == "static ") ){
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
 		    }
 		    result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
-			      visibility + type  + mApi.name(id) + "(" + operationFactors + ");" + "\n";
+			      visibility + type  + mApi.name(id) + "(" + operationFactors + "){};" + "\n";
 		} else {
 			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
@@ -119,10 +120,10 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		    QString isStaticField = isStatic(id);
 		    QString isVolatileField = isVolatile(id);
 		    QString isTransientField = isTransient(id);
-		    if (isVolatileField == "true" && isFinalField == "true"){
+		    if (isVolatileField == "volatile " && isFinalField == "final "){
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
 		    }
-		    result += isFinalField + isStaticField + isVolatileField + isTransientField + visibility + type + mApi.name(id);
+		    result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
 		    if (defaultValue != ""){
 			result += " " + defaultValue;
 		    }
@@ -223,11 +224,9 @@ QString JavaHandler::isAbstract(Id const &id)
     if (mApi.hasProperty(id, "isAbstract")) {
 	QString isAbstract = mApi.stringProperty(id, "isAbstract");
 
-	if (isAbstract == "true" || isAbstract == "false") {
-		result = isAbstract;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isAbstract == "true") {
+	    result = "abstract ";
+	}else if (isAbstract != "false" && isAbstract != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isAbstract value: " + isAbstract);
     	}
     }
@@ -244,11 +243,9 @@ QString JavaHandler::isStatic(Id const &id)
     if (mApi.hasProperty(id, "isStatic")) {
 	QString isStatic = mApi.stringProperty(id, "isStatic");
 
-	if (isStatic == "true" || isStatic == "false") {
-		result = isStatic;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isStatic == "true") {
+	    result = "static ";
+	} else if (isStatic != "false" && isStatic != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isStatic value: " + isStatic);
     	}
     }
@@ -265,11 +262,9 @@ QString JavaHandler::isSynchronized(Id const &id)
     if (mApi.hasProperty(id, "isSynchronized")) {
 	QString isSynchronized = mApi.stringProperty(id, "isSynchronized");
 
-	if (isSynchronized == "true" || isSynchronized == "false") {
-		result = isSynchronized;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isSynchronized == "true"){
+	    result = "synchrinized ";
+	} else if (isSynchronized != "false" && isSynchronized != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isSynchronized value: " + isSynchronized);
     	}
     }
@@ -286,11 +281,9 @@ QString JavaHandler::isNative(Id const &id)
     if (mApi.hasProperty(id, "isNative")) {
 	QString isNative = mApi.stringProperty(id, "isNative");
 
-	if (isNative == "true" || isNative == "false") {
-		result = isNative;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isNative == "true") {
+	    result = "native ";
+	} else if (isNative != "false" && isNative != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isNative value: " + isNative);
     	}
     }
@@ -304,15 +297,13 @@ QString JavaHandler::isFinal(Id const &id)
 
     QString const objectType = mApi.typeName(id);
 
-    if (mApi.hasProperty(id, "isFinal")) {
+    if (mApi.hasProperty(id, "isLeaf")) {
 	QString isFinal = mApi.stringProperty(id, "isLeaf");
 
-	if (isFinal == "true" || isFinal == "false") {
-		result = isFinal;
-		if (result != "")
-		    result += " ";
-	} else {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isFinal value: " + isFinal);
+	if (isFinal == "true") {
+	    result = "final ";
+	} else if (isFinal != "false" && isFinal != "") {
+		addError("object " + objectType + " with id " + id.toString() + " has invalid isLeaf value: " + isFinal);
     	}
     }
 
@@ -328,11 +319,9 @@ QString JavaHandler::isTransient(Id const &id)
     if (mApi.hasProperty(id, "isTransient")) {
 	QString isTransient = mApi.stringProperty(id, "isTransient");
 
-	if (isTransient == "true" || isTransient == "false") {
-		result = isTransient;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isTransient == "true") {
+	    result = "transient ";
+	} else if (isTransient != "false" && isTransient != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isTransient value: " + isTransient);
     	}
     }
@@ -349,11 +338,9 @@ QString JavaHandler::isVolatile(Id const &id)
     if (mApi.hasProperty(id, "isVolatile")) {
 	QString isVolatile = mApi.stringProperty(id, "isVolatile");
 
-	if (isVolatile == "true" || isVolatile == "false") {
-		result = isVolatile;
-		if (result != "")
-		    result += " ";
-	} else {
+	if (isVolatile == "true") {
+	    result = "volatile ";
+	} else if (isVolatile != "false" && isVolatile != "") {
 		addError("object " + objectType + " with id " + id.toString() + " has invalid isVolatile value: " + isVolatile);
     	}
     }
