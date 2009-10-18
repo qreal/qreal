@@ -22,10 +22,17 @@ void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (!(event->modifiers() & Qt::ControlModifier))
 		scene()->clearSelection();
 	parentItem()->setSelected(true);
+	if (mFocusIn) {
+		QTextCursor cursor(textCursor());
+		cursor.select(QTextCursor::Document);
+		setTextCursor(cursor);
+		mFocusIn = false;
+	}
 }
 
 void ElementTitle::focusInEvent(QFocusEvent *event)
 {
+	mFocusIn = true;
 	mOldText = toHtml();
 	QGraphicsTextItem::focusInEvent(event);
 }
@@ -116,7 +123,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTitle.setTextWidth(mContents.width() - 15);
 }
 
-void NodeElement::adjustLinks() 
+void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->adjustLink();
@@ -322,7 +329,7 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999))
 	{
 		return qMin(b, c);
-	} else 
+	} else
 	{
 		qreal p = (a + b + c) / 2;
 		qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
@@ -346,7 +353,7 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 	} else if (nearestLinePort.y1() == nearestLinePort.y2())
 	{
 		nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-	} else 
+	} else
 	{
 		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
 		qreal b2 = location.y() + 1 / k * location.x();
@@ -397,7 +404,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		}
 	}
 
-	if (mLinePorts.size() != 0) 
+	if (mLinePorts.size() != 0)
 	{
 		bool linePort = false;
 		if (numMinDistance == -1)
@@ -406,7 +413,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 			minDistance = minDistanceFromLinePort(0, location);
 			linePort = true;
 		}
-		for(int i = 0; i < mLinePorts.size(); i++) 
+		for(int i = 0; i < mLinePorts.size(); i++)
 		{
 			qreal currentDistance = minDistanceFromLinePort(i, location);
 			if (currentDistance < minDistance)

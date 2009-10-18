@@ -27,15 +27,17 @@ namespace UML {
 	class ElementTitle : public QGraphicsTextItem
 	{
 		Q_OBJECT
-		QString mOldText;
 	public:
-		ElementTitle() {}
+		ElementTitle(): mFocusIn(false) {}
 		~ElementTitle() {}
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void focusInEvent(QFocusEvent *event);
 		virtual void focusOutEvent(QFocusEvent *event);
 		virtual void keyPressEvent(QKeyEvent *event);
+	private:
+		bool mFocusIn;
+		QString mOldText;
 	};
 
 	class NodeElement :  public QObject, public Element
