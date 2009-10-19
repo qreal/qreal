@@ -1,5 +1,5 @@
-#include "ProjectTypeFixer.h"
-#include "SolutionFileFixer.h"
+#include "projectTypeFixer.h"
+#include "solutionFileFixer.h"
 
 int main()
 {

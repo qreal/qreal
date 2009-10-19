@@ -1,10 +1,11 @@
-#include "SolutionFileFixer.h"
+#include "solutionFileFixer.h"
 #include <QFile>
 #include <qDebug>
 
 void SolutionFileFixer::fix()
 {
-	QFile solutionFile("..\\..\\..\\qreal.sln");
+	qDebug() << "Solution fixing started";
+	QFile solutionFile("..\\..\\..\\unreal\\trunk\\qreal.sln");
 	if (solutionFile.open(QIODevice::ReadWrite))
 	{
 		QTextStream solutionFileStream(&solutionFile);

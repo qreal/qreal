@@ -1,11 +1,12 @@
-#include "ProjectTypeFixer.h"
+#include "projectTypeFixer.h"
 #include <QFile>
 #include <QDir>
 #include <qDebug>
 
 void ProjectTypeFixer::fix()
 {
-	QString editorsDirectoryName("..\\..\\..\\qrxml");
+	qDebug() << "Project fixing started";
+	QString editorsDirectoryName("..\\..\\..\\unreal\\trunk\\qrxml");
 	QDir editorsDirectory(editorsDirectoryName);
 	editorsDirectory.setFilter(QDir::Dirs);
 	QStringList nameFilters;
@@ -14,6 +15,7 @@ void ProjectTypeFixer::fix()
 	QStringList fileNames = editorsDirectory.entryList();
 	foreach(QString fileNameShort, fileNames)
 	{
+		qDebug() << "Fixing project " << fileNameShort;
 		fixProject(editorsDirectoryName + "\\" + fileNameShort + "\\" + fileNameShort + ".vcproj");
 	}
 	qDebug() << "Project fixing finished";

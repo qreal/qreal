@@ -1,5 +1,5 @@
 #pragma once
-#include "Fixer.h"
+#include "fixer.h"
 #include <QString>
 
 class ProjectTypeFixer : Fixer
