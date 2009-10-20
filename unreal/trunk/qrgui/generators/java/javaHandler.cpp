@@ -16,7 +16,7 @@ JavaHandler::JavaHandler(client::RepoApi const &api)
 {
 }
 
-QString JavaHandler::exportToJava(QString const &pathToFile)
+QString JavaHandler::generateToJava(QString const &pathToFile)
 {
 	mErrorText = "";
 
@@ -48,20 +48,6 @@ QString JavaHandler::serializeChildren(Id const &idParent)
 	foreach (Id const id, childElems) {
 		result += serializeObject(id, idParent);
 	}
-
-//	if (idParent != ROOT_ID) {
-//		IdList linksOut = mApi.outcomingLinks(idParent);
-//
-//		foreach (Id const id, linksOut) {
-//			result += serializeOutcomingLink(id);
-//		}
-//
-//		IdList linksIn = mApi.incomingLinks(idParent);
-//
-//		foreach (Id const id, linksIn) {
-//			result += serializeIncomingLink(id);
-//		}
-//	}
 
 	return result;
 }
@@ -133,34 +119,6 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
 	}
-
-	//	//use case diagram
-	//
-	//	else if (objectType == "uscnActor") {
-	//		typeOfTag = "ownedMember";
-	//		typeOfElem = "uml:Actor";
-	//	} else if (objectType == "uscnUseCase") {
-	//		typeOfTag = "ownedMember";
-	//		typeOfElem = "uml:UseCase";
-	//	}
-	//
-	//	// sequence diagramm
-	//
-	//	else if (objectType == "sqnnInteraction") {
-	//		typeOfTag = "ownedMember";
-	//		typeOfElem = "uml:Interaction";
-	//	} else if (objectType == "sqnnSLifeline") {
-	//		typeOfTag = "lifeline";
-	//		typeOfElem = "uml:Lifeline";
-	//	}
-
-
-	//	result += "<" + typeOfTag + " xmi:type=\"" + typeOfElem + "\" xmi:id=\""
-	//		+ id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" name=\"" + mApi.name(id)
-	//		+ "\" " + additionalParams + ">" + "\n";
-	//	result += serializeChildren(id);
-	//	result += "</" + typeOfTag + ">" + "\n";
-	//	result += serializeLinkBodies(id);
 
 	return result;
 }
@@ -309,185 +267,6 @@ QString JavaHandler::getDefaultValue(Id const &id)
 		//	} else {
 		//		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
 		//    	}
-	}
-
-	return result;
-}
-
-QString JavaHandler::serializeOutcomingLink(Id const &id)
-{
-	QString result = "";
-	QString linkType = mApi.typeName(id);
-
-	// kernel diagram
-	// TODO: � љ� ѕС€� ј� °СЂ� Ѕ� °СЏ � є� ѕ� ї� ё� ї� °СЃС‚� ° СЃ � ё� ґС€� Ѕ� ё� є� °� ј� ё
-	if (linkType == "krnePackageImport") {
-		result += "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
-				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
-				  + "\"  importedPackage=\"" + mApi.to(id).toString() + "\" />";
-	} else if (linkType == "krneElementImport") {
-		result += "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
-				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
-				  + "\"  importedElement=\"" + mApi.to(id).toString() + "\" />";
-	} else if (linkType == "krneGeneralization") {
-		result += "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
-				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
-				  + "\" general=\"" + mApi.to(id).toString() +  "\"/>";
-	} else if (linkType == "krneDirRelationship") {
-		result = result + "<ownedAttribute xmi:type=\"uml:Property\" xmi:id=\""
-				 + "ToEnd" + id.toString() + "\" xmi:uuid=\"" + "ToEnd" + id.toString()
-				 + "\" visibility=\"protected\" type=\"" + mApi.to(id).toString() + "\">" + "\n";
-
-		QString toMult = mApi.stringProperty(id, "toMultiplicity");
-		result = result + serializeMultiplicity(id, toMult);
-
-		result = result + "<association xmi:idref=\"" + id.toString() +  "\"/>" + "\n";
-		result = result + "</ownedAttribute>" + "\n";
-	}
-
-	// class diagram
-
-	else if (linkType == "ceDependency") {
-		result += "<clientDependency xmi:idref=\"" + id.toString() + "\"/>" + "\n";
-	}
-
-	// use case diagram
-
-	else if (linkType == "uscaExtend") {
-		result += "<extend xmi:type=\"uml:Extend\" xmi:id=\"" + id.toString()
-				  + "\" xmi:uuid=\"" + id.toString() + "\" extendedCase=\""
-				  + mApi.to(id).toString() + "\">" + "\n";
-		result += "<extension xmi:idref=\"" + mApi.from(id).toString() + "\"/>" + "\n";
-		result += "</extend>\n";
-	} else if (linkType == "uscaInclude") {
-		result += "<include xmi:type=\"uml:Include\" xmi:id=\"" + id.toString() +
-				  "\" xmi:uuid=\"" + id.toString() + "\" addition=\"" + mApi.to(id).toString() + "\"/>" + "\n";
-	}
-
-	return result;
-}
-
-QString JavaHandler::serializeIncomingLink(Id const &id)
-{
-	QString result = "";
-
-	if (mApi.typeName(id) == "ceDependency") {
-		result += "<supplierDependency xmi:idref=\"" + id.toString()  + "\"/>";
-	}
-
-	return result;
-}
-
-QString JavaHandler::serializeLink(Id const &id)
-{
-	QString result = "";
-	QString additionalParams = "";
-	QString linkType = mApi.typeName(id);
-
-	if (!mApi.stringProperty(id, "visibility").isEmpty()) {
-		additionalParams += "visibility=\"" + mApi.property(id, "visibility").toString() + "\"";
-	}
-
-	if (linkType == "ceComposition" || linkType == "ceAggregation"
-		|| linkType == "krneRelationship" || linkType == "ceRelation"
-		|| linkType == "krneDirRelationship")
-	{
-		QString aggregation = "";
-
-		if (linkType == "ceComposition") {
-			aggregation = "aggregation=\"composite\"";
-		} else if (linkType == "ceAggregation") {
-			aggregation = "aggregation=\"shared\"";
-		}
-
-		result += "<ownedMember xmi:type=\"uml:Association\" xmi:id=\""
-				  + id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" " + additionalParams + ">" + "\n";
-
-		// FromEnd
-
-		result += "<memberEnd xmi:idref=\"FromEnd" + id.toString() + "\"/>\n";
-		result += "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\""
-				  + QString("FromEnd") + id.toString() + "\" xmi:uuid=\"FromEnd" + id.toString()
-				  + "\" visibility=\"protected\" type=\"" + mApi.from(id).toString() + "\">\n";
-		result += "<association xmi:idref=\"" + id.toString() +  "\"/>\n";
-
-		QString fromMult = mApi.stringProperty(id, "fromMultiplicity");
-		result += serializeMultiplicity(id, fromMult);
-
-		result += "<association xmi:idref=\"" + id.toString() +  "\"/>\n";
-		result += "</ownedEnd>\n";
-
-		// ToEnd
-
-		result += "<memberEnd xmi:idref=\"ToEnd" + id.toString() + "\"/>\n";
-
-		if (linkType != "krneDirRelationship") {
-
-			result += "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\"ToEnd"
-					  + id.toString() + "\" xmi:uuid=\"ToEnd" + id.toString()
-					  + "\" visibility=\"protected\" " + aggregation + " type=\""
-					  + mApi.to(id).toString() + "\">" + "\n";
-
-			QString toMult = mApi.stringProperty(id, "toMultiplicity");
-			result += serializeMultiplicity(id, toMult);
-
-			result += "<association xmi:idref=\"" + id.toString() +  "\"/>" + "\n";
-			result += "</ownedEnd>\n";
-		}
-
-		result += "</ownedMember>\n";
-	} else if (linkType == "ceDependency"){
-		result += "<ownedMember xmi:type=\"uml:Dependency\" xmi:id=\""
-				  + id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" "
-				  + additionalParams + ">" + "\n";
-		result = "<supplier xmi:idref=\"" + mApi.to(id).toString() + "\"/>\n";
-		result = "<client xmi:idref=\"" + mApi.from(id).toString() + "\"/>\n";
-		result = "</ownedMember>\n";
-	}
-
-	return result;
-}
-
-QString JavaHandler::serializeLinkBodies(Id const &id)
-{
-	QString result = "";
-
-	foreach (Id const id, mApi.incomingLinks(id)) {
-		result += serializeLink(id);
-	}
-
-	return result;
-}
-
-QString JavaHandler::serializeMultiplicity(Id const &id, QString const &multiplicity) const
-{
-	QString result = "";
-	if (!multiplicity.isEmpty()) {
-		QString valueLower;
-		QString valueUpper;
-
-		if (multiplicity == "1..*") {
-			valueLower = "1";
-			valueUpper = "*";
-		} else if (multiplicity == "0..1") {
-			valueLower = "0";
-			valueUpper = "1";
-		} else if (multiplicity == "1") {
-			valueLower = "1";
-			valueUpper = "1";
-		} else if (multiplicity == "*") {
-			valueLower = "*";
-			valueUpper = "*";
-		}
-
-		if (!valueLower.isEmpty() && !valueUpper.isEmpty()) {
-			result += QString("<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\"")
-					  + "loverValueTo" + id.toString() + "\" xmi:uuid=\"loverValueTo" + id.toString()
-					  + "\" visibility=\"public\" value=\"" + valueLower + "\"/>\n";
-			result = QString("<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\"")
-					 + "upperValueTo" + id.toString() + "\" xmi:uuid=\"" + "upperValueTo" + id.toString()
-					 + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>\n";
-		}
 	}
 
 	return result;

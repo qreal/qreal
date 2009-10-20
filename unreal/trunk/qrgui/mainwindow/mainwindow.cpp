@@ -73,7 +73,7 @@ MainWindow::MainWindow()
 	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	connect(ui.actionExport_to_Java, SIGNAL(triggered()), this, SLOT(exportToJava()));
+	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
@@ -391,7 +391,7 @@ void MainWindow::exportToXmi()
 	qDebug() << "Done.";
 }
 
-void MainWindow::exportToJava()
+void MainWindow::generateToJava()
 {
 		generators::JavaHandler java(mModel->api());
 
@@ -399,7 +399,7 @@ void MainWindow::exportToJava()
 		if (fileName.isEmpty())
 				return;
 
-		QString const errors = java.exportToJava(fileName);
+		QString const errors = java.generateToJava(fileName);
 
 		if (!errors.isEmpty()) {
 				QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
