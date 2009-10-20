@@ -16,15 +16,6 @@ void EditorGenerator::generate(Id const &editor)
 	createMetaEditor(editor);
 }
 
-Id EditorGenerator::getOtherEntityFromLink(Id const &linkId, Id const &firstNode)
-{
-	Id const from = mApi.from(linkId);
-	if (from != firstNode)
-		return from;
-	else
-		return mApi.to(linkId);
-}
-
 // Функция, генерирующая сущности и отношения в редакторе
 QDomElement EditorGenerator::createNode(QDomDocument doc, Id const &nodeId, QString const &prefix)
 {
@@ -67,7 +58,7 @@ QDomElement EditorGenerator::createNode(QDomDocument doc, Id const &nodeId, QStr
 
 		// TODO: Не знаю, что тут должно происходить, надо разобраться.
 
-		Id const otherNode = getOtherEntityFromLink(link, nodeId);
+		Id const otherNode = mApi.otherEntityFromLink(link, nodeId);
 		if (mApi.typeName(otherNode) == "mednMetaEntityAttribute") {
 			QDomElement domProp = doc.createElement("property");
 			domPropElement.appendChild(domProp);

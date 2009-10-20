@@ -48,6 +48,8 @@ namespace qReal {
 			double toPort(Id const &id) const;
 			void setToPort(Id const &id, double toPort);
 
+			Id otherEntityFromLink(Id const &linkId, Id const &firstNode) const;
+
 			void exterminate();
 			void save() const;
 

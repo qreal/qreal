@@ -225,3 +225,12 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
 }
+
+Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
+{
+	Id const fromId = from(linkId);
+	if (fromId != firstNode)
+		return fromId;
+	else
+		return to(linkId);
+}
