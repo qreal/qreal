@@ -12,7 +12,7 @@ using namespace qReal;
 using namespace generators;
 
 JavaHandler::JavaHandler(client::RepoApi const &api)
-	: mApi(api)
+		: mApi(api)
 {
 }
 
@@ -49,19 +49,19 @@ QString JavaHandler::serializeChildren(Id const &idParent)
 		result += serializeObject(id, idParent);
 	}
 
-	if (idParent != ROOT_ID) {
-		IdList linksOut = mApi.outcomingLinks(idParent);
-
-		foreach (Id const id, linksOut) {
-			result += serializeOutcomingLink(id);
-		}
-
-		IdList linksIn = mApi.incomingLinks(idParent);
-
-		foreach (Id const id, linksIn) {
-			result += serializeIncomingLink(id);
-		}
-	}
+//	if (idParent != ROOT_ID) {
+//		IdList linksOut = mApi.outcomingLinks(idParent);
+//
+//		foreach (Id const id, linksOut) {
+//			result += serializeOutcomingLink(id);
+//		}
+//
+//		IdList linksIn = mApi.incomingLinks(idParent);
+//
+//		foreach (Id const id, linksIn) {
+//			result += serializeIncomingLink(id);
+//		}
+//	}
 
 	return result;
 }
@@ -81,311 +81,237 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	// class diagramm
 
 	else if (objectType == "cnClass") {
-	    QString visibility = getVisibility(id);
-	    QString isFinalField = isFinal(id);
-	    QString isAbstractField = isAbstract(id);
-	    if (isAbstractField == "abstract " && isFinalField == "final "){
-		addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
-	    }
-	    result += isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + " {" + "\n";
-	    result += serializeChildren(id);
-	    result += "}\n";
+		QString visibility = getVisibility(id);
+		QString isFinalField = hasModifier(id, "final");
+		QString isAbstractField = hasModifier(id, "abstract");
+		QString parents = getParents(id);
+		if (isAbstractField == "abstract " && isFinalField == "final "){
+			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
+		}
+		result += isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+		result += serializeChildren(id);
+		result += "}\n";
 	} else if (objectType == "cnClassView") {
-//	    to do someting
+		//	    to do someting
 	} else if (objectType == "cnClassMethod") {
 		if (parentType == "cnClass") {
-		    QString visibility = getVisibility(id);
-		    QString type = getType(id);
-		    QString operationFactors = getOperationFactors(id);
-		    QString isFinalField = isFinal(id);
-		    QString isAbstractField = isAbstract(id);
-		    QString isStaticField = isStatic(id);
-		    QString isSynchronizedField = isSynchronized(id);
-		    QString isNativeField = isNative(id);
-		    if ( (isAbstractField == "abstract " && isFinalField == "final ")
-			|| (isAbstractField == "abstract " && isStaticField == "static ") ){
-			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
-		    }
-		    result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
-			      visibility + type  + mApi.name(id) + "(" + operationFactors + "){};" + "\n";
+			QString visibility = getVisibility(id);
+			QString type = getType(id);
+			QString operationFactors = getOperationFactors(id);
+			QString isFinalField = hasModifier(id, "final");
+			QString isAbstractField = hasModifier(id, "abstract");
+			QString isStaticField = hasModifier(id, "static");
+			QString isSynchronizedField = hasModifier(id, "synchronized");
+			QString isNativeField = hasModifier(id, "native");
+			if ( (isAbstractField == "abstract " && isFinalField == "final ")
+				|| (isAbstractField == "abstract " && isStaticField == "static ") ){
+				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
+			}
+			result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
+					  visibility + type  + mApi.name(id) + "(" + operationFactors + "){};" + "\n";
 		} else {
 			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
 	} else if (objectType == "cnClassField") {
 		if (parentType == "cnClass"){
-		    QString visibility = getVisibility(id);
-		    QString type = getType(id);
-		    QString defaultValue = getDefaultValue(id);
-		    QString isFinalField = isFinal(id);
-		    QString isStaticField = isStatic(id);
-		    QString isVolatileField = isVolatile(id);
-		    QString isTransientField = isTransient(id);
-		    if (isVolatileField == "volatile " && isFinalField == "final "){
-			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
-		    }
-		    result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
-		    if (defaultValue != ""){
-			result += " " + defaultValue;
-		    }
-		    result += ";\n";
+			QString visibility = getVisibility(id);
+			QString type = getType(id);
+			QString defaultValue = getDefaultValue(id);
+			QString isFinalField = hasModifier(id, "final");
+			QString isStaticField = hasModifier(id, "static");
+			QString isVolatileField = hasModifier(id, "volatile");
+			QString isTransientField = hasModifier(id, "transient");
+			if (isVolatileField == "volatile " && isFinalField == "final "){
+				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
+			}
+			result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
+			if (defaultValue != ""){
+				result += " " + defaultValue;
+			}
+			result += ";\n";
 		} else {
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
 	}
 
-//	//use case diagram
-//
-//	else if (objectType == "uscnActor") {
-//		typeOfTag = "ownedMember";
-//		typeOfElem = "uml:Actor";
-//	} else if (objectType == "uscnUseCase") {
-//		typeOfTag = "ownedMember";
-//		typeOfElem = "uml:UseCase";
-//	}
-//
-//	// sequence diagramm
-//
-//	else if (objectType == "sqnnInteraction") {
-//		typeOfTag = "ownedMember";
-//		typeOfElem = "uml:Interaction";
-//	} else if (objectType == "sqnnSLifeline") {
-//		typeOfTag = "lifeline";
-//		typeOfElem = "uml:Lifeline";
-//	}
+	//	//use case diagram
+	//
+	//	else if (objectType == "uscnActor") {
+	//		typeOfTag = "ownedMember";
+	//		typeOfElem = "uml:Actor";
+	//	} else if (objectType == "uscnUseCase") {
+	//		typeOfTag = "ownedMember";
+	//		typeOfElem = "uml:UseCase";
+	//	}
+	//
+	//	// sequence diagramm
+	//
+	//	else if (objectType == "sqnnInteraction") {
+	//		typeOfTag = "ownedMember";
+	//		typeOfElem = "uml:Interaction";
+	//	} else if (objectType == "sqnnSLifeline") {
+	//		typeOfTag = "lifeline";
+	//		typeOfElem = "uml:Lifeline";
+	//	}
 
 
-//	result += "<" + typeOfTag + " xmi:type=\"" + typeOfElem + "\" xmi:id=\""
-//		+ id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" name=\"" + mApi.name(id)
-//		+ "\" " + additionalParams + ">" + "\n";
-//	result += serializeChildren(id);
-//	result += "</" + typeOfTag + ">" + "\n";
-//	result += serializeLinkBodies(id);
+	//	result += "<" + typeOfTag + " xmi:type=\"" + typeOfElem + "\" xmi:id=\""
+	//		+ id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" name=\"" + mApi.name(id)
+	//		+ "\" " + additionalParams + ">" + "\n";
+	//	result += serializeChildren(id);
+	//	result += "</" + typeOfTag + ">" + "\n";
+	//	result += serializeLinkBodies(id);
 
 	return result;
 }
 
 QString JavaHandler::getVisibility(Id const &id)
 {
-    QString result = "";
+	QString result = "";
 
-    QString const objectType = mApi.typeName(id);
+	QString const objectType = mApi.typeName(id);
 
-    if (mApi.hasProperty(id, "visibility")) {
-	QString visibility = mApi.stringProperty(id, "visibility");
+	if (mApi.hasProperty(id, "visibility")) {
+		QString visibility = mApi.stringProperty(id, "visibility");
 
-	if (visibility == "+")
-		visibility = "public";
-	else if (visibility == "-")
-		visibility = "private";
-	else if (visibility == "#")
-		visibility = "protected";
-	else if (visibility == "~")
-		visibility = "";
+		if (visibility == "+")
+			visibility = "public";
+		else if (visibility == "-")
+			visibility = "private";
+		else if (visibility == "#")
+			visibility = "protected";
+		else if (visibility == "~")
+			visibility = "";
 
-	if (isVisibilitySuitable(visibility)) {
-		result = visibility;
-		if (result != "")
-		    result += " ";
-	} else {
-		addError("object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
+		if (isVisibilitySuitable(visibility)) {
+			result = visibility;
+			if (result != "")
+				result += " ";
+		} else {
+			addError("object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
+		}
 	}
-    }
 
-    return result;
+	return result;
 }
 
 QString JavaHandler::getType(Id const &id)
 {
-    QString result = "";
+	QString result = "";
 
-    QString const objectType = mApi.typeName(id);
+	QString const objectType = mApi.typeName(id);
 
-    if (mApi.hasProperty(id, "type")) {
-	QString type = mApi.stringProperty(id, "type");
+	if (mApi.hasProperty(id, "type")) {
+		QString type = mApi.stringProperty(id, "type");
 
-	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
-		result = type;
-		if (result != "")
-		    result += " ";
+		if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
+			result = type;
+			if (result != "")
+				result += " ";
+		} else {
+			addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+		}
+	}
+
+	return result;
+}
+
+QString JavaHandler::getParents(Id const &id)
+{
+	QString result = "";
+	bool hasParentClass = false;
+
+	QString const objectType = mApi.typeName(id);
+
+	if (!mApi.links(id).isEmpty()) {
+		IdList links = mApi.outcomingLinks(id);
+
+		foreach (Id const aLink, links){
+			if (aLink.element() == "krneGeneralization") {
+				if (hasParentClass == false) {
+					hasParentClass = true;
+					if (id == mApi.otherEntityFromLink(aLink, id)) {
+						addError("object " + objectType + " with id " + id.toString() + " can not be his own superclass");
+					} else {
+						QString parentClass = mApi.name(mApi.otherEntityFromLink(aLink, id));
+						result += " extends " + parentClass;
+					}
+				} else {
+					addError("object " + objectType + " with id " + id.toString() + " has too much superclasses");
+				}
+			}
+		}
+
+	}
+
+	return result;
+}
+
+QString JavaHandler::hasModifier(Id const &id, QString const &modifier)
+{
+	QString result = "";
+
+	QString const objectType = mApi.typeName(id);
+
+	QString isModifier = "";
+
+	if (modifier == "final") {
+		isModifier = "isLeaf";
 	} else {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
-    	}
-    }
+		isModifier = "is" + modifier.left(1).toUpper() + modifier.mid(1, modifier.length());
+	}
 
-    return result;
-}
+	if (mApi.hasProperty(id, isModifier)) {
+		QString hasModifier = mApi.stringProperty(id, isModifier);
 
-QString JavaHandler::isAbstract(Id const &id)
-{
-    QString result = "";
+		if (hasModifier == "true") {
+			result = modifier + " ";
+		}else if (hasModifier != "false" && hasModifier != "") {
+			addError("object " + objectType + " with id " + id.toString() + " has invalid " + isModifier + " value: " + hasModifier);
+		}
+	}
 
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isAbstract")) {
-	QString isAbstract = mApi.stringProperty(id, "isAbstract");
-
-	if (isAbstract == "true") {
-	    result = "abstract ";
-	}else if (isAbstract != "false" && isAbstract != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isAbstract value: " + isAbstract);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isStatic(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isStatic")) {
-	QString isStatic = mApi.stringProperty(id, "isStatic");
-
-	if (isStatic == "true") {
-	    result = "static ";
-	} else if (isStatic != "false" && isStatic != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isStatic value: " + isStatic);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isSynchronized(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isSynchronized")) {
-	QString isSynchronized = mApi.stringProperty(id, "isSynchronized");
-
-	if (isSynchronized == "true"){
-	    result = "synchrinized ";
-	} else if (isSynchronized != "false" && isSynchronized != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isSynchronized value: " + isSynchronized);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isNative(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isNative")) {
-	QString isNative = mApi.stringProperty(id, "isNative");
-
-	if (isNative == "true") {
-	    result = "native ";
-	} else if (isNative != "false" && isNative != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isNative value: " + isNative);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isFinal(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isLeaf")) {
-	QString isFinal = mApi.stringProperty(id, "isLeaf");
-
-	if (isFinal == "true") {
-	    result = "final ";
-	} else if (isFinal != "false" && isFinal != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isLeaf value: " + isFinal);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isTransient(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isTransient")) {
-	QString isTransient = mApi.stringProperty(id, "isTransient");
-
-	if (isTransient == "true") {
-	    result = "transient ";
-	} else if (isTransient != "false" && isTransient != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isTransient value: " + isTransient);
-    	}
-    }
-
-    return result;
-}
-
-QString JavaHandler::isVolatile(Id const &id)
-{
-    QString result = "";
-
-    QString const objectType = mApi.typeName(id);
-
-    if (mApi.hasProperty(id, "isVolatile")) {
-	QString isVolatile = mApi.stringProperty(id, "isVolatile");
-
-	if (isVolatile == "true") {
-	    result = "volatile ";
-	} else if (isVolatile != "false" && isVolatile != "") {
-		addError("object " + objectType + " with id " + id.toString() + " has invalid isVolatile value: " + isVolatile);
-    	}
-    }
-
-    return result;
+	return result;
 }
 
 QString JavaHandler::getOperationFactors(Id const &id)
 {
-    QString result = "";
+	QString result = "";
 
-    QString const objectType = mApi.typeName(id);
+	QString const objectType = mApi.typeName(id);
 
-    if (mApi.hasProperty(id, "type")) {
-	QString operationFactors = mApi.stringProperty(id, "operationFactors");
+	if (mApi.hasProperty(id, "type")) {
+		QString operationFactors = mApi.stringProperty(id, "operationFactors");
 
-//	to check for the corract data
-//	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
+		//	to check for the corract data
+		//	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
 		result = operationFactors;
-//	} else {
-//		addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
-//    	}
-    }
+		//	} else {
+		//		addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+		//    	}
+	}
 
-    return result;
+	return result;
 }
 
 QString JavaHandler::getDefaultValue(Id const &id)
 {
-    QString result = "";
+	QString result = "";
 
-    QString const objectType = mApi.typeName(id);
+	QString const objectType = mApi.typeName(id);
 
-    if (mApi.hasProperty(id, "defaultValue")) {
-	QString defaultValue = mApi.stringProperty(id, "defaultValue");
+	if (mApi.hasProperty(id, "defaultValue")) {
+		QString defaultValue = mApi.stringProperty(id, "defaultValue");
 
-//	if (isTypeSuitable(defaultValue)) {
-//	to check for the corract data
+		//	if (isTypeSuitable(defaultValue)) {
+		//	to check for the corract data
 		result = defaultValue;
-//	} else {
-//		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
-//    	}
-    }
+		//	} else {
+		//		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
+		//    	}
+	}
 
-    return result;
+	return result;
 }
 
 QString JavaHandler::serializeOutcomingLink(Id const &id)
@@ -394,23 +320,23 @@ QString JavaHandler::serializeOutcomingLink(Id const &id)
 	QString linkType = mApi.typeName(id);
 
 	// kernel diagram
-	// TODO: � љ� ѕС€� ј� °СЂ� Ѕ� °СЏ � є� ѕ� ї� ё� ї� °СЃС‚� ° СЃ � ё� ґС€� Ѕ� ё� є� °� ј� ё
+	// TODO: � љ� ѕС€� ј� °СЂ� Ѕ� °СЏ � є� ѕ� ї� ё� ї� °СЃС‚� ° СЃ � ё� ґС€� Ѕ� ё� є� °� ј� ё
 	if (linkType == "krnePackageImport") {
 		result += "<packageImport xmi:type=\"uml:PackageImport\" xmi:id=\""
-			+ id.toString() + "\" xmi:uuid=\"" + id.toString()
-			+ "\"  importedPackage=\"" + mApi.to(id).toString() + "\" />";
+				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
+				  + "\"  importedPackage=\"" + mApi.to(id).toString() + "\" />";
 	} else if (linkType == "krneElementImport") {
 		result += "<elementImport xmi:type=\"uml:ElementImport\" xmi:id=\""
-			+ id.toString() + "\" xmi:uuid=\"" + id.toString()
-			+ "\"  importedElement=\"" + mApi.to(id).toString() + "\" />";
+				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
+				  + "\"  importedElement=\"" + mApi.to(id).toString() + "\" />";
 	} else if (linkType == "krneGeneralization") {
 		result += "<generalization xmi:type=\"uml:Generalization\" xmi:id=\""
-			+ id.toString() + "\" xmi:uuid=\"" + id.toString()
-			+ "\" general=\"" + mApi.to(id).toString() +  "\"/>";
+				  + id.toString() + "\" xmi:uuid=\"" + id.toString()
+				  + "\" general=\"" + mApi.to(id).toString() +  "\"/>";
 	} else if (linkType == "krneDirRelationship") {
 		result = result + "<ownedAttribute xmi:type=\"uml:Property\" xmi:id=\""
-			+ "ToEnd" + id.toString() + "\" xmi:uuid=\"" + "ToEnd" + id.toString()
-			+ "\" visibility=\"protected\" type=\"" + mApi.to(id).toString() + "\">" + "\n";
+				 + "ToEnd" + id.toString() + "\" xmi:uuid=\"" + "ToEnd" + id.toString()
+				 + "\" visibility=\"protected\" type=\"" + mApi.to(id).toString() + "\">" + "\n";
 
 		QString toMult = mApi.stringProperty(id, "toMultiplicity");
 		result = result + serializeMultiplicity(id, toMult);
@@ -429,13 +355,13 @@ QString JavaHandler::serializeOutcomingLink(Id const &id)
 
 	else if (linkType == "uscaExtend") {
 		result += "<extend xmi:type=\"uml:Extend\" xmi:id=\"" + id.toString()
-			+ "\" xmi:uuid=\"" + id.toString() + "\" extendedCase=\""
-			+ mApi.to(id).toString() + "\">" + "\n";
+				  + "\" xmi:uuid=\"" + id.toString() + "\" extendedCase=\""
+				  + mApi.to(id).toString() + "\">" + "\n";
 		result += "<extension xmi:idref=\"" + mApi.from(id).toString() + "\"/>" + "\n";
 		result += "</extend>\n";
 	} else if (linkType == "uscaInclude") {
 		result += "<include xmi:type=\"uml:Include\" xmi:id=\"" + id.toString() +
-			"\" xmi:uuid=\"" + id.toString() + "\" addition=\"" + mApi.to(id).toString() + "\"/>" + "\n";
+				  "\" xmi:uuid=\"" + id.toString() + "\" addition=\"" + mApi.to(id).toString() + "\"/>" + "\n";
 	}
 
 	return result;
@@ -475,14 +401,14 @@ QString JavaHandler::serializeLink(Id const &id)
 		}
 
 		result += "<ownedMember xmi:type=\"uml:Association\" xmi:id=\""
-			+ id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" " + additionalParams + ">" + "\n";
+				  + id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" " + additionalParams + ">" + "\n";
 
 		// FromEnd
 
 		result += "<memberEnd xmi:idref=\"FromEnd" + id.toString() + "\"/>\n";
 		result += "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\""
-			+ QString("FromEnd") + id.toString() + "\" xmi:uuid=\"FromEnd" + id.toString()
-			+ "\" visibility=\"protected\" type=\"" + mApi.from(id).toString() + "\">\n";
+				  + QString("FromEnd") + id.toString() + "\" xmi:uuid=\"FromEnd" + id.toString()
+				  + "\" visibility=\"protected\" type=\"" + mApi.from(id).toString() + "\">\n";
 		result += "<association xmi:idref=\"" + id.toString() +  "\"/>\n";
 
 		QString fromMult = mApi.stringProperty(id, "fromMultiplicity");
@@ -498,9 +424,9 @@ QString JavaHandler::serializeLink(Id const &id)
 		if (linkType != "krneDirRelationship") {
 
 			result += "<ownedEnd xmi:type=\"uml:Property\" xmi:id=\"ToEnd"
-				+ id.toString() + "\" xmi:uuid=\"ToEnd" + id.toString()
-				+ "\" visibility=\"protected\" " + aggregation + " type=\""
-				+ mApi.to(id).toString() + "\">" + "\n";
+					  + id.toString() + "\" xmi:uuid=\"ToEnd" + id.toString()
+					  + "\" visibility=\"protected\" " + aggregation + " type=\""
+					  + mApi.to(id).toString() + "\">" + "\n";
 
 			QString toMult = mApi.stringProperty(id, "toMultiplicity");
 			result += serializeMultiplicity(id, toMult);
@@ -512,8 +438,8 @@ QString JavaHandler::serializeLink(Id const &id)
 		result += "</ownedMember>\n";
 	} else if (linkType == "ceDependency"){
 		result += "<ownedMember xmi:type=\"uml:Dependency\" xmi:id=\""
-			+ id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" "
-			+ additionalParams + ">" + "\n";
+				  + id.toString() + "\" xmi:uuid=\"" + id.toString() + "\" "
+				  + additionalParams + ">" + "\n";
 		result = "<supplier xmi:idref=\"" + mApi.to(id).toString() + "\"/>\n";
 		result = "<client xmi:idref=\"" + mApi.from(id).toString() + "\"/>\n";
 		result = "</ownedMember>\n";
@@ -556,8 +482,8 @@ QString JavaHandler::serializeMultiplicity(Id const &id, QString const &multipli
 
 		if (!valueLower.isEmpty() && !valueUpper.isEmpty()) {
 			result += QString("<lowerValue xmi:type=\"uml:LiteralString\" xmi:id=\"")
-					 + "loverValueTo" + id.toString() + "\" xmi:uuid=\"loverValueTo" + id.toString()
-					 + "\" visibility=\"public\" value=\"" + valueLower + "\"/>\n";
+					  + "loverValueTo" + id.toString() + "\" xmi:uuid=\"loverValueTo" + id.toString()
+					  + "\" visibility=\"public\" value=\"" + valueLower + "\"/>\n";
 			result = QString("<upperValue xmi:type=\"uml:LiteralString\" xmi:id=\"")
 					 + "upperValueTo" + id.toString() + "\" xmi:uuid=\"" + "upperValueTo" + id.toString()
 					 + "\" visibility=\"public\" value=\"" + valueUpper + "\"/>\n";
@@ -569,9 +495,9 @@ QString JavaHandler::serializeMultiplicity(Id const &id, QString const &multipli
 
 bool JavaHandler::isTypeSuitable(QString const &type) const
 {
-//    Добавить в рассмотрение все классы-оболочки и пользователем созданные классы
-    return type == "int" || type == "float" || type == "double" || type == "boolean"
-		|| type == "char" || type == "byte" || type == "long" || type == "short";
+	//  todo: check class-type for correctness
+	return type == "int" || type == "float" || type == "double" || type == "boolean"
+			|| type == "char" || type == "byte" || type == "long" || type == "short";
 }
 
 bool JavaHandler::isVisibilitySuitable(QString const &visibility) const

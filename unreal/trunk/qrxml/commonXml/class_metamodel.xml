@@ -14,12 +14,16 @@
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:b>
+	   <html:b>
+	   <!--
         <html:i>
+		-->
          <html:center>
           <html:text_from_repo name="name" />
          </html:center>
+		 <!--
         </html:i>
+		-->
        </html:b>
       </html:html>
      </repo_info>
@@ -221,7 +225,7 @@
      <association end_type="no_arrow" id="caReal1" >
       <begin idref="krnnElement" />
      </association>
-     <association end_type="arrow" id="acReal2" >
+     <association end_type="empty_arrow" id="acReal2" >
       <end idref="krnnElement" />
      </association>
     </associations>
@@ -232,27 +236,25 @@
     </generalizations>
    </logic>
   </edge>
-  <edge id="ceInheritance" name="Inheritance" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <association end_type="no_arrow" id="caInh1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="arrow" id="acInh2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-   </logic>
+  <edge id="krneGeneralization" name="Generalization" >
+    <logic>
+	  <generalizations>
+		<generalization>
+		  <parent parent_id="krneDirRelationship" />
+		</generalization>
+	  </generalizations>
+	  <properties>
+	    <property type="bool" name="isSubstitutable" />
+	  </properties>
+	  <associations>
+    	<association role="general" end_type="empty_arrow" id="krnaGeneralEnd" >
+		  <end idref="krnnClassifier" />
+	    </association>
+	    <association id="krnaGeneralStart" >
+		  <begin idref="krnnClassifier" />
+	    </association>
+	  </associations>
+    </logic>
   </edge>
   <node id="cnClassMethod" name="Class method" >
    <graphics>
@@ -309,17 +311,13 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnClassifier" />
-     </generalization>
-    </generalizations>
     <properties>
      <property type="string" name="type" />
      <property type="string" name="defaultValue" />
 	 <property type="string" name="isStatic" />
 	 <property type="string" name="isTransient" />
 	 <property type="string" name="isVolatile" />
+	 <property type="string" name="isLeaf" />
     </properties>
     <containers>
      <container name="Class-Classifier" >
@@ -333,19 +331,19 @@
     <view>
      <picture sizex="150" sizey="210" >
       <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210" stroke-width="1" x2="150" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid" />
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50a" x1="0" y2="50a" stroke-width="1" x2="150" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="1" x2="150" fill-style="solid" />
-	  <text i="0" font-fill="#000000" y1="16a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >&lt;&lt;interface>></text>
+	  <text i="0" font-fill="#000000" y1="16a" b="0" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="10a" >&lt;&lt;interface>></text>
 	  <!-- Хорошо бы текст по центру и чтобы название было на новой строке -->
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:b>
-        <html:i>
+        <html:br>
          <html:center>
           <html:text_from_repo name="name" />
          </html:center>
-        </html:i>
+        </html:br>
        </html:b>
       </html:html>
      </repo_info>
@@ -370,15 +368,18 @@
     </view>
    </graphics>
    <logic>
+   <!--
     <generalizations>
      <generalization>
       <parent parent_id="krnnClassifier" />
      </generalization>
     </generalizations>
+	-->
     <properties>
      <property type="string" name="vals" />
      <property type="string" name="methods" />
      <property type="string" name="logicalName" />     
+	 <property type="string" name="isAbstract" />   
     </properties>
     <containers>
      <container name="Class-Classifier" >
