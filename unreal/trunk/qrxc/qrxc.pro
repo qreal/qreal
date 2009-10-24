@@ -25,4 +25,4 @@ SOURCES += generator.cpp \
     non_graph_type.cpp \
     property.cpp \
     sdftocpp.cpp \
-    qrxc.cpp
+    main.cpp
