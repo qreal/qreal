@@ -81,7 +81,7 @@
     </property>
     <addaction name="actionClear"/>
     <addaction name="actionExport_to_XMI"/>
-    <addaction name="actionExport_to_Java"/>
+    <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_editor"/>
    </widget>
    <addaction name="menu_File"/>
@@ -406,7 +406,7 @@
     <string>Export to XMI</string>
    </property>
   </action>
-  <action name="actionExport_to_Java">
+  <action name="actionGenerate_to_Java">
    <property name="text">
     <string>Export to Java</string>
    </property>
