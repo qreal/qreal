@@ -1,13 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <include>basicbehaviors_metamodel</include>
+ <include>kernel_metamodel.xml</include>
+ <include>basicbehaviors_metamodel.xml</include>
  <namespace>UML 2.1</namespace>
- <editor name="Use Case Diagram" >
-   <graph_types>
+ <diagram name="Use Case Diagram" >
+   <graphicTypes>
   <node id="uscnActor" name="Actor" >
-   <graphics>
-    <view>
      <picture sizex="31" sizey="100" >
       <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="31" stroke-width="2" x2="31" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="31" x1="16" y2="66" stroke-width="2" x2="16" fill-style="solid" />
@@ -30,13 +28,9 @@
        <end endx="16" endy="66" />
       </line_port>
      </ports>
-    </view>
-   </graphics>
    <logic>
     <generalizations>
-     <generalization>
       <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
     </generalizations>
     <!--  TO DELETE!!!  <properties>
      <property type="string" name="name" />
@@ -49,8 +43,6 @@
    </logic>
   </node>
   <node id="uscnUCClassifier" name="UCClassifier" >
-   <graphics>
-    <view>
      <picture sizex="60" sizey="110" >
       <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="99" stroke-width="1" x2="59" fill-style="solid" />
      </picture>
@@ -59,13 +51,9 @@
        <html:text_from_repo name="name" />
       </html:html>
      </repo_info>
-    </view>
-   </graphics>
    <logic>
     <generalizations>
-     <generalization>
       <parent parent_id="krnnClassifier" />
-     </generalization>
     </generalizations>
     <associations>
      <assoc_ref idref="uscaClassifier" />
@@ -81,8 +69,6 @@
    </logic>
   </node>
   <node id="uscnUseCase" name="UseCase" >
-   <graphics>
-    <view>
      <picture sizex="100" sizey="60" >
       <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="2" y2="49" stroke-width="2" x2="98" fill-style="solid" />
      </picture>
@@ -111,13 +97,9 @@
       <point_port x="50" y="49" />
       <point_port x="50" y="1" />
      </ports>
-    </view>
-   </graphics>
    <logic>
     <generalizations>
-     <generalization>
       <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
     </generalizations>
     <!-- TO DELETE!!!    <properties>
      <property type="string" name="name" />
@@ -137,9 +119,7 @@
    </logic>
   </node>
   <edge id="uscaExtend" name="Extend" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
+     <lineType type="dashLine" />
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
@@ -147,29 +127,18 @@
        </html:center>
       </html:html>
      </repo_info>
-    </view>
-   </graphics>
    <logic>
     <generalizations>
-     <generalization>
       <parent parent_id="krnnNamedElement" />
       <parent parent_id="krneDirRelationship" />
-     </generalization>
     </generalizations>
-    <associations>
-     <association role="extend" multiplicity="true" id="uscaExtend" >
-      <begin idref="uscnUseCase" />
-     </association>
-     <association role="extend" multiplicity="false" end_type="open_arrow" id="uscaExtend" >
-      <end idref="uscnUseCase" />
-     </association>
-    </associations>
+     <associations beginType="no_arrow" endType="open_arrow">
+      <association beginName="Element" endName="Element" />
+     </associations>
    </logic>
   </edge>
   <edge id="uscaInclude" name="Include" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
+     <lineType type="dashLine" />
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
        <html:center>
@@ -177,25 +146,16 @@
        </html:center>
       </html:html>
      </repo_info>
-    </view>
-   </graphics>
    <logic>
     <generalizations>
-     <generalization>
       <parent parent_id="krneDirRelationship" />
       <parent parent_id="krnnNamedElement" />
-     </generalization>
     </generalizations>
-    <associations>
-     <association role="include" multiplicity="true" id="ucsaInclude" >
-      <begin idref="uscnUseCase" />
-     </association>
-     <association role="include" multiplicity="false" end_type="open_arrow" id="uscaInclude" >
-      <end idref="uscnUseCase" />
-     </association>
-    </associations>
+     <associations beginType="no_arrow" endType="open_arrow">
+      <association beginName="Element" endName="Element" />
+     </associations>
    </logic>
   </edge>
-   </graph_types>
- </editor>
+   </graphicTypes>
+ </diagram>
 </metamodel>
