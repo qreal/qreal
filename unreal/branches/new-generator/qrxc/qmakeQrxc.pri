@@ -53,4 +53,4 @@ INCLUDEPATH += ../..
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
-RCC_DIR = ../
+RCC_DIR = .moc
