@@ -25,19 +25,31 @@ qrxc_source.variable_out = SOURCES
 
 QMAKE_EXTRA_COMPILERS += qrxc_source
 
-qrxc_h.commands = $$FAKE
-qrxc_h.input = QREAL_XML
-qrxc_h.output = generated/pluginInterface.h
-qrxc_h.variable_out = HEADERS
+qrxc_moc.commands = moc generated/pluginInterface.h -o .moc/moc_pluginInterface.cpp
+qrxc_moc.input = QREAL_XML
+qrxc_moc.output = .moc/moc_pluginInterface.cpp
+qrxc_moc.variable_out = SOURCES
 
-QMAKE_EXTRA_COMPILERS += qrxc_h
+QMAKE_EXTRA_COMPILERS += qrxc_moc
 
-qrxc_r.commands = $$FAKE
-qrxc_r.input = QREAL_XML
-qrxc_r.output = generated/shapes/${QMAKE_FILE_IN_BASE}.qrc
-qrxc_r.variable_out = RESOURCES
+qrxc_rcc.commands = rcc -name ${QMAKE_FILE_IN_BASE} generated/shapes/${QMAKE_FILE_IN_BASE}.qrc -o .moc/qrc_${QMAKE_FILE_IN_BASE}.cpp
+qrxc_rcc.input = QREAL_XML
+qrxc_rcc.output = .moc/qrc_${QMAKE_FILE_IN_BASE}.cpp
+qrxc_rcc.variable_out = SOURCES
 
-QMAKE_EXTRA_COMPILERS += qrxc_r
+QMAKE_EXTRA_COMPILERS += qrxc_rcc
+
+
+# чтобы файл было видно в IDE
+qrxc_fake.commands = $$FAKE
+qrxc_fake.input = QREAL_XML
+qrxc_fake.output = generated/pluginInterface.h
+qrxc_fake.variable_out = SOURCES
+
+QMAKE_EXTRA_COMPILERS += qrxc_fake
+
+#чтобы не было предупреждения о том, что файл указан несколько раз (.h в sources нельзя)
+QMAKE_LFLAGS += /ignore:4042
 
 QRXML_ROOT = ..
 
