@@ -1,4 +1,4 @@
-win32 {
+п»їwin32 {
         CONFIG(debug, debug|release) {
                 QMAKE_QRXC = $$PWD/debug/qrxc.exe
         } else:CONFIG(release, debug|release){
@@ -40,7 +40,7 @@ qrxc_rcc.variable_out = SOURCES
 QMAKE_EXTRA_COMPILERS += qrxc_rcc
 
 
-# чтобы файл было видно в IDE
+# С‡С‚РѕР±С‹ С„Р°Р№Р» Р±С‹Р»Рѕ РІРёРґРЅРѕ РІ IDE
 qrxc_fake.commands = $$FAKE
 qrxc_fake.input = QREAL_XML
 qrxc_fake.output = generated/pluginInterface.h
@@ -48,7 +48,7 @@ qrxc_fake.variable_out = SOURCES
 
 QMAKE_EXTRA_COMPILERS += qrxc_fake
 
-#чтобы не было предупреждения о том, что файл указан несколько раз (.h в sources нельзя)
+#С‡С‚РѕР±С‹ РЅРµ Р±С‹Р»Рѕ РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёСЏ Рѕ С‚РѕРј, С‡С‚Рѕ С„Р°Р№Р» СѓРєР°Р·Р°РЅ РЅРµСЃРєРѕР»СЊРєРѕ СЂР°Р· (.h РІ sources РЅРµР»СЊР·СЏ)
 QMAKE_LFLAGS += /ignore:4042
 
 QRXML_ROOT = ..
