@@ -1,4 +1,4 @@
-﻿win32 {
+﻿win32 | win32-msvc* {
         CONFIG(debug, debug|release) {
                 QMAKE_QRXC = $$PWD/debug/qrxc.exe
         } else:CONFIG(release, debug|release){
@@ -10,46 +10,67 @@
         QMAKE_QRXC = $$PWD/qrxc
 }
 
-CONFIG(debug, debug|release) {
-	QR_PLUGIN_CONFIG = CONFIG+=debug
-} else:CONFIG(release, debug|release){
-	QR_PLUGIN_CONFIG = CONFIG+=release
-} else {
-	error(CONFIG is wrong, can not determine build configuration for plugins)
-}
+INPUT = $$QREAL_XML$$quote(.xml)
 
-qrxc_source.commands = $$QMAKE_QRXC $$QREAL_XML generated/${QMAKE_FILE_IN_BASE}.pro
-qrxc_source.input = QREAL_XML
+qrxc_source.commands = $$QMAKE_QRXC $$INPUT generated/${QMAKE_FILE_IN_BASE}.pro
+qrxc_source.input = INPUT
 qrxc_source.output = generated/pluginInterface.cpp
 qrxc_source.variable_out = SOURCES
+qrxc_source.name = QReal_XML_Compiler
 
 QMAKE_EXTRA_COMPILERS += qrxc_source
 
-qrxc_moc.commands = moc generated/pluginInterface.h -o .moc/moc_pluginInterface.cpp
-qrxc_moc.input = QREAL_XML
-qrxc_moc.output = .moc/moc_pluginInterface.cpp
-qrxc_moc.variable_out = SOURCES
+qrxc_header.commands = $$FAKE
+qrxc_header.input = INPUT
+qrxc_header.output = generated/pluginInterface.h
+qrxc_header.variable_out = HEADERS
 
-QMAKE_EXTRA_COMPILERS += qrxc_moc
+QMAKE_EXTRA_COMPILERS += qrxc_header
 
-qrxc_rcc.commands = rcc -name ${QMAKE_FILE_IN_BASE} generated/shapes/${QMAKE_FILE_IN_BASE}.qrc -o .moc/qrc_${QMAKE_FILE_IN_BASE}.cpp
-qrxc_rcc.input = QREAL_XML
-qrxc_rcc.output = .moc/qrc_${QMAKE_FILE_IN_BASE}.cpp
-qrxc_rcc.variable_out = SOURCES
+qrxc_resource.commands = $$FAKE
+qrxc_resource.input = INPUT
+qrxc_resource.output = $$quote(generated/shapes/)$$QREAL_XML$$quote(.qrc)
+qrxc_resource.variable_out = RESOURCES
 
-QMAKE_EXTRA_COMPILERS += qrxc_rcc
+QMAKE_EXTRA_COMPILERS += qrxc_resource
+
+SDF_FILES = $$files($$quote(..\qrxml\)$$QREAL_XML$$quote(\generated\shapes\*.sdf))
+#message($$SDF_FILES)
 
 
-# чтобы файл было видно в IDE
-qrxc_fake.commands = $$FAKE
-qrxc_fake.input = QREAL_XML
-qrxc_fake.output = generated/pluginInterface.h
-qrxc_fake.variable_out = SOURCES
+defineTest(addExtraCompiler) {
+    eval($${1}.commands = $$FAKE)
+    eval($${1}.input = INPUT)
+	eval($${1}.output = $${2})
+    eval($${1}.variable_out = GENERATED_FILES)
+	
+    export($${1}.output)
+    export($${1}.input)
+    export($${1}.commands)
+    export($${1}.variable_out)
 
-QMAKE_EXTRA_COMPILERS += qrxc_fake
+    QMAKE_EXTRA_COMPILERS += $${1}
 
-#чтобы не было предупреждения о том, что файл указан несколько раз (.h в sources нельзя)
-QMAKE_LFLAGS += /ignore:4042
+    export(QMAKE_EXTRA_COMPILERS)
+
+    return(true)
+}
+
+for(sdfFile,SDF_FILES) {
+	FILE_NAME_LONG = $${sdfFile}
+	COMPILER_NAME_LONG = $$section(FILE_NAME_LONG,"/",1,1)
+	COMPILER_NAME = $$section(COMPILER_NAME_LONG,".",0,0)
+	FILE_NAME = $$quote(generated/shapes/)$$COMPILER_NAME$$quote(.sdf)
+
+	addExtraCompiler($$COMPILER_NAME, $$FILE_NAME)
+}
+
+COMMAND = cd $$quote(..\qrxml\)$$QREAL_XML\ && $$QMAKE_QRXC $$QREAL_XML$$quote(.xml) $$quote(generated/)$$QREAL_XML$$quote(.pro)
+
+!exists($$quote(..\qrxml\)$$QREAL_XML$$quote(\generated\pluginInterface.h)) {
+	message($$COMMAND)
+	SYS = $$system($$COMMAND) 
+}
 
 QRXML_ROOT = ..
 
