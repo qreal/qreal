@@ -208,8 +208,8 @@ void NodeType::generateCode(OutFile &out)
 	{
 		label->generateCode(out);
 	}
-	//out() << ";\n";
-	//out() << "\t\t\tmTitle.setHtml(text);\n";
+	out() << ";\n";
+	out() << "\t\t\tmTitle.setHtml(text);\n";
 
 	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
 

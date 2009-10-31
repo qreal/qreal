@@ -19,5 +19,5 @@ bool Label::init(QDomElement const &element, int width, int height)
 
 void Label::generateCode(OutFile &out)
 {
-	out() << QString("\t\t\tQString text = QString(\"%1\")").arg(mText);
+	out() << QString("\t\t\tQString text = QString(\"%1\")").arg(mTextBinded);
 }
