@@ -174,7 +174,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual void initPlugin();\n"
 		<< "\n"
-		<< "\tvirtual QString id() const { return \"" << mPluginName << "Editor\"; }\n"
+		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
 		<< "\tvirtual QStringList diagrams() const;\n"
 		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
@@ -229,7 +229,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagramName << " \"" << ";\n";
+		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->name() << " \"" << ";\n";
 		out() << "\n";
 	}
 

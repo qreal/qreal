@@ -190,7 +190,7 @@ void GraphicType::generateNameMapping(OutFile &out)
 	{
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString name = NameNormalizer::normalize(mName);
-		out() << "\telementsNameMap[\"" << name << "\"][\"" << mName << "\"] = \"" << name << "\";\n";
+		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << name << "\"] = \"" << mName << "\";\n";
 	}
 }
 

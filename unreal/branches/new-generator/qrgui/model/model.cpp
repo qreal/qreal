@@ -14,8 +14,8 @@ Model::Model(EditorManager const &editorManager)
 	init();
 	if (rootItem->children().count() == 0)
 	{
-		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel/krnnDiagram"), QUuid::createUuid().toString());
-		addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
+//		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel/krnnDiagram"), QUuid::createUuid().toString());
+//		addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
 	}
 }
 
