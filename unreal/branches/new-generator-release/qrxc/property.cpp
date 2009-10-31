@@ -1,62 +1,72 @@
-#include <QDomDocument>
-#include <QDomNode>
-#include "entity.h"
 #include "property.h"
 
-bool RealProperty::init(QDomElement &xml_element)
+#include <qDebug>
+
+bool Property::init(QDomElement const &element)
 {
-	QDomNamedNodeMap attrs = xml_element.attributes();
-
-	is_enum = false;
-	is_ref = false;
-	// Fetch property name
-	name = attrs.namedItem("name").toAttr().value();
-	if (name == "") name = xml_element.firstChildElement("name").text();
-	if (name == "")
+	mIsEnum = false;
+	mIsReference = false;
+	mName = element.attribute("name");
+	if (mName == "")
 	{
-		qDebug() << "Anonymous prop of " << entity->id << " entity";
+		qDebug() << "Error: anonymous property found";
 		return false;
 	}
-
-	// Fetch property type
-	type = attrs.namedItem("type").toAttr().value();
-	if (type == "") type = xml_element.firstChildElement("type").text();
-	if (type == "")
+	QString mType = element.attribute("type");
+	if (mType == "")
 	{
-		qDebug() << "Unspecified type for prop" << name
-		         << "of" << entity->id << "entity";
+		qDebug() << "Error: no type of property found";
 		return false;
 	}
-
-	// Sanity checks for all available types
-	if (type == "enum")
+	else if (mType == "enum")
 	{
-		type = xml_element.firstChildElement("enum").attribute("idref");
-		if (type == "")
-		{
-			qDebug() << "Anonymous enum type for prop" << name
-			         << "of" << entity->id << "entity";
+		if (initReferenceType("enum", element))
+			mIsEnum = true;	// TODO: Lookup enum
+		else 
 			return false;
-		}
-		// TODO: Lookup enum
-		is_enum = true;
-	}
-	else if (type == "ref")
+	} 
+	else if (mType == "reference")
+	{				
+		if (initReferenceType("reference", element))
+			mIsReference = true; // TODO: Lookup reference
+		else
+			return false;
+	} 
+	else if ((mType != "int") && (mType != "string") && (mType != "bool") && (mType != "text") &&
+		(mType != "positiveInt") && (mType != "nonNegativeInt"))
 	{
-		type = xml_element.firstChildElement("ref").attribute("idref");
-		is_ref = true;
-	}
-	else if (type != "int" && type != "string" && type != "bool" &&
-	         type != "positiveInt" && type != "nonNegativeInt" && type != "text")
-	{
-		qDebug() << "Unknown type for prop " << name << " of "
-		         << entity->id << " entity";
+		qDebug() << "Error: unknown type found";
 		return false;
 	}
-
-	// Even if do not exist, not an error
-	description = xml_element.firstChildElement("description").text();
-	default_value = xml_element.firstChildElement("default").text();
-
+	mDescription = element.firstChildElement("description").text();
+	mDefaultValue = element.firstChildElement("default").text();
 	return true;
+}
+
+bool Property::initReferenceType(QString typeName, QDomElement const &element)
+{
+	mType = element.firstChildElement(typeName).attribute("nameReference");
+	if (mType == "")
+	{
+		qDebug() << "Error: anonymous type found";
+		return false;
+	}
+	return true;
+}
+
+QString Property::name()
+{
+	return mName;
+}
+
+Property * Property::clone()
+{
+	Property *result = new Property();
+	result->mName = mName;
+	result->mType = mType;
+	result->mIsEnum = mIsEnum;
+	result->mIsReference = mIsReference;
+	result->mDescription = mDescription;
+	result->mDefaultValue = mDefaultValue;
+	return result;
 }

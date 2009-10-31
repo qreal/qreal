@@ -1,152 +1,128 @@
-#include <QDomElement>
-#include "editor_file.h"
 #include "editor.h"
+#include "xmlCompiler.h"
+#include "diagram.h"
+#include "type.h"
 
-Editor::Editor(QString dname, EditorFile *file)
-{
-	efile = file;
-	name = dname;
-}
+#include <qDebug>
+
+Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
+	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false) 
+{}
 
 Editor::~Editor()
 {
-	while (!objects.isEmpty())
-		delete objects.takeFirst();
-}
-
-bool Editor::parseNonGraphTypes(QDomElement &xml_element)
-{
-	QDomElement child = xml_element.firstChildElement();
-
-	while (!child.isNull())
+	foreach(Diagram *diagram, mDiagrams.values())
 	{
-		if (child.nodeName() == "enum")
+		if (diagram)
 		{
-			EnumType *t = new EnumType;
-			if (!t->init(child))
-			{
-				delete t;
-				return false;
-			}
-			NonGraphType *ngt = new NonGraphType(t);
-			types_ng << ngt;
+			delete diagram;
 		}
-		else if (child.nodeName() == "numeric")
-		{
-			NumericType *t = new NumericType;
-			if (!t->init(child))
-			{
-				delete t;
-				return false;
-			}
-			NonGraphType *ngt = new NonGraphType(t);
-			types_ng << ngt;
-		}
-		else if (child.nodeName() == "string")
-		{
-			StringType *t = new StringType;
-			if (!t->init(child))
-			{
-				delete t;
-				return false;
-			}
-			NonGraphType *ngt = new NonGraphType(t);
-			types_ng << ngt;
-		}
-		else
-			qDebug() << "WARNING: unknown non-graph metatype" << child.nodeName();
-		child = child.nextSiblingElement();
 	}
-
-	return true;
 }
 
-bool Editor::parseGraphTypes(QDomElement &xml_element)
+bool Editor::isLoaded()
 {
-	QDomElement child = xml_element.firstChildElement();
+	return mLoadingComplete;
+}
 
-	while (!child.isNull())
+bool Editor::load()
+{
+	QDomElement metamodel;
+
+	metamodel = mXmlDomDocument.firstChildElement("metamodel");
+	if (metamodel.isNull())
 	{
-		if (child.nodeName() == "node")
-		{
-			Node *node = new Node(this);
-			if (!node->init(child))
-			{
-				delete node;
-				return false;
-			}
-			objects << node;
-		}
-		else if (child.nodeName() == "edge")
-		{
-			Edge *edge = new Edge(this);
-			if (!edge->init(child))
-			{
-				delete edge;
-				return false;
-			}
-			objects << edge;
-		}
-		else
-			qDebug() << "WARNING: unknown tag" << child.nodeName();
-		child = child.nextSiblingElement();
-	}
-	return true;
-}
-
-bool Editor::init(QDomElement &xml_element)
-{
-	QDomElement child = xml_element.firstChildElement();
-
-	qDebug() << "Processing" << name << "editor";
-	while (!child.isNull())
+		qDebug() << "Error: metamodel tag not found";
+		return false;
+	} 
+	
+	//Load includes
+	for (QDomElement includeElement = metamodel.firstChildElement("include"); !includeElement.isNull();
+		includeElement = includeElement.nextSiblingElement("include"))
 	{
-		if (child.nodeName() == "non_graph_types")
+		QString includeFileName = includeElement.text();
+		Editor *includeFile = mXmlCompiler->loadXmlFile(includeFileName);
+		if (!includeFile)
 		{
-			if (!parseNonGraphTypes(child)) return false;
-		}
-		else if (child.nodeName() == "graph_types")
-		{
-			if (!parseGraphTypes(child)) return false;
-		}
-		else
-			qDebug() << "WARNING: unknown tag" << child.nodeName();
-		child = child.nextSiblingElement();
-	}
-	qDebug() << "editor's inits done";
-	return true;
-}
-
-bool Editor::resolve(void)
-{
-	Entity *e;
-
-	Q_FOREACH(e, objects)
-		if (!e->resolve())
+			qDebug() << "Error: can't include file" << includeFileName;
 			return false;
+		}
+		mIncludes.append(includeFile);
+	}
+
+	// Load diagrams part one: don't process inherited properties.
+	for (QDomElement diagramElement = metamodel.firstChildElement("diagram"); !diagramElement.isNull();
+		diagramElement = diagramElement.nextSiblingElement("diagram"))
+	{
+		QString diagramName = diagramElement.attribute("name");
+		Diagram const *existingDiagram = mXmlCompiler->getDiagram(diagramName);
+		if (existingDiagram)
+		{
+			qDebug() << "Error: diagram" << diagramName << "is already loaded";
+			return false;
+		}
+		qDebug() << "parsing diagram" << diagramName;
+		Diagram *diagram = new Diagram(diagramName, this);
+		if (!diagram->init(diagramElement))
+		{
+			qDebug() << "Error: diagram" << diagramName << "can't be parsed";
+			delete diagram;
+			return false;
+		}
+		qDebug() << "diagram" << diagramName << "parsed";
+		mDiagrams[diagramName] = diagram;
+	}
+
+	// Load diagram part two: resolve all dependencies.
+	foreach (Diagram *diagram, mDiagrams.values())
+	{
+		if (!diagram->resolve())
+		{
+			return false;
+		}
+	}
+	mLoadingComplete = true;
 	return true;
 }
 
-const Entity* Editor::findEntityInTree(QString id) const
+XmlCompiler* Editor::xmlCompiler()
 {
-	const Entity *res;
-
-	// Search in this diagram of this file
-	res = findEntity(id);
-	if (!res)
-	{
-		// Search in include files
-		res = efile->findEntityInIncludes(id);
-	}
-	return res;
+	return mXmlCompiler;
 }
 
-const Entity* Editor::findEntity(QString id) const
+Type* Editor::findType(QString const &name)
 {
-	Entity *e;
-
-	Q_FOREACH(e, objects)
-		if (e->id == id)
-			return e;
+	foreach (Diagram *diagram, mDiagrams.values())
+	{
+		foreach (Type *type, diagram->types())
+		{
+			if (type->name() == name)
+			{
+				return type;
+			}
+		}
+	}
+	foreach (Editor *editor, mIncludes)
+	{
+		Type *type = editor->findType(name);
+		if (type->name() == name)
+		{
+			return type;
+		}
+	}
 	return NULL;
+}
+
+Diagram* Editor::findDiagram(QString const &name)
+{
+	if (mDiagrams.contains(name))
+	{
+		return mDiagrams[name];
+	}
+	return NULL;
+}
+
+QMap<QString, Diagram*> Editor::diagrams()
+{
+	return mDiagrams;
 }
