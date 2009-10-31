@@ -6,7 +6,7 @@ cd %WD%
 qmake
 nmake
 del /s /q generated
-release\code.exe
+debug\code.exe
 
 if %ERRORLEVEL% neq 0 (
 	echo "Generate-code failed!"
