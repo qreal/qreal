@@ -28,7 +28,7 @@ bool NodeType::initAssociations()
 
 void NodeType::addKernelParent()
 {
-	if ((mName != "Element") && (mName != "Named Element"))
+	if ((mName != "Kernel Element") && (mName != "Named Element"))
 	{
 		mParents.append("Named Element");
 	}
@@ -60,7 +60,6 @@ bool NodeType::initSdf()
 		mHeight = sdfElement.attribute("sizey").toInt();
 		QString name = NameNormalizer::normalize(mName);
 		QString resourceName = name + "Class.sdf";
-//		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "Ports.sdf" + "</file>\n");
 		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName + "</file>\n");
 		OutFile out("generated/shapes/" + resourceName);
 		sdfElement.save(out(), 1);
@@ -74,10 +73,10 @@ bool NodeType::initPorts()
 	QDomElement portsElement = mElement.firstChildElement("ports");
 	if (portsElement.isNull())
 	{
-		qDebug() << "Error: can't parse ports";
-		return true;//return false;
+		return true;
 	}
 	QString const name = NameNormalizer::normalize(mName);
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "Ports.sdf" + "</file>\n");
 	OutFile out("generated/shapes/" + name + "Ports.sdf");
 	out() << "<picture ";
 	out() << "sizex=\"" << portsElement.attribute("sizex").toInt() << "\" ";
@@ -179,7 +178,7 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\t\tmTitle.setParentItem(this);\n";
 
 	// True horror:
-	if ((className == "cnClassMethodClass") || (className == "cnClassFieldClass")) {
+	if ((className == "Class_method") || (className == "Class_field")) {
 		out() << "\tmDocVis.setParentItem(this);\n"
 			<< "\tmDocType.setParentItem(this);\n";
 	}

@@ -1,8 +1,9 @@
 #include "editor.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
+#include "type.h"
 
-#include <QDebug>
+#include <qDebug>
 
 Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false) 
@@ -10,13 +11,12 @@ Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 
 Editor::~Editor()
 {
-	//foreach(Editor *include, mIncludes)
-	//{
-	//	delete include;
-	//}
 	foreach(Diagram *diagram, mDiagrams.values())
 	{
-		delete diagram;
+		if (diagram)
+		{
+			delete diagram;
+		}
 	}
 }
 
@@ -96,7 +96,7 @@ Type* Editor::findType(QString const &name)
 	{
 		foreach (Type *type, diagram->types())
 		{
-			if (type)
+			if (type->name() == name)
 			{
 				return type;
 			}
@@ -105,7 +105,7 @@ Type* Editor::findType(QString const &name)
 	foreach (Editor *editor, mIncludes)
 	{
 		Type *type = editor->findType(name);
-		if (type)
+		if (type->name() == name)
 		{
 			return type;
 		}

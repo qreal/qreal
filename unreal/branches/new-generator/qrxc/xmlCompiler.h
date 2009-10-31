@@ -21,6 +21,7 @@ private:
 	QMap<QString, Editor*> mEditors;
 	QString mPluginName;
 	QString mResources;
+	QString mCurrentEditor;
 
 	void generateCode();
 	void generateElementClasses();

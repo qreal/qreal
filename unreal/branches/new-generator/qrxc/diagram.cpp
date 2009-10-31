@@ -17,7 +17,10 @@ Diagram::~Diagram()
 {
 	foreach(Type *type, mTypes.values())
 	{
-		delete type;
+		if (type)
+		{
+			delete type;
+		}
 	}
 }
 
@@ -42,7 +45,11 @@ bool Diagram::init(QDomElement const &diagramElement)
 		}
 		else
 		{
-			qDebug() << "Error: unknown tag" << element.nodeName();
+			QString name = element.nodeName();
+			if ((name != "graphicTypes") && (name != "nonGraphicTypes"))
+			{
+				qDebug() << "Error: unknown tag" << name;
+			}
 		}
 	}
 	return true;

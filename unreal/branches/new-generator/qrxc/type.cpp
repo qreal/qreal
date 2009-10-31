@@ -11,7 +11,10 @@ Type::~Type()
 {
 	foreach (Property *property, mProperties.values())
 	{
-		delete property;
+		if (property)
+		{
+			delete property;
+		}
 	}
 }
 

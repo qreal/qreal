@@ -30,7 +30,10 @@ XmlCompiler::~XmlCompiler()
 {
 	foreach(Editor *editor, mEditors.values())
 	{
-		delete editor;
+		if (editor)
+		{
+			delete editor;
+		}
 	}
 }
 
@@ -38,6 +41,7 @@ void XmlCompiler::compile(QString const &inputXmlFileName)
 {
 	QFileInfo inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
+	mCurrentEditor = inputXmlFileName;
 	loadXmlFile(inputXmlFileName);
 	generateCode();
 }
@@ -137,14 +141,11 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QPainter>\n\n"
 		<< "namespace UML {\n\n";
 
-	foreach (Editor *editor, mEditors.values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
-		foreach (Diagram *diagram, editor->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 		{
-			foreach (Type *type, diagram->types().values())
-			{
-				type->generateCode(out);
-			}
+			type->generateCode(out);
 		}
 	}
 	out() << "}\n\n";
@@ -224,24 +225,19 @@ void XmlCompiler::generateIncludes(OutFile &out)
 void XmlCompiler::generateNameMappings(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin(){\n";
-	foreach (Editor *editor, mEditors.values())
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
-		foreach (Diagram *diagram, editor->diagrams().values())
-		{
-			QString diagramName = NameNormalizer::normalize(diagram->name());
-			out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagramName << " \"" << ";\n";
-			out() << "\n";
-		}
+		QString diagramName = NameNormalizer::normalize(diagram->name());
+		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagramName << " \"" << ";\n";
+		out() << "\n";
 	}
 
-	foreach (Editor *editor, mEditors.values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
-		foreach (Diagram *diagram, editor->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 		{
-			foreach (Type *type, diagram->types().values())
-			{
-				type->generateNameMapping(out);
-			}
+			type->generateNameMapping(out);
 		}
 	}
 	out() << "}\n\n";
@@ -281,16 +277,14 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 
 	bool notIsFirst = false;
 
-	foreach (Editor *editor, mEditors.values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
-		foreach (Diagram *diagram, editor->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 		{
-			foreach (Type *type, diagram->types().values())
-			{
-				notIsFirst |= type->generateObjectRequestString(out, notIsFirst);
-			}
+			notIsFirst |= type->generateObjectRequestString(out, notIsFirst);
 		}
 	}
+
 	out() << "	else {\n"
 		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
 		<< "		return NULL;\n"
@@ -306,16 +300,14 @@ void XmlCompiler::generateProperties(OutFile &out)
 
 	bool notIsFirst = false;
 
-	foreach (Editor *editor, mEditors.values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 	{
-		foreach (Diagram *diagram, editor->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 		{
-			foreach (Type *type, diagram->types().values())
-			{
-				notIsFirst |= type->generateProperties(out, notIsFirst);
-			}
+			notIsFirst |= type->generateProperties(out, notIsFirst);
 		}
 	}
+
 	out() << "\treturn result;\n"
 		<< "}\n";
 }

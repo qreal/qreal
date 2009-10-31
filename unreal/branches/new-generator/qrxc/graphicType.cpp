@@ -97,8 +97,8 @@ bool GraphicType::initProperties()
 	{
 		return true;
 	}
-	for (QDomElement propertyElement = propertiesElement.firstChildElement("parent"); !propertyElement.isNull();
-		propertyElement = propertyElement.nextSiblingElement("parent"))
+	for (QDomElement propertyElement = propertiesElement.firstChildElement("property"); !propertyElement.isNull();
+		propertyElement = propertyElement.nextSiblingElement("property"))
 	{
 		Property *property = new Property();
 		if (!property->init(propertyElement))
@@ -166,15 +166,15 @@ bool GraphicType::resolve()
 		}
 		if (!parent->isResolved())
 		{
-	//		if (!parent->resolve())
-	//		{
-	//			return false;
-	//		}
+			if (!parent->resolve())
+			{
+				return false;
+			}
 			return true;
 		}
 		foreach(Property *property, parent->properties().values())
 		{
-			if (!addProperty(property))
+			if (!addProperty(property->clone()))
 			{
 				return false;
 			}

@@ -7,6 +7,7 @@ class Property
 public:
 	bool init(QDomElement const &element);
 	QString name();
+	Property *clone();
 
 private:
 	QString mName;

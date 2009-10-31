@@ -58,3 +58,15 @@ QString Property::name()
 {
 	return mName;
 }
+
+Property * Property::clone()
+{
+	Property *result = new Property();
+	result->mName = mName;
+	result->mType = mType;
+	result->mIsEnum = mIsEnum;
+	result->mIsReference = mIsReference;
+	result->mDescription = mDescription;
+	result->mDefaultValue = mDefaultValue;
+	return result;
+}

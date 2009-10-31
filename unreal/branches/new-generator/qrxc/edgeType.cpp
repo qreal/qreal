@@ -21,13 +21,13 @@ EdgeType::~EdgeType()
 
 void EdgeType::addKernelParent()
 {
-	if (mName != "Relationship")
+	if (mName == "Kernel Relationship")
 	{
 		mParents.append("Named Element");
 	}
 	else
 	{
-		mParents.append("Relationship");
+		mParents.append("Kernel Relationship");
 	}
 }
 
@@ -65,8 +65,8 @@ bool EdgeType::initGraphics()
 	QDomElement lineTypeElement = mElement.firstChildElement("lineType");
 	if (lineTypeElement.isNull())
 	{
-		qDebug() << "Error: can't parse edge graphics";
-		return true;//return false;
+		mVisible = false;
+		return true;
 	}
 	QString lineType = lineTypeElement.attribute("type");
 	if (lineType == "")
