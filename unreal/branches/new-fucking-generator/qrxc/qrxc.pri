@@ -42,7 +42,7 @@ defineTest(addExtraCompiler) {
     eval($${1}.commands = $$FAKE)
     eval($${1}.input = INPUT)
 	eval($${1}.output = $${2})
-    eval($${1}.variable_out = GENERATED_FILES)
+    eval($${1}.variable_out = GENERATED_RESOURCES)
 	
     export($${1}.output)
     export($${1}.input)
