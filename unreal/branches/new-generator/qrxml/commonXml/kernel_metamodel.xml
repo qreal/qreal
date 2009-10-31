@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
 	<namespace>UML 2.1</namespace>
-	<diagram name="Kernel Diagram" >
+	<diagram name="Kernel" >
 		<nonGraphicTypes>
 			<enum name="State" >
 				<value>Created</value>
