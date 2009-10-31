@@ -1,5 +1,5 @@
-QREAL_XML = ../commonXml/sequence_metamodel.xml
-QREAL_XML_DEPENDS = ../commonXml/kernel_metamodel.xml ../commonXml/basicbehaviors_metamodel.xml
+QREAL_XML = ../commonXml/sequenceEditor.xml
+QREAL_EDITOR_NAME = sequenceEditor
 
 include (../editorsCommon.pri)
 

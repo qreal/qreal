@@ -1,5 +1,5 @@
-QREAL_XML = ../commonXml/class_metamodel.xml
-QREAL_XML_DEPENDS = ../commonXml/kernel_metamodel.xml
+QREAL_XML = ../commonXml/classEditor.xml
+QREAL_EDITOR_NAME = classEditor
 
 include (../editorsCommon.pri)
 

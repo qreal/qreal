@@ -14,7 +14,7 @@ Model::Model(EditorManager const &editorManager)
 	init();
 	if (rootItem->children().count() == 0)
 	{
-		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel/krnnDiagram"), QUuid::createUuid().toString());
+		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel_Diagram/Kernel_Diagram"), QUuid::createUuid().toString());
 		addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
 	}
 }
@@ -342,7 +342,7 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 
 bool Model::isDiagram(const Id &id)
 {
-	return ((id.editor() == "KernelEditor") && (id.diagram() == "Kernel") && (id.element() == "krnnDiagram"));
+	return ((id.editor() == "KernelEditor") && (id.diagram() == "Kernel_Diagram") && (id.element() == "Kernel_Diagram"));
 }
 
 ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id,
