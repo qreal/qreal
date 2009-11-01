@@ -13,6 +13,13 @@ qrxc_header.variable_out = HEADERS
 
 QMAKE_EXTRA_COMPILERS += qrxc_header
 
+qrxc_elements.commands = $$FAKE_COMMAND
+qrxc_elements.input = QREAL_XML
+qrxc_elements.output = generated/elements.h
+qrxc_elements.variable_out = HEADERS
+
+QMAKE_EXTRA_COMPILERS += qrxc_elements
+
 qrxc_resource.commands = $$FAKE_COMMAND
 qrxc_resource.input = QREAL_XML
 qrxc_resource.output = generated/shapes/plugin.qrc
