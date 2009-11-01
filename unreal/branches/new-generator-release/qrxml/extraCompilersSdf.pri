@@ -1,6 +1,6 @@
 defineTest(addExtraCompiler) {
     eval($${1}.commands = $$FAKE_COMMAND)
-    eval($${1}.input = INPUT)
+    eval($${1}.input = QREAL_XML)
 	eval($${1}.output = $${2})
     eval($${1}.variable_out = GENERATED_RESOURCES)
 	
@@ -12,7 +12,7 @@ defineTest(addExtraCompiler) {
     QMAKE_EXTRA_COMPILERS += $${1}
 
     export(QMAKE_EXTRA_COMPILERS)
-
+	
     return(true)
 }
 
