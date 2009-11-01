@@ -20,7 +20,19 @@ win32 | win32-msvc* {
 COMMAND = cd $$QREAL_EDITOR_NAME && $$QRXC $$QREAL_XML
 
 !exists($$QREAL_EDITOR_NAME$$quote(\generated\pluginInterface.h)) {
-	message($$COMMAND)
+	!exists($$QRXC) {
+		win32-msvc* {
+			MAKE = nmake
+		} else {
+			win32 {
+				MAKE = mingw32-make
+			} else {
+				MAKE = make
+			}
+		}
+		QRXC_COMMAND = cd ..\qrxc && $${QMAKE_QMAKE} && $$MAKE
+		QRXC_SYS = $$system($$QRXC_COMMAND)
+	}
 	SYS = $$system($$COMMAND) 
 }
 
