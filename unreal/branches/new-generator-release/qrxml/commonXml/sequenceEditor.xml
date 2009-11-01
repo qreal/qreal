@@ -1,0 +1,120 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+	<include>basicbehaviors_metamodel.xml</include>
+	<include>kernel_metamodel.xml</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="Sequence Diagram" >
+		<nonGraphicTypes>
+			<enum name="Combined Fragment Kind" >
+				<value>alt</value>
+				<value>par</value>
+			</enum>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<node name="Interaction" >
+				<picture sizex="100" sizey="72" >
+					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="61" stroke-width="2" x2="99" fill-style="solid" />
+					<text i="0" font-fill="#000000" y1="17a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >sd</text>
+				</picture>
+				<labels>
+					<label x="40" y="10" textBinded="name" />
+				</labels>
+				<logic>
+					<generalizations>
+						<parent parentName="Behavior" />
+					</generalizations>
+				</logic>
+			</node>
+			<node name="S Life Line" >
+				<picture sizex="82" sizey="102" >
+					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="26a" stroke-width="2" x2="100%" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="7%" y2="21a" stroke-width="2" x2="94%" fill-style="solid" />
+					<text i="0" font-fill="#000000" y1="19a" b="0" x1="9%" font-name="MS Shell Dlg 2" u="0" font-size="12a" >:</text>
+					<line fill="#000000" stroke-style="dash" stroke="#000000" y1="26a" x1="50%" y2="100%" stroke-width="2" x2="50%" fill-style="solid" />
+				</picture>
+				<labels>
+					<label x="40" y="10" textBinded="name" />
+				</labels>
+				<ports>
+					<linePort>
+						<start startx="1a" starty="1a" />
+						<end endx="100%" endy="1a" />
+					</linePort>
+					<linePort>
+						<start startx="50%" starty="26a" />
+						<end endx="50%" endy="100%" />
+					</linePort>
+				</ports>
+				<logic>
+				</logic>
+			</node>
+			<node name="Interaction Use" >
+				<picture sizex="100" sizey="100" >
+					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="61%" stroke-width="2" x2="99%" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="1a" y2="21a" stroke-width="2" x2="41a" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="41a" y2="11a" stroke-width="2" x2="51a" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="11a" x1="51a" y2="1a" stroke-width="2" x2="51a" fill-style="solid" />
+					<text i="0" font-fill="#000000" y1="16a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >ref</text>
+				</picture>
+				<labels>
+					<label x="40" y="10" textBinded="name" />
+				</labels>
+				<logic>
+				</logic>
+			</node>
+			<node name="Combined Fragment" >
+				<picture sizex="100" sizey="100" >
+					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="89%" stroke-width="2" x2="99%" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="1a" y2="21a" stroke-width="2" x2="26a" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="26a" y2="11a" stroke-width="2" x2="36a" fill-style="solid" />
+					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="11a" x1="36a" y2="1a" stroke-width="2" x2="36a" fill-style="solid" />
+					<line fill="#000000" stroke-style="dash" stroke="#000000" y1="46%" x1="1a" y2="46%" stroke-width="2" x2="99%" fill-style="solid" />
+					<text i="0" font-fill="#000000" y1="16a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >par</text>
+				</picture>
+				<labels>
+					<label x="40" y="10" textBinded="alternative" />
+				</labels>
+				<logic>
+					<properties>
+						<property type="enum" name="kind" >
+							<enum nameReference="Combined Fragment Kind" />
+						</property>
+						<property type="string" name="alternative" />
+						<!-- оно есть только у alt-->
+					</properties>
+				</logic>
+			</node>
+			<edge name="Message" >
+				<lineType type="solidLine" />
+				<labels>
+					<label x="40" y="10" textBinded="name" />
+				</labels>
+				<logic>
+					<!--стрелочка закрашенная-->
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Kernel Element" endName="Kernel Element" />
+					</associations>
+				</logic>
+			</edge>
+			<node name="Execution Specification" >
+				<picture sizex="17" sizey="92" >
+					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="81" stroke-width="2" x2="16" fill-style="solid" />
+				</picture>
+				<ports>
+					<linePort>
+						<start startx="1" starty="1" />
+						<end endx="1" endy="81" />
+					</linePort>
+					<linePort>
+						<start startx="16" starty="1" />
+						<end endx="16" endy="81" />
+					</linePort>
+					<pointPort x="8" y="1" />
+					<pointPort x="8" y="81" />
+				</ports>
+				<logic>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
+</metamodel>
