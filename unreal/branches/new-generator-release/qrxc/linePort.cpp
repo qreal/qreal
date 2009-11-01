@@ -13,18 +13,18 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 	return true;
 }
 
-void LinePort::initCoordinate(ScalableCoordinate &field, QString &coordinate, int maxValue)
+void LinePort::initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue)
 {
 	if (coordinate.endsWith("a"))
 	{
 		coordinate.remove(coordinate.length() - 1, 1);
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, true);
-	} 
+	}
 	else if (coordinate.endsWith("%"))
 	{
 		coordinate.remove(coordinate.length() - 1, 1);
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / 100, false);
-	} 
+	}
 	else
 	{
 		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, false);
