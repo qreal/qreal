@@ -1,6 +1,6 @@
 #include "enumType.h"
 
-#include <qDebug>
+#include <QDebug>
 
 bool EnumType::init(QDomElement const &element)
 {

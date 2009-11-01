@@ -5,7 +5,7 @@
 #include "nameNormalizer.h"
 #include "outFile.h"
 
-#include <qDebug>
+#include <QDebug>
 
 const int MAX_LINE_LENGTH = 60;
 

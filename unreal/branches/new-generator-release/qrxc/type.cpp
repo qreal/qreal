@@ -1,7 +1,7 @@
 #include "type.h"
 #include "property.h"
 
-#include <qDebug>
+#include <QDebug>
 
 Type::Type(bool isResolved)
 	: mResolvingFinished(isResolved)

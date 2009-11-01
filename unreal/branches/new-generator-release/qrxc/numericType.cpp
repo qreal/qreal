@@ -1,6 +1,6 @@
 #include "numericType.h"
 
-#include <qDebug>
+#include <QDebug>
 
 bool NumericType::init(QDomElement const &element)
 {

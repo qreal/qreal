@@ -3,7 +3,7 @@
 #include "diagram.h"
 #include "type.h"
 
-#include <qDebug>
+#include <QDebug>
 
 Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false) 

@@ -6,7 +6,7 @@
 #include "editor.h"
 #include "nameNormalizer.h"
 
-#include <qDebug>
+#include <QDebug>
 
 EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 {}

@@ -8,7 +8,7 @@
 #include "nameNormalizer.h"
 #include "label.h"
 
-#include <qDebug>
+#include <QDebug>
 
 NodeType::NodeType(Diagram *diagram) : GraphicType(diagram)
 {}

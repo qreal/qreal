@@ -2,7 +2,7 @@
 
 #include <QCoreApplication>
 #include <QStringList>
-#include <qDebug>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

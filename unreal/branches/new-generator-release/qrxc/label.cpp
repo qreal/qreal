@@ -1,7 +1,7 @@
 #include "label.h"
 #include "outFile.h"
 
-#include <qDebug>
+#include <QDebug>
 
 bool Label::init(QDomElement const &element, int width, int height)
 {

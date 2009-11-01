@@ -1,6 +1,6 @@
 #include "stringType.h"
 
-#include <qDebug>
+#include <QDebug>
 
 bool StringType::init(QDomElement const &element)
 {

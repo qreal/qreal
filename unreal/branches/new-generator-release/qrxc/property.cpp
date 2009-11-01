@@ -1,6 +1,6 @@
 #include "property.h"
 
-#include <qDebug>
+#include <QDebug>
 
 bool Property::init(QDomElement const &element)
 {

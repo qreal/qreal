@@ -8,7 +8,7 @@
 #include <QFile>
 #include <QDir>
 #include <QFileInfo>
-#include <qDebug>
+#include <QDebug>
 
 XmlCompiler::XmlCompiler()
 {

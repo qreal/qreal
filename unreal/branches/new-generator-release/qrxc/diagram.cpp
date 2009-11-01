@@ -7,7 +7,7 @@
 #include "edgeType.h"
 #include "editor.h"
 
-#include <qDebug>
+#include <QDebug>
 
 Diagram::Diagram(QString const &name, Editor *editor)
 	: mDiagramName(name), mEditor(editor)
