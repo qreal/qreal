@@ -14,25 +14,11 @@ win32 | win32-msvc* {
                 error(Windows build definitely needs to be fixed)
         }
 } else {
-        QRXC = ..\..\qrxc\qrxc
+        QRXC = ../../qrxc/qrxc
 }
 
-COMMAND = cd $$QREAL_EDITOR_NAME && $$QRXC $$QREAL_XML
-
 !exists($$QREAL_EDITOR_NAME$$quote(\generated\pluginInterface.h)) {
-	!exists($$QRXC) {
-		win32-msvc* {
-			MAKE = nmake
-		} else {
-			win32 {
-				MAKE = mingw32-make
-			} else {
-				MAKE = make
-			}
-		}
-		QRXC_COMMAND = cd ..\qrxc && $${QMAKE_QMAKE} && $$MAKE
-		QRXC_SYS = $$system($$QRXC_COMMAND)
-	}
+	COMMAND = cd $$QREAL_EDITOR_NAME && $$QRXC $$QREAL_XML
 	SYS = $$system($$COMMAND) 
 }
 
