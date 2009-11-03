@@ -79,8 +79,8 @@ bool NodeType::initPorts()
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "Ports.sdf" + "</file>\n");
 	OutFile out("generated/shapes/" + name + "Ports.sdf");
 	out() << "<picture ";
-	out() << "sizex=\"" << portsElement.attribute("sizex").toInt() << "\" ";
-	out() << "sizey=\"" << portsElement.attribute("sizey").toInt() << "\" ";
+	out() << "sizex=\"" << mWidth << "\" ";
+	out() << "sizey=\"" << mHeight << "\" ";
 	out() << ">\n";
 
 	if (!initPointPorts(portsElement, out))
@@ -93,6 +93,7 @@ bool NodeType::initPorts()
 		qDebug() << "Error: can't parse line ports";
 		return false;
 	}
+	out() << "</picture>\n";
 	return true;
 }
 
