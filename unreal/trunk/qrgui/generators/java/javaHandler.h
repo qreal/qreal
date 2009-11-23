@@ -36,6 +36,7 @@ namespace qReal {
 
 			client::RepoApi const &mApi;
 			QString mErrorText;
+			QString pathToDir;
 		};
 
 	}

@@ -395,11 +395,11 @@ void MainWindow::generateToJava()
 {
 		generators::JavaHandler java(mModel->api());
 
-		QString const fileName = QFileDialog::getSaveFileName(this);
-		if (fileName.isEmpty())
+		QString const dirName = QFileDialog::getExistingDirectory(this);
+		if (dirName.isEmpty())
 				return;
 
-		QString const errors = java.generateToJava(fileName);
+		QString const errors = java.generateToJava(dirName);
 
 		if (!errors.isEmpty()) {
 				QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);

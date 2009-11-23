@@ -344,6 +344,8 @@
 	 <property type="string" name="isStatic" />
 	 <property type="string" name="isTransient" />
 	 <property type="string" name="isVolatile" />
+	 <property type="string" name="fromMultiplicity" />
+	 <property type="string" name="toMultiplicity" />
 	 <property type="string" name="isLeaf" />
     </properties>
     <containers>
@@ -415,7 +417,7 @@
     </containers>
    </logic>
   </node>
-  <node id="krnnComment" name="Comment" >
+  <node id="cnComment" name="Comment" >
    <graphics>
     <view>
      <picture sizex="100" sizey="60" >
@@ -470,7 +472,7 @@
     </containers>
    </logic>
   </node>
-  <edge id="krneComLink" name="CommentLink" >
+  <edge id="cnComLink" name="CommentLink" >
    <graphics>
     <view>
      <line_type type="dashLine" />

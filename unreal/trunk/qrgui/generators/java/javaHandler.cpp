@@ -16,24 +16,17 @@ JavaHandler::JavaHandler(client::RepoApi const &api)
 {
 }
 
-QString JavaHandler::generateToJava(QString const &pathToFile)
+QString JavaHandler::generateToJava(QString const &pathToDir)
 {
 	mErrorText = "";
-
-	QFile file(pathToFile);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return "";
-
-	QTextStream out(&file);
+	this->pathToDir = pathToDir;
 
 	Id repoId = ROOT_ID;
-
-	out << serializeChildren(repoId);
 
 	IdList rootDiagrams = mApi.children(repoId);
 
 	foreach (Id const typeDiagram, rootDiagrams) {
-		out << serializeChildren(typeDiagram);
+		serializeChildren(typeDiagram);
 	}
 
 	qDebug() << "Done.";
@@ -67,20 +60,35 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	// class diagramm
 
 	else if (objectType == "cnClass") {
+
+		//-----------
+		QString const pathToFile = pathToDir + "/" + mApi.name(id);
+
+		QFile file(pathToFile);
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+			return "";
+
+		QTextStream out(&file);
+		//-----------
+
 		QString visibility = getVisibility(id);
 		QString isFinalField = hasModifier(id, "final");
 		QString isAbstractField = hasModifier(id, "abstract");
 		QString parents = getParents(id);
+
 		if (isAbstractField == "abstract " && isFinalField == "final "){
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
 		}
-		result += isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
-		result += serializeChildren(id);
-		result += "}\n";
+		/*result +=*/out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+
+		/*result +=*/out << serializeChildren(id);
+
+		/*result +=*/out << "}\n";
 	} else if (objectType == "cnClassView") {
 		//	    to do someting
 	} else if (objectType == "cnClassMethod") {
 		if (parentType == "cnClass") {
+
 			QString visibility = getVisibility(id);
 			QString type = getType(id);
 			QString operationFactors = getOperationFactors(id);
@@ -89,6 +97,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			QString isStaticField = hasModifier(id, "static");
 			QString isSynchronizedField = hasModifier(id, "synchronized");
 			QString isNativeField = hasModifier(id, "native");
+
 			if ( (isAbstractField == "abstract " && isFinalField == "final ")
 				|| (isAbstractField == "abstract " && isStaticField == "static ") ){
 				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
@@ -100,6 +109,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		}
 	} else if (objectType == "cnClassField") {
 		if (parentType == "cnClass"){
+
 			QString visibility = getVisibility(id);
 			QString type = getType(id);
 			QString defaultValue = getDefaultValue(id);
@@ -107,6 +117,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			QString isStaticField = hasModifier(id, "static");
 			QString isVolatileField = hasModifier(id, "volatile");
 			QString isTransientField = hasModifier(id, "transient");
+
 			if (isVolatileField == "volatile " && isFinalField == "final "){
 				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
 			}
@@ -118,6 +129,23 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		} else {
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
+	} else if (objectType == "cnDirRelation") {
+		Id from = mApi.from(id);
+		Id to = mApi.to(id);
+
+//			QString visibility = getVisibility(id);
+//			QString isFinalField = hasModifier(id, "final");
+//			QString isStaticField = hasModifier(id, "static");
+//			QString isVolatileField = hasModifier(id, "volatile");
+//			QString isTransientField = hasModifier(id, "transient");
+//
+//			if (isVolatileField == "volatile " && isFinalField == "final "){
+//				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
+//			}
+//
+//			result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
+//
+//			result += ";\n";
 	}
 
 	return result;
@@ -241,7 +269,7 @@ QString JavaHandler::getOperationFactors(Id const &id)
 	if (mApi.hasProperty(id, "type")) {
 		QString operationFactors = mApi.stringProperty(id, "operationFactors");
 
-		//	to check for the corract data
+		//	to check for the correct data
 		//	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
 		result = operationFactors;
 		//	} else {
