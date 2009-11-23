@@ -79,11 +79,36 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		if (isAbstractField == "abstract " && isFinalField == "final "){
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
 		}
-		/*result +=*/out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+		out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
 
-		/*result +=*/out << serializeChildren(id);
+		out << serializeChildren(id);
 
-		/*result +=*/out << "}\n";
+		if (!mApi.links(id).isEmpty()) {
+			IdList links = mApi.outcomingLinks(id);
+
+			foreach (Id const aLink, links){
+				if (aLink.element() == "cnDirRelation") {
+
+					QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
+					QString visibility = getVisibility(aLink);
+					QString isFinalField = hasModifier(aLink, "final");
+					QString isStaticField = hasModifier(aLink, "static");
+					QString isVolatileField = hasModifier(aLink, "volatile");
+					QString isTransientField = hasModifier(aLink, "transient");
+
+					if (isVolatileField == "volatile " && isFinalField == "final "){
+						addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sence");
+					}
+
+					out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
+
+					out << ";\n";
+
+				}
+			}
+		}
+
+		out << "}\n";
 	} else if (objectType == "cnClassView") {
 		//	    to do someting
 	} else if (objectType == "cnClassMethod") {
@@ -129,23 +154,6 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		} else {
 			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
-	} else if (objectType == "cnDirRelation") {
-		Id from = mApi.from(id);
-		Id to = mApi.to(id);
-
-//			QString visibility = getVisibility(id);
-//			QString isFinalField = hasModifier(id, "final");
-//			QString isStaticField = hasModifier(id, "static");
-//			QString isVolatileField = hasModifier(id, "volatile");
-//			QString isTransientField = hasModifier(id, "transient");
-//
-//			if (isVolatileField == "volatile " && isFinalField == "final "){
-//				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
-//			}
-//
-//			result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
-//
-//			result += ";\n";
 	}
 
 	return result;
