@@ -260,7 +260,7 @@
 	  </associations>
     </logic>
   </edge>
-  <edge id="cnDirRelation" name="DirectedRelation" >
+  <edge id="ceDirRelation" name="DirectedRelation" >
    <graphics>
     <view>
      <line_type type="solidLine" />

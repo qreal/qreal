@@ -62,7 +62,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	else if (objectType == "cnClass") {
 
 		//-----------
-		QString const pathToFile = pathToDir + "/" + mApi.name(id);
+		QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
 
 		QFile file(pathToFile);
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -72,23 +72,22 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		//-----------
 
 		QString visibility = getVisibility(id);
+		QString multiplicity = getMultiplicity(id);
 		QString isFinalField = hasModifier(id, "final");
 		QString isAbstractField = hasModifier(id, "abstract");
 		QString parents = getParents(id);
 
 		if (isAbstractField == "abstract " && isFinalField == "final "){
-			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sence");
+			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
 		}
-		out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
 
+		out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
 		out << serializeChildren(id);
 
 		if (!mApi.links(id).isEmpty()) {
-			IdList links = mApi.outcomingLinks(id);
-
-			foreach (Id const aLink, links){
-				if (aLink.element() == "cnDirRelation") {
-
+			IdList linksOut = mApi.outcomingLinks(id);
+			foreach (Id const aLink, linksOut){
+				if (aLink.element() == "ceDirRelation" || aLink.element() == "ceRelation") {
 					QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
 					QString visibility = getVisibility(aLink);
 					QString isFinalField = hasModifier(aLink, "final");
@@ -97,14 +96,46 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 					QString isTransientField = hasModifier(aLink, "transient");
 
 					if (isVolatileField == "volatile " && isFinalField == "final "){
-						addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sence");
+						addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
 					}
 
 					out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
-
 					out << ";\n";
-
 				}
+			}
+
+			IdList linksIn = mApi.incomingLinks(id);
+			foreach (Id const aLink, linksIn){
+				if (aLink.element() == "ceRelation") {
+					QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
+					QString visibility = getVisibility(aLink);
+					QString isFinalField = hasModifier(aLink, "final");
+					QString isStaticField = hasModifier(aLink, "static");
+					QString isVolatileField = hasModifier(aLink, "volatile");
+					QString isTransientField = hasModifier(aLink, "transient");
+
+					if (isVolatileField == "volatile " && isFinalField == "final "){
+						addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
+					}
+
+					out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
+					out << ";\n";
+				}
+			}
+		}
+
+		if (multiplicity != "") {
+			bool ok = false;
+			int classMultiplicity = multiplicity.toInt(&ok);
+
+			if (!ok || classMultiplicity <= 0){
+				if (classMultiplicity == 1) {
+					// класс singleton
+				} else {
+					// класс в виде расширенного singleton'а (т.е. может быть ограниченное число экземпляров и за этим надо проследить)
+				}
+			} else {
+				addError("object " + objectType + " with id  " + id.toString() + " has invalid multiplicity property: " + multiplicity);
 			}
 		}
 
@@ -125,12 +156,12 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 
 			if ( (isAbstractField == "abstract " && isFinalField == "final ")
 				|| (isAbstractField == "abstract " && isStaticField == "static ") ){
-				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sence");
+				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" or \"abstract final\" declaration doesn't make sense");
 			}
 			result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
 					  visibility + type  + mApi.name(id) + "(" + operationFactors + "){};" + "\n";
 		} else {
-			this->addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
+			this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 		}
 	} else if (objectType == "cnClassField") {
 		if (parentType == "cnClass"){
@@ -144,7 +175,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			QString isTransientField = hasModifier(id, "transient");
 
 			if (isVolatileField == "volatile " && isFinalField == "final "){
-				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sence");
+				addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sense");
 			}
 			result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
 			if (defaultValue != ""){
@@ -184,6 +215,19 @@ QString JavaHandler::getVisibility(Id const &id)
 		} else {
 			addError("object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
 		}
+	}
+
+	return result;
+}
+
+QString JavaHandler::getMultiplicity(Id const &id)
+{
+	QString result = "";
+
+	QString const objectType = mApi.typeName(id);
+
+	if (mApi.hasProperty(id, "multiplicity")) {
+		QString multiplicity = mApi.stringProperty(id, "multiplicity");
 	}
 
 	return result;

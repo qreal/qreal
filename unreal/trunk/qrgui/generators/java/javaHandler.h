@@ -17,11 +17,12 @@ namespace qReal {
 		public:
 			explicit JavaHandler(client::RepoApi const &api);
 
-			QString generateToJava(QString const &pathToFile);
+			QString generateToJava(QString const &pathToDir);
 		private:
 			QString serializeObject(Id const &id, Id const &parentId);
 			QString serializeChildren(Id const &id);
 			QString getVisibility(Id const &id);
+			QString getMultiplicity(Id const &id);
 			QString getType(Id const &id);
 			QString getDefaultValue(Id const &id);
 			QString getOperationFactors(Id const &id);
