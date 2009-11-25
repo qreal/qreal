@@ -393,21 +393,21 @@ void MainWindow::exportToXmi()
 
 void MainWindow::generateToJava()
 {
-		generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModel->api());
 
-		QString const dirName = QFileDialog::getExistingDirectory(this);
-		if (dirName.isEmpty())
-				return;
+	QString const dirName = QFileDialog::getExistingDirectory(this);
+	if (dirName.isEmpty())
+		return;
 
-		QString const errors = java.generateToJava(dirName);
+	QString const errors = java.generateToJava(dirName);
 
-		if (!errors.isEmpty()) {
-				QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-		} else {
-				QMessageBox::information(this, tr("finished"), "Export is finished");
-		}
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Export is finished");
+	}
 
-		qDebug() << "Done.";
+	qDebug() << "Done.";
 }
 
 EditorView * MainWindow::getCurrentTab()
