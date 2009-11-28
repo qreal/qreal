@@ -4,6 +4,9 @@
 #include <QDebug>
 #include "entity.h"
 #include "generator.h"
+#include "../utils/outFile.h"
+
+using namespace utils;
 
 Entity::~Entity()
 {
@@ -279,8 +282,8 @@ bool Edge::init(QDomElement &xml_element)
 		parents << "krnnNamedElement";
 
 	if (!parseEdgeGraphics(xml_element) || !parseGeneralizations(logic) || !parseProperties(logic) ||
-		!parseAssociations(logic) || !parseLabels(logic) 
-	) 
+		!parseAssociations(logic) || !parseLabels(logic)
+	)
 		return false;
 
 	return true;

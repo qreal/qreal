@@ -1,0 +1,2 @@
+HEADERS += \
+	../utils/outFile.h \

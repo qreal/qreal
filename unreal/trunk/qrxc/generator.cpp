@@ -7,7 +7,9 @@
 #include "generator.h"
 #include <QMessageBox>
 
-class OutFile;
+#include "../utils/outFile.h"
+
+using namespace utils;
 
 const int MAX_LINE_LENGTH = 60;
 

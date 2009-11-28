@@ -2,7 +2,7 @@ include (qmakeQrxc.pri)
 
 QT = core \
      xml \
-     gui
+     gui \
 
 CONFIG += console
 
@@ -16,7 +16,8 @@ HEADERS += generator.h \
     editor.h \
     non_graph_type.h \
     property.h \
-    sdftocpp.h
+    sdftocpp.h \
+
 
 SOURCES += generator.cpp \
     entity.cpp \
@@ -25,4 +26,7 @@ SOURCES += generator.cpp \
     non_graph_type.cpp \
     property.cpp \
     sdftocpp.cpp \
-    main.cpp
+    main.cpp \
+
+# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
+include(utils.pri)

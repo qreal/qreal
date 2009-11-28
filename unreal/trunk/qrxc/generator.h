@@ -13,7 +13,10 @@
 #include "entity.h"
 
 class Editor;
-class OutFile;
+
+namespace utils {
+	class OutFile;
+}
 
 #define FOR_ALL_FILES(f) \
 	for (QList<EditorFile *>::ConstIterator f = mLoadedFiles.constBegin(); \
@@ -46,7 +49,7 @@ public:
 	bool loadFile(QString const &fileName, const EditorFile **f = NULL);
 	const Editor* findEditor(QString const &editorName) const;
 	void addResource(QString const &resourceXml);
-	inline void setCurrentEditor(QString const &name) 
+	inline void setCurrentEditor(QString const &name)
 	{
 		currentEditor = name;
 	}
@@ -65,7 +68,7 @@ private:
 	void genEdgeClass(Edge* edge, QString const &plugin);
 	void genProFile(QString const &plugin) const;
 	void genQrcFile(QString const &plugin) const;
-	void genEdgeStyle(QString style, OutFile &out);
+	void genEdgeStyle(QString style, utils::OutFile &out);
 
 	QString normalizeName(QString const &name) const;
 	QString upperFirst(const QString &str) const;
@@ -83,29 +86,3 @@ private:
 	QString mResources;
 	QString currentEditor;
 };
-
-class OutFile
-{
-public:
-	explicit OutFile(QString const &fileName)
-			: mFile(fileName)
-	{
-		mFile.open(QIODevice::WriteOnly | QIODevice::Text);
-		mOut.setDevice(&mFile);
-	}
-
-	~OutFile()
-	{
-		mFile.close();
-	}
-
-	QTextStream& operator()()
-	{
-		return mOut;
-	}
-private:
-	QTextStream mOut;
-	QFile mFile;
-};
-
-

@@ -39,3 +39,7 @@ include (kernel/kernel.pri)
 include (generators/generators.pri)
 
 HEADERS += ../qrxml/editorinterface.h
+
+# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
+# Содержит код, общий для генератора редакторов и основной части.
+include (utils.pri)

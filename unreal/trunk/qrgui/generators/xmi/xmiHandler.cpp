@@ -8,8 +8,11 @@
 #include "../../kernel/definitions.h"
 #include "../../client/repoApi.h"
 
+#include "../../../utils/outFile.h"
+
 using namespace qReal;
 using namespace generators;
+using namespace utils;
 
 XmiHandler::XmiHandler(client::RepoApi const &api)
 	: mApi(api)
@@ -20,35 +23,31 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 {
 	mErrorText = "";
 
-	QFile file(pathToFile);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return "";
+	OutFile out(pathToFile);
 
-	QTextStream out(&file);
+	out() << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
+	out() << "<xmi:XMI xmlns:xmi=\"http://schema.omg.org/spec/XMI/2.1\" xmlns:uml=\"http://schema.omg.org/spec/UML/2.0\" xmi:version=\"2.1\">" << "\n";
 
-	out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
-	out << "<xmi:XMI xmlns:xmi=\"http://schema.omg.org/spec/XMI/2.1\" xmlns:uml=\"http://schema.omg.org/spec/UML/2.0\" xmi:version=\"2.1\">" << "\n";
-
-	out << "\n";
-	out << "\n";
+	out() << "\n";
+	out() << "\n";
 
 	//  --------------  header --------------- //
-	out << "<xmi:Documentation exporter=\"QReal\" />" << "\n";
+	out() << "<xmi:Documentation exporter=\"QReal\" />" << "\n";
 
-	out << "\n";
-	out << "\n";
+	out() << "\n";
+	out() << "\n";
 
 	//  --------------  end of header --------------- //
 
 	//  --------------  content --------------- //
 	Id repoId = ROOT_ID;
 
-	out << "<uml:Package xmi:id=\"" + repoId.toString() + "\" xmi:uuid=\""
+	out() << "<uml:Package xmi:id=\"" + repoId.toString() + "\" xmi:uuid=\""
 		+ repoId.toString() + "\" name=\"RootDiagram\">" << "\n";
 
-	out << initPrimitiveTypes();
+	out() << initPrimitiveTypes();
 
-	out << serializeChildren(repoId);
+	out() << serializeChildren(repoId);
 
 	/* Это нам потребуется, когда к корню можно будет цеплять только диаграммы.
 	IdList rootDiagrams = mApi.children(repoId);
@@ -58,10 +57,10 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 	}
 	*/
 
-	out << "</uml:Package>" << "\n";
+	out() << "</uml:Package>" << "\n";
 	//  --------------  end of content  --------------- //
 
-	out << "</xmi:XMI>" << "\n";
+	out() << "</xmi:XMI>" << "\n";
 	qDebug() << "Done.";
 	return mErrorText;
 }
