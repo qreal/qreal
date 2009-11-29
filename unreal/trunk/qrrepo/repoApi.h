@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrgui/kernel/definitions.h"
+#include "../qrgui/kernel/definitions.h"
 #include "private/client.h"
 
 namespace qReal {
