@@ -11,8 +11,11 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++")) {
-    QMAKE_LFLAGS += -Wl,-E
+	QMAKE_LFLAGS += -Wl,-E
 }
+
+# Путь до библиотеки с АПИ. Где-нибудь она найдётся...
+LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo
 
 # Graphical elements
 include (umllib/umllib.pri)
@@ -22,9 +25,6 @@ include (dialogs/dialogs.pri)
 
 # Main window
 include (mainwindow/mainwindow.pri)
-
-# Client
-include (client/client.pri)
 
 # Model
 include (model/model.pri)

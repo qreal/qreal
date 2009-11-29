@@ -1,5 +1,5 @@
 TEMPLATE	= subdirs
-SUBDIRS		= qrxc qrgui qrxml
+SUBDIRS		= qrxc qrgui qrxml qrrepo
 
-qrgui.depends = qrxc qrxml
+qrgui.depends = qrxc qrxml qrrepo
 qrxml.depends = qrxc

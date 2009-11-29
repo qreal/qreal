@@ -2,7 +2,7 @@
 
 #include <QDomDocument>
 
-#include "../../client/repoApi.h"
+#include "../../../qrrepo/repoApi.h"
 
 namespace qReal {
 

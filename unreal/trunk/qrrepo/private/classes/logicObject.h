@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../kernel/definitions.h"
+#include "../../../qrgui/kernel/definitions.h"
 
 #include <QMap>
 #include <QVariant>

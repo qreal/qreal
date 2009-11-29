@@ -1,5 +1,5 @@
 #include "logicObject.h"
-#include "../kernel/exception/exception.h"
+#include "../../qrgui/kernel/exception/exception.h"
 
 #include <QDebug>
 

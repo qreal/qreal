@@ -6,7 +6,7 @@
 #include <QtCore/QDebug>
 
 #include "../../kernel/definitions.h"
-#include "../../client/repoApi.h"
+#include "../../../qrrepo/repoApi.h"
 
 using namespace qReal;
 using namespace generators;

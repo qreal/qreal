@@ -2,7 +2,7 @@
 
 #include <QtGui/QDialog>
 
-#include "../client/repoApi.h"
+#include "../../qrrepo/repoApi.h"
 
 namespace Ui {
 	class EditorGeneratorDialogUi;

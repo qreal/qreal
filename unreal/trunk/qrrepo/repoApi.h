@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../kernel/definitions.h"
-#include "client.h"
+#include "../../qrgui/kernel/definitions.h"
+#include "private/client.h"
 
 namespace qReal {
 

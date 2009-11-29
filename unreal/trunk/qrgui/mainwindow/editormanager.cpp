@@ -9,7 +9,7 @@
 
 #include "editorinterface.h"
 #include "../kernel/ids.h"
-#include "../client/repoApi.h"
+#include "../../qrrepo/repoApi.h"
 
 using namespace qReal;
 

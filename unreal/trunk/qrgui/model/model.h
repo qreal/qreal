@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QPersistentModelIndex>
 
-#include "../client/repoApi.h"
+#include "../../qrrepo/repoApi.h"
 #include "../kernel/definitions.h"
 #include "classes/modelTreeItem.h"
 #include "../mainwindow/editormanager.h"
