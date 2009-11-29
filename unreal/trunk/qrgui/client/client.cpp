@@ -2,10 +2,11 @@
 #include "../kernel/exception/exception.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QTextStream>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
+
+#include "../../utils/outFile.h"
 
 using namespace qReal;
 using namespace client::details;
@@ -349,11 +350,8 @@ void Client::saveToDisk() const
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
-		QFile file(filePath);
-		file.open(QIODevice::WriteOnly | QIODevice::Text);
-		QTextStream stream(&file);
-		doc.save(stream, 2);
-		file.close();
+		utils::OutFile out(filePath);
+		doc.save(out(), 2);
 	}
 }
 

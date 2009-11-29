@@ -1,5 +1,10 @@
 #pragma once
 
+#include <QtCore/QString>
+#include <QtCore/QIODevice>
+#include <QtCore/QTextStream>
+#include <QtCore/QFile>
+
 namespace utils {
 
 	class OutFile
