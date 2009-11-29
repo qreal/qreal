@@ -3,9 +3,8 @@
 
 #include <QDebug>
 
+using namespace qrRepo::details;
 using namespace qReal;
-
-using namespace client::details;
 
 LogicObject::LogicObject(const Id &id, const Id &parent) : mId(id)
 {

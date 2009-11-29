@@ -11,7 +11,7 @@
 using namespace qReal;
 using namespace generators;
 
-JavaHandler::JavaHandler(client::RepoApi const &api)
+JavaHandler::JavaHandler(qrRepo::RepoApi const &api)
 		: mApi(api)
 {
 }

@@ -9,11 +9,11 @@ class QIcon;
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
 
-namespace qReal {
+namespace qrRepo {
+	class RepoApi;
+}
 
-	namespace client {
-		class RepoApi;
-	}
+namespace qReal {
 
 	class EditorInterface;
 
@@ -38,10 +38,10 @@ namespace qReal {
 
 		QStringList getPropertyNames(Id const &id) const;
 
-		IdList checkNeededPlugins(client::RepoApi const &api) const;
+		IdList checkNeededPlugins(qrRepo::RepoApi const &api) const;
 
 	private:
-		void checkNeededPluginsRecursive(client::RepoApi const &api, Id const &id, IdList &result) const;
+		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
 
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

@@ -4,18 +4,18 @@
 
 #include "../../kernel/ids.h"
 
-namespace qReal {
+namespace qrRepo {
+	class RepoApi;
+}
 
-	namespace client {
-		class RepoApi;
-	}
+namespace qReal {
 
 	namespace generators {
 
 		class JavaHandler
 		{
 		public:
-			explicit JavaHandler(client::RepoApi const &api);
+			explicit JavaHandler(qrRepo::RepoApi const &api);
 
 			QString generateToJava(QString const &pathToDir);
 		private:
@@ -35,7 +35,7 @@ namespace qReal {
 
 			void addError(QString const &errorText);
 
-			client::RepoApi const &mApi;
+			qrRepo::RepoApi const &mApi;
 			QString mErrorText;
 			QString pathToDir;
 		};

@@ -1,8 +1,8 @@
 #include "../repoApi.h"
 
+using namespace qrRepo;
+using namespace qrRepo::details;
 using namespace qReal;
-using namespace client;
-using namespace details;
 
 RepoApi::RepoApi()
 {

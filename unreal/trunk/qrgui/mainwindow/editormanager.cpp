@@ -134,14 +134,14 @@ QStringList EditorManager::getPropertyNames(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
-IdList EditorManager::checkNeededPlugins(client::RepoApi const &api) const
+IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
 	IdList result;
 	checkNeededPluginsRecursive(api, ROOT_ID, result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(client::RepoApi const &api, Id const &id, IdList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const
 {
 	if (id != ROOT_ID && !mPluginsLoaded.contains(id.editor())) {
 		Id missingEditor = Id(id.editor());

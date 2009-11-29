@@ -9,7 +9,7 @@
 
 using namespace qReal;
 
-EditorGeneratorDialog::EditorGeneratorDialog(client::RepoApi const &api)
+EditorGeneratorDialog::EditorGeneratorDialog(qrRepo::RepoApi const &api)
 	: mUi(new Ui::EditorGeneratorDialogUi), mApi(api)
 {
 	mUi->setupUi(this);

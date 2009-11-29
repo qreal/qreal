@@ -6,18 +6,18 @@
 
 #include "../../kernel/ids.h"
 
-namespace qReal {
+namespace qrRepo {
+	class RepoApi;
+}
 
-	namespace client {
-		class RepoApi;
-	}
+namespace qReal {
 
 	namespace generators {
 
 		class XmiHandler
 		{
 		public:
-			explicit XmiHandler(client::RepoApi const &api);
+			explicit XmiHandler(qrRepo::RepoApi const &api);
 
 			QString exportToXmi(QString const &pathToFile);
 		private:
@@ -45,7 +45,7 @@ namespace qReal {
 
 			void addError(QString const &errorText);
 
-			client::RepoApi const &mApi;
+			qrRepo::RepoApi const &mApi;
 			QDomDocument mDocument;
 			QString mErrorText;
 		};

@@ -350,7 +350,7 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
-	
+
 	if (isDiagram(id))
 	{
 		if ((!isDiagram(parentItem->id())) && (parentItem != rootItem))
@@ -358,7 +358,7 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id
 			qDebug() << "Диаграмму нельзя добавить в элемент.";
 			return NULL;
 		}
-	} 
+	}
 	else
 	{
 		if (parentItem == rootItem)
@@ -450,7 +450,7 @@ void Model::cleanupTree(ModelTreeItem *root)
 	root->clearChildren();
 }
 
-client::RepoApi const & Model::api() const
+qrRepo::RepoApi const & Model::api() const
 {
 	return mApi;
 }

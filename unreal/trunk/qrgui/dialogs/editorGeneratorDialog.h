@@ -15,13 +15,13 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		EditorGeneratorDialog(client::RepoApi const &api);
+		EditorGeneratorDialog(qrRepo::RepoApi const &api);
 		~EditorGeneratorDialog();
 	private slots:
 		void createEditor();
 	private:
 		Ui::EditorGeneratorDialogUi *mUi;
-		client::RepoApi const &mApi;
+		qrRepo::RepoApi const &mApi;
 		IdList mEditors;
 	};
 }

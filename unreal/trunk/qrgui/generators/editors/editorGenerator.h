@@ -10,12 +10,12 @@ namespace qReal {
 
 		class EditorGenerator {
 		public:
-			EditorGenerator(client::RepoApi const &api);
+			EditorGenerator(qrRepo::RepoApi const &api);
 			void generate(Id const &editor);
 		private:
 			QDomElement createNode(QDomDocument doc, Id const &nodeId, QString const &prefix);
 			void createMetaEditor(Id const &editor);
-			client::RepoApi const &mApi;
+			qrRepo::RepoApi const &mApi;
 		};
 
 	}

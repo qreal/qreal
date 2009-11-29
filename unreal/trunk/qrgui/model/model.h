@@ -38,7 +38,7 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
-			client::RepoApi const &api() const;
+			qrRepo::RepoApi const &api() const;
 		public slots:
 			void exterminate();
 
@@ -49,7 +49,7 @@ namespace qReal {
 				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
-			client::RepoApi mApi;
+			qrRepo::RepoApi mApi;
 			ModelTreeItem *rootItem;
 			EditorManager const &mEditorManager;
 

@@ -14,7 +14,7 @@ using namespace qReal;
 using namespace generators;
 using namespace utils;
 
-XmiHandler::XmiHandler(client::RepoApi const &api)
+XmiHandler::XmiHandler(qrRepo::RepoApi const &api)
 	: mApi(api)
 {
 }

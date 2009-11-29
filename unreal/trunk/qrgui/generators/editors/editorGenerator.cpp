@@ -6,7 +6,7 @@
 using namespace qReal;
 using namespace generators;
 
-EditorGenerator::EditorGenerator(client::RepoApi const &api)
+EditorGenerator::EditorGenerator(qrRepo::RepoApi const &api)
 	: mApi(api)
 {
 }
