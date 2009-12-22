@@ -4,18 +4,6 @@
  <namespace>UML 2.1</namespace>
  <editor name="Kernel" >
   <non_graph_types>
-    <enum id="krntState" name="State" >
-     <value>Created</value>
-     <value>Development</value>
-     <value>Ready for testing</value>
-     <value>Testing</value>
-     <value>Feedback</value>
-     <value>Debugging</value>
-     <value>Ready for acceptance</value>
-     <value>Accepted</value>
-     <value>Release</value>
-     <value>Launched</value>
-    </enum>
     <enum id="krntVisibility" name="VisibilityKind" >
      <value>private</value>
      <value>protected</value>
@@ -33,13 +21,6 @@
    <!-- The main element -->
    <node id="krnnElement" name="Element" >
     <logic>
-     <properties>
-      <property type="enum" name="state" >
-       <enum idref="krntState" />
-       <default>Created</default>
-      </property>
-      <!--property name="comment" type="string"/-->
-     </properties>
      <containers>
       <container name="E-E" >
        <contains idref="krnnElement" role="ownedElement" />
@@ -314,6 +295,11 @@
    <!-- Classifier part -->
    <node id="krnnRedefElement" name="RedefinableElement" >
     <logic>
+	 <generalizations>
+      <generalization>
+       <parent parent_id="krnnNamedElement" />
+      </generalization>
+     </generalizations>
      <properties>
       <property type="bool" name="isLeaf" />
      </properties>
