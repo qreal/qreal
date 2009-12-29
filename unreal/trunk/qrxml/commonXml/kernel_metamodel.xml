@@ -540,7 +540,7 @@
 	   </containers>
      </logic>
    </node>
-   <node name="krnnValueSpecification" id="ValueSpecification">
+   <node id="krnnValueSpecification" name="ValueSpecification">
    <!-- не поняла, как именно она детализирует (возможно пустой) набор экземляров объектов или значений -->
      <logic>
 	   <generalizations>
