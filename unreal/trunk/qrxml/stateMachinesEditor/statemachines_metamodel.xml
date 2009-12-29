@@ -154,10 +154,10 @@
      </container>
     </containers>
     <associations>
-     <association role="source" id="smaTransitionSource" >
+     <association role="source" end_type="no_arrow" id="smaTransitionSource" >
       <begin idref="smVertex" />
      </association>
-     <association role="target" id="smaTransitionTarget" >
+     <association role="target" end_type="open_arrow" id="smaTransitionTarget" >
       <begin idref="smVertex" />
      </association>
     </associations>

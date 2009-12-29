@@ -50,10 +50,10 @@
      </generalization>
     </generalizations>
     <properties>
-     <property type="string" name="vals" />
-     <property type="string" name="methods" />
+     <!-- <property type="string" name="vals" /> -->
+     <!-- <property type="string" name="methods" /> -->
 	 <property type="string" name="import" />
-     <property type="string" name="logicalName" />     
+     <!-- <property type="string" name="logicalName" />  -->
 	 <property type="string" name="multiplicity" />
     </properties>
     <containers>
@@ -120,169 +120,6 @@
     </containers>
    </logic>
   </node>
-  <edge id="ceAggregation" name="Aggregation" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <association end_type="empty_rhomb" id="caAggr1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="no_arrow" id="acAggr2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </edge>
-  <edge id="ceRelation" name="Relation" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <properties>
-      <property type="string" name="isStatic" />
-	  <property type="string" name="isTransient" />
-	  <property type="string" name="isVolatile" />
-	  <property type="string" name="isLeaf" />
-    </properties>
-    <associations>
-     <association end_type="open_arrow" id="caAggr1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="open_arrow" id="acAggr2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <!--				<properties>
-					<property name="fromMultiplicity" type="string" />
-					<property name="toMultiplicity" type="string" />
-				</properties>								-->
-   </logic>
-  </edge>
-  <edge id="ceComposition" name="Composition" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <association end_type="filled_rhomb" id="caComp1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="no_arrow" id="acComp2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </edge>
-  <edge id="ceDependency" name="Dependency" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <association end_type="no_arrow" id="caDep1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="open_arrow" id="acAggr2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </edge>
-  <edge id="ceRealization" name="Realization" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <association end_type="no_arrow" id="caReal1" >
-      <begin idref="krnnElement" />
-     </association>
-     <association end_type="empty_arrow" id="acReal2" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </edge>
-  <edge id="krneGeneralization" name="Generalization" >
-    <logic>
-	  <generalizations>
-		<generalization>
-		  <parent parent_id="krneDirRelationship" />
-		</generalization>
-	  </generalizations>
-	  <properties>
-	    <property type="bool" name="isSubstitutable" />
-	  </properties>
-	  <associations>
-    	<association role="general" end_type="empty_arrow" id="krnaGeneralEnd" >
-		  <end idref="krnnClassifier" />
-	    </association>
-	    <association id="krnaGeneralStart" >
-		  <begin idref="krnnClassifier" />
-	    </association>
-	  </associations>
-    </logic>
-  </edge>
-  <edge id="ceDirRelation" name="DirectedRelation" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <properties>
-     <property type="string" name="isStatic" />
-	 <property type="string" name="isTransient" />
-	 <property type="string" name="isVolatile" />
-	 <property type="string" name="isLeaf" />
-    </properties>
-    <associations>
-     <association role="source" end_type="no_arrow" id="krnaDirrelSrc" >
-      <begin idref="krnnElement" />
-     </association>
-     <association role="target" end_type="open_arrow" id="krnaDirrelTarg" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
   <node id="cnClassMethod" name="Class method" >
    <graphics>
     <view>
@@ -309,9 +146,9 @@
     <properties>
      <property type="string" name="type" />
 	 <property type="string" name="operationFactors" />
-	 <property type="string" name="isStatic" />
-	 <property type="string" name="isSynchronized" />
-	 <property type="string" name="isNative" />
+	 <property type="bool" name="isStatic" />
+	 <property type="bool" name="isSynchronized" />
+	 <property type="bool" name="isNative" />
     </properties>
     <containers>
      <container name="Class-Classifier" >
@@ -458,7 +295,7 @@
      <property type="string" name="body" />
     </properties>
     <associations>
-     <assoc_ref idref="krnaComLinkCom" />
+     <assoc_ref idref="cnComLink" />
     </associations>
     <generalizations>
      <generalization>
@@ -472,6 +309,174 @@
     </containers>
    </logic>
   </node>
+  <edge id="ceAggregation" name="Aggregation" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="empty_rhomb" id="caAggr1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="no_arrow" id="acAggr2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
+  <edge id="ceRelation" name="Relationship" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
+   <logic>
+    <properties>
+      <property type="string" name="isStatic" />
+	  <property type="string" name="isTransient" />
+	  <property type="string" name="isVolatile" />
+	  <property type="string" name="isLeaf" />
+    </properties>
+    <associations>
+     <association end_type="open_arrow" id="caAggr1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="open_arrow" id="acAggr2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+    <!--				<properties>
+					<property name="fromMultiplicity" type="string" />
+					<property name="toMultiplicity" type="string" />
+				</properties>								-->
+   </logic>
+  </edge>
+  <edge id="ceComposition" name="Composition" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="filled_rhomb" id="caComp1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="no_arrow" id="acComp2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
+  <edge id="ceDependency" name="Dependency" >
+   <graphics>
+    <view>
+     <line_type type="dashLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="no_arrow" id="caDep1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="open_arrow" id="acAggr2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
+  <edge id="ceRealization" name="Realization" >
+   <graphics>
+    <view>
+     <line_type type="dashLine" />
+    </view>
+   </graphics>
+   <logic>
+    <associations>
+     <association end_type="no_arrow" id="caReal1" >
+      <begin idref="krnnElement" />
+     </association>
+     <association end_type="empty_arrow" id="acReal2" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneRelationship" />
+     </generalization>
+    </generalizations>
+   </logic>
+  </edge>
+  <edge id="ceGeneralization" name="Generalization" >
+    <logic>
+	  <generalizations>
+		<generalization>
+		  <parent parent_id="krneDirRelationship" />
+		</generalization>
+	  </generalizations>
+	  <properties>
+	    <property type="bool" name="isSubstitutable" />
+	  </properties>
+	  <associations>
+    	<association role="general" end_type="empty_arrow" id="caGeneralEnd" >
+		  <end idref="krnnClassifier" />
+	    </association >
+	    <association role="generalization" end_type="no_arrow" id="caGeneralStart" >
+		  <begin idref="krnnClassifier" />
+	    </association>
+	  </associations>
+    </logic>
+  </edge>
+  <edge id="ceDirRelation" name="DirectedRelation" >
+   <graphics>
+    <view>
+     <line_type type="solidLine" />
+	 <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+        <html:text_from_repo name="name" />
+      </html:html>
+     </repo_info>
+    </view>
+   </graphics>
+   <logic>
+    <properties>
+     <property type="string" name="isStatic" />
+	 <property type="string" name="isTransient" />
+	 <property type="string" name="isVolatile" />
+	 <property type="string" name="isLeaf" />
+    </properties>
+    <associations>
+     <association role="source" end_type="no_arrow" id="krnaDirrelSrc" >
+      <begin idref="krnnElement" />
+     </association>
+     <association role="target" end_type="open_arrow" id="krnaDirrelTarg" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+   </logic>
+  </edge>
   <edge id="cnComLink" name="CommentLink" >
    <graphics>
     <view>

@@ -268,7 +268,7 @@ QString JavaHandler::getParents(Id const &id)
 		IdList links = mApi.outcomingLinks(id);
 
 		foreach (Id const aLink, links) {
-			if (aLink.element() == "krneGeneralization") {
+			if (aLink.element() == "ceGeneralization") {
 				if (hasParentClass == false) {
 					hasParentClass = true;
 					if (id == mApi.otherEntityFromLink(aLink, id)) {

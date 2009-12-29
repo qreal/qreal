@@ -38,9 +38,6 @@
       <parent parent_id="bbnBehavioredClassifier" />
      </generalization>
     </generalizations>
-    <!--  TO DELETE!!!  <properties>
-     <property type="string" name="name" />
-    </properties> -->
     <containers>
      <container>
       <contains idref="uscnUseCase" role="use case" />
@@ -136,7 +133,7 @@
     </containers>
    </logic>
   </node>
-  <edge id="uscaExtend" name="Extend" >
+  <edge id="usceExtend" name="Extend" >
    <graphics>
     <view>
      <line_type type="dashLine" />
@@ -166,7 +163,7 @@
     </associations>
    </logic>
   </edge>
-  <edge id="uscaInclude" name="Include" >
+  <edge id="usceInclude" name="Include" >
    <graphics>
     <view>
      <line_type type="dashLine" />
@@ -196,6 +193,23 @@
     </associations>
    </logic>
   </edge>
+  <edge id="usceRelationship" name="Relationship" >
+    <logic>
+     <associations>
+      <association role="relatedElement" end_type="no_arrow" id="usceRelEl1" >
+       <begin idref="krnnElement" />
+      </association>
+      <association role="relatedElement" end_type="no_arrow" id="usceRelEl2" >
+       <end idref="krnnElement" />
+      </association>
+     </associations>
+     <generalizations>
+      <generalization>
+       <parent parent_id="krnnElement" />
+      </generalization>
+     </generalizations>
+    </logic>
+   </edge>
    </graph_types>
  </editor>
 </metamodel>

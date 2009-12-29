@@ -517,6 +517,50 @@
      </generalizations>
     </logic>
    </node>
+   <node id="krnnMultiplicityElement" name="MultiplicityElement">
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="krnnElement" />
+         </generalization>
+       </generalizations>
+	   <properties>
+	     <property type="bool" name="isOrdered" />
+		 <property type="bool" name="isUnique" />
+		 <property type="int" name="lower" />
+		 <property type="int" name="upper" /> <!-- на самом деле type="UnlimitedNatural" -->
+	   </properties>
+	   <containers>
+	     <container name="lowerValue" >
+           <contains idref="krnnValueSpecification" role="lowerValue" />
+         </container>
+		 <container name="upperValue" >
+           <contains idref="krnnValueSpecification" role="upperValue" />
+         </container>
+	   </containers>
+     </logic>
+   </node>
+   <node name="krnnValueSpecification" id="ValueSpecification">
+   <!-- не поняла, как именно она детализирует (возможно пустой) набор экземляров объектов или значений -->
+     <logic>
+	   <generalizations>
+	     <generalization>
+		   <parent parent_id="krnnPackageableElem" />
+		 </generalization>
+		 <generalization>
+		   <parent parent_id="krnnTypedElem" />
+		 </generalization>
+	   </generalizations>
+	   <containers>
+	     <container name="lowerValue" >
+		   <contained_by idref="krnnMultiplicityElement" role="nestedValueSpecification" />
+         </container>
+		 <container name="upperValue" >
+		   <contained_by idref="krnnMultiplicityElement" role="nestedValueSpecification" />
+         </container>
+	   </containers>
+	 </logic>
+   </node>
   </graph_types>
  </editor>
 </metamodel>
