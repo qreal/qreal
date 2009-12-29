@@ -175,7 +175,7 @@
     <containers>
      <container>
       <contains idfer="actActivityNode" role="node" />
-      <contains idref="actActivityEdge" role="edge" />
+      <contains idref="acteActivityEdge" role="edge" />
       <contains idref="actActivityGroup" role="group" />
      </container>
      <container>
@@ -234,7 +234,7 @@
     <containers>
      <container>
       <contained_by idref="actnActivity" role="activity" />
-      <contained_by idref="actActivityEdge" role="redefinedEdge" />
+      <contained_by idref="acteActivityEdge" role="redefinedEdge" />
       <contained_by idref="actnActivityPartition" role="partition" />
       <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
      </container>
@@ -376,7 +376,7 @@
     <containers>
      <container>
       <contains idref="actActivityNode" role="node" />
-      <contains idref="actActivityEdge" role="edge" />
+      <contains idref="acteActivityEdge" role="edge" />
       <contains idref="actnActivityPartition" role="superPartition" />
       <contains idref="actnActivityPartition" role="subPartition" />
      </container>
@@ -623,7 +623,7 @@
     <containers>
      <container>
       <contains idref="actActivityNode" role="node" />
-      <contains idref="actActivityEdge" role="interruptingEdge" />
+      <contains idref="acteActivityEdge" role="interruptingEdge" />
      </container>
     </containers>
    </logic>
@@ -662,7 +662,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actActivityEdge" />
+      <parent parent_id="acteActivityEdge" />
       <parent parent_id="krnnTypedElem" />
      </generalization>
     </generalizations>
@@ -781,7 +781,7 @@
     <containers>
      <container>
       <contains idref="actActivityNode" role="node" />
-      <contains idref="actActivityEdge" role="edge" />
+      <contains idref="acteActivityEdge" role="edge" />
      </container>
      <container>
       <contained_by idref="actnActivity" role="activity" />
