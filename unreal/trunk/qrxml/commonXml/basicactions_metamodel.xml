@@ -132,6 +132,21 @@
 	   </containers>
 	 </logic>
    </node>
+   <node id="batnValueSpecificationAction" name="ValueSpecificationAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="bacnAction" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container>
+           <contains idref="krnnValueSpecification" role="value" />
+           <contains idref="batnOutputPin" role="result" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
    
  </graph_types>
  </editor>
