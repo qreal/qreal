@@ -400,7 +400,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actActivityEdge" />
+      <parent parent_id="acteActivityEdge" />
      </generalization>
     </generalizations>
     <associations>
