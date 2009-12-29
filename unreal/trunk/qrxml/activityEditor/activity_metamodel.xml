@@ -872,9 +872,23 @@
 <!-- some strange node are under this line -->
 
  <node id="actControlNode" name="ControlNode" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="actActivityNode" />
+	  </generalization>
+	 </generalizations>
+   </logic>
  </node>
  
  <node id="actFinalNode" name="FinalNode" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="actControlNode" />
+	  </generalization>
+	 </generalizations>
+   </logic>
  </node>
  
   
