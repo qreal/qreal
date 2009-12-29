@@ -891,6 +891,27 @@
    </logic>
  </node>
  
+ <node id="actnVariable" name="Variable" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="krnnMultiplicityElement" />
+		<parent parent_id="krnnTypedElem" />
+	  </generalization>
+	 </generalizations>
+   </logic>
+ </node>
+ 
+ <node id="actnParameter" name="Parameter" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="krnnParameter" />
+	  </generalization>
+	 </generalizations>
+   </logic>
+ </node>
+ 
   
   <node id="actnForkNodeWithControlFlows" name="ForkNodeWithControlFlows" >
    <graphics>
