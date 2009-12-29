@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+ <include>kernel_metamodel</include>
+ <include>basicbehaviors_metamodel</include>
+ <namespace>UML 2.0</namespace>
+ <editor name="Actions" >
+ <graph_types>
+   <node id="bacnAcceptEventAction" name="AcceptEventAction">
+     <logic>
+       <generalizations>
+         <generalization>
+           <parent parent_id="bacnAction" />
+         </generalization>
+       </generalizations>
+	   <properties>
+	     <property type="bool" name="isUnmarshall" />
+	   </properties>
+	   <containers>
+         <container name="trigger" >
+           <contains idref="batnTrigger" role="trigger" />
+         </container>
+		 <container name="result" >
+           <contains idref="batnOutputPin" role="result" />
+         </container>
+       </containers>
+	</logic>
+   </node>
+   <node id="bacnAction" name="Action">
+     <logic>
+       <generalizations>
+         <generalization>
+           <parent parent_id="krnnNamedElement" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container name="input" >
+           <contains idref="batnInputpin" role="input" />
+         </container>
+		 <container name="output" >
+           <contains idref="batnOutputPin" role="output" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnTrigger" name="Trigger" >
+   <!-- "from Communications" -->
+     <logic>
+       <generalizations>
+         <generalization>
+		   <parent parent_id="krnnNamedElement" />
+         </generalization>
+       </generalizations>
+	   <containers>
+	     <container name="event" >
+           <contains idref="batnEvent" role="event" />
+         </container>
+	     <container name="trigger" >
+		   <contained_by idref="bacnAcceptEventAction" role="nestedTrigger" />
+         </container>
+	   </containers>
+     </logic>
+   </node>
+   <node id="batnOutputPin" name="OutputPin" >
+     <logic>
+       <generalizations>
+         <generalization>
+		   <parent parent_id="batnPin" />
+         </generalization>
+       </generalizations>
+	   <containers>
+	     <container name="result" >
+		   <contained_by idref="bacnAcceptEventAction" role="nestedOutputPin" />
+         </container>
+		 <container name="output" >
+		   <contained_by idref="bacnAction" role="nestedOutputPin" />
+         </container>
+	   </containers>
+     </logic>
+   </node>
+   <node id="batnInputPin" name="InputPin" >
+     <logic>
+       <generalizations>
+         <generalization>
+		   <parent parent_id="batnPin" />
+         </generalization>
+       </generalizations>
+	   <containers>
+	     <container name="input" >
+		   <contained_by idref="bacnAction" role="nestedInputPin" />
+         </container>
+	   </containers>
+     </logic>
+   </node>
+   <node id="batnEvent" name="Event">
+     <!-- "from Communications" -->
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="krnnPackageableElem" />
+         </generalization>
+       </generalizations>
+	   <containers>
+	     <container name="event" >
+		   <contained_by idref="batnTrigger" role="nestedEvent" />
+         </container>
+	   </containers>
+	 </logic>
+   </node>
+   <node id="batnPin" name="Pin">
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="krnnTypedElem" />
+         </generalization>
+		 <generalization>
+		   <parent parent_id="krnnMultiplicityElement" />
+         </generalization>
+       </generalizations>
+	 </logic>
+   </node>
+   <node id="batnActionInputPin" name="ActionInputPin">
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="batnInputPin" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container name="fromAction" >
+		   <contained_by idref="bacnAction" role="fromAction" />
+         </container>
+	   </containers>
+	 </logic>
+   </node>
+   
+ </graph_types>
+ </editor>
+ </metamodel>
