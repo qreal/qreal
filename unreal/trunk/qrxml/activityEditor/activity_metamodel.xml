@@ -1,31 +1,31 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <include>basicbehaviors_metamodel</include>
- <include>basicactions_metamodel</include>
- <namespace>UML 2.0</namespace>
- <editor name="Activity Diagram" >
- <non_graph_types>
+  <include>kernel_metamodel</include>
+  <include>basicbehaviors_metamodel</include>
+  <include>basicactions_metamodel</include>
+  <namespace>UML 2.0</namespace>
+  <editor name="Activity Diagram" >
+  <non_graph_types>
     <enum id="acttType" name="Type" >
-     <value>localPrecondition</value>
-     <value>localPostCondation</value>
+      <value>localPrecondition</value>
+      <value>localPostCondation</value>
     </enum>
-	<enum id="acttExpansionKind" name="ExpansionKind" >
-     <value>parallel</value>
-     <value>iterative</value>
-	 <value>stream</value>
+    <enum id="acttExpansionKind" name="ExpansionKind" >
+      <value>parallel</value>
+      <value>iterative</value>
+      <value>stream</value>
     </enum>
-	<enum id="acttObjectNodeOrderingKind" name="ObjectNodeOrderingKind" >
-     <value>unordered</value>
-     <value>ordered</value>
-	 <value>LIFO</value>
-	 <value>FIFO</value>
+    <enum id="acttObjectNodeOrderingKind" name="ObjectNodeOrderingKind" >
+      <value>unordered</value>
+      <value>ordered</value>
+      <value>LIFO</value>
+      <value>FIFO</value>
     </enum>
-	<enum id="acttParameterEffectKind" name="ParameterEffectKind" >
-     <value>create</value>
-     <value>read</value>
-	 <value>update</value>
-	 <value>delete</value>
+    <enum id="acttParameterEffectKind" name="ParameterEffectKind" >
+      <value>create</value>
+      <value>read</value>
+      <value>update</value>
+      <value>delete</value>
     </enum>
   </non_graph_types>
   <graph_types>
@@ -39,10 +39,10 @@
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30" stroke-width="1" x2="15" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid" />
      </picture>
-	 <ports>
+     <ports>
        <point_port x="15" y="30" />
        <point_port x="100" y="30" />
-	 </ports>
+     </ports>
     </view>
    </graphics>
    <logic>
@@ -62,9 +62,9 @@
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50" stroke-width="1" x2="40" fill-style="solid" />
       <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0" stroke-width="1" x2="40" fill-style="solid" />
      </picture>
-	 <ports>
+     <ports>
        <point_port x="20" y="25" />
-	 </ports>
+     </ports>
     </view>
    </graphics>
    <logic>
@@ -88,7 +88,7 @@
        </html:center>
       </html:html>
      </repo_info>
-	 <ports>
+     <ports>
       <line_port>
        <start startx="79" starty="10" />
        <end endx="79" endy="50" />
@@ -97,22 +97,22 @@
        <start startx="1" starty="10" />
        <end endx="1" endy="50" />
       </line_port>
-	  <line_port>
+      <line_port>
        <start startx="10" starty="1" />
        <end endx="70" endy="1" />
       </line_port>
-	  <line_port>
+      <line_port>
        <start startx="10" starty="59" />
        <end endx="70" endy="59" />
       </line_port>
-	 </ports>
+     </ports>
     </view>
    </graphics>
    <logic>
     <generalizations>
      <generalization>
       <parent parent_id="actActivityNode" />
-	  <parent parent_id="actnExecutableNode" />
+        <parent parent_id="actnExecutableNode" />
       <parent parent_id="bacnAction" />
      </generalization>
     </generalizations>
@@ -123,34 +123,34 @@
       <view>
         <picture sizex="20" sizey="20" >
           <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid" />
-	    </picture>
-		<ports>
-		  <line_port>
-		    <start startx="0" starty="0" />
-			<end endx="0" endy="20" />
-		  </line_port>
-		  <line_port>
-		    <start startx="20" starty="0" />
-			<end endx="20" endy="20" />
-		  </line_port>
-		  <line_port>
-		    <start startx="0" starty="0" />
-			<end endx="20" endy="0" />
-		  </line_port>
-		  <line_port>
-		    <start startx="0" starty="20" />
-			<end endx="20" endy="20" />
-		  </line_port>
-	    </ports>
-	  </view>
+	</picture>
+	<ports>
+	  <line_port>
+	    <start startx="0" starty="0" />
+	    <end endx="0" endy="20" />
+	  </line_port>
+	  <line_port>
+	    <start startx="20" starty="0" />
+	    <end endx="20" endy="20" />
+	  </line_port>
+	  <line_port>
+	    <start startx="0" starty="0" />
+	    <end endx="20" endy="0" />
+	  </line_port>
+	  <line_port>
+	    <start startx="0" starty="20" />
+	    <end endx="20" endy="20" />
+	  </line_port>
+	</ports>
+      </view>
     </graphics>
     <logic>
-	  <generalizations>
-	    <generalization>
-		  <parent parent_id="batnActionInputPin" />
-		</generalization>
-	  </generalizations>
-	</logic>
+      <generalizations>
+        <generalization>
+	  <parent parent_id="batnActionInputPin" />
+	</generalization>
+      </generalizations>
+    </logic>
   </node>
   <node id="actnActivity" name="Activity" >
    <graphics>
@@ -163,7 +163,7 @@
        <html:text_from_repo name="name" />
       </html:html>
      </repo_info>
-	 <ports>
+     <ports>
       <line_port>
        <start startx="79" starty="10" />
        <end endx="79" endy="50" />
@@ -172,15 +172,15 @@
        <start startx="1" starty="10" />
        <end endx="1" endy="50" />
       </line_port>
-	  <line_port>
+      <line_port>
        <start startx="10" starty="1" />
        <end endx="70" endy="1" />
       </line_port>
-	  <line_port>
+      <line_port>
        <start startx="10" starty="59" />
        <end endx="70" endy="59" />
       </line_port>
-	 </ports>
+     </ports>
     </view>
    </graphics>
    <logic>
@@ -199,20 +199,20 @@
       <contained_by idref="actnExpansionRegion" role="expansionRegion" />
      </container>
     </containers>
-	<properties>
-	  <property type="bool" name="isSingleExecution" >
+    <properties>
+      <property type="bool" name="isSingleExecution" >
        <default>false</default>
       </property>
-	</properties>
-	<containers>
+    </properties>
+    <containers>
       <container>
         <contains idref="actActivityNode" role="coordinatedNodes" />
         <contains idref="acteActivityEdge" role="edges" />
         <contains idref="actnVariable" role="topLevelVariables" />
       </container>
-	  <container>
-	    <contained_by idref="actActivityGroup" role="topLevelGroups" />
-	    <contained_by idref="actnActivityPartition" role="topLevelPartitions" />
+      <container>
+        <contained_by idref="actActivityGroup" role="topLevelGroups" />
+        <contained_by idref="actnActivityPartition" role="topLevelPartitions" />
       </container>
     </containers>
    </logic>
@@ -226,7 +226,7 @@
        <html:center>
 		<html:text_from_repo name="name" />
 		<html:text_from_repo name="guard" />
-		<!-- guard Ð½Ð°Ð´Ð¾ Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ð²Ð½ÑƒÑ‚Ñ€Ð¸ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð½Ñ‹Ñ… ÑÐºÐ¾Ð±Ð¾Ðº -->
+		<!-- guard íàäî ïèñàòü âíóòðè êâàäðàòíûõ ñêîáîê  -->
        </html:center>
       </html:html>
      </repo_info>
@@ -1083,7 +1083,7 @@
      </picture>
      <repo_info>
       <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text>â€¹â€¹structuredâ€ºâ€º</html:text>
+       <html:text text="&lt;&lt;structured>>" />
       </html:html>
      </repo_info>
     </view>

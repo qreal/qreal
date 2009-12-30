@@ -478,9 +478,6 @@
    </node>
    <node id="krnnBehavioralFeature" name="BehavioralFeature" >
     <logic>
-     <properties>
-      <property type="bool" name="isAbstract" />
-     </properties>
      <containers>
       <container name="BF-Type" >
        <contains idref="krnnType" unbounded="true" role="raisedException" min="0" />
@@ -488,15 +485,10 @@
       <container name="BF-Parameter" >
        <contains idref="krnnParameter" unbounded="true" role="ownedParameter" min="0" />
       </container>
-      <container name="Behavior-BF" >
-       <contained_by idref="bbnBehavior" role="specification" />
-      </container>
      </containers>
      <generalizations>
       <generalization>
        <parent parent_id="krnnFeature" />
-      </generalization>
-      <generalization>
        <parent parent_id="krnnNamespace" />
       </generalization>
      </generalizations>

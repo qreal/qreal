@@ -5,6 +5,13 @@
  <namespace>UML 2.1</namespace>
  <editor name="BASIC BEHAVIOURS" >
   <!-- BasicBehaviors -->
+  <non_graph_types>
+	<enum id="bbntCallConcurrencyKind" name="CallConcurrencyKind" >
+       <value>sequential</value>
+       <value>guarded</value>
+       <value>concurrent</value>
+    </enum>
+  </non_graph_types>
   <graph_types>
   <node id="bbnBehavior" name="Behavior" >
    <logic>
@@ -71,6 +78,10 @@
       </generalizations>
 	  <properties>
         <property type="bool" name="isAbstract" />
+		<property type="enum" name="concurrency" >
+        <enum idref="bbntCallConcurrencyKind" />
+		<default>sequential</default>
+      </property>
 	  </properties>
 	  <containers>
         <container>
