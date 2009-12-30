@@ -208,7 +208,7 @@
      <logic>
 	   <generalizations>
          <generalization>
-		   <parent parent_id="" />
+		   <parent parent_id="batnInvocationAction" />
          </generalization>
        </generalizations>
 	   <properties>
