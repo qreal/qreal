@@ -6,7 +6,7 @@
  <editor name="BASIC BEHAVIOURS" >
   <!-- BasicBehaviors -->
   <graph_types>
-  <node id="bbnBehavior" name="Behavour" >
+  <node id="bbnBehavior" name="Behavior" >
    <logic>
     <generalizations>
      <generalization>
@@ -26,7 +26,7 @@
     </containers>
    </logic>
   </node>
-  <node id="bbnBehavioredClassifier" name="Behavour" >
+  <node id="bbnBehavioredClassifier" name="BehavioredClassifier" >
    <logic>
     <generalizations>
      <generalization>
@@ -35,7 +35,7 @@
     </generalizations>
    </logic>
   </node>
-  <node id="bbnOpaqueBehavior" name="Behavour" >
+  <node id="bbnOpaqueBehavior" name="OpaqueBehavior" >
    <logic>
     <properties>
      <property type="text" name="body" />
@@ -53,7 +53,7 @@
     </containers>
    </logic>
   </node>
-  <node id="bbnFunctionBehavior" name="Behavour" >
+  <node id="bbnFunctionBehavior" name="FunctionBehavior" >
    <logic>
     <generalizations>
      <generalization>
@@ -61,6 +61,24 @@
      </generalization>
     </generalizations>
    </logic>
+  </node>
+  <node id="bbnBehavioralFeature" name="BehavioralFeature" >
+    <logic>
+      <generalizations>
+        <generalization>
+          <parent parent_id="krnnBehavioralFeature" />
+        </generalization>
+      </generalizations>
+	  <properties>
+        <property type="bool" name="isAbstract" />
+	  </properties>
+	  <containers>
+        <container>
+          <contains idref="bbnBehavior" role="methods" />
+		  <contains idref="krnnClassifier" role="raisedException" />
+	    </container>
+	  </containers>
+    </logic>
   </node>
   </graph_types>
  </editor>

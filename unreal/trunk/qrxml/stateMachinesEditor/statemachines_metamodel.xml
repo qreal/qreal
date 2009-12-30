@@ -103,9 +103,8 @@
     <generalizations>
      <generalization>
       <parent parent_id="krnnNamespace" />
-     </generalization>
-     <generalization>
       <parent parent_id="smVertex" />
+	  <parent parent_id="krnnRedefElement" />
      </generalization>
     </generalizations>
     <containers>

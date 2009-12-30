@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
  <include>basicbehaviors_metamodel</include>
@@ -9,6 +9,23 @@
     <enum id="acttType" name="Type" >
      <value>localPrecondition</value>
      <value>localPostCondation</value>
+    </enum>
+	<enum id="acttExpansionKind" name="ExpansionKind" >
+     <value>parallel</value>
+     <value>iterative</value>
+	 <value>stream</value>
+    </enum>
+	<enum id="acttObjectNodeOrderingKind" name="ObjectNodeOrderingKind" >
+     <value>unordered</value>
+     <value>ordered</value>
+	 <value>LIFO</value>
+	 <value>FIFO</value>
+    </enum>
+	<enum id="acttParameterEffectKind" name="ParameterEffectKind" >
+     <value>create</value>
+     <value>read</value>
+	 <value>update</value>
+	 <value>delete</value>
     </enum>
   </non_graph_types>
   <graph_types>
@@ -224,11 +241,13 @@
     <associations>
      <association role="target" end_type="open_arrow" id="actaActivityEdgeTarget" >
       <begin idref="actActivityNode" />
+      <begin idref="actnActivityPartition" />
      </association>
     </associations>
     <associations>
      <association role="source" end_type="no_arrow" id="actaActivityEdgeSource" >
       <end idref="actActivityNode" />
+	  <end idref="actnActivityPartition" />
      </association>
     </associations>
     <containers>
@@ -350,13 +369,23 @@
 	</logic>
   </node>
   <node id="actnActivityPartition" name="ActivityPartition" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="3" y2="3" stroke-width="4" x2="57" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="3" y2="57" stroke-width="4" x2="57" fill-style="solid" />
-     </picture>
-    </view>
+    <graphics>
+      <view>
+        <picture sizex="60" sizey="60" >
+          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="3" y2="3" stroke-width="4" x2="57" fill-style="solid" />
+          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="3" y2="57" stroke-width="4" x2="57" fill-style="solid" />
+        </picture>
+	    <ports>
+	      <line_port>
+	        <start startx="0" starty="0" />
+		    <end endx="60" endy="0" />
+	      </line_port>
+		  <line_port>
+		    <start startx="0" starty="60" />
+			<end endx="60" endy="60" />
+		  </line_port>
+	    </ports>
+      </view>
    </graphics>
    <logic>
     <generalizations>
@@ -367,10 +396,10 @@
     </generalizations>
 	<properties>
       <property type="bool" name="isDimension" >
-       <default>false</default>
+        <default>false</default>
       </property>
 	  <property type="bool" name="isExternal" >
-       <default>false</default>
+        <default>false</default>
       </property>
      </properties>
     <containers>
@@ -379,6 +408,7 @@
       <contains idref="acteActivityEdge" role="edge" />
       <contains idref="actnActivityPartition" role="superPartition" />
       <contains idref="actnActivityPartition" role="subPartition" />
+	  <contains idref="krnnElement" role="represents" />
      </container>
      <container>
       <contained_by idref="actnActivityPartition" role="superPartition" />
@@ -390,6 +420,112 @@
      <assoc_ref idref="actaActivityEdgeSource" />
     </associations>
    </logic>
+  </node>
+  <node id="actnAddVariableValueAction" name="AddVariableValueAction" >
+    <logic>
+      <generalizations>
+        <generalization>
+          <parent parent_id="batnAddVariableValueAction" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actBehavior" name="Behavior" >
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="bbnBehavior" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="actnParameterSet" role="ownedParameterSet" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actBehavioralFeature" name="BehavioralFeature" >
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="bbnBehavioralFeature" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="actnParameterSet" role="ownedParameterSet" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actnCallBehaviorAction" name="CallBehaviorAction" >
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnCallBehaviorAction" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actnCallOperationAction" name="CallOperationAction" >
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnCallOperationAction" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actnCentralBufferNode" name="CentralBufferNode">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actnObjectNode" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actnClause" name="Clause">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="krnnElement" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="actnExecutableNode" role="test" />
+		  <contains idref="actnExecutableNode" role="body" />
+		  <contains idref="actnClause" role="predecessorClause" />
+		  <contains idref="actnClause" role="successorClause" />
+		  <contains idref="actnOutputPin" role="decider" />
+		  <contains idref="actnOutputPin" role="bodyOutput" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actnConditionalNode" name="ConditionalNode">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actnStructuredActivityNode" />
+        </generalization>
+      </generalizations>
+	  <properties>
+         <property type="bool" name="isAssured" >
+           <default>false</default>
+         </property>
+		 <property type="bool" name="isDeterminate" >
+           <default>false</default>
+         </property>
+	   </properties>
+	  <containers>
+        <container>
+          <contains idref="actnClause" role="clause" />
+		  <contains idref="actnOutputPin" role="result" />
+	    </container>
+	  </containers>
+	</logic>
   </node>
   <edge id="acteControlFlow" name="ControlFlow" >
    <graphics>
@@ -404,23 +540,22 @@
      </generalization>
     </generalizations>
     <associations>
-     <association role="begin" end_type="arrow" id="actaControlFlowBegin" >
-      <begin id_fer="actnMergeNode" />
-      <begin id_fer="actnJoinNode" />
-      <begin id_fer="actnForkNode" />
-      <begin id_fer="actnForkNodeWithControlFlows" />
-      <begin id_fer="actnJoinNodeWithControlFlows" />
+     <association role="begin" end_type="open_arrow" id="actaControlFlowBegin" >
      </association>
-     <association role="begin" id="actaControlFlowEnd" >
-      <end id_fer="actnMergeNode" />
-      <end id_fer="actnJoinNode" />
-      <end id_fer="actnForkNode" />
-      <end id_fer="actnForkNodeWithControlFlows" />
-      <end id_fer="actnJoinNodeWithControlFlows" />
+     <association role="end" end_type="no_arrow" id="actaControlFlowEnd" >
      </association>
     </associations>
    </logic>
   </edge>
+  <node id="actControlNode" name="ControlNode" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="actActivityNode" />
+	  </generalization>
+	 </generalizations>
+   </logic>
+ </node>
   <node id="actnDataStoreNode" name="DataStoreNode" >
    <graphics>
     <view>
@@ -437,43 +572,33 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actnObjectNode" />
+      <parent parent_id="actnCentralBufferNode" />
      </generalization>
     </generalizations>
-    <!-- TO DELETE!!!    <properties>
-     <property type="string" name="name" />
-    </properties> -->
     <associations>
-     <assoc_ref idref="actaEdgeEnd" />
+     <assoc_ref idref="actaActivityEdgeTarget" />
+	 <assoc_ref idref="actaActivityEdgeSource" />
     </associations>
    </logic>
   </node>
-  <node id="actnDataStoreNode" name="DataStoreNode" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="60" />
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actnObjectNode" />
-     </generalization>
-    </generalizations>
-    <!-- TO DELETE!!!    <properties>
-     <property type="string" name="name" />
-    </properties> -->
-    <associations>
-     <assoc_ref idref="actaEdgeEnd" />
-    </associations>
-   </logic>
+  <node id="actnDecisionNode" name="DecisionNode">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actControlNode" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="actBehavior" role="decisionInput" />
+		  <contains idref="acteObjectFlow" role="decisionInputFlow" />
+	    </container>
+	  </containers>
+	  <associations>
+        <assoc_ref idref="actaActivityEdgeTarget" />
+	    <assoc_ref idref="actaActivityEdgeSource" />
+      </associations>
+	</logic>
   </node>
   <edge id="acteExceptionHandler" name="ExceptionHandler" >
    <graphics>
@@ -484,19 +609,21 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="krneRelationship" />
+      <parent parent_id="krnnElement" />
      </generalization>
     </generalizations>
+	<containers>
+      <container>
+        <contains idref="krnnClassifier" role="exceptionType" />
+		<contains idref="actnObjectNode" role="exceptionInput" />
+	  </container>
+	</containers>
     <associations>
-     <association end_type="arrow" id="actaExceptionHandlerBegin" >
-      <begin idref="actnObjectNode" />
-      <begin idref="actnActionNode" />
-      <begin idref="actnExecutableNode" />
+     <association role="target" end_type="open_arrow" id="actaExceptionHandlerBegin" >
+      <begin idref="actActivityNode" />
      </association>
-     <association id="actaExceptionHandlerEnd" >
-      <end idref="actnObjectNode" />
-      <end idref="actnActionNode" />
-	  <end idref="actnExecutableNode" />
+     <association role="source" end_type="no_arrow" id="actaExceptionHandlerEnd" >
+      <end idref="actActivityNode" />
      </association>
     </associations>
    </logic>
@@ -508,6 +635,11 @@
 		  <parent parent_id="actActivityNode" />
 		</generalization>
 	  </generalizations>
+	  <containers>
+        <container>
+          <contains idref="acteExceptionHandler" role="handler" />
+	    </container>
+	  </containers>
 	</logic>
   </node>
   <node id="actnExpansionNode" name="ExpansionNode" >
@@ -559,19 +691,27 @@
      </generalization>
     </generalizations>
     <properties>
-     <property type="string" name="keyword" />
-    </properties>
-    <containres>
+	  <property type="enum" name="mode" >
+        <enum idref="acttExpansionKind" />
+      </property>
+	</properties>
+    <containers>
      <container>
       <contains idref="actnExpansionNode" role="inputElement" />
       <contains idref="actnExpansionNode" role="outputElement" />
-      <!--но он их на границе должен расместить-->
-      <contains idref="actActivityNode" role="activityNode" />
-      <contains idref="actObjectFlow" />
      </container>
-    </containres>
+    </containers>
    </logic>
   </node>
+  <node id="actFinalNode" name="FinalNode" >
+   <logic>
+     <generalizations>
+	   <generalization>
+		<parent parent_id="actControlNode" />
+	  </generalization>
+	 </generalizations>
+   </logic>
+ </node>
   <node id="actnFlowFinalNode" name="FlowFinalNode" >
    <graphics>
     <view>
@@ -585,12 +725,28 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actActivityNode" />
+      <parent parent_id="actFinalNode" />
      </generalization>
     </generalizations>
    </logic>
   </node>
-  <node id="actnInitialFinalNode" name="InitialNode" >
+  <node id="actnForkNode" name="ForkNode">
+    <graphics>
+      <view>
+        <picture sizex="60" sizey="60" >
+          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
+        </picture>
+      </view>
+    </graphics>
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actControlNode" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actnInitialNode" name="InitialNode" >
    <graphics>
     <view>
      <picture sizex="60" sizey="60" >
@@ -601,10 +757,19 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actActivityNode" />
+      <parent parent_id="actControlNode" />
      </generalization>
     </generalizations>
    </logic>
+  </node>
+  <node id="actnInputPin" name="InputPin" >
+    <logic>
+      <generalizations>
+	    <generalization>
+		  <parent parent_id="batnInputPin" />
+	    </generalization>
+	  </generalizations>
+    </logic>
   </node>
   <node id="actnInterruptibleActivityRegion" name="InterruptibleActivityRegion" >
    <graphics>
@@ -628,6 +793,62 @@
     </containers>
    </logic>
   </node>
+  <node id="actnJoinNode" name="JoinNode" >
+   <graphics>
+    <view>
+     <picture sizex="60" sizey="60" >
+      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
+     </picture>
+    </view>
+   </graphics>
+   <logic>
+     <generalizations>
+       <generalization>
+         <parent parent_id="actControlNode" />
+       </generalization>
+     </generalizations>
+	 <properties>
+       <property type="bool" name="isCombineDuplicate" >
+         <default>true</default>
+       </property>
+	 </properties>
+     <associations>
+       <assoc_ref idref="actaActivityEdgeTarget" />
+       <assoc_ref idref="actaActivityEdgeSource" />
+     </associations>
+	 <containers>
+        <container>
+          <contains idref="krnnValueSpecification" role="joinSpec" />
+	    </container>
+	  </containers>
+   </logic>
+  </node>
+  <node id="actnLoopNode" name="LoopNode">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actnStructuredActivityNode" />
+        </generalization>
+      </generalizations>
+	  <properties>
+       <property type="bool" name="isTestedFirst" >
+         <default>false</default>
+       </property>
+	  </properties>
+	  <containers>
+        <container>
+          <contains idref="actnExecutableNode" role="setupPart" />
+		  <contains idref="actnExecutableNode" role="bodyPart" />
+		  <contains idref="actnExecutableNode" role="test" />
+		  <contains idref="actnOutputPin" role="decider" />
+		  <contains idref="actnOutputPin" role="result" />
+		  <contains idref="actnOutputPin" role="loopVariable" />
+		  <contains idref="actnOutputPin" role="bodyOutput" />
+		  <contains idref="actnInputPin" role="loopVariableInput" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
   <node id="actnMergeNode" name="MergeNode" >
    <graphics>
     <view>
@@ -640,17 +861,15 @@
     </view>
    </graphics>
    <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-     <assoc_ref idref="actaControlFlowBegin" />
-     <assoc_ref idref="actaControlFlowEnd" />
-    </associations>
+     <generalizations>
+       <generalization>
+         <parent parent_id="actControlNode" />
+       </generalization>
+     </generalizations>
+     <associations>
+       <assoc_ref idref="actaActivityEdgeTarget" />
+       <assoc_ref idref="actaActivityEdgeSource" />
+     </associations>
    </logic>
   </node>
   <edge id="acteObjectFlow" name="ObjectFlow" >
@@ -663,34 +882,32 @@
     <generalizations>
      <generalization>
       <parent parent_id="acteActivityEdge" />
-      <parent parent_id="krnnTypedElem" />
      </generalization>
     </generalizations>
+	<properties>
+      <property type="bool" name="isMulticast" >
+        <default>false</default>
+      </property>
+	  <property type="bool" name="isMultireceive" >
+        <default>false</default>
+      </property>
+	</properties>
+    <containers>
+        <container>
+          <contains idref="actBehavior" role="selection" />
+		  <contains idref="actBehavior" role="transformation" />
+	    </container>
+	  </containers>
     <associations>
-     <association role="begin" end_type="arrow" id="actaObjectFlowBegin" >
-      <begin idfer="actnObjectNode" />
-      <begin idfer="actnActionNode" />
+     <association role="begin" end_type="open_arrow" id="actaObjectFlowBegin" >
       <begin idfer="actnExpansionNode" />
-      <begin idfer="actnMergeNode" />
-      <begin idfer="actnForkNodeWithObjectFlows" />
-      <begin idfer="actnJoinNodeWithObjectFlows" />
       <begin idref="actnObjectNodeWithSignal" />
      </association>
-     <association role="begin" id="actaObjectFlowEnd" >
-      <end idfer="actnObjectNode" />
-      <end idfer="actnActionNode" />
+     <association role="end" end_type="no_arrow" id="actaObjectFlowEnd" >
       <end idfer="actnExpansionNode" />
-      <end idfer="actnMergeNode" />
-      <end idfer="actnForkNodeWithObjectFlows" />
-      <end idfer="actnJoinNodeWithObjectFlows" />
       <end idref="actnObjectNodeWithSignal" />
      </association>
     </associations>
-    <containers>
-     <container>
-      <contained_by idref="actnExpansionRegion" />
-     </container>
-    </containers>
    </logic>
   </edge>
   <node id="actnObjectNode" name="ObjectNode" >
@@ -715,6 +932,15 @@
       <parent parent_id="actActivityNode" />
      </generalization>
     </generalizations>
+	<properties>
+      <property type="enum" name="ordering" >
+        <enum idref="acttObjectNodeOrderingKind" />
+		<default>FIFO</default>
+      </property>
+	  <property type="bool" name="isControlType" >
+        <default>false</default>
+      </property>
+	</properties>
     <associations>
      <assoc_ref idref="actaObjectFlowBegin" />
      <assoc_ref idref="actaObjectFlowEnd" />
@@ -723,11 +949,90 @@
     </associations>
     <containers>
      <container>
-      <contained_by idref="actnExpansionRegion" role="expansionRegion" />
-      <contained_by idref="actnActionNode" role="actionNode" />
+	  <contains idref="smnState" role="inState" />
+	  <contains idref="actBehavior" role="selection" />
+	  <contains idref="krnnValueSpecification" role="upperBound" />
      </container>
     </containers>
    </logic>
+  </node>
+  <node id="actnOutputPin" name="OutputPin" >
+    <logic>
+      <generalizations>
+	    <generalization>
+		  <parent parent_id="batnOutputPin" />
+	    </generalization>
+	  </generalizations>
+    </logic>
+  </node>
+  <node id="actnParameter" name="Parameter" >
+    <logic>
+      <generalizations>
+	    <generalization>
+		  <parent parent_id="krnnParameter" />
+	    </generalization>
+	  </generalizations>
+	  <properties>
+        <property type="enum" name="effect" >
+          <enum idref="acttParameterEffectKind" />
+        </property>
+	    <property type="bool" name="isException" >
+          <default>false</default>
+        </property>
+		<property type="bool" name="isStream" >
+          <default>false</default>
+        </property>
+	  </properties>
+	  <containers>
+        <container>
+          <contains idref="actnParameterSet" role="parameterSet" />
+	    </container>
+	  </containers>
+    </logic>
+  </node>
+  <node id="actnParameterSet" name="ParameterSet">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="krnnNamedElement" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="krnnConstraint" role="condation" />
+		  <contains idref="actnParameter" role="parameter" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actPin" name="Pin">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actnObjectNode" />
+		  <parent parent_id="batnPin" />
+        </generalization>
+      </generalizations>
+	  <properties>
+	    <property type="bool" name="isControl" >
+          <default>false</default>
+        </property>
+	  </properties>
+	  <containers>
+        <container>
+          <contains idref="" role="" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actnSendObjectAction" name="SendObjectAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnSendObjectAction" />
+        </generalization>
+      </generalizations>
+	</logic>
   </node>
   <node id="actnSendSignalAction" name="SendSignalAction" >
    <graphics>
@@ -751,12 +1056,26 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="krnnNamedElement" />
+      <parent parent_id="batnSendSignalAction" />
      </generalization>
     </generalizations>
    </logic>
   </node>
-  <node id="actStructuredActivityNode" name="StructuredActivityNode" >
+  <node id="actnSequenceNode" name="SequenceNode">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="actnStructuredActivityNode" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="actnExecutableNode" role="executableNode" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+  <node id="actnStructuredActivityNode" name="StructuredActivityNode" >
    <graphics>
     <view>
      <picture sizex="100" sizey="100" >
@@ -771,23 +1090,47 @@
    </graphics>
    <logic>
     <generalizations>
-     <generalization>
-      <parent parent_id="actnAction" />
-      <parent parent_id="actActivityGroup" />
-      <parent parent_id="actnExpansionNode" />
-      <parent parent_id="krnnNamespace" />
-     </generalization>
+      <generalization>
+        <parent parent_id="actnAction" />
+        <parent parent_id="actActivityGroup" />
+        <parent parent_id="actnExpansionNode" />
+        <parent parent_id="krnnNamespace" />
+      </generalization>
     </generalizations>
+	<properties>
+	  <property type="bool" name="mustIsolate" >
+        <default>false</default>
+      </property>
+	</properties>
     <containers>
-     <container>
-      <contains idref="actActivityNode" role="node" />
-      <contains idref="acteActivityEdge" role="edge" />
-     </container>
-     <container>
-      <contained_by idref="actnActivity" role="activity" />
-     </container>
+      <container>
+	    <contains idref="actnVariable" role="variable" />
+        <contains idref="actActivityNode" role="node" />
+        <contains idref="acteActivityEdge" role="edge" />
+      </container>
+      <container>
+        <contained_by idref="actnActivity" role="activity" />
+      </container>
     </containers>
    </logic>
+  </node>
+  <node id="actnUnmarshallAction" name="UnmarshallAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnUnmarshallAction" />
+        </generalization>
+      </generalizations>
+	</logic>
+  </node>
+  <node id="actnValuePin" name="ValuePin">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnValuePin" />
+        </generalization>
+      </generalizations>
+	</logic>
   </node>
   <node id="actValueSpecificationAction" name="ValueSpecificationAction" >
     <logic>
@@ -797,6 +1140,22 @@
 		</generalization>
 	  </generalizations>
 	</logic>
+  </node>
+  <node id="actnVariable" name="Variable" >
+    <logic>
+      <generalizations>
+	    <generalization>
+	 	<parent parent_id="krnnMultiplicityElement" />
+ 		<parent parent_id="krnnTypedElem" />
+ 	  </generalization>
+ 	 </generalizations>
+	 <containers>
+        <container>
+          <contains idref="actnStructuredActivityNode" role="scope" />
+		  <contains idref="actnActivity" role="activityScope" />
+	    </container>
+	  </containers>
+    </logic>
   </node>
   
 
@@ -868,258 +1227,7 @@
 	   </generalizations>
 	 </logic>
    </node>
-
-<!-- some strange node are under this line -->
-
- <node id="actControlNode" name="ControlNode" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="actActivityNode" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
- 
- <node id="actFinalNode" name="FinalNode" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="actControlNode" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
- 
- <node id="actnVariable" name="Variable" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="krnnMultiplicityElement" />
-		<parent parent_id="krnnTypedElem" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
- 
- <node id="actnParameter" name="Parameter" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="krnnParameter" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
- 
-  
-  <node id="actnForkNodeWithControlFlows" name="ForkNodeWithControlFlows" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associatios>
-     <assoc_ref idref="actaControlFlowBegin" />
-     <assoc_ref idref="actaControlFlowEnd" />
-    </associatios>
-   </logic>
-  </node>
-
-  <node id="actnForkNodeWithObjectFlows" name="ForkNodeWithObjectFlows" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-    </associations>
-   </logic>
-  </node>
-
-  <node id="actnJoinNodeWithControlFlows" name="JoinNodeWithControlFlows" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaControlFlowBegin" />
-     <assoc_ref idref="actaControlFlowEnd" />
-    </associations>
-   </logic>
-  </node>
-
-  <node id="actnJoinNodeWithObjectFlows" name="JoinNodeWithObjectFlows" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-    </associations>
-   </logic>
-  </node>
-
-  <node id="actnAcceptTimeEventAction" name="AcceptTimeEventAction" >
-   <graphics>
-    <view>
-     <picture sizex="40" sizey="50" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0" stroke-width="1" x2="40" fill-style="solid" />
-     </picture>
-	 <ports>
-       <point_port x="20" y="25" />
-	 </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnNamedElement" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-
-  <node id="actnTimeEvent" name="TimeEvent" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="80" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="59" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="79" x1="1" y2="79" stroke-width="1" x2="59" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="79" x1="1" y2="1" stroke-width="1" x2="59" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="79" stroke-width="1" x2="59" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnNamedElement" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-
-  <node id="actnObjectNodeWithSignal" name="ObjectNodeWithSignal" >
-   <graphics>
-    <view>
-     <picture sizex="80" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="84" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30" stroke-width="1" x2="99" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59" stroke-width="1" x2="84" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59" stroke-width="1" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="30" stroke-width="1" x2="16" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="16" y2="1" stroke-width="1" x2="1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnTypedElem" />
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-    </associations>
-   </logic>
-  </node>
-
-  <edge id="acteEdge" name="Edge" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="any leave" end_type="arrow" id="actaEdgeBegin" >
-      <begin idref="krnnElement" />
-     </association>
-     <association role="any enter" id="actaEdgeEnd" >
-      <end idref="krnnElement" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-
-  <edge id="acteBehaviorEdge" name="BehaviorEdge" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association id="actaBehaviorEdgeBegin" >
-      <begin idref="bbnBehavior" />
-     </association>
-     <association id="actaBehaviorEdgeEnd" >
-      <end idref="actnDecisionNode" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-
+   
   </graph_types>
  </editor>
 </metamodel>

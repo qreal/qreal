@@ -561,6 +561,21 @@
 	   </containers>
 	 </logic>
    </node>
+   <node id="krnnConstraint" name="Constraint">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="krnnPackageableElem" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="krnnElement" role="constrainedElement" />
+		  <contains idref="krnnValueSpecification" role="specification" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
   </graph_types>
  </editor>
 </metamodel>

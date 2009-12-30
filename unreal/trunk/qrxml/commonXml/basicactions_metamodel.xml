@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
  <include>kernel_metamodel</include>
+ <include>activity_metamodel</include>
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.0</namespace>
  <editor name="Actions" >
@@ -147,6 +148,190 @@
        </containers>
 	 </logic>
    </node>
+   <node id="batnAddVariableValueAction" name="AddVariableValueAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="batnWriteVariableAction" />
+         </generalization>
+       </generalizations>
+	   <properties>
+         <property type="bool" name="isReplaceAll" >
+           <default>false</default>
+         </property>
+	   </properties>
+	   <containers>
+         <container>
+           <contains idref="batnInputPin" role="insertAt" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnWriteVariableAction" name="WriteVariableAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="batnVariableAction" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container>
+           <contains idref="batnInputPin" role="value" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnVariableAction" name="VariableAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="bacnAction" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container>
+           <contains idref="actnVariable" role="variable" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnCallAction" name="CallAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="" />
+         </generalization>
+       </generalizations>
+	   <properties>
+         <property type="bool" name="isSynchronous" >
+           <default>true</default>
+         </property>
+	   </properties>
+	   <containers>
+         <container>
+           <contains idref="batnOutputPin" role="result" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnCallBehaviorAction" name="CallBehaviorAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="batnCallAction" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container>
+           <contains idref="bbnBehavior" role="behavior" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnCallOperationAction" name="CallOperationAction" >
+     <logic>
+	   <generalizations>
+         <generalization>
+		   <parent parent_id="batnCallAction" />
+         </generalization>
+       </generalizations>
+	   <containers>
+         <container>
+           <contains idref="batnInputPin" role="target" />
+		   <contains idref="krnnOperation" role="operation" />
+         </container>
+       </containers>
+	 </logic>
+   </node>
+   <node id="batnSendObjectAction" name="SendObjectAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnInvocationAction" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="batnInputPin" role="request" />
+		  <contains idref="batnInputPin" role="target" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+   <node id="batnInvocationAction" name="InvocationAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="bacnAction" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="batnInputPin" role="argument" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+   <node id="batnSendSignalAction" name="SendSignalAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnInvocationAction" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="batnSignal" role="signal" />
+		  <contains idref="batnInputPin" role="target" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+   <node id="batnSignal" name="Signal">
+  <!-- "from Communication" -->
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="krnnClassifier" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="krnnProperty" role="ownedAttribute" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+   <node id="batnUnmarshallAction" name="UnmarshallAction">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="bacnAction" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="batnInputPin" role="object" />
+		  <contains idref="krnnClassifier" role="unmarshallType" />
+		  <contains idref="batnOutputPin" role="result" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
+   <node id="batnValuePin" name="ValuePin">
+    <logic>
+	  <generalizations>
+        <generalization>
+          <parent parent_id="batnInputPin" />
+        </generalization>
+      </generalizations>
+	  <containers>
+        <container>
+          <contains idref="krnnValueSpecification" role="value" />
+	    </container>
+	  </containers>
+	</logic>
+  </node>
    
  </graph_types>
  </editor>
