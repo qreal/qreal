@@ -1145,8 +1145,7 @@
     <logic>
       <generalizations>
 	    <generalization>
-	 	<parent parent_id="krnnMultiplicityElement" />
- 		<parent parent_id="krnnTypedElem" />
+	 	<parent parent_id="batnVariable" />
  	  </generalization>
  	 </generalizations>
 	 <containers>
