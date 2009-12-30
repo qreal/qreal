@@ -687,7 +687,7 @@
    <logic>
     <generalizations>
      <generalization>
-      <parent parent_id="actStructuredActivityNode" />
+      <parent parent_id="actnStructuredActivityNode" />
      </generalization>
     </generalizations>
     <properties>
