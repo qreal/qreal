@@ -1,32 +1,49 @@
-include (qmakeQrxc.pri)
-
-QT = core \
-     xml \
-     gui \
-
+TEMPLATE = app
+QT += xml gui
 CONFIG += console
-
-DESTDIR = $$dirname(QMAKE_QRXC)
-OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
-HEADERS += generator.h \
-    entity.h \
-    editor_file.h \
+HEADERS += association.h \
+    diagram.h \
+    edgeType.h \
     editor.h \
-    non_graph_type.h \
+    enumType.h \
+    graphicType.h \
+    label.h \
+    linePort.h \
+    nameNormalizer.h \
+    nodeType.h \
+    nonGraphicType.h \
+    numericType.h \
+    outFile.h \
+    pointPort.h \
+    port.h \
     property.h \
+    scalableCoordinate.h \
     sdftocpp.h \
+    stringType.h \
+    type.h \
+    xmlCompiler.h
 
-
-SOURCES += generator.cpp \
-    entity.cpp \
-    editor_file.cpp \
+SOURCES += association.cpp \
+    diagram.cpp \
+    edgeType.cpp \
     editor.cpp \
-    non_graph_type.cpp \
-    property.cpp \
-    sdftocpp.cpp \
+    enumType.cpp \
+    graphicType.cpp \
+    label.cpp \
+    linePort.cpp \
     main.cpp \
-
-# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
-include(utils.pri)
+    nameNormalizer.cpp \
+    nodeType.cpp \
+    nonGraphicType.cpp \
+    numericType.cpp \
+    outFile.cpp \
+    pointPort.cpp \
+    port.cpp \
+    property.cpp \
+    scalableCoordinate.cpp \
+    sdftocpp.cpp \
+    stringType.cpp \
+    type.cpp \
+    xmlCompiler.cpp

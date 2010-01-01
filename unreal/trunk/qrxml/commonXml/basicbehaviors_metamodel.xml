@@ -1,96 +1,21 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <include>class_metamodel</include>
- <namespace>UML 2.1</namespace>
- <editor name="BASIC BEHAVIOURS" >
-  <!-- BasicBehaviors -->
-  <non_graph_types>
-	<enum id="bbntCallConcurrencyKind" name="CallConcurrencyKind" >
-       <value>sequential</value>
-       <value>guarded</value>
-       <value>concurrent</value>
-    </enum>
-  </non_graph_types>
-  <graph_types>
-  <node id="bbnBehavior" name="Behavior" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="cnClass" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contains idref="krnnBehavioralFeature" role="method" />
-     </container>
-     <container>
-      <contains idref="krnnParameter" />
-     </container>
-     <container inherited_from="E-E" >
-      <contained_by idref="bbnBehavioredClassifier" role="ownedBehavior" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="bbnBehavioredClassifier" name="BehavioredClassifier" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnClassifier" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="bbnOpaqueBehavior" name="OpaqueBehavior" >
-   <logic>
-    <properties>
-     <property type="text" name="body" />
-     <property type="text" name="language" />
-    </properties>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavior" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container inherited_from="E-E" >
-      <contains idref="bbnBehavior" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="bbnFunctionBehavior" name="FunctionBehavior" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnOpaqueBehavior" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="bbnBehavioralFeature" name="BehavioralFeature" >
-    <logic>
-      <generalizations>
-        <generalization>
-          <parent parent_id="krnnBehavioralFeature" />
-        </generalization>
-      </generalizations>
-	  <properties>
-        <property type="bool" name="isAbstract" />
-		<property type="enum" name="concurrency" >
-        <enum idref="bbntCallConcurrencyKind" />
-		<default>sequential</default>
-      </property>
-	  </properties>
-	  <containers>
-        <container>
-          <contains idref="bbnBehavior" role="methods" />
-		  <contains idref="krnnClassifier" role="raisedException" />
-	    </container>
-	  </containers>
-    </logic>
-  </node>
-  </graph_types>
- </editor>
+	<include>kernel_metamodel.xml</include>
+	<include>classEditor.xml</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="Basic Behaviours" >
+		<graphicTypes>
+			<node name="Behavour" >
+				<logic>
+					<generalizations>
+						<parent parentName="Class" />
+					</generalizations>			
+					<properties>
+						<property type="text" name="body" />
+						<property type="text" name="language" />
+					</properties>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
 </metamodel>
