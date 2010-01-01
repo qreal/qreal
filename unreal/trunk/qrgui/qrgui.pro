@@ -10,6 +10,7 @@ SOURCES		=	main.cpp
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
+RCC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
