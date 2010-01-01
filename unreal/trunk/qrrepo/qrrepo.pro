@@ -21,7 +21,7 @@ DEFINES += QRREPO_LIBRARY
 HEADERS += \
 	private/client.h \
 	private/classes/logicObject.h \
-	qrRepoGlobal.h \
+	private/qrRepoGlobal.h \
 
 SOURCES += \
 	private/client.cpp \

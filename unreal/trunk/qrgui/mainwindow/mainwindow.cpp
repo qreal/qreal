@@ -150,26 +150,20 @@ MainWindow::MainWindow()
 void MainWindow::openNewTab()
 {
 	QModelIndex index = QModelIndex();
-	if (ui.diagramExplorer->hasFocus())
-	{
+	if (ui.diagramExplorer->hasFocus()) {
 		index = ui.diagramExplorer->currentIndex();
 	}
 	int tabNumber = -1;
-	for (int i = 0; i < ui.tabs->count(); i++)
-	{
+	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if ((tab->mvIface()->rootIndex() == index) && (ui.tabs->currentIndex() != i))
-		{
+		if ((tab->mvIface()->rootIndex() == index) && (ui.tabs->currentIndex() != i)) {
 			tabNumber = i;
 			break;
 		}
 	}
-	if (tabNumber != -1)
-	{
+	if (tabNumber != -1) {
 		ui.tabs->setCurrentIndex(tabNumber);
-	}
-	else
-	{
+	} else {
 		EditorView *view = new EditorView();
 		ui.tabs->addTab(view,"test");
 		ui.tabs->setCurrentWidget(view);
@@ -237,12 +231,9 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 
 	if (ui.tabs->isEnabled())
 	{
-		if (parent == mModel->rootIndex())
-		{
+		if (parent == mModel->rootIndex()) {
 			getCurrentTab()->mvIface()->setRootIndex(idx);
-		}
-		else
-		{
+		} else {
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
@@ -280,9 +271,7 @@ void MainWindow::sceneSelectionChanged()
 				mPropertyModel.setIndex(elem->index());
 			}
 		}
-	}
-	else
-	{
+	} else {
 		ui.diagramExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.setIndex(QModelIndex());
 	}
@@ -417,13 +406,10 @@ EditorView * MainWindow::getCurrentTab()
 
 void MainWindow::changeMiniMapSource( int index )
 {
-	if (index != -1)
-	{
+	if (index != -1) {
 		ui.tabs->setEnabled(true);
 		ui.minimapView->setScene(getCurrentTab()->scene());
-	}
-	else
-	{
+	} else {
 		ui.tabs->setEnabled(false);
 	}
 }
@@ -449,5 +435,4 @@ void MainWindow::generateEditor()
 {
 	EditorGeneratorDialog editorGeneratorDialog(mModel->api());
 	editorGeneratorDialog.exec();
-
 }

@@ -12,10 +12,10 @@ Model::Model(EditorManager const &editorManager)
 {
 	rootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
-	if (rootItem->children().count() == 0)
-	{
+	if (rootItem->children().count() == 0) {
 		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel/krnnDiagram"), QUuid::createUuid().toString());
-		addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
+		if (mEditorManager.hasElement(elementId.type()))
+			addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
 	}
 }
 

@@ -34,10 +34,6 @@ EditorManager::EditorManager(QObject *parent)
 		if (plugin) {
 			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 			if (iEditor) {
-				foreach (QString d, iEditor->diagrams())
-					foreach (QString e, iEditor->elements(d))
-					;
-
 				mPluginsLoaded += iEditor->id();
 				mPluginIface[iEditor->id()] = iEditor;
 			}
@@ -152,4 +148,17 @@ void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id c
 	foreach (Id child, api.children(id)) {
 		checkNeededPluginsRecursive(api, child, result);
 	}
+}
+
+bool EditorManager::hasElement(Id const &elementId) const
+{
+	Q_ASSERT(elementId.idSize() == 3);
+	if (!mPluginsLoaded.contains(elementId.editor()))
+		return false;
+	EditorInterface *editor = mPluginIface[elementId.editor()];
+	foreach (QString diagram, editor->diagrams())
+		foreach (QString element, editor->elements(diagram))
+			if (elementId.diagram() == diagram && elementId.element() == element)
+				return true;
+	return false;
 }
