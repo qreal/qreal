@@ -1,7 +1,7 @@
 #include "xmlCompiler.h"
 #include "editor.h"
 #include "nameNormalizer.h"
-#include "outFile.h"
+#include "../utils/outFile.h"
 #include "diagram.h"
 #include "type.h"
 

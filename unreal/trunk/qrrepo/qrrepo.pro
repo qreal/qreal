@@ -4,6 +4,9 @@ TARGET = qrrepo
 
 TEMPLATE = lib
 
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+
 win32 {
         CONFIG(debug, debug|release) {
                 DESTDIR = ../qrgui/debug
@@ -34,3 +37,7 @@ SOURCES += private/repoApi.cpp \
 
 # Код из qrgui/kernel, который тоже неплохо бы куда-нибудь вынести
 include(qrguiCode.pri)
+		
+# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
+# Содержит код, общий для генератора редакторов и основной части.
+include (../utils/utils.pri)

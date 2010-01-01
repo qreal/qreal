@@ -1,34 +1,18 @@
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QIODevice>
-#include <QtCore/QTextStream>
-#include <QtCore/QFile>
+#include <QFile>
+#include <QTextStream>
 
-namespace utils {
+class OutFile
+{
+public:
+	explicit OutFile(QString const &fileName);
+	~OutFile();
+	QTextStream& operator()();
 
-	class OutFile
-	{
-	public:
-		explicit OutFile(QString const &fileName)
-				: mFile(fileName)
-		{
-			mFile.open(QIODevice::WriteOnly | QIODevice::Text);
-			mOut.setDevice(&mFile);
-		}
+private:
+	QTextStream mOut;
+	QFile mFile;
+};
 
-		~OutFile()
-		{
-			mFile.close();
-		}
 
-		QTextStream& operator()()
-		{
-			return mOut;
-		}
-	private:
-		QTextStream mOut;
-		QFile mFile;
-	};
-
-}

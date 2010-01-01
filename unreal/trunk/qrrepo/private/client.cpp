@@ -351,7 +351,7 @@ void Client::saveToDisk() const
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
-		utils::OutFile out(filePath);
+		OutFile out(filePath);
 		doc.save(out(), 2);
 	}
 }

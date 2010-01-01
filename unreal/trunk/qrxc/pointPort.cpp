@@ -1,5 +1,5 @@
 #include "pointPort.h"
-#include "outFile.h"
+#include "../utils/outFile.h"
 
 bool PointPort::init(QDomElement const &element, int width, int height)
 {

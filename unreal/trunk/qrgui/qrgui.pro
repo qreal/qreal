@@ -7,6 +7,8 @@ INCLUDEPATH	+=	../qrxml/editors \
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 
+OBJECTS_DIR = .obj
+UI_DIR = .ui
 MOC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++")) {
@@ -41,4 +43,4 @@ HEADERS += ../qrxml/editorinterface.h
 
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.
-include (utils.pri)
+include (../utils/utils.pri)

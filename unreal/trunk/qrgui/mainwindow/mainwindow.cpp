@@ -14,14 +14,14 @@
 
 #include <QtCore/QDebug>
 
-#include "dialogs/plugindialog.h"
+#include "../dialogs/plugindialog.h"
 #include "editorinterface.h"
 #include "../model/model.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
-#include "dialogs/editorGeneratorDialog.h"
+#include "../dialogs/editorGeneratorDialog.h"
 
 using namespace qReal;
 

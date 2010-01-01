@@ -1,5 +1,5 @@
 #include "nonGraphicType.h"
-#include "outFile.h"
+#include "../utils/outFile.h"
 
 NonGraphicType::NonGraphicType()
 	: Type(true)

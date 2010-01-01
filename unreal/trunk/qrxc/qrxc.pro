@@ -2,6 +2,7 @@ TEMPLATE = app
 QT += xml gui
 CONFIG += console
 MOC_DIR = .moc
+OBJECTS_DIR = .obj
 
 HEADERS += association.h \
     diagram.h \
@@ -15,7 +16,6 @@ HEADERS += association.h \
     nodeType.h \
     nonGraphicType.h \
     numericType.h \
-    outFile.h \
     pointPort.h \
     port.h \
     property.h \
@@ -38,7 +38,6 @@ SOURCES += association.cpp \
     nodeType.cpp \
     nonGraphicType.cpp \
     numericType.cpp \
-    outFile.cpp \
     pointPort.cpp \
     port.cpp \
     property.cpp \
@@ -47,3 +46,7 @@ SOURCES += association.cpp \
     stringType.cpp \
     type.cpp \
     xmlCompiler.cpp
+		
+# .pri заведён, чтобы структура папок более круто показывалась в креаторе.
+# Содержит код, общий для генератора редакторов и основной части.
+include (../utils/utils.pri)

@@ -1,5 +1,5 @@
 #include "label.h"
-#include "outFile.h"
+#include "../utils/outFile.h"
 
 #include <QDebug>
 

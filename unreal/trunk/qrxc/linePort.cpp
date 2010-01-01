@@ -1,5 +1,5 @@
 #include "linePort.h"
-#include "outFile.h"
+#include "../utils/outFile.h"
 
 bool LinePort::init(QDomElement const &element, int width, int height)
 {
