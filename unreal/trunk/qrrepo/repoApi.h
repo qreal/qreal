@@ -2,10 +2,11 @@
 
 #include "../qrgui/kernel/definitions.h"
 #include "private/client.h"
+#include "private/qrRepoGlobal.h"
 
 namespace qrRepo {
 
-	class RepoApi {
+	class QRREPO_EXPORT RepoApi {
 	public:
 		RepoApi();
 		// Default destructor ok.

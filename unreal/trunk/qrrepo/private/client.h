@@ -2,6 +2,7 @@
 
 #include "../../qrgui/kernel/definitions.h"
 #include "classes/logicObject.h"
+#include "qrRepoGlobal.h"
 
 #include <QVariant>
 #include <QHash>
@@ -16,8 +17,8 @@ namespace qrRepo {
 		class Client
 		{
 		public:
-			Client();
-			~Client();
+			QRREPO_EXPORT Client();
+			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::IdList parents(const qReal::Id &id) const;
 			void addParent(const qReal::Id &id, const qReal::Id &parent);
