@@ -6,6 +6,8 @@ qrxc_source.name = QReal_XML_Compiler
 
 QMAKE_EXTRA_COMPILERS += qrxc_source
 
+FAKE_COMMAND = cd .
+
 qrxc_header.commands = $$FAKE_COMMAND
 qrxc_header.input = QREAL_XML
 qrxc_header.output = generated/pluginInterface.h
