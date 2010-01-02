@@ -23,7 +23,7 @@ bool Type::init(QDomElement const &element)
 	mName = element.attribute("name");
 	if (mName == "")
 	{
-		qDebug() << "Error: anonymous type found";
+		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
 	return true;

@@ -44,7 +44,7 @@ bool EdgeType::initAssociations()
 	mEndType = associationsElement.attribute("endType");
 	if ((mBeginType == "") || (mEndType == ""))
 	{
-		qDebug() << "Error: can't parse associations";
+		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
 	for (QDomElement element = associationsElement.firstChildElement("association"); !element.isNull();
@@ -73,7 +73,7 @@ bool EdgeType::initGraphics()
 	QString lineType = lineTypeElement.attribute("type");
 	if (lineType == "")
 	{
-		qDebug() << "Error: no line type";
+		qDebug() << "ERROR: no line type";
 		return false;
 	}
 	else if (lineType == "noPan"){

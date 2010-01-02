@@ -6,8 +6,10 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication app(argc,argv);
+	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
+
+	qDebug() << "Running " + args.join(" ");
 
 	if (args.count() != 2) {
 		qDebug() << "Usage: qrxc inputFile.xml";

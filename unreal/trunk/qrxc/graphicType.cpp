@@ -31,30 +31,20 @@ bool GraphicType::init(QDomElement const &element)
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull())
 		{
-			qDebug() << "Error: can't find logic tag of graphic type";
+			qDebug() << "ERROR: can't find logic tag of graphic type";
 			return false;
 		}
 		addKernelParent();
 		if (!initParents())
-		{
 			return false;
-		}
 		if (!initProperties())
-		{
 			return false;
-		}
 		if (!initAssociations())
-		{
 			return false;
-		}
 		if (!initGraphics())
-		{
 			return false;
-		}
 		if (!initLabels())
-		{
 			return false;
-		}
 		return true;
 	}
 	else
@@ -79,13 +69,12 @@ bool GraphicType::initParents()
 			qDebug() << "Error: anonymous parent of node";
 			return false;
 		}
+
 		if (!mParents.contains(parentName))
-		{
 			mParents.append(parentName);
-		}
 		else
 		{
-			qDebug() << "Error: parent of node duplicated";
+			qDebug() << "ERROR: parent of node duplicated";
 			return false;
 		}
 	}
@@ -139,7 +128,7 @@ bool GraphicType::addProperty(Property *property)
 	{
 		if (!(mProperties[propertyName] == property))
 		{
-			qDebug() << "Error: property duplicated";
+			qDebug() << "ERROR: property duplicated";
 			delete property;
 			return false;
 		}
@@ -163,7 +152,7 @@ bool GraphicType::resolve()
 		Type *parent = mDiagram->findType(parentName);
 		if (parent == NULL)
 		{
-			qDebug() << "Error: can't find parent" << parentName;
+			qDebug() << "ERROR: can't find parent" << parentName;
 			return false;
 		}
 		if (!parent->isResolved())

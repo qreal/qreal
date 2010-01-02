@@ -13,7 +13,7 @@ bool Label::init(QDomElement const &element, int width, int height)
 	mTextBinded = element.attribute("textBinded");
 	if ((mText == "") && (mTextBinded == ""))
 	{
-		qDebug() << "Error: can't parse label";
+		qDebug() << "ERROR: can't parse label";
 		return false;
 	}
 	return true;

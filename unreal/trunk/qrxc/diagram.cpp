@@ -31,7 +31,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 	{
 		if (element.nodeName() == "graphicTypes")
 		{
-			if (!initGraphicTypes(element)) 
+			if (!initGraphicTypes(element))
 			{
 				return false;
 			}
@@ -48,7 +48,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 			QString name = element.nodeName();
 			if ((name != "graphicTypes") && (name != "nonGraphicTypes"))
 			{
-				qDebug() << "Error: unknown tag" << name;
+				qDebug() << "ERROR: unknown tag" << name;
 			}
 		}
 	}
@@ -85,7 +85,7 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 		}
 		else
 		{
-			qDebug() << "Error: unknown graphic type" << element.nodeName();
+			qDebug() << "ERROR: unknown graphic type" << element.nodeName();
 			return false;
 		}
 	}
@@ -130,7 +130,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 		}
 		else
 		{
-			qDebug() << "Error: unknown non graphic type" << element.nodeName();
+			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();
 			return false;
 		}
 	}
@@ -143,7 +143,7 @@ bool Diagram::resolve()
 	{
 		if (!type->resolve())
 		{
-			qDebug() << "Error: can't resolve";
+			qDebug() << "ERROR: can't resolve";
 			return false;
 		}
 	}

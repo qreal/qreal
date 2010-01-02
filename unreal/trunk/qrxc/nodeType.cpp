@@ -87,12 +87,12 @@ bool NodeType::initPorts()
 
 	if (!initPointPorts(portsElement, out))
 	{
-		qDebug() << "Error: can't parse point ports";
+		qDebug() << "ERROR: can't parse point ports";
 		return false;
 	}
 	if (!initLinePorts(portsElement, out))
 	{
-		qDebug() << "Error: can't parse line ports";
+		qDebug() << "ERROR: can't parse line ports";
 		return false;
 	}
 	out() << "</picture>\n";

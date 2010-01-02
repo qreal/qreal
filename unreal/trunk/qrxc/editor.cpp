@@ -6,7 +6,7 @@
 #include <QDebug>
 
 Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
-	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false) 
+	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false)
 {}
 
 Editor::~Editor()
@@ -32,10 +32,10 @@ bool Editor::load()
 	metamodel = mXmlDomDocument.firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
-		qDebug() << "Error: metamodel tag not found";
+		qDebug() << "ERROR: metamodel tag not found";
 		return false;
-	} 
-	
+	}
+
 	//Load includes
 	for (QDomElement includeElement = metamodel.firstChildElement("include"); !includeElement.isNull();
 		includeElement = includeElement.nextSiblingElement("include"))
@@ -44,7 +44,7 @@ bool Editor::load()
 		Editor *includeFile = mXmlCompiler->loadXmlFile(includeFileName);
 		if (!includeFile)
 		{
-			qDebug() << "Error: can't include file" << includeFileName;
+			qDebug() << "ERROR: can't include file" << includeFileName;
 			return false;
 		}
 		mIncludes.append(includeFile);
@@ -58,14 +58,14 @@ bool Editor::load()
 		Diagram const *existingDiagram = mXmlCompiler->getDiagram(diagramName);
 		if (existingDiagram)
 		{
-			qDebug() << "Error: diagram" << diagramName << "is already loaded";
+			qDebug() << "ERROR: diagram" << diagramName << "is already loaded";
 			return false;
 		}
 		qDebug() << "parsing diagram" << diagramName;
 		Diagram *diagram = new Diagram(diagramName, this);
 		if (!diagram->init(diagramElement))
 		{
-			qDebug() << "Error: diagram" << diagramName << "can't be parsed";
+			qDebug() << "ERROR: diagram" << diagramName << "can't be parsed";
 			delete diagram;
 			return false;
 		}

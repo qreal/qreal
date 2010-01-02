@@ -17,26 +17,18 @@ XmlCompiler::XmlCompiler()
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
 	QDir dir;
 	if(!dir.exists("generated"))
-	{
 		dir.mkdir("generated");
-	}
 	dir.cd("generated");
 	if(!dir.exists("shapes"))
-	{
 		dir.mkdir("shapes");
-	}
 	dir.cd("..");
 }
 
 XmlCompiler::~XmlCompiler()
 {
 	foreach(Editor *editor, mEditors.values())
-	{
 		if (editor)
-		{
 			delete editor;
-		}
-	}
 }
 
 void XmlCompiler::compile(QString const &inputXmlFileName)
@@ -52,53 +44,35 @@ Editor* XmlCompiler::loadXmlFile(QString inputXmlFileName)
 {
 	qDebug() << "Loading file started" << inputXmlFileName;
 	QFile inputXmlFile(inputXmlFileName);
-	if (!inputXmlFile.open(QIODevice::ReadOnly))
-	{
-		QFileInfo inputXmlFileInfo(inputXmlFile);
-		QDir inputXmlFileDir(inputXmlFileInfo.path());
-		inputXmlFileDir.cd("../commonXml");
-		inputXmlFileName = inputXmlFileDir.filePath(inputXmlFileInfo.fileName());
-		qDebug() << "Loading file trying" << inputXmlFileName;
-		inputXmlFile.setFileName(inputXmlFileName);
-		if (!inputXmlFile.open(QIODevice::ReadOnly))
-		{
-			qDebug() << "Error: can't open file" << inputXmlFileName;
-			return NULL;
-		}
+	if (!inputXmlFile.open(QIODevice::ReadOnly)) {
+		qDebug() << "ERROR: can't open file" << inputXmlFileName;
+		return NULL;
 	}
-	Editor *editor;
-	if (mEditors.contains(inputXmlFileName))
-	{
-		editor = mEditors[inputXmlFileName];
+
+	if (mEditors.contains(inputXmlFileName)) {
+		Editor *editor = mEditors[inputXmlFileName];
 		inputXmlFile.close();
-		if (editor->isLoaded())
-		{
+		if (editor->isLoaded()) {
 			qDebug() << "File already loaded";
 			return editor;
-		}
-		else
-		{
-			qDebug() << "Error: cycle detected";
+		} else {
+			qDebug() << "ERROR: cycle detected";
 			return NULL;
 		}
-	}
-	else
-	{
+	} else {
 		QDomDocument inputXmlDomDocument;
 		QString error = "";
 		int errorLine = 0;
 		int errorColumn = 0;
-		if(!inputXmlDomDocument.setContent(&inputXmlFile, false, &error, &errorLine, &errorColumn))
-		{
-			qDebug() << "parse error" << "at" << errorLine << "," << errorColumn << error;
+		if(!inputXmlDomDocument.setContent(&inputXmlFile, false, &error, &errorLine, &errorColumn)) {
+			qDebug() << "ERROR: parse error" << "at" << errorLine << "," << errorColumn << error;
 			inputXmlFile.close();
 			return NULL;
 		}
 		inputXmlFile.close();
-		editor = new Editor(inputXmlDomDocument, this);
-		if (!editor->load())
-		{
-			qDebug() << "Failed to load file";
+		Editor *editor = new Editor(inputXmlDomDocument, this);
+		if (!editor->load()) {
+			qDebug() << "ERROR: Failed to load file";
 			delete editor;
 			return NULL;
 		}
@@ -113,15 +87,19 @@ Diagram * XmlCompiler::getDiagram(QString const &diagramName)
 	{
 		Diagram *diagram = editor->findDiagram(diagramName);
 		if (diagram)
-		{
 			return diagram;
-		}
 	}
 	return NULL;
 }
 
 void XmlCompiler::generateCode()
 {
+	if (!mEditors.contains(mCurrentEditor))
+	{
+		qDebug() << "ERROR: Main editor xml was not loaded, generation aborted";
+		return;
+	}
+
 	generateElementClasses();
 	generatePluginHeader();
 	generatePluginSource();
@@ -144,12 +122,8 @@ void XmlCompiler::generateElementClasses()
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
 		foreach (Type *type, diagram->types().values())
-		{
 			type->generateCode(out);
-		}
-	}
 	out() << "}\n\n";
 }
 
@@ -228,20 +202,15 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin(){\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
 		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->name() << " \"" << ";\n";
 		out() << "\n";
 	}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
 		foreach (Type *type, diagram->types().values())
-		{
 			type->generateNameMapping(out);
-		}
-	}
 	out() << "}\n\n";
 }
 
@@ -280,12 +249,8 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 	bool notIsFirst = false;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
 		foreach (Type *type, diagram->types().values())
-		{
 			notIsFirst |= type->generateObjectRequestString(out, notIsFirst);
-		}
-	}
 
 	out() << "	else {\n"
 		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
@@ -303,12 +268,8 @@ void XmlCompiler::generateProperties(OutFile &out)
 	bool notIsFirst = false;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-	{
 		foreach (Type *type, diagram->types().values())
-		{
 			notIsFirst |= type->generateProperties(out, notIsFirst);
-		}
-	}
 
 	out() << "\treturn result;\n"
 		<< "}\n";
