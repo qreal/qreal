@@ -17,6 +17,10 @@ win32 | win32-msvc* {
         QRXC = ../../qrxc/qrxc
 }
 
+isEmpty(QREAL_EDITOR_NAME) {
+	error(Please set QREAL_EDITOR_NAME variable in a .pro file of your editor as a folder name of that editor)
+}
+
 !exists($$QREAL_EDITOR_NAME$$quote(\generated\pluginInterface.h)) {
 	COMMAND = cd $$QREAL_EDITOR_NAME && $$QRXC $$QREAL_XML
 	SYS = $$system($$COMMAND) 
