@@ -36,10 +36,14 @@
 						<parent parentName="Classifier" />
 					</generalizations>
 					<properties>
-						<property type="string" name="vals" />
-						<property type="string" name="methods" />
-						<property type="string" name="logicalName" />     
+						<property type="string" name="import" />
+						<property type="string" name="multiplicity" />
 					</properties>
+					<containers>
+						<container>
+							<contains idref="krnnClassifier" role="class" />
+						</container>
+					</containers>
 				</logic>
 			</node>
 			<node name="View" >
@@ -78,6 +82,11 @@
 					<properties>
 						<property type="string" name="logicalName" />
 					</properties>
+					<containers>
+						<container>
+							<contains idref="krnnClassifier" role="class" />
+						</container>
+					</containers>
 				</logic>
 			</node>
 			<edge name="Aggregation" >
@@ -123,7 +132,8 @@
 					</associations>
 				</logic>
 			</edge>
-			<edge name="Kernel Generalization" >
+			<edge name="Generalization" >
+				<lineType type="solidLine" />
 				<logic>
 					<properties>
 						<property type="bool" name="isSubstitutable" />
@@ -166,8 +176,8 @@
 						<property type="string" name="isStatic" />
 						<property type="string" name="isTransient" />
 						<property type="string" name="isVolatile" />
-						<property type="string" name="isLeaf" />			
-					</properties>					
+						<property type="string" name="isLeaf" />
+					</properties>
 				</logic>
 			</node>
 			<node name="Interface" >
