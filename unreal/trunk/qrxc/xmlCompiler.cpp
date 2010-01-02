@@ -10,6 +10,8 @@
 #include <QFileInfo>
 #include <QDebug>
 
+using namespace utils;
+
 XmlCompiler::XmlCompiler()
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
@@ -210,7 +212,7 @@ void XmlCompiler::generatePluginSource()
 
 void XmlCompiler::generateIncludes(OutFile &out)
 {
-	out() << "#include \"" << "pluginInterface.h\"\n" //mPluginName 
+	out() << "#include \"" << "pluginInterface.h\"\n" //mPluginName
 		<< "\n";
 
 	out() << "#include \"" << "elements.h" << "\"\n";
@@ -314,7 +316,7 @@ void XmlCompiler::generateProperties(OutFile &out)
 
 void XmlCompiler::generateResourceFile()
 {
-	OutFile out("generated/shapes/plugin.qrc");// mPluginName 
+	OutFile out("generated/shapes/plugin.qrc");// mPluginName
 	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";

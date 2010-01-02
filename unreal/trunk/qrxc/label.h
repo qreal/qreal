@@ -2,13 +2,15 @@
 
 #include <QDomElement>
 
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class Label
 {
 public:
 	bool init(QDomElement const &element, int width, int height);
-	void generateCode(OutFile &out);
+	void generateCode(utils::OutFile &out);
 
 private:
 	qreal mX;

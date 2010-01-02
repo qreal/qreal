@@ -1,6 +1,8 @@
 #include "linePort.h"
 #include "../utils/outFile.h"
 
+using namespace utils;
+
 bool LinePort::init(QDomElement const &element, int width, int height)
 {
 	QDomElement portStartElement = element.firstChildElement("start");

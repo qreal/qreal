@@ -5,14 +5,17 @@
 #include <QList>
 
 class Port;
-class OutFile;
+
+namespace utils {
+	class OutFile;
+}
 
 class NodeType : public GraphicType
 {
 public:
 	NodeType(Diagram *diagram);
 	virtual ~NodeType();
-	virtual void generateCode(OutFile &out);
+	virtual void generateCode(utils::OutFile &out);
 
 private:
 	QList<Port*> mPorts;
@@ -22,6 +25,6 @@ private:
 	virtual bool initGraphics();
 	bool initSdf();
 	bool initPorts();
-	bool initLinePorts(QDomElement const &portsElement, OutFile &out);
-	bool initPointPorts(QDomElement const &portsElement, OutFile &out);
+	bool initLinePorts(QDomElement const &portsElement, utils::OutFile &out);
+	bool initPointPorts(QDomElement const &portsElement, utils::OutFile &out);
 };

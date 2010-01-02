@@ -1,10 +1,12 @@
 #include "pointPort.h"
 #include "../utils/outFile.h"
 
+using namespace utils;
+
 bool PointPort::init(QDomElement const &element, int width, int height)
 {
-	mX = ((qreal) element.attribute("x").toInt()) / width;
-	mY = ((qreal) element.attribute("y").toInt()) / height;
+	mX = static_cast<qreal>(element.attribute("x").toInt()) / width;
+	mY = static_cast<qreal>(element.attribute("y").toInt()) / height;
 	return true;
 }
 

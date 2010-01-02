@@ -7,6 +7,8 @@
 
 #include <QDebug>
 
+using namespace utils;
+
 const int MAX_LINE_LENGTH = 60;
 
 GraphicType::GraphicType(Diagram *diagram)
@@ -33,28 +35,28 @@ bool GraphicType::init(QDomElement const &element)
 			return false;
 		}
 		addKernelParent();
-		if (!initParents()) 
+		if (!initParents())
 		{
 			return false;
 		}
-		if (!initProperties()) 
+		if (!initProperties())
 		{
 			return false;
 		}
-		if (!initAssociations()) 
+		if (!initAssociations())
 		{
 			return false;
 		}
-		if (!initGraphics()) 
+		if (!initGraphics())
 		{
 			return false;
 		}
-		if (!initLabels()) 
+		if (!initLabels())
 		{
 			return false;
 		}
 		return true;
-	} 
+	}
 	else
 	{
 		return false;
@@ -64,7 +66,7 @@ bool GraphicType::init(QDomElement const &element)
 bool GraphicType::initParents()
 {
 	QDomElement parentsElement = mLogic.firstChildElement("parents");
-	if (parentsElement.isNull()) 
+	if (parentsElement.isNull())
 	{
 		return true;
 	}
@@ -212,14 +214,14 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 	if (mVisible)
 	{
 		generateOneCase(out, notIsFirst);
-		
+
 		QString propertiesString;
 		bool isFirstProperty = true;
 
 		foreach (Property *property, mProperties)
 		{
-			// Õàê: íå ãåíåðèòü ïðåäîïðåäåë¸ííûå ñâîéñòâà, èíà÷å îíè çàòðóò
-			// íàñòîÿùèå è ëèíêè áóäóò öåïëÿòüñÿ ê ÷åìó ïîïàëî.
+			// Ð¥Ð°Ðº: Ð½Ðµ Ð³ÐµÐ½ÐµÑ€Ð¸Ñ‚ÑŒ Ð¿Ñ€ÐµÐ´Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ñ‘Ð½Ð½Ñ‹Ðµ ÑÐ²Ð¾Ð¹ÑÑ‚Ð²Ð°, Ð¸Ð½Ð°Ñ‡Ðµ Ð¾Ð½Ð¸ Ð·Ð°Ñ‚Ñ€ÑƒÑ‚
+			// Ð½Ð°ÑÑ‚Ð¾ÑÑ‰Ð¸Ðµ Ð¸ Ð»Ð¸Ð½ÐºÐ¸ Ð±ÑƒÐ´ÑƒÑ‚ Ñ†ÐµÐ¿Ð»ÑÑ‚ÑŒÑÑ Ðº Ñ‡ÐµÐ¼Ñƒ Ð¿Ð¾Ð¿Ð°Ð»Ð¾.
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
 				|| property->name() == "name")

@@ -5,14 +5,16 @@
 #include <QList>
 
 class Association;
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class EdgeType : public GraphicType
 {
 public:
 	EdgeType(Diagram *diagram);
 	virtual ~EdgeType();
-	virtual void generateCode(OutFile &out);
+	virtual void generateCode(utils::OutFile &out);
 
 private:
 	QList<Association*> mAssociations;
@@ -23,5 +25,5 @@ private:
 	virtual void addKernelParent();
 	virtual bool initAssociations();
 	virtual bool initGraphics();
-	void generateEdgeStyle(QString const &styleString, OutFile &out);
+	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
 };

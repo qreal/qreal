@@ -3,16 +3,18 @@
 #include <QFile>
 #include <QTextStream>
 
-class OutFile
-{
-public:
-	explicit OutFile(QString const &fileName);
-	~OutFile();
-	QTextStream& operator()();
+namespace utils {
 
-private:
-	QTextStream mOut;
-	QFile mFile;
-};
+	class OutFile
+	{
+	public:
+		explicit OutFile(QString const &fileName);
+		~OutFile();
+		QTextStream& operator()();
 
+	private:
+		QTextStream mOut;
+		QFile mFile;
+	};
 
+}

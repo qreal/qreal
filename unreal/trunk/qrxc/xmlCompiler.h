@@ -5,7 +5,9 @@
 
 class Editor;
 class Diagram;
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class XmlCompiler
 {
@@ -27,10 +29,10 @@ private:
 	void generateElementClasses();
 	void generatePluginHeader();
 	void generatePluginSource();
-	void generateIncludes(OutFile &out);
-	void generateNameMappings(OutFile &out);
-	void generateNameMappingsRequests(OutFile &out);
-	void generateGraphicalObjectRequest(OutFile &out);
-	void generateProperties(OutFile &out);
+	void generateIncludes(utils::OutFile &out);
+	void generateNameMappings(utils::OutFile &out);
+	void generateNameMappingsRequests(utils::OutFile &out);
+	void generateGraphicalObjectRequest(utils::OutFile &out);
+	void generateProperties(utils::OutFile &out);
 	void generateResourceFile();
 };

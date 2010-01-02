@@ -5,13 +5,15 @@
 #include "port.h"
 #include "scalableCoordinate.h"
 
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class LinePort : public Port
 {
 public:
 	virtual bool init(QDomElement const &element, int width, int height);
-	virtual void generateCode(OutFile &out);
+	virtual void generateCode(utils::OutFile &out);
 
 private:
 	ScalableCoordinate mStartX;

@@ -1,5 +1,7 @@
 #include "outFile.h"
 
+using namespace utils;
+
 OutFile::OutFile(QString const &fileName)
 {
 	mFile.setFileName(fileName);

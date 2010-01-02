@@ -4,13 +4,15 @@
 
 #include <QDomElement>
 
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class PointPort : public Port
 {
 public:
 	virtual bool init(QDomElement const &element, int width, int height);
-	virtual void generateCode(OutFile &out);
+	virtual void generateCode(utils::OutFile &out);
 
 private:
 	qreal mX;

@@ -3,6 +3,8 @@
 
 #include <QDebug>
 
+using namespace utils;
+
 bool Label::init(QDomElement const &element, int width, int height)
 {
 	mX = ((qreal) element.attribute("x").toInt()) / width;

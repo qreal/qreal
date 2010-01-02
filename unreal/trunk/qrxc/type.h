@@ -4,7 +4,10 @@
 #include <QMap>
 
 class Property;
-class OutFile;
+
+namespace utils {
+	class OutFile;
+}
 
 class Type
 {
@@ -16,10 +19,10 @@ public:
 	bool isResolved();
 	QString name();
 	QMap<QString, Property*> properties();
-	virtual void generateCode(OutFile &out) = 0;
-	virtual void generateNameMapping(OutFile &out) = 0;
-	virtual bool generateObjectRequestString(OutFile &out, bool notIsFirst) = 0;
-	virtual bool generateProperties(OutFile &out, bool notIsFirst) = 0;
+	virtual void generateCode(utils::OutFile &out) = 0;
+	virtual void generateNameMapping(utils::OutFile &out) = 0;
+	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst) = 0;
+	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst) = 0;
 
 protected:
 	QMap<QString, Property*> mProperties;

@@ -15,10 +15,10 @@ public:
 	GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
 	virtual bool init(QDomElement const &element);
-	virtual bool resolve(); 
-	virtual void generateNameMapping(OutFile &out);
-	virtual bool generateObjectRequestString(OutFile &out, bool notIsFirst);
-	virtual bool generateProperties(OutFile &out, bool notIsFirst);
+	virtual bool resolve();
+	virtual void generateNameMapping(utils::OutFile &out);
+	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst);
+	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst);
 
 protected:
 	QDomElement mLogic;
@@ -38,5 +38,5 @@ private:
 	virtual bool initGraphics() = 0;
 	bool initLabels();
 	bool addProperty(Property *property);
-	void generateOneCase(OutFile &out, bool notIsFirst);
+	void generateOneCase(utils::OutFile &out, bool notIsFirst);
 };

@@ -8,6 +8,8 @@
 
 #include <QDebug>
 
+using namespace utils;
+
 EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 {}
 
@@ -73,7 +75,7 @@ bool EdgeType::initGraphics()
 	{
 		qDebug() << "Error: no line type";
 		return false;
-	} 
+	}
 	else if (lineType == "noPan"){
 		lineType = "solidLine";
 	}

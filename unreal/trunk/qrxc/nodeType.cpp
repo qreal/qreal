@@ -10,6 +10,8 @@
 
 #include <QDebug>
 
+using namespace utils;
+
 NodeType::NodeType(Diagram *diagram) : GraphicType(diagram)
 {}
 
@@ -101,7 +103,7 @@ bool NodeType::initPointPorts(QDomElement const &portsElement, OutFile &out)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
 		portElement = portElement.nextSiblingElement("pointPort"))
-	{	
+	{
 		out() << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 		out() << "x1=\""<<portElement.attribute("x") << "\" y1=\""<<portElement.attribute("y") << "\" ";
 		out() << "/>\n";
@@ -124,7 +126,7 @@ bool NodeType::initLinePorts(QDomElement const &portsElement, OutFile &out)
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
 		portElement = portElement.nextSiblingElement("linePort"))
-	{	
+	{
 		QDomElement portStartElement = portElement.firstChildElement("start");
 		QDomElement portEndElement = portElement.firstChildElement("end");
 
@@ -209,10 +211,10 @@ void NodeType::generateCode(OutFile &out)
 	{
 		label->generateCode(out);
 	}
-	if (mLabels.size() > 0)  // ÔÓÚÓÏ ‡ÁÓ·‡Ú¸Òˇ Ò Ì‡‰ÔËÒˇÏË
+	if (mLabels.size() > 0)  // –ø–æ—Ç–æ–º —Ä–∞–∑–æ–±—Ä–∞—Ç—å—Å—è —Å –Ω–∞–¥–ø–∏—Å—è–º–∏
 	{
 		out() << ";\n";
-		out() << "\t\t\tmTitle.setHtml(text);\n";	
+		out() << "\t\t\tmTitle.setHtml(text);\n";
 	}
 
 	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";

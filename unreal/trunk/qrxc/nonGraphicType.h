@@ -2,15 +2,17 @@
 
 #include "type.h"
 
-class OutFile;
+namespace utils {
+	class OutFile;
+}
 
 class NonGraphicType : public Type
 {
 public:
 	NonGraphicType();
-	virtual bool resolve(); 
-	virtual void generateCode(OutFile &out);
-	virtual void generateNameMapping(OutFile &out);
-	virtual bool generateObjectRequestString(OutFile &out, bool notIsFirst);
-	virtual bool generateProperties(OutFile &out, bool notIsFirst);
+	virtual bool resolve();
+	virtual void generateCode(utils::OutFile &out);
+	virtual void generateNameMapping(utils::OutFile &out);
+	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst);
+	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst);
 };

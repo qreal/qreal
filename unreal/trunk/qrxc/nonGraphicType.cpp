@@ -1,6 +1,8 @@
 #include "nonGraphicType.h"
 #include "../utils/outFile.h"
 
+using namespace utils;
+
 NonGraphicType::NonGraphicType()
 	: Type(true)
 {}
