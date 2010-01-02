@@ -1,4 +1,5 @@
 qrxc_source.commands = $$QRXC $$QREAL_XML
+qrxc_source.depends = $$QRXC
 qrxc_source.input = QREAL_XML
 qrxc_source.output = generated/pluginInterface.cpp
 qrxc_source.variable_out = SOURCES
