@@ -3,6 +3,7 @@
 #include <QDomDocument>
 #include <QList>
 #include <QMap>
+#include <QDir>
 
 class XmlCompiler;
 class Diagram;
@@ -15,7 +16,7 @@ public:
 	~Editor();
 	XmlCompiler *xmlCompiler();
 	bool isLoaded();
-	bool load();
+	bool load(QDir const &currentDir);
 	Type *findType(QString const &name);
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();

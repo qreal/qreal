@@ -2,6 +2,7 @@
 
 #include <QMap>
 #include <QString>
+#include <QDir>
 
 class Editor;
 class Diagram;
@@ -15,7 +16,7 @@ public:
 	XmlCompiler();
 	~XmlCompiler();
 	void compile(QString const &inputXmlFileName);
-	Editor *loadXmlFile(QString inputXmlFileName);
+	Editor *loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName);
 	Diagram *getDiagram(QString const &diagramName);
 	void addResource(QString const &resourceName);
 

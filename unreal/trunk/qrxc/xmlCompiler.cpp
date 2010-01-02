@@ -33,24 +33,29 @@ XmlCompiler::~XmlCompiler()
 
 void XmlCompiler::compile(QString const &inputXmlFileName)
 {
-	QFileInfo inputXmlFileInfo(inputXmlFileName);
+	QFileInfo const inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
-	mCurrentEditor = inputXmlFileName;
-	loadXmlFile(inputXmlFileName);
+	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
+	QDir const startingDir = inputXmlFileInfo.dir();
+	loadXmlFile(startingDir, inputXmlFileInfo.fileName());
 	generateCode();
 }
 
-Editor* XmlCompiler::loadXmlFile(QString inputXmlFileName)
+Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
 {
-	qDebug() << "Loading file started" << inputXmlFileName;
-	QFile inputXmlFile(inputXmlFileName);
+	QFileInfo fileInfo(inputXmlFileName);
+	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);  // Проверяем, что нам передали только имя файла, без пути.
+
+	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
+	qDebug() << "Loading file started: " << fullFileName;
+	QFile inputXmlFile(fullFileName);
 	if (!inputXmlFile.open(QIODevice::ReadOnly)) {
-		qDebug() << "ERROR: can't open file" << inputXmlFileName;
+		qDebug() << "ERROR: can't open file" << fullFileName;
 		return NULL;
 	}
 
-	if (mEditors.contains(inputXmlFileName)) {
-		Editor *editor = mEditors[inputXmlFileName];
+	if (mEditors.contains(fullFileName)) {
+		Editor *editor = mEditors[fullFileName];
 		inputXmlFile.close();
 		if (editor->isLoaded()) {
 			qDebug() << "File already loaded";
@@ -71,20 +76,19 @@ Editor* XmlCompiler::loadXmlFile(QString inputXmlFileName)
 		}
 		inputXmlFile.close();
 		Editor *editor = new Editor(inputXmlDomDocument, this);
-		if (!editor->load()) {
+		if (!editor->load(currentDir)) {
 			qDebug() << "ERROR: Failed to load file";
 			delete editor;
 			return NULL;
 		}
-		mEditors[inputXmlFileName] = editor;
+		mEditors[fullFileName] = editor;
 		return editor;
 	}
 }
 
 Diagram * XmlCompiler::getDiagram(QString const &diagramName)
 {
-	foreach (Editor *editor, mEditors)
-	{
+	foreach (Editor *editor, mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
 		if (diagram)
 			return diagram;
@@ -94,8 +98,7 @@ Diagram * XmlCompiler::getDiagram(QString const &diagramName)
 
 void XmlCompiler::generateCode()
 {
-	if (!mEditors.contains(mCurrentEditor))
-	{
+	if (!mEditors.contains(mCurrentEditor)) {
 		qDebug() << "ERROR: Main editor xml was not loaded, generation aborted";
 		return;
 	}

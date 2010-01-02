@@ -25,7 +25,7 @@ bool Editor::isLoaded()
 	return mLoadingComplete;
 }
 
-bool Editor::load()
+bool Editor::load(QDir const &currentDir)
 {
 	QDomElement metamodel;
 
@@ -41,7 +41,10 @@ bool Editor::load()
 		includeElement = includeElement.nextSiblingElement("include"))
 	{
 		QString includeFileName = includeElement.text();
-		Editor *includeFile = mXmlCompiler->loadXmlFile(includeFileName);
+		QFileInfo includeFileInfo(includeFileName);
+		QDir newDir = currentDir;
+		newDir.cd(includeFileInfo.canonicalPath());
+		Editor *includeFile = mXmlCompiler->loadXmlFile(newDir, includeFileInfo.fileName());
 		if (!includeFile)
 		{
 			qDebug() << "ERROR: can't include file" << includeFileName;
