@@ -96,7 +96,7 @@ bool GraphicType::initProperties()
 		if (!property->init(propertyElement))
 		{
 			delete property;
-			return false;
+			continue;
 		}
 		if (!addProperty(property))
 		{

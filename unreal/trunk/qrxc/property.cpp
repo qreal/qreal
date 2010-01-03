@@ -35,7 +35,7 @@ bool Property::init(QDomElement const &element)
 	else if ((mType != "int") && (mType != "string") && (mType != "bool") && (mType != "text") &&
 		(mType != "positiveInt") && (mType != "nonNegativeInt"))
 	{
-		qDebug() << "ERROR: unknown type found";
+		// qDebug() << "ERROR: unknown type" << mType << "found for property" << name();
 		return false;
 	}
 	mDescription = element.firstChildElement("description").text();
@@ -48,7 +48,7 @@ bool Property::initReferenceType(QString typeName, QDomElement const &element)
 	mType = element.firstChildElement(typeName).attribute("nameReference");
 	if (mType == "")
 	{
-		qDebug() << "ERROR: anonymous type found";
+		qDebug() << "ERROR: anonymous property reference type for" << name() << "found";
 		return false;
 	}
 	return true;
