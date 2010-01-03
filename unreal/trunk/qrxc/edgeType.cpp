@@ -77,7 +77,7 @@ bool EdgeType::initGraphics()
 	}
 	QString sdfType = lineType;
 	sdfType.remove("Line").toLower();
-	QString resourceName = mName + "Class.sdf";
+	QString resourceName = NameNormalizer::normalize(mName) + "Class.sdf";
 	OutFile out("generated/shapes/" + resourceName);
 	out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
 		"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
