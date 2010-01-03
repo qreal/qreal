@@ -154,7 +154,7 @@ bool GraphicType::resolve()
 		Type *parent = mDiagram->findType(parentName);
 		if (parent == NULL)
 		{
-			qDebug() << "ERROR: can't find parent" << parentName;
+			qDebug() << "ERROR: can't find parent" << parentName << "for" << mName;
 			return false;
 		}
 		if (!parent->isResolved())

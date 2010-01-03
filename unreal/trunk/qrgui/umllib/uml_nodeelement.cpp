@@ -171,25 +171,27 @@ void NodeElement::storeGeometry()
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
-QString NodeElement::roleValueByName(QString const &roleName) const
+int NodeElement::roleIndexByName(QString const &roleName) const
 {
 	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
 	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
-	int roleIndex = properties.indexOf(roleName);
-	if (roleIndex == -1)
+	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
+}
+
+QString NodeElement::roleValueByName(QString const &roleName) const
+{
+	int roleIndex = roleIndexByName(roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
 		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
-	roleIndex += roles::customPropertiesBeginRole;
-	return itemModel->data(mDataIndex, roleIndex).toString();
+	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
 }
 
 void NodeElement::setRoleValueByName(QString const &roleName, QString const &value)
 {
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
-	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
-	int roleIndex = properties.indexOf(roleName);
-	if (roleIndex == -1)
+	int roleIndex = roleIndexByName(roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
 		return;
-	roleIndex += roles::customPropertiesBeginRole;
+	QAbstractItemModel *itemModel = const_cast<QAbstractItemModel*>(mDataIndex.model());
 	itemModel->setData(mDataIndex, value, roleIndex);
 }
 

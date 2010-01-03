@@ -6,6 +6,7 @@ QString NameNormalizer::normalize(QString const &name)
 {
 	QString result = name;
 	result = result.simplified().replace(" ", "_");
+	result = result.replace("::", "_");
 	result = upperFirst(result);
 	while (result.endsWith("_"))
 	{

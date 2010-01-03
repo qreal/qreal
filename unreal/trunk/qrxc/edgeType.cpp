@@ -23,14 +23,10 @@ EdgeType::~EdgeType()
 
 void EdgeType::addKernelParent()
 {
-	if (mName == "Kernel Relationship")
-	{
-		mParents.append("Named Element");
-	}
+	if (mName == "Kernel Diagram::Kernel Relationship")
+		mParents.append("Kernel Diagram::Named Element");
 	else
-	{
-		mParents.append("Kernel Relationship");
-	}
+		mParents.append("Kernel Diagram::Kernel Relationship");
 }
 
 bool EdgeType::initAssociations()

@@ -142,6 +142,7 @@ namespace UML {
 			* */
 		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
 
+		int roleIndexByName(QString const &roleName) const;
 		void adjustLinks();
 
 		QLineF newTransform(const StatLine& port)  const;

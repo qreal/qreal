@@ -30,22 +30,19 @@ bool NodeType::initAssociations()
 
 void NodeType::addKernelParent()
 {
-	if ((mName != "Kernel Element") && (mName != "Named Element"))
+	// lolwt*?
+	if ((mName != "Kernel Diagram::Kernel Element") && (mName != "Kernel Diagram::Named Element"))
 	{
-		mParents.append("Named Element");
+		mParents.append("Kernel Diagram::Named Element");
 	}
 }
 
 bool NodeType::initGraphics()
 {
 	if (!initSdf())
-	{
 		return false;
-	}
 	if (!initPorts())
-	{
 		return false;
-	}
 	return true;
 }
 
@@ -53,11 +50,8 @@ bool NodeType::initSdf()
 {
 	QDomElement sdfElement = mGraphics.firstChildElement("picture");
 	if (sdfElement.isNull())
-	{
 		mVisible = (mName == "NamedElement");
-	}
-	else
-	{
+	else {
 		mWidth = sdfElement.attribute("sizex").toInt();
 		mHeight = sdfElement.attribute("sizey").toInt();
 		QString name = NameNormalizer::normalize(mName);
