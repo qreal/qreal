@@ -16,11 +16,17 @@ using namespace UML;
 using namespace qReal;
 
 /* {{{ Element title */
-ElementTitle::ElementTitle(int x, int y, QString text)
-	: mFocusIn(false)
+ElementTitle::ElementTitle(int x, int y, QString const &text)
+	: mFocusIn(false), mReadOnly(true), mBinding("")
 {
 	setPos(x, y);
 	setHtml(text);
+}
+
+ElementTitle::ElementTitle(int x, int y, QString const &binding, bool readOnly)
+	: mFocusIn(false), mReadOnly(readOnly), mBinding(binding)
+{
+	setPos(x, y);
 }
 
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -30,10 +36,14 @@ void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		scene()->clearSelection();
 	parentItem()->setSelected(true);
 	if (mFocusIn) {
-		QTextCursor cursor(textCursor());
-		cursor.select(QTextCursor::Document);
-		setTextCursor(cursor);
-		mFocusIn = false;
+		if (mReadOnly)
+			setTextInteractionFlags(Qt::TextBrowserInteraction);
+		else {
+			QTextCursor cursor(textCursor());
+			cursor.select(QTextCursor::Document);
+			setTextCursor(cursor);
+			mFocusIn = false;
+		}
 	}
 }
 
@@ -46,15 +56,21 @@ void ElementTitle::focusInEvent(QFocusEvent *event)
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
-	QString name = toPlainText();
-	QString tmp = toHtml();
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
+	if (mReadOnly)
+		return;
+	QString value = toPlainText();
+	QString tmp = toHtml();
 	// FIXME: Reset selection
 	setHtml("");
 	setHtml(tmp);
-	if (mOldText != toHtml())
-		(static_cast<NodeElement*>(parentItem()))->setName(name);
+	if (mOldText != toHtml()) {
+		if (mBinding == "name")
+			static_cast<NodeElement*>(parentItem())->setName(value);
+		else
+			static_cast<NodeElement*>(parentItem())->setRoleValueByName(mBinding, value);
+	}
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
@@ -92,10 +108,10 @@ NodeElement::~NodeElement()
 		delete title;
 }
 
-void NodeElement::setName(QString name)
+void NodeElement::setName(QString value)
 {
 	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
-	im->setData(mDataIndex, name, Qt::DisplayRole);
+	im->setData(mDataIndex, value, Qt::DisplayRole);
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -164,6 +180,17 @@ QString NodeElement::roleValueByName(QString const &roleName) const
 		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
 	roleIndex += roles::customPropertiesBeginRole;
 	return itemModel->data(mDataIndex, roleIndex).toString();
+}
+
+void NodeElement::setRoleValueByName(QString const &roleName, QString const &value)
+{
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
+	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
+	int roleIndex = properties.indexOf(roleName);
+	if (roleIndex == -1)
+		return;
+	roleIndex += roles::customPropertiesBeginRole;
+	itemModel->setData(mDataIndex, value, roleIndex);
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

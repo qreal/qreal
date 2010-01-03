@@ -28,7 +28,8 @@ namespace UML {
 	{
 		Q_OBJECT
 	public:
-		ElementTitle(int x, int y, QString text);
+		ElementTitle(int x, int y, QString const &text);
+		ElementTitle(int x, int y, QString const &binding, bool readOnly);
 		~ElementTitle() {}
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -37,7 +38,9 @@ namespace UML {
 		virtual void keyPressEvent(QKeyEvent *event);
 	private:
 		bool mFocusIn;
+		bool mReadOnly;
 		QString mOldText;
+		QString mBinding;
 	};
 
 	class NodeElement :  public QObject, public Element
@@ -96,6 +99,10 @@ namespace UML {
 
 		void setPortsVisible(bool value);
 
+		// Для инлайн-редактирования, мы должны иметь возможность менять проперти объекта, пока через его графическое представление.
+		// Можно сделать, чтобы сами текстовые лейблы хранили индекс модели и делали всё сами.
+		void setRoleValueByName(QString const &roleName, QString const &value);
+
 	protected:
 		/** @brief Обработать событие наведения на объект курсора мыши */
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
@@ -124,17 +131,9 @@ namespace UML {
 		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF mContents;
 
-		// TODO: Этого тут вообще быть не должно.
-		/*
-		ElementTitle mDocVis;
-		ElementTitle mDocType;
-		QString mTypeText;
-		QString mVisText;
-		*/
-
 		QList<ElementTitle*> mTitles;
 
-	private:
+ private:
 		/** @brief Направление растяжения элемента */
 		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 

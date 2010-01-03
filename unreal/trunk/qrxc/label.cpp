@@ -26,10 +26,17 @@ QString Label::titleName() const
 
 void Label::generateCodeForConstructor(OutFile &out)
 {
-	out() << "			" + titleName() + " = new ElementTitle("
-			+ mX + ", " + mY + ", \"" + mText + "\");\n"
-			// TODO: вынести отсюда в родительский класс.
-		<< "			" + titleName() + "->setFlags(0);\n"
+	if (mText.isEmpty()) {
+		// Это бинденный лейбл, текст для него будет браться из репозитория
+		out() << "			" + titleName() + " = new ElementTitle("
+				+ mX + ", " + mY + ", \"" + mTextBinded + "\", " + "false" + ");\n";
+	} else {
+		// Это статический лейбл, репозиторий ему не нужен
+		out() << "			" + titleName() + " = new ElementTitle("
+				+ mX + ", " + mY + ", \"" + mText + "\");\n";
+	}
+	// TODO: вынести отсюда в родительский класс.
+	out() << "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			" + titleName() + "->setParentItem(this);\n"
 		<< "			mTitles.append(" + titleName() + ");\n";
