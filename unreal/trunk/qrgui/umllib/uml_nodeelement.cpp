@@ -97,6 +97,7 @@ NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
+	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
 NodeElement::~NodeElement()
@@ -200,32 +201,32 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 	} else {
-		QRectF newcontents = mContents;
+		QRectF newContents = mContents;
 
 		switch (mDragState) {
 		case TopLeft:
-			newcontents.setTopLeft(event->pos());
+			newContents.setTopLeft(event->pos());
 			break;
 		case Top:
-			newcontents.setTop(event->pos().y());
+			newContents.setTop(event->pos().y());
 			break;
 		case TopRight:
-			newcontents.setTopRight(event->pos());
+			newContents.setTopRight(event->pos());
 			break;
 		case Left:
-			newcontents.setLeft(event->pos().x());
+			newContents.setLeft(event->pos().x());
 			break;
 		case Right:
-			newcontents.setRight(event->pos().x());
+			newContents.setRight(event->pos().x());
 			break;
 		case BottomLeft:
-			newcontents.setBottomLeft(event->pos());
+			newContents.setBottomLeft(event->pos());
 			break;
 		case Bottom:
-			newcontents.setBottom(event->pos().y());
+			newContents.setBottom(event->pos().y());
 			break;
 		case BottomRight:
-			newcontents.setBottomRight(event->pos());
+			newContents.setBottomRight(event->pos());
 			break;
 		case None:
 			break;
@@ -233,14 +234,14 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		if (event->modifiers() & Qt::ShiftModifier)
 		{
-			qreal size = std::max(newcontents.width(), newcontents.height());
-			newcontents.setWidth(size);
-			newcontents.setHeight(size);
+			qreal size = std::max(newContents.width(), newContents.height());
+			newContents.setWidth(size);
+			newContents.setHeight(size);
 		}
 
-		newcontents.translate(pos());
-		if (!((newcontents.width() < 10) || (newcontents.height() < 10)))
-			setGeometry(newcontents);
+		newContents.translate(pos());
+		if (!((newContents.width() < 10) || (newContents.height() < 10)))
+			setGeometry(newContents);
 	}
 }
 
