@@ -1,21 +1,79 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
-	<include>kernel_metamodel.xml</include>
-	<include>classMetamodel.xml</include>
-	<namespace>UML 2.1</namespace>
-	<diagram name="Basic Behaviours" >
-		<graphicTypes>
-			<node name="Behavour" >
-				<logic>
-					<generalizations>
-						<parent parentName="Class" />
-					</generalizations>			
-					<properties>
-						<property type="text" name="body" />
-						<property type="text" name="language" />
-					</properties>
-				</logic>
-			</node>
-		</graphicTypes>
-	</diagram>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>kernel_metamodel.xml</include>
+    <include>classMetamodel.xml</include>
+    <namespace>UML 2.1</namespace>
+    <diagram name="Basic Behaviors">
+        <nonGraphicTypes>
+            <enum name="Basic Behaviors Diagram::Call Concurrency Kind">
+                <value>sequential</value>
+                <value>guarded</value>
+                <value>concurrent</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="Basic Behaviors Diagram::Behavior">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Class Diagram::Class"/>
+                    </generalizations>
+                    <properties>
+                        <property type="text" name="body"/>
+                        <property type="text" name="language"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Behaviors Diagram::Behaviored Classifier">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel Diagram::Classifier"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <!--
+			<node name="Basic Behaviors Diagram::Opaque Behavior">
+                <logic>
+                    <properties>
+                        <property type="text" name="body"/>
+                        <property type="text" name="language"/>
+                    </properties>
+                    <generalizations>
+                            <parent parentName="Basic Behaviors Diagram::Behavior"/>
+                    </generalizations>
+                    <containers>
+                        <container>
+                            <contains idref="Basic Behaviors Diagram::Behavior"/>
+                        </container>
+                    </containers>
+                </logic>
+            </node>
+            <node name="Basic Behaviors Diagram::Function Behavior">
+                <logic>
+                    <generalizations>
+                        <generalization>
+                            <parent parentName="Basic Behaviors Diagram::Opaque Behavior"/>
+                        </generalization>
+                    </generalizations>
+                </logic>
+            </node>
+			-->
+            <node name="Basic Behaviors Diagram::Behavioral Feature">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel Diagram::Behavioral Feature"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isAbstract"/>
+                        <property type="enum" name="concurrency">
+                            <enum idref="Basic Behaviors Diagram::Call Concurrency Kind"/>
+                            <default>sequential</default>
+                        </property>
+                        <property type="Basic Behaviors Diagram::Behavior" name="methods"/>
+                        <property type="Kernel Diagram::Classifier" name="raisedException"/>
+                    </properties>
+                </logic>
+            </node>
+
+        </graphicTypes>
+    </diagram>
 </metamodel>

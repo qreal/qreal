@@ -1,347 +1,247 @@
 <?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <include>basicbehaviors_metamodel</include>
- <namespace>UML 2.0</namespace>
- <editor name="Actions" >
- <graph_types>
-   <node id="bacnAcceptEventAction" name="AcceptEventAction">
-     <logic>
-       <generalizations>
-         <generalization>
-           <parent parent_id="bacnAction" />
-         </generalization>
-       </generalizations>
-	   <properties>
-	     <property type="bool" name="isUnmarshall" />
-	   </properties>
-	   <containers>
-         <container name="trigger" >
-           <contains idref="batnTrigger" role="trigger" />
-         </container>
-		 <container name="result" >
-           <contains idref="batnOutputPin" role="result" />
-         </container>
-       </containers>
-	</logic>
-   </node>
-   <node id="bacnAction" name="Action">
-     <logic>
-       <generalizations>
-         <generalization>
-           <parent parent_id="krnnNamedElement" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container name="input" >
-           <contains idref="batnInputpin" role="input" />
-         </container>
-		 <container name="output" >
-           <contains idref="batnOutputPin" role="output" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnTrigger" name="Trigger" >
-   <!-- "from Communications" -->
-     <logic>
-       <generalizations>
-         <generalization>
-		   <parent parent_id="krnnNamedElement" />
-         </generalization>
-       </generalizations>
-	   <containers>
-	     <container name="event" >
-           <contains idref="batnEvent" role="event" />
-         </container>
-	     <container name="trigger" >
-		   <contained_by idref="bacnAcceptEventAction" role="nestedTrigger" />
-         </container>
-	   </containers>
-     </logic>
-   </node>
-   <node id="batnOutputPin" name="OutputPin" >
-     <logic>
-       <generalizations>
-         <generalization>
-		   <parent parent_id="batnPin" />
-         </generalization>
-       </generalizations>
-	   <containers>
-	     <container name="result" >
-		   <contained_by idref="bacnAcceptEventAction" role="nestedOutputPin" />
-         </container>
-		 <container name="output" >
-		   <contained_by idref="bacnAction" role="nestedOutputPin" />
-         </container>
-	   </containers>
-     </logic>
-   </node>
-   <node id="batnInputPin" name="InputPin" >
-     <logic>
-       <generalizations>
-         <generalization>
-		   <parent parent_id="batnPin" />
-         </generalization>
-       </generalizations>
-	   <containers>
-	     <container name="input" >
-		   <contained_by idref="bacnAction" role="nestedInputPin" />
-         </container>
-	   </containers>
-     </logic>
-   </node>
-   <node id="batnEvent" name="Event">
-     <!-- "from Communications" -->
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="krnnPackageableElem" />
-         </generalization>
-       </generalizations>
-	   <containers>
-	     <container name="event" >
-		   <contained_by idref="batnTrigger" role="nestedEvent" />
-         </container>
-	   </containers>
-	 </logic>
-   </node>
-   <node id="batnPin" name="Pin">
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="krnnTypedElem" />
-         </generalization>
-		 <generalization>
-		   <parent parent_id="krnnMultiplicityElement" />
-         </generalization>
-       </generalizations>
-	 </logic>
-   </node>
-   <node id="batnActionInputPin" name="ActionInputPin">
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnInputPin" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container name="fromAction" >
-		   <contained_by idref="bacnAction" role="fromAction" />
-         </container>
-	   </containers>
-	 </logic>
-   </node>
-   <node id="batnValueSpecificationAction" name="ValueSpecificationAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="bacnAction" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container>
-           <contains idref="krnnValueSpecification" role="value" />
-           <contains idref="batnOutputPin" role="result" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnAddVariableValueAction" name="AddVariableValueAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnWriteVariableAction" />
-         </generalization>
-       </generalizations>
-	   <properties>
-         <property type="bool" name="isReplaceAll" >
-           <default>false</default>
-         </property>
-	   </properties>
-	   <containers>
-         <container>
-           <contains idref="batnInputPin" role="insertAt" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnWriteVariableAction" name="WriteVariableAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnVariableAction" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container>
-           <contains idref="batnInputPin" role="value" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnVariableAction" name="VariableAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="bacnAction" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container>
-           <contains idref="batnVariable" role="variable" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnVariable" name="Variable" >
-    <logic>
-      <generalizations>
-	    <generalization>
-	 	<parent parent_id="krnnMultiplicityElement" />
- 		<parent parent_id="krnnTypedElem" />
- 	  </generalization>
- 	 </generalizations>
-    </logic>
-  </node>
-   <node id="batnCallAction" name="CallAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnInvocationAction" />
-         </generalization>
-       </generalizations>
-	   <properties>
-         <property type="bool" name="isSynchronous" >
-           <default>true</default>
-         </property>
-	   </properties>
-	   <containers>
-         <container>
-           <contains idref="batnOutputPin" role="result" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnCallBehaviorAction" name="CallBehaviorAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnCallAction" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container>
-           <contains idref="bbnBehavior" role="behavior" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnCallOperationAction" name="CallOperationAction" >
-     <logic>
-	   <generalizations>
-         <generalization>
-		   <parent parent_id="batnCallAction" />
-         </generalization>
-       </generalizations>
-	   <containers>
-         <container>
-           <contains idref="batnInputPin" role="target" />
-		   <contains idref="krnnOperation" role="operation" />
-         </container>
-       </containers>
-	 </logic>
-   </node>
-   <node id="batnSendObjectAction" name="SendObjectAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnInvocationAction" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="batnInputPin" role="request" />
-		  <contains idref="batnInputPin" role="target" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   <node id="batnInvocationAction" name="InvocationAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="bacnAction" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="batnInputPin" role="argument" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   <node id="batnSendSignalAction" name="SendSignalAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnInvocationAction" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="batnSignal" role="signal" />
-		  <contains idref="batnInputPin" role="target" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   <node id="batnSignal" name="Signal">
-  <!-- "from Communication" -->
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="krnnClassifier" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="krnnProperty" role="ownedAttribute" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   <node id="batnUnmarshallAction" name="UnmarshallAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="bacnAction" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="batnInputPin" role="object" />
-		  <contains idref="krnnClassifier" role="unmarshallType" />
-		  <contains idref="batnOutputPin" role="result" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   <node id="batnValuePin" name="ValuePin">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnInputPin" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="krnnValueSpecification" role="value" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-   
- </graph_types>
- </editor>
- </metamodel>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>kernel_metamodel</include>
+    <include>basicbehaviors_metamodel</include>
+    <namespace>UML 2.0</namespace>
+    <diagram name="Actions">
+        <graphicTypes>
+            <node name="Basic Actions Diagram::Accept Event Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isUnmarshall" />
+						<property type="Basic Actions Diagram::Trigger" name="trigger" />
+						<property type="Basic Actions Diagram::Output Pin" name="result" />
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Named Element"/>
+                    </generalizations>
+					<properties>
+					  <property type="Basic Actions Diagram::Input Pin" name="input"/>
+					  <property type="Basic Actions Diagram::Output Pin" name="output"/>
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Trigger">
+                <!-- "from Communications" -->
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Named Element"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Event" name="event" />
+						<property type="Basic Actions Diagram::Accept Event Action" name="trigger" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Output Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Pin"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Accept Event Action" name="result" />
+						<property type="Basic Actions Diagram::Action" name="output" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Input Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Pin"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Action" name="input" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Event">
+                <!-- "from Communications" -->
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Packageable Element"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Trigger" name="event" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Typed Element"/>
+                            <parent parentName="Kernel Diagram::Multiplicity Element"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Action Input Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Input Pin"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Action" name="fromAction" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Value Specification Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+					<properties>
+						<property type="Kernel Diagram::Value Specification" name="value" />
+						<property type="Kernel Diagram::Output Pin" name="result" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Add Variable Value Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Write Variable Action"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isReplaceAll">
+                            <default>false</default>
+                        </property>
+						<property type="Basic Actions Diagram::Input Pin" name="insertAt"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Write Variable Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Variable Action"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Input Pin" name="value" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Variable Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+					<properties>
+						<property type="Basic Actions Diagram::Variable" name="variable" />
+					</properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Variable">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Multiplicity Element"/>
+                            <parent parentName="Kernel Diagram::Typed Element"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Call Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isSynchronous">
+                            <default>true</default>
+                        </property>
+						<property type="Basic Actions Diagram::Output Pin" name="result"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Call Behavior Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Call Action"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Basic Behavior Diagram::Behavior" name="behavior"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Call Operation Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Call Action" />
+                    </generalizations>
+                        <properties>
+                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
+                            <property type="Kernel Diagram::Operation" name="operation"/>
+                        </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Send Object Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Basic Actions Diagram::Input Pin" name="request"/>
+                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Invocation Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Basic Actions Diagram::Input Pin" name="argument"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::SendSignal Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Basic Actions Diagram::Signal" name="signal"/>
+                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Signal">
+                <!-- "from Communication" -->
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Classifier"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Kernel Diagram::Property" name="ownedAttribute"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Unmarshall Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Basic Actions Diagram::Input Pin" name="object"/>
+                            <property type="Kernel Diagram::Classifier" name="unmarshallType"/>
+                            <property type="Basic Actions Diagram::Output Pin" name="result"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Basic Actions Diagram::Value Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Input Pin"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Kernel Diagram::Value Specification" name="value"/>
+                    </properties>
+                </logic>
+            </node>
+
+        </graphicTypes>
+    </diagram>
+</metamodel>

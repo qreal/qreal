@@ -1,1232 +1,929 @@
 <?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
-  <include>kernel_metamodel</include>
-  <include>basicbehaviors_metamodel</include>
-  <include>basicactions_metamodel</include>
-  <namespace>UML 2.0</namespace>
-  <editor name="Activity Diagram" >
-  <non_graph_types>
-    <enum id="acttType" name="Type" >
-      <value>localPrecondition</value>
-      <value>localPostCondation</value>
-    </enum>
-    <enum id="acttExpansionKind" name="ExpansionKind" >
-      <value>parallel</value>
-      <value>iterative</value>
-      <value>stream</value>
-    </enum>
-    <enum id="acttObjectNodeOrderingKind" name="ObjectNodeOrderingKind" >
-      <value>unordered</value>
-      <value>ordered</value>
-      <value>LIFO</value>
-      <value>FIFO</value>
-    </enum>
-    <enum id="acttParameterEffectKind" name="ParameterEffectKind" >
-      <value>create</value>
-      <value>read</value>
-      <value>update</value>
-      <value>delete</value>
-    </enum>
-  </non_graph_types>
-  <graph_types>
-  <node id="actnAcceptEventAction" name="AcceptEventAction" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="100" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60" stroke-width="1" x2="100" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60" stroke-width="1" x2="0" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30" stroke-width="1" x2="15" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0" stroke-width="1" x2="0" fill-style="solid" />
-     </picture>
-     <ports>
-       <point_port x="15" y="30" />
-       <point_port x="100" y="30" />
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bacnAcceptEventAction" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnAcceptTimeEventAction" name="AcceptTimeEventAction" >
-   <graphics>
-    <view>
-     <picture sizex="40" sizey="50" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50" stroke-width="1" x2="40" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0" stroke-width="1" x2="40" fill-style="solid" />
-     </picture>
-     <ports>
-       <point_port x="20" y="25" />
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bacnAcceptEventAction" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnAction" name="Action" >
-   <graphics>
-    <view>
-     <picture sizex="80" sizey="60" >
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-     <ports>
-      <line_port>
-       <start startx="79" starty="10" />
-       <end endx="79" endy="50" />
-      </line_port>
-      <line_port>
-       <start startx="1" starty="10" />
-       <end endx="1" endy="50" />
-      </line_port>
-      <line_port>
-       <start startx="10" starty="1" />
-       <end endx="70" endy="1" />
-      </line_port>
-      <line_port>
-       <start startx="10" starty="59" />
-       <end endx="70" endy="59" />
-      </line_port>
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityNode" />
-        <parent parent_id="actnExecutableNode" />
-      <parent parent_id="bacnAction" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnActionInputPin" name="ActionInputPin" >
-    <graphics>
-      <view>
-        <picture sizex="20" sizey="20" >
-          <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid" />
-	</picture>
-	<ports>
-	  <line_port>
-	    <start startx="0" starty="0" />
-	    <end endx="0" endy="20" />
-	  </line_port>
-	  <line_port>
-	    <start startx="20" starty="0" />
-	    <end endx="20" endy="20" />
-	  </line_port>
-	  <line_port>
-	    <start startx="0" starty="0" />
-	    <end endx="20" endy="0" />
-	  </line_port>
-	  <line_port>
-	    <start startx="0" starty="20" />
-	    <end endx="20" endy="20" />
-	  </line_port>
-	</ports>
-      </view>
-    </graphics>
-    <logic>
-      <generalizations>
-        <generalization>
-	  <parent parent_id="batnActionInputPin" />
-	</generalization>
-      </generalizations>
-    </logic>
-  </node>
-  <node id="actnActivity" name="Activity" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="100" >
-      <rect x="0" y="0" rx="20" ry="20" width="100" height="60" fill="#ffffff" stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text_from_repo name="name" />
-      </html:html>
-     </repo_info>
-     <ports>
-      <line_port>
-       <start startx="79" starty="10" />
-       <end endx="79" endy="50" />
-      </line_port>
-      <line_port>
-       <start startx="1" starty="10" />
-       <end endx="1" endy="50" />
-      </line_port>
-      <line_port>
-       <start startx="10" starty="1" />
-       <end endx="70" endy="1" />
-      </line_port>
-      <line_port>
-       <start startx="10" starty="59" />
-       <end endx="70" endy="59" />
-      </line_port>
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavior" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contains idfer="actActivityNode" role="node" />
-      <contains idref="acteActivityEdge" role="edge" />
-      <contains idref="actActivityGroup" role="group" />
-     </container>
-     <container>
-      <contained_by idref="actnExpansionRegion" role="expansionRegion" />
-     </container>
-    </containers>
-    <properties>
-      <property type="bool" name="isSingleExecution" >
-       <default>false</default>
-      </property>
-    </properties>
-    <containers>
-      <container>
-        <contains idref="actActivityNode" role="coordinatedNodes" />
-        <contains idref="acteActivityEdge" role="edges" />
-        <contains idref="actnVariable" role="topLevelVariables" />
-      </container>
-      <container>
-        <contained_by idref="actActivityGroup" role="topLevelGroups" />
-        <contained_by idref="actnActivityPartition" role="topLevelPartitions" />
-      </container>
-    </containers>
-   </logic>
-  </node>
-  <edge id="acteActivityEdge" name="ActivityEdge" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-		<html:text_from_repo name="name" />
-		<html:text_from_repo name="guard" />
-		<!-- guard надо писать внутри квадратных скобок  -->
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnRedefElement" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="target" end_type="open_arrow" id="actaActivityEdgeTarget" >
-      <begin idref="actActivityNode" />
-      <begin idref="actnActivityPartition" />
-     </association>
-    </associations>
-    <associations>
-     <association role="source" end_type="no_arrow" id="actaActivityEdgeSource" >
-      <end idref="actActivityNode" />
-	  <end idref="actnActivityPartition" />
-     </association>
-    </associations>
-    <containers>
-     <container>
-      <contained_by idref="actnActivity" role="activity" />
-      <contained_by idref="acteActivityEdge" role="redefinedEdge" />
-      <contained_by idref="actnActivityPartition" role="partition" />
-      <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
-     </container>
-	 <container>
-	   <contains idref="actnInterruptibleActivityRegion" role="interrupts" />
-	   <contains idref="actValueSpecification" role="guard" />
-	   <contains idref="actValueSpecification" role="weight" />
-	 </container>
-    </containers>
-   </logic>
-  </edge>
-  <node id="actnActivityFinalNode" name="ActivityFinalNode" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60" stroke-width="1" x2="60" fill-style="solid" />
-      <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="50" stroke-width="1" x2="50" fill-style="solid" />
-     </picture>
-	 <ports>
-       <point_port x="0" y="15" />
-       <point_port x="15" y="0" />
-	   <point_port x="15" y="60" />
-       <point_port x="60" y="15" />
-	 </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actControlNode" />
-      <parent parent_id="actFinalNode" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actActivityGroup" name="ActivityGroup" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnElement" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contained_by idref="actnActivity" role="activity" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="actActivityNode" name="ActivityNode" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnNamedElement" />
-      <parent parent_id="krnnRedefElement" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contained_by idref="actnActivity" role="activity" />
-      <contained_by idref="actActivityNode" role="redefinedNode" />
-      <contained_by idref="actnActivityPartition" role="inPartition" />
-      <contained_by idref="actnInterruptibleActivityRegion" role="inInterruptableRegion" />
-      <contained_by idref="actStructuredActivityNode" role="structuredActivityNode" />
-     </container>
-     <container>
-      <contains idref="actActivityNode" role="redefineNode" />
-     </container>
-    </containers>
-    <associations>
-     <assoc_ref idref="actaActivityEdgeTarget" />
-     <assoc_ref idref="actaActivityEdgeSource" />
-    </associations>
-   </logic>
-  </node>
-  <node id="actnActivityParameterNode" name="ActivityParameterNode" >
-    <graphics>
-      <view>
-        <picture sizex="80" sizey="60" >
-          <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60" stroke-width="1" x2="80" fill-style="solid" />
-        </picture>
-		<ports>
-		  <line_port>
-		    <start startx="0" starty="0" />
-			<end endx="0" endy="60" />
-		  </line_port>
-		  <line_port>
-		    <start startx="80" starty="0" />
-			<end endx="80" endy="60" />
-		  </line_port>
-		  <line_port>
-		    <start startx="0" starty="0" />
-			<end endx="80" endy="0" />
-		  </line_port>
-		  <line_port>
-		    <start startx="0" starty="60" />
-			<end endx="80" endy="60" />
-		  </line_port>
-	    </ports>
-      </view>
-    </graphics>
-    <logic>
-	  <generalizations>
-	    <generalization>
-		  <parent parent_id="actnObjectNode" />
-		</generalization>
-	  </generalizations>
-	  <containers>
-	    <container>
-		  <contains idref="actnParameter" role="parameter" />
-		</container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnActivityPartition" name="ActivityPartition" >
-    <graphics>
-      <view>
-        <picture sizex="60" sizey="60" >
-          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="3" y2="3" stroke-width="4" x2="57" fill-style="solid" />
-          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="3" y2="57" stroke-width="4" x2="57" fill-style="solid" />
-        </picture>
-	    <ports>
-	      <line_port>
-	        <start startx="0" starty="0" />
-		    <end endx="60" endy="0" />
-	      </line_port>
-		  <line_port>
-		    <start startx="0" starty="60" />
-			<end endx="60" endy="60" />
-		  </line_port>
-	    </ports>
-      </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityGroup" />
-      <parent parent_id="krnnNamedElement" />
-     </generalization>
-    </generalizations>
-	<properties>
-      <property type="bool" name="isDimension" >
-        <default>false</default>
-      </property>
-	  <property type="bool" name="isExternal" >
-        <default>false</default>
-      </property>
-     </properties>
-    <containers>
-     <container>
-      <contains idref="actActivityNode" role="node" />
-      <contains idref="acteActivityEdge" role="edge" />
-      <contains idref="actnActivityPartition" role="superPartition" />
-      <contains idref="actnActivityPartition" role="subPartition" />
-	  <contains idref="krnnElement" role="represents" />
-     </container>
-     <container>
-      <contained_by idref="actnActivityPartition" role="superPartition" />
-      <contained_by idref="actnActivityPartition" role="subPartition" />
-     </container>
-    </containers>
-    <associations>
-     <assoc_ref idref="actaActivityEdgeTarget" />
-     <assoc_ref idref="actaActivityEdgeSource" />
-    </associations>
-   </logic>
-  </node>
-  <node id="actnAddVariableValueAction" name="AddVariableValueAction" >
-    <logic>
-      <generalizations>
-        <generalization>
-          <parent parent_id="batnAddVariableValueAction" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actBehavior" name="Behavior" >
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="bbnBehavior" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="actnParameterSet" role="ownedParameterSet" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actBehavioralFeature" name="BehavioralFeature" >
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="bbnBehavioralFeature" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="actnParameterSet" role="ownedParameterSet" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnCallBehaviorAction" name="CallBehaviorAction" >
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnCallBehaviorAction" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnCallOperationAction" name="CallOperationAction" >
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnCallOperationAction" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnCentralBufferNode" name="CentralBufferNode">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actnObjectNode" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnClause" name="Clause">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="krnnElement" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="actnExecutableNode" role="test" />
-		  <contains idref="actnExecutableNode" role="body" />
-		  <contains idref="actnClause" role="predecessorClause" />
-		  <contains idref="actnClause" role="successorClause" />
-		  <contains idref="actnOutputPin" role="decider" />
-		  <contains idref="actnOutputPin" role="bodyOutput" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnConditionalNode" name="ConditionalNode">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actnStructuredActivityNode" />
-        </generalization>
-      </generalizations>
-	  <properties>
-         <property type="bool" name="isAssured" >
-           <default>false</default>
-         </property>
-		 <property type="bool" name="isDeterminate" >
-           <default>false</default>
-         </property>
-	   </properties>
-	  <containers>
-        <container>
-          <contains idref="actnClause" role="clause" />
-		  <contains idref="actnOutputPin" role="result" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <edge id="acteControlFlow" name="ControlFlow" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="acteActivityEdge" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="begin" end_type="open_arrow" id="actaControlFlowBegin" >
-     </association>
-     <association role="end" end_type="no_arrow" id="actaControlFlowEnd" >
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <node id="actControlNode" name="ControlNode" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="actActivityNode" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
-  <node id="actnDataStoreNode" name="DataStoreNode" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="60" />
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actnCentralBufferNode" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="actaActivityEdgeTarget" />
-	 <assoc_ref idref="actaActivityEdgeSource" />
-    </associations>
-   </logic>
-  </node>
-  <node id="actnDecisionNode" name="DecisionNode">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actControlNode" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="actBehavior" role="decisionInput" />
-		  <contains idref="acteObjectFlow" role="decisionInputFlow" />
-	    </container>
-	  </containers>
-	  <associations>
-        <assoc_ref idref="actaActivityEdgeTarget" />
-	    <assoc_ref idref="actaActivityEdgeSource" />
-      </associations>
-	</logic>
-  </node>
-  <edge id="acteExceptionHandler" name="ExceptionHandler" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnElement" />
-     </generalization>
-    </generalizations>
-	<containers>
-      <container>
-        <contains idref="krnnClassifier" role="exceptionType" />
-		<contains idref="actnObjectNode" role="exceptionInput" />
-	  </container>
-	</containers>
-    <associations>
-     <association role="target" end_type="open_arrow" id="actaExceptionHandlerBegin" >
-      <begin idref="actActivityNode" />
-     </association>
-     <association role="source" end_type="no_arrow" id="actaExceptionHandlerEnd" >
-      <end idref="actActivityNode" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <node id="actnExecutableNode" name="ExecutableNode">
-    <logic>
-	  <generalizations>
-	    <generalization>
-		  <parent parent_id="actActivityNode" />
-		</generalization>
-	  </generalizations>
-	  <containers>
-        <container>
-          <contains idref="acteExceptionHandler" role="handler" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnExpansionNode" name="ExpansionNode" >
-   <graphics>
-    <view>
-     <picture sizex="42" sizey="22" >
-      <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21" stroke-width="1" x2="41" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="20" stroke-width="1" x2="10" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="20" stroke-width="1" x2="20" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="20" stroke-width="1" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actnObjectNode" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contained_by idref="actnExpansionRegion" role="regionAsInput" />
-      <contained_by idref="actnExpansionRegion" role="regionAsOutput" />
-     </container>
-    </containers>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-    </associations>
-   </logic>
-  </node>
-  <node id="actnExpansionRegion" name="ExpansionRegion" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="100" >
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text_from_repo name="keyword" />
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actnStructuredActivityNode" />
-     </generalization>
-    </generalizations>
-    <properties>
-	  <property type="enum" name="mode" >
-        <enum idref="acttExpansionKind" />
-      </property>
-	</properties>
-    <containers>
-     <container>
-      <contains idref="actnExpansionNode" role="inputElement" />
-      <contains idref="actnExpansionNode" role="outputElement" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="actFinalNode" name="FinalNode" >
-   <logic>
-     <generalizations>
-	   <generalization>
-		<parent parent_id="actControlNode" />
-	  </generalization>
-	 </generalizations>
-   </logic>
- </node>
-  <node id="actnFlowFinalNode" name="FlowFinalNode" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59" stroke-width="1" x2="59" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="51" y2="10" stroke-width="1" x2="11" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="11" y2="10" stroke-width="1" x2="51" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actFinalNode" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnForkNode" name="ForkNode">
-    <graphics>
-      <view>
-        <picture sizex="60" sizey="60" >
-          <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-        </picture>
-      </view>
-    </graphics>
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actControlNode" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnInitialNode" name="InitialNode" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59" stroke-width="1" x2="59" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actControlNode" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnInputPin" name="InputPin" >
-    <logic>
-      <generalizations>
-	    <generalization>
-		  <parent parent_id="batnInputPin" />
-	    </generalization>
-	  </generalizations>
-    </logic>
-  </node>
-  <node id="actnInterruptibleActivityRegion" name="InterruptibleActivityRegion" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="100" >
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 10.8 1 C 5.38761 1 1 5.38761 1 10.8 L 1 89.2 C 1 94.6124 5.38761 99 10.8 99 L 89.2 99 C 94.6124 99 99 94.6124 99 89.2 L 99 10.8 C 99 5.38761 94.6124 1 89.2 1 L 10.8 1" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="actActivityGroup" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contains idref="actActivityNode" role="node" />
-      <contains idref="acteActivityEdge" role="interruptingEdge" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="actnJoinNode" name="JoinNode" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59" stroke-width="4" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-     <generalizations>
-       <generalization>
-         <parent parent_id="actControlNode" />
-       </generalization>
-     </generalizations>
-	 <properties>
-       <property type="bool" name="isCombineDuplicate" >
-         <default>true</default>
-       </property>
-	 </properties>
-     <associations>
-       <assoc_ref idref="actaActivityEdgeTarget" />
-       <assoc_ref idref="actaActivityEdgeSource" />
-     </associations>
-	 <containers>
-        <container>
-          <contains idref="krnnValueSpecification" role="joinSpec" />
-	    </container>
-	  </containers>
-   </logic>
-  </node>
-  <node id="actnLoopNode" name="LoopNode">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actnStructuredActivityNode" />
-        </generalization>
-      </generalizations>
-	  <properties>
-       <property type="bool" name="isTestedFirst" >
-         <default>false</default>
-       </property>
-	  </properties>
-	  <containers>
-        <container>
-          <contains idref="actnExecutableNode" role="setupPart" />
-		  <contains idref="actnExecutableNode" role="bodyPart" />
-		  <contains idref="actnExecutableNode" role="test" />
-		  <contains idref="actnOutputPin" role="decider" />
-		  <contains idref="actnOutputPin" role="result" />
-		  <contains idref="actnOutputPin" role="loopVariable" />
-		  <contains idref="actnOutputPin" role="bodyOutput" />
-		  <contains idref="actnInputPin" role="loopVariableInput" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnMergeNode" name="MergeNode" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30" stroke-width="1" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59" stroke-width="1" x2="30" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30" stroke-width="1" x2="59" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1" stroke-width="1" x2="30" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-     <generalizations>
-       <generalization>
-         <parent parent_id="actControlNode" />
-       </generalization>
-     </generalizations>
-     <associations>
-       <assoc_ref idref="actaActivityEdgeTarget" />
-       <assoc_ref idref="actaActivityEdgeSource" />
-     </associations>
-   </logic>
-  </node>
-  <edge id="acteObjectFlow" name="ObjectFlow" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="acteActivityEdge" />
-     </generalization>
-    </generalizations>
-	<properties>
-      <property type="bool" name="isMulticast" >
-        <default>false</default>
-      </property>
-	  <property type="bool" name="isMultireceive" >
-        <default>false</default>
-      </property>
-	</properties>
-    <containers>
-        <container>
-          <contains idref="actBehavior" role="selection" />
-		  <contains idref="actBehavior" role="transformation" />
-	    </container>
-	  </containers>
-    <associations>
-     <association role="begin" end_type="open_arrow" id="actaObjectFlowBegin" >
-      <begin idfer="actnExpansionNode" />
-      <begin idref="actnObjectNodeWithSignal" />
-     </association>
-     <association role="end" end_type="no_arrow" id="actaObjectFlowEnd" >
-      <end idfer="actnExpansionNode" />
-      <end idref="actnObjectNodeWithSignal" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <node id="actnObjectNode" name="ObjectNode" >
-   <graphics>
-    <view>
-     <picture sizex="80" sizey="60" >
-      <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59" stroke-width="1" x2="79" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnTypedElem" />
-      <parent parent_id="actActivityNode" />
-     </generalization>
-    </generalizations>
-	<properties>
-      <property type="enum" name="ordering" >
-        <enum idref="acttObjectNodeOrderingKind" />
-		<default>FIFO</default>
-      </property>
-	  <property type="bool" name="isControlType" >
-        <default>false</default>
-      </property>
-	</properties>
-    <associations>
-     <assoc_ref idref="actaObjectFlowBegin" />
-     <assoc_ref idref="actaObjectFlowEnd" />
-     <assoc_ref idref="actaExceptionHandlerBegin" />
-     <assoc_ref idref="actaExceptionHandlerEnd" />
-    </associations>
-    <containers>
-     <container>
-	  <contains idref="smnState" role="inState" />
-	  <contains idref="actBehavior" role="selection" />
-	  <contains idref="krnnValueSpecification" role="upperBound" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="actnOutputPin" name="OutputPin" >
-    <logic>
-      <generalizations>
-	    <generalization>
-		  <parent parent_id="batnOutputPin" />
-	    </generalization>
-	  </generalizations>
-    </logic>
-  </node>
-  <node id="actnParameter" name="Parameter" >
-    <logic>
-      <generalizations>
-	    <generalization>
-		  <parent parent_id="krnnParameter" />
-	    </generalization>
-	  </generalizations>
-	  <properties>
-        <property type="enum" name="effect" >
-          <enum idref="acttParameterEffectKind" />
-        </property>
-	    <property type="bool" name="isException" >
-          <default>false</default>
-        </property>
-		<property type="bool" name="isStream" >
-          <default>false</default>
-        </property>
-	  </properties>
-	  <containers>
-        <container>
-          <contains idref="actnParameterSet" role="parameterSet" />
-	    </container>
-	  </containers>
-    </logic>
-  </node>
-  <node id="actnParameterSet" name="ParameterSet">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="krnnNamedElement" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="krnnConstraint" role="condation" />
-		  <contains idref="actnParameter" role="parameter" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actPin" name="Pin">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actnObjectNode" />
-		  <parent parent_id="batnPin" />
-        </generalization>
-      </generalizations>
-	  <properties>
-	    <property type="bool" name="isControl" >
-          <default>false</default>
-        </property>
-	  </properties>
-	  <containers>
-        <container>
-          <contains idref="" role="" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnSendObjectAction" name="SendObjectAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnSendObjectAction" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnSendSignalAction" name="SendSignalAction" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="60" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="84" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30" stroke-width="1" x2="99" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59" stroke-width="1" x2="84" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59" stroke-width="1" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1" stroke-width="1" x2="1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="batnSendSignalAction" />
-     </generalization>
-    </generalizations>
-   </logic>
-  </node>
-  <node id="actnSequenceNode" name="SequenceNode">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="actnStructuredActivityNode" />
-        </generalization>
-      </generalizations>
-	  <containers>
-        <container>
-          <contains idref="actnExecutableNode" role="executableNode" />
-	    </container>
-	  </containers>
-	</logic>
-  </node>
-  <node id="actnStructuredActivityNode" name="StructuredActivityNode" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="100" >
-      <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text text="&lt;&lt;structured>>" />
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-      <generalization>
-        <parent parent_id="actnAction" />
-        <parent parent_id="actActivityGroup" />
-        <parent parent_id="actnExpansionNode" />
-        <parent parent_id="krnnNamespace" />
-      </generalization>
-    </generalizations>
-	<properties>
-	  <property type="bool" name="mustIsolate" >
-        <default>false</default>
-      </property>
-	</properties>
-    <containers>
-      <container>
-	    <contains idref="actnVariable" role="variable" />
-        <contains idref="actActivityNode" role="node" />
-        <contains idref="acteActivityEdge" role="edge" />
-      </container>
-      <container>
-        <contained_by idref="actnActivity" role="activity" />
-      </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="actnUnmarshallAction" name="UnmarshallAction">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnUnmarshallAction" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actnValuePin" name="ValuePin">
-    <logic>
-	  <generalizations>
-        <generalization>
-          <parent parent_id="batnValuePin" />
-        </generalization>
-      </generalizations>
-	</logic>
-  </node>
-  <node id="actValueSpecificationAction" name="ValueSpecificationAction" >
-    <logic>
-	  <generalizations>
-	    <generalization>
-		  <parent parent_id="batnValueSpecificationAction" />
-		</generalization>
-	  </generalizations>
-	</logic>
-  </node>
-  <node id="actnVariable" name="Variable" >
-    <logic>
-      <generalizations>
-	    <generalization>
-	 	<parent parent_id="batnVariable" />
- 	  </generalization>
- 	 </generalizations>
-	 <containers>
-        <container>
-          <contains idref="actnStructuredActivityNode" role="scope" />
-		  <contains idref="actnActivity" role="activityScope" />
-	    </container>
-	  </containers>
-    </logic>
-  </node>
-  
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>kernel_metamodel</include>
+    <include>basicbehaviors_metamodel</include>
+    <include>basicactions_metamodel</include>
+    <namespace>UML 2.0</namespace>
+    <diagram name="Activity Diagram">
+        <nonGraphicTypes>
+            <enum name="Activity Diagram::Type">
+                <value>localPrecondition</value>
+                <value>localPostCondation</value>
+            </enum>
+            <enum name="Activity Diagram::Expansion Kind">
+                <value>parallel</value>
+                <value>iterative</value>
+                <value>stream</value>
+            </enum>
+            <enum name="Activity Diagram::Object Node Ordering Kind">
+                <value>unordered</value>
+                <value>ordered</value>
+                <value>LIFO</value>
+                <value>FIFO</value>
+            </enum>
+            <enum name="Activity Diagram::Parameter Effect Kind">
+                <value>create</value>
+                <value>read</value>
+                <value>update</value>
+                <value>delete</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="Activity Diagram::Accept Event Action">
+                <graphics>
+                    <picture sizex="100" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1"
+                              x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60"
+                              stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60"
+                              stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30"
+                              stroke-width="1" x2="15" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0"
+                              stroke-width="1" x2="0" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="100" y="30"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Accept Event Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Accept Time Event Action">
+                <graphics>
+                        <picture sizex="40" sizey="50">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0"
+                                  stroke-width="1" x2="40" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50"
+                                  stroke-width="1" x2="40" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50"
+                                  stroke-width="1" x2="40" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0"
+                                  stroke-width="1" x2="40" fill-style="solid"/>
+                        </picture>
+                        <ports>
+                            <pointPort x="20" y="25"/>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Accept Event Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Action">
+                <graphics>
+                        <picture sizex="80" sizey="60">
+                            <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                                  d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1"
+                                  fill-style="solid"/>
+                        </picture>
+                        <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                        <ports>
+                            <linePort>
+                                <start startx="79" starty="10"/>
+                                <end endx="79" endy="50"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="1" starty="10"/>
+                                <end endx="1" endy="50"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="10" starty="1"/>
+                                <end endx="70" endy="1"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="10" starty="59"/>
+                                <end endx="70" endy="59"/>
+                            </linePort>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Node"/>
+                            <parent parentName="Activity Diagram::Executable Node"/>
+                            <parent parentName="Basic Actions Diagram::Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Action Input Pin">
+                <graphics>
+                        <picture sizex="20" sizey="20">
+                            <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
+                                       stroke-width="1" x2="20" fill-style="solid"/>
+                        </picture>
+                        <ports>
+                            <linePort>
+                                <start startx="0" starty="0"/>
+                                <end endx="0" endy="20"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="20" starty="0"/>
+                                <end endx="20" endy="20"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="0" starty="0"/>
+                                <end endx="20" endy="0"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="0" starty="20"/>
+                                <end endx="20" endy="20"/>
+                            </linePort>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Action Input Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Activity">
+                <graphics>
+                        <picture sizex="100" sizey="100">
+                            <rect x="0" y="0" rx="20" ry="20" width="100" height="60" fill="#ffffff"
+                                  stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
+                        </picture>
+                        <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                        <ports>
+                            <linePort>
+                                <start startx="79" starty="10"/>
+                                <end endx="79" endy="50"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="1" starty="10"/>
+                                <end endx="1" endy="50"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="10" starty="1"/>
+                                <end endx="70" endy="1"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="10" starty="59"/>
+                                <end endx="70" endy="59"/>
+                            </linePort>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Behaviors Diagram::Behavior"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Activity Node" name="node"/>
+                            <property type="Activity Diagram::Activity Edge" name="edge"/>
+                            <property type="Activity Diagram::Activity Group" name="group"/>
+                            <property type="Activity Diagram::Expansion Region" name="expansionRegion"/>
+                        <property type="bool" name="isSingleExecution">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Activity Node" name="coordinatedNodes"/>
+                            <property type="Activity Diagram::Activity Edge" name="edges"/>
+                            <property type="Activity Diagram::Variable" name="topLevelVariables"/>
+                            <property type="Activity Diagram::Activity Group" name="topLevelGroups"/>
+                            <property type="Activity Diagram::Activity Partition" name="topLevelPartitions"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Activity Diagram::Activity Edge">
+                <graphics>
+                        <line_type type="solidLine"/>
+						<labels>
+                        <label x="40" y="10" textBinded="name"/>
+						<label x="40" y="20" textBinded="guard"/>
+						<!-- guard РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РІ РєРІР°РґСЂР°С‚РЅС‹С… СЃРєРѕР±РєР°С… -->
+                    </labels>
+                        
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Redefinable Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Activity" name="activity"/>
+                            <property type="Activity Diagram::Activity Edge" name="redefinedEdge"/>
+                            <property type="Activity Diagram::Activity Partition" name="partition"/>
+                            <property type="Activity Diagram::Structured Activity Node" name="structuredActivityNode"/>
+                            <property type="Activity Diagram::Interruptible Activity Region" name="interrupts"/>
+                            <property type="Activity Diagram::Value Specification" name="guard"/>
+                            <property type="Activity Diagram::Value Specification" name="weight"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Activity Diagram::Activity Final Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60"
+                                     stroke-width="1" x2="60" fill-style="solid"/>
+                            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="50"
+                                     stroke-width="1" x2="50" fill-style="solid"/>
+                        </picture>
+                        <ports>
+                            <pointPort x="0" y="15"/>
+                            <pointPort x="15" y="0"/>
+                            <pointPort x="15" y="60"/>
+                            <pointPort x="60" y="15"/>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                            <parent parentName="Activity Diagram::Final Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Activity Group">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Kernel Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Activity" name="activity"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Activity Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Named Element"/>
+                            <parent parentName="Kernel Diagram::Redefinable Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Activity" name="activity"/>
+                            <property type="Activity Diagram::Activity Node" name="redefinedNode"/>
+                            <property type="Activity Diagram::Activity Partition" name="inPartition"/>
+                            <property type="Activity Diagram::Interruptible Activity Region" name="inInterruptableRegion"/>
+                            <property type="Activity Diagram::Structured Activity Node" name="structuredActivityNode"/>
+                            <property type="Activity Diagram::Activity Node" name="redefineNode"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Activity Parameter Node">
+                <graphics>
+                        <picture sizex="80" sizey="60">
+                            <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60"
+                                       stroke-width="1" x2="80" fill-style="solid"/>
+                        </picture>
+                        <ports>
+                            <linePort>
+                                <start startx="0" starty="0"/>
+                                <end endx="0" endy="60"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="80" starty="0"/>
+                                <end endx="80" endy="60"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="0" starty="0"/>
+                                <end endx="80" endy="0"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="0" starty="60"/>
+                                <end endx="80" endy="60"/>
+                            </linePort>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Object Node"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Parameter" name="parameter"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Activity Partition">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="3" y2="3"
+                                  stroke-width="4" x2="57" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="3" y2="57"
+                                  stroke-width="4" x2="57" fill-style="solid"/>
+                        </picture>
+                        <ports>
+                            <linePort>
+                                <start startx="0" starty="0"/>
+                                <end endx="60" endy="0"/>
+                            </linePort>
+                            <linePort>
+                                <start startx="0" starty="60"/>
+                                <end endx="60" endy="60"/>
+                            </linePort>
+                        </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Group"/>
+                            <parent parentName="Kernel Diagram::Named Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isDimension">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isExternal">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Activity Node" name="node"/>
+                            <property type="Activity Diagram::Activity Edge" name="edge"/>
+                            <property type="Activity Diagram::Activity Partition" name="superPartition"/>
+                            <property type="Activity Diagram::Activity Partition" name="subPartition"/>
+                            <property type="Kernel Diagram::Kernel Element" name="represents"/>
+                            <property type="Activity Diagram::Activity Partition" name="superPartition"/>
+                            <property type="Activity Diagram::Activity Partition" name="subPartition"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Add Variable Value Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Add Variable Value Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Behavior">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Behaviors Diagram::Behavior"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Parameter Set" name="ownedParameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Behavioral Feature">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Behaviors Diagram::Behavioral Feature"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Parameter Set" name="ownedParameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Call Behavior Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Call Behavior Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Call Operation Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Call Operation Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Central Buffer Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Object Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Clause">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Kernel Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Executable Node" name="test"/>
+                            <property type="Activity Diagram::Executable Node" name="body"/>
+                            <property type="Activity Diagram::Clause" name="predecessorClause"/>
+                            <property type="Activity Diagram::Clause" name="successorClause"/>
+                            <property type="Activity Diagram::Output Pin" name="decider"/>
+                            <property type="Activity Diagram::Output Pin" name="bodyOutput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Conditional Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isAssured">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isDeterminate">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Clause" name="clause"/>
+                            <property type="Activity Diagram::Output Pin" name="result"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Activity Diagram::Control Flow">
+                <graphics>
+                        <line_type type="solidLine"/>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Edge"/>
+                    </generalizations>
+                </logic>
+            </edge>
+            <node name="Activity Diagram::Control Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Data Store Node">
+                <graphics>
+                        <picture sizex="100" sizey="60"/>
+                        <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Central Buffer Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Decision Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Behavior" name="decisionInput"/>
+                            <property type="Activity Diagram::Object Flow" name="decisionInputFlow"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Activity Diagram::Exception Handler">
+                <graphics>
+                        <line_type type="solidLine"/>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram:: Kernel Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Kernel Diagram::Classifier" name="exceptionType"/>
+                            <property type="Activity Diagram::Object Node" name="exceptionInput"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Activity Diagram::Executable Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Node"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Exception Handler" name="handler"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Expansion Node">
+                <graphics>
+                        <picture sizex="42" sizey="22">
+                            <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21"
+                                       stroke-width="1" x2="41" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="20"
+                                  stroke-width="1" x2="10" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="20"
+                                  stroke-width="1" x2="20" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="20"
+                                  stroke-width="1" x2="30" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Object Node"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Expansion Region" name="regionAsInput"/>
+                            <property type="Activity Diagram::Expansion Region" name="regionAsOutput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Expansion Region">
+                <graphics>
+                        <picture sizex="100" sizey="100">
+                            <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                                  d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
+                                  fill-style="solid"/>
+                        </picture>
+                        <labels>
+                        <label x="40" y="10" textBinded="keyword"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="mode">
+                            <enum type="Activity Diagram::Expansion Kind"/>
+                        </property>
+                    </properties>
+                    <properties>
+                            <property type="Activity Diagram::Expansion Node" name="inputElement"/>
+                            <property type="Activity Diagram::Expansion Node" name="outputElement"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Final Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Flow Final Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
+                                     stroke-width="1" x2="59" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="51" y2="10"
+                                  stroke-width="1" x2="11" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="11" y2="10"
+                                  stroke-width="1" x2="51" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Final Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Fork Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
+                                  stroke-width="4" x2="30" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Initial Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
+                                     stroke-width="1" x2="59" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Input Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Input Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Interruptible Activity Region">
+                <graphics>
+                        <picture sizex="100" sizey="100">
+                            <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                                  d=" M 10.8 1 C 5.38761 1 1 5.38761 1 10.8 L 1 89.2 C 1 94.6124 5.38761 99 10.8 99 L 89.2 99 C 94.6124 99 99 94.6124 99 89.2 L 99 10.8 C 99 5.38761 94.6124 1 89.2 1 L 10.8 1"
+                                  fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Group"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Activity Node" name="node"/>
+                            <property type="Activity Diagram::Activity Edge" name="interruptingEdge"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Join Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
+                                  stroke-width="4" x2="30" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isCombineDuplicate">
+                            <default>true</default>
+                        </property>
+                            <property type="Kernel Diagram::Value Specification" name="joinSpec"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Loop Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isTestedFirst">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Executable Node" name="setupPart"/>
+                            <property type="Activity Diagram::Executable Node" name="bodyPart"/>
+                            <property type="Activity Diagram::Executable Node" name="test"/>
+                            <property type="Activity Diagram::Output Pin" name="decider"/>
+                            <property type="Activity Diagram::Output Pin" name="result"/>
+                            <property type="Activity Diagram::Output Pin" name="loopVariable"/>
+                            <property type="Activity Diagram::Output Pin" name="bodyOutput"/>
+                            <property type="Activity Diagram::Input Pin" name="loopVariableInput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Merge Node">
+                <graphics>
+                        <picture sizex="60" sizey="60">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30"
+                                  stroke-width="1" x2="1" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59"
+                                  stroke-width="1" x2="30" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30"
+                                  stroke-width="1" x2="59" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1"
+                                  stroke-width="1" x2="30" fill-style="solid"/>
+                        </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <edge name="Activity Diagram::Object Flow">
+                <graphics>
+                        <line_type type="solidLine"/>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Activity Edge"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isMulticast">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isMultireceive">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Behavior" name="selection"/>
+                            <property type="Activity Diagram::Behavior" name="transformation"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Activity Diagram::Object Node">
+                <graphics>
+                        <picture sizex="80" sizey="60">
+                            <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
+                                       stroke-width="1" x2="79" fill-style="solid"/>
+                        </picture>
+                        <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Typed Element"/>
+                            <parent parentName="Activity Diagram::Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="ordering">
+                            <enum type="acttObjectNodeOrderingKind"/>
+                            <default>FIFO</default>
+                        </property>
+                        <property type="bool" name="isControlType">
+                            <default>false</default>
+                        </property>
+                            <property type="State Machines Diagram::State" name="inState"/>
+                            <property type="Activity Diagram::Behavior" name="selection"/>
+                            <property type="Kernel Diagram::Value Specification" name="upperBound"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Output Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Output Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Parameter">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Parameter"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="effect">
+                            <enum type="Activity Diagram::Parameter Effect Kind"/>
+                        </property>
+                        <property type="bool" name="isException">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isStream">
+                            <default>false</default>
+                        </property>
+                    </properties>
+                    <properties>
+                            <property type="Activity Diagram::Parameter Set" name="parameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Parameter Set">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Named Element"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Kernel Diagram::Constraint" name="condition"/>
+                            <property type="Activity Diagram::Parameter" name="parameter"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Object Node"/>
+                            <parent parentName="Basic Actions Diagram::Pin"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isControl">
+                            <default>false</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Send Object Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Send Object Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Send Signal Action">
+                <graphics>
+                        <picture sizex="100" sizey="60">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
+                                  stroke-width="1" x2="84" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30"
+                                  stroke-width="1" x2="99" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59"
+                                  stroke-width="1" x2="84" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59"
+                                  stroke-width="1" x2="1" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1"
+                                  stroke-width="1" x2="1" fill-style="solid"/>
+                        </picture>
+                        <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Send Signal Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Sequence Node">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Executable Node" name="executableNode"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Structured Activity Node">
+                <graphics>
+                        <picture sizex="100" sizey="100">
+                            <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                                  d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
+                                  fill-style="solid"/>
+                        </picture>
+						<labels>
+                        <label x="40" y="10" textBinded="&lt;&lt;structured>>"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Activity Diagram::Action"/>
+                            <parent parentName="Activity Diagram::Activity Group"/>
+                            <parent parentName="Activity Diagram::Expansion Node"/>
+                            <parent parentName="Kernel Diagram::Namespace"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="mustIsolate">
+                            <default>false</default>
+                        </property>
+                            <property type="Activity Diagram::Variable" name="variable"/>
+                            <property type="Activity Diagram::Activity Node" name="node"/>
+                            <property type="Activity Diagram::Activity Edge" name="edge"/>
+                            <property type="Activity Diagram::Activity" name="activity"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Unmarshall Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Unmarshall Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Value Pin">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Value Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Value Specification Action">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Value Specification Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Diagram::Variable">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Basic Actions Diagram::Variable"/>
+                    </generalizations>
+                    <properties>
+                            <property type="Activity Diagram::Structured Activity Node" name="scope"/>
+                            <property type="Activity Diagram::Activity" name="activityScope"/>
+                    </properties>
+                </logic>
+            </node>
 
-  <node id="actnConstraint" name="Constraint" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="52" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="1" x2="88" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="41" stroke-width="1" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="1" y2="41" stroke-width="1" x2="99" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="99" y2="11" stroke-width="1" x2="99" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11" stroke-width="1" x2="99" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11" stroke-width="1" x2="88" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="11" x1="88" y2="11" stroke-width="1" x2="99" fill-style="solid" />
-     </picture>
-	 <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-        <html:center>
-		  <html:text text="&lt;&lt;" />
-          <html:text_from_repo name="type" />
-		  <html:text text=">>" />
-		  <html:br />
-        </html:center>
-		<html:text_from_repo name="condition" />
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <assoc_ref idref="actaConstraintEdgeEnd" />
-    </associations>
-	<properties>
-	  <property type="enum" name="type" >
-       <enum idref="acttType" />
-      </property>
-	  <property type="string" name="condition" />   
-	</properties>
-   </logic>
-  </node>
-  <edge id="acteConstraintEdge" name="ConstraintEdge" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="constraint" end_type="no_arrow" id="actaConstraintEdgeBegin" >
-      <begin idref="krnnElement" />
-     </association>
-     <association role="constraint" end_type="no_arrow" id="actaConstraintEdgeEnd" >
-      <end idref="actnConstraint" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <node name="actValueSpecification" id="ValueSpecification">
-     <logic>
-	   <generalizations>
-	     <generalization>
-		   <parent parent_id="krnnValueSpecification" />
-		 </generalization>
-	   </generalizations>
-	 </logic>
-   </node>
-   
-  </graph_types>
- </editor>
+
+            <node name="Activity Diagram::Constraint">
+                <graphics>
+                        <picture sizex="100" sizey="52">
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
+                                  stroke-width="1" x2="88" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="41"
+                                  stroke-width="1" x2="1" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="1" y2="41"
+                                  stroke-width="1" x2="99" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="99" y2="11"
+                                  stroke-width="1" x2="99" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11"
+                                  stroke-width="1" x2="99" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11"
+                                  stroke-width="1" x2="88" fill-style="solid"/>
+                            <line fill="#000000" stroke-style="solid" stroke="#000000" y1="11" x1="88" y2="11"
+                                  stroke-width="1" x2="99" fill-style="solid"/>
+                        </picture>
+                     <labels>
+                        <label x="40" y="10" textBinded="&lt;&lt;"/>
+						<label x="44" y="10" textBinded="type"/>
+						<!-- <html:text text=">>"/> -->
+						<label x="40" y="20" textBinded="condition"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <properties>
+                        <property type="enum" name="type">
+                            <enum type="Activity Diagram::Type"/>
+                        </property>
+                        <property type="string" name="condition"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Activity Diagram::Constraint Edge">
+                <graphics>
+                        <line_type type="dashLine"/>
+                </graphics>
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Kernel Relationship"/>
+                    </generalizations>
+                </logic>
+            </edge>
+            <node name="Activity Diagram::Value Specification">
+                <logic>
+                    <generalizations>
+                            <parent parentName="Kernel Diagram::Value Specification"/>
+                    </generalizations>
+                </logic>
+            </node>
+
+        </graphicTypes>
+    </diagram>
 </metamodel>
