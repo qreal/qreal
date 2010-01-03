@@ -255,10 +255,15 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			notIsFirst |= type->generateObjectRequestString(out, notIsFirst);
 
-	out() << "	else {\n"
-		<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
-		<< "		return NULL;\n"
-		<< "	}\n";
+	if (notIsFirst) {
+		out() << "	else {\n"
+			<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
+			<< "		return NULL;\n"
+			<< "	}\n";
+	} else {
+		out() << "	Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
+			<< "	return NULL;\n";
+	}
 	out() << "}\n\n";
 }
 

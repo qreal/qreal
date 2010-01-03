@@ -64,7 +64,7 @@ bool EdgeType::initAssociations()
 bool EdgeType::initGraphics()
 {
 	mVisible = true;
-	QDomElement lineTypeElement = mElement.firstChildElement("lineType");
+	QDomElement lineTypeElement = mGraphics.firstChildElement("lineType");
 	if (lineTypeElement.isNull())
 	{
 		mVisible = false;

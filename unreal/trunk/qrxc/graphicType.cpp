@@ -34,6 +34,7 @@ bool GraphicType::init(QDomElement const &element)
 			qDebug() << "ERROR: can't find logic tag of graphic type";
 			return false;
 		}
+		mGraphics = element.firstChildElement("graphics");
 		addKernelParent();
 		if (!initParents())
 			return false;
@@ -108,7 +109,7 @@ bool GraphicType::initProperties()
 bool GraphicType::initLabels()
 {
 	int count = 1;
-	for (QDomElement element = mElement.firstChildElement("labels").firstChildElement("label"); !element.isNull();
+	for (QDomElement element = mGraphics.firstChildElement("labels").firstChildElement("label"); !element.isNull();
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();

@@ -51,7 +51,7 @@ bool NodeType::initGraphics()
 
 bool NodeType::initSdf()
 {
-	QDomElement sdfElement = mElement.firstChildElement("picture");
+	QDomElement sdfElement = mGraphics.firstChildElement("picture");
 	if (sdfElement.isNull())
 	{
 		mVisible = (mName == "NamedElement");
@@ -72,7 +72,7 @@ bool NodeType::initSdf()
 
 bool NodeType::initPorts()
 {
-	QDomElement portsElement = mElement.firstChildElement("ports");
+	QDomElement portsElement = mGraphics.firstChildElement("ports");
 	if (portsElement.isNull())
 	{
 		return true;

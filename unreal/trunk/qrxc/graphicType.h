@@ -22,6 +22,7 @@ public:
 
 protected:
 	QDomElement mLogic;
+	QDomElement mGraphics;
 	QStringList mParents;
 	QDomElement mElement;
 	Diagram *mDiagram;
