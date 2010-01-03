@@ -3,15 +3,15 @@
  <include>kernel_metamodel</include>
  <include>basicbehaviors_metamodel</include>
  <namespace>UML 2.1</namespace>
- <editor name="STATE MACHINES DIAGRAM" >
-   <non_graph_types>
+ <diagram name="State Machines Diagram" >
+   <nonGraphicTypes>
   <enum id="smtTransitionkind" name="TransitionKind" >
    <value>internal</value>
    <value>local</value>
    <value>external</value>
   </enum>
-   </non_graph_types>
-   <graph_types>
+   </nonGraphicTypes>
+   <graphicTypes>
   <node id="smnStateMachine" name="StateMachine" >
    <graphics>
     <view>
@@ -69,7 +69,7 @@
     </associations>
    </logic>
   </node>
-  <node id="smnState" name="State" >
+  <node id="smnState" name="State Machines Diagram::State" >
    <graphics>
     <view>
      <description>simple state</description>
@@ -441,6 +441,7 @@
     </generalizations>
    </logic>
   </node>
-   </graph_types>
- </editor>
+   
+   </graphicTypes>
+ </diagram>
 </metamodel>
