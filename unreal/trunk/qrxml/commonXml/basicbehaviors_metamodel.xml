@@ -65,7 +65,7 @@
                     <properties>
                         <property type="bool" name="isAbstract"/>
                         <property type="enum" name="concurrency">
-                            <enum idref="Basic Behaviors Diagram::Call Concurrency Kind"/>
+                            <enum nameReference="Basic Behaviors Diagram::Call Concurrency Kind"/>
                             <default>sequential</default>
                         </property>
                         <property type="Basic Behaviors Diagram::Behavior" name="methods"/>

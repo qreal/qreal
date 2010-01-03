@@ -525,7 +525,7 @@
                     </generalizations>
                     <properties>
                         <property type="enum" name="mode">
-                            <enum type="Activity Diagram::Expansion Kind"/>
+                            <enum nameReference="Activity Diagram::Expansion Kind"/>
                         </property>
                     </properties>
                     <properties>
@@ -704,7 +704,7 @@
                     </generalizations>
                     <properties>
                         <property type="enum" name="ordering">
-                            <enum type="acttObjectNodeOrderingKind"/>
+                            <enum nameReference="acttObjectNodeOrderingKind"/>
                             <default>FIFO</default>
                         </property>
                         <property type="bool" name="isControlType">
@@ -730,7 +730,7 @@
                     </generalizations>
                     <properties>
                         <property type="enum" name="effect">
-                            <enum type="Activity Diagram::Parameter Effect Kind"/>
+                            <enum nameReference="Activity Diagram::Parameter Effect Kind"/>
                         </property>
                         <property type="bool" name="isException">
                             <default>false</default>
@@ -900,7 +900,7 @@
                 <logic>
                     <properties>
                         <property type="enum" name="type">
-                            <enum type="Activity Diagram::Type"/>
+                            <enum nameReference="Activity Diagram::Type"/>
                         </property>
                         <property type="string" name="condition"/>
                     </properties>
