@@ -16,6 +16,13 @@ using namespace UML;
 using namespace qReal;
 
 /* {{{ Element title */
+ElementTitle::ElementTitle(int x, int y, QString text)
+	: mFocusIn(false)
+{
+	setPos(x, y);
+	setHtml(text);
+}
+
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsTextItem::mousePressEvent(event);
@@ -80,6 +87,9 @@ NodeElement::~NodeElement()
 {
 	foreach (EdgeElement *edge, mEdgeList)
 		edge->removeLink(this);
+
+	foreach (ElementTitle *title, mTitles)
+		delete title;
 }
 
 void NodeElement::setName(QString name)
@@ -120,7 +130,9 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
-	mTitle.setTextWidth(mContents.width() - 15);
+
+	foreach (ElementTitle *title, mTitles)
+		title->setTextWidth(mContents.width() - 15 - title->pos().x());
 }
 
 void NodeElement::adjustLinks()
@@ -135,12 +147,23 @@ void NodeElement::adjustLinks()
 	}
 }
 
-void NodeElement::storeGeometry(void)
+void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
 	itemModel->setData(mDataIndex, pos(), roles::positionRole);
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
+}
+
+QString NodeElement::roleValueByName(QString const &roleName) const
+{
+	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
+	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
+	int roleIndex = properties.indexOf(roleName);
+	if (roleIndex == -1)
+		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
+	roleIndex += roles::customPropertiesBeginRole;
+	return itemModel->data(mDataIndex, roleIndex).toString();
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -453,42 +476,44 @@ void NodeElement::setPortsVisible(bool value)
 
 void NodeElement::complexInlineEditing()
 {
+	/* TODO: Ересь!
 	if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() == "")){
-	mDocVis.setTextWidth(0);
-	mDocType.setTextWidth(0);
-	mTitle.setPos(15, mContents.height() - 15);
-	mTitle.setTextWidth(mContents.width() - 25);
+		mDocVis.setTextWidth(0);
+		mDocType.setTextWidth(0);
+		mTitle.setPos(15, mContents.height() - 15);
+		mTitle.setTextWidth(mContents.width() - 25);
 	} else
-	if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() != "")){
-	mDocVis.setTextWidth(0);
-	mDocType.setPos(1, mContents.height() - 15);
-	if (mTypeText.length() * 5 < 6*mContents.width() / 16)
-		mDocType.setTextWidth(mTypeText.length() * 5);
-	else
-		mDocType.setTextWidth(6 * mContents.width() / 16);
+		if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() != "")){
+		mDocVis.setTextWidth(0);
+		mDocType.setPos(1, mContents.height() - 15);
+		if (mTypeText.length() * 5 < 6*mContents.width() / 16)
+			mDocType.setTextWidth(mTypeText.length() * 5);
+		else
+			mDocType.setTextWidth(6 * mContents.width() / 16);
 
-	mTitle.setPos(mDocType.textWidth(), mContents.height() - 15);
-	mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
+		mTitle.setPos(mDocType.textWidth(), mContents.height() - 15);
+		mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
 	} else
-	if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() == "")){
-	mDocType.setTextWidth(0);
-	mDocVis.setPos(1, mContents.height() - 15);
-	mDocVis.setTextWidth(11);
-	mTitle.setPos(16, mContents.height() - 15);
-	mTitle.setTextWidth(mContents.width() - 37);
+		if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() == "")){
+		mDocType.setTextWidth(0);
+		mDocVis.setPos(1, mContents.height() - 15);
+		mDocVis.setTextWidth(11);
+		mTitle.setPos(16, mContents.height() - 15);
+		mTitle.setTextWidth(mContents.width() - 37);
 	} else
-	if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() != "")){
-	mDocVis.setPos(1, mContents.height() - 15);
-	mDocVis.setTextWidth(11);
-	mDocType.setPos (16, mContents.height() - 15);
-	if (mTypeText.length() * 5 < 6 * mContents.width() / 16)
-		mDocType.setTextWidth(mTypeText.length() * 5);
-	else
-		mDocType.setTextWidth(6 * mContents.width() / 16);
+		if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() != "")){
+		mDocVis.setPos(1, mContents.height() - 15);
+		mDocVis.setTextWidth(11);
+		mDocType.setPos (16, mContents.height() - 15);
+		if (mTypeText.length() * 5 < 6 * mContents.width() / 16)
+			mDocType.setTextWidth(mTypeText.length() * 5);
+		else
+			mDocType.setTextWidth(6 * mContents.width() / 16);
 
-	mTitle.setPos(mDocVis.textWidth() + mDocType.textWidth(),  mContents.height() - 15);
-	mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
+		mTitle.setPos(mDocVis.textWidth() + mDocType.textWidth(),  mContents.height() - 15);
+		mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
 	}
+	*/
 }
 
 NodeElement *NodeElement::getNodeAt( const QPointF &position )

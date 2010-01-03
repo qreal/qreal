@@ -29,7 +29,7 @@ namespace UML {
 			/** @brief Получить область, в рамках которой производится отрисовка связи
 			 *	@brief @return Область, в рамках которой производится отрисовка связи
 			 * */
-			QRectF boundingRect() const;
+			virtual QRectF boundingRect() const;
 			/** @brief Получить ломаную для отрисовки связи
 			 *	@brief @return Ломаня для отрисовки связи
 			 * */

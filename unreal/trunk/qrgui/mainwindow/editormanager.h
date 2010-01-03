@@ -36,7 +36,7 @@ namespace qReal {
 		bool isDiagram(Id const &id) const;
 		bool isElement(Id const &id) const;
 
-		QStringList getPropertyNames(Id const &id) const;
+		virtual QStringList getPropertyNames(Id const &id) const;
 
 		IdList checkNeededPlugins(qrRepo::RepoApi const &api) const;
 		bool hasElement(Id const &element) const;

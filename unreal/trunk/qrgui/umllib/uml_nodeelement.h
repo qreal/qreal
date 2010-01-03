@@ -28,7 +28,7 @@ namespace UML {
 	{
 		Q_OBJECT
 	public:
-		ElementTitle(): mFocusIn(false) {}
+		ElementTitle(int x, int y, QString text);
 		~ElementTitle() {}
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -55,9 +55,9 @@ namespace UML {
 
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
-						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
+			const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
+			QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
+			SdfRenderer *portrenderer /**< Рендерер портов)*/);
 
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
@@ -113,6 +113,8 @@ namespace UML {
 									const QVariant &value /**< Величина изменения */
 									);
 
+		QString roleValueByName(QString const &roleName) const;
+
 		bool mPortsVisible;
 
 		/** @brief Список точечных портов */
@@ -123,12 +125,14 @@ namespace UML {
 		QRectF mContents;
 
 		// TODO: Этого тут вообще быть не должно.
+		/*
 		ElementTitle mDocVis;
 		ElementTitle mDocType;
 		QString mTypeText;
 		QString mVisText;
+		*/
 
-		ElementTitle mTitle;
+		QList<ElementTitle*> mTitles;
 
 	private:
 		/** @brief Направление растяжения элемента */

@@ -107,16 +107,17 @@ bool GraphicType::initProperties()
 
 bool GraphicType::initLabels()
 {
+	int count = 1;
 	for (QDomElement element = mElement.firstChildElement("labels").firstChildElement("label"); !element.isNull();
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, mWidth, mHeight))
-		{
+		if (!label->init(element, count))
 			delete label;
-			return false;
+		else {
+			mLabels.append(label);
+			++count;
 		}
-		mLabels.append(label);
 	}
 	return true;
 }

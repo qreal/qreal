@@ -12,6 +12,8 @@
 #include "uml_nodeelement.h"
 #include "../model/model.h"
 
+#include <QDebug>
+
 using namespace UML;
 using namespace qReal;
 

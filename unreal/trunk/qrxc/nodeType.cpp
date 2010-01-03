@@ -162,34 +162,26 @@ void NodeType::generateCode(OutFile &out)
 	bool hasSdf = false;
 	bool hasPorts = false;
 
-	QFile sdffile("generated/shapes/" + className + "Class.sdf");
-	if (sdffile.exists()) {
+	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
+	if (sdfFile.exists()) {
 		out() << "\t\t\tmRenderer.load(QString(\":/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
 	}
 
-	sdffile.setFileName("generated/shapes/" + className + "Ports.sdf");
-	if (sdffile.exists()) {
+	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
+	if (sdfFile.exists()) {
 		out() << "\t\t\tmPortRenderer.load(QString(\":/" << className << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
 
 	out() << "\t\t\tmContents.setWidth(" << mWidth << ");\n"
-		<< "\t\t\tmContents.setHeight(" << mHeight << ");\n"
-		<< "\t\t\tmTitle.setFlags(0);\n"
-		<< "\t\t\tmTitle.setTextInteractionFlags(Qt::NoTextInteraction);\n"
-		<< "\t\t\tmTitle.setParentItem(this);\n";
-
-	// True horror:
-	if ((className == "Class_method") || (className == "Class_field")) {
-		out() << "\tmDocVis.setParentItem(this);\n"
-			<< "\tmDocType.setParentItem(this);\n";
-	}
+		<< "\t\t\tmContents.setHeight(" << mHeight << ");\n";
 
 	foreach (Port *port, mPorts)
-	{
 		port->generateCode(out);
-	}
+
+	foreach (Label *label, mLabels)
+		label->generateCodeForConstructor(out);
 
 	out() << "\t\t}\n\n"
 		<< "\t\t~" << className << "() {}\n\n"
@@ -208,14 +200,7 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\t\tNodeElement::updateData();\n";
 
 	foreach (Label *label, mLabels)
-	{
-		label->generateCode(out);
-	}
-	if (mLabels.size() > 0)  // потом разобраться с надписями
-	{
-		out() << ";\n";
-		out() << "\t\t\tmTitle.setHtml(text);\n";
-	}
+		label->generateCodeForUpdateData(out);
 
 	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
 
@@ -224,6 +209,8 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\tSdfRenderer mRenderer;\n";
 	if (hasPorts)
 		out() << "\t\tSdfRenderer mPortRenderer;\n";
+	foreach (Label *label, mLabels)
+		label->generateCodeForFields(out);
 	out() << "\t};";
 	out() << "\n\n";
 }

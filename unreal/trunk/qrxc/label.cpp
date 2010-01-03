@@ -5,21 +5,50 @@
 
 using namespace utils;
 
-bool Label::init(QDomElement const &element, int width, int height)
+bool Label::init(QDomElement const &element, int index)
 {
-	mX = ((qreal) element.attribute("x").toInt()) / width;
-	mY = ((qreal) element.attribute("y").toInt()) / height;
+	mX = QString("%1").arg(static_cast<qreal>(element.attribute("x").toInt()));
+	mY = QString("%1").arg(static_cast<qreal>(element.attribute("y").toInt()));
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
-	if ((mText == "") && (mTextBinded == ""))
-	{
+	mIndex = index;
+	if (mText == "" && mTextBinded == "") {
 		qDebug() << "ERROR: can't parse label";
 		return false;
 	}
 	return true;
 }
 
-void Label::generateCode(OutFile &out)
+QString Label::titleName() const
 {
-	out() << QString("\t\t\tQString text = QString(\"%1\")").arg(mTextBinded);
+	return "title_" + QString("%1").arg(mIndex);
+}
+
+void Label::generateCodeForConstructor(OutFile &out)
+{
+	out() << "			" + titleName() + " = new ElementTitle("
+			+ mX + ", " + mY + ", \"" + mText + "\");\n"
+			// TODO: вынести отсюда в родительский класс.
+		<< "			" + titleName() + "->setFlags(0);\n"
+		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
+		<< "			" + titleName() + "->setParentItem(this);\n"
+		<< "			mTitles.append(" + titleName() + ");\n";
+}
+
+void Label::generateCodeForUpdateData(OutFile &out)
+{
+	if (mTextBinded.isEmpty())
+		return;  // Метка статическая.
+	QString field;
+	if (mTextBinded == "name")
+		field = "mDataIndex.data(Qt::DisplayRole).toString()";
+	else
+		field = "roleValueByName(\"" + mTextBinded + "\")";  // Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
+
+	out() << "			" + titleName() + "->setHtml(QString(\"%1\").arg(" + field + "));\n";
+}
+
+void Label::generateCodeForFields(OutFile &out)
+{
+	out() << "		ElementTitle *" + titleName() + ";\n";
 }

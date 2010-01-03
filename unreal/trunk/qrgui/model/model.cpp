@@ -454,3 +454,8 @@ qrRepo::RepoApi const & Model::api() const
 {
 	return mApi;
 }
+
+EditorManager const &Model::editorManager() const
+{
+	return mEditorManager;
+}
