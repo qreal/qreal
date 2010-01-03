@@ -97,7 +97,6 @@ NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
-	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 }
 
 NodeElement::~NodeElement()

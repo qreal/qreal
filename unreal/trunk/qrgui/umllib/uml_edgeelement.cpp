@@ -35,7 +35,6 @@ EdgeElement::EdgeElement()
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
 	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
 {
-	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...

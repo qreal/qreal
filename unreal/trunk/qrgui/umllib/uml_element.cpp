@@ -11,8 +11,8 @@ using namespace UML;
 Element::Element()
 	: mMoving(false)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape
-			| ItemClipsToShape);
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
+	         ItemClipsToShape | ItemSendsGeometryChanges);
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
 }
