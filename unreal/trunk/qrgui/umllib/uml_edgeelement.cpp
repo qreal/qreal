@@ -5,6 +5,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtGui/QMenu>
+#include <QtCore/QSettings>
 #include <math.h>
 
 #include "../view/editorviewscene.h"
@@ -43,6 +44,9 @@ EdgeElement::EdgeElement()
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
 	setAcceptHoverEvents(true);
+
+	QSettings settings("SPbSU", "QReal");
+	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
 }
 
 EdgeElement::~EdgeElement()
@@ -65,6 +69,52 @@ static double lineAngle(const QLineF &line)
 		angle = 2 * M_PI - angle;
 
 	return angle * 180 * M_1_PI;
+}
+
+static void drawChaosStar(QPainter *painter)
+{
+	painter->save();
+	QPen pen;
+	QColor color;
+	color.setNamedColor("#c3dcc4");
+	pen.setColor(color);
+	painter->setPen(pen);
+
+	for (int i = 0; i < 8; ++i) {
+		painter->rotate(45 * i);
+		painter->drawLine(0, 2, 0, 11);
+
+		painter->save();
+		painter->translate(0, 11);
+		painter->rotate(30);
+		painter->drawLine(0, 0, 0, -3);
+		painter->rotate(-60);
+		painter->drawLine(0, 0, 0, -3);
+		painter->restore();
+	}
+
+	painter->drawArc(-2, -2, 4, 4, 0, 5760);
+	painter->drawArc(-6, -6, 12, 12, 0, 5760);
+
+	painter->restore();
+}
+
+void EdgeElement::drawPort(QPainter *painter) const
+{
+	QPen pen;
+	QColor color;
+
+	color.setNamedColor("#c3dcc4");
+	pen.setWidth(11);
+	pen.setColor(color);
+	painter->setPen(pen);
+	painter->drawLine(0, 0, 0, 0);
+
+	color.setNamedColor("#465945");
+	pen.setWidth(3);
+	pen.setColor(color);
+	painter->setPen(pen);
+	painter->drawLine(0, 0, 0, 0);
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -95,20 +145,16 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if (option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) {
 		painter->setBrush(Qt::SolidPattern);
 		foreach (QPointF const point, mLine) {
-			QPen pen;
-			QColor color;
 
-			color.setNamedColor("#c3dcc4");
-			pen.setWidth(11);
-			pen.setColor(color);
-			painter->setPen(pen);
-			painter->drawLine(point, point);
+			painter->save();
+			painter->translate(point);
 
-			color.setNamedColor("#465945");
-			pen.setWidth(3);
-			pen.setColor(color);
-			painter->setPen(pen);
-			painter->drawLine(point, point);
+			if (mChaoticEdition)
+				drawChaosStar(painter);
+			else
+				drawPort(painter);
+
+			painter->restore();
 		}
 	}
 
@@ -180,7 +226,6 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mDragState = -1;
 
 	mDragState = getPoint(event->pos());
-	setSelected(true);
 
 	if (mDragState == -1)
 		Element::mousePressEvent(event);

@@ -85,6 +85,8 @@ namespace UML {
 			/** @brief Получить прямоугольник порта вокруг заданной точки */
 			static QRectF getPortRect(QPointF const &point);
 
+			void drawPort(QPainter *painter) const;
+
 			/** @brief Объект, присоединенный к началу связи */
 			NodeElement *mSrc;
 			/** @brief Объект, присоединенный к концу связи */
@@ -107,5 +109,7 @@ namespace UML {
 
 			NodeElement *mBeginning;
 			NodeElement *mEnding;
+
+			bool mChaoticEdition;
 	};
 }
