@@ -11,8 +11,9 @@ bool Label::init(QDomElement const &element, int index)
 	mY = QString("%1").arg(static_cast<qreal>(element.attribute("y").toInt()));
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
+	mReadOnly = element.attribute("readOnly", "false");
 	mIndex = index;
-	if (mText == "" && mTextBinded == "") {
+	if ((mText == "" && mTextBinded == "") || (mReadOnly != "true" && mReadOnly != "false")) {
 		qDebug() << "ERROR: can't parse label";
 		return false;
 	}
@@ -29,7 +30,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
 		out() << "			" + titleName() + " = new ElementTitle("
-				+ mX + ", " + mY + ", \"" + mTextBinded + "\", " + "false" + ");\n";
+				+ mX + ", " + mY + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
 		out() << "			" + titleName() + " = new ElementTitle("

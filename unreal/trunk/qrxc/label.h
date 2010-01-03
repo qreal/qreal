@@ -21,4 +21,5 @@ private:
 	int mIndex;
 	QString mText;
 	QString mTextBinded;
+	QString mReadOnly;
 };
