@@ -35,12 +35,15 @@ EdgeElement::EdgeElement()
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
 	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
 {
+	setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
 	setFlag(ItemClipsToShape, false);
 
 	mLine << QPointF(0, 0) << QPointF(200, 60);
+
+	setAcceptHoverEvents(true);
 }
 
 EdgeElement::~EdgeElement()
@@ -90,7 +93,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	drawEndArrow(painter);
 	painter->restore();
 
-	if (option->state & QStyle::State_Selected) {
+	if (option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) {
 		painter->setBrush(Qt::SolidPattern);
 		foreach (QPointF const point, mLine) {
 			QPen pen;
@@ -100,13 +103,13 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			pen.setWidth(11);
 			pen.setColor(color);
 			painter->setPen(pen);
-			painter->drawPoint(point);
+			painter->drawLine(point, point);
 
 			color.setNamedColor("#465945");
 			pen.setWidth(3);
 			pen.setColor(color);
 			painter->setPen(pen);
-			painter->drawPoint(point);
+			painter->drawLine(point, point);
 		}
 	}
 
