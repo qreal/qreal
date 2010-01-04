@@ -31,14 +31,6 @@ Type* EdgeType::clone() const
 	return result;
 }
 
-void EdgeType::addKernelParent()
-{
-	if (mName == "Kernel Diagram::Kernel Relationship")
-		mParents.append("Kernel Diagram::Named Element");
-	else
-		mParents.append("Kernel Diagram::Kernel Relationship");
-}
-
 bool EdgeType::initAssociations()
 {
 	QDomElement associationsElement = mLogic.firstChildElement("associations");

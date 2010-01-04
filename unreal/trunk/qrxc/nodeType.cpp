@@ -35,15 +35,6 @@ bool NodeType::initAssociations()
 	return true;
 }
 
-void NodeType::addKernelParent()
-{
-	// lolwt*?
-	if ((mName != "Kernel Diagram::Kernel Element") && (mName != "Kernel Diagram::Named Element"))
-	{
-		mParents.append("Kernel Diagram::Named Element");
-	}
-}
-
 bool NodeType::initGraphics()
 {
 	if (!initSdf())

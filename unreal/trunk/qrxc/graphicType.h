@@ -33,7 +33,6 @@ protected:
 	void copyFields(GraphicType *type) const;
 
 private:
-	virtual void addKernelParent() = 0;
 	bool initParents();
 	bool initProperties();
 	virtual bool initAssociations() = 0;

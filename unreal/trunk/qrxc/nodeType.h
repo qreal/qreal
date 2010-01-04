@@ -21,7 +21,6 @@ public:
 private:
 	QList<Port*> mPorts;
 
-	virtual void addKernelParent();
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	bool initSdf();

@@ -47,7 +47,6 @@ bool GraphicType::init(QDomElement const &element)
 			return false;
 		}
 		mGraphics = element.firstChildElement("graphics");
-		addKernelParent();
 		if (!initParents())
 			return false;
 		if (!initProperties())
@@ -136,19 +135,15 @@ bool GraphicType::initLabels()
 bool GraphicType::addProperty(Property *property)
 {
 	QString propertyName = property->name();
-	if (mProperties.contains(propertyName))
-	{
-		if (!(mProperties[propertyName] == property))
-		{
+	if (mProperties.contains(propertyName)) {
+		if (!(mProperties[propertyName] == property)) {
 			qDebug() << "ERROR: property duplicated";
 			delete property;
 			return false;
 		}
 	}
 	else
-	{
 		mProperties[propertyName] = property;
-	}
 	return true;
 }
 
@@ -157,29 +152,20 @@ bool GraphicType::resolve()
 	if (mResolvingFinished)
 		return true;
 
-	foreach (QString parentName, mParents)
-	{
+	foreach (QString parentName, mParents) {
 		Type *parent = mDiagram->findType(parentName);
-		if (parent == NULL)
-		{
+		if (parent == NULL) {
 			qDebug() << "ERROR: can't find parent" << parentName << "for" << mName;
 			return false;
 		}
-		if (!parent->isResolved())
-		{
+		if (!parent->isResolved()) {
 			if (!parent->resolve())
-			{
 				return false;
-			}
 			return true;
 		}
 		foreach(Property *property, parent->properties().values())
-		{
 			if (!addProperty(property->clone()))
-			{
 				return false;
-			}
-		}
 	}
 	mResolvingFinished = true;
 	return true;
@@ -187,8 +173,7 @@ bool GraphicType::resolve()
 
 void GraphicType::generateNameMapping(OutFile &out)
 {
-	if (mVisible)
-	{
+	if (mVisible) {
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString name = NameNormalizer::normalize(mName);
 		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << name << "\"] = \"" << mName << "\";\n";
@@ -197,8 +182,7 @@ void GraphicType::generateNameMapping(OutFile &out)
 
 bool GraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
 {
-	if (mVisible)
-	{
+	if (mVisible) {
 		QString name = NameNormalizer::normalize(mName);
 		generateOneCase(out, notIsFirst);
 		out() << "\t\treturn new UML::" << name << "();\n";
@@ -210,21 +194,21 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
 
 bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 {
-	if (mVisible)
-	{
+	if (mVisible) {
 		generateOneCase(out, notIsFirst);
 
 		QString propertiesString;
 		bool isFirstProperty = true;
 
-		foreach (Property *property, mProperties)
-		{
+		foreach (Property *property, mProperties) {
 			// Хак: не генерить предопределённые свойства, иначе они затрут
 			// настоящие и линки будут цепляться к чему попало.
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
 				|| property->name() == "name")
 			{
+				qDebug() << "ERROR: predefined property" << property->name()
+					<< "shall not appear in .xml, ignored";
 				continue;
 			}
 
@@ -234,16 +218,13 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 			}
 
 			propertiesString += QString(" << \"" + property->name() + "\"");
-			if( propertiesString.length() >= MAX_LINE_LENGTH )
-			{
+			if (propertiesString.length() >= MAX_LINE_LENGTH) {
 				out() << propertiesString;
 				propertiesString = "\n\t\t";
 			}
 		}
 		if(!propertiesString.trimmed().isEmpty())
-		{
 			out() << propertiesString;
-		}
 		out() << ";\n";
 		return true;
 	}
@@ -255,11 +236,7 @@ void GraphicType::generateOneCase(OutFile &out, bool notIsFirst)
 	QString name = NameNormalizer::normalize(mName);
 
 	if (!notIsFirst)
-	{
 		out() << "\tif (element == \"" << name << "\")\n";
-	}
 	else
-	{
 		out() << "\telse if (element == \"" << name << "\")\n";
-	}
 }

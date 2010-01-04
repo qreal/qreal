@@ -23,7 +23,6 @@ private:
 	QString mEndType;
 	QString mLineType;
 
-	virtual void addKernelParent();
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
