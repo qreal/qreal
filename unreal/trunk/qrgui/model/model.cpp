@@ -13,7 +13,7 @@ Model::Model(EditorManager const &editorManager)
 	rootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
 	if (rootItem->children().count() == 0) {
-		Id elementId(Id::loadFromString("qrm:/KernelEditor/Kernel_Diagram/Diagram"), QUuid::createUuid().toString());
+		Id elementId(Id::loadFromString("qrm:/Kernel_metamodel/Kernel/Kernel_Diagram_Kernel_Diagram"), QUuid::createUuid().toString());
 		if (mEditorManager.hasElement(elementId.type()))
 			addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
 	}
@@ -23,6 +23,11 @@ Model::~Model()
 {
 	cleanupTree(rootItem);
 	treeItems.clear();
+}
+
+bool Model::isDiagram(const Id &id)
+{
+	return id.editor() == "Kernel_metamodel" && id.diagram() == "Kernel" && id.element() == "Kernel_Diagram_Kernel_Diagram";
 }
 
 void Model::init()
@@ -338,11 +343,6 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 
 		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
 	}
-}
-
-bool Model::isDiagram(const Id &id)
-{
-	return ((id.editor() == "KernelEditor") && (id.diagram() == "Kernel_Diagram") && (id.element() == "Diagram"));
 }
 
 ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id,
