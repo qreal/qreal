@@ -135,6 +135,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	{
 		event->accept();
 	}
+
+	setZValue(1);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -265,6 +267,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		itemModel->changeParent(dataIndex,evscene->rootItem(),scenePos());
 	}
 	*/
+
+	setZValue(0);
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
