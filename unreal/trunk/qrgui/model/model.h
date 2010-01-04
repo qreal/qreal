@@ -38,6 +38,7 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 			qrRepo::RepoApi const &api() const;
 			virtual EditorManager const &editorManager() const;
 		public slots:

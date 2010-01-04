@@ -82,6 +82,11 @@ void RepoApi::addParent(Id const &id, Id const &parent)
 	mClient.addParent(id, parent);
 }
 
+void RepoApi::removeParent(qReal::Id const &id, qReal::Id const &parent)
+{
+	mClient.removeParent(id, parent);
+}
+
 IdList RepoApi::links(Id const &id, QString const &direction) const
 {
 	IdList links = mClient.property(id, "links").value<IdList>();

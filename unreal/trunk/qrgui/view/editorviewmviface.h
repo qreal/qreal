@@ -49,6 +49,9 @@ namespace qReal {
 		void reset();
 		/** @brief Установить индекс корневого элемента представления */
 		void setRootIndex(const QModelIndex &index /**< Индекс */);
+		/** @brief В модели перемещены элементы и надо обновить сцену */
+		void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
+		void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 
 	protected slots:
 		/** @brief Обработать изменение данных элемента модели */

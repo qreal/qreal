@@ -188,6 +188,11 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setModel(mModel);
 	getCurrentTab()->mvIface()->setRootIndex(rootIndex);
+
+	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
+		, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
+		, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
 MainWindow::~MainWindow()

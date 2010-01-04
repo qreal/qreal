@@ -1,6 +1,8 @@
 /** @file uml_nodeelement.cpp
  * 	@brief Класс, представляющий объект на диаграмме
  * */
+#include "uml_nodeelement.h"
+
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QMessageBox>
@@ -8,8 +10,9 @@
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
 
-#include "uml_nodeelement.h"
 #include "../model/model.h"
+#include "../view/editorviewscene.h"
+
 #include <math.h>
 
 using namespace UML;
@@ -251,22 +254,19 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	storeGeometry();
 
-//	NodeElement *newParent = getNodeAt(event->scenePos());
-
 	if (mDragState != None)
 		mDragState = None;
 	else
 		Element::mouseReleaseEvent(event);
 
-	/*
-	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(scene());
+	NodeElement *newParent = getNodeAt(event->scenePos());
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (newParent) {
-		itemModel->changeParent(dataIndex,newParent->dataIndex,
-						 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
-	} else {
-		itemModel->changeParent(dataIndex,evscene->rootItem(),scenePos());
-	}
-	*/
+		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+	} else
+		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 
 	setZValue(0);
 }

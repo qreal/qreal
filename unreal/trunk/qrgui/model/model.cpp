@@ -369,7 +369,7 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id
 	}
 
 	int newRow = parentItem->children().size();
-	beginInsertRows(index(parentItem),newRow,newRow);
+	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		parentItem->addChild(item);
 		treeItems.insert(id,item);
@@ -392,6 +392,31 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id
 		}
 	endInsertRows();
 	return item;
+}
+
+void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
+{
+	if (!parent.isValid() || element.parent() == parent)
+		return;
+
+	int destinationRow = static_cast<ModelTreeItem*>(parent.internalPointer())->children().size();
+
+	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
+		ModelTreeItem *elementItem = static_cast<ModelTreeItem*>(element.internalPointer());
+		QVariant configuration = mApi.property(elementItem->id(), configurationPropertyName(elementItem));
+		elementItem->parent()->removeChild(elementItem);
+		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+
+		mApi.addParent(elementItem->id(), parentItem->id());
+		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
+
+		elementItem->setParent(parentItem);
+		parentItem->addChild(elementItem);
+
+		mApi.setProperty(elementItem->id(), positionPropertyName(elementItem), position);
+		mApi.setProperty(elementItem->id(), configurationPropertyName(elementItem), configuration);
+		endMoveRows();
+	}
 }
 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)

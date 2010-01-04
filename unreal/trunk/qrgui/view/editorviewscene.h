@@ -38,9 +38,9 @@ public:
 	/** @brief Получить элемент сцены по его индексу в модели
 	 *	@brief @return
 	 * */
-	UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
+	virtual UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
 
-	QPersistentModelIndex rootItem();
+	virtual QPersistentModelIndex rootItem();
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
