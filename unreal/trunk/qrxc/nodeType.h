@@ -20,11 +20,19 @@ public:
 
 private:
 	QList<Port*> mPorts;
+	QDomElement mSdfDomElement;
+	QDomElement mPortsDomElement;
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	bool initSdf();
+	void generateSdf() const;
+
 	bool initPorts();
-	bool initLinePorts(QDomElement const &portsElement, utils::OutFile &out);
-	bool initPointPorts(QDomElement const &portsElement, utils::OutFile &out);
+	bool initPointPorts(QDomElement const &portsElement);
+	bool initLinePorts(QDomElement const &portsElement);
+
+	void generatePorts() const;
+	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
+	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
 };

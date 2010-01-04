@@ -11,7 +11,12 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="Hascol Processes::Relation"/>
+			<import name="Class Diagram::Aggregation" as="Hascol Processes::Used Process Relation"/>
+			<import name="Class Diagram::Composition" as="Hascol Processes::Nested Process Relation"/>
+			<import name="Kernel Diagram::Kernel Generalization" as="Hascol Processes::Generalization"/>
+			<import name="Kernel Diagram::Comment" as="Hascol Processes::Comment"/>
+			<import name="Kernel Diagram::Comment Link" as="Hascol Processes::Comment Link"/>
+			<import name="Kernel Diagram::Kernel Diagram" as="Hascol Processes::Diagram"/>
 			<node name="Hascol Processes::Process">
 				<graphics>
 					<picture sizex="150" sizey="210">
@@ -66,6 +71,22 @@
 					</generalizations>
 					<properties>
 						<property type="Hascol Processes::Process Operation Kind" name="direction"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Hascol Processes::Resource">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Diagram::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="type"/>
 					</properties>
 				</logic>
 			</node>

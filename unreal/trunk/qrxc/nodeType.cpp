@@ -27,6 +27,8 @@ Type* NodeType::clone() const
 	GraphicType::copyFields(result);
 	foreach (Port *port, mPorts)
 		result->mPorts.append(port->clone());
+	result->mSdfDomElement = mSdfDomElement;
+	result->mPortsDomElement = mPortsDomElement;
 	return result;
 }
 
@@ -47,51 +49,84 @@ bool NodeType::initGraphics()
 bool NodeType::initSdf()
 {
 	QDomElement sdfElement = mGraphics.firstChildElement("picture");
-	if (sdfElement.isNull())
-		mVisible = (mName == "NamedElement");
-	else {
+	if (!sdfElement.isNull()) {
 		mWidth = sdfElement.attribute("sizex").toInt();
 		mHeight = sdfElement.attribute("sizey").toInt();
-		QString name = NameNormalizer::normalize(mName);
-		QString resourceName = name + "Class.sdf";
-		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName + "</file>\n");
-		OutFile out("generated/shapes/" + resourceName);
-		sdfElement.save(out(), 1);
+		mSdfDomElement = sdfElement;
 		mVisible = true;
-	}
+	} else
+		mVisible = false;
 	return true;
+}
+
+void NodeType::generateSdf() const
+{
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Class") + "</file>\n");
+
+	OutFile out("generated/shapes/" + resourceName("Class"));
+	mSdfDomElement.save(out(), 1);
 }
 
 bool NodeType::initPorts()
 {
 	QDomElement portsElement = mGraphics.firstChildElement("ports");
 	if (portsElement.isNull())
-	{
 		return true;
+	mPortsDomElement = portsElement;
+	initPointPorts(portsElement);
+	initLinePorts(portsElement);
+
+	return true;
+}
+
+bool NodeType::initPointPorts(QDomElement const &portsElement)
+{
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
+		portElement = portElement.nextSiblingElement("pointPort"))
+	{
+		Port *pointPort = new PointPort();
+		if (!pointPort->init(portElement, mWidth, mHeight)) {
+			delete pointPort;
+			return false;
+		}
+		mPorts.append(pointPort);
 	}
-	QString const name = NameNormalizer::normalize(mName);
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "Ports.sdf" + "</file>\n");
-	OutFile out("generated/shapes/" + name + "Ports.sdf");
+	return true;
+}
+
+bool NodeType::initLinePorts(QDomElement const &portsElement)
+{
+	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
+		portElement = portElement.nextSiblingElement("linePort"))
+	{
+		Port *linePort = new LinePort();
+		if (!linePort->init(portElement, mWidth, mHeight))
+		{
+			delete linePort;
+			return false;
+		}
+		mPorts.append(linePort);
+	}
+	return true;
+}
+
+void NodeType::generatePorts() const
+{
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Ports") + "</file>\n");
+
+	OutFile out("generated/shapes/" + resourceName("Ports"));
 	out() << "<picture ";
 	out() << "sizex=\"" << mWidth << "\" ";
 	out() << "sizey=\"" << mHeight << "\" ";
 	out() << ">\n";
 
-	if (!initPointPorts(portsElement, out))
-	{
-		qDebug() << "ERROR: can't parse point ports";
-		return false;
-	}
-	if (!initLinePorts(portsElement, out))
-	{
-		qDebug() << "ERROR: can't parse line ports";
-		return false;
-	}
+	generatePointPorts(mPortsDomElement, out);
+	generateLinePorts(mPortsDomElement, out);
+
 	out() << "</picture>\n";
-	return true;
 }
 
-bool NodeType::initPointPorts(QDomElement const &portsElement, OutFile &out)
+void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
 		portElement = portElement.nextSiblingElement("pointPort"))
@@ -102,19 +137,10 @@ bool NodeType::initPointPorts(QDomElement const &portsElement, OutFile &out)
 		out() << "\t<point stroke-width=\"3\" stroke-style=\"solid\" stroke=\"#465945\" ";
 		out() << "x1=\"" << portElement.attribute("x") << "\" y1=\"" << portElement.attribute("y") << "\" ";
 		out() << "/>\n";
-
-		Port *pointPort = new PointPort();
-		if (!pointPort->init(portElement, mWidth, mHeight))
-		{
-			delete pointPort;
-			return false;
-		}
-		mPorts.append(pointPort);
 	}
-	return true;
 }
 
-bool NodeType::initLinePorts(QDomElement const &portsElement, OutFile &out)
+void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
 		portElement = portElement.nextSiblingElement("linePort"))
@@ -131,20 +157,14 @@ bool NodeType::initLinePorts(QDomElement const &portsElement, OutFile &out)
 		out() << "x2=\""<<portEndElement.attribute("endx") << "\" y2=\"" << portEndElement.attribute("endy") << "\" ";
 		out() << "stroke-width=\"1\" stroke-style=\"solid\" stroke=\"#465945\" ";
 		out() << "/>\n";
-
-		Port *linePort = new LinePort();
-		if (!linePort->init(portElement, mWidth, mHeight))
-		{
-			delete linePort;
-			return false;
-		}
-		mPorts.append(linePort);
 	}
-	return true;
 }
 
 void NodeType::generateCode(OutFile &out)
 {
+	generateSdf();
+	generatePorts();
+
 	QString const className = NameNormalizer::normalize(mName);
 
 	out() << "\tclass " << className << " : public NodeElement {\n"

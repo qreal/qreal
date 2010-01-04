@@ -31,6 +31,7 @@ protected:
 	QList<Label*> mLabels;
 
 	void copyFields(GraphicType *type) const;
+	QString resourceName(QString const &resourceType) const;
 
 private:
 	bool initParents();

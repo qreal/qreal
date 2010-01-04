@@ -60,9 +60,7 @@ bool GraphicType::init(QDomElement const &element)
 		return true;
 	}
 	else
-	{
 		return false;
-	}
 }
 
 bool GraphicType::initParents()
@@ -239,4 +237,10 @@ void GraphicType::generateOneCase(OutFile &out, bool notIsFirst)
 		out() << "\tif (element == \"" << name << "\")\n";
 	else
 		out() << "\telse if (element == \"" << name << "\")\n";
+}
+
+QString GraphicType::resourceName(QString const &resourceType) const
+{
+	QString name = NameNormalizer::normalize(mName);
+	return name + resourceType + ".sdf";
 }

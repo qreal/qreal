@@ -116,7 +116,7 @@
                 <graphics>
                     <picture sizex="100" sizey="20"/>
                     <labels>
-                        <label x="40" y="10" textBinded="name"/>
+                        <label x="0" y="10" textBinded="name"/>
                     </labels>
                 </graphics>
                 <logic>

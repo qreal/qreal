@@ -25,5 +25,6 @@ private:
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
+	void generateGraphics() const;
 	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
 };

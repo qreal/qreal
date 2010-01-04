@@ -74,24 +74,30 @@ bool EdgeType::initGraphics()
 		qDebug() << "ERROR: no line type";
 		return false;
 	}
-	else if (lineType == "noPan"){
+	else if (lineType == "noPan")
 		lineType = "solidLine";
-	}
-	QString sdfType = lineType;
+	mLineType = "Qt::" + lineType.replace(0, 1, lineType.at(0).toUpper());
+	return true;
+}
+
+void EdgeType::generateGraphics() const
+{
+	QString sdfType = mLineType;
+	sdfType.remove("Qt::");
 	sdfType.remove("Line").toLower();
-	QString resourceName = NameNormalizer::normalize(mName) + "Class.sdf";
-	OutFile out("generated/shapes/" + resourceName);
+
+	OutFile out("generated/shapes/" + resourceName("Class"));
 	out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
 		"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
 		"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
 		"</picture>";
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName + "</file>\n");
-	mLineType = "Qt::" + lineType.replace(0,1,lineType.at(0).toUpper());
-	return true;
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Class") + "</file>\n");
 }
 
 void EdgeType::generateCode(OutFile &out)
 {
+	generateGraphics();
+
 	QString const className = NameNormalizer::normalize(mName);
 
 	out() << "\tclass " << className << " : public EdgeElement {\n"
