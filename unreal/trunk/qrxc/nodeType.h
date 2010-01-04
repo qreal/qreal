@@ -14,6 +14,7 @@ class NodeType : public GraphicType
 {
 public:
 	NodeType(Diagram *diagram);
+	virtual Type* clone() const;
 	virtual ~NodeType();
 	virtual void generateCode(utils::OutFile &out);
 

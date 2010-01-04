@@ -21,3 +21,12 @@ bool NumericType::init(QDomElement const &element)
 	else
 		return false;
 }
+
+Type* NumericType::clone() const
+{
+	NumericType *result = new NumericType();
+	Type::copyFields(result);
+	result->mBaseType = mBaseType;
+	return result;
+}
+

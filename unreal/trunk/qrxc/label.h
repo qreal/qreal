@@ -13,6 +13,7 @@ public:
 	void generateCodeForConstructor(utils::OutFile &out);
 	void generateCodeForUpdateData(utils::OutFile &out);
 	void generateCodeForFields(utils::OutFile &out);
+	// Default copy constructor ok.
 private:
 	QString titleName() const;
 

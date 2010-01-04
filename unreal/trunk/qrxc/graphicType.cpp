@@ -12,15 +12,27 @@ using namespace utils;
 const int MAX_LINE_LENGTH = 60;
 
 GraphicType::GraphicType(Diagram *diagram)
-	: Type(false), mDiagram(diagram), mVisible(false), mWidth(-1), mHeight(-1)
+	: Type(false, diagram), mVisible(false), mWidth(-1), mHeight(-1)
 {}
 
 GraphicType::~GraphicType()
 {
 	foreach (Label *label, mLabels)
-	{
 		delete label;
-	}
+}
+
+void GraphicType::copyFields(GraphicType *type) const
+{
+	Type::copyFields(type);
+	type->mElement = mElement;
+	type->mGraphics = mGraphics;
+	type->mHeight = mHeight;
+	foreach (Label *label, mLabels)
+		type->mLabels.append(new Label(*label));
+	type->mLogic = mLogic;
+	type->mParents = mParents;
+	type->mVisible = mVisible;
+	type->mWidth = mWidth;
 }
 
 bool GraphicType::init(QDomElement const &element)
@@ -58,9 +70,7 @@ bool GraphicType::initParents()
 {
 	QDomElement parentsElement = mLogic.firstChildElement("parents");
 	if (parentsElement.isNull())
-	{
 		return true;
-	}
 	for (QDomElement parentElement = parentsElement.firstChildElement("parent"); !parentElement.isNull();
 		parentElement = parentElement.nextSiblingElement("parent"))
 	{
@@ -145,9 +155,7 @@ bool GraphicType::addProperty(Property *property)
 bool GraphicType::resolve()
 {
 	if (mResolvingFinished)
-	{
 		return true;
-	}
 
 	foreach (QString parentName, mParents)
 	{

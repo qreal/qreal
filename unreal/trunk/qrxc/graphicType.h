@@ -1,13 +1,13 @@
 #pragma once
 
-#include "type.h"
-
 #include <QDomElement>
 #include <QStringList>
 #include <QList>
 
-class Diagram;
+#include "type.h"
+
 class Label;
+class Diagram;
 
 class GraphicType : public Type
 {
@@ -25,11 +25,12 @@ protected:
 	QDomElement mGraphics;
 	QStringList mParents;
 	QDomElement mElement;
-	Diagram *mDiagram;
 	bool mVisible;
 	int mWidth;
 	int mHeight;
 	QList<Label*> mLabels;
+
+	void copyFields(GraphicType *type) const;
 
 private:
 	virtual void addKernelParent() = 0;

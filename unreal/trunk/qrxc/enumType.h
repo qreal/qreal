@@ -9,6 +9,7 @@ class EnumType : public NonGraphicType
 {
 public:
 	virtual bool init(QDomElement const &element);
+	virtual Type* clone() const;
 
 private:
 	QStringList mValues;

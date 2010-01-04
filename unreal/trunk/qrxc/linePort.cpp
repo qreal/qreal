@@ -50,3 +50,14 @@ void LinePort::generateCode(OutFile &out)
 		<< "\t\t\t\tmLinePorts << ln;\n"
 		<< "\t\t\t};\n";
 }
+
+Port *LinePort::clone() const
+{
+	LinePort *result = new LinePort();
+	result->mEndX = mEndX;
+	result->mEndY = mEndY;
+	result->mStartX = mStartX;
+	result->mStartY = mStartY;
+	return result;
+}
+

@@ -14,3 +14,11 @@ void PointPort::generateCode(OutFile &out)
 {
 	out() << QString("\t\t\tmPointPorts << QPointF(%1, %2);\n").arg(mX).arg(mY);
 }
+
+Port* PointPort::clone() const
+{
+	PointPort *result = new PointPort();
+	result->mX = mX;
+	result->mY = mY;
+	return result;
+}

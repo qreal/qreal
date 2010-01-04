@@ -16,9 +16,19 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 EdgeType::~EdgeType()
 {
 	foreach (Association *association, mAssociations)
-	{
 		delete association;
-	}
+}
+
+Type* EdgeType::clone() const
+{
+	EdgeType *result = new EdgeType(mDiagram);
+	GraphicType::copyFields(result);
+	foreach (Association *association, mAssociations)
+		result->mAssociations.append(new Association(*association));
+	result->mBeginType = mBeginType;
+	result->mEndType = mEndType;
+	result->mLineType = mLineType;
+	return result;
 }
 
 void EdgeType::addKernelParent()

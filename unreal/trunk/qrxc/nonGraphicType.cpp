@@ -4,7 +4,7 @@
 using namespace utils;
 
 NonGraphicType::NonGraphicType()
-	: Type(true)
+	: Type(true, NULL)  // Неграфическим типам тоже неплохо бы знать, из какой они диаграммы
 {}
 
 bool NonGraphicType::resolve()

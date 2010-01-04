@@ -18,9 +18,16 @@ NodeType::NodeType(Diagram *diagram) : GraphicType(diagram)
 NodeType::~NodeType()
 {
 	foreach (Port *port, mPorts)
-	{
 		delete port;
-	}
+}
+
+Type* NodeType::clone() const
+{
+	NodeType *result = new NodeType(mDiagram);
+	GraphicType::copyFields(result);
+	foreach (Port *port, mPorts)
+		result->mPorts.append(port->clone());
+	return result;
 }
 
 bool NodeType::initAssociations()

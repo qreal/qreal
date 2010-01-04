@@ -12,12 +12,8 @@ Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 Editor::~Editor()
 {
 	foreach(Diagram *diagram, mDiagrams.values())
-	{
 		if (diagram)
-		{
 			delete diagram;
-		}
-	}
 }
 
 bool Editor::isLoaded()
@@ -78,12 +74,9 @@ bool Editor::load(QDir const &currentDir)
 
 	// Load diagram part two: resolve all dependencies.
 	foreach (Diagram *diagram, mDiagrams.values())
-	{
 		if (!diagram->resolve())
-		{
 			return false;
-		}
-	}
+
 	mLoadingComplete = true;
 	return true;
 }
@@ -95,23 +88,17 @@ XmlCompiler* Editor::xmlCompiler()
 
 Type* Editor::findType(QString const &name)
 {
-	foreach (Diagram *diagram, mDiagrams.values())
-	{
-		foreach (Type *type, diagram->types())
-		{
+	foreach (Diagram *diagram, mDiagrams.values()) {
+		foreach (Type *type, diagram->types()) {
 			if (type->name() == name)
-			{
 				return type;
-			}
 		}
 	}
-	foreach (Editor *editor, mIncludes)
-	{
+
+	foreach (Editor *editor, mIncludes) {
 		Type *type = editor->findType(name);
-		if (type->name() == name)
-		{
+		if (type != NULL && type->name() == name)
 			return type;
-		}
 	}
 	return NULL;
 }
@@ -119,9 +106,7 @@ Type* Editor::findType(QString const &name)
 Diagram* Editor::findDiagram(QString const &name)
 {
 	if (mDiagrams.contains(name))
-	{
 		return mDiagrams[name];
-	}
 	return NULL;
 }
 

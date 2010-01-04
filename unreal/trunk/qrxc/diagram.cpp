@@ -16,12 +16,8 @@ Diagram::Diagram(QString const &name, Editor *editor)
 Diagram::~Diagram()
 {
 	foreach(Type *type, mTypes.values())
-	{
 		if (type)
-		{
 			delete type;
-		}
-	}
 }
 
 bool Diagram::init(QDomElement const &diagramElement)
@@ -61,27 +57,26 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 	for (QDomElement element = graphicTypesElement.firstChildElement(); !element.isNull();
 		element = element.nextSiblingElement())
 	{
-		if (element.nodeName() == "node")
-		{
+		if (element.nodeName() == "node") {
 			Type *nodeType = new NodeType(this);
-			if (!nodeType->init(element))
-			{
+			if (!nodeType->init(element)) {
 				delete nodeType;
 				qDebug() << "Can't parse node";
 				return false;
 			}
 			mTypes[nodeType->name()] = nodeType;
-		}
-		else if (element.nodeName() == "edge")
-		{
+		} else if (element.nodeName() == "edge") {
 			Type *edgeType = new EdgeType(this);
-			if (!edgeType->init(element))
-			{
+			if (!edgeType->init(element)) {
 				delete edgeType;
 				qDebug() << "Can't parse edge";
 				return false;
 			}
 			mTypes[edgeType->name()] = edgeType;
+		} else if (element.nodeName() == "import") {
+			QString importedElementName = element.attribute("name", "");
+			QString importAs = element.attribute("as", "");
+			mImports.append(QPair<QString, QString>(importedElementName, importAs));
 		}
 		else
 		{
@@ -139,18 +134,25 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 
 bool Diagram::resolve()
 {
+	typedef QPair<QString, QString> ImportPair;
+	foreach (ImportPair import, mImports) {
+		Type *importedType = mEditor->findType(import.first);
+		Type *copiedType = importedType->clone();
+		copiedType->setName(import.second);
+		copiedType->setDiagram(this);
+		mTypes.insert(copiedType->name(), copiedType);
+	}
+
 	foreach(Type *type, mTypes.values())
-	{
-		if (!type->resolve())
-		{
-			qDebug() << "ERROR: can't resolve";
+		if (!type->resolve()) {
+			qDebug() << "ERROR: can't resolve type" << type->name();
 			return false;
 		}
-	}
+
 	return true;
 }
 
-Editor* Diagram::editor()
+Editor* Diagram::editor() const
 {
 	return mEditor;
 }
@@ -167,12 +169,12 @@ Type* Diagram::findType(QString name)
 	}
 }
 
-QMap<QString, Type*> Diagram::types()
+QMap<QString, Type*> Diagram::types() const
 {
 	return mTypes;
 }
 
-QString Diagram::name()
+QString Diagram::name() const
 {
 	return mDiagramName;
 }

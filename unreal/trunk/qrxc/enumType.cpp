@@ -4,17 +4,21 @@
 
 bool EnumType::init(QDomElement const &element)
 {
-	if (NonGraphicType::init(element))
-	{
+	if (NonGraphicType::init(element)) {
 		for (QDomElement valueElement = element.firstChildElement("value"); !valueElement.isNull();
 			valueElement = valueElement.nextSiblingElement("value"))
 		{
 			mValues.append(valueElement.text());
 		}
 		return true;
-	} 
-	else
-	{
+	} else
 		return false;
-	}
+}
+
+Type* EnumType::clone() const
+{
+	EnumType *result = new EnumType();
+	Type::copyFields(result);
+	result->mValues = mValues;
+	return result;
 }

@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>../commonXml/kernel_metamodel.xml</include>
+	<include>../commonXml/classMetamodel.xml</include>
+	<namespace>UML 2.0</namespace>
+	<diagram name="Hascol Structure Diagram">
+		<nonGraphicTypes>
+			<enum name="Hascol Processes::Process Operation Kind">
+				<value>in</value>
+				<value>out</value>
+			</enum>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<import name="Class Diagram::Relation" as="Hascol Processes::Relation"/>
+			<node name="Hascol Processes::Process">
+				<graphics>
+					<picture sizex="150" sizey="210">
+						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
+								   stroke-width="1" x2="150" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a"
+							  stroke-width="1" x2="150" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100"
+							  stroke-width="1" x2="150" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="150" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="150" starty="0"/>
+							<end endx="150" endy="210"/>
+						</linePort>
+						<linePort>
+							<start startx="150" starty="210"/>
+							<end endx="0" endy="210"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="210"/>
+							<end endx="0" endy="0"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+							<parent parentName="Kernel Diagram::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="implementation"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Hascol Processes::Process Operation">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Diagram::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="Hascol Processes::Process Operation Kind" name="direction"/>
+					</properties>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
+</metamodel>

@@ -6,6 +6,7 @@ class Association
 {
 public:
 	bool init(QDomElement const &element);
+	// Default copy constructor ok.
 
 private:
 	QString mBeginName;

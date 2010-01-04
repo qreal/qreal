@@ -13,6 +13,7 @@ class EdgeType : public GraphicType
 {
 public:
 	EdgeType(Diagram *diagram);
+	virtual Type* clone() const;
 	virtual ~EdgeType();
 	virtual void generateCode(utils::OutFile &out);
 

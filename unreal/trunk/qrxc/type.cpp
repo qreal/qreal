@@ -3,19 +3,15 @@
 
 #include <QDebug>
 
-Type::Type(bool isResolved)
-	: mResolvingFinished(isResolved)
+Type::Type(bool isResolved, Diagram *diagram)
+	: mResolvingFinished(isResolved), mDiagram(diagram)
 {}
 
 Type::~Type()
 {
 	foreach (Property *property, mProperties.values())
-	{
 		if (property)
-		{
 			delete property;
-		}
-	}
 }
 
 bool Type::init(QDomElement const &element)
@@ -29,17 +25,36 @@ bool Type::init(QDomElement const &element)
 	return true;
 }
 
-bool Type::isResolved()
+bool Type::isResolved() const
 {
 	return mResolvingFinished;
 }
 
-QString Type::name()
+QString Type::name() const
 {
 	return mName;
 }
 
-QMap<QString, Property*> Type::properties()
+void Type::setName(QString const &name)
+{
+	mName = name;
+}
+
+QMap<QString, Property*> Type::properties() const
 {
 	return mProperties;
+}
+
+void Type::setDiagram(Diagram *diagram)
+{
+	mDiagram = diagram;
+}
+
+void Type::copyFields(Type *type) const
+{
+	type->mName = mName;
+	foreach (QString propertyName, mProperties.keys())
+		type->mProperties.insert(propertyName, mProperties[propertyName]->clone());
+	type->mResolvingFinished = mResolvingFinished;
+	type->mDiagram = mDiagram;
 }
