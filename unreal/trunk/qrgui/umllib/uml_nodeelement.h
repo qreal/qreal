@@ -54,8 +54,6 @@ namespace UML {
 		/** @brief Деструктор */
 		virtual ~NodeElement();
 
-		void complexInlineEditing();
-
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
 			const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */

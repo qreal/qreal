@@ -153,7 +153,7 @@ void NodeElement::setGeometry(QRectF const &geom)
 	adjustLinks();
 
 	foreach (ElementTitle *title, mTitles)
-		title->setTextWidth(mContents.width() - 15 - title->pos().x());
+		title->setTextWidth(mContents.width() - title->pos().x());
 }
 
 void NodeElement::adjustLinks()
@@ -505,48 +505,6 @@ void NodeElement::setPortsVisible(bool value)
 {
 	prepareGeometryChange();
 	mPortsVisible = value;
-}
-
-void NodeElement::complexInlineEditing()
-{
-	/* TODO: Ересь!
-	if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() == "")){
-		mDocVis.setTextWidth(0);
-		mDocType.setTextWidth(0);
-		mTitle.setPos(15, mContents.height() - 15);
-		mTitle.setTextWidth(mContents.width() - 25);
-	} else
-		if ((mDocVis.toPlainText() == "") && (mDocType.toPlainText() != "")){
-		mDocVis.setTextWidth(0);
-		mDocType.setPos(1, mContents.height() - 15);
-		if (mTypeText.length() * 5 < 6*mContents.width() / 16)
-			mDocType.setTextWidth(mTypeText.length() * 5);
-		else
-			mDocType.setTextWidth(6 * mContents.width() / 16);
-
-		mTitle.setPos(mDocType.textWidth(), mContents.height() - 15);
-		mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
-	} else
-		if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() == "")){
-		mDocType.setTextWidth(0);
-		mDocVis.setPos(1, mContents.height() - 15);
-		mDocVis.setTextWidth(11);
-		mTitle.setPos(16, mContents.height() - 15);
-		mTitle.setTextWidth(mContents.width() - 37);
-	} else
-		if ((mDocVis.toPlainText() != "") && (mDocType.toPlainText() != "")){
-		mDocVis.setPos(1, mContents.height() - 15);
-		mDocVis.setTextWidth(11);
-		mDocType.setPos (16, mContents.height() - 15);
-		if (mTypeText.length() * 5 < 6 * mContents.width() / 16)
-			mDocType.setTextWidth(mTypeText.length() * 5);
-		else
-			mDocType.setTextWidth(6 * mContents.width() / 16);
-
-		mTitle.setPos(mDocVis.textWidth() + mDocType.textWidth(),  mContents.height() - 15);
-		mTitle.setTextWidth(mContents.width() - mDocType.textWidth() - 30);
-	}
-	*/
 }
 
 NodeElement *NodeElement::getNodeAt( const QPointF &position )
