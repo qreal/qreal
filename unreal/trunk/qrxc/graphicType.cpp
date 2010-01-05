@@ -133,7 +133,7 @@ bool GraphicType::addProperty(Property *property)
 	QString propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
 		if (!(mProperties[propertyName] == property)) {
-			qDebug() << "ERROR: property duplicated";
+			qDebug() << "ERROR: property" << propertyName << "duplicated";
 			delete property;
 			return false;
 		}

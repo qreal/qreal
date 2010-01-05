@@ -63,7 +63,6 @@
                         <parent parentName="Kernel Diagram::Behavioral Feature"/>
                     </generalizations>
                     <properties>
-                        <property type="bool" name="isAbstract"/>
                         <property type="enum" name="concurrency">
                             <enum nameReference="Basic Behaviors Diagram::Call Concurrency Kind"/>
                             <default>sequential</default>

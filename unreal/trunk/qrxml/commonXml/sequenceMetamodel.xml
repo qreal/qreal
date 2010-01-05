@@ -12,39 +12,43 @@
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="Interaction" >
-				<picture sizex="100" sizey="72" >
-					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="61" stroke-width="2" x2="99" fill-style="solid" />
-					<text i="0" font-fill="#000000" y1="17a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >sd</text>
-				</picture>
-				<labels>
-					<label x="40" y="10" textBinded="name" />
-				</labels>
+				<graphics>
+					<picture sizex="100" sizey="72" >
+						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="61" stroke-width="2" x2="99" fill-style="solid" />
+						<text i="0" font-fill="#000000" y1="17a" b="1" x1="6a" font-name="MS Shell Dlg 2" u="0" font-size="12a" >sd</text>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name" />
+					</labels>
+				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Behavior" />
+						<parent parentName="Basic Behaviors Diagram::Behavior" />
 					</generalizations>
 				</logic>
 			</node>
 			<node name="S Life Line" >
-				<picture sizex="82" sizey="102" >
-					<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="26a" stroke-width="2" x2="100%" fill-style="solid" />
-					<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="7%" y2="21a" stroke-width="2" x2="94%" fill-style="solid" />
-					<text i="0" font-fill="#000000" y1="19a" b="0" x1="9%" font-name="MS Shell Dlg 2" u="0" font-size="12a" >:</text>
-					<line fill="#000000" stroke-style="dash" stroke="#000000" y1="26a" x1="50%" y2="100%" stroke-width="2" x2="50%" fill-style="solid" />
-				</picture>
-				<labels>
-					<label x="40" y="10" textBinded="name" />
-				</labels>
-				<ports>
-					<linePort>
-						<start startx="1a" starty="1a" />
-						<end endx="100%" endy="1a" />
-					</linePort>
-					<linePort>
-						<start startx="50%" starty="26a" />
-						<end endx="50%" endy="100%" />
-					</linePort>
-				</ports>
+				<graphics>
+					<picture sizex="82" sizey="102" >
+						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" x1="1a" y2="26a" stroke-width="2" x2="100%" fill-style="solid" />
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="21a" x1="7%" y2="21a" stroke-width="2" x2="94%" fill-style="solid" />
+						<text i="0" font-fill="#000000" y1="19a" b="0" x1="9%" font-name="MS Shell Dlg 2" u="0" font-size="12a" >:</text>
+						<line fill="#000000" stroke-style="dash" stroke="#000000" y1="26a" x1="50%" y2="100%" stroke-width="2" x2="50%" fill-style="solid" />
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name" />
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="1a" starty="1a" />
+							<end endx="100%" endy="1a" />
+						</linePort>
+						<linePort>
+							<start startx="50%" starty="26a" />
+							<end endx="50%" endy="100%" />
+						</linePort>
+					</ports>
+				</graphics>
 				<logic>
 				</logic>
 			</node>

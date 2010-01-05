@@ -25,28 +25,14 @@ bool Diagram::init(QDomElement const &diagramElement)
 	for (QDomElement element = diagramElement.firstChildElement(); !element.isNull();
 		element = element.nextSiblingElement())
 	{
-		if (element.nodeName() == "graphicTypes")
-		{
+		if (element.nodeName() == "graphicTypes") {
 			if (!initGraphicTypes(element))
-			{
 				return false;
-			}
-		}
-		if (element.nodeName() == "nonGraphicTypes")
-		{
+		} else if (element.nodeName() == "nonGraphicTypes") {
 			if (!initNonGraphicTypes(element))
-			{
 				return false;
-			}
-		}
-		else
-		{
-			QString name = element.nodeName();
-			if ((name != "graphicTypes") && (name != "nonGraphicTypes"))
-			{
-				qDebug() << "ERROR: unknown tag" << name;
-			}
-		}
+		} else
+			qDebug() << "ERROR: unknown tag" << element.nodeName();
 	}
 	return true;
 }
