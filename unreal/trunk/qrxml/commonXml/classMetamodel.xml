@@ -129,7 +129,6 @@
                         <property type="string" name="isStatic"/>
                         <property type="string" name="isTransient"/>
                         <property type="string" name="isVolatile"/>
-                        <property type="string" name="isLeaf"/>
                     </properties>
                 </logic>
             </node>

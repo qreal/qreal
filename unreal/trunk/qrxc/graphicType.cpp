@@ -65,24 +65,22 @@ bool GraphicType::init(QDomElement const &element)
 
 bool GraphicType::initParents()
 {
-	QDomElement parentsElement = mLogic.firstChildElement("parents");
+	QDomElement parentsElement = mLogic.firstChildElement("generalizations");
 	if (parentsElement.isNull())
 		return true;
 	for (QDomElement parentElement = parentsElement.firstChildElement("parent"); !parentElement.isNull();
 		parentElement = parentElement.nextSiblingElement("parent"))
 	{
 		QString parentName = parentElement.attribute("parentName");
-		if (parentName == "")
-		{
-			qDebug() << "Error: anonymous parent of node";
+		if (parentName == "") {
+			qDebug() << "Error: anonymous parent of node" << mName;
 			return false;
 		}
 
 		if (!mParents.contains(parentName))
 			mParents.append(parentName);
-		else
-		{
-			qDebug() << "ERROR: parent of node duplicated";
+		else {
+			qDebug() << "ERROR: parent of node" << mName << "duplicated";
 			return false;
 		}
 	}
@@ -161,7 +159,7 @@ bool GraphicType::resolve()
 				return false;
 			return true;
 		}
-		foreach(Property *property, parent->properties().values())
+		foreach (Property *property, parent->properties().values())
 			if (!addProperty(property->clone()))
 				return false;
 	}
@@ -210,7 +208,7 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 				continue;
 			}
 
-			if (isFirstProperty){
+			if (isFirstProperty) {
 				out() << "\t\tresult ";
 				isFirstProperty = false;
 			}
@@ -221,8 +219,10 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 				propertiesString = "\n\t\t";
 			}
 		}
-		if(!propertiesString.trimmed().isEmpty())
+
+		if (!propertiesString.trimmed().isEmpty())
 			out() << propertiesString;
+
 		out() << ";\n";
 		return true;
 	}
