@@ -67,6 +67,9 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 			{
 				ellipse(elem);
 			}
+			else if (elem.tagName() == "arc") {
+				arc(elem);
+			}
 			else if(elem.tagName()=="background")
 			{
 				background(elem);
@@ -111,16 +114,28 @@ void SdfRenderer::line(QDomElement &element)
 
 void SdfRenderer::ellipse(QDomElement &element)
 {
-
 	float x1 = x1_def(element);
 	float y1 = y1_def(element);
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
 
-	QRectF rect;
-	rect.adjust(x1, y1, x2, y2);
+	QRectF rect(x1, y1, x2, y2);
 	parsestyle(element);
 	painter->drawEllipse(rect);
+}
+
+void SdfRenderer::arc(QDomElement &element)
+{
+	float x1 = x1_def(element);
+	float y1 = y1_def(element);
+	float x2 = x2_def(element);
+	float y2 = y2_def(element);
+	int startAngle = element.attribute("startAngle").toInt();
+	int spanAngle = element.attribute("spanAngle").toInt();
+
+	QRectF rect(x1, y1, x2, y2);
+	parsestyle(element);
+	painter->drawArc(rect, startAngle, spanAngle);
 }
 
 void SdfRenderer::background(QDomElement &element)

@@ -50,6 +50,7 @@ private:
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
+	void arc(QDomElement &element);
 	void parsestyle(QDomElement &element);
 	void background(QDomElement &element);
 	void draw_text(QDomElement &element);
