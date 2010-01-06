@@ -11,6 +11,7 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
+			<import name="Class Diagram::Relation" as="Hascol Processes::Functor Parameter Relation"/>
 			<import name="Class Diagram::Aggregation" as="Hascol Processes::Used Process Relation"/>
 			<import name="Class Diagram::Composition" as="Hascol Processes::Nested Process Relation"/>
 			<import name="Kernel Diagram::Kernel Generalization" as="Hascol Processes::Generalization"/>
@@ -51,7 +52,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-							<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Kernel Diagram::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="implementation"/>
@@ -90,6 +91,55 @@
 					<properties>
 						<property type="string" name="type"/>
 					</properties>
+				</logic>
+			</node>
+			<node name="Hascol Processes::Functor">
+				<graphics>
+					<picture sizex="250" sizey="210">
+						<rectangle x1="0" y1="50" y2="210" x2="150" />
+						<line x1="0" y1="75" x2="150" y2="75" />
+						<line x1="0" y1="140" x2="150" y2="140" />
+						<rectangle x1="100" y1="0" y2="55" x2="250" stroke-style="dash" fill-style="solid" fill="#ffffff"/>
+					</picture>
+					<labels>
+						<label x="0" y="50" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="50"/>
+							<end endx="100" endy="50"/>
+						</linePort>
+						<linePort>
+							<start startx="150" starty="55"/>
+							<end endx="150" endy="210"/>
+						</linePort>
+						<linePort>
+							<start startx="150" starty="210"/>
+							<end endx="0" endy="210"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="210"/>
+							<end endx="0" endy="50"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Hascol Processes::Process"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Hascol Processes::Functor Parameter">
+				<graphics>
+					<picture sizex="140" sizey="20"/>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="140" y="10"/>
+					</ports>
+				</graphics>
+				<logic>
 				</logic>
 			</node>
 		</graphicTypes>

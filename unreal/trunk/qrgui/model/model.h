@@ -23,7 +23,7 @@ namespace qReal {
 
 		public:
 			explicit Model(EditorManager const &editorManager);
-			~Model();
+			virtual ~Model();
 			QPersistentModelIndex rootIndex();
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 			virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
