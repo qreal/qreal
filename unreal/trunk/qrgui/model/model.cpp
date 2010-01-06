@@ -422,7 +422,6 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
 	foreach (Id childId, mApi.children(parent->id())) {
-		QString path = pathToItem(parent);
 		ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}

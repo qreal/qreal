@@ -166,16 +166,33 @@
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
 			<import name="Class Diagram::Relation" as="Hascol Port Mappings::Port Mapping Relation"/>
+			<import name="Hascol Processes::Functor Parameter" as="Hascol Port Mappings::Functor Parameter"/>
 			<node name="Hascol Port Mappings::Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
 					<picture sizex="200" sizey="100">
-						<rectangle x1="20" y1="0" x2="180" y2="100" />
+						<rectangle x1="20a" y1="0" x2="180" y2="100" />
 					</picture>
 					<labels>
 						<label x="20" y="0" textBinded="name"/>
 					</labels>
 				</graphics>
 				<logic>
+				</logic>
+			</node>
+			<node name="Hascol Port Mappings::Functor Instance">
+				<graphics>
+					<picture sizex="250" sizey="130">
+						<rectangle x1="20a" y1="30a" x2="180" y2="130" />
+						<rectangle x1="150" y1="0a" x2="250" y2="35a" stroke-style="dash" fill-style="solid" fill="#ffffff"/>
+					</picture>
+					<labels>
+						<label x="20" y="30" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Hascol Port Mappings::Process Instance"/>
+					</generalizations>
 				</logic>
 			</node>
 			<node name="Hascol Port Mappings::Port"> <!-- Это просто порт из композитных структур + атрибут direction -->

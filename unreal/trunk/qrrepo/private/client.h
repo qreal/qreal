@@ -12,7 +12,7 @@ namespace qrRepo {
 
 	namespace details {
 
-		const QString saveDirName = "./save";
+		QString const saveDirName = "./save";
 
 		class Client
 		{

@@ -13,6 +13,8 @@ using namespace qrRepo::details;
 using namespace qReal;
 using namespace utils;
 
+bool const failSafe = true;
+
 Client::Client()
 {
 	init();
@@ -55,7 +57,8 @@ void Client::addParent(Id const &id, Id const &parent)
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
 			mObjects[id]->addParent(parent);
-			mObjects[parent]->addChild(id);
+			if (!failSafe || !mObjects[parent]->children().contains(id))
+				mObjects[parent]->addChild(id);
 		} else {
 			throw Exception("Client: Adding nonexistent parent " + parent.toString() + " to  object " + id.toString());
 		}
@@ -67,7 +70,8 @@ void Client::addParent(Id const &id, Id const &parent)
 void Client::addChild(const Id &id, const Id &child)
 {
 	if (mObjects.contains(id)) {
-		mObjects[id]->addChild(child);
+		if (!failSafe || !mObjects[id]->children().contains(child))
+			mObjects[id]->addChild(child);
 		if (mObjects.contains(child)) {
 			mObjects[child]->addParent(id);
 		} else {
@@ -164,7 +168,8 @@ void Client::addChildrenToRootObject()
 {
 	foreach (LogicObject *object, mObjects.values()) {
 		if (object->parents().contains(ROOT_ID)) {
-			mObjects[ROOT_ID]->addChild(object->id());
+			if (!failSafe || !mObjects[ROOT_ID]->children().contains(object->id()))
+				mObjects[ROOT_ID]->addChild(object->id());
 		}
 	}
 }
@@ -222,10 +227,12 @@ LogicObject *Client::parseLogicObject(QDomElement const &elem)
 	LogicObject object(Id::loadFromString(id));
 
 	foreach (Id parent, loadIdList(elem, "parents"))
-		object.addParent(parent);
+		if (!failSafe || !object.parents().contains(parent))
+			object.addParent(parent);
 
 	foreach (Id child, loadIdList(elem, "children"))
-		object.addChild(child);
+		if (!failSafe || !object.children().contains(child))
+			object.addChild(child);
 
 	if (!loadProperties(elem, object))
 		return NULL;
