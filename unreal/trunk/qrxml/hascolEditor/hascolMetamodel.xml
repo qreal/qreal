@@ -14,7 +14,7 @@
 			<import name="Class Diagram::Relation" as="Hascol Processes::Functor Parameter Relation"/>
 			<import name="Class Diagram::Aggregation" as="Hascol Processes::Used Process Relation"/>
 			<import name="Class Diagram::Composition" as="Hascol Processes::Nested Process Relation"/>
-			<import name="Kernel Diagram::Kernel Generalization" as="Hascol Processes::Generalization"/>
+			<import name="Class Diagram::Generalization" as="Hascol Processes::Generalization"/>
 			<import name="Kernel Diagram::Comment" as="Hascol Processes::Comment"/>
 			<import name="Kernel Diagram::Comment Link" as="Hascol Processes::Comment Link"/>
 			<import name="Kernel Diagram::Kernel Diagram" as="Hascol Processes::Diagram"/>
@@ -142,6 +142,23 @@
 				<logic>
 				</logic>
 			</node>
+			<edge name="Hascol Processes::Functor Binding">
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="empty_arrow" endType="no_arrow">
+						<association beginName="Hascol Processes::Functor"
+							endName="Hascol Processes::Process"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="parameter bindings" />
+					</properties>
+				</logic>
+			</edge>
 		</graphicTypes>
 	</diagram>
 </metamodel>
