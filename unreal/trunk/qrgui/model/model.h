@@ -71,6 +71,7 @@ namespace qReal {
 
 			void init();
 			void cleanupTree(ModelTreeItem *root);
+			void checkProperties(Id const &id);
 		};
 
 	}

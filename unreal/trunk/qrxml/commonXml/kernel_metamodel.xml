@@ -86,10 +86,12 @@
 				<logic>
 					<properties>
 						<!-- TO DISCUSS!!! -->
+						<!--
 						<property type="string" name="from"/>
 						<property type="string" name="to"/>
 						<property type="string" name="fromPort"/>
 						<property type="string" name="toPort"/>
+						-->
 						<!-- END TO DISCUSS!!! -->
 						<property type="string" name="fromMultiplicity"/>
 						<property type="string" name="toMultiplicity"/>

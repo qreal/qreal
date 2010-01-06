@@ -433,10 +433,19 @@ ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const Id &id)
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
+		checkProperties(id);
 		parentItem->addChild(item);
 		treeItems.insert(id, item);
 	endInsertRows();
 	return item;
+}
+
+void Model::checkProperties(Id const &id)
+{
+	QStringList propertiesThatShallBe = editorManager().getPropertyNames(id.type());
+	foreach (QString property, propertiesThatShallBe)
+		if (!api().hasProperty(id, property))
+			mApi.setProperty(id, property, "");  // Типа значение по умолчанию.
 }
 
 QPersistentModelIndex Model::rootIndex()

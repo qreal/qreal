@@ -62,7 +62,8 @@
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
-						<label x="0" y="0" textBinded="name"/>
+						<label x="0" y="0" textBinded="direction"/>
+						<label x="20" y="0" textBinded="name"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -70,7 +71,8 @@
 						<parent parentName="Kernel Diagram::Classifier"/>
 					</generalizations>
 					<properties>
-						<property type="Hascol Processes::Process Operation Kind" name="direction"/>
+						<!-- <property type="Hascol Processes::Process Operation Kind" name="direction"/> -->
+						<property type="string" name="direction"/>
 					</properties>
 				</logic>
 			</node>
