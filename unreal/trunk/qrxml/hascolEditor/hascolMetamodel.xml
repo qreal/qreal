@@ -161,4 +161,58 @@
 			</edge>
 		</graphicTypes>
 	</diagram>
+	
+	<diagram name="Hascol Port Mapping Diagram">
+		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
+		<graphicTypes>
+			<import name="Class Diagram::Relation" as="Hascol Port Mappings::Port Mapping Relation"/>
+			<node name="Hascol Port Mappings::Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<rectangle x1="20" y1="0" x2="180" y2="100" />
+					</picture>
+					<labels>
+						<label x="20" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+				</logic>
+			</node>
+			<node name="Hascol Port Mappings::Port"> <!-- Это просто порт из композитных структур + атрибут direction -->
+				<graphics>
+					<picture sizex="100" sizey="10">
+						<rectangle x1="0" y1="0" x2="10" y2="10" fill="#ffffff" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="10" y="-10" textBinded="direction"/>
+						<label x="30" y="-10" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="0" endy="10"/>
+						</linePort>
+						<linePort>
+							<start startx="10" starty="0"/>
+							<end endx="10" endy="10"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="10" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="10"/>
+							<end endx="10" endy="10"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<properties>
+						<!-- <property type="Hascol Processes::Process Operation Kind" name="direction"/> -->
+						<property type="string" name="direction"/>
+					</properties>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
 </metamodel>

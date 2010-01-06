@@ -100,6 +100,7 @@ NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
+	setFlag(ItemClipsChildrenToShape, false);
 }
 
 NodeElement::~NodeElement()
