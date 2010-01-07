@@ -94,9 +94,12 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
+	/*
 	qDebug() << "========== rowsInserted" << parent << start << end;
 
 	qDebug() << "rowsInserted: adding items" << parent;
+	*/
+
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		Id uuid = current.data(roles::idRole).value<Id>();
@@ -113,8 +116,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			setRootIndex(current);
 			continue;
 		}
-
-		qDebug() << uuid.toString();
 
 		if (uuid == ROOT_ID)
 			continue;

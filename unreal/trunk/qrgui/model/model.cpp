@@ -441,6 +441,8 @@ ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const Id &id)
 
 void Model::checkProperties(Id const &id)
 {
+	if (!editorManager().hasElement(id.type()))
+		return;
 	QStringList propertiesThatShallBe = editorManager().getPropertyNames(id.type());
 	foreach (QString property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
