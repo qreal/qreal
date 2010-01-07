@@ -4,7 +4,7 @@
 	<namespace>UML 2.1</namespace>
 	<diagram name="Class Diagram">
 		<graphicTypes>
-			<node name="Class Diagram::Class">
+			<node name="Class">
 				<graphics>
 					<picture sizex="150" sizey="210">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
@@ -38,7 +38,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="import"/>
@@ -46,7 +46,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Class Diagram::View">
+			<node name="View">
 				<graphics>
 					<picture sizex="100" sizey="100">
 						<text i="0" font-fill="#0000ff" y1="7a" b="0" x1="40%" font-name="MS Shell Dlg 2" u="0"
@@ -85,14 +85,14 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="logicalName"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Class Diagram::Class method">
+			<node name="Class method">
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
@@ -101,7 +101,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
@@ -112,7 +112,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Class Diagram::Class field">
+			<node name="Class field">
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
@@ -121,7 +121,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
@@ -132,7 +132,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Class Diagram::Interface">
+			<node name="Interface">
 				<graphics>
 					<picture sizex="150" sizey="210">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
@@ -176,74 +176,74 @@
 					</properties>
 				</logic>
 			</node>
-			<edge name="Class Diagram::Aggregation">
+			<edge name="Aggregation">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="empty_rhomb" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+						<parent parentName="Kernel Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Class Diagram::Relation">
+			<edge name="Relation">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+						<parent parentName="Kernel Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Class Diagram::Composition">
+			<edge name="Composition">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="filled_rhomb" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+						<parent parentName="Kernel Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Class Diagram::Dependency">
+			<edge name="Dependency">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+						<parent parentName="Kernel Relationship"/>
 					</generalizations>
 					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 				</logic>
 			</edge>
-			<edge name="Class Diagram::Realization">
+			<edge name="Realization">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 				</logic>
 			</edge>
-			<edge name="Class Diagram::Generalization">
+			<edge name="Generalization">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
@@ -252,8 +252,8 @@
 						<property type="bool" name="isSubstitutable"/>
 					</properties>
 					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element"
+									 endName="Kernel Element"/>
 					</associations>
 				</logic>
 			</edge>

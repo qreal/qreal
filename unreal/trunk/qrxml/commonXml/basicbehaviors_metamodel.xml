@@ -5,17 +5,17 @@
     <namespace>UML 2.1</namespace>
     <diagram name="Basic Behaviors">
         <nonGraphicTypes>
-            <enum name="Basic Behaviors Diagram::Call Concurrency Kind">
+            <enum name="Call Concurrency Kind">
                 <value>sequential</value>
                 <value>guarded</value>
                 <value>concurrent</value>
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
-            <node name="Basic Behaviors Diagram::Behavior">
+            <node name="Behavior">
                 <logic>
                     <generalizations>
-                        <parent parentName="Class Diagram::Class"/>
+                        <parent parentName="Class"/>
                     </generalizations>
                     <properties>
                         <property type="text" name="body"/>
@@ -23,15 +23,15 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Behaviors Diagram::Behaviored Classifier">
+            <node name="Behaviored Classifier">
                 <logic>
                     <generalizations>
-                        <parent parentName="Kernel Diagram::Classifier"/>
+                        <parent parentName="Classifier"/>
                     </generalizations>
                 </logic>
             </node>
             <!--
-			<node name="Basic Behaviors Diagram::Opaque Behavior">
+			<node name="Opaque Behavior">
                 <logic>
                     <properties>
                         <property type="text" name="body"/>
@@ -47,7 +47,7 @@
                     </containers>
                 </logic>
             </node>
-            <node name="Basic Behaviors Diagram::Function Behavior">
+            <node name="Function Behavior">
                 <logic>
                     <generalizations>
                         <generalization>
@@ -57,18 +57,18 @@
                 </logic>
             </node>
 			-->
-            <node name="Basic Behaviors Diagram::Behavioral Feature">
+            <node name="Behavioral Feature">
                 <logic>
                     <generalizations>
-                        <parent parentName="Kernel Diagram::Behavioral Feature"/>
+                        <parent parentName="Behavioral Feature"/>
                     </generalizations>
                     <properties>
                         <property type="enum" name="concurrency">
-                            <enum nameReference="Basic Behaviors Diagram::Call Concurrency Kind"/>
+                            <enum nameReference="Call Concurrency Kind"/>
                             <default>sequential</default>
                         </property>
-                        <property type="Basic Behaviors Diagram::Behavior" name="methods"/>
-                        <property type="Kernel Diagram::Classifier" name="raisedException"/>
+                        <property type="Behavior" name="methods"/>
+                        <property type="Classifier" name="raisedException"/>
                     </properties>
                 </logic>
             </node>

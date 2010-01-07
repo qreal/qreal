@@ -5,239 +5,239 @@
     <namespace>UML 2.0</namespace>
     <diagram name="Actions">
         <graphicTypes>
-            <node name="Basic Actions Diagram::Accept Event Action">
+            <node name="Accept Event Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Action"/>
+                            <parent parentName="Action"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isUnmarshall" />
-						<property type="Basic Actions Diagram::Trigger" name="trigger" />
-						<property type="Basic Actions Diagram::Output Pin" name="result" />
+						<property type="Trigger" name="trigger" />
+						<property type="Output Pin" name="result" />
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Action">
+            <node name="Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Named Element"/>
+                            <parent parentName="Named Element"/>
                     </generalizations>
 					<properties>
-					  <property type="Basic Actions Diagram::Input Pin" name="input"/>
-					  <property type="Basic Actions Diagram::Output Pin" name="output"/>
+					  <property type="Input Pin" name="input"/>
+					  <property type="Output Pin" name="output"/>
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Trigger">
+            <node name="Trigger">
                 <!-- "from Communications" -->
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Named Element"/>
+                            <parent parentName="Named Element"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Event" name="event" />
-						<property type="Basic Actions Diagram::Accept Event Action" name="trigger" />
+						<property type="Event" name="event" />
+						<property type="Accept Event Action" name="trigger" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Output Pin">
+            <node name="Output Pin">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Pin"/>
+                            <parent parentName="Pin"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Accept Event Action" name="result" />
-						<property type="Basic Actions Diagram::Action" name="output" />
+						<property type="Accept Event Action" name="result" />
+						<property type="Action" name="output" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Input Pin">
+            <node name="Input Pin">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Pin"/>
+                            <parent parentName="Pin"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Action" name="input" />
+						<property type="Action" name="input" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Event">
+            <node name="Event">
                 <!-- "from Communications" -->
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Packageable Element"/>
+                            <parent parentName="Packageable Element"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Trigger" name="event" />
+						<property type="Trigger" name="event" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Pin">
+            <node name="Pin">
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Typed Element"/>
-                            <parent parentName="Kernel Diagram::Multiplicity Element"/>
+                            <parent parentName="Typed Element"/>
+                            <parent parentName="Multiplicity Element"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Action Input Pin">
+            <node name="Action Input Pin">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Input Pin"/>
+                            <parent parentName="Input Pin"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Action" name="fromAction" />
+						<property type="Action" name="fromAction" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Value Specification Action">
+            <node name="Value Specification Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Action"/>
+                            <parent parentName="Action"/>
                     </generalizations>
 					<properties>
-						<property type="Kernel Diagram::Value Specification" name="value" />
-						<property type="Kernel Diagram::Output Pin" name="result" />
+						<property type="Value Specification" name="value" />
+						<property type="Output Pin" name="result" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Add Variable Value Action">
+            <node name="Add Variable Value Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Write Variable Action"/>
+                            <parent parentName="Write Variable Action"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isReplaceAll">
                             <default>false</default>
                         </property>
-						<property type="Basic Actions Diagram::Input Pin" name="insertAt"/>
+						<property type="Input Pin" name="insertAt"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Write Variable Action">
+            <node name="Write Variable Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Variable Action"/>
+                            <parent parentName="Variable Action"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Input Pin" name="value" />
+						<property type="Input Pin" name="value" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Variable Action">
+            <node name="Variable Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Action"/>
+                            <parent parentName="Action"/>
                     </generalizations>
 					<properties>
-						<property type="Basic Actions Diagram::Variable" name="variable" />
+						<property type="Variable" name="variable" />
 					</properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Variable">
+            <node name="Variable">
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Multiplicity Element"/>
-                            <parent parentName="Kernel Diagram::Typed Element"/>
+                            <parent parentName="Multiplicity Element"/>
+                            <parent parentName="Typed Element"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Call Action">
+            <node name="Call Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                            <parent parentName="Invocation Action"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isSynchronous">
                             <default>true</default>
                         </property>
-						<property type="Basic Actions Diagram::Output Pin" name="result"/>
+						<property type="Output Pin" name="result"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Call Behavior Action">
+            <node name="Call Behavior Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Call Action"/>
+                            <parent parentName="Call Action"/>
                     </generalizations>
                     <properties>
-                            <property type="Basic Behavior Diagram::Behavior" name="behavior"/>
+                            <property type="Behavior" name="behavior"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Call Operation Action">
+            <node name="Call Operation Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Call Action" />
+                            <parent parentName="Call Action" />
                     </generalizations>
                         <properties>
-                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
-                            <property type="Kernel Diagram::Operation" name="operation"/>
+                            <property type="Input Pin" name="target"/>
+                            <property type="Operation" name="operation"/>
                         </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Send Object Action">
+            <node name="Send Object Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                            <parent parentName="Invocation Action"/>
                     </generalizations>
                     <properties>
-                            <property type="Basic Actions Diagram::Input Pin" name="request"/>
-                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
+                            <property type="Input Pin" name="request"/>
+                            <property type="Input Pin" name="target"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Invocation Action">
+            <node name="Invocation Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Action"/>
+                            <parent parentName="Action"/>
                     </generalizations>
                     <properties>
-                            <property type="Basic Actions Diagram::Input Pin" name="argument"/>
+                            <property type="Input Pin" name="argument"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::SendSignal Action">
+            <node name="SendSignal Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Invocation Action"/>
+                            <parent parentName="Invocation Action"/>
                     </generalizations>
                     <properties>
-                            <property type="Basic Actions Diagram::Signal" name="signal"/>
-                            <property type="Basic Actions Diagram::Input Pin" name="target"/>
+                            <property type="Signal" name="signal"/>
+                            <property type="Input Pin" name="target"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Signal">
+            <node name="Signal">
                 <!-- "from Communication" -->
                 <logic>
                     <generalizations>
-                            <parent parentName="Kernel Diagram::Classifier"/>
+                            <parent parentName="Classifier"/>
                     </generalizations>
                     <properties>
-                            <property type="Kernel Diagram::Property" name="ownedAttribute"/>
+                            <property type="Property" name="ownedAttribute"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Unmarshall Action">
+            <node name="Unmarshall Action">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Action"/>
+                            <parent parentName="Action"/>
                     </generalizations>
                     <properties>
-                            <property type="Basic Actions Diagram::Input Pin" name="object"/>
-                            <property type="Kernel Diagram::Classifier" name="unmarshallType"/>
-                            <property type="Basic Actions Diagram::Output Pin" name="result"/>
+                            <property type="Input Pin" name="object"/>
+                            <property type="Classifier" name="unmarshallType"/>
+                            <property type="Output Pin" name="result"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Basic Actions Diagram::Value Pin">
+            <node name="Value Pin">
                 <logic>
                     <generalizations>
-                            <parent parentName="Basic Actions Diagram::Input Pin"/>
+                            <parent parentName="Input Pin"/>
                     </generalizations>
                     <properties>
-                            <property type="Kernel Diagram::Value Specification" name="value"/>
+                            <property type="Value Specification" name="value"/>
                     </properties>
                 </logic>
             </node>

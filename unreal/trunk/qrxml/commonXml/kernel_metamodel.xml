@@ -3,25 +3,18 @@
 	<namespace>UML 2.1</namespace>
 	<diagram name="Kernel">
 		<nonGraphicTypes>
-			<enum name="Kernel Diagram::State">
-				<value>Created</value>
-				<value>Development</value>
-				<value>Ready for testing</value>
-				<value>Testing</value>
-				<value>Feedback</value>
-				<value>Debugging</value>
-				<value>Ready for acceptance</value>
-				<value>Accepted</value>
-				<value>Release</value>
-				<value>Launched</value>
+			<enum name="Aggregation Kind">
+				<value>none</value>
+				<value>shared</value>
+				<value>composite</value>
 			</enum>
-			<enum name="Kernel Diagram::Visibility Kind">
+			<enum name="Visibility Kind">
 				<value>private</value>
 				<value>protected</value>
 				<value>public</value>
 				<value>package</value>
 			</enum>
-			<enum name="Kernel Diagram::Parameter Direction Kind">
+			<enum name="Parameter Direction Kind">
 				<value>in</value>
 				<value>inout</value>
 				<value>out</value>
@@ -29,17 +22,557 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="Kernel Diagram::Kernel Element">
+			<edge name="Association">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="no_arrow">
+						<association beginName="Property" endName="Property"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Classifier"/>
+						<parent parentName="Kernel Relationship"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="isDerived">
+							<default>false</default>
+						</property>
+						<property type="Property" name="ownedEnd" />
+						<property type="Property" name="navigableOwnedEnd" />
+					</properties>
+				</logic>
+			</edge>
+			<node name="Behavioral Feature">
+				<logic>
+					<generalizations>
+						<parent parentName="Feature" />
+						<parent parentName="Namespace" />
+					</generalizations>
+					<properties>
+						<property type="Parameter" name="ownedParameter" />
+						<property type="Type" name="raisedException" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Class">
+				<logic>
+					<generalizations>
+						<parent parentName="Classifier" />
+					</generalizations>
+					<properties>
+						<property type="Classifier" name="nestedClassifier" />
+						<property type="Property" name="ownedAttribute" />
+						<property type="Operation" name="ownedOperation" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Classifier">
+				<logic>
+					<generalizations>
+						<parent parentName="Namespace" />
+						<parent parentName="Redefinable Element" />
+						<parent parentName="Type" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isAbstract">
+							<default>false</default>
+						</property>
+						<property type="Kernel Generalization" name="generalization" />
+						<property type="Classifier" name="redefinedClassifier" />
+						<property type="Substitution" name="substitution" />
+						<property type="Generalization Set" name="powertypeExtent" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Comment">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line x1="0" y1="0" x2="180" y2="0" />
+						<line x1="0" y1="0" x2="0" y2="100" />
+						<line x1="0" y1="100" x2="200" y2="100" />
+						<line x1="200" y1="100" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="180" y2="20" />
+						<line x1="200" y1="20" x2="180" y2="20" />
+					</picture>
+					<ports>
+						<pointPort x="200" y="50"/>
+						<pointPort x="0" y="50"/>
+						<pointPort x="100" y="100"/>
+						<pointPort x="100" y="0"/>
+					</ports>
+					<labels>
+						<label x="0" y="0" textBinded="body"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Element" />
+					</generalizations>
+					<properties>
+						<property type="string" name="body" />
+						<property type="Kernel Element" name="annotatedElement" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Constraint">
+				<logic>
+					<generalizations>
+						<parent parentName="Packageable Element" />
+					</generalizations>
+					<properties>
+						<property type="Kernel Element" name="constrainedElement" />
+						<property type="Value Specification" name="specification" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Data Type">
+				<logic>
+					<generalizations>
+						<parent parentName="Classifier" />
+					</generalizations>
+					<properties>
+						<property type="Property" name="ownedAttribute" />
+						<property type="Operation" name="ownedOperation" />
+					</properties>
+				</logic>
+			</node>
+			<edge name="Kernel Directed Relationship">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Kernel Element" endName="Kernel Element"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Relationship" />
+					</generalizations>
+				</logic>
+			</edge>
+			<node name="Kernel Element">
 				<logic>
 					<properties>
-						<property type="enum" name="state">
-							<enum nameReference="State"/>
-							<default>Created</default>
+						<property type="Comment" name="ownedComment" />
+					</properties>
+				</logic>
+			</node>
+			<edge name="Element Import">
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Namespace" endName="Packageable Element"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel Directed Relationship" />
+					</generalizations>
+					<properties>
+						<property type="enum" name="visibility">
+							<enum nameReference="Visibility Kind" />
+							<default>public</default>
+						</property>
+						<property type="string" name="alias" />
+					</properties>
+				</logic>
+			</edge>
+			<node name="Enumeration">
+				<logic>
+					<generalizations>
+						<parent parentName="Data Type" />
+					</generalizations>
+					<properties>
+						<property type="Enumeration Literal" name="ownedLiteral" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Enumeration Literal">
+				<logic>
+					<generalizations>
+						<parent parentName="Instance Specification" />
+					</generalizations>
+					<properties>
+						<property type="Enumeration" name="enumeration" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Expression">
+				<logic>
+					<generalizations>
+						<parent parentName="Value Specification" />
+					</generalizations>
+					<properties>
+						<property type="string" name="symbol" />
+						<property type="Value Specification" name="operand" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Feature">
+				<logic>
+					<generalizations>
+						<parent parentName="Redefinable Element" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isStatic">
+							<default>false</default>
 						</property>
 					</properties>
 				</logic>
 			</node>
-			<node name="Kernel Diagram::Kernel Diagram">
+			<edge name="Kernel Generalization">
+				<graphics>
+					<lineType type="solidLine" />
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Classifier" endName="Classifier"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel Directed Relationship" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isSubstitutable">
+							<default>true</default>
+						</property>
+						<property type="Generalization Set" name="generalizationSet" />
+					</properties>
+				</logic>
+			</edge>
+			<node name="Instance Specification">
+				<logic>
+					<generalizations>
+						<parent parentName="Packageable Element" />
+					</generalizations>
+					<properties>
+						<property type="Classifier" name="classifier" />
+						<property type="Slot" name="slot" />
+						<property type="Value Specification" name="specification" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Instance Value">
+				<logic>
+					<generalizations>
+						<parent parentName="Value Specification" />
+					</generalizations>
+					<properties>
+						<property type="Instance Specification" name="instance" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Literal Boolean">
+				<logic>
+					<generalizations>
+						<parent parentName="Literal Specification" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="value" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Literal Integer">
+				<logic>
+					<generalizations>
+						<parent parentName="Literal Specification" />
+					</generalizations>
+					<properties>
+						<property type="int" name="value">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node name="Literal Null">
+				<logic>
+					<generalizations>
+						<parent parentName="Literal Specification" />
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Literal Specification">
+				<logic>
+					<generalizations>
+						<parent parentName="Value Specification" />
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Literal String">
+				<logic>
+					<generalizations>
+						<parent parentName="Literal Specification" />
+					</generalizations>
+					<properties>
+						<property type="string" name="value" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Literal Unlimited Natural">
+				<logic>
+					<generalizations>
+						<parent parentName="Literal Specification" />
+					</generalizations>
+					<properties>
+						<property type="unlimitedNatural" name="value">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node name="Multiplicity Element">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Element" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isOrdered">
+							<default>false</default>
+						</property>
+						<property type="bool" name="isUnique">
+							<default>true</default>
+						</property>
+						<property type="Value Specification" name="lowerValue" />
+						<property type="Value Specification" name="upperValue" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Named Element">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Element" />
+					</generalizations>
+					<properties>
+						<property type="string" name="name" />
+						<property type="enum" name="visibility">
+							<enum nameReference="Visibility Kind" />
+						</property>
+						<property type="Dependency" name="clientDependency" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Namespace">
+				<logic>
+					<generalizations>
+						<parent parentName="Named Element" />
+					</generalizations>
+					<properties>
+						<property type="Element Import" name="elementImport" />
+						<property type="Constraint" name="ownedRule" />
+						<property type="Package Import" name="packageImport" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Opaque Expression">
+				<logic>
+					<generalizations>
+						<parent parentName="Value Specification" />
+					</generalizations>
+					<properties>
+						<property type="string" name="body" />
+						<property type="string" name="language" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Operation">
+				<logic>
+					<generalizations>
+						<parent parentName="Behavioral Feature" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isQuery">
+							<default>false</default>
+						</property>
+						<property type="Class" name="class" />
+						<property type="Constraint" name="bodyCondition" />
+						<property type="Parameter" name="ownedParameter" />
+						<property type="Constraint" name="postcondition" />
+						<property type="Constraint" name="precondition" />
+						<property type="Type" name="raisedException" />
+						<property type="Interface" name="interface" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Package">
+				<logic>
+					<generalizations>
+						<parent parentName="Namespace" />
+						<parent parentName="Packageable Element" />
+					</generalizations>
+					<properties>
+						<property type="Package" name="packageMerge" />
+						<property type="Package" name="nestingPackage" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Packageable Element">
+				<logic>
+					<generalizations>
+						<parent parentName="Named Element" />
+					</generalizations>
+					<properties>
+						<property type="enum" name="visibility">
+							<enum nameReference="Visibility Kind" />
+							<default>private</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<edge name="Package Import">
+				<graphics>
+					<lineType type="dashLine" />
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Namespace" endName="Package"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Directed Relationship" />
+					</generalizations>
+					<properties>
+						<property type="enum" name="visibility">
+							<enum nameReference="Visibility Kind" />
+							<default>public</default>
+						</property>
+					</properties>
+				</logic>
+			</edge>
+			<edge name="Package Merge">
+				<graphics>
+					<lineType type="dashLine" />
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Package" endName="Package"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Directed Relationship" />
+					</generalizations>
+				</logic>
+			</edge>
+			<node name="Parameter">
+				<logic>
+					<generalizations>
+						<parent parentName="Multiplicity Element" />
+						<parent parentName="Typed Element" />
+					</generalizations>
+					<properties>
+						<property type="enum" name="diraction">
+							<enum nameReference="Parameter Direction Kind" />
+							<default>in</default>
+						</property>
+						<property type="Value Specification" name="defaultValue" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Primitive Type">
+				<logic>
+					<generalizations>
+						<parent parentName="Data Type" />
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Property">
+				<logic>
+					<generalizations>
+						<parent parentName="Structural Feature" />
+					</generalizations>
+					<properties>
+						<property type="enum" name="aggregation">
+							<enum nameReference="Aggregation Kind" />
+							<default>none</default>
+						</property>
+						<property type="bool" name="isDerivedUnion">
+							<default>false</default>
+						</property>
+						<property type="bool" name="isReadOnly">
+							<default>false</default>
+						</property>
+						<property type="Association" name="association" />
+						<property type="Association" name="owningAssociation" />
+						<property type="Data Type" name="datatype" />
+						<property type="Value Specification" name="defaultValue" />
+						<property type="Property" name="redefinedProperty" />
+						<property type="Property" name="subsettedProperty" />
+						<property type="Class" name="class" />
+						<property type="Property" name="associationEnd" />
+						<property type="Property" name="qualifier" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Redefinable Element">
+				<logic>
+					<generalizations>
+						<parent parentName="Named Element" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isLeaf">
+							<default>false</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<edge name="Kernel Relationship">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Element" />
+					</generalizations>
+				</logic>
+			</edge>
+			<node name="Slot">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel Element" />
+					</generalizations>
+					<properties>
+						<property type="Structural Feature" name="definingFeature" />
+						<property type="Instance Specification" name="owningInstance" />
+						<property type="Value Specification" name="value" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Structural Feature">
+				<logic>
+					<generalizations>
+						<parent parentName="Feature" />
+						<parent parentName="Multiplicity Element" />
+						<parent parentName="Typed Element" />
+					</generalizations>
+					<properties>
+						<property type="bool" name="isReadOnly">
+							<default>false</default>
+						</properties>
+					</properties>
+				</logic>
+			</node>
+			<node name="Type">
+				<logic>
+					<generalizations>
+						<parent parentName="Packageable Element" />
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Typed Element">
+				<logic>
+					<generalizations>
+						<parent parentName="Named Element" />
+					</generalizations>
+					<properties>
+						<property type="Type" name="type" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Value Specification">
+				<logic>
+					<generalizations>
+						<parent parentName="Packageable Element" />
+						<parent parentName="Typed Element" />
+					</generalizations>
+				</logic>
+			</node>
+			
+			
+			<node name="Kernel Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="20" y1="0" x2="180" y2="0"/>
@@ -68,202 +601,93 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Kernel Diagram::Named Element">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Element"/>
-					</generalizations>
-					<properties>
-						<property type="string" name="name"/>
-						<property type="enum" name="visibility">
-							<enum nameReference="Kernel Diagram::Visibility Kind"/>
-						</property>
-						<property type="string" name="qualifiedName"/>
-					</properties>
-				</logic>
-			</node>
-			<edge name="Kernel Diagram::Kernel Relationship">
-				<logic>
-					<properties>
-						<!-- TO DISCUSS!!! -->
-						<!--
-						<property type="string" name="from"/>
-						<property type="string" name="to"/>
-						<property type="string" name="fromPort"/>
-						<property type="string" name="toPort"/>
-						-->
-						<!-- END TO DISCUSS!!! -->
-						<property type="string" name="fromMultiplicity"/>
-						<property type="string" name="toMultiplicity"/>
-					</properties>
-					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
-					</associations>
-				</logic>
-			</edge>
-			<edge name="Kernel Diagram::Kernel Directed Relationship">
-				<logic>
-					<properties>
-						<property type="string" name="condition"/>
-					</properties>
-					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
-					</associations>
-				</logic>
-			</edge>
-			<node name="Kernel Diagram::Comment">
-				<graphics>
-					<picture sizex="200" sizey="100">
-						<line x1="0" y1="0" x2="180" y2="0" />
-						<line x1="0" y1="0" x2="0" y2="100" />
-						<line x1="0" y1="100" x2="200" y2="100" />
-						<line x1="200" y1="100" x2="200" y2="20" />
-						<line x1="180" y1="0" x2="200" y2="20" />
-						<line x1="180" y1="0" x2="180" y2="20" />
-						<line x1="200" y1="20" x2="180" y2="20" />
-					</picture>
-					<ports>
-						<pointPort x="200" y="50"/>
-						<pointPort x="0" y="50"/>
-						<pointPort x="100" y="100"/>
-						<pointPort x="100" y="0"/>
-					</ports>
-					<labels>
-						<label x="0" y="0" textBinded="body"/>
-					</labels>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="string" name="body"/>
-					</properties>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Element"/>
-					</generalizations>
-				</logic>
-			</node>
-			<edge name="Kernel Diagram::Comment Link">
+			<edge name="Comment Link">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-							endName="Kernel Diagram::Kernel Element"/>
+						<association beginName="Kernel Element" endName="Kernel Element"/>
 					</associations>
 				</logic>
 			</edge>
-			<edge name="Kernel Diagram::Element Import">
+			<edge name="Substitution">
+			<!-- from Dependencies -->
+				<graphics>
+					<lineType type="dashLine" />
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Classifier" endName="Classifier"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Realization" />
+					</generalizations>
+				</logic>
+			</edge>
+			<edge name="Realization">
+			<!-- from Dependencies -->
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Directed Relationship"/>
+						<parent parentName="Abstraction" />
+					</generalizations>
+				</logic>
+			</edge>
+			<edge name="Abstraction">
+			<!-- from Dependencies -->
+				<logic>
+					<generalizations>
+						<parent parentName="Dependency" />
 					</generalizations>
 					<properties>
-						<property type="string" name="alias"/>
+						<property type="Expression" name="mapping"/>
 					</properties>
-					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
-					</associations>
 				</logic>
 			</edge>
-			<edge name="Kernel Diagram::Package Import">
+			<edge name="Dependency">
+			<!-- from Dependencies -->
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
 				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Directed Relationship"/>
-					</generalizations>
-					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Named Element" endName="Named Element"/>
 					</associations>
+					<generalizations>
+						<parent parentName="Kernel Directed Relationship" />
+						<parent parentName="Packageable Element" />
+					</generalizations>
 				</logic>
 			</edge>
-			<node name="Kernel Diagram::Redefinable Element">
-				<logic>
-					<properties>
-						<property type="bool" name="isLeaf"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Kernel Diagram::Classifier">
+			<node name="Generalization Set">
+			<!-- from PowerTypes -->
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Redefinable Element"/>
+						<parent parentName="Packageable Element" />
 					</generalizations>
 					<properties>
-						<property type="bool" name="isAbstract">
+						<property type="bool" name="isCovering">
 							<default>false</default>
 						</property>
-					</properties>
-				</logic>
-			</node>
-			<edge name="Kernel Diagram::Kernel Generalization">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Directed Relationship"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isSubstitutable"/>
-					</properties>
-					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
-					</associations>
-				</logic>
-			</edge>
-			<node name="Kernel Diagram::Feature">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Redefinable Element"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isStatic"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Kernel Diagram::Behavioral Feature">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Feature"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isAbstract"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Kernel Diagram::Structural Feature">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Feature"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isReadOnly"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Kernel Diagram::Operation">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel Diagram::Behavioral Feature"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isQuery">
+						<property type="bool" name="isDisjoint">
 							<default>false</default>
 						</property>
-						<property type="bool" name="isOrdered"/>
-						<property type="bool" name="isUnique"/>
-						<property type="int" name="lower"/>
-						<property type="positiveInt" name="upper"/>
+						<property type="Kernel Generalization" name="generalization"/>
+						<property type="Classifier" name="powertype"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Kernel Diagram::Parameter">
+			<node name="Interface">
+			<!-- from PowerTypes -->
 				<logic>
+					<generalizations>
+						<parent parentName="Classifier" />
+					</generalizations>
 					<properties>
-						<property type="enum" name="direction">
-							<enum nameReference="Kernel Diagram::Parameter Direction Kind"/>
-						</property>
+						<property type="Property" name="ownedAttribute"/>
+						<property type="Operation" name="ownedOperation"/>
+						<property type="Classifier" name="nestedClassifier"/>
+						<property type="Interface" name="redefinedInterface"/>
 					</properties>
 				</logic>
 			</node>
