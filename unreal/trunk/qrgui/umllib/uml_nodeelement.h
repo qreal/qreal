@@ -125,15 +125,6 @@ namespace UML {
 
 		QString roleValueByName(QString const &roleName) const;
 
-
-		virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-		virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent *event);
-		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
-
-		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-
-		bool mShowBorder;
 		bool mPortsVisible;
 
 		/** @brief Список точечных портов */

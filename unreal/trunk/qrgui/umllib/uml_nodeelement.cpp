@@ -19,7 +19,7 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement()
-: mShowBorder(false), mPortsVisible(false), mDragState(None)
+: mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
 	setAcceptDrops(true);
@@ -195,46 +195,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	setZValue(0);
 }
-
-
-
-
-void NodeElement::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
-{
-	mShowBorder = true;
-	event->accept();
-	qDebug() << "NodeElement::dragEnterEvent";
-}
-
-void NodeElement::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
-{
-	mShowBorder = false;
-	event->accept();
-	qDebug() << "NodeElement::dragLeaveEvent";
-}
-
-void NodeElement::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
-{
-	mShowBorder = true;
-	event->accept();
-}
-
-void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-	mShowBorder = true;
-	event->accept();
-	qDebug() << "NodeElement::hoverEnterEvent";
-}
-
-void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-	mShowBorder = true;
-	event->accept();
-	qDebug() << "NodeElement::hoverLeaveEvent";
-}
-
-
-
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -512,16 +472,6 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->save();
 			painter->setOpacity(0.7);
 			portrenderer->render(painter,mContents);
-			painter->restore();
-		}
-		if (mShowBorder)
-		{
-			painter->save();
-			painter->setOpacity(0.3);
-			QBrush b(Qt::red, Qt::SolidPattern);
-			painter->setBrush(b);
-			painter->setPen(Qt::red);
-			painter->drawRect(mContents);
 			painter->restore();
 		}
 	}
