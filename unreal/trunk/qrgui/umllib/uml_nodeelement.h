@@ -4,16 +4,15 @@
 
 #pragma once
 
-#include "uml_element.h"
-#include "uml_edgeelement.h"
-#include "sdfrenderer.h"
-#include <QGraphicsTextItem>
-#include <QTextCursor>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
-
 #include <QtGui/QWidget>
+
+#include "uml_element.h"
+#include "uml_edgeelement.h"
+#include "sdfrenderer.h"
+#include "elementTitle.h"
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
@@ -22,27 +21,6 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
-	struct StatLine;
-
-	class ElementTitle : public QGraphicsTextItem
-	{
-		Q_OBJECT
-	public:
-		ElementTitle(int x, int y, QString const &text);
-		ElementTitle(int x, int y, QString const &binding, bool readOnly);
-		~ElementTitle() {}
-	protected:
-		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		virtual void focusInEvent(QFocusEvent *event);
-		virtual void focusOutEvent(QFocusEvent *event);
-		virtual void keyPressEvent(QKeyEvent *event);
-	private:
-		bool mFocusIn;
-		bool mReadOnly;
-		QString mOldText;
-		QString mBinding;
-	};
-
 	class NodeElement :  public QObject, public Element
 	{
 		Q_OBJECT
@@ -102,6 +80,33 @@ namespace UML {
 		void setRoleValueByName(QString const &roleName, QString const &value);
 
 	protected:
+		/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
+		struct StatLine
+		{
+			QLineF line;
+			bool prop_x1;
+			bool prop_y1;
+			bool prop_x2;
+			bool prop_y2;
+
+			StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
+				prop_x2(false), prop_y2(false) {}
+
+			operator QLineF () const
+			{
+				return line;
+			}
+
+			void operator = (QLineF const &l)
+			{
+				line = l;
+				prop_x1 = false;
+				prop_x2 = false;
+				prop_y1 = false;
+				prop_y2 = false;
+			}
+		};
+
 		/** @brief Обработать событие наведения на объект курсора мыши */
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
 
@@ -120,6 +125,15 @@ namespace UML {
 
 		QString roleValueByName(QString const &roleName) const;
 
+
+		virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
+		virtual void dragLeaveEvent(QGraphicsSceneDragDropEvent *event);
+		virtual void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
+
+		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+		bool mShowBorder;
 		bool mPortsVisible;
 
 		/** @brief Список точечных портов */
@@ -159,32 +173,4 @@ namespace UML {
 		QTransform mTransform;
 	};
 
-	/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
-	struct StatLine
-	{
-		QLineF line;
-		bool prop_x1;
-		bool prop_y1;
-		bool prop_x2;
-		bool prop_y2;
-
-		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-			prop_x2(false), prop_y2(false)
-		{
-		}
-
-		operator QLineF () const
-		{
-			return line;
-		}
-
-		void operator = (QLineF const &l)
-		{
-			line = l;
-			prop_x1 = false;
-			prop_x2 = false;
-			prop_y1 = false;
-			prop_y2 = false;
-		}
-	};
 }

@@ -18,89 +18,13 @@
 using namespace UML;
 using namespace qReal;
 
-/* {{{ Element title */
-ElementTitle::ElementTitle(int x, int y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mBinding("")
-{
-	setPos(x, y);
-	setHtml(text);
-}
-
-ElementTitle::ElementTitle(int x, int y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mBinding(binding)
-{
-	setPos(x, y);
-}
-
-void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsTextItem::mousePressEvent(event);
-	if (!(event->modifiers() & Qt::ControlModifier))
-		scene()->clearSelection();
-	parentItem()->setSelected(true);
-	if (mFocusIn) {
-		if (mReadOnly)
-			setTextInteractionFlags(Qt::TextBrowserInteraction);
-		else {
-			QTextCursor cursor(textCursor());
-			cursor.select(QTextCursor::Document);
-			setTextCursor(cursor);
-			mFocusIn = false;
-		}
-	}
-}
-
-void ElementTitle::focusInEvent(QFocusEvent *event)
-{
-	mFocusIn = true;
-	mOldText = toHtml();
-	QGraphicsTextItem::focusInEvent(event);
-}
-
-void ElementTitle::focusOutEvent(QFocusEvent *event)
-{
-	QGraphicsTextItem::focusOutEvent(event);
-	setTextInteractionFlags(Qt::NoTextInteraction);
-	if (mReadOnly)
-		return;
-	QString value = toPlainText();
-	QString tmp = toHtml();
-	// FIXME: Reset selection
-	setHtml("");
-	setHtml(tmp);
-	if (mOldText != toHtml()) {
-		if (mBinding == "name")
-			static_cast<NodeElement*>(parentItem())->setName(value);
-		else
-			static_cast<NodeElement*>(parentItem())->setRoleValueByName(mBinding, value);
-	}
-}
-
-void ElementTitle::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == Qt::Key_Escape)
-	{
-		// Restore previous text and loose focus
-		setHtml(mOldText);
-		clearFocus();
-		return;
-	}
-	if (event->key() == Qt::Key_Enter ||
-		event->key() == Qt::Key_Return)
-	{
-		// Loose focus: new name will be applied in focusOutEvent
-		clearFocus();
-		return;
-	}
-	QGraphicsTextItem::keyPressEvent(event);
-}
-/* }}} */
-
 NodeElement::NodeElement()
-: mPortsVisible(false), mDragState(None)
+: mShowBorder(false), mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
+	setAcceptDrops(true);
 	setFlag(ItemClipsChildrenToShape, false);
+	qDebug() << "Created";
 }
 
 NodeElement::~NodeElement()
@@ -271,6 +195,46 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	setZValue(0);
 }
+
+
+
+
+void NodeElement::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
+{
+	mShowBorder = true;
+	event->accept();
+	qDebug() << "NodeElement::dragEnterEvent";
+}
+
+void NodeElement::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
+{
+	mShowBorder = false;
+	event->accept();
+	qDebug() << "NodeElement::dragLeaveEvent";
+}
+
+void NodeElement::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+	mShowBorder = true;
+	event->accept();
+}
+
+void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	mShowBorder = true;
+	event->accept();
+	qDebug() << "NodeElement::hoverEnterEvent";
+}
+
+void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	mShowBorder = true;
+	event->accept();
+	qDebug() << "NodeElement::hoverLeaveEvent";
+}
+
+
+
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
@@ -548,6 +512,16 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->save();
 			painter->setOpacity(0.7);
 			portrenderer->render(painter,mContents);
+			painter->restore();
+		}
+		if (mShowBorder)
+		{
+			painter->save();
+			painter->setOpacity(0.3);
+			QBrush b(Qt::red, Qt::SolidPattern);
+			painter->setBrush(b);
+			painter->setPen(Qt::red);
+			painter->drawRect(mContents);
 			painter->restore();
 		}
 	}
