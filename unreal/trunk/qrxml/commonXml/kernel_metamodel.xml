@@ -114,6 +114,26 @@
 				</logic>
 			</edge>
 			<node name="Kernel Diagram::Comment">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line x1="0" y1="0" x2="180" y2="0" />
+						<line x1="0" y1="0" x2="0" y2="100" />
+						<line x1="0" y1="100" x2="200" y2="100" />
+						<line x1="200" y1="100" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="180" y2="20" />
+						<line x1="200" y1="20" x2="180" y2="20" />
+					</picture>
+					<ports>
+						<pointPort x="200" y="50"/>
+						<pointPort x="0" y="50"/>
+						<pointPort x="100" y="100"/>
+						<pointPort x="100" y="0"/>
+					</ports>
+					<labels>
+						<label x="0" y="0" textBinded="body"/>
+					</labels>
+				</graphics>
 				<logic>
 					<properties>
 						<property type="string" name="body"/>
@@ -124,10 +144,13 @@
 				</logic>
 			</node>
 			<edge name="Kernel Diagram::Comment Link">
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">
 						<association beginName="Kernel Diagram::Kernel Element"
-									 endName="Kernel Diagram::Kernel Element"/>
+							endName="Kernel Diagram::Kernel Element"/>
 					</associations>
 				</logic>
 			</edge>
