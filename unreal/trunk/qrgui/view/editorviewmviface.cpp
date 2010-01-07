@@ -157,8 +157,22 @@ void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int s
 void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
 	Q_ASSERT(sourceStart == sourceEnd);  // Можно перемещать только один элемент за раз.
-	QModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
+	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
+
+	if (!mItems.contains(movedElementIndex)) {
+		// Перемещаемого элемента на сцене уже нет.
+		// TODO: элемент надо добавлять на сцену, если тут его нет, а в модели есть.
+		// Пока такое не рассматриваем.
+		return;
+	}
 	UML::Element* movedElement = mItems[movedElementIndex];
+
+	if (!mItems.contains(destinationParent)) {
+		// Элемента-родителя на сцене нет, так что это скорее всего корневой элемент.
+		movedElement->setParentItem(NULL);
+		return;
+	}
+
 	UML::Element* newParent = mItems[destinationParent];
 	movedElement->setParentItem(newParent);
 }
@@ -167,6 +181,13 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 {
 	Q_ASSERT(sourceStart == sourceEnd);
 	QPersistentModelIndex movedElementIndex = destinationParent.child(destinationRow, 0);
+
+	Q_ASSERT(movedElementIndex.isValid());
+	if (!mItems.contains(movedElementIndex)) {
+		// Перемещённого элемента на сцене нет, так что и заботиться о нём не надо
+		return;
+	}
+
 	UML::Element* movedElement = mItems[movedElementIndex];
 	movedElement->updateData();
 }
