@@ -1,5 +1,7 @@
 #include "elementTitle.h"
 
+#include <QtGui/QTextCursor>
+
 #include "uml_nodeelement.h"
 #include "uml_edgeelement.h"
 

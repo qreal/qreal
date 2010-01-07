@@ -34,6 +34,8 @@ SOURCES		+= \
 			../../qrgui/umllib/uml_edgeelement.cpp \
 			../../qrgui/umllib/uml_element.cpp \
 			../../qrgui/kernel/ids.cpp \
+			../../qrgui/umllib/elementTitle.cpp \
+
 
 HEADERS		+= \
 			../../qrgui/umllib/sdfrenderer.h \
@@ -42,5 +44,6 @@ HEADERS		+= \
 			../../qrgui/umllib/uml_element.h \
 			../../qrgui/kernel/ids.h \
 			../editorinterface.h \
+			../../qrgui/umllib/elementTitle.h\
 
 

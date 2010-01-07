@@ -22,9 +22,7 @@ NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
 	setAcceptsHoverEvents(true);
-	setAcceptDrops(true);
 	setFlag(ItemClipsChildrenToShape, false);
-	qDebug() << "Created";
 }
 
 NodeElement::~NodeElement()
@@ -60,9 +58,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		Element::mousePressEvent(event);
 
 	if (event->button() == Qt::RightButton)
-	{
 		event->accept();
-	}
 
 	setZValue(1);
 }
@@ -249,7 +245,7 @@ void NodeElement::updateData()
 static int portId(qreal id)
 {
 	int iid = qRound(id);
-	if ( id < ( 1.0 * iid ) )
+	if (id < 1.0 * iid)
 		return iid - 1;
 	else
 		return iid;
@@ -308,10 +304,8 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 
 	qreal nearestPointOfLinePort = getNearestPointOfLinePort(linePortNumber, location);
 	if ((nearestPointOfLinePort < 0) || (nearestPointOfLinePort > 0.9999))
-	{
 		return qMin(b, c);
-	} else
-	{
+	else {
 		qreal p = (a + b + c) / 2;
 		qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
 		qreal minDistance = 2 * triangleSquare / a;
@@ -328,14 +322,11 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 {
 	qreal nearestPointOfLinePort = 0;
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
-	if (nearestLinePort.x1() == nearestLinePort.x2())
-	{
+	if (nearestLinePort.x1() == nearestLinePort.x2()) {
 		nearestPointOfLinePort = (location.y() - nearestLinePort.y1()) / (nearestLinePort.y2() - nearestLinePort.y1());
-	} else if (nearestLinePort.y1() == nearestLinePort.y2())
-	{
+	} else if (nearestLinePort.y1() == nearestLinePort.y2()) {
 		nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
-	} else
-	{
+	} else {
 		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
 		qreal b2 = location.y() + 1 / k * location.x();
 		qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
@@ -349,11 +340,13 @@ qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
 		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+		{
 			return 1.0 * i;
+		}
 	}
 
-	for( int i = 0; i < mLinePorts.size(); i++ ) {
+	for (int i = 0; i < mLinePorts.size(); i++) {
 		QPainterPathStroker ps;
 		ps.setWidth(kvadratik);
 
@@ -368,7 +361,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 				/ newTransform(mLinePorts[i]).length() ) );
 	}
 
-	qreal minDistance;
+	qreal minDistance = 0;
 	int numMinDistance = -1;
 	if (mPointPorts.size() != 0)
 	{
@@ -442,7 +435,7 @@ NodeElement *NodeElement::getNodeAt( const QPointF &position )
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portrenderer)
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5)
 	{
@@ -467,11 +460,11 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portrenderer)
+		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer)
 		{
 			painter->save();
 			painter->setOpacity(0.7);
-			portrenderer->render(painter,mContents);
+			portRenderer->render(painter,mContents);
 			painter->restore();
 		}
 	}
