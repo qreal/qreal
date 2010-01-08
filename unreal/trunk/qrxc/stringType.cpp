@@ -2,9 +2,9 @@
 
 #include <QDebug>
 
-bool StringType::init(QDomElement const &element)
+bool StringType::init(QDomElement const &element, QString const &context)
 {
-	if (NonGraphicType::init(element)) {
+	if (NonGraphicType::init(element, context)) {
 		mRegularExpression = element.firstChildElement("regularExpression").text();
 		return true;
 	}

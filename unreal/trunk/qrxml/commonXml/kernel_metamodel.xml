@@ -32,7 +32,7 @@
 					</associations>
 					<generalizations>
 						<parent parentName="Classifier"/>
-						<parent parentName="Kernel Relationship"/>
+						<parent parentName="Relationship"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isDerived">
@@ -78,7 +78,7 @@
 						<property type="bool" name="isAbstract">
 							<default>false</default>
 						</property>
-						<property type="Kernel Generalization" name="generalization" />
+						<property type="Generalization" name="generalization" />
 						<property type="Classifier" name="redefinedClassifier" />
 						<property type="Substitution" name="substitution" />
 						<property type="Generalization Set" name="powertypeExtent" />
@@ -108,11 +108,11 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Element" />
+						<parent parentName="Element" />
 					</generalizations>
 					<properties>
 						<property type="string" name="body" />
-						<property type="Kernel Element" name="annotatedElement" />
+						<property type="Element" name="annotatedElement" />
 					</properties>
 				</logic>
 			</node>
@@ -122,7 +122,7 @@
 						<parent parentName="Packageable Element" />
 					</generalizations>
 					<properties>
-						<property type="Kernel Element" name="constrainedElement" />
+						<property type="Element" name="constrainedElement" />
 						<property type="Value Specification" name="specification" />
 					</properties>
 				</logic>
@@ -138,20 +138,20 @@
 					</properties>
 				</logic>
 			</node>
-			<edge name="Kernel Directed Relationship">
+			<edge name="Directed Relationship">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Kernel Element" endName="Kernel Element"/>
+						<association beginName="Element" endName="Element"/>
 					</associations>
 					<generalizations>
 						<parent parentName="Relationship" />
 					</generalizations>
 				</logic>
 			</edge>
-			<node name="Kernel Element">
+			<node name="Element">
 				<logic>
 					<properties>
 						<property type="Comment" name="ownedComment" />
@@ -167,7 +167,7 @@
 						<association beginName="Namespace" endName="Packageable Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Directed Relationship" />
+						<parent parentName="Directed Relationship" />
 					</generalizations>
 					<properties>
 						<property type="enum" name="visibility">
@@ -221,7 +221,7 @@
 					</properties>
 				</logic>
 			</node>
-			<edge name="Kernel Generalization">
+			<edge name="Generalization">
 				<graphics>
 					<lineType type="solidLine" />
 				</graphics>
@@ -230,7 +230,7 @@
 						<association beginName="Classifier" endName="Classifier"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Directed Relationship" />
+						<parent parentName="Directed Relationship" />
 					</generalizations>
 					<properties>
 						<property type="bool" name="isSubstitutable">
@@ -323,7 +323,7 @@
 			<node name="Multiplicity Element">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Element" />
+						<parent parentName="Element" />
 					</generalizations>
 					<properties>
 						<property type="bool" name="isOrdered">
@@ -340,12 +340,16 @@
 			<node name="Named Element">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Element" />
+						<parent parentName="Element" />
 					</generalizations>
 					<properties>
-						<property type="string" name="name" />
+						<!-- В риале все элементы имеют имя, оно нужно хотя бы для отображения в диаграм эксплорере.
+							Поэтому свойство name добавляется автоматически всем, даже кому не нужно.
+							Указывать его в xml-ке не надо - иначе будет ворнинг компилятора -->
+						<!-- <property type="string" name="name" /> -->
 						<property type="enum" name="visibility">
 							<enum nameReference="Visibility Kind" />
+							<default>private</default>
 						</property>
 						<property type="Dependency" name="clientDependency" />
 					</properties>
@@ -411,10 +415,6 @@
 						<parent parentName="Named Element" />
 					</generalizations>
 					<properties>
-						<property type="enum" name="visibility">
-							<enum nameReference="Visibility Kind" />
-							<default>private</default>
-						</property>
 					</properties>
 				</logic>
 			</node>
@@ -512,17 +512,17 @@
 					</properties>
 				</logic>
 			</node>
-			<edge name="Kernel Relationship">
+			<edge name="Relationship">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Element" />
+						<parent parentName="Element" />
 					</generalizations>
 				</logic>
 			</edge>
 			<node name="Slot">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Element" />
+						<parent parentName="Element" />
 					</generalizations>
 					<properties>
 						<property type="Structural Feature" name="definingFeature" />
@@ -541,7 +541,7 @@
 					<properties>
 						<property type="bool" name="isReadOnly">
 							<default>false</default>
-						</properties>
+						</property>
 					</properties>
 				</logic>
 			</node>
@@ -570,9 +570,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			
-			
-			<node name="Kernel Diagram">
+			<node name="Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="20" y1="0" x2="180" y2="0"/>
@@ -607,7 +605,7 @@
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Element" endName="Kernel Element"/>
+						<association beginName="Element" endName="Element"/>
 					</associations>
 				</logic>
 			</edge>
@@ -654,7 +652,7 @@
 						<association beginName="Named Element" endName="Named Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Directed Relationship" />
+						<parent parentName="Directed Relationship" />
 						<parent parentName="Packageable Element" />
 					</generalizations>
 				</logic>
@@ -672,7 +670,7 @@
 						<property type="bool" name="isDisjoint">
 							<default>false</default>
 						</property>
-						<property type="Kernel Generalization" name="generalization"/>
+						<property type="Generalization" name="generalization"/>
 						<property type="Classifier" name="powertype"/>
 					</properties>
 				</logic>
@@ -691,7 +689,6 @@
 					</properties>
 				</logic>
 			</node>
-		
 		</graphicTypes>
 	</diagram>
 </metamodel>

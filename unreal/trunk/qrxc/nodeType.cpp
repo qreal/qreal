@@ -165,7 +165,7 @@ void NodeType::generateCode(OutFile &out)
 	generateSdf();
 	generatePorts();
 
-	QString const className = NameNormalizer::normalize(mName);
+	QString const className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public NodeElement {\n"
 		<< "\tpublic:\n"

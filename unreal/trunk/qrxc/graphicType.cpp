@@ -35,10 +35,10 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mWidth = mWidth;
 }
 
-bool GraphicType::init(QDomElement const &element)
+bool GraphicType::init(QDomElement const &element, QString const &context)
 {
 	mElement = element;
-	if (Type::init(element))
+	if (Type::init(element, context))
 	{
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull())
@@ -73,14 +73,14 @@ bool GraphicType::initParents()
 	{
 		QString parentName = parentElement.attribute("parentName");
 		if (parentName == "") {
-			qDebug() << "Error: anonymous parent of node" << mName;
+			qDebug() << "Error: anonymous parent of node" << qualifiedName();
 			return false;
 		}
 
 		if (!mParents.contains(parentName))
 			mParents.append(parentName);
 		else {
-			qDebug() << "ERROR: parent of node" << mName << "duplicated";
+			qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
 			return false;
 		}
 	}
@@ -132,8 +132,14 @@ bool GraphicType::addProperty(Property *property)
 {
 	QString propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
-		if (!(mProperties[propertyName] == property)) {
-			qDebug() << "ERROR: property" << propertyName << "duplicated";
+		// Множественное наследование может приводить к тому, что одно свойство
+		// может быть добавлено классу дважды (ромбовидное наследование, например).
+		// Ругаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
+		// у одноимённых свойств различны - тогда непонятно, что делать.
+		if (mProperties[propertyName] != property
+			&& *mProperties[propertyName] != *property)
+		{
+			qDebug() << "ERROR: property" << propertyName << "duplicated with different attributes";
 			delete property;
 			return false;
 		}
@@ -148,11 +154,20 @@ bool GraphicType::resolve()
 	if (mResolvingFinished)
 		return true;
 
+	mParents.removeDuplicates();
+
 	foreach (QString parentName, mParents) {
-		Type *parent = mDiagram->findType(parentName);
+		// Предки ищутся в "родном" контексте типа, так что если он был импортирован, ссылки не должны поломаться.
+		QString qualifiedParentName = nativeContext() + "::" + parentName;
+
+		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {
-			qDebug() << "ERROR: can't find parent" << parentName << "for" << mName;
-			return false;
+			// В локальном контексте не нашлось, попробуем в глобальном
+			parent = mDiagram->findType(parentName);
+			if (parent == NULL) {
+				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
+				return false;
+			}
 		}
 		if (!parent->isResolved()) {
 			if (!parent->resolve())
@@ -171,15 +186,15 @@ void GraphicType::generateNameMapping(OutFile &out)
 {
 	if (mVisible) {
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
-		QString name = NameNormalizer::normalize(mName);
-		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << name << "\"] = \"" << mName << "\";\n";
+		QString name = NameNormalizer::normalize(qualifiedName());
+		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << name << "\"] = \"" << qualifiedName() << "\";\n";
 	}
 }
 
 bool GraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
 {
 	if (mVisible) {
-		QString name = NameNormalizer::normalize(mName);
+		QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, notIsFirst);
 		out() << "\t\treturn new UML::" << name << "();\n";
 		return true;
@@ -231,7 +246,7 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 
 void GraphicType::generateOneCase(OutFile &out, bool notIsFirst)
 {
-	QString name = NameNormalizer::normalize(mName);
+	QString name = NameNormalizer::normalize(qualifiedName());
 
 	if (!notIsFirst)
 		out() << "\tif (element == \"" << name << "\")\n";
@@ -241,6 +256,6 @@ void GraphicType::generateOneCase(OutFile &out, bool notIsFirst)
 
 QString GraphicType::resourceName(QString const &resourceType) const
 {
-	QString name = NameNormalizer::normalize(mName);
+	QString name = NameNormalizer::normalize(qualifiedName());
 	return name + resourceType + ".sdf";
 }

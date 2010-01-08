@@ -98,7 +98,7 @@ void EdgeType::generateCode(OutFile &out)
 {
 	generateGraphics();
 
-	QString const className = NameNormalizer::normalize(mName);
+	QString const className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public EdgeElement {\n"
 		<< "\tpublic:\n"

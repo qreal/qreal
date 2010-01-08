@@ -70,3 +70,30 @@ Property * Property::clone()
 	result->mDefaultValue = mDefaultValue;
 	return result;
 }
+
+bool Property::operator == (Property const &other) const
+{
+	return other.mName == mName
+		&& other.mType == mType
+		&& other.mIsEnum == mIsEnum
+		&& other.mIsReference == mIsReference
+		&& other.mDescription == mDescription
+		&& other.mDefaultValue == mDefaultValue
+		;
+}
+
+bool Property::operator != (Property const &other) const
+{
+	return !(other == *this);
+}
+
+void Property::dump() const
+{
+	qDebug() << mName;
+	qDebug() << mType;
+	qDebug() << mIsEnum;
+	qDebug() << mIsReference;
+	qDebug() << mDescription;
+	qDebug() << mDefaultValue;
+}
+

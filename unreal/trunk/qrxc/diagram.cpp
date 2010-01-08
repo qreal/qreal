@@ -37,7 +37,6 @@ bool Diagram::init(QDomElement const &diagramElement)
 	return true;
 }
 
-
 bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 {
 	for (QDomElement element = graphicTypesElement.firstChildElement(); !element.isNull();
@@ -45,20 +44,20 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 	{
 		if (element.nodeName() == "node") {
 			Type *nodeType = new NodeType(this);
-			if (!nodeType->init(element)) {
+			if (!nodeType->init(element, mDiagramName)) {
 				delete nodeType;
 				qDebug() << "Can't parse node";
 				return false;
 			}
-			mTypes[nodeType->name()] = nodeType;
+			mTypes[nodeType->qualifiedName()] = nodeType;
 		} else if (element.nodeName() == "edge") {
 			Type *edgeType = new EdgeType(this);
-			if (!edgeType->init(element)) {
+			if (!edgeType->init(element, mDiagramName)) {
 				delete edgeType;
 				qDebug() << "Can't parse edge";
 				return false;
 			}
-			mTypes[edgeType->name()] = edgeType;
+			mTypes[edgeType->qualifiedName()] = edgeType;
 		} else if (element.nodeName() == "import") {
 			QString importedElementName = element.attribute("name", "");
 			QString importAs = element.attribute("as", "");
@@ -81,33 +80,33 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 		if (element.nodeName() == "enum")
 		{
 			Type *enumType = new EnumType();
-			if (!enumType->init(element))
+			if (!enumType->init(element, mDiagramName))
 			{
 				delete enumType;
 				qDebug() << "Can't parse enum";
 				return false;
 			}
-			mTypes[enumType->name()] = enumType;
+			mTypes[enumType->qualifiedName()] = enumType;
 		} else if (element.nodeName() == "numeric")
 		{
 			Type *numericType = new NumericType();
-			if (!numericType->init(element))
+			if (!numericType->init(element, mDiagramName))
 			{
 				delete numericType;
 				qDebug() << "Can't parse numeric type";
 				return false;
 			}
-			mTypes[numericType->name()] = numericType;
+			mTypes[numericType->qualifiedName()] = numericType;
 		} else if (element.nodeName() == "string")
 		{
 			Type *stringType = new StringType();
-			if (!stringType->init(element))
+			if (!stringType->init(element, mDiagramName))
 			{
 				delete stringType;
 				qDebug() << "Can't parse string type";
 				return false;
 			}
-			mTypes[stringType->name()] = stringType;
+			mTypes[stringType->qualifiedName()] = stringType;
 		}
 		else
 		{
@@ -123,10 +122,15 @@ bool Diagram::resolve()
 	typedef QPair<QString, QString> ImportPair;
 	foreach (ImportPair import, mImports) {
 		Type *importedType = mEditor->findType(import.first);
+		if (importedType == NULL) {
+			qDebug() << "ERROR: imported type" << import.first << "not found, skipping";
+			continue;
+		}
 		Type *copiedType = importedType->clone();
 		copiedType->setName(import.second);
 		copiedType->setDiagram(this);
-		mTypes.insert(copiedType->name(), copiedType);
+		copiedType->setContext(mDiagramName);
+		mTypes.insert(copiedType->qualifiedName(), copiedType);
 	}
 
 	foreach(Type *type, mTypes.values())
@@ -146,13 +150,9 @@ Editor* Diagram::editor() const
 Type* Diagram::findType(QString name)
 {
 	if (mTypes.contains(name))
-	{
 		return mTypes[name];
-	}
 	else
-	{
 		return mEditor->findType(name);
-	}
 }
 
 QMap<QString, Type*> Diagram::types() const

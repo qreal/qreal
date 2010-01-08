@@ -2,17 +2,15 @@
 
 #include <QDebug>
 
-bool NumericType::init(QDomElement const &element)
+bool NumericType::init(QDomElement const &element, QString const &context)
 {
-	if (NonGraphicType::init(element))
-	{
+	if (NonGraphicType::init(element, context)) {
 		QString baseTypeName = element.firstChildElement("base_type").text();
 		if (baseTypeName == "int")
 			mBaseType = IntType;
 		else if (baseTypeName == "float")
 			mBaseType = FloatType;
-		else
-		{
+		else {
 			qDebug() << "ERROR: unknown numeric base type" << baseTypeName;
 			return false;
 		}

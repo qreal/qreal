@@ -2,9 +2,9 @@
 
 #include <QDebug>
 
-bool EnumType::init(QDomElement const &element)
+bool EnumType::init(QDomElement const &element, QString const &context)
 {
-	if (NonGraphicType::init(element)) {
+	if (NonGraphicType::init(element, context)) {
 		for (QDomElement valueElement = element.firstChildElement("value"); !valueElement.isNull();
 			valueElement = valueElement.nextSiblingElement("value"))
 		{

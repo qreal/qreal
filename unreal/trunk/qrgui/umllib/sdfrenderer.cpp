@@ -623,7 +623,5 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	Q_UNUSED(state)
 	painter->eraseRect(rect);
 	painter->setRenderHint(QPainter::Antialiasing, true);
-//	QRect adjustedRect(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1);
-//	qDebug() << rect;
 	mRenderer.render(painter, rect);
 }

@@ -14,11 +14,12 @@ Type::~Type()
 			delete property;
 }
 
-bool Type::init(QDomElement const &element)
+bool Type::init(QDomElement const &element, QString const &context)
 {
 	mName = element.attribute("name");
-	if (mName == "")
-	{
+	mContext = context;
+	mNativeContext = context;
+	if (mName == "") {
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
@@ -33,6 +34,21 @@ bool Type::isResolved() const
 QString Type::name() const
 {
 	return mName;
+}
+
+QString Type::qualifiedName() const
+{
+	return mContext + "::" + mName;
+}
+
+QString Type::nativeContext() const
+{
+	return mNativeContext;
+}
+
+void Type::setContext(QString const &newContext)
+{
+	mContext = newContext;
 }
 
 void Type::setName(QString const &name)
@@ -53,6 +69,8 @@ void Type::setDiagram(Diagram *diagram)
 void Type::copyFields(Type *type) const
 {
 	type->mName = mName;
+	type->mContext = mContext;
+	type->mNativeContext = mNativeContext;
 	foreach (QString propertyName, mProperties.keys())
 		type->mProperties.insert(propertyName, mProperties[propertyName]->clone());
 	type->mResolvingFinished = mResolvingFinished;

@@ -14,7 +14,7 @@ class GraphicType : public Type
 public:
 	GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
-	virtual bool init(QDomElement const &element);
+	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst);

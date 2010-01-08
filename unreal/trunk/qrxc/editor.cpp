@@ -90,14 +90,14 @@ Type* Editor::findType(QString const &name)
 {
 	foreach (Diagram *diagram, mDiagrams.values()) {
 		foreach (Type *type, diagram->types()) {
-			if (type->name() == name)
+			if (type->qualifiedName() == name)
 				return type;
 		}
 	}
 
 	foreach (Editor *editor, mIncludes) {
 		Type *type = editor->findType(name);
-		if (type != NULL && type->name() == name)
+		if (type != NULL && type->qualifiedName() == name)
 			return type;
 	}
 	return NULL;

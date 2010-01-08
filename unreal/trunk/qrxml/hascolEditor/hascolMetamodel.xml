@@ -3,22 +3,22 @@
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<include>../commonXml/classMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="Hascol Structure Diagram">
+	<diagram name="Hascol Structure">
 		<nonGraphicTypes>
-			<enum name="Hascol Processes::Process Operation Kind">
+			<enum name="Process Operation Kind">
 				<value>in</value>
 				<value>out</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="Hascol Processes::Functor Parameter Relation"/>
-			<import name="Class Diagram::Aggregation" as="Hascol Processes::Used Process Relation"/>
-			<import name="Class Diagram::Composition" as="Hascol Processes::Nested Process Relation"/>
-			<import name="Class Diagram::Generalization" as="Hascol Processes::Generalization"/>
-			<import name="Kernel Diagram::Comment" as="Hascol Processes::Comment"/>
-			<import name="Kernel Diagram::Comment Link" as="Hascol Processes::Comment Link"/>
-			<import name="Kernel Diagram::Kernel Diagram" as="Hascol Processes::Diagram"/>
-			<node name="Hascol Processes::Process">
+			<import name="Class Diagram::Relation" as="Functor Parameter Relation"/>
+			<import name="Class Diagram::Aggregation" as="Used Process Relation"/>
+			<import name="Class Diagram::Composition" as="Nested Process Relation"/>
+			<import name="Class Diagram::Generalization" as="Generalization"/>
+			<import name="Kernel::Comment" as="Comment"/>
+			<import name="Kernel::Comment Link" as="Comment Link"/>
+			<import name="Kernel::Diagram" as="Diagram"/>
+			<node name="Process">
 				<graphics>
 					<picture sizex="150" sizey="210">
 						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
@@ -52,14 +52,14 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="implementation"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Hascol Processes::Process Operation">
+			<node name="Process Operation">
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
@@ -69,15 +69,15 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
-						<!-- <property type="Hascol Processes::Process Operation Kind" name="direction"/> -->
+						<!-- <property type="Process Operation Kind" name="direction"/> -->
 						<property type="string" name="direction"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Hascol Processes::Resource">
+			<node name="Resource">
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
@@ -86,14 +86,14 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Hascol Processes::Functor">
+			<node name="Functor">
 				<graphics>
 					<picture sizex="250" sizey="210">
 						<rectangle x1="0" y1="50" y2="210" x2="150" />
@@ -125,11 +125,11 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Hascol Processes::Process"/>
+						<parent parentName="Process"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="Hascol Processes::Functor Parameter">
+			<node name="Functor Parameter">
 				<graphics>
 					<picture sizex="140" sizey="20"/>
 					<labels>
@@ -142,17 +142,17 @@
 				<logic>
 				</logic>
 			</node>
-			<edge name="Hascol Processes::Functor Binding">
+			<edge name="Functor Binding">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="empty_arrow" endType="no_arrow">
-						<association beginName="Hascol Processes::Functor"
-							endName="Hascol Processes::Process"/>
+						<association beginName="Functor"
+							endName="Process"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Diagram::Kernel Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="parameter bindings" />
@@ -162,12 +162,12 @@
 		</graphicTypes>
 	</diagram>
 	
-	<diagram name="Hascol Port Mapping Diagram">
+	<diagram name="Hascol Port Mapping">
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="Hascol Port Mappings::Port Mapping Relation"/>
-			<import name="Hascol Processes::Functor Parameter" as="Hascol Port Mappings::Functor Parameter"/>
-			<node name="Hascol Port Mappings::Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
+			<import name="Class Diagram::Relation" as="Port Mapping Relation"/>
+			<import name="Hascol Structure::Functor Parameter" as="Functor Parameter"/>
+			<node name="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
 					<picture sizex="200" sizey="100">
 						<rectangle x1="20a" y1="0" x2="180" y2="100" />
@@ -179,7 +179,7 @@
 				<logic>
 				</logic>
 			</node>
-			<node name="Hascol Port Mappings::Functor Instance">
+			<node name="Functor Instance">
 				<graphics>
 					<picture sizex="250" sizey="130">
 						<rectangle x1="20a" y1="30a" x2="180" y2="130" />
@@ -191,11 +191,11 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Hascol Port Mappings::Process Instance"/>
+						<parent parentName="Process Instance"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="Hascol Port Mappings::Port"> <!-- Это просто порт из композитных структур + атрибут direction -->
+			<node name="Port"> <!-- Это просто порт из композитных структур + атрибут direction -->
 				<graphics>
 					<picture sizex="100" sizey="10">
 						<rectangle x1="0" y1="0" x2="10" y2="10" fill="#ffffff" fill-style="solid"/>
@@ -225,7 +225,7 @@
 				</graphics>
 				<logic>
 					<properties>
-						<!-- <property type="Hascol Processes::Process Operation Kind" name="direction"/> -->
+						<!-- <property type="Process Operation Kind" name="direction"/> -->
 						<property type="string" name="direction"/>
 					</properties>
 				</logic>

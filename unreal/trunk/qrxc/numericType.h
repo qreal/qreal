@@ -13,7 +13,7 @@ enum BaseType
 class NumericType : public NonGraphicType
 {
 public:
-	virtual bool init(QDomElement const &element);
+	virtual bool init(QDomElement const &element, QString const &context);
 	virtual Type* clone() const;
 
 private:

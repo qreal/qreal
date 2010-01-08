@@ -38,7 +38,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="import"/>
@@ -85,7 +85,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="logicalName"/>
@@ -101,7 +101,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
@@ -121,7 +121,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Classifier"/>
+						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
@@ -182,11 +182,11 @@
 				</graphics>
 				<logic>
 					<associations beginType="empty_rhomb" endType="no_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
@@ -196,11 +196,11 @@
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
@@ -210,11 +210,11 @@
 				</graphics>
 				<logic>
 					<associations beginType="filled_rhomb" endType="no_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
@@ -224,11 +224,11 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 				</logic>
 			</edge>
@@ -238,8 +238,8 @@
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 				</logic>
 			</edge>
@@ -252,12 +252,11 @@
 						<property type="bool" name="isSubstitutable"/>
 					</properties>
 					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Kernel Element"
-									 endName="Kernel Element"/>
+						<association beginName="Element"
+									 endName="Element"/>
 					</associations>
 				</logic>
 			</edge>
-		
 		</graphicTypes>
 	</diagram>
 </metamodel>
