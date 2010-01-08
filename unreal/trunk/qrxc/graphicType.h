@@ -32,8 +32,19 @@ protected:
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
+	virtual bool isResolving() const;
 
 private:
+	class ResolvingHelper {
+	public:
+		ResolvingHelper(bool &resolvingFlag);
+		~ResolvingHelper();
+	private:
+		bool &mResolvingFlag;
+	};
+
+	bool mResolving;
+
 	bool initParents();
 	bool initProperties();
 	virtual bool initAssociations() = 0;

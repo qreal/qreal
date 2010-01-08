@@ -11,8 +11,19 @@ using namespace utils;
 
 const int MAX_LINE_LENGTH = 60;
 
+GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
+	: mResolvingFlag(resolvingFlag)
+{
+	mResolvingFlag = true;
+}
+
+GraphicType::ResolvingHelper::~ResolvingHelper()
+{
+	mResolvingFlag = false;
+}
+
 GraphicType::GraphicType(Diagram *diagram)
-	: Type(false, diagram), mVisible(false), mWidth(-1), mHeight(-1)
+	: Type(false, diagram), mVisible(false), mWidth(-1), mHeight(-1), mResolving(false)
 {}
 
 GraphicType::~GraphicType()
@@ -149,10 +160,17 @@ bool GraphicType::addProperty(Property *property)
 	return true;
 }
 
+bool GraphicType::isResolving() const
+{
+	return mResolving;
+}
+
 bool GraphicType::resolve()
 {
 	if (mResolvingFinished)
 		return true;
+
+	ResolvingHelper helper(mResolving);
 
 	mParents.removeDuplicates();
 
@@ -168,6 +186,10 @@ bool GraphicType::resolve()
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
 			}
+		}
+		if (parent->isResolving()) {
+			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
+			return false;
 		}
 		if (!parent->isResolved()) {
 			if (!parent->resolve())

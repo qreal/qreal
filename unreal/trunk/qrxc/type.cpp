@@ -31,6 +31,11 @@ bool Type::isResolved() const
 	return mResolvingFinished;
 }
 
+bool Type::isResolving() const
+{
+	return false;
+}
+
 QString Type::name() const
 {
 	return mName;

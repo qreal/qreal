@@ -29,6 +29,7 @@ public:
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst) = 0;
 	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst) = 0;
 	void setDiagram(Diagram *diagram);
+	virtual bool isResolving() const;
 
 protected:
 	void copyFields(Type *type) const;
