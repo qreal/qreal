@@ -14,7 +14,7 @@ SUBDIRS	= \
 #	packageEditor/packageEditor.pro \
 #	parallelEditor/parallelEditor.pro \
 #	requirementsEditor/requirementsEditor.pro \
-	sequenceEditor/sequenceEditor.pro \
+#	sequenceEditor/sequenceEditor.pro \
 #	stateMachinesEditor/stateMachinesEditor.pro \
 #	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
