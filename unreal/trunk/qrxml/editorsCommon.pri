@@ -26,6 +26,10 @@ isEmpty(QREAL_EDITOR_NAME) {
 	SYS = $$system($$COMMAND) 
 }
 
+if (equals(QMAKE_CXX, "g++")) {
+	QMAKE_LFLAGS += -Wl,-E
+}
+
 include(extraCompilers.pri)
 
 SOURCES		+= \
