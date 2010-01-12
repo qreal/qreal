@@ -5,7 +5,7 @@ win32-msvc* {
         QRXC = qrxc\release\qrxc.exe
     }
 	!exists($$QRXC) {
-		COMMAND = $$escape_expand(\"C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat\") && cd qrxc && $(QMAKE) -tp vc && vcbuild
+		COMMAND = $$escape_expand(\"C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat\") && cd qrxc && qmake -tp vc && vcbuild
 		SYS = $$system($$COMMAND)
 	}
 }
