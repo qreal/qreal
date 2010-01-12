@@ -2,6 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<include>../commonXml/classMetamodel.xml</include>
+	<include>../activityEditor/activity_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
 	<diagram name="Hascol Structure">
 		<nonGraphicTypes>
@@ -160,8 +161,7 @@
 				</logic>
 			</edge>
 		</graphicTypes>
-	</diagram>
-	
+	</diagram>	
 	<diagram name="Hascol Port Mapping">
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
@@ -230,6 +230,19 @@
 					</properties>
 				</logic>
 			</node>
+		</graphicTypes>
+	</diagram>
+	<diagram name="Hascol Activity">
+		<graphicTypes>
+			<import name="Activity Diagram::Accept Event Action" as="Handler Start"/>
+			<import name="Activity Diagram::Action" as="Action"/>
+			<import name="Activity Diagram::Input Pin" as="Input Pin"/>
+			<import name="Activity Diagram::Output Pin" as="Output Pin"/>
+			<import name="Activity Diagram::Decision Node" as="Decision Node"/>
+			<import name="Activity Diagram::Merge Node" as="Merge Node"/>
+			<import name="Activity Diagram::Send Signal Action" as="Send Signal Action"/>
+			<import name="Activity Diagram::Activity Final Node" as="Activity Final Node"/>
+			<import name="Activity Diagram::Control Flow" as="Control Flow"/>
 		</graphicTypes>
 	</diagram>
 </metamodel>
