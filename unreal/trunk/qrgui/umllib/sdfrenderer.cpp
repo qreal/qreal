@@ -214,7 +214,7 @@ void SdfRenderer::point(QDomElement &element)
 	float x = x1_def(element);
 	float y = y1_def(element);
 	QPointF pointf(x,y);
-	painter->drawLine(pointf, pointf);
+	painter->drawLine(QPointF(pointf.x()-0.1, pointf.y()-0.1), QPointF(pointf.x()+0.1, pointf.y()+0.1));
 	defaultstyle();
 }
 
