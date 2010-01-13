@@ -103,18 +103,20 @@ void EdgeElement::drawPort(QPainter *painter) const
 {
 	QPen pen;
 	QColor color;
+	QPointF p1(-0.25,0);
+	QPointF p2(0.25,0);
 
 	color.setNamedColor("#c3dcc4");
 	pen.setWidth(11);
 	pen.setColor(color);
 	painter->setPen(pen);
-	painter->drawLine(0, 0, 0, 0);
+	painter->drawLine(p1, p2);
 
 	color.setNamedColor("#465945");
 	pen.setWidth(3);
 	pen.setColor(color);
 	painter->setPen(pen);
-	painter->drawLine(0, 0, 0, 0);
+	painter->drawLine(p1, p2);
 }
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
