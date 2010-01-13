@@ -147,6 +147,13 @@ MainWindow::MainWindow()
 	delete splash;
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
+{
+	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
+		close();	
+	}	
+}
+
 void MainWindow::openNewTab()
 {
 	QModelIndex index = QModelIndex();

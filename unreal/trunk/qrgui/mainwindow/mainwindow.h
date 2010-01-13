@@ -83,6 +83,7 @@ namespace qReal {
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
 		void initCurrentTab(const QModelIndex &rootIndex);
+		void keyPressEvent(QKeyEvent *event);
 	};
 
 }
