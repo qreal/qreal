@@ -75,8 +75,11 @@ private:
 	/** @brief Список названий полей объекта */
 	QStringList mFieldNames;
 
-	/** @brief Число нередактируемых атрибутов */
+	/** @brief Число псевдоатрибутов, то есть атрибутов, которые не являются пропертями элемента*/
 	int mPseudoAttributesCount;
+
+	/** @brief Число псевдоатрибутов, которых можно редактировать*/
+	int mEditablePseudoAttributesCount;
 
 	qReal::EditorManager const &mEditorManager;
 

@@ -31,7 +31,7 @@ Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
 		return Qt::ItemIsEnabled;
 
 	// Object id
-	if (index.row() < mPseudoAttributesCount)
+	if (index.row() < mPseudoAttributesCount - mEditablePseudoAttributesCount)
 		return Qt::NoItemFlags;
 
 	// Other properties
@@ -65,9 +65,10 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		else if (index.row() == 0) {
 			Id id = targetObject.data(roles::idRole).value<Id>();
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
-		}
-		else
+		} else if (index.row() == 1)
 			return targetObject.data(roles::idRole).value<Id>().id();
+		else if (index.row() == 2)
+			return targetObject.data(Qt::DisplayRole);
 		return QVariant();
 	} else
 		return QVariant();
@@ -83,13 +84,15 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 	if (!targetObject.isValid())
 		return false;
 
-	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1)
-		if (index.row() != 0) {
-			 model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1) {
+		model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+		if (index.row() > mPseudoAttributesCount)
 			 ret = im->setData(targetObject, value, roleByIndex(index.row()));
-		}
+		else if (index.row() == 2)
+			ret = im->setData(targetObject, value, Qt::DisplayRole);
 		else
 			ret = true;
+	}
 	else
 		ret = false;
 	if (ret)
@@ -139,9 +142,15 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	Id id = targetObject.data(roles::idRole).value<Id>();
 	mFieldNames = mEditorManager.getPropertyNames(id.type());
 
-	mFieldNames.push_front("repo_id");
+	// Сначала в списке должны идти нередактируемые атрибуты, за ними - редактируемые.
+	// Атрибуты и их порядок захардкожены в методах data и setData, так что править
+	// аккуратно.
+	mFieldNames.push_front("name");
 	mFieldNames.push_front("metatype");
-	mPseudoAttributesCount = 2;
+	mFieldNames.push_front("repo_id");
+
+	mPseudoAttributesCount = 3;
+	mEditablePseudoAttributesCount = 1;
 
 	reset();
 }
