@@ -97,10 +97,22 @@
 						<line x1="200" y1="20" x2="180" y2="20" />
 					</picture>
 					<ports>
-						<pointPort x="200" y="50"/>
-						<pointPort x="0" y="50"/>
-						<pointPort x="100" y="100"/>
-						<pointPort x="100" y="0"/>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="180" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="0" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="100"/>
+							<end endx="200" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="100"/>
+							<end endx="200" endy="20"/>
+						</linePort>
 					</ports>
 					<labels>
 						<label x="0" y="0" textBinded="body"/>
@@ -117,6 +129,38 @@
 				</logic>
 			</node>
 			<node name="Constraint">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line x1="0" y1="0" x2="180" y2="0" />
+						<line x1="0" y1="0" x2="0" y2="100" />
+						<line x1="0" y1="100" x2="200" y2="100" />
+						<line x1="200" y1="100" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="200" y2="20" />
+						<line x1="180" y1="0" x2="180" y2="20" />
+						<line x1="200" y1="20" x2="180" y2="20" />
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="180" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="0"/>
+							<end endx="0" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="0" starty="100"/>
+							<end endx="200" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="100"/>
+							<end endx="200" endy="20"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="0" y="0" textBinded="body"/>
+					</labels>
+				</graphics>
 				<logic>
 					<generalizations>
 						<parent parentName="Packageable Element" />

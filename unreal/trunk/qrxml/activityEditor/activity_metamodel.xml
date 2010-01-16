@@ -1,1056 +1,1037 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/">
-	<include>../commonXml/kernel_metamodel.xml</include>
-	<include>../commonXml/basicbehaviors_metamodel.xml</include>
-	<include>../commonXml/basicactions_metamodel.xml</include>
-	<namespace>UML 2.0</namespace>
-	<diagram name="Activity Diagram">
-		<nonGraphicTypes>
-			<enum name="Type">
-				<value>localPrecondition</value>
-				<value>localPostCondation</value>
-			</enum>
-			<enum name="Expansion Kind">
-				<value>parallel</value>
-				<value>iterative</value>
-				<value>stream</value>
-			</enum>
-			<enum name="Object Node Ordering Kind">
-				<value>unordered</value>
-				<value>ordered</value>
-				<value>LIFO</value>
-				<value>FIFO</value>
-			</enum>
-			<enum name="Parameter Effect Kind">
-				<value>create</value>
-				<value>read</value>
-				<value>update</value>
-				<value>delete</value>
-			</enum>
-		</nonGraphicTypes>
-		<graphicTypes>
-			<node name="Accept Event Action">
-				<graphics>
-					<picture sizex="100" sizey="60">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1"
-							  x2="100" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60"
-							  stroke-width="1" x2="100" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60"
-							  stroke-width="1" x2="0" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30"
-							  stroke-width="1" x2="15" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0"
-							  stroke-width="1" x2="0" fill-style="solid"/>
-					</picture>
-					<ports>
-						<pointPort x="15" y="30"/>
-						<pointPort x="100" y="30"/>
-						<pointPort x="50" y="0"/>
-						<pointPort x="50" y="60"/>
-					</ports>
-					<labels>
-						<label x="33" y="3" textBinded="trigger"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Basic Actions::Accept Event Action"/>
-					</generalizations>
-					<properties>
-						<property type="string" name="trigger"/>
-						<!-- <property type="Trigger" name="trigger"/> -->
-					</properties>
-				</logic>
-			</node>
-			<node name="Accept Time Event Action">
-				<graphics>
-						<picture sizex="40" sizey="50">
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0"
-								  stroke-width="1" x2="40" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50"
-								  stroke-width="1" x2="40" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50"
-								  stroke-width="1" x2="40" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0"
-								  stroke-width="1" x2="40" fill-style="solid"/>
-						</picture>
-						<ports>
-							<pointPort x="20" y="25"/>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Accept Event Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Action">
-				<graphics>
-						<picture sizex="80" sizey="60">
-							<path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
-								  d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1"
-								  fill-style="solid"/>
-						</picture>
-						<labels>
-						<label x="5" y="3" textBinded="name"/>
-					</labels>
-						<ports>
-							<linePort>
-								<start startx="79" starty="10"/>
-								<end endx="79" endy="50"/>
-							</linePort>
-							<linePort>
-								<start startx="1" starty="10"/>
-								<end endx="1" endy="50"/>
-							</linePort>
-							<linePort>
-								<start startx="10" starty="1"/>
-								<end endx="70" endy="1"/>
-							</linePort>
-							<linePort>
-								<start startx="10" starty="59"/>
-								<end endx="70" endy="59"/>
-							</linePort>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Node"/>
-							<parent parentName="Executable Node"/>
-							<parent parentName="Basic Actions::Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Action Input Pin">
-				<graphics>
-						<picture sizex="20" sizey="20">
-							<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
-									   stroke-width="1" x2="20" fill-style="solid"/>
-						</picture>
-						<ports>
-							<linePort>
-								<start startx="0" starty="0"/>
-								<end endx="0" endy="20"/>
-							</linePort>
-							<linePort>
-								<start startx="20" starty="0"/>
-								<end endx="20" endy="20"/>
-							</linePort>
-							<linePort>
-								<start startx="0" starty="0"/>
-								<end endx="20" endy="0"/>
-							</linePort>
-							<linePort>
-								<start startx="0" starty="20"/>
-								<end endx="20" endy="20"/>
-							</linePort>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Action Input Pin"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Activity">
-				<graphics>
-						<picture sizex="100" sizey="100">
-							<rect x="0" y="0" rx="20" ry="20" width="100" height="60" fill="#ffffff"
-								  stroke-style="solid" stroke="#000000" stroke-width="1" fill-style="solid"/>
-						</picture>
-						<labels>
-						<label x="40" y="10" textBinded="name"/>
-					</labels>
-						<ports>
-							<linePort>
-								<start startx="79" starty="10"/>
-								<end endx="79" endy="50"/>
-							</linePort>
-							<linePort>
-								<start startx="1" starty="10"/>
-								<end endx="1" endy="50"/>
-							</linePort>
-							<linePort>
-								<start startx="10" starty="1"/>
-								<end endx="70" endy="1"/>
-							</linePort>
-							<linePort>
-								<start startx="10" starty="59"/>
-								<end endx="70" endy="59"/>
-							</linePort>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Behaviors::Behavior"/>
-					</generalizations>
-					<properties>
-							<property type="Activity Node" name="node"/>
-							<property type="Activity Edge" name="edge"/>
-							<property type="Activity Group" name="group"/>
-							<property type="Expansion Region" name="expansionRegion"/>
-						<property type="bool" name="isSingleExecution">
-							<default>false</default>
-						</property>
-							<property type="Activity Node" name="coordinatedNodes"/>
-							<property type="Activity Edge" name="edges"/>
-							<property type="Variable" name="topLevelVariables"/>
-							<property type="Activity Group" name="topLevelGroups"/>
-							<property type="Activity Partition" name="topLevelPartitions"/>
-					</properties>
-				</logic>
-			</node>
-			<edge name="Activity Edge">
-				<graphics>
-						<line_type type="solidLine"/>
-						<labels>
-						<label x="40" y="10" textBinded="name"/>
-						<label x="40" y="20" textBinded="guard"/>
-						<!-- guard должен быть в квадратных скобках -->
-					</labels>
-						
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Redefinable Element"/>
-					</generalizations>
-					<properties>
-							<property type="Activity" name="activity"/>
-							<property type="Activity Edge" name="redefinedEdge"/>
-							<property type="Activity Partition" name="partition"/>
-							<property type="Structured Activity Node" name="structuredActivityNode"/>
-							<property type="Interruptible Activity Region" name="interrupts"/>
-							<property type="Value Specification" name="guard"/>
-							<property type="Value Specification" name="weight"/>
-					</properties>
-				</logic>
-			</edge>
-			<node name="Activity Final Node">
-				<graphics>
-					<picture sizex="30" sizey="30">
-						<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30"
-							 stroke-width="1" x2="30" fill-style="solid"/>
-						<ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="20"
-							 stroke-width="1" x2="20" fill-style="solid"/>
-					</picture>
-					<ports>
-						<pointPort x="0" y="15"/>
-						<pointPort x="15" y="0"/>
-						<pointPort x="15" y="30"/>
-						<pointPort x="30" y="15"/>
-						<pointPort x="15" y="15"/>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Control Node"/>
-						<parent parentName="Final Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Activity Group">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Element"/>
-					</generalizations>
-					<properties>
-							<property type="Activity" name="activity"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Activity Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Named Element"/>
-							<parent parentName="Kernel::Redefinable Element"/>
-					</generalizations>
-					<properties>
-							<property type="Activity" name="activity"/>
-							<property type="Activity Node" name="redefinedNode"/>
-							<property type="Activity Partition" name="inPartition"/>
-							<property type="Interruptible Activity Region" name="inInterruptableRegion"/>
-							<property type="Structured Activity Node" name="structuredActivityNode"/>
-							<property type="Activity Node" name="redefineNode"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Activity Parameter Node">
-				<graphics>
-						<picture sizex="80" sizey="60">
-							<rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60"
-									   stroke-width="1" x2="80" fill-style="solid"/>
-						</picture>
-						<ports>
-							<linePort>
-								<start startx="0" starty="0"/>
-								<end endx="0" endy="60"/>
-							</linePort>
-							<linePort>
-								<start startx="80" starty="0"/>
-								<end endx="80" endy="60"/>
-							</linePort>
-							<linePort>
-								<start startx="0" starty="0"/>
-								<end endx="80" endy="0"/>
-							</linePort>
-							<linePort>
-								<start startx="0" starty="60"/>
-								<end endx="80" endy="60"/>
-							</linePort>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Object Node"/>
-					</generalizations>
-					<properties>
-							<property type="Parameter" name="parameter"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Activity Partition">
-				<graphics>
-						<picture sizex="60" sizey="60">
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="3" y2="3"
-								  stroke-width="4" x2="57" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="3" y2="57"
-								  stroke-width="4" x2="57" fill-style="solid"/>
-						</picture>
-						<ports>
-							<linePort>
-								<start startx="0" starty="0"/>
-								<end endx="60" endy="0"/>
-							</linePort>
-							<linePort>
-								<start startx="0" starty="60"/>
-								<end endx="60" endy="60"/>
-							</linePort>
-						</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Group"/>
-							<parent parentName="Kernel::Named Element"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isDimension">
-							<default>false</default>
-						</property>
-						<property type="bool" name="isExternal">
-							<default>false</default>
-						</property>
-							<property type="Activity Node" name="node"/>
-							<property type="Activity Edge" name="edge"/>
-							<property type="Activity Partition" name="superPartition"/>
-							<property type="Activity Partition" name="subPartition"/>
-							<property type="Kernel::Element" name="represents"/>
-							<property type="Activity Partition" name="superPartition"/>
-							<property type="Activity Partition" name="subPartition"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Add Variable Value Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Add Variable Value Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Behavior">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Behaviors::Behavior"/>
-					</generalizations>
-					<properties>
-							<property type="Parameter Set" name="ownedParameterSet"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Behavioral Feature">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Behaviors::Behavioral Feature"/>
-					</generalizations>
-					<properties>
-							<property type="Parameter Set" name="ownedParameterSet"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Call Behavior Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Call Behavior Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Call Operation Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Call Operation Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Central Buffer Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Object Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Clause">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Element"/>
-					</generalizations>
-					<properties>
-							<property type="Executable Node" name="test"/>
-							<property type="Executable Node" name="body"/>
-							<property type="Clause" name="predecessorClause"/>
-							<property type="Clause" name="successorClause"/>
-							<property type="Output Pin" name="decider"/>
-							<property type="Output Pin" name="bodyOutput"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Conditional Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Structured Activity Node"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isAssured">
-							<default>false</default>
-						</property>
-						<property type="bool" name="isDeterminate">
-							<default>false</default>
-						</property>
-							<property type="Clause" name="clause"/>
-							<property type="Output Pin" name="result"/>
-					</properties>
-				</logic>
-			</node>
-			<edge name="Control Flow">
-				<graphics>
-					<lineType type="solidLine"/>
-				</graphics>
-				<logic>
-					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Activity Node" endName="Activity Node"/>
-					</associations>
-					<generalizations>
-						<parent parentName="Activity Edge"/>
-					</generalizations>
-				</logic>
-			</edge>
-			<node name="Control Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Data Store Node">
-				<graphics>
-						<picture sizex="100" sizey="60"/>
-						<labels>
-						<label x="40" y="10" textBinded="name"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Central Buffer Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Decision Node">
-				<graphics>
-					<picture sizex="30" sizey="30">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="15" y2="15"
-							  stroke-width="1" x2="1" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="1" y2="29"
-							  stroke-width="1" x2="15" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="29" x1="15" y2="15"
-							  stroke-width="1" x2="29" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="29" y2="1"
-							  stroke-width="1" x2="15" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="15" starty="1"/>
-							<end endx="1" endy="15"/>
-						</linePort>
-						<linePort>
-							<start startx="1" starty="15"/>
-							<end endx="15" endy="29"/>
-						</linePort>
-						<linePort>
-							<start startx="15" starty="29"/>
-							<end endx="29" endy="15"/>
-						</linePort>
-						<linePort>
-							<start startx="29" starty="15"/>
-							<end endx="15" endy="1"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-					<properties>
-							<property type="Behavior" name="decisionInput"/>
-							<property type="Object Flow" name="decisionInputFlow"/>
-					</properties>
-				</logic>
-			</node>
-			<edge name="Exception Handler">
-				<graphics>
-						<line_type type="solidLine"/>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Element"/>
-					</generalizations>
-					<properties>
-							<property type="Kernel::Classifier" name="exceptionType"/>
-							<property type="Object Node" name="exceptionInput"/>
-					</properties>
-				</logic>
-			</edge>
-			<node name="Executable Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Node"/>
-					</generalizations>
-					<properties>
-							<property type="Exception Handler" name="handler"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Expansion Node">
-				<graphics>
-						<picture sizex="42" sizey="22">
-							<rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21"
-									   stroke-width="1" x2="41" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="20"
-								  stroke-width="1" x2="10" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="20"
-								  stroke-width="1" x2="20" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="20"
-								  stroke-width="1" x2="30" fill-style="solid"/>
-						</picture>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Object Node"/>
-					</generalizations>
-					<properties>
-							<property type="Expansion Region" name="regionAsInput"/>
-							<property type="Expansion Region" name="regionAsOutput"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Expansion Region">
-				<graphics>
-						<picture sizex="100" sizey="100">
-							<path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
-								  d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
-								  fill-style="solid"/>
-						</picture>
-						<labels>
-						<label x="40" y="10" textBinded="keyword"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Structured Activity Node"/>
-					</generalizations>
-					<properties>
-						<property type="enum" name="mode">
-							<enum nameReference="Expansion Kind"/>
-						</property>
-					</properties>
-					<properties>
-							<property type="Expansion Node" name="inputElement"/>
-							<property type="Expansion Node" name="outputElement"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Final Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Flow Final Node">
-				<graphics>
-						<picture sizex="60" sizey="60">
-							<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
-									 stroke-width="1" x2="59" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="51" y2="10"
-								  stroke-width="1" x2="11" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="11" y2="10"
-								  stroke-width="1" x2="51" fill-style="solid"/>
-						</picture>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Final Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Fork Node">
-				<graphics>
-					<picture sizex="60" sizey="60">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
-							  stroke-width="4" x2="30" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="30" starty="1"/>
-							<end endx="30" endy="59"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Initial Node">
-				<graphics>
-						<picture sizex="60" sizey="60">
-							<ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
-									 stroke-width="1" x2="59" fill-style="solid"/>
-						</picture>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Input Pin">
-				<graphics>
-					<picture sizex="20" sizey="20">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
-						   stroke-width="1" x2="20" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="0" endy="20"/>
-						</linePort>
-						<linePort>
-							<start startx="20" starty="0"/>
-							<end endx="20" endy="20"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="20" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="20"/>
-							<end endx="20" endy="20"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Input Pin"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Interruptible Activity Region">
-				<graphics>
-						<picture sizex="100" sizey="100">
-							<path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
-								  d=" M 10.8 1 C 5.38761 1 1 5.38761 1 10.8 L 1 89.2 C 1 94.6124 5.38761 99 10.8 99 L 89.2 99 C 94.6124 99 99 94.6124 99 89.2 L 99 10.8 C 99 5.38761 94.6124 1 89.2 1 L 10.8 1"
-								  fill-style="solid"/>
-						</picture>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Group"/>
-					</generalizations>
-					<properties>
-							<property type="Activity Node" name="node"/>
-							<property type="Activity Edge" name="interruptingEdge"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Join Node">
-				<graphics>
-					<picture sizex="60" sizey="60">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
-							  stroke-width="4" x2="30" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="30" starty="1"/>
-							<end endx="30" endy="59"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isCombineDuplicate">
-							<default>true</default>
-						</property>
-							<property type="Kernel::Value Specification" name="joinSpec"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Loop Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Structured Activity Node"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isTestedFirst">
-							<default>false</default>
-						</property>
-							<property type="Executable Node" name="setupPart"/>
-							<property type="Executable Node" name="bodyPart"/>
-							<property type="Executable Node" name="test"/>
-							<property type="Output Pin" name="decider"/>
-							<property type="Output Pin" name="result"/>
-							<property type="Output Pin" name="loopVariable"/>
-							<property type="Output Pin" name="bodyOutput"/>
-							<property type="Input Pin" name="loopVariableInput"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Merge Node">
-				<graphics>
-					<picture sizex="60" sizey="60">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30"
-							  stroke-width="1" x2="1" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59"
-							  stroke-width="1" x2="30" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30"
-							  stroke-width="1" x2="59" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1"
-							  stroke-width="1" x2="30" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="30" starty="1"/>
-							<end endx="1" endy="30"/>
-						</linePort>
-						<linePort>
-							<start startx="1" starty="30"/>
-							<end endx="30" endy="59"/>
-						</linePort>
-						<linePort>
-							<start startx="30" starty="59"/>
-							<end endx="59" endy="30"/>
-						</linePort>
-						<linePort>
-							<start startx="59" starty="30"/>
-							<end endx="30" endy="1"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Control Node"/>
-					</generalizations>
-				</logic>
-			</node>
-			<edge name="Object Flow">
-				<graphics>
-						<line_type type="solidLine"/>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Activity Edge"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isMulticast">
-							<default>false</default>
-						</property>
-						<property type="bool" name="isMultireceive">
-							<default>false</default>
-						</property>
-							<property type="Behavior" name="selection"/>
-							<property type="Behavior" name="transformation"/>
-					</properties>
-				</logic>
-			</edge>
-			<node name="Object Node">
-				<graphics>
-						<picture sizex="80" sizey="60">
-							<rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
-									   stroke-width="1" x2="79" fill-style="solid"/>
-						</picture>
-						<labels>
-						<label x="40" y="10" textBinded="name"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Typed Element"/>
-							<parent parentName="Activity Node"/>
-					</generalizations>
-					<properties>
-						<property type="enum" name="ordering">
-							<enum nameReference="acttObjectNodeOrderingKind"/>
-							<default>FIFO</default>
-						</property>
-						<property type="bool" name="isControlType">
-							<default>false</default>
-						</property>
-							<property type="State Machines::State" name="inState"/>
-							<property type="Behavior" name="selection"/>
-							<property type="Kernel::Value Specification" name="upperBound"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Output Pin">
-				<graphics>
-					<picture sizex="20" sizey="20">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
-						   stroke-width="1" x2="20" fill-style="solid"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="0" endy="20"/>
-						</linePort>
-						<linePort>
-							<start startx="20" starty="0"/>
-							<end endx="20" endy="20"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="20" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="20"/>
-							<end endx="20" endy="20"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Output Pin"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Parameter">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Parameter"/>
-					</generalizations>
-					<properties>
-						<property type="enum" name="effect">
-							<enum nameReference="Parameter Effect Kind"/>
-						</property>
-						<property type="bool" name="isException">
-							<default>false</default>
-						</property>
-						<property type="bool" name="isStream">
-							<default>false</default>
-						</property>
-					</properties>
-					<properties>
-							<property type="Parameter Set" name="parameterSet"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Parameter Set">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Named Element"/>
-					</generalizations>
-					<properties>
-							<property type="Kernel::Constraint" name="condition"/>
-							<property type="Parameter" name="parameter"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Pin">
-				<logic>
-					<generalizations>
-							<parent parentName="Object Node"/>
-							<parent parentName="Basic Actions::Pin"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="isControl">
-							<default>false</default>
-						</property>
-					</properties>
-				</logic>
-			</node>
-			<node name="Send Object Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Send Object Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Send Signal Action">
-				<graphics>
-					<picture sizex="100" sizey="60">
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
-							  stroke-width="1" x2="84" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30"
-							  stroke-width="1" x2="99" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59"
-							  stroke-width="1" x2="84" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59"
-							  stroke-width="1" x2="1" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1"
-							  stroke-width="1" x2="1" fill-style="solid"/>
-					</picture>
-					<labels>
-						<label x="0" y="0" textBinded="name"/>
-					</labels>
-					<ports>
-						<pointPort x="50" y="0"/>
-						<pointPort x="50" y="60"/>
-						<pointPort x="0" y="30"/>
-						<pointPort x="100" y="30"/>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Basic Actions::SendSignal Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Sequence Node">
-				<logic>
-					<generalizations>
-							<parent parentName="Structured Activity Node"/>
-					</generalizations>
-					<properties>
-							<property type="Executable Node" name="executableNode"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Structured Activity Node">
-				<graphics>
-						<picture sizex="100" sizey="100">
-							<path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
-								  d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
-								  fill-style="solid"/>
-						</picture>
-						<labels>
-						<label x="40" y="10" textBinded="&lt;&lt;structured>>"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-							<parent parentName="Action"/>
-							<parent parentName="Activity Group"/>
-							<parent parentName="Expansion Node"/>
-							<parent parentName="Kernel::Namespace"/>
-					</generalizations>
-					<properties>
-						<property type="bool" name="mustIsolate">
-							<default>false</default>
-						</property>
-							<property type="Variable" name="variable"/>
-							<property type="Activity Node" name="node"/>
-							<property type="Activity Edge" name="edge"/>
-							<property type="Activity" name="activity"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Unmarshall Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Unmarshall Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Value Pin">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Value Pin"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Value Specification Action">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Value Specification Action"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="Variable">
-				<logic>
-					<generalizations>
-							<parent parentName="Basic Actions::Variable"/>
-					</generalizations>
-					<properties>
-							<property type="Structured Activity Node" name="scope"/>
-							<property type="Activity" name="activityScope"/>
-					</properties>
-				</logic>
-			</node>
+    <include>../commonXml/kernel_metamodel.xml</include>
+    <include>../commonXml/basicbehaviors_metamodel.xml</include>
+    <include>../commonXml/basicactions_metamodel.xml</include>
+    <namespace>UML 2.0</namespace>
+    <diagram name="Activity Diagram">
+        <nonGraphicTypes>
+            <enum name="Type">
+                <value>localPrecondition</value>
+                <value>localPostCondation</value>
+            </enum>
+            <enum name="Expansion Kind">
+                <value>parallel</value>
+                <value>iterative</value>
+                <value>stream</value>
+            </enum>
+            <enum name="Object Node Ordering Kind">
+                <value>unordered</value>
+                <value>ordered</value>
+                <value>LIFO</value>
+                <value>FIFO</value>
+            </enum>
+            <enum name="Parameter Effect Kind">
+                <value>create</value>
+                <value>read</value>
+                <value>update</value>
+                <value>delete</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+			<import name="Kernel::Constraint" as="Constraint"/>
+			<import name="Kernel::Value Specification" as="Value Specification"/>
+            <node name="Accept Event Action">
+                <graphics>
+                    <picture sizex="100" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1"
+                              x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="60"
+                              stroke-width="1" x2="100" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="100" y2="60"
+                              stroke-width="1" x2="0" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="60" x1="0" y2="30"
+                              stroke-width="1" x2="15" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0"
+                              stroke-width="1" x2="0" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="100" y="30"/>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="60"/>
+                    </ports>
+                    <labels>
+                        <label x="33" y="3" textBinded="trigger"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Accept Event Action"/>
+                    </generalizations>
+                    <properties>
+                        <property type="string" name="trigger"/>
+                        <!-- <property type="Trigger" name="trigger"/> -->
+                    </properties>
+                </logic>
+            </node>
+            <node name="Accept Time Event Action">
+                <graphics>
+                    <picture sizex="40" sizey="50">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0"
+                              stroke-width="1" x2="40" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="50"
+                              stroke-width="1" x2="40" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="50"
+                              stroke-width="1" x2="40" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="50" x1="0" y2="0"
+                              stroke-width="1" x2="40" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="20" y="25"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Accept Event Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Action">
+                <graphics>
+                    <picture sizex="80" sizey="60">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                              d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1"
+                              fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="79" starty="10"/>
+                            <end endx="79" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="1" starty="10"/>
+                            <end endx="1" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="1"/>
+                            <end endx="70" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="59"/>
+                            <end endx="70" endy="59"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Activity Node"/>
+                        <parent parentName="Executable Node"/>
+                        <parent parentName="Basic Actions::Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Action Input Pin">
+                <graphics>
+                    <picture sizex="20" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
+                                   stroke-width="1" x2="20" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="0" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="20" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Action Input Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity">
+                <graphics>
+                    <picture sizex="80" sizey="60">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                              d=" M 10.75 1 C 5.36522 1 1 5.41447 1 10.86 L 1 49.14 C 1 54.5855 5.36522 59 10.75 59 L 69.25 59 C 74.6348 59 79 54.5855 79 49.14 L 79 10.86 C 79 5.41447 74.6348 1 69.25 1 L 10.75 1"
+                              fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="79" starty="10"/>
+                            <end endx="79" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="1" starty="10"/>
+                            <end endx="1" endy="50"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="1"/>
+                            <end endx="70" endy="1"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="59"/>
+                            <end endx="70" endy="59"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Behaviors::Behavior"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Activity Node" name="node"/>
+                        <property type="Activity Edge" name="edge"/>
+                        <property type="Activity Group" name="group"/>
+                        <property type="Expansion Region" name="expansionRegion"/>
+                        <property type="bool" name="isSingleExecution">
+                            <default>false</default>
+                        </property>
+                        <property type="Activity Node" name="coordinatedNodes"/>
+                        <property type="Activity Edge" name="edges"/>
+                        <property type="Variable" name="topLevelVariables"/>
+                        <property type="Activity Group" name="topLevelGroups"/>
+                        <property type="Activity Partition" name="topLevelPartitions"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Activity Edge">
+                <graphics>
+                    <line_type type="solidLine"/>
+                    <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                        <label x="40" y="20" textBinded="guard"/>
+                        <!-- guard должен быть в квадратных скобках -->
+                    </labels>
 
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Redefinable Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Activity" name="activity"/>
+                        <property type="Activity Edge" name="redefinedEdge"/>
+                        <property type="Activity Partition" name="partition"/>
+                        <property type="Structured Activity Node" name="structuredActivityNode"/>
+                        <property type="Interruptible Activity Region" name="interrupts"/>
+                        <property type="Value Specification" name="guard"/>
+                        <property type="Value Specification" name="weight"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Activity Final Node">
+                <graphics>
+                    <picture sizex="30" sizey="30">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30"
+                                 stroke-width="1" x2="30" fill-style="solid"/>
+                        <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="20"
+                                 stroke-width="1" x2="20" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="15"/>
+                        <pointPort x="15" y="0"/>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="30" y="15"/>
+                        <pointPort x="15" y="15"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                        <parent parentName="Final Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Activity Group">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Activity" name="activity"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Named Element"/>
+                        <parent parentName="Kernel::Redefinable Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Activity" name="activity"/>
+                        <property type="Activity Node" name="redefinedNode"/>
+                        <property type="Activity Partition" name="inPartition"/>
+                        <property type="Interruptible Activity Region" name="inInterruptableRegion"/>
+                        <property type="Structured Activity Node" name="structuredActivityNode"/>
+                        <property type="Activity Node" name="redefineNode"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Parameter Node">
+                <graphics>
+                    <picture sizex="80" sizey="60">
+                        <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60"
+                                   stroke-width="1" x2="80" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="0" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="80" starty="0"/>
+                            <end endx="80" endy="60"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="80" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="60"/>
+                            <end endx="80" endy="60"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Object Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Parameter" name="parameter"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Activity Partition">
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="0" y2="3"
+                              stroke-width="4" x2="60" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="57" x1="0" y2="57"
+                              stroke-width="4" x2="60" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="3"/>
+                            <end endx="60" endy="3"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="57"/>
+                            <end endx="60" endy="57"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Activity Group"/>
+                        <parent parentName="Kernel::Named Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isDimension">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isExternal">
+                            <default>false</default>
+                        </property>
+                        <property type="Activity Node" name="node"/>
+                        <property type="Activity Edge" name="edge"/>
+                        <property type="Activity Partition" name="superPartition"/>
+                        <property type="Activity Partition" name="subPartition"/>
+                        <property type="Kernel::Element" name="represents"/>
+                        <property type="Activity Partition" name="superPartition"/>
+                        <property type="Activity Partition" name="subPartition"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Add Variable Value Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Add Variable Value Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Behavior">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Behaviors::Behavior"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Parameter Set" name="ownedParameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Behavioral Feature">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Behaviors::Behavioral Feature"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Parameter Set" name="ownedParameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Call Behavior Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Call Behavior Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Call Operation Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Call Operation Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Central Buffer Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Object Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Clause">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Executable Node" name="test"/>
+                        <property type="Executable Node" name="body"/>
+                        <property type="Clause" name="predecessorClause"/>
+                        <property type="Clause" name="successorClause"/>
+                        <property type="Output Pin" name="decider"/>
+                        <property type="Output Pin" name="bodyOutput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Conditional Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isAssured">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isDeterminate">
+                            <default>false</default>
+                        </property>
+                        <property type="Clause" name="clause"/>
+                        <property type="Output Pin" name="result"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Control Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations beginType="no_arrow" endType="open_arrow">
+                        <association beginName="Activity Node" endName="Activity Node"/>
+                    </associations>
+                    <generalizations>
+                        <parent parentName="Activity Edge"/>
+                    </generalizations>
+                </logic>
+            </edge>
+            <node name="Control Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Activity Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Data Store Node">
+                <graphics>
+                    <picture sizex="100" sizey="60"/>
+                    <labels>
+                        <label x="40" y="10" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Central Buffer Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Decision Node">
+                <graphics>
+                    <picture sizex="30" sizey="30">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="15" y2="15"
+                              stroke-width="1" x2="1" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="1" y2="29"
+                              stroke-width="1" x2="15" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="29" x1="15" y2="15"
+                              stroke-width="1" x2="29" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="29" y2="1"
+                              stroke-width="1" x2="15" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="15" starty="1"/>
+                            <end endx="1" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="1" starty="15"/>
+                            <end endx="15" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="15" starty="29"/>
+                            <end endx="29" endy="15"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="29" starty="15"/>
+                            <end endx="15" endy="1"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Behavior" name="decisionInput"/>
+                        <property type="Object Flow" name="decisionInputFlow"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="Exception Handler">
+                <graphics>
+                    <line_type type="solidLine"/>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Kernel::Classifier" name="exceptionType"/>
+                        <property type="Object Node" name="exceptionInput"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Executable Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Exception Handler" name="handler"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Expansion Node">
+                <graphics>
+                    <picture sizex="42" sizey="22">
+                        <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21"
+                                   stroke-width="1" x2="41" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="20"
+                              stroke-width="1" x2="10" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="20"
+                              stroke-width="1" x2="20" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="20"
+                              stroke-width="1" x2="30" fill-style="solid"/>
+                    </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Object Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Expansion Region" name="regionAsInput"/>
+                        <property type="Expansion Region" name="regionAsOutput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Expansion Region">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                              d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
+                              fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10" textBinded="keyword"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="mode">
+                            <enum nameReference="Expansion Kind"/>
+                        </property>
+                    </properties>
+                    <properties>
+                        <property type="Expansion Node" name="inputElement"/>
+                        <property type="Expansion Node" name="outputElement"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Final Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Flow Final Node">
+                <graphics>
+                    <picture sizex="30" sizey="30">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="30"
+                                 stroke-width="1" x2="30" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" x1="25.6" y1="4.4" x2="4.4" y2="25.6"
+                              stroke-width="1" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" x1="4.5" y1="4.5" x2="25.6" y2="25.6"
+                              stroke-width="1" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="15"/>
+                        <pointPort x="15" y="0"/>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="30" y="15"/>
+                        <pointPort x="15" y="15"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Final Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Fork Node">
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
+                              stroke-width="4" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="30" starty="1"/>
+                            <end endx="30" endy="59"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Initial Node">
+                <graphics>
+                    <picture sizex="30" sizey="30">
+                        <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="30"
+                                 stroke-width="1" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <pointPort x="0" y="15"/>
+                        <pointPort x="30" y="15"/>
+                        <pointPort x="15" y="0"/>
+                        <pointPort x="15" y="30"/>
+                        <pointPort x="15" y="15"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Input Pin">
+                <graphics>
+                    <picture sizex="20" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
+                                   stroke-width="1" x2="20" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="0" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="20" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Input Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Interruptible Activity Region">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                              d=" M 10.8 1 C 5.38761 1 1 5.38761 1 10.8 L 1 89.2 C 1 94.6124 5.38761 99 10.8 99 L 89.2 99 C 94.6124 99 99 94.6124 99 89.2 L 99 10.8 C 99 5.38761 94.6124 1 89.2 1 L 10.8 1"
+                              fill-style="solid"/>
+                    </picture>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Activity Group"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Activity Node" name="node"/>
+                        <property type="Activity Edge" name="interruptingEdge"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Join Node">
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
+                              stroke-width="4" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="30" starty="1"/>
+                            <end endx="30" endy="59"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isCombineDuplicate">
+                            <default>true</default>
+                        </property>
+                        <property type="Value Specification" name="joinSpec"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Loop Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isTestedFirst">
+                            <default>false</default>
+                        </property>
+                        <property type="Executable Node" name="setupPart"/>
+                        <property type="Executable Node" name="bodyPart"/>
+                        <property type="Executable Node" name="test"/>
+                        <property type="Output Pin" name="decider"/>
+                        <property type="Output Pin" name="result"/>
+                        <property type="Output Pin" name="loopVariable"/>
+                        <property type="Output Pin" name="bodyOutput"/>
+                        <property type="Input Pin" name="loopVariableInput"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Merge Node">
+                <graphics>
+                    <picture sizex="60" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30"
+                              stroke-width="1" x2="1" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59"
+                              stroke-width="1" x2="30" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30"
+                              stroke-width="1" x2="59" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1"
+                              stroke-width="1" x2="30" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="30" starty="1"/>
+                            <end endx="1" endy="30"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="1" starty="30"/>
+                            <end endx="30" endy="59"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="30" starty="59"/>
+                            <end endx="59" endy="30"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="59" starty="30"/>
+                            <end endx="30" endy="1"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Control Node"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <edge name="Object Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations beginType="no_arrow" endType="open_arrow">
+                        <association beginName="Activity Node" endName="Activity Node"/>
+                    </associations>
+                    <generalizations>
+                        <parent parentName="Activity Edge"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isMulticast">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isMultireceive">
+                            <default>false</default>
+                        </property>
+                        <property type="Behavior" name="selection"/>
+                        <property type="Behavior" name="transformation"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Object Node">
+                <graphics>
+                    <picture sizex="80" sizey="60">
+                        <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
+                                   stroke-width="1" x2="79" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="name"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Typed Element"/>
+                        <parent parentName="Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="ordering">
+                            <enum nameReference="acttObjectNodeOrderingKind"/>
+                            <default>FIFO</default>
+                        </property>
+                        <property type="bool" name="isControlType">
+                            <default>false</default>
+                        </property>
+                        <property type="State Machines::State" name="inState"/>
+                        <property type="Behavior" name="selection"/>
+                        <property type="Value Specification" name="upperBound"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Output Pin">
+                <graphics>
+                    <picture sizex="20" sizey="20">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
+                                   stroke-width="1" x2="20" fill-style="solid"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="0" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="20" starty="0"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="0"/>
+                            <end endx="20" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0" starty="20"/>
+                            <end endx="20" endy="20"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Output Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Parameter">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Parameter"/>
+                    </generalizations>
+                    <properties>
+                        <property type="enum" name="effect">
+                            <enum nameReference="Parameter Effect Kind"/>
+                        </property>
+                        <property type="bool" name="isException">
+                            <default>false</default>
+                        </property>
+                        <property type="bool" name="isStream">
+                            <default>false</default>
+                        </property>
+                    </properties>
+                    <properties>
+                        <property type="Parameter Set" name="parameterSet"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Parameter Set">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Kernel::Named Element"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Kernel::Constraint" name="condition"/>
+                        <property type="Parameter" name="parameter"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Pin">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Object Node"/>
+                        <parent parentName="Basic Actions::Pin"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="isControl">
+                            <default>false</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Send Object Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Send Object Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Send Signal Action">
+                <graphics>
+                    <picture sizex="100" sizey="60">
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
+                              stroke-width="1" x2="84" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="84" y2="30"
+                              stroke-width="1" x2="99" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="99" y2="59"
+                              stroke-width="1" x2="84" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="84" y2="59"
+                              stroke-width="1" x2="1" fill-style="solid"/>
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="1" y2="1"
+                              stroke-width="1" x2="1" fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="0" y="0" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="60"/>
+                        <pointPort x="0" y="30"/>
+                        <pointPort x="100" y="30"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::SendSignal Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Sequence Node">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Structured Activity Node"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Executable Node" name="executableNode"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Structured Activity Node">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
+                              d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1"
+                              fill-style="solid"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10" textBinded="&lt;&lt;structured>>"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <generalizations>
+                        <parent parentName="Action"/>
+                        <parent parentName="Activity Group"/>
+                        <parent parentName="Expansion Node"/>
+                        <parent parentName="Kernel::Namespace"/>
+                    </generalizations>
+                    <properties>
+                        <property type="bool" name="mustIsolate">
+                            <default>false</default>
+                        </property>
+                        <property type="Variable" name="variable"/>
+                        <property type="Activity Node" name="node"/>
+                        <property type="Activity Edge" name="edge"/>
+                        <property type="Activity" name="activity"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Unmarshall Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Unmarshall Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Value Pin">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Value Pin"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Value Specification Action">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Value Specification Action"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="Variable">
+                <logic>
+                    <generalizations>
+                        <parent parentName="Basic Actions::Variable"/>
+                    </generalizations>
+                    <properties>
+                        <property type="Structured Activity Node" name="scope"/>
+                        <property type="Activity" name="activityScope"/>
+                    </properties>
+                </logic>
+            </node>
 
-			<node name="Constraint">
-				<graphics>
-						<picture sizex="100" sizey="52">
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
-								  stroke-width="1" x2="88" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="41"
-								  stroke-width="1" x2="1" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="1" y2="41"
-								  stroke-width="1" x2="99" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="41" x1="99" y2="11"
-								  stroke-width="1" x2="99" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11"
-								  stroke-width="1" x2="99" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="88" y2="11"
-								  stroke-width="1" x2="88" fill-style="solid"/>
-							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="11" x1="88" y2="11"
-								  stroke-width="1" x2="99" fill-style="solid"/>
-						</picture>
-					 <labels>
-						<label x="40" y="10" textBinded="&lt;&lt;"/>
-						<label x="44" y="10" textBinded="type"/>
-						<!-- <html:text text=">>"/> -->
-						<label x="40" y="20" textBinded="condition"/>
-					</labels>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="enum" name="type">
-							<enum nameReference="Type"/>
-						</property>
-						<property type="string" name="condition"/>
-					</properties>
-				</logic>
-			</node>
 			<edge name="Constraint Edge">
 				<graphics>
-						<line_type type="dashLine"/>
+					<line_type type="dashLine"/>
 				</graphics>
 				<logic>
+					<associations beginType="no_arrow" endType="no_arrow">
+						<association beginName="Constraint" endName="Activity"/>
+					</associations>
 					<generalizations>
-							<parent parentName="Kernel::Relationship"/>
+						<parent parentName="Kernel::Relationship"/>
 					</generalizations>
 				</logic>
 			</edge>
-			<node name="Value Specification">
-				<logic>
-					<generalizations>
-							<parent parentName="Kernel::Value Specification"/>
-					</generalizations>
-				</logic>
-			</node>
 
 		</graphicTypes>
-	</diagram>
+    </diagram>
 </metamodel>

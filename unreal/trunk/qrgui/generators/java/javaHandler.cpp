@@ -54,12 +54,12 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 	QString const objectType = mApi.typeName(id);
 	QString const parentType = mApi.typeName(parentId);
 
-	if (objectType == "krnnDiagram") {
+        if (objectType == "Class_Diagram_Diagram") {
 	}
 
 	// class diagramm
 
-	else if (objectType == "cnClass") {
+        else if (objectType == "Class_Diagram_Class") {
 
 		//-----------
 		QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
@@ -87,7 +87,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		if (!mApi.links(id).isEmpty()) {
 			IdList linksOut = mApi.outcomingLinks(id);
 			foreach (Id const aLink, linksOut) {
-				if (aLink.element() == "ceDirRelation" || aLink.element() == "ceRelation") {
+                            if (aLink.element() == "Class_Diagram_Directed_Relationship" || aLink.element() == "Class_Diagram_Relation") {
 					QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
 					QString visibility = getVisibility(aLink);
 					QString isFinalField = hasModifier(aLink, "final");
@@ -106,7 +106,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 
 			IdList linksIn = mApi.incomingLinks(id);
 			foreach (Id const aLink, linksIn) {
-				if (aLink.element() == "ceRelation") {
+                            if (aLink.element() == "Class_Diagram_Relation") {
 					QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
 					QString visibility = getVisibility(aLink);
 					QString isFinalField = hasModifier(aLink, "final");
@@ -140,10 +140,10 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 		}
 
 		out << "}\n";
-	} else if (objectType == "cnClassView") {
+            } else if (objectType == "Class_Diagram_View") {
 		//	    to do someting
-	} else if (objectType == "cnClassMethod") {
-		if (parentType == "cnClass") {
+            } else if (objectType == "Class_Diagram_Class_method") {
+                if (parentType == "Class_Diagram_Class") {
 
 			QString visibility = getVisibility(id);
 			QString type = getType(id);
@@ -164,10 +164,10 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
 					  visibility + type  + mApi.name(id) + "(" + operationFactors + "){};" + "\n";
 		} else {
-			this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
+                        this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
 		}
-	} else if (objectType == "cnClassField") {
-		if (parentType == "cnClass") {
+            } else if (objectType == "Class_Diagram_Class_field") {
+                if (parentType == "Class_Diagram_Class") {
 
 			QString visibility = getVisibility(id);
 			QString type = getType(id);
@@ -186,7 +186,7 @@ QString JavaHandler::serializeObject(Id const &id, Id const &parentId)
 			}
 			result += ";\n";
 		} else {
-			addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
+                        addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
 		}
 	}
 
@@ -245,7 +245,7 @@ QString JavaHandler::getType(Id const &id)
 	if (mApi.hasProperty(id, "type")) {
 		QString type = mApi.stringProperty(id, "type");
 
-		if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
+                if (isTypeSuitable(type) || (objectType == "Class_Diagram_Class_method" && type == "void")) {
 			result = type;
 			if (result != "")
 				result += " ";
@@ -268,7 +268,7 @@ QString JavaHandler::getParents(Id const &id)
 		IdList links = mApi.outcomingLinks(id);
 
 		foreach (Id const aLink, links) {
-			if (aLink.element() == "ceGeneralization") {
+                        if (aLink.element() == "Class_Diagram_Generalization") {
 				if (hasParentClass == false) {
 					hasParentClass = true;
 					if (id == mApi.otherEntityFromLink(aLink, id)) {
