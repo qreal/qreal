@@ -4,10 +4,10 @@
 	<namespace>UML 2.1</namespace>
 	<diagram name="Class Diagram">
 		<graphicTypes>
-		 <import name="Kernel::Comment" as="Comment"/>
-		 <import name="Kernel::Comment Link" as="Comment Link"/>
-		 <import name="Kernel::Directed Relationship" as="Directed Relationship"/>
-		 <import name="Kernel::Diagram" as="Diagram"/>
+			<import name="Kernel::Comment" as="Comment"/>
+			<import name="Kernel::Comment Link" as="Comment Link"/>
+			<import name="Kernel::Directed Relationship" as="Directed Relationship"/>
+			<import name="Kernel::Diagram" as="Diagram"/>
 			<node name="Class">
 				<graphics>
 					<picture sizex="150" sizey="210">
