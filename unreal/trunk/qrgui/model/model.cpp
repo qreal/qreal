@@ -27,7 +27,7 @@ Model::~Model()
 
 bool Model::isDiagram(const Id &id)
 {
-	return id.editor() == "Kernel_metamodel" && id.diagram() == "Kernel" && id.element() == "Kernel_Diagram";
+	return id.element().contains("Diagram", Qt::CaseInsensitive);
 }
 
 void Model::init()
