@@ -7,8 +7,8 @@ using namespace utils;
 
 bool Label::init(QDomElement const &element, int index)
 {
-	mX = QString("%1").arg(static_cast<qreal>(element.attribute("x").toInt()));
-	mY = QString("%1").arg(static_cast<qreal>(element.attribute("y").toInt()));
+	mX = element.attribute("x", "0");
+	mY = element.attribute("y", "0");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
