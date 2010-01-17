@@ -35,8 +35,11 @@ bool Property::init(QDomElement const &element)
 	else if ((mType != "int") && (mType != "string") && (mType != "bool") && (mType != "text") &&
 		(mType != "positiveInt") && (mType != "nonNegativeInt"))
 	{
+		// Хак: проперти непримитивных типов пока что будут строковыми, это лучше,
+		// чем если их не будет вообще.
+		mType = "string";
 		// qDebug() << "ERROR: unknown type" << mType << "found for property" << name();
-		return false;
+		// return false;
 	}
 	mDescription = element.firstChildElement("description").text();
 	mDefaultValue = element.firstChildElement("default").text();
