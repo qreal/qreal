@@ -23,6 +23,8 @@ public:
 	QString qualifiedName() const;
 	void setName(QString const &name);
 	void setContext(QString const &newContext);
+	QString displayedName() const;
+	void setDisplayedName(QString const &displayedName);
 	QMap<QString, Property*> properties() const;
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
@@ -43,4 +45,5 @@ private:
 	QString mName;  // Неквалифицированное имя метатипа
 	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
 	QString mNativeContext;  // "Родной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
+	QString mDisplayedName;
 };

@@ -9,8 +9,8 @@
 
 #include <QDebug>
 
-Diagram::Diagram(QString const &name, Editor *editor)
-	: mDiagramName(name), mEditor(editor)
+Diagram::Diagram(QString const &name, QString const &displayedName, Editor *editor)
+	: mDiagramName(name), mDiagramDisplayedName(displayedName), mEditor(editor)
 {}
 
 Diagram::~Diagram()
@@ -59,9 +59,12 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 			}
 			mTypes[edgeType->qualifiedName()] = edgeType;
 		} else if (element.nodeName() == "import") {
-			QString importedElementName = element.attribute("name", "");
-			QString importAs = element.attribute("as", "");
-			mImports.append(QPair<QString, QString>(importedElementName, importAs));
+			ImportSpecification import = {
+				element.attribute("name", ""),
+				element.attribute("as", ""),
+				element.attribute("displayedName", "")
+			};
+			mImports.append(import);
 		}
 		else
 		{
@@ -119,15 +122,15 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 
 bool Diagram::resolve()
 {
-	typedef QPair<QString, QString> ImportPair;
-	foreach (ImportPair import, mImports) {
-		Type *importedType = mEditor->findType(import.first);
+	foreach (ImportSpecification import, mImports) {
+		Type *importedType = mEditor->findType(import.name);
 		if (importedType == NULL) {
-			qDebug() << "ERROR: imported type" << import.first << "not found, skipping";
+			qDebug() << "ERROR: imported type" << import.name << "not found, skipping";
 			continue;
 		}
 		Type *copiedType = importedType->clone();
-		copiedType->setName(import.second);
+		copiedType->setName(import.as);
+		copiedType->setDisplayedName(import.displayedName);
 		copiedType->setDiagram(this);
 		copiedType->setContext(mDiagramName);
 		mTypes.insert(copiedType->qualifiedName(), copiedType);
@@ -163,4 +166,9 @@ QMap<QString, Type*> Diagram::types() const
 QString Diagram::name() const
 {
 	return mDiagramName;
+}
+
+QString Diagram::displayedName() const
+{
+	return mDiagramDisplayedName;
 }

@@ -23,6 +23,7 @@ bool Type::init(QDomElement const &element, QString const &context)
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
+	mDisplayedName = element.attribute("displayedName", mName);
 	return true;
 }
 
@@ -61,6 +62,16 @@ void Type::setName(QString const &name)
 	mName = name;
 }
 
+QString Type::displayedName() const
+{
+	return mDisplayedName;
+}
+
+void Type::setDisplayedName(QString const &displayedName)
+{
+	mDisplayedName = displayedName;
+}
+
 QMap<QString, Property*> Type::properties() const
 {
 	return mProperties;
@@ -76,6 +87,7 @@ void Type::copyFields(Type *type) const
 	type->mName = mName;
 	type->mContext = mContext;
 	type->mNativeContext = mNativeContext;
+	type->mDisplayedName = mDisplayedName;
 	foreach (QString propertyName, mProperties.keys())
 		type->mProperties.insert(propertyName, mProperties[propertyName]->clone());
 	type->mResolvingFinished = mResolvingFinished;

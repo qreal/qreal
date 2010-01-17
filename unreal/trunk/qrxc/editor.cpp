@@ -54,6 +54,7 @@ bool Editor::load(QDir const &currentDir)
 		diagramElement = diagramElement.nextSiblingElement("diagram"))
 	{
 		QString diagramName = diagramElement.attribute("name");
+		QString diagramDisplayedName = diagramElement.attribute("displayedName", diagramName);
 		Diagram const *existingDiagram = mXmlCompiler->getDiagram(diagramName);
 		if (existingDiagram)
 		{
@@ -61,7 +62,7 @@ bool Editor::load(QDir const &currentDir)
 			return false;
 		}
 		qDebug() << "parsing diagram" << diagramName;
-		Diagram *diagram = new Diagram(diagramName, this);
+		Diagram *diagram = new Diagram(diagramName, diagramDisplayedName, this);
 		if (!diagram->init(diagramElement))
 		{
 			qDebug() << "ERROR: diagram" << diagramName << "can't be parsed";

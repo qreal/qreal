@@ -207,7 +207,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->name() << " \"" << ";\n";
+		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->displayedName() << " \"" << ";\n";
 		out() << "\n";
 	}
 

@@ -4,20 +4,20 @@
 	<include>../commonXml/classMetamodel.xml</include>
 	<include>../activityEditor/activity_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="Hascol Structure">
+	<diagram name="HascolStructure" displayedName="Hascol Structure">
 		<nonGraphicTypes>
-			<enum name="Process Operation Kind">
+			<enum name="ProcessOperationKind">
 				<value>in</value>
 				<value>out</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="Functor Parameter Relation"/>
-			<import name="Class Diagram::Aggregation" as="Used Process Relation"/>
-			<import name="Class Diagram::Composition" as="Nested Process Relation"/>
+			<import name="Class Diagram::Relation" as="FunctorParameterRelation" displayedName="Functor Parameter Relation"/>
+			<import name="Class Diagram::Aggregation" as="UsedProcessRelation" displayedName="Used Process Relation"/>
+			<import name="Class Diagram::Composition" as="NestedProcessRelation" displayedName="Nested Process Relation"/>
 			<import name="Class Diagram::Generalization" as="Generalization"/>
 			<import name="Kernel::Comment" as="Comment"/>
-			<import name="Kernel::Comment Link" as="Comment Link"/>
+			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
 			<import name="Kernel::Diagram" as="Diagram"/>
 			<node name="Process">
 				<graphics>
@@ -60,7 +60,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Process Operation">
+			<node name="ProcessOperation" displayedName="Process Operation">
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
@@ -130,7 +130,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node name="Functor Parameter">
+			<node name="FunctorFormalParameter" displayedName="Functor Parameter">
 				<graphics>
 					<picture sizex="140" sizey="20"/>
 					<labels>
@@ -143,7 +143,7 @@
 				<logic>
 				</logic>
 			</node>
-			<edge name="Functor Binding">
+			<edge name="FunctorBinding" displayedName="Functor Binding">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
@@ -161,13 +161,13 @@
 				</logic>
 			</edge>
 		</graphicTypes>
-	</diagram>	
-	<diagram name="Hascol Port Mapping">
+	</diagram>
+	<diagram name="HascolPortMapping" displayedName="Hascol Port Mapping">
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="Port Mapping Relation"/>
-			<import name="Hascol Structure::Functor Parameter" as="Functor Parameter"/>
-			<node name="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
+			<import name="Class Diagram::Relation" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
+			<import name="Hascol Structure::Functor Parameter" as="FunctorFormalParameter" displayedName="Functor Parameter"/>
+			<node name="ProcessInstance" displayedName="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
 					<picture sizex="200" sizey="100">
 						<rectangle x1="20a" y1="0" x2="180" y2="100" />
@@ -179,7 +179,7 @@
 				<logic>
 				</logic>
 			</node>
-			<node name="Functor Instance">
+			<node name="FunctorInstance" displayedName="Functor Instance">
 				<graphics>
 					<picture sizex="250" sizey="130">
 						<rectangle x1="20a" y1="30a" x2="180" y2="130" />
@@ -191,7 +191,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Process Instance"/>
+						<parent parentName="ProcessInstance"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -232,17 +232,17 @@
 			</node>
 		</graphicTypes>
 	</diagram>
-	<diagram name="Hascol Activity">
+	<diagram name="HascolActivity" displayedName="Hascol Activity">
 		<graphicTypes>
-			<import name="Activity Diagram::Accept Event Action" as="Handler Start"/>
+			<import name="Activity Diagram::Accept Event Action" as="HandlerStart" displayedName="Handler Start"/>
 			<import name="Activity Diagram::Action" as="Action"/>
-			<import name="Activity Diagram::Input Pin" as="Input Pin"/>
-			<import name="Activity Diagram::Output Pin" as="Output Pin"/>
-			<import name="Activity Diagram::Decision Node" as="Decision Node"/>
-			<import name="Activity Diagram::Merge Node" as="Merge Node"/>
-			<import name="Activity Diagram::Send Signal Action" as="Send Signal Action"/>
-			<import name="Activity Diagram::Activity Final Node" as="Activity Final Node"/>
-			<import name="Activity Diagram::Control Flow" as="Control Flow"/>
+			<import name="Activity Diagram::Input Pin" as="InputPin" displayedName="Input Pin"/>
+			<import name="Activity Diagram::Output Pin" as="OutputPin" displayedName="Output Pin"/>
+			<import name="Activity Diagram::Decision Node" as="DecisionNode" displayedName="Decision Node"/>
+			<import name="Activity Diagram::Merge Node" as="MergeNode" displayedName="Merge Node"/>
+			<import name="Activity Diagram::Send Signal Action" as="SendSignalAction" displayedName="Send Signal Action"/>
+			<import name="Activity Diagram::Activity Final Node" as="ActivityFinalNode" displayedName="Activity Final Node"/>
+			<import name="Activity Diagram::Control Flow" as="ControlFlow" displayedName="Control Flow"/>
 		</graphicTypes>
 	</diagram>
 </metamodel>
