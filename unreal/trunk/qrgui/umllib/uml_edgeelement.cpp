@@ -40,6 +40,7 @@ EdgeElement::EdgeElement()
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
 	setFlag(ItemClipsToShape, false);
+	setFlag(ItemClipsChildrenToShape, false);
 
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
@@ -160,19 +161,23 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 		}
 	}
 
-	if (!mText.isEmpty()) {
+	/*
+	if (mTitles.count() == 1) {
 		painter->save();
 		QLineF longest(mLine[mLongPart], mLine[mLongPart + 1]);
 		painter->translate(mLine[mLongPart]);
 		painter->rotate(-lineAngle(longest));
 
+		mTitles[0]->setX();
+
 		QTextDocument text;
-		text.setHtml(mText);
+		text.setHtml(mTitles);
 		text.setTextWidth(longest.length());
 		text.drawContents(painter);
 
 		painter->restore();
 	}
+	*/
 }
 
 bool canBeConnected(int linkID, int from, int to);
@@ -221,6 +226,21 @@ void EdgeElement::updateLongestPart()
 		}
 	}
 	mLongPart = maxIdx;
+
+	if (mTitles.count() == 1) {
+		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
+		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
+		mTitles[0]->setPos(x, y);
+
+		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
+
+		if (mChaoticEdition)
+			mTitles[0]->rotate(-lineAngle(longest));
+		else {
+			double angle = -lineAngle(longest);
+			mTitles[0]->setRotation(angle);
+		}
+	}
 }
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)

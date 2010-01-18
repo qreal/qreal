@@ -82,3 +82,11 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	}
 	QGraphicsTextItem::keyPressEvent(event);
 }
+
+void ElementTitle::setNeededTextInteractionFlags()
+{
+	if (mReadOnly)
+		setTextInteractionFlags(Qt::TextBrowserInteraction);
+	else
+		setTextInteractionFlags(Qt::TextEditorInteraction);
+}

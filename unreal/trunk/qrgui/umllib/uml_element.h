@@ -7,6 +7,7 @@
 #include <QtCore/QModelIndex>
 
 #include "../kernel/definitions.h"
+#include "elementTitle.h"
 
 namespace UML {
 	/** @class Element
@@ -44,5 +45,7 @@ namespace UML {
 
 		/** @brief Индикатор перемещения элемента */
 		bool mMoving;
+
+		QList<ElementTitle*> mTitles;
 	};
 }

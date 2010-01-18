@@ -12,7 +12,6 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 #include "sdfrenderer.h"
-#include "elementTitle.h"
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
@@ -133,8 +132,6 @@ namespace UML {
 		QList<StatLine> mLinePorts;
 		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF mContents;
-
-		QList<ElementTitle*> mTitles;
 
  private:
 		/** @brief Направление растяжения элемента */

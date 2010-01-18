@@ -225,7 +225,6 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
 	return false;
 }
 
-
 bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 {
 	if (mVisible) {

@@ -11,6 +11,7 @@ namespace UML {
 		ElementTitle(int x, int y, QString const &text);
 		ElementTitle(int x, int y, QString const &binding, bool readOnly);
 		~ElementTitle() {}
+		void setNeededTextInteractionFlags();
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void focusInEvent(QFocusEvent *event);

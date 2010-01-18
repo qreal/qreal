@@ -477,6 +477,9 @@
 			<edge name="Package Import">
 				<graphics>
 					<lineType type="dashLine" />
+					<labels>
+						<label text="import" />
+					</labels>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="open_arrow">

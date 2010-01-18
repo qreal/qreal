@@ -5,6 +5,7 @@
 #include "diagram.h"
 #include "editor.h"
 #include "nameNormalizer.h"
+#include "label.h"
 
 #include <QDebug>
 
@@ -103,25 +104,38 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tclass " << className << " : public EdgeElement {\n"
 		<< "\tpublic:\n"
 		<< "\t\t" << className << "() {\n";
-		if (mLineType != "")
-		{
-			out() << "\t\t\tmPenStyle = " << mLineType <<  ";\n";
-		}
 
-		out() << "\t\t}\n\n"
+	if (mLineType != "")
+		out() << "\t\t\tmPenStyle = " << mLineType <<  ";\n";
 
+	if (!mLabels.isEmpty())
+		mLabels[0]->generateCodeForConstructor(out);
+
+	out() << "\t\t}\n\n"
 		<< "\t\tvirtual ~" << className << "() {}\n\n"
-
 		<< "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {\n";
 
-		generateEdgeStyle(mBeginType, out);
+	generateEdgeStyle(mBeginType, out);
 
-		out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const {\n";
+	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const {\n";
 
-		generateEdgeStyle(mEndType, out);
+	generateEdgeStyle(mEndType, out);
 
-		out()<< "\t};\n\n";
+	out() << "\t\tvoid updateData()\n\t\t{\n"
+		<< "\t\t\tEdgeElement::updateData();\n";
+
+	if (!mLabels.isEmpty())
+		mLabels[0]->generateCodeForUpdateData(out);
+
+	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
+
+	out() << "\tprivate:\n";
+
+	if (!mLabels.isEmpty())
+		mLabels[0]->generateCodeForFields(out);
+
+	out() << "\t};\n\n";
 }
 
 void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
