@@ -82,7 +82,7 @@ QString JavaHandler::serializeObject(Id const &id)
             // search for the Class-typed attrbutes
             IdList linksOut = mApi.outcomingLinks(id);
             foreach (Id const aLink, linksOut) {
-                if (aLink.element() == "Class_Diagram_Directed_Relationship" || aLink.element() == "Class_Diagram_Relation") {
+                if (aLink.element() == "Class_Diagram_Directed_Association" || aLink.element() == "Class_Diagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
@@ -102,7 +102,7 @@ QString JavaHandler::serializeObject(Id const &id)
             //search for bidirectional assocciation
             IdList linksIn = mApi.incomingLinks(id);
             foreach (Id const aLink, linksIn) {
-                if (aLink.element() == "Class_Diagram_Relation") {
+                if (aLink.element() == "Class_Diagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
