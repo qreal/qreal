@@ -20,43 +20,21 @@ ElementTitle::ElementTitle(int x, int y, QString const &binding, bool readOnly)
 	setPos(x, y);
 }
 
-void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsTextItem::mousePressEvent(event);
-	if (!(event->modifiers() & Qt::ControlModifier))
-		scene()->clearSelection();
-	parentItem()->setSelected(true);
-	if (mFocusIn) {
-		if (mReadOnly)
-			setTextInteractionFlags(Qt::TextBrowserInteraction);
-		else {
-			QTextCursor cursor(textCursor());
-			cursor.select(QTextCursor::Document);
-			setTextCursor(cursor);
-			mFocusIn = false;
-		}
-	}
-}
-
-void ElementTitle::focusInEvent(QFocusEvent *event)
-{
-	mFocusIn = true;
-	mOldText = toHtml();
-	QGraphicsTextItem::focusInEvent(event);
-}
-
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
 	setTextInteractionFlags(Qt::NoTextInteraction);
+
+	// Clear selection
+	QTextCursor cursor = textCursor();
+	cursor.clearSelection();
+	setTextCursor(cursor);
+
 	if (mReadOnly)
 		return;
-	QString value = toPlainText();
-	QString tmp = toHtml();
-	// FIXME: Reset selection
-	setHtml("");
-	setHtml(tmp);
+
 	if (mOldText != toHtml()) {
+		QString value = toPlainText();
 		if (mBinding == "name")
 			static_cast<NodeElement*>(parentItem())->setName(value);
 		else
@@ -83,16 +61,34 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
-void ElementTitle::setNeededTextInteractionFlags()
+void ElementTitle::startTextInteraction()
 {
+	// Already interacting?
+	if (hasFocus())
+		return;
+
+	mOldText = toHtml();
+
+	// Clear scene selection
+	//if (!(event->modifiers() & Qt::ControlModifier)) - was here.
+	scene()->clearSelection();
+	parentItem()->setSelected(true);
+
 	if (mReadOnly)
 		setTextInteractionFlags(Qt::TextBrowserInteraction);
 	else
 		setTextInteractionFlags(Qt::TextEditorInteraction);
+	setFocus(Qt::OtherFocusReason);
+
+	// Set full text selection
+	QTextCursor cursor = QTextCursor(document());
+	cursor.select(QTextCursor::Document);
+	setTextCursor(cursor);
 }
 
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	// Paint a white rectangle below text
 	painter->save();
 	QBrush brush(Qt::white);
 	painter->setBrush(brush);

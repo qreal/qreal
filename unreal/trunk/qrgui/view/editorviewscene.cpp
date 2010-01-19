@@ -198,11 +198,19 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
-		// Double click on title activates it
-		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos())))
-			title->setNeededTextInteractionFlags();
+		// Double click on a title activates it
+		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()))) {
+			event->accept();
+			title->startTextInteraction();
+			return;
+		}
 		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
+			event->accept();
 			mainWindow()->activateSubdiagram(element->index());
+			// Now scene is changed from outside. Being a mere mortal I do not
+			// know whether it is good or not, but what is the destiny of
+			// workflow after this return?
+			return;
 		}
 	}
 
