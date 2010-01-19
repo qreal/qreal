@@ -6,56 +6,18 @@
 		<graphicTypes>
 			<import name="Kernel::Comment" as="Comment"/>
 			<import name="Kernel::Comment Link" as="Comment Link"/>
-			<import name="Kernel::Directed Relationship" as="Directed Relationship"/>
-			<import name="Kernel::Diagram" as="Diagram"/>
-			<node name="Class">
-				<graphics>
-					<picture sizex="150" sizey="210">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
-								stroke-width="1" x2="150" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a"
-							stroke-width="1" x2="150" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100"
-							stroke-width="1" x2="150" fill-style="solid"/>
-					</picture>
-					<labels>
-						<label x="3" y="3" textBinded="name"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="150" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="150" starty="0"/>
-							<end endx="150" endy="210"/>
-						</linePort>
-						<linePort>
-							<start startx="150" starty="210"/>
-							<end endx="0" endy="210"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="210"/>
-							<end endx="0" endy="0"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
-					</generalizations>
-					<properties>
-						<property type="string" name="import"/>
-						<property type="string" name="multiplicity"/>
-					</properties>
-				</logic>
-			</node>
+			<import name="Kernel::Class" as="Class"/>
+			<import name="Kernel::Interface" as="Interface"/>
+			<import name="Kernel::Association" as="Association"/>
+			<import name="Kernel::Directed Association" as="Directed Association"/>
+			<import name="Kernel::Generalization" as="Generalization"/>
+			<import name="Kernel::Realization" as="Realization"/>
+			<import name="Kernel::Dependency" as="Dependency"/>
+			
 			<node name="View">
 				<graphics>
 					<picture sizex="100" sizey="100">
-						<text i="0" font-fill="#0000ff" y1="7a" b="0" x1="40%" font-name="MS Shell Dlg 2" u="0"
-							font-size="15a">View
-						</text>
+						<text i="0" font-fill="#0000ff" y1="7a" b="0" x1="40%" font-name="MS Shell Dlg 2" u="0" font-size="15a">View</text>
 						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="20a" x1="0a" y2="20a"
 							stroke-width="2" x2="100%" fill-style="solid"/>
 						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="100%" x1="0a" y2="100%"
@@ -96,114 +58,16 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Class method">
-				<graphics>
-					<picture sizex="100" sizey="20"/>
-					<labels>
-						<label x="40" y="0" textBinded="name"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
-					</generalizations>
-					<properties>
-						<property type="string" name="type"/>
-						<property type="string" name="operationFactors"/>
-						<property type="string" name="isStatic"/>
-						<property type="string" name="isSynchronized"/>
-						<property type="string" name="isNative"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Class field">
-				<graphics>
-					<picture sizex="100" sizey="20"/>
-					<labels>
-						<label x="0" y="0" textBinded="name"/>
-					</labels>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
-					</generalizations>
-					<properties>
-						<property type="string" name="type"/>
-						<property type="string" name="defaultValue"/>
-						<property type="string" name="isStatic"/>
-						<property type="string" name="isTransient"/>
-						<property type="string" name="isVolatile"/>
-					</properties>
-				</logic>
-			</node>
-			<node name="Interface">
-				<graphics>
-					<picture sizex="150" sizey="210">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210"
-								 stroke-width="1" x2="150" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="50a" x1="0" y2="50a"
-							stroke-width="1" x2="150" fill-style="solid"/>
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100"
-							stroke-width="1" x2="150" fill-style="solid"/>
-						<text i="0" font-fill="#000000" y1="16a" b="0" x1="6a" font-name="MS Shell Dlg 2" u="0"
-							font-size="10a">&lt;&lt;interface&gt;&gt;</text>
-					</picture>
-					<labels>
-						<label x="40" y="10" textBinded="name"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="0"/>
-							<end endx="150" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="150" starty="0"/>
-							<end endx="150" endy="210"/>
-						</linePort>
-						<linePort>
-							<start startx="150" starty="210"/>
-							<end endx="0" endy="210"/>
-						</linePort>
-						<linePort>
-							<start startx="0" starty="210"/>
-							<end endx="0" endy="0"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="string" name="vals"/>
-						<property type="string" name="methods"/>
-						<property type="string" name="logicalName"/>
-						<property type="string" name="isAbstract"/>
-					</properties>
-				</logic>
-			</node>
 			<edge name="Aggregation">
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations beginType="empty_rhomb" endType="no_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
+					<associations beginType="no_arrow" endType="empty_rhomb">
+						<association beginName="Property" endName="Property"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel::Relationship"/>
-					</generalizations>
-				</logic>
-			</edge>
-			<edge name="Relation">
-				<graphics>
-					<lineType type="solidLine"/>
-				</graphics>
-				<logic>
-					<associations beginType="no_arrow" endType="no_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
-					</associations>
-					<generalizations>
-						<parent parentName="Kernel::Relationship"/>
+						<parent parentName="Kernel::Association"/>
 					</generalizations>
 				</logic>
 			</edge>
@@ -212,54 +76,28 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations beginType="filled_rhomb" endType="no_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
+					<associations beginType="no_arrow" endType="filled_rhomb">
+						<association beginName="Element" endName="Element"/>
 					</associations>
 					<generalizations>
-						<parent parentName="Kernel::Relationship"/>
+						<parent parentName="Kernel::Association"/>
 					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Dependency">
-				<graphics>
-					<lineType type="dashLine"/>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Relationship"/>
-					</generalizations>
-					<associations beginType="no_arrow" endType="open_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
-					</associations>
-				</logic>
-			</edge>
-			<edge name="Realization">
+			<edge name="Interface Realization">
 				<graphics>
 					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
+						<association beginName="Interface" endName="Basic Behaviors::Behaviored Classifier"/>
 					</associations>
+					<generalizations>
+						<parent parentName="Kernel::Realization"/>
+					</generalizations>
 				</logic>
 			</edge>
-			<edge name="Generalization">
-				<graphics>
-					<lineType type="solidLine"/>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="bool" name="isSubstitutable"/>
-					</properties>
-					<associations beginType="no_arrow" endType="empty_arrow">
-						<association beginName="Element"
-									 endName="Element"/>
-					</associations>
-				</logic>
-			</edge>
+			
 		</graphicTypes>
 	</diagram>
 </metamodel>

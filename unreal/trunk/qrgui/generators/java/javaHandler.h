@@ -19,7 +19,7 @@ namespace qReal {
 
 			QString generateToJava(QString const &pathToDir);
 		private:
-			QString serializeObject(Id const &id, Id const &parentId);
+            QString serializeObject(Id const &id);
 			QString serializeChildren(Id const &id);
 			QString getVisibility(Id const &id);
 			QString getMultiplicity(Id const &id);
@@ -27,7 +27,7 @@ namespace qReal {
 			QString getDefaultValue(Id const &id);
 			QString getOperationFactors(Id const &id);
 			QString hasModifier(Id const &id, QString const &modifier);
-			QString getParents(Id const &id);
+                        QString getSuperclass(Id const &id);
 
 			QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
 			bool isTypeSuitable(QString const &type) const;

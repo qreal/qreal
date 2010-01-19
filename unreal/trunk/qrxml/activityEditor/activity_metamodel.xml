@@ -212,7 +212,6 @@
                         <label x="40" y="20" textBinded="guard"/>
                         <!-- guard должен быть в квадратных скобках -->
                     </labels>
-
                 </graphics>
                 <logic>
                     <generalizations>
