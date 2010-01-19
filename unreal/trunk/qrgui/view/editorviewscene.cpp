@@ -200,9 +200,12 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	if (event->button() == Qt::LeftButton) {
 		// Double click on a title activates it
 		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()))) {
-			event->accept();
-			title->startTextInteraction();
-			return;
+			if (!title->hasFocus()) // Do not activate already activated item
+			{
+				event->accept();
+				title->startTextInteraction();
+				return;
+			}
 		}
 		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
 			event->accept();
