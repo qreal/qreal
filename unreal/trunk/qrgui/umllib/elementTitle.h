@@ -17,6 +17,8 @@ namespace UML {
 		virtual void focusInEvent(QFocusEvent *event);
 		virtual void focusOutEvent(QFocusEvent *event);
 		virtual void keyPressEvent(QKeyEvent *event);
+
+		virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 	private:
 		bool mFocusIn;
 		bool mReadOnly;

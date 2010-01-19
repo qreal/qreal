@@ -90,3 +90,16 @@ void ElementTitle::setNeededTextInteractionFlags()
 	else
 		setTextInteractionFlags(Qt::TextEditorInteraction);
 }
+
+void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+	painter->save();
+	QBrush brush(Qt::white);
+	painter->setBrush(brush);
+	QPen pen(Qt::transparent);
+	painter->setPen(pen);
+	painter->drawRect(boundingRect());
+	painter->restore();
+
+	QGraphicsTextItem::paint(painter, option, widget);
+}

@@ -228,18 +228,17 @@ void EdgeElement::updateLongestPart()
 	mLongPart = maxIdx;
 
 	if (mTitles.count() == 1) {
+		ElementTitle *title = mTitles[0];
 		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
 		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
-		mTitles[0]->setPos(x, y);
+		x -= title->boundingRect().width() / 2;
+		y -= title->boundingRect().height() / 2;
+		title->setPos(x, y);
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
 		if (mChaoticEdition)
-			mTitles[0]->rotate(-lineAngle(longest));
-		else {
-			double angle = -lineAngle(longest);
-			mTitles[0]->setRotation(angle);
-		}
+			title->rotate(-lineAngle(longest));
 	}
 }
 

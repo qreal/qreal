@@ -478,7 +478,7 @@
 				<graphics>
 					<lineType type="dashLine" />
 					<labels>
-						<label text="import" />
+						<label text="&amp;lt;&amp;lt;import&amp;gt;&amp;gt;" />
 					</labels>
 				</graphics>
 				<logic>
@@ -499,6 +499,9 @@
 			<edge name="Package Merge">
 				<graphics>
 					<lineType type="dashLine" />
+					<labels>
+						<label text="&amp;lt;&amp;lt;merge&amp;gt;&amp;gt;" />
+					</labels>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="open_arrow">

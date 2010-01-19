@@ -19,7 +19,7 @@
 							stroke-width="1" x2="150" fill-style="solid"/>
 					</picture>
 					<labels>
-						<label x="40" y="3" textBinded="name"/>
+						<label x="3" y="3" textBinded="name"/>
 					</labels>
 					<ports>
 						<linePort>
