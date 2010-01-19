@@ -58,6 +58,46 @@
 					</properties>
 				</logic>
 			</node>
+			<node name="Class method">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="40" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="type"/>
+						<property type="string" name="operationFactors"/>
+						<property type="string" name="isStatic"/>
+						<property type="string" name="isSynchronized"/>
+						<property type="string" name="isNative"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Class field">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="type"/>
+						<property type="string" name="defaultValue"/>
+						<property type="string" name="isStatic"/>
+						<property type="string" name="isTransient"/>
+						<property type="string" name="isVolatile"/>
+					</properties>
+				</logic>
+			</node>
 			<edge name="Aggregation">
 				<graphics>
 					<lineType type="solidLine"/>
