@@ -62,16 +62,18 @@
 				<graphics>
 					<picture sizex="100" sizey="20"/>
 					<labels>
-						<label x="40" y="0" textBinded="name"/>
+						<label x="3" y="0" textBinded="name"/>
 					</labels>
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
+						<parent parentName="Kernel::Operation"/>
+						<parent parentName="Kernel::Redefinable Element"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
 						<property type="string" name="operationFactors"/>
+						<property type="string" name="isAbstract"/>
 						<property type="string" name="isStatic"/>
 						<property type="string" name="isSynchronized"/>
 						<property type="string" name="isNative"/>
@@ -87,7 +89,8 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
+						<parent parentName="Kernel::Property"/>
+						<parent parentName="Kernel::Named Element"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="type"/>
@@ -95,6 +98,7 @@
 						<property type="string" name="isStatic"/>
 						<property type="string" name="isTransient"/>
 						<property type="string" name="isVolatile"/>
+						<property type="string" name="isLeaf"/>
 					</properties>
 				</logic>
 			</node>

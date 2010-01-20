@@ -626,7 +626,7 @@
 						<parent parentName="Typed Element" />
 					</generalizations>
 					<properties>
-						<property type="enum" name="diraction">
+						<property type="enum" name="direction">
 							<enum nameReference="Parameter Direction Kind" />
 							<default>in</default>
 						</property>
