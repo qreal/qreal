@@ -9,7 +9,7 @@ namespace utils {
 class Label
 {
 public:
-	bool init(QDomElement const &element, int index);
+	bool init(QDomElement const &element, int index, bool nodeLabel);
 	void generateCodeForConstructor(utils::OutFile &out);
 	void generateCodeForUpdateData(utils::OutFile &out);
 	void generateCodeForFields(utils::OutFile &out);
@@ -23,4 +23,5 @@ private:
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;
+	QString mBackground;
 };

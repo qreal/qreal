@@ -8,16 +8,21 @@
 using namespace UML;
 
 ElementTitle::ElementTitle(int x, int y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mBinding("")
+	: mFocusIn(false), mReadOnly(true), mBinding(""), mBackground(Qt::transparent)
 {
 	setPos(x, y);
 	setHtml(text);
 }
 
 ElementTitle::ElementTitle(int x, int y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mBinding(binding)
+	: mFocusIn(false), mReadOnly(readOnly), mBinding(binding), mBackground(Qt::transparent)
 {
 	setPos(x, y);
+}
+
+void ElementTitle::setBackground(Qt::GlobalColor const &background)
+{
+	mBackground = background;
 }
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
@@ -90,10 +95,8 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
 	// Paint a white rectangle below text
 	painter->save();
-	QBrush brush(Qt::white);
-	painter->setBrush(brush);
-	QPen pen(Qt::transparent);
-	painter->setPen(pen);
+	painter->setBrush(QBrush(mBackground));
+	painter->setPen(QPen(Qt::transparent));
 	painter->drawRect(boundingRect());
 	painter->restore();
 

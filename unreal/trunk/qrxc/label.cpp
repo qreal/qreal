@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-bool Label::init(QDomElement const &element, int index)
+bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 {
 	mX = element.attribute("x", "0");
 	mY = element.attribute("y", "0");
@@ -13,6 +13,7 @@ bool Label::init(QDomElement const &element, int index)
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
 	mIndex = index;
+	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	if ((mText == "" && mTextBinded == "") || (mReadOnly != "true" && mReadOnly != "false")) {
 		qDebug() << "ERROR: can't parse label";
 		return false;
@@ -36,6 +37,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 		out() << "			" + titleName() + " = new ElementTitle("
 				+ mX + ", " + mY + ", \"" + mText + "\");\n";
 	}
+	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
+
 	// TODO: вынести отсюда в родительский класс.
 	out() << "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"

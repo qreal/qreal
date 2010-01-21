@@ -129,7 +129,7 @@ bool GraphicType::initLabels()
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count))
+		if (!initLabel(label, element, count))
 			delete label;
 		else {
 			mLabels.append(label);

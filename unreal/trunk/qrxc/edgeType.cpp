@@ -81,6 +81,11 @@ bool EdgeType::initGraphics()
 	return true;
 }
 
+bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
+{
+	return label->init(element, count, false);
+}
+
 void EdgeType::generateGraphics() const
 {
 	QString sdfType = mLineType;

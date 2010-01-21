@@ -110,6 +110,11 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 	return true;
 }
 
+bool NodeType::initLabel(Label *label, QDomElement const &element, int const &count)
+{
+	return label->init(element, count, true);
+}
+
 void NodeType::generatePorts() const
 {
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Ports") + "</file>\n");

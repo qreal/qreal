@@ -50,6 +50,7 @@ private:
 	virtual bool initAssociations() = 0;
 	virtual bool initGraphics() = 0;
 	bool initLabels();
+	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool notIsFirst);
 };

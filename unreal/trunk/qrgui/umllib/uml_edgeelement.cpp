@@ -160,24 +160,6 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->restore();
 		}
 	}
-
-	/*
-	if (mTitles.count() == 1) {
-		painter->save();
-		QLineF longest(mLine[mLongPart], mLine[mLongPart + 1]);
-		painter->translate(mLine[mLongPart]);
-		painter->rotate(-lineAngle(longest));
-
-		mTitles[0]->setX();
-
-		QTextDocument text;
-		text.setHtml(mTitles);
-		text.setTextWidth(longest.length());
-		text.drawContents(painter);
-
-		painter->restore();
-	}
-	*/
 }
 
 bool canBeConnected(int linkID, int from, int to);

@@ -10,6 +10,7 @@ namespace UML {
 	public:
 		ElementTitle(int x, int y, QString const &text);
 		ElementTitle(int x, int y, QString const &binding, bool readOnly);
+		void setBackground(Qt::GlobalColor const &background);
 		~ElementTitle() {}
 		void startTextInteraction();
 	protected:
@@ -22,6 +23,7 @@ namespace UML {
 		bool mReadOnly;
 		QString mOldText;
 		QString mBinding;
+		Qt::GlobalColor mBackground;
 	};
 
 }
