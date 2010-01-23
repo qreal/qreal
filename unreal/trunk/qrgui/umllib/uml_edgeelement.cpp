@@ -34,7 +34,8 @@ using namespace qReal;
 EdgeElement::EdgeElement()
 	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
-	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL)
+	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction("Add point", this),
+	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this)
 {
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -45,6 +46,10 @@ EdgeElement::EdgeElement()
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
 	setAcceptHoverEvents(true);
+
+	connect(&mAddPointAction, SIGNAL(triggered(QPointF const &)), SLOT(addPointHandler(QPointF const &)));
+	connect(&mDelPointAction, SIGNAL(triggered(QPointF const &)), SLOT(delPointHandler(QPointF const &)));
+	connect(&mSquarizeAction, SIGNAL(triggered(QPointF const &)), SLOT(squarizeHandler(QPointF const &)));
 
 	QSettings settings("SPbSU", "QReal");
 	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
@@ -353,51 +358,57 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position)
 	return NULL;
 }
 
-void EdgeElement::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 {
-	QMenu menu;
+	QList<ContextMenuAction*> result;
+	result.push_back(&mAddPointAction);
+	result.push_back(&mDelPointAction);
+	result.push_back(&mSquarizeAction);
+	return result;
+}
 
-	QAction *addPointAction = menu.addAction("Add point");
-	QAction *delPointAction = menu.addAction("Remove point");
-	QAction *squarizeAction = menu.addAction("Squarize");
+void EdgeElement::delPointHandler(QPointF const &pos)
+{
+	int pointIndex = getPoint(pos);
+	if (pointIndex != -1) {
+		prepareGeometryChange();
+		mLine.remove(pointIndex);
+		mLongPart = 0;
+		update();
+	}
+}
 
-	if (QAction *selectedAction = menu.exec(event->screenPos())) {
-		if (selectedAction == delPointAction) {
-			int pointIndex = getPoint(event->pos());
-			if (pointIndex != -1) {
-				prepareGeometryChange();
-				mLine.remove(pointIndex);
-				mLongPart = 0;
-				update();
-			}
-		} else if (selectedAction == addPointAction) {
-			for (int i = 0; i < mLine.size() - 1; ++i) {
-				QPainterPath path;
-				QPainterPathStroker ps;
-				ps.setWidth(kvadratik);
+void EdgeElement::addPointHandler(QPointF const &pos)
+{
+	for (int i = 0; i < mLine.size() - 1; ++i) {
+		QPainterPath path;
+		QPainterPathStroker ps;
+		ps.setWidth(kvadratik);
 
-				path.moveTo(mLine[i]);
-				path.lineTo(mLine[i+1]);
-				if (ps.createStroke(path).contains(event->pos())) {
-					mLine.insert(i + 1, event->pos());
-					update();
-					break;
-				}
-			}
-		} else if (selectedAction == squarizeAction) {
-			prepareGeometryChange();
-			for (int i = 0; i < mLine.size() - 1; ++i) {
-				QLineF line(mLine[i], mLine[i + 1]);
-				if (qAbs(line.dx()) < qAbs(line.dy())) {
-					mLine[i + 1].setX(mLine[i].x());
-				} else {
-					mLine[i + 1].setY(mLine[i].y());
-				}
-			}
-			adjustLink();
+		path.moveTo(mLine[i]);
+		path.lineTo(mLine[i+1]);
+		if (ps.createStroke(path).contains(pos)) {
+			mLine.insert(i + 1, pos);
 			update();
+			break;
 		}
 	}
+}
+
+void EdgeElement::squarizeHandler(QPointF const &pos)
+{
+	Q_UNUSED(pos);
+	prepareGeometryChange();
+	for (int i = 0; i < mLine.size() - 1; ++i) {
+		QLineF line(mLine[i], mLine[i + 1]);
+		if (qAbs(line.dx()) < qAbs(line.dy())) {
+			mLine[i + 1].setX(mLine[i].x());
+		} else {
+			mLine[i + 1].setY(mLine[i].y());
+		}
+	}
+	adjustLink();
+	update();
 }
 
 void EdgeElement::adjustLink()

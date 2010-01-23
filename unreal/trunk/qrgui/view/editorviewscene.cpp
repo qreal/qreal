@@ -69,7 +69,7 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 	return NULL;
 }
 
-void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
+void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat("application/x-real-uml-data"))
@@ -78,17 +78,17 @@ void EditorViewScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 		event->ignore();
 }
 
-void EditorViewScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
+void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
 }
 
-void EditorViewScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
+void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
 }
 
-void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
+void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_ASSERT(mWindow);  // Значение mWindow должно быть инициализировано
 	// отдельно, через конструктор это делать нехорошо,
@@ -156,7 +156,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent * event)
 	delete newMimeData;
 }
 
-void EditorViewScene::keyPressEvent( QKeyEvent * event )
+void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
 	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
 		// Forward event to text editor
@@ -177,17 +177,28 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 
 	UML::Element *e = getElemAt(event->scenePos());
-	if (!e) return;
-	if (!e->isSelected())
-	{
+	if (!e)
+		return;
+	if (!e->isSelected()) {
 		clearSelection();
 		e->setSelected(true);
 	}
 
 	// Menu belongs to scene handler because it can delete elements.
 	// We cannot not allow elements to commit suicide.
+
 	QMenu menu;
 	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
+	QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
+
+	if (!elementActions.isEmpty())
+		menu.addSeparator();
+
+	foreach (UML::ContextMenuAction* action, elementActions) {
+		action->setEventPos(e->mapFromScene(event->scenePos()));
+		menu.addAction(action);
+	}
+
 	// FIXME: add check for diagram
 	//	if (selectedItems().count() == 1)
 	//		menu.addAction(window->ui.actionJumpToAvatar);

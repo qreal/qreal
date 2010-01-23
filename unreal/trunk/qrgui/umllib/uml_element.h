@@ -4,18 +4,23 @@
 #pragma once
 
 #include <QtGui/QGraphicsItem>
+#include <QtGui/QAction>
 #include <QtCore/QModelIndex>
 
 #include "../kernel/definitions.h"
 #include "elementTitle.h"
+#include "contextMenuAction.h"
 
 namespace UML {
 	/** @class Element
 	* 	@brief Базовый класс элемента на диаграмме
 	 * */
-	class Element : public QGraphicsItem
+	class Element : public QObject, public QGraphicsItem
 	{
+		Q_OBJECT
+		Q_INTERFACES(QGraphicsItem)
 	public:
+
 		Element();
 		virtual ~Element(){}
 		/** @brief Получить индекс элемента в модели
@@ -35,6 +40,7 @@ namespace UML {
 		qReal::Id uuid() const;
 
 		virtual void connectToPort() { }
+		virtual QList<ContextMenuAction*> contextMenuActions() const;
 
 	protected:
 		/** @brief Индекс элемента в модели */

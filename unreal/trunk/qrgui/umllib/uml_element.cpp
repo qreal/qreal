@@ -12,7 +12,7 @@ Element::Element()
 	: mMoving(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-	         ItemClipsToShape | ItemSendsGeometryChanges);
+		ItemClipsToShape | ItemSendsGeometryChanges);
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
 }
@@ -37,4 +37,9 @@ void Element::updateData()
 QPersistentModelIndex Element::index() const
 {
 	return mDataIndex;
+}
+
+QList<ContextMenuAction*> Element::contextMenuActions() const
+{
+	return QList<ContextMenuAction*>();
 }

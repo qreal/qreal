@@ -20,7 +20,7 @@ namespace UML {
 	/** @class NodeElement
 	* 	@brief Класс, представляющий объект на диаграмме
 	 * */
-	class NodeElement :  public QObject, public Element
+	class NodeElement : public Element
 	{
 		Q_OBJECT
 

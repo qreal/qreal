@@ -17,6 +17,7 @@ namespace UML {
 	 * 	*/
 	class EdgeElement : public Element
 	{
+		Q_OBJECT
 		public:
 			/** @brief Конструктор */
 			EdgeElement();
@@ -47,6 +48,8 @@ namespace UML {
 
 			virtual void connectToPort();
 
+			virtual QList<ContextMenuAction*> contextMenuActions();
+
 		protected:
 			/** @brief Обработать нажатие кнопки мыши */
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -54,8 +57,6 @@ namespace UML {
 			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 			/** @brief Обработать отпускание кнопки мыши */
 			virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-			/** @brief Обработать открытие контекстного меню */
-			virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 			/** @brief Отрисовать начало связи */
 			virtual void drawStartArrow(QPainter *p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
@@ -72,6 +73,10 @@ namespace UML {
 			/** @brief Тип стрелки конца связи */
 			ArrowType mEndArrowStyle;
 
+		private slots:
+			void addPointHandler(QPointF const &pos);
+			void delPointHandler(QPointF const &pos);
+			void squarizeHandler(QPointF const &pos);
 		private:
 
 			/** @brief Получить точку на ломаной
@@ -109,6 +114,11 @@ namespace UML {
 
 			NodeElement *mBeginning;
 			NodeElement *mEnding;
+
+			// События контекстного меню.
+			ContextMenuAction mAddPointAction;
+			ContextMenuAction mDelPointAction;
+			ContextMenuAction mSquarizeAction;
 
 			bool mChaoticEdition;
 	};
