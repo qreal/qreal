@@ -39,7 +39,7 @@ QPersistentModelIndex Element::index() const
 	return mDataIndex;
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions() const
+QList<ContextMenuAction*> Element::contextMenuActions()
 {
 	return QList<ContextMenuAction*>();
 }

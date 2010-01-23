@@ -40,7 +40,7 @@ namespace UML {
 		qReal::Id uuid() const;
 
 		virtual void connectToPort() { }
-		virtual QList<ContextMenuAction*> contextMenuActions() const;
+		virtual QList<ContextMenuAction*> contextMenuActions();
 
 	protected:
 		/** @brief Индекс элемента в модели */
