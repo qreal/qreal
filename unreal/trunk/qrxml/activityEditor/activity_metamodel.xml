@@ -963,7 +963,7 @@
                               fill-style="solid"/>
                     </picture>
                     <labels>
-                        <label x="40" y="10" textBinded="&lt;&lt;structured>>"/>
+                        <label x="40" y="10" text="&amp;lt;&amp;lt;structured>>"/>
                     </labels>
                 </graphics>
                 <logic>
