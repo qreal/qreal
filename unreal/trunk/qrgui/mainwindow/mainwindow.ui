@@ -83,6 +83,7 @@
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_editor"/>
+    <addaction name="actionGenerate_to_Hascol"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -140,6 +141,7 @@
    </attribute>
    <addaction name="actionPrint"/>
    <addaction name="actionClear"/>
+   <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
    <property name="windowTitle">
@@ -240,6 +242,20 @@
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="generatorsToolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionGenerate_to_Hascol"/>
+   <addaction name="actionGenerate_to_Java"/>
+   <addaction name="actionExport_to_XMI"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
@@ -419,6 +435,11 @@
   <action name="actionGenerate_editor">
    <property name="text">
     <string>Generate editor</string>
+   </property>
+  </action>
+  <action name="actionGenerate_to_Hascol">
+   <property name="text">
+    <string>Generate to Hascol</string>
    </property>
   </action>
  </widget>

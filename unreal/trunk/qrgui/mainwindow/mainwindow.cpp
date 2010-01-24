@@ -21,6 +21,7 @@
 #include "../umllib/uml_element.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
+#include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
 
 using namespace qReal;
@@ -75,6 +76,7 @@ MainWindow::MainWindow()
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -150,8 +152,8 @@ MainWindow::MainWindow()
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
-		close();	
-	}	
+		close();
+	}
 }
 
 void MainWindow::openNewTab()
@@ -407,6 +409,20 @@ void MainWindow::generateToJava()
 	} else {
 		QMessageBox::information(this, tr("finished"), "Export is finished");
 	}
+
+	qDebug() << "Done.";
+}
+
+void MainWindow::generateToHascol()
+{
+	generators::HascolGenerator hascolGenerator(mModel->api());
+
+	QString const errors = hascolGenerator.generate();
+
+	if (!errors.isEmpty())
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Errors list: \n" + errors);
+	else
+		QMessageBox::information(this, tr("finished"), "Export is finished");
 
 	qDebug() << "Done.";
 }

@@ -167,8 +167,6 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	}
 }
 
-bool canBeConnected(int linkID, int from, int to);
-
 QPainterPath EdgeElement::shape() const
 {
 	QPainterPath path;

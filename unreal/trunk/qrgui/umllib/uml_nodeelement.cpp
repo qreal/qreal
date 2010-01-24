@@ -97,30 +97,6 @@ void NodeElement::storeGeometry()
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
-int NodeElement::roleIndexByName(QString const &roleName) const
-{
-	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
-	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
-	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
-}
-
-QString NodeElement::roleValueByName(QString const &roleName) const
-{
-	int roleIndex = roleIndexByName(roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
-		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
-	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
-}
-
-void NodeElement::setRoleValueByName(QString const &roleName, QString const &value)
-{
-	int roleIndex = roleIndexByName(roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
-		return;
-	QAbstractItemModel *itemModel = const_cast<QAbstractItemModel*>(mDataIndex.model());
-	itemModel->setData(mDataIndex, value, roleIndex);
-}
-
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == None) {

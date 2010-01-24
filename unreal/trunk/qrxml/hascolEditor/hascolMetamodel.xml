@@ -12,13 +12,40 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="FunctorParameterRelation" displayedName="Functor Parameter Relation"/>
+			<import name="Class Diagram::Association" as="FunctorParameterRelation" displayedName="Functor Parameter Relation"/>
 			<import name="Class Diagram::Aggregation" as="UsedProcessRelation" displayedName="Used Process Relation"/>
 			<import name="Class Diagram::Composition" as="NestedProcessRelation" displayedName="Nested Process Relation"/>
 			<import name="Class Diagram::Generalization" as="Generalization"/>
 			<import name="Kernel::Comment" as="Comment"/>
 			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
-			<import name="Kernel::Diagram" as="Diagram"/>
+			<node name="HascolStructureDiagram" displayedName="Structure Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="40" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="40" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="40" y2="40" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<properties>
+						<property type="string" name="output directory"/>
+					</properties>
+				</logic>
+			</node>
 			<node name="Process">
 				<graphics>
 					<picture sizex="150" sizey="210">
@@ -62,7 +89,7 @@
 			</node>
 			<node name="ProcessOperation" displayedName="Process Operation">
 				<graphics>
-					<picture sizex="100" sizey="20"/>
+					<picture sizex="150" sizey="20"/>
 					<labels>
 						<label x="0" y="0" textBinded="direction"/>
 						<label x="20" y="0" textBinded="name"/>
@@ -164,8 +191,9 @@
 	<diagram name="HascolPortMapping" displayedName="Hascol Port Mapping">
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
-			<import name="Class Diagram::Relation" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
-			<import name="Hascol Structure::Functor Parameter" as="FunctorFormalParameter" displayedName="Functor Parameter"/>
+			<import name="HascolStructure::HascolStructureDiagram" as="HascolPortMappingDiagram" displayedName="Port Mapping Diagram"/>
+			<import name="Class Diagram::Association" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
+			<import name="HascolStructure::FunctorFormalParameter" as="FunctorFormalParameter" displayedName="Functor Parameter"/>
 			<node name="ProcessInstance" displayedName="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
 					<picture sizex="200" sizey="100">
@@ -233,6 +261,7 @@
 	</diagram>
 	<diagram name="HascolActivity" displayedName="Hascol Activity">
 		<graphicTypes>
+			<import name="HascolStructure::HascolStructureDiagram" as="HascolActivityDiagram" displayedName="Activity Diagram"/>
 			<import name="Activity Diagram::Accept Event Action" as="HandlerStart" displayedName="Handler Start"/>
 			<import name="Activity Diagram::Action" as="Action"/>
 			<import name="Activity Diagram::Input Pin" as="InputPin" displayedName="Input Pin"/>
@@ -242,6 +271,28 @@
 			<import name="Activity Diagram::Send Signal Action" as="SendSignalAction" displayedName="Send Signal Action"/>
 			<import name="Activity Diagram::Activity Final Node" as="ActivityFinalNode" displayedName="Activity Final Node"/>
 			<import name="Activity Diagram::Control Flow" as="ControlFlow" displayedName="Control Flow"/>
+			<node name="Group">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="40" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="40" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="40" y2="40" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" text="&amp;lt;&amp;lt;group>>"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Activity Diagram::Structured Activity Node"/>
+					</generalizations>
+				</logic>
+			</node>
 		</graphicTypes>
 	</diagram>
 </metamodel>

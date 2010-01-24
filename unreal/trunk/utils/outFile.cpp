@@ -3,9 +3,12 @@
 using namespace utils;
 
 OutFile::OutFile(QString const &fileName)
+	: mIndent(0)
 {
 	mFile.setFileName(fileName);
 	mFile.open(QIODevice::WriteOnly | QIODevice::Text);
+	if (!mFile.isOpen())
+		throw "File open operation failed";
 	mOut.setDevice(&mFile);
 }
 
@@ -16,5 +19,24 @@ OutFile::~OutFile()
 
 QTextStream& OutFile::operator()()
 {
+	mOut << indent();
 	return mOut;
+}
+
+void OutFile::incIndent()
+{
+	++mIndent;
+}
+
+void OutFile::decIndent()
+{
+	--mIndent;
+}
+
+QString OutFile::indent() const
+{
+	QString result;
+	for (int i = 0; i < mIndent; ++i)
+		result += "\t";
+	return result;
 }

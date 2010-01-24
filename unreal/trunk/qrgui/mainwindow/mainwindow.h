@@ -69,6 +69,7 @@ namespace qReal {
 		void closeTab(int index);
 		void exterminate();
 		void generateEditor();
+		void generateToHascol();
 	private:
 		model::Model *mModel;
 		EditorManager mgr;

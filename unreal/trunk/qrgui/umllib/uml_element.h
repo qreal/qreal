@@ -42,6 +42,9 @@ namespace UML {
 		virtual void connectToPort() { }
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
+		// Для инлайн-редактирования, мы должны иметь возможность менять проперти объекта, пока через его графическое представление.
+		// Можно сделать, чтобы сами текстовые лейблы хранили индекс модели и делали всё сами.
+		void setRoleValueByName(QString const &roleName, QString const &value);
 	protected:
 		/** @brief Индекс элемента в модели */
 		QPersistentModelIndex mDataIndex;
@@ -53,5 +56,8 @@ namespace UML {
 		bool mMoving;
 
 		QList<ElementTitle*> mTitles;
+
+		int roleIndexByName(QString const &roleName) const;
+		QString roleValueByName(QString const &roleName) const;
 	};
 }

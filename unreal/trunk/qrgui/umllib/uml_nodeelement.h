@@ -74,10 +74,6 @@ namespace UML {
 
 		void setPortsVisible(bool value);
 
-		// Для инлайн-редактирования, мы должны иметь возможность менять проперти объекта, пока через его графическое представление.
-		// Можно сделать, чтобы сами текстовые лейблы хранили индекс модели и делали всё сами.
-		void setRoleValueByName(QString const &roleName, QString const &value);
-
 	protected:
 		/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
 		struct StatLine
@@ -122,8 +118,6 @@ namespace UML {
 									const QVariant &value /**< Величина изменения */
 									);
 
-		QString roleValueByName(QString const &roleName) const;
-
 		bool mPortsVisible;
 
 		/** @brief Список точечных портов */
@@ -142,7 +136,6 @@ namespace UML {
 			* */
 		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
 
-		int roleIndexByName(QString const &roleName) const;
 		void adjustLinks();
 
 		QLineF newTransform(const StatLine& port)  const;

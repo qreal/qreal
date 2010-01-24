@@ -5,6 +5,8 @@
 
 #include <QtGui>
 
+#include "../model/model.h"
+
 using namespace qReal;
 using namespace UML;
 
@@ -43,3 +45,28 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 {
 	return QList<ContextMenuAction*>();
 }
+
+int Element::roleIndexByName(QString const &roleName) const
+{
+	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
+	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
+	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
+}
+
+QString Element::roleValueByName(QString const &roleName) const
+{
+	int roleIndex = roleIndexByName(roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
+		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
+	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
+}
+
+void Element::setRoleValueByName(QString const &roleName, QString const &value)
+{
+	int roleIndex = roleIndexByName(roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
+		return;
+	QAbstractItemModel *itemModel = const_cast<QAbstractItemModel*>(mDataIndex.model());
+	itemModel->setData(mDataIndex, value, roleIndex);
+}
+

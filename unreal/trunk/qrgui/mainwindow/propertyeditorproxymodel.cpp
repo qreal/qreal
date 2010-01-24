@@ -10,7 +10,8 @@ using namespace qReal;
 
 PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManager,
 										 QObject *parent)
-	: QAbstractTableModel(parent), mPseudoAttributesCount(0), mEditorManager(editorManager)
+	: QAbstractTableModel(parent), mPseudoAttributesCount(0), mEditablePseudoAttributesCount(0),
+	mEditorManager(editorManager)
 {
 }
 
@@ -86,7 +87,7 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 
 	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1) {
 		model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-		if (index.row() > mPseudoAttributesCount)
+		if (index.row() >= mPseudoAttributesCount)
 			 ret = im->setData(targetObject, value, roleByIndex(index.row()));
 		else if (index.row() == 2)
 			ret = im->setData(targetObject, value, Qt::DisplayRole);
