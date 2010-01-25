@@ -3,7 +3,7 @@
 #include "enumType.h"
 #include "numericType.h"
 #include "stringType.h"
-#include "q.h"
+#include "nodeType.h"
 #include "edgeType.h"
 #include "editor.h"
 
@@ -45,13 +45,13 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "node") {
-			Type *q = new NodeType(this);
-			if (!q->init(element, mDiagramName)) {
-				delete q;
+			Type *nodeType = new NodeType(this);
+			if (!nodeType->init(element, mDiagramName)) {
+				delete nodeType;
 				qDebug() << "Can't parse node";
 				return false;
 			}
-			mTypes[q->qualifiedName()] = nodeType;
+			mTypes[nodeType->qualifiedName()] = nodeType;
 		} else if (element.nodeName() == "edge") {
 			Type *edgeType = new EdgeType(this);
 			if (!edgeType->init(element, mDiagramName)) {
