@@ -49,8 +49,13 @@ void HascolGenerator::generateDiagram(Id const &id)
 	OutFile out(outputDirectory + "/" + mApi.name(id));
 
 	foreach (Id const element, mApi.children(id)) {
-		if (element.element() == "HascolStructure_Process") {
+		if (element.element() == "HascolStructure_Process"
+			&& !mApi.name(element).isEmpty())
+		{
 			generateProcess(element, out);
+			out() << "\n";
+		} else if (element.element() == "HascolStructure_Functor") {
+			generateFunctor(element, out);
 			out() << "\n";
 		}
 	}
@@ -59,6 +64,11 @@ void HascolGenerator::generateDiagram(Id const &id)
 void HascolGenerator::generateProcess(Id const &id, OutFile &out)
 {
 	out() << "process " << mApi.name(id) << " =\n";
+	generateProcessTypeBody(id, out);
+}
+
+void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
+{
 	out() << "begin\n";
 
 	out.incIndent();
@@ -71,9 +81,94 @@ void HascolGenerator::generateProcess(Id const &id, OutFile &out)
 		if (mApi.name(activity) == mApi.name(id))
 			generateActivity(activity, out);
 
+	foreach (Id const portMap, mPortMappingDiagrams)
+		if (mApi.name(portMap) == mApi.name(id))
+			generatePortMap(portMap, out);
+
 	out.decIndent();
 
 	out() << "end\n";
+}
+
+void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
+{
+	foreach (Id const child, mApi.children(id)) {
+		if (child.element() == "HascolPortMapping_ProcessInstance"
+			|| child.element() == "HascolPortMapping_FunctorInstance")
+		{
+			foreach (Id const instanceChild, mApi.children(child)) {
+				if (instanceChild.element() == "HascolPortMapping_ProcessInstance"
+					|| instanceChild.element() == "HascolPortMapping_ProcessInstance")
+				{
+					out() << "process " << mApi.name(instanceChild).replace(":", "=") << " with\n";
+					out.incIndent();
+					bool first = true;
+					foreach (Id const port, mApi.children(instanceChild)) {
+						if (port.element() == "HascolPortMapping_Port") {
+							Id const link = mApi.links(port).at(0);
+							Id const mappedPort = mApi.otherEntityFromLink(link, port);
+
+							Id const mappedPortParent = mApi.parents(mappedPort).at(0);
+							QString parentName;
+							if (mappedPortParent == child)
+								parentName = "";
+							else {
+								parentName = mApi.name(mappedPortParent);
+								parentName.remove(parentName.indexOf(":"), parentName.length());
+								parentName = parentName.trimmed();
+								parentName += ".";
+							}
+
+							if (mApi.outgoingLinks(port).count() == 1
+								|| mappedPortParent == child)
+							{
+								QString comma = !first ? ", " : "";
+								first = false;
+
+								out() << comma << mApi.name(port) << " = " << parentName << mApi.name(mappedPort) << "\n";
+							}
+						}
+					}
+					out.decIndent();
+					out() << ";\n";
+				}
+			}
+		}
+	}
+}
+
+void HascolGenerator::generateFunctor(Id const &id, OutFile &out)
+{
+	out() << "process " << mApi.name(id) << " (\n";
+
+	out.incIndent();
+
+	foreach (Id const child, mApi.children(id))
+		if (child.element() == "HascolStructure_FunctorFormalParameter")
+			generateFunctorFormalParameter(child, out);
+
+	out.decIndent();
+
+	out() << "\t) =\n";
+	generateProcessTypeBody(id, out);
+}
+
+void HascolGenerator::generateFunctorFormalParameter(Id const &id, utils::OutFile &out)
+{
+	if (mApi.links(id).count() == 1) {
+		out() << mApi.name(id) << " : ";
+		Id const parameterType = mApi.otherEntityFromLink(mApi.links(id).at(0), id);
+		if (mApi.name(parameterType) != "") {
+			out() << mApi.name(parameterType);
+		} else {
+			out() << "\n";
+			out.incIndent();
+			generateProcessTypeBody(parameterType, out);
+			out.decIndent();
+		}
+	} else {
+		out() << mApi.name(id) << "\n";
+	}
 }
 
 void HascolGenerator::generateProcessOperation(Id const &id, OutFile &out)

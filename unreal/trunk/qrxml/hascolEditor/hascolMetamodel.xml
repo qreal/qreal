@@ -192,7 +192,7 @@
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
 			<import name="HascolStructure::HascolStructureDiagram" as="HascolPortMappingDiagram" displayedName="Port Mapping Diagram"/>
-			<import name="Class Diagram::Association" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
+			<import name="Kernel::Directed Association" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
 			<import name="HascolStructure::FunctorFormalParameter" as="FunctorFormalParameter" displayedName="Functor Parameter"/>
 			<node name="ProcessInstance" displayedName="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
@@ -224,7 +224,7 @@
 			</node>
 			<node name="Port"> <!-- Это просто порт из композитных структур + атрибут direction -->
 				<graphics>
-					<picture sizex="100" sizey="10">
+					<picture sizex="60" sizey="10">
 						<rectangle x1="0" y1="0" x2="10" y2="10" fill="#ffffff" fill-style="solid"/>
 					</picture>
 					<labels>

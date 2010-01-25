@@ -25,9 +25,13 @@ namespace qReal {
 		private:
 			void generateDiagram(Id const &id);
 			void generateProcess(Id const &id, utils::OutFile &out);
+			void generateProcessTypeBody(Id const &id, utils::OutFile &out);
 			void generateProcessOperation(Id const &id, utils::OutFile &out);
 			void generateActivity(Id const &id, utils::OutFile &out);
 			void generateHandler(Id const &id, utils::OutFile &out);
+			void generateFunctor(Id const &id, utils::OutFile &out);
+			void generateFunctorFormalParameter(Id const &id, utils::OutFile &out);
+			void generatePortMap(Id const &id, utils::OutFile &out);
 
 			void addError(QString const &errorText);
 
