@@ -173,10 +173,16 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 		return false;
 	} else {
 		for (int i = row; i < row + count; ++i) {
-			removeModelItems(parentItem->children().at(i));
+			ModelTreeItem * child = parentItem->children().at(i);
+		
+			foreach (Id id, mApi.outcomingLinks(child->id()))
+				mApi.setFrom(id, ROOT_ID);
+			foreach(Id id, mApi.incomingLinks(child->id()))
+				mApi.setTo(id, ROOT_ID);
+
+			removeModelItems(child);		
 
 			// TODO: Убрать копипасту.
-			ModelTreeItem *child = parentItem->children().at(i);
 			int childRow = child->row();
 			beginRemoveRows(parent, childRow, childRow);
 			child->parent()->removeChild(child);
