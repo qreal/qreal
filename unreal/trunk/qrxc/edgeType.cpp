@@ -41,12 +41,13 @@ bool EdgeType::initAssociations()
 	}
 	mBeginType = associationsElement.attribute("beginType");
 	mEndType = associationsElement.attribute("endType");
-	if ((mBeginType == "") || (mEndType == ""))
+	if (mBeginType.isEmpty() || mEndType.isEmpty())
 	{
 		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
-	for (QDomElement element = associationsElement.firstChildElement("association"); !element.isNull();
+	for (QDomElement element = associationsElement.firstChildElement("association"); 
+		!element.isNull();
 		element = element.nextSiblingElement("association"))
 	{
 		Association *association = new Association();
@@ -70,7 +71,7 @@ bool EdgeType::initGraphics()
 		return true;
 	}
 	QString lineType = lineTypeElement.attribute("type");
-	if (lineType == "")
+	if (lineType.isEmpty())
 	{
 		qDebug() << "ERROR: no line type";
 		return false;

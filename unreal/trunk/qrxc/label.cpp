@@ -14,7 +14,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 	mReadOnly = element.attribute("readOnly", "false");
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
-	if ((mText == "" && mTextBinded == "") || (mReadOnly != "true" && mReadOnly != "false")) {
+	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
 		qDebug() << "ERROR: can't parse label";
 		return false;
 	}

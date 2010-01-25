@@ -7,13 +7,13 @@ bool Property::init(QDomElement const &element)
 	mIsEnum = false;
 	mIsReference = false;
 	mName = element.attribute("name");
-	if (mName == "")
+	if (mName.isEmpty())
 	{
 		qDebug() << "ERROR: anonymous property found";
 		return false;
 	}
 	QString mType = element.attribute("type");
-	if (mType == "")
+	if (mType.isEmpty())
 	{
 		qDebug() << "ERROR: no type of property found";
 		return false;
@@ -49,7 +49,7 @@ bool Property::init(QDomElement const &element)
 bool Property::initReferenceType(QString typeName, QDomElement const &element)
 {
 	mType = element.firstChildElement(typeName).attribute("nameReference");
-	if (mType == "")
+	if (mType.isEmpty())
 	{
 		qDebug() << "ERROR: anonymous property reference type for" << name() << "found";
 		return false;

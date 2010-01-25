@@ -3,7 +3,7 @@
 #include "enumType.h"
 #include "numericType.h"
 #include "stringType.h"
-#include "nodeType.h"
+#include "q.h"
 #include "edgeType.h"
 #include "editor.h"
 
@@ -22,7 +22,8 @@ Diagram::~Diagram()
 
 bool Diagram::init(QDomElement const &diagramElement)
 {
-	for (QDomElement element = diagramElement.firstChildElement(); !element.isNull();
+	for (QDomElement element = diagramElement.firstChildElement(); 
+		!element.isNull();
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "graphicTypes") {
@@ -39,17 +40,18 @@ bool Diagram::init(QDomElement const &diagramElement)
 
 bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 {
-	for (QDomElement element = graphicTypesElement.firstChildElement(); !element.isNull();
+	for (QDomElement element = graphicTypesElement.firstChildElement(); 
+		!element.isNull();
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "node") {
-			Type *nodeType = new NodeType(this);
-			if (!nodeType->init(element, mDiagramName)) {
-				delete nodeType;
+			Type *q = new NodeType(this);
+			if (!q->init(element, mDiagramName)) {
+				delete q;
 				qDebug() << "Can't parse node";
 				return false;
 			}
-			mTypes[nodeType->qualifiedName()] = nodeType;
+			mTypes[q->qualifiedName()] = nodeType;
 		} else if (element.nodeName() == "edge") {
 			Type *edgeType = new EdgeType(this);
 			if (!edgeType->init(element, mDiagramName)) {
@@ -77,7 +79,8 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 
 bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 {
-	for (QDomElement element = nonGraphicTypesElement.firstChildElement(); !element.isNull();
+	for (QDomElement element = nonGraphicTypesElement.firstChildElement(); 
+		!element.isNull();
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "enum")

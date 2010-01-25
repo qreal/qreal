@@ -39,11 +39,7 @@ bool NodeType::initAssociations()
 
 bool NodeType::initGraphics()
 {
-	if (!initSdf())
-		return false;
-	if (!initPorts())
-		return false;
-	return true;
+	return initSdf() && initPorts();
 }
 
 bool NodeType::initSdf()
@@ -81,7 +77,8 @@ bool NodeType::initPorts()
 
 bool NodeType::initPointPorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); 
+		!portElement.isNull();
 		portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		Port *pointPort = new PointPort();
@@ -96,7 +93,8 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 
 bool NodeType::initLinePorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
+	for (QDomElement portElement = portsElement.firstChildElement("linePort"); 
+		!portElement.isNull();
 		portElement = portElement.nextSiblingElement("linePort"))
 	{
 		Port *linePort = new LinePort();

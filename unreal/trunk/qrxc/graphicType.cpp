@@ -58,17 +58,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 			return false;
 		}
 		mGraphics = element.firstChildElement("graphics");
-		if (!initParents())
-			return false;
-		if (!initProperties())
-			return false;
-		if (!initAssociations())
-			return false;
-		if (!initGraphics())
-			return false;
-		if (!initLabels())
-			return false;
-		return true;
+		return initParents() && initProperties() && initAssociations() && initGraphics() && initLabels();
 	}
 	else
 		return false;
@@ -79,7 +69,8 @@ bool GraphicType::initParents()
 	QDomElement parentsElement = mLogic.firstChildElement("generalizations");
 	if (parentsElement.isNull())
 		return true;
-	for (QDomElement parentElement = parentsElement.firstChildElement("parent"); !parentElement.isNull();
+	for (QDomElement parentElement = parentsElement.firstChildElement("parent"); 
+		!parentElement.isNull();
 		parentElement = parentElement.nextSiblingElement("parent"))
 	{
 		QString parentName = parentElement.attribute("parentName");
@@ -105,7 +96,8 @@ bool GraphicType::initProperties()
 	{
 		return true;
 	}
-	for (QDomElement propertyElement = propertiesElement.firstChildElement("property"); !propertyElement.isNull();
+	for (QDomElement propertyElement = propertiesElement.firstChildElement("property"); 
+		!propertyElement.isNull();
 		propertyElement = propertyElement.nextSiblingElement("property"))
 	{
 		Property *property = new Property();
@@ -125,7 +117,8 @@ bool GraphicType::initProperties()
 bool GraphicType::initLabels()
 {
 	int count = 1;
-	for (QDomElement element = mGraphics.firstChildElement("labels").firstChildElement("label"); !element.isNull();
+	for (QDomElement element = mGraphics.firstChildElement("labels").firstChildElement("label"); 
+		!element.isNull();
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
