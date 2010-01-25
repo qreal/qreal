@@ -232,18 +232,18 @@ private:
     
 public:
 
-    ::RepoIce::IdList outcomingLinks(const ::std::string& id)
+    ::RepoIce::IdList outgoingLinks(const ::std::string& id)
     {
-        return outcomingLinks(id, 0);
+        return outgoingLinks(id, 0);
     }
-    ::RepoIce::IdList outcomingLinks(const ::std::string& id, const ::Ice::Context& __ctx)
+    ::RepoIce::IdList outgoingLinks(const ::std::string& id, const ::Ice::Context& __ctx)
     {
-        return outcomingLinks(id, &__ctx);
+        return outgoingLinks(id, &__ctx);
     }
     
 private:
 
-    ::RepoIce::IdList outcomingLinks(const ::std::string&, const ::Ice::Context*);
+    ::RepoIce::IdList outgoingLinks(const ::std::string&, const ::Ice::Context*);
     
 public:
 
@@ -763,7 +763,7 @@ public:
 
     virtual void removeParent(const ::std::string&, const ::std::string&, const ::Ice::Context*) = 0;
 
-    virtual ::RepoIce::IdList outcomingLinks(const ::std::string&, const ::Ice::Context*) = 0;
+    virtual ::RepoIce::IdList outgoingLinks(const ::std::string&, const ::Ice::Context*) = 0;
 
     virtual ::RepoIce::IdList incomingLinks(const ::std::string&, const ::Ice::Context*) = 0;
 
@@ -837,7 +837,7 @@ public:
 
     virtual void removeParent(const ::std::string&, const ::std::string&, const ::Ice::Context*);
 
-    virtual ::RepoIce::IdList outcomingLinks(const ::std::string&, const ::Ice::Context*);
+    virtual ::RepoIce::IdList outgoingLinks(const ::std::string&, const ::Ice::Context*);
 
     virtual ::RepoIce::IdList incomingLinks(const ::std::string&, const ::Ice::Context*);
 
@@ -911,7 +911,7 @@ public:
 
     virtual void removeParent(const ::std::string&, const ::std::string&, const ::Ice::Context*);
 
-    virtual ::RepoIce::IdList outcomingLinks(const ::std::string&, const ::Ice::Context*);
+    virtual ::RepoIce::IdList outgoingLinks(const ::std::string&, const ::Ice::Context*);
 
     virtual ::RepoIce::IdList incomingLinks(const ::std::string&, const ::Ice::Context*);
 
@@ -1000,8 +1000,8 @@ public:
     virtual void removeParent(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___removeParent(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::RepoIce::IdList outcomingLinks(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
-    ::Ice::DispatchStatus ___outcomingLinks(::IceInternal::Incoming&, const ::Ice::Current&);
+    virtual ::RepoIce::IdList outgoingLinks(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___outgoingLinks(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::RepoIce::IdList incomingLinks(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___incomingLinks(::IceInternal::Incoming&, const ::Ice::Current&);

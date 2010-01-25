@@ -57,7 +57,7 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 
 void XmiHandler::serializeLinks(QDomElement &parent, bool direction, Id const &idParent)
 {
-	IdList links = direction ? mApi.outcomingLinks(idParent) : mApi.incomingLinks(idParent);
+	IdList links = direction ? mApi.outgoingLinks(idParent) : mApi.incomingLinks(idParent);
 
 	foreach (Id const id, links) {
 		QDomElement link = direction ? serializeOutcomingLink(id) : serializeIncomingLink(id);

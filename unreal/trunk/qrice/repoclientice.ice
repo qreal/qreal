@@ -18,7 +18,7 @@ module RepoIce
 		void addParent(string id, string parent);
 		void removeParent(string id, string parent);
 
-		idempotent IdList outcomingLinks(string id);
+		idempotent IdList outgoingLinks(string id);
 		idempotent IdList incomingLinks(string id);
 		idempotent IdList links(string id);
 

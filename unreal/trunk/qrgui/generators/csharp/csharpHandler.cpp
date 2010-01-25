@@ -320,7 +320,7 @@ QList<Variable> CsharpHandler::getObjectVariable(Id const id){
         Variable var;
         QString const objectType = mApi.typeName(id);
         if (!mApi.links(id).isEmpty()) {
-                IdList links = mApi.outcomingLinks(id);
+                IdList links = mApi.outgoingLinks(id);
 
                 foreach (Id const aLink, links){
                     if ((aLink.element() == "ceAggregation")&&(mApi.typeName(mApi.otherEntityFromLink(aLink, id))=="cnClass")) {
@@ -436,7 +436,7 @@ bool hasParentClass = false;
 	QString const objectType = mApi.typeName(id);
 
 	if (!mApi.links(id).isEmpty()) {
-		IdList links = mApi.outcomingLinks(id);
+		IdList links = mApi.outgoingLinks(id);
 
 		foreach (Id const aLink, links){
                     if ((aLink.element() == "krneGeneralization")&&(mApi.typeName(mApi.otherEntityFromLink(aLink, id))=="cnClass")) {
@@ -465,7 +465,7 @@ QList<QString> CsharpHandler::getParents(Id const &id)
         QString interf="";
         QString const objectType = mApi.typeName(id);
         if (!mApi.links(id).isEmpty()) {
-                IdList links = mApi.outcomingLinks(id);
+                IdList links = mApi.outgoingLinks(id);
 
                 foreach (Id const aLink, links){
                     if ((aLink.element() == "krneGeneralization")&&(mApi.typeName(mApi.otherEntityFromLink(aLink, id))=="cnInterface")) {

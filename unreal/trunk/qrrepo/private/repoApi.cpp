@@ -99,7 +99,7 @@ IdList RepoApi::links(Id const &id, QString const &direction) const
 	return result;
 }
 
-IdList RepoApi::outcomingLinks(Id const &id) const
+IdList RepoApi::outgoingLinks(Id const &id) const
 {
 	return links(id, "from");
 }
@@ -111,7 +111,7 @@ IdList RepoApi::incomingLinks(Id const &id) const
 
 IdList RepoApi::links(Id const &id) const
 {
-	return incomingLinks(id) << outcomingLinks(id);
+	return incomingLinks(id) << outgoingLinks(id);
 }
 
 QString RepoApi::typeName(Id const &id) const

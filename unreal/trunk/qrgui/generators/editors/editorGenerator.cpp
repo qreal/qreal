@@ -52,7 +52,7 @@ QDomElement EditorGenerator::createNode(QDomDocument doc, Id const &nodeId, QStr
 	}
 
 	// here links should be proceded
-	IdList const links = mApi.outcomingLinks(nodeId);
+	IdList const links = mApi.outgoingLinks(nodeId);
 	foreach (Id const link, links) {
 		//here we are asking things about link
 

@@ -68,8 +68,8 @@ namespace RepoIce
         void removeParent(string id, string parent);
         void removeParent(string id, string parent, _System.Collections.Generic.Dictionary<string, string> context__);
 
-        string[] outcomingLinks(string id);
-        string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
+        string[] outgoingLinks(string id);
+        string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
 
         string[] incomingLinks(string id);
         string[] incomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
@@ -152,7 +152,7 @@ namespace RepoIce
 
         void removeParent(string id, string parent, Ice.Current current__);
 
-        string[] outcomingLinks(string id, Ice.Current current__);
+        string[] outgoingLinks(string id, Ice.Current current__);
 
         string[] incomingLinks(string id, Ice.Current current__);
 
@@ -213,7 +213,7 @@ namespace RepoIce
 
         void removeParent(string id, string parent);
 
-        string[] outcomingLinks(string id);
+        string[] outgoingLinks(string id);
 
         string[] incomingLinks(string id);
 
@@ -694,17 +694,17 @@ namespace RepoIce
             }
         }
 
-        public string[] outcomingLinks(string id)
+        public string[] outgoingLinks(string id)
         {
-            return outcomingLinks(id, null, false);
+            return outgoingLinks(id, null, false);
         }
 
-        public string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
+        public string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
         {
-            return outcomingLinks(id, context__, true);
+            return outgoingLinks(id, context__, true);
         }
 
-        private string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
+        private string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__, bool explicitContext__)
         {
             if(explicitContext__ && context__ == null)
             {
@@ -716,10 +716,10 @@ namespace RepoIce
                 Ice.ObjectDel_ delBase__ = null;
                 try
                 {
-                    checkTwowayOnly__("outcomingLinks");
+                    checkTwowayOnly__("outgoingLinks");
                     delBase__ = getDelegate__(false);
                     RepoApiDel_ del__ = (RepoApiDel_)delBase__;
-                    return del__.outcomingLinks(id, context__);
+                    return del__.outgoingLinks(id, context__);
                 }
                 catch(IceInternal.LocalExceptionWrapper ex__)
                 {
@@ -1543,7 +1543,7 @@ namespace RepoIce
 
         void removeParent(string id, string parent, _System.Collections.Generic.Dictionary<string, string> context__);
 
-        string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
+        string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
 
         string[] incomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__);
 
@@ -2084,9 +2084,9 @@ namespace RepoIce
             }
         }
 
-        public string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
+        public string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
         {
-            IceInternal.Outgoing og__ = handler__.getOutgoing("outcomingLinks", Ice.OperationMode.Idempotent, context__);
+            IceInternal.Outgoing og__ = handler__.getOutgoing("outgoingLinks", Ice.OperationMode.Idempotent, context__);
             try
             {
                 try
@@ -3377,10 +3377,10 @@ namespace RepoIce
             return result__;
         }
 
-        public string[] outcomingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
+        public string[] outgoingLinks(string id, _System.Collections.Generic.Dictionary<string, string> context__)
         {
             Ice.Current current__ = new Ice.Current();
-            initCurrent__(ref current__, "outcomingLinks", Ice.OperationMode.Idempotent, context__);
+            initCurrent__(ref current__, "outgoingLinks", Ice.OperationMode.Idempotent, context__);
             string[] result__ = null;
             IceInternal.Direct.RunDelegate run__ = delegate(Ice.Object obj__)
             {
@@ -3393,7 +3393,7 @@ namespace RepoIce
                 {
                     throw new Ice.OperationNotExistException(current__.id, current__.facet, current__.operation);
                 }
-                result__ = servant__.outcomingLinks(id, current__);
+                result__ = servant__.outgoingLinks(id, current__);
                 return Ice.DispatchStatus.DispatchOK;
             };
             IceInternal.Direct direct__ = null;
@@ -4218,12 +4218,12 @@ namespace RepoIce
 
         public abstract void removeParent(string id, string parent, Ice.Current current__);
 
-        public string[] outcomingLinks(string id)
+        public string[] outgoingLinks(string id)
         {
-            return outcomingLinks(id, Ice.ObjectImpl.defaultCurrent);
+            return outgoingLinks(id, Ice.ObjectImpl.defaultCurrent);
         }
 
-        public abstract string[] outcomingLinks(string id, Ice.Current current__);
+        public abstract string[] outgoingLinks(string id, Ice.Current current__);
 
         public string[] incomingLinks(string id)
         {
@@ -4531,7 +4531,7 @@ namespace RepoIce
             return Ice.DispatchStatus.DispatchOK;
         }
 
-        public static Ice.DispatchStatus outcomingLinks___(RepoApi obj__, IceInternal.Incoming inS__, Ice.Current current__)
+        public static Ice.DispatchStatus outgoingLinks___(RepoApi obj__, IceInternal.Incoming inS__, Ice.Current current__)
         {
             checkMode__(Ice.OperationMode.Idempotent, current__.mode);
             IceInternal.BasicStream is__ = inS__.istr();
@@ -4540,7 +4540,7 @@ namespace RepoIce
             id = is__.readString();
             is__.endReadEncaps();
             IceInternal.BasicStream os__ = inS__.ostr();
-            string[] ret__ = obj__.outcomingLinks(id, current__);
+            string[] ret__ = obj__.outgoingLinks(id, current__);
             os__.writeStringSeq(ret__);
             return Ice.DispatchStatus.DispatchOK;
         }
@@ -4826,7 +4826,7 @@ namespace RepoIce
             "links",
             "name",
             "otherEntityFromLink",
-            "outcomingLinks",
+            "outgoingLinks",
             "parents",
             "property",
             "removeChild",
@@ -4918,7 +4918,7 @@ namespace RepoIce
                 }
                 case 15:
                 {
-                    return outcomingLinks___(this, inS__, current__);
+                    return outgoingLinks___(this, inS__, current__);
                 }
                 case 16:
                 {

@@ -47,7 +47,7 @@ static const ::std::string __RepoIce__RepoApi__addParent_name = "addParent";
 
 static const ::std::string __RepoIce__RepoApi__removeParent_name = "removeParent";
 
-static const ::std::string __RepoIce__RepoApi__outcomingLinks_name = "outcomingLinks";
+static const ::std::string __RepoIce__RepoApi__outgoingLinks_name = "outgoingLinks";
 
 static const ::std::string __RepoIce__RepoApi__incomingLinks_name = "incomingLinks";
 
@@ -332,7 +332,7 @@ IceProxy::RepoIce::RepoApi::removeParent(const ::std::string& id, const ::std::s
 }
 
 ::RepoIce::IdList
-IceProxy::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::Ice::Context* __ctx)
+IceProxy::RepoIce::RepoApi::outgoingLinks(const ::std::string& id, const ::Ice::Context* __ctx)
 {
     int __cnt = 0;
     while(true)
@@ -340,10 +340,10 @@ IceProxy::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::Ice:
         ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
         try
         {
-            __checkTwowayOnly(__RepoIce__RepoApi__outcomingLinks_name);
+            __checkTwowayOnly(__RepoIce__RepoApi__outgoingLinks_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::RepoIce::RepoApi* __del = dynamic_cast< ::IceDelegate::RepoIce::RepoApi*>(__delBase.get());
-            return __del->outcomingLinks(id, __ctx);
+            return __del->outgoingLinks(id, __ctx);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -1218,9 +1218,9 @@ IceDelegateM::RepoIce::RepoApi::removeParent(const ::std::string& id, const ::st
 }
 
 ::RepoIce::IdList
-IceDelegateM::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::Ice::Context* __context)
+IceDelegateM::RepoIce::RepoApi::outgoingLinks(const ::std::string& id, const ::Ice::Context* __context)
 {
-    ::IceInternal::Outgoing __og(__handler.get(), __RepoIce__RepoApi__outcomingLinks_name, ::Ice::Idempotent, __context);
+    ::IceInternal::Outgoing __og(__handler.get(), __RepoIce__RepoApi__outgoingLinks_name, ::Ice::Idempotent, __context);
     try
     {
         ::IceInternal::BasicStream* __os = __og.os();
@@ -2613,7 +2613,7 @@ IceDelegateD::RepoIce::RepoApi::removeParent(const ::std::string& id, const ::st
 }
 
 ::RepoIce::IdList
-IceDelegateD::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::Ice::Context* __context)
+IceDelegateD::RepoIce::RepoApi::outgoingLinks(const ::std::string& id, const ::Ice::Context* __context)
 {
     class _DirectI : public ::IceInternal::Direct
     {
@@ -2634,7 +2634,7 @@ IceDelegateD::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->outcomingLinks(_m_id, _current);
+            _result = servant->outgoingLinks(_m_id, _current);
             return ::Ice::DispatchOK;
         }
         
@@ -2645,7 +2645,7 @@ IceDelegateD::RepoIce::RepoApi::outcomingLinks(const ::std::string& id, const ::
     };
     
     ::Ice::Current __current;
-    __initCurrent(__current, __RepoIce__RepoApi__outcomingLinks_name, ::Ice::Idempotent, __context);
+    __initCurrent(__current, __RepoIce__RepoApi__outgoingLinks_name, ::Ice::Idempotent, __context);
     ::RepoIce::IdList __result;
     try
     {
@@ -4143,7 +4143,7 @@ RepoIce::RepoApi::___removeParent(::IceInternal::Incoming& __inS, const ::Ice::C
 }
 
 ::Ice::DispatchStatus
-RepoIce::RepoApi::___outcomingLinks(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+RepoIce::RepoApi::___outgoingLinks(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
 {
     __checkMode(::Ice::Idempotent, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.is();
@@ -4152,7 +4152,7 @@ RepoIce::RepoApi::___outcomingLinks(::IceInternal::Incoming& __inS, const ::Ice:
     __is->read(id);
     __is->endReadEncaps();
     ::IceInternal::BasicStream* __os = __inS.os();
-    ::RepoIce::IdList __ret = outcomingLinks(id, __current);
+    ::RepoIce::IdList __ret = outgoingLinks(id, __current);
     if(__ret.size() == 0)
     {
         __os->writeSize(0);
@@ -4478,7 +4478,7 @@ static ::std::string __RepoIce__RepoApi_all[] =
     "links",
     "name",
     "otherEntityFromLink",
-    "outcomingLinks",
+    "outgoingLinks",
     "parents",
     "property",
     "removeChild",
@@ -4571,7 +4571,7 @@ RepoIce::RepoApi::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& 
         }
         case 15:
         {
-            return ___outcomingLinks(in, current);
+            return ___outgoingLinks(in, current);
         }
         case 16:
         {

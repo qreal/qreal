@@ -104,8 +104,8 @@ void HascolGenerator::generateHandler(Id const &id, utils::OutFile &out)
 	out.incIndent();
 
 	Id currentId = id;
-	while (mApi.outcomingLinks(currentId).count() > 0) {
-		Id const link = mApi.outcomingLinks(currentId)[0];  // Пока ничего паралельного не генерится.
+	while (mApi.outgoingLinks(currentId).count() > 0) {
+		Id const link = mApi.outgoingLinks(currentId)[0];  // Пока ничего паралельного не генерится.
 		currentId = mApi.otherEntityFromLink(link, currentId);
 		if (currentId.element() == "HascolActivity_SendSignalAction") {
 			out() << mApi.name(currentId) << "\n";

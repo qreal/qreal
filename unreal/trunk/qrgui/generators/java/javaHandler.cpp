@@ -80,7 +80,7 @@ QString JavaHandler::serializeObject(Id const &id)
         
         if (!mApi.links(id).isEmpty()) {
             // search for the Class-typed attrbutes
-            IdList linksOut = mApi.outcomingLinks(id);
+            IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
                 if (aLink.element() == "Class_Diagram_Directed_Association" || aLink.element() == "Class_Diagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
@@ -218,7 +218,7 @@ QString JavaHandler::serializeObject(Id const &id)
                     addError("object " + objectType + " with id  " + id.toString() + " can not have incoming links");
                 }
 
-                IdList linksOut = mApi.outcomingLinks(id);
+                IdList linksOut = mApi.outgoingLinks(id);
                 foreach (Id const aLink, linksOut) {
                     //imagine, that Initial Node has just one outcoming link
                     if (aLink.element() == "Activity_Diagram_Control_Flow") {
@@ -233,7 +233,7 @@ QString JavaHandler::serializeObject(Id const &id)
     } else if (objectType == "Activity_Diagram_Action") {
         result += mApi.name(id) + "();" + "\n";
         if (!mApi.links(id).isEmpty()) {
-            IdList linksOut = mApi.outcomingLinks(id);
+            IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
                 if (aLink.element() == "Activity_Diagram_Control_Flow") {
                     Id toConsider = mApi.otherEntityFromLink(aLink, id);
@@ -246,7 +246,7 @@ QString JavaHandler::serializeObject(Id const &id)
     } else if (objectType == "Activity_Diagram_Decision_Node") {
         result += "if (";
         if (!mApi.links(id).isEmpty()) {
-            IdList linksOut = mApi.outcomingLinks(id);
+            IdList linksOut = mApi.outgoingLinks(id);
             if (!linksOut.isEmpty()) {
                 foreach (Id const aLink, linksOut) {
                     if (aLink.element() == "Activity_Diagram_Control_Flow") {
@@ -335,7 +335,7 @@ QString JavaHandler::getSuperclass(Id const &id)
 	QString const objectType = mApi.typeName(id);
     
 	if (!mApi.links(id).isEmpty()) {
-		IdList links = mApi.outcomingLinks(id);
+		IdList links = mApi.outgoingLinks(id);
         
 		foreach (Id const aLink, links) {
             if (aLink.element() == "Class_Diagram_Generalization") {

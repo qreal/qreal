@@ -31,7 +31,7 @@ public:
 
     virtual void removeParent(const ::std::string&, const ::std::string&, const Ice::Current&);
 
-    virtual ::RepoIce::IdList outcomingLinks(const ::std::string&, const Ice::Current&);
+    virtual ::RepoIce::IdList outgoingLinks(const ::std::string&, const Ice::Current&);
 
     virtual ::RepoIce::IdList incomingLinks(const ::std::string&, const Ice::Current&);
 

@@ -175,7 +175,7 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 		for (int i = row; i < row + count; ++i) {
 			ModelTreeItem * child = parentItem->children().at(i);
 		
-			foreach (Id id, mApi.outcomingLinks(child->id()))
+			foreach (Id id, mApi.outgoingLinks(child->id()))
 				mApi.setFrom(id, ROOT_ID);
 			foreach(Id id, mApi.incomingLinks(child->id()))
 				mApi.setTo(id, ROOT_ID);

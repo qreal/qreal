@@ -76,9 +76,9 @@ RepoIce::RepoApiI::removeParent(const ::std::string& id, const ::std::string& pa
 }
 
 ::RepoIce::IdList
-RepoIce::RepoApiI::outcomingLinks(const ::std::string& id, const Ice::Current& )
+RepoIce::RepoApiI::outgoingLinks(const ::std::string& id, const Ice::Current& )
 {
-	qReal::IdList list = repoApi.outcomingLinks(toqRealId(id));
+	qReal::IdList list = repoApi.outgoingLinks(toqRealId(id));
 	::RepoIce::IdList result;
 	
 	for (qReal::IdList::const_iterator i = list.begin(); i != list.end(); i++)
