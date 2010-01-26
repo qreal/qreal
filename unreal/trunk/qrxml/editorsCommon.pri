@@ -4,7 +4,6 @@ CONFIG += plugin
 DESTDIR = ../../qrgui/plugins/
 MOC_DIR = ../.moc
 RCC_DIR = ../.moc
-OBJECTS_DIR = ../.obj
 
 win32 | win32-msvc* {
 	CONFIG(debug, debug|release) {

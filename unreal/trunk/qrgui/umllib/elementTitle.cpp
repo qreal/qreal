@@ -93,12 +93,14 @@ void ElementTitle::startTextInteraction()
 
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	// Paint a white rectangle below text
-	painter->save();
-	painter->setBrush(QBrush(mBackground));
-	painter->setPen(QPen(Qt::transparent));
-	painter->drawRect(boundingRect());
-	painter->restore();
+	// Нарисовать бэкграунд под текстом, если текст не пустой.
+	if (!toPlainText().isEmpty()) {
+		painter->save();
+		painter->setBrush(QBrush(mBackground));
+		painter->setPen(QPen(Qt::transparent));
+		painter->drawRect(boundingRect());
+		painter->restore();
+	}
 
 	QGraphicsTextItem::paint(painter, option, widget);
 }
