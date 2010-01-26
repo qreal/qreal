@@ -53,7 +53,7 @@ QString JavaHandler::serializeObject(Id const &id)
     
 	// class diagramm
     
-    if (objectType == "Class_Diagram_Class") {
+    if ((objectType == "Class_Diagram_Class")|(objectType == "Class_Diagram_Interface")) {
         
         //-----------
         QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
@@ -119,22 +119,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
             }
         }
-        
-        if (multiplicity != "") {
-            bool ok = false;
-            int classMultiplicity = multiplicity.toInt(&ok);
-            
-            if (!ok || classMultiplicity <= 0) {
-                if (classMultiplicity == 1) {
-                    // класс singleton
-                } else {
-                    // класс в виде расширенного singleton'а (т.е. может быть ограниченное число экземпляров и за этим надо проследить)
-                }
-            } else {
-                addError("object " + objectType + " with id  " + id.toString() + " has invalid multiplicity property: " + multiplicity);
-            }
-        }
-        
+
         out << "}\n";
     } else if (objectType == "Class_Diagram_View") {
 		//	    to do someting
@@ -194,8 +179,8 @@ QString JavaHandler::serializeObject(Id const &id)
                 addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
             }
         }
-	}
-    
+    }
+
     // activity diagram
     
     else if (objectType == "Activity_Diagram_Initial_Node") {
