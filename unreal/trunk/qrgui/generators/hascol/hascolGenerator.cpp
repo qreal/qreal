@@ -77,6 +77,22 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		if (child.element() == "HascolStructure_ProcessOperation")
 			generateProcessOperation(child, out);
 
+	foreach (Id const child, mApi.children(id))
+		if (child.element() == "HascolStructure_Resource")
+			generateResource(child, out);
+
+	foreach (Id const link, mApi.incomingLinks(id)) {
+		if (link.element() == "HascolStructure_UsedProcessRelation") {
+			Id const usedProcess = mApi.otherEntityFromLink(link, id);
+			out() << "process " << mApi.name(link) << " = " << mApi.name(usedProcess) << ";\n";
+		}
+		if (link.element() == "HascolStructure_NestedProcessRelation") {
+			Id const nestedProcess = mApi.otherEntityFromLink(link, id);
+			out() << "process " << mApi.name(link) << " =\n";
+			generateProcessTypeBody(nestedProcess, out);
+		}
+	}
+
 	foreach (Id const activity, mActivityDiagrams)
 		if (mApi.name(activity) == mApi.name(id))
 			generateActivity(activity, out);
@@ -175,6 +191,11 @@ void HascolGenerator::generateProcessOperation(Id const &id, OutFile &out)
 {
 	out() << mApi.stringProperty(id, "direction") << " "
 		<< mApi.name(id) << ";\n";
+}
+
+void HascolGenerator::generateResource(Id const &id, OutFile &out)
+{
+	out() << mApi.name(id) << ";\n";
 }
 
 void HascolGenerator::generateActivity(Id const &id, utils::OutFile &out)
