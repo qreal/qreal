@@ -261,6 +261,19 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
+	// Правило "провязки" - если есть диаграмма первого уровня с тем же именем,
+	// что и у нашего элемента, показываем её.
+	QString targetName = mModel->data(idx, Qt::DisplayRole).toString();
+	int rows = mModel->rowCount(mModel->rootIndex());
+	for (int i = 0; i < rows; ++i) {
+		QModelIndex child = mModel->index(i, 0, mModel->rootIndex());
+		if (mModel->data(child, Qt::DisplayRole).toString() == targetName)
+		{
+			activateItemOrDiagram(child);
+			return;
+		}
+	}
+
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
 		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
