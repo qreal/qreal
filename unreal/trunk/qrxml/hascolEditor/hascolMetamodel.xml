@@ -26,9 +26,9 @@
 						<line x1="0" y1="20" x2="0" y2="180"/>
 						<line x1="200" y1="20" x2="200" y2="180"/>
 						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
-						<arc x1="160" y1="0" x2="40" y2="40" startAngle="0" spanAngle="1440"/>
-						<arc x1="0" y1="160" x2="40" y2="40" startAngle="2880" spanAngle="1440"/>
-						<arc x1="160" y1="160" x2="40" y2="40" startAngle="0" spanAngle="-1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
 					</picture>
 					<labels>
 						<label x="40" y="10" textBinded="name"/>
@@ -279,9 +279,9 @@
 						<line x1="0" y1="20" x2="0" y2="180"/>
 						<line x1="200" y1="20" x2="200" y2="180"/>
 						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
-						<arc x1="160" y1="0" x2="40" y2="40" startAngle="0" spanAngle="1440"/>
-						<arc x1="0" y1="160" x2="40" y2="40" startAngle="2880" spanAngle="1440"/>
-						<arc x1="160" y1="160" x2="40" y2="40" startAngle="0" spanAngle="-1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
 					</picture>
 					<labels>
 						<label x="40" y="10" text="&amp;lt;&amp;lt;group>>"/>

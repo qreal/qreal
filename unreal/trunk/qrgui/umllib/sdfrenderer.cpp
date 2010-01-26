@@ -119,7 +119,7 @@ void SdfRenderer::ellipse(QDomElement &element)
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
 
-	QRectF rect(x1, y1, x2, y2);
+	QRectF rect(x1, y1, x2-x1, y2-y1);
 	parsestyle(element);
 	painter->drawEllipse(rect);
 }
@@ -133,7 +133,7 @@ void SdfRenderer::arc(QDomElement &element)
 	int startAngle = element.attribute("startAngle").toInt();
 	int spanAngle = element.attribute("spanAngle").toInt();
 
-	QRectF rect(x1, y1, x2, y2);
+	QRectF rect(x1, y1, x2-x1, y2-y1);
 	parsestyle(element);
 	painter->drawArc(rect, startAngle, spanAngle);
 }
