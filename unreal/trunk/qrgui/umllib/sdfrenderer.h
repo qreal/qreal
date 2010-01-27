@@ -23,6 +23,9 @@ public:
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
 
+	int pictureWidth() { return first_size_x; }
+	int pictureHeight() { return first_size_y; }
+
 private:
 	int first_size_x;
 	int first_size_y;
