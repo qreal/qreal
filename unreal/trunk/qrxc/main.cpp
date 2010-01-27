@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 	QString inputXmlFileName = args[1];
 
 	XmlCompiler xmlCompiler;
-	xmlCompiler.compile(inputXmlFileName);
+	if (!xmlCompiler.compile(inputXmlFileName))
+		return 1;
 
 	return 0;
 }

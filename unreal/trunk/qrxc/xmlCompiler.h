@@ -15,7 +15,7 @@ class XmlCompiler
 public:
 	XmlCompiler();
 	~XmlCompiler();
-	void compile(QString const &inputXmlFileName);
+	bool compile(QString const &inputXmlFileName);
 	Editor *loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName);
 	Diagram *getDiagram(QString const &diagramName);
 	void addResource(QString const &resourceName);

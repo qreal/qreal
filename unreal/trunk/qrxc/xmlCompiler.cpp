@@ -31,14 +31,16 @@ XmlCompiler::~XmlCompiler()
 			delete editor;
 }
 
-void XmlCompiler::compile(QString const &inputXmlFileName)
+bool XmlCompiler::compile(QString const &inputXmlFileName)
 {
 	QFileInfo const inputXmlFileInfo(inputXmlFileName);
 	mPluginName = NameNormalizer::normalize(inputXmlFileInfo.baseName());
 	mCurrentEditor = inputXmlFileInfo.absoluteFilePath();
 	QDir const startingDir = inputXmlFileInfo.dir();
-	loadXmlFile(startingDir, inputXmlFileInfo.fileName());
+	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName()))
+		return false;
 	generateCode();
+	return true;
 }
 
 Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
