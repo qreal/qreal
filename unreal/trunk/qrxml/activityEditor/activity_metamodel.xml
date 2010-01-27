@@ -538,11 +538,11 @@
                     <picture sizex="42" sizey="22">
                         <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21"
                                    stroke-width="1" x2="41" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="20"
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="10" y2="21"
                               stroke-width="1" x2="10" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="20"
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="20" y2="21"
                               stroke-width="1" x2="20" fill-style="solid"/>
-                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="20"
+                        <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="21"
                               stroke-width="1" x2="30" fill-style="solid"/>
                     </picture>
                 </graphics>
