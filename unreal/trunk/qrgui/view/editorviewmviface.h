@@ -29,6 +29,8 @@ namespace qReal {
 			EditorViewScene *scene /**< Сцена для отрисовки элементов */
 		);
 
+		~EditorViewMViface();
+
 		/** @brief Получить область, занимаемую объектом с данным индексом
 		 *	@brief @return Область, занимаемая объектом с данным индексом
 		 * */
@@ -109,6 +111,8 @@ namespace qReal {
 
 		/** @brief Элементы на сцене */
 		QMap<QPersistentModelIndex, UML::Element*> mItems;
+
+		void clearItems();
 	};
 
 }

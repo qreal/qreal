@@ -23,6 +23,11 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	mScene->view = mView;
 }
 
+EditorViewMViface::~EditorViewMViface()
+{
+	clearItems();
+}
+
 QRect EditorViewMViface::visualRect(const QModelIndex &) const
 {
 	return QRect();
@@ -69,8 +74,9 @@ QRegion EditorViewMViface::visualRegionForSelection(const QItemSelection &) cons
 
 void EditorViewMViface::reset()
 {
-	mItems.clear();
 	mScene->clearScene();
+	clearItems();
+
 	//для того, чтобы работало с экстерминатусом.
 	if ((model()) && (model()->rowCount(QModelIndex()) == 0))
 	{
@@ -208,4 +214,11 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 EditorViewScene *EditorViewMViface::scene() const
 {
 	return mScene;
+}
+
+void EditorViewMViface::clearItems()
+{
+	foreach (QGraphicsItem *item, mItems)
+		delete item;
+	mItems.clear();
 }

@@ -23,18 +23,13 @@ EditorViewScene::EditorViewScene(QObject * parent)
 void EditorViewScene::setEnabled(bool enabled)
 {
 	foreach (QGraphicsView *view, views())
-	{
 		view->setEnabled(enabled);
-	}
 }
 
 void EditorViewScene::clearScene()
 {
-	QList < QGraphicsItem * >list = items();
-	QList < QGraphicsItem * >::Iterator it = list.begin();
-	for (; it != list.end(); ++it) {
-		removeItem(*it);
-	}
+	foreach (QGraphicsItem *item, items())
+		removeItem(item);
 }
 
 UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
@@ -94,11 +89,10 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	// отдельно, через конструктор это делать нехорошо,
 	// поскольку сцена создаётся в сгенерённом ui-шнике.
 
-	//если нет ни одной диаграммы, то ниего не создаем.
+	// если нет ни одной диаграммы, то ничего не создаем.
 	if (mv_iface->model()->rowCount(QModelIndex()) == 0)
-	{
 		return;
-	}
+
 	// Transform mime data to include coordinates.
 	const QMimeData *mimeData = event->mimeData();
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
@@ -109,7 +103,6 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	QString pathToItem = "";
 	QString name;
 	QPointF pos;
-	QString metatype;
 
 	in_stream >> uuid;
 	in_stream >> pathToItem;
@@ -125,34 +118,29 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	UML::Element *e = mWindow->manager()->graphicalObject(qReal::Id::loadFromString(uuid));
 	//	= UML::GUIObjectFactory(type_id);
 
-	if (dynamic_cast<UML::NodeElement*>(e)) {
+	if (dynamic_cast<UML::NodeElement*>(e))
 		newParent = getElemAt(event->scenePos());
-	}
 
-	if (e) {
+	if (e)
 		delete e;
-	}
 
 	stream << uuid;				// uuid
 	stream << pathToItem;
 	stream << name;
 
-	if (!newParent) {
+	if (!newParent)
 		stream << event->scenePos();
-	} else {
+	else
 		stream << newParent->mapToItem(newParent, newParent->mapFromScene(event->scenePos()));
-	}
 
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);
 
-	if (newParent) {
-		mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
-										 mv_iface->model()->rowCount(newParent->index()), 0, newParent->index() );
-	} else {
-		mv_iface->model()->dropMimeData( newMimeData, event->dropAction(),
-										 mv_iface->model()->rowCount(mv_iface->rootIndex()), 0, mv_iface->rootIndex() );
-	}
+	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
+
+	mv_iface->model()->dropMimeData(newMimeData, event->dropAction(),
+		mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+
 	delete newMimeData;
 }
 
@@ -211,8 +199,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	if (event->button() == Qt::LeftButton) {
 		// Double click on a title activates it
 		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()))) {
-			if (!title->hasFocus()) // Do not activate already activated item
-			{
+			if (!title->hasFocus()) {  // Do not activate already activated item
 				event->accept();
 				title->startTextInteraction();
 				return;
