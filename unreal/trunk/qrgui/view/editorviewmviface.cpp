@@ -218,7 +218,7 @@ EditorViewScene *EditorViewMViface::scene() const
 
 void EditorViewMViface::clearItems()
 {
-	foreach (QGraphicsItem *item, mItems)
+	foreach (QGraphicsItem *item, mItems.values())
 		delete item;
 	mItems.clear();
 }
