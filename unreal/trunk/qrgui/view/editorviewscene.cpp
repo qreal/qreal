@@ -29,7 +29,10 @@ void EditorViewScene::setEnabled(bool enabled)
 void EditorViewScene::clearScene()
 {
 	foreach (QGraphicsItem *item, items())
-		removeItem(item);
+		// Выглядит довольно безумно, но некоторые элементы
+		// оказываются уже удалены, потому как был удалён их родитель.
+		if (items().contains(item))
+			removeItem(item);
 }
 
 UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
