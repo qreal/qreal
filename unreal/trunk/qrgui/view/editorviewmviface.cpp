@@ -174,7 +174,6 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 
 	if (!item(destinationParent)) {
 		// Элемента-родителя на сцене нет, так что это скорее всего корневой элемент.
-		qDebug() << "parent does not exist on a current scene, setting as NULL";
 		movedElement->setParentItem(NULL);
 		return;
 	}
@@ -191,7 +190,6 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	Q_ASSERT(movedElementIndex.isValid());
 	if (!item(movedElementIndex)) {
 		// Перемещённого элемента на сцене нет, так что и заботиться о нём не надо
-		qDebug() << "element does not exist on a current scene, aborting";
 		return;
 	}
 
@@ -216,8 +214,13 @@ EditorViewScene *EditorViewMViface::scene() const
 
 void EditorViewMViface::clearItems()
 {
+
+	QList<QGraphicsItem *> toRemove;
 	foreach (IndexElementPair pair, mItems)
-		delete pair.second;
+		if (!pair.second->parentItem())
+			toRemove.append(pair.second);
+	foreach (QGraphicsItem *item, toRemove)
+		delete item;
 	mItems.clear();
 }
 
