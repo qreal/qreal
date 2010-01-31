@@ -78,17 +78,15 @@ void EditorViewMViface::reset()
 	clearItems();
 
 	//для того, чтобы работало с экстерминатусом.
-	if ((model()) && (model()->rowCount(QModelIndex()) == 0))
-	{
+	if (model() && model()->rowCount(QModelIndex()) == 0)
 		mScene->setEnabled(false);
-	}
 
 	// so that our diagram be nicer
 	QGraphicsRectItem *rect = mScene->addRect(QRect(-1000, -1000, 2000, 2000));
 	mScene->removeItem(rect);
 	delete rect;
 
-	if ( model() )
+	if (model())
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
 }
 
@@ -98,7 +96,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
-void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
+void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	/*
 	qDebug() << "========== rowsInserted" << parent << start << end;
@@ -117,8 +115,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		mScene->setEnabled(true);
 
 		//если добавляем диаграмму в корень
-		if (!parent.isValid())
-		{
+		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
@@ -129,11 +126,11 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
 			e->setIndex(current);
-			if ((!(parent_uuid == Id())) && (mItems.contains(parent)))
-				e->setParentItem(mItems[parent]);
+			if (parent_uuid != Id() && item(parent) != NULL)
+				e->setParentItem(item(parent));
 			else
 				mScene->addItem(e);
-			mItems[current] = e;
+			setItem(current, e);
 			e->updateData();
 			e->connectToPort();
 		}
@@ -145,19 +142,18 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 
-void EditorViewMViface::rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end )
+void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		mScene->removeItem(mItems[curr]);
-		delete mItems[curr];
-		mItems.remove(curr);
+		mScene->removeItem(item(curr));
+		delete item(curr);
+		removeItem(curr);
 	}
 	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
-	if ((parent == QModelIndex()) && (model()->rowCount(parent) == start - end + 1))
-	{
+	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1)
 		mScene->setEnabled(false);
-	}
+
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
@@ -166,21 +162,24 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	Q_ASSERT(sourceStart == sourceEnd);  // Можно перемещать только один элемент за раз.
 	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
 
-	if (!mItems.contains(movedElementIndex)) {
+	if (!item(movedElementIndex)) {
 		// Перемещаемого элемента на сцене уже нет.
 		// TODO: элемент надо добавлять на сцену, если тут его нет, а в модели есть.
 		// Пока такое не рассматриваем.
+		qDebug() << "Trying to move element that already does not exist on a current scene, that's strange";
 		return;
 	}
-	UML::Element* movedElement = mItems[movedElementIndex];
 
-	if (!mItems.contains(destinationParent)) {
+	UML::Element* movedElement = item(movedElementIndex);
+
+	if (!item(destinationParent)) {
 		// Элемента-родителя на сцене нет, так что это скорее всего корневой элемент.
+		qDebug() << "parent does not exist on a current scene, setting as NULL";
 		movedElement->setParentItem(NULL);
 		return;
 	}
 
-	UML::Element* newParent = mItems[destinationParent];
+	UML::Element* newParent = item(destinationParent);
 	movedElement->setParentItem(newParent);
 }
 
@@ -190,12 +189,13 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	QPersistentModelIndex movedElementIndex = destinationParent.child(destinationRow, 0);
 
 	Q_ASSERT(movedElementIndex.isValid());
-	if (!mItems.contains(movedElementIndex)) {
+	if (!item(movedElementIndex)) {
 		// Перемещённого элемента на сцене нет, так что и заботиться о нём не надо
+		qDebug() << "element does not exist on a current scene, aborting";
 		return;
 	}
 
-	UML::Element* movedElement = mItems[movedElementIndex];
+	UML::Element* movedElement = item(movedElementIndex);
 	movedElement->updateData();
 }
 
@@ -204,10 +204,8 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);
-		if (mItems.contains(curr)) {
-			Q_ASSERT(mItems[curr] != NULL);
-			mItems[curr]->updateData();
-		}
+		if (item(curr))
+			item(curr)->updateData();
 	}
 }
 
@@ -218,7 +216,31 @@ EditorViewScene *EditorViewMViface::scene() const
 
 void EditorViewMViface::clearItems()
 {
-	foreach (QGraphicsItem *item, mItems.values())
-		delete item;
+	foreach (IndexElementPair pair, mItems)
+		delete pair.second;
 	mItems.clear();
+}
+
+UML::Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
+{
+	foreach (IndexElementPair pair, mItems) {
+		if (pair.first == index)
+			return pair.second;
+	}
+	return NULL;
+}
+
+void EditorViewMViface::setItem(QPersistentModelIndex const &index, UML::Element *item)
+{
+	IndexElementPair pair(index, item);
+	if (!mItems.contains(pair))
+		mItems.insert(pair);
+}
+
+void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
+{
+	foreach (IndexElementPair pair, mItems) {
+		if (pair.first == index)
+			mItems.remove(pair);
+	}
 }

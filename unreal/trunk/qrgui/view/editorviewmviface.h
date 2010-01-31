@@ -104,13 +104,21 @@ namespace qReal {
 		QRegion visualRegionForSelection(const QItemSelection &selection /**< Выделение */ ) const;
 
 	private:
+		typedef QPair<QPersistentModelIndex, UML::Element*> IndexElementPair;
+
 		/** @brief Сцена */
 		EditorViewScene *mScene;
 		/** @brief Представление */
 		qReal::EditorView *mView;
 
-		/** @brief Элементы на сцене */
-		QMap<QPersistentModelIndex, UML::Element*> mItems;
+		/** @brief Элементы на сцене. Индексы могут меняться ВНЕЗАПНО, так что
+			использовать мапы, хеши и т.д. с ключами-индексами не получится.
+			Причём, если попробовать, можно замучаться отлаживать. */
+		QSet<IndexElementPair> mItems;
+
+		UML::Element *item(QPersistentModelIndex const &index) const;
+		void setItem(QPersistentModelIndex const &index, UML::Element *item);
+		void removeItem(QPersistentModelIndex const &index);
 
 		void clearItems();
 	};
