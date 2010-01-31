@@ -2,39 +2,41 @@
 #include <QtCore/QDebug>
 #include <QtGui/QPolygon>
 #include <QtGui/QIcon>
-#include <QUuid>
+#include <QtCore/QUuid>
 
 using namespace qReal;
 using namespace model;
+using namespace details;
 
 Model::Model(EditorManager const &editorManager)
-		: mEditorManager(editorManager)
+	: mEditorManager(editorManager)
 {
-	rootItem = new ModelTreeItem(ROOT_ID, NULL);
+	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
-	if (rootItem->children().count() == 0) {
-		Id elementId(Id::loadFromString("qrm:/Kernel_metamodel/Kernel/Kernel_Diagram"), QUuid::createUuid().toString());
-		if (mEditorManager.hasElement(elementId.type()))
-			addElementToModel(rootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
-	}
 }
 
 Model::~Model()
 {
-	cleanupTree(rootItem);
-	treeItems.clear();
+	cleanupTree(mRootItem);
+	mTreeItems.clear();
 }
 
-bool Model::isDiagram(const Id &id)
+bool Model::isDiagram(Id const &id) const
 {
 	return id.element().contains("Diagram", Qt::CaseInsensitive);
 }
 
 void Model::init()
 {
-	treeItems.insert(ROOT_ID, rootItem);
+	mTreeItems.insert(ROOT_ID, mRootItem);
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
-	loadSubtreeFromClient(rootItem);
+	loadSubtreeFromClient(mRootItem);
+
+	if (mRootItem->children().count() == 0) {
+		Id elementId(Id::loadFromString("qrm:/Kernel_metamodel/Kernel/Kernel_Diagram"), QUuid::createUuid().toString());
+		if (mEditorManager.hasElement(elementId.type()))
+			addElementToModel(mRootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
+	}
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -136,24 +138,17 @@ QString Model::findPropertyName(Id const &id, int const role) const
 	return properties[role - roles::customPropertiesBeginRole];
 }
 
-QVariant Model::headerData( int section, Qt::Orientation orientation, int role ) const
+QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0 ) {
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0)
 		return QVariant("name");
-	} else {
+	else
 		return QVariant();
-	}
 }
 
-int Model::rowCount( const QModelIndex &parent ) const
+int Model::rowCount(QModelIndex const &parent) const
 {
-	ModelTreeItem *parentItem;
-	if (parent.isValid()) {
-		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-	} else {
-		parentItem = rootItem;
-	}
-	return parentItem->children().size();
+	return parentTreeItem(parent)->children().size();
 }
 
 int Model::columnCount(QModelIndex const &parent) const
@@ -164,32 +159,28 @@ int Model::columnCount(QModelIndex const &parent) const
 
 bool Model::removeRows(int row, int count, QModelIndex const &parent)
 {
-	ModelTreeItem *parentItem = rootItem;
-	if (parent.isValid()) {
-		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-	}
+	ModelTreeItem *parentItem = parentTreeItem(parent);
 
-	if (parentItem->children().size() < row + count) {
+	if (parentItem->children().size() < row + count)
 		return false;
-	} else {
+	else {
 		for (int i = row; i < row + count; ++i) {
-			ModelTreeItem * child = parentItem->children().at(i);
-		
+			ModelTreeItem *child = parentItem->children().at(i);
+
 			foreach (Id id, mApi.outgoingLinks(child->id()))
 				mApi.setFrom(id, ROOT_ID);
 			foreach(Id id, mApi.incomingLinks(child->id()))
 				mApi.setTo(id, ROOT_ID);
 
-			removeModelItems(child);		
+			removeModelItems(child);
 
 			// TODO: Убрать копипасту.
 			int childRow = child->row();
 			beginRemoveRows(parent, childRow, childRow);
 			child->parent()->removeChild(child);
-			treeItems.remove(child->id(), child);
-			if (treeItems.count(child->id()) == 0) {
+			mTreeItems.remove(child->id(), child);
+			if (mTreeItems.count(child->id()) == 0)
 				mApi.removeChild(parentItem->id(), child->id());
-			}
 			delete child;
 			endRemoveRows();
 		}
@@ -199,30 +190,30 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 
 QString Model::pathToItem(ModelTreeItem const *item) const
 {
-	if (item != rootItem) {
+	if (item != mRootItem) {
 		QString path;
 		do {
 			item = item->parent();
-			path = item->id().toString() + PATH_DIVIDER + path;
-		} while (item!=rootItem);
+			path = item->id().toString() + ID_PATH_DIVIDER + path;
+		} while (item != mRootItem);
 		return path;
 	}
 	else
 		return ROOT_ID.toString();
 }
 
-void Model::removeConfigurationInClient( ModelTreeItem *item )
+void Model::removeConfigurationInClient(ModelTreeItem const * const item)
 {
 	mApi.removeProperty(item->id(), positionPropertyName(item));
 	mApi.removeProperty(item->id(), configurationPropertyName(item));
 }
 
-QModelIndex Model::index(ModelTreeItem *item)
+QModelIndex Model::index(ModelTreeItem const * const item) const
 {
 	QList<int> rowCoords;
 
 	for (ModelTreeItem const *curItem = item;
-		curItem != rootItem; curItem = curItem->parent())
+		curItem != mRootItem; curItem = curItem->parent())
 	{
 		rowCoords.append(const_cast<ModelTreeItem *>(curItem)->row());
 	}
@@ -236,7 +227,7 @@ QModelIndex Model::index(ModelTreeItem *item)
 	return result;
 }
 
-void Model::removeModelItems( ModelTreeItem *root )
+void Model::removeModelItems(ModelTreeItem *root)
 {
 	foreach (ModelTreeItem *child, root->children()) {
 		removeModelItems(child);
@@ -244,8 +235,8 @@ void Model::removeModelItems( ModelTreeItem *root )
 		beginRemoveRows(index(root),childRow,childRow);
 		removeConfigurationInClient(child);
 		child->parent()->removeChild(child);
-		treeItems.remove(child->id(),child);
-		if (treeItems.count(child->id())==0) {
+		mTreeItems.remove(child->id(),child);
+		if (mTreeItems.count(child->id())==0) {
 			mApi.removeChild(root->id(),child->id());
 		}
 		delete child;
@@ -253,34 +244,26 @@ void Model::removeModelItems( ModelTreeItem *root )
 	}
 }
 
-QModelIndex Model::index( int row, int column, const QModelIndex &parent ) const
+QModelIndex Model::index(int row, int column, QModelIndex const &parent) const
 {
-	ModelTreeItem *parentItem;
-	if (parent.isValid()) {
-		parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-	} else {
-		parentItem = rootItem;
-	}
-	if (parentItem->children().size()<=row) {
+	ModelTreeItem *parentItem = parentTreeItem(parent);
+	if (parentItem->children().size()<=row)
 		return QModelIndex();
-	}
 	ModelTreeItem *item = parentItem->children().at(row);
 	return createIndex(row,column,item);
 }
 
-QModelIndex Model::parent( const QModelIndex &index ) const
+QModelIndex Model::parent(QModelIndex const &index) const
 {
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		ModelTreeItem *parentItem = item->parent();
-		if ((parentItem==rootItem)||(parentItem==NULL)) {
+		if (parentItem == mRootItem || parentItem == NULL)
 			return QModelIndex();
-		} else{
-			return createIndex(parentItem->row(),0,parentItem);
-		}
-	} else {
+		else
+			return createIndex(parentItem->row(), 0, parentItem);
+	} else
 		return QModelIndex();
-	}
 }
 
 Qt::DropActions Model::supportedDropActions() const
@@ -295,7 +278,7 @@ QStringList Model::mimeTypes() const
 	return types;
 }
 
-QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
+QMimeData* Model::mimeData(QModelIndexList const &indexes) const
 {
 	QByteArray data;
 	QDataStream stream(&data, QIODevice::WriteOnly);
@@ -318,19 +301,15 @@ QMimeData* Model::mimeData( const QModelIndexList &indexes ) const
 	return mimeData;
 }
 
-bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent )
+bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
 {
 	Q_UNUSED(row)
 	Q_UNUSED(column)
-	if (action == Qt::IgnoreAction) {
+	if (action == Qt::IgnoreAction)
 		return true;
-	} else {
-		ModelTreeItem *parentItem;
-		if (parent.isValid()) {
-			parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
-		} else {
-			parentItem = rootItem;
-		}
+	else {
+		ModelTreeItem *parentItem = parentTreeItem(parent);
+
 		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 		QDataStream stream(&dragData, QIODevice::ReadOnly);
 		QString idString;
@@ -344,31 +323,28 @@ bool Model::dropMimeData( const QMimeData *data, Qt::DropAction action, int row,
 		Id id = Id::loadFromString(idString);
 		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
-		if (treeItems.contains(id))  // Пока контейнеры не работают, бросать существующие элементы нельзя.
+		if (mTreeItems.contains(id))  // Пока на диаграмме не может быть больше одного экземпляра
+			// одной и той же сущности, бросать существующие элементы нельзя.
 			return false;
 
-		return addElementToModel(parentItem,id,pathToItem,name,position,action) != NULL;
+		return addElementToModel(parentItem, id, pathToItem, name, position, action) != NULL;
 	}
 }
 
-ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id,
-		const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action )
+ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
+	QString const &oldPathToItem, QString const &name, QPointF const &position, Qt::DropAction action)
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
 
-	if (isDiagram(id))
-	{
-		if ((!isDiagram(parentItem->id())) && (parentItem != rootItem))
-		{
+	if (isDiagram(id)) {
+		if (!isDiagram(parentItem->id()) && parentItem != mRootItem) {
 			qDebug() << "Диаграмму нельзя добавить в элемент.";
 			return NULL;
 		}
 	}
-	else
-	{
-		if (parentItem == rootItem)
-		{
+	else {
+		if (parentItem == mRootItem) {
 			qDebug() << "Элемент можно добавить только на диаграмму";
 			return NULL;
 		}
@@ -378,7 +354,7 @@ ModelTreeItem *Model::addElementToModel( ModelTreeItem *parentItem, const Id &id
 	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		parentItem->addChild(item);
-		treeItems.insert(id,item);
+		mTreeItems.insert(id, item);
 		mApi.addChild(parentItem->id(), id);
 		mApi.setProperty(id, "name", name);
 		mApi.setProperty(id, "from", ROOT_ID.toVariant());
@@ -405,13 +381,13 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 	if (!parent.isValid() || element.parent() == parent)
 		return;
 
-	int destinationRow = static_cast<ModelTreeItem*>(parent.internalPointer())->children().size();
+	int destinationRow = parentTreeItem(parent)->children().size();
 
 	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
 		ModelTreeItem *elementItem = static_cast<ModelTreeItem*>(element.internalPointer());
 		QVariant configuration = mApi.property(elementItem->id(), configurationPropertyName(elementItem));
 		elementItem->parent()->removeChild(elementItem);
-		ModelTreeItem *parentItem = static_cast<ModelTreeItem*>(parent.internalPointer());
+		ModelTreeItem *parentItem = parentTreeItem(parent);
 
 		mApi.addParent(elementItem->id(), parentItem->id());
 		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
@@ -433,14 +409,14 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 	}
 }
 
-ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, const Id &id)
+ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		checkProperties(id);
 		parentItem->addChild(item);
-		treeItems.insert(id, item);
+		mTreeItems.insert(id, item);
 	endInsertRows();
 	return item;
 }
@@ -455,9 +431,9 @@ void Model::checkProperties(Id const &id)
 			mApi.setProperty(id, property, "");  // Типа значение по умолчанию.
 }
 
-QPersistentModelIndex Model::rootIndex()
+QPersistentModelIndex Model::rootIndex() const
 {
-	return index(rootItem);
+	return index(mRootItem);
 }
 
 QString Model::positionPropertyName(ModelTreeItem const *item) const
@@ -473,18 +449,17 @@ QString Model::configurationPropertyName(ModelTreeItem const *item) const
 void Model::exterminate()
 {
 	mApi.exterminate();
-	cleanupTree(rootItem);
-	treeItems.clear();
-	delete rootItem;
-	rootItem = new ModelTreeItem(ROOT_ID, NULL);
+	cleanupTree(mRootItem);
+	mTreeItems.clear();
+	delete mRootItem;
+	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	reset();
 	init();
 }
 
 void Model::cleanupTree(ModelTreeItem *root)
 {
-	foreach (ModelTreeItem *childItem, root->children())
-	{
+	foreach (ModelTreeItem *childItem, root->children()) {
 		cleanupTree(childItem);
 		delete childItem;
 	}
@@ -499,4 +474,12 @@ qrRepo::RepoApi const & Model::api() const
 EditorManager const &Model::editorManager() const
 {
 	return mEditorManager;
+}
+
+ModelTreeItem *Model::parentTreeItem(QModelIndex const &parent) const
+{
+	return parent.isValid()
+		? static_cast<ModelTreeItem*>(parent.internalPointer())
+		: mRootItem
+	;
 }

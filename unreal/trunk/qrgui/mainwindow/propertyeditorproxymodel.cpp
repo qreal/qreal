@@ -147,8 +147,8 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	// Атрибуты и их порядок захардкожены в методах data и setData, так что править
 	// аккуратно.
 	mFieldNames.push_front("name");
-	mFieldNames.push_front("metatype");
 	mFieldNames.push_front("repo_id");
+	mFieldNames.push_front("metatype");
 
 	mPseudoAttributesCount = 3;
 	mEditablePseudoAttributesCount = 1;

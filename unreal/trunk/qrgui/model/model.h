@@ -24,7 +24,7 @@ namespace qReal {
 		public:
 			explicit Model(EditorManager const &editorManager);
 			virtual ~Model();
-			QPersistentModelIndex rootIndex();
+			QPersistentModelIndex rootIndex() const;
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 			virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 			virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -45,32 +45,33 @@ namespace qReal {
 			void exterminate();
 
 		protected:
-			QMultiHash<Id, ModelTreeItem*> treeItems;
-			QModelIndex index(ModelTreeItem *item);
-			ModelTreeItem* addElementToModel(ModelTreeItem *parentItem, const Id &id,
+			QMultiHash<Id, details::ModelTreeItem*> mTreeItems;
+			QModelIndex index(details::ModelTreeItem const * const item) const;
+			details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
 				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		private:
 			qrRepo::RepoApi mApi;
-			ModelTreeItem *rootItem;
+			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
 
 			Model(Model const &);  // Копировать модель нельзя
 			Model& operator =(Model const &);  // Присваивать тоже
 
-			QString pathToItem(ModelTreeItem const *item) const;
-			void removeConfigurationInClient(ModelTreeItem *item);
-			void removeModelItems(ModelTreeItem *root);
-			void loadSubtreeFromClient(ModelTreeItem * const parent);
-			ModelTreeItem *loadElement(ModelTreeItem *parentItem, const Id &id);
+			QString pathToItem(details::ModelTreeItem const * const item) const;
+			void removeConfigurationInClient(details::ModelTreeItem const * const item);
+			void removeModelItems(details::ModelTreeItem * const root);
+			void loadSubtreeFromClient(details::ModelTreeItem * const parent);
+			details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const Id &id);
+			details::ModelTreeItem *parentTreeItem(QModelIndex const &parent) const;
 
-			QString positionPropertyName(ModelTreeItem const *item) const;
-			QString configurationPropertyName(ModelTreeItem const *item) const;
+			QString positionPropertyName(details::ModelTreeItem const *item) const;
+			QString configurationPropertyName(details::ModelTreeItem const *item) const;
 			QString findPropertyName(Id const &id, int const role) const;
-			bool isDiagram(const Id &id);
+			bool isDiagram(Id const &id) const;
 
 			void init();
-			void cleanupTree(ModelTreeItem *root);
+			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 		};
 

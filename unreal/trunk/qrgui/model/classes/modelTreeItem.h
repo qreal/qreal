@@ -8,26 +8,30 @@ namespace qReal {
 
 	namespace model {
 
-		class ModelTreeItem
-		{
-		public:
-			typedef QList<ModelTreeItem*> PointerList;
+		namespace details {
 
-			ModelTreeItem(Id const &id, ModelTreeItem *parent);
-			Id id() const;
-			ModelTreeItem *parent() const;
-			void setParent(ModelTreeItem *parent);
-			PointerList children() const;
-			void addChild(ModelTreeItem *child);
-			void removeChild(ModelTreeItem *child);
-			int row();
-			void clearChildren() { mChildren.clear(); }
+			class ModelTreeItem
+			{
+			public:
+				typedef QList<ModelTreeItem*> PointerList;
 
-		private:
-			ModelTreeItem *mParent;
-			const Id mId;
-			PointerList mChildren;
-		};
+				ModelTreeItem(Id const &id, ModelTreeItem *parent);
+				Id id() const;
+				ModelTreeItem *parent() const;
+				void setParent(ModelTreeItem *parent);
+				PointerList children() const;
+				void addChild(ModelTreeItem *child);
+				void removeChild(ModelTreeItem *child);
+				int row();
+				void clearChildren();
+
+			private:
+				ModelTreeItem *mParent;
+				const Id mId;
+				PointerList mChildren;
+			};
+
+		}
 
 	}
 
