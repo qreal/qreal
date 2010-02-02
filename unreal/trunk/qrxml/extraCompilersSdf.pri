@@ -20,7 +20,7 @@ SDF_FILES = $$files($$QREAL_EDITOR_NAME$$quote(\generated\shapes\*.sdf))
 
 for(sdfFile,SDF_FILES) {
 	FILE_NAME_LONG = $${sdfFile}
-	COMPILER_NAME_LONG = $$section(FILE_NAME_LONG,"/",1,1)
+	COMPILER_NAME_LONG = $$basename(FILE_NAME_LONG)
 	COMPILER_NAME = $$section(COMPILER_NAME_LONG,".",0,0)
 	FILE_NAME = $$quote(generated/shapes/)$$COMPILER_NAME$$quote(.sdf)
 	addExtraCompiler($$COMPILER_NAME, $$FILE_NAME)
