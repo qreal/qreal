@@ -438,12 +438,15 @@ QPersistentModelIndex Model::rootIndex() const
 
 QString Model::positionPropertyName(ModelTreeItem const *item) const
 {
-	return "position + " + pathToItem(item);
+	// Здесь раньше был интеллект, который ставил в зависимость имя свойства
+	// от пути до корня диаграммы. Зачем, в общем-то, не понятно. К рассмотрению
+	// этого вопроса надо вернуться, когда восстановят аватаров.
+	return "position";
 }
 
 QString Model::configurationPropertyName(ModelTreeItem const *item) const
 {
-	return "configuration + " + pathToItem(item);
+	return "configuration";
 }
 
 void Model::exterminate()
