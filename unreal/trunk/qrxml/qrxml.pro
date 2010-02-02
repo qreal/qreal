@@ -2,7 +2,6 @@ TEMPLATE = subdirs
 
 SUBDIRS	= \
         activityEditor/activityEditor.pro \
-        hascolEditor/hascolEditor.pro \
 #	bpelEditor/bpelEditor.pro \
 	classEditor/classEditor.pro \
 #	communicationEditor/communicationEditor.pro \
@@ -12,7 +11,7 @@ SUBDIRS	= \
 #	metaEditor/metaEditor.pro \
 #	networkEditor/networkEditor.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
-	packageEditor/packageEditor.pro \
+#	packageEditor/packageEditor.pro \
 #	parallelEditor/parallelEditor.pro \
 #	requirementsEditor/requirementsEditor.pro \
 #	sequenceEditor/sequenceEditor.pro \
