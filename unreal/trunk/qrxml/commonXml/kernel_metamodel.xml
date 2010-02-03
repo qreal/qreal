@@ -382,18 +382,6 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Label">
-				<!-- Просто надпись, не имеет к метамодели UML никакого отношения, как и Diagram, например -->
-				<graphics>
-					<picture sizex="150" sizey="30">
-					</picture>
-					<labels>
-						<label x="0" y="0" textBinded="name"/>
-					</labels>
-				</graphics>
-				<logic>
-				</logic>
-			</node>
 			<node name="Literal Boolean">
 				<logic>
 					<generalizations>
