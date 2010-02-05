@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# ololo
 (cd source-generator && make distclean)
 (cd source-generator && rm -rf generated)
 (cd reposerver && make distclean)
