@@ -34,6 +34,9 @@ namespace qReal {
 			void generateFunctor(Id const &id, utils::OutFile &out);
 			void generateFunctorFormalParameter(Id const &id, utils::OutFile &out);
 			void generatePortMap(Id const &id, utils::OutFile &out);
+			Id generateChain(Id const &startNode, utils::OutFile &out);
+			void generateActivityNode(Id const &id, utils::OutFile &out);
+			Id generateIf(Id const &id, utils::OutFile &out);
 
 			void addError(QString const &errorText);
 

@@ -241,20 +241,72 @@ void HascolGenerator::generateHandler(Id const &id, utils::OutFile &out)
 	out() << "{\n";
 
 	out.incIndent();
-
-	Id currentId = id;
-	while (mApi.outgoingLinks(currentId).count() > 0) {
-		Id const link = mApi.outgoingLinks(currentId)[0];  // Пока ничего паралельного не генерится.
-		currentId = mApi.otherEntityFromLink(link, currentId);
-		if (currentId.element() == "HascolActivity_SendSignalAction") {
-			out() << "send " << mApi.name(currentId) << "\n";
-		} else if (currentId.element() == "HascolActivity_InformSignalAction") {
-				out() << "inform " << mApi.name(currentId) << "\n";
-			}
-
-	}
-
+	generateChain(id, out);
 	out.decIndent();
 
 	out() << "}\n";
+}
+
+Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
+{
+	Id currentId = startNode;
+	while (mApi.outgoingLinks(currentId).count() > 0) {
+
+		if (mApi.incomingLinks(currentId).count() > 1)
+			return currentId;
+
+		if (currentId.element() == "HascolActivity_DecisionNode") {
+			currentId = generateIf(currentId, out);
+		} else if (mApi.outgoingLinks(currentId).count() > 1) {
+			generateActivityNode(currentId, out);
+			Id chainEndId;
+			bool wasOutgoingLink = false;
+			foreach (Id linkId, mApi.outgoingLinks(currentId)) {
+				if (wasOutgoingLink)
+					out() << "|\n";
+				wasOutgoingLink = true;
+				Id chainBeginId = mApi.otherEntityFromLink(linkId, currentId);
+				chainEndId = generateChain(chainBeginId, out);
+			}
+			currentId = chainEndId;
+		}
+
+		generateActivityNode(currentId, out);
+
+		if (mApi.outgoingLinks(currentId).count() > 0) {
+			Id const link = mApi.outgoingLinks(currentId)[0];  // Последовательный участок цепочки.
+			currentId = mApi.otherEntityFromLink(link, currentId);
+		}
+	}
+	return currentId;
+}
+
+void HascolGenerator::generateActivityNode(Id const &id, utils::OutFile &out)
+{
+	if (id.element() == "HascolActivity_SendSignalAction") {
+		out() << "send " << mApi.name(id) << "\n";
+	} else if (id.element() == "HascolActivity_InformSignalAction") {
+		out() << "inform " << mApi.name(id) << "\n";
+	} else if (id.element() == "HascolActivity_Action") {
+		out() << mApi.name(id) << "\n";
+	}
+}
+
+Id HascolGenerator::generateIf(Id const &id, utils::OutFile &out)
+{
+	Id const thenLink = mApi.outgoingLinks(id)[0];
+	out() << "if " << mApi.stringProperty(thenLink, "guard") << " then {\n";
+	out.incIndent();
+	Id const thenChainEnd = generateChain(mApi.otherEntityFromLink(thenLink, id), out);
+	Id const elseLink = mApi.outgoingLinks(id)[1];
+	Id const elseNode = mApi.otherEntityFromLink(elseLink, id);
+	if (elseNode != thenChainEnd) {
+		out.decIndent();
+		out() << "} else {\n";
+		out.incIndent();
+		generateChain(elseNode, out);
+	}
+	out.decIndent();
+	out() << "} fi\n";
+	return thenChainEnd;
 }
