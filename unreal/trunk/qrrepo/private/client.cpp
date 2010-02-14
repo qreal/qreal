@@ -15,7 +15,8 @@ using namespace utils;
 
 bool const failSafe = true;
 
-Client::Client()
+Client::Client(QString const &workingDirectory)
+	: mSaveDirName(workingDirectory)
 {
 	init();
 	loadFromDisk();
@@ -160,7 +161,7 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 
 void Client::loadFromDisk()
 {
-	loadFromDisk(saveDirName);
+	loadFromDisk(mSaveDirName);
 	addChildrenToRootObject();
 }
 
@@ -344,9 +345,15 @@ void Client::save() const
 	saveToDisk();
 }
 
+void Client::saveTo(QString const &workingDir)
+{
+	mSaveDirName = workingDir;
+	saveToDisk();
+}
+
 void Client::saveToDisk() const
 {
-	clearDir(saveDirName);
+	clearDir(mSaveDirName);
 	foreach (LogicObject *object, mObjects.values()) {
 		QString filePath = createDirectory(object->id());
 
@@ -364,9 +371,9 @@ void Client::saveToDisk() const
 	}
 }
 
-QString Client::createDirectory(Id const &id)
+QString Client::createDirectory(Id const &id) const
 {
-	QString dirName = saveDirName;
+	QString dirName = mSaveDirName;
 	QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
@@ -374,7 +381,7 @@ QString Client::createDirectory(Id const &id)
 	}
 
 	QDir dir;
-	dir.rmdir(saveDirName);
+	dir.rmdir(mSaveDirName);
 	dir.mkpath(dirName);
 
 	return dirName + "/" + partsList[partsList.size() - 1];
@@ -495,3 +502,12 @@ void Client::exterminate()
 	init();
 	printDebug();
 }
+
+void Client::open(QString const &workingDir)
+{
+	mSaveDirName = workingDir;
+	mObjects.clear();
+	init();
+	loadFromDisk();
+}
+

@@ -12,12 +12,10 @@ namespace qrRepo {
 
 	namespace details {
 
-		QString const saveDirName = "./save";
-
 		class Client
 		{
 		public:
-			QRREPO_EXPORT Client();
+			QRREPO_EXPORT Client(QString const &workingDirectory);
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
 			qReal::IdList parents(const qReal::Id &id) const;
@@ -35,7 +33,9 @@ namespace qrRepo {
 			void printDebug() const;
 
 			void exterminate();
+			void open(QString const &workingDir);
 			void save() const;
+			void saveTo(QString const &workingDir);
 
 		private:
 			void loadFromDisk();
@@ -48,6 +48,8 @@ namespace qrRepo {
 			QDomDocument loadXmlDocument(QString const &path);
 			void addChildrenToRootObject();
 
+			QString createDirectory(qReal::Id const &id) const;
+
 			static LogicObject *parseLogicObject(QDomElement const &elem);
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);
 			static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
@@ -58,11 +60,11 @@ namespace qrRepo {
 			static QString serializeQVariant(QVariant const &v);
 			static QString serializeQPointF(QPointF const &p);
 			static QString serializeQPolygon(QPolygon const &p);
-			static QString createDirectory(qReal::Id const &id);
 			static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
 			static QDomElement propertiesToXml(LogicObject * const object, QDomDocument &doc);
 
 			QHash<qReal::Id, LogicObject*> mObjects;
+			QString mSaveDirName;
 		};
 
 	}

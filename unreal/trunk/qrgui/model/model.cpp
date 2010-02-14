@@ -8,8 +8,8 @@ using namespace qReal;
 using namespace model;
 using namespace details;
 
-Model::Model(EditorManager const &editorManager)
-	: mEditorManager(editorManager)
+Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
+	:  mApi(workingDirectory), mEditorManager(editorManager)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -449,15 +449,31 @@ QString Model::configurationPropertyName(ModelTreeItem const *item) const
 	return "configuration";
 }
 
-void Model::exterminate()
+void Model::open(QString const &workingDirectory)
 {
-	mApi.exterminate();
+	mApi.open(workingDirectory);
+	reinit();
+}
+
+void Model::saveTo(QString const &workingDirectory)
+{
+	mApi.saveTo(workingDirectory);
+}
+
+void Model::reinit()
+{
 	cleanupTree(mRootItem);
 	mTreeItems.clear();
 	delete mRootItem;
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	reset();
 	init();
+}
+
+void Model::exterminate()
+{
+	mApi.exterminate();
+	reinit();
 }
 
 void Model::cleanupTree(ModelTreeItem *root)

@@ -8,7 +8,7 @@ namespace qrRepo {
 
 	class QRREPO_EXPORT RepoApi {
 	public:
-		RepoApi();
+		RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
 		QString name(qReal::Id const &id) const;
@@ -51,7 +51,9 @@ namespace qrRepo {
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
 		void exterminate();
+		void open(QString const &workingDir);
 		void save() const;
+		void saveTo(QString const &workingDir);
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

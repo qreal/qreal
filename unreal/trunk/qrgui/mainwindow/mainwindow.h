@@ -44,7 +44,9 @@ namespace qReal {
 		void showAbout();
 		void showHelp();
 
+		void open();
 		void save();
+		void saveAs();
 		void print();
 		void makeSvg();
 
@@ -85,6 +87,7 @@ namespace qReal {
 		void deleteFromExplorer();
 		void initCurrentTab(const QModelIndex &rootIndex);
 		void keyPressEvent(QKeyEvent *event);
+		QString getWorkingDir(QString const &dialogWindowTitle);
 	};
 
 }

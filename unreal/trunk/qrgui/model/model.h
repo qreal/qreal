@@ -22,7 +22,7 @@ namespace qReal {
 			Q_OBJECT
 
 		public:
-			explicit Model(EditorManager const &editorManager);
+			explicit Model(EditorManager const &editorManager, QString const &workingDirectory);
 			virtual ~Model();
 			QPersistentModelIndex rootIndex() const;
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -41,6 +41,9 @@ namespace qReal {
 			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 			qrRepo::RepoApi const &api() const;
 			virtual EditorManager const &editorManager() const;
+
+			void open(QString const &workingDirectory);
+			void saveTo(QString const &workingDirectory);
 		public slots:
 			void exterminate();
 
@@ -71,6 +74,7 @@ namespace qReal {
 			bool isDiagram(Id const &id) const;
 
 			void init();
+			void reinit();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 		};

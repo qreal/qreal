@@ -4,7 +4,8 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi()
+RepoApi::RepoApi(QString const &workingDirectory)
+	: mClient(workingDirectory)
 {
 }
 
@@ -200,9 +201,19 @@ void RepoApi::exterminate()
 	mClient.exterminate();
 }
 
+void RepoApi::open(QString const &workingDir)
+{
+	mClient.open(workingDir);
+}
+
 void RepoApi::save() const
 {
 	mClient.save();
+}
+
+void RepoApi::saveTo(QString const &workingDir)
+{
+	mClient.saveTo(workingDir);
 }
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
