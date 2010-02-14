@@ -46,7 +46,10 @@ void HascolGenerator::generateDiagram(Id const &id)
 	QString outputDirectory = mApi.stringProperty(id, "output directory");
 	if (outputDirectory == "")
 		outputDirectory = ".";
-	OutFile out(outputDirectory + "/" + mApi.name(id));
+	OutFile out(outputDirectory + "/" + mApi.name(id) + ".md");
+
+	out() << "using bincompl;\n";  // Сигнатура по умолчанию, определяет основные используемые типы и операции.
+	out() << "\n";
 
 	foreach (Id const element, mApi.children(id)) {
 		if (element.element() == "HascolStructure_Process"
@@ -77,9 +80,20 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		if (child.element() == "HascolStructure_ProcessOperation")
 			generateProcessOperation(child, out);
 
+	bool firstResource = true;
 	foreach (Id const child, mApi.children(id))
-		if (child.element() == "HascolStructure_Resource")
-			generateResource(child, out);
+		if (child.element() == "HascolStructure_Resource") {
+			if (firstResource) {
+				out() << "data\n";
+				out.incIndent();
+			}
+			generateResource(child, firstResource, out);
+			firstResource = false;
+		}
+	if (!firstResource) {
+		out.decIndent();
+		out() << ";\n";
+	}
 
 	foreach (Id const link, mApi.incomingLinks(id)) {
 		if (link.element() == "HascolStructure_UsedProcessRelation") {
@@ -103,7 +117,7 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 
 	out.decIndent();
 
-	out() << "end\n";
+	out() << "end;\n";
 }
 
 void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
@@ -193,9 +207,9 @@ void HascolGenerator::generateProcessOperation(Id const &id, OutFile &out)
 		<< mApi.name(id) << ";\n";
 }
 
-void HascolGenerator::generateResource(Id const &id, OutFile &out)
+void HascolGenerator::generateResource(Id const &id, bool first, OutFile &out)
 {
-	out() << mApi.name(id) << ";\n";
+	out() << (first ? "" : ", ") << mApi.name(id) << "\n";
 }
 
 void HascolGenerator::generateActivity(Id const &id, utils::OutFile &out)
@@ -224,8 +238,11 @@ void HascolGenerator::generateHandler(Id const &id, utils::OutFile &out)
 		Id const link = mApi.outgoingLinks(currentId)[0];  // Пока ничего паралельного не генерится.
 		currentId = mApi.otherEntityFromLink(link, currentId);
 		if (currentId.element() == "HascolActivity_SendSignalAction") {
-			out() << mApi.name(currentId) << "\n";
-		}
+			out() << "send " << mApi.name(currentId) << "\n";
+		} else if (currentId.element() == "HascolActivity_InformSignalAction") {
+				out() << "inform " << mApi.name(currentId) << "\n";
+			}
+
 	}
 
 	out.decIndent();
