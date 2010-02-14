@@ -95,6 +95,10 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		out() << ";\n";
 	}
 
+	foreach (Id const child, mApi.children(id))
+		if (child.element() == "HascolStructure_LetBinding")
+			generateLetBinding(child, out);
+
 	foreach (Id const link, mApi.incomingLinks(id)) {
 		if (link.element() == "HascolStructure_UsedProcessRelation") {
 			Id const usedProcess = mApi.otherEntityFromLink(link, id);
@@ -205,6 +209,11 @@ void HascolGenerator::generateProcessOperation(Id const &id, OutFile &out)
 {
 	out() << mApi.stringProperty(id, "direction") << " "
 		<< mApi.name(id) << ";\n";
+}
+
+void HascolGenerator::generateLetBinding(Id const &id, utils::OutFile &out)
+{
+	out() << "let " << mApi.name(id) << ";\n";
 }
 
 void HascolGenerator::generateResource(Id const &id, bool first, OutFile &out)

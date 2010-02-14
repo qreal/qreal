@@ -27,6 +27,7 @@ namespace qReal {
 			void generateProcess(Id const &id, utils::OutFile &out);
 			void generateProcessTypeBody(Id const &id, utils::OutFile &out);
 			void generateProcessOperation(Id const &id, utils::OutFile &out);
+			void generateLetBinding(Id const &id, utils::OutFile &out);
 			void generateResource(Id const &id, bool first, utils::OutFile &out);
 			void generateActivity(Id const &id, utils::OutFile &out);
 			void generateHandler(Id const &id, utils::OutFile &out);

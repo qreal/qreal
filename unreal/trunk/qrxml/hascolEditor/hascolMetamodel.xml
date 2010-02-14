@@ -120,6 +120,17 @@
 					</properties>
 				</logic>
 			</node>
+			<node name="LetBinding" displayedName="Let Binding">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="0" y="0" text="&lt;b&gt;let&lt;b&gt;"/>
+						<label x="20" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+				</logic>
+			</node>
 			<node name="Functor">
 				<graphics>
 					<picture sizex="250" sizey="210">
