@@ -43,9 +43,11 @@ void RepoApi::removeElement(Id const &id)
 		removeElement(child);
 	}
 
-	foreach (Id const parent, parents(id)) {
-		removeChild(parent, id);
-	}
+// 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
+
+//	foreach (Id const parent, parents(id)) {
+//		removeChild(parent, id);
+//	}
 
 	if (hasProperty(id, "links")) {
 		IdList links = property(id, "links").value<IdList>();
