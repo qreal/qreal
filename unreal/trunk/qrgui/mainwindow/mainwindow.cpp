@@ -157,6 +157,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
 		close();
+	} else if ( keyEvent->key() == Qt::Key_F2 ){
+		save();
 	}
 }
 
