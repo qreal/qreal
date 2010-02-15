@@ -35,6 +35,8 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	cursor.clearSelection();
 	setTextCursor(cursor);
 
+	unsetCursor();
+
 	if (mReadOnly)
 		return;
 
@@ -89,6 +91,7 @@ void ElementTitle::startTextInteraction()
 	QTextCursor cursor = QTextCursor(document());
 	cursor.select(QTextCursor::Document);
 	setTextCursor(cursor);
+	setCursor(Qt::IBeamCursor);
 }
 
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
