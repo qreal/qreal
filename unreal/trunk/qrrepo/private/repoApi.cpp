@@ -35,13 +35,18 @@ void RepoApi::removeChild(Id const &id, Id const &child)
 	mClient.removeChild(id, child);
 }
 
+void RepoApi::removeChildren(qReal::Id const &id)
+{
+	foreach (Id const child, children(id))
+		removeChild(id, child);
+}
+
 void RepoApi::removeElement(Id const &id)
 {
 	Q_ASSERT(id != ROOT_ID);
 
-	foreach (Id const child, children(id)) {
+	foreach (Id const child, children(id))
 		removeElement(child);
-	}
 
 // 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
 

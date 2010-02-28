@@ -13,7 +13,7 @@ namespace qrRepo {
 		class Serializer {
 		public:
 			Serializer(QString const& saveDirName, bool failSafeMode);
-			void setCurrentDir(QString const& saveDirName);
+			void setWorkingDir(QString const& workingDir);
 			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
 			void saveToDisk(QList<LogicObject*> const &objects) const;
 
@@ -35,7 +35,7 @@ namespace qrRepo {
 			static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
 			static QDomElement propertiesToXml(LogicObject * const object, QDomDocument &doc);
 
-			QString mSaveDirName;
+			QString mWorkingDir;
 			bool const mFailSafe;
 		};
 

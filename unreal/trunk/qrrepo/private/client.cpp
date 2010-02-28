@@ -176,7 +176,7 @@ void Client::save() const
 
 void Client::saveTo(QString const &workingDir)
 {
-	serializer.setCurrentDir(workingDir);
+	serializer.setWorkingDir(workingDir);
 	serializer.saveToDisk(mObjects.values());
 }
 
@@ -206,7 +206,7 @@ void Client::exterminate()
 
 void Client::open(QString const &workingDir)
 {
-	serializer.setCurrentDir(workingDir);
+	serializer.setWorkingDir(workingDir);
 	mObjects.clear();
 	init();
 	loadFromDisk();
