@@ -72,6 +72,7 @@ namespace qReal {
 		void exterminate();
 		void generateEditor();
 		void generateToHascol();
+		void parseHascol();
 	private:
 		model::Model *mModel;
 		EditorManager mgr;

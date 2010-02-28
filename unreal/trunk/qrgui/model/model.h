@@ -40,9 +40,11 @@ namespace qReal {
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 			qrRepo::RepoApi const &api() const;
+			qrRepo::RepoApi &mutableApi();
 			virtual EditorManager const &editorManager() const;
 
 			void open(QString const &workingDirectory);
+			void reinit();
 			void saveTo(QString const &workingDirectory);
 		public slots:
 			void exterminate();
@@ -68,13 +70,10 @@ namespace qReal {
 			details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const Id &id);
 			details::ModelTreeItem *parentTreeItem(QModelIndex const &parent) const;
 
-			QString positionPropertyName(details::ModelTreeItem const *item) const;
-			QString configurationPropertyName(details::ModelTreeItem const *item) const;
 			QString findPropertyName(Id const &id, int const role) const;
 			bool isDiagram(Id const &id) const;
 
 			void init();
-			void reinit();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 		};

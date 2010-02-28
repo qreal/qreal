@@ -14,7 +14,7 @@
    <string>QReal</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../qrgui.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -245,7 +245,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="generatorsToolBar">
+  <widget class="QToolBar" name="generatorsToolbar">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -258,6 +258,18 @@
    <addaction name="actionGenerate_to_Hascol"/>
    <addaction name="actionGenerate_to_Java"/>
    <addaction name="actionExport_to_XMI"/>
+  </widget>
+  <widget class="QToolBar" name="parsersToolbar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionParse_Hascol_sources"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
@@ -275,7 +287,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
    <property name="text">
@@ -284,7 +296,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
    <property name="text">
@@ -312,7 +324,7 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -412,7 +424,7 @@
   </action>
   <action name="actionClear">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
@@ -454,6 +466,14 @@
     <string>Open...</string>
    </property>
   </action>
+  <action name="actionParse_Hascol_sources">
+   <property name="text">
+    <string>Parse Hascol sources</string>
+   </property>
+   <property name="toolTip">
+    <string>Build diagrams from existing Hascol sources</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
@@ -464,6 +484,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../qrgui.qrc"/>
+ </resources>
  <connections/>
 </ui>

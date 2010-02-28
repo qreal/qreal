@@ -63,7 +63,7 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			case roles::idRole:
 				return item->id().toVariant();
 			case roles::positionRole:
-				return mApi.property(item->id(), positionPropertyName(item));
+				return mApi.property(item->id(), "position");
 			case roles::fromRole:
 				return mApi.from(item->id()).toVariant();
 			case roles::toRole:
@@ -73,7 +73,7 @@ QVariant Model::data(QModelIndex const &index, int role) const
 			case roles::toPortRole:
 				return mApi.toPort(item->id());
 			case roles::configurationRole:
-				return mApi.property(item->id(), configurationPropertyName(item));
+				return mApi.property(item->id(), "configuration");
 		}
 		if (role >= roles::customPropertiesBeginRole) {
 			QString selectedProperty = findPropertyName(item->id(), role);
@@ -96,10 +96,10 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 			mApi.setName(item->id(), value.toString());
 			break;
 		case roles::positionRole:
-			mApi.setProperty(item->id(), positionPropertyName(item), value);
+			mApi.setProperty(item->id(), "position", value);
 			break;
 		case roles::configurationRole:
-			mApi.setProperty(item->id(), configurationPropertyName(item), value);
+			mApi.setProperty(item->id(), "configuration", value);
 			break;
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
@@ -167,7 +167,7 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 		for (int i = row; i < row + count; ++i) {
 			ModelTreeItem *child = parentItem->children().at(i);
 
-			mApi.removeElement(child->id());	
+			mApi.removeElement(child->id());
 			removeModelItems(child);
 
 			// TODO: Убрать копипасту.
@@ -200,8 +200,8 @@ QString Model::pathToItem(ModelTreeItem const *item) const
 
 void Model::removeConfigurationInClient(ModelTreeItem const * const item)
 {
-	mApi.removeProperty(item->id(), positionPropertyName(item));
-	mApi.removeProperty(item->id(), configurationPropertyName(item));
+	mApi.removeProperty(item->id(), "position");
+	mApi.removeProperty(item->id(), "configuration");
 }
 
 QModelIndex Model::index(ModelTreeItem const * const item) const
@@ -226,7 +226,7 @@ QModelIndex Model::index(ModelTreeItem const * const item) const
 void Model::removeModelItems(ModelTreeItem *root)
 {
 	foreach (ModelTreeItem *child, root->children()) {
-		mApi.removeElement(child->id());	
+		mApi.removeElement(child->id());
 		removeModelItems(child);
 		int childRow = child->row();
 		beginRemoveRows(index(root),childRow,childRow);
@@ -285,7 +285,7 @@ QMimeData* Model::mimeData(QModelIndexList const &indexes) const
 			stream << item->id().toString();
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name");
-			stream << mApi.property(item->id(), positionPropertyName(item)).toPointF();
+			stream << mApi.property(item->id(), "position").toPointF();
 		} else {
 			stream << ROOT_ID.toString();
 			stream << QString();
@@ -359,8 +359,8 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mApi.setProperty(id, "fromPort", 0.0);
 		mApi.setProperty(id, "toPort", 0.0);
 		mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, positionPropertyName(item), position);
-		mApi.setProperty(id, configurationPropertyName(item), QVariant(QPolygon()));
+		mApi.setProperty(id, "position", position);
+		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
 		QStringList properties = mEditorManager.getPropertyNames(id.type());
 		foreach (QString property, properties) {
@@ -382,7 +382,7 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 
 	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
 		ModelTreeItem *elementItem = static_cast<ModelTreeItem*>(element.internalPointer());
-		QVariant configuration = mApi.property(elementItem->id(), configurationPropertyName(elementItem));
+		QVariant configuration = mApi.property(elementItem->id(), "configuration");
 		elementItem->parent()->removeChild(elementItem);
 		ModelTreeItem *parentItem = parentTreeItem(parent);
 
@@ -392,8 +392,8 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 		elementItem->setParent(parentItem);
 		parentItem->addChild(elementItem);
 
-		mApi.setProperty(elementItem->id(), positionPropertyName(elementItem), position);
-		mApi.setProperty(elementItem->id(), configurationPropertyName(elementItem), configuration);
+		mApi.setProperty(elementItem->id(), "position", position);
+		mApi.setProperty(elementItem->id(), "configuration", configuration);
 		endMoveRows();
 	}
 }
@@ -431,19 +431,6 @@ void Model::checkProperties(Id const &id)
 QPersistentModelIndex Model::rootIndex() const
 {
 	return index(mRootItem);
-}
-
-QString Model::positionPropertyName(ModelTreeItem const *item) const
-{
-	// Здесь раньше был интеллект, который ставил в зависимость имя свойства
-	// от пути до корня диаграммы. Зачем, в общем-то, не понятно. К рассмотрению
-	// этого вопроса надо вернуться, когда восстановят аватаров.
-	return "position";
-}
-
-QString Model::configurationPropertyName(ModelTreeItem const *item) const
-{
-	return "configuration";
 }
 
 void Model::open(QString const &workingDirectory)
@@ -499,3 +486,9 @@ ModelTreeItem *Model::parentTreeItem(QModelIndex const &parent) const
 		: mRootItem
 	;
 }
+
+qrRepo::RepoApi& Model::mutableApi()
+{
+	return mApi;
+}
+

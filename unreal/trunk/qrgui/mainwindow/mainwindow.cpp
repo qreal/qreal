@@ -23,6 +23,7 @@
 #include "../generators/java/javaHandler.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
+#include "../parsers/hascol/hascolParser.h"
 
 using namespace qReal;
 
@@ -79,6 +80,8 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
+
+	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -490,9 +493,8 @@ void MainWindow::changeMiniMapSource( int index )
 	if (index != -1) {
 		ui.tabs->setEnabled(true);
 		ui.minimapView->setScene(getCurrentTab()->scene());
-	} else {
+	} else
 		ui.tabs->setEnabled(false);
-	}
 }
 
 void qReal::MainWindow::closeTab( int index )
@@ -506,9 +508,7 @@ void MainWindow::exterminate()
 {
 	int tabCount = ui.tabs->count();
 	for (int i = 1; i < tabCount; i++)
-	{
 		closeTab(i);
-	}
 	mModel->exterminate();
 }
 
@@ -516,4 +516,15 @@ void MainWindow::generateEditor()
 {
 	EditorGeneratorDialog editorGeneratorDialog(mModel->api());
 	editorGeneratorDialog.exec();
+}
+
+void MainWindow::parseHascol()
+{
+	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
+	if (fileNames.empty())
+		return;
+
+	parsers::HascolParser parser(mModel->mutableApi(), mgr);
+	parser.parse(fileNames);
+	mModel->reinit();
 }

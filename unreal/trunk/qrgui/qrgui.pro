@@ -40,6 +40,9 @@ include (kernel/kernel.pri)
 # "Встроенные" генераторы
 include (generators/generators.pri)
 
+# "Встроенные" средства реверс-инжиниринга
+include (parsers/parsers.pri)
+
 HEADERS += ../qrxml/editorinterface.h
 
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
