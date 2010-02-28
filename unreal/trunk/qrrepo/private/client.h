@@ -2,11 +2,10 @@
 
 #include "../../qrgui/kernel/definitions.h"
 #include "classes/logicObject.h"
+#include "serializer.h"
 #include "qrRepoGlobal.h"
 
-#include <QVariant>
 #include <QHash>
-#include <QtXml/QDomDocument>
 
 namespace qrRepo {
 
@@ -38,33 +37,13 @@ namespace qrRepo {
 			void saveTo(QString const &workingDir);
 
 		private:
-			void loadFromDisk();
-			void saveToDisk() const;
 			void init();
 
-			// TODO: Вынести всё, что относится к сериализации, в отдельный класс,
-			// как только это переложат в qrgui.
-			void loadFromDisk(QString const &currentPath);
-			QDomDocument loadXmlDocument(QString const &path);
+			void loadFromDisk();
 			void addChildrenToRootObject();
 
-			QString createDirectory(qReal::Id const &id) const;
-
-			static LogicObject *parseLogicObject(QDomElement const &elem);
-			static QVariant parseValue(QString const &typeName, QString const &valueStr);
-			static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
-			static bool loadProperties(QDomElement const &elem, LogicObject &object);
-			static QPointF parsePointF(QString const &str);
-
-			static void clearDir(QString const &path);
-			static QString serializeQVariant(QVariant const &v);
-			static QString serializeQPointF(QPointF const &p);
-			static QString serializeQPolygon(QPolygon const &p);
-			static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
-			static QDomElement propertiesToXml(LogicObject * const object, QDomDocument &doc);
-
 			QHash<qReal::Id, LogicObject*> mObjects;
-			QString mSaveDirName;
+			Serializer serializer;
 		};
 
 	}
