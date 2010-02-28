@@ -22,17 +22,24 @@ namespace qReal {
 
 			void parse(QStringList const &files);
 		private:
-			Id mImportedDiagramId;
+			Id mImportedPortMappingDiagramId;
+			Id mImportedStructureDiagramId;
 
 			qrRepo::RepoApi &mApi;
 			EditorManager const &mEditorManager;
 
+			Id initDiagram(QString const &diagramName, QString const &diagramType);
 			Id addElement(Id const &parent, Id const &elementType, QString const &name);
 			void parseFile(QString const &fileName);
 			void parseProcess(QDomElement const &element);
-			void parsePorts(QDomNodeList const &ports, QString const &direction, Id const &parent);
+			void parsePorts(QDomNodeList const &ports, QString const &direction
+				, Id const &parentOnAPortMap, Id const &parentOnAStructure);
+			void initClassifierFields(Id const &classifier);
 
-			void doLayout();
+			void doLayout(Id const &diagram, unsigned cellWidth, unsigned cellHeight);
+			void doPortMappingLayout();
+			void doStructureLayout();
+			void doPlugsLayout(Id const &parent);
 			void doPortsLayout(Id const &parent);
 			void doLayoutForPortsType(Id const &parent, unsigned margin, QString const &direction, unsigned count);
 		};
