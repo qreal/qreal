@@ -4,8 +4,9 @@
 
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
-
 #include <QtXml/QDomDocument>
+
+#include "math.h"
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
@@ -34,9 +35,10 @@ void HascolParser::parse(QStringList const &files)
 	if (mImportedDiagramId == Id())
 		mImportedDiagramId = addElement(ROOT_ID, importedDiagramType, "Imported diagram");
 
-	foreach (QString file, files) {
+	foreach (QString file, files)
 		parseFile(file);
-	}
+
+	doLayout();
 }
 
 Id HascolParser::addElement(Id const &parent, Id const &elementType, QString const &name)
@@ -66,7 +68,7 @@ void HascolParser::parseFile(QString const& fileName)
 		QDomElement md = list.at(i).toElement();
 		QDomNodeList children = md.childNodes();
 		for(unsigned j = 0; j < children.length(); ++j) {
-			QDomElement child = children.at(i).toElement();
+			QDomElement child = children.at(j).toElement();
 			if (child.isElement()) {
 				parseProcess(child.toElement());
 			}
@@ -120,5 +122,56 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 		Id attrType = Id(baseId, "HascolPortMapping_Port");
 		Id portId = addElement(parent, attrType, portName);
 		mApi.setProperty(portId, "direction", direction);
+	}
+}
+
+void HascolParser::doLayout() {
+	unsigned count = mApi.children(mImportedDiagramId).count();
+	unsigned rowWidth = ceil(sqrt(count));
+	unsigned currentRow = 0;
+	unsigned currentColumn = 0;
+	foreach(Id element, mApi.children(mImportedDiagramId)) {
+		mApi.setProperty(element, "position", QPointF(currentColumn * 300, currentRow * 150));
+		doPortsLayout(element);
+		++currentColumn;
+		if (currentColumn >= rowWidth) {
+			currentColumn = 0;
+			++currentRow;
+		}
+	}
+}
+
+void HascolParser::doPortsLayout(Id const &parent)
+{
+	unsigned inputPorts = 0;
+	unsigned outputPorts = 0;
+	foreach(Id element, mApi.children(parent)) {
+		if (mApi.hasProperty(element, "direction")) {
+			if (mApi.stringProperty(element, "direction") == "in")
+				++inputPorts;
+			else if (mApi.stringProperty(element, "direction") == "out")
+				++outputPorts;
+		}
+	}
+
+	doLayoutForPortsType(parent, 15, "in", inputPorts);
+	doLayoutForPortsType(parent, 175, "out", outputPorts);
+}
+
+void HascolParser::doLayoutForPortsType(Id const &parent, unsigned margin, QString const &direction, unsigned count)
+{
+	unsigned const startY = 0;
+	unsigned const endY = 100;
+
+	double step = (endY - startY) / (count + 1);
+	unsigned current = 1;
+
+	foreach(Id element, mApi.children(parent)) {
+		if (mApi.hasProperty(element, "direction")) {
+			if (mApi.stringProperty(element, "direction") == direction) {
+				mApi.setProperty(element, "position", QPointF(margin, startY + step * current));
+				++current;
+			}
+		}
 	}
 }
