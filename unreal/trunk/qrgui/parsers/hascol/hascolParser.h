@@ -30,6 +30,7 @@ namespace qReal {
 
 			Id initDiagram(QString const &diagramName, QString const &diagramType);
 			Id addElement(Id const &parent, Id const &elementType, QString const &name);
+			void preprocessFile(QString const &fileName);
 			void parseFile(QString const &fileName);
 			void parseProcess(QDomElement const &element);
 			void parsePorts(QDomNodeList const &ports, QString const &direction

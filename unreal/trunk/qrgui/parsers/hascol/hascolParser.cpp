@@ -5,6 +5,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtXml/QDomDocument>
+#include <QtCore/QProcess>
 
 #include "math.h"
 
@@ -25,11 +26,30 @@ void HascolParser::parse(QStringList const &files)
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");
 	mApi.setProperty(mImportedStructureDiagramId, "output directory", "");
 
-	foreach (QString file, files)
-		parseFile(file);
+	foreach (QString file, files) {
+		preprocessFile(file);
+		parseFile(file + ".xml");
+	}
 
 	doPortMappingLayout();
 	doStructureLayout();
+}
+
+void HascolParser::preprocessFile(QString const &fileName)
+{
+	QProcess preprocessor;
+	QStringList args;
+
+	args.append("-I");
+	args.append("\"%COOL_ROOT%/signature\"");
+
+	args.append(fileName);
+
+	args.append("-o");
+	args.append(fileName + ".xml");
+
+	preprocessor.start("hascolStructur2xml.byte.exe", args);
+	preprocessor.waitForFinished();
 }
 
 Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType) {
