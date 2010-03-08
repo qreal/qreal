@@ -150,7 +150,7 @@ void HascolParser::parseProcess(QDomElement const &element)
 	Id structureElementType = functor ? Id(structureBaseId, "HascolStructure_Functor")
 		: Id(structureBaseId, "HascolStructure_Process");
 
-	Id processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, name);
+	Id processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
 	Id processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
 	initClassifierFields(processOnAStructure);
 
@@ -185,11 +185,13 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 			parameters += paramValue + ", ";
 		}
 		parameters.chop(2);
-		portName += "(" + parameters + ")";
 
+		// Порты на диаграмме отображения портов должны быть без параметров.
 		Id attrType = Id(portMappingBaseId, "HascolPortMapping_Port");
 		Id portId = addElement(parentOnAPortMap, attrType, portName);
 		mApi.setProperty(portId, "direction", direction);
+
+		portName += "(" + parameters + ")";
 
 		Id structureAttrType = Id(structureBaseId, "HascolStructure_ProcessOperation");
 		Id plugId = addElement(parentOnAStructure, structureAttrType, portName);
