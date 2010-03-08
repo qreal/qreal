@@ -24,6 +24,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
 #include "../parsers/hascol/hascolParser.h"
+#include "errorReporter.h"
 
 using namespace qReal;
 
@@ -525,6 +526,9 @@ void MainWindow::parseHascol()
 		return;
 
 	parsers::HascolParser parser(mModel->mutableApi(), mgr);
-	parser.parse(fileNames);
+	gui::ErrorReporter errors = parser.parse(fileNames);
+
+	errors.showErrors();
+
 	mModel->reinit();
 }

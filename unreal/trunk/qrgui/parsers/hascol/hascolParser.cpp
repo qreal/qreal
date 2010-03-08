@@ -14,13 +14,14 @@
 
 using namespace qReal;
 using namespace parsers;
+using gui::ErrorReporter;
 
 HascolParser::HascolParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager)
+	: mApi(api), mEditorManager(editorManager), mErrorReporter()
 {
 }
 
-void HascolParser::parse(QStringList const &files)
+ErrorReporter HascolParser::parse(QStringList const &files)
 {
 	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMapping_HascolPortMappingDiagram");
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");
@@ -33,6 +34,8 @@ void HascolParser::parse(QStringList const &files)
 
 	doPortMappingLayout();
 	doStructureLayout();
+
+	return mErrorReporter;
 }
 
 void HascolParser::preprocessFile(QString const &fileName)
@@ -50,6 +53,19 @@ void HascolParser::preprocessFile(QString const &fileName)
 
 	preprocessor.start("hascolStructur2xml.byte.exe", args);
 	preprocessor.waitForFinished();
+
+	if (preprocessor.exitStatus() == QProcess::CrashExit)
+		mErrorReporter.addError("Hascol preprocessor crashed.");
+	else if (preprocessor.exitCode() != 0)
+		mErrorReporter.addError(QString("Hascol preprocessor finished with error code %1").arg(preprocessor.exitCode()));
+
+	mErrorReporter.addInformation(QString("Preprocessed file %1").arg(fileName));
+	QByteArray standardOutput = preprocessor.readAllStandardOutput();
+	if (!standardOutput.isEmpty())
+		mErrorReporter.addInformation(QString("Output stream: %1").arg(standardOutput.data()));
+	QByteArray standardError = preprocessor.readAllStandardError();
+	if (!standardError.isEmpty())
+		mErrorReporter.addInformation(QString("Error stream: %1").arg(standardError.data()));
 }
 
 Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType) {
