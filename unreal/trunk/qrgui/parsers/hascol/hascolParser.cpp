@@ -43,13 +43,10 @@ void HascolParser::preprocessFile(QString const &fileName)
 	QProcess preprocessor;
 	QStringList args;
 
-	args.append("-I");
-	args.append("\"%COOL_ROOT%/signature\"");
-
-	args.append(fileName);
-
-	args.append("-o");
-	args.append(fileName + ".xml");
+	QString const coolRoot = QProcessEnvironment::systemEnvironment().value("COOL_ROOT", ".");
+	args << "-I" << coolRoot + "/signature";
+	args << fileName;
+	args << "-o" << fileName + ".xml";
 
 	preprocessor.start("hascolStructur2xml.byte.exe", args);
 	preprocessor.waitForFinished();
@@ -68,7 +65,8 @@ void HascolParser::preprocessFile(QString const &fileName)
 		mErrorReporter.addInformation(QString("Error stream: %1").arg(standardError.data()));
 }
 
-Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType) {
+Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType)
+{
 	Id result;
 	Id const diagramTypeId = Id("HascolMetamodel", "HascolPortMapping", diagramType);
 
