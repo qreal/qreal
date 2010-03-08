@@ -18,10 +18,8 @@ HascolGenerator::HascolGenerator(qrRepo::RepoApi const &api)
 {
 }
 
-QString HascolGenerator::generate()
+gui::ErrorReporter HascolGenerator::generate()
 {
-	mErrorText = "";
-
 	Id repoId = ROOT_ID;
 	IdList rootDiagrams = mApi.children(repoId);
 
@@ -38,7 +36,7 @@ QString HascolGenerator::generate()
 			generateDiagram(diagram);
 	}
 
-	return mErrorText;
+	return mErrorReporter;
 }
 
 void HascolGenerator::generateDiagram(Id const &id)
@@ -139,6 +137,11 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 					bool first = true;
 					foreach (Id const port, mApi.children(instanceChild)) {
 						if (port.element() == "HascolPortMapping_Port") {
+							if (mApi.links(port).isEmpty()) {
+								mErrorReporter.addWarning("Port without connections", port);
+								continue;
+							}
+
 							Id const link = mApi.links(port).at(0);
 							Id const mappedPort = mApi.otherEntityFromLink(link, port);
 

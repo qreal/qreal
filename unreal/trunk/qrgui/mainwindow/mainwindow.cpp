@@ -474,12 +474,8 @@ void MainWindow::generateToHascol()
 {
 	generators::HascolGenerator hascolGenerator(mModel->api());
 
-	QString const errors = hascolGenerator.generate();
-
-	if (!errors.isEmpty())
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Errors list: \n" + errors);
-	else
-		QMessageBox::information(this, tr("finished"), "Export is finished");
+	gui::ErrorReporter const errors = hascolGenerator.generate();
+	errors.showErrors("Generation finished successfully");
 
 	qDebug() << "Done.";
 }
@@ -528,7 +524,7 @@ void MainWindow::parseHascol()
 	parsers::HascolParser parser(mModel->mutableApi(), mgr);
 	gui::ErrorReporter errors = parser.parse(fileNames);
 
-	errors.showErrors();
+	errors.showErrors("Parsing is finished");
 
 	mModel->reinit();
 }

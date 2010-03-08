@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include "../../kernel/ids.h"
+#include "../../mainwindow/errorReporter.h"
 
 namespace qrRepo {
 	class RepoApi;
@@ -21,7 +22,7 @@ namespace qReal {
 		public:
 			explicit HascolGenerator(qrRepo::RepoApi const &api);
 
-			QString generate();
+			gui::ErrorReporter generate();
 		private:
 			void generateDiagram(Id const &id);
 			void generateProcess(Id const &id, utils::OutFile &out);
@@ -38,10 +39,8 @@ namespace qReal {
 			void generateActivityNode(Id const &id, utils::OutFile &out);
 			Id generateIf(Id const &id, utils::OutFile &out);
 
-			void addError(QString const &errorText);
-
 			qrRepo::RepoApi const &mApi;
-			QString mErrorText;
+			gui::ErrorReporter mErrorReporter;
 
 			QList<Id> mPortMappingDiagrams;
 			QList<Id> mActivityDiagrams;

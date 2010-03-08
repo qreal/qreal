@@ -52,19 +52,23 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	mErrors.append(error);
 }
 
-void ErrorReporter::showErrors() const
+void ErrorReporter::showErrors(QString const &successMessage) const
 {
-	if (mErrors.isEmpty())
-		return;
+	QString const windowTitle = "Results";
 
-	QString message;
-	foreach (Error error, mErrors)
-	{
-		message += severityMessage(error) + " ";
-		message += error.message() + "\n";
+	if (mErrors.isEmpty()) {
+		QMessageBox::information(NULL, windowTitle, successMessage);
+		return;
 	}
 
-	QString const windowTitle = "Results";
+	QString message;
+	foreach (Error error, mErrors) {
+		message += severityMessage(error) + " ";
+		message += error.message() + "\n";
+		if (error.position() != ROOT_ID)
+			message += "    at " + error.position().toString() + "\n";
+	}
+
 	Error::Severity const totalSeverity = maxSeverity();
 	switch (totalSeverity) {
 	case Error::information:
