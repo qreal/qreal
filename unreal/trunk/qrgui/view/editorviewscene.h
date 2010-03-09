@@ -45,6 +45,8 @@ public:
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
 
+	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
+
 protected:
 	/** @brief Обработать начало события drag'n'drop */
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );

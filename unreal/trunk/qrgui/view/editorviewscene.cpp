@@ -86,6 +86,16 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 	Q_UNUSED(event);
 }
 
+bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
+{
+	bool allowed = false;
+	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container)){
+		if (candidate.element() ==  type.editor() )
+			allowed = true;
+	}	
+	return allowed;
+}
+
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_ASSERT(mWindow);  // Значение mWindow должно быть инициализировано
@@ -129,12 +139,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		delete e;
 
 	if( newParent ){
-		bool allowed = false;
-		foreach (qReal::Id type, mWindow->manager()->getContainedTypes(newParent->uuid())){
-			if (id.element() ==  type.editor() )
-				allowed = true;
-		}	
-		if (!allowed){
+		if (!canBeContainedBy(newParent->uuid(), id)){
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
 		}
