@@ -160,6 +160,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList diagrams() const;\n"
 		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
 		<< "\n"
+		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
+		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
@@ -187,6 +189,7 @@ void XmlCompiler::generatePluginSource()
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateProperties(out);
+	generateContainedTypes(out);
 }
 
 void XmlCompiler::generateIncludes(OutFile &out)
@@ -251,13 +254,13 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 	out() << "UML::Element* " << mPluginName
 		<< "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
-	bool notIsFirst = false;
+	bool isNotFirst = false;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
-			notIsFirst |= type->generateObjectRequestString(out, notIsFirst);
+			isNotFirst |= type->generateObjectRequestString(out, isNotFirst);
 
-	if (notIsFirst) {
+	if (isNotFirst) {
 		out() << "	else {\n"
 			<< "		Q_ASSERT(!\"Request for creation of an element with unknown name\");\n"
 			<< "		return NULL;\n"
@@ -275,14 +278,31 @@ void XmlCompiler::generateProperties(OutFile &out)
 		<< "{\n"
 		<< "\tQStringList result;\n";
 
-	bool notIsFirst = false;
+	bool isNotFirst = false;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
-			notIsFirst |= type->generateProperties(out, notIsFirst);
+			isNotFirst |= type->generateProperties(out, isNotFirst);
 
 	out() << "\treturn result;\n"
 		<< "}\n";
+}
+
+void XmlCompiler::generateContainedTypes(OutFile &out)
+{
+	out() << "QStringList " << mPluginName << "Plugin::getTypesContainedBy(QString const &element) const\n"
+		<< "{\n"
+		<< "\tQStringList result;\n";
+
+	bool isNotFirst = false;
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
+			isNotFirst |= type->generateContainedTypes(out, isNotFirst);
+
+	out() << "\treturn result;\n"
+		<< "}\n";
+		
 }
 
 void XmlCompiler::generateResourceFile()

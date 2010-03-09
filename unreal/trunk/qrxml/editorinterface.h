@@ -22,6 +22,8 @@ namespace qReal {
 		virtual QStringList diagrams() const = 0;
 		virtual QStringList elements(QString const &diagram) const = 0;
 
+		virtual QStringList getTypesContainedBy(QString const &element) const = 0;
+
 		virtual QIcon getIcon(QString const &diagram, QString const &element) const = 0;
 		virtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const = 0;
 		virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const = 0;

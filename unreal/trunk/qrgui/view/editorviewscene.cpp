@@ -118,7 +118,8 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	UML::Element *newParent = NULL;
 
 	// TODO: возможно, это можно сделать проще
-	UML::Element *e = mWindow->manager()->graphicalObject(qReal::Id::loadFromString(uuid));
+	qReal::Id id = qReal::Id::loadFromString(uuid);
+	UML::Element *e = mWindow->manager()->graphicalObject(id);
 	//	= UML::GUIObjectFactory(type_id);
 
 	if (dynamic_cast<UML::NodeElement*>(e))
@@ -127,6 +128,18 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	if (e)
 		delete e;
 
+	if( newParent ){
+		bool allowed = false;
+		foreach (qReal::Id type, mWindow->manager()->getContainedTypes(newParent->uuid())){
+			if (id.element() ==  type.editor() )
+				allowed = true;
+		}	
+		if (!allowed){
+			QMessageBox::critical(0, "Error!", "[some text]");
+			return;
+		}
+	}	
+ 
 	stream << uuid;				// uuid
 	stream << pathToItem;
 	stream << name;

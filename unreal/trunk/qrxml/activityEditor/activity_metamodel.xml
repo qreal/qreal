@@ -202,6 +202,10 @@
                         <property type="Activity Group" name="topLevelGroups"/>
                         <property type="Activity Partition" name="topLevelPartitions"/>
                     </properties>
+					<container>
+						<contains type="Activity Diagram::Action"/>
+						<contains type="Activity Diagram::Accept Event Action"/>
+					</container>
                 </logic>
             </node>
             <edge name="Activity Edge">

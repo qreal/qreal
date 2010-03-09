@@ -35,3 +35,10 @@ bool NonGraphicType::generateProperties(OutFile &out, bool notIsFirst)
 	Q_UNUSED(notIsFirst)
 	return false;
 }
+
+bool NonGraphicType::generateContainedTypes(OutFile &out, bool notIsFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(notIsFirst)
+	return false;
+}

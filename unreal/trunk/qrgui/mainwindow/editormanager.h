@@ -32,6 +32,8 @@ namespace qReal {
 		QIcon icon(Id const &id) const;
 		UML::Element* graphicalObject(Id const &id) const;
 
+		IdList getContainedTypes(const Id &id) const;
+
 		bool isEditor(Id const &id) const;
 		bool isDiagram(Id const &id) const;
 		bool isElement(Id const &id) const;

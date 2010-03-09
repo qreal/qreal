@@ -14,6 +14,7 @@ public:
 	virtual void generateNameMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst);
 	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst);
+	virtual bool generateContainedTypes(utils::OutFile &out, bool notIsFirst);
 protected:
 	NonGraphicType();
 };

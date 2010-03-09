@@ -8,6 +8,7 @@ SUBDIRS	= \
 #	componentEditor/componentEditor.pro \
 #	deploymentEditor/deploymentEditor.pro \
 	kernelEditor/kernelEditor.pro \
+	hascolEditor/hascolEditor.pro \
 #	metaEditor/metaEditor.pro \
 #	networkEditor/networkEditor.pro \
 #	orthodoxEditor/orthodoxEditor.pro \

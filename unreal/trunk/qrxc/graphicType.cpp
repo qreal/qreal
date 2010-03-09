@@ -58,7 +58,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 			return false;
 		}
 		mGraphics = element.firstChildElement("graphics");
-		return initParents() && initProperties() && initAssociations() && initGraphics() && initLabels();
+		return initParents() && initProperties() && initContainers() && initAssociations() && initGraphics() && initLabels();
 	}
 	else
 		return false;
@@ -108,6 +108,34 @@ bool GraphicType::initProperties()
 		}
 		if (!addProperty(property))
 		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool GraphicType::initContainers()
+{
+	QDomElement containerElement = mLogic.firstChildElement("container");
+	if (containerElement.isNull())
+	{
+		return true;
+	}
+	for (QDomElement childElement = containerElement.firstChildElement("contains"); 
+		!childElement.isNull();
+		childElement = childElement.nextSiblingElement("contains"))
+	{
+		QString typeName = NameNormalizer::normalize(childElement.attribute("type"));
+
+		if (typeName == "") {
+			qDebug() << "Error: anonymous type to be contained by " << qualifiedName();
+			return false;
+		}
+
+		if (!mContains.contains(typeName))
+			mContains.append(typeName);
+		else {
+			qDebug() << "ERROR: type to contained by" << qualifiedName() << "duplicated";
 			return false;
 		}
 	}
@@ -207,21 +235,21 @@ void GraphicType::generateNameMapping(OutFile &out)
 	}
 }
 
-bool GraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
+bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	if (mVisible) {
 		QString name = NameNormalizer::normalize(qualifiedName());
-		generateOneCase(out, notIsFirst);
+		generateOneCase(out, isNotFirst);
 		out() << "\t\treturn new UML::" << name << "();\n";
 		return true;
 	}
 	return false;
 }
 
-bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
+bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 {
 	if (mVisible) {
-		generateOneCase(out, notIsFirst);
+		generateOneCase(out, isNotFirst);
 
 		QString propertiesString;
 		bool isFirstProperty = true;
@@ -259,11 +287,11 @@ bool GraphicType::generateProperties(OutFile &out, bool notIsFirst)
 	return false;
 }
 
-void GraphicType::generateOneCase(OutFile &out, bool notIsFirst)
+void GraphicType::generateOneCase(OutFile &out, bool isNotFirst)
 {
 	QString name = NameNormalizer::normalize(qualifiedName());
 
-	if (!notIsFirst)
+	if (!isNotFirst)
 		out() << "\tif (element == \"" << name << "\")\n";
 	else
 		out() << "\telse if (element == \"" << name << "\")\n";
@@ -273,4 +301,26 @@ QString GraphicType::resourceName(QString const &resourceType) const
 {
 	QString name = NameNormalizer::normalize(qualifiedName());
 	return name + resourceType + ".sdf";
+}
+
+bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
+{
+	if (mContains.isEmpty())
+		return true;
+
+	QString name = NameNormalizer::normalize(qualifiedName());
+
+	if (isNotFirst)
+		out() << "\tif (element == \"" << name << "\")\n";
+	else
+		out() << "\telse if (element == \"" << name << "\")\n";
+	
+	out() << "\t\tresult ";
+	foreach (QString type, mContains)
+	{
+		out() << "<< \"" << type << "\" ";
+	}
+	
+	out() << ";\n";
+	return true;
 }

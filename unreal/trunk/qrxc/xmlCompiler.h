@@ -35,5 +35,6 @@ private:
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
+	void generateContainedTypes(utils::OutFile &out);
 	void generateResourceFile();
 };

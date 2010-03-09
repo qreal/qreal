@@ -17,8 +17,9 @@ public:
 	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst);
-	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst);
+	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
+	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
+	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 
 protected:
 	QDomElement mLogic;
@@ -29,6 +30,7 @@ protected:
 	int mWidth;
 	int mHeight;
 	QList<Label*> mLabels;
+	QStringList mContains;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -47,10 +49,11 @@ private:
 
 	bool initParents();
 	bool initProperties();
+	bool initContainers();
 	virtual bool initAssociations() = 0;
 	virtual bool initGraphics() = 0;
 	bool initLabels();
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 	bool addProperty(Property *property);
-	void generateOneCase(utils::OutFile &out, bool notIsFirst);
+	void generateOneCase(utils::OutFile &out, bool isNotFirst);
 };

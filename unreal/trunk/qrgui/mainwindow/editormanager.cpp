@@ -130,6 +130,19 @@ QStringList EditorManager::getPropertyNames(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
+IdList EditorManager::getContainedTypes(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	IdList result;
+	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element()))
+	{
+		result.append(Id(type));
+	}
+	return result;
+}
+
 IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
 	IdList result;
