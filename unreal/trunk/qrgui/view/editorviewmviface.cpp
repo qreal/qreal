@@ -159,6 +159,8 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 
 void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
+	Q_UNUSED(sourceEnd);
+	Q_UNUSED(destinationRow);
 	Q_ASSERT(sourceStart == sourceEnd);  // Можно перемещать только один элемент за раз.
 	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
 
@@ -184,6 +186,11 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 
 void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
+	qDebug() << "rows moved";
+	
+	Q_UNUSED(sourceParent);
+	Q_UNUSED(sourceStart);
+	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);
 	QPersistentModelIndex movedElementIndex = destinationParent.child(destinationRow, 0);
 

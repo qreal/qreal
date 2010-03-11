@@ -10,11 +10,12 @@
 #include "editorview.h"
 #include "mainwindow.h"
 #include "../mainwindow/mainwindow.h"
+#include "../model/model.h"
 
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-		:  QGraphicsScene(parent), mWindow(NULL)
+		:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
@@ -182,37 +183,93 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mousePressEvent(event);
 
-	if (event->button() != Qt::RightButton)
+	if( event->button() == Qt::LeftButton ){
+		QGraphicsItem *item = itemAt(event->scenePos());
+		qDebug() << "item: " << item;
+		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
+		if( title ){ // проверяем, а не зацепились ли мы случайно за надпись, когда начали тащить эоемент
+			item = item->parentItem();
+		}	
+		if( item ){			
+			mPrevParent = item->parentItem();
+			mPrevPosition = item->scenePos();	
+			qDebug() << "NEW mPrevParent: " << mPrevParent;
+			qDebug() << "NEW pos: " << mPrevPosition;
+		}	
+
+	} else if (event->button() == Qt::RightButton){
+
+		UML::Element *e = getElemAt(event->scenePos());
+		if (!e)
+			return;
+		if (!e->isSelected()) {
+			clearSelection();
+			e->setSelected(true);
+		}
+
+		// Menu belongs to scene handler because it can delete elements.
+		// We cannot not allow elements to commit suicide.
+	
+		QMenu menu;
+		menu.addAction(mWindow->ui.actionDeleteFromDiagram);
+		QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
+	
+		if (!elementActions.isEmpty())
+			menu.addSeparator();
+
+		foreach (UML::ContextMenuAction* action, elementActions) {
+			action->setEventPos(e->mapFromScene(event->scenePos()));
+			menu.addAction(action);
+		}
+
+		// FIXME: add check for diagram
+		//	if (selectedItems().count() == 1)
+		//		menu.addAction(window->ui.actionJumpToAvatar);
+
+		menu.exec(QCursor::pos());
+	}	
+}
+
+void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
+{
+	// Let scene update selection and perform other operations
+	QGraphicsScene::mouseReleaseEvent(event);
+	
+	UML::Element *element = getElemAt(event->scenePos());
+	if (!element)
 		return;
-
-	UML::Element *e = getElemAt(event->scenePos());
-	if (!e)
-		return;
-	if (!e->isSelected()) {
-		clearSelection();
-		e->setSelected(true);
+	
+	qDebug() << "element" << element->uuid().toString();
+	UML::Element *parent = getElemByModelIndex(element->index().parent());
+					
+	
+	if (parent){
+	qDebug() << "parent: " << parent->uuid().toString();
+	
+		if (!canBeContainedBy(parent->uuid(), element->uuid())){
+			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
+			// фэйл, репарентим элемент обратно
+			foreach (QGraphicsItem *item, items(event->scenePos())) {
+				UML::Element * elem = dynamic_cast < UML::Element * >(item);
+				if (elem && elem->uuid() == element->uuid()) {
+					QModelIndex ind = mv_iface->rootIndex();
+					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
+					qDebug() << "prev parent:  " << mPrevParent;
+					
+					if (prevParent)
+						ind = prevParent->index();
+					
+					qReal::model::Model *model = dynamic_cast < qReal::model::Model *> (mv_iface->model());
+					if (model)
+						model->changeParent(element->index(), ind, mPrevPosition);		
+					
+//					elem->setParentItem(mPrevParent);
+//					elem->setPos(mPrevPosition);
+					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
+				}
+			}
+		}
 	}
-
-	// Menu belongs to scene handler because it can delete elements.
-	// We cannot not allow elements to commit suicide.
-
-	QMenu menu;
-	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
-	QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
-
-	if (!elementActions.isEmpty())
-		menu.addSeparator();
-
-	foreach (UML::ContextMenuAction* action, elementActions) {
-		action->setEventPos(e->mapFromScene(event->scenePos()));
-		menu.addAction(action);
-	}
-
-	// FIXME: add check for diagram
-	//	if (selectedItems().count() == 1)
-	//		menu.addAction(window->ui.actionJumpToAvatar);
-
-	menu.exec(QCursor::pos());
 }
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

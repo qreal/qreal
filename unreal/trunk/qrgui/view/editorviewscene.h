@@ -62,6 +62,7 @@ protected:
 
 	/** @brief Обработать событие нажатия кнопок мыши */
 	void mousePressEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
 	/** @brief Обработать двойной щелчок мыши */
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
@@ -78,6 +79,9 @@ private:
 	qReal::EditorView *view;
 
 	qReal::MainWindow *mWindow;
+
+	QPointF mPrevPosition;
+	QGraphicsItem *mPrevParent;
 
 	friend class qReal::EditorViewMViface;
 };
