@@ -192,7 +192,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}	
 		if( item ){			
 			mPrevParent = item->parentItem();
-			mPrevPosition = item->scenePos();	
+			mPrevPosition = item->pos();	
 			qDebug() << "NEW mPrevParent: " << mPrevParent;
 			qDebug() << "NEW pos: " << mPrevPosition;
 		}	
