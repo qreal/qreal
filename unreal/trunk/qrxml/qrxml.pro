@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS	= \
         activityEditor/activityEditor.pro \
-#	bpelEditor/bpelEditor.pro \
+	bpelEditor/bpelEditor.pro \
 	classEditor/classEditor.pro \
 #	communicationEditor/communicationEditor.pro \
 #	componentEditor/componentEditor.pro \
