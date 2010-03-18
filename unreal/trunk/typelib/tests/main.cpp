@@ -8,8 +8,8 @@ using namespace qRealType;
 int main()
 {
 	QRealTypeFactory::init();
-	QRealValue ololo = QRealTypeFactory::getTypeByName("string")->newValue();
+	QRealValue *ololo = QRealTypeFactory::getTypeByName("string")->newValue();
 
-	qDebug() << ololo.toString();
+	qDebug() << ololo->toString();
 	return 0;
 }

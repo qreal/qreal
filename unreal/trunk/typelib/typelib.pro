@@ -10,5 +10,3 @@ SOURCES += \
     type.cpp \
     value.cpp \
     typefactory.cpp
-
-SUBDIRS=tests
