@@ -40,7 +40,7 @@ namespace qRealType {
 		return mName;
 	}
 
-	QRealValue& QRealType::newValue()
+	QRealValue* QRealType::newValue()
 	{
 		return mDefaultValue->clone();
 	}

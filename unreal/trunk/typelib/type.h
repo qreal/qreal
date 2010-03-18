@@ -24,6 +24,8 @@ namespace qRealType {
 		~QRealType();
 
 		QString toString() const;
-		QRealValue& newValue();
+		QRealValue* newValue();
+
+		friend class QRealTypeFactory;
 	};
 };

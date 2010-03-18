@@ -6,13 +6,13 @@ using namespace qRealType;
 QRealValue::QRealValue(QRealType *type)
 {
 	mType = type;
-	// other fields will be initialized by qRealType::New()
+	// other fields will be initialized by qRealType::newValue()
 }
 
-QRealValue& QRealValue::clone() const
+QRealValue* QRealValue::clone() const
 {
-	QRealValue& result = mType->newValue();
-	result.mValue = mValue;
+	QRealValue* result = new QRealValue(mType);
+	result->mValue = mValue;
 	return result;
 }
 

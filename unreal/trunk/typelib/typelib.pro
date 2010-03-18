@@ -3,10 +3,12 @@ OBJECTS_DIR = .obj
 
 HEADERS += \
     type.h \
-    value.h
+    value.h \
+    typefactory.h
 
 SOURCES += \
     type.cpp \
-    value.cpp
+    value.cpp \
+    typefactory.cpp
 
 SUBDIRS=tests

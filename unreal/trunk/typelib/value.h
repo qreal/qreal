@@ -15,10 +15,10 @@ namespace qRealType {
 		QRealType *mType;
 		QRealValueUnion mValue;
 		QRealValue(QRealType *type);
-		QRealValue& clone() const;
+		QRealValue* clone() const;
 
 	public:
-		~QRealValue();
+		~QRealValue(){};
 
 		QString toString() const;
 		void fromString(QString const&);
