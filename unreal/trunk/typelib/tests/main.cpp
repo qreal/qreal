@@ -8,13 +8,39 @@ using namespace qRealType;
 int main()
 {
 	QRealTypeFactory::init();
-	QRealValue *ololo = QRealTypeFactory::getTypeByName("string")->newValue();
 
-	ololo->fromString("Domine, Domine salvum fac regem Demetrium Moscoviae");
-	qDebug() << ololo->toString();
+	// String variable
+	QRealValue *testvar = QRealTypeFactory::getTypeByName("string")->newValue();
 
-	ololo->fromInteger(1605);
-	qDebug() << ololo->toString();
+	testvar->fromString("Domine, Domine salvum fac regem Demetrium Moscoviae");
+	qDebug() << testvar->toString();
+	qDebug() << testvar->toInteger();
+	qDebug() << testvar->toBoolean();
+	qDebug() << testvar->toReal();
+
+	testvar->fromInteger(1605);
+	qDebug() << testvar->toString();
+	qDebug() << testvar->toInteger();
+	qDebug() << testvar->toBoolean();
+	qDebug() << testvar->toReal();
+
+	delete testvar;
+
+	// Integer variable
+	testvar = QRealTypeFactory::getTypeByName("integer")->newValue();
+	testvar->fromString("1605");
+	qDebug() << testvar->toString();
+	qDebug() << testvar->toInteger();
+	qDebug() << testvar->toBoolean();
+	qDebug() << testvar->toReal();
+
+	testvar->fromInteger(13423);
+	qDebug() << testvar->toString();
+	qDebug() << testvar->toInteger();
+	qDebug() << testvar->toBoolean();
+	qDebug() << testvar->toReal();
+
+	delete testvar;
 
 	return 0;
 }
