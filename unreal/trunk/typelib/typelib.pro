@@ -8,3 +8,5 @@ HEADERS += \
 SOURCES += \
     type.cpp \
     value.cpp
+
+SUBDIRS=tests
