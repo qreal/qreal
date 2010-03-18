@@ -3,55 +3,63 @@
 
 using namespace qRealType;
 
-qRealValue::qRealValue(qRealType *type_)
+QRealValue::QRealValue(QRealType *type)
 {
-	type = type_;
+	mType = type;
 	// other fields will be initialized by qRealType::New()
 }
 
-qRealValue& qRealValue::clone()
+QRealValue& QRealValue::clone() const
 {
-	qRealValue result = type->New();
-	result.value = value;
+	QRealValue& result = mType->newValue();
+	result.mValue = mValue;
 	return result;
 }
 
-QString qRealValue::toString()
+QString QRealValue::toString() const
 {
 	// TODO
+	return QString();
 }
 
-void qRealValue::fromString(QString const &val)
+void QRealValue::fromString(QString const &val)
 {
 	// TODO
+	Q_UNUSED(val);
 }
 
-int qRealValue::toInteger()
+int QRealValue::toInteger() const
 {
 	// TODO
+	return 0;
 }
 
-void qRealValue::fromInteger(int val)
+void QRealValue::fromInteger(int val)
 {
 	// TODO
+	Q_UNUSED(val);
 }
 
-bool qRealValue::toBoolean()
+bool QRealValue::toBoolean() const
 {
 	// TODO
+	return false;
 }
 
-void qRealValue::fromBoolean(bool val)
+void QRealValue::fromBoolean(bool val)
 {
 	// TODO
+	Q_UNUSED(val);
 }
 
-double qRealValue::toReal()
+double QRealValue::toReal() const
 {
 	// TODO
+	return 0.0;
 }
 
-void qRealValue::fromReal(double val)
+void QRealValue::fromReal(double val)
 {
 	// TODO
+	Q_UNUSED(val);
 }

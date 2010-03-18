@@ -1,28 +1,28 @@
 #include "type.h"
 
 namespace qRealType {
-	qRealType::qRealType(QREAL_METATYPE type_)
+	QRealType::QRealType(QREAL_METATYPE type)
 	{
-		type = type_;
-		defaultValue = new qRealValue(this);
+		mType = type;
+		mDefaultValue = new QRealValue(this);
 
-		switch (type)
+		switch (mType)
 		{
 		case INTEGER:
-			defaultValue->fromInteger(0);
-			name = "Integer";
+			mDefaultValue->fromInteger(0);
+			mName = "Integer";
 			break;
 		case REAL:
-			defaultValue->fromReal(0.0);
-			name = "Real";
+			mDefaultValue->fromReal(0.0);
+			mName = "Real";
 			break;
 		case BOOLEAN:
-			defaultValue->fromBoolean(false);
-			name = "Boolean";
+			mDefaultValue->fromBoolean(false);
+			mName = "Boolean";
 			break;
 		case STRING:
-			defaultValue->fromString("");
-			name = "String";
+			mDefaultValue->fromString("");
+			mName = "String";
 			break;
 		default:
 			throw "Invalid metatype";
@@ -30,18 +30,18 @@ namespace qRealType {
 		}
 	}
 
-	qRealType::~qRealType()
+	QRealType::~QRealType()
 	{
-		delete defaultValue;
+		delete mDefaultValue;
 	}
 
-	QString qRealType::toString()
+	QString QRealType::toString() const
 	{
-		return name;
+		return mName;
 	}
 
-	qRealValue& qRealType::New()
+	QRealValue& QRealType::newValue()
 	{
-		return defaultValue->clone();
+		return mDefaultValue->clone();
 	}
 }

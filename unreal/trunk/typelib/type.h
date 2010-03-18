@@ -4,7 +4,7 @@
 #include "value.h"
 
 namespace qRealType {
-	class qRealTypeFactory;
+	class QRealTypeFactory;
 
 	// Basic OCL types
 	enum QREAL_METATYPE {
@@ -14,16 +14,16 @@ namespace qRealType {
 		STRING,
 	};
 
-	class qRealType {
-		QREAL_METATYPE type;
-		QString name;
-		qRealValue *defaultValue;
+	class QRealType {
+		QREAL_METATYPE mType;
+		QString mName;
+		QRealValue *mDefaultValue;
 
-		qRealType(QREAL_METATYPE);
+		QRealType(QREAL_METATYPE type);
 	public:
-		~qRealType();
+		~QRealType();
 
-		QString toString();
-		qRealValue& New();
+		QString toString() const;
+		QRealValue& newValue();
 	};
 };

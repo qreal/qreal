@@ -3,35 +3,35 @@
 #include <QString>
 
 namespace qRealType {
-	class qRealType;
+	class QRealType;
 
-	class qRealValue {
-		union qRealValueUnion {
+	class QRealValue {
+		union QRealValueUnion {
 			int integerVal;
 			double realVal;
 			QString *stringVal;
 			bool booleanVal;
 		};
-		qRealType *type;
-		qRealValueUnion value;
-		qRealValue(qRealType *);
-		qRealValue& clone();
+		QRealType *mType;
+		QRealValueUnion mValue;
+		QRealValue(QRealType *type);
+		QRealValue& clone() const;
 
 	public:
-		~qRealValue();
+		~QRealValue();
 
-		QString toString();
+		QString toString() const;
 		void fromString(QString const&);
 
-		int toInteger();
+		int toInteger() const;
 		void fromInteger(int);
 
-		bool toBoolean();
+		bool toBoolean() const;
 		void fromBoolean(bool);
 
-		double toReal();
+		double toReal() const;
 		void fromReal(double);
 
-		friend class qRealType;
+		friend class QRealType;
 	};
 };
