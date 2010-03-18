@@ -69,11 +69,11 @@ namespace qRealType {
 	{
 		if (mType == INTEGER)
 			var->mValue.integerVal = val.toInt();
-		if (mType == REAL)
+		else if (mType == REAL)
 			var->mValue.realVal = val.toDouble();
-		if (mType == STRING)
+		else if (mType == STRING)
 			*(var->mValue.stringVal) = val;
-		if (mType == BOOLEAN)
+		else if (mType == BOOLEAN)
 		{
 			if (val == "true")
 				var->mValue.booleanVal = true;
@@ -82,6 +82,8 @@ namespace qRealType {
 			else
 				throw "Bad cast";
 		}
+		else
+			Q_ASSERT(0);
 	}
 
 	int QRealType::toIntegerValue(QRealValue const *var)
@@ -106,35 +108,74 @@ namespace qRealType {
 	{
 		if (mType == INTEGER)
 			var->mValue.integerVal = val;
-		if (mType == REAL)
+		else if (mType == REAL)
 			var->mValue.realVal = val;
-		if (mType == STRING)
+		else if (mType == STRING)
 			var->mValue.stringVal->setNum(val);
-		if (mType == BOOLEAN)
-		{
-			var->mValue.booleanVal = (val == 0);
-		}
+		else if (mType == BOOLEAN)
+			var->mValue.booleanVal = (val != 0);
+		else
+			Q_ASSERT(0);
 	}
 
 	bool QRealType::toBooleanValue(QRealValue const *var)
 	{
-		// FIXME:
-		return false;
+		if (mType == INTEGER)
+			return var->mValue.integerVal != 0;
+		if (mType == REAL)
+			throw "Bad cast";
+		if (mType == STRING)
+		{
+			if (*(var->mValue.stringVal) == "true")
+				return true;
+			else if (*(var->mValue.stringVal) == "false")
+				return false;
+			else
+				throw "Bad cast";
+		}
+		if (mType == BOOLEAN)
+			return var->mValue.booleanVal;
+		Q_ASSERT(0);
 	}
 
 	void QRealType::fromBooleanValue(QRealValue *var, bool val)
 	{
-		// FIXME:
+		if (mType == INTEGER)
+			var->mValue.integerVal = val?1:0;
+		else if (mType == REAL)
+			throw "Bad cast";
+		else if (mType == STRING)
+			*(var->mValue.stringVal) = val?"true":"false";
+		else if (mType == BOOLEAN)
+			var->mValue.booleanVal = val;
+		else
+			Q_ASSERT(0);
 	}
 
 	double QRealType::toRealValue(QRealValue const *var)
 	{
-		// FIXME:
-		return 0.0;
+		if (mType == INTEGER)
+			return (double)(var->mValue.integerVal);
+		if (mType == REAL)
+			return var->mValue.realVal;
+		if (mType == STRING)
+			return var->mValue.stringVal->toDouble();
+		if (mType == BOOLEAN)
+			throw "Bad cast";
+		Q_ASSERT(0);
 	}
 
 	void QRealType::fromRealValue(QRealValue *var, double val)
 	{
-		// FIXME:
+		if (mType == INTEGER)
+			var->mValue.integerVal = (int)val;
+		else if (mType == REAL)
+			var->mValue.realVal = val;
+		else if (mType == STRING)
+			var->mValue.stringVal->setNum(val);
+		else if (mType == BOOLEAN)
+			throw "Bad cast";
+		else
+			Q_ASSERT(0);
 	}
 }
