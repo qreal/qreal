@@ -18,48 +18,40 @@ QRealValue* QRealValue::clone() const
 
 QString QRealValue::toString() const
 {
-	// TODO
-	return QString();
+	return mType->toStringValue(this);
 }
 
 void QRealValue::fromString(QString const &val)
 {
-	// TODO
-	Q_UNUSED(val);
+	mType->fromStringValue(this, val);
 }
 
 int QRealValue::toInteger() const
 {
-	// TODO
-	return 0;
+	return mType->toIntegerValue(this);
 }
 
 void QRealValue::fromInteger(int val)
 {
-	// TODO
-	Q_UNUSED(val);
+	mType->fromIntegerValue(this, val);
 }
 
 bool QRealValue::toBoolean() const
 {
-	// TODO
-	return false;
+	return mType->toBooleanValue(this);
 }
 
 void QRealValue::fromBoolean(bool val)
 {
-	// TODO
-	Q_UNUSED(val);
+	mType->fromBooleanValue(this, val);
 }
 
 double QRealValue::toReal() const
 {
-	// TODO
-	return 0.0;
+	return mType->toRealValue(this);
 }
 
 void QRealValue::fromReal(double val)
 {
-	// TODO
-	Q_UNUSED(val);
+	mType->fromRealValue(this, val);
 }

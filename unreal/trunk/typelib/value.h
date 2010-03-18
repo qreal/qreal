@@ -20,17 +20,15 @@ namespace qRealType {
 	public:
 		~QRealValue(){};
 
+		// Handy proxies
 		QString toString() const;
-		void fromString(QString const&);
-
+		void fromString(QString const& val);
 		int toInteger() const;
-		void fromInteger(int);
-
+		void fromInteger(int val);
 		bool toBoolean() const;
-		void fromBoolean(bool);
-
+		void fromBoolean(bool val);
 		double toReal() const;
-		void fromReal(double);
+		void fromReal(double val);
 
 		friend class QRealType;
 	};

@@ -26,6 +26,16 @@ namespace qRealType {
 		QString toString() const;
 		QRealValue* newValue();
 
+		// Used by QRealValue class only
+		QString toStringValue(QRealValue const *var);
+		void fromStringValue(QRealValue *var, QString const &val);
+		int toIntegerValue(QRealValue const *var);
+		void fromIntegerValue(QRealValue *var, int val);
+		bool toBooleanValue(QRealValue const *var);
+		void fromBooleanValue(QRealValue *var, bool val);
+		double toRealValue(QRealValue const *var);
+		void fromRealValue(QRealValue *var, double val);
+
 		friend class QRealTypeFactory;
 	};
 };
