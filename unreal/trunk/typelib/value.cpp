@@ -11,7 +11,7 @@ QRealValue::QRealValue(QRealType *type)
 
 QRealValue* QRealValue::clone() const
 {
-	QRealValue* result = new QRealValue(mType);
+	QRealValue *result = new QRealValue(mType);
 	result->mValue = mValue;
 	return result;
 }

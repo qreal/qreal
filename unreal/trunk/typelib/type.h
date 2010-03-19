@@ -2,6 +2,8 @@
 
 #include <QString>
 #include "value.h"
+#include "typefactory.h"
+#include "constraint.h"
 
 namespace qRealType {
 	class QRealTypeFactory;
@@ -19,6 +21,7 @@ namespace qRealType {
 		QREAL_METATYPE mType;
 		QString mName;
 		QRealValue *mDefaultValue;
+		QConstraintList mConstraints;
 
 		QRealType(QREAL_METATYPE type);
 	public:
@@ -26,6 +29,9 @@ namespace qRealType {
 
 		QString toString() const;
 		QRealValue* newValue();
+
+		QRealType *clone() const;
+		QRealType* newSubType(QString const &name, QConstraintList const &constr, QRealValue const *def = NULL);
 
 		// Used by QRealValue class only
 		QString toStringValue(QRealValue const *var);

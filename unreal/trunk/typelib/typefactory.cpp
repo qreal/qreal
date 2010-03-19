@@ -1,4 +1,5 @@
 #include "typefactory.h"
+#include "value.h"
 
 using namespace qRealType;
 
@@ -20,14 +21,32 @@ void QRealTypeFactory::init()
 	gInstance = new QRealTypeFactory();
 }
 
-QRealType* QRealTypeFactory::getTypeByName(QString name)
+QRealType* QRealTypeFactory::getTypeByName(QString const &name)
 {
 	return gInstance->getTypeByName_(name);
 }
 
-QRealType* QRealTypeFactory::getTypeByName_(QString name) const
+QRealType* QRealTypeFactory::getTypeByName_(QString const &name) const
 {
 	if (mTypes.contains(name))
 		return mTypes[name];
 	return NULL;
+}
+
+QRealType* QRealTypeFactory::newSubType(QString const &name, QConstraintList const &constr, QRealValue const *def, QRealType *type)
+{
+	return gInstance->newSubType_(name, constr, def, type);
+}
+
+QRealType* QRealTypeFactory::newSubType_(QString const &name, QConstraintList const &constr, QRealValue const *def, QRealType *type)
+{
+	if (mTypes.contains(name))
+		throw "Type already exists";
+	QRealType *newtype = type->clone();
+	newtype->mConstraints << constr;
+	// TODO: Check default value against new constraints
+	delete newtype->mDefaultValue;
+	newtype->mDefaultValue = def->clone();
+	mTypes[name] = newtype;
+	return newtype;
 }

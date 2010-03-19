@@ -53,6 +53,21 @@ namespace qRealType {
 		return mDefaultValue->clone();
 	}
 
+	QRealType* QRealType::clone() const
+	{
+		QRealType *result = new QRealType(mType);
+		result->mConstraints = mConstraints;
+		result->mName = mName;
+		delete result->mDefaultValue;
+		result->mDefaultValue = mDefaultValue->clone();
+		return result;
+	}
+
+	QRealType* QRealType::newSubType(QString const &name, QConstraintList const &constr, QRealValue const *def)
+	{
+		return QRealTypeFactory::newSubType(name, constr, def?def:mDefaultValue, this);
+	}
+
 	QString QRealType::toStringValue(QRealValue const *var)
 	{
 		if (mType == INTEGER)
