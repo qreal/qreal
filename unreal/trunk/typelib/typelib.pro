@@ -1,5 +1,6 @@
 TEMPLATE = lib
 OBJECTS_DIR = .obj
+CONFIG += staticlib
 
 HEADERS += \
     type.h \
