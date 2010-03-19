@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <typelib.h>
 
 class Property
 {
@@ -14,6 +15,7 @@ public:
 
 private:
 	QString mName;
+	qRealType::QRealType *mRealType;
 	QString mType;
 	bool mIsEnum;
 	bool mIsReference;

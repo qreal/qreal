@@ -13,6 +13,12 @@ bool Property::init(QDomElement const &element)
 		return false;
 	}
 	QString mType = element.attribute("type");
+	mRealType = qRealType::QRealTypeFactory::getTypeByName(mType);
+	if (!mRealType)
+	{
+		qDebug() << "WARNING: type " << mType << " is not registered";
+		// For now just print a warning
+	}
 	if (mType.isEmpty())
 	{
 		qDebug() << "ERROR: no type of property found";
@@ -67,6 +73,7 @@ Property * Property::clone()
 	Property *result = new Property();
 	result->mName = mName;
 	result->mType = mType;
+	result->mRealType = mRealType;
 	result->mIsEnum = mIsEnum;
 	result->mIsReference = mIsReference;
 	result->mDescription = mDescription;
@@ -78,6 +85,7 @@ bool Property::operator == (Property const &other) const
 {
 	return other.mName == mName
 		&& other.mType == mType
+		&& other.mRealType == mRealType
 		&& other.mIsEnum == mIsEnum
 		&& other.mIsReference == mIsReference
 		&& other.mDescription == mDescription
@@ -94,6 +102,7 @@ void Property::dump() const
 {
 	qDebug() << mName;
 	qDebug() << mType;
+	qDebug() << mRealType;
 	qDebug() << mIsEnum;
 	qDebug() << mIsReference;
 	qDebug() << mDescription;

@@ -3,11 +3,14 @@
 #include <QCoreApplication>
 #include <QStringList>
 #include <QDebug>
+#include "typelib.h"
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
+
+	qRealType::QRealTypeFactory::init();
 
 	qDebug() << "Running " + args.join(" ");
 
