@@ -10,7 +10,10 @@ int main(int argc, char *argv[])
 	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
 
+// Ad kalendas graecas
+#if 0
 	qRealType::QRealTypeFactory::init();
+#endif
 
 	qDebug() << "Running " + args.join(" ");
 

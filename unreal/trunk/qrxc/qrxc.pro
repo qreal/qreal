@@ -6,7 +6,7 @@ OBJECTS_DIR = .obj
 
 INCLUDEPATH += ../typelib
 
-LIBS += ../typelib/libtypelib.a
+#LIBS += ../typelib/libtypelib.a
 
 HEADERS += association.h \
     diagram.h \

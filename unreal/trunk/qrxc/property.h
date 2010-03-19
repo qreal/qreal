@@ -15,7 +15,8 @@ public:
 
 private:
 	QString mName;
-	qRealType::QRealType *mRealType;
+// Ad kalendas graecas
+//	qRealType::QRealType *mRealType;
 	QString mType;
 	bool mIsEnum;
 	bool mIsReference;
