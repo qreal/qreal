@@ -1,7 +1,5 @@
-#include "type.h"
-#include "value.h"
-#include "typefactory.h"
 #include <QDebug>
+#include "typelib.h"
 
 using namespace qRealType;
 
