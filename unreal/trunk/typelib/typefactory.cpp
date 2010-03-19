@@ -12,6 +12,7 @@ QRealTypeFactory::QRealTypeFactory()
 	mTypes["boolean"] = new QRealType(BOOLEAN);
 	mTypes["real"] = new QRealType(REAL);
 	mTypes["integer"] = new QRealType(INTEGER);
+	mTypes["enum"] = new QRealType(ENUM);
 }
 
 void QRealTypeFactory::init()

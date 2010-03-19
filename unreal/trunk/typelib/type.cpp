@@ -11,20 +11,24 @@ namespace qRealType {
 		{
 		case INTEGER:
 			mDefaultValue->fromInteger(0);
-			mName = "Integer";
+			mName = "integer";
 			break;
 		case REAL:
 			mDefaultValue->fromReal(0.0);
-			mName = "Real";
+			mName = "real";
 			break;
 		case BOOLEAN:
 			mDefaultValue->fromBoolean(false);
-			mName = "Boolean";
+			mName = "boolean";
 			break;
 		case STRING:
 			mDefaultValue->mValue.stringVal = new QString();
 			mDefaultValue->fromString("");
-			mName = "String";
+			mName = "string";
+			break;
+		case ENUM:
+			mDefaultValue = NULL;
+			mName = "enum";
 			break;
 		default:
 			throw "Invalid metatype";
@@ -44,6 +48,8 @@ namespace qRealType {
 
 	QRealValue* QRealType::newValue()
 	{
+		if (!mDefaultValue)
+			throw QString("Attempt to instantiate abstract type") + mName;
 		return mDefaultValue->clone();
 	}
 

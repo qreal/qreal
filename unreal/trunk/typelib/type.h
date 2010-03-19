@@ -6,12 +6,13 @@
 namespace qRealType {
 	class QRealTypeFactory;
 
-	// Basic OCL types
+	// Basic OCL types + enum
 	enum QREAL_METATYPE {
 		INTEGER,
 		REAL,
 		BOOLEAN,
 		STRING,
+		ENUM,
 	};
 
 	class QRealType {
