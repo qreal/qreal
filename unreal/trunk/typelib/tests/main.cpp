@@ -1,5 +1,5 @@
 #include <QDebug>
-#include "typelib.h"
+#include <typelib.h>
 
 using namespace qRealType;
 
