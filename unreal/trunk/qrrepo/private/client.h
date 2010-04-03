@@ -26,6 +26,9 @@ namespace qrRepo {
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
+
+			qReal::IdList elements() const;
+
 			void svnUpdate();
 			void svnCommit();
 

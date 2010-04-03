@@ -62,6 +62,10 @@ namespace qReal {
 		 * элемент, если в ней есть элементы. */
 		void activateSubdiagram(QModelIndex const &idx);
 
+		/** @brief Ищет в модели нужный элемент и открывает соответствующую ему
+		 * диаграмму. */
+		void activateItemOrDiagram(Id const &id);
+
 		EditorView *getCurrentTab();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);

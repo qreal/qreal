@@ -64,7 +64,6 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 				return elem;
 		}
 	}
-	Q_ASSERT(!"Element not found");
 	return NULL;
 }
 
@@ -93,7 +92,7 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container)){
 		if (candidate.element() ==  type.editor() )
 			allowed = true;
-	}	
+	}
 	return allowed;
 }
 
@@ -144,8 +143,8 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
 		}
-	}	
- 
+	}
+
 	stream << uuid;				// uuid
 	stream << pathToItem;
 	stream << name;
@@ -189,13 +188,13 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
 		if( title ){ // проверяем, а не зацепились ли мы случайно за надпись, когда начали тащить эоемент
 			item = item->parentItem();
-		}	
-		if( item ){			
+		}
+		if( item ){
 			mPrevParent = item->parentItem();
-			mPrevPosition = item->pos();	
+			mPrevPosition = item->pos();
 			qDebug() << "NEW mPrevParent: " << mPrevParent;
 			qDebug() << "NEW pos: " << mPrevPosition;
-		}	
+		}
 
 	} else if (event->button() == Qt::RightButton){
 
@@ -208,12 +207,12 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		// Menu belongs to scene handler because it can delete elements.
-		// We cannot not allow elements to commit suicide.
-	
+		// We cannot allow elements to commit suicide.
+
 		QMenu menu;
 		menu.addAction(mWindow->ui.actionDeleteFromDiagram);
 		QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
-	
+
 		if (!elementActions.isEmpty())
 			menu.addSeparator();
 
@@ -222,30 +221,76 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			menu.addAction(action);
 		}
 
+		// Пункты меню, отвечающие за провязку, "привязать к".
+		// TODO: Перенести это в элементы, они лучше знают, что они такое, а тут
+		// сцене модель и апи приходится спрашивать.
+		QMenu *connectToMenu = menu.addMenu(tr("Connect to"));
+
+		IdList possibleTypes = mWindow->manager()->getConnectedTypes(e->uuid().type());
+		qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
+		foreach (Id type, possibleTypes) {
+			foreach (Id element, model->api().elements(type)) {
+				if (model->api().outgoingConnections(e->uuid()).contains(element))
+					continue;
+				QAction *action = connectToMenu->addAction(model->api().name(element));
+				connect(action, SIGNAL(triggered()), SLOT(connectActionTriggered()));
+				QList<QVariant> tag;
+				tag << e->uuid().toVariant() << element.toVariant();
+				action->setData(tag);
+			}
+		}
+
+		QMenu *goToMenu = menu.addMenu(tr("Go to"));
+		foreach (Id element, model->api().outgoingConnections(e->uuid())) {
+			QAction *action = goToMenu->addAction(model->api().name(element));
+			connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
+			action->setData(element.toVariant());
+		}
+
+		QMenu *usedInMenu = menu.addMenu(tr("Used in"));
+		foreach (Id element, model->api().incomingConnections(e->uuid())) {
+			QAction *action = usedInMenu->addAction(model->api().name(element));
+			connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
+			action->setData(element.toVariant());
+		}
+
+
+		QMenu *disconnectMenu = menu.addMenu(tr("Disconnect"));
+		IdList list = model->api().outgoingConnections(e->uuid());
+		list.append(model->api().incomingConnections(e->uuid()));
+
+		foreach (Id element, list) {
+			QAction *action = disconnectMenu->addAction(model->api().name(element));
+			connect(action, SIGNAL(triggered()), SLOT(disconnectActionTriggered()));
+			QList<QVariant> tag;
+			tag << e->uuid().toVariant() << element.toVariant();
+			action->setData(tag);
+		}
+
 		// FIXME: add check for diagram
 		//	if (selectedItems().count() == 1)
 		//		menu.addAction(window->ui.actionJumpToAvatar);
 
 		menu.exec(QCursor::pos());
-	}	
+	}
 }
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
-	
+
 	UML::Element *element = getElemAt(event->scenePos());
 	if (!element)
 		return;
-	
+
 	qDebug() << "element" << element->uuid().toString();
 	UML::Element *parent = getElemByModelIndex(element->index().parent());
-					
-	
+
+
 	if (parent){
 	qDebug() << "parent: " << parent->uuid().toString();
-	
+
 		if (!canBeContainedBy(parent->uuid(), element->uuid())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// фэйл, репарентим элемент обратно
@@ -255,14 +300,14 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					QModelIndex ind = mv_iface->rootIndex();
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
 					qDebug() << "prev parent:  " << mPrevParent;
-					
+
 					if (prevParent)
 						ind = prevParent->index();
-					
+
 					qReal::model::Model *model = dynamic_cast < qReal::model::Model *> (mv_iface->model());
 					if (model)
-						model->changeParent(element->index(), ind, mPrevPosition);		
-					
+						model->changeParent(element->index(), ind, mPrevPosition);
+
 //					elem->setParentItem(mPrevParent);
 //					elem->setPos(mPrevPosition);
 					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
@@ -285,7 +330,13 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
 			event->accept();
-			mainWindow()->activateSubdiagram(element->index());
+
+			qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
+			IdList outgoingLinks = model->api().outgoingConnections(element->uuid());
+
+			if (outgoingLinks.size() > 0)
+				mainWindow()->activateItemOrDiagram(outgoingLinks[0]);
+
 			// Now scene is changed from outside. Being a mere mortal I do not
 			// know whether it is good or not, but what is the destiny of
 			// workflow after this return?
@@ -319,4 +370,34 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 qReal::MainWindow *EditorViewScene::mainWindow() const
 {
 	return mWindow;
+}
+
+void EditorViewScene::connectActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	QList<QVariant> connection = action->data().toList();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
+	qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
+	// Модели нет дела до провязки, поскольку это свойство логической, а не
+	// графической модели.
+	model->mutableApi().connect(source, destination);
+}
+
+void EditorViewScene::goToActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id target = action->data().value<Id>();
+	mainWindow()->activateItemOrDiagram(target);
+	return;
+}
+
+void EditorViewScene::disconnectActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	QList<QVariant> connection = action->data().toList();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
+	qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
+	model->mutableApi().disconnect(source, destination);
 }

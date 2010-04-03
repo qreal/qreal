@@ -270,6 +270,10 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 	}
 }
 
+void MainWindow::activateItemOrDiagram(Id const &id) {
+	activateItemOrDiagram(mModel->indexById(id));
+}
+
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 	// Правило "провязки" - если есть диаграмма первого уровня с тем же именем,
 	// что и у нашего элемента, показываем её.

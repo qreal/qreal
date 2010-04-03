@@ -23,6 +23,7 @@ namespace qReal {
 		virtual QStringList elements(QString const &diagram) const = 0;
 
 		virtual QStringList getTypesContainedBy(QString const &element) const = 0;
+		virtual QStringList getConnectedTypes(QString const &element) const = 0;
 
 		virtual QIcon getIcon(QString const &diagram, QString const &element) const = 0;
 		virtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const = 0;
@@ -35,4 +36,4 @@ namespace qReal {
 
 }
 
-Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.4")
+Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.5")

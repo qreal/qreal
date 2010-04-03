@@ -58,7 +58,8 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 			return false;
 		}
 		mGraphics = element.firstChildElement("graphics");
-		return initParents() && initProperties() && initContainers() && initAssociations() && initGraphics() && initLabels();
+		return initParents() && initProperties() && initContainers() && initAssociations()
+			&& initGraphics() && initLabels() && initConnections();
 	}
 	else
 		return false;
@@ -69,7 +70,7 @@ bool GraphicType::initParents()
 	QDomElement parentsElement = mLogic.firstChildElement("generalizations");
 	if (parentsElement.isNull())
 		return true;
-	for (QDomElement parentElement = parentsElement.firstChildElement("parent"); 
+	for (QDomElement parentElement = parentsElement.firstChildElement("parent");
 		!parentElement.isNull();
 		parentElement = parentElement.nextSiblingElement("parent"))
 	{
@@ -96,7 +97,7 @@ bool GraphicType::initProperties()
 	{
 		return true;
 	}
-	for (QDomElement propertyElement = propertiesElement.firstChildElement("property"); 
+	for (QDomElement propertyElement = propertiesElement.firstChildElement("property");
 		!propertyElement.isNull();
 		propertyElement = propertyElement.nextSiblingElement("property"))
 	{
@@ -121,7 +122,7 @@ bool GraphicType::initContainers()
 	{
 		return true;
 	}
-	for (QDomElement childElement = containerElement.firstChildElement("contains"); 
+	for (QDomElement childElement = containerElement.firstChildElement("contains");
 		!childElement.isNull();
 		childElement = childElement.nextSiblingElement("contains"))
 	{
@@ -145,7 +146,7 @@ bool GraphicType::initContainers()
 bool GraphicType::initLabels()
 {
 	int count = 1;
-	for (QDomElement element = mGraphics.firstChildElement("labels").firstChildElement("label"); 
+	for (QDomElement element = mGraphics.firstChildElement("labels").firstChildElement("label");
 		!element.isNull();
 		element = element.nextSiblingElement("label"))
 	{
@@ -155,6 +156,33 @@ bool GraphicType::initLabels()
 		else {
 			mLabels.append(label);
 			++count;
+		}
+	}
+	return true;
+}
+
+bool GraphicType::initConnections()
+{
+	QDomElement connectionsElement = mLogic.firstChildElement("connections");
+	if (connectionsElement.isNull())
+		return true;
+
+	for (QDomElement childElement = connectionsElement.firstChildElement("connection");
+		!childElement.isNull();
+		childElement = childElement.nextSiblingElement("connection"))
+	{
+		QString typeName = NameNormalizer::normalize(childElement.attribute("type"));
+
+		if (typeName == "") {
+			qDebug() << "Error: anonymous type to be connected to " << qualifiedName();
+			return false;
+		}
+
+		if (!mConnections.contains(typeName))
+			mConnections.append(typeName);
+		else {
+			qDebug() << "ERROR: type to be connected to " << qualifiedName() << " duplicated";
+			return false;
 		}
 	}
 	return true;
@@ -287,7 +315,7 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-void GraphicType::generateOneCase(OutFile &out, bool isNotFirst)
+void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 {
 	QString name = NameNormalizer::normalize(qualifiedName());
 
@@ -305,22 +333,25 @@ QString GraphicType::resourceName(QString const &resourceType) const
 
 bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 {
-	if (mContains.isEmpty())
-		return true;
+	return generateListForElement(out, isNotFirst, mContains);
+}
 
-	QString name = NameNormalizer::normalize(qualifiedName());
+bool GraphicType::generateConnections(OutFile &out, bool isNotFirst)
+{
+	return generateListForElement(out, isNotFirst, mConnections);
+}
 
-	if (isNotFirst)
-		out() << "\tif (element == \"" << name << "\")\n";
-	else
-		out() << "\telse if (element == \"" << name << "\")\n";
-	
+bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const
+{
+	if (list.isEmpty())
+		return false;
+
+	generateOneCase(out, isNotFirst);
+
 	out() << "\t\tresult ";
-	foreach (QString type, mContains)
-	{
-		out() << "<< \"" << type << "\" ";
-	}
-	
+	foreach (QString element, list)
+		out() << "<< \"" << element << "\" ";
+
 	out() << ";\n";
 	return true;
 }

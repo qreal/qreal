@@ -22,23 +22,30 @@ void NonGraphicType::generateNameMapping(OutFile &out)
 	Q_UNUSED(out)
 }
 
-bool NonGraphicType::generateObjectRequestString(OutFile &out, bool notIsFirst)
+bool NonGraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
-	Q_UNUSED(notIsFirst)
+	Q_UNUSED(isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generateProperties(OutFile &out, bool notIsFirst)
+bool NonGraphicType::generateProperties(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
-	Q_UNUSED(notIsFirst)
+	Q_UNUSED(isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generateContainedTypes(OutFile &out, bool notIsFirst)
+bool NonGraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
-	Q_UNUSED(notIsFirst)
+	Q_UNUSED(isNotFirst)
+	return false;
+}
+
+bool NonGraphicType::generateConnections(utils::OutFile &out, bool isNotFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
 	return false;
 }

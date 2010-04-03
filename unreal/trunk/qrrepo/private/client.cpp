@@ -212,3 +212,7 @@ void Client::open(QString const &workingDir)
 	loadFromDisk();
 }
 
+qReal::IdList Client::elements() const
+{
+	return mObjects.keys();
+}

@@ -67,6 +67,18 @@ void RepoApi::removeElement(Id const &id)
 	removeLinkEnds("from", id);
 	removeLinkEnds("to", id);
 
+	if (hasProperty(id, "outgoingConnections")) {
+		IdList connections = property(id, "outgoingConnections").value<IdList>();
+		foreach (Id const target, connections)
+			disconnect(id, target);
+	}
+
+	if (hasProperty(id, "incomingConnections")) {
+		IdList connections = property(id, "incomingConnections").value<IdList>();
+		foreach (Id const source, connections)
+			disconnect(source, id);
+	}
+
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
 }
@@ -120,6 +132,28 @@ IdList RepoApi::incomingLinks(Id const &id) const
 IdList RepoApi::links(Id const &id) const
 {
 	return incomingLinks(id) << outgoingLinks(id);
+}
+
+qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
+{
+	return mClient.property(id, "outgoingConnections").value<IdList>();
+}
+
+qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
+{
+	return mClient.property(id, "incomingConnections").value<IdList>();
+}
+
+void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
+{
+	addToIdList(source, "outgoingConnections", destination);
+	addToIdList(destination, "incomingConnections", source);
+}
+
+void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
+{
+	removeFromList(source, "outgoingConnections", destination);
+	removeFromList(destination, "incomingConnections", source);
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -256,4 +290,19 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 		return fromId;
 	else
 		return to(linkId);
+}
+
+IdList RepoApi::elements(Id const &type) const
+{
+	Q_ASSERT(type.idSize() == 3);  // Применимо только к типам
+
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		// Так должно быть
+		// if (id.type() == type)
+		// Так есть
+		if (id.element() == type.element())
+			result.append(id);
+	}
+	return result;
 }

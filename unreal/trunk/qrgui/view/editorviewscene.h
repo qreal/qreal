@@ -84,4 +84,10 @@ private:
 	QGraphicsItem *mPrevParent;
 
 	friend class qReal::EditorViewMViface;
+
+// TODO: Убрать отсюда.
+private slots:
+	void connectActionTriggered();
+	void goToActionTriggered();
+	void disconnectActionTriggered();
 };

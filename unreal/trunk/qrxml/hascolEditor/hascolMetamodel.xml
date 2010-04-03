@@ -85,6 +85,10 @@
 					<properties>
 						<property type="string" name="implementation"/>
 					</properties>
+					<connections>
+						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
+						<connection type="HascolActivity::ActivityDiagram"/>
+					</connections>
 				</logic>
 			</node>
 			<node name="ProcessOperation" displayedName="Plug">
@@ -102,6 +106,9 @@
 					<properties>
 						<property type="Process Operation Kind" name="direction"/>
 					</properties>
+					<connections>
+						<connection type="HascolPortMapping::Port"/>
+					</connections>
 				</logic>
 			</node>
 			<node name="Resource" displayedName="Data">
@@ -118,6 +125,9 @@
 					<properties>
 						<property type="string" name="type"/>
 					</properties>
+					<connections>
+						<connection type="HascolActivity::Action"/>
+					</connections>
 				</logic>
 			</node>
 			<node name="LetBinding" displayedName="Let Binding">
@@ -165,6 +175,10 @@
 					<generalizations>
 						<parent parentName="Process"/>
 					</generalizations>
+					<connections>
+						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
+						<connection type="HascolActivity::ActivityDiagram"/>
+					</connections>
 				</logic>
 			</node>
 			<node name="FunctorFormalParameter" displayedName="Functor Parameter">

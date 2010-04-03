@@ -28,9 +28,10 @@ public:
 	QMap<QString, Property*> properties() const;
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool notIsFirst) = 0;
-	virtual bool generateProperties(utils::OutFile &out, bool notIsFirst) = 0;
-	virtual bool generateContainedTypes(utils::OutFile &out, bool notIsFirst) = 0;
+	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst) = 0;
 	void setDiagram(Diagram *diagram);
 	virtual bool isResolving() const;
 

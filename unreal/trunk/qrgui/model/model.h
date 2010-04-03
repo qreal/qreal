@@ -22,7 +22,7 @@ namespace qReal {
 			Q_OBJECT
 
 		public:
-			explicit Model(EditorManager const &editorManager, QString const &workingDirectory);
+			Model(EditorManager const &editorManager, QString const &workingDirectory);
 			virtual ~Model();
 			QPersistentModelIndex rootIndex() const;
 			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -38,10 +38,12 @@ namespace qReal {
 			virtual QStringList mimeTypes() const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+
 			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 			qrRepo::RepoApi const &api() const;
 			qrRepo::RepoApi &mutableApi();
 			virtual EditorManager const &editorManager() const;
+			QModelIndex indexById(Id const &id) const;
 
 			void open(QString const &workingDirectory);
 			void reinit();

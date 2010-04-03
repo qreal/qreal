@@ -161,6 +161,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
 		<< "\n"
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
+		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
@@ -190,6 +191,7 @@ void XmlCompiler::generatePluginSource()
 	generateGraphicalObjectRequest(out);
 	generateProperties(out);
 	generateContainedTypes(out);
+	generateConnections(out);
 }
 
 void XmlCompiler::generateIncludes(OutFile &out)
@@ -302,8 +304,24 @@ void XmlCompiler::generateContainedTypes(OutFile &out)
 
 	out() << "\treturn result;\n"
 		<< "}\n";
-		
 }
+
+void XmlCompiler::generateConnections(OutFile &out)
+{
+	out() << "QStringList " << mPluginName << "Plugin::getConnectedTypes(QString const &element) const\n"
+		<< "{\n"
+		<< "\tQStringList result;\n";
+
+	bool isNotFirst = false;
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
+			isNotFirst |= type->generateConnections(out, isNotFirst);
+
+	out() << "\treturn result;\n"
+		<< "}\n";
+}
+
 
 void XmlCompiler::generateResourceFile()
 {

@@ -8,7 +8,7 @@ namespace qrRepo {
 
 	class QRREPO_EXPORT RepoApi {
 	public:
-		RepoApi(QString const &workingDirectory);
+		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
 		QString name(qReal::Id const &id) const;
@@ -28,6 +28,11 @@ namespace qrRepo {
 		qReal::IdList outgoingLinks(qReal::Id const &id) const;
 		qReal::IdList incomingLinks(qReal::Id const &id) const;
 		qReal::IdList links(qReal::Id const &id) const;
+
+		qReal::IdList outgoingConnections(qReal::Id const &id) const;
+		qReal::IdList incomingConnections(qReal::Id const &id) const;
+		void connect(qReal::Id const &source, qReal::Id const &destination);
+		void disconnect(qReal::Id const &source, qReal::Id const &destination);
 
 		QString typeName(qReal::Id const &id) const;
 
@@ -55,6 +60,10 @@ namespace qrRepo {
 		void open(QString const &workingDir);
 		void save() const;
 		void saveTo(QString const &workingDir);
+
+
+		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
+		qReal::IdList elements(qReal::Id const &type) const;
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

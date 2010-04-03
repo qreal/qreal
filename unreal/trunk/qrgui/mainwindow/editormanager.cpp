@@ -143,6 +143,20 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 	return result;
 }
 
+IdList EditorManager::getConnectedTypes(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	IdList result;
+	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element()))
+		// Хак, связанный с отсутствием понятия "Id" в генераторе редакторов.
+		result.append(Id("?", "?", type));
+
+	return result;
+}
+
 IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
 	IdList result;

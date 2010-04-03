@@ -36,5 +36,6 @@ private:
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
+	void generateConnections(utils::OutFile &out);
 	void generateResourceFile();
 };

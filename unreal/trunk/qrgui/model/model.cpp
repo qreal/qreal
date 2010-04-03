@@ -359,6 +359,8 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mApi.setProperty(id, "fromPort", 0.0);
 		mApi.setProperty(id, "toPort", 0.0);
 		mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
+		mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
+		mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
 		mApi.setProperty(id, "position", position);
 		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
@@ -492,3 +494,10 @@ qrRepo::RepoApi& Model::mutableApi()
 	return mApi;
 }
 
+QModelIndex Model::indexById(Id const &id) const
+{
+	if (mTreeItems.keys().contains(id)) {
+		return index(mTreeItems.find(id).value());
+	}
+	return QModelIndex();
+}
