@@ -28,7 +28,7 @@ void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
     for (int i = 0; i < mKeyObjectTable.size(); i++)
     {
         mKeyObjectTable[i].key = mKeyManager->getKey(
-                Adopter().getMousePath(mKeyObjectTable[i].correctPath));
+                Adopter::getMousePath(mKeyObjectTable[i].correctPath));
     }
 }
 
@@ -44,7 +44,7 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
         if (mKeyObjectTable[i].object == object)
         {
             mKeyObjectTable[i].correctPath = correctPath;
-            QString key = mKeyManager->getKey(Adopter().getMousePath(correctPath));
+            QString key = mKeyManager->getKey(Adopter::getMousePath(correctPath));
             mKeyObjectTable[i].key = key;
             return;
         }
@@ -53,19 +53,23 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
 
 QString KeyObjectTable::getObject(QList<QPoint> const & path)
 {
-    int e = 100;
-    int min = e;
+    const float e = 100;
+    const float maxKeyDistance = 60;
+    float min = e;
     float distance;
     QString key = mKeyManager->getKey(path);
     QString object = "";
+    if (key.isEmpty())
+    {
+        return object;
+    }
     foreach (KeyObjectItem item, mKeyObjectTable)
     {
-
         if (!item.key.isEmpty())
         {
-            distance = (float)(LevenshteinDistance().getLevenshteinDistance(item.key, key) * e
+            distance = (float)(LevenshteinDistance::getLevenshteinDistance(item.key, key) * e
                                 / std::min(key.size(), item.key.size()));
-            if (distance < min)
+            if (distance < min && distance < maxKeyDistance)
             {
                 min = distance;
                 object = item.object;
@@ -94,7 +98,5 @@ KeyObjectItem KeyObjectTable::getItem(QString const & name)
             return item;
         }
     }
-    KeyObjectItem item;
-    return item;
+    return KeyObjectItem();
 }
-

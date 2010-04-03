@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
+    <width>913</width>
     <height>569</height>
    </rect>
   </property>
@@ -35,6 +35,59 @@
      </spacer>
     </item>
     <item>
+     <widget class="QGroupBox" name="gbGestures">
+      <property name="minimumSize">
+       <size>
+        <width>489</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Gestures</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTableWidget" name="twObjectPathTable">
+         <property name="minimumSize">
+          <size>
+           <width>311</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>object</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>path</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>key</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGraphicsView" name="gvGesture">
+         <property name="minimumSize">
+          <size>
+           <width>441</width>
+           <height>101</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
      <widget class="QTextEdit" name="teObject">
       <property name="maximumSize">
        <size>
@@ -47,28 +100,6 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QTableWidget" name="twObjectPathTable">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <column>
-       <property name="text">
-        <string>object</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>path</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>key</string>
-       </property>
-      </column>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -76,7 +107,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>507</width>
+     <width>913</width>
      <height>20</height>
     </rect>
    </property>

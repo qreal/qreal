@@ -1,9 +1,5 @@
 #include "levenshteindistance.h"
 
-LevenshteinDistance::LevenshteinDistance()
-{
-}
-
 int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString const & key2)
 {
     int m = key1.size();
@@ -16,9 +12,7 @@ int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString co
     {
         return m;
     }
-
     int matrix[m + 1][n + 1];
-
     for (int i = 0; i <= m; i++)
     {
         for (int j = 0; j <= n; j++)
@@ -30,9 +24,6 @@ int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString co
         }
     }
     matrix[0][0] = 0;
-    int aboveCell;
-    int leftCell;
-    int diagonalCell;
     int cost = 0;
     for (int i = 1; i <= m; ++i)
     {
@@ -46,9 +37,9 @@ int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString co
             {
                 cost = 1;
             }
-            aboveCell = matrix[i - 1][j];
-            leftCell = matrix[i][j - 1];
-            diagonalCell = matrix[i - 1][j - 1];
+            int aboveCell = matrix[i - 1][j];
+            int leftCell = matrix[i][j - 1];
+            int diagonalCell = matrix[i - 1][j - 1];
             matrix[i][j] = std::min(std::min(aboveCell + 1, leftCell + 1), diagonalCell + cost);
         }
     }

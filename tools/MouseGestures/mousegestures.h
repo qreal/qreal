@@ -1,12 +1,14 @@
 #pragma once
 #include "GeometricForms.h"
 #include "keyobjecttable.h"
+#include "paintmanager.h"
 #include <QtGui/QMainWindow>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
+#include <QGraphicsScene>
 
 namespace Ui
 {
@@ -27,11 +29,11 @@ private:
     void mouseReleaseEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void paintEvent(QPaintEvent *);
-    void drawPath(QPainter * painter, QList<QPoint> const & path);
     void addEntities(EntityVector const & entities);
     QList<QPoint> mMousePath;
     QList<QPoint> mCorrectPath;
     KeyObjectTable mKeyObjectTable;
+    PaintManager * mPaintManager;
     static const int keyColumn = 2;
     static const int pathColumn = 1;
     static const int objectColumn = 0;
@@ -39,4 +41,5 @@ private:
 private slots:
     void loadFile();
     void changePath();
+    void drawGesture();
 };

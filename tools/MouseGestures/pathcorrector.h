@@ -5,11 +5,9 @@
 class PathCorrector
 {
 public:
-    PathCorrector();
-    PathCorrector(QList<QPoint> const & path);
-    QList<QPoint> correctPath();
+    static QList<QPoint> correctPath(QList<QPoint> const & path);
+
 private:
-    QList<QPoint> mPath;
     static const double sense = 1;
     static const double speedKoef = 0.0275;
 };

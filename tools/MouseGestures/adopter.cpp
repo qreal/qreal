@@ -29,22 +29,17 @@ QList<QPoint> Adopter::getMousePath(QList<QPoint> const & path)
         return mousePath;
     }
     mousePath.append(path[0]);
-    QPoint currentPoint;
-    QPoint previousPoint;
-    QPoint point;
-    int length;
-    int width;
     for (int i = 1; i < path.size(); i++)
     {
-        currentPoint = path[i];
-        previousPoint = path[i - 1];
-        length = currentPoint.x() - previousPoint.x();
-        width = currentPoint.y() - previousPoint.y();
+        QPoint currentPoint = path[i];
+        QPoint previousPoint = path[i - 1];
+        int length = currentPoint.x() - previousPoint.x();
+        int width = currentPoint.y() - previousPoint.y();
         int number = (int) ((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
         for (int j = 1; j <= number; j++)
         {
-            point.setX(int(previousPoint.x() + length * j / number));
-            point.setY(int(previousPoint.y() + width * j / number));
+            QPoint point(int(previousPoint.x() + length * j / number),
+                         int(previousPoint.y() + width * j / number));
             mousePath.append(point);
         }
     }

@@ -13,7 +13,8 @@ SOURCES += main.cpp \
     validpathcreator.cpp \
     keyobjecttable.cpp \
     adopter.cpp \
-    levenshteindistance.cpp
+    levenshteindistance.cpp \
+    paintmanager.cpp
 HEADERS += mousegestures.h \
     mousemovementmanager.h \
     key8manager.h \
@@ -24,5 +25,6 @@ HEADERS += mousegestures.h \
     keyobjecttable.h \
     IKeyManager.h \
     adopter.h \
-    levenshteindistance.h
+    levenshteindistance.h \
+    paintmanager.h
 FORMS += mousegestures.ui
