@@ -2,6 +2,7 @@
 #include "editor.h"
 #include "nameNormalizer.h"
 #include "../utils/outFile.h"
+#include "../utils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
 
@@ -50,15 +51,9 @@ Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXml
 
 	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
 	qDebug() << "Loading file started: " << fullFileName;
-	QFile inputXmlFile(fullFileName);
-	if (!inputXmlFile.open(QIODevice::ReadOnly)) {
-		qDebug() << "ERROR: can't open file" << fullFileName;
-		return NULL;
-	}
 
 	if (mEditors.contains(fullFileName)) {
 		Editor *editor = mEditors[fullFileName];
-		inputXmlFile.close();
 		if (editor->isLoaded()) {
 			qDebug() << "File already loaded";
 			return editor;
@@ -67,16 +62,7 @@ Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXml
 			return NULL;
 		}
 	} else {
-		QDomDocument inputXmlDomDocument;
-		QString error = "";
-		int errorLine = 0;
-		int errorColumn = 0;
-		if(!inputXmlDomDocument.setContent(&inputXmlFile, false, &error, &errorLine, &errorColumn)) {
-			qDebug() << "ERROR: parse error" << "at" << errorLine << "," << errorColumn << error;
-			inputXmlFile.close();
-			return NULL;
-		}
-		inputXmlFile.close();
+		QDomDocument inputXmlDomDocument = xmlUtils::loadDocument(fullFileName);
 		Editor *editor = new Editor(inputXmlDomDocument, this);
 		if (!editor->load(currentDir)) {
 			qDebug() << "ERROR: Failed to load file";
@@ -274,9 +260,35 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 	out() << "}\n\n";
 }
 
-void XmlCompiler::generateProperties(OutFile &out)
+class XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
+};
+
+class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateProperties(out, isNotFirst);
+	}
+};
+
+class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateContainedTypes(out, isNotFirst);
+	}
+};
+
+class XmlCompiler::ConnectionsGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateConnections(out, isNotFirst);
+	}
+};
+
+void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, ListMethodGenerator const &generator)
 {
-	out() << "QStringList " << mPluginName << "Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const\n"
+	out() << "QStringList " << mPluginName << "Plugin::" << signature << " const\n"
 		<< "{\n"
 		<< "\tQStringList result;\n";
 
@@ -284,44 +296,26 @@ void XmlCompiler::generateProperties(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
-			isNotFirst |= type->generateProperties(out, isNotFirst);
+			isNotFirst |= generator.generate(type, out, isNotFirst);
 
 	out() << "\treturn result;\n"
 		<< "}\n";
+}
+
+void XmlCompiler::generateProperties(OutFile &out)
+{
+	generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
 }
 
 void XmlCompiler::generateContainedTypes(OutFile &out)
 {
-	out() << "QStringList " << mPluginName << "Plugin::getTypesContainedBy(QString const &element) const\n"
-		<< "{\n"
-		<< "\tQStringList result;\n";
-
-	bool isNotFirst = false;
-
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
-			isNotFirst |= type->generateContainedTypes(out, isNotFirst);
-
-	out() << "\treturn result;\n"
-		<< "}\n";
+	generateListMethod(out, "getTypesContainedBy(QString const &element)", ContainedTypesGenerator());
 }
 
 void XmlCompiler::generateConnections(OutFile &out)
 {
-	out() << "QStringList " << mPluginName << "Plugin::getConnectedTypes(QString const &element) const\n"
-		<< "{\n"
-		<< "\tQStringList result;\n";
-
-	bool isNotFirst = false;
-
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
-			isNotFirst |= type->generateConnections(out, isNotFirst);
-
-	out() << "\treturn result;\n"
-		<< "}\n";
+	generateListMethod(out, "getConnectedTypes(QString const &element)", ConnectionsGenerator());
 }
-
 
 void XmlCompiler::generateResourceFile()
 {

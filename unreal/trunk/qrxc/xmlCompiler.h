@@ -38,4 +38,11 @@ private:
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);
 	void generateResourceFile();
+
+	class ListMethodGenerator;
+	class PropertiesGenerator;
+	class ContainedTypesGenerator;
+	class ConnectionsGenerator;
+
+	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
 };
