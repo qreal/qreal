@@ -89,8 +89,8 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container)){
-		if (candidate.element() ==  type.editor() )
+	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+		if (candidate.element() ==  type.editor())
 			allowed = true;
 	}
 	return allowed;

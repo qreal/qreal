@@ -89,6 +89,9 @@
 						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
 						<connection type="HascolActivity::ActivityDiagram"/>
 					</connections>
+					<container> 
+						<contains type="HascolStructure::ProcessOperation"/> 
+					</container> 
 				</logic>
 			</node>
 			<node name="ProcessOperation" displayedName="Plug">
