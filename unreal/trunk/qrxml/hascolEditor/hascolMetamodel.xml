@@ -44,6 +44,11 @@
 					<properties>
 						<property type="string" name="output directory"/>
 					</properties>
+					<container>
+						<contains type="HascolStructure::Process"/> 
+						<contains type="HascolStructure::Functor"/> 
+						<contains type="HascolStructure::Comment"/> 
+					</container> 
 				</logic>
 			</node>
 			<node name="Process">
@@ -89,8 +94,10 @@
 						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
 						<connection type="HascolActivity::ActivityDiagram"/>
 					</connections>
-					<container> 
+					<container>
 						<contains type="HascolStructure::ProcessOperation"/> 
+						<contains type="HascolStructure::Resource"/> 
+						<contains type="HascolStructure::LetBinding"/> 
 					</container> 
 				</logic>
 			</node>
@@ -182,6 +189,12 @@
 						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
 						<connection type="HascolActivity::ActivityDiagram"/>
 					</connections>
+					<container>
+						<contains type="HascolStructure::ProcessOperation"/> 
+						<contains type="HascolStructure::Resource"/> 
+						<contains type="HascolStructure::LetBinding"/> 
+						<contains type="HascolStructure::FunctorFormalParameter"/> 
+					</container> 
 				</logic>
 			</node>
 			<node name="FunctorFormalParameter" displayedName="Functor Parameter">
@@ -219,9 +232,41 @@
 	<diagram name="HascolPortMapping" displayedName="Hascol Port Mapping">
 		<!-- За неимением диаграммы композитных структур - ад-хок реализация -->
 		<graphicTypes>
-			<import name="HascolStructure::HascolStructureDiagram" as="HascolPortMappingDiagram" displayedName="Port Mapping Diagram"/>
 			<import name="Kernel::Directed Association" as="PortMappingRelation" displayedName="Port Mapping Relation"/>
 			<import name="HascolStructure::FunctorFormalParameter" as="FunctorFormalParameter" displayedName="Functor Parameter"/>
+			<node name="HascolPortMappingDiagram" displayedName="Port Mapping Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<properties>
+						<property type="string" name="output directory"/>
+					</properties>
+					<container>
+						<contains type="HascolPortMapping::ProcessInstance"/> 
+						<contains type="HascolPortMapping::FunctorInstance"/> 
+						<contains type="HascolStructure::Comment"/> 
+					</container> 
+				</logic>
+			</node>
 			<node name="ProcessInstance" displayedName="Process Instance"> <!-- Должно наследоваться от EncapsulatedClassifier и TypedElement -->
 				<graphics>
 					<picture sizex="200" sizey="100">
@@ -232,6 +277,11 @@
 					</labels>
 				</graphics>
 				<logic>
+					<container>
+						<contains type="HascolPortMapping::ProcessInstance"/> 
+						<contains type="HascolPortMapping::FunctorInstance"/> 
+						<contains type="HascolPortMapping::Port"/> 
+					</container> 
 				</logic>
 			</node>
 			<node name="FunctorInstance" displayedName="Functor Instance">
@@ -248,6 +298,11 @@
 					<generalizations>
 						<parent parentName="ProcessInstance"/>
 					</generalizations>
+					<container>
+						<contains type="HascolPortMapping::ProcessInstance"/> 
+						<contains type="HascolPortMapping::FunctorInstance"/> 
+						<contains type="HascolPortMapping::Port"/> 
+					</container> 
 				</logic>
 			</node>
 			<node name="Port"> <!-- Это просто порт из композитных структур + атрибут direction -->
@@ -289,13 +344,54 @@
 	</diagram>
 	<diagram name="HascolActivity" displayedName="Hascol Activity">
 		<graphicTypes>
-			<import name="HascolStructure::HascolStructureDiagram" as="HascolActivityDiagram" displayedName="Activity Diagram"/>
 			<import name="Activity Diagram::Accept Event Action" as="HandlerStart" displayedName="Handler Start"/>
 			<import name="Activity Diagram::Action" as="Action"/>
-			<import name="Activity Diagram::Input Pin" as="InputPin" displayedName="Input Pin"/>
-			<import name="Activity Diagram::Output Pin" as="OutputPin" displayedName="Output Pin"/>
+			<!-- Неиспользуемая ересь, для которой надо ещё описать, где она лежать может -->
+			<!-- <import name="Activity Diagram::Input Pin" as="InputPin" displayedName="Input Pin"/> -->
+			<!-- <import name="Activity Diagram::Output Pin" as="OutputPin" displayedName="Output Pin"/> -->
 			<import name="Activity Diagram::Decision Node" as="DecisionNode" displayedName="Decision Node"/>
 			<import name="Activity Diagram::Merge Node" as="MergeNode" displayedName="Merge Node"/>
+			<node name="HascolActivityDiagram" displayedName="Activity Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<properties>
+						<property type="string" name="output directory"/>
+					</properties>
+					<container>
+						<contains type="HascolActivity::HandlerStart"/> 
+						<contains type="HascolActivity::Action"/> 
+						<contains type="HascolActivity::DecisionNode"/> 
+						<contains type="HascolActivity::MergeNode"/> 
+						<contains type="HascolActivity::SendSignalAction"/> 
+						<contains type="HascolActivity::InformSignalAction"/> 
+						<contains type="HascolActivity::ActivityFinalNode"/> 
+						<contains type="HascolActivity::ControlFlow"/> 
+						<contains type="HascolActivity::Group"/> 
+						<contains type="HascolStructure::Comment"/> 
+					</container> 
+				</logic>
+			</node>
+
 			<node name="SendSignalAction" displayedName="Send">
 				<graphics>
 					<picture sizex="100" sizey="60">
@@ -380,6 +476,17 @@
 					<generalizations>
 						<parent parentName="Activity Diagram::Structured Activity Node"/>
 					</generalizations>
+					<container>
+						<contains type="HascolActivity::HandlerStart"/> 
+						<contains type="HascolActivity::Action"/> 
+						<contains type="HascolActivity::DecisionNode"/> 
+						<contains type="HascolActivity::MergeNode"/> 
+						<contains type="HascolActivity::SendSignalAction"/> 
+						<contains type="HascolActivity::InformSignalAction"/> 
+						<contains type="HascolActivity::ActivityFinalNode"/> 
+						<contains type="HascolActivity::ControlFlow"/> 
+						<contains type="HascolStructure::Comment"/> 
+					</container> 
 				</logic>
 			</node>
 		</graphicTypes>
