@@ -13,7 +13,7 @@ namespace QReal.Utils
             argBuilder.AppendArgument("--xml");
             argBuilder.AppendArgument("--limit 1");
             argBuilder.AddArgument(StringHelper.Quote(svnOptions.Url));
-            ProcessResult result = AddLoginInfoAndRunSvnProcess(svnOptions, argBuilder);
+            ProcessResult result = RunSvnProcess(svnOptions, argBuilder);
 
             XmlDocument xml = new XmlDocument();
             xml.LoadXml(result.StandardOutput);
@@ -22,10 +22,8 @@ namespace QReal.Utils
             return Convert.ToInt32(node.InnerText);
         }
 
-        public static ProcessResult AddLoginInfoAndRunSvnProcess(SvnLoginOptions svnLoginOptions, ProcessArgumentBuilder argBuilder)
+        public static ProcessResult RunSvnProcess(SvnOptions svnLoginOptions, ProcessArgumentBuilder argBuilder)
         {
-            argBuilder.AddArgument("--username", svnLoginOptions.Username);
-            argBuilder.AddArgument("--password", svnLoginOptions.Password);
             argBuilder.AddArgument("--non-interactive");
             argBuilder.AddArgument("--no-auth-cache");
 

@@ -49,7 +49,6 @@
     <Compile Include="ReplaceVersionMultiple\ReplaceVersionMultiple.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SvnRevisionLabeller\SvnRevisionLabeller.cs" />
-    <Compile Include="Utils\SvnLoginOptions.cs" />
     <Compile Include="Utils\SvnOptions.cs" />
     <Compile Include="Utils\SvnProcessHelper.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
