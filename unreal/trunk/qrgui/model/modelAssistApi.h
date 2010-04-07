@@ -23,10 +23,10 @@ namespace qReal {
 		class ModelAssistApi {
 		public:
 			ModelAssistApi(Model &model, EditorManager const &editorManager);
-			EditorManager const &editorManager() const;
+			virtual EditorManager const &editorManager() const;
 
-			void connect(qReal::Id const &source, qReal::Id const &destination);
-			void disconnect(qReal::Id const &source, qReal::Id const &destination);
+			virtual void connect(qReal::Id const &source, qReal::Id const &destination);
+			virtual void disconnect(qReal::Id const &source, qReal::Id const &destination);
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Копирование запрещено.
 			ModelAssistApi& operator =(ModelAssistApi const &);  // Присваивание тоже.
