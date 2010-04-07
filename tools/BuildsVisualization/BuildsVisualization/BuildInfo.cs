@@ -36,7 +36,8 @@ namespace BuildsVisualization
             this.message = commitInfo.Message;
             this.autor = commitInfo.Autor;
             string dirFullName = dirInfo.FullName;
-            this.url = dirFullName.Substring(dirFullName.IndexOf("Builds") + 7) + @"\" + dirInfo.GetFiles()[0].Name;
+            string newUrl = dirFullName.Substring(dirFullName.IndexOf("Builds") + 7) + @"\" + dirInfo.GetFiles()[0].Name;
+            this.url = newUrl.Replace('\\','/');
         }
     }
 }
