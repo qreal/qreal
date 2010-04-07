@@ -54,6 +54,9 @@ namespace qReal {
 			void saveTo(QString const &workingDirectory);
 		public slots:
 			void exterminate();
+		
+		signals:
+			void nameChanged(QModelIndex const &index);
 
 		protected:
 			QMultiHash<Id, details::ModelTreeItem*> mTreeItems;

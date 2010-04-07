@@ -94,6 +94,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			mApi.setName(item->id(), value.toString());
+			emit nameChanged(index);
 			break;
 		case roles::positionRole:
 			mApi.setProperty(item->id(), "position", value);

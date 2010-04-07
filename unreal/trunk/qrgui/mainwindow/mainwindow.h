@@ -39,6 +39,8 @@ namespace qReal {
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
+		void updateTab(QModelIndex const &index);
+
 		void settingsPlugins();
 
 		void showAbout();

@@ -149,6 +149,8 @@ MainWindow::MainWindow()
 	ui.diagramExplorer->setModel(mModel);
 	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
 
+	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
+
 	openNewTab();
 
 	progress->setValue(100);
@@ -184,7 +186,7 @@ void MainWindow::openNewTab()
 		ui.tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView *view = new EditorView();
-		ui.tabs->addTab(view,"test");
+		ui.tabs->addTab(view, "");
 		ui.tabs->setCurrentWidget(view);
 
 		if (!index.isValid())
@@ -193,9 +195,27 @@ void MainWindow::openNewTab()
 	}
 }
 
+void MainWindow::updateTab(QModelIndex const &index)
+{
+	qDebug() << mModel->data(index, Qt::EditRole).toString();
+	for (int i = 0; i < ui.tabs->count(); i++) { // ZOMG, переделать на мапах
+		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
+		if ((tab->mvIface()->rootIndex() == index) /*&& (ui.tabs->currentIndex() != i)*/) {
+			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
+			return;
+		}
+	}	
+}
+
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 {
 	getCurrentTab()->setMainWindow(this);
+	QModelIndex index = rootIndex;
+	
+	if( rootIndex == QModelIndex() ) // хотя бы одна диаграмма всегда есть
+		index = mModel->index(0,0,mModel->rootIndex());
+
+	ui.tabs->setTabText(ui.tabs->currentIndex(), mModel->data(index, Qt::EditRole).toString());
 
 	changeMiniMapSource(ui.tabs->currentIndex());
 
@@ -206,7 +226,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
 	getCurrentTab()->mvIface()->setModel(mModel);
-	getCurrentTab()->mvIface()->setRootIndex(rootIndex);
+	getCurrentTab()->mvIface()->setRootIndex(index);
 
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 		, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
