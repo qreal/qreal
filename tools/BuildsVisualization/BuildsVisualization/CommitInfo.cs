@@ -6,17 +6,6 @@ namespace BuildsVisualization
 {
     public class CommitInfo
     {
-        protected int revision;
-
-        public int Revision
-        {
-            get
-            {
-                return revision;
-            }
-        }
-
-
         protected string message;
 
         public string Message
@@ -37,16 +26,14 @@ namespace BuildsVisualization
             }
         }
 
-        public CommitInfo(int revision, string message, string autor)
+        public CommitInfo(string message, string autor)
         {
-            this.revision = revision;
             this.message = message;
             this.autor = autor;
         }
 
         public CommitInfo()
         {
-
         }
     }
 }

@@ -45,7 +45,7 @@ namespace BuildsVisualization
             string message = messageNode != null ? EncodeMessageForConsoleOutput(messageNode.InnerText) : null;
             XmlNode authorNode = node.SelectSingleNode("author");
             string author = authorNode != null ? authorNode.InnerText : null;
-            CommitInfo commitInfo = new CommitInfo(revision, message, author);
+            CommitInfo commitInfo = new CommitInfo(message, author);
             return commitInfo;
         }
 

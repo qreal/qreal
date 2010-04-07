@@ -17,10 +17,21 @@ namespace BuildsVisualization
             }
         }
 
+        private string version;
+
+        public string Version
+        {
+            get
+            {
+                return version;
+            }
+        }
+
         public BuildInfo(DirectoryInfo dirInfo)
         {
             string dirName = dirInfo.Name;
-            revision = Convert.ToInt32(dirName.Split('.')[2]);
+            this.version = dirName;
+            int revision = Convert.ToInt32(dirName.Split('.')[2]);
             CommitInfo commitInfo = SvnProcessHelper.GetSvnCommitInfo(revision);
             this.message = commitInfo.Message;
             this.autor = commitInfo.Autor;

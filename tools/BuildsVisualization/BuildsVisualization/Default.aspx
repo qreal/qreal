@@ -12,20 +12,20 @@
             <table> 
                 <tr> 
                     <td>
-                            <asp:TreeView ID="buildPlatformsTreeView" runat="server" ShowLines="True" 
-                                onselectednodechanged="buildPlatformsTreeView_SelectedNodeChanged">
-                            </asp:TreeView>
+                        <asp:TreeView ID="buildPlatformsTreeView" runat="server" ShowLines="True" 
+                            onselectednodechanged="buildPlatformsTreeView_SelectedNodeChanged">
+                        </asp:TreeView>
                     </td> 
                     <td width="10"/> 
                     <td valign="top">
-                            <asp:GridView ID="buildsGridView" runat="server" AutoGenerateColumns="False">
-                                <Columns>
-                                    <asp:BoundField HeaderText="Revision" DataField="Revision" />
-                                    <asp:BoundField HeaderText="Commit Message" DataField="Message" />
-                                    <asp:BoundField HeaderText="Autor" DataField="Autor" />
-                                    <asp:HyperLinkField HeaderText="Download" Text="Download" DataNavigateUrlFields="Url" />
-                                </Columns>
-                            </asp:GridView>
+                        <asp:GridView ID="buildsGridView" runat="server" AutoGenerateColumns="False">
+                            <Columns>
+                                <asp:BoundField HeaderText="Version" DataField="Version" />
+                                <asp:BoundField HeaderText="Commit Message" DataField="Message" />
+                                <asp:BoundField HeaderText="Autor" DataField="Autor" />
+                                <asp:HyperLinkField HeaderText="Download" Text="Download" DataNavigateUrlFields="Url" />
+                            </Columns>
+                        </asp:GridView>
                     </td> 
                 </tr> 
             </table>
