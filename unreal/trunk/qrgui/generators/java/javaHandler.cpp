@@ -345,12 +345,12 @@ QString JavaHandler::getMethodCode(Id const &id)
         if (outgoingConnections.length() == 1) {
             //there is a big hope here that the user will connect just Activity Diagrams
             if (outgoingConnections.at(0).element() == "Kernel_Diagram") {
-                result = serializeObject(outgoingConnections.at(0));
+                result = serializeChildren(outgoingConnections.at(0));
             } else {
                 addError("object " + objectType + " with id " + id.toString() + ". Only Activity Diagram can be its realization.");
             }
         } else {
-            addError("object " + objectType + " with id " + id.toString() + " has too much realizations");
+            addError("object " + objectType + " with id " + id.toString() + " has too many realizations");
         }
 
     } else {
