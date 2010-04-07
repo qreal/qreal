@@ -323,7 +323,7 @@ QString JavaHandler::getSuperclass(Id const &id)
                         result += " extends " + parentClass;
                     }
                 } else {
-                    addError("object " + objectType + " with id " + id.toString() + " has too much superclasses");
+                    addError("object " + objectType + " with id " + id.toString() + " has too many superclasses");
                 }
             }
         }
