@@ -149,8 +149,8 @@ QString JavaHandler::serializeObject(Id const &id)
 
                 QString methodBody = getMethodCode(id);
 
-                result += isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
-                          visibility + type  + mApi.name(id) + "(" + operationFactors + ")" + methodBody + "\n";
+                result += visibility + isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
+                          type  + mApi.name(id) + "(" + operationFactors + ")" + methodBody + "\n";
             } else {
                 this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
             }
@@ -218,7 +218,7 @@ QString JavaHandler::serializeObject(Id const &id)
     } else if (objectType == "Activity_Diagram_Activity_Final_Node") {
         result += "}\n";
     } else if (objectType == "Activity_Diagram_Decision_Node") {
-        result += "if (";
+        result += "if (" + mApi.name(id) + ") {";
         if (!mApi.links(id).isEmpty()) {
             IdList linksOut = mApi.outgoingLinks(id);
             if (!linksOut.isEmpty()) {
