@@ -68,7 +68,9 @@ Section -Main SEC0000
     SetOverwrite on
     File ..\qrgui\release\qrgui.exe
     File ..\qrgui\release\qrrepo.dll
+	SetOutPath "$INSTDIR\plugins"
     File /r ..\qrgui\plugins\*
+	SetOutPath $INSTDIR
     File C:\Qt\2010.02.1\bin\QtCore4.dll
     File C:\Qt\2010.02.1\bin\QtGui4.dll
     File C:\Qt\2010.02.1\bin\QtSvg4.dll
@@ -124,6 +126,7 @@ Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\QtSvg4.dll
     Delete /REBOOTOK $INSTDIR\QtGui4.dll
     Delete /REBOOTOK $INSTDIR\QtCore4.dll
+	RmDir /r /REBOOTOK $INSTDIR\plugins
     RmDir /r /REBOOTOK $INSTDIR
     Delete /REBOOTOK $INSTDIR\qrrepo.dll
     Delete /REBOOTOK $INSTDIR\qrgui.exe
