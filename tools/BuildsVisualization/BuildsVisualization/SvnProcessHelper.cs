@@ -61,7 +61,8 @@ namespace BuildsVisualization
 
         private static string EncodeMessageForConsoleOutput(string Message)
         {
-            return Convert(Message, Encoding.GetEncoding("utf-8"), Encoding.Default);
+            string converted1 = Convert(Message, Encoding.Default, Encoding.GetEncoding("cp866"));
+            return Convert(converted1, Encoding.UTF8, Encoding.Default);
         }
     }
 }
