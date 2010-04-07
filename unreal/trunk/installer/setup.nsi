@@ -74,6 +74,7 @@ Section -Main SEC0000
     File C:\Qt\2010.02.1\bin\QtSvg4.dll
     File C:\Qt\2010.02.1\bin\QtXml4.dll
     File C:\Qt\2010.02.1\mingw\bin\mingwm10.dll
+    File C:\Qt\2010.02.1\mingw\bin\libgcc_s_dw2-1.dll
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Start QReal.lnk" $INSTDIR\qrgui.exe
     SetOutPath $DESKTOP
@@ -117,6 +118,7 @@ done${UNSECTION_ID}:
 Section /o -un.Main UNSEC0000
     Delete /REBOOTOK "$DESKTOP\Start QReal.lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Start QReal.lnk"
+    Delete /REBOOTOK $INSTDIR\libgcc_s_dw2-1.dll
     Delete /REBOOTOK $INSTDIR\mingwm10.dll
     Delete /REBOOTOK $INSTDIR\QtXml4.dll
     Delete /REBOOTOK $INSTDIR\QtSvg4.dll
