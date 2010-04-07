@@ -187,6 +187,7 @@ QString JavaHandler::serializeObject(Id const &id)
     // activity diagram
 
     else if (objectType == "Activity_Diagram_Initial_Node") {
+        result += "{\n";
         if (!mApi.links(id).isEmpty()) {
            if (!mApi.incomingLinks(id).isEmpty()) {
               addError("object " + objectType + " with id  " + id.toString() + " can not have incoming links");
@@ -204,7 +205,7 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
     } else if (objectType == "Activity_Diagram_Action") {
-        result += mApi.name(id) + "();" + "\n";
+        result += mApi.name(id) + "\n";
         if (!mApi.links(id).isEmpty()) {
             IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
