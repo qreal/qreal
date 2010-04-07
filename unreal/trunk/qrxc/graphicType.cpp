@@ -236,6 +236,7 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
+
 		if (parent->isResolving()) {
 			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
 			return false;
@@ -243,7 +244,6 @@ bool GraphicType::resolve()
 		if (!parent->isResolved()) {
 			if (!parent->resolve())
 				return false;
-			return true;
 		}
 		foreach (Property *property, parent->properties().values())
 			if (!addProperty(property->clone()))
