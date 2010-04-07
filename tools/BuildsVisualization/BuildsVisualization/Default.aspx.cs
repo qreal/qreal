@@ -15,6 +15,8 @@ namespace BuildsVisualization
             HierarchicalFolderIEnumearable folders = new HierarchicalFolderIEnumearable(dirName);
             buildPlatformsTreeView.DataSource = folders;
             buildPlatformsTreeView.DataBind();
+            buildPlatformsTreeView.Nodes[0].Select();
+            buildPlatformsTreeView_SelectedNodeChanged(null, null);
         }
 
         protected void buildPlatformsTreeView_SelectedNodeChanged(object sender, EventArgs e)
@@ -27,6 +29,7 @@ namespace BuildsVisualization
             {
                 builds.Add(new BuildInfo(build));
             }
+            builds.Reverse();
             buildsGridView.DataSource = builds;
             buildsGridView.DataBind();
         }
