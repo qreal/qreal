@@ -177,7 +177,7 @@ void MainWindow::openNewTab()
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if ((tab->mvIface()->rootIndex() == index) && (ui.tabs->currentIndex() != i)) {
+		if (tab->mvIface()->rootIndex() == index) {
 			tabNumber = i;
 			break;
 		}
