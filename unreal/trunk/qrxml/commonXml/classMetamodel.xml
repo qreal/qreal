@@ -77,6 +77,9 @@
 						<property type="string" name="isSynchronized"/>
 						<property type="string" name="isNative"/>
 					</properties>
+					<connections>
+						<connection type="Kernel::Diagram"/>
+					</connections>
 				</logic>
 			</node>
 			<node name="Class field">
