@@ -384,9 +384,7 @@ void EditorViewScene::connectActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
-	// Модели нет дела до провязки, поскольку это свойство логической, а не
-	// графической модели.
-	model->mutableApi().connect(source, destination);
+	model->assistApi().connect(source, destination);
 }
 
 void EditorViewScene::goToActionTriggered()
@@ -404,5 +402,5 @@ void EditorViewScene::disconnectActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
-	model->mutableApi().disconnect(source, destination);
+	model->assistApi().disconnect(source, destination);
 }

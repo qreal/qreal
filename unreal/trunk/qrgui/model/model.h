@@ -12,6 +12,7 @@
 #include "../kernel/definitions.h"
 #include "classes/modelTreeItem.h"
 #include "../mainwindow/editormanager.h"
+#include "modelAssistApi.h"
 
 namespace qReal {
 
@@ -40,9 +41,12 @@ namespace qReal {
 			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
 			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+
+			virtual ModelAssistApi &assistApi();
+			virtual ModelAssistApi const &assistApi() const;
 			qrRepo::RepoApi const &api() const;
 			qrRepo::RepoApi &mutableApi();
-			virtual EditorManager const &editorManager() const;
+
 			QModelIndex indexById(Id const &id) const;
 
 			void open(QString const &workingDirectory);
@@ -61,6 +65,7 @@ namespace qReal {
 			qrRepo::RepoApi mApi;
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
+			ModelAssistApi mAssistApi;
 
 			Model(Model const &);  // Копировать модель нельзя
 			Model& operator =(Model const &);  // Присваивать тоже

@@ -49,7 +49,7 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 int Element::roleIndexByName(QString const &roleName) const
 {
 	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
-	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
+	QStringList properties = itemModel->assistApi().editorManager().getPropertyNames(uuid().type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 

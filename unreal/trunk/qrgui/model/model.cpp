@@ -9,7 +9,7 @@ using namespace model;
 using namespace details;
 
 Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
-	:  mApi(workingDirectory), mEditorManager(editorManager)
+	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -422,9 +422,9 @@ ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 
 void Model::checkProperties(Id const &id)
 {
-	if (!editorManager().hasElement(id.type()))
+	if (!mEditorManager.hasElement(id.type()))
 		return;
-	QStringList propertiesThatShallBe = editorManager().getPropertyNames(id.type());
+	QStringList propertiesThatShallBe = mEditorManager.getPropertyNames(id.type());
 	foreach (QString property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // Типа значение по умолчанию.
@@ -476,11 +476,6 @@ qrRepo::RepoApi const & Model::api() const
 	return mApi;
 }
 
-EditorManager const &Model::editorManager() const
-{
-	return mEditorManager;
-}
-
 ModelTreeItem *Model::parentTreeItem(QModelIndex const &parent) const
 {
 	return parent.isValid()
@@ -501,3 +496,14 @@ QModelIndex Model::indexById(Id const &id) const
 	}
 	return QModelIndex();
 }
+
+ModelAssistApi &Model::assistApi()
+{
+	return mAssistApi;
+}
+
+ModelAssistApi const &Model::assistApi() const
+{
+	return mAssistApi;
+}
+
