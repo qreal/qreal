@@ -31,12 +31,6 @@ void Model::init()
 	mTreeItems.insert(ROOT_ID, mRootItem);
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
 	loadSubtreeFromClient(mRootItem);
-
-	if (mRootItem->children().count() == 0) {
-		Id elementId(Id::loadFromString("qrm:/Kernel_metamodel/Kernel/Kernel_Diagram"), QUuid::createUuid().toString());
-		if (mEditorManager.hasElement(elementId.type()))
-			addElementToModel(mRootItem, elementId, "", "(anonymous Diagram)", QPointF(0,0), Qt::CopyAction);
-	}
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
