@@ -48,3 +48,5 @@ HEADERS += ../qrxml/editorinterface.h
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.
 include (../utils/utils.pri)
+
+include (thirdparty/thirdparty.pri)
