@@ -1,215 +1,208 @@
 <?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <include>basicbehaviors_metamodel</include>
- <namespace>UML 2.1</namespace>
- <editor name="Use Case Diagram" >
-   <graph_types>
-  <node id="uscnActor" name="Actor" >
-   <graphics>
-    <view>
-     <picture sizex="31" sizey="100" >
-      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="31" stroke-width="2" x2="31" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="31" x1="16" y2="66" stroke-width="2" x2="16" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="45" x1="1" y2="45" stroke-width="2" x2="31" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="66" x1="16" y2="89" stroke-width="2" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="66" x1="16" y2="89" stroke-width="2" x2="31" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-     <ports>
-      <point_port x="1" y="45" />
-      <point_port x="31" y="45" />
-      <line_port>
-       <start startx="16" starty="31" />
-       <end endx="16" endy="66" />
-      </line_port>
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <containers>
-     <container>
-      <contains idref="uscnUseCase" role="use case" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="uscnUCClassifier" name="UCClassifier" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="110" >
-      <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="99" stroke-width="1" x2="59" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html x="5" y="5" xmlns:html="http://www.w3.org/html/" >
-       <html:text_from_repo name="name" />
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnClassifier" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <assoc_ref idref="uscaClassifier" />
-    </associations>
-    <containers>
-     <container>
-      <contains idref="uscnUseCase" role="use case" />
-     </container>
-    </containers>
-    <!--  TO DELETE!!!  <properties>
-     <property type="string" name="name" />
-    </properties> -->
-   </logic>
-  </node>
-  <node id="uscnUseCase" name="UseCase" >
-   <graphics>
-    <view>
-     <picture sizex="100" sizey="60" >
-      <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="2" y2="49" stroke-width="2" x2="98" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html x="0" y="20" xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text_from_repo name="name" />
-       </html:center>
-      </html:html>
-     </repo_info>
-     <ports>
-      <point_port x="72" y="46" />
-      <point_port x="28" y="4" />
-      <point_port x="28" y="46" />
-      <point_port x="72" y="4" />
-      <point_port x="90" y="38" />
-      <point_port x="10" y="12" />
-      <point_port x="10" y="38" />
-      <point_port x="90" y="12" />
-      <point_port x="80" y="44" />
-      <point_port x="20" y="6" />
-      <point_port x="20" y="44" />
-      <point_port x="80" y="6" />
-      <point_port x="98" y="25" />
-      <point_port x="2" y="25" />
-      <point_port x="50" y="49" />
-      <point_port x="50" y="1" />
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="bbnBehavioredClassifier" />
-     </generalization>
-    </generalizations>
-    <!-- TO DELETE!!!    <properties>
-     <property type="string" name="name" />
-    </properties> -->
-    <associations>
-     <assoc_ref idref="uscaExtend" />
-     <assoc_ref idref="uscaInclude" />
-    </associations>
-    <containers>
-     <container>
-      <contains idref="uscnExtensionPoint" role="extension point" />
-     </container>
-     <container>
-      <contained_by idref="uscnActor" role="actor" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <edge id="usceExtend" name="Extend" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text text="&lt;&lt;extend>>" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krnnNamedElement" />
-      <parent parent_id="krneDirRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="extend" multiplicity="true" id="uscaExtend" >
-      <begin idref="uscnUseCase" />
-     </association>
-     <association role="extend" multiplicity="false" end_type="open_arrow" id="uscaExtend" >
-      <end idref="uscnUseCase" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <edge id="usceInclude" name="Include" >
-   <graphics>
-    <view>
-     <line_type type="dashLine" />
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:center>
-        <html:text text="&lt;&lt;include>>" />
-       </html:center>
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneDirRelationship" />
-      <parent parent_id="krnnNamedElement" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="include" multiplicity="true" id="ucsaInclude" >
-      <begin idref="uscnUseCase" />
-     </association>
-     <association role="include" multiplicity="false" end_type="open_arrow" id="uscaInclude" >
-      <end idref="uscnUseCase" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <edge id="usceRelationship" name="Relationship" >
-    <logic>
-     <associations>
-      <association role="relatedElement" end_type="no_arrow" id="usceRelEl1" >
-       <begin idref="krnnElement" />
-      </association>
-      <association role="relatedElement" end_type="no_arrow" id="usceRelEl2" >
-       <end idref="krnnElement" />
-      </association>
-     </associations>
-     <generalizations>
-      <generalization>
-       <parent parent_id="krnnElement" />
-      </generalization>
-     </generalizations>
-    </logic>
-   </edge>
-   </graph_types>
- </editor>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel.xml</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="UseCaseDiagram" displayedName="Use Case Diagram">
+		<graphicTypes>
+			<import name="Kernel::Directed Association" as="DirectedAssociation" displayedName="Directed Association"/>
+			<import name="Kernel::Constraint" as="Constraint" displayedName="Constraint"/>
+			<import name="ActivityDiagram::ConstraintEdge" as="ConstraintEdge" displayedName="Constraint Edge"/>
+		
+			<node name="UseCaseDiagram" displayedName="Use Case Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+                        <parent parentName="Kernel::Diagram"/>
+                    </generalizations>
+					<container>
+						<contains type="UseCaseDiagram::Aggregation"/>
+						<contains type="UseCaseDiagram::Association"/>
+						<contains type="UseCaseDiagram::Class"/>
+						<contains type="UseCaseDiagram::ClassField"/>
+						<contains type="UseCaseDiagram::ClassMethod"/>
+						<contains type="UseCaseDiagram::Comment"/>
+						<contains type="UseCaseDiagram::CommentLink"/>
+						<contains type="UseCaseDiagram::Composition"/>
+						<contains type="UseCaseDiagram::Dependency"/>
+						<contains type="UseCaseDiagram::DirectedAssociation"/>
+						<contains type="UseCaseDiagram::Generalization"/>
+						<contains type="UseCaseDiagram::Interface"/>
+						<contains type="UseCaseDiagram::InterfaceRealization"/>
+						<contains type="UseCaseDiagram::Realization"/>
+						<contains type="UseCaseDiagram::View"/>
+					</container> 
+				</logic>
+			</node>
+		
+			<node name="Actor" displayedName="Actor">
+				<graphics>
+					<view>
+						<picture sizex="31" sizey="100" >
+							<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="31" stroke-width="2" x2="31" fill-style="solid" />
+							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="31" x1="16" y2="66" stroke-width="2" x2="16" fill-style="solid" />
+							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="45" x1="1" y2="45" stroke-width="2" x2="31" fill-style="solid" />
+							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="66" x1="16" y2="89" stroke-width="2" x2="1" fill-style="solid" />
+							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="66" x1="16" y2="89" stroke-width="2" x2="31" fill-style="solid" />
+						</picture>
+						<labels>
+							<label x="3" y="0" textBinded="name"/>
+						</labels>
+						<ports>
+							<pointPort x="1" y="45"/>
+							<pointPort x="31" y="45"/>
+							<linePort>
+								<start startx="16a" starty="31a"/>
+								<end endx="16a" endy="66a"/>
+							</linePort>
+						</ports>
+					</view>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Basic Behaviors::Behaviored Classifier"/>
+					</generalizations>
+					<container>
+						<contains type="UseCase" />
+					</container>
+				</logic>
+		    </node>
+			<node name="Classifier" displayedName="Classifier">
+				<graphics>
+					<view>
+						<picture sizex="60" sizey="110" >
+							<rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="99" stroke-width="1" x2="59" fill-style="solid" />
+						</picture>
+						<labels>
+							<label x="3" y="0" textBinded="name"/>
+						</labels>
+					</view>
+			    </graphics>
+			    <logic>
+					<generalizations>
+						<parent parentName="Kernel::Classifier" />
+					</generalizations>
+					<properties>
+						<property type="UseCase" name="ownedUseCase"/>
+						<property type="UseCase" name="useCase"/>
+					</properties>
+					<containers>
+						<contains type="UseCase" />
+						<contains type="Extend" />
+						<contains type="ExtensionPoint" />
+						<contains type="Include" />
+					</containers>
+			    </logic>
+			</node>
+			<edge name="Extend" displayedName="Extend" >
+				<graphics>
+					<view>
+						<lineType type="dashLine" />
+					</view>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Named Element" />
+					    <parent parentName="Kernel::Directed Relationship" />
+					</generalizations>
+					<properties>
+						<property type="UseCase" name="extendedUseCase"/>
+						<property type="UseCase" name="extension"/>
+						<property type="Constraint" name="condition"/>
+						<property type="ExtensionPoint" name="extensionLocation"/>
+					</properties>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="Use Case" endName="Use Case" />
+					</associations>
+				</logic>
+		    </edge>
+			<node name="ExtensionPoint" displayedName="Extension Point">
+			    <logic>
+					<generalizations>
+						<parent parentName="Kernel::Redefinable Element" />
+					</generalizations>
+					<properties>
+						<property type="UseCase" name="useCase"/>
+					</properties>
+			    </logic>
+			</node>
+			<edge name="Include" displayedName="Include" >
+			    <graphics>
+					<view>
+						<lineType type="dashLine" />
+					</view>
+				</graphics>
+			    <logic>
+					<generalizations>
+						<parent parentName="Kernel::Directed Relationship" />
+						<parent parentName="Kernel::Named Element" />
+					</generalizations>
+					<associations beginType="no_arrow" endType="open_arrow">
+						<association beginName="UseCase" endName="UseCase" />
+					</associations>
+			    </logic>
+		    </edge>
+		    <node name="UseCase" displayedName="Use Case" >
+				<graphics>
+					<view>
+						<picture sizex="100" sizey="60" >
+							<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="2" y2="49" stroke-width="2" x2="98" fill-style="solid" />
+						</picture>
+						<labels>
+							<label x="3" y="0" textBinded="name"/>
+						</labels>
+						<ports>
+							<pointPort x="72" y="46" />
+						    <pointPort x="28" y="4" />
+							<pointPort x="28" y="46" />
+							<pointPort x="72" y="4" />
+							<pointPort x="90" y="38" />
+							<pointPort x="10" y="12" />
+							<pointPort x="10" y="38" />
+							<pointPort x="90" y="12" />
+							<pointPort x="80" y="44" />
+							<pointPort x="20" y="6" />
+							<pointPort x="20" y="44" />
+							<pointPort x="80" y="6" />
+							<pointPort x="98" y="25" />
+							<pointPort x="2" y="25" />
+							<pointPort x="50" y="49" />
+							<pointPort x="50" y="1" />
+						</ports>
+					</view>
+				</graphics>
+			    <logic>
+					<generalizations>
+						<parent parentName="Basic Behaviors::Behaviored Classifier" />
+					</generalizations>
+			    </logic>
+				<properties>
+					<property type="Classifier" name="subject" />
+					<property type="Include" name="include" />
+					<property type="Extend" name="extend" />
+					<property type="ExtensionPoint" name="extensionPoint" />
+				</properties>
+		    </node>
+		  
+		</graphicTypes>
+	</diagram>
 </metamodel>
