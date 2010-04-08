@@ -51,9 +51,9 @@ QString JavaHandler::serializeObject(Id const &id)
 
     QString const objectType = mApi.typeName(id);
 
-    // class diagramm
+    // class diagram
 
-    if ((objectType == "Class_Diagram_Class")|(objectType == "Class_Diagram_Interface")) {
+    if ((objectType == "ClassDiagram_Class")|(objectType == "ClassDiagram_Interface")) {
 
         //-----------
         QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
@@ -82,7 +82,7 @@ QString JavaHandler::serializeObject(Id const &id)
             // search for the Class-typed attrbutes
             IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
-                if (aLink.element() == "Class_Diagram_Directed_Association" || aLink.element() == "Class_Diagram_Association") {
+                if (aLink.element() == "ClassDiagram_DirectedAssociation" || aLink.element() == "ClassDiagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
@@ -102,7 +102,7 @@ QString JavaHandler::serializeObject(Id const &id)
             //search for bidirectional assocciation
             IdList linksIn = mApi.incomingLinks(id);
             foreach (Id const aLink, linksIn) {
-                if (aLink.element() == "Class_Diagram_Association") {
+                if (aLink.element() == "ClassDiagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
@@ -121,15 +121,15 @@ QString JavaHandler::serializeObject(Id const &id)
         }
 
         out << "}\n";
-    } else if (objectType == "Class_Diagram_View") {
+    } else if (objectType == "ClassDiagram_View") {
         //	    to do someting
-    } else if (objectType == "Class_Diagram_Class_method") {
+    } else if (objectType == "ClassDiagram_ClassMethod") {
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
             QString const parentType = mApi.typeName(parentId);
 
-            if (parentType == "Class_Diagram_Class") {
+            if (parentType == "ClassDiagram_Class") {
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString operationFactors = getOperationFactors(id);
@@ -155,13 +155,13 @@ QString JavaHandler::serializeObject(Id const &id)
                 this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
             }
         }
-    } else if (objectType == "Class_Diagram_Class_field") {
+    } else if (objectType == "ClassDiagram_ClassField") {
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
             QString const parentType = mApi.typeName(parentId);
 
-            if (parentType == "Class_Diagram_Class") {
+            if (parentType == "ClassDiagram_Class") {
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString defaultValue = getDefaultValue(id);
@@ -186,7 +186,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
     // activity diagram
 
-    else if (objectType == "Activity_Diagram_Initial_Node") {
+    else if (objectType == "ActivityDiagram_InitialNode") {
         result += "{\n";
         if (!mApi.links(id).isEmpty()) {
            if (!mApi.incomingLinks(id).isEmpty()) {
@@ -196,7 +196,7 @@ QString JavaHandler::serializeObject(Id const &id)
             IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
                 //imagine, that Initial Node has just one outcoming link
-                if (aLink.element() == "Activity_Diagram_Control_Flow") {
+                if (aLink.element() == "ActivityDiagram_ControlFlow") {
                     Id toConsider = mApi.otherEntityFromLink(aLink, id);
                     result += serializeObject(toConsider);
                 } else {
@@ -204,20 +204,20 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
             }
         }
-    } else if (objectType == "Activity_Diagram_Action") {
+    } else if (objectType == "ActivityDiagram_Action") {
         result += mApi.name(id) + "\n";
         if (!mApi.links(id).isEmpty()) {
             IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
-                if (aLink.element() == "Activity_Diagram_Control_Flow") {
+                if (aLink.element() == "ActivityDiagram_ControlFlow") {
                     Id toConsider = mApi.otherEntityFromLink(aLink, id);
                     result += serializeObject(toConsider);
                 }
             }
         }
-    } else if (objectType == "Activity_Diagram_Activity_Final_Node") {
+    } else if (objectType == "ActivityDiagram_ActivityFinalNode") {
         result += "}\n";
-    } else if (objectType == "Activity_Diagram_Decision_Node") {
+    } else if (objectType == "ActivityDiagram_DecisionNode") {
 
         int isControlFlow = -1;
         result += "if ( (" + mApi.name(id) + ") == ";
@@ -225,12 +225,12 @@ QString JavaHandler::serializeObject(Id const &id)
             IdList linksOut = mApi.outgoingLinks(id);
             if (!linksOut.isEmpty()) {
                 foreach (Id const aLink, linksOut) {
-                    if (aLink.element() == "Activity_Diagram_Control_Flow") {
+                    if (aLink.element() == "ActivityDiagram_ControlFlow") {
                         if (isControlFlow == 0) {
                             addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
                         }
                         isControlFlow = 1;
-                    } else if (aLink.element() == "Activity_Diagram_Object_Flow") {
+                    } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
                         if (isControlFlow == 1) {
                             addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
                         }
@@ -243,7 +243,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
             }
         }
-    } else if (objectType == "Activity_Diagram_Merge_Node") {
+    } else if (objectType == "ActivityDiagram_MergeNode") {
         result += "}\n";
     }
 
@@ -320,7 +320,7 @@ QString JavaHandler::getType(Id const &id)
     if (mApi.hasProperty(id, "type")) {
         QString type = mApi.stringProperty(id, "type");
 
-        if (isTypeSuitable(type) || (objectType == "Class_Diagram_Class_method" && type == "void")) {
+        if (isTypeSuitable(type) || (objectType == "ClassDiagram_ClassMethod" && type == "void")) {
             result = type;
             if (result != "")
                 result += " ";
@@ -343,7 +343,7 @@ QString JavaHandler::getSuperclass(Id const &id)
         IdList links = mApi.outgoingLinks(id);
 
         foreach (Id const aLink, links) {
-            if (aLink.element() == "Class_Diagram_Generalization") {
+            if (aLink.element() == "ClassDiagram_Generalization") {
                 if (hasParentClass == false) {
                     hasParentClass = true;
                     if (id == mApi.otherEntityFromLink(aLink, id)) {
@@ -374,7 +374,7 @@ QString JavaHandler::getMethodCode(Id const &id)
 
         if (outgoingConnections.length() == 1) {
             //there is a big hope here that the user will connect just Activity Diagrams
-            if (outgoingConnections.at(0).element() == "Kernel_Diagram") {
+            if (outgoingConnections.at(0).element() == "ActivityDiagram_ActivityDiagramNode") {
                 result = serializeChildren(outgoingConnections.at(0));
             } else {
                 addError("Object " + objectType + " with id " + id.toString() + ". Only Activity Diagram can be its realization.");

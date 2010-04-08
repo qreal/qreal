@@ -8,13 +8,11 @@
 			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
 			<import name="Kernel::Class" as="Class" displayedName="Class"/>
 			<import name="Kernel::Interface" as="Interface" displayedName="Interface"/>
-			<import name="Kernel::Association" as="Association" displayedName="Association"/>
-			<import name="Kernel::Directed Association" as="DirectedAssociation" displayedName="Directed Association"/>
 			<import name="Kernel::Generalization" as="Generalization" displayedName="Generalization"/>
 			<import name="Kernel::Realization" as="Realization" displayedName="Realization"/>
 			<import name="Kernel::Dependency" as="Dependency" displayedName="Dependency"/>
 			
-			<node name="ClassDiagram" displayedName="Class Diagram">
+			<node name="ClassDiagramNode" displayedName="Class Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="20" y1="0" x2="180" y2="0"/>
@@ -124,7 +122,7 @@
 						<property type="string" name="isNative"/>
 					</properties>
 					<connections>
-						<connection type="Kernel::Diagram"/>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 					</connections>
 				</logic>
 			</node>
@@ -146,6 +144,9 @@
 						<property type="string" name="isTransient"/>
 						<property type="string" name="isVolatile"/>
 					</properties>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
 				</logic>
 			</node>
 			<edge name="Aggregation" displayedName="Aggregation">
@@ -159,6 +160,9 @@
 					<generalizations>
 						<parent parentName="Kernel::Association"/>
 					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
 				</logic>
 			</edge>
 			<edge name="Composition" displayedName="Composition">
@@ -172,6 +176,9 @@
 					<generalizations>
 						<parent parentName="Kernel::Association"/>
 					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
 				</logic>
 			</edge>
 			<edge name="InterfaceRealization" displayedName="Interface Realization">
@@ -185,6 +192,27 @@
 					<generalizations>
 						<parent parentName="Kernel::Realization"/>
 					</generalizations>
+				</logic>
+			</edge>
+
+			<edge name="Association" displayedName="Association">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
+				</logic>
+			</edge>
+			<edge name="DirectedAssociation" displayedName="Directed Association">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Directed Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
 				</logic>
 			</edge>
 			

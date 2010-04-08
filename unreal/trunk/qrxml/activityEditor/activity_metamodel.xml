@@ -32,7 +32,7 @@
 			<import name="Kernel::Constraint" as="Constraint" displayedName="Constraint"/>
 			<import name="Kernel::Value Specification" as="ValueSpecification" displayedName="Value Specification"/>
 			
-			<node name="ActivityDiagram" displayedName="Activity Diagram">
+			<node name="ActivityDiagramNode" displayedName="Activity Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line x1="20" y1="0" x2="180" y2="0"/>
