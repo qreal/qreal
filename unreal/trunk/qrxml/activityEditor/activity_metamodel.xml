@@ -4,24 +4,24 @@
     <include>../commonXml/basicbehaviors_metamodel.xml</include>
     <include>../commonXml/basicactions_metamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram name="Activity Diagram">
+    <diagram name="ActivityDiagram" displayedName="Activity Diagram">
         <nonGraphicTypes>
-            <enum name="Type">
+            <enum name="Type" displayedName="Type">
                 <value>localPrecondition</value>
                 <value>localPostCondation</value>
             </enum>
-            <enum name="Expansion Kind">
+            <enum name="ExpansionKind" displayedName="Expansion Kind">
                 <value>parallel</value>
                 <value>iterative</value>
                 <value>stream</value>
             </enum>
-            <enum name="Object Node Ordering Kind">
+            <enum name="ObjectNodeOrderingKind" displayedName="Object Node Ordering Kind">
                 <value>unordered</value>
                 <value>ordered</value>
                 <value>LIFO</value>
                 <value>FIFO</value>
             </enum>
-            <enum name="Parameter Effect Kind">
+            <enum name="ParameterEffectKind" displayedName="Parameter Effect Kind">
                 <value>create</value>
                 <value>read</value>
                 <value>update</value>
@@ -29,9 +29,68 @@
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
-			<import name="Kernel::Constraint" as="Constraint"/>
-			<import name="Kernel::Value Specification" as="Value Specification"/>
-            <node name="Accept Event Action">
+			<import name="Kernel::Constraint" as="Constraint" displayedName="Constraint"/>
+			<import name="Kernel::Value Specification" as="ValueSpecification" displayedName="Value Specification"/>
+			
+			<node name="ActivityDiagram" displayedName="Activity Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+                        <parent parentName="Kernel::Diagram"/>
+                    </generalizations>
+					<container>
+						<contains type="ActivityDiagram::AcceptEventAction"/>
+						<contains type="ActivityDiagram::AcceptTimeEventAction"/>
+						<contains type="ActivityDiagram::Action"/>
+						<contains type="ActivityDiagram::ActionInputPin"/>
+						<contains type="ActivityDiagram::Activity"/>
+						<contains type="ActivityDiagram::ActivityFinalNode"/>
+						<contains type="ActivityDiagram::ActivityParameterNode"/>
+						<contains type="ActivityDiagram::ActivityPartition"/>
+						<contains type="ActivityDiagram::Constraint"/>
+						<contains type="ActivityDiagram::ConstraintEdge"/>
+						<contains type="ActivityDiagram::ControlFlow"/>
+						<contains type="ActivityDiagram::DataStoreNode"/>
+						<contains type="ActivityDiagram::DecisionNode"/>
+						<contains type="ActivityDiagram::ExpansionNode"/>
+						<contains type="ActivityDiagram::ExpansionRegion"/>
+						<contains type="ActivityDiagram::FlowFinalNode"/>
+						<contains type="ActivityDiagram::ForkNode"/>
+						<contains type="ActivityDiagram::InitialNode"/>
+						<contains type="ActivityDiagram::InputPin"/>
+						<contains type="ActivityDiagram::InterruptibleActivityRegion"/>
+						<contains type="ActivityDiagram::JoinNode"/>
+						<contains type="ActivityDiagram::MergeNode"/>
+						<contains type="ActivityDiagram::ObjectFlow"/>
+						<contains type="ActivityDiagram::ObjectNode"/>
+						<contains type="ActivityDiagram::OutputPin"/>
+						<contains type="ActivityDiagram::SendSignalAction"/>
+						<contains type="ActivityDiagram::StructuredActivityNode"/>
+					</container> 
+				</logic>
+			</node>
+			
+            <node name="AcceptEventAction" displayedName="Accept Event Action">
                 <graphics>
                     <picture sizex="100" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="1"
@@ -65,7 +124,7 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Accept Time Event Action">
+            <node name="AcceptTimeEventAction" displayedName="Accept Time Event Action">
                 <graphics>
                     <picture sizex="40" sizey="50">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0"
@@ -87,7 +146,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="Action">
+            <node name="Action" displayedName="Action">
                 <graphics>
                     <picture sizex="80" sizey="60">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
@@ -118,13 +177,13 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Activity Node"/>
-                        <parent parentName="Executable Node"/>
+                        <parent parentName="ActivityNode"/>
+                        <parent parentName="ExecutableNode"/>
                         <parent parentName="Basic Actions::Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Action Input Pin">
+            <node name="ActionInputPin" displayedName="Action Input Pin">
                 <graphics>
                     <picture sizex="20" sizey="20">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
@@ -155,7 +214,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="Activity">
+            <node name="Activity" displayedName="Activity">
                 <graphics>
                     <picture sizex="80" sizey="60">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
@@ -189,26 +248,26 @@
                         <parent parentName="Basic Behaviors::Behavior"/>
                     </generalizations>
                     <properties>
-                        <property type="Activity Node" name="node"/>
-                        <property type="Activity Edge" name="edge"/>
-                        <property type="Activity Group" name="group"/>
-                        <property type="Expansion Region" name="expansionRegion"/>
+                        <property type="ActivityNode" name="node"/>
+                        <property type="ActivityEdge" name="edge"/>
+                        <property type="ActivityGroup" name="group"/>
+                        <property type="ExpansionRegion" name="expansionRegion"/>
                         <property type="bool" name="isSingleExecution">
                             <default>false</default>
                         </property>
-                        <property type="Activity Node" name="coordinatedNodes"/>
-                        <property type="Activity Edge" name="edges"/>
+                        <property type="ActivityNode" name="coordinatedNodes"/>
+                        <property type="ActivityEdge" name="edges"/>
                         <property type="Variable" name="topLevelVariables"/>
-                        <property type="Activity Group" name="topLevelGroups"/>
-                        <property type="Activity Partition" name="topLevelPartitions"/>
+                        <property type="ActivityGroup" name="topLevelGroups"/>
+                        <property type="ActivityPartition" name="topLevelPartitions"/>
                     </properties>
 					<container>
-						<contains type="Activity Diagram::Action"/>
-						<contains type="Activity Diagram::Accept Event Action"/>
+						<contains type="ActivityDiagram::Action"/>
+						<contains type="ActivityDiagram::Accept Event Action"/>
 					</container>
                 </logic>
             </node>
-            <edge name="Activity Edge">
+            <edge name="ActivityEdge" displayedName="Activity Edge">
                 <graphics>
                     <line_type type="solidLine"/>
                     <labels>
@@ -223,16 +282,16 @@
                     </generalizations>
                     <properties>
                         <property type="Activity" name="activity"/>
-                        <property type="Activity Edge" name="redefinedEdge"/>
-                        <property type="Activity Partition" name="partition"/>
-                        <property type="Structured Activity Node" name="structuredActivityNode"/>
-                        <property type="Interruptible Activity Region" name="interrupts"/>
-                        <property type="Value Specification" name="guard"/>
-                        <property type="Value Specification" name="weight"/>
+                        <property type="ActivityEdge" name="redefinedEdge"/>
+                        <property type="ActivityPartition" name="partition"/>
+                        <property type="StructuredActivityNode" name="structuredActivityNode"/>
+                        <property type="InterruptibleActivityRegion" name="interrupts"/>
+                        <property type="ValueSpecification" name="guard"/>
+                        <property type="ValueSpecification" name="weight"/>
                     </properties>
                 </logic>
             </edge>
-            <node name="Activity Final Node">
+            <node name="ActivityFinalNode" displayedName="Activity Final Node">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30"
@@ -250,12 +309,12 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
-                        <parent parentName="Final Node"/>
+                        <parent parentName="ControlNode"/>
+                        <parent parentName="FinalNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Activity Group">
+            <node name="ActivityGroup" displayedName="Activity Group">
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Element"/>
@@ -265,7 +324,7 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Activity Node">
+            <node name="ActivityNode" displayedName="Activity Node">
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Named Element"/>
@@ -273,15 +332,15 @@
                     </generalizations>
                     <properties>
                         <property type="Activity" name="activity"/>
-                        <property type="Activity Node" name="redefinedNode"/>
-                        <property type="Activity Partition" name="inPartition"/>
-                        <property type="Interruptible Activity Region" name="inInterruptableRegion"/>
-                        <property type="Structured Activity Node" name="structuredActivityNode"/>
-                        <property type="Activity Node" name="redefineNode"/>
+                        <property type="ActivityNode" name="redefinedNode"/>
+                        <property type="ActivityPartition" name="inPartition"/>
+                        <property type="InterruptibleActivityRegion" name="inInterruptableRegion"/>
+                        <property type="StructuredActivityNode" name="structuredActivityNode"/>
+                        <property type="ActivityNode" name="redefineNode"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Activity Parameter Node">
+            <node name="ActivityParameterNode" displayedName="Activity Parameter Node">
                 <graphics>
                     <picture sizex="80" sizey="60">
                         <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60"
@@ -308,14 +367,14 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Object Node"/>
+                        <parent parentName="ObjectNode"/>
                     </generalizations>
                     <properties>
                         <property type="Parameter" name="parameter"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Activity Partition">
+            <node name="ActivityPartition" displayedName="Activity Partition">
                 <graphics>
                     <picture sizex="60" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="0" y2="3"
@@ -336,7 +395,7 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Activity Group"/>
+                        <parent parentName="ActivityGroup"/>
                         <parent parentName="Kernel::Named Element"/>
                     </generalizations>
                     <properties>
@@ -346,65 +405,65 @@
                         <property type="bool" name="isExternal">
                             <default>false</default>
                         </property>
-                        <property type="Activity Node" name="node"/>
-                        <property type="Activity Edge" name="edge"/>
-                        <property type="Activity Partition" name="superPartition"/>
-                        <property type="Activity Partition" name="subPartition"/>
+                        <property type="ActivityNode" name="node"/>
+                        <property type="ActivityEdge" name="edge"/>
+                        <property type="ActivityPartition" name="superPartition"/>
+                        <property type="ActivityPartition" name="subPartition"/>
                         <property type="Kernel::Element" name="represents"/>
-                        <property type="Activity Partition" name="superPartition"/>
-                        <property type="Activity Partition" name="subPartition"/>
+                        <property type="ActivityPartition" name="superPartition"/>
+                        <property type="ActivityPartition" name="subPartition"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Add Variable Value Action">
+            <node name="AddVariableValueAction" displayedName="Add Variable Value Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Add Variable Value Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Behavior">
+            <node name="Behavior" displayedName="Behavior">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Behaviors::Behavior"/>
                     </generalizations>
                     <properties>
-                        <property type="Parameter Set" name="ownedParameterSet"/>
+                        <property type="ParameterSet" name="ownedParameterSet"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Behavioral Feature">
+            <node name="BehavioralFeature" displayedName="Behavioral Feature">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Behaviors::Behavioral Feature"/>
                     </generalizations>
                     <properties>
-                        <property type="Parameter Set" name="ownedParameterSet"/>
+                        <property type="ParameterSet" name="ownedParameterSet"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Call Behavior Action">
+            <node name="CallBehaviorAction" displayedName="Call Behavior Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Call Behavior Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Call Operation Action">
+            <node name="CallOperationAction" displayedName="Call Operation Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Call Operation Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Central Buffer Node">
+            <node name="CentralBufferNode" displayedName="Central Buffer Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Object Node"/>
+                        <parent parentName="ObjectNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Clause">
+            <node name="Clause" displayedName="Clause">
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Element"/>
@@ -414,15 +473,15 @@
                         <property type="Executable Node" name="body"/>
                         <property type="Clause" name="predecessorClause"/>
                         <property type="Clause" name="successorClause"/>
-                        <property type="Output Pin" name="decider"/>
-                        <property type="Output Pin" name="bodyOutput"/>
+                        <property type="OutputPin" name="decider"/>
+                        <property type="OutputPin" name="bodyOutput"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Conditional Node">
+            <node name="ConditionalNode" displayedName="Conditional Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Structured Activity Node"/>
+                        <parent parentName="StructuredActivityNode"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isAssured">
@@ -432,11 +491,11 @@
                             <default>false</default>
                         </property>
                         <property type="Clause" name="clause"/>
-                        <property type="Output Pin" name="result"/>
+                        <property type="OutputPin" name="result"/>
                     </properties>
                 </logic>
             </node>
-            <edge name="Control Flow">
+            <edge name="ControlFlow" displayedName="Control Flow">
                 <graphics>
                     <lineType type="solidLine"/>
 					<labels>
@@ -445,21 +504,21 @@
                 </graphics>
                 <logic>
                     <associations beginType="no_arrow" endType="open_arrow">
-                        <association beginName="Activity Node" endName="Activity Node"/>
+                        <association beginName="ActivityNode" endName="Activity Node"/>
                     </associations>
                     <generalizations>
-                        <parent parentName="Activity Edge"/>
+                        <parent parentName="ActivityEdge"/>
                     </generalizations>
                 </logic>
             </edge>
-            <node name="Control Node">
+            <node name="ControlNode" displayedName="Control Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Activity Node"/>
+                        <parent parentName="ActivityNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Data Store Node">
+            <node name="DataStoreNode" displayedName="Data Store Node">
                 <graphics>
                     <picture sizex="100" sizey="60"/>
                     <labels>
@@ -468,11 +527,11 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Central Buffer Node"/>
+                        <parent parentName="CentralBufferNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Decision Node">
+            <node name="DecisionNode" displayedName="Decision Node">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="15" y2="15"
@@ -505,15 +564,15 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                     <properties>
                         <property type="Behavior" name="decisionInput"/>
-                        <property type="Object Flow" name="decisionInputFlow"/>
+                        <property type="ObjectFlow" name="decisionInputFlow"/>
                     </properties>
                 </logic>
             </node>
-            <edge name="Exception Handler">
+            <edge name="ExceptionHandler" displayedName="Exception Handler">
                 <graphics>
                     <line_type type="solidLine"/>
                 </graphics>
@@ -523,21 +582,21 @@
                     </generalizations>
                     <properties>
                         <property type="Kernel::Classifier" name="exceptionType"/>
-                        <property type="Object Node" name="exceptionInput"/>
+                        <property type="ObjectNode" name="exceptionInput"/>
                     </properties>
                 </logic>
             </edge>
-            <node name="Executable Node">
+            <node name="ExecutableNode" displayedName="Executable Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Activity Node"/>
+                        <parent parentName="ActivityNode"/>
                     </generalizations>
                     <properties>
-                        <property type="Exception Handler" name="handler"/>
+                        <property type="ExceptionHandler" name="handler"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Expansion Node">
+            <node name="ExpansionNode" displayedName="Expansion Node">
                 <graphics>
                     <picture sizex="42" sizey="22">
                         <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="21"
@@ -552,15 +611,15 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Object Node"/>
+                        <parent parentName="ObjectNode"/>
                     </generalizations>
                     <properties>
-                        <property type="Expansion Region" name="regionAsInput"/>
-                        <property type="Expansion Region" name="regionAsOutput"/>
+                        <property type="ExpansionRegion" name="regionAsInput"/>
+                        <property type="ExpansionRegion" name="regionAsOutput"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Expansion Region">
+            <node name="ExpansionRegion" displayedName="Expansion Region">
                 <graphics>
                     <picture sizex="100" sizey="100">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
@@ -573,7 +632,7 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Structured Activity Node"/>
+                        <parent parentName="StructuredActivityNode"/>
                     </generalizations>
                     <properties>
                         <property type="enum" name="mode">
@@ -581,19 +640,19 @@
                         </property>
                     </properties>
                     <properties>
-                        <property type="Expansion Node" name="inputElement"/>
-                        <property type="Expansion Node" name="outputElement"/>
+                        <property type="ExpansionNode" name="inputElement"/>
+                        <property type="ExpansionNode" name="outputElement"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Final Node">
+            <node name="FinalNode" displayedName="Final Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Flow Final Node">
+            <node name="FlowFinalNode" displayedName="Flow Final Node">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30"
@@ -613,11 +672,11 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Final Node"/>
+                        <parent parentName="FinalNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Fork Node">
+            <node name="ForkNode" displayedName="Fork Node">
                 <graphics>
                     <picture sizex="60" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
@@ -632,11 +691,11 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Initial Node">
+            <node name="InitialNode" displayedName="Initial Node">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30"
@@ -652,11 +711,11 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Input Pin">
+            <node name="InputPin" displayedName="Input Pin">
                 <graphics>
                     <picture sizex="20" sizey="20">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
@@ -687,7 +746,7 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="Interruptible Activity Region">
+            <node name="InterruptibleActivityRegion" displayedName="Interruptible Activity Region">
                 <graphics>
                     <picture sizex="100" sizey="100">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
@@ -697,15 +756,15 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Activity Group"/>
+                        <parent parentName="ActivityGroup"/>
                     </generalizations>
                     <properties>
-                        <property type="Activity Node" name="node"/>
-                        <property type="Activity Edge" name="interruptingEdge"/>
+                        <property type="ActivityNode" name="node"/>
+                        <property type="ActivityEdge" name="interruptingEdge"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Join Node">
+            <node name="JoinNode" displayedName="Join Node">
                 <graphics>
                     <picture sizex="60" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="59"
@@ -720,7 +779,7 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isCombineDuplicate">
@@ -730,27 +789,27 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Loop Node">
+            <node name="LoopNode" displayedName="Loop Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Structured Activity Node"/>
+                        <parent parentName="StructuredActivityNode"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isTestedFirst">
                             <default>false</default>
                         </property>
-                        <property type="Executable Node" name="setupPart"/>
-                        <property type="Executable Node" name="bodyPart"/>
-                        <property type="Executable Node" name="test"/>
-                        <property type="Output Pin" name="decider"/>
-                        <property type="Output Pin" name="result"/>
-                        <property type="Output Pin" name="loopVariable"/>
-                        <property type="Output Pin" name="bodyOutput"/>
-                        <property type="Input Pin" name="loopVariableInput"/>
+                        <property type="ExecutableNode" name="setupPart"/>
+                        <property type="ExecutableNode" name="bodyPart"/>
+                        <property type="ExecutableNode" name="test"/>
+                        <property type="OutputPin" name="decider"/>
+                        <property type="OutputPin" name="result"/>
+                        <property type="OutputPin" name="loopVariable"/>
+                        <property type="OutputPin" name="bodyOutput"/>
+                        <property type="InputPin" name="loopVariableInput"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Merge Node">
+            <node name="MergeNode" displayedName="Merge Node">
                 <graphics>
                     <picture sizex="30" sizey="30">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="15" y2="15"
@@ -783,11 +842,11 @@
                 </graphics>
                 <logic>
                     <generalizations>
-                        <parent parentName="Control Node"/>
+                        <parent parentName="ControlNode"/>
                     </generalizations>
                 </logic>
             </node>
-            <edge name="Object Flow">
+            <edge name="ObjectFlow" displayedName="Object Flow">
                 <graphics>
                     <lineType type="solidLine"/>
                 </graphics>
@@ -796,7 +855,7 @@
                         <association beginName="Activity Node" endName="Activity Node"/>
                     </associations>
                     <generalizations>
-                        <parent parentName="Activity Edge"/>
+                        <parent parentName="ActivityEdge"/>
                     </generalizations>
                     <properties>
                         <property type="bool" name="isMulticast">
@@ -810,7 +869,7 @@
                     </properties>
                 </logic>
             </edge>
-            <node name="Object Node">
+            <node name="ObjectNode" displayedName="Object Node">
                 <graphics>
                     <picture sizex="80" sizey="60">
                         <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59"
@@ -823,7 +882,7 @@
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Typed Element"/>
-                        <parent parentName="Activity Node"/>
+                        <parent parentName="ActivityNode"/>
                     </generalizations>
                     <properties>
                         <property type="enum" name="ordering">
@@ -835,11 +894,11 @@
                         </property>
                         <property type="State Machines::State" name="inState"/>
                         <property type="Behavior" name="selection"/>
-                        <property type="Value Specification" name="upperBound"/>
+                        <property type="ValueSpecification" name="upperBound"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Output Pin">
+            <node name="OutputPin" displayedName="Output Pin">
                 <graphics>
                     <picture sizex="20" sizey="20">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20"
@@ -870,14 +929,14 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="Parameter">
+            <node name="Parameter" displayedName="Parameter">
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Parameter"/>
                     </generalizations>
                     <properties>
                         <property type="enum" name="effect">
-                            <enum nameReference="Parameter Effect Kind"/>
+                            <enum nameReference="ParameterEffectKind"/>
                         </property>
                         <property type="bool" name="isException">
                             <default>false</default>
@@ -891,7 +950,7 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Parameter Set">
+            <node name="ParameterSet" displayedName="Parameter Set">
                 <logic>
                     <generalizations>
                         <parent parentName="Kernel::Named Element"/>
@@ -902,10 +961,10 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Pin">
+            <node name="Pin" displayedName="Pin">
                 <logic>
                     <generalizations>
-                        <parent parentName="Object Node"/>
+                        <parent parentName="ObjectNode"/>
                         <parent parentName="Basic Actions::Pin"/>
                     </generalizations>
                     <properties>
@@ -915,14 +974,14 @@
                     </properties>
                 </logic>
             </node>
-            <node name="Send Object Action">
+            <node name="SendObjectAction" displayedName="Send Object Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Send Object Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Send Signal Action">
+            <node name="SendSignalAction" displayedName="Send Signal Action">
                 <graphics>
                     <picture sizex="100" sizey="60">
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1"
@@ -952,17 +1011,17 @@
                     </generalizations>
                 </logic>
             </node>
-            <node name="Sequence Node">
+            <node name="SequenceNode" displayedName="Sequence Node">
                 <logic>
                     <generalizations>
-                        <parent parentName="Structured Activity Node"/>
+                        <parent parentName="StructuredActivityNode"/>
                     </generalizations>
                     <properties>
-                        <property type="Executable Node" name="executableNode"/>
+                        <property type="ExecutableNode" name="executableNode"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Structured Activity Node">
+            <node name="StructuredActivityNode" displayedName="Structured Activity Node">
                 <graphics>
                     <picture sizex="100" sizey="100">
                         <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1"
@@ -976,8 +1035,8 @@
                 <logic>
                     <generalizations>
                         <parent parentName="Action"/>
-                        <parent parentName="Activity Group"/>
-                        <parent parentName="Expansion Node"/>
+                        <parent parentName="ActivityGroup"/>
+                        <parent parentName="ExpansionNode"/>
                         <parent parentName="Kernel::Namespace"/>
                     </generalizations>
                     <properties>
@@ -985,46 +1044,46 @@
                             <default>false</default>
                         </property>
                         <property type="Variable" name="variable"/>
-                        <property type="Activity Node" name="node"/>
-                        <property type="Activity Edge" name="edge"/>
+                        <property type="ActivityNode" name="node"/>
+                        <property type="ActivityEdge" name="edge"/>
                         <property type="Activity" name="activity"/>
                     </properties>
                 </logic>
             </node>
-            <node name="Unmarshall Action">
+            <node name="UnmarshallAction" displayedName="Unmarshall Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Unmarshall Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Value Pin">
+            <node name="ValuePin" displayedName="Value Pin">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Value Pin"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Value Specification Action">
+            <node name="ValueSpecificationAction" displayedName="Value Specification Action">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Value Specification Action"/>
                     </generalizations>
                 </logic>
             </node>
-            <node name="Variable">
+            <node name="Variable" displayedName="Variable">
                 <logic>
                     <generalizations>
                         <parent parentName="Basic Actions::Variable"/>
                     </generalizations>
                     <properties>
-                        <property type="Structured Activity Node" name="scope"/>
+                        <property type="StructuredActivityNode" name="scope"/>
                         <property type="Activity" name="activityScope"/>
                     </properties>
                 </logic>
             </node>
 
-			<edge name="Constraint Edge">
+			<edge name="ConstraintEdge" displayedName="Constraint Edge">
 				<graphics>
 					<line_type type="dashLine"/>
 				</graphics>

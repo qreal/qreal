@@ -12,10 +12,10 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<import name="Class Diagram::Association" as="FunctorParameterRelation" displayedName="Functor Parameter Relation"/>
-			<import name="Class Diagram::Aggregation" as="UsedProcessRelation" displayedName="Used Process Relation"/>
-			<import name="Class Diagram::Composition" as="NestedProcessRelation" displayedName="Nested Process Relation"/>
-			<import name="Class Diagram::Generalization" as="Generalization"/>
+			<import name="ClassDiagram::Association" as="FunctorParameterRelation" displayedName="Functor Parameter Relation"/>
+			<import name="ClassDiagram::Aggregation" as="UsedProcessRelation" displayedName="Used Process Relation"/>
+			<import name="ClassDiagram::Composition" as="NestedProcessRelation" displayedName="Nested Process Relation"/>
+			<import name="ClassDiagram::Generalization" as="Generalization"/>
 			<import name="Kernel::Comment" as="Comment"/>
 			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
 			<node name="HascolStructureDiagram" displayedName="Structure Diagram">
@@ -114,7 +114,7 @@
 						<parent parentName="Kernel::Classifier"/>
 					</generalizations>
 					<properties>
-						<property type="Process Operation Kind" name="direction"/>
+						<property type="ProcessOperationKind" name="direction"/>
 					</properties>
 					<connections>
 						<connection type="HascolPortMapping::Port"/>
@@ -344,13 +344,13 @@
 	</diagram>
 	<diagram name="HascolActivity" displayedName="Hascol Activity">
 		<graphicTypes>
-			<import name="Activity Diagram::Accept Event Action" as="HandlerStart" displayedName="Handler Start"/>
-			<import name="Activity Diagram::Action" as="Action"/>
+			<import name="ActivityDiagram::AcceptEventAction" as="HandlerStart" displayedName="Handler Start"/>
+			<import name="ActivityDiagram::Action" as="Action"/>
 			<!-- Неиспользуемая ересь, для которой надо ещё описать, где она лежать может -->
 			<!-- <import name="Activity Diagram::Input Pin" as="InputPin" displayedName="Input Pin"/> -->
 			<!-- <import name="Activity Diagram::Output Pin" as="OutputPin" displayedName="Output Pin"/> -->
-			<import name="Activity Diagram::Decision Node" as="DecisionNode" displayedName="Decision Node"/>
-			<import name="Activity Diagram::Merge Node" as="MergeNode" displayedName="Merge Node"/>
+			<import name="ActivityDiagram::DecisionNode" as="DecisionNode" displayedName="Decision Node"/>
+			<import name="ActivityDiagram::MergeNode" as="MergeNode" displayedName="Merge Node"/>
 			<node name="HascolActivityDiagram" displayedName="Activity Diagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
@@ -419,7 +419,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Activity Diagram::Send Signal Action"/>
+						<parent parentName="ActivityDiagram::SendSignalAction"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -450,12 +450,12 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Activity Diagram::Send Signal Action"/>
+						<parent parentName="ActivityDiagram::SendSignalAction"/>
 					</generalizations>
 				</logic>
 			</node>
-			<import name="Activity Diagram::Activity Final Node" as="ActivityFinalNode" displayedName="Activity Final Node"/>
-			<import name="Activity Diagram::Control Flow" as="ControlFlow" displayedName="Control Flow"/>
+			<import name="ActivityDiagram::ActivityFinalNode" as="ActivityFinalNode" displayedName="Activity Final Node"/>
+			<import name="ActivityDiagram::ControlFlow" as="ControlFlow" displayedName="Control Flow"/>
 			<node name="Group">
 				<graphics>
 					<picture sizex="200" sizey="200">
@@ -474,7 +474,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="Activity Diagram::Structured Activity Node"/>
+						<parent parentName="ActivityDiagram::StructuredActivityNode"/>
 					</generalizations>
 					<container>
 						<contains type="HascolActivity::HandlerStart"/> 

@@ -44,7 +44,7 @@
 				</logic>
 			</edge>
 			<edge name="Directed Association">
-			<!-- it desn't exist. The problem is that Association has 2 different pictures and we can do it just entering a Directed Relation -->
+			<!-- it doesn't exist. The problem is that Association has 2 different pictures and we can do it just entering a Directed Relation -->
 				<graphics>
 					<lineType type="solidLine"/>
 				</graphics>

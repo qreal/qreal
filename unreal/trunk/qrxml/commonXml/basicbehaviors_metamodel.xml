@@ -15,7 +15,7 @@
 			<node name="Behavior">
 				<logic>
 					<generalizations>
-						<parent parentName="Class Diagram::Class"/>
+						<parent parentName="ClassDiagram::Class"/>
 					</generalizations>
 					<properties>
 						<property type="text" name="body"/>
