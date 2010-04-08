@@ -190,7 +190,7 @@ QString JavaHandler::serializeObject(Id const &id)
         result += "{\n";
         if (!mApi.links(id).isEmpty()) {
            if (!mApi.incomingLinks(id).isEmpty()) {
-              addError("object " + objectType + " with id  " + id.toString() + " can not have incoming links");
+              addError("Object " + objectType + " with id  " + id.toString() + " can not have incoming links.");
            }
 
             IdList linksOut = mApi.outgoingLinks(id);
@@ -200,7 +200,7 @@ QString JavaHandler::serializeObject(Id const &id)
                     Id toConsider = mApi.otherEntityFromLink(aLink, id);
                     result += serializeObject(toConsider);
                 } else {
-                    addError("object " + objectType + " with id  " + id.toString() + " can not have not Control Flow link as outcoming link.");
+                    addError("Object " + objectType + " with id  " + id.toString() + ". Only Control Edges can have Initial Nodes as source.");
                 }
             }
         }
@@ -218,15 +218,26 @@ QString JavaHandler::serializeObject(Id const &id)
     } else if (objectType == "Activity_Diagram_Activity_Final_Node") {
         result += "}\n";
     } else if (objectType == "Activity_Diagram_Decision_Node") {
-        result += "if (" + mApi.name(id) + ") {";
+
+        int isControlFlow = -1;
+        result += "if ( (" + mApi.name(id) + ") == ";
         if (!mApi.links(id).isEmpty()) {
             IdList linksOut = mApi.outgoingLinks(id);
             if (!linksOut.isEmpty()) {
                 foreach (Id const aLink, linksOut) {
                     if (aLink.element() == "Activity_Diagram_Control_Flow") {
-                        Id toConsider = mApi.otherEntityFromLink(aLink, id);
-                        result += serializeObject(toConsider);
-                    }
+                        if (isControlFlow == 0) {
+                            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                        }
+                        isControlFlow = 1;
+                    } else if (aLink.element() == "Activity_Diagram_Object_Flow") {
+                        if (isControlFlow == 1) {
+                            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                        }
+                        isControlFlow = 0;
+                    } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
+                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
+                    result += getFlowGuard(aLinnk) + " ) {\n    " + serializeObject(toConsider);
                 }
             } else {
                 addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
@@ -262,7 +273,25 @@ QString JavaHandler::getVisibility(Id const &id)
             if (result != "")
                 result += " ";
         } else {
-            addError("object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
+            addError("Object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
+        }
+    }
+
+    return result;
+}
+
+QString JavaHandler::getFlowGuard(Id const &id)
+{
+    QString result = "";
+
+    QString const objectType = mApi.typeName(id);
+
+    if (mApi.hasProperty(id, "guard")) {
+        QString guard = mApi.stringProperty(id, "guard");
+
+        //TODO: Delete all white spaces, tabs, etc. in guard. Just find the function =)
+        if (guard = "") {
+            addError("Object " + objectType + " with id  " + id.toString() + " has invalid guard property: " + visibility);
         }
     }
 
@@ -296,7 +325,7 @@ QString JavaHandler::getType(Id const &id)
             if (result != "")
                 result += " ";
         } else {
-            addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+            addError("Object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
         }
     }
 
@@ -318,13 +347,13 @@ QString JavaHandler::getSuperclass(Id const &id)
                 if (hasParentClass == false) {
                     hasParentClass = true;
                     if (id == mApi.otherEntityFromLink(aLink, id)) {
-                        addError("object " + objectType + " with id " + id.toString() + " can not be his own superclass");
+                        addError("Object " + objectType + " with id " + id.toString() + " can not be his own superclass");
                     } else {
                         QString parentClass = mApi.name(mApi.otherEntityFromLink(aLink, id));
                         result += " extends " + parentClass;
                     }
                 } else {
-                    addError("object " + objectType + " with id " + id.toString() + " has too many superclasses");
+                    addError("Object " + objectType + " with id " + id.toString() + " has too many superclasses");
                 }
             }
         }
@@ -348,10 +377,10 @@ QString JavaHandler::getMethodCode(Id const &id)
             if (outgoingConnections.at(0).element() == "Kernel_Diagram") {
                 result = serializeChildren(outgoingConnections.at(0));
             } else {
-                addError("object " + objectType + " with id " + id.toString() + ". Only Activity Diagram can be its realization.");
+                addError("Object " + objectType + " with id " + id.toString() + ". Only Activity Diagram can be its realization.");
             }
         } else {
-            addError("object " + objectType + " with id " + id.toString() + " has too many realizations");
+            addError("Object " + objectType + " with id " + id.toString() + " has too many realizations");
         }
 
     } else {
@@ -381,7 +410,7 @@ QString JavaHandler::hasModifier(Id const &id, QString const &modifier)
         if (hasModifier == "true") {
             result = modifier + " ";
         }else if (hasModifier != "false" && hasModifier != "") {
-            addError("object " + objectType + " with id " + id.toString() + " has invalid " + isModifier + " value: " + hasModifier);
+            addError("Object " + objectType + " with id " + id.toString() + " has invalid " + isModifier + " value: " + hasModifier);
         }
     }
 
@@ -399,7 +428,7 @@ QString JavaHandler::getOperationFactors(Id const &id)
         //	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
         result = operationFactors;
         //	} else {
-        //		addError("object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+        //		addError("Object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
         //    	}
     }
 
@@ -419,7 +448,7 @@ QString JavaHandler::getDefaultValue(Id const &id)
         //	to check for the corract data
         result = defaultValue;
         //	} else {
-        //		addError("object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
+        //		addError("Object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
         //    	}
     }
 
