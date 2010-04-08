@@ -365,21 +365,27 @@ QString JavaHandler::getSuperclass(Id const &id)
 
 QString JavaHandler::getMethodCode(Id const &id)
 {
-    QString result = "{}";
+    QString result = "{\n}";
 
     QString const objectType = mApi.typeName(id);
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
+        Id realizationDiagram; //TODO: maybe it should be initialized with null?..
 
-        if (outgoingConnections.length() == 1) {
-            //there is a big hope here that the user will connect just Activity Diagrams
-            if (outgoingConnections.at(0).element() == "ActivityDiagram_ActivityDiagramNode") {
-                result = serializeChildren(outgoingConnections.at(0));
-            } else {
-                addError("Object " + objectType + " with id " + id.toString() + ". Only Activity Diagram can be its realization.");
+        int realizationsCount = 0;
+        foreach (Id aConnection, outgoingConnections) {
+            if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+                realizationDiagram = aConnection;
+                realizationsCount++;
             }
-        } else {
+        }
+
+        if (realizationsCount == 1) { //if everything is ok
+            result = serializeChildren(realizationDiagram);
+        } else if (realizationsCount == 0) { //if there is no realization
+            addError("Method " + objectType + " with id " + id.toString() + " will be empty.");
+        } else { //if there is more than one ActivityDiagram connected
             addError("Object " + objectType + " with id " + id.toString() + " has too many realizations");
         }
 

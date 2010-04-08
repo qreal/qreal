@@ -123,6 +123,8 @@
 					</properties>
 					<connections>
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+						<connection type="ActivityDiagram::Action"/>
+						<connection type="ActivityDiagram::DecisionNode"/>
 					</connections>
 				</logic>
 			</node>
@@ -146,6 +148,8 @@
 					</properties>
 					<connections>
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+						<connection type="ActivityDiagram::Action"/>
+						<connection type="ActivityDiagram::DecisionNode"/>
 					</connections>
 				</logic>
 			</node>
