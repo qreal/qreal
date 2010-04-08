@@ -88,6 +88,8 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
+	Q_UNUSED(container);
+	Q_UNUSED(candidate); // задолбали ворнинги. убрать, когда пофиксят хмли
 	// Типизированные контейнеры временно закомментированы, надо сначала поправить xml-ки.
 	return true;
 

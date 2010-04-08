@@ -56,9 +56,6 @@ MainWindow::MainWindow()
 
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
-	connect(ui.diagramExplorer, SIGNAL(clicked(const QModelIndex &)),
-		this, SLOT(activateItemOrDiagram(const QModelIndex &)));
-
 	progress->setValue(20);
 
 	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -72,7 +69,6 @@ MainWindow::MainWindow()
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(ui.actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
-	connect(ui.openNewTab, SIGNAL(triggered()), this, SLOT(openNewTab()));
 
 	connect(ui.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
@@ -100,10 +96,6 @@ MainWindow::MainWindow()
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 
-	//ui.propertyEditor->horizontalHeader()->setStretchLastSection(true);
-	//ui.propertyEditor->horizontalHeader()->hide();
-	//	ui.propertyEditor->setModel(&propertyModel);
-
 	ui.propertyEditor->setModel(&mPropertyModel);
 	ui.propertyEditor->verticalHeader()->hide();
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
@@ -112,10 +104,11 @@ MainWindow::MainWindow()
 
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
 		&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
+	
+	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
+		this, SLOT(openNewTab(QModelIndex const &)));
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
-	ui.diagramExplorer->addAction(ui.openNewTab);
-
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", QSize(1024, 800)).toSize());
 	move(settings.value("pos", QPoint(0, 0)).toPoint());
@@ -151,7 +144,8 @@ MainWindow::MainWindow()
 
 	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
 
-	openNewTab();
+	// хотя бы одна диаграмма всегда есть, вот ее и открываем
+	openNewTab(mModel->index(0,0,QModelIndex()));
 
 	progress->setValue(100);
 	if (showSplash)
@@ -166,72 +160,6 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	} else if ( keyEvent->key() == Qt::Key_F2 ){
 		save();
 	}
-}
-
-void MainWindow::openNewTab()
-{
-	QModelIndex index = QModelIndex();
-	if (ui.diagramExplorer->hasFocus()) {
-		index = ui.diagramExplorer->currentIndex();
-	}
-	int tabNumber = -1;
-	for (int i = 0; i < ui.tabs->count(); i++) {
-		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
-			tabNumber = i;
-			break;
-		}
-	}
-	if (tabNumber != -1) {
-		ui.tabs->setCurrentIndex(tabNumber);
-	} else {
-		EditorView *view = new EditorView();
-		ui.tabs->addTab(view, "");
-		ui.tabs->setCurrentWidget(view);
-
-		if (!index.isValid())
-			index = mModel->rootIndex();
-		initCurrentTab(index);
-	}
-}
-
-void MainWindow::updateTab(QModelIndex const &index)
-{
-	qDebug() << mModel->data(index, Qt::EditRole).toString();
-	for (int i = 0; i < ui.tabs->count(); i++) { // ZOMG, переделать на мапах
-		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if ((tab->mvIface()->rootIndex() == index) /*&& (ui.tabs->currentIndex() != i)*/) {
-			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
-			return;
-		}
-	}	
-}
-
-void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
-{
-	getCurrentTab()->setMainWindow(this);
-	QModelIndex index = rootIndex;
-	
-	if( rootIndex == QModelIndex() ) // хотя бы одна диаграмма всегда есть
-		index = mModel->index(0,0,mModel->rootIndex());
-
-	ui.tabs->setTabText(ui.tabs->currentIndex(), mModel->data(index, Qt::EditRole).toString());
-
-	changeMiniMapSource(ui.tabs->currentIndex());
-
-	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
-	connect(ui.actionZoom_In, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomIn()));
-	connect(ui.actionZoom_Out, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomOut()));
-	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
-	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
-
-	getCurrentTab()->mvIface()->setModel(mModel);
-	getCurrentTab()->mvIface()->setRootIndex(index);
-
-	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
-		, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
-		, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
 MainWindow::~MainWindow()
@@ -412,6 +340,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer()
 {
 	QModelIndex idx = ui.diagramExplorer->currentIndex();
+	deleteTab(idx);
 	if (idx.isValid())
 		mModel->removeRow(idx.row(), idx.parent());
 }
@@ -551,4 +480,75 @@ void MainWindow::parseHascol()
 	errors.showErrors("Parsing is finished");
 
 	mModel->reinit();
+}
+
+void MainWindow::openNewTab(const QModelIndex &index)
+{
+	if( index.parent() != QModelIndex() ) // открываем в новом табе только диаграммы первого уровня
+		return;
+
+	int tabNumber = -1;
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab->mvIface()->rootIndex() == index) {
+			tabNumber = i;
+			break;
+		}
+	}
+	if (tabNumber != -1) {
+		ui.tabs->setCurrentIndex(tabNumber);
+	} else {
+		EditorView *view = new EditorView();
+		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
+		ui.tabs->setCurrentWidget(view);
+	
+//		if (!index.isValid())
+//			index = mModel->rootIndex();
+		initCurrentTab(index);
+	}
+}
+
+void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
+{
+	getCurrentTab()->setMainWindow(this);
+	QModelIndex index = rootIndex;
+	
+	changeMiniMapSource(ui.tabs->currentIndex());
+
+	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
+	connect(ui.actionZoom_In, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomIn()));
+	connect(ui.actionZoom_Out, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomOut()));
+	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
+	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
+
+	getCurrentTab()->mvIface()->setModel(mModel);
+	getCurrentTab()->mvIface()->setRootIndex(index);
+
+	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
+		, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
+		, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+}
+
+void MainWindow::updateTab(QModelIndex const &index)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) { 
+		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab->mvIface()->rootIndex() == index) {
+			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
+			return;
+		}
+	}	
+}
+
+void MainWindow::deleteTab(QModelIndex const &index)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) { 
+		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab->mvIface()->rootIndex() == index) {
+			qDebug() << " closing tab" << i;
+			closeTab(i);
+			return;
+		}
+	}	
 }

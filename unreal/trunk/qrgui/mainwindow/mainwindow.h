@@ -72,13 +72,16 @@ namespace qReal {
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();
-		void openNewTab();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
+		void deleteTab(const QModelIndex &index);
 		void exterminate();
 		void generateEditor();
 		void generateToHascol();
 		void parseHascol();
+		void initCurrentTab(const QModelIndex &rootIndex);
+		void openNewTab(const QModelIndex &index);
+
 	private:
 		model::Model *mModel;
 		EditorManager mgr;
@@ -92,7 +95,6 @@ namespace qReal {
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
-		void initCurrentTab(const QModelIndex &rootIndex);
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 	};

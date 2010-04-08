@@ -98,12 +98,6 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
-	/*
-	qDebug() << "========== rowsInserted" << parent << start << end;
-
-	qDebug() << "rowsInserted: adding items" << parent;
-	*/
-
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		Id uuid = current.data(roles::idRole).value<Id>();
@@ -146,8 +140,10 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		mScene->removeItem(item(curr));
-		delete item(curr);
+		if( item(curr) ){
+			mScene->removeItem(item(curr));
+			delete item(curr);
+		}	
 		removeItem(curr);
 	}
 	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
@@ -186,8 +182,6 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 
 void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
-	qDebug() << "rows moved";
-	
 	Q_UNUSED(sourceParent);
 	Q_UNUSED(sourceStart);
 	Q_UNUSED(sourceEnd);
