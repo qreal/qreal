@@ -237,7 +237,7 @@ QString JavaHandler::serializeObject(Id const &id)
                         isControlFlow = 0;
                     } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
                     Id toConsider = mApi.otherEntityFromLink(aLink, id);
-                    result += getFlowGuard(aLinnk) + " ) {\n    " + serializeObject(toConsider);
+                    result += getFlowGuard(aLink) + " ) {\n    " + serializeObject(toConsider);
                 }
             } else {
                 addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
@@ -290,8 +290,8 @@ QString JavaHandler::getFlowGuard(Id const &id)
         QString guard = mApi.stringProperty(id, "guard");
 
         //TODO: Delete all white spaces, tabs, etc. in guard. Just find the function =)
-        if (guard = "") {
-            addError("Object " + objectType + " with id  " + id.toString() + " has invalid guard property: " + visibility);
+        if (guard == "") {
+            addError("Object " + objectType + " with id  " + id.toString() + " has invalid guard property: " + guard);
         }
     }
 
