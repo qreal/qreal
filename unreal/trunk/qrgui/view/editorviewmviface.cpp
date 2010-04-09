@@ -134,6 +134,13 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
+	
+	// обновляем порты всех линков, т.к. при создании линков они почему-то не находят прицепленных к ним нодов
+	foreach (QGraphicsItem *item, mScene->items()){
+		UML::Element *e = dynamic_cast<UML::Element*>(item);
+		if (e)
+			e->connectToPort();
+	}
 }
 
 void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int start, int end)
