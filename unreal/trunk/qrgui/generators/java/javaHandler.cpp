@@ -149,7 +149,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
                 QString methodBody = getMethodCode(id);
 
-                result += visibility + isAbstractField + isFinalField + isStaticField + isSynchronizedField + isNativeField +
+                result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
                           type  + mApi.name(id) + "(" + operationFactors + ")" + methodBody + "\n";
             } else {
                 this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
@@ -173,7 +173,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 if (isVolatileField == "volatile " && isFinalField == "final ") {
                     addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sense");
                 }
-                result += isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(id);
+                result += visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
                 if (defaultValue != "") {
                     result += " " + defaultValue;
                 }
@@ -187,44 +187,39 @@ QString JavaHandler::serializeObject(Id const &id)
     // activity diagram
 
     else if (objectType == "ActivityDiagram_InitialNode") {
-        result += "{\n";
+        //[Superstructure 09-02-02][1] An initial node has no incoming edges.
         if (!mApi.links(id).isEmpty()) {
-           if (!mApi.incomingLinks(id).isEmpty()) {
-              addError("Object " + objectType + " with id  " + id.toString() + " can not have incoming links.");
-           }
+            if (!mApi.incomingLinks(id).isEmpty()) {
+                addError("Object " + objectType + " with id  " + id.toString() + " can not have incoming links.");
+            }
 
+            //[Superstructure 09-02-02][2] Only control edges can have initial nodes as source.
             IdList linksOut = mApi.outgoingLinks(id);
             foreach (Id const aLink, linksOut) {
-                //imagine, that Initial Node has just one outcoming link
+//                //imagine, that Initial Node has just one outcoming link
                 if (aLink.element() == "ActivityDiagram_ControlFlow") {
-                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
-                    result += serializeObject(toConsider);
+                    result += "{\n";
+//                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
+//                    result += serializeObject(toConsider);
                 } else {
                     addError("Object " + objectType + " with id  " + id.toString() + ". Only Control Edges can have Initial Nodes as source.");
                 }
             }
         }
     } else if (objectType == "ActivityDiagram_Action") {
+//        addError("ATTENTION! Action.name() = " + mApi.name(id));
         result += mApi.name(id) + "\n";
-        if (!mApi.links(id).isEmpty()) {
-            IdList linksOut = mApi.outgoingLinks(id);
-            foreach (Id const aLink, linksOut) {
-                if (aLink.element() == "ActivityDiagram_ControlFlow") {
-                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
-                    result += serializeObject(toConsider);
-                }
-            }
-        }
     } else if (objectType == "ActivityDiagram_ActivityFinalNode") {
         result += "}\n";
     } else if (objectType == "ActivityDiagram_DecisionNode") {
 
         int isControlFlow = -1;
-        result += "if ( (" + mApi.name(id) + ") == ";
         if (!mApi.links(id).isEmpty()) {
             IdList linksOut = mApi.outgoingLinks(id);
             if (!linksOut.isEmpty()) {
                 foreach (Id const aLink, linksOut) {
+                    // Very arched way to check:
+                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
                     if (aLink.element() == "ActivityDiagram_ControlFlow") {
                         if (isControlFlow == 0) {
                             addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
@@ -236,15 +231,25 @@ QString JavaHandler::serializeObject(Id const &id)
                         }
                         isControlFlow = 0;
                     } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
-                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
-                    result += getFlowGuard(aLink) + " ) {\n    " + serializeObject(toConsider);
+
+                    Id caseBody = mApi.otherEntityFromLink(aLink, id);
+                    result += "if (" + getFlowGuard(aLink) + ") {\n" + serializeObject(caseBody) + "\n}";
+
+                    if (aLink == linksOut.at(linksOut.length()-1)) { // if it is the last link then we should finish "if"-statement
+                        result += "\n";
+                    } else { //if it is not the last link, connected to the DecisionNode
+                        result += " else ";
+                    }
                 }
+                result += "/* if had been ended */\n";
             } else {
-                addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
+                addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
             }
+        } else {
+            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
         }
     } else if (objectType == "ActivityDiagram_MergeNode") {
-        result += "}\n";
+        result += "//merge node \n";
     }
 
     return result;
@@ -288,6 +293,7 @@ QString JavaHandler::getFlowGuard(Id const &id)
 
     if (mApi.hasProperty(id, "guard")) {
         QString guard = mApi.stringProperty(id, "guard");
+        result = guard;
 
         //TODO: Delete all white spaces, tabs, etc. in guard. Just find the function =)
         if (guard == "") {
