@@ -36,8 +36,8 @@
 				</graphics>
 				<logic>
 					<generalizations>
-                        <parent parentName="Kernel::Diagram"/>
-                    </generalizations>
+						<parent parentName="Kernel::Diagram"/>
+					</generalizations>
 					<container>
 						<contains type="ClassDiagram::Aggregation"/>
 						<contains type="ClassDiagram::Association"/>
