@@ -11,17 +11,26 @@
 using namespace qReal;
 using namespace generators;
 
-Tree::Tree(Id const &element, TreeList const &children)
+Tree::Tree(Id const &element, QList<Tree> const &children)
     : mElement(element), mChildren(children)
 {
 }
 
-Id Tree::element()
+bool Tree::operator== ( Tree const & other ) const
+{
+    if ( (mElement == other.element()) && (mChildren == other.children()) ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Id Tree::element() const
 {
     return mElement;
 }
 
-QList<Tree> Tree::children()
+QList<Tree> Tree::children() const
 {
     return mChildren;
 }

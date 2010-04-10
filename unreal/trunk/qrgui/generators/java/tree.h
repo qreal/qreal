@@ -15,15 +15,15 @@ namespace qReal {
         class Tree
         {
         public:
-            typedef QList<Tree> TreeList;
+            Tree(Id const &element, QList<Tree> const &children);
 
-            explicit Tree(Id const &element, TreeList const &children);
+            bool operator== ( Tree const & other  ) const;
 
-            Id element();
-            TreeList children();
+            Id element() const;
+            QList<Tree> children() const;
         private:
             Id mElement;
-            TreeList mChildren;
+            QList<Tree> mChildren;
 
             void moveChildToEnd(Tree const &child);
 //            QString serializeObject(Id const &id);
