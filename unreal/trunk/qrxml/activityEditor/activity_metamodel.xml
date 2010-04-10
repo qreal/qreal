@@ -181,6 +181,9 @@
                         <parent parentName="ExecutableNode"/>
                         <parent parentName="Basic Actions::Action"/>
                     </generalizations>
+					<connections>
+						<connection type="ClassDiagram::ClassMethod"/>
+					</connections>
                 </logic>
             </node>
             <node name="ActionInputPin" displayedName="Action Input Pin">
@@ -570,6 +573,9 @@
                         <property type="Behavior" name="decisionInput"/>
                         <property type="ObjectFlow" name="decisionInputFlow"/>
                     </properties>
+					<connections>
+						<connection type="ActivityDiagram::Action"/>
+					</connections>
                 </logic>
             </node>
             <edge name="ExceptionHandler" displayedName="Exception Handler">
@@ -787,6 +793,9 @@
                         </property>
                         <property type="Value Specification" name="joinSpec"/>
                     </properties>
+					<connections>
+						<connection type="ActivityDiagram::ForkNode"/>
+					</connections>
                 </logic>
             </node>
             <node name="LoopNode" displayedName="Loop Node">
@@ -844,6 +853,9 @@
                     <generalizations>
                         <parent parentName="ControlNode"/>
                     </generalizations>
+					<connections>
+						<connection type="ActivityDiagram::DecisionNode"/>
+					</connections>
                 </logic>
             </node>
             <edge name="ObjectFlow" displayedName="Object Flow">
@@ -1096,7 +1108,7 @@
 					</generalizations>
 				</logic>
 			</edge>
-
+			
 		</graphicTypes>
     </diagram>
 </metamodel>

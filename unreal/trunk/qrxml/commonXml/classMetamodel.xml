@@ -125,6 +125,7 @@
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 						<connection type="ActivityDiagram::Action"/>
 						<connection type="ActivityDiagram::DecisionNode"/>
+						<connection type="ActivityDiagram::Constraint"/>
 					</connections>
 				</logic>
 			</node>
@@ -150,6 +151,7 @@
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 						<connection type="ActivityDiagram::Action"/>
 						<connection type="ActivityDiagram::DecisionNode"/>
+						<connection type="ActivityDiagram::Constraint"/>
 					</connections>
 				</logic>
 			</node>
