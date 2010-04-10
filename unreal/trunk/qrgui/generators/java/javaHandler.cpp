@@ -1,4 +1,5 @@
 #include "javaHandler.h"
+#include "tree.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -482,4 +483,8 @@ bool JavaHandler::isVisibilitySuitable(QString const &visibility) const
 void JavaHandler::addError(QString const &errorText)
 {
     mErrorText += errorText + "\n";
+}
+
+void JavaHandler::makeTree(Id const &activityDiagramId)
+{
 }

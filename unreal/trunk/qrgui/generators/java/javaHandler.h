@@ -36,6 +36,7 @@ namespace qReal {
             bool isVisibilitySuitable(QString const &type) const;
 
             void addError(QString const &errorText);
+            void makeTree(Id const &activityDiagramId);
 
             qrRepo::RepoApi const &mApi;
             QString mErrorText;
