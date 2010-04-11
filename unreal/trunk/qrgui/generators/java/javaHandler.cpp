@@ -33,20 +33,192 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
     return mErrorText;
 }
 
+IdList JavaHandler::getActivityDiagramChildren(Id const &idParent)
+{
+    IdList childElements, allElements;
+    allElements = mApi.children(idParent);
+
+    foreach (Id aChild, allElements) {
+        //Search for the nodes that can start control flows
+        //We are hoping that there is just one such node on the Activity Diagram
+        if (aChild.element() == "ActivityDiagram_InitialNode" || aChild.element() == "ActivityDiagram_ActivityParameterNode"
+            || aChild.element() == "ActivityDiagram_AcceptEventAction") {
+            childElements.append(aChild);
+        }
+
+        if (childElements.length() == 0) {
+            addError("Unable to serialize object " + objectType(idParent) + " with id: " + idParent.toString() + ". There is no start nodes (Initial Node, Activity Parameter Node, Accept Event Action).");
+        } else if (childElements.length() > 1) { //TODO: to find out if it is possible. If so, write the appropriate serialization
+            addError("AAA!!! There is too many start nodes. I don't know which to choose.");
+        }
+    }
+
+    Id startNode = childElements.at(0);
+    childElements.append(findIntermediateNodes(startNode));
+
+    return childElements;
+}
+
+IdList JavaHandler::findIntermediateNodes(Id const &startNode)
+{
+    IdList children;
+
+    IdList outgoingLinks = mApi.outgoingLinks(startNode);
+
+    foreach (Id aLink, outgoingLinks) {
+        Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
+        if (nextElement.element() == "ActivityDiagram_DecisionNode") {
+            children.append(nextElement);
+
+            int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
+            if (!mApi.links(nextElement).isEmpty()) {
+                IdList outgoingLinks = mApi.outgoingLinks(nextElement);
+                if (!outgoingLinks.isEmpty()) {
+                    // Very arched way to check:
+                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
+                    foreach (Id const aLink, outgoingLinks) {
+                        if (aLink.element() == "ActivityDiagram_ControlFlow") {
+                            if (isControlFlow == 0) {
+                                addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                            }
+                            isControlFlow = 1;
+                        } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
+                            if (isControlFlow == 1) {
+                                addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                            }
+                            isControlFlow = 0;
+                        } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
+                    }
+
+                    //"if" or "while"?
+                    IdList incomingLinks = mApi.incomingLinks(nextElement);
+                    if (incomingLinks.length() == 1) { //"if"
+                        Id mergeNode = findMergeNode(nextElement);
+
+                        //TODO: if there is no mergeNode?!
+                        children.append(findIntermediateNodes(mergeNode));
+                    } else if (incomingLinks.length() == 2) { //"while"
+                        Id nonBodyLink = findNonBodyLink(nextElement);
+
+                        Id firstNonBodyElement = mApi.otherEntityFromLink(nonBodyLink, nextElement);
+                        children.append(findIntermediateNodes(firstNonBodyElement));
+                    } else { //[Superstructure 09-02-02][1] A decision node has one or two incoming edges.
+                        addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". A decision Node has one or two incoming edges.");
+                    }
+
+                } else {
+                    addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". Is must have at least one outgoing edge.");
+                }
+            } else {
+                addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". Is must have at least one outgoing edge.");
+            }
+        } else if (nextElement.element() == "ActivityDiagram_MergeNode") {
+            //TODO: fill this
+        } //TODO: add other "importaint" nodes
+        else {
+            children.append(nextElement);
+            children.append(findIntermediateNodes(nextElement));;
+        }
+    }
+
+    return children;
+}
+
+Id JavaHandler::findMergeNode(Id const &idDecisionNode)
+{
+    Id mergeNode;
+
+    //look for Merge Nodes connected with this Decision Node
+    IdList mergeNodes;
+    IdList incomingConnections = mApi.incomingConnections(idDecisionNode);
+    foreach (Id aConnection, incomingConnections) {
+        if (aConnection.element() == "ActivityDiagram_MergeNode") {
+            mergeNodes.append(aConnection);
+        }
+    }
+
+    if (mergeNodes.length() == 0) {
+        //TODO: fill this
+    } else if (mergeNodes.length() == 1) {
+        mergeNode = mergeNodes.at(0);
+    } else {
+        addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". Is has to many connected Merge Nodes.");
+    }
+
+    return mergeNode;
+}
+
+Id JavaHandler::findDecisionNode(Id const &idMergeNode)
+{
+    Id decisionNode;
+
+    //it is empty because there is no need in it right now, but will be in the future
+
+    return decisionNode;
+}
+
+Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
+{
+    Id linkId;
+
+    IdList outgoingLinks = mApi.outgoingLinks(idDecisionNode);
+    if (outgoingLinks.length() != 2) {
+        addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". May be you forget a Merge Node before this Decision Node.");
+    } else {
+        QString guard1 = getFlowGuard(outgoingLinks.at(0));
+        QString guard2 = getFlowGuard(outgoingLinks.at(1));
+
+        //they can't be equal "" at the same time; one of them ought to be "" or to be "else"
+        if (guard1 != "" || guard2 != "") {
+            if ( (guard1 == "" || guard1 == "else") || (guard2 == "" || guard2 == "else") ) {
+                //Supposing that the first link is represent the loop's body. If not — .swap
+                if (guard1 == "" || guard1 == "else") {
+                    outgoingLinks.swap(0, 1);
+                }
+
+                linkId = outgoingLinks.at(1);
+            } else {
+                addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". One of the guards must either empty or equals \"else\".");
+            }
+        } else {
+            addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". At least one of the links must have a guard.");
+        }
+    }
+
+
+    return linkId;
+}
+
+Id JavaHandler::findJoinNode(Id const &idForkNode)
+{
+    Id joinNode;
+
+    //it is empty because there is no need in it right now, but will be in the future
+
+    return joinNode;
+}
+
 QString JavaHandler::serializeChildren(Id const &idParent)
 {
     QString result = "";
-    IdList childElems; //TODO: initialize as NULL
+    IdList childElems;
 
     if (objectType(idParent) == "ActivityDiagram_ActivityDiagramNode") {
-        IdList children = mApi.children(idParent);
+        childElems = getActivityDiagramChildren(idParent);
+    } else if (objectType(idParent) == "ClassDiagram_Class") {
+        IdList allChildren = mApi.children(idParent);
+        IdList fields, methods;
 
-        foreach (Id aChild, children) {
-            //TODO: add those elements that can begin the execution (structured and some else)
-            if (aChild.element() == "ActivityDiagram_InitialNode") {
-                childElems.append(aChild);
-            }
+        foreach (Id aChild, allChildren) {
+            if (aChild.element() == "ClassDiagram_ClassField") {
+                fields.append(aChild);
+            } else if (aChild.element() == "ClassDiagram_ClassMethod") {
+                methods.append(aChild);
+            } //TODO: add processing of another nodes that may be in Class
         }
+
+        childElems.append(fields);
+        childElems.append(methods);
     } else {
         childElems = mApi.children(idParent);
     }
@@ -65,7 +237,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
     // class diagram
 
-    if ((objectType(id) == "ClassDiagram_Class")|(objectType(id) == "ClassDiagram_Interface")) {
+    if ((objectType(id) == "ClassDiagram_Class")||(objectType(id) == "ClassDiagram_Interface")) {
 
         //-----------
         QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
@@ -162,7 +334,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 QString methodBody = getMethodCode(id);
 
                 result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
-                          type  + mApi.name(id) + "(" + operationFactors + ")" + methodBody + "\n";
+                          type  + mApi.name(id) + "(" + operationFactors + ") " + methodBody + "\n";
             } else {
                 this->addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class");
             }
@@ -208,30 +380,18 @@ QString JavaHandler::serializeObject(Id const &id)
             //[Superstructure 09-02-02][2] Only control edges can have initial nodes as source.
             IdList outgoingLinks = mApi.outgoingLinks(id);
             foreach (Id const aLink, outgoingLinks) {
-//                //imagine, that Initial Node has just one outcoming link
-                if (aLink.element() == "ActivityDiagram_ControlFlow") {
-                    result += "{\n";
-                    Id nextElement = mApi.otherEntityFromLink(aLink, id);
-                    result += serializeObject(nextElement);
-                } else {
+                if (aLink.element() == "ActivityDiagram_ObjectFlow") {
                     addError("Object " + objectType(id) + " with id  " + id.toString() + ". Only Control Edges can have Initial Nodes as source.");
                 }
             }
         }
+
+        result += "{\n";
     } else if (objectType(id) == "ActivityDiagram_Action") {
         result += mApi.name(id) + "\n";
-
-        //serialization of it's children
-        IdList outgoingLinks = mApi.outgoingLinks(id);
-        foreach (Id const aLink, outgoingLinks) {
-            Id nextElement = mApi.otherEntityFromLink(aLink, id);
-            if (nextElement.element() != "ActivityDiagram_MergeNode" && nextElement.element() != "ActivityDiagram_JoinNode") {
-                result += serializeObject(nextElement);
-            }
-        }
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
         addError("If you want \"return;\" you should write it in the Action before this Final Node.");
-        result += "} //final node\n";
+        result += "} /*final node*/   \n"; //TODO: delete /*final node*/!
 
         //[Superstructure 09-02-02][1] A final node has no outgoing edges.
         IdList outgoingLinks = mApi.outgoingLinks(id);
@@ -239,50 +399,38 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A final node has no outgoing edges.");
         }
     } else if (objectType(id) == "ActivityDiagram_DecisionNode") {
-        int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
-        if (!mApi.links(id).isEmpty()) {
-            IdList outgoingLinks = mApi.outgoingLinks(id);
-            if (!outgoingLinks.isEmpty()) {
-                foreach (Id const aLink, outgoingLinks) {
-                    // Very arched way to check:
-                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
-                    if (aLink.element() == "ActivityDiagram_ControlFlow") {
-                        if (isControlFlow == 0) {
-                            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
-                        }
-                        isControlFlow = 1;
-                    } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
-                        if (isControlFlow == 1) {
-                            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
-                        }
-                        isControlFlow = 0;
-                    } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
-                }
-
-                //"if" or "while-do"?
-                IdList incomingLinks = mApi.incomingLinks(id);
-                if (incomingLinks.length() == 1) {
-                    result += ifStatement(id);
-                } else if (incomingLinks.length() == 2) {
-                    result += whileDoLoop(id);
-                } else { //[Superstructure 09-02-02][1] A decision node has one or two incoming edges.
-                    addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A decision Node has one or two incoming edges.");
-                }
-
-                result += "//end of the decision node\n";
-            } else {
-                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
-            }
-        } else {
-            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
+        //"if" or "while"?
+        IdList incomingLinks = mApi.incomingLinks(id);
+        if (incomingLinks.length() == 1) { //"if"
+            result += ifStatement(id);
+        } else if (incomingLinks.length() == 2) { //"while"
+            result += whileDoLoop(id);
         }
-    } else if (objectType(id) == "ActivityDiagram_MergeNode") {
-        result += "//merge node \n";
 
+        result += "//end of the decision node\n"; //TODO: delete!
+    } else if (objectType(id) == "ActivityDiagram_MergeNode") {
+        result += "//merge node \n"; //TODO: delete!
+    }
+
+    return result;
+}
+
+QString JavaHandler::serializeUntil(Id const &id, Id const &untilElement)
+{
+    QString result = "";
+
+    if (id == untilElement) {
+        return result;
+    } else if (id.element() == "ActivityDiagram_ActivityFinalNode") {
+        result += "//return; \n"; //TODO: fill this
+    } else {
+        result += serializeObject(id);
+
+        //serialise it's children
         IdList outgoingLinks = mApi.outgoingLinks(id);
-        foreach (Id const aLink, outgoingLinks) {
+        foreach (Id aLink, outgoingLinks) {
             Id nextElement = mApi.otherEntityFromLink(aLink, id);
-            result += serializeObject(nextElement);
+            result += serializeUntil(nextElement, untilElement);
         }
     }
 
@@ -293,6 +441,7 @@ QString JavaHandler::ifStatement(Id const &id)
 {
     QString result = "";
 
+    Id untilMergeNode = findMergeNode(id);
     int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
 
     //move "else" link to the end of the list
@@ -301,7 +450,6 @@ QString JavaHandler::ifStatement(Id const &id)
         //if this link represent "else" case than change it with the last link in the serialization sequence
         if (getFlowGuard(aLink) == "else" && existElse == 0) {
             existElse = 1;
-            addError("ATTENTION!!! Else link changes with " + getFlowGuard(outgoingLinks.at(outgoingLinks.length()-1)));
             outgoingLinks.swap(outgoingLinks.indexOf(aLink), outgoingLinks.length()-1);
         } else {
             addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"else\" as guard.");
@@ -316,33 +464,13 @@ QString JavaHandler::ifStatement(Id const &id)
         }
 
         //if it is a straight link from Decision Node to Merge Node
-        if (caseBody.element() != "ActivityDiagram_MergeNode") {
-            result += "{\n"+ serializeObject(caseBody) + "}";
-        } else {
-            result += "{\n}";
-        }
+        result += "{\n"+ serializeUntil(caseBody, untilMergeNode) + "}";
 
         if (aLink == outgoingLinks.at(outgoingLinks.length()-1)) { // if it is the last link then we should finish "if"-statement
-            result += "/*last link in decision node*/  \n";
-        } else { //if it is not the last link, connected to the DecisionNode
+            result += "/*last link in the decision node*/  \n";
+        } else { //if it is not the last link, connected to the Decision Node
             result += " else ";
         }
-    }
-
-    IdList mergeNodes;
-    IdList incomingConnections = mApi.incomingConnections(id);
-    foreach (Id aConnection, incomingConnections) {
-        if (aConnection.element() == "ActivityDiagram_MergeNode") {
-            mergeNodes.append(aConnection);
-        }
-    }
-
-    if (mergeNodes.length() == 0) {
-        //TODO: fill this
-    } else if (mergeNodes.length() == 1) {
-        result += serializeObject(mergeNodes.at(0));
-    } else {
-        addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is has to many connected Merge Nodes.");
     }
 
     return result;
@@ -351,6 +479,20 @@ QString JavaHandler::ifStatement(Id const &id)
 QString JavaHandler::whileDoLoop(Id const &id)
 {
     QString result = "";
+
+    //get the "body" link
+    Id nonBodyLink = findNonBodyLink(id);
+    IdList outgoingLinks = mApi.outgoingLinks(id);
+    outgoingLinks.removeAll(nonBodyLink);
+    Id bodyLink = outgoingLinks.at(0);
+
+    result += "while (" + getFlowGuard(bodyLink) + ") {\n";
+
+    //Serialization of the loop's body
+    Id nextElement = mApi.otherEntityFromLink(bodyLink, id);
+    result += serializeUntil(nextElement, id);
+
+    result += "} /*end of \"while\"*/  \n"; //TODO: delete /*end of "while"*/!
 
     return result;
 }
@@ -473,7 +615,7 @@ QString JavaHandler::getMethodCode(Id const &id)
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
-        Id realizationDiagram; //TODO: maybe it should be initialized with null?..
+        Id realizationDiagram;
 
         int realizationsCount = 0;
         foreach (Id aConnection, outgoingConnections) {
@@ -581,6 +723,3 @@ void JavaHandler::addError(QString const &errorText)
     mErrorText += errorText + "\n";
 }
 
-void JavaHandler::makeTree(Id const &activityDiagramId)
-{
-}
