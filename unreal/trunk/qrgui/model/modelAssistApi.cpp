@@ -39,3 +39,27 @@ Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
 		throw Exception("Incorrect automatic element creation");
 	return newElementId;
 }
+
+void ModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
+{
+	Id element = createElement(ROOT_ID, elementType);
+	QString sourceName = mModel.data(mModel.indexById(sourceElement), Qt::DisplayRole).toString();
+	QString typeName = editorManager().friendlyName(elementType);
+	mModel.setData(mModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
+	connect(sourceElement, element);
+}
+
+IdList ModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
+{
+	// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
+	// редактор умел говорить, что диаграмма, а что - нет.
+	IdList possibleTypes = editorManager().getConnectedTypes(element.type());
+	IdList diagrams;
+	foreach (Id type, possibleTypes) {
+		if (type.element().contains("diagram", Qt::CaseInsensitive)) {
+			if (!diagrams.contains(type))
+				diagrams.append(type);
+		}
+	}
+	return diagrams;
+}

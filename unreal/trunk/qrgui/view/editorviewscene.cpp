@@ -235,9 +235,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 		IdList possibleTypes = mWindow->manager()->getConnectedTypes(e->uuid().type());
 		qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
-		IdList diagrams;
 		foreach (Id type, possibleTypes) {
-			qDebug() << type.toString();
 			foreach (Id element, model->api().elements(type)) {
 				if (model->api().outgoingConnections(e->uuid()).contains(element))
 					continue;
@@ -247,15 +245,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				tag << e->uuid().toVariant() << element.toVariant();
 				action->setData(tag);
 			}
-			// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
-			// редактор умел говорить, что диаграмма, а что - нет.
-			if (type.element().contains("diagram", Qt::CaseInsensitive)) {
-				if (!diagrams.contains(type))
-					diagrams.append(type);
-			}
 		}
 
-		foreach (Id diagram, diagrams) {
+		foreach (Id diagram, model->assistApi().diagramsAbleToBeConnectedTo(e->uuid())) {
 			Id diagramType = model->assistApi().editorManager().findElementByType(diagram.element());
 			QString name = model->assistApi().editorManager().friendlyName(diagramType);
 			QString editorName = model->assistApi().editorManager().friendlyName(Id(diagramType.editor()));
@@ -361,6 +353,13 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 			if (outgoingLinks.size() > 0)
 				mainWindow()->activateItemOrDiagram(outgoingLinks[0]);
+			else {
+				IdList diagrams = model->assistApi().diagramsAbleToBeConnectedTo(element->uuid());
+				if (!diagrams.isEmpty()) {
+					Id diagramType = model->assistApi().editorManager().findElementByType(diagrams[0].element());
+					model->assistApi().createConnected(element->uuid(), diagramType);
+				}
+			}
 
 			// Now scene is changed from outside. Being a mere mortal I do not
 			// know whether it is good or not, but what is the destiny of
@@ -407,12 +406,7 @@ void EditorViewScene::connectActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		model->assistApi().connect(source, destination);
 	} else {
-		// Создаём новую диаграмму и цепляем элемент к ней.
-		Id diagram = model->assistApi().createElement(ROOT_ID, destination);
-		QString sourceName = model->data(model->indexById(source), Qt::DisplayRole).toString();
-		QString diagramTypeName = model->assistApi().editorManager().friendlyName(destination);
-		model->setData(model->indexById(diagram), sourceName + " " + diagramTypeName, Qt::DisplayRole);
-		model->assistApi().connect(source, diagram);
+		model->assistApi().createConnected(source, destination);
 	}
 }
 
