@@ -9,6 +9,7 @@
 
 #include "editorinterface.h"
 #include "../kernel/ids.h"
+#include "../kernel/exception/exception.h"
 #include "../../qrrepo/repoApi.h"
 
 using namespace qReal;
@@ -188,4 +189,14 @@ bool EditorManager::hasElement(Id const &elementId) const
 			if (elementId.diagram() == diagram && elementId.element() == element)
 				return true;
 	return false;
+}
+
+Id EditorManager::findElementByType(QString const &type) const
+{
+	foreach (EditorInterface *editor, mPluginIface.values())
+		foreach (QString diagram, editor->diagrams())
+			foreach (QString element, editor->elements(diagram))
+				if (type == element)
+					return Id(editor->id(), diagram, element);
+	throw Exception("No type " + type + " in loaded plugins");
 }

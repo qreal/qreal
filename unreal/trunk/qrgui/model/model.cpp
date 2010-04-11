@@ -370,6 +370,14 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	return item;
 }
 
+bool Model::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
+{
+	ModelTreeItem *parentItem = parent == ROOT_ID ? mRootItem
+		: static_cast<ModelTreeItem*>(indexById(parent).internalPointer());
+	Q_ASSERT(parentItem != NULL);
+	return addElementToModel(parentItem, id, "", name, position, Qt::CopyAction) != NULL;
+}
+
 void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
 	if (!parent.isValid() || element.parent() == parent)

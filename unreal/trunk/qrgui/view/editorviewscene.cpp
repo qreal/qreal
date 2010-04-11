@@ -235,7 +235,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 		IdList possibleTypes = mWindow->manager()->getConnectedTypes(e->uuid().type());
 		qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
+		IdList diagrams;
 		foreach (Id type, possibleTypes) {
+			qDebug() << type.toString();
 			foreach (Id element, model->api().elements(type)) {
 				if (model->api().outgoingConnections(e->uuid()).contains(element))
 					continue;
@@ -245,6 +247,23 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				tag << e->uuid().toVariant() << element.toVariant();
 				action->setData(tag);
 			}
+			// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
+			// редактор умел говорить, что диаграмма, а что - нет.
+			if (type.element().contains("diagram", Qt::CaseInsensitive)) {
+				if (!diagrams.contains(type))
+					diagrams.append(type);
+			}
+		}
+
+		foreach (Id diagram, diagrams) {
+			Id diagramType = model->assistApi().editorManager().findElementByType(diagram.element());
+			QString name = model->assistApi().editorManager().friendlyName(diagramType);
+			QString editorName = model->assistApi().editorManager().friendlyName(Id(diagramType.editor()));
+			QAction *action = connectToMenu->addAction("New " + editorName + "/" + name);
+			connect(action, SIGNAL(triggered()), SLOT(connectActionTriggered()));
+			QList<QVariant> tag;
+			tag << e->uuid().toVariant() << diagramType.toVariant();
+			action->setData(tag);
 		}
 
 		QMenu *goToMenu = menu.addMenu(tr("Go to"));
@@ -260,7 +279,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
 			action->setData(element.toVariant());
 		}
-
 
 		QMenu *disconnectMenu = menu.addMenu(tr("Disconnect"));
 		IdList list = model->api().outgoingConnections(e->uuid());
@@ -386,7 +404,16 @@ void EditorViewScene::connectActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	qReal::model::Model *model = dynamic_cast<qReal::model::Model *>(mv_iface->model());
-	model->assistApi().connect(source, destination);
+	if (!action->text().startsWith("New ")) {
+		model->assistApi().connect(source, destination);
+	} else {
+		// Создаём новую диаграмму и цепляем элемент к ней.
+		Id diagram = model->assistApi().createElement(ROOT_ID, destination);
+		QString sourceName = model->data(model->indexById(source), Qt::DisplayRole).toString();
+		QString diagramTypeName = model->assistApi().editorManager().friendlyName(destination);
+		model->setData(model->indexById(diagram), sourceName + " " + diagramTypeName, Qt::DisplayRole);
+		model->assistApi().connect(source, diagram);
+	}
 }
 
 void EditorViewScene::goToActionTriggered()

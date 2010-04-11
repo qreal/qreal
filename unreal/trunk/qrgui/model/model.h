@@ -52,9 +52,10 @@ namespace qReal {
 			void open(QString const &workingDirectory);
 			void reinit();
 			void saveTo(QString const &workingDirectory);
+
 		public slots:
 			void exterminate();
-		
+
 		signals:
 			void nameChanged(QModelIndex const &index);
 
@@ -63,6 +64,10 @@ namespace qReal {
 			QModelIndex index(details::ModelTreeItem const * const item) const;
 			details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
 				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
+
+		protected:
+			friend class ModelAssistApi;
+			bool addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position);
 
 		private:
 			qrRepo::RepoApi mApi;

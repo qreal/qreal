@@ -27,6 +27,8 @@ namespace qReal {
 
 			virtual void connect(qReal::Id const &source, qReal::Id const &destination);
 			virtual void disconnect(qReal::Id const &source, qReal::Id const &destination);
+
+			virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Копирование запрещено.
 			ModelAssistApi& operator =(ModelAssistApi const &);  // Присваивание тоже.

@@ -44,6 +44,8 @@ namespace qReal {
 		IdList checkNeededPlugins(qrRepo::RepoApi const &api) const;
 		bool hasElement(Id const &element) const;
 
+		Id findElementByType(QString const &type) const;
+
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
 
