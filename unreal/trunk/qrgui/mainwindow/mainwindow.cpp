@@ -50,6 +50,7 @@ MainWindow::MainWindow()
 
 	ui.setupUi(this);
 	ui.tabs->setTabsClosable(true);
+	ui.tabs->setMovable(true);
 
 	if (!showSplash)
 		ui.actionShowSplash->setChecked(false);
@@ -104,7 +105,7 @@ MainWindow::MainWindow()
 
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
 		&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
-	
+
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
 		this, SLOT(openNewTab(QModelIndex const &)));
 
@@ -144,8 +145,8 @@ MainWindow::MainWindow()
 
 	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
 
-	// хотя бы одна диаграмма всегда есть, вот ее и открываем
-	openNewTab(mModel->index(0,0,QModelIndex()));
+	if (mModel->rowCount() > 0)
+		openNewTab(mModel->index(0, 0, QModelIndex()));
 
 	progress->setValue(100);
 	if (showSplash)
@@ -340,7 +341,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer()
 {
 	QModelIndex idx = ui.diagramExplorer->currentIndex();
-	deleteTab(idx);
+	closeTab(idx);
 	if (idx.isValid())
 		mModel->removeRow(idx.row(), idx.parent());
 }
@@ -457,7 +458,7 @@ void qReal::MainWindow::closeTab( int index )
 void MainWindow::exterminate()
 {
 	int tabCount = ui.tabs->count();
-	for (int i = 1; i < tabCount; i++)
+	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
 	mModel->exterminate();
 }
@@ -501,7 +502,7 @@ void MainWindow::openNewTab(const QModelIndex &index)
 		EditorView *view = new EditorView();
 		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
 		ui.tabs->setCurrentWidget(view);
-	
+
 //		if (!index.isValid())
 //			index = mModel->rootIndex();
 		initCurrentTab(index);
@@ -512,7 +513,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 {
 	getCurrentTab()->setMainWindow(this);
 	QModelIndex index = rootIndex;
-	
+
 	changeMiniMapSource(ui.tabs->currentIndex());
 
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
@@ -532,23 +533,23 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 void MainWindow::updateTab(QModelIndex const &index)
 {
-	for (int i = 0; i < ui.tabs->count(); i++) { 
+	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
 			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
 			return;
 		}
-	}	
+	}
 }
 
-void MainWindow::deleteTab(QModelIndex const &index)
+void MainWindow::closeTab(QModelIndex const &index)
 {
-	for (int i = 0; i < ui.tabs->count(); i++) { 
+	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
 			qDebug() << " closing tab" << i;
 			closeTab(i);
 			return;
 		}
-	}	
+	}
 }

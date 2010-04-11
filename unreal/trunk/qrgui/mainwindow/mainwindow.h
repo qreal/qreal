@@ -74,7 +74,7 @@ namespace qReal {
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
-		void deleteTab(const QModelIndex &index);
+		void closeTab(QModelIndex const &index);
 		void exterminate();
 		void generateEditor();
 		void generateToHascol();
