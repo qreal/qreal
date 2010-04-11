@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return id.element().contains("Diagram", Qt::CaseInsensitive);
+	return id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive);
 }
 
 void Model::init()
