@@ -73,7 +73,7 @@ void MouseGestures::addEntities(EntityVector const & entities)
     foreach (Entity entity, entities)
     {
         ValidPathCreator pathCreator;
-        QList<QPoint> path = pathCreator.createPath(entity.lines);
+        QList<QPoint> path = pathCreator.createPath(entity.components);
         mKeyObjectTable.add(entity.name, path);
     }
 }

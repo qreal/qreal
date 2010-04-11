@@ -2,6 +2,7 @@
 #include "GeometricForms.h"
 
 static const QString lineKey = "line";
+static const QString ellipseKey = "ellipse";
 static const QString nodeKey = "node";
 static const QString nodeNameKey = "name";
 static const QString noAttributeKey = "no attribute with such name";
@@ -53,27 +54,50 @@ EntityVector XmlParser::parseXml()
 Entity XmlParser::parseNode(QDomElement const & domElement)
 {
     QString name = domElement.attribute(nodeNameKey, noAttributeKey);
-    Graph lines;
-    Line line;
-    bool isValid;
+    PathVector components;
     QDomNodeList geometricElements = domElement.elementsByTagName(lineKey);
-    for (unsigned i = 0; i < geometricElements.length(); i++)
+    for (int i = 0; i < geometricElements.size(); i++)
     {
-        QDomNode geometricNode = geometricElements.at(i);
-        QDomElement geometricElement = geometricNode.toElement();
-        if (geometricElement.tagName() == lineKey)
+        QDomElement geometricElement = geometricElements.at(i).toElement();
+        components.push_back(getPoints(geometricElement));
+    }
+    geometricElements = domElement.elementsByTagName(ellipseKey);
+    for (int i = 0; i < geometricElements.size(); i++)
+    {
+        QDomElement geometricElement = geometricElements.at(i).toElement();
+        QList<QPoint> diam = getPoints(geometricElement);
+        if (diam.size() > 1)
         {
-            QPoint point1(geometricElement.attribute(x1Key, noAttributeKey).toInt(&isValid, 10),
-                          geometricElement.attribute(y1Key, noAttributeKey).toInt(&isValid, 10));
-            line.point1 = point1;
-            QPoint point2(geometricElement.attribute(x2Key, noAttributeKey).toInt(&isValid, 10),
-                          geometricElement.attribute(y2Key, noAttributeKey).toInt(&isValid, 10));
-            line.point2 = point2;
-            lines.push_back(line);
+            components.push_back(getEllipsePath(diam[0], diam[1]));
         }
     }
     Entity entity;
     entity.name = name;
-    entity.lines = lines;
+    entity.components = components;
     return entity;
+}
+
+QList<QPoint> XmlParser::getPoints(const QDomElement &geometricElement)
+{
+    bool isValid;
+    QPoint point1(geometricElement.attribute(x1Key, noAttributeKey).toInt(&isValid, 10),
+                  geometricElement.attribute(y1Key, noAttributeKey).toInt(&isValid, 10));
+    QPoint point2(geometricElement.attribute(x2Key, noAttributeKey).toInt(&isValid, 10),
+                  geometricElement.attribute(y2Key, noAttributeKey).toInt(&isValid, 10));
+    QList<QPoint> component;
+    component.push_back(point1);
+    component.push_back(point2);
+    return component;
+}
+
+//todo:: в параметры передавать QList, сделать больше точек
+QList<QPoint> XmlParser::getEllipsePath(const QPoint &point1, const QPoint &point2)
+{
+    QList<QPoint> ellipse;
+    ellipse.push_back(point1);
+    ellipse.push_back(QPoint(point2.x(), point1.y()));
+    ellipse.push_back(point2);
+    ellipse.push_back(QPoint(point1.x(), point2.y()));
+    ellipse.push_back(point1);
+    return ellipse;
 }

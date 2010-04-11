@@ -3,20 +3,19 @@
 #include <QList>
 #include <QPoint>
 
-typedef QList<QPoint> PointVector;
-typedef QList<PointVector> PathVector;
-
 // по набору линий создает "идеальный путь" (рисуем объект одним росчерком, если это возможно)
 class ValidPathCreator
 {
 public:
     ValidPathCreator();
-    QList<QPoint> createPath(Graph const & lines);
+    QList<QPoint> createPath(PathVector const & curves);
 
 private:
-    bool canMerge(PointVector const & path1, PointVector const & path2);
-    QList<QPoint> merge(PointVector path1, PointVector path2);
-    PointVector mergeNotCycles (PointVector path1, PointVector path2);
-    PointVector lineToPath(Line const & line);
+    QList<QPoint> merge(PointVector path1, PointVector path2, int distance);
+    PointVector mergeNotCycles (PointVector path1, PointVector path2, int distance);
     bool isCycle(PointVector const & path);
+    QList<QPoint> connectComponents(PathVector paths);
+    double getDistance(QList<QPoint> const &path1, QList<QPoint> const &path2);
+    double getDistance(QList<QPoint> const &path, QPoint const &point);
+    QList<QPoint> pushBackPath(QList<QPoint> mainPath, QList<QPoint> const &path, int begin, int end);
 };

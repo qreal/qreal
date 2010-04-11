@@ -1,6 +1,6 @@
 #include "keyobjecttable.h"
 #include "GeometricForms.h"
-#include "adopter.h"
+#include "pathcorrector.h"
 #include "levenshteindistance.h"
 
 KeyObjectTable::KeyObjectTable(IKeyManager * keyManager)
@@ -18,7 +18,7 @@ void KeyObjectTable::add(QString const & object, QList<QPoint> const & correctPa
     KeyObjectItem keyObjectItem;
     keyObjectItem.object = object;
     keyObjectItem.correctPath = correctPath;
-    keyObjectItem.key = mKeyManager->getKey(Adopter().getMousePath(correctPath));
+    keyObjectItem.key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
     mKeyObjectTable.push_back(keyObjectItem);
 }
 
@@ -28,7 +28,7 @@ void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
     for (int i = 0; i < mKeyObjectTable.size(); i++)
     {
         mKeyObjectTable[i].key = mKeyManager->getKey(
-                Adopter::getMousePath(mKeyObjectTable[i].correctPath));
+                PathCorrector::getMousePath(mKeyObjectTable[i].correctPath));
     }
 }
 
@@ -44,7 +44,7 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
         if (mKeyObjectTable[i].object == object)
         {
             mKeyObjectTable[i].correctPath = correctPath;
-            QString key = mKeyManager->getKey(Adopter::getMousePath(correctPath));
+            QString key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
             mKeyObjectTable[i].key = key;
             return;
         }

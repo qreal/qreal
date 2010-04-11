@@ -3,20 +3,15 @@
 #include <QString>
 #include <QPoint>
 
-struct Line
-{
-public:
-    QPoint point1;
-    QPoint point2;
-};
+typedef QList<QPoint> PointVector;
 
-typedef QList<Line> Graph;
+typedef QList<PointVector> PathVector;
 
 struct Entity
 {
 public:
     QString name;
-    Graph lines;
+    PathVector components;
 };
 
 typedef QList<Entity> EntityVector;
