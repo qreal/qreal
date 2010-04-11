@@ -92,7 +92,7 @@
 					</properties>
 					<connections>
 						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
-						<connection type="HascolActivity::ActivityDiagram"/>
+						<connection type="HascolActivity::HascolActivityDiagram"/>
 					</connections>
 					<container>
 						<contains type="HascolStructure::ProcessOperation"/> 
@@ -187,7 +187,7 @@
 					</generalizations>
 					<connections>
 						<connection type="HascolPortMapping::HascolPortMappingDiagram"/>
-						<connection type="HascolActivity::ActivityDiagram"/>
+						<connection type="HascolActivity::HascolActivityDiagram"/>
 					</connections>
 					<container>
 						<contains type="HascolStructure::ProcessOperation"/> 
