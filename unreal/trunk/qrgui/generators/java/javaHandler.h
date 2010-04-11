@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include "../../kernel/ids.h"
+#include "tree.h"
 
 namespace qrRepo {
     class RepoApi;
@@ -30,6 +31,10 @@ namespace qReal {
             QString getSuperclass(Id const &id);
             QString getMethodCode(Id const &id);
             QString getFlowGuard(Id const &id);
+            QString objectType(Id const &id);
+            QString ifStatement(Id const &id);
+            QString whileDoLoop(Id const &id);
+            QString doWhileLoop(Id const &id);
 
             QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
             bool isTypeSuitable(QString const &type) const;
@@ -41,6 +46,7 @@ namespace qReal {
             qrRepo::RepoApi const &mApi;
             QString mErrorText;
             QString pathToDir;
+            QList<Tree> TreeList;
         };
 
     }

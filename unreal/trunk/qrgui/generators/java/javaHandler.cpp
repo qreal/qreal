@@ -1,5 +1,4 @@
 #include "javaHandler.h"
-#include "tree.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
@@ -37,7 +36,21 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 QString JavaHandler::serializeChildren(Id const &idParent)
 {
     QString result = "";
-    IdList childElems = mApi.children(idParent);
+    IdList childElems; //TODO: initialize as NULL
+
+    if (objectType(idParent) == "ActivityDiagram_ActivityDiagramNode") {
+        IdList children = mApi.children(idParent);
+
+        foreach (Id aChild, children) {
+            //TODO: add those elements that can begin the execution (structured and some else)
+            if (aChild.element() == "ActivityDiagram_InitialNode") {
+                childElems.append(aChild);
+            }
+        }
+    } else {
+        childElems = mApi.children(idParent);
+    }
+
 
     foreach (Id const id, childElems) {
         result += serializeObject(id);
@@ -50,11 +63,9 @@ QString JavaHandler::serializeObject(Id const &id)
 {
     QString result = "";
 
-    QString const objectType = mApi.typeName(id);
-
     // class diagram
 
-    if ((objectType == "ClassDiagram_Class")|(objectType == "ClassDiagram_Interface")) {
+    if ((objectType(id) == "ClassDiagram_Class")|(objectType(id) == "ClassDiagram_Interface")) {
 
         //-----------
         QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
@@ -73,7 +84,7 @@ QString JavaHandler::serializeObject(Id const &id)
         QString parents = getSuperclass(id);
 
         if (isAbstractField == "abstract " && isFinalField == "final ") {
-            addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
+            addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
         out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
@@ -81,8 +92,8 @@ QString JavaHandler::serializeObject(Id const &id)
 
         if (!mApi.links(id).isEmpty()) {
             // search for the Class-typed attrbutes
-            IdList linksOut = mApi.outgoingLinks(id);
-            foreach (Id const aLink, linksOut) {
+            IdList outgoingLinks = mApi.outgoingLinks(id);
+            foreach (Id const aLink, outgoingLinks) {
                 if (aLink.element() == "ClassDiagram_DirectedAssociation" || aLink.element() == "ClassDiagram_Association") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
@@ -92,7 +103,7 @@ QString JavaHandler::serializeObject(Id const &id)
                     QString isTransientField = hasModifier(aLink, "transient");
 
                     if (isVolatileField == "volatile " && isFinalField == "final ") {
-                        addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
+                        addError("unable to serialize object " + objectType(id) + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
                     }
 
                     out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
@@ -112,7 +123,7 @@ QString JavaHandler::serializeObject(Id const &id)
                     QString isTransientField = hasModifier(aLink, "transient");
 
                     if (isVolatileField == "volatile " && isFinalField == "final ") {
-                        addError("unable to serialize object " + objectType + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
+                        addError("unable to serialize object " + objectType(id) + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
                     }
 
                     out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
@@ -121,14 +132,14 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
-        out << "}\n";
-    } else if (objectType == "ClassDiagram_View") {
+        out << "} //end of class\n";
+    } else if (objectType(id) == "ClassDiagram_View") {
         //	    to do someting
-    } else if (objectType == "ClassDiagram_ClassMethod") {
+    } else if (objectType(id) == "ClassDiagram_ClassMethod") {
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
-            QString const parentType = mApi.typeName(parentId);
+            QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class") {
                 QString visibility = getVisibility(id);
@@ -142,9 +153,9 @@ QString JavaHandler::serializeObject(Id const &id)
 
                 if (isAbstractField == "abstract ") {
                     if (isFinalField == "final ") {
-                        addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
+                        addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
                     } else if (isStaticField == "static ") {
-                        addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"abstract static\" declaration doesn't make sense");
+                        addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract static\" declaration doesn't make sense");
                     }
                 }
 
@@ -153,14 +164,14 @@ QString JavaHandler::serializeObject(Id const &id)
                 result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
                           type  + mApi.name(id) + "(" + operationFactors + ")" + methodBody + "\n";
             } else {
-                this->addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
+                this->addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class");
             }
         }
-    } else if (objectType == "ClassDiagram_ClassField") {
+    } else if (objectType(id) == "ClassDiagram_ClassField") {
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
-            QString const parentType = mApi.typeName(parentId);
+            QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class") {
                 QString visibility = getVisibility(id);
@@ -172,7 +183,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 QString isTransientField = hasModifier(id, "transient");
 
                 if (isVolatileField == "volatile " && isFinalField == "final ") {
-                    addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sense");
+                    addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sense");
                 }
                 result += visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
                 if (defaultValue != "") {
@@ -180,78 +191,173 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
                 result += ";\n";
             } else {
-                addError("unable to serialize object " + objectType + " with id: " + id.toString() + ". Move it inside some Class");
+                addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class");
             }
         }
     }
 
     // activity diagram
 
-    else if (objectType == "ActivityDiagram_InitialNode") {
+    else if (objectType(id) == "ActivityDiagram_InitialNode") {
         //[Superstructure 09-02-02][1] An initial node has no incoming edges.
         if (!mApi.links(id).isEmpty()) {
             if (!mApi.incomingLinks(id).isEmpty()) {
-                addError("Object " + objectType + " with id  " + id.toString() + " can not have incoming links.");
+                addError("Object " + objectType(id) + " with id  " + id.toString() + " can not have incoming links.");
             }
 
             //[Superstructure 09-02-02][2] Only control edges can have initial nodes as source.
-            IdList linksOut = mApi.outgoingLinks(id);
-            foreach (Id const aLink, linksOut) {
+            IdList outgoingLinks = mApi.outgoingLinks(id);
+            foreach (Id const aLink, outgoingLinks) {
 //                //imagine, that Initial Node has just one outcoming link
                 if (aLink.element() == "ActivityDiagram_ControlFlow") {
                     result += "{\n";
-//                    Id toConsider = mApi.otherEntityFromLink(aLink, id);
-//                    result += serializeObject(toConsider);
+                    Id nextElement = mApi.otherEntityFromLink(aLink, id);
+                    result += serializeObject(nextElement);
                 } else {
-                    addError("Object " + objectType + " with id  " + id.toString() + ". Only Control Edges can have Initial Nodes as source.");
+                    addError("Object " + objectType(id) + " with id  " + id.toString() + ". Only Control Edges can have Initial Nodes as source.");
                 }
             }
         }
-    } else if (objectType == "ActivityDiagram_Action") {
-//        addError("ATTENTION! Action.name() = " + mApi.name(id));
+    } else if (objectType(id) == "ActivityDiagram_Action") {
         result += mApi.name(id) + "\n";
-    } else if (objectType == "ActivityDiagram_ActivityFinalNode") {
-        result += "}\n";
-    } else if (objectType == "ActivityDiagram_DecisionNode") {
 
-        int isControlFlow = -1;
+        //serialization of it's children
+        IdList outgoingLinks = mApi.outgoingLinks(id);
+        foreach (Id const aLink, outgoingLinks) {
+            Id nextElement = mApi.otherEntityFromLink(aLink, id);
+            if (nextElement.element() != "ActivityDiagram_MergeNode" && nextElement.element() != "ActivityDiagram_JoinNode") {
+                result += serializeObject(nextElement);
+            }
+        }
+    } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
+        addError("If you want \"return;\" you should write it in the Action before this Final Node.");
+        result += "} //final node\n";
+
+        //[Superstructure 09-02-02][1] A final node has no outgoing edges.
+        IdList outgoingLinks = mApi.outgoingLinks(id);
+        if (!outgoingLinks.isEmpty()) {
+            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A final node has no outgoing edges.");
+        }
+    } else if (objectType(id) == "ActivityDiagram_DecisionNode") {
+        int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
         if (!mApi.links(id).isEmpty()) {
-            IdList linksOut = mApi.outgoingLinks(id);
-            if (!linksOut.isEmpty()) {
-                foreach (Id const aLink, linksOut) {
+            IdList outgoingLinks = mApi.outgoingLinks(id);
+            if (!outgoingLinks.isEmpty()) {
+                foreach (Id const aLink, outgoingLinks) {
                     // Very arched way to check:
                     // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
                     if (aLink.element() == "ActivityDiagram_ControlFlow") {
                         if (isControlFlow == 0) {
-                            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
                         }
                         isControlFlow = 1;
                     } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
                         if (isControlFlow == 1) {
-                            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+                            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
                         }
                         isControlFlow = 0;
                     } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
-
-                    Id caseBody = mApi.otherEntityFromLink(aLink, id);
-                    result += "if (" + getFlowGuard(aLink) + ") {\n" + serializeObject(caseBody) + "\n}";
-
-                    if (aLink == linksOut.at(linksOut.length()-1)) { // if it is the last link then we should finish "if"-statement
-                        result += "\n";
-                    } else { //if it is not the last link, connected to the DecisionNode
-                        result += " else ";
-                    }
                 }
-                result += "/* if had been ended */\n";
+
+                //"if" or "while-do"?
+                IdList incomingLinks = mApi.incomingLinks(id);
+                if (incomingLinks.length() == 1) {
+                    result += ifStatement(id);
+                } else if (incomingLinks.length() == 2) {
+                    result += whileDoLoop(id);
+                } else { //[Superstructure 09-02-02][1] A decision node has one or two incoming edges.
+                    addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A decision Node has one or two incoming edges.");
+                }
+
+                result += "//end of the decision node\n";
             } else {
-                addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
             }
         } else {
-            addError("Unable to serialize object " + objectType + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
+            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is must have at least one outgoing edge.");
         }
-    } else if (objectType == "ActivityDiagram_MergeNode") {
+    } else if (objectType(id) == "ActivityDiagram_MergeNode") {
         result += "//merge node \n";
+
+        IdList outgoingLinks = mApi.outgoingLinks(id);
+        foreach (Id const aLink, outgoingLinks) {
+            Id nextElement = mApi.otherEntityFromLink(aLink, id);
+            result += serializeObject(nextElement);
+        }
     }
+
+    return result;
+}
+
+QString JavaHandler::ifStatement(Id const &id)
+{
+    QString result = "";
+
+    int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
+
+    //move "else" link to the end of the list
+    IdList outgoingLinks = mApi.outgoingLinks(id);
+    foreach (Id aLink, outgoingLinks) {
+        //if this link represent "else" case than change it with the last link in the serialization sequence
+        if (getFlowGuard(aLink) == "else" && existElse == 0) {
+            existElse = 1;
+            addError("ATTENTION!!! Else link changes with " + getFlowGuard(outgoingLinks.at(outgoingLinks.length()-1)));
+            outgoingLinks.swap(outgoingLinks.indexOf(aLink), outgoingLinks.length()-1);
+        } else {
+            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"else\" as guard.");
+        }
+    }
+
+    foreach (Id aLink, outgoingLinks) {
+        Id caseBody = mApi.otherEntityFromLink(aLink, id);
+        QString guard = getFlowGuard(aLink);
+        if (guard != "else") {
+            result += "if (" + guard + ") ";
+        }
+
+        //if it is a straight link from Decision Node to Merge Node
+        if (caseBody.element() != "ActivityDiagram_MergeNode") {
+            result += "{\n"+ serializeObject(caseBody) + "}";
+        } else {
+            result += "{\n}";
+        }
+
+        if (aLink == outgoingLinks.at(outgoingLinks.length()-1)) { // if it is the last link then we should finish "if"-statement
+            result += "/*last link in decision node*/  \n";
+        } else { //if it is not the last link, connected to the DecisionNode
+            result += " else ";
+        }
+    }
+
+    IdList mergeNodes;
+    IdList incomingConnections = mApi.incomingConnections(id);
+    foreach (Id aConnection, incomingConnections) {
+        if (aConnection.element() == "ActivityDiagram_MergeNode") {
+            mergeNodes.append(aConnection);
+        }
+    }
+
+    if (mergeNodes.length() == 0) {
+        //TODO: fill this
+    } else if (mergeNodes.length() == 1) {
+        result += serializeObject(mergeNodes.at(0));
+    } else {
+        addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Is has to many connected Merge Nodes.");
+    }
+
+    return result;
+}
+
+QString JavaHandler::whileDoLoop(Id const &id)
+{
+    QString result = "";
+
+    return result;
+}
+
+QString JavaHandler::doWhileLoop(Id const &id)
+{
+    QString result = "";
 
     return result;
 }
@@ -259,8 +365,6 @@ QString JavaHandler::serializeObject(Id const &id)
 QString JavaHandler::getVisibility(Id const &id)
 {
     QString result = "";
-
-    QString const objectType = mApi.typeName(id);
 
     if (mApi.hasProperty(id, "visibility")) {
         QString visibility = mApi.stringProperty(id, "visibility");
@@ -279,7 +383,7 @@ QString JavaHandler::getVisibility(Id const &id)
             if (result != "")
                 result += " ";
         } else {
-            addError("Object " + objectType + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
+            addError("Object " + objectType(id) + " with id  " + id.toString() + " has invalid visibility property: " + visibility);
         }
     }
 
@@ -290,15 +394,13 @@ QString JavaHandler::getFlowGuard(Id const &id)
 {
     QString result = "";
 
-    QString const objectType = mApi.typeName(id);
-
     if (mApi.hasProperty(id, "guard")) {
         QString guard = mApi.stringProperty(id, "guard");
-        result = guard;
+        result = guard.simplified(); //delete whitespaces from the start and the end and internal whitespaces replace with a single space
 
         //TODO: Delete all white spaces, tabs, etc. in guard. Just find the function =)
         if (guard == "") {
-            addError("Object " + objectType + " with id  " + id.toString() + " has invalid guard property: " + guard);
+            addError("Object " + objectType(id) + " with id  " + id.toString() + " has empty guard property.");
         }
     }
 
@@ -309,10 +411,9 @@ QString JavaHandler::getMultiplicity(Id const &id)
 {
     QString result = "";
 
-    QString const objectType = mApi.typeName(id);
-
     if (mApi.hasProperty(id, "multiplicity")) {
         QString multiplicity = mApi.stringProperty(id, "multiplicity");
+        result = multiplicity;
     }
 
     return result;
@@ -322,17 +423,15 @@ QString JavaHandler::getType(Id const &id)
 {
     QString result = "";
 
-    QString const objectType = mApi.typeName(id);
-
     if (mApi.hasProperty(id, "type")) {
         QString type = mApi.stringProperty(id, "type");
 
-        if (isTypeSuitable(type) || (objectType == "ClassDiagram_ClassMethod" && type == "void")) {
+        if (isTypeSuitable(type) || (objectType(id) == "ClassDiagram_ClassMethod" && type == "void")) {
             result = type;
             if (result != "")
                 result += " ";
         } else {
-            addError("Object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+            addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid type: " + type);
         }
     }
 
@@ -344,8 +443,6 @@ QString JavaHandler::getSuperclass(Id const &id)
     QString result = "";
     bool hasParentClass = false;
 
-    QString const objectType = mApi.typeName(id);
-
     if (!mApi.links(id).isEmpty()) {
         IdList links = mApi.outgoingLinks(id);
 
@@ -354,13 +451,13 @@ QString JavaHandler::getSuperclass(Id const &id)
                 if (hasParentClass == false) {
                     hasParentClass = true;
                     if (id == mApi.otherEntityFromLink(aLink, id)) {
-                        addError("Object " + objectType + " with id " + id.toString() + " can not be his own superclass");
+                        addError("Object " + objectType(id) + " with id " + id.toString() + " can not be his own superclass");
                     } else {
                         QString parentClass = mApi.name(mApi.otherEntityFromLink(aLink, id));
                         result += " extends " + parentClass;
                     }
                 } else {
-                    addError("Object " + objectType + " with id " + id.toString() + " has too many superclasses");
+                    addError("Object " + objectType(id) + " with id " + id.toString() + " has too many superclasses");
                 }
             }
         }
@@ -373,8 +470,6 @@ QString JavaHandler::getSuperclass(Id const &id)
 QString JavaHandler::getMethodCode(Id const &id)
 {
     QString result = "{\n}";
-
-    QString const objectType = mApi.typeName(id);
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
@@ -391,13 +486,13 @@ QString JavaHandler::getMethodCode(Id const &id)
         if (realizationsCount == 1) { //if everything is ok
             result = serializeChildren(realizationDiagram);
         } else if (realizationsCount == 0) { //if there is no realization
-            addError("Method " + objectType + " with id " + id.toString() + " will be empty.");
+            addError("Method " + objectType(id) + " with id " + id.toString() + " will be empty.");
         } else { //if there is more than one ActivityDiagram connected
-            addError("Object " + objectType + " with id " + id.toString() + " has too many realizations");
+            addError("Object " + objectType(id) + " with id " + id.toString() + " has too many realizations");
         }
 
     } else {
-        addError("Method " + objectType + " with id " + id.toString() + " will be empty.");
+        addError("Method " + objectType(id) + " with id " + id.toString() + " will be empty.");
     }
 
     return result;
@@ -406,8 +501,6 @@ QString JavaHandler::getMethodCode(Id const &id)
 QString JavaHandler::hasModifier(Id const &id, QString const &modifier)
 {
     QString result = "";
-
-    QString const objectType = mApi.typeName(id);
 
     QString isModifier = "";
 
@@ -423,7 +516,7 @@ QString JavaHandler::hasModifier(Id const &id, QString const &modifier)
         if (hasModifier == "true") {
             result = modifier + " ";
         }else if (hasModifier != "false" && hasModifier != "") {
-            addError("Object " + objectType + " with id " + id.toString() + " has invalid " + isModifier + " value: " + hasModifier);
+            addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid " + isModifier + " value: " + hasModifier);
         }
     }
 
@@ -438,10 +531,10 @@ QString JavaHandler::getOperationFactors(Id const &id)
         QString operationFactors = mApi.stringProperty(id, "operationFactors");
 
         //	to check for the correct data
-        //	if (isTypeSuitable(type) || (objectType == "cnClassMethod" && type == "void")) {
+        //	if (isTypeSuitable(type) || (objectType(id) == "cnClassMethod" && type == "void")) {
         result = operationFactors;
         //	} else {
-        //		addError("Object " + objectType + " with id " + id.toString() + " has invalid type: " + type);
+        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid type: " + type);
         //    	}
     }
 
@@ -452,8 +545,6 @@ QString JavaHandler::getDefaultValue(Id const &id)
 {
     QString result = "";
 
-    QString const objectType = mApi.typeName(id);
-
     if (mApi.hasProperty(id, "defaultValue")) {
         QString defaultValue = mApi.stringProperty(id, "defaultValue");
 
@@ -461,11 +552,16 @@ QString JavaHandler::getDefaultValue(Id const &id)
         //	to check for the corract data
         result = defaultValue;
         //	} else {
-        //		addError("Object " + objectType + " with id " + id.toString() + " has invalid default value: " + defaultValue);
+        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid default value: " + defaultValue);
         //    	}
     }
 
     return result;
+}
+
+QString JavaHandler::objectType(Id const &id)
+{
+    return mApi.typeName(id);
 }
 
 bool JavaHandler::isTypeSuitable(QString const &type) const

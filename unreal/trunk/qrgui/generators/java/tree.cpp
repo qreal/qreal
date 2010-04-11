@@ -18,11 +18,7 @@ Tree::Tree(Id const &element, QList<Tree> const &children)
 
 bool Tree::operator== ( Tree const & other ) const
 {
-    if ( (mElement == other.element()) && (mChildren == other.children()) ) {
-        return true;
-    } else {
-        return false;
-    }
+    return mElement == other.element() && mChildren == other.children();
 }
 
 Id Tree::element() const
