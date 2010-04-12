@@ -23,7 +23,7 @@ namespace qReal {
 
             QString serializeObject(Id const &id);
             QString serializeChildren(Id const &id);
-            QString serializeUntil(Id const &id, Id const &untilElement);
+            QString serializeUntil(Id &id, Id const &untilElement);
 
             QString getVisibility(Id const &id);
             QString getMultiplicity(Id const &id);

@@ -162,7 +162,10 @@ Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
     Id linkId;
 
     IdList outgoingLinks = mApi.outgoingLinks(idDecisionNode);
+
     if (outgoingLinks.length() != 2) {
+        qDebug() << " length != 2 ";
+
         addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". May be you forget a Merge Node before this Decision Node.");
     } else {
         QString guard1 = getFlowGuard(outgoingLinks.at(0));
@@ -178,13 +181,14 @@ Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 
                 linkId = outgoingLinks.at(1);
             } else {
+                qDebug() << "One of the guards must either empty or equals \"else\".";
+
                 addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". One of the guards must either empty or equals \"else\".");
             }
         } else {
             addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". At least one of the links must have a guard.");
         }
     }
-
 
     return linkId;
 }
@@ -424,7 +428,7 @@ QString JavaHandler::serializeObject(Id const &id)
     return result;
 }
 
-QString JavaHandler::serializeUntil(Id const &id, Id const &untilElement)
+QString JavaHandler::serializeUntil(Id &id, Id const &untilElement)
 {
     QString result = "";
 
@@ -436,10 +440,33 @@ QString JavaHandler::serializeUntil(Id const &id, Id const &untilElement)
     } else {
         result += serializeObject(id);
 
+        qDebug() << "id = " + id.element() + "  name = " + mApi.name(id);
+
+        Id nextImportaintNode = id;
+        if (id.element() == "ActivityDiagram_DecisionNode") {
+            //"if" or "while"?
+            IdList incomingLinks = mApi.incomingLinks(id);
+            if (incomingLinks.length() == 1) { //"if"
+                qDebug() << "if";
+
+                nextImportaintNode = findMergeNode(id);
+            } else if (incomingLinks.length() == 2) { //"while"
+                qDebug() << "while : idDecision = " + mApi.name(id);
+
+                Id nonBodyLink = findNonBodyLink(id);
+
+                qDebug() << "nonBodyLink = " + mApi.name(nonBodyLink);
+
+                nextImportaintNode = mApi.otherEntityFromLink(nonBodyLink, id);
+            }
+        }
+
+        qDebug() << "next = " + nextImportaintNode.element() + "  name = " + mApi.name(nextImportaintNode);
+
         //serialise it's children
-        IdList outgoingLinks = mApi.outgoingLinks(id);
+        IdList outgoingLinks = mApi.outgoingLinks(nextImportaintNode);
         foreach (Id aLink, outgoingLinks) {
-            Id nextElement = mApi.otherEntityFromLink(aLink, id);
+            Id nextElement = mApi.otherEntityFromLink(aLink, nextImportaintNode);
             result += serializeUntil(nextElement, untilElement);
         }
     }
@@ -452,17 +479,21 @@ QString JavaHandler::ifStatement(Id const &id)
     QString result = indent() + "";
 
     Id untilMergeNode = findMergeNode(id);
+
+    qDebug() << "if = " + mApi.name(id) + "   it's merge = " + mApi.name(untilMergeNode);
+
     int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
 
     //move "else" link to the end of the list
     IdList outgoingLinks = mApi.outgoingLinks(id);
     foreach (Id aLink, outgoingLinks) {
         //if this link represent "else" case than change it with the last link in the serialization sequence
-        if (getFlowGuard(aLink) == "else" && existElse == 0) {
+        if (getFlowGuard(aLink) == "else") {
+            if (existElse == 1) {
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"else\" as guard.");
+            }
             existElse = 1;
             outgoingLinks.swap(outgoingLinks.indexOf(aLink), outgoingLinks.length()-1);
-        } else {
-            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"else\" as guard.");
         }
     }
 
