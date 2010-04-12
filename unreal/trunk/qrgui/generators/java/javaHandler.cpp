@@ -239,6 +239,8 @@ QString JavaHandler::serializeObject(Id const &id)
 
     if ((objectType(id) == "ClassDiagram_Class")||(objectType(id) == "ClassDiagram_Interface")) {
 
+        mIndent = 0;
+
         //-----------
         QString const pathToFile = pathToDir + "/" + mApi.name(id) + ".java";
 
@@ -259,7 +261,8 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
-        out << isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+        out << indent() + isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+        mIndent++;
         out << serializeChildren(id);
 
         if (!mApi.links(id).isEmpty()) {
@@ -278,8 +281,8 @@ QString JavaHandler::serializeObject(Id const &id)
                         addError("unable to serialize object " + objectType(id) + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
                     }
 
-                    out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
-                    out << ";\n";
+                    out << indent() + isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
+                    out << indent() + ";\n";
                 }
             }
 
@@ -298,13 +301,14 @@ QString JavaHandler::serializeObject(Id const &id)
                         addError("unable to serialize object " + objectType(id) + " with id: " + aLink.toString() + ". \"final volatile\" declaration doesn't make sense");
                     }
 
-                    out << isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
-                    out << ";\n";
+                    out << indent() + isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
+                    out << indent() + ";\n";
                 }
             }
         }
 
-        out << "} //end of class\n";
+        mIndent--;
+        out << indent() + "} //end of class\n";
     } else if (objectType(id) == "ClassDiagram_View") {
         //	    to do someting
     } else if (objectType(id) == "ClassDiagram_ClassMethod") {
@@ -314,6 +318,8 @@ QString JavaHandler::serializeObject(Id const &id)
             QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class") {
+                result += indent();
+
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString operationFactors = getOperationFactors(id);
@@ -346,6 +352,8 @@ QString JavaHandler::serializeObject(Id const &id)
             QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class") {
+                result += indent();
+
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString defaultValue = getDefaultValue(id);
@@ -387,11 +395,12 @@ QString JavaHandler::serializeObject(Id const &id)
         }
 
         result += "{\n";
+        mIndent++;
     } else if (objectType(id) == "ActivityDiagram_Action") {
-        result += mApi.name(id) + "\n";
+        result += indent() + mApi.name(id) + "\n";
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
-        addError("If you want \"return;\" you should write it in the Action before this Final Node.");
-        result += "} /*final node*/   \n"; //TODO: delete /*final node*/!
+        mIndent--;
+        result += indent() + "} /*final node*/   \n"; //TODO: delete /*final node*/!
 
         //[Superstructure 09-02-02][1] A final node has no outgoing edges.
         IdList outgoingLinks = mApi.outgoingLinks(id);
@@ -407,9 +416,9 @@ QString JavaHandler::serializeObject(Id const &id)
             result += whileDoLoop(id);
         }
 
-        result += "//end of the decision node\n"; //TODO: delete!
+        result += indent() + "//end of the decision node\n"; //TODO: delete!
     } else if (objectType(id) == "ActivityDiagram_MergeNode") {
-        result += "//merge node \n"; //TODO: delete!
+        result += indent() + "//merge node \n"; //TODO: delete!
     }
 
     return result;
@@ -422,7 +431,8 @@ QString JavaHandler::serializeUntil(Id const &id, Id const &untilElement)
     if (id == untilElement) {
         return result;
     } else if (id.element() == "ActivityDiagram_ActivityFinalNode") {
-        result += "//return; \n"; //TODO: fill this
+        result += indent() + "//return; \n"; //TODO: fill this
+        addError("If you want \"return;\" you should write it in the Action before this Final Node.");
     } else {
         result += serializeObject(id);
 
@@ -439,7 +449,7 @@ QString JavaHandler::serializeUntil(Id const &id, Id const &untilElement)
 
 QString JavaHandler::ifStatement(Id const &id)
 {
-    QString result = "";
+    QString result = indent() + "";
 
     Id untilMergeNode = findMergeNode(id);
     int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
@@ -456,6 +466,7 @@ QString JavaHandler::ifStatement(Id const &id)
         }
     }
 
+    //serialization
     foreach (Id aLink, outgoingLinks) {
         Id caseBody = mApi.otherEntityFromLink(aLink, id);
         QString guard = getFlowGuard(aLink);
@@ -464,10 +475,14 @@ QString JavaHandler::ifStatement(Id const &id)
         }
 
         //if it is a straight link from Decision Node to Merge Node
-        result += "{\n"+ serializeUntil(caseBody, untilMergeNode) + "}";
+        result += "{\n";
+        mIndent++;
+        result += serializeUntil(caseBody, untilMergeNode);
+        mIndent--;
+        result += indent() + "}";
 
         if (aLink == outgoingLinks.at(outgoingLinks.length()-1)) { // if it is the last link then we should finish "if"-statement
-            result += "/*last link in the decision node*/  \n";
+            result += indent() + "/*last link in the decision node*/  \n";
         } else { //if it is not the last link, connected to the Decision Node
             result += " else ";
         }
@@ -478,7 +493,7 @@ QString JavaHandler::ifStatement(Id const &id)
 
 QString JavaHandler::whileDoLoop(Id const &id)
 {
-    QString result = "";
+    QString result = indent() + "";
 
     //get the "body" link
     Id nonBodyLink = findNonBodyLink(id);
@@ -487,12 +502,14 @@ QString JavaHandler::whileDoLoop(Id const &id)
     Id bodyLink = outgoingLinks.at(0);
 
     result += "while (" + getFlowGuard(bodyLink) + ") {\n";
+    mIndent++;
 
     //Serialization of the loop's body
     Id nextElement = mApi.otherEntityFromLink(bodyLink, id);
     result += serializeUntil(nextElement, id);
-
-    result += "} /*end of \"while\"*/  \n"; //TODO: delete /*end of "while"*/!
+\
+    mIndent--;
+    result += indent() + "} /*end of \"while\"*/  \n"; //TODO: delete /*end of "while"*/!
 
     return result;
 }
@@ -723,3 +740,10 @@ void JavaHandler::addError(QString const &errorText)
     mErrorText += errorText + "\n";
 }
 
+QString JavaHandler::indent()
+{
+    QString result;
+    for (int i = 0; i < mIndent; ++i)
+        result += "\t";
+    return result;
+}

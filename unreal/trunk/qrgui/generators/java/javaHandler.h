@@ -55,6 +55,9 @@ namespace qReal {
             qrRepo::RepoApi const &mApi;
             QString mErrorText;
             QString pathToDir;
+
+            int mIndent;
+            QString indent();
         };
 
     }
