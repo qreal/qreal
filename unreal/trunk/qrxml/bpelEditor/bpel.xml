@@ -453,27 +453,6 @@
 		</logic>
   </node>
 		
-	<node id="bplContinue" name="Continue" >
-		<graphics>
-			<picture sizex="70" sizey="100" >
-				<text i="0" font-fill="#0000ff" y1="10a" b="0" x1="10a" font-name="Helvetica" u="0" font-size="15a" >bplContinue</text>
-				<line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="20a" stroke-width="2" x2="100%" fill-style="solid"/>
-				<line fill="#000000" stroke-style="solid" stroke="#00F000" y1="100%" x1="0a" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
-				<line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="0a" y2="100%" stroke-width="2" x2="0a" fill-style="solid"/>
-				<line fill="#000000" stroke-style="solid" stroke="#00F000" y1="20a" x1="100%" y2="100%" stroke-width="2" x2="100%" fill-style="solid"/>
-			</picture>
-			<labels> <label x="30" y="30" textBinded="name"/> </labels>
-			<ports>
-				<linePort> <start startx="0a" starty="20a" />  <end endx="0a" endy="100%" /> </linePort>
-				<linePort> <start startx="100%" starty="20a" />  <end endx="100%" endy="100%" /> </linePort>
-				<linePort> <start startx="0a" starty="20a" />  <end endx="100%" endy="20a" /> </linePort>
-				<linePort> <start startx="0a" starty="100%" />  <end endx="100%" endy="100%" /> </linePort>
-			</ports>
-		</graphics>
-		<logic>
-			<generalizations> <parent parentName="BPEL::bplAbstract" /> </generalizations>
-		</logic>
-  </node>
 	
 	<node id="bplContinue" name="Continue" >
 		<graphics>

@@ -20,7 +20,8 @@ class RepoServer : virtual public Ice::Application {
 			
 			RepoApiI::_adapter = communicator()->createObjectAdapterWithEndpoints("RepoApiAdapter", "default -p 6667");
 	
-			Ice::ObjectPtr servant = new ::RepoIce::RepoApiI();
+			qrRepo::RepoApi repoApi("../qrgui/save");
+			Ice::ObjectPtr servant = new ::RepoIce::RepoApiI(repoApi);
 			RepoApiI::_adapter->add(servant, communicator()->stringToIdentity("RepoApi") );
 			RepoApiI::_adapter->activate();
 	
@@ -38,14 +39,14 @@ class RepoServer : virtual public Ice::Application {
 int main(int argc, char **argv)
 {
 	QTextStream out(stdout);
-	QString str = "Hello World!";
-	out << str << endl;
 
-	qrRepo::RepoApi repoApi;
-	//Real::IdList children(qReal::Id const &id) const;
-	qReal::IdList list = repoApi.children(qReal::ROOT_ID);
-	out << repoApi.name(qReal::ROOT_ID) << " " << list.size() << endl;
-	out << "String representation: " << qReal::ROOT_ID.toString() << endl;
+	qrRepo::RepoApi repoApi("../qrgui/save");
+
+	qReal::Id diagramId = repoApi.children(qReal::ROOT_ID).at(0);
+
+	qReal::IdList list = repoApi.children(diagramId);
+	out << repoApi.name(diagramId) << " " << list.size() << endl;
+	out << "String representation: " << diagramId.toString() << endl;
 	
 
 	for (int i = 0; i < list.size(); ++i) 
@@ -57,6 +58,6 @@ int main(int argc, char **argv)
 
 	RepoServer app;
 	return app.main(argc, argv);
-	//return 0;
+	return 0;
 }
 

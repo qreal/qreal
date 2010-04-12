@@ -73,11 +73,14 @@ public:
 	
 		static Ice::ObjectAdapterPtr _adapter;
 
+		RepoApiI (::qrRepo::RepoApi &_repoApi) : repoApi(_repoApi)		{}
+			
+
 	private:
 		
 		static ::qReal::Id toqRealId(const ::std::string& str);
 		
-		::qrRepo::RepoApi repoApi;
+		::qrRepo::RepoApi &repoApi;
 };
 
 }

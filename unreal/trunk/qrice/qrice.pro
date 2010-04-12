@@ -1,3 +1,5 @@
+# To generate repoclientice.cpp, repoclientice.h run
+# slice2cpp *.ice
 SOURCES = main.cpp repoclienticeI.cpp repoclientice.cpp
 HEADERS =  ../qrgui/kernel/definitions.h ../qrrepo/repoApi.h repoclienticeI.h repoclientice.h
 
