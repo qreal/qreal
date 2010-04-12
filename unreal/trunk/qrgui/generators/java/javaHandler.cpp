@@ -36,6 +36,7 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 IdList JavaHandler::getActivityDiagramChildren(Id const &idParent)
 {
     IdList childElements, allElements;
+    childElements.clear();
     allElements = mApi.children(idParent);
 
     foreach (Id aChild, allElements) {
@@ -45,16 +46,16 @@ IdList JavaHandler::getActivityDiagramChildren(Id const &idParent)
             || aChild.element() == "ActivityDiagram_AcceptEventAction") {
             childElements.append(aChild);
         }
-
-        if (childElements.length() == 0) {
-            addError("Unable to serialize object " + objectType(idParent) + " with id: " + idParent.toString() + ". There is no start nodes (Initial Node, Activity Parameter Node, Accept Event Action).");
-        } else if (childElements.length() > 1) { //TODO: to find out if it is possible. If so, write the appropriate serialization
-            addError("AAA!!! There is too many start nodes. I don't know which to choose.");
-        }
     }
 
-    Id startNode = childElements.at(0);
-    childElements.append(findIntermediateNodes(startNode));
+    if (childElements.length() == 0) {
+        addError("Unable to serialize object " + objectType(idParent) + " with id: " + idParent.toString() + ". There is no start nodes (Initial Node, Activity Parameter Node, Accept Event Action).");
+    } else if (childElements.length() > 1) { //TODO: to find out if it is possible. If so, write the appropriate serialization
+        addError("AAA!!! There is too many start nodes. I don't know which to choose. Diagram is " + mApi.name(idParent));
+    } else {
+        Id startNode = childElements.at(0);
+        childElements.append(findIntermediateNodes(startNode));
+    }
 
     return childElements;
 }
@@ -95,13 +96,17 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode)
                     if (incomingLinks.length() == 1) { //"if"
                         Id mergeNode = findMergeNode(nextElement);
 
-                        //TODO: if there is no mergeNode?!
-                        children.append(findIntermediateNodes(mergeNode));
+                        if (mergeNode != Id()) {
+                            children.append(findIntermediateNodes(mergeNode));
+                        }
                     } else if (incomingLinks.length() == 2) { //"while"
                         Id nonBodyLink = findNonBodyLink(nextElement);
 
-                        Id firstNonBodyElement = mApi.otherEntityFromLink(nonBodyLink, nextElement);
-                        children.append(findIntermediateNodes(firstNonBodyElement));
+                        if (nonBodyLink != Id()) {
+                            Id firstNonBodyElement = mApi.otherEntityFromLink(nonBodyLink, nextElement);
+                            children.append(firstNonBodyElement);
+                            children.append(findIntermediateNodes(firstNonBodyElement));
+                        }
                     } else { //[Superstructure 09-02-02][1] A decision node has one or two incoming edges.
                         addError("Unable to serialize object " + objectType(nextElement) + " with id: " + nextElement.toString() + ". A decision Node has one or two incoming edges.");
                     }
@@ -138,7 +143,7 @@ Id JavaHandler::findMergeNode(Id const &idDecisionNode)
     }
 
     if (mergeNodes.length() == 0) {
-        //TODO: fill this
+        mergeNode = Id();
     } else if (mergeNodes.length() == 1) {
         mergeNode = mergeNodes.at(0);
     } else {
@@ -159,13 +164,11 @@ Id JavaHandler::findDecisionNode(Id const &idMergeNode)
 
 Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 {
-    Id linkId;
+    Id linkId = Id();
 
     IdList outgoingLinks = mApi.outgoingLinks(idDecisionNode);
 
     if (outgoingLinks.length() != 2) {
-        qDebug() << " length != 2 ";
-
         addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". May be you forget a Merge Node before this Decision Node.");
     } else {
         QString guard1 = getFlowGuard(outgoingLinks.at(0));
@@ -181,8 +184,6 @@ Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 
                 linkId = outgoingLinks.at(1);
             } else {
-                qDebug() << "One of the guards must either empty or equals \"else\".";
-
                 addError("Unable to serialize object " + objectType(idDecisionNode) + " with id: " + idDecisionNode.toString() + ". One of the guards must either empty or equals \"else\".");
             }
         } else {
@@ -440,34 +441,28 @@ QString JavaHandler::serializeUntil(Id &id, Id const &untilElement)
     } else {
         result += serializeObject(id);
 
-        qDebug() << "id = " + id.element() + "  name = " + mApi.name(id);
-
         Id nextImportaintNode = id;
         if (id.element() == "ActivityDiagram_DecisionNode") {
             //"if" or "while"?
             IdList incomingLinks = mApi.incomingLinks(id);
             if (incomingLinks.length() == 1) { //"if"
-                qDebug() << "if";
-
                 nextImportaintNode = findMergeNode(id);
             } else if (incomingLinks.length() == 2) { //"while"
-                qDebug() << "while : idDecision = " + mApi.name(id);
 
+                //It can fail here. Need to be rewritten
                 Id nonBodyLink = findNonBodyLink(id);
-
-                qDebug() << "nonBodyLink = " + mApi.name(nonBodyLink);
-
                 nextImportaintNode = mApi.otherEntityFromLink(nonBodyLink, id);
+                result += serializeObject(nextImportaintNode);
             }
         }
 
-        qDebug() << "next = " + nextImportaintNode.element() + "  name = " + mApi.name(nextImportaintNode);
-
-        //serialise it's children
-        IdList outgoingLinks = mApi.outgoingLinks(nextImportaintNode);
-        foreach (Id aLink, outgoingLinks) {
-            Id nextElement = mApi.otherEntityFromLink(aLink, nextImportaintNode);
-            result += serializeUntil(nextElement, untilElement);
+        if (nextImportaintNode != Id()) {
+            //serialise it's children
+            IdList outgoingLinks = mApi.outgoingLinks(nextImportaintNode);
+            foreach (Id aLink, outgoingLinks) {
+                Id nextElement = mApi.otherEntityFromLink(aLink, nextImportaintNode);
+                result += serializeUntil(nextElement, untilElement);
+            }
         }
     }
 
@@ -479,8 +474,6 @@ QString JavaHandler::ifStatement(Id const &id)
     QString result = indent() + "";
 
     Id untilMergeNode = findMergeNode(id);
-
-    qDebug() << "if = " + mApi.name(id) + "   it's merge = " + mApi.name(untilMergeNode);
 
     int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
 
@@ -517,6 +510,12 @@ QString JavaHandler::ifStatement(Id const &id)
         } else { //if it is not the last link, connected to the Decision Node
             result += " else ";
         }
+    }
+
+    //if there is no merge node than we must close the function
+    if (untilMergeNode == Id()) {
+        mIndent--;
+        result += indent() + "}\n";
     }
 
     return result;
