@@ -16,7 +16,7 @@ public:
     PaintManager(QGraphicsView *gestureView);
     ~PaintManager();
     static void drawPath(QPainter *painter, QList<QPoint> const & path);
-    void drawGesture(QString polygonString);
+    void drawGesture(QString const & polygonString);
 
 private:
     QGraphicsScene *mGestureScene;

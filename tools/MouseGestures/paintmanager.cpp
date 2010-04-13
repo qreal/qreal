@@ -32,7 +32,7 @@ void PaintManager::drawPath(QPainter * painter, QList<QPoint> const & path)
 
 }
 
-void PaintManager::drawGesture(QString polygonStr)
+void PaintManager::drawGesture(QString const & polygonStr)
 {
     mCurrentPointNumber = 0;
     mGestureScene->clear();

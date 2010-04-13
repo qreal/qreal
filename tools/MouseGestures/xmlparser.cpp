@@ -1,5 +1,6 @@
 #include "xmlparser.h"
 #include "GeometricForms.h"
+#include "math.h"
 
 static const QString lineKey = "line";
 static const QString ellipseKey = "ellipse";
@@ -10,6 +11,8 @@ static const QString x1Key = "x1";
 static const QString x2Key = "x2";
 static const QString y1Key = "y1";
 static const QString y2Key = "y2";
+static const double pi = 3.141592;
+static const int pointsOnEllipse = 16;
 
 XmlParser::XmlParser(QString const & pathToFile)
 {
@@ -90,14 +93,17 @@ QList<QPoint> XmlParser::getPoints(const QDomElement &geometricElement)
     return component;
 }
 
-//todo:: в параметры передавать QList, сделать больше точек
 QList<QPoint> XmlParser::getEllipsePath(const QPoint &point1, const QPoint &point2)
 {
     QList<QPoint> ellipse;
-    ellipse.push_back(point1);
-    ellipse.push_back(QPoint(point2.x(), point1.y()));
-    ellipse.push_back(point2);
-    ellipse.push_back(QPoint(point1.x(), point2.y()));
-    ellipse.push_back(point1);
+    QPoint centre = (point1 + point2) / 2;
+    int diam = (int)(sqrt(pow((point1 - point2).x(), 2) + pow((point1 - point2).y(), 2)));
+    for (int i = 0; i < pointsOnEllipse; i++)
+    {
+        int x = (int)(diam * cos(2 * pi * i / pointsOnEllipse) / 2);
+        int y = (int)(diam * sin(2 * pi * i / pointsOnEllipse) / 2);
+        ellipse.push_back(centre + QPoint(x, y));
+    }
+    ellipse.push_back(QPoint(centre.x() + diam / 2, centre.y()));
     return ellipse;
 }

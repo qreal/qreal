@@ -5,6 +5,7 @@ const QChar openBracket = '(';
 const QChar closeBracket = ')';
 const QChar comma = ',';
 const QChar delimeter = ' ';
+const QChar minus = '-';
 
 enum State
 {
@@ -39,7 +40,7 @@ bool Adopter::isPath(QString const & str)
         switch (currentState)
         {
         case OpenBracket:
-            if (isDigit(symbol))
+            if (isDigit(symbol) || symbol == minus)
                 currentState = FirstNumber;
             else if (symbol != delimeter)
                 return false;
@@ -62,7 +63,7 @@ bool Adopter::isPath(QString const & str)
                 return false;
             break;
         case Comma:
-            if (isDigit(symbol))
+            if (isDigit(symbol) || symbol == minus)
                 currentState = SecondNumber;
             else if (symbol != delimeter)
                 return false;
@@ -105,7 +106,7 @@ QList<QPoint> Adopter::stringToPath(QString const & str)
     bool isSecondPos = false;
     foreach (QChar symbol, str)
     {
-        if (isDigit(symbol))
+        if (isDigit(symbol) || symbol == minus)
         {
             integerStr += symbol;
         }
@@ -115,12 +116,12 @@ QList<QPoint> Adopter::stringToPath(QString const & str)
             {
                 if (isSecondPos)
                 {
-                    currentPoint.setY(integerStr.toInt(&isInt, 10));
+                    currentPoint.setY(integerStr.toInt(&isInt, 0));
                     path.push_back(currentPoint);
                 }
                 else
                 {
-                    currentPoint.setX(integerStr.toInt(&isInt, 10));
+                    currentPoint.setX(integerStr.toInt(&isInt, 0));
                 }
                 isSecondPos = !isSecondPos;
             }
