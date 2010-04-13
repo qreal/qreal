@@ -19,11 +19,12 @@ namespace qReal {
 
             QString generateToJava(QString const &pathToDir);
         private:
-            IdList getActivityDiagramChildren(Id const &idParent);
+            IdList getActivityChildren(Id const &idStartNode, Id const &untilNode);
 
             QString serializeObject(Id const &id);
             QString serializeChildren(Id const &id);
-            QString serializeUntil(Id &id, Id const &untilElement);
+//            QString serializeUntil(Id const &id, Id const &untilElement);
+            QString serializeActivity(Id const &idStartNode, Id const &idUntilNode);
 
             QString getVisibility(Id const &id);
             QString getMultiplicity(Id const &id);
@@ -48,7 +49,7 @@ namespace qReal {
             Id findDecisionNode(Id const &idMergeNode);
             Id findNonBodyLink(Id const &idDecisionNode);
             Id findJoinNode(Id const &idForkNode);
-            IdList findIntermediateNodes(Id const &id);
+            IdList findIntermediateNodes(Id const &id, Id const &untilNode, bool const closesFunction);
 
             void addError(QString const &errorText);
 
