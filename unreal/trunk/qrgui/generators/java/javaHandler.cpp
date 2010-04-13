@@ -95,7 +95,7 @@ Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
         //they can't be equal "" at the same time; one of them ought to be "" or to be "else"
         if (guard1 != "" || guard2 != "") {
             if ( (guard1 == "" || guard1 == "else") || (guard2 == "" || guard2 == "else") ) {
-                //Supposing that the first link is represent the loop's body. If not — .swap
+                //Supposing that the first link is represent the loop's body. If not --- .swap
                 if (guard1 == "" || guard1 == "else") {
                     outgoingLinks.swap(0, 1);
                 }
@@ -251,9 +251,7 @@ QString JavaHandler::serializeChildren(Id const &idParent)
             addError("AAA!!! There are too many start nodes. I don't know which to choose.");
         } else {
             Id startNode = startNodes.at(0);
-            Id null = (Id) 0; //we don't know the untilNode
-
-            childElems = getActivityChildren(startNode, null);
+            childElems = getActivityChildren(startNode, Id());
         }
     } else if (objectType(idParent) == "ClassDiagram_Class") {
         IdList fields, methods;
