@@ -31,30 +31,26 @@ QList<QPoint> ValidPathCreator::createPath(PathVector const & components)
     return connectComponents(paths);
 }
 
-QList<QPoint> ValidPathCreator::connectComponents(PathVector paths)
+QList<QPoint> ValidPathCreator::connectComponents(const PathVector &components)
 {
-    QList<QPoint> path = paths[0];
-    paths.removeAt(0);
-    int min = 1000;
-    while (!paths.isEmpty())
+    if (components.size() == 0)
     {
-        int pos = 0;
-        for (int i = 0; i < paths.size(); i++)
-        {
-            if (min > getDistance(path, paths[i]))
-            {
-                min = getDistance(path, path[i]);
-                pos = min;
-            }
-        }
-        path = merge(path, paths[pos], min);
-        paths.removeAt(pos);
+        return QList<QPoint>();
+    }
+    PointVector path;
+    foreach (PointVector component, components)
+    {
+        path = merge(path, component, getDistance(path, component));
     }
     return path;
 }
 
 double ValidPathCreator::getDistance(const QList<QPoint> &path1, const QList<QPoint> &path2)
 {
+    if (path1.isEmpty() || path2.isEmpty())
+    {
+        return 0;
+    }
     double min = std::min(getDistance(path1, path2[0]), getDistance(path1, path2.back()));
     if (isCycle(path2))
     {
@@ -79,60 +75,82 @@ double ValidPathCreator::getDistance(const QList<QPoint> &path, const QPoint &po
     return min;
 }
 
-PointVector ValidPathCreator::mergeNotCycles(PointVector path1, PointVector path2, int distance)
+QList<QPoint> ValidPathCreator::mergeNotCycles(PointVector path1, PointVector path2, int distance)
 {
+    if (path1.isEmpty())
+    {
+        return path2;
+    }
+    if (path2.isEmpty())
+    {
+        return path1;
+    }
     if ((path1.back() - path2[0]).manhattanLength() == distance)
     {
-        return pushBackPath(path1, path2, 1, path2.size());
+        return pushBackPath(path1, path2, 0, path2.size() - 1);
     }
     if ((path1[0] - path2.back()).manhattanLength() == distance)
     {
-        return pushBackPath(path2, path1, 1, path1.size());
+        return pushBackPath(path2, path1, 0, path1.size() - 1);
     }
     if ((path1.back() - path2.back()).manhattanLength() == distance)
     {
-        for (int i = 0; i < path2.size() - 1; i++)
+        for (int i = 0; i < path2.size(); i++)
         {
-            path1.push_back(path2[path2.size() - 1 - i]);
+            path1 = pushBackPoint(path1, path2[path2.size() - i - 1]);
         }
         return path1;
     }
     if ((path1[0] - path2[0]).manhattanLength() == distance)
     {
         QList<QPoint> path;
-        for (unsigned i = path2.size() - 1; i > 0; i--)
+        for (int i = path2.size() - 1; i >= 0; i--)
         {
             path.push_back(path2[i]);
         }
         foreach (QPoint point, path1)
         {
-            path.push_back(point);
+            path = pushBackPoint(path, point);
         }
         return path;
     }
     return path1;
 }
 
-//todo:: слить компоненты нормально, чтобы точки не пропадали, если > 1 компонент связности
+QList<QPoint> ValidPathCreator::pushBackPoint(QList<QPoint> path, const QPoint &point)
+{
+    if (path.isEmpty() || path.back() != point)
+    {
+        path.push_back(point);
+    }
+    return path;
+}
+
 QList<QPoint> ValidPathCreator::merge(PointVector path1, PointVector path2, int distance)
 {
+    if (path1.isEmpty())
+    {
+        return path2;
+    }
+    if (path2.isEmpty())
+    {
+        return path1;
+    }
     if (!isCycle(path1) && !isCycle(path2))
     {
         return mergeNotCycles(path1, path2, distance);
     }
     int cyclePos = 0;
     int graphPos = 0;
-    PointVector cycle;
-    PointVector graph;
+    PointVector cycle = path1;
+    PointVector graph = path1;
     if (isCycle(path1))
     {
-        cycle = path1;
         graph = path2;
     }
     else
     {
         cycle = path2;
-        graph = path1;
     }
     for (int i = 0; i < cycle.size(); i++)
     {
@@ -145,21 +163,32 @@ QList<QPoint> ValidPathCreator::merge(PointVector path1, PointVector path2, int 
             }
         }
     }
+    return mergeGraphCycle(cycle, graph, cyclePos, graphPos);
+}
+
+QList<QPoint> ValidPathCreator::mergeGraphCycle(const PointVector &cycle, const PointVector &graph, int cyclePos, int graphPos)
+{
     PointVector mergePath;
-    mergePath = pushBackPath(mergePath, graph, 0, graphPos - 1);
-    mergePath = pushBackPath(mergePath, cycle, cyclePos, cycle.size());
-    mergePath = pushBackPath(mergePath, cycle, 1, cyclePos + 1);
-    mergePath = pushBackPath(mergePath, graph, graphPos + 1, graph.size());
+    if (graphPos != 0)
+    {
+        mergePath = pushBackPath(mergePath, graph, 0, graphPos);
+    }
+    mergePath = pushBackPath(mergePath, cycle, cyclePos, cycle.size() - 1);
+    mergePath = pushBackPath(mergePath, cycle, 1, cyclePos);
+    if (graphPos != graph.size() - 1)
+    {
+        mergePath = pushBackPath(mergePath, graph, graphPos, graph.size() - 1);
+    }
     return mergePath;
 }
 
 QList<QPoint> ValidPathCreator::pushBackPath(QList<QPoint> mainPath, const QList<QPoint> &path, int begin, int end)
 {
-    if (begin >= 0 && end <= path.size())
+    if (begin >= 0 && end < path.size())
     {
-        for (int i = begin; i < end; i++)
+        for (int i = begin; i <= end; i++)
         {
-            mainPath.push_back(path[i]);
+            mainPath = pushBackPoint(mainPath, path[i]);
         }
     }
     return mainPath;
@@ -167,5 +196,5 @@ QList<QPoint> ValidPathCreator::pushBackPath(QList<QPoint> mainPath, const QList
 
 bool ValidPathCreator::isCycle(PointVector const & path)
 {
-    return path[0] == path.back();
+    return (!path.isEmpty() && path[0] == path.back());
 }
