@@ -29,6 +29,8 @@ public:
 	/** @brief Очистить сцену */
 	void clearScene();
 
+	void createElement ( const QMimeData *mimeData, QPointF scenePos);
+
 	/** @brief Получить элемент сцены по его идентификатору
 	 *	@brief @return Элемент сцены
 	 * */

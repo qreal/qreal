@@ -40,11 +40,14 @@ namespace UML {
 						const QStyleOptionGraphicsItem* opt, /**< Настройки отрисовки */
 						QWidget* w /**< Виджет, на котором осуществляется отрисовка */
 						);
-
+		
 			/** @brief Перерисовать связь */
 			void adjustLink();
 			/** @brief Отсоединить связь от объекта */
 			void removeLink(UML::NodeElement const *from /**< Объект */);
+
+			/** @brief Поместить конец связи в указанную точку */
+			void placeEndTo(QPointF const &place);
 
 			virtual void connectToPort();
 
@@ -123,3 +126,4 @@ namespace UML {
 			bool mChaoticEdition;
 	};
 }
+

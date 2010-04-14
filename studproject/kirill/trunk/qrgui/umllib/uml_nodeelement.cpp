@@ -9,6 +9,7 @@
 #include <QtGui/QTextCursor>
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
+#include <QtCore/QUuid>
 
 #include "../model/model.h"
 #include "../view/editorviewscene.h"
@@ -42,6 +43,8 @@ void NodeElement::setName(QString value)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+	qDebug() << "mousePressEvent, nodeElement uuid: " << uuid().toString();
+
 	if (isSelected())
 	{
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -49,12 +52,51 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
 			mDragState = TopRight;
 		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+		{
 			mDragState = BottomRight;
+			EditorViewScene *editorScene = dynamic_cast<EditorViewScene*>(scene());
+			if (editorScene != NULL)				
+			{
+				qDebug() << "! Create Relationship:   start";
+
+				QByteArray data;
+				QDataStream stream(&data, QIODevice::WriteOnly);
+				Id *edgeId = new Id(QString("Kernel_metamodel"), QString("Kernel"),
+				QString("Kernel_Association"), QUuid::createUuid().toString());
+				QString uuid = edgeId->toString();
+				QString pathToItem = ROOT_ID.toString();
+				QString name = "(anonymous Relationship)";
+				QPointF pos = QPointF(0,0);						
+				stream << uuid;
+				stream << pathToItem;
+				stream << name;
+				stream << pos;
+
+				QString mimeType = QString("application/x-real-uml-data");
+				QMimeData *mimeData = new QMimeData();
+				mimeData->setData(mimeType, data);
+						
+				editorScene->createElement(mimeData, event->scenePos());
+				mEdge = dynamic_cast<EdgeElement*>(editorScene->getElem(*edgeId));
+
+				if (mEdge)
+				{
+					qDebug() << "edge uuid: " << mEdge->uuid().toString();
+					mEdge->placeEndTo(QPointF(mContents.bottomRight().x()/2, mContents.bottomRight().y()/2));
+				}
+				else
+					qDebug() << "*edge == NULL";
+
+				qDebug() << "! Create Relationship:   finish";
+				delete mimeData;
+			}
+		}
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
 		else
 			Element::mousePressEvent(event);
-	} else
+	}
+	else
 		Element::mousePressEvent(event);
 
 	if (event->button() == Qt::RightButton)
@@ -127,7 +169,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setBottom(event->pos().y());
 			break;
 		case BottomRight:
-			newContents.setBottomRight(event->pos());
+			//newContents.setBottomRight(event->pos());
+			mEdge->placeEndTo(QPointF(event->pos().x() - mContents.bottomRight().x()/2, event->pos().y() - mContents.bottomRight().y()/2));
 			break;
 		case None:
 			break;
@@ -151,20 +194,22 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	storeGeometry();
 
-	if (mDragState != None)
-		mDragState = None;
-	else
+	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
-
-	NodeElement *newParent = getNodeAt(event->scenePos());
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (newParent) {
-		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
-	} else
-		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
-
+	if (mDragState != BottomRight)
+	{
+		NodeElement *newParent = getNodeAt(event->scenePos());
+		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+		if (newParent) {
+			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+				mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+		} else
+			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+	} else {
+		mEdge->connectToPort();
+	}
+	mDragState = None;
 	setZValue(0);
 }
 
@@ -455,3 +500,4 @@ void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAt(mEdgeList.indexOf(edge));
 }
+
