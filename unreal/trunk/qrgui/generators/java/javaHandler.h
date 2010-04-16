@@ -30,6 +30,7 @@ namespace qReal {
             QString getMultiplicity(Id const &id);
             QString getType(Id const &id);
             QString getDefaultValue(Id const &id);
+            QString getImports(Id const &id);
             QString getOperationFactors(Id const &id);
             QString hasModifier(Id const &id, QString const &modifier);
             QString getSuperclass(Id const &id);

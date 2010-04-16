@@ -300,6 +300,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
         QString visibility = getVisibility(id);
         QString multiplicity = getMultiplicity(id);
+        QString imports = getImports(id);
         QString isFinalField = hasModifier(id, "final");
         QString isAbstractField = hasModifier(id, "abstract");
         QString parents = getSuperclass(id);
@@ -308,7 +309,8 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
-        out << indent() + isAbstractField + isFinalField + visibility + "class " + mApi.name(id) + parents +  " {" + "\n";
+        out << imports + "\n";
+        out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents +  " {" + "\n";
         mIndent++;
         out << serializeChildren(id);
 
@@ -414,7 +416,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
                 result += visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
                 if (defaultValue != "") {
-                    result += " " + defaultValue;
+                    result += " = " + defaultValue;
                 }
                 result += ";\n";
             } else {
@@ -760,6 +762,24 @@ QString JavaHandler::getDefaultValue(Id const &id)
         //	if (isTypeSuitable(defaultValue)) {
         //	to check for the corract data
         result = defaultValue;
+        //	} else {
+        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid default value: " + defaultValue);
+        //    	}
+    }
+
+    return result;
+}
+
+QString JavaHandler::getImports(Id const &id)
+{
+    QString result = "";
+
+    if (mApi.hasProperty(id, "elementImport")) {
+        QString elementImport = mApi.stringProperty(id, "elementImport");
+
+        //	if (isTypeSuitable(defaultValue)) {
+        //	to check for the corract data
+        result = elementImport;
         //	} else {
         //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid default value: " + defaultValue);
         //    	}

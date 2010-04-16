@@ -573,9 +573,6 @@
 						<property type="Behavior" name="decisionInput"/>
 						<property type="ObjectFlow" name="decisionInputFlow"/>
 					</properties>
-					<connections>
-						<connection type="ActivityDiagram::Action"/>
-					</connections>
 				</logic>
 			</node>
 			<edge name="ExceptionHandler" displayedName="Exception Handler">
