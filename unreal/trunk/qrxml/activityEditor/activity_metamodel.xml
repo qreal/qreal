@@ -1093,7 +1093,7 @@
 			</node>
 			<edge name="ConstraintEdge" displayedName="Constraint Edge">
 				<graphics>
-					<line_type type="dashLine"/>
+					<lineType type="dashLine"/>
 				</graphics>
 				<logic>
 					<associations beginType="no_arrow" endType="no_arrow">

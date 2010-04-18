@@ -195,13 +195,16 @@
 					<generalizations>
 						<parent parentName="Basic Behaviors::Behaviored Classifier" />
 					</generalizations>
+					<properties>
+						<property type="Classifier" name="subject" />
+						<property type="Include" name="include" />
+						<property type="Extend" name="extend" />
+						<property type="ExtensionPoint" name="extensionPoint" />
+					</properties>
+					<connections>
+						<connection type="ClassDiagram::ClassMethod"/>
+					</connections>
 			    </logic>
-				<properties>
-					<property type="Classifier" name="subject" />
-					<property type="Include" name="include" />
-					<property type="Extend" name="extend" />
-					<property type="ExtensionPoint" name="extensionPoint" />
-				</properties>
 		    </node>
 		  
 		</graphicTypes>

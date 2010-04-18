@@ -20,6 +20,12 @@
 				<value>out</value>
 				<value>return</value>
 			</enum>
+			<!-- begin : not from the superstructure -->
+			<enum name="Constraint Content Kind">
+				<value>code</value>
+				<value>comment</value>
+			</enum>
+			<!-- end : not from the superstructure -->
 		</nonGraphicTypes>
 		<graphicTypes>
 			<edge name="Association">
@@ -203,7 +209,7 @@
 						</linePort>
 					</ports>
 					<labels>
-						<label x="0" y="0" textBinded="body"/>
+						<label x="0" y="0" textBinded="specification"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -213,6 +219,12 @@
 					<properties>
 						<property type="Element" name="constrainedElement" />
 						<property type="Value Specification" name="specification" />
+						<!-- begin : not from the superstructure -->
+						<property type="enum" name="contentType">
+							<enum nameReference="Constraint Content Kind" />
+							<default>comment</default>
+						</property>
+						<!-- end : not from the superstructure -->
 					</properties>
 				</logic>
 			</node>
