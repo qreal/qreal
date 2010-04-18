@@ -79,11 +79,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 				editorScene->createElement(mimeData, event->scenePos());
 				mEdge = dynamic_cast<EdgeElement*>(editorScene->getElem(*edgeId));
 
-				if (mEdge)
-				{
-					qDebug() << "edge uuid: " << mEdge->uuid().toString();
+				if (mEdge != NULL)
 					mEdge->placeEndTo(QPointF(mContents.bottomRight().x()/2, mContents.bottomRight().y()/2));
-				}
 				else
 					qDebug() << "*edge == NULL";
 
@@ -141,37 +138,40 @@ void NodeElement::storeGeometry()
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == None) {
+	if (mDragState == None)
+	{
 		Element::mouseMoveEvent(event);
 	} else {
 		QRectF newContents = mContents;
 
-		switch (mDragState) {
-		case TopLeft:
-			newContents.setTopLeft(event->pos());
-			break;
-		case Top:
-			newContents.setTop(event->pos().y());
-			break;
-		case TopRight:
-			newContents.setTopRight(event->pos());
-			break;
-		case Left:
-			newContents.setLeft(event->pos().x());
-			break;
-		case Right:
-			newContents.setRight(event->pos().x());
-			break;
-		case BottomLeft:
-			newContents.setBottomLeft(event->pos());
-			break;
-		case Bottom:
-			newContents.setBottom(event->pos().y());
-			break;
-		case BottomRight:
-			//newContents.setBottomRight(event->pos());
-			mEdge->placeEndTo(QPointF(event->pos().x() - mContents.bottomRight().x()/2, event->pos().y() - mContents.bottomRight().y()/2));
-			break;
+		switch (mDragState)
+		{
+			case TopLeft:
+				newContents.setTopLeft(event->pos());
+				break;
+			case Top:
+				newContents.setTop(event->pos().y());
+				break;
+			case TopRight:
+				newContents.setTopRight(event->pos());
+				break;
+			case Left:
+				newContents.setLeft(event->pos().x());
+				break;
+			case Right:
+				newContents.setRight(event->pos().x());
+				break;
+			case BottomLeft:
+				newContents.setBottomLeft(event->pos());
+				break;
+			case Bottom:
+				newContents.setBottom(event->pos().y());
+				break;
+			case BottomRight:
+				//newContents.setBottomRight(event->pos());
+				mEdge->placeEndTo(QPointF(event->pos().x() - mContents.bottomRight().x()/2,
+					event->pos().y() - mContents.bottomRight().y()/2));
+				break;
 		case None:
 			break;
 		}
@@ -206,7 +206,20 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 		} else
 			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
-	} else {
+	} else
+	{
+		EditorViewScene *editorScene = dynamic_cast<EditorViewScene*>(scene());
+		if (editorScene != NULL)
+		{
+			mEdge->hide();
+			Element *under = dynamic_cast<Element*>(editorScene->itemAt(event->scenePos()));
+			mEdge->show();
+			if (under == NULL)
+			{
+				this->setSelected(false);
+				editorScene->launchEdgeMenu(mEdge);
+			}
+		}
 		mEdge->connectToPort();
 	}
 	mDragState = None;

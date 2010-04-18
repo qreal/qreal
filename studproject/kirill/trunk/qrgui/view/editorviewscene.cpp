@@ -116,6 +116,20 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	createElement(event->mimeData(),event->scenePos());
 }
 
+void EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge)
+{
+	qDebug() << "---launchCreation() start";
+	
+	edge->setSelected(true);
+
+	QMenu menu;
+	menu.addAction(mWindow->ui.actionDeleteFromDiagram);//Сегфолт.
+	menu.addMenu("Create new element");
+	menu.exec(QCursor::pos());
+
+	qDebug() << "---launchCreation() finish";
+}
+
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 {
 	qDebug() << "! createElement : begin ----------";
