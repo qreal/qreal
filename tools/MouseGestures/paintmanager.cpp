@@ -14,19 +14,13 @@ void PaintManager::drawPath(QPainter * painter, QList<QPoint> const & path)
 {
     QPoint previousPoint(-1, -1);
     if (path.isEmpty())
-    {
         return;
-    }
     foreach (QPoint currentPoint, path)
     {
         if (previousPoint.x() >= 0 && previousPoint.y() >= 0)
-        {
             painter->drawLine(previousPoint, currentPoint);
-        }
         else
-        {
             painter->drawPoint(currentPoint);
-        }
         previousPoint = currentPoint;
     }
 
@@ -42,9 +36,7 @@ void PaintManager::drawGesture(QString const & polygonStr)
 void PaintManager::draw()
 {
     if (mPath.isEmpty())
-    {
         return;
-    }
     int verticeIndex = (mCurrentPointNumber / pointsAtSegment) % mPath.size();
     int segmentNumber = mCurrentPointNumber % pointsAtSegment + 1;
     if (verticeIndex == mPath.size() - 1)
@@ -63,7 +55,7 @@ void PaintManager::draw()
 
 int PaintManager::coord(int previous, int next, int part)
 {
-  return previous + (next - previous) * part / pointsAtSegment;
+    return previous + (next - previous) * part / pointsAtSegment;
 }
 
 PaintManager::~PaintManager()

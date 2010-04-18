@@ -5,22 +5,16 @@ int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString co
     int m = key1.size();
     int n = key2.size();
     if (m == 0)
-    {
         return n;
-    }
     if (n == 0)
-    {
         return m;
-    }
     int matrix[m + 1][n + 1];
     for (int i = 0; i <= m; i++)
     {
         for (int j = 0; j <= n; j++)
         {
             if (i == 0 || j ==0)
-            {
                 matrix[i][j] = 1;
-            }
         }
     }
     matrix[0][0] = 0;

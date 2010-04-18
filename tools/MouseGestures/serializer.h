@@ -13,6 +13,8 @@ class Serializer
 public:
     Serializer(QString const & pathToFile);
     EntityVector parseXml();
+    void serialize(const Objects &objects);
+    Objects deserialize();
 
 private:
     QDomElement getFirstDomElement();

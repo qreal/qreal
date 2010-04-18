@@ -1,5 +1,5 @@
 #include "adopter.h"
-#include "xmlparser.h"
+#include "serializer.h"
 #include "mousegestures.h"
 #include "ui_mousegestures.h"
 #include "pathcorrector.h"
@@ -8,6 +8,8 @@
 #include "paintmanager.h"
 
 //todo:: что-то форма чересчур поумнела... надо бы ее тупой сделать
+static const QString pathToFile = "../mouse_gestures.xml";
+static const QString xmlDir = "../../../unreal/trunk/qrxml";
 
 MouseGestures::MouseGestures(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MouseGestures)
@@ -16,6 +18,9 @@ MouseGestures::MouseGestures(QWidget *parent)
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadFile()));
     connect(ui->twObjectPathTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(drawGesture()));
     mPaintManager = new PaintManager(ui->gvGesture);
+    Serializer serializer(pathToFile);
+    this->mKeyObjectTable.add(serializer.deserialize());
+    showTable();
 }
 
 void MouseGestures::changePath()
@@ -25,9 +30,7 @@ void MouseGestures::changePath()
     QString pathStr = ui->twObjectPathTable->item(currentRow, pathColumn)->text();
     QList<QPoint> path = Adopter::stringToPath(pathStr);
     if (!path.isEmpty())
-    {
         mKeyObjectTable.setPath(name, path);
-    }
     else
     {
         QMessageBox msgBox;
@@ -44,23 +47,29 @@ void MouseGestures::changePath()
 void MouseGestures::loadFile()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Xml"), ".",
+                                                    tr("Open Xml"), xmlDir,
                                                     tr("Xml files (*.xml)"));
-    XmlParser xmlParser(fileName);
-    EntityVector entities = xmlParser.parseXml();
+    Serializer serializer(fileName);
+    EntityVector entities = serializer.parseXml();
     addEntities(entities);
-    QString text = "";
-    foreach (Entity entity, entities)
+    showTable();
+}
+
+void MouseGestures::showTable()
+{
+    this->disconnect(ui->twObjectPathTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(changePath()));
+    for (int i = 0; i < this->mKeyObjectTable.size(); i ++)
     {
+        KeyObjectItem object = this->mKeyObjectTable.at(i);
         int rowCount = ui->twObjectPathTable->rowCount();
         ui->twObjectPathTable->setRowCount(rowCount + 1);
-        QTableWidgetItem * item = new QTableWidgetItem(entity.name);
+        QTableWidgetItem *item = new QTableWidgetItem(object.object);
         item->setFlags(Qt::NoItemFlags);
         ui->twObjectPathTable->setItem(rowCount, objectColumn, item);
-        text = Adopter::pathToString(mKeyObjectTable.getPath(entity.name));
+        QString text = Adopter::pathToString(object.correctPath);
         item = new QTableWidgetItem(text);
         ui->twObjectPathTable->setItem(rowCount, pathColumn, item);
-        text = mKeyObjectTable.getKey(entity.name);
+        text = object.key;
         item = new QTableWidgetItem(text);
         item->setFlags(Qt::NoItemFlags);
         ui->twObjectPathTable->setItem(rowCount, keyColumn, item);
@@ -118,5 +127,7 @@ void MouseGestures::drawGesture()
 
 MouseGestures::~MouseGestures()
 {
+    Serializer serializer(pathToFile);
+    serializer.serialize(this->mKeyObjectTable.getObjects());
     delete ui;
 }

@@ -8,11 +8,10 @@
 class Adopter
 {
 public:
-    Adopter();
-    static QString pathToString(QList<QPoint> const & path);
-    static QList<QPoint> stringToPath(QString const & str);
+    static QString pathToString(QList<QPoint> const &path);
+    static QList<QPoint> stringToPath(QString const &str);
 
 private:
-    static bool isDigit(QChar const & symbol);
-    static bool isPath(QString const & str);
+    static QPoint parsePoint(QString const &str);
+    static QString pointToString(QPoint const &p);
 };

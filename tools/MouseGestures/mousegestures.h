@@ -26,8 +26,10 @@ public:
 private:
     Ui::MouseGestures *ui;
     void mouseMoveEvent(QMouseEvent *);
+    void save();
     void mouseReleaseEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
+    void showTable();
     void paintEvent(QPaintEvent *);
     void addEntities(EntityVector const & entities);
     QList<QPoint> mMousePath;

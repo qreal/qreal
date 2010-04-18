@@ -13,13 +13,39 @@ KeyObjectTable::KeyObjectTable()
     mKeyManager = &mMouseMovementManager;
 }
 
+KeyObjectItem KeyObjectTable::at(int pos)
+{
+    return mKeyObjectTable.at(pos);
+}
+
+int KeyObjectTable::size()
+{
+    return mKeyObjectTable.size();
+}
+
+Objects KeyObjectTable::getObjects()
+{
+    Objects objects;
+    foreach (KeyObjectItem item, mKeyObjectTable)
+    {
+        objects.push_back(Object(item.object, item.correctPath));
+    }
+    return objects;
+}
+
 void KeyObjectTable::add(QString const & object, QList<QPoint> const & correctPath)
 {
-    KeyObjectItem keyObjectItem;
-    keyObjectItem.object = object;
-    keyObjectItem.correctPath = correctPath;
-    keyObjectItem.key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
+    QString key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
+    KeyObjectItem keyObjectItem(object, correctPath, key);
     mKeyObjectTable.push_back(keyObjectItem);
+}
+
+void KeyObjectTable::add(const Objects &objects)
+{
+    foreach (Object object, objects)
+    {
+        add(object.name, object.path);
+    }
 }
 
 void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
@@ -34,11 +60,6 @@ void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
 
 void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & correctPath)
 {
-    if (mKeyObjectTable.isEmpty())
-    {
-        add(object, correctPath);
-        return;
-    }
     for (int i = 0; i < mKeyObjectTable.size(); i++)
     {
         if (mKeyObjectTable[i].object == object)
@@ -49,20 +70,19 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
             return;
         }
     }
+    add(object, correctPath);
 }
 
 QString KeyObjectTable::getObject(QList<QPoint> const & path)
 {
     const float e = 100;
-    const float maxKeyDistance = 60;
+    const float maxKeyDistance = 100;
     float min = e;
     float distance;
     QString key = mKeyManager->getKey(path);
     QString object = "";
     if (key.isEmpty())
-    {
         return object;
-    }
     foreach (KeyObjectItem item, mKeyObjectTable)
     {
         if (!item.key.isEmpty())
@@ -94,9 +114,7 @@ KeyObjectItem KeyObjectTable::getItem(QString const & name)
     foreach (KeyObjectItem item, mKeyObjectTable)
     {
         if (item.object == name)
-        {
             return item;
-        }
     }
     return KeyObjectItem();
 }

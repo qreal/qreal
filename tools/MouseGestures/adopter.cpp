@@ -1,132 +1,41 @@
 #include "adopter.h"
 #include "math.h"
+#include <QStringList>
 
-const QChar openBracket = '(';
-const QChar closeBracket = ')';
-const QChar comma = ',';
-const QChar delimeter = ' ';
-const QChar minus = '-';
+const QString comma = ", ";
+const QString pointDelimeter = " : ";
 
-enum State
+QString Adopter::pointToString(QPoint const &p)
 {
-    OpenBracket,
-    FirstNumber,
-    FirstNumberEnd,
-    Comma,
-    SecondNumber,
-    CloseBracket
-};
-
-Adopter::Adopter()
-{
+    return QString("%1").arg(p.x()) + comma + QString("%1").arg(p.y());
 }
 
-QString Adopter::pathToString(QList<QPoint> const & path)
+QString Adopter::pathToString(QList<QPoint> const &path)
 {
-    QString str = "";
+    QString result = "";
     foreach (QPoint point, path)
     {
-        str += openBracket + QString("%0").arg(point.x()) + comma
-               + QString("%1").arg(point.y()) + closeBracket + delimeter;
+        result += pointToString(point) + pointDelimeter;
     }
-    return str;
+    return result;
 }
 
-bool Adopter::isPath(QString const & str)
+QList<QPoint> Adopter::stringToPath(QString const &valueStr)
 {
-    State currentState = CloseBracket;
-    foreach (QChar symbol, str)
+    QStringList points = valueStr.split(pointDelimeter, QString::SkipEmptyParts);
+    QList<QPoint> result;
+    foreach (QString str, points)
     {
-        switch (currentState)
-        {
-        case OpenBracket:
-            if (isDigit(symbol) || symbol == minus)
-                currentState = FirstNumber;
-            else if (symbol != delimeter)
-                return false;
-            break;
-        case FirstNumber:
-            if (!isDigit(symbol))
-            {
-                if (symbol == comma)
-                    currentState = Comma;
-                else if (symbol == delimeter)
-                    currentState = FirstNumberEnd;
-                else
-                    return false;
-            }
-            break;
-        case FirstNumberEnd:
-            if (symbol == comma)
-                currentState = Comma;
-            else if (symbol != delimeter)
-                return false;
-            break;
-        case Comma:
-            if (isDigit(symbol) || symbol == minus)
-                currentState = SecondNumber;
-            else if (symbol != delimeter)
-                return false;
-            break;
-        case SecondNumber:
-            if (!isDigit(symbol))
-            {
-                if (symbol == closeBracket)
-                    currentState = CloseBracket;
-                else if (symbol != delimeter)
-                    return false;
-            }
-            break;
-        case CloseBracket:
-            if (symbol == openBracket)
-                currentState = OpenBracket;
-            else if (symbol != delimeter)
-                return false;
-            break;
-        }
+        QPoint point = parsePoint(str);
+        result.push_back(point);
     }
-    return currentState == CloseBracket;
+    return result;
 }
 
-bool Adopter::isDigit(QChar const & symbol)
+QPoint Adopter::parsePoint(QString const &str)
 {
-    return (symbol >= '0' && symbol <='9');
-}
-
-QList<QPoint> Adopter::stringToPath(QString const & str)
-{
-    QList<QPoint> path;
-    if (!isPath(str))
-    {
-        return path;
-    }
-    QPoint currentPoint(0, 0);
     bool isInt;
-    QString integerStr = "";
-    bool isSecondPos = false;
-    foreach (QChar symbol, str)
-    {
-        if (isDigit(symbol) || symbol == minus)
-        {
-            integerStr += symbol;
-        }
-        else
-        {
-            if (integerStr != "")
-            {
-                if (isSecondPos)
-                {
-                    currentPoint.setY(integerStr.toInt(&isInt, 0));
-                    path.push_back(currentPoint);
-                }
-                else
-                {
-                    currentPoint.setX(integerStr.toInt(&isInt, 0));
-                }
-                isSecondPos = !isSecondPos;
-            }
-            integerStr = "";
-        }
-    }
-    return path;
+    int x = str.section(comma, 0, 0).toInt(&isInt, 0);
+    int y = str.section(comma, 1, 1).toInt(&isInt, 0);
+    return QPoint(x, y);
 }

@@ -8,9 +8,7 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
 {
     QList<QPoint> mousePath;
     if (path.isEmpty())
-    {
         return mousePath;
-    }
     mousePath.append(path[0]);
     for (int i = 1; i < path.size(); i++)
     {
@@ -18,7 +16,7 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
         QPoint previousPoint = path[i - 1];
         int length = currentPoint.x() - previousPoint.x();
         int width = currentPoint.y() - previousPoint.y();
-        int number = (int)((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
+        int number = static_cast<int>((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
         for (int j = 1; j <= number; j++)
         {
             QPoint point(int(previousPoint.x() + length * j / number),
@@ -33,9 +31,7 @@ QList<QPoint> PathCorrector::correctPath(QList<QPoint> const & path)
 {
     QList<QPoint> newPath;
     if (path.isEmpty())
-    {
         return newPath;
-    }
     QPoint previousPoint = path[0];
     for (int i = 1; i < path.size(); i++)
     {
@@ -61,9 +57,7 @@ bool PathCorrector::isLine(QList<QPoint> const & path)
             double cos = getCos(path[i * difference], path[((2 * i + 1) * difference - 1) / 2],
                                 path[(i + 1) * difference - 1]);
             if (cos < minCos)
-            {
                 return false;
-            }
         }
         difference /= 2;
     }
@@ -77,9 +71,7 @@ double PathCorrector::getCos(QPoint const & pnt1, QPoint const & pnt2, QPoint co
     double length1 = (pnt1 - pnt2).manhattanLength();
     double length2 = (pnt2 - pnt3).manhattanLength();
     if(length1 > 0 && length2 > 0)
-    {
         return (double) getScalarProduct(vector1, vector2) / (length1 * length2);
-    }
     return 1;
 }
 

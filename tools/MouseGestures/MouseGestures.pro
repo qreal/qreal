@@ -9,7 +9,7 @@ SOURCES += main.cpp \
     mousemovementmanager.cpp \
     key8manager.cpp \
     pathcorrector.cpp \
-    xmlparser.cpp \
+    serializer.cpp \
     validpathcreator.cpp \
     keyobjecttable.cpp \
     adopter.cpp \
@@ -19,7 +19,7 @@ HEADERS += mousegestures.h \
     mousemovementmanager.h \
     key8manager.h \
     pathcorrector.h \
-    xmlparser.h \
+    serializer.h \
     GeometricForms.h \
     validpathcreator.h \
     keyobjecttable.h \
