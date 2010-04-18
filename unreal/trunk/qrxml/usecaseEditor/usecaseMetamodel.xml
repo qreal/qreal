@@ -57,7 +57,6 @@
 		
 			<node name="Actor" displayedName="Actor">
 				<graphics>
-					<view>
 						<picture sizex="31" sizey="100" >
 							<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="31" stroke-width="2" x2="31" fill-style="solid" />
 							<line fill="#000000" stroke-style="solid" stroke="#000000" y1="31" x1="16" y2="66" stroke-width="2" x2="16" fill-style="solid" />
@@ -76,7 +75,6 @@
 								<end endx="16a" endy="66a"/>
 							</linePort>
 						</ports>
-					</view>
 				</graphics>
 				<logic>
 					<generalizations>
@@ -89,14 +87,30 @@
 		    </node>
 			<node name="Classifier" displayedName="Classifier">
 				<graphics>
-					<view>
 						<picture sizex="60" sizey="110" >
 							<rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="99" stroke-width="1" x2="59" fill-style="solid" />
 						</picture>
 						<labels>
 							<label x="3" y="0" textBinded="name"/>
 						</labels>
-					</view>
+						<ports>
+							<linePort>
+								<start startx="0" starty="0"/>
+								<end endx="0" endy="110"/>
+							</linePort>
+							<linePort>
+								<start startx="0" starty="110"/>
+								<end endx="60" endy="110"/>
+							</linePort>
+							<linePort>
+								<start startx="60" starty="110"/>
+								<end endx="60" endy="0"/>
+							</linePort>
+							<linePort>
+								<start startx="60" starty="0"/>
+								<end endx="0" endy="0"/>
+							</linePort>
+						</ports>
 			    </graphics>
 			    <logic>
 					<generalizations>
@@ -116,9 +130,7 @@
 			</node>
 			<edge name="Extend" displayedName="Extend" >
 				<graphics>
-					<view>
 						<lineType type="dashLine" />
-					</view>
 				</graphics>
 				<logic>
 					<generalizations>
@@ -148,9 +160,7 @@
 			</node>
 			<edge name="Include" displayedName="Include" >
 			    <graphics>
-					<view>
 						<lineType type="dashLine" />
-					</view>
 				</graphics>
 			    <logic>
 					<generalizations>
@@ -164,7 +174,6 @@
 		    </edge>
 		    <node name="UseCase" displayedName="Use Case" >
 				<graphics>
-					<view>
 						<picture sizex="100" sizey="60" >
 							<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="2" y2="49" stroke-width="2" x2="98" fill-style="solid" />
 						</picture>
@@ -189,7 +198,6 @@
 							<pointPort x="50" y="49" />
 							<pointPort x="50" y="1" />
 						</ports>
-					</view>
 				</graphics>
 			    <logic>
 					<generalizations>

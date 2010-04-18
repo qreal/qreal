@@ -223,7 +223,9 @@ IdList JavaHandler::getActivityChildren(Id const &idStartNode, Id const &idUntil
     bool closesMethod = idStartNode != Id() && idStartNode.element() == "ActivityDiagram_InitialNode";
 
     result.append(findIntermediateNodes(idStartNode, idUntilNode, closesMethod));
-    result.append(idUntilNode);
+    if (idUntilNode != Id()) {
+        result.append(idUntilNode);
+    }
 
     return result;
 }
@@ -309,7 +311,7 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
-        out << imports + "\n";
+        out << imports + "\n\n";
         out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents +  " {" + "\n";
         mIndent++;
         out << serializeChildren(id);
@@ -446,6 +448,28 @@ QString JavaHandler::serializeObject(Id const &id)
         result += "{\n";
         mIndent++;
     } else if (objectType(id) == "ActivityDiagram_Action") {
+        //if it has the Constraint nodes
+        IdList outgoingLinks = mApi.outgoingLinks(id);
+        IdList constraints;
+        foreach (Id aLink, outgoingLinks) {
+            if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+                constraints.append(aLink);
+            }
+        }
+
+        foreach (Id aConstraint, constraints) {
+            QString code = getConstraintContent(mApi.otherEntityFromLink(aConstraint, id));
+            code.replace("<br/>", "\n");
+            result += indent() + code + "\n";
+
+            QString contentType = getConstraintType(id);
+            //serialization
+            if (contentType == "comment") {
+                result += indent() + mApi.name(id) + "\n";
+            }
+        }
+
+        //if it does not
         result += indent() + mApi.name(id) + "\n";
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
         mIndent--;
@@ -468,6 +492,10 @@ QString JavaHandler::serializeObject(Id const &id)
         result += indent() + "//end of the decision node\n"; //TODO: delete!
     } else if (objectType(id) == "ActivityDiagram_MergeNode") {
         result += indent() + "//merge node \n"; //TODO: delete!
+    } else if (objectType(id) == "ActivityDiagram_AcceptEventAction") {
+    } else if (objectType(id) == "ActivityDiagram_InterruptibleActivityRegion") {
+    } else if (objectType(id) == "ActivityDiagram_Activity") {
+        result += serializeChildren(id);
     }
 
     return result;
@@ -478,12 +506,13 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
     QString result = "";
 
     IdList childElems = getActivityChildren(idStartNode, idUntilNode);
+
     if (!childElems.isEmpty()) {
         childElems.takeLast(); //it will be serialized in the upper level activity
+    }
 
-        foreach (Id const id, childElems) {
-            if (id != Id()) {
-            }
+    foreach (Id id, childElems) {
+       if (id != Id()) {
             result += serializeObject(id);
         }
     }
@@ -680,7 +709,7 @@ QString JavaHandler::getSuperclass(Id const &id)
 
 QString JavaHandler::getMethodCode(Id const &id)
 {
-    QString result = "{\n}";
+    QString result = "{\n" +indent() + "}";
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
@@ -741,12 +770,7 @@ QString JavaHandler::getOperationFactors(Id const &id)
     if (mApi.hasProperty(id, "type")) {
         QString operationFactors = mApi.stringProperty(id, "operationFactors");
 
-        //	to check for the correct data
-        //	if (isTypeSuitable(type) || (objectType(id) == "cnClassMethod" && type == "void")) {
         result = operationFactors;
-        //	} else {
-        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid type: " + type);
-        //    	}
     }
 
     return result;
@@ -759,12 +783,7 @@ QString JavaHandler::getDefaultValue(Id const &id)
     if (mApi.hasProperty(id, "defaultValue")) {
         QString defaultValue = mApi.stringProperty(id, "defaultValue");
 
-        //	if (isTypeSuitable(defaultValue)) {
-        //	to check for the corract data
         result = defaultValue;
-        //	} else {
-        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid default value: " + defaultValue);
-        //    	}
     }
 
     return result;
@@ -777,12 +796,37 @@ QString JavaHandler::getImports(Id const &id)
     if (mApi.hasProperty(id, "elementImport")) {
         QString elementImport = mApi.stringProperty(id, "elementImport");
 
-        //	if (isTypeSuitable(defaultValue)) {
-        //	to check for the corract data
         result = elementImport;
-        //	} else {
-        //		addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid default value: " + defaultValue);
-        //    	}
+    }
+
+    return result;
+}
+
+QString JavaHandler::getConstraintContent(Id const &id)
+{
+    QString result = "";
+
+    if (mApi.hasProperty(id, "specification")) {
+        QString specification = mApi.stringProperty(id, "specification");
+
+        result = specification;
+    }
+
+    return result;
+}
+
+QString JavaHandler::getConstraintType(Id const &id)
+{
+    QString result = "";
+
+    if (mApi.hasProperty(id, "contentType")) {
+        QString contentType = mApi.stringProperty(id, "contentType");
+
+        if (contentType == "code" || contentType == "comment") {
+            result = contentType;
+        } else {
+            addError("Object " + objectType(id) + " with id  " + id.toString() + " has invalid contantType property: " + contentType);
+        }
     }
 
     return result;

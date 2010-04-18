@@ -104,6 +104,9 @@
 						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="15" y2="0"
 							  stroke-width="1" x2="0" fill-style="solid"/>
 					</picture>
+					<labels>
+						<label x="5" y="3" textBinded="name"/>
+					</labels>
 					<ports>
 						<pointPort x="15" y="30"/>
 						<pointPort x="100" y="30"/>
@@ -1038,7 +1041,7 @@
 							  fill-style="solid"/>
 					</picture>
 					<labels>
-						<label x="40" y="10" text="&amp;lt;&amp;lt;structured>>"/>
+						<label x="15" y="3" text="&amp;lt;&amp;lt;structured>>"/>
 					</labels>
 				</graphics>
 				<logic>
