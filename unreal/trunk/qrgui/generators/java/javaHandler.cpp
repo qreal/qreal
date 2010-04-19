@@ -197,14 +197,32 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
                 Id returnNode = children.takeLast();
                 addError("Node: " + returnNode.toString() + ". If you want \"return;\" you should write it in the Action before this Final Node.");
             }
-        }//TODO: add other "importaint" nodes
+        } else if (startNode.element() == "ActivityDiagram_Activity") { //"try-catch" or just Activity
+            IdList outgoingLinks = mApi.outgoingLinks(startNode);
+
+            //Delete all "exception"-links from the list. They will be serialized by the Activity itself.
+            foreach (Id aLink, outgoingLinks) {
+                if (getFlowGuard(aLink) != "") {
+                    outgoingLinks.removeAll(aLink);
+                }
+            }
+
+            foreach (Id aLink, outgoingLinks) {
+                Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
+                if (nextElement != Id()) {
+                    children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));
+                } else {
+                    addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It does not have the target-node.");
+                }
+            }
+        } //TODO: add other "importaint" nodes
         else { //Think, that it is Action, Initial, Final.
             IdList outgoingLinks = mApi.outgoingLinks(startNode);
 
             foreach (Id aLink, outgoingLinks) {
                 Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
                 if (nextElement != Id()) {
-                    children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));;
+                    children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));
                 } else {
                     addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It does not have the target-node.");
                 }
@@ -311,7 +329,7 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
-        out << imports + "\n\n";
+        out << imports;
         out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents +  " {" + "\n";
         mIndent++;
         out << serializeChildren(id);
@@ -445,8 +463,17 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
-        result += "{\n";
-        mIndent++;
+        IdList parents = mApi.parents(id);
+        if (!parents.isEmpty()) {
+            Id parentId = parents.at(0);
+
+            if (objectType(parentId) == "ActivityDiagram_Activity") {
+                result += "\n";
+            } else {
+                result += "{\n";
+                mIndent++;
+            }
+        }
     } else if (objectType(id) == "ActivityDiagram_Action") {
         //if it has the Constraint nodes
         IdList outgoingLinks = mApi.outgoingLinks(id);
@@ -472,8 +499,17 @@ QString JavaHandler::serializeObject(Id const &id)
         //if it does not
         result += indent() + mApi.name(id) + "\n";
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
-        mIndent--;
-        result += indent() + "} /*final node*/   \n"; //TODO: delete /*final node*/!
+        IdList parents = mApi.parents(id);
+        if (!parents.isEmpty()) {
+            Id parentId = parents.at(0);
+
+            if (objectType(parentId) == "ActivityDiagram_Activity") {
+                result += indent() + "\n"; //TODO: delete /*final node*/!
+            } else {
+                mIndent--;
+                result += indent() + "} /*final node*/   \n"; //TODO: delete /*final node*/!
+            }
+        }
 
         //[Superstructure 09-02-02][1] A final node has no outgoing edges.
         IdList outgoingLinks = mApi.outgoingLinks(id);
@@ -495,7 +531,35 @@ QString JavaHandler::serializeObject(Id const &id)
     } else if (objectType(id) == "ActivityDiagram_AcceptEventAction") {
     } else if (objectType(id) == "ActivityDiagram_InterruptibleActivityRegion") {
     } else if (objectType(id) == "ActivityDiagram_Activity") {
-        result += serializeChildren(id);
+        //search for "exception"-links
+        IdList outgoingLinks = mApi.outgoingLinks(id);
+        IdList exceptions;
+        foreach (Id aLink, outgoingLinks) {
+            if (getFlowGuard(aLink) != "") {
+                exceptions.append(aLink);
+            }
+        }
+
+        if (exceptions.length() == 0) { //if it is just an Activity
+            result += serializeChildren(id);
+        } else { //if it is "try-catch"
+            result += indent() + "try {\n";
+            mIndent++;
+            result += serializeChildren(id);
+            mIndent--;
+            result += indent() + "}";
+
+            foreach (Id anException, exceptions) {
+                result += " catch (" + getFlowGuard(anException) + ") {\n";
+                mIndent++;
+                Id exceptionHandler = mApi.otherEntityFromLink(anException, id);
+                result += serializeActivity(exceptionHandler, Id());
+                mIndent--;
+                result += indent() + "}";
+            }
+
+            result += "\n";
+        }
     }
 
     return result;
@@ -507,8 +571,19 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
 
     IdList childElems = getActivityChildren(idStartNode, idUntilNode);
 
+    foreach (Id id, childElems) {
+       if (id != Id()) {
+            qDebug() << "node = " + mApi.name(id);
+        }
+    }
+
     if (!childElems.isEmpty()) {
-        childElems.takeLast(); //it will be serialized in the upper level activity
+        Id last = childElems.takeLast(); //it will be serialized in the upper level activity
+
+        if (last != Id() && (last.element() == "ActivityDiagram_Action" ||
+                             last.element() == "ActivityDiagram_Activity")) {
+            childElems.append(last);
+        }
     }
 
     foreach (Id id, childElems) {
@@ -797,6 +872,10 @@ QString JavaHandler::getImports(Id const &id)
         QString elementImport = mApi.stringProperty(id, "elementImport");
 
         result = elementImport;
+
+        if (result != "") {
+            result += "\n\n";
+        }
     }
 
     return result;
