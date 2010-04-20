@@ -31,6 +31,7 @@ namespace qReal {
             QString getType(Id const &id);
             QString getDefaultValue(Id const &id);
             QString getImports(Id const &id);
+            QString getConstraints(Id const &id);
             QString getConstraintContent(Id const &id);
             QString getConstraintType(Id const &id);
             QString getOperationFactors(Id const &id);

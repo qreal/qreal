@@ -463,12 +463,13 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
+        result += getConstraints(id);
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
 
             if (objectType(parentId) == "ActivityDiagram_Activity") {
-                result += "\n";
+//                result += "\n";
             } else {
                 result += "{\n";
                 mIndent++;
@@ -484,27 +485,30 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
+        bool hasCode = false;
         foreach (Id aConstraint, constraints) {
-            QString code = getConstraintContent(mApi.otherEntityFromLink(aConstraint, id));
-            code.replace("<br/>", "\n");
+            Id constraint = mApi.otherEntityFromLink(aConstraint, id);
+            QString code = getConstraintContent(constraint);
             result += indent() + code + "\n";
 
-            QString contentType = getConstraintType(id);
-            //serialization
-            if (contentType == "comment") {
-                result += indent() + mApi.name(id) + "\n";
+            QString contentType = getConstraintType(constraint);
+            if (contentType == "code") {
+                hasCode = true;
             }
         }
 
-        //if it does not
-        result += indent() + mApi.name(id) + "\n";
+        //serialization
+        if (constraints.isEmpty() || !hasCode) {
+            result += indent() + mApi.name(id) + "\n";
+        }
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
+        result += getConstraints(id);
         IdList parents = mApi.parents(id);
         if (!parents.isEmpty()) {
             Id parentId = parents.at(0);
 
             if (objectType(parentId) == "ActivityDiagram_Activity") {
-                result += indent() + "\n"; //TODO: delete /*final node*/!
+//                result += indent() + "\n"; //TODO: delete /*final node*/!
             } else {
                 mIndent--;
                 result += indent() + "} /*final node*/   \n"; //TODO: delete /*final node*/!
@@ -517,6 +521,7 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A final node has no outgoing edges.");
         }
     } else if (objectType(id) == "ActivityDiagram_DecisionNode") {
+        result += getConstraints(id);
         //"if" or "while"?
         IdList incomingLinks = mApi.incomingLinks(id);
         if (incomingLinks.length() == 1) { //"if"
@@ -527,10 +532,11 @@ QString JavaHandler::serializeObject(Id const &id)
 
         result += indent() + "//end of the decision node\n"; //TODO: delete!
     } else if (objectType(id) == "ActivityDiagram_MergeNode") {
+        result += getConstraints(id);
         result += indent() + "//merge node \n"; //TODO: delete!
     } else if (objectType(id) == "ActivityDiagram_AcceptEventAction") {
-    } else if (objectType(id) == "ActivityDiagram_InterruptibleActivityRegion") {
     } else if (objectType(id) == "ActivityDiagram_Activity") {
+        result += getConstraints(id);
         //search for "exception"-links
         IdList outgoingLinks = mApi.outgoingLinks(id);
         IdList exceptions;
@@ -870,11 +876,38 @@ QString JavaHandler::getImports(Id const &id)
 
     if (mApi.hasProperty(id, "elementImport")) {
         QString elementImport = mApi.stringProperty(id, "elementImport");
+        elementImport.replace("<br/>", "\n" + indent());
 
         result = elementImport;
 
         if (result != "") {
             result += "\n\n";
+        }
+    }
+
+    return result;
+}
+
+QString JavaHandler::getConstraints(Id const &id)
+{
+    QString result = "";
+
+    //if it has the Constraint nodes
+    IdList outgoingLinks = mApi.outgoingLinks(id);
+    IdList constraints;
+    foreach (Id aLink, outgoingLinks) {
+        if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+            constraints.append(aLink);
+        }
+    }
+
+    foreach (Id aConstraint, constraints) {
+        Id constraint = mApi.otherEntityFromLink(aConstraint, id);
+        QString code = getConstraintContent(constraint);
+        if (getConstraintType(constraint) == "comment") {
+            result += indent() + code + "\n";
+        } else {
+            addError("Unable to serialize object " + objectType(constraint) + " with id: " + constraint.toString() + ". You are not allowed to insert \"code\"-constraint here.");
         }
     }
 
@@ -887,6 +920,7 @@ QString JavaHandler::getConstraintContent(Id const &id)
 
     if (mApi.hasProperty(id, "specification")) {
         QString specification = mApi.stringProperty(id, "specification");
+        specification.replace("<br/>", "\n" + indent());
 
         result = specification;
     }
@@ -936,6 +970,7 @@ void JavaHandler::addError(QString const &errorText)
 QString JavaHandler::indent()
 {
     QString result;
+
     for (int i = 0; i < mIndent; ++i)
         result += "\t";
     return result;
