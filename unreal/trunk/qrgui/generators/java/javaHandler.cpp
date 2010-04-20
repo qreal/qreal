@@ -253,7 +253,7 @@ QString JavaHandler::serializeChildren(Id const &idParent)
     QString result = "";
     IdList childElems, allChildren = mApi.children(idParent);
 
-    if (objectType(idParent) == "ActivityDiagram_ActivityDiagramNode") {
+    if (objectType(idParent) == "ActivityDiagram_ActivityDiagramNode" || objectType(idParent) == "ActivityDiagram_Activity") {
         IdList startNodes;
 
         foreach (Id aChild, allChildren) {
@@ -489,9 +489,16 @@ QString JavaHandler::serializeObject(Id const &id)
         foreach (Id aConstraint, constraints) {
             Id constraint = mApi.otherEntityFromLink(aConstraint, id);
             QString code = getConstraintContent(constraint);
+            QString contentType = getConstraintType(constraint);
+            if (contentType == "comment") {
+                if (code.contains("\n")) {
+                    code = "/*" + code + "*/";
+                } else {
+                    code = "//" + code;
+                }
+            }
             result += indent() + code + "\n";
 
-            QString contentType = getConstraintType(constraint);
             if (contentType == "code") {
                 hasCode = true;
             }
@@ -508,10 +515,10 @@ QString JavaHandler::serializeObject(Id const &id)
             Id parentId = parents.at(0);
 
             if (objectType(parentId) == "ActivityDiagram_Activity") {
-//                result += indent() + "\n"; //TODO: delete /*final node*/!
+//                result += indent() + "\n";
             } else {
                 mIndent--;
-                result += indent() + "} /*final node*/   \n"; //TODO: delete /*final node*/!
+                result += indent() + "}//final node\n";
             }
         }
 
@@ -530,10 +537,9 @@ QString JavaHandler::serializeObject(Id const &id)
             result += whileDoLoop(id);
         }
 
-        result += indent() + "//end of the decision node\n"; //TODO: delete!
+        result += indent() + "\n";
     } else if (objectType(id) == "ActivityDiagram_MergeNode") {
         result += getConstraints(id);
-        result += indent() + "//merge node \n"; //TODO: delete!
     } else if (objectType(id) == "ActivityDiagram_AcceptEventAction") {
     } else if (objectType(id) == "ActivityDiagram_Activity") {
         result += getConstraints(id);
@@ -577,10 +583,9 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
 
     IdList childElems = getActivityChildren(idStartNode, idUntilNode);
 
-    foreach (Id id, childElems) {
-       if (id != Id()) {
-            qDebug() << "node = " + mApi.name(id);
-        }
+    foreach (Id aChild, childElems) {
+        if (aChild != Id())
+            qDebug() << "aChild = " + mApi.name(aChild);
     }
 
     if (!childElems.isEmpty()) {
@@ -588,6 +593,8 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
 
         if (last != Id() && (last.element() == "ActivityDiagram_Action" ||
                              last.element() == "ActivityDiagram_Activity")) {
+
+            qDebug() << "returned last = " + mApi.name(last);
             childElems.append(last);
         }
     }
@@ -638,7 +645,7 @@ QString JavaHandler::ifStatement(Id const &id)
         result += indent() + "}";
 
         if (aLink == outgoingLinks.at(outgoingLinks.length()-1)) { // if it is the last link then we should finish "if"-statement
-            result += indent() + "/*last link in the decision node*/  \n";
+            result += indent() + "\n"; //empty string after "if"-statement. can be deleted.
         } else { //if it is not the last link, connected to the Decision Node
             result += " else ";
         }
@@ -671,7 +678,7 @@ QString JavaHandler::whileDoLoop(Id const &id)
     result += serializeActivity(nextElement, id);
 \
     mIndent--;
-    result += indent() + "} /*end of \"while\"*/  \n"; //TODO: delete /*end of "while"*/!
+    result += indent() + "}\n";
 
     return result;
 }
@@ -719,10 +726,9 @@ QString JavaHandler::getFlowGuard(Id const &id)
         QString guard = mApi.stringProperty(id, "guard");
         result = guard.simplified(); //delete whitespaces from the start and the end and internal whitespaces replace with a single space
 
-        //TODO: Delete all white spaces, tabs, etc. in guard. Just find the function =)
-        if (guard == "") {
+//        if (guard == "") {
 //            addError("Object " + objectType(id) + " with id  " + id.toString() + " has empty guard property.");
-        }
+//        }
     }
 
     return result;
@@ -747,11 +753,8 @@ QString JavaHandler::getType(Id const &id)
     if (mApi.hasProperty(id, "type")) {
         QString type = mApi.stringProperty(id, "type");
 
-        if (isTypeSuitable(type) || (objectType(id) == "ClassDiagram_ClassMethod" && type == "void")) {
-            result = type;
-            if (result != "")
-                result += " ";
-        } else {
+        result = type + " ";
+        if ( !isTypeSuitable(type) && !(objectType(id) == "ClassDiagram_ClassMethod" && type == "void") ) {
             addError("Object " + objectType(id) + " with id " + id.toString() + " has invalid type: " + type);
         }
     }
@@ -790,7 +793,7 @@ QString JavaHandler::getSuperclass(Id const &id)
 
 QString JavaHandler::getMethodCode(Id const &id)
 {
-    QString result = "{\n" +indent() + "}";
+    QString result = "";
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
@@ -816,6 +819,10 @@ QString JavaHandler::getMethodCode(Id const &id)
         addError("Method " + objectType(id) + " with id " + id.toString() + " will be empty.");
     }
 
+    //If the realization diagram was empty or something was wrong
+    if (result == "") {
+        result += "{\n" +indent() + "}";
+    }
     return result;
 }
 
@@ -876,12 +883,15 @@ QString JavaHandler::getImports(Id const &id)
 
     if (mApi.hasProperty(id, "elementImport")) {
         QString elementImport = mApi.stringProperty(id, "elementImport");
-        elementImport.replace("<br/>", "\n" + indent());
+        if (elementImport != "") {
+            QStringList imports = elementImport.split(",");
 
-        result = elementImport;
-
-        if (result != "") {
-            result += "\n\n";
+            foreach (QString anImport, imports) {
+                anImport = anImport.simplified();
+                if (anImport != "")
+                    result += indent() + "import " + anImport + ";\n";
+            }
+            result += indent() + "\n";
         }
     }
 
@@ -904,7 +914,13 @@ QString JavaHandler::getConstraints(Id const &id)
     foreach (Id aConstraint, constraints) {
         Id constraint = mApi.otherEntityFromLink(aConstraint, id);
         QString code = getConstraintContent(constraint);
+
         if (getConstraintType(constraint) == "comment") {
+            if (code.contains("\n")) {
+                code = "/*" + code + "*/";
+            } else {
+                code = "//" + code;
+            }
             result += indent() + code + "\n";
         } else {
             addError("Unable to serialize object " + objectType(constraint) + " with id: " + constraint.toString() + ". You are not allowed to insert \"code\"-constraint here.");
