@@ -45,6 +45,7 @@ namespace qReal {
             bool isVisibilitySuitable(QString const &type) const;
 
             QString objectType(Id const &id);
+            QString tryCatch(Id const &id);
             QString ifStatement(Id const &id);
             QString whileDoLoop(Id const &id);
             QString doWhileLoop(Id const &id);

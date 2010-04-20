@@ -477,37 +477,37 @@ QString JavaHandler::serializeObject(Id const &id)
         }
     } else if (objectType(id) == "ActivityDiagram_Action") {
         //if it has the Constraint nodes
-        IdList outgoingLinks = mApi.outgoingLinks(id);
-        IdList constraints;
-        foreach (Id aLink, outgoingLinks) {
-            if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
-                constraints.append(aLink);
-            }
-        }
-
-        bool hasCode = false;
-        foreach (Id aConstraint, constraints) {
-            Id constraint = mApi.otherEntityFromLink(aConstraint, id);
-            QString code = getConstraintContent(constraint);
-            QString contentType = getConstraintType(constraint);
-            if (contentType == "comment") {
-                if (code.contains("\n")) {
-                    code = "/*" + code + "*/";
-                } else {
-                    code = "//" + code;
+                IdList outgoingLinks = mApi.outgoingLinks(id);
+                IdList constraints;
+                foreach (Id aLink, outgoingLinks) {
+                    if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+                        constraints.append(aLink);
+                    }
                 }
-            }
-            result += indent() + code + "\n";
 
-            if (contentType == "code") {
-                hasCode = true;
-            }
-        }
+                bool hasCode = false;
+                foreach (Id aConstraint, constraints) {
+                    Id constraint = mApi.otherEntityFromLink(aConstraint, id);
+                    QString code = getConstraintContent(constraint);
+                    QString contentType = getConstraintType(constraint);
+                    if (contentType == "comment") {
+                        if (code.contains("\n")) {
+                            code = "/*" + code + "*/";
+                        } else {
+                            code = "//" + code;
+                        }
+                    }
+                    result += indent() + code + "\n";
 
-        //serialization
-        if (constraints.isEmpty() || !hasCode) {
-            result += indent() + mApi.name(id) + "\n";
-        }
+                    if (contentType == "code") {
+                        hasCode = true;
+                    }
+                }
+
+                //serialization
+                if (constraints.isEmpty() || !hasCode) {
+                    result += indent() + mApi.name(id) + "\n";
+                }
     } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
         result += getConstraints(id);
         IdList parents = mApi.parents(id);
@@ -555,22 +555,7 @@ QString JavaHandler::serializeObject(Id const &id)
         if (exceptions.length() == 0) { //if it is just an Activity
             result += serializeChildren(id);
         } else { //if it is "try-catch"
-            result += indent() + "try {\n";
-            mIndent++;
-            result += serializeChildren(id);
-            mIndent--;
-            result += indent() + "}";
-
-            foreach (Id anException, exceptions) {
-                result += " catch (" + getFlowGuard(anException) + ") {\n";
-                mIndent++;
-                Id exceptionHandler = mApi.otherEntityFromLink(anException, id);
-                result += serializeActivity(exceptionHandler, Id());
-                mIndent--;
-                result += indent() + "}";
-            }
-
-            result += "\n";
+            result += tryCatch(id);
         }
     }
 
@@ -608,6 +593,56 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
     return result;
 }
 
+QString JavaHandler::tryCatch(Id const &id)
+{
+    QString result = "";
+    int existFinally = 0; //for checking that there is no 2 outgoing links with "finally" as a guard
+
+    //search for "exception"-links
+    IdList outgoingLinks = mApi.outgoingLinks(id);
+    IdList exceptions;
+    foreach (Id aLink, outgoingLinks) {
+        if (getFlowGuard(aLink) != "") {
+            exceptions.append(aLink);
+        }
+    }
+
+    //move "finally"-link to the end of the list
+    foreach (Id aLink, exceptions) {
+        //if this link represent "finally" case than change it with the last link in the serialization sequence
+        if (getFlowGuard(aLink) == "finally") {
+            if (existFinally == 1) {
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"finally\" as guard.");
+            }
+            existFinally = 1;
+            outgoingLinks.swap(outgoingLinks.indexOf(aLink), outgoingLinks.length()-1);
+        }
+    }
+
+    result += indent() + "try {\n";
+    mIndent++;
+    result += serializeChildren(id);
+    mIndent--;
+    result += indent() + "}";
+
+    foreach (Id anException, exceptions) {
+        if (getFlowGuard(anException) != "finally") {
+            result += " catch (" + getFlowGuard(anException) + ") {\n";
+        } else {
+            result += " finally {\n";
+        }
+        mIndent++;
+        Id exceptionHandler = mApi.otherEntityFromLink(anException, id);
+        result += serializeActivity(exceptionHandler, Id());
+        mIndent--;
+        result += indent() + "}";
+    }
+
+    result += "\n";
+
+    return result;
+}
+
 QString JavaHandler::ifStatement(Id const &id)
 {
     QString result = indent() + "";
@@ -615,9 +650,13 @@ QString JavaHandler::ifStatement(Id const &id)
     Id untilMergeNode = findMergeNode(id);
     int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
 
-    //move "else" link to the end of the list
+    //move "else" link to the end of the list and delete Constraint Edges.
     IdList outgoingLinks = mApi.outgoingLinks(id);
     foreach (Id aLink, outgoingLinks) {
+        if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+            outgoingLinks.removeAll(aLink);
+            break;
+        }
         //if this link represent "else" case than change it with the last link in the serialization sequence
         if (getFlowGuard(aLink) == "else") {
             if (existElse == 1) {
@@ -644,9 +683,7 @@ QString JavaHandler::ifStatement(Id const &id)
         mIndent--;
         result += indent() + "}";
 
-        if (aLink == outgoingLinks.at(outgoingLinks.length()-1)) { // if it is the last link then we should finish "if"-statement
-            result += indent() + "\n"; //empty string after "if"-statement. can be deleted.
-        } else { //if it is not the last link, connected to the Decision Node
+        if (aLink != outgoingLinks.at(outgoingLinks.length()-1)) { //if it is not the last link, connected to the Decision Node
             result += " else ";
         }
     }
@@ -724,6 +761,10 @@ QString JavaHandler::getFlowGuard(Id const &id)
 
     if (mApi.hasProperty(id, "guard")) {
         QString guard = mApi.stringProperty(id, "guard");
+        //TODO: delete it!!! That is just because QReal's sh~
+        guard = guard.replace("&lt;", "<");
+        guard = guard.replace("&rt;", ">");
+
         result = guard.simplified(); //delete whitespaces from the start and the end and internal whitespaces replace with a single space
 
 //        if (guard == "") {
