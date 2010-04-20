@@ -3,6 +3,7 @@
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<include>../commonXml/classMetamodel.xml</include>
 	<include>../activityEditor/activity_metamodel.xml</include>
+	<listener file="createObjectListener" class="hascolEditor::CreateObjectListener" />
 	<namespace>UML 2.0</namespace>
 	<diagram name="HascolStructure" displayedName="Hascol Structure">
 		<nonGraphicTypes>

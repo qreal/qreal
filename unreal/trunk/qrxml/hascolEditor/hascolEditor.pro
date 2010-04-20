@@ -4,3 +4,12 @@ QREAL_EDITOR_NAME = hascolEditor
 
 include (../editorsCommon.pri)
 
+HEADERS += \
+	../../qrgui/editorManager/listener.h
+
+HEADERS += \
+	createObjectListener.h \
+
+SOURCES += \
+	createObjectListener.cpp \
+
