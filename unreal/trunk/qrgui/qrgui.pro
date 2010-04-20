@@ -49,4 +49,8 @@ HEADERS += ../qrxml/editorinterface.h
 # Содержит код, общий для генератора редакторов и основной части.
 include (../utils/utils.pri)
 
+# Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)
+
+# Управление плагинами.
+include (editorManager/editorManager.pri)

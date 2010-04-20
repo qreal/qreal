@@ -8,6 +8,7 @@
 // TODO: Выделить что-то вроде Plugins SDK - куски кода основной системы,
 // которые должны использоваться при написании плагинов.
 #include "../qrgui/umllib/uml_element.h"
+#include "../qrgui/editorManager/listener.h"
 
 namespace qReal {
 
@@ -32,8 +33,10 @@ namespace qReal {
 		virtual QString editorName() const = 0;
 		virtual QString diagramName(QString const &diagram) const = 0;
 		virtual QString elementName(QString const &diagram, QString const &element) const = 0;
+
+		virtual QList<qReal::Listener*> listeners() const = 0;
 	};
 
 }
 
-Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.5")
+Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.6")

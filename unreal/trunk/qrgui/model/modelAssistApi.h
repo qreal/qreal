@@ -1,8 +1,10 @@
 #pragma once
 
-#include "../mainwindow/editormanager.h"
+#include "../kernel/ids.h"
 
 namespace qReal {
+
+	class EditorManager;
 
 	namespace model {
 

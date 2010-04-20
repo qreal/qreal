@@ -11,7 +11,7 @@
 #include "../../qrrepo/repoApi.h"
 #include "../kernel/definitions.h"
 #include "classes/modelTreeItem.h"
-#include "../mainwindow/editormanager.h"
+#include "../editorManager/editormanager.h"
 #include "modelAssistApi.h"
 
 namespace qReal {

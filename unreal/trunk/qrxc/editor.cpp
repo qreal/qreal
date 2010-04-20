@@ -2,6 +2,7 @@
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "type.h"
+#include "../utils/outFile.h"
 
 #include <QDebug>
 
@@ -23,9 +24,7 @@ bool Editor::isLoaded()
 
 bool Editor::load(QDir const &currentDir)
 {
-	QDomElement metamodel;
-
-	metamodel = mXmlDomDocument.firstChildElement("metamodel");
+	QDomElement metamodel = mXmlDomDocument.firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
 		qDebug() << "ERROR: metamodel tag not found";
@@ -47,6 +46,15 @@ bool Editor::load(QDir const &currentDir)
 			return false;
 		}
 		mIncludes.append(includeFile);
+	}
+
+	//Load listeners
+	for (QDomElement listenerElement = metamodel.firstChildElement("listener"); !listenerElement.isNull();
+		listenerElement = listenerElement.nextSiblingElement("listener"))
+	{
+		QString fileName = listenerElement.attribute("file");
+		QString className = listenerElement.attribute("class");
+		mListeners << QPair<QString, QString>(fileName, className);
 	}
 
 	// Load diagrams part one: don't process inherited properties.
@@ -114,4 +122,27 @@ Diagram* Editor::findDiagram(QString const &name)
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
+}
+
+void Editor::generateListenerIncludes(utils::OutFile &out) const
+{
+	typedef QPair<QString, QString> StringPair;
+	foreach (StringPair listener, mListeners) {
+		out() << "#include \"../" << listener.first << ".h\"\n";
+	}
+	out() << "\n";
+}
+
+void Editor::generateListenerFactory(utils::OutFile &out, QString const &pluginName) const
+{
+	out() << "QList<qReal::Listener*> " + pluginName + "Plugin::listeners() const\n"
+		<< "{\n"
+		<< "\tQList<qReal::Listener*> result;\n";
+
+	typedef QPair<QString, QString> StringPair;
+	foreach (StringPair listener, mListeners)
+		out() << "\tresult << new " + listener.second + ";\n";
+
+	out() << "\treturn result;\n"
+		<< "}\n";
 }

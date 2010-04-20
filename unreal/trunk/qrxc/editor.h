@@ -1,13 +1,18 @@
 #pragma once
 
-#include <QDomDocument>
-#include <QList>
-#include <QMap>
-#include <QDir>
+#include <QtXml/QDomDocument>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QDir>
+#include <QtCore/QPair>
 
 class XmlCompiler;
 class Diagram;
 class Type;
+
+namespace utils {
+	class OutFile;
+}
 
 class Editor
 {
@@ -21,10 +26,14 @@ public:
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 
+	void generateListenerIncludes(utils::OutFile &out) const;
+	void generateListenerFactory(utils::OutFile &out, QString const &pluginName) const;
+
 private:
 	XmlCompiler *mXmlCompiler;
 	QDomDocument mXmlDomDocument;
 	bool mLoadingComplete;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;
+	QList<QPair<QString, QString> > mListeners;
 };

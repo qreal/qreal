@@ -166,8 +166,11 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
 
-	mv_iface->model()->dropMimeData(newMimeData, event->dropAction(),
-		mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+	if (mv_iface->model()->dropMimeData(newMimeData, event->dropAction(),
+		mv_iface->model()->rowCount(parentIndex), 0, parentIndex))
+	{
+		emit objectCreated(id);
+	}
 
 	delete newMimeData;
 }
@@ -389,6 +392,7 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
+	connect(this, SIGNAL(objectCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const

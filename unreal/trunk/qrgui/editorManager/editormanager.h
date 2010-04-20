@@ -8,6 +8,7 @@ class QIcon;
 
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
+#include "listenerManager.h"
 
 namespace qrRepo {
 	class RepoApi;
@@ -45,6 +46,7 @@ namespace qReal {
 		bool hasElement(Id const &element) const;
 
 		Id findElementByType(QString const &type) const;
+		QList<Listener *> listeners() const;
 
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;

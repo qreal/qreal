@@ -8,7 +8,7 @@
 #include "editorviewscene.h"
 #include "../kernel/definitions.h"
 #include "../umllib/uml_element.h"
-#include "editormanager.h"
+#include "../editorManager/editorManager.h"
 #include "../mainwindow/mainwindow.h"
 
 using namespace qReal;
@@ -134,7 +134,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
-	
+
 	// обновляем порты всех линков, т.к. при создании линков они почему-то не находят прицепленных к ним нодов
 	foreach (QGraphicsItem *item, mScene->items()){
 		UML::Element *e = dynamic_cast<UML::Element*>(item);
@@ -150,7 +150,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 		if( item(curr) ){
 			mScene->removeItem(item(curr));
 			delete item(curr);
-		}	
+		}
 		removeItem(curr);
 	}
 	//потому что из модели элементы удаляются только после того, как удалятся из графической части.

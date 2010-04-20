@@ -157,6 +157,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
+		<< 	"\tvirtual QList<qReal::Listener*> listeners() const;\n"
+		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
@@ -178,6 +180,8 @@ void XmlCompiler::generatePluginSource()
 	generateProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
+
+	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
 
 void XmlCompiler::generateIncludes(OutFile &out)
@@ -188,6 +192,9 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out() << "#include \"" << "elements.h" << "\"\n";
 
 	out() << "\n";
+
+	mEditors[mCurrentEditor]->generateListenerIncludes(out);
+
 	out() << "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin(){\n"
 		<< "\tinitPlugin();\n"
@@ -299,7 +306,7 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 			isNotFirst |= generator.generate(type, out, isNotFirst);
 
 	out() << "\treturn result;\n"
-		<< "}\n";
+		<< "}\n\n";
 }
 
 void XmlCompiler::generateProperties(OutFile &out)

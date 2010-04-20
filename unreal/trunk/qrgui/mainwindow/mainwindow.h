@@ -7,13 +7,14 @@
 
 #include "ui_mainwindow.h"
 
-#include "editormanager.h"
+#include "../editorManager/editorManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 
 namespace qReal {
 
 	class EditorView;
+	class ListenerManager;
 
 	namespace model  {
 		class Model;
@@ -28,8 +29,10 @@ namespace qReal {
 		~MainWindow();
 
 		EditorManager *manager() {
-			return &mgr;
+			return &mEditorManager;
 		}
+
+		ListenerManager *listenerManager();
 
 		/** @brief Интерфейс главного окна */
 		Ui::MainWindowUi ui;
@@ -84,7 +87,8 @@ namespace qReal {
 
 	private:
 		model::Model *mModel;
-		EditorManager mgr;
+		EditorManager mEditorManager;
+		ListenerManager *mListenerManager;
 
 		/** @brief Модель редактора свойств */
 		PropertyEditorModel mPropertyModel;

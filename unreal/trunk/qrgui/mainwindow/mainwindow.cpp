@@ -25,11 +25,12 @@
 #include "../dialogs/editorGeneratorDialog.h"
 #include "../parsers/hascol/hascolParser.h"
 #include "errorReporter.h"
+#include "../editorManager/listenerManager.h"
 
 using namespace qReal;
 
 MainWindow::MainWindow()
-		: mPropertyModel(mgr)
+		: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
@@ -123,8 +124,8 @@ MainWindow::MainWindow()
 
 	QString workingDir = settings.value("workingDir", "./save").toString();
 
-	mModel = new model::Model(mgr, workingDir);
-	IdList missingPlugins = mgr.checkNeededPlugins(mModel->api());
+	mModel = new model::Model(mEditorManager, workingDir);
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
 	if (!missingPlugins.isEmpty()) {
 		QString text = "These plugins are not present, but needed to load the save:\n";
 		foreach (Id const id, missingPlugins) {
@@ -134,6 +135,8 @@ MainWindow::MainWindow()
 		close();  // Всё, собственно.
 		return;
 	}
+
+	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -166,6 +169,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	delete mModel;
+	delete mListenerManager;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -180,12 +184,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-	foreach (Id const editor, mgr.editors()) {
-		foreach (Id const diagram, mgr.diagrams(editor)) {
-			ui.paletteToolbox->addDiagramType(diagram, mgr.friendlyName(diagram) );
+	foreach (Id const editor, mEditorManager.editors()) {
+		foreach (Id const diagram, mEditorManager.diagrams(editor)) {
+			ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram) );
 
-			foreach (Id const element, mgr.elements(diagram)) {
-				ui.paletteToolbox->addItemType(element, mgr.friendlyName(element), mgr.icon(element));
+			foreach (Id const element, mEditorManager.elements(diagram)) {
+				ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
 			}
 		}
 	}
@@ -334,7 +338,7 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-	PluginDialog dialog( mgr , this);
+	PluginDialog dialog(mEditorManager , this);
 	dialog.exec();
 }
 
@@ -475,7 +479,7 @@ void MainWindow::parseHascol()
 	if (fileNames.empty())
 		return;
 
-	parsers::HascolParser parser(mModel->mutableApi(), mgr);
+	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
 	gui::ErrorReporter errors = parser.parse(fileNames);
 
 	errors.showErrors("Parsing is finished");
@@ -552,4 +556,9 @@ void MainWindow::closeTab(QModelIndex const &index)
 			return;
 		}
 	}
+}
+
+ListenerManager *MainWindow::listenerManager()
+{
+	return mListenerManager;
 }

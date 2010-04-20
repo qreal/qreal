@@ -200,3 +200,11 @@ Id EditorManager::findElementByType(QString const &type) const
 					return Id(editor->id(), diagram, element);
 	throw Exception("No type " + type + " in loaded plugins");
 }
+
+QList<Listener*> EditorManager::listeners() const
+{
+	QList<Listener*> result;
+	foreach (EditorInterface *editor, mPluginIface.values())
+		result.append(editor->listeners());
+	return result;
+}

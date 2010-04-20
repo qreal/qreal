@@ -47,6 +47,9 @@ public:
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
+signals:
+	void objectCreated(qReal::Id const & id);
+
 protected:
 	/** @brief Обработать начало события drag'n'drop */
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );
