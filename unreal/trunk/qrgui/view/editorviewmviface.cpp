@@ -8,7 +8,7 @@
 #include "editorviewscene.h"
 #include "../kernel/definitions.h"
 #include "../umllib/uml_element.h"
-#include "../editorManager/editorManager.h"
+#include "../editorManager/editormanager.h"
 #include "../mainwindow/mainwindow.h"
 
 using namespace qReal;

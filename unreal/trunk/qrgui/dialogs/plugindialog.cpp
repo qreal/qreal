@@ -14,7 +14,7 @@
 #include "plugindialog.h"
 
 #include "editorinterface.h"
-#include "../editorManager/editorManager.h"
+#include "../editorManager/editormanager.h"
 
 using namespace qReal;
 

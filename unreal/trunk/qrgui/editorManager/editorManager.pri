@@ -1,9 +1,9 @@
 HEADERS += \
-	editorManager/editorManager.h \
+	editorManager/editormanager.h \
 	editorManager/listenerManager.h \
 	editorManager/listener.h \
 
 SOURCES += \
-	editorManager/editorManager.cpp \
+	editorManager/editormanager.cpp \
 	editorManager/listenerManager.cpp \
 

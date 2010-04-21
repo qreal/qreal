@@ -1,6 +1,6 @@
 #include "hascolParser.h"
 
-#include "../../editorManager/editorManager.h"
+#include "../../editorManager/editormanager.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>

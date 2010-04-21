@@ -7,7 +7,7 @@
 
 #include "ui_mainwindow.h"
 
-#include "../editorManager/editorManager.h"
+#include "../editorManager/editormanager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 
