@@ -1,0 +1,56 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{630c3ea1-41f0-409f-ab7a-79ca2f4347f2}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_InitialNode/{b98b73e0-f6ca-41b0-82e3-a862acd14dc9}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{6b13b8cd-b71f-4e4a-b1c1-7533a49d9235}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{c8c43fac-3cdd-4fc7-821c-d81f2b937a58}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{95bbea78-c93d-42c5-bec8-bc04c41c3e1f}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{bac4b2ab-67cc-4e3d-a217-85091a68abab}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityFinalNode/{702876ed-8d50-4d91-a45d-102482a23871}"/>
+  </children>
+  <properties>
+    <QString key="body" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 597, 0 : 597, 489 : 0, 489 : "/>
+    <QString key="coordinatedNodes" value=""/>
+    <QString key="edge" value=""/>
+    <QString key="edges" value=""/>
+    <QString key="elementImport" value=""/>
+    <QString key="expansionRegion" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="generalization" value=""/>
+    <QString key="group" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="isAbstract" value=""/>
+    <QString key="isLeaf" value=""/>
+    <QString key="isSingleExecution" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{2fe8d9ff-3e2e-41a6-a62e-ee37da180679}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ab573a9a-2fc7-4c88-8cfe-f9acb1070d91}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{1743352b-d177-4589-9623-60d06db50a7f}"/>
+    </links>
+    <QString key="name" value="(anonymous Activity)"/>
+    <QString key="nestedClassifier" value=""/>
+    <QString key="node" value=""/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedAttribute" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QString key="ownedOperation" value=""/>
+    <QString key="ownedRule" value=""/>
+    <QString key="packageImport" value=""/>
+    <QPointF key="position" value="-829, -1657"/>
+    <QString key="powertypeExtent" value=""/>
+    <QString key="redefinedClassifier" value=""/>
+    <QString key="substitution" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="topLevelGroups" value=""/>
+    <QString key="topLevelPartitions" value=""/>
+    <QString key="topLevelVariables" value=""/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

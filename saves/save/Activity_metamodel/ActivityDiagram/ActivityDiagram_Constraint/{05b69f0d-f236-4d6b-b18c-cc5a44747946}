@@ -1,0 +1,26 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{05b69f0d-f236-4d6b-b18c-cc5a44747946}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 358, 0 : 358, 83 : 0, 83 : "/>
+    <QString key="constrainedElement" value=""/>
+    <QString key="contentType" value="code"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ConstraintEdge/{a3c0c351-4b2f-46ff-a831-0a7b6279e7af}"/>
+    </links>
+    <QString key="name" value="(anonymous Constraint)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-211.266, 2991.74"/>
+    <QString key="specification" value="Intent detailIntent = new Intent(context, CityInfoDetailActivity.class);&lt;br/>detailIntent.setData(appWidgetUri);&lt;br/>detailIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

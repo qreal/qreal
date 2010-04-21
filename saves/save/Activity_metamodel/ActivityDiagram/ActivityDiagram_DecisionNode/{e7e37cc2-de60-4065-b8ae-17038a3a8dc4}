@@ -1,0 +1,36 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{e7e37cc2-de60-4065-b8ae-17038a3a8dc4}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 30, 0 : 30, 30 : 0, 30 : "/>
+    <QString key="decisionInput" value=""/>
+    <QString key="decisionInputFlow" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="inInterruptableRegion" value=""/>
+    <QString key="inPartition" value=""/>
+    <incomingConnections type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{5df8fa19-0340-4c0a-9e09-f72e0c8c1b6c}"/>
+    </incomingConnections>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{d306df8e-71e3-4bc4-a5f2-4e9e0bb113d2}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{e6b1a41f-b787-43cf-8735-ae58248faea7}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ae40d12e-5cb5-4e5a-a444-297fdf2cb0c2}"/>
+    </links>
+    <QString key="name" value="another big if : if 1"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-453, -47"/>
+    <QString key="redefineNode" value=""/>
+    <QString key="redefinedNode" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

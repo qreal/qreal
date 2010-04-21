@@ -1,0 +1,34 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{07df5f40-e087-49ee-9679-79bbed4bd022}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 266, 0 : 266, 44 : 0, 44 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="handler" value=""/>
+    <QString key="inInterruptableRegion" value=""/>
+    <QString key="inPartition" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="input" value=""/>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{44033ff0-b1f9-400b-9fd9-7d5d8e56a66f}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{8da0e00d-f596-4cd0-83fb-bd40c78b9cef}"/>
+    </links>
+    <QString key="name" value="views.setOnClickPendingIntent(R.id.widget_layout, pending);"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="output" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-444.51, 3173.94"/>
+    <QString key="redefineNode" value=""/>
+    <QString key="redefinedNode" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

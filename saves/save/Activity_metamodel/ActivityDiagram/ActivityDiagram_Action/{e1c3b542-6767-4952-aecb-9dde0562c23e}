@@ -1,0 +1,34 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{e1c3b542-6767-4952-aecb-9dde0562c23e}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 336, 0 : 336, 45 : 0, 45 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="handler" value=""/>
+    <QString key="inInterruptableRegion" value=""/>
+    <QString key="inPartition" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="input" value=""/>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{9404e149-94dc-4a13-b8d9-6002e26124c4}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{66d97b4a-7dec-4ce9-bb6c-339498e5772b}"/>
+    </links>
+    <QString key="name" value="views.setTextVievText(R.id.widget_date, WeatherUtil.getDateShortString(context, calendar) + &quot; &quot; + date);"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="output" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-378, 2119"/>
+    <QString key="redefineNode" value=""/>
+    <QString key="redefinedNode" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

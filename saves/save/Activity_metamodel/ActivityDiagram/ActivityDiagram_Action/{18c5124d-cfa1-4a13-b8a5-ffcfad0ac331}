@@ -1,0 +1,34 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{18c5124d-cfa1-4a13-b8a5-ffcfad0ac331}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{4921bf8a-1d23-487b-88cd-4ddf14178909}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 112, 0 : 112, 39 : 0, 39 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="handler" value=""/>
+    <QString key="inInterruptableRegion" value=""/>
+    <QString key="inPartition" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="input" value=""/>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{3b0c4bc8-a104-40be-8065-f44eaed9f37c}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{1a3123c2-fadf-42ca-a0a1-81d584f52f92}"/>
+    </links>
+    <QString key="name" value="cursor.close();"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="output" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-141, -263"/>
+    <QString key="redefineNode" value=""/>
+    <QString key="redefinedNode" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

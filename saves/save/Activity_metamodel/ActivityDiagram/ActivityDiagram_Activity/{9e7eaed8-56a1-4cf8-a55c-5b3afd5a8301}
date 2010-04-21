@@ -1,0 +1,143 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{9e7eaed8-56a1-4cf8-a55c-5b3afd5a8301}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{f5a2515c-2f4a-4521-87e2-8c20a80e27c2}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{ea71a14b-9801-427d-aedf-e9073c9cc8a3}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{388449f0-87ea-4f5e-9168-84c24f18b94a}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityFinalNode/{cc3c1b21-f1f5-45d2-817b-3d79f1990afb}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{26bda82f-da92-4eab-86ec-d0d1c6425b16}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{50ceff2e-eb04-4a9f-93fc-40c119762802}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d8a598e8-f713-40e2-b3e3-a2d2420ad6c5}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{3cb18c08-a808-4abe-853e-d752607171a3}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{58a11f84-688c-4198-aa1e-53e133a3c353}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{1caee273-0ea9-4302-b31c-239b25f63aad}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{7a08e394-3d04-4608-8beb-394f89db3090}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d0e2c12b-9657-45ed-ab18-2f9b4628845b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{5b536f78-7cab-4463-b059-57faad9a35f8}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{19f39616-be90-4998-a155-82cd788dc283}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{dc482801-a40e-445f-94c0-eaf5b523b2c1}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{03588f0b-7321-4689-b677-891b309d2dfe}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{20f811da-a1da-41b8-a2c9-58ffffe8303b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{24b64092-fac7-4590-b722-a7d21c4ce9fc}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{1cdf1cd7-5d79-4f4f-aafd-096e97cd8744}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{574c36df-3ed4-4684-9872-7c4ed580b870}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{fbc8657e-7b1e-48bc-a279-279647f237f8}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{363a19aa-9f44-4d63-a0dc-a4a333f6160d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{4fcdaf05-2347-48cc-82c5-19338adcf39c}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{659b09d0-1ad3-4edf-92ab-d639a048757c}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{1b141dfd-c051-421c-baaf-fd2592019333}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{d7fbc644-fb7b-4ed6-8c59-fa053c08dddc}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{641bbf95-31e5-4339-9f36-bc1e6b592be8}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{95709400-a62e-405e-8250-f1a20aab2369}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{7e648337-13ff-440c-ac6a-71fddc0bce87}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{70fbbd2b-99e4-4f21-ae6b-ea6af532170c}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{a834968b-8d61-4b08-8835-ecd9fd705a6b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{50ab6141-e0bd-488e-8f07-8f485ed5eb9b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{c3983114-3a2e-46b4-afd7-05d0d8aa7150}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{4b0e1302-9ae0-4d9e-87f8-3c5f074d61a7}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{385dc016-c257-4d45-8bec-d74d295fd8a9}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{26dceb9d-a43c-4600-8bed-25067f44a095}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{c56d4f91-faba-402f-a09c-403dd184f6ac}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{cd1fbb32-438f-4d21-8971-c761d5a73bf1}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_InitialNode/{36e8b3df-3e89-44ee-9fcc-df292eecb88a}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{124ceee8-f0ee-4409-b2f0-818b594f0660}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{d3de8ad2-6946-461b-bddc-a222b621747a}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{f44b1089-ef14-4f79-a708-4e7e37b78702}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{6a841b2c-dbdc-47d1-8532-a37be928c971}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{a5e3cde6-f9f1-4962-bcc1-24133ec6ab80}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{6c702792-2a4f-41c9-981c-92b64a85ff90}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{0a44ece1-118e-4bbd-a583-bbf42177adf4}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{fe7230e2-3305-4cd4-966c-294ab9256730}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{4fad22f1-7735-4a92-8f28-d7a05a5b1264}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{7a9ae44f-76f3-438c-b910-0f0d6fdb7de2}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{2f3d112e-0adf-4bb5-8706-d326c6dc94ed}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{97574a76-b7ae-4b09-90d9-320c9490427b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{1c58c0ce-6ac8-4a93-be9e-e59df04c9508}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{a5b4512e-f888-48ae-a78e-3c8a4845c8cf}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{6a9c6ca4-0d5d-40a7-958f-976a5d2f14a3}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{e0472fdd-ccd8-473c-9531-92e6c51713e2}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{40f2abca-3a5f-43ee-9bb1-f890d3e9ee55}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{20fcfd0a-13d4-49a4-9b26-e3adc06cc6bc}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{5d289c79-cb8e-47df-8e36-ab2745932b3c}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{9601caff-d189-4704-89c7-fbaf5006ab23}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{fbc5af19-7855-4f4e-ab3e-17d6114c65d0}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{bfccde80-d8e7-4a42-9442-a93efb0f0f9c}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{39392f67-be22-4f94-8ce7-77d2829e6d22}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{30f39f42-1b0a-4bfc-967d-f1bf1093df80}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{fb634554-2000-46ae-89b8-67f8bc40e60f}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{28d50106-a1ce-47b6-b593-5c6106b93ad1}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{42be2efd-d9d3-4876-810b-77e9b70c4130}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d199ca63-16bf-4688-86b0-dc41ed3ef8f7}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{ce029e9a-1d26-4df8-9597-a7d3633e587d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{bdf22fce-d8fa-4b44-b9e6-f81d432b5896}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{0d9d95f9-ccf6-4ec6-906a-af98749b9e3b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{aa07a3d9-d0b6-4530-a873-d033349dae0d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{db2450b1-67d1-44aa-9c55-383255507c2f}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{b77576ae-404f-4aca-9a21-eaad50e4c883}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{54cad476-1e40-4657-8604-d2e9e5512f7b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{46dd90f6-ad5e-4bc1-8343-13acc096c567}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{152f6291-9d5f-4a21-ae92-77d56a020407}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{ad2720bf-a355-4894-b09d-a1d423a5df82}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d2eebfbc-4759-43e4-9a52-52012551f730}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{7a6c2bdf-36b4-45c0-8370-7f0201475cfe}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{00e09088-db14-4171-be8f-96af835f976a}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{68e605fe-570e-4ca3-8bbd-3cc92358e00b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{2e9a1fe8-cfe8-4ae8-bf6f-32a1ea7d5bc9}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{708131ac-0cbd-49d8-ae46-14cf9cde2b85}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{e4b43aab-861f-4671-9e90-4ccf826955a0}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{800138ce-7d18-4ba8-b1f9-7e17acbfb496}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{466bac39-53e6-495b-b7a0-06ee2f608277}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d3d7d39d-5ad1-469a-ba26-381326126683}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{3e6da550-9bc8-4909-b44e-9020679dfb97}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{77dd24ef-d9ba-4a99-b1eb-93087239f898}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{614892a6-1a27-4843-ac63-0cabc73ed05d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{6242e8f8-a79e-48a5-b804-f78ae580f4b5}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{8c7642f2-a141-446e-9669-448c5f48778d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_MergeNode/{b43fdc8f-157c-444c-acd1-922f3ccff6c4}"/>
+  </children>
+  <properties>
+    <QString key="body" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 1412, 0 : 1412, 3115 : 0, 3115 : "/>
+    <QString key="coordinatedNodes" value=""/>
+    <QString key="edge" value=""/>
+    <QString key="edges" value=""/>
+    <QString key="elementImport" value=""/>
+    <QString key="expansionRegion" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="generalization" value=""/>
+    <QString key="group" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="isAbstract" value=""/>
+    <QString key="isLeaf" value=""/>
+    <QString key="isSingleExecution" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{18a12739-4fce-43ab-86a5-d71307fb90ee}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{00266449-7555-42fe-ad15-4045a2e64b0c}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{b764ae02-383d-4406-9bf6-d3c2b1bade23}"/>
+    </links>
+    <QString key="name" value=""/>
+    <QString key="nestedClassifier" value=""/>
+    <QString key="node" value=""/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedAttribute" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QString key="ownedOperation" value=""/>
+    <QString key="ownedRule" value=""/>
+    <QString key="packageImport" value=""/>
+    <QPointF key="position" value="-416.406, -453"/>
+    <QString key="powertypeExtent" value=""/>
+    <QString key="redefinedClassifier" value=""/>
+    <QString key="substitution" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="topLevelGroups" value=""/>
+    <QString key="topLevelPartitions" value=""/>
+    <QString key="topLevelVariables" value=""/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

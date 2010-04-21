@@ -1,0 +1,19 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ConstraintEdge/{ade48166-5bc5-4f15-8c66-e6493decafcd}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, -4 : "/>
+    <qReal::Id key="from" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{dc482801-a40e-445f-94c0-eaf5b523b2c1}"/>
+    <double key="fromPort" value="3.9"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(anonymous Constraint Edge)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-131, 148"/>
+    <qReal::Id key="to" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{19f39616-be90-4998-a155-82cd788dc283}"/>
+    <double key="toPort" value="1.66121"/>
+  </properties>
+</LogicObject>

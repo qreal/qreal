@@ -1,0 +1,29 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{a9317193-b4ce-4484-92a8-768cc7b0c506}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : -2, 28 : "/>
+    <qReal::Id key="from" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{03d24d53-3bd6-4345-8778-9f2f519b7852}"/>
+    <double key="fromPort" value="3.51353"/>
+    <QString key="guard" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="interrupts" value=""/>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(anonymous Control Flow)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QString key="partition" value=""/>
+    <QPointF key="position" value="-270.994, -988.883"/>
+    <QString key="redefinedEdge" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{fba73d88-e2a2-41d4-b1fe-134a77a46f06}"/>
+    <double key="toPort" value="2.47913"/>
+    <QString key="visibility" value=""/>
+    <QString key="weight" value=""/>
+  </properties>
+</LogicObject>

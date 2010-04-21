@@ -1,0 +1,34 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{4fcdaf05-2347-48cc-82c5-19338adcf39c}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{9e7eaed8-56a1-4cf8-a55c-5b3afd5a8301}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="activity" value=""/>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 194, 0 : 194, 49 : 0, 49 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <QString key="handler" value=""/>
+    <QString key="inInterruptableRegion" value=""/>
+    <QString key="inPartition" value=""/>
+    <incomingConnections type="qReal::IdList"/>
+    <QString key="input" value=""/>
+    <QString key="isLeaf" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{d5f01676-9dcc-466f-bfaa-974c6f7a69f2}"/>
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{bb27b835-65b9-415c-b69f-9e5385d4618b}"/>
+    </links>
+    <QString key="name" value="int timezone_hour = Integer.parseInt(timeZoneArray[0]);"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="output" value=""/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="774.406, 245"/>
+    <QString key="redefineNode" value=""/>
+    <QString key="redefinedNode" value=""/>
+    <QString key="structuredActivityNode" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

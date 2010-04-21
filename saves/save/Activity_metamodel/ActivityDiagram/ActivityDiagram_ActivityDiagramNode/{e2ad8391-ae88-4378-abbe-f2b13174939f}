@@ -1,0 +1,54 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}">
+  <parents>
+    <object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </parents>
+  <children>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{e4a87b80-e8ea-4c20-9454-32c503ef54c0}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{0fe69aaa-b9d9-409d-87e9-c4c572ca5cda}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ac8fcbe5-aebe-47f9-b50b-1fe92ec82e2e}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{cdf66c78-23be-488e-867c-233a3113997d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{2fe8d9ff-3e2e-41a6-a62e-ee37da180679}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityFinalNode/{9048eff6-03a7-4930-b6c3-ad6538f35f34}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{630c3ea1-41f0-409f-ab7a-79ca2f4347f2}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ab573a9a-2fc7-4c88-8cfe-f9acb1070d91}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{1743352b-d177-4589-9623-60d06db50a7f}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{68d1da03-6bc6-47c4-aef7-99ef4a57311e}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{8a85ec9f-f69d-41e2-9cad-77cf6bdf251b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ConstraintEdge/{687aed38-77e6-43c2-8136-aaf2aec60bb5}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{d304d15e-427e-4039-87cc-317388cd3d82}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ba45984d-35e6-4790-b011-35e95fb8c90a}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{0c7c0406-b57a-4610-931f-ad1e5a6917d3}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{9b17884b-396c-4ff6-a973-1966a3499d02}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{a7001e52-b965-418f-ae89-bedc6f9f5060}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{cbd8d889-5862-4302-8ca1-e3edff1f5c93}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{03f3e454-86e4-407c-beb3-a5a348e751f0}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_DecisionNode/{7034e74b-1d1d-4f1d-87c0-854d18deb7a4}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ea735d7b-56df-4365-9cc8-a6b32c81888b}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{ab6a48a4-4080-4041-8a67-b3ca385f11e7}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{ef8ec87a-38cb-42dc-9c45-d84b969df34d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{5fefc8b6-6891-4cb9-9bd8-88fbc294dfdd}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{922d62ad-ef27-4e59-89ee-de1323492da4}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{308a8922-915e-4966-b28a-2526508d4bcd}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{2190f4ae-8ff7-45e0-a5f1-6889d76ae985}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{cacfb118-ba3b-41e1-b414-826f643648bb}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{f1515316-207d-4664-880f-eb4ad04e7b45}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ControlFlow/{61376fa6-24ff-431c-af88-4f4d03f3a049}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_InitialNode/{0afe6141-f2ad-412b-a049-8aa31a6d6670}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList">
+      <object id="qrm:/ClassMetamodel/ClassDiagram/ClassDiagram_ClassMethod/{6de058db-a60d-4307-9f8b-cb276533f2d7}"/>
+    </incomingConnections>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="ClockWeatherWidgetProvider : buildUpdate"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QPointF key="position" value="0, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

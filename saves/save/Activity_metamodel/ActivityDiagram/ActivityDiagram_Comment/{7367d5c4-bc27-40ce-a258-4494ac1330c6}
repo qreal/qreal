@@ -1,0 +1,23 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Comment/{7367d5c4-bc27-40ce-a258-4494ac1330c6}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="annotatedElement" value=""/>
+    <QString key="body" value="timezone"/>
+    <QPolygon key="configuration" value="0, 0 : 107, 0 : 107, 31 : 0, 31 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_CommentLink/{79562045-05e5-4f49-a4ae-c88b8a29cb88}"/>
+    </links>
+    <QString key="name" value="(anonymous Comment)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-233, 281"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

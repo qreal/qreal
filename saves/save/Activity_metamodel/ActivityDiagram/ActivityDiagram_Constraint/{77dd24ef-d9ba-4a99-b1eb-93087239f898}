@@ -1,0 +1,26 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{77dd24ef-d9ba-4a99-b1eb-93087239f898}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Activity/{9e7eaed8-56a1-4cf8-a55c-5b3afd5a8301}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 90, 0 : 90, 30 : 0, 30 : "/>
+    <QString key="constrainedElement" value=""/>
+    <QString key="contentType" value="comment"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ConstraintEdge/{214271ce-0259-414f-93d1-ba215c3fc7ab}"/>
+    </links>
+    <QString key="name" value="(anonymous Constraint)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="1135.41, 2510"/>
+    <QString key="specification" value="minute (current)"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

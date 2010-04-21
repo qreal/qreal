@@ -1,0 +1,18 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_CommentLink/{aaeac48d-758f-49f1-a54a-c455467b272d}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 45, -23 : "/>
+    <qReal::Id key="from" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Action/{07dfd92d-367b-47e5-82cf-3f47be4f826b}"/>
+    <double key="fromPort" value="0.425"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(anonymous Comment Link)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QPointF key="position" value="-200, 1229.6"/>
+    <qReal::Id key="to" value="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Comment/{4af9a4c8-8a88-4a59-8f83-96a0afd9554b}"/>
+    <double key="toPort" value="1.34015"/>
+  </properties>
+</LogicObject>
