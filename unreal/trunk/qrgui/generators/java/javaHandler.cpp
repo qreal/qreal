@@ -241,6 +241,7 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
     return children;
 }
 
+//Delete all CommentLink links from idList. Returns deleted CommentLinks.
 IdList JavaHandler::deleteCommentLinks(IdList &idList)
 {
     IdList result;
@@ -255,6 +256,7 @@ IdList JavaHandler::deleteCommentLinks(IdList &idList)
     return result;
 }
 
+//Delete all ConstraintEdge links from idList. Returns deleted ConstraintEdges.
 IdList JavaHandler::deleteConstraintEdges(IdList &idList)
 {
     IdList result;
@@ -501,8 +503,6 @@ QString JavaHandler::serializeObject(Id const &id)
 
         result += getConstraints(id);
     } else if (objectType(id) == "ActivityDiagram_Action") {
-        result += getComments(id);
-
         IdList outgoingConnections = mApi.outgoingConnections(id);
         IdList activityDiagrams;
         foreach (Id aConnection, outgoingConnections) {
@@ -515,13 +515,14 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are too many Activity Diagrams connected.");
         }
 
+        result += getComments(id);
         QString code = getConstraints(id);
 
         if (activityDiagrams.isEmpty() && code == "") {
             result += indent() + mApi.name(id).replace("<br/>", "\n" + indent()) + "\n";
         } else {
             if (activityDiagrams.isEmpty() && code != "") {
-                result += indent() + code + "\n";
+                result += code;
             } else if (!activityDiagrams.isEmpty() && code == "") {
                 result += serializeChildren(activityDiagrams.at(0));
             } else {
@@ -655,13 +656,15 @@ QString JavaHandler::ifStatement(Id const &id)
 
     //move "else" link to the end of the list and delete Constraint Edges.
     IdList outgoingLinks = mApi.outgoingLinks(id);
+    deleteCommentLinks(outgoingLinks);
+    deleteConstraintEdges(outgoingLinks);
     foreach (Id aLink, outgoingLinks) {
         if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
             outgoingLinks.removeAll(aLink);
             break;
         }
         //if this link represent "else" case than change it with the last link in the serialization sequence
-        if (getFlowGuard(aLink) == "else") {
+        if (getFlowGuard(aLink) == "else" || getFlowGuard(aLink) == "") {
             if (existElse == 1) {
                 addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are two objects with \"else\" as guard.");
             }
@@ -673,21 +676,21 @@ QString JavaHandler::ifStatement(Id const &id)
     //serialization
     foreach (Id aLink, outgoingLinks) {
         Id caseBody = mApi.otherEntityFromLink(aLink, id);
-        QString guard = getFlowGuard(aLink);
-        if (guard != "else") {
-            result += "if (" + guard + ") ";
-        }
-
-        result += "{\n";
-        mIndent++;
         if (caseBody != untilMergeNode) {
-            result += serializeActivity(caseBody, untilMergeNode);
-        }
-        mIndent--;
-        result += indent() + "}";
+            if (aLink != outgoingLinks.at(0)) { //if it is not the first link, connected to the Decision Node
+                result += " else ";
+            }
 
-        if (aLink != outgoingLinks.at(outgoingLinks.length()-1)) { //if it is not the last link, connected to the Decision Node
-            result += " else ";
+            QString guard = getFlowGuard(aLink);
+            if (guard != "else" && guard != "") {
+                result += "if (" + guard + ") ";
+            }
+            result += "{\n";
+            mIndent++;
+            result += serializeActivity(caseBody, untilMergeNode);
+            mIndent--;
+            result += indent() + "}";
+
         }
     }
 
@@ -948,6 +951,8 @@ QString JavaHandler::getConstraints(Id const &id)
     //if it has the Constraint nodes
     IdList outgoingLinks = mApi.outgoingLinks(id);
     IdList constraints = deleteConstraintEdges(outgoingLinks);
+    IdList incomingLinks = mApi.incomingLinks(id);
+    constraints.append(deleteConstraintEdges(incomingLinks));
 
     if (constraints.length() >= 2) {
         addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Constraints generalization can not be defined.");
@@ -955,9 +960,7 @@ QString JavaHandler::getConstraints(Id const &id)
 
     foreach (Id aConstraint, constraints) {
         Id constraint = mApi.otherEntityFromLink(aConstraint, id);
-        QString code = getConstraint(constraint);
-
-        result += code;
+        result += getConstraint(constraint) + "\n";
     }
 
     return result;
@@ -971,7 +974,7 @@ QString JavaHandler::getConstraint(Id const &id)
         QString specification = mApi.stringProperty(id, "specification");
         specification.replace("<br/>", "\n" + indent());
 
-        result = specification;
+        result = indent() + specification;
     }
 
     return result;
@@ -983,6 +986,8 @@ QString JavaHandler::getComments(Id const &id)
 
     IdList outgoingLinks = mApi.outgoingLinks(id);
     IdList comments = deleteCommentLinks(outgoingLinks);
+    IdList incominglinks = mApi.incomingLinks(id);
+    comments.append(deleteCommentLinks(incominglinks));
 
     if (comments.length() >= 2) {
         addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Comments generalization can not be defined.");
@@ -990,9 +995,7 @@ QString JavaHandler::getComments(Id const &id)
 
     foreach (Id aCommentLink, comments) {
         Id comment = mApi.otherEntityFromLink(aCommentLink, id);
-        QString body = getComment(comment);
-
-        result += body + "\n";
+        result += getComment(comment) + "\n";
     }
 
     return result;
