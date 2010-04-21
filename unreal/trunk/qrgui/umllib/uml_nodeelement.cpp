@@ -59,33 +59,22 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 			{
 				qDebug() << "! Create Relationship:   start";
 
-				QByteArray data;
-				QDataStream stream(&data, QIODevice::WriteOnly);
-				Id *edgeId = new Id(QString("Kernel_metamodel"), QString("Kernel"),
-				QString("Kernel_Association"), QUuid::createUuid().toString());
-				QString uuid = edgeId->toString();
-				QString pathToItem = ROOT_ID.toString();
-				QString name = "(anonymous Relationship)";
-				QPointF pos = QPointF(0,0);						
-				stream << uuid;
-				stream << pathToItem;
-				stream << name;
-				stream << pos;
+				const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association/";
+				Id *edgeId = editorScene->createElement(type, event->scenePos());
 
-				QString mimeType = QString("application/x-real-uml-data");
-				QMimeData *mimeData = new QMimeData();
-				mimeData->setData(mimeType, data);
-						
-				editorScene->createElement(mimeData, event->scenePos());
 				mEdge = dynamic_cast<EdgeElement*>(editorScene->getElem(*edgeId));
 
 				if (mEdge != NULL)
-					mEdge->placeEndTo(QPointF(mContents.bottomRight().x()/2, mContents.bottomRight().y()/2));
+				{
+					QPointF p = QPointF(mContents.bottomRight().x()/2, mContents.bottomRight().y()/2);
+					this->setSelected(false);
+					mEdge->setSelected(true);
+					mEdge->placeEndTo(p);
+//					QCursor::setPos(QPoint(p.x(),p.y()));
+				}
 				else
 					qDebug() << "*edge == NULL";
-
 				qDebug() << "! Create Relationship:   finish";
-				delete mimeData;
 			}
 		}
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
@@ -215,12 +204,12 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			Element *under = dynamic_cast<Element*>(editorScene->itemAt(event->scenePos()));
 			mEdge->show();
 			if (under == NULL)
-			{
-				this->setSelected(false);
-				editorScene->launchEdgeMenu(mEdge);
-			}
+				if (editorScene->launchEdgeMenu(mEdge, event->scenePos()))
+					mEdge = NULL;
 		}
-		mEdge->connectToPort();
+
+		if (mEdge != NULL)
+			mEdge->connectToPort();
 	}
 	mDragState = None;
 	setZValue(0);

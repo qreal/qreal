@@ -105,7 +105,7 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_ASSERT(mWindow);  // Значение mWindow должно быть инициализировано
+	Q_ASSERT(mWindow);// Значение mWindow должно быть инициализировано
 	// отдельно, через конструктор это делать нехорошо,
 	// поскольку сцена создаётся в сгенерённом ui-шнике.
 
@@ -116,26 +116,98 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	createElement(event->mimeData(),event->scenePos());
 }
 
-void EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge)
+bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 {
-	qDebug() << "---launchCreation() start";
-	
+	bool edgeDeleted = false;
+	qDebug() << "---launchEdgeMenu() begin";
 	edge->setSelected(true);
-	
-	// убрал пока, чтобы не сегфолтило
-/*
-	QMenu menu;
-	menu.addAction(mWindow->ui.actionDeleteFromDiagram);//Сегфолт.
-	menu.addMenu("Create new element");
-	menu.exec(QCursor::pos());
-*/
 
-	qDebug() << "---launchCreation() finish";
+	QList<QObject*> toDelete;
+
+	QMenu *edgeMenu = new QMenu();
+	toDelete.append(edgeMenu);
+	edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
+	
+	const QString title = "Create new element";
+	QMenu *createMenu = new QMenu(title, edgeMenu);
+	toDelete.append(createMenu);
+	edgeMenu->addMenu(createMenu);
+
+	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
+	toDelete.append(menuSignalMapper);
+	foreach(Id editorId, mWindow->manager()->editors())
+	{
+		qDebug() << editorId.editor();
+		QMenu *editor = new QMenu(editorId.editor(), createMenu);
+		toDelete.append(editor);
+		foreach(Id diagramId, mWindow->manager()->diagrams(editorId))
+		{
+			QMenu *diagram = new QMenu(diagramId.diagram(), editor);
+			toDelete.append(diagram);	
+			foreach(Id elementId, mWindow->manager()->elements(diagramId))
+			{
+				QAction *element = new QAction(elementId.element(), diagram);
+				diagram->addAction(element);
+				toDelete.append(element);
+
+				QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
+				menuSignalMapper->setMapping(element, elementId.toString());
+			}
+			editor->addMenu(diagram);
+		}
+		createMenu->addMenu(editor);
+	}
+
+	mCreatePoint = scenePos;
+	QObject::connect(menuSignalMapper,SIGNAL(mapped(const QString &)),this,SLOT(createElement(const QString &)));
+
+	if (edgeMenu->exec(QCursor::pos()) == mWindow->ui.actionDeleteFromDiagram)
+		edgeDeleted = true;
+
+//	Чистка памяти.
+//	foreach(QObject *object, toDelete)
+//		delete object;		
+
+	qDebug() << "---launchEdgeMenu() end";
+	return edgeDeleted;
+}
+
+
+
+qReal::Id *EditorViewScene::createElement(const QString &str)
+{
+	return createElement(str, mCreatePoint);
+}
+
+qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+{
+	qDebug() << "createElement(..)" << str;
+	Id typeId = Id::loadFromString(str);
+	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
+
+	QByteArray data;
+	QMimeData *mimeData = new QMimeData();
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	QString mimeType = QString("application/x-real-uml-data");
+	QString uuid = objectId->toString();
+	QString pathToItem = ROOT_ID.toString();
+	QString name = "(anonymous something)";
+	QPointF pos = QPointF(0,0);						
+	stream << uuid;
+	stream << pathToItem;
+	stream << name;
+	stream << pos;
+
+	mimeData->setData(mimeType, data);				
+	createElement(mimeData, scenePos);
+	delete mimeData;
+
+	return objectId;
 }
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 {
-	qDebug() << "! createElement : begin ----------";
+	qDebug() << "---createElement() begin";
 
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -193,14 +265,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
 
-	if (mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction, 
-			mv_iface->model()->rowCount(parentIndex), 0, parentIndex))
-	{
-		emit objectCreated(id);
-	}
+	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
+		mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
 
 	delete newMimeData;	
-	qDebug() << "! createElement : end ------------";
+	qDebug() << "---createElement() end";
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
@@ -224,6 +293,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		QGraphicsItem *item = itemAt(event->scenePos());
 		qDebug() << "item: " << item;
 		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
+
 		if( title ){ // проверяем, а не зацепились ли мы случайно за надпись, когда начали тащить эоемент
 			item = item->parentItem();
 		}
@@ -420,7 +490,6 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-	connect(this, SIGNAL(objectCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const

@@ -30,9 +30,9 @@ public:
 	void clearScene();
 
 
-	virtual void launchEdgeMenu(UML::EdgeElement *edge);
-	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
-
+	bool launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos);
+	qReal::Id *createElement(const QString &, QPointF scenePos);
+	void createElement ( const QMimeData *mimeData, QPointF scenePos);
 
 	/** @brief Получить элемент сцены по его идентификатору
 	 *	@brief @return Элемент сцены
@@ -51,9 +51,6 @@ public:
 	void setEnabled(bool enabled);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
-
-signals:
-	void objectCreated(qReal::Id const & id);
 
 protected:
 	/** @brief Обработать начало события drag'n'drop */
@@ -91,8 +88,12 @@ private:
 	QPointF mPrevPosition;
 	QGraphicsItem *mPrevParent;
 
+	QPointF mCreatePoint;
+
 	friend class qReal::EditorViewMViface;
 
+public slots:
+	qReal::Id *createElement(const QString &);
 // TODO: Убрать отсюда.
 private slots:
 	void connectActionTriggered();
