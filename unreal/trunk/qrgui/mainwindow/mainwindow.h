@@ -62,6 +62,7 @@ namespace qReal {
 		void exportToXmi();
 		void generateToJava();
 		void deleteFromScene();
+		void deleteFromScene(QGraphicsItem *target);
 
 		/** @brief Активирует ближайшую к текущей поддиаграмму, содержащую указанный
 		 * элемент, если в ней есть элементы. */

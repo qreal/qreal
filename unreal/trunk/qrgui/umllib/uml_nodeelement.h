@@ -149,9 +149,13 @@ namespace UML {
 
 		/** @brief Направление растяжения */
 		DragState mDragState;
+		
+		/** @brief Связь, появляющаяся при клике на правый нижний угол */
+		EdgeElement *mEdge;
 
 		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;
 	};
 
 }
+

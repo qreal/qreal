@@ -29,6 +29,11 @@ public:
 	/** @brief Очистить сцену */
 	void clearScene();
 
+
+	void launchEdgeMenu(UML::EdgeElement *edge);
+	virtual void createElement ( const QMimeData *mimeData, QPointF scenePos);
+
+
 	/** @brief Получить элемент сцены по его идентификатору
 	 *	@brief @return Элемент сцены
 	 * */

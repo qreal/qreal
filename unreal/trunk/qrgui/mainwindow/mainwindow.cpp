@@ -353,9 +353,17 @@ void MainWindow::deleteFromExplorer()
 void MainWindow::deleteFromScene()
 {
 	foreach (QGraphicsItem *item, getCurrentTab()->scene()->selectedItems())
-		if (UML::Element *elem = dynamic_cast<UML::Element *>(item))
-			if (elem->index().isValid())
-				mModel->removeRow(elem->index().row(), elem->index().parent());
+		deleteFromScene(item);
+}
+
+void MainWindow::deleteFromScene(QGraphicsItem *target)
+{
+	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
+	{
+		qDebug() << "Deleting object, uuid: " << elem->uuid().toString();
+		if (elem->index().isValid())
+			mModel->removeRow(elem->index().row(), elem->index().parent());
+	}
 }
 
 void MainWindow::deleteFromDiagram()
