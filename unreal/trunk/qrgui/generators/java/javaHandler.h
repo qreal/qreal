@@ -55,6 +55,8 @@ namespace qReal {
             Id findNonBodyLink(Id const &idDecisionNode);
             Id findJoinNode(Id const &idForkNode);
             IdList findIntermediateNodes(Id const &id, Id const &untilNode, bool const closesFunction);
+            IdList deleteCommentLinks(IdList &idList);
+            IdList deleteConstraintEdges(IdList &idList);
 
             void addError(QString const &errorText);
 

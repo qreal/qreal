@@ -153,6 +153,8 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
 
                     //"if" or "while"?
                     IdList incomingLinks = mApi.incomingLinks(startNode);
+                    deleteCommentLinks(incomingLinks);
+                    deleteConstraintEdges(incomingLinks);
                     if (incomingLinks.length() == 1) { //"if"
                         Id mergeNode = findMergeNode(startNode);
 
@@ -183,6 +185,8 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
         } else if (startNode.element() == "ActivityDiagram_MergeNode") {
             //TODO: fill this
             IdList outgoingLinks = mApi.outgoingLinks(startNode);
+            deleteCommentLinks(outgoingLinks);
+            deleteConstraintEdges(outgoingLinks);
 
             foreach (Id aLink, outgoingLinks) {
                 Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
@@ -194,11 +198,13 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
             }
         } else if (startNode.element() == "ActivityDiagram_ActivityFinalNode") {
             if (!closesMethod) {
-//                Id returnNode = children.takeLast();
+                Id returnNode = children.at(children.length() - 1);
                 addError("Node: " + returnNode.toString() + ". If you want \"return;\" you should write it in the Action before this Final Node.");
             }
         } else if (startNode.element() == "ActivityDiagram_Activity") { //"try-catch" or just Activity
             IdList outgoingLinks = mApi.outgoingLinks(startNode);
+            deleteCommentLinks(outgoingLinks);
+            deleteConstraintEdges(outgoingLinks);
 
             //Delete all "exception"-links from the list. They will be serialized by the Activity itself.
             foreach (Id aLink, outgoingLinks) {
@@ -218,6 +224,8 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
         } //TODO: add other "importaint" nodes
         else { //Think, that it is Action, Initial, Final.
             IdList outgoingLinks = mApi.outgoingLinks(startNode);
+            deleteCommentLinks(outgoingLinks);
+            deleteConstraintEdges(outgoingLinks);
 
             foreach (Id aLink, outgoingLinks) {
                 Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
@@ -231,6 +239,34 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
     }
 
     return children;
+}
+
+IdList JavaHandler::deleteCommentLinks(IdList &idList)
+{
+    IdList result;
+
+    foreach (Id aLink, idList) {
+        if (aLink.element() == "ActivityDiagram_CommentLink") {
+            result.append(aLink);
+            idList.removeAll(aLink);
+        }
+    }
+
+    return result;
+}
+
+IdList JavaHandler::deleteConstraintEdges(IdList &idList)
+{
+    IdList result;
+
+    foreach (Id aLink, idList) {
+        if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+            result.append(aLink);
+            idList.removeAll(aLink);
+        }
+    }
+
+    return result;
 }
 
 IdList JavaHandler::getActivityChildren(Id const &idStartNode, Id const &idUntilNode)
@@ -482,7 +518,7 @@ QString JavaHandler::serializeObject(Id const &id)
         QString code = getConstraints(id);
 
         if (activityDiagrams.isEmpty() && code == "") {
-            result += indent() + mApi.name(id) + "\n";
+            result += indent() + mApi.name(id).replace("<br/>", "\n" + indent()) + "\n";
         } else {
             if (activityDiagrams.isEmpty() && code != "") {
                 result += indent() + code + "\n";
@@ -504,6 +540,8 @@ QString JavaHandler::serializeObject(Id const &id)
         result += getComments(id);
         //"if" or "while"?
         IdList incomingLinks = mApi.incomingLinks(id);
+        deleteCommentLinks(incomingLinks);
+        deleteConstraintEdges(incomingLinks);
         if (incomingLinks.length() == 1) { //"if"
             result += ifStatement(id);
         } else if (incomingLinks.length() == 2) { //"while"
@@ -540,18 +578,11 @@ QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilN
 
     IdList childElems = getActivityChildren(idStartNode, idUntilNode);
 
-    foreach (Id aChild, childElems) {
-        if (aChild != Id())
-            qDebug() << "aChild = " + mApi.name(aChild);
-    }
-
     if (!childElems.isEmpty()) {
         Id last = childElems.takeLast(); //it will be serialized in the upper level activity
 
         if (last != Id() && (last.element() == "ActivityDiagram_Action" ||
                              last.element() == "ActivityDiagram_Activity")) {
-
-            qDebug() << "returned last = " + mApi.name(last);
             childElems.append(last);
         }
     }
@@ -734,8 +765,8 @@ QString JavaHandler::getFlowGuard(Id const &id)
     if (mApi.hasProperty(id, "guard")) {
         QString guard = mApi.stringProperty(id, "guard");
         //TODO: delete it!!! That is just because QReal's sh~
-        guard = guard.replace("&lt;", "<");
-        guard = guard.replace("&rt;", ">");
+        guard.replace("&lt;", "<");
+        guard.replace("&rt;", ">");
 
         result = guard.simplified(); //delete whitespaces from the start and the end and internal whitespaces replace with a single space
 
@@ -916,12 +947,7 @@ QString JavaHandler::getConstraints(Id const &id)
 
     //if it has the Constraint nodes
     IdList outgoingLinks = mApi.outgoingLinks(id);
-    IdList constraints;
-    foreach (Id aLink, outgoingLinks) {
-        if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
-            constraints.append(aLink);
-        }
-    }
+    IdList constraints = deleteConstraintEdges(outgoingLinks);
 
     if (constraints.length() >= 2) {
         addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Constraints generalization can not be defined.");
@@ -955,14 +981,8 @@ QString JavaHandler::getComments(Id const &id)
 {
     QString result = "";
 
-    //if it has the Comment nodes
     IdList outgoingLinks = mApi.outgoingLinks(id);
-    IdList comments;
-    foreach (Id aLink, outgoingLinks) {
-        if (aLink.element() == "ActivityDiagram_CommentLink") {
-            comments.append(aLink);
-        }
-    }
+    IdList comments = deleteCommentLinks(outgoingLinks);
 
     if (comments.length() >= 2) {
         addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Comments generalization can not be defined.");
@@ -987,11 +1007,11 @@ QString JavaHandler::getComment(Id const &id)
 
         QStringList strings = body.split("<br/>");
         if (strings.length() == 1) {
-            result = "//" + body;
+            result = indent() + "// " + body;
         } else {
             result += indent() + "/*\n";
             foreach (QString aString, strings) {
-                result += indent() + "*" + aString + "\n";
+                result += indent() + "* " + aString + "\n";
             }
             result += indent() + "*/";
         }
