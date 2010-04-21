@@ -20,12 +20,6 @@
 				<value>out</value>
 				<value>return</value>
 			</enum>
-			<!-- begin : not from the superstructure -->
-			<enum name="Constraint Content Kind">
-				<value>code</value>
-				<value>comment</value>
-			</enum>
-			<!-- end : not from the superstructure -->
 		</nonGraphicTypes>
 		<graphicTypes>
 			<edge name="Association">
@@ -219,12 +213,6 @@
 					<properties>
 						<property type="Element" name="constrainedElement" />
 						<property type="Value Specification" name="specification" />
-						<!-- begin : not from the superstructure -->
-						<property type="enum" name="contentType">
-							<enum nameReference="Constraint Content Kind" />
-							<default>comment</default>
-						</property>
-						<!-- end : not from the superstructure -->
 					</properties>
 				</logic>
 			</node>

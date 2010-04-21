@@ -31,6 +31,8 @@
 		<graphicTypes>
 			<import name="Kernel::Constraint" as="Constraint" displayedName="Constraint"/>
 			<import name="Kernel::Value Specification" as="ValueSpecification" displayedName="Value Specification"/>
+			<import name="Kernel::Comment" as="Comment" displayedName="Comment"/>
+			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
 			
 			<node name="ActivityDiagramNode" displayedName="Activity Diagram">
 				<graphics>
@@ -186,6 +188,7 @@
 					</generalizations>
 					<connections>
 						<connection type="ClassDiagram::ClassMethod"/>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 					</connections>
 				</logic>
 			</node>

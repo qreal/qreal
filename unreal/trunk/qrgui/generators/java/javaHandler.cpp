@@ -194,7 +194,7 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
             }
         } else if (startNode.element() == "ActivityDiagram_ActivityFinalNode") {
             if (!closesMethod) {
-                Id returnNode = children.takeLast();
+//                Id returnNode = children.takeLast();
                 addError("Node: " + returnNode.toString() + ". If you want \"return;\" you should write it in the Action before this Final Node.");
             }
         } else if (startNode.element() == "ActivityDiagram_Activity") { //"try-catch" or just Activity
@@ -464,63 +464,36 @@ QString JavaHandler::serializeObject(Id const &id)
         }
 
         result += getConstraints(id);
-        IdList parents = mApi.parents(id);
-        if (!parents.isEmpty()) {
-            Id parentId = parents.at(0);
-
-            if (objectType(parentId) == "ActivityDiagram_Activity") {
-//                result += "\n";
-            } else {
-                result += "{\n";
-                mIndent++;
-            }
-        }
     } else if (objectType(id) == "ActivityDiagram_Action") {
-        //if it has the Constraint nodes
-                IdList outgoingLinks = mApi.outgoingLinks(id);
-                IdList constraints;
-                foreach (Id aLink, outgoingLinks) {
-                    if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
-                        constraints.append(aLink);
-                    }
-                }
+        result += getComments(id);
 
-                bool hasCode = false;
-                foreach (Id aConstraint, constraints) {
-                    Id constraint = mApi.otherEntityFromLink(aConstraint, id);
-                    QString code = getConstraintContent(constraint);
-                    QString contentType = getConstraintType(constraint);
-                    if (contentType == "comment") {
-                        if (code.contains("\n")) {
-                            code = "/*" + code + "*/";
-                        } else {
-                            code = "//" + code;
-                        }
-                    }
-                    result += indent() + code + "\n";
-
-                    if (contentType == "code") {
-                        hasCode = true;
-                    }
-                }
-
-                //serialization
-                if (constraints.isEmpty() || !hasCode) {
-                    result += indent() + mApi.name(id) + "\n";
-                }
-    } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
-        result += getConstraints(id);
-        IdList parents = mApi.parents(id);
-        if (!parents.isEmpty()) {
-            Id parentId = parents.at(0);
-
-            if (objectType(parentId) == "ActivityDiagram_Activity") {
-//                result += indent() + "\n";
-            } else {
-                mIndent--;
-                result += indent() + "}//final node\n";
+        IdList outgoingConnections = mApi.outgoingConnections(id);
+        IdList activityDiagrams;
+        foreach (Id aConnection, outgoingConnections) {
+            if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+                activityDiagrams.append(aConnection);
             }
         }
+
+        if (activityDiagrams.length() > 1) {
+            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". There are too many Activity Diagrams connected.");
+        }
+
+        QString code = getConstraints(id);
+
+        if (activityDiagrams.isEmpty() && code == "") {
+            result += indent() + mApi.name(id) + "\n";
+        } else {
+            if (activityDiagrams.isEmpty() && code != "") {
+                result += indent() + code + "\n";
+            } else if (!activityDiagrams.isEmpty() && code == "") {
+                result += serializeChildren(activityDiagrams.at(0));
+            } else {
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". You can not set code into the Constraints and Activity Diagram at the same time.");
+            }
+        }
+    } else if (objectType(id) == "ActivityDiagram_ActivityFinalNode") {
+        result += getComments(id) + getConstraints(id);
 
         //[Superstructure 09-02-02][1] A final node has no outgoing edges.
         IdList outgoingLinks = mApi.outgoingLinks(id);
@@ -528,7 +501,7 @@ QString JavaHandler::serializeObject(Id const &id)
             addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". A final node has no outgoing edges.");
         }
     } else if (objectType(id) == "ActivityDiagram_DecisionNode") {
-        result += getConstraints(id);
+        result += getComments(id);
         //"if" or "while"?
         IdList incomingLinks = mApi.incomingLinks(id);
         if (incomingLinks.length() == 1) { //"if"
@@ -539,10 +512,9 @@ QString JavaHandler::serializeObject(Id const &id)
 
         result += indent() + "\n";
     } else if (objectType(id) == "ActivityDiagram_MergeNode") {
-        result += getConstraints(id);
-    } else if (objectType(id) == "ActivityDiagram_AcceptEventAction") {
+        result += getComments(id);
     } else if (objectType(id) == "ActivityDiagram_Activity") {
-        result += getConstraints(id);
+        result += getComments(id) + getConstraints(id);
         //search for "exception"-links
         IdList outgoingLinks = mApi.outgoingLinks(id);
         IdList exceptions;
@@ -552,7 +524,7 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
-        if (exceptions.length() == 0) { //if it is just an Activity
+        if (exceptions.isEmpty()) { //if it is just an Activity
             result += serializeChildren(id);
         } else { //if it is "try-catch"
             result += tryCatch(id);
@@ -834,7 +806,8 @@ QString JavaHandler::getSuperclass(Id const &id)
 
 QString JavaHandler::getMethodCode(Id const &id)
 {
-    QString result = "";
+    QString result = "{\n";
+    mIndent++;
 
     if (!mApi.outgoingConnections(id).isEmpty()) {
         IdList outgoingConnections = mApi.outgoingConnections(id);
@@ -849,7 +822,7 @@ QString JavaHandler::getMethodCode(Id const &id)
         }
 
         if (realizationsCount == 1) { //if everything is ok
-            result = serializeChildren(realizationDiagram);
+            result += serializeChildren(realizationDiagram);
         } else if (realizationsCount == 0) { //if there is no realization
             addError("Method " + objectType(id) + " with id " + id.toString() + " will be empty.");
         } else { //if there is more than one ActivityDiagram connected
@@ -860,10 +833,8 @@ QString JavaHandler::getMethodCode(Id const &id)
         addError("Method " + objectType(id) + " with id " + id.toString() + " will be empty.");
     }
 
-    //If the realization diagram was empty or something was wrong
-    if (result == "") {
-        result += "{\n" +indent() + "}";
-    }
+    mIndent--;
+    result += indent() + "}\n";
     return result;
 }
 
@@ -952,26 +923,21 @@ QString JavaHandler::getConstraints(Id const &id)
         }
     }
 
+    if (constraints.length() >= 2) {
+        addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Constraints generalization can not be defined.");
+    }
+
     foreach (Id aConstraint, constraints) {
         Id constraint = mApi.otherEntityFromLink(aConstraint, id);
-        QString code = getConstraintContent(constraint);
+        QString code = getConstraint(constraint);
 
-        if (getConstraintType(constraint) == "comment") {
-            if (code.contains("\n")) {
-                code = "/*" + code + "*/";
-            } else {
-                code = "//" + code;
-            }
-            result += indent() + code + "\n";
-        } else {
-            addError("Unable to serialize object " + objectType(constraint) + " with id: " + constraint.toString() + ". You are not allowed to insert \"code\"-constraint here.");
-        }
+        result += code;
     }
 
     return result;
 }
 
-QString JavaHandler::getConstraintContent(Id const &id)
+QString JavaHandler::getConstraint(Id const &id)
 {
     QString result = "";
 
@@ -985,17 +951,49 @@ QString JavaHandler::getConstraintContent(Id const &id)
     return result;
 }
 
-QString JavaHandler::getConstraintType(Id const &id)
+QString JavaHandler::getComments(Id const &id)
 {
     QString result = "";
 
-    if (mApi.hasProperty(id, "contentType")) {
-        QString contentType = mApi.stringProperty(id, "contentType");
+    //if it has the Comment nodes
+    IdList outgoingLinks = mApi.outgoingLinks(id);
+    IdList comments;
+    foreach (Id aLink, outgoingLinks) {
+        if (aLink.element() == "ActivityDiagram_CommentLink") {
+            comments.append(aLink);
+        }
+    }
 
-        if (contentType == "code" || contentType == "comment") {
-            result = contentType;
+    if (comments.length() >= 2) {
+        addError("Object " + objectType(id) + " with id: " + id.toString() + ". The order of Comments generalization can not be defined.");
+    }
+
+    foreach (Id aCommentLink, comments) {
+        Id comment = mApi.otherEntityFromLink(aCommentLink, id);
+        QString body = getComment(comment);
+
+        result += body + "\n";
+    }
+
+    return result;
+}
+
+QString JavaHandler::getComment(Id const &id)
+{
+    QString result = "";
+
+    if (mApi.hasProperty(id, "body")) {
+        QString body = mApi.stringProperty(id, "body");
+
+        QStringList strings = body.split("<br/>");
+        if (strings.length() == 1) {
+            result = "//" + body;
         } else {
-            addError("Object " + objectType(id) + " with id  " + id.toString() + " has invalid contantType property: " + contentType);
+            result += indent() + "/*\n";
+            foreach (QString aString, strings) {
+                result += indent() + "*" + aString + "\n";
+            }
+            result += indent() + "*/";
         }
     }
 

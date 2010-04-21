@@ -23,7 +23,6 @@ namespace qReal {
 
             QString serializeObject(Id const &id);
             QString serializeChildren(Id const &id);
-//            QString serializeUntil(Id const &id, Id const &untilElement);
             QString serializeActivity(Id const &idStartNode, Id const &idUntilNode);
 
             QString getVisibility(Id const &id);
@@ -32,8 +31,9 @@ namespace qReal {
             QString getDefaultValue(Id const &id);
             QString getImports(Id const &id);
             QString getConstraints(Id const &id);
-            QString getConstraintContent(Id const &id);
-            QString getConstraintType(Id const &id);
+            QString getConstraint(Id const &id);
+            QString getComments(Id const &id);
+            QString getComment(Id const &id);
             QString getOperationFactors(Id const &id);
             QString hasModifier(Id const &id, QString const &modifier);
             QString getSuperclass(Id const &id);
