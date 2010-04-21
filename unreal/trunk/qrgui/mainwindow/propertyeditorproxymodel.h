@@ -6,7 +6,7 @@
 #include <QAbstractTableModel>
 #include <QtCore/QStringList>
 
-#include "../editorManager/editormanager.h"
+#include "../editorManager/editorManager.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств

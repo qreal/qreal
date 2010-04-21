@@ -1,4 +1,4 @@
-#include "editormanager.h"
+#include "editorManager.h"
 
 #include <QtCore/QPluginLoader>
 #include <QtCore/QCoreApplication>
