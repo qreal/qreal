@@ -30,9 +30,9 @@ public:
 	void clearScene();
 
 
-	bool launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos);
-	qReal::Id *createElement(const QString &, QPointF scenePos);
-	void createElement ( const QMimeData *mimeData, QPointF scenePos);
+	virtual bool launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos);
+	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
+	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	/** @brief Получить элемент сцены по его идентификатору
 	 *	@brief @return Элемент сцены
