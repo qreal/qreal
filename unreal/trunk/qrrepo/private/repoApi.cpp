@@ -48,7 +48,7 @@ void RepoApi::removeElement(Id const &id)
 	foreach (Id const child, children(id))
 		removeElement(child);
 
-// 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
+// 	removeChild() РІ РєР»РёРµРЅС‚Рµ РєР°РєРѕР№-С‚Рѕ СЃР»РёС€РєРѕРј СѓРјРЅС‹Р№, РґРµР»Р°РµС‚ РјРЅРѕРіРѕ Р»РёС€РЅРµРіРѕ, РїРѕС‚РѕРјСѓ РїРѕРєР° РµРіРѕ СѓР±РёСЂР°РµРј
 
 //	foreach (Id const parent, parents(id)) {
 //		removeChild(parent, id);
@@ -79,8 +79,8 @@ void RepoApi::removeElement(Id const &id)
 			disconnect(source, id);
 	}
 
-	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
-	// Впрочем, может, этого делать и не надо.
+	// Р С‚Р°Рє РґР°Р»РµРµ РґР»СЏ РІСЃРµС… РІРѕР·РјРѕР¶РЅС‹С… РІРёРґРѕРІ СЃСЃС‹Р»РѕРє Рё РґР»СЏ РІСЃРµС… РёС… РєРѕРјР±РёРЅР°С†РёР№...
+	// Р’РїСЂРѕС‡РµРј, РјРѕР¶РµС‚, СЌС‚РѕРіРѕ РґРµР»Р°С‚СЊ Рё РЅРµ РЅР°РґРѕ.
 }
 
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
@@ -264,7 +264,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mClient.property(target, listName).value<IdList>();
 
-	// Значения в списке должны быть уникальны.
+	// Р—РЅР°С‡РµРЅРёСЏ РІ СЃРїРёСЃРєРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹.
 	if (list.contains(data))
 		return;
 
@@ -294,15 +294,25 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 
 IdList RepoApi::elements(Id const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);  // Применимо только к типам
+	Q_ASSERT(type.idSize() == 3);  // РџСЂРёРјРµРЅРёРјРѕ С‚РѕР»СЊРєРѕ Рє С‚РёРїР°Рј
 
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		// Так должно быть
+		// РўР°Рє РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ
 		// if (id.type() == type)
-		// Так есть
+		// РўР°Рє РµСЃС‚СЊ
 		if (id.element() == type.element())
 			result.append(id);
 	}
 	return result;
+}
+
+IdList RepoApi::elementsByType(QString const &type) const
+{
+        IdList result;
+        foreach (Id id, mClient.elements()) {
+                if (id.element() == type)
+                        result.append(id);
+        }
+        return result;
 }

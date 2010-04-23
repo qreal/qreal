@@ -19,6 +19,8 @@ namespace qReal {
 
             QString generateToJava(QString const &pathToDir);
         private:
+            bool checkTheModel();
+
             IdList getActivityChildren(Id const &idStartNode, Id const &untilNode);
 
             QString serializeObject(Id const &id);

@@ -23,29 +23,102 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 
     Id repoId = ROOT_ID;
 
-    IdList allDiagrams = mApi.children(repoId);
-    IdList classDiagrams;
+    if (checkTheModel()) {
+        IdList allDiagrams = mApi.children(repoId);
+        IdList classDiagrams;
 
-    //separate just class diagrams, because they are the main diagrams, others are connected
-    foreach (Id const aDiagram, allDiagrams) {
-        if (objectType(aDiagram) == "ClassDiagram_ClassDiagramNode") {
-            classDiagrams.append(aDiagram);
-        }
-        if (objectType(aDiagram) == "ActivityDiagram_ActivityDiagramNode") {
-            //If there is no connected Class Methods it won't be serialized
-            IdList incomingConnections = mApi.incomingConnections(aDiagram);
-            if (incomingConnections.isEmpty()) {
-                addError("Unable to serialize object " + objectType(aDiagram) + " with id: " + aDiagram.toString() + ". It is not connected to some class method.");
+        //separate just class diagrams, because they are the main diagrams, others are connected
+        foreach (Id const aDiagram, allDiagrams) {
+            if (objectType(aDiagram) == "ClassDiagram_ClassDiagramNode") {
+                classDiagrams.append(aDiagram);
+            }
+            if (objectType(aDiagram) == "ActivityDiagram_ActivityDiagramNode") {
+                //If there is no connected Class Methods it won't be serialized
+                IdList incomingConnections = mApi.incomingConnections(aDiagram);
+                if (incomingConnections.isEmpty()) {
+                    addError("Unable to serialize object " + objectType(aDiagram) + " with id: " + aDiagram.toString() + ". It is not connected to some class method.");
+                }
             }
         }
-    }
 
-    foreach (Id const classDiagram, classDiagrams) {
-        serializeChildren(classDiagram);
+        foreach (Id const classDiagram, classDiagrams) {
+            serializeChildren(classDiagram);
+        }
     }
 
     qDebug() << "Done.";
     return mErrorText;
+}
+
+bool JavaHandler::checkTheModel()
+{
+    bool result = true;
+
+    IdList links;
+
+    //class diagram
+    IdList aggregations = mApi.elementsByType("ClassDiagram_Aggregation");
+//    IdList classes = mApi.elementsByType("ClassDiagram_Class");
+//    IdList classFields = mApi.elementsByType("ClassDiagram_ClassField");
+//    IdList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
+//    IdList comments = mApi.elementsByType("ClassDiagram_Comment");
+    IdList classCommentLinks = mApi.elementsByType("ClassDiagram_CommentLink");
+    IdList compositions = mApi.elementsByType("ClassDiagram_Composition");
+    IdList dependencies = mApi.elementsByType("ClassDiagram_Dependency");
+    IdList generalizations = mApi.elementsByType("ClassDiagram_Generalization");
+//    IdList interfaces = mApi.elementsByType("ClassDiagram_Interface");
+    IdList interfaceRealizations = mApi.elementsByType("ClassDiagram_InterfaceRealization");
+    IdList realizations = mApi.elementsByType("ClassDiagram_Realization");
+//    IdList views = mApi.elementsByType("ClassDiagram_View");
+
+    links.append(aggregations);
+    links.append(classCommentLinks);
+    links.append(compositions);
+    links.append(dependencies);
+    links.append(generalizations);
+    links.append(interfaceRealizations);
+    links.append(realizations);
+
+    //activity diagram
+    IdList activityCommentLinks = mApi.elementsByType("ActivityDiagram_CommentLink");
+    IdList activityConstraintEdges = mApi.elementsByType("ActivityDiagram_ConstraintEdge");
+    IdList controlFlows = mApi.elementsByType("ActivityDiagram_ControlFlow");
+    IdList objectFlows = mApi.elementsByType("ActivityDiagram_ObjectFlow");
+
+    links.append(activityCommentLinks);
+    links.append(activityConstraintEdges);
+    links.append(controlFlows);
+    links.append(objectFlows);
+
+    //use case diagram
+    IdList useCaseCommentLinks = mApi.elementsByType("UseCaseDiagram_CommentLink");
+    IdList useCaseConstraintEdges = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+    IdList directedAssociations = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+    IdList extends = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+    IdList includes = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+
+    links.append(useCaseCommentLinks);
+    links.append(useCaseConstraintEdges);
+    links.append(directedAssociations);
+    links.append(extends);
+    links.append(includes);
+
+    //Checking for links ends
+    qDebug() << "links.length = " + links.size();
+    foreach (Id aLink, links) {
+        qDebug() << "link";
+        Id fromId = mApi.from(aLink);
+        qDebug() << "from = " + fromId.toString();
+        Id toId = mApi.to(aLink);
+        qDebug() << "to = " + toId.toString();
+
+        if (fromId == ROOT_ID || toId == ROOT_ID) {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have nodes on both ends.");
+            result = false;
+        }
+    }
+
+    return result;
 }
 
 Id JavaHandler::findMergeNode(Id const &idDecisionNode)
@@ -122,7 +195,7 @@ Id JavaHandler::findJoinNode(Id const &idForkNode)
     return joinNode;
 }
 
-//Returns "importaint" nodes between startNode (including) and untilNode (including)
+//Returns "importaint" nodes between startNode (including) and untilNode (excluding)
 IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNode, bool const closesMethod)
 {
     IdList children;
@@ -271,6 +344,7 @@ IdList JavaHandler::deleteConstraintEdges(IdList &idList)
     return result;
 }
 
+//Returns "importaint" nodes between startNode (including) and untilNode (including, if it is not "Id()")
 IdList JavaHandler::getActivityChildren(Id const &idStartNode, Id const &idUntilNode)
 {
     IdList result;
@@ -312,6 +386,7 @@ QString JavaHandler::serializeChildren(Id const &idParent)
             childElems = getActivityChildren(startNode, Id());
         }
     } else if (objectType(idParent) == "ClassDiagram_Class") {
+        //All fields in the beginning, all methods in the end.
         IdList fields, methods;
 
         foreach (Id aChild, allChildren) {

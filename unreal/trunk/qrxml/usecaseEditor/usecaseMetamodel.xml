@@ -8,6 +8,8 @@
 			<import name="Kernel::Directed Association" as="DirectedAssociation" displayedName="Directed Association"/>
 			<import name="Kernel::Constraint" as="Constraint" displayedName="Constraint"/>
 			<import name="ActivityDiagram::ConstraintEdge" as="ConstraintEdge" displayedName="Constraint Edge"/>
+			<import name="Kernel::Comment" as="Comment" displayedName="Comment"/>
+			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
 		
 			<node name="UseCaseDiagramNode" displayedName="Use Case Diagram">
 				<graphics>
