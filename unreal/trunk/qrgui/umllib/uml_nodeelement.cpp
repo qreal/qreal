@@ -22,7 +22,7 @@ using namespace qReal;
 NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
-	fl = NULL;
+	mEmbeddedLinker = NULL;
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 }
@@ -80,14 +80,14 @@ void NodeElement::storeGeometry()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-	if (fl == NULL)
+	if (mEmbeddedLinker == NULL)
 	{
-		fl = new EmbeddedLinker();
-		fl->setMaster(this);
-		scene()->addItem(fl);
+		mEmbeddedLinker = new EmbeddedLinker();
+		mEmbeddedLinker->setMaster(this);
+		scene()->addItem(mEmbeddedLinker);
 	}
-	fl->moveTo(event->pos());
-	fl->setCovered(true);
+	mEmbeddedLinker->moveTo(event->pos());
+	mEmbeddedLinker->setCovered(true);
 
 	if (isSelected())
 	{
@@ -113,7 +113,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	fl->setCovered(false);
+	mEmbeddedLinker->setCovered(false);
 	if (mDragState == None)
 	{
 		Element::mouseMoveEvent(event);
@@ -166,7 +166,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mContents = mContents.normalized();
 	storeGeometry();
-	fl->setCovered(true);
+	mEmbeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
@@ -190,28 +190,28 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	if (fl == NULL)
+	if (mEmbeddedLinker == NULL)
 	{
-		fl = new EmbeddedLinker();
-		fl->setMaster(this);
-		scene()->addItem(fl);
+		mEmbeddedLinker = new EmbeddedLinker();
+		mEmbeddedLinker->setMaster(this);
+		scene()->addItem(mEmbeddedLinker);
 	}
-	fl->moveTo(event->pos());
-	fl->setCovered(true);
+	mEmbeddedLinker->moveTo(event->pos());
+	mEmbeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	fl->moveTo(event->pos());
+	mEmbeddedLinker->moveTo(event->pos());
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	fl->setCovered(false);
+	mEmbeddedLinker->setCovered(false);
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

@@ -165,7 +165,7 @@ namespace UML {
 		DragState mDragState;
 		
 		/** @brief EmbeddedLinker */
-		EmbeddedLinker *fl;
+		EmbeddedLinker *mEmbeddedLinker;
 
 		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;
