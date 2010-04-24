@@ -467,7 +467,7 @@ void EdgeElement::removeLink(UML::NodeElement const *from)
 void EdgeElement::placeEndTo(QPointF const &place)
 {
 	mLine[mLine.size() - 1] = place;
-	qDebug() << place;
 	updateLongestPart();
+	adjustLink();
 }
 

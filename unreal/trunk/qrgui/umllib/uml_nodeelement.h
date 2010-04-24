@@ -4,14 +4,16 @@
 
 #pragma once
 
+#include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QKeyEvent>
+#include <QGraphicsSceneHoverEvent>
 #include <QtGui/QWidget>
 
+#include "fastlinker.h"
+#include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
-#include "sdfrenderer.h"
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
@@ -102,21 +104,33 @@ namespace UML {
 			}
 		};
 
-		/** @brief Обработать событие наведения на объект курсора мыши */
-		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
-
-		/** @brief Обработать событие отпускания кнопки мыши */
-		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
+		//события мыши
 
 		/** @brief Обработать событие нажатия кнопки мыши */
-		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
+		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event );
+
+		/** @brief Обработать событие перемещения мыши во время нажатия */
+		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+
+		/** @brief Обработать событие отпускания кнопки мыши */
+		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+
+		//события наведения мыши
+
+		/** @brief Обработать событие наведения мыши */
+		virtual void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
+
+		/** @brief Обработать событие перемещения мыши над элементом */
+		virtual void hoverMoveEvent( QGraphicsSceneHoverEvent * event );
+
+		/** @brief Обработать событие покидания области элемента мышью */
+		virtual void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
 
 		/** @brief Обработать изменение данных объекта
 			 *	@brief @return Измененные данные
 			 * */
 		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-									const QVariant &value /**< Величина изменения */
-									);
+			const QVariant &value /**< Величина изменения */);
 
 		bool mPortsVisible;
 
@@ -150,8 +164,8 @@ namespace UML {
 		/** @brief Направление растяжения */
 		DragState mDragState;
 		
-		/** @brief Связь, появляющаяся при клике на правый нижний угол */
-		EdgeElement *mEdge;
+		/** @brief FastLinker */
+		FastLinker *fl;
 
 		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;

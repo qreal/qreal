@@ -22,7 +22,8 @@ using namespace qReal;
 NodeElement::NodeElement()
 : mPortsVisible(false), mDragState(None)
 {
-	setAcceptsHoverEvents(true);
+	fl = NULL;
+	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 }
 
@@ -39,56 +40,6 @@ void NodeElement::setName(QString value)
 {
 	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
 	im->setData(mDataIndex, value, Qt::DisplayRole);
-}
-
-void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-	qDebug() << "mousePressEvent, nodeElement uuid: " << uuid().toString();
-
-	if (isSelected())
-	{
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
-			mDragState = TopLeft;
-		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
-			mDragState = TopRight;
-		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
-		{
-			mDragState = BottomRight;
-			EditorViewScene *editorScene = dynamic_cast<EditorViewScene*>(scene());
-			if (editorScene != NULL)				
-			{
-				qDebug() << "! Create Relationship:   start";
-
-				const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association/";
-				Id *edgeId = editorScene->createElement(type, event->scenePos());
-
-				mEdge = dynamic_cast<EdgeElement*>(editorScene->getElem(*edgeId));
-
-				if (mEdge != NULL)
-				{
-					QPointF p = QPointF(mContents.bottomRight().x()/2, mContents.bottomRight().y()/2);
-					this->setSelected(false);
-					mEdge->setSelected(true);
-					mEdge->placeEndTo(p);
-//					QCursor::setPos(QPoint(p.x(),p.y()));
-				}
-				else
-					qDebug() << "*edge == NULL";
-				qDebug() << "! Create Relationship:   finish";
-			}
-		}
-		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
-			mDragState = BottomLeft;
-		else
-			Element::mousePressEvent(event);
-	}
-	else
-		Element::mousePressEvent(event);
-
-	if (event->button() == Qt::RightButton)
-		event->accept();
-
-	setZValue(1);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -125,6 +76,41 @@ void NodeElement::storeGeometry()
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
+//события мыши
+
+void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+	if (fl == NULL)
+	{
+		fl = new FastLinker();
+		fl->setMaster(this);
+		scene()->addItem(fl);
+	}
+	fl->show();
+	fl->moveTo(event->pos());
+
+	if (isSelected())
+	{
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+			mDragState = TopLeft;
+		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+			mDragState = TopRight;
+		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+			mDragState = BottomRight;
+		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+			mDragState = BottomLeft;
+		else
+			Element::mousePressEvent(event);
+	}
+	else
+		Element::mousePressEvent(event);
+
+	if (event->button() == Qt::RightButton)
+		event->accept();
+
+	setZValue(1);
+}
+
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == None)
@@ -132,7 +118,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseMoveEvent(event);
 	} else {
 		QRectF newContents = mContents;
-
+		if (fl != NULL)
+			fl->moveTo(event->pos());
 		switch (mDragState)
 		{
 			case TopLeft:
@@ -157,9 +144,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				newContents.setBottom(event->pos().y());
 				break;
 			case BottomRight:
-				//newContents.setBottomRight(event->pos());
-				mEdge->placeEndTo(QPointF(event->pos().x() - mContents.bottomRight().x()/2,
-					event->pos().y() - mContents.bottomRight().y()/2));
+				newContents.setBottomRight(event->pos());
 				break;
 		case None:
 			break;
@@ -185,34 +170,60 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
-	if (mDragState != BottomRight)
-	{
-		NodeElement *newParent = getNodeAt(event->scenePos());
-		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-		if (newParent) {
-			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-				mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
-		} else
-			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
-	} else
-	{
-		EditorViewScene *editorScene = dynamic_cast<EditorViewScene*>(scene());
-		if (editorScene != NULL)
-		{
-			mEdge->hide();
-			Element *under = dynamic_cast<Element*>(editorScene->itemAt(event->scenePos()));
-			mEdge->show();
-			if (under == NULL)
-				if (editorScene->launchEdgeMenu(mEdge, event->scenePos()))
-					mEdge = NULL;
-		}
 
-		if (mEdge != NULL)
-			mEdge->connectToPort();
-	}
+	NodeElement *newParent = getNodeAt(event->scenePos());
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+	if (newParent) {
+		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+	} else
+		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+
 	mDragState = None;
 	setZValue(0);
+}
+
+//события наведения мыши
+
+void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	if (!isSelected())
+		return;
+	qDebug() << "hoverEnter";
+	if (fl == NULL)
+	{
+		fl = new FastLinker();
+		fl->setMaster(this);
+		scene()->addItem(fl);
+	}
+
+	fl->show();
+	fl->moveTo(event->pos());
+}
+
+void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+	if (!isSelected())
+		return;
+	qDebug() << "hoverMove";
+	if (fl == NULL)
+	{
+		fl = new FastLinker();
+		fl->setMaster(this);
+		scene()->addItem(fl);
+	}
+	else
+		fl->moveTo(event->pos());
+}
+
+void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	if (!isSelected())
+		return;
+	qDebug() << "hoverLeave";
+	if (fl != NULL)
+		fl->hide();
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

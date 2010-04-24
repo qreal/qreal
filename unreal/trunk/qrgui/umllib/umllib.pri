@@ -4,6 +4,7 @@ HEADERS += umllib/uml_edgeelement.h \
 	umllib/sdfrenderer.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
+        umllib/fastlinker.h \
 	
 SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/uml_element.cpp \
@@ -11,4 +12,5 @@ SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/sdfrenderer.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
-	
+        umllib/fastlinker.cpp \
+
