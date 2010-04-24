@@ -1,4 +1,4 @@
-#include "fastlinker.h"
+#include "embeddedLinker.h"
 #include "uml_nodeelement.h"
 
 #include <QtGui/QStyle>
@@ -11,25 +11,33 @@
 using namespace UML;
 using namespace qReal;
 
-FastLinker::FastLinker()
+EmbeddedLinker::EmbeddedLinker()
 {
 	mRectangle = QRectF(-6,-6,12,12);
 	mInnerRectangle = QRectF(-3,-3,6,6);
 	setAcceptsHoverEvents(true);
+	QObject::connect(this,SIGNAL(coveredChanged()),this,SLOT(changeShowState()));
 }
 
-FastLinker::~FastLinker()
+EmbeddedLinker::~EmbeddedLinker()
 {
-
 }
 
-void FastLinker::setMaster(NodeElement *element)
+void EmbeddedLinker::setMaster(NodeElement *element)
 {
 	master = element;
 	setParentItem(element);
+	QObject::connect(master->scene(),SIGNAL(selectionChanged()),this,SLOT(changeShowState()));
 }
 
-void FastLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
+void EmbeddedLinker::setCovered(bool arg)
+{
+	covered = arg;
+	emit coveredChanged();
+	qDebug() << "covered == " << covered;
+}
+
+void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	painter->save();
 
@@ -45,10 +53,10 @@ void FastLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	painter->drawEllipse(mInnerRectangle);
 
 	painter->restore();
-//	сделать подсвечивание при наведении мыши
+//TODO:	сделать подсвечивание при наведении мыши
 }
 
-void FastLinker::moveTo(QPointF pos)
+void EmbeddedLinker::moveTo(QPointF pos)
 {
 	QRectF bounding = master->boundingRect();
 
@@ -90,14 +98,14 @@ void FastLinker::moveTo(QPointF pos)
 	this->setPos(fx, fy);
 }
 
-QRectF FastLinker::boundingRect() const
+QRectF EmbeddedLinker::boundingRect() const
 {
 	return mRectangle;
 }
 
 // Обработка событий мыши
 
-void FastLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
@@ -108,8 +116,8 @@ void FastLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
 		if (mEdge != NULL)
 		{
-			master->setSelected(false);
 			mEdge->setSelected(true);
+			master->setSelected(false);
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));	//QCursor?
 		}
 		else
@@ -117,13 +125,12 @@ void FastLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void FastLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "pos: " << mEdge->mapFromScene(mapToScene(event->pos()));
 	mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
-void FastLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	hide();
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
@@ -139,4 +146,16 @@ void FastLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mEdge != NULL)
 		mEdge->connectToPort();
+}
+
+void EmbeddedLinker::changeShowState()
+{
+	if ((master == NULL) || ((!master->scene()->selectedItems().contains(master)) &&
+					(!master->scene()->selectedItems().contains(mEdge))) || (!covered))
+	{
+		hide();
+		return;
+	}
+	else if ((master->scene()->selectedItems().contains(master)) && covered)
+		show();
 }

@@ -82,12 +82,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	if (fl == NULL)
 	{
-		fl = new FastLinker();
+		fl = new EmbeddedLinker();
 		fl->setMaster(this);
 		scene()->addItem(fl);
 	}
-	fl->show();
 	fl->moveTo(event->pos());
+	fl->setCovered(true);
 
 	if (isSelected())
 	{
@@ -113,13 +113,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	fl->setCovered(false);
 	if (mDragState == None)
 	{
 		Element::mouseMoveEvent(event);
 	} else {
 		QRectF newContents = mContents;
-		if (fl != NULL)
-			fl->moveTo(event->pos());
 		switch (mDragState)
 		{
 			case TopLeft:
@@ -167,6 +166,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mContents = mContents.normalized();
 	storeGeometry();
+	fl->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
@@ -190,40 +190,28 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	qDebug() << "hoverEnter";
 	if (fl == NULL)
 	{
-		fl = new FastLinker();
+		fl = new EmbeddedLinker();
 		fl->setMaster(this);
 		scene()->addItem(fl);
 	}
-
-	fl->show();
 	fl->moveTo(event->pos());
+	fl->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	qDebug() << "hoverMove";
-	if (fl == NULL)
-	{
-		fl = new FastLinker();
-		fl->setMaster(this);
-		scene()->addItem(fl);
-	}
-	else
-		fl->moveTo(event->pos());
+	fl->moveTo(event->pos());
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	qDebug() << "hoverLeave";
-	if (fl != NULL)
-		fl->hide();
+	fl->setCovered(false);
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

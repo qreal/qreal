@@ -10,7 +10,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QtGui/QWidget>
 
-#include "fastlinker.h"
+#include "embeddedLinker.h"
 #include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
@@ -164,8 +164,8 @@ namespace UML {
 		/** @brief Направление растяжения */
 		DragState mDragState;
 		
-		/** @brief FastLinker */
-		FastLinker *fl;
+		/** @brief EmbeddedLinker */
+		EmbeddedLinker *fl;
 
 		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;

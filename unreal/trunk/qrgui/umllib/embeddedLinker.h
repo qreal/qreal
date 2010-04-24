@@ -8,24 +8,26 @@
 
 namespace UML {
 	class NodeElement;
-	/** @class FastLinker
+	/** @class EmbeddedLinker
 	* 	@brief Небольшой объект рядом с элементом, позволяющий быстро создавать связи.
 	 * */
-	class FastLinker : public QObject, public QGraphicsItem
+	class EmbeddedLinker : public QObject, public QGraphicsItem
 	{
 		Q_OBJECT
 		Q_INTERFACES(QGraphicsItem)
 
 	public:
 		/** @brief Конструктор */
-		FastLinker();
+		EmbeddedLinker();
 		/** @brief Конструктор */
-		FastLinker(QGraphicsItem *parent);
+		EmbeddedLinker(QGraphicsItem *parent);
 		/** @brief Деструктор */
-		virtual ~FastLinker();
+		virtual ~EmbeddedLinker();
 
 		/** @brief Установить элемент, управляющий объектом */
 		void setMaster(NodeElement *element);
+		/** @brief Сообщить, что NodeElement под указателем мыши */
+		void setCovered(bool arg);
 
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
@@ -46,6 +48,7 @@ namespace UML {
 		/** @brief Обработать событие нажатия кнопки мыши */
 		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
 	private:
+		bool covered;
 		/** @brief Элемент, управляющий объектом */
 		NodeElement *master;
 		/** @brief Текущая связь */
@@ -53,7 +56,10 @@ namespace UML {
 		/** @brief Прямоугольник, ограничивающий объект */
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
-
+	signals:
+		void coveredChanged();
+	public slots:
+		void changeShowState();
 	};
 }
 
