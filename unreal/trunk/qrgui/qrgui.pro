@@ -1,4 +1,5 @@
 QT		+=	svg xml
+CONFIG += rpath_libdirs
 
 INCLUDEPATH	+=	../qrxml/editors \
 			../qrxml \
@@ -6,6 +7,11 @@ INCLUDEPATH	+=	../qrxml/editors \
 
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
+
+# workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
+# как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
+QMAKE_LFLAGS_RELEASE="-Wl,-O1,-rpath,$(PWD)"
+QMAKE_LFLAGS_DEBUG="-Wl,-O1,-rpath,$(PWD)"
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui
