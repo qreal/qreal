@@ -130,7 +130,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
 		<< "\n"
-		<< "#include \"../../editorinterface.h\"\n"
+		<< "#include \"../../editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"

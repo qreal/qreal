@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QMessageBox>
 
-#include "editorinterface.h"
+#include "editorInterface.h"
 
 class EditorTest_@@NAME@@_Plugin : public QObject, public EditorInterface
 {

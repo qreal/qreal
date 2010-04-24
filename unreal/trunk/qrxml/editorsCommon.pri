@@ -47,7 +47,7 @@ HEADERS		+= \
 	../../qrgui/umllib/uml_edgeelement.h \
 	../../qrgui/umllib/uml_element.h \
 	../../qrgui/kernel/ids.h \
-	../editorinterface.h \
+	../editorInterface.h \
 	../../qrgui/umllib/elementTitle.h\
 	../../qrgui/umllib/contextMenuAction.h \
 

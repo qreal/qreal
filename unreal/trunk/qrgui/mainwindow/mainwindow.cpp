@@ -15,7 +15,7 @@
 #include <QtCore/QDebug>
 
 #include "../dialogs/plugindialog.h"
-#include "editorinterface.h"
+#include "editorInterface.h"
 #include "../model/model.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"

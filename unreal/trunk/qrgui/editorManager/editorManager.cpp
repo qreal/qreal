@@ -7,7 +7,7 @@
 
 #include <QtCore/QtDebug>
 
-#include "editorinterface.h"
+#include "editorInterface.h"
 #include "../kernel/ids.h"
 #include "../kernel/exception/exception.h"
 #include "../../qrrepo/repoApi.h"

@@ -5,7 +5,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 
-#include "editorinterface.h"
+#include "editorInterface.h"
 
 class HandmadePlugin : public QObject, public qReal::EditorInterface
 {
