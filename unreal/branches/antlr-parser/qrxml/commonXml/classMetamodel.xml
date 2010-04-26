@@ -1,0 +1,227 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel.xml</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="ClassDiagram" displayedName="Class Diagram">
+		<graphicTypes>
+			<import name="Kernel::Comment" as="Comment" displayedName="Comment"/>
+			<import name="Kernel::Comment Link" as="CommentLink" displayedName="Comment Link"/>
+			<import name="Kernel::Class" as="Class" displayedName="Class"/>
+			<import name="Kernel::Interface" as="Interface" displayedName="Interface"/>
+			<import name="Kernel::Generalization" as="Generalization" displayedName="Generalization"/>
+			<import name="Kernel::Realization" as="Realization" displayedName="Realization"/>
+			<import name="Kernel::Dependency" as="Dependency" displayedName="Dependency"/>
+			
+			<node name="ClassDiagramNode" displayedName="Class Diagram">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line x1="20" y1="0" x2="180" y2="0"/>
+						<line x1="20" y1="200" x2="180" y2="200"/>
+						<line x1="0" y1="20" x2="0" y2="180"/>
+						<line x1="200" y1="20" x2="200" y2="180"/>
+						<arc x1="0" y1="0" x2="40" y2="40" startAngle="1440" spanAngle="1440"/>
+						<arc x1="160" y1="0" x2="200" y2="40" startAngle="0" spanAngle="1440"/>
+						<arc x1="0" y1="160" x2="40" y2="200" startAngle="2880" spanAngle="1440"/>
+						<arc x1="160" y1="160" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Diagram"/>
+					</generalizations>
+					<container>
+						<contains type="ClassDiagram::Aggregation"/>
+						<contains type="ClassDiagram::Association"/>
+						<contains type="ClassDiagram::Class"/>
+						<contains type="ClassDiagram::ClassField"/>
+						<contains type="ClassDiagram::ClassMethod"/>
+						<contains type="ClassDiagram::Comment"/>
+						<contains type="ClassDiagram::CommentLink"/>
+						<contains type="ClassDiagram::Composition"/>
+						<contains type="ClassDiagram::Dependency"/>
+						<contains type="ClassDiagram::DirectedAssociation"/>
+						<contains type="ClassDiagram::Generalization"/>
+						<contains type="ClassDiagram::Interface"/>
+						<contains type="ClassDiagram::InterfaceRealization"/>
+						<contains type="ClassDiagram::Realization"/>
+						<contains type="ClassDiagram::View"/>
+					</container> 
+				</logic>
+			</node>
+			
+			<node name="View" displayedName="View">
+				<graphics>
+					<picture sizex="100" sizey="100">
+						<text i="0" font-fill="#0000ff" y1="7a" b="0" x1="40%" font-name="MS Shell Dlg 2" u="0" font-size="15a">View</text>
+						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="20a" x1="0a" y2="20a"
+							stroke-width="2" x2="100%" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="100%" x1="0a" y2="100%"
+							stroke-width="2" x2="100%" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="20a" x1="0a" y2="100%"
+							stroke-width="2" x2="0a" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#008000" y1="20a" x1="100%" y2="100%"
+							stroke-width="2" x2="100%" fill-style="solid"/>
+					</picture>
+					<labels>
+						<label x="40" y="20" textBinded="name"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0a" starty="20a"/>
+							<end endx="100%" endy="20a"/>
+						</linePort>
+						<linePort>
+							<start startx="0a" starty="100%"/>
+							<end endx="100%" endy="100%"/>
+						</linePort>
+						<linePort>
+							<start startx="0a" starty="20a"/>
+							<end endx="0a" endy="100%"/>
+						</linePort>
+						<linePort>
+							<start startx="100%" starty="20a"/>
+							<end endx="100%" endy="100%"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="logicalName"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="ClassMethod" displayedName="Class method">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="3" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Operation"/>
+						<parent parentName="Kernel::Redefinable Element"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="type"/>
+						<property type="string" name="operationFactors"/>
+						<property type="string" name="isAbstract"/>
+						<property type="string" name="isSynchronized"/>
+						<property type="string" name="isNative"/>
+					</properties>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+						<connection type="ActivityDiagram::Action"/>
+						<connection type="ActivityDiagram::DecisionNode"/>
+						<connection type="ActivityDiagram::Constraint"/>
+					</connections>
+				</logic>
+			</node>
+			<node name="ClassField" displayedName="Class field">
+				<graphics>
+					<picture sizex="100" sizey="20"/>
+					<labels>
+						<label x="0" y="0" textBinded="name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Property"/>
+						<parent parentName="Kernel::Named Element"/>
+					</generalizations>
+					<properties>
+						<property type="string" name="type"/>
+						<property type="string" name="defaultValue"/>
+						<property type="string" name="isTransient"/>
+						<property type="string" name="isVolatile"/>
+					</properties>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+						<connection type="ActivityDiagram::Action"/>
+						<connection type="ActivityDiagram::DecisionNode"/>
+						<connection type="ActivityDiagram::Constraint"/>
+					</connections>
+				</logic>
+			</node>
+			<edge name="Aggregation" displayedName="Aggregation">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="empty_rhomb">
+						<association beginName="Property" endName="Property"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel::Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
+				</logic>
+			</edge>
+			<edge name="Composition" displayedName="Composition">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="filled_rhomb">
+						<association beginName="Element" endName="Element"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel::Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
+				</logic>
+			</edge>
+			<edge name="InterfaceRealization" displayedName="Interface Realization">
+				<graphics>
+					<lineType type="dashLine"/>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="empty_arrow">
+						<association beginName="Interface" endName="Basic Behaviors::Behaviored Classifier"/>
+					</associations>
+					<generalizations>
+						<parent parentName="Kernel::Realization"/>
+					</generalizations>
+				</logic>
+			</edge>
+
+			<edge name="Association" displayedName="Association">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
+				</logic>
+			</edge>
+			<edge name="DirectedAssociation" displayedName="Directed Association">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Directed Association"/>
+					</generalizations>
+					<connections>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
+					</connections>
+				</logic>
+			</edge>
+			
+		</graphicTypes>
+	</diagram>
+</metamodel>
