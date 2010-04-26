@@ -213,6 +213,7 @@
 					</properties>
 					<connections>
 						<connection type="ClassDiagram::ClassMethod"/>
+						<connection type="UseCaseDiagram::UseCaseDiagramNode"/>
 					</connections>
 			    </logic>
 		    </node>
