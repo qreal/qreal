@@ -59,8 +59,8 @@ bool JavaHandler::checkTheModel()
     //class diagram
     IdList aggregations = mApi.elementsByType("ClassDiagram_Aggregation");
 //    IdList classes = mApi.elementsByType("ClassDiagram_Class");
-//    IdList classFields = mApi.elementsByType("ClassDiagram_ClassField");
-//    IdList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
+    IdList classFields = mApi.elementsByType("ClassDiagram_ClassField");
+    IdList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
 //    IdList comments = mApi.elementsByType("ClassDiagram_Comment");
     IdList classCommentLinks = mApi.elementsByType("ClassDiagram_CommentLink");
     IdList compositions = mApi.elementsByType("ClassDiagram_Composition");
@@ -79,11 +79,14 @@ bool JavaHandler::checkTheModel()
     links.append(interfaceRealizations);
     links.append(realizations);
 
+
     //activity diagram
     IdList activityCommentLinks = mApi.elementsByType("ActivityDiagram_CommentLink");
     IdList activityConstraintEdges = mApi.elementsByType("ActivityDiagram_ConstraintEdge");
     IdList controlFlows = mApi.elementsByType("ActivityDiagram_ControlFlow");
     IdList objectFlows = mApi.elementsByType("ActivityDiagram_ObjectFlow");
+    IdList decisionNodes = mApi.elementsByType("ActivityDiagram_DecisionNode");
+    IdList mergeNodes = mApi.elementsByType("ActivityDiagram_MergeNode");
 
     links.append(activityCommentLinks);
     links.append(activityConstraintEdges);
@@ -93,9 +96,11 @@ bool JavaHandler::checkTheModel()
     //use case diagram
     IdList useCaseCommentLinks = mApi.elementsByType("UseCaseDiagram_CommentLink");
     IdList useCaseConstraintEdges = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
-    IdList directedAssociations = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
-    IdList extends = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
-    IdList includes = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+    IdList directedAssociations = mApi.elementsByType("UseCaseDiagram_DirectedAssociation");
+    IdList extends = mApi.elementsByType("UseCaseDiagram_Extend");
+    IdList includes = mApi.elementsByType("UseCaseDiagram_Include");
+    IdList actors = mApi.elementsByType("UseCaseDiagram_Actor");
+    IdList useCases = mApi.elementsByType("UseCaseDiagram_UseCase");
 
     links.append(useCaseCommentLinks);
     links.append(useCaseConstraintEdges);
@@ -103,18 +108,134 @@ bool JavaHandler::checkTheModel()
     links.append(extends);
     links.append(includes);
 
-    //Checking for links ends
-    qDebug() << "links.length = " + links.size();
+    //Checking for links ends (both of them exist).
     foreach (Id aLink, links) {
-        qDebug() << "link";
         Id fromId = mApi.from(aLink);
-        qDebug() << "from = " + fromId.toString();
         Id toId = mApi.to(aLink);
-        qDebug() << "to = " + toId.toString();
 
         if (fromId == ROOT_ID || toId == ROOT_ID) {
             addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have nodes on both ends.");
             result = false;
+        }
+    }
+    //Next constraints may need links to have both: source and target.
+    if (result == false) {
+        return false;
+    }
+
+    //Class Methods and Class Fields are inside some Class or Interface.
+    IdList features;
+    features.append(classFields);
+    features.append(classMethods);
+    foreach (Id id, features) {
+        IdList parents = mApi.parents(id);
+        if (parents.isEmpty()) {
+            addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
+            result = false;
+        }
+    }
+
+    //[Superstructure][09-02-02][1] A decision node has one or two incoming edges and at least one outgoing edge.
+    foreach (Id aDecision, decisionNodes) {
+        IdList incomingLinks = mApi.incomingLinks(aDecision);
+        IdList outgoingLinks = mApi.outgoingLinks(aDecision);
+
+        if ( !(incomingLinks.size() == 2 || incomingLinks.size() == 1) || !(outgoingLinks.size() >=1) ) {
+            addError("Unable to serialize object " + objectType(aDecision) + " with id: " + aDecision.toString() + ". A decision node has one or two incoming edges and at least one outgoing edge.");
+            result = false;
+        }
+    }
+
+    //[Superstructure][09-02-02][1] A merge node has one outgoing edge.
+    foreach (Id aMerge, mergeNodes) {
+        IdList outgoingLinks = mApi.outgoingLinks(aMerge);
+
+        if ( !outgoingLinks.size()==1 ) {
+            addError("Unable to serialize object " + objectType(aMerge) + " with id: " + aMerge.toString() + ". A merge node has one outgoing edge.");
+            result = false;
+        }
+    }
+
+    //[Superstructure][09-02-02][3] A constraint cannot be applied to itself. (Comments too)
+    IdList commentConstraintLinks;
+    commentConstraintLinks.append(classCommentLinks);
+    commentConstraintLinks.append(activityCommentLinks);
+    commentConstraintLinks.append(activityConstraintEdges);
+    commentConstraintLinks.append(useCaseCommentLinks);
+    commentConstraintLinks.append(useCaseConstraintEdges);
+    foreach (Id aLink, commentConstraintLinks) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId == toId) {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It cannot be applied to itself.");
+            result = false;
+        }
+    }
+
+    ///[Superstructure][09-02-02][1] The source and the target of an edge must be in the same activity as the edge.
+    IdList activityEdges;
+    activityEdges.append(controlFlows);
+    activityEdges.append(objectFlows);
+    foreach (Id aLink, activityEdges) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+        IdList fromIdParents = mApi.parents(fromId);
+        IdList toIdParents = mApi.parents(toId);
+
+        if (fromIdParents.isEmpty() || toIdParents.isEmpty() || fromIdParents.at(0) != toIdParents.at(0)) {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". The source and the target of an edge must be in the same activity as the edge.");
+            result = false;
+        }
+    }
+
+    //UseCaseDiagram_Actor.
+    foreach (Id anActor, actors) {
+        //Check, that there is no incoming edges.
+        IdList incomingLinks = mApi.incomingLinks(anActor);
+        if (!incomingLinks.isEmpty()) {
+            addError("Unable to serialize object " + objectType(anActor) + " with id: " + anActor.toString() + ". An actor can not have incoming edges.");
+            result = false;
+        }
+        IdList outgoingLinks = mApi.outgoingLinks(anActor);
+        foreach (Id aLink, outgoingLinks) {
+            //Check, that just CommentLink or DirectedAssociation as an outgoing links. Not ConstrainEdge, Extend or Include.
+            if (aLink.element() != "UseCaseDiagram_CommentLink" || aLink.element() != "UseCaseDiagram_DirectedAssociation") {
+                addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". An actor can have only Comment Link or Directed Association as an outgoing link.");
+                result = false;
+            }
+            //[Superstructure][09-02-02][1] An actor can only have associations to use cases [,components and classes. ...].
+            Id toId = mApi.otherEntityFromLink(aLink, anActor);
+            if (toId.element() != "UseCaseDiagram_UseCase") {
+                addError("Unable to serialize object " + objectType(anActor) + " with id: " + anActor.toString() + ". An actor can only have associations to use cases.");
+                result = false;
+            }
+        }
+
+        //[Superstructure][09-02-02][2] An actor must have a name.
+        if (mApi.name(anActor).simplified() == "") {
+            addError("Unable to serialize object " + objectType(anActor) + " with id: " + anActor.toString() + ". An actor must have a name.");
+        }
+    }
+
+    //Check, that Extend and Include connect UseCases.
+    IdList extendAndIncludes;
+    extendAndIncludes.append(extends);
+    extendAndIncludes.append(includes);
+    foreach (Id aLink, extendAndIncludes) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "UseCaseDiagram_UseCase" || toId.element() != "UseCaseDiagram_UseCase") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Use Case on both ends.");
+            result = false;
+        }
+    }
+
+    foreach (Id aUseCase, useCases) {
+        //[Superstructure][09-02-02][1] A UseCase must have a name.
+        if (mApi.name(aUseCase).simplified() == "") {
+            addError("Unable to serialize object " + objectType(aUseCase) + " with id: " + aUseCase.toString() + ". A Use Case must have a name.");
         }
     }
 
@@ -204,25 +325,25 @@ IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNo
         children.append(startNode);
 
         if (startNode.element() == "ActivityDiagram_DecisionNode") {
-            int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
+//            int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
             if (!mApi.links(startNode).isEmpty()) {
                 IdList outgoingLinks = mApi.outgoingLinks(startNode);
                 if (!outgoingLinks.isEmpty()) {
-                    // Very arched way to check:
-                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
-                    foreach (Id const aLink, outgoingLinks) {
-                        if (aLink.element() == "ActivityDiagram_ControlFlow") {
-                            if (isControlFlow == 0) {
-                                addError("Unable to serialize object " + objectType(startNode) + " with id: " + startNode.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
-                            }
-                            isControlFlow = 1;
-                        } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
-                            if (isControlFlow == 1) {
-                                addError("Unable to serialize object " + objectType(startNode) + " with id: " + startNode.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
-                            }
-                            isControlFlow = 0;
-                        } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
-                    }
+//                    // Very arched way to check:
+//                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
+//                    foreach (Id const aLink, outgoingLinks) {
+//                        if (aLink.element() == "ActivityDiagram_ControlFlow") {
+//                            if (isControlFlow == 0) {
+//                                addError("Unable to serialize object " + objectType(startNode) + " with id: " + startNode.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+//                            }
+//                            isControlFlow = 1;
+//                        } else if (aLink.element() == "ActivityDiagram_ObjectFlow") {
+//                            if (isControlFlow == 1) {
+//                                addError("Unable to serialize object " + objectType(startNode) + " with id: " + startNode.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
+//                            }
+//                            isControlFlow = 0;
+//                        } //TODO: To check if the link is not Control Flow or Object Flow and fail the generation if it is.
+//                    }
 
                     //"if" or "while"?
                     IdList incomingLinks = mApi.incomingLinks(startNode);
@@ -499,7 +620,7 @@ QString JavaHandler::serializeObject(Id const &id)
             Id parentId = parents.at(0);
             QString const parentType = objectType(parentId);
 
-            if (parentType == "ClassDiagram_Class") {
+            if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
                 result += indent();
 
                 QString visibility = getVisibility(id);
@@ -524,7 +645,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
                           type  + mApi.name(id) + "(" + operationFactors + ") " + methodBody + "\n";
             } else {
-                this->addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class");
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
             }
         }
     } else if (objectType(id) == "ClassDiagram_ClassField") {
@@ -533,7 +654,7 @@ QString JavaHandler::serializeObject(Id const &id)
             Id parentId = parents.at(0);
             QString const parentType = objectType(parentId);
 
-            if (parentType == "ClassDiagram_Class") {
+            if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
                 result += indent();
 
                 QString visibility = getVisibility(id);
@@ -553,7 +674,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
                 result += ";\n";
             } else {
-                addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class");
+                addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
             }
         }
     }
