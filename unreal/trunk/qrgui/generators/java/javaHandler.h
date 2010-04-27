@@ -20,6 +20,7 @@ namespace qReal {
             QString generateToJava(QString const &pathToDir);
         private:
             bool checkTheModel();
+            bool commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType);
 
             IdList getActivityChildren(Id const &idStartNode, Id const &untilNode);
 

@@ -254,7 +254,7 @@ bool JavaHandler::checkTheModel()
         }
     }
 
-    //ClassDiagram_InterfaceRealization: edge between Classe and Interface
+    //ClassDiagram_InterfaceRealization: edge between Class and Interface
     foreach (Id aLink, interfaceRealizations) {
         Id fromId = mApi.from(aLink);
         Id toId = mApi.to(aLink);
@@ -270,76 +270,48 @@ bool JavaHandler::checkTheModel()
     }
 
     //ActivityDiagram_ConstraintEdge: edge with Constraint-node
-    foreach (Id aLink, activityConstraintEdges) {
-        Id fromId = mApi.from(aLink);
-        Id toId = mApi.to(aLink);
-
-        if (fromId.element() != "ActivityDiagram_Constraint" && toId.element() != "ActivityDiagram_Constraint") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Constraint on one of the ends.");
-            result = false;
-        }
-        if (fromId.element() == "ActivityDiagram_Constraint" && toId.element() == "ActivityDiagram_Constraint") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Constraint node on one of the ends.");
-            result = false;
-        }
+    if (!commentAndConstraintChecking(activityConstraintEdges, "Activity", "Constraint")) {
+        result = false;
     }
 
     //UseCaseDiagram_ConstraintEdge: edge with Constraint-node
-    foreach (Id aLink, useCaseConstraintEdges) {
-        Id fromId = mApi.from(aLink);
-        Id toId = mApi.to(aLink);
-
-        if (fromId.element() != "UseCaseDiagram_Constraint" && toId.element() != "UseCaseDiagram_Constraint") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Constraint on one of the ends.");
-            result = false;
-        }
-        if (fromId.element() == "UseCaseDiagram_Constraint" && toId.element() == "UseCaseDiagram_Constraint") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Constraint node on one of the ends.");
-            result = false;
-        }
+    if (!commentAndConstraintChecking(useCaseConstraintEdges, "UseCase", "Constraint")) {
+        result = false;
     }
 
     //ClassDiagram_CommentLink: edge with Comment-node
-    foreach (Id aLink, classCommentLinks) {
-        Id fromId = mApi.from(aLink);
-        Id toId = mApi.to(aLink);
-
-        if (fromId.element() != "ClassDiagram_Comment" && toId.element() != "ClassDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
-            result = false;
-        }
-        if (fromId.element() == "ClassDiagram_Comment" && toId.element() == "ClassDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
-            result = false;
-        }
+    if (!commentAndConstraintChecking(classCommentLinks, "Class", "Comment")) {
+        result = false;
     }
 
     //ActivityDiagram_CommentLink: edge with Comment-node
-    foreach (Id aLink, classCommentLinks) {
-        Id fromId = mApi.from(aLink);
-        Id toId = mApi.to(aLink);
-
-        if (fromId.element() != "ActivityDiagram_Comment" && toId.element() != "ActivityDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
-            result = false;
-        }
-        if (fromId.element() == "ActivityDiagram_Comment" && toId.element() == "ActivityDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
-            result = false;
-        }
+    if (!commentAndConstraintChecking(activityCommentLinks, "Activity", "Comment")) {
+        result = false;
     }
 
     //UseCaseDiagram_CommentLink: edge with Comment-node
-    foreach (Id aLink, classCommentLinks) {
+    if (!commentAndConstraintChecking(useCaseCommentLinks, "UseCase", "Comment")) {
+        result = false;
+    }
+
+    return result;
+}
+
+bool JavaHandler::commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType)
+{
+    bool result = true;
+    QString fullType = diagramType + "Diagram_" +nodeType;
+
+    foreach (Id aLink, idList) {
         Id fromId = mApi.from(aLink);
         Id toId = mApi.to(aLink);
 
-        if (fromId.element() != "UseCaseDiagram_Comment" && toId.element() != "UseCaseDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
+        if (fromId.element() != fullType && toId.element() != fullType) {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have " + nodeType + " on one of the ends.");
             result = false;
         }
-        if (fromId.element() == "UseCaseDiagram_Comment" && toId.element() == "UseCaseDiagram_Comment") {
-            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
+        if (fromId.element() == fullType && toId.element() == fullType) {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-" + nodeType + " node on one of the ends.");
             result = false;
         }
     }
