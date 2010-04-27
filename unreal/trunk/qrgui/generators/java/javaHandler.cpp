@@ -518,7 +518,8 @@ IdList JavaHandler::deleteCommentLinks(IdList &idList)
     IdList result;
 
     foreach (Id aLink, idList) {
-        if (aLink.element() == "ActivityDiagram_CommentLink") {
+        if (aLink.element() == "ActivityDiagram_CommentLink" || aLink.element() == "ClassDiagram_CommentLink"
+                || aLink.element() == "UseCaseDiagram_CommentLink") {
             result.append(aLink);
             idList.removeAll(aLink);
         }
@@ -645,7 +646,6 @@ QString JavaHandler::serializeObject(Id const &id)
         out << imports;
         out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents + interfaces +  " {" + "\n";
         mIndent++;
-        out << serializeChildren(id);
 
         if (!mApi.links(id).isEmpty()) {
             // search for the Class-typed attrbutes
@@ -691,6 +691,7 @@ QString JavaHandler::serializeObject(Id const &id)
             }
         }
 
+        out << serializeChildren(id);
         mIndent--;
         out << indent() + "} //end of class\n";
     } else if (objectType(id) == "ClassDiagram_View") {
@@ -702,8 +703,6 @@ QString JavaHandler::serializeObject(Id const &id)
             QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
-                result += indent();
-
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString operationFactors = getOperationFactors(id);
@@ -724,7 +723,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 QString methodBody = getMethodCode(id);
 
                 result += getComments(id);
-                result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
+                result += indent() + visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
                           type  + mApi.name(id) + "(" + operationFactors + ") " + methodBody + "\n";
             } else {
                 addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
@@ -737,8 +736,6 @@ QString JavaHandler::serializeObject(Id const &id)
             QString const parentType = objectType(parentId);
 
             if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
-                result += indent();
-
                 QString visibility = getVisibility(id);
                 QString type = getType(id);
                 QString defaultValue = getDefaultValue(id);
@@ -752,7 +749,7 @@ QString JavaHandler::serializeObject(Id const &id)
                 }
 
                 result += getComments(id);
-                result += visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
+                result += indent() +  visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
                 if (defaultValue != "") {
                     result += " = " + defaultValue;
                 }
