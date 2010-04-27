@@ -39,6 +39,7 @@ namespace qReal {
             QString getOperationFactors(Id const &id);
             QString hasModifier(Id const &id, QString const &modifier);
             QString getSuperclass(Id const &id);
+            QString getInterfaces(Id const &id);
             QString getMethodCode(Id const &id);
             QString getFlowGuard(Id const &id);
             QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;

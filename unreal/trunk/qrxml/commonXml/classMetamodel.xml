@@ -11,6 +11,8 @@
 			<import name="Kernel::Generalization" as="Generalization" displayedName="Generalization"/>
 			<import name="Kernel::Realization" as="Realization" displayedName="Realization"/>
 			<import name="Kernel::Dependency" as="Dependency" displayedName="Dependency"/>
+			<import name="Kernel::Association" as="Association" displayedName="Association"/>
+			<import name="Kernel::Directed Association" as="DirectedAssociation" displayedName="Directed Association"/>
 			
 			<node name="ClassDiagramNode" displayedName="Class Diagram">
 				<graphics>
@@ -198,27 +200,6 @@
 					<generalizations>
 						<parent parentName="Kernel::Realization"/>
 					</generalizations>
-				</logic>
-			</edge>
-
-			<edge name="Association" displayedName="Association">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Association"/>
-					</generalizations>
-					<connections>
-						<connection type="ActivityDiagram::ActivityDiagramNode"/>
-					</connections>
-				</logic>
-			</edge>
-			<edge name="DirectedAssociation" displayedName="Directed Association">
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Directed Association"/>
-					</generalizations>
-					<connections>
-						<connection type="ActivityDiagram::ActivityDiagramNode"/>
-					</connections>
 				</logic>
 			</edge>
 			

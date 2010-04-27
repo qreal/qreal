@@ -58,6 +58,8 @@ bool JavaHandler::checkTheModel()
 
     //class diagram
     IdList aggregations = mApi.elementsByType("ClassDiagram_Aggregation");
+    IdList associations = mApi.elementsByType("ClassDiagram_Association");
+    IdList classDirectedAssociations = mApi.elementsByType("ClassDiagram_DirectedAssociation");
 //    IdList classes = mApi.elementsByType("ClassDiagram_Class");
     IdList classFields = mApi.elementsByType("ClassDiagram_ClassField");
     IdList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
@@ -72,6 +74,8 @@ bool JavaHandler::checkTheModel()
 //    IdList views = mApi.elementsByType("ClassDiagram_View");
 
     links.append(aggregations);
+    links.append(associations);
+    links.append(classDirectedAssociations);
     links.append(classCommentLinks);
     links.append(compositions);
     links.append(dependencies);
@@ -96,7 +100,7 @@ bool JavaHandler::checkTheModel()
     //use case diagram
     IdList useCaseCommentLinks = mApi.elementsByType("UseCaseDiagram_CommentLink");
     IdList useCaseConstraintEdges = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
-    IdList directedAssociations = mApi.elementsByType("UseCaseDiagram_DirectedAssociation");
+    IdList useCaseDirectedAssociations = mApi.elementsByType("UseCaseDiagram_DirectedAssociation");
     IdList extends = mApi.elementsByType("UseCaseDiagram_Extend");
     IdList includes = mApi.elementsByType("UseCaseDiagram_Include");
     IdList actors = mApi.elementsByType("UseCaseDiagram_Actor");
@@ -104,7 +108,7 @@ bool JavaHandler::checkTheModel()
 
     links.append(useCaseCommentLinks);
     links.append(useCaseConstraintEdges);
-    links.append(directedAssociations);
+    links.append(useCaseDirectedAssociations);
     links.append(extends);
     links.append(includes);
 
@@ -232,10 +236,111 @@ bool JavaHandler::checkTheModel()
         }
     }
 
+    //[Superstructure][09-02-02][1] A UseCase must have a name.
     foreach (Id aUseCase, useCases) {
-        //[Superstructure][09-02-02][1] A UseCase must have a name.
         if (mApi.name(aUseCase).simplified() == "") {
             addError("Unable to serialize object " + objectType(aUseCase) + " with id: " + aUseCase.toString() + ". A Use Case must have a name.");
+        }
+    }
+
+    //ClassDiagram_Generalization: edge between Classes
+    foreach (Id aLink, generalizations) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "ClassDiagram_Class" || toId.element() != "ClassDiagram_Class") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Classes on both ends.");
+            result = false;
+        }
+    }
+
+    //ClassDiagram_InterfaceRealization: edge between Classe and Interface
+    foreach (Id aLink, interfaceRealizations) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "ClassDiagram_Class") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must starts with a Class.");
+            result = false;
+        }
+        if (toId.element() != "ClassDiagram_Interface") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must ends with an Interface.");
+            result = false;
+        }
+    }
+
+    //ActivityDiagram_ConstraintEdge: edge with Constraint-node
+    foreach (Id aLink, activityConstraintEdges) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "ActivityDiagram_Constraint" && toId.element() != "ActivityDiagram_Constraint") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Constraint on one of the ends.");
+            result = false;
+        }
+        if (fromId.element() == "ActivityDiagram_Constraint" && toId.element() == "ActivityDiagram_Constraint") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Constraint node on one of the ends.");
+            result = false;
+        }
+    }
+
+    //UseCaseDiagram_ConstraintEdge: edge with Constraint-node
+    foreach (Id aLink, useCaseConstraintEdges) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "UseCaseDiagram_Constraint" && toId.element() != "UseCaseDiagram_Constraint") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Constraint on one of the ends.");
+            result = false;
+        }
+        if (fromId.element() == "UseCaseDiagram_Constraint" && toId.element() == "UseCaseDiagram_Constraint") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Constraint node on one of the ends.");
+            result = false;
+        }
+    }
+
+    //ClassDiagram_CommentLink: edge with Comment-node
+    foreach (Id aLink, classCommentLinks) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "ClassDiagram_Comment" && toId.element() != "ClassDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
+            result = false;
+        }
+        if (fromId.element() == "ClassDiagram_Comment" && toId.element() == "ClassDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
+            result = false;
+        }
+    }
+
+    //ActivityDiagram_CommentLink: edge with Comment-node
+    foreach (Id aLink, classCommentLinks) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "ActivityDiagram_Comment" && toId.element() != "ActivityDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
+            result = false;
+        }
+        if (fromId.element() == "ActivityDiagram_Comment" && toId.element() == "ActivityDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
+            result = false;
+        }
+    }
+
+    //UseCaseDiagram_CommentLink: edge with Comment-node
+    foreach (Id aLink, classCommentLinks) {
+        Id fromId = mApi.from(aLink);
+        Id toId = mApi.to(aLink);
+
+        if (fromId.element() != "UseCaseDiagram_Comment" && toId.element() != "UseCaseDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have Comment on one of the ends.");
+            result = false;
+        }
+        if (fromId.element() == "UseCaseDiagram_Comment" && toId.element() == "UseCaseDiagram_Comment") {
+            addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". It must have non-Comment node on one of the ends.");
+            result = false;
         }
     }
 
@@ -558,13 +663,15 @@ QString JavaHandler::serializeObject(Id const &id)
         QString isFinalField = hasModifier(id, "final");
         QString isAbstractField = hasModifier(id, "abstract");
         QString parents = getSuperclass(id);
+        QString interfaces = getInterfaces(id);
 
         if (isAbstractField == "abstract " && isFinalField == "final ") {
             addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"abstract final\" declaration doesn't make sense");
         }
 
+        out << getComments(id);
         out << imports;
-        out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents +  " {" + "\n";
+        out << indent() + visibility + isAbstractField + isFinalField + "class " + mApi.name(id) + parents + interfaces +  " {" + "\n";
         mIndent++;
         out << serializeChildren(id);
 
@@ -572,7 +679,8 @@ QString JavaHandler::serializeObject(Id const &id)
             // search for the Class-typed attrbutes
             IdList outgoingLinks = mApi.outgoingLinks(id);
             foreach (Id const aLink, outgoingLinks) {
-                if (aLink.element() == "ClassDiagram_DirectedAssociation" || aLink.element() == "ClassDiagram_Association") {
+                if (aLink.element() == "ClassDiagram_DirectedAssociation" || aLink.element() == "ClassDiagram_Association"
+                        || aLink.element() == "ClassDiagram_Composition" || aLink.element() == "ClassDiagram_Aggregation") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
@@ -585,14 +693,15 @@ QString JavaHandler::serializeObject(Id const &id)
                     }
 
                     out << indent() + isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
-                    out << indent() + ";\n";
+                    out << ";\n";
                 }
             }
 
             //search for bidirectional assocciation
             IdList linksIn = mApi.incomingLinks(id);
             foreach (Id const aLink, linksIn) {
-                if (aLink.element() == "ClassDiagram_Association") {
+                if (aLink.element() == "ClassDiagram_Association" || aLink.element() == "ClassDiagram_Composition"
+                        || aLink.element() == "ClassDiagram_Aggregation") {
                     QString type = mApi.name(mApi.otherEntityFromLink(aLink, id)) + " ";
                     QString visibility = getVisibility(aLink);
                     QString isFinalField = hasModifier(aLink, "final");
@@ -605,7 +714,7 @@ QString JavaHandler::serializeObject(Id const &id)
                     }
 
                     out << indent() + isFinalField + visibility + isStaticField + isVolatileField + isTransientField + type + mApi.name(aLink);
-                    out << indent() + ";\n";
+                    out << ";\n";
                 }
             }
         }
@@ -642,6 +751,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
                 QString methodBody = getMethodCode(id);
 
+                result += getComments(id);
                 result += visibility + isAbstractField + isStaticField + isFinalField + isSynchronizedField + isNativeField +
                           type  + mApi.name(id) + "(" + operationFactors + ") " + methodBody + "\n";
             } else {
@@ -668,6 +778,8 @@ QString JavaHandler::serializeObject(Id const &id)
                 if (isVolatileField == "volatile " && isFinalField == "final ") {
                     addError("unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". \"final volatile\" declaration doesn't make sense");
                 }
+
+                result += getComments(id);
                 result += visibility + isStaticField + isFinalField + isVolatileField + isTransientField + type + mApi.name(id);
                 if (defaultValue != "") {
                     result += " = " + defaultValue;
@@ -1026,6 +1138,31 @@ QString JavaHandler::getSuperclass(Id const &id)
                 } else {
                     addError("Object " + objectType(id) + " with id " + id.toString() + " has too many superclasses");
                 }
+            }
+        }
+
+    }
+
+    return result;
+}
+
+QString JavaHandler::getInterfaces(Id const &id)
+{
+    QString result = "";
+    bool hasInterface = false;
+
+    if (!mApi.links(id).isEmpty()) {
+        IdList links = mApi.outgoingLinks(id);
+
+        foreach (Id const aLink, links) {
+            if (aLink.element() == "ClassDiagram_InterfaceRealization") {
+                 QString interface = mApi.name(mApi.otherEntityFromLink(aLink, id));
+                 hasInterface = true;
+                 if (!hasInterface) {
+                     result += " implements " + interface;
+                 } else {
+                     result += ", " + interface;
+                 }
             }
         }
 
