@@ -13,6 +13,9 @@ using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
 {
+	covered = false;
+	master = NULL;
+	mEdge = NULL;
 	mRectangle = QRectF(-6,-6,12,12);
 	mInnerRectangle = QRectF(-3,-3,6,6);
 	setAcceptsHoverEvents(true);
