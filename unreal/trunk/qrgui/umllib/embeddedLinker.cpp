@@ -153,14 +153,14 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::changeShowState()
 {
-	if (!scene())
-		return;
-	if ((master == NULL) || ((!master->scene()->selectedItems().contains(master)) &&
-					(!master->scene()->selectedItems().contains(mEdge))) || (!covered))
+//	if (!scene())
+//		return;
+	if ((!master) || (!scene()) || (!covered) ||
+	((!scene()->selectedItems().contains(master)) && (!scene()->selectedItems().contains(mEdge))))
 	{
 		hide();
 		return;
 	}
-	else if ((master->scene()->selectedItems().contains(master)) && covered)
+	else if ((scene()->selectedItems().contains(master)) && covered)
 		show();
 }
