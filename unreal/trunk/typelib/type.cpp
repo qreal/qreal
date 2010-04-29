@@ -84,6 +84,8 @@ namespace qRealType {
 				return QString("false");
 		}
 		Q_ASSERT(0);
+		// not reached
+		return QString();
 	}
 
 	void QRealType::fromStringValue(QRealValue *var, QString const &val)
@@ -123,6 +125,8 @@ namespace qRealType {
 				return 0;
 		}
 		Q_ASSERT(0);
+		// not reached
+		return 0;
 	}
 
 	void QRealType::fromIntegerValue(QRealValue *var, int val)
@@ -157,6 +161,8 @@ namespace qRealType {
 		if (mType == BOOLEAN)
 			return var->mValue.booleanVal;
 		Q_ASSERT(0);
+		// notreached
+		return false;
 	}
 
 	void QRealType::fromBooleanValue(QRealValue *var, bool val)
@@ -184,6 +190,8 @@ namespace qRealType {
 		if (mType == BOOLEAN)
 			throw "Bad cast";
 		Q_ASSERT(0);
+		// notreached
+		return 0;
 	}
 
 	void QRealType::fromRealValue(QRealValue *var, double val)
