@@ -10,6 +10,7 @@
 #include "../kernel/definitions.h"
 #include "elementTitle.h"
 #include "contextMenuAction.h"
+#include "elementImpl.h"
 
 namespace UML {
 	/** @class Element
@@ -59,5 +60,6 @@ namespace UML {
 
 		int roleIndexByName(QString const &roleName) const;
 		QString roleValueByName(QString const &roleName) const;
+		ElementImpl* elementImpl;
 	};
 }

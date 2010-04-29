@@ -106,10 +106,10 @@ void XmlCompiler::generateElementClasses()
 {
 	OutFile out("generated/elements.h");
 	out() << "#pragma once\n\n"
-		<< "#include \"../../../qrgui/umllib/uml_nodeelement.h\"\n\n"
-		<< "#include \"../../../qrgui/umllib/uml_edgeelement.h\"\n\n"
-		<< "#include <QBrush>\n\n"
+		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
+		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n\n"
+		<< "#include \"../../../qrgui/umllib/sdfrenderer.h\"\n\n"
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
@@ -150,7 +150,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual UML::Element* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
@@ -246,7 +246,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 {
-	out() << "UML::Element* " << mPluginName
+	out() << "UML::ElementImpl* " << mPluginName
 		<< "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
 	bool isNotFirst = false;

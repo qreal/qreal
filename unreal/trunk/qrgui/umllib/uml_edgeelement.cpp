@@ -31,12 +31,13 @@ using namespace qReal;
 /** @brief Индикатор перемещения связи */
 // static bool moving = false;
 
-EdgeElement::EdgeElement()
+EdgeElement::EdgeElement(ElementImpl *impl)
 	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
 	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction("Add point", this),
-	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this)
+	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this), mElementImpl(impl)
 {
+	mPenStyle = mElementImpl->getPenStyle();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// FIXME: draws strangely...
@@ -61,6 +62,7 @@ EdgeElement::~EdgeElement()
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
+	delete mElementImpl;
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -453,6 +455,7 @@ void EdgeElement::updateData()
 	mPortTo = mDataIndex.data(roles::toPortRole).toDouble();
 
 	adjustLink();
+	update();
 }
 
 void EdgeElement::removeLink(UML::NodeElement const *from)
@@ -471,3 +474,14 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	adjustLink();
 }
 
+void EdgeElement::drawStartArrow(QPainter *painter) const
+{
+	if (mElementImpl)
+		mElementImpl->drawStartArrow(painter);
+}
+
+void EdgeElement::drawEndArrow(QPainter *painter) const
+{
+	if (mElementImpl)
+		mElementImpl->drawEndArrow(painter);
+}

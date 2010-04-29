@@ -19,12 +19,15 @@
 using namespace UML;
 using namespace qReal;
 
-NodeElement::NodeElement()
-: mPortsVisible(false), mDragState(None)
+NodeElement::NodeElement(ElementImpl* impl)
+: mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
 {
-	mEmbeddedLinker = NULL;
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
+	mPortRenderer = new SdfRenderer();
+	mElementImpl->init(mContents, mPointPorts, mLinePorts, mTitles, mPortRenderer);
+	foreach (ElementTitle *title, mTitles)
+		title->setParentItem(this);
 }
 
 NodeElement::~NodeElement()
@@ -34,6 +37,9 @@ NodeElement::~NodeElement()
 
 	foreach (ElementTitle *title, mTitles)
 		delete title;
+	
+	delete mPortRenderer;
+	delete mElementImpl;
 }
 
 void NodeElement::setName(QString value)
@@ -209,6 +215,7 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+	Q_UNUSED(event);
 	if (!isSelected())
 		return;
 	mEmbeddedLinker->setCovered(false);
@@ -262,6 +269,8 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
+	// TODO: прикрутить лейблы
+	update();
 }
 
 static int portId(qreal id)
@@ -455,6 +464,15 @@ NodeElement *NodeElement::getNodeAt( const QPointF &position )
 			return e;
 	}
 	return 0;
+}
+
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
+{
+	if (mElementImpl->hasPorts())
+		paint(painter, style, widget, mPortRenderer);
+	else	
+		paint(painter, style, widget, 0);
+	mElementImpl->paint(painter, mContents);
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portRenderer)

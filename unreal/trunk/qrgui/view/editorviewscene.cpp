@@ -234,7 +234,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	// TODO: возможно, это можно сделать проще
 	qReal::Id id = qReal::Id::loadFromString(uuid);
 	UML::Element *e = mWindow->manager()->graphicalObject(id);
-	//	= UML::GUIObjectFactory(type_id);
 
 	qDebug() << "new element uuid: " << e->uuid().toString(); 
 

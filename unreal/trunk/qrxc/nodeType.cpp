@@ -163,34 +163,60 @@ void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) 
 	}
 }
 
+bool NodeType::hasPointPorts()
+{
+	foreach (Port *port, mPorts){
+		if (dynamic_cast<PointPort*>(port))
+			return true;
+	}
+	return false;
+}
+
+bool NodeType::hasLinePorts()
+{
+	foreach (Port *port, mPorts){
+		if (dynamic_cast<LinePort*>(port))
+			return true;
+	}
+	return false;
+}
+
 void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
 	generatePorts();
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
-
-	out() << "\tclass " << className << " : public NodeElement {\n"
-		<< "\tpublic:\n"
-		<< "\t\t" << className << "() {\n";
-
 	bool hasSdf = false;
 	bool hasPorts = false;
+
+	out() << "\tclass " << className << " : public ElementImpl {\n"
+		<< "\tpublic:\n"
+		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
+		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) {\n";
+
+	if (!hasPointPorts())
+		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
+	if (!hasLinePorts())
+		out() << "\t\t\tQ_UNUSED(linePorts);\n";
+	if (mLabels.size() == 0)
+		out() << "\t\t\tQ_UNUSED(titles);\n";
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
 		out() << "\t\t\tmRenderer.load(QString(\":/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
-	}
+	} else
+		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
 
 	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
 	if (sdfFile.exists()) {
-		out() << "\t\t\tmPortRenderer.load(QString(\":/" << className << "Ports.sdf\"));\n";
+		out() << "\t\t\tportRenderer->load(QString(\":/" << className << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
 
-	out() << "\t\t\tmContents.setWidth(" << mWidth << ");\n"
-		<< "\t\t\tmContents.setHeight(" << mHeight << ");\n";
+	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
+		<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
 
 	foreach (Port *port, mPorts)
 		port->generateCode(out);
@@ -200,30 +226,38 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n"
 		<< "\t\t~" << className << "() {}\n\n"
-		<< "\t\tvoid paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)\n\t\t{\n";
+		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)
-		out() << "\t\t\tmRenderer.render(painter, mContents);\n";
+		out() << "\t\t\tmRenderer.render(painter, contents);\n";
+
+	out() << "\t\t}\n\n";
+
+	out() << "\t\tQt::PenStyle getPenStyle() { return Qt::SolidLine; }\n\n"
+		<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
+		<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
+		<< "\t\tbool hasPorts()\n\t\t{\n";
 
 	if (hasPorts)
-		out() << "\t\t\tNodeElement::paint(painter, style, widget, &mPortRenderer);\n";
+		out() << "\t\t\treturn true;\n";
 	else
-		out() << "\t\t\tNodeElement::paint(painter, style, widget, NULL);\n";
+		out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";	
 
-	out() << "\t\t}\n\n"
-		<< "\t\tvoid updateData()\n\t\t{\n"
-		<< "\t\t\tNodeElement::updateData();\n";
+//	out() << "\t\tvoid updateData(QPersistentModelIndex &dataIndex)\n\t\t{\n";
 
-	foreach (Label *label, mLabels)
-		label->generateCodeForUpdateData(out);
+// TODO: перенести запросы в репо внутри ElementTitle
+//	foreach (Label *label, mLabels)
+//		label->generateCodeForUpdateData(out);
 
-	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
+//	out() << "\t\t}\n\n"
+	out() << "\t\tbool isNode()\n\t\t{\n"
+		<< "\t\t\treturn true;\n"
+		<< "\t\t}\n\n";
 
 	out() << "\tprivate:\n";
 	if (hasSdf)
 		out() << "\t\tSdfRenderer mRenderer;\n";
-	if (hasPorts)
-		out() << "\t\tSdfRenderer mPortRenderer;\n";
 	foreach (Label *label, mLabels)
 		label->generateCodeForFields(out);
 	out() << "\t};";

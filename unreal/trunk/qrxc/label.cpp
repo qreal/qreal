@@ -42,8 +42,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	// TODO: вынести отсюда в родительский класс.
 	out() << "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
-		<< "			" + titleName() + "->setParentItem(this);\n"
-		<< "			mTitles.append(" + titleName() + ");\n";
+		<< "			titles.append(" + titleName() + ");\n";
 }
 
 void Label::generateCodeForUpdateData(OutFile &out)
@@ -52,7 +51,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		return;  // Метка статическая.
 	QString field;
 	if (mTextBinded == "name")
-		field = "mDataIndex.data(Qt::DisplayRole).toString()";
+		field = "dataIndex.data(Qt::DisplayRole).toString()";
 	else
 		field = "roleValueByName(\"" + mTextBinded + "\")";  // Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
 

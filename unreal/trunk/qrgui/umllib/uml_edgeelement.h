@@ -4,6 +4,7 @@
 #pragma once
 
 #include "uml_element.h"
+#include "elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -20,7 +21,7 @@ namespace UML {
 		Q_OBJECT
 		public:
 			/** @brief Конструктор */
-			EdgeElement();
+			EdgeElement(ElementImpl *impl);
 			/** @brief Деструктор */
 			virtual ~EdgeElement();
 
@@ -62,9 +63,9 @@ namespace UML {
 			virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 			/** @brief Отрисовать начало связи */
-			virtual void drawStartArrow(QPainter *p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+			virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 			/** @brief Отрисовать конец связи */
-			virtual void drawEndArrow(QPainter *p /**< Объект, осуществляющий отрисовку элементов */) const = 0;
+			virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
 
 			/** @brief Стиль линии */
 			Qt::PenStyle mPenStyle;
@@ -124,6 +125,8 @@ namespace UML {
 			ContextMenuAction mSquarizeAction;
 
 			bool mChaoticEdition;
+
+			ElementImpl *mElementImpl;
 	};
 }
 

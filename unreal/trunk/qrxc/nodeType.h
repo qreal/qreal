@@ -25,6 +25,8 @@ private:
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
+	bool hasLinePorts();
+	bool hasPointPorts();
 	bool initSdf();
 	void generateSdf() const;
 

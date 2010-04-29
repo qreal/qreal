@@ -12,7 +12,7 @@ bool PointPort::init(QDomElement const &element, int width, int height)
 
 void PointPort::generateCode(OutFile &out)
 {
-	out() << QString("\t\t\tmPointPorts << QPointF(%1, %2);\n").arg(mX).arg(mY);
+	out() << QString("\t\t\tpointPorts << QPointF(%1, %2);\n").arg(mX).arg(mY);
 }
 
 Port* PointPort::clone() const

@@ -47,7 +47,7 @@ void LinePort::generateCode(OutFile &out)
 		<< ((mEndX.isScalable()) ? "true; \n" : "false; \n")
 		<< "\t\t\t\tln.prop_y2 = "
 		<< ((mEndY.isScalable()) ? "true; \n" : "false; \n")
-		<< "\t\t\t\tmLinePorts << ln;\n"
+		<< "\t\t\t\tlinePorts << ln;\n"
 		<< "\t\t\t};\n";
 }
 

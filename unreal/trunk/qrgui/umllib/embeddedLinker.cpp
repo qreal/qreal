@@ -42,6 +42,7 @@ void EmbeddedLinker::setCovered(bool arg)
 
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
+	Q_UNUSED(option);
 	painter->save();
 
 	QBrush brush;

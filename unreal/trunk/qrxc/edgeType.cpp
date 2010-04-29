@@ -107,19 +107,27 @@ void EdgeType::generateCode(OutFile &out)
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 
-	out() << "\tclass " << className << " : public EdgeElement {\n"
+	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
-		<< "\t\t" << className << "() {\n";
-
-	if (mLineType != "")
-		out() << "\t\t\tmPenStyle = " << mLineType <<  ";\n";
+		<< "\t\tvoid init(QRectF &, QList<QPointF> &,\n"
+		<< "\t\t\t\t\t\t\t\t\t\t\tQList<StatLine> &, QList<ElementTitle*> &titles, SdfRenderer *) {\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
+	else
+		out() << "\t\t\tQ_UNUSED(titles);\n";
 
 	out() << "\t\t}\n\n"
 		<< "\t\tvirtual ~" << className << "() {}\n\n"
-		<< "\tprotected:\n"
+		<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
+		<< "\t\tbool isNode() { return false; }\n"
+		<< "\t\tbool hasPorts() { return false; }\n"
+		<< "\t\tQt::PenStyle getPenStyle() { ";
+	if (mLineType != "")
+		out() << "return " << mLineType << "; }\n";
+	else	
+		out() << "return Qt::SolidLine; }\n";
+	out() << "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {\n";
 
 	generateEdgeStyle(mBeginType, out);
@@ -128,14 +136,13 @@ void EdgeType::generateCode(OutFile &out)
 
 	generateEdgeStyle(mEndType, out);
 
-	out() << "\t\tvoid updateData()\n\t\t{\n"
-		<< "\t\t\tEdgeElement::updateData();\n";
+	out() << "\t\tvoid updateData()\n\t\t{\n";
 
-	if (!mLabels.isEmpty())
-		mLabels[0]->generateCodeForUpdateData(out);
+// TODO перенести запросы в репо внутри ElementTitle
+//	if (!mLabels.isEmpty())
+//		mLabels[0]->generateCodeForUpdateData(out);
 
-	out() << "\t\t\tupdate();\n" << "\t\t}\n\n";
-
+	out() << "\t\t}\n\n";
 	out() << "\tprivate:\n";
 
 	if (!mLabels.isEmpty())

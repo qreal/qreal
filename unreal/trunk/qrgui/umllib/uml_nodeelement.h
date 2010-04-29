@@ -14,6 +14,7 @@
 #include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
+#include "elementImpl.h"
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
@@ -28,7 +29,7 @@ namespace UML {
 
 	public:
 		/** @brief Конструктор */
-		NodeElement();
+		NodeElement(ElementImpl *impl);
 
 		/** @brief Деструктор */
 		virtual ~NodeElement();
@@ -38,6 +39,9 @@ namespace UML {
 			const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
 			QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
 			SdfRenderer *portrenderer /**< Рендерер портов)*/);
+		virtual void paint(QPainter *, /**< Объект, осуществляющий отрисовку элементов */
+			const QStyleOptionGraphicsItem *, /**< Настройки отрисовки */
+			QWidget * /**< Виджет, на котором осуществляется отрисовка */);
 
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
@@ -76,33 +80,7 @@ namespace UML {
 
 		void setPortsVisible(bool value);
 
-	protected:
-		/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
-		struct StatLine
-		{
-			QLineF line;
-			bool prop_x1;
-			bool prop_y1;
-			bool prop_x2;
-			bool prop_y2;
-
-			StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-				prop_x2(false), prop_y2(false) {}
-
-			operator QLineF () const
-			{
-				return line;
-			}
-
-			void operator = (QLineF const &l)
-			{
-				line = l;
-				prop_x1 = false;
-				prop_x2 = false;
-				prop_y1 = false;
-				prop_y2 = false;
-			}
-		};
+	private:
 
 		//события мыши
 
@@ -141,7 +119,6 @@ namespace UML {
 		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF mContents;
 
- private:
 		/** @brief Направление растяжения элемента */
 		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 
@@ -169,6 +146,10 @@ namespace UML {
 
 		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;
+
+		ElementImpl* mElementImpl;
+
+		SdfRenderer *mPortRenderer;
 	};
 
 }
