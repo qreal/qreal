@@ -131,6 +131,10 @@ namespace UML {
 
 		QLineF newTransform(const StatLine& port)  const;
 
+		enum { SIZE_OF_FORESTALLING = 25 };
+		void resizeOverChild(QRectF newContents);
+		void moveChilds(qreal dx, qreal dy);
+
 		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
 		qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
