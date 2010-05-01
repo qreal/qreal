@@ -17,7 +17,7 @@ namespace UML {
 	private slots:
 		void trigger();
 	signals:
-		void triggered(QPointF const &pos);
+		virtual void triggered(QPointF const &pos);
 	private:
 		QPointF mEventPos;
 	};

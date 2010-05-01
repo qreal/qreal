@@ -60,7 +60,7 @@ namespace UML {
 		/** @brief Сохранить текущие размеры и позицию в модель */
 		void storeGeometry();
 		/** @brief Установить новое имя и сохранить его в модель */
-		void setName(QString name);
+		virtual void setName(QString name);
 
 		/** @brief Получить расположение порта
 			 *	@brief @return Координаты порта
@@ -140,7 +140,7 @@ namespace UML {
 
 		/** @brief Направление растяжения */
 		DragState mDragState;
-		
+
 		/** @brief EmbeddedLinker */
 		EmbeddedLinker *mEmbeddedLinker;
 

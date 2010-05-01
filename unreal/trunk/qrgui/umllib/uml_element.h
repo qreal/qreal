@@ -45,7 +45,7 @@ namespace UML {
 
 		// Для инлайн-редактирования, мы должны иметь возможность менять проперти объекта, пока через его графическое представление.
 		// Можно сделать, чтобы сами текстовые лейблы хранили индекс модели и делали всё сами.
-		void setRoleValueByName(QString const &roleName, QString const &value);
+		virtual void setRoleValueByName(QString const &roleName, QString const &value);
 	protected:
 		/** @brief Индекс элемента в модели */
 		QPersistentModelIndex mDataIndex;
