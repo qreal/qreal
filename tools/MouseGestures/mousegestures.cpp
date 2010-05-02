@@ -8,7 +8,6 @@
 #include "paintmanager.h"
 
 //todo:: что-то форма чересчур поумнела... надо бы ее тупой сделать
-static const QString pathToFile = "../mouse_gestures.xml";
 static const QString xmlDir = "../../../unreal/trunk/qrxml";
 
 MouseGestures::MouseGestures(QWidget *parent)
@@ -17,10 +16,15 @@ MouseGestures::MouseGestures(QWidget *parent)
     ui->setupUi(this);
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadFile()));
     connect(ui->twObjectPathTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(drawGesture()));
+    connect(ui->bSave, SIGNAL(clicked()), this, SLOT(save()));
     mPaintManager = new PaintManager(ui->gvGesture);
-    Serializer serializer(pathToFile);
-    this->mKeyObjectTable.add(serializer.deserialize());
     showTable();
+}
+
+void MouseGestures::save()
+{
+    Serializer serializer(mFileName);
+    serializer.serialize(mKeyObjectTable.getObjects());
 }
 
 void MouseGestures::changePath()
@@ -46,11 +50,16 @@ void MouseGestures::changePath()
 
 void MouseGestures::loadFile()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Xml"), xmlDir,
-                                                    tr("Xml files (*.xml)"));
-    Serializer serializer(fileName);
-    EntityVector entities = serializer.parseXml();
+    //save();
+    mFileName = QFileDialog::getOpenFileName(this,
+                                             tr("Open Xml"), xmlDir,
+                                             tr("Xml files (*.xml)"));
+    Serializer serializer(mFileName);
+    EntityVector entities = serializer.deserialize();
+    for (int i = 0; i < ui->twObjectPathTable->rowCount(); i++)
+    {
+        ui->twObjectPathTable->removeRow(i);
+    }
     addEntities(entities);
     showTable();
 }
@@ -127,7 +136,5 @@ void MouseGestures::drawGesture()
 
 MouseGestures::~MouseGestures()
 {
-    Serializer serializer(pathToFile);
-    serializer.serialize(this->mKeyObjectTable.getObjects());
     delete ui;
 }

@@ -79,3 +79,23 @@ double PathCorrector::getScalarProduct(QPoint const & vector1, QPoint const & ve
 {
     return vector1.x() * vector2.x() + vector1.y() * vector2.y();
 }
+
+QList<QPoint> PathCorrector::rotate(const QList<QPoint> &path)
+{
+    QList<QPoint> inversePath;
+    foreach (QPoint pnt, path)
+    {
+        inversePath.push_front(pnt);
+    }
+    return inversePath;
+}
+
+QList<QPoint> PathCorrector::increase(const QList<QPoint> &path, int k)
+{
+    QList<QPoint> newPath;
+    foreach (QPoint pnt, path)
+    {
+        newPath.push_back(pnt * k);
+    }
+    return newPath;
+}

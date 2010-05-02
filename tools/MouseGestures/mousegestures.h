@@ -8,7 +8,6 @@
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
-#include <QGraphicsScene>
 
 namespace Ui
 {
@@ -26,7 +25,6 @@ public:
 private:
     Ui::MouseGestures *ui;
     void mouseMoveEvent(QMouseEvent *);
-    void save();
     void mouseReleaseEvent(QMouseEvent *);
     void mousePressEvent(QMouseEvent *);
     void showTable();
@@ -34,6 +32,7 @@ private:
     void addEntities(EntityVector const & entities);
     QList<QPoint> mMousePath;
     QList<QPoint> mCorrectPath;
+    QString mFileName;
     KeyObjectTable mKeyObjectTable;
     PaintManager * mPaintManager;
     static const int keyColumn = 2;
@@ -44,4 +43,5 @@ private slots:
     void loadFile();
     void changePath();
     void drawGesture();
+    void save();
 };

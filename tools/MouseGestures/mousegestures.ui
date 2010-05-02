@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>913</width>
-    <height>569</height>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="bSave">
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QTextEdit" name="teObject">
       <property name="maximumSize">
        <size>
@@ -108,7 +115,7 @@
      <x>0</x>
      <y>0</y>
      <width>913</width>
-     <height>20</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -1,4 +1,5 @@
 #include <QXmlStreamWriter>
+#include <QTextStream>
 #include "adopter.h"
 #include "serializer.h"
 #include "GeometricForms.h"
@@ -9,8 +10,6 @@ static const QString ellipseKey = "ellipse";
 static const QString nodeKey = "node";
 static const QString nodeNameKey = "name";
 static const QString pathKey = "path";
-static const QString gestureKey = "gesture";
-static const QString noAttributeKey = "no attribute with such name";
 static const QString x1Key = "x1";
 static const QString x2Key = "x2";
 static const QString y1Key = "y1";
@@ -36,7 +35,7 @@ QDomElement Serializer::getFirstDomElement()
     return doc.documentElement();
 }
 
-EntityVector Serializer::parseXml()
+EntityVector Serializer::deserialize()
 {
     EntityVector entities;
     QDomNodeList nodes = mDomElement.elementsByTagName(nodeKey);
@@ -44,32 +43,37 @@ EntityVector Serializer::parseXml()
     {
         QDomNode node = nodes.at(i);
         QDomElement element = node.toElement();
-        if (element.tagName() == nodeKey)
-        {
-            Entity entity = parseNode(element);
-            entities.push_back(entity);
-        }
+        Entity entity = parseNode(element);
+        entities.push_back(entity);
     }
     return entities;
 }
 
 Entity Serializer::parseNode(QDomElement const & domElement)
 {
-    QString name = domElement.attribute(nodeNameKey, noAttributeKey);
+    QString name = domElement.attribute(nodeNameKey, "");
     PathVector components;
-    QDomNodeList geometricElements = domElement.elementsByTagName(lineKey);
-    for (int i = 0; i < geometricElements.size(); i++)
+    QString path = domElement.attribute(pathKey, "");
+    if (!path.isEmpty())
     {
-        QDomElement geometricElement = geometricElements.at(i).toElement();
-        components.push_back(getPoints(geometricElement));
+        components.push_back(Adopter::stringToPath(path));
     }
-    geometricElements = domElement.elementsByTagName(ellipseKey);
-    for (int i = 0; i < geometricElements.size(); i++)
+    else
     {
-        QDomElement geometricElement = geometricElements.at(i).toElement();
-        QList<QPoint> diam = getPoints(geometricElement);
-        if (diam.size() > 1)
-            components.push_back(getEllipsePath(diam[0], diam[1]));
+        QDomNodeList geometricElements = domElement.elementsByTagName(lineKey);
+        for (int i = 0; i < geometricElements.size(); i++)
+        {
+            QDomElement geometricElement = geometricElements.at(i).toElement();
+            components.push_back(getPoints(geometricElement));
+        }
+        geometricElements = domElement.elementsByTagName(ellipseKey);
+        for (int i = 0; i < geometricElements.size(); i++)
+        {
+            QDomElement geometricElement = geometricElements.at(i).toElement();
+            QList<QPoint> diam = getPoints(geometricElement);
+            if (diam.size() > 1)
+                components.push_back(getEllipsePath(diam[0], diam[1]));
+        }
     }
     Entity entity;
     entity.name = name;
@@ -80,10 +84,10 @@ Entity Serializer::parseNode(QDomElement const & domElement)
 QList<QPoint> Serializer::getPoints(const QDomElement &geometricElement)
 {
     bool isValid;
-    QPoint point1(geometricElement.attribute(x1Key, noAttributeKey).toInt(&isValid, 10),
-                  geometricElement.attribute(y1Key, noAttributeKey).toInt(&isValid, 10));
-    QPoint point2(geometricElement.attribute(x2Key, noAttributeKey).toInt(&isValid, 10),
-                  geometricElement.attribute(y2Key, noAttributeKey).toInt(&isValid, 10));
+    QPoint point1(geometricElement.attribute(x1Key, "").toInt(&isValid, 10),
+                  geometricElement.attribute(y1Key, "").toInt(&isValid, 10));
+    QPoint point2(geometricElement.attribute(x2Key, "").toInt(&isValid, 10),
+                  geometricElement.attribute(y2Key, "").toInt(&isValid, 10));
     QList<QPoint> component;
     component.push_back(point1);
     component.push_back(point2);
@@ -110,35 +114,23 @@ void Serializer::serialize(const Objects &objects)
     QFile file(this->mPathToFile);
     if (file.open(QFile::ReadWrite))
     {
-        QXmlStreamWriter xml;
-        xml.setDevice(&file);
-        xml.writeStartDocument();
-        xml.writeDTD("<!DOCTYPE xml>");
-        xml.writeStartElement("xml");
-        xml.writeAttribute("version", "1.0");
-        foreach (Object object, objects)
+        QTextStream textStream(&file);
+        QDomNodeList nodes = mDomElement.elementsByTagName(nodeKey);
+        for (unsigned i = 0; i < nodes.length(); i++)
         {
-            xml.writeEmptyElement(gestureKey);
-            xml.writeAttribute(nodeNameKey, object.name);
-            xml.writeAttribute(pathKey, Adopter::pathToString(object.path));
+            QDomNode node = nodes.at(i);
+            QDomElement element = node.toElement();
+            foreach (Object object, objects)
+            {
+                if (object.name == element.attribute(nodeNameKey, ""))
+                {
+                    QString path = Adopter::pathToString(object.path);
+                    if (!path.isEmpty())
+                        element.setAttribute(pathKey, path);
+                }
+            }
         }
-        xml.writeEndElement();
-        xml.writeEndDocument();
+        mDomElement.save(textStream, 2);
     }
     file.close();
-}
-
-Objects Serializer::deserialize()
-{
-    Objects objects;
-    QDomNodeList nodes = this->mDomElement.elementsByTagName(gestureKey);
-    for (int i = 0; i < nodes.size(); i++)
-    {
-        QDomElement element = nodes.at(i).toElement();
-        QString name = element.attribute(nodeNameKey, "");
-        QString path = element.attribute(pathKey, "");
-        Object object(name, Adopter::stringToPath(path));
-        objects.push_back(object);
-    }
-    return objects;
 }

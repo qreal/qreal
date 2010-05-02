@@ -8,6 +8,8 @@ public:
     static QList<QPoint> correctPath(QList<QPoint> const & path);
     static bool isLine(QList<QPoint> const & path);
     static QList<QPoint> getMousePath(QList<QPoint> const & path);
+    static QList<QPoint> rotate(QList<QPoint> const & path);
+    static QList<QPoint> increase(QList<QPoint> const & path, int k);
 
 private:
     static double getCos(QPoint const & pnt1, QPoint const & pnt2, QPoint const & pnt3);
