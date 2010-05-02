@@ -29,16 +29,23 @@ namespace qReal {
 
 			virtual void connect(qReal::Id const &source, qReal::Id const &destination);
 			virtual void disconnect(qReal::Id const &source, qReal::Id const &destination);
+			virtual void addUsage(qReal::Id const &source, qReal::Id const &destination);
+			virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
 			virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
 
 			// Методы, добавленные для удобства, реализуются через остальные методы апи.
 			void createConnected(qReal::Id const &sourceElement, qReal::Id const &elementType);
+			void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			qReal::IdList diagramsAbleToBeConnectedTo(qReal::Id const &element) const;
+			qReal::IdList diagramsAbleToBeUsedIn(qReal::Id const &element) const;
 
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Копирование запрещено.
 			ModelAssistApi& operator =(ModelAssistApi const &);  // Присваивание тоже.
+
+			static IdList diagramsFromList(IdList const &list);
+			Id createConnectedElement(Id const &source, Id const &elementType);
 
 			Model &mModel;
 			EditorManager const &mEditorManager;

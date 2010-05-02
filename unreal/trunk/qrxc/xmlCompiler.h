@@ -37,12 +37,14 @@ private:
 	void generateProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);
+	void generateUsages(utils::OutFile &out);
 	void generateResourceFile();
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;
 	class ContainedTypesGenerator;
 	class ConnectionsGenerator;
+	class UsagesGenerator;
 
 	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
 };

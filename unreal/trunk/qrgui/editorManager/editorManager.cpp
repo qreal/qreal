@@ -127,13 +127,13 @@ UML::Element* EditorManager::graphicalObject(const Id &id) const
 	if( !impl ){
 		qDebug() << "no impl";
 		return 0;
-	}	
+	}
 	UML::Element *el;
-	if (impl->isNode()) 
+	if (impl->isNode())
 		el = new UML::NodeElement(impl);
 	else
 		el = new UML::EdgeElement(impl);
-	return el;	
+	return el;
 }
 
 QStringList EditorManager::getPropertyNames(const Id &id) const
@@ -165,6 +165,19 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	IdList result;
 	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element()))
 		// Хак, связанный с отсутствием понятия "Id" в генераторе редакторов.
+		result.append(Id("?", "?", type));
+
+	return result;
+}
+
+IdList EditorManager::getUsedTypes(const Id &id) const
+{
+	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	IdList result;
+	foreach (QString type, mPluginIface[id.editor()]->getUsedTypes(id.element()))
 		result.append(Id("?", "?", type));
 
 	return result;

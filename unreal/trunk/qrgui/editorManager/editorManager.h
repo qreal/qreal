@@ -35,6 +35,7 @@ namespace qReal {
 
 		IdList getContainedTypes(const Id &id) const;
 		IdList getConnectedTypes(const Id &id) const;
+		IdList getUsedTypes(const Id &id) const;
 
 		bool isEditor(Id const &id) const;
 		bool isDiagram(Id const &id) const;

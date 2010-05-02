@@ -21,6 +21,7 @@ public:
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
+	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 
 protected:
 	QDomElement mLogic;
@@ -33,6 +34,7 @@ protected:
 	QList<Label*> mLabels;
 	QStringList mContains;
 	QStringList mConnections;
+	QStringList mUsages;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -53,6 +55,7 @@ private:
 	bool initProperties();
 	bool initContainers();
 	bool initConnections();
+	bool initUsages();
 	virtual bool initAssociations() = 0;
 	virtual bool initGraphics() = 0;
 	bool initLabels();
@@ -61,4 +64,7 @@ private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
+	bool initTypeList(QString const &listName, QString const &listElementName
+		, QStringList &resultingList) const;
 };

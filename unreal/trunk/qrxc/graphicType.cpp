@@ -59,7 +59,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initContainers() && initAssociations()
-			&& initGraphics() && initLabels() && initConnections();
+			&& initGraphics() && initLabels() && initConnections() && initUsages();
 	}
 	else
 		return false;
@@ -115,32 +115,47 @@ bool GraphicType::initProperties()
 	return true;
 }
 
-bool GraphicType::initContainers()
+bool GraphicType::initTypeList(QString const &listName, QString const &listElementName
+	, QStringList &resultingList) const
 {
-	QDomElement containerElement = mLogic.firstChildElement("container");
+	QDomElement containerElement = mLogic.firstChildElement(listName);
 	if (containerElement.isNull())
-	{
 		return true;
-	}
-	for (QDomElement childElement = containerElement.firstChildElement("contains");
+
+	for (QDomElement childElement = containerElement.firstChildElement(listElementName);
 		!childElement.isNull();
-		childElement = childElement.nextSiblingElement("contains"))
+		childElement = childElement.nextSiblingElement(listElementName))
 	{
 		QString typeName = NameNormalizer::normalize(childElement.attribute("type"));
 
 		if (typeName == "") {
-			qDebug() << "Error: anonymous type to be contained by " << qualifiedName();
+			qDebug() << "Error: anonymous type in the " << listName << " list, in " << qualifiedName();
 			return false;
 		}
 
-		if (!mContains.contains(typeName))
-			mContains.append(typeName);
+		if (!resultingList.contains(typeName))
+			resultingList.append(typeName);
 		else {
-			qDebug() << "ERROR: type to contained by" << qualifiedName() << "duplicated";
+			qDebug() << "ERROR: type in the " << listName << " list in " << qualifiedName() << "duplicated";
 			return false;
 		}
 	}
 	return true;
+}
+
+bool GraphicType::initContainers()
+{
+	return initTypeList("container", "contains", mContains);
+}
+
+bool GraphicType::initConnections()
+{
+	return initTypeList("connections", "connection", mConnections);
+}
+
+bool GraphicType::initUsages()
+{
+	return initTypeList("usages", "usage", mUsages);
 }
 
 bool GraphicType::initLabels()
@@ -156,33 +171,6 @@ bool GraphicType::initLabels()
 		else {
 			mLabels.append(label);
 			++count;
-		}
-	}
-	return true;
-}
-
-bool GraphicType::initConnections()
-{
-	QDomElement connectionsElement = mLogic.firstChildElement("connections");
-	if (connectionsElement.isNull())
-		return true;
-
-	for (QDomElement childElement = connectionsElement.firstChildElement("connection");
-		!childElement.isNull();
-		childElement = childElement.nextSiblingElement("connection"))
-	{
-		QString typeName = NameNormalizer::normalize(childElement.attribute("type"));
-
-		if (typeName == "") {
-			qDebug() << "Error: anonymous type to be connected to " << qualifiedName();
-			return false;
-		}
-
-		if (!mConnections.contains(typeName))
-			mConnections.append(typeName);
-		else {
-			qDebug() << "ERROR: type to be connected to " << qualifiedName() << " duplicated";
-			return false;
 		}
 	}
 	return true;
@@ -339,6 +327,11 @@ bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 bool GraphicType::generateConnections(OutFile &out, bool isNotFirst)
 {
 	return generateListForElement(out, isNotFirst, mConnections);
+}
+
+bool GraphicType::generateUsages(OutFile &out, bool isNotFirst)
+{
+	return generateListForElement(out, isNotFirst, mUsages);
 }
 
 bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const

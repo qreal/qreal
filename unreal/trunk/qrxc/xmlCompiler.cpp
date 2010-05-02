@@ -148,6 +148,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
+		<< "\tvirtual QStringList getUsedTypes(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
@@ -180,6 +181,7 @@ void XmlCompiler::generatePluginSource()
 	generateProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
+	generateUsages(out);
 
 	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
@@ -267,6 +269,20 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 	out() << "}\n\n";
 }
 
+// Набор классов ниже представляет собой эмуляцию средствами C++ лямбда-выражений.
+// Цель: разделить действие, выполняемое при хитром обходе хитрой структуры данных
+// и саму логику хитрого обхода. В нормальных языках хитрый обход можно сделать методом,
+// принимающим функцию, вызываемую при посещении каждого элемента. В C++ так тоже
+// можно, но невежливо, поэтому делается так: тоже есть метод, реализующий
+// хитрый обход, ему вместо функции передаётся объект-действие, реализующий некий
+// интерфейс. Интерфейс содержит только один метод, который принимает в качестве параметров
+// элемент структуры, который мы хотим посетить, некоторые дополнительные параметры,
+// говорящии о состоянии обхода, и некоторые параметры из внешнего контекста
+// (для которых в нормальных языках вообще есть замыкания).
+// Здесь: обход (не очень хитрый) - это generateListMethod, интерфейс -
+// ListMethodGenerator, объекты-действия - PropertiesGenerator и т.д.
+// Примечание: на С++ это выглядит уродски, на C# вообще лишнего кода бы не было.
+// Даже в Java с анонимными классами это бы выглядело лучше.
 class XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
@@ -290,6 +306,13 @@ class XmlCompiler::ConnectionsGenerator: public XmlCompiler::ListMethodGenerator
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateConnections(out, isNotFirst);
+	}
+};
+
+class XmlCompiler::UsagesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateUsages(out, isNotFirst);
 	}
 };
 
@@ -322,6 +345,11 @@ void XmlCompiler::generateContainedTypes(OutFile &out)
 void XmlCompiler::generateConnections(OutFile &out)
 {
 	generateListMethod(out, "getConnectedTypes(QString const &element)", ConnectionsGenerator());
+}
+
+void XmlCompiler::generateUsages(utils::OutFile &out)
+{
+	generateListMethod(out, "getUsedTypes(QString const &element)", UsagesGenerator());
 }
 
 void XmlCompiler::generateResourceFile()

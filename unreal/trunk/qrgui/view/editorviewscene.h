@@ -13,6 +13,9 @@ namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
 	class MainWindow;
+	namespace model {
+		class Model;
+	}
 }
 
 /** @class EditorViewScene
@@ -75,6 +78,20 @@ private:
 
 	UML::Element *getElemAt(const QPointF &position);
 
+	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
+	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
+	void createAddConnectionMenu(UML::Element const * const element
+		, QMenu &contextMenu, QString const &menuName
+		, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
+		, qReal::IdList const &connectableDiagrams, const char *slot) const;
+
+	void createDisconnectMenu(UML::Element const * const element
+		, QMenu &contextMenu, QString const &menuName
+		, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
+		, const char *slot) const;
+
+	qReal::model::Model *model() const;
+
 	/** @brief Новое положение элемента */
 	QPointF newElementsPosition;
 
@@ -99,4 +116,6 @@ private slots:
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
+	void addUsageActionTriggered();
+	void deleteUsageActionTriggered();
 };

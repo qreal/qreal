@@ -16,6 +16,7 @@ public:
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
+	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 protected:
 	NonGraphicType();
 };

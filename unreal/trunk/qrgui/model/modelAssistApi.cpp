@@ -28,6 +28,16 @@ void ModelAssistApi::disconnect(qReal::Id const &source, qReal::Id const &destin
 	mModel.mutableApi().disconnect(source, destination);
 }
 
+void ModelAssistApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
+{
+	mModel.mutableApi().addUsage(source, destination);
+}
+
+void ModelAssistApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
+{
+	mModel.mutableApi().deleteUsage(source, destination);
+}
+
 Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
 {
 	Q_ASSERT(type.idSize() == 3);
@@ -40,26 +50,47 @@ Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
 	return newElementId;
 }
 
-void ModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
+Id ModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
 {
 	Id element = createElement(ROOT_ID, elementType);
-	QString sourceName = mModel.data(mModel.indexById(sourceElement), Qt::DisplayRole).toString();
+	QString sourceName = mModel.data(mModel.indexById(source), Qt::DisplayRole).toString();
 	QString typeName = editorManager().friendlyName(elementType);
 	mModel.setData(mModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
+	return element;
+}
+
+void ModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
+{
+	Id element = createConnectedElement(sourceElement, elementType);
 	connect(sourceElement, element);
+}
+
+void ModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
+{
+	Id element = createConnectedElement(sourceElement, elementType);
+	addUsage(sourceElement, element);
+}
+
+IdList ModelAssistApi::diagramsFromList(IdList const &list)
+{
+	// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
+	// редактор умел говорить, что диаграмма, а что - нет.
+	IdList result;
+	foreach (Id type, list) {
+		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
+			if (!result.contains(type))
+				result.append(type);
+		}
+	}
+	return result;
 }
 
 IdList ModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
 {
-	// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
-	// редактор умел говорить, что диаграмма, а что - нет.
-	IdList possibleTypes = editorManager().getConnectedTypes(element.type());
-	IdList diagrams;
-	foreach (Id type, possibleTypes) {
-		if (type.element().contains("diagram", Qt::CaseInsensitive)) {
-			if (!diagrams.contains(type))
-				diagrams.append(type);
-		}
-	}
-	return diagrams;
+	return diagramsFromList(editorManager().getConnectedTypes(element.type()));
+}
+
+IdList ModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
+{
+	return diagramsFromList(editorManager().getUsedTypes(element.type()));
 }

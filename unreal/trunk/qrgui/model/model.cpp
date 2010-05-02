@@ -356,6 +356,8 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
 		mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
 		mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
+		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 		mApi.setProperty(id, "position", position);
 		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
@@ -431,6 +433,10 @@ void Model::checkProperties(Id const &id)
 	foreach (QString property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // Типа значение по умолчанию.
+	if (!api().hasProperty(id, "outgoingUsages"))
+		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+	if (!api().hasProperty(id, "incomingUsages"))
+		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 }
 
 QPersistentModelIndex Model::rootIndex() const

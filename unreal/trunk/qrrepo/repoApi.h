@@ -34,6 +34,11 @@ namespace qrRepo {
 		void connect(qReal::Id const &source, qReal::Id const &destination);
 		void disconnect(qReal::Id const &source, qReal::Id const &destination);
 
+		qReal::IdList outgoingUsages(qReal::Id const &id) const;
+		qReal::IdList incomingUsages(qReal::Id const &id) const;
+		void addUsage(qReal::Id const &source, qReal::Id const &destination);
+		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
+
 		QString typeName(qReal::Id const &id) const;
 
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
@@ -63,11 +68,11 @@ namespace qrRepo {
 
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
-                //Returns all elements with .element() == type.element()
+		//Returns all elements with .element() == type.element()
 		qReal::IdList elements(qReal::Id const &type) const;
 
-                //Returns all elements with .element() == type
-                qReal::IdList elementsByType(QString const &type) const;
+		//Returns all elements with .element() == type
+		qReal::IdList elementsByType(QString const &type) const;
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

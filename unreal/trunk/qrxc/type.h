@@ -32,6 +32,7 @@ public:
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst) = 0;
 	void setDiagram(Diagram *diagram);
 	virtual bool isResolving() const;
 

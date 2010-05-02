@@ -48,7 +48,7 @@ void RepoApi::removeElement(Id const &id)
 	foreach (Id const child, children(id))
 		removeElement(child);
 
-// 	removeChild() РІ РєР»РёРµРЅС‚Рµ РєР°РєРѕР№-С‚Рѕ СЃР»РёС€РєРѕРј СѓРјРЅС‹Р№, РґРµР»Р°РµС‚ РјРЅРѕРіРѕ Р»РёС€РЅРµРіРѕ, РїРѕС‚РѕРјСѓ РїРѕРєР° РµРіРѕ СѓР±РёСЂР°РµРј
+// 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
 
 //	foreach (Id const parent, parents(id)) {
 //		removeChild(parent, id);
@@ -79,8 +79,20 @@ void RepoApi::removeElement(Id const &id)
 			disconnect(source, id);
 	}
 
-	// Р С‚Р°Рє РґР°Р»РµРµ РґР»СЏ РІСЃРµС… РІРѕР·РјРѕР¶РЅС‹С… РІРёРґРѕРІ СЃСЃС‹Р»РѕРє Рё РґР»СЏ РІСЃРµС… РёС… РєРѕРјР±РёРЅР°С†РёР№...
-	// Р’РїСЂРѕС‡РµРј, РјРѕР¶РµС‚, СЌС‚РѕРіРѕ РґРµР»Р°С‚СЊ Рё РЅРµ РЅР°РґРѕ.
+	if (hasProperty(id, "outgoingUsages")) {
+		IdList connections = property(id, "outgoingUsages").value<IdList>();
+		foreach (Id const target, connections)
+			deleteUsage(id, target);
+	}
+
+	if (hasProperty(id, "incomingUsages")) {
+		IdList connections = property(id, "incomingUsages").value<IdList>();
+		foreach (Id const source, connections)
+			deleteUsage(source, id);
+	}
+
+	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
+	// Впрочем, может, этого делать и не надо.
 }
 
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
@@ -154,6 +166,28 @@ void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingConnections", destination);
 	removeFromList(destination, "incomingConnections", source);
+}
+
+qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
+{
+	return mClient.property(id, "outgoingUsages").value<IdList>();
+}
+
+qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
+{
+	return mClient.property(id, "incomingUsages").value<IdList>();
+}
+
+void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
+{
+	addToIdList(source, "outgoingUsages", destination);
+	addToIdList(destination, "incomingUsages", source);
+}
+
+void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
+{
+	removeFromList(source, "outgoingUsages", destination);
+	removeFromList(destination, "incomingUsages", source);
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -264,7 +298,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mClient.property(target, listName).value<IdList>();
 
-	// Р—РЅР°С‡РµРЅРёСЏ РІ СЃРїРёСЃРєРµ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹.
+	// Значения в списке должны быть уникальны.
 	if (list.contains(data))
 		return;
 
@@ -294,13 +328,13 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 
 IdList RepoApi::elements(Id const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);  // РџСЂРёРјРµРЅРёРјРѕ С‚РѕР»СЊРєРѕ Рє С‚РёРїР°Рј
+	Q_ASSERT(type.idSize() == 3);  // Применимо только к типам
 
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		// РўР°Рє РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ
+		 // Так должно быть
 		// if (id.type() == type)
-		// РўР°Рє РµСЃС‚СЊ
+		// Так есть
 		if (id.element() == type.element())
 			result.append(id);
 	}
@@ -309,10 +343,10 @@ IdList RepoApi::elements(Id const &type) const
 
 IdList RepoApi::elementsByType(QString const &type) const
 {
-        IdList result;
-        foreach (Id id, mClient.elements()) {
-                if (id.element() == type)
-                        result.append(id);
-        }
-        return result;
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (id.element() == type)
+			result.append(id);
+	}
+	return result;
 }
