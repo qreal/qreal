@@ -19,15 +19,12 @@
 using namespace UML;
 using namespace qReal;
 
-NodeElement::NodeElement(ElementImpl* impl)
-: mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
+NodeElement::NodeElement()
+: mPortsVisible(false), mDragState(None)
 {
+	mEmbeddedLinker = NULL;
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
-	mPortRenderer = new SdfRenderer();
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, mTitles, mPortRenderer);
-	foreach (ElementTitle *title, mTitles)
-		title->setParentItem(this);
 }
 
 NodeElement::~NodeElement()
@@ -37,9 +34,6 @@ NodeElement::~NodeElement()
 
 	foreach (ElementTitle *title, mTitles)
 		delete title;
-	
-	delete mPortRenderer;
-	delete mElementImpl;
 }
 
 void NodeElement::setName(QString value)
@@ -100,36 +94,42 @@ void NodeElement::resizeOverChild(QRectF newContents)
 	foreach (QGraphicsItem* childItem, childItems())
 	{
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem)
+		if (!curItem)
 		{
-			QRectF curChildItemBoundingRect = curItem->boundingRect();
-			curChildItemBoundingRect.translate(curItem->pos());
-			if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
-			{
-				newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
-			}
+			continue;
+		}
 
-			if (curChildItemBoundingRect.right() > newContents.right() - SIZE_OF_FORESTALLING)
-			{
-				newContents.setRight(curChildItemBoundingRect.right() + SIZE_OF_FORESTALLING);
-			}
+		QRectF curChildItemBoundingRect = curItem->boundingRect();
+		curChildItemBoundingRect.translate(curItem->pos());
+		if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
+		{
+			newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
+		}
 
-			if (curChildItemBoundingRect.top() < newContents.top() + SIZE_OF_FORESTALLING)
-			{
-				newContents.setTop(curChildItemBoundingRect.top() - SIZE_OF_FORESTALLING);
-			}
+		if (curChildItemBoundingRect.right() > newContents.right() - SIZE_OF_FORESTALLING)
+		{
+			newContents.setRight(curChildItemBoundingRect.right() + SIZE_OF_FORESTALLING);
+		}
 
-			if (curChildItemBoundingRect.bottom() > newContents.bottom() - SIZE_OF_FORESTALLING)
-			{
-				newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
-			}
+		if (curChildItemBoundingRect.top() < newContents.top() + SIZE_OF_FORESTALLING)
+		{
+			newContents.setTop(curChildItemBoundingRect.top() - SIZE_OF_FORESTALLING);
+		}
+
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - SIZE_OF_FORESTALLING)
+		{
+			newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
 		}
 	}
 
 	newContents.translate(pos());
 
-	if (!((newContents.width() < 10) || (newContents.height() < 10)))
+	if (!((newContents.width() < OBJECT_MIN_SIZE) || (newContents.height() < OBJECT_MIN_SIZE)))
 		setGeometry(newContents);
+	
+	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
+	if (parItem)
+		parItem->resizeOverChild(parItem->mContents);
 }
 
 //события мыши
@@ -226,10 +226,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		//moveChilds(-childsMoving.x(), -childsMoving.y());
 		resizeOverChild(newContents);
-	
-		NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
-		if (parItem)
-			parItem->resizeOverChild(parItem->mContents);
 	}
 }
 
@@ -237,6 +233,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mContents = mContents.normalized();
 	storeGeometry();
+
 	mEmbeddedLinker->setCovered(true);
 
 	if (mDragState == None)
@@ -248,21 +245,25 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (newParent) {
 		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
 			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
-			
+
 		///returns object to the parent area
 		if (pos().x() < 0)
 			this->setPos(SIZE_OF_FORESTALLING, pos().y());
 		if (pos().y() < 0)
 			this->setPos(pos().x(), SIZE_OF_FORESTALLING);
 		///
-		
+	
 		newParent->resizeOverChild(newParent->mContents);
-		newParent->mContents = newParent->mContents.normalized();
-		newParent->storeGeometry();
-
+		
+		while (newParent)
+		{	
+			newParent->mContents = newParent->mContents.normalized();
+			newParent->storeGeometry();
+			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+		}
 	} else
 		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
-
+	
 	mDragState = None;
 	setZValue(0);
 }
@@ -292,7 +293,6 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-	Q_UNUSED(event);
 	if (!isSelected())
 		return;
 	mEmbeddedLinker->setCovered(false);
@@ -346,8 +346,6 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-	// TODO: прикрутить лейблы
-	update();
 }
 
 static int portId(qreal id)
@@ -541,15 +539,6 @@ NodeElement *NodeElement::getNodeAt( const QPointF &position )
 			return e;
 	}
 	return 0;
-}
-
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
-{
-	if (mElementImpl->hasPorts())
-		paint(painter, style, widget, mPortRenderer);
-	else	
-		paint(painter, style, widget, 0);
-	mElementImpl->paint(painter, mContents);
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portRenderer)
