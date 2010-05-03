@@ -21,6 +21,34 @@ MouseGestures::MouseGestures(QWidget *parent)
     showTable();
 }
 
+void MouseGestures::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu menu(this);
+    QAction *rotate = new QAction("Rotate path", this);
+    connect(rotate, SIGNAL(triggered()), this, SLOT(rotatePath()));
+    menu.addAction(rotate);
+    QAction *increase = new QAction("Increase path", this);
+    connect(increase, SIGNAL(triggered()), this, SLOT(increasePath()));
+    menu.addAction(increase);
+    menu.exec(event->globalPos());
+}
+
+void MouseGestures::rotatePath()
+{
+    QString pathStr = ui->twObjectPathTable->currentItem()->text();
+    QList<QPoint> path = Adopter::stringToPath(pathStr);
+    path = PathCorrector::rotate(path);
+    ui->twObjectPathTable->currentItem()->setText(Adopter::pathToString(path));
+}
+
+void MouseGestures::increasePath()
+{
+    QString pathStr = ui->twObjectPathTable->currentItem()->text();
+    QList<QPoint> path = Adopter::stringToPath(pathStr);
+    path = PathCorrector::increase(path, 2);
+    ui->twObjectPathTable->currentItem()->setText(Adopter::pathToString(path));
+}
+
 void MouseGestures::save()
 {
     Serializer serializer(mFileName);

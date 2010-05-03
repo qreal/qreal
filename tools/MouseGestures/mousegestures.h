@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QList>
 #include <QMessageBox>
+#include <QMenu>
+#include <QAction>
 
 namespace Ui
 {
@@ -21,6 +23,9 @@ class MouseGestures : public QMainWindow
 public:
     explicit MouseGestures(QWidget *parent = 0);
     ~MouseGestures();
+
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
 
 private:
     Ui::MouseGestures *ui;
@@ -40,6 +45,8 @@ private:
     static const int objectColumn = 0;
 
 private slots:
+    void rotatePath();
+    void increasePath();
     void loadFile();
     void changePath();
     void drawGesture();
