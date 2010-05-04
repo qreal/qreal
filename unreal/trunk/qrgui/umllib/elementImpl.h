@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <QPainter>
 #include "elementTitle.h"
+#include "elementRepoInterface.h"
 #include "sdfrenderer.h"
 
 namespace UML{
@@ -45,7 +46,9 @@ namespace UML{
 		public:
 			virtual void init(QRectF &contents, QList<QPointF> &pointPorts, 
 							QList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) = 0;
+			virtual void init(QList<ElementTitle*> &titles) = 0;
 			virtual void paint(QPainter *painter, QRectF &contents) = 0;
+			virtual void updateData(ElementRepoInterface *repo) const = 0;
 			virtual bool isNode() = 0;
 			virtual bool hasPorts() = 0;
 			virtual Qt::PenStyle getPenStyle() = 0;

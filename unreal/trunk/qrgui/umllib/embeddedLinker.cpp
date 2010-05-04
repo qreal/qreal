@@ -37,7 +37,7 @@ void EmbeddedLinker::setCovered(bool arg)
 {
 	covered = arg;
 	emit coveredChanged();
-	qDebug() << "covered == " << covered;
+//	qDebug() << "covered == " << covered;
 }
 
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)

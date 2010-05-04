@@ -269,7 +269,8 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-	// TODO: прикрутить лейблы
+	
+	mElementImpl->updateData(this);
 	update();
 }
 

@@ -110,7 +110,8 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
 		<< "\t\tvoid init(QRectF &, QList<QPointF> &,\n"
-		<< "\t\t\t\t\t\t\t\t\t\t\tQList<StatLine> &, QList<ElementTitle*> &titles, SdfRenderer *) {\n";
+		<< "\t\t\t\t\t\t\t\t\t\t\tQList<StatLine> &, QList<ElementTitle*> &, SdfRenderer *) {}\n\n"
+		<< "\t\tvoid init(QList<ElementTitle*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
@@ -136,11 +137,12 @@ void EdgeType::generateCode(OutFile &out)
 
 	generateEdgeStyle(mEndType, out);
 
-	out() << "\t\tvoid updateData()\n\t\t{\n";
+	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
-// TODO перенести запросы в репо внутри ElementTitle
-//	if (!mLabels.isEmpty())
-//		mLabels[0]->generateCodeForUpdateData(out);
+	if (mLabels.isEmpty())
+		out() << "\t\t\tQ_UNUSED(repo);\n";
+	else		
+		mLabels[0]->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n";
 	out() << "\tprivate:\n";

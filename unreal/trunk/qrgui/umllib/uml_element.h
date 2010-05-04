@@ -8,6 +8,7 @@
 #include <QtCore/QModelIndex>
 
 #include "../kernel/definitions.h"
+#include "elementRepoInterface.h"
 #include "elementTitle.h"
 #include "contextMenuAction.h"
 #include "elementImpl.h"
@@ -16,7 +17,7 @@ namespace UML {
 	/** @class Element
 	* 	@brief Базовый класс элемента на диаграмме
 	 * */
-	class Element : public QObject, public QGraphicsItem
+	class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 	{
 		Q_OBJECT
 		Q_INTERFACES(QGraphicsItem)

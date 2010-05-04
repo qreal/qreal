@@ -54,6 +54,10 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	QSettings settings("SPbSU", "QReal");
 	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
+	
+	mElementImpl->init(mTitles);
+	foreach (ElementTitle *title, mTitles)
+		title->setParentItem(this);
 }
 
 EdgeElement::~EdgeElement()
@@ -62,6 +66,7 @@ EdgeElement::~EdgeElement()
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
+	
 	delete mElementImpl;
 }
 
@@ -455,6 +460,7 @@ void EdgeElement::updateData()
 	mPortTo = mDataIndex.data(roles::toPortRole).toDouble();
 
 	adjustLink();
+	mElementImpl->updateData(this);
 	update();
 }
 

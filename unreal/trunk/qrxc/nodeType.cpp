@@ -192,6 +192,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
+		<< "\t\tvoid init(QList<ElementTitle*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) {\n";
 
@@ -244,14 +245,16 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\treturn false;\n";
 	out() << "\t\t}\n\n";	
 
-//	out() << "\t\tvoid updateData(QPersistentModelIndex &dataIndex)\n\t\t{\n";
+	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
-// TODO: перенести запросы в репо внутри ElementTitle
-//	foreach (Label *label, mLabels)
-//		label->generateCodeForUpdateData(out);
+	if (mLabels.isEmpty())
+		out() << "\t\t\tQ_UNUSED(repo);\n";
+	else		
+		foreach (Label *label, mLabels)
+			label->generateCodeForUpdateData(out);
 
-//	out() << "\t\t}\n\n"
-	out() << "\t\tbool isNode()\n\t\t{\n"
+	out() << "\t\t}\n\n"
+		<< "\t\tbool isNode()\n\t\t{\n"
 		<< "\t\t\treturn true;\n"
 		<< "\t\t}\n\n";
 

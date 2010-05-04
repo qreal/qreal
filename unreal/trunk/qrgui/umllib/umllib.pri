@@ -5,6 +5,7 @@ HEADERS += umllib/uml_edgeelement.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
 	umllib/elementImpl.h \
+	umllib/elementRepoInterface.h \
 	umllib/embeddedLinker.h \
 	
 SOURCES += umllib/uml_edgeelement.cpp \

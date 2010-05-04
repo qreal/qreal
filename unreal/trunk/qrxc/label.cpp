@@ -47,15 +47,19 @@ void Label::generateCodeForConstructor(OutFile &out)
 
 void Label::generateCodeForUpdateData(OutFile &out)
 {
-	if (mTextBinded.isEmpty())
-		return;  // Метка статическая.
+	if (mTextBinded.isEmpty()){
+		// Метка статическая.
+		out() << "\t\t\tQ_UNUSED(repo);\n";
+		return;  
+	}	
 	QString field;
 	if (mTextBinded == "name")
-		field = "dataIndex.data(Qt::DisplayRole).toString()";
+		field = "repo->index().data(Qt::DisplayRole).toString()";
 	else
-		field = "roleValueByName(\"" + mTextBinded + "\")";  // Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
+		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
+		field = "repo->roleValueByName(\"" + mTextBinded + "\")"; 
 
-	out() << "			" + titleName() + "->setHtml(QString(\"%1\").arg(" + field + "));\n";
+	out() << "\t\t\t" + titleName() + "->setHtml(QString(\"%1\").arg(" + field + "));\n";
 }
 
 void Label::generateCodeForFields(OutFile &out)

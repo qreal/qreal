@@ -108,7 +108,8 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n\n"
+		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n"
+		<< "#include \"../../../qrgui/umllib/elementRepoInterface.h\"\n"
 		<< "#include \"../../../qrgui/umllib/sdfrenderer.h\"\n\n"
 		<< "namespace UML {\n\n";
 
@@ -328,6 +329,8 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 		foreach (Type *type, diagram->types().values())
 			isNotFirst |= generator.generate(type, out, isNotFirst);
 
+	if (!isNotFirst)
+		out() << "\tQ_UNUSED(element);\n";
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }
