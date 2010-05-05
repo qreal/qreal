@@ -339,7 +339,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     bool deleteCurrentPoint = false;
     if  (mLine.size() >= 3) {
 
-	if ((mDragState > 0) && (mDragState < (mLine.size()-1))) {
+	if ((mDragState > 0) && (mDragState < (mLine.size() - 1))) {
 
 	    QPainterPath path;
 	    QPainterPathStroker neighbourhood;
@@ -348,7 +348,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	    path.moveTo(mLine[mDragState - 1]);
 	    path.lineTo(mLine[mDragState + 1]);
 
-
 	    if (neighbourhood.createStroke(path).contains(mLine[mDragState])) {
 
 		delPointHandler(mLine[mDragState]);
@@ -356,7 +355,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		deleteCurrentPoint = true;
 	    }
 	}
-	if ((mDragState != -1) && (mDragState < (mLine.size()-2))) {
+	if ((mDragState != -1) && (mDragState < (mLine.size() - 2))) {
 
 	    QPainterPath path;
 	    QPainterPathStroker neighbourhood;
@@ -366,7 +365,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	    path.lineTo(mLine[mDragState + 2]);
 
 	    if (neighbourhood.createStroke(path).contains(mLine[mDragState+1]))
-		delPointHandler(mLine[mDragState+1]);
+		delPointHandler(mLine[mDragState + 1]);
 
 	    if (deleteCurrentPoint)
 		mDragState += 1;
@@ -382,7 +381,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	    path.lineTo(mLine[mDragState]);
 
 	    if (neigbourhood.createStroke(path).contains(mLine[mDragState-1]))
-		delPointHandler(mLine[mDragState-1]);
+		delPointHandler(mLine[mDragState - 1]);
 	}
     }
 
@@ -444,7 +443,7 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	ps.setWidth(kvadratik);
 
 	path.moveTo(mLine[i]);
-	path.lineTo(mLine[i+1]);
+	path.lineTo(mLine[i + 1]);
 	if (ps.createStroke(path).contains(pos)) {
 	    mLine.insert(i + 1, pos);
 	    mDragState = i + 1;
