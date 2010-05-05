@@ -133,7 +133,7 @@ namespace UML {
 		QLineF newTransform(const StatLine& port)  const;
 
 		void resizeOverChild(QRectF newContents);
-		void moveChilds(qreal dx, qreal dy);
+		void moveChildren(qreal dx, qreal dy);
 
 		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
