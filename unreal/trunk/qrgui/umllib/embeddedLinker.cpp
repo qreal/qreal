@@ -113,9 +113,9 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
-	if (scene != NULL)				
+	if (scene != NULL)
 	{
-		const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association/";
+		const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association";
 		Id *edgeId = scene->createElement(type, event->scenePos());
 		mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
 		if (mEdge != NULL)
