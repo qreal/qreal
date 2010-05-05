@@ -131,7 +131,11 @@ void NodeElement::resizeOverChild(QRectF newContents)
 		}
 	}
 
+	/*
+	newContents.moveTo(0, 0);
 	newContents.translate(pos());
+	*/
+	newContents.moveTo(pos());
 
 	if (!((newContents.width() < OBJECT_MIN_SIZE) || (newContents.height() < OBJECT_MIN_SIZE)))
 		setGeometry(newContents);
