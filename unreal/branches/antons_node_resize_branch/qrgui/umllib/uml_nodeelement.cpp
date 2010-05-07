@@ -91,17 +91,17 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 		{
 			curItem->moveBy(dx, dy);
 			///returns object to the parent area
-			/*
 			if (curItem->pos().x() < SIZE_OF_FORESTALLING)
 				curItem->setPos(SIZE_OF_FORESTALLING, curItem->pos().y());
 			if (curItem->pos().y() < SIZE_OF_FORESTALLING)
 				curItem->setPos(curItem->pos().x(), SIZE_OF_FORESTALLING);
-			*/
-				
+			
+			/*	
 			if (curItem->pos().x() < 0)
 				curItem->setPos(0, curItem->pos().y());
 			if (curItem->pos().y() < 0)
 				curItem->setPos(curItem->pos().x(), 0);
+			*/
 			///
 		}
 	}
@@ -125,15 +125,15 @@ void NodeElement::resize(QRectF newContents)
 
 		QPointF curItemPos = curItem->pos();
 
-		if (curItemPos.x() < childrenMoving.x())
-			childrenMoving.setX(curItemPos.x());
-		if (curItemPos.y() < childrenMoving.y())
-			childrenMoving.setY(curItemPos.y());
+		if (curItemPos.x() < childrenMoving.x() + SIZE_OF_FORESTALLING)
+			childrenMoving.setX(curItemPos.x() - SIZE_OF_FORESTALLING);
+		if (curItemPos.y() < childrenMoving.y() + SIZE_OF_FORESTALLING)
+			childrenMoving.setY(curItemPos.y() - SIZE_OF_FORESTALLING);
 	}
 	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
-	newContents.setTopLeft(childrenMoving);
-	newContents.moveTo(0, 0);
+	//newContents.setTopLeft(childrenMoving);
+	//newContents.moveTo(0, 0);
 
 	foreach (QGraphicsItem* childItem, childItems())
 	{
@@ -143,7 +143,8 @@ void NodeElement::resize(QRectF newContents)
 
 		QRectF curChildItemBoundingRect = curItem->mContents;
 		curChildItemBoundingRect.translate(curItem->pos());
-	
+
+		/*	
 		if (curChildItemBoundingRect.left() < newContents.left() + 0)
 		{
 			newContents.setLeft(curChildItemBoundingRect.left() - 0);
@@ -163,8 +164,9 @@ void NodeElement::resize(QRectF newContents)
 		{
 			newContents.setBottom(curChildItemBoundingRect.bottom() + 0);
 		}
+		*/
 
-		/*
+		
 		if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
 		{
 			newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
@@ -184,7 +186,7 @@ void NodeElement::resize(QRectF newContents)
 		{
 			newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
 		}
-		*/
+		
 	}
 
 	newContents.moveTo(pos());
