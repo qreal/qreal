@@ -93,7 +93,7 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 			///returns object to the parent area
 			if (curItem->pos().x() < SIZE_OF_FORESTALLING)
 				curItem->setPos(SIZE_OF_FORESTALLING, curItem->pos().y());
-			if (pos().y() < SIZE_OF_FORESTALLING)
+			if (curItem->pos().y() < SIZE_OF_FORESTALLING)
 				curItem->setPos(curItem->pos().x(), SIZE_OF_FORESTALLING);
 			///
 		}
@@ -102,6 +102,11 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 
 void NodeElement::resizeOverChild(QRectF newContents)
 {
+	//BAD IDEA
+	newContents.moveTo(0, 0);
+	//moveChildren(0, 0);
+	//BAD IDEA
+
 	foreach (QGraphicsItem* childItem, childItems())
 	{
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
@@ -110,6 +115,28 @@ void NodeElement::resizeOverChild(QRectF newContents)
 
 		QRectF curChildItemBoundingRect = curItem->boundingRect();
 		curChildItemBoundingRect.translate(curItem->pos());
+		
+		if (curChildItemBoundingRect.left() < newContents.left() + 0)
+		{
+			newContents.setLeft(curChildItemBoundingRect.left() - 0);
+		}
+
+		if (curChildItemBoundingRect.right() > newContents.right() - 0)
+		{
+			newContents.setRight(curChildItemBoundingRect.right() + 0);
+		}
+
+		if (curChildItemBoundingRect.top() < newContents.top() + 0)
+		{
+			newContents.setTop(curChildItemBoundingRect.top() - 0);
+		}
+
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - 0)
+		{
+			newContents.setBottom(curChildItemBoundingRect.bottom() + 0);
+		}
+
+		/*
 		if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
 		{
 			newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
@@ -129,12 +156,9 @@ void NodeElement::resizeOverChild(QRectF newContents)
 		{
 			newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
 		}
+		*/
 	}
 
-	/*
-	newContents.moveTo(0, 0);
-	newContents.translate(pos());
-	*/
 	newContents.moveTo(pos());
 
 	if (!((newContents.width() < OBJECT_MIN_SIZE) || (newContents.height() < OBJECT_MIN_SIZE)))
@@ -187,26 +211,37 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	{
 		Element::mouseMoveEvent(event);
 	} else {
-		QRectF newContents = mContents;
+		QRectF newContents = mContents;	
+
+		QPointF parentPos = QPointF(0, 0);
+		QGraphicsItem* parItem = parentItem();
+		if (parItem)
+			parentPos = parItem->scenePos();
+
 		switch (mDragState)
 		{
 			case TopLeft:
 				newContents.setTopLeft(event->pos());
+				setPos(event->scenePos() - parentPos);
 				break;
 			case Top:
 				newContents.setTop(event->pos().y());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
 				break;
 			case TopRight:
 				newContents.setTopRight(event->pos());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
 				break;
 			case Left:
 				newContents.setLeft(event->pos().x());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
 				break;
 			case Right:
 				newContents.setRight(event->pos().x());
 				break;
 			case BottomLeft:
 				newContents.setBottomLeft(event->pos());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
 				break;
 			case Bottom:
 				newContents.setBottom(event->pos().y());
