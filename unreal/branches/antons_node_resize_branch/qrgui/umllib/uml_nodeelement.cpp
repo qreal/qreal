@@ -132,8 +132,8 @@ void NodeElement::resize(QRectF newContents)
 	}
 	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
-	//newContents.setTopLeft(childrenMoving);
-	//newContents.moveTo(0, 0);
+	newContents.setTopLeft(childrenMoving);
+	newContents.moveTo(0, 0);
 
 	foreach (QGraphicsItem* childItem, childItems())
 	{
