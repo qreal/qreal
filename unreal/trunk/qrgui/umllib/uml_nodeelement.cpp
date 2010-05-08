@@ -20,7 +20,7 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
+: mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -28,7 +28,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, mPointPorts, mLinePorts, mTitles, mPortRenderer);
 	foreach (ElementTitle *title, mTitles)
 		title->setParentItem(this);
-	mSwitchGrid = true;
 }
 
 NodeElement::~NodeElement()
@@ -38,7 +37,7 @@ NodeElement::~NodeElement()
 
 	foreach (ElementTitle *title, mTitles)
 		delete title;
-
+	
 	delete mPortRenderer;
 	delete mElementImpl;
 }
@@ -83,117 +82,7 @@ void NodeElement::storeGeometry()
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
-/*Удаляем все лишние прямые*/
-void NodeElement::delUnusedLines()
-{
-	for (int i = mLines.size() - 1; i >= 0; i--) {
-		mLines[i]->hide();
-		scene()->removeItem(mLines[i]);
-		mLines.pop_back();
-	}
-}
-
-/*Рисуем горизонтальную линию*/
-void NodeElement::drawLineY(qreal pointY, qreal myX)
-{
-	QLineF line(myX - widthLine/2, pointY, myX + widthLine/2, pointY);
-	mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.5, Qt::DashLine)));
-}
-
-/*Рисуем вертикальную линию*/
-void NodeElement::drawLineX(qreal pointX, qreal myY)
-{
-	QLineF line(pointX, myY - widthLine/2, pointX, myY + widthLine/2);
-	mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.5, Qt::DashLine)));
-}
-
-/*Проверяем, надо ли делать "прыжок" к вертикальной линии. Если да, то делаем его*/
-bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
-{
-	if (deltaX <= radiusJump) {
-		setX(pointX - boundingRect().x());
-		return true;
-	}
-	return false;
-}
-
-/*Проверяем, надо ли делать "прыжок" к горизонтальной линии. Если да, то делаем его*/
-bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
-{
-	if (deltaY <= radiusJump) {
-		setY(pointY - boundingRect().y());
-		return true;
-	}
-	return false;
-}
-
-/*"Строим" вертикальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
-{
-	if (deltaX <= radius || doAlways) {
-		drawLineX(pointX, myY);
-		if (makeJumpX(deltaX, radiusJump, pointX - correctionX)) {
-			myX1 = recountX1();
-			myX2 = recountX2(myX1);
-		}
-	}
-}
-
-/*"Строим" горизонтальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
-{
-	if (deltaY <= radius || doAlways) {
-		drawLineY(pointY, myX);
-		if (makeJumpY(deltaY, radiusJump, pointY - correctionY)) {
-			myY1 = recountY1();
-			myY2 = recountY2(myY1);
-		}
-	}
-}
-
-/*Пересчитываем X1*/
-qreal NodeElement::recountX1()
-{
-	return scenePos().x() + boundingRect().x();
-}
-
-/*Пересчитываем X2*/
-qreal NodeElement::recountX2(qreal myX1)
-{
-	return myX1 + boundingRect().width();
-}
-
-/*Пересчитываем Y1*/
-qreal NodeElement::recountY1()
-{
-	return scenePos().y() + boundingRect().y();
-}
-
-/*Пересчитываем Y2*/
-qreal NodeElement::recountY2(qreal myY1)
-{
-	return myY1 + boundingRect().height();
-}
-
-/*Осуществляем вертикальное движение объекта по заданной сетке*/
-void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
-{
-	if(fabs(myX - koef * indexGrid) <= indexGrid / 2)
-		setX(koef * indexGrid);
-	else if(fabs(myX - (koef + 1)* indexGrid) < indexGrid / 2)
-		setX((koef + 1) * indexGrid);
-}
-
-/*Осуществляем горизонтальное движение объекта по заданной сетке*/
-void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
-{
-	if(fabs(myY - koef * indexGrid) <= indexGrid / 2)
-		setY(koef * indexGrid);
-	else if(fabs(myY - (koef + 1)* indexGrid) < indexGrid / 2)
-		setY((koef + 1) * indexGrid);
-}
-
-//события мышки
+//события мыши
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
@@ -226,7 +115,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		event->accept();
 
 	setZValue(1);
-
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -239,30 +127,30 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		QRectF newContents = mContents;
 		switch (mDragState)
 		{
-		case TopLeft:
-			newContents.setTopLeft(event->pos());
-			break;
-		case Top:
-			newContents.setTop(event->pos().y());
-			break;
-		case TopRight:
-			newContents.setTopRight(event->pos());
-			break;
-		case Left:
-			newContents.setLeft(event->pos().x());
-			break;
-		case Right:
-			newContents.setRight(event->pos().x());
-			break;
-		case BottomLeft:
-			newContents.setBottomLeft(event->pos());
-			break;
-		case Bottom:
-			newContents.setBottom(event->pos().y());
-			break;
-		case BottomRight:
-			newContents.setBottomRight(event->pos());
-			break;
+			case TopLeft:
+				newContents.setTopLeft(event->pos());
+				break;
+			case Top:
+				newContents.setTop(event->pos().y());
+				break;
+			case TopRight:
+				newContents.setTopRight(event->pos());
+				break;
+			case Left:
+				newContents.setLeft(event->pos().x());
+				break;
+			case Right:
+				newContents.setRight(event->pos().x());
+				break;
+			case BottomLeft:
+				newContents.setBottomLeft(event->pos());
+				break;
+			case Bottom:
+				newContents.setBottom(event->pos().y());
+				break;
+			case BottomRight:
+				newContents.setBottomRight(event->pos());
+				break;
 		case None:
 			break;
 		}
@@ -278,63 +166,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (!((newContents.width() < 10) || (newContents.height() < 10)))
 			setGeometry(newContents);
 	}
-
-	qreal myX1 = scenePos().x() + boundingRect().x();
-	qreal myY1 = scenePos().y() + boundingRect().y();
-
-	if (mSwitchGrid) {
-		int indexGrid = 10;
-		int koefX = ((int) myX1) / indexGrid;
-		int koefY = ((int) myY1) / indexGrid;
-		makeGridMovingX(myX1, koefX, indexGrid);
-		makeGridMovingY(myY1, koefY, indexGrid);
-
-		myX1 = scenePos().x() + boundingRect().x();
-		myY1 = scenePos().y() + boundingRect().y();
-	}
-
-	qreal myX2 = myX1 + boundingRect().width();
-	qreal myY2 = myY1 + boundingRect().height();
-
-	qreal radius = 20;
-	qreal radiusJump = 10;
-
-	QList<QGraphicsItem *> list = scene()->items();
-	delUnusedLines();
-	foreach (QGraphicsItem *graphicsItem, list) {
-		NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
-		if (item == NULL)
-			continue;
-		QPointF point = item->scenePos();
-		qreal pointX1 = point.x() + item->boundingRect().x();
-		qreal pointY1  = point.y() + item->boundingRect().y();
-		qreal pointX2 = pointX1  + item->boundingRect().width();
-		qreal pointY2  = pointY1 + item->boundingRect().height();
-
-		if (pointX1 != myX1 || pointY1 != myY1) {
-			qreal deltaY1 = fabs(pointY1 - myY1);
-			qreal deltaY2 = fabs(pointY2 - myY2);
-			qreal deltaX1 = fabs(pointX1 - myX1);
-			qreal deltaX2 = fabs(pointX2 - myX2);
-			if (deltaY1 <= radius || deltaY2 <= radius) {
-				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1 + boundingRect().width() / 2);
-				buildLineY(deltaY2, radius, true, radiusJump, pointY2, boundingRect().height(), myY1, myY2, myX1 + boundingRect().width() / 2);
-			}
-			if (deltaX1 <= radius || deltaX2 <= radius) {
-				buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1 + boundingRect().height() / 2);
-				buildLineX(deltaX2, radius, true, radiusJump, pointX2, boundingRect().width(), myX1, myX2, myY1 + boundingRect().height() / 2);
-			}
-			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1, boundingRect().height(), myY1, myY2, myX1 + boundingRect().width() / 2);
-			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1, boundingRect().width(), myX1, myX2, myY1 + boundingRect().height() / 2);
-			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2, 0, myY1, myY2, myX1 + boundingRect().width() / 2);
-			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2, 0, myX1, myX2, myY1 + boundingRect().height() / 2);
-		}
-	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();
 	mEmbeddedLinker->setCovered(true);
@@ -347,7 +182,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (newParent) {
 		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-								mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 	} else
 		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 
@@ -389,11 +224,11 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch (change) {
-	case ItemPositionHasChanged:
-		adjustLinks();
-		return value;
-	default:
-		return QGraphicsItem::itemChange(change, value);
+		case ItemPositionHasChanged:
+			adjustLinks();
+			return value;
+		default:
+			return QGraphicsItem::itemChange(change, value);
 	}
 }
 
@@ -434,7 +269,7 @@ void NodeElement::updateData()
 		}
 		setGeometry(newRect.translated(newpos));
 	}
-
+	
 	mElementImpl->updateData(this);
 	update();
 }
@@ -537,7 +372,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
 		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 		{
 			return 1.0 * i;
 		}
@@ -554,8 +389,8 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		path = ps.createStroke(path);
 		if (path.contains(location))
 			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-														  QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-														  / newTransform(mLinePorts[i]).length() ) );
+				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
+				/ newTransform(mLinePorts[i]).length() ) );
 	}
 
 	qreal minDistance = 0;
@@ -636,7 +471,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 {
 	if (mElementImpl->hasPorts())
 		paint(painter, style, widget, mPortRenderer);
-	else
+	else	
 		paint(painter, style, widget, 0);
 	mElementImpl->paint(painter, mContents);
 }

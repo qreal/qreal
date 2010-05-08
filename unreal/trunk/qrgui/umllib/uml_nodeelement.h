@@ -18,7 +18,6 @@
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
-const int widthLine = 1000;
 
 namespace UML {
 	/** @class NodeElement
@@ -37,12 +36,12 @@ namespace UML {
 
 		/** @brief Отрисовать объект */
 		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
-						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
+			const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
+			QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
+			SdfRenderer *portrenderer /**< Рендерер портов)*/);
 		virtual void paint(QPainter *, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *, /**< Настройки отрисовки */
-						   QWidget * /**< Виджет, на котором осуществляется отрисовка */);
+			const QStyleOptionGraphicsItem *, /**< Настройки отрисовки */
+			QWidget * /**< Виджет, на котором осуществляется отрисовка */);
 
 		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
 			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
@@ -82,23 +81,8 @@ namespace UML {
 		void setPortsVisible(bool value);
 
 	private:
-		QList<QGraphicsLineItem*> mLines;
-		bool mSwitchGrid;
-		void delUnusedLines();
-		void drawLineX(qreal pointX, qreal myY);
-		void drawLineY(qreal pointY, qreal myX);
-		bool makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX);
-		bool makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY);
-		void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY);
-		void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX);
-		qreal recountX1();
-		qreal recountX2(qreal myX1);
-		qreal recountY1();
-		qreal recountY2(qreal myY1);
-		void makeGridMovingX(qreal myX, int koef, int indexGrid);
-		void makeGridMovingY(qreal myY, int koef, int indexGrid);
-		
-//события мыши
+
+		//события мыши
 
 		/** @brief Обработать событие нажатия кнопки мыши */
 		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event );
@@ -124,7 +108,7 @@ namespace UML {
 			 *	@brief @return Измененные данные
 			 * */
 		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-									const QVariant &value /**< Величина изменения */);
+			const QVariant &value /**< Величина изменения */);
 
 		bool mPortsVisible;
 
