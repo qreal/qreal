@@ -1,0 +1,12 @@
+INPUT(
+./release\sdfrenderer.o
+./release\ids.o
+./release\elementTitle.o
+./release\contextMenuAction.o
+./release\pluginInterface.o
+./release\moc_sdfrenderer.o
+./release\moc_elementTitle.o
+./release\moc_contextMenuAction.o
+./release\moc_pluginInterface.o
+./release\qrc_plugin.o
+);
