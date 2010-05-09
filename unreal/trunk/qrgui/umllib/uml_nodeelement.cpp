@@ -82,6 +82,94 @@ void NodeElement::storeGeometry()
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
 
+void NodeElement::moveChildren(qreal dx, qreal dy)
+{
+	foreach (QGraphicsItem* childItem, childItems())
+	{
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem)
+		{
+			curItem->moveBy(dx, dy);
+			///returns object to the parent area
+			if (curItem->pos().x() < SIZE_OF_FORESTALLING)
+				curItem->setPos(SIZE_OF_FORESTALLING, curItem->pos().y());
+			if (curItem->pos().y() < SIZE_OF_FORESTALLING)
+				curItem->setPos(curItem->pos().x(), SIZE_OF_FORESTALLING);	
+		}
+	}
+}
+
+void NodeElement::moveChildren(QPointF moving)
+{
+	moveChildren(moving.x(), moving.y());
+}
+
+void NodeElement::resize(QRectF newContents)
+{
+	newContents.moveTo(0, 0);
+
+	//childrenMoving - отрицательный сдвиг детей 
+	//относительно точки (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
+	QPointF childrenMoving = QPointF(0, 0);
+	foreach (QGraphicsItem* childItem, childItems())
+	{
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (!curItem)
+			continue;
+
+		QPointF curItemPos = curItem->pos();
+
+		if (curItemPos.x() < childrenMoving.x() + SIZE_OF_FORESTALLING)
+			childrenMoving.setX(curItemPos.x() - SIZE_OF_FORESTALLING);
+		if (curItemPos.y() < childrenMoving.y() + SIZE_OF_FORESTALLING)
+			childrenMoving.setY(curItemPos.y() - SIZE_OF_FORESTALLING);
+	}
+	setPos(pos() + childrenMoving);//сдвиг объекта из-за детей
+	moveChildren(-childrenMoving);
+	newContents.setTopLeft(childrenMoving);//растяжение объекта из-за детей
+	newContents.moveTo(0, 0);
+
+	foreach (QGraphicsItem* childItem, childItems())
+	{
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (!curItem)
+			continue;
+
+		QRectF curChildItemBoundingRect = curItem->mContents;
+		curChildItemBoundingRect.translate(curItem->pos());
+		
+		if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
+		{
+			newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
+		}
+
+		if (curChildItemBoundingRect.right() > newContents.right() - SIZE_OF_FORESTALLING)
+		{
+			newContents.setRight(curChildItemBoundingRect.right() + SIZE_OF_FORESTALLING);
+		}
+
+		if (curChildItemBoundingRect.top() < newContents.top() + SIZE_OF_FORESTALLING)
+		{
+			newContents.setTop(curChildItemBoundingRect.top() - SIZE_OF_FORESTALLING);
+		}
+
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - SIZE_OF_FORESTALLING)
+		{
+			newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
+		}
+	}
+
+	newContents.moveTo(pos());
+
+	if (!((newContents.width() < OBJECT_MIN_SIZE) || (newContents.height() < OBJECT_MIN_SIZE)))
+		setGeometry(newContents);
+	
+	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
+	if (parItem)
+		parItem->resize(parItem->mContents);
+		//рекурсивное растяжение родителей
+}
+
 //события мыши
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -124,26 +212,37 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	{
 		Element::mouseMoveEvent(event);
 	} else {
-		QRectF newContents = mContents;
+		QRectF newContents = mContents;	
+
+		QPointF parentPos = QPointF(0, 0);
+		QGraphicsItem* parItem = parentItem();
+		if (parItem)
+			parentPos = parItem->scenePos();
+
 		switch (mDragState)
 		{
 			case TopLeft:
 				newContents.setTopLeft(event->pos());
+				setPos(event->scenePos() - parentPos);
 				break;
 			case Top:
 				newContents.setTop(event->pos().y());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
 				break;
 			case TopRight:
 				newContents.setTopRight(event->pos());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
 				break;
 			case Left:
 				newContents.setLeft(event->pos().x());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
 				break;
 			case Right:
 				newContents.setRight(event->pos().x());
 				break;
 			case BottomLeft:
 				newContents.setBottomLeft(event->pos());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
 				break;
 			case Bottom:
 				newContents.setBottom(event->pos().y());
@@ -162,9 +261,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setHeight(size);
 		}
 
-		newContents.translate(pos());
-		if (!((newContents.width() < 10) || (newContents.height() < 10)))
-			setGeometry(newContents);
+		resize(newContents);
 	}
 }
 
@@ -172,6 +269,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mContents = mContents.normalized();
 	storeGeometry();
+
 	mEmbeddedLinker->setCovered(true);
 
 	if (mDragState == None)
@@ -180,12 +278,22 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	NodeElement *newParent = getNodeAt(event->scenePos());
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (newParent) {
+	if (newParent) 
+	{
 		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
 			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+
+		newParent->resize(newParent->mContents);
+		
+		while (newParent)
+		{	
+			newParent->mContents = newParent->mContents.normalized();
+			newParent->storeGeometry();
+			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+		}
 	} else
 		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
-
+	
 	mDragState = None;
 	setZValue(0);
 }
