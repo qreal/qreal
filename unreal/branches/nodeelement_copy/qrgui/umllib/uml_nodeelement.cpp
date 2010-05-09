@@ -1,4 +1,4 @@
-/** @file uml_nodeelement.cpp
+﻿/** @file uml_nodeelement.cpp
  * 	@brief Класс, представляющий объект на диаграмме
  * */
 #include "uml_nodeelement.h"
@@ -103,15 +103,27 @@ void NodeElement::delUnusedLines()
 /*Рисуем горизонтальную линию*/
 void NodeElement::drawLineY(qreal pointY)
 {
+	bool lineIsFound = false;
 	QLineF line(this->scene()->sceneRect().x(), pointY, this->scene()->sceneRect().x() + this->scene()->sceneRect().width(), pointY);
-	mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
+	foreach (QGraphicsLineItem* lineItem, mLines) {
+		if (lineItem->line().y1() == line.y1() && lineItem->line().y2() == line.y2())
+			lineIsFound = true;
+	}
+	if (!lineIsFound)
+		mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
 }
 
 /*Рисуем вертикальную линию*/
 void NodeElement::drawLineX(qreal pointX)
 {
+	bool lineIsFound = false;
 	QLineF line(pointX, this->scene()->sceneRect().y(), pointX, this->scene()->sceneRect().y() + this->scene()->sceneRect().height());
-	mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
+	foreach (QGraphicsLineItem* lineItem, mLines) {
+		if (lineItem->line().x1() == line.x1() && lineItem->line().x2() == line.x2())
+			lineIsFound = true;
+	}
+	if (!lineIsFound)
+		mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
 }
 
 /*Проверяем, надо ли делать "прыжок" к вертикальной линии. Если да, то делаем его*/
@@ -191,7 +203,7 @@ void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 	if(fabs(fabs(myX) - fabs(koef) * indexGrid) <= indexGrid / 2)
 		setX(koef * indexGrid);
 	else if(fabs(fabs(myX) - (fabs(koef) + 1)* indexGrid) < indexGrid / 2)
-		setX((koef + 1) * indexGrid);
+		setX((koef + oneKoef) * indexGrid);
 }
 
 /*Осуществляем горизонтальное движение объекта по заданной сетке*/
@@ -203,7 +215,7 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 	if(fabs(fabs(myY) - fabs(koef) * indexGrid) <= indexGrid / 2)
 		setY(koef * indexGrid);
 	else if(fabs(fabs(myY) - (fabs(koef) + 1)* indexGrid) < indexGrid / 2)
-			setY((koef + oneKoef) * indexGrid);
+		setY((koef + oneKoef) * indexGrid);
 }
 
 //события мышки
