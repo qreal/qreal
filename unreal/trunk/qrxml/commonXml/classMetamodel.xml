@@ -1,6 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>kernel_metamodel.xml</include>
+	<include>../activityEditor/activity_metamodel.xml</include>
 	<namespace>UML 2.1</namespace>
 	<diagram name="ClassDiagram" displayedName="Class Diagram">
 		<graphicTypes>
@@ -143,10 +144,13 @@
 					</properties>
 					<connections>
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
-						<connection type="ActivityDiagram::Action"/>
-						<connection type="ActivityDiagram::DecisionNode"/>
-						<connection type="ActivityDiagram::Constraint"/>
+						<connection type="UseCaseDiagram::UseCase"/>
 					</connections>
+					<usages>
+						<usage type="ClassDiagram::ClassMethod"/>
+						<usage type="ClassDiagram::ClassField"/>
+						<usage type="ClassDiagram::Interface"/>
+					</usages>
 				</logic>
 			</node>
 			<node name="ClassField" displayedName="Class field">
@@ -185,12 +189,11 @@
 						<property type="string" name="isTransient"/>
 						<property type="string" name="isVolatile"/>
 					</properties>
-					<connections>
-						<connection type="ActivityDiagram::ActivityDiagramNode"/>
-						<connection type="ActivityDiagram::Action"/>
-						<connection type="ActivityDiagram::DecisionNode"/>
-						<connection type="ActivityDiagram::Constraint"/>
-					</connections>
+					<usages>
+						<usage type="ClassDiagram::ClassMethod"/>
+						<usage type="ClassDiagram::ClassField"/>
+						<usage type="ClassDiagram::Interface"/>
+					</usages>
 				</logic>
 			</node>
 			<edge name="Aggregation" displayedName="Aggregation">

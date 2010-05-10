@@ -18,6 +18,7 @@ namespace qReal {
             explicit JavaHandler(qrRepo::RepoApi const &api);
 
             QString generateToJava(QString const &pathToDir);
+            QString parseJavaLibraries(QString const &pathToDir);
         private:
             bool checkTheModel();
             bool commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType);
@@ -70,6 +71,9 @@ namespace qReal {
 
             int mIndent;
             QString indent();
+
+            //Parsing Java Libraries
+            QStringList getAllFilesInDirectory(QString dir_name);
         };
 
     }

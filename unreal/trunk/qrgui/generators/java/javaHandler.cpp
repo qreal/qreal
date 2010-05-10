@@ -5,6 +5,9 @@
 
 #include <QtCore/QDebug>
 
+#include <QFileInfo>
+#include <QDir>
+
 #include "../../kernel/definitions.h"
 #include "../../../qrrepo/repoApi.h"
 
@@ -15,6 +18,67 @@ JavaHandler::JavaHandler(qrRepo::RepoApi const &api)
     : mApi(api)
 {
 }
+
+//Parsing Java Libraries
+
+QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
+{
+    qDebug() << "start";
+
+    QStringList files = getAllFilesInDirectory(pathToDir);
+    foreach (QString aFile, files) {
+        qDebug() << aFile;
+
+//            //QString -> char *
+//            QByteArray byteArray = aFile.toLatin1();
+//            char * fileName = byteArray.data();
+//
+//            javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
+//            pANTLR3_BASE_TREE tree = compilationUnit.tree;
+//
+//            pANTLR3_STRING name = className(tree);
+//            QString typeAndName = QString(QLatin1String((char *) name->chars));
+//            qDebug() << "typeAndName = " + typeAndName;
+//
+//            QStringList attributes = classAttributes(tree);
+//            foreach (QString anAttr, attributes) {
+//                if (anAttr.contains("(")) { //method
+//                    qDebug() << "method = " + anAttr;
+//                } else { //attribute
+//                    qDebug() << "attribute = " + anAttr;
+//                }
+//            }
+    }
+
+    qDebug() << "finished parsing OK";
+
+    return "";
+}
+
+QStringList JavaHandler::getAllFilesInDirectory(QString dir_name)
+{
+    QStringList ret_list;
+    QDir dir(dir_name);
+    QFileInfoList info_list = dir.entryInfoList();
+    if(info_list.size() > 2) {
+        QList<QFileInfo>::iterator iter = info_list.begin();
+        QString path;
+        for (iter = info_list.begin() + 2; iter != info_list.end(); iter++) {
+            path = iter->absoluteFilePath();
+            if (iter->isDir()) {
+                ret_list += getAllFilesInDirectory(path);
+            } else {
+                if (path.endsWith(".java")) {
+                    qDebug() << "adding file with path = " + path;
+                    ret_list.append(path);
+                }
+            }
+        }
+    }
+    return ret_list;
+}
+
+//Code Generating
 
 QString JavaHandler::generateToJava(QString const &pathToDir)
 {

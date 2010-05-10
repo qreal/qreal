@@ -89,6 +89,10 @@
 						<contains type="ActivityDiagram::SendSignalAction"/>
 						<contains type="ActivityDiagram::StructuredActivityNode"/>
 					</container> 
+					<connections>
+						<connection type="ClassDiagram::ClassMethod"/>
+						<connection type="UseCaseDiagram::UseCase"/>
+					</connections>
 				</logic>
 			</node>
 			
@@ -187,9 +191,12 @@
 						<parent parentName="Basic Actions::Action"/>
 					</generalizations>
 					<connections>
-						<connection type="ClassDiagram::ClassMethod"/>
 						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 					</connections>
+					<usages>
+						<usage type="ClassDiagram::ClassMethod"/>
+						<usage type="ClassDiagram::ClassField"/>
+					</usages>
 				</logic>
 			</node>
 			<node name="ActionInputPin" displayedName="Action Input Pin">
@@ -579,6 +586,10 @@
 						<property type="Behavior" name="decisionInput"/>
 						<property type="ObjectFlow" name="decisionInputFlow"/>
 					</properties>
+					<usages>
+						<usage type="ClassDiagram::ClassMethod"/>
+						<usage type="ClassDiagram::ClassField"/>
+					</usages>
 				</logic>
 			</node>
 			<edge name="ExceptionHandler" displayedName="Exception Handler">

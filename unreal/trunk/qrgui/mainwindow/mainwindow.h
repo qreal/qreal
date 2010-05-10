@@ -55,12 +55,13 @@ namespace qReal {
 		void print();
 		void makeSvg();
 
-		/** @brief Реагирует на изменение выделения на сцене, синхронизируя его с диаграм
+		/** @brief � еагирует на изменение выделения на сцене, синхронизируя его с диаграм
 		 * эксплорером. */
 		void sceneSelectionChanged();
 
 		void exportToXmi();
 		void generateToJava();
+                void parseJavaLibraries();
 		void deleteFromScene();
 		void deleteFromScene(QGraphicsItem *target);
 

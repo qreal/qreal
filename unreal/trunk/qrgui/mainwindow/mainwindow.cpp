@@ -81,6 +81,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
+        connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 
@@ -434,6 +435,25 @@ void MainWindow::generateToJava()
 	}
 
 	qDebug() << "Done.";
+}
+
+void MainWindow::parseJavaLibraries()
+{
+        generators::JavaHandler java(mModel->api());
+
+        QString const dirName = QFileDialog::getExistingDirectory(this);
+        if (dirName.isEmpty())
+                return;
+
+        QString const errors = java.parseJavaLibraries(dirName);
+
+        if (!errors.isEmpty()) {
+                QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+        } else {
+                QMessageBox::information(this, tr("finished"), "Parsing is finished");
+        }
+
+        qDebug() << "Done.";
 }
 
 void MainWindow::generateToHascol()

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../commonXml/kernel_metamodel.xml</include>
-	<include>../activityEditor/activity_metamodel.xml</include>
+	<include>../commonXml/classMetamodel.xml</include>
 	<namespace>UML 2.1</namespace>
 	<diagram name="UseCaseDiagram" displayedName="Use Case Diagram">
 		<graphicTypes>
@@ -213,6 +213,7 @@
 					</properties>
 					<connections>
 						<connection type="ClassDiagram::ClassMethod"/>
+						<connection type="ActivityDiagram::ActivityDiagramNode"/>
 						<connection type="UseCaseDiagram::UseCaseDiagramNode"/>
 					</connections>
 			    </logic>
