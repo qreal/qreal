@@ -20,27 +20,38 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
-	mDraw = false;
-	connect(this, SIGNAL(sceneRectChanged(const QRectF &rect )), this, SLOT(sceneRectChangedHandler(const QRectF &rect)));
+	mNeedDrawGrid = true;
+	connect(this, SIGNAL(sceneRectChanged(const QRectF &)), this, SLOT(sceneRectChangedHandler(const QRectF &)));
+}
+
+/*Удаляем все лишние прямые*/
+void EditorViewScene::delUnusedLines()
+{
+	for (int i = mGridLines.size() - 1; i >= 0; i--) {
+		mGridLines[i]->hide();
+		removeItem(mGridLines[i]);
+		mGridLines.pop_back();
+	}
 }
 
 /*Рисуем сетку*/
 void EditorViewScene::drawGrid()
 {
-	int startX = sceneRect().center().x() - widthLineX / 2;
-	int endX = sceneRect().center().x() + widthLineX / 2;
-	int startY = sceneRect().center().y() - widthLineY / 2;
-	int endY = sceneRect().center().y() + widthLineY / 2;
+	delUnusedLines();
+	int startX = qMax(sceneRect().center().x() - widthLineX / 2, sceneRect().x());
+	int endX = qMin(sceneRect().center().x() + widthLineX / 2, sceneRect().x() + sceneRect().width());
+	int startY = qMax(sceneRect().center().y() - widthLineY / 2, sceneRect().y());
+	int endY = qMin(sceneRect().center().y() + widthLineY / 2, sceneRect().y() + sceneRect().height());
 	qDebug() << startX << " " << endX << " " << startY << " " << endY;
 	for (int i = startX; i <= endX; i = i + indexGrid) {
 		QLineF line(i, startY, i, endY);
-		addLine(line, QPen(Qt::black, 0.25, Qt::DashLine));
+		mGridLines.push_back(addLine(line, QPen(Qt::black, 0.1, Qt::DashLine)));
 	}
 	for (int i = startY; i <= endY; i = i + indexGrid) {
 		QLineF line(startX, i, endX, i);
-		addLine(line, QPen(Qt::black, 0.25, Qt::DashLine));
+		mGridLines.push_back(addLine(line, QPen(Qt::black, 0.1, Qt::DashLine)));
 	}
-	mDraw = true;
+	mNeedDrawGrid = false;
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -405,7 +416,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (!mDraw)
+	if (mNeedDrawGrid)
 		drawGrid();
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mousePressEvent(event);
@@ -617,5 +628,5 @@ qReal::model::Model *EditorViewScene::model() const
 
 void EditorViewScene::sceneRectChangedHandler(const QRectF & rect)
 {
-	mDraw = true;
+	drawGrid();
 }

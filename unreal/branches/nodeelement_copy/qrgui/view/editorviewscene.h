@@ -30,8 +30,6 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	bool mDraw;
-	void drawGrid();
 	/** @brief Конструктор  */
 	explicit EditorViewScene(QObject *parent = 0 /**< Родительский объект*/);
 
@@ -81,6 +79,11 @@ protected:
 	/** @brief Обработать двойной щелчок мыши */
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
 private:
+
+	bool mNeedDrawGrid;
+	void drawGrid();
+	QList<QGraphicsLineItem*> mGridLines;
+	void delUnusedLines();
 
 	UML::Element *getElemAt(const QPointF &position);
 
