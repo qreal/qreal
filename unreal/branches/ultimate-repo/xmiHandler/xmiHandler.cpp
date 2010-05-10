@@ -2,7 +2,7 @@
 #include "realrepoclient.h"
 #include "dbg.h"
 
-#include <QtGui>
+#include <QtCore/QFile>
 
 XmiHandler::XmiHandler (QString const &addr, const int port)
 {

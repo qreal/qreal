@@ -51,7 +51,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 	if (event->key() == Qt::Key_Enter ||
-	    event->key() == Qt::Key_Return)
+		event->key() == Qt::Key_Return)
 	{
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
@@ -121,6 +121,8 @@ void NodeElement::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	if ( dragState == None ) {
 		Element::mouseMoveEvent(event);
+		static_cast<EditorScene*>(scene())->updateLinks();
+		adjustEdges();
 	} else {
 		QRectF newcontents = m_contents;
 
@@ -196,7 +198,7 @@ void NodeElement::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	EditorScene *evscene = static_cast<EditorScene *>(scene());
 	if (newParent) {
 		im->changeParent(dataIndex,newParent->dataIndex,
-		                 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
+						 mapToItem(evscene->getElemByModelIndex(newParent->dataIndex),mapFromScene(scenePos())));
 	} else {
 		im->changeParent(dataIndex,evscene->rootItem(),scenePos());
 	}
