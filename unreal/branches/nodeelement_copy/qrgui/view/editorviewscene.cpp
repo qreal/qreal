@@ -5,6 +5,7 @@
 
 #include <QGraphicsTextItem>
 #include <QtGui>
+#include <QtCore/QDebug>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -19,6 +20,27 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+	mDraw = false;
+	connect(this, SIGNAL(sceneRectChanged(const QRectF &rect )), this, SLOT(sceneRectChangedHandler(const QRectF &rect)));
+}
+
+/*Рисуем сетку*/
+void EditorViewScene::drawGrid()
+{
+	int startX = sceneRect().center().x() - widthLineX / 2;
+	int endX = sceneRect().center().x() + widthLineX / 2;
+	int startY = sceneRect().center().y() - widthLineY / 2;
+	int endY = sceneRect().center().y() + widthLineY / 2;
+	qDebug() << startX << " " << endX << " " << startY << " " << endY;
+	for (int i = startX; i <= endX; i = i + indexGrid) {
+		QLineF line(i, startY, i, endY);
+		addLine(line, QPen(Qt::black, 0.25, Qt::DashLine));
+	}
+	for (int i = startY; i <= endY; i = i + indexGrid) {
+		QLineF line(startX, i, endX, i);
+		addLine(line, QPen(Qt::black, 0.25, Qt::DashLine));
+	}
+	mDraw = true;
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -383,6 +405,8 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (!mDraw)
+		drawGrid();
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mousePressEvent(event);
 
@@ -591,3 +615,7 @@ qReal::model::Model *EditorViewScene::model() const
 	return dynamic_cast<qReal::model::Model *>(mv_iface->model());
 }
 
+void EditorViewScene::sceneRectChangedHandler(const QRectF & rect)
+{
+	mDraw = true;
+}

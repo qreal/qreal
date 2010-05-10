@@ -9,6 +9,10 @@
 #include "../umllib/uml_nodeelement.h"
 
 
+const int widthLineX = 800;
+const int widthLineY = 600;
+const int indexGrid = 20; //ширина м/д линиями решетки сцены
+
 namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
@@ -26,6 +30,8 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
+	bool mDraw;
+	void drawGrid();
 	/** @brief Конструктор  */
 	explicit EditorViewScene(QObject *parent = 0 /**< Родительский объект*/);
 
@@ -118,4 +124,5 @@ private slots:
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
+	void sceneRectChangedHandler(const QRectF & rect);
 };

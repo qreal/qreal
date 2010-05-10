@@ -324,7 +324,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	qreal myY1 = scenePos().y() + boundingRect().y();
 
 	if (mSwitchGrid) {
-		int indexGrid = 10; //ширина м/д линиями решетки сцены
 		int koefX = ((int) myX1) / indexGrid;
 		int koefY = ((int) myY1) / indexGrid;
 

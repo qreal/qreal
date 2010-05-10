@@ -18,8 +18,6 @@
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
-const int widthLineX = 1400;
-const int widthLineY = 1000;
 
 namespace UML {
 	/** @class NodeElement
@@ -91,6 +89,7 @@ namespace UML {
 		QList<QGraphicsLineItem*> mLines;
 		bool mSwitchGrid;  //true - данный объект будет двигаться по "решетке", заданной indexGrid
 		ContextMenuAction mSwitchGridAction;
+		void drawGrid();
 		void delUnusedLines();
 		void drawLineX(qreal pointX, qreal myY);
 		void drawLineY(qreal pointY, qreal myX);
@@ -105,74 +104,74 @@ namespace UML {
 		void makeGridMovingX(qreal myX, int koef, int indexGrid);
 		void makeGridMovingY(qreal myY, int koef, int indexGrid);
 
-	//события мыши
+		//события мыши
 
-	/** @brief Обработать событие нажатия кнопки мыши */
-	virtual void mousePressEvent( QGraphicsSceneMouseEvent * event );
+		/** @brief Обработать событие нажатия кнопки мыши */
+		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event );
 
-	/** @brief Обработать событие перемещения мыши во время нажатия */
-	virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		/** @brief Обработать событие перемещения мыши во время нажатия */
+		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 
-	/** @brief Обработать событие отпускания кнопки мыши */
-	virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+		/** @brief Обработать событие отпускания кнопки мыши */
+		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
 
-	//события наведения мыши
+		//события наведения мыши
 
-	/** @brief Обработать событие наведения мыши */
-	virtual void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
+		/** @brief Обработать событие наведения мыши */
+		virtual void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
 
-	/** @brief Обработать событие перемещения мыши над элементом */
-	virtual void hoverMoveEvent( QGraphicsSceneHoverEvent * event );
+		/** @brief Обработать событие перемещения мыши над элементом */
+		virtual void hoverMoveEvent( QGraphicsSceneHoverEvent * event );
 
-	/** @brief Обработать событие покидания области элемента мышью */
-	virtual void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
+		/** @brief Обработать событие покидания области элемента мышью */
+		virtual void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
 
-	/** @brief Обработать изменение данных объекта
-			 *	@brief @return Измененные данные
-			 * */
-	virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-								const QVariant &value /**< Величина изменения */);
+		/** @brief Обработать изменение данных объекта
+				 *	@brief @return Измененные данные
+				 * */
+		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
+									const QVariant &value /**< Величина изменения */);
 
-	bool mPortsVisible;
+		bool mPortsVisible;
 
-	/** @brief Список точечных портов */
-	QList<QPointF> mPointPorts;
-	/** @brief Список портов-линий */
-	QList<StatLine> mLinePorts;
-	/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
-	QRectF mContents;
+		/** @brief Список точечных портов */
+		QList<QPointF> mPointPorts;
+		/** @brief Список портов-линий */
+		QList<StatLine> mLinePorts;
+		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
+		QRectF mContents;
 
-	/** @brief Направление растяжения элемента */
-	enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
+		/** @brief Направление растяжения элемента */
+		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
 
-	/** @brief Получить объект, расположенный в данной точке сцены
-			*	@brief @return Объект, расположенный в данной точке сцены
-			* */
-	NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+		/** @brief Получить объект, расположенный в данной точке сцены
+				*	@brief @return Объект, расположенный в данной точке сцены
+				* */
+		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
 
-	void adjustLinks();
+		void adjustLinks();
 
-	QLineF newTransform(const StatLine& port)  const;
+		QLineF newTransform(const StatLine& port)  const;
 
-	qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
-	qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
-	qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
+		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
+		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
+		qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
 
-	/** @brief Список ассоциированных с объектом связей */
-	QList<EdgeElement *> mEdgeList;
+		/** @brief Список ассоциированных с объектом связей */
+		QList<EdgeElement *> mEdgeList;
 
-	/** @brief Направление растяжения */
-	DragState mDragState;
+		/** @brief Направление растяжения */
+		DragState mDragState;
 
-	/** @brief EmbeddedLinker */
-	EmbeddedLinker *mEmbeddedLinker;
+		/** @brief EmbeddedLinker */
+		EmbeddedLinker *mEmbeddedLinker;
 
-	/** @brief Описание двухмерной трансформации объекта */
-	QTransform mTransform;
+		/** @brief Описание двухмерной трансформации объекта */
+		QTransform mTransform;
 
-	ElementImpl* mElementImpl;
+		ElementImpl* mElementImpl;
 
-	SdfRenderer *mPortRenderer;
-};
+		SdfRenderer *mPortRenderer;
+	};
 
 }
