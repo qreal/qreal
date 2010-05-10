@@ -1,4 +1,4 @@
-﻿/** @file uml_nodeelement.h
+/** @file uml_nodeelement.h
  * 	@brief Класс, представляющий объект на диаграмме
  * */
 
@@ -18,8 +18,8 @@
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
-const int widthLineX = 1000;
-const int widthLineY = 800;
+const int widthLineX = 1400;
+const int widthLineY = 1000;
 
 namespace UML {
 	/** @class NodeElement
@@ -88,16 +88,16 @@ namespace UML {
 		void switchGrid();
 
 	private:
-		QList<QGraphicsLineItem*> mLines; 
+		QList<QGraphicsLineItem*> mLines;
 		bool mSwitchGrid;  //true - данный объект будет двигаться по "решетке", заданной indexGrid
 		ContextMenuAction mSwitchGridAction;
 		void delUnusedLines();
-		void drawLineX(qreal pointX);
-		void drawLineY(qreal pointY);
+		void drawLineX(qreal pointX, qreal myY);
+		void drawLineY(qreal pointY, qreal myX);
 		bool makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX);
 		bool makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY);
-		void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2);
-		void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2);
+		void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY);
+		void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX);
 		qreal recountX1();
 		qreal recountX2(qreal myX1);
 		qreal recountY1();

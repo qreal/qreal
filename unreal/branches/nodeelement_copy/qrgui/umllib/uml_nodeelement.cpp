@@ -1,4 +1,4 @@
-﻿/** @file uml_nodeelement.cpp
+/** @file uml_nodeelement.cpp
  * 	@brief Класс, представляющий объект на диаграмме
  * */
 #include "uml_nodeelement.h"
@@ -101,10 +101,18 @@ void NodeElement::delUnusedLines()
 }
 
 /*Рисуем горизонтальную линию*/
-void NodeElement::drawLineY(qreal pointY)
+void NodeElement::drawLineY(qreal pointY, qreal myX)
 {
 	bool lineIsFound = false;
-	QLineF line(this->scene()->sceneRect().x(), pointY, this->scene()->sceneRect().x() + this->scene()->sceneRect().width(), pointY);
+	qreal x1 = myX - widthLineX/2;
+	qreal x2 = myX + widthLineX/2;
+	if (myX - scene()->sceneRect().x() < widthLineX/2)
+		x1 = scene()->sceneRect().x() + 10;
+	if (scene()->sceneRect().x() + scene()->sceneRect().width() - myX < widthLineX/2)
+		x2 = scene()->sceneRect().x() + scene()->sceneRect().width() - 10;
+	QLineF line(x1, pointY, x2, pointY);
+
+	/*Проверка есть ли уже данная линия на сцене. Если нет (lineIsFound = false), то добавляем её*/
 	foreach (QGraphicsLineItem* lineItem, mLines) {
 		if (lineItem->line().y1() == line.y1() && lineItem->line().y2() == line.y2())
 			lineIsFound = true;
@@ -114,10 +122,18 @@ void NodeElement::drawLineY(qreal pointY)
 }
 
 /*Рисуем вертикальную линию*/
-void NodeElement::drawLineX(qreal pointX)
+void NodeElement::drawLineX(qreal pointX, qreal myY)
 {
 	bool lineIsFound = false;
-	QLineF line(pointX, this->scene()->sceneRect().y(), pointX, this->scene()->sceneRect().y() + this->scene()->sceneRect().height());
+	qreal y1 = myY - widthLineY/2;
+	qreal y2 = myY + widthLineY/2;
+	if (myY - scene()->sceneRect().y() < widthLineY/2)
+		y1 = scene()->sceneRect().y() + 10;
+	if (scene()->sceneRect().y() + scene()->sceneRect().height() - myY < widthLineY/2)
+		y2 = scene()->sceneRect().y() + scene()->sceneRect().height() - 10;
+	QLineF line(pointX, y1, pointX, y2);
+
+	/*Проверка есть ли уже данная линия на сцене. Если нет (lineIsFound = false), то добавляем её*/
 	foreach (QGraphicsLineItem* lineItem, mLines) {
 		if (lineItem->line().x1() == line.x1() && lineItem->line().x2() == line.x2())
 			lineIsFound = true;
@@ -147,10 +163,10 @@ bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 }
 
 /*"Строим" вертикальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2)
+void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
 {
 	if (deltaX <= radius || doAlways) {
-		drawLineX(pointX);
+		drawLineX(pointX, myY);
 		if (makeJumpX(deltaX, radiusJump, pointX - correctionX)) {
 			myX1 = recountX1();
 			myX2 = recountX2(myX1);
@@ -159,10 +175,10 @@ void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal ra
 }
 
 /*"Строим" горизонтальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2)
+void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
 {
 	if (deltaY <= radius || doAlways) {
-		drawLineY(pointY);
+		drawLineY(pointY, myX);
 		if (makeJumpY(deltaY, radiusJump, pointY - correctionY)) {
 			myY1 = recountY1();
 			myY2 = recountY2(myY1);
@@ -343,17 +359,17 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal deltaX1 = fabs(pointX1 - myX1);
 			qreal deltaX2 = fabs(pointX2 - myX2);
 			if (deltaY1 <= radius || deltaY2 <= radius) {
-				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2);
-				buildLineY(deltaY2, radius, true, radiusJump, pointY2, boundingRect().height(), myY1, myY2);
+				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
+				buildLineY(deltaY2, radius, true, radiusJump, pointY2, boundingRect().height(), myY1, myY2, myX1);
 			}
 			if (deltaX1 <= radius || deltaX2 <= radius) {
-				buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2);
-				buildLineX(deltaX2, radius, true, radiusJump, pointX2, boundingRect().width(), myX1, myX2);
+				buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
+				buildLineX(deltaX2, radius, true, radiusJump, pointX2, boundingRect().width(), myX1, myX2, myY1);
 			}
-			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1, boundingRect().height(), myY1, myY2);
-			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1, boundingRect().width(), myX1, myX2);
-			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2, 0, myY1, myY2);
-			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2, 0, myX1, myX2);
+			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1, boundingRect().height(), myY1, myY2, myX1);
+			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1, boundingRect().width(), myX1, myX2, myY1);
+			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2, 0, myY1, myY2, myX1);
+			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2, 0, myX1, myX2, myY1);
 		}
 	}
 }
