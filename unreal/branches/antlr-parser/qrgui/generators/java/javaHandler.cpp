@@ -36,7 +36,7 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
             char * fileName = byteArray.data();
 
             javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
-//            pANTLR3_BASE_TREE tree = compilationUnit.tree;
+            pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
 //            pANTLR3_STRING name = className(tree);
 //            QString typeAndName = QString(QLatin1String((char *) name->chars));
