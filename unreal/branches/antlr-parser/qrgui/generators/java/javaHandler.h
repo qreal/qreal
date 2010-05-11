@@ -80,6 +80,8 @@ namespace qReal {
             javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
             pANTLR3_STRING toStringTree(pANTLR3_BASE_TREE tree);
             pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
+            pANTLR3_STRING classAttributesInString(pANTLR3_BASE_TREE tree);
+            QStringList classAttributes(pANTLR3_BASE_TREE tree);
         };
 
     }

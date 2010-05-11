@@ -38,18 +38,18 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
             javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
             pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
-//            pANTLR3_STRING name = className(tree);
-//            QString typeAndName = QString(QLatin1String((char *) name->chars));
-//            qDebug() << "typeAndName = " + typeAndName;
-//
-//            QStringList attributes = classAttributes(tree);
-//            Q_FOREACH (QString anAttr, attributes) {
-//                if (anAttr.contains("(")) { //method
-//                    qDebug() << "method = " + anAttr;
-//                } else { //attribute
-//                    qDebug() << "attribute = " + anAttr;
-//                }
-//            }
+            pANTLR3_STRING name = className(tree);
+            QString typeAndName = QString(QLatin1String((char *) name->chars));
+            qDebug() << "typeAndName = " + typeAndName;
+
+            QStringList attributes = classAttributes(tree);
+            Q_FOREACH (QString anAttr, attributes) {
+                if (anAttr.contains("(")) { //method
+                    qDebug() << "method = " + anAttr;
+                } else { //attribute
+                    qDebug() << "attribute = " + anAttr;
+                }
+            }
     }
 
     qDebug() << "finished parsing OK";
@@ -237,51 +237,6 @@ javaParser_compilationUnit_return JavaHandler::parseFile(pANTLR3_UINT8 fileName)
     return result;
 }
 
-pANTLR3_STRING JavaHandler::toStringTree(pANTLR3_BASE_TREE tree)
-{
-    pANTLR3_STRING  string;
-    ANTLR3_UINT32   i;
-    ANTLR3_UINT32   n;
-    pANTLR3_BASE_TREE   t;
-
-    if	(tree->children == NULL || tree->children->size(tree->children) == 0)
-    {
-        return	tree->toString(tree);
-    }
-
-    /* Need a new string with nothing at all in it.
-    */
-    string	= tree->strFactory->newRaw(tree->strFactory);
-
-    if	(tree->isNilNode(tree) == ANTLR3_FALSE)
-    {
-        string->append8	(string, "(");
-        string->appendS	(string, tree->toString(tree));
-        string->append8	(string, " ");
-    }
-    if	(tree->children != NULL)
-    {
-        n = tree->children->size(tree->children);
-
-        for	(i = 0; i < n; i++)
-        {
-            t   = (pANTLR3_BASE_TREE) tree->children->get(tree->children, i);
-
-            if  (i > 0)
-            {
-                string->append8(string, " ");
-            }
-            string->appendS(string, t->toStringTree(t));
-        }
-    }
-    if	(tree->isNilNode(tree) == ANTLR3_FALSE)
-    {
-        string->append8(string,")");
-    }
-
-    return  string;
-}
-
 pANTLR3_STRING JavaHandler::className(pANTLR3_BASE_TREE tree)
 {
     pANTLR3_STRING  string;
@@ -323,6 +278,76 @@ pANTLR3_STRING JavaHandler::className(pANTLR3_BASE_TREE tree)
 
     return  string;
 }
+
+pANTLR3_STRING JavaHandler::classAttributesInString(pANTLR3_BASE_TREE tree)
+{
+    pANTLR3_STRING  string;
+    ANTLR3_UINT32   i;
+    ANTLR3_UINT32   n;
+    pANTLR3_BASE_TREE   t;
+    bool shouldAppend = false;
+
+    if	(tree->children == NULL || tree->children->size(tree->children) == 0)
+    {
+            return	classAttributesInString(tree);
+    }
+
+    /* Need a new string with nothing at all in it.
+    */
+    string = tree->strFactory->newRaw(tree->strFactory);
+
+    if	(tree->children != NULL)
+    {
+            n = tree->children->size(tree->children);
+
+            for	(i = 0; i < n; i++)
+            {
+                    t   = (pANTLR3_BASE_TREE) tree->children->get(tree->children, i);
+
+                    if  (i > 0)
+                    {
+                            string->append8(string, " ");
+                    }
+                    pANTLR3_STRING toString = t->toString(t);
+                    if (shouldAppend) {
+                        if (QString(QLatin1String((char *)toString->chars)) != "{"){
+                            string->appendS(string, toString);
+                        } else {
+                            string->append8(string, ";");
+                        }
+                        string->append8(string, " ");
+                    }
+                    if (QString(QLatin1String((char *)toString->chars)) == "public" || QString(QLatin1String((char *)toString->chars)) == "protected") {
+                        string->appendS(string, toString);
+                        string->append8(string, " ");
+                        shouldAppend = true;
+                    }
+                    if (QString(QLatin1String((char *)toString->chars)) == ";" || QString(QLatin1String((char *)toString->chars)) == "{") {
+                        shouldAppend = false;
+                    }
+            }
+    }
+
+    return  string;
+}
+
+QStringList JavaHandler::classAttributes(pANTLR3_BASE_TREE tree)
+{
+    QStringList result;
+
+    pANTLR3_STRING attributesANTLR3 = classAttributesInString(tree);
+    QString attributes = QString(QLatin1String((char *) attributesANTLR3 -> chars));
+    attributes = attributes.simplified();
+    result = attributes.split(";");
+
+    QString last = result.takeLast();
+    if (last != "") {
+        result.append(last);
+    }
+
+    return result;
+}
+
 
 //Code Generating
 
