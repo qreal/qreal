@@ -272,6 +272,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	scene()->invalidate();
 	mEmbeddedLinker->setCovered(false);
 	if (mDragState == None)
 	{

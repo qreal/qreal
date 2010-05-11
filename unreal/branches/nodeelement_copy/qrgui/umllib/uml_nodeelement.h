@@ -18,6 +18,8 @@
 
 /** @brief Размер порта объекта */
 const int kvadratik = 5;
+const int widthLineX = 1400;
+const int widthLineY = 1000;
 
 namespace UML {
 	/** @class NodeElement
@@ -89,7 +91,6 @@ namespace UML {
 		QList<QGraphicsLineItem*> mLines;
 		bool mSwitchGrid;  //true - данный объект будет двигаться по "решетке", заданной indexGrid
 		ContextMenuAction mSwitchGridAction;
-		void drawGrid();
 		void delUnusedLines();
 		void drawLineX(qreal pointX, qreal myY);
 		void drawLineY(qreal pointY, qreal myX);

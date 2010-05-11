@@ -8,10 +8,7 @@
 #include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
 
-
-const int widthLineX = 800;
-const int widthLineY = 600;
-const int indexGrid = 20; //ширина м/д линиями решетки сцены
+const int indexGrid = 30; //ширина м/д линиями решетки сцены
 
 namespace qReal {
 	class EditorViewMViface;
@@ -45,8 +42,8 @@ public:
 	 *	@brief @return Элемент сцены
 	 * */
 	virtual UML::Element *getElem(qReal::Id const &uuid);  // Функция виртуальная только для того, чтобы обмануть линкер.
-		// Она используется из плагинов редакторов, а включать в них еще и сцену (и всё, что тянет сцена) неохота.
-		// Определение адреса виртуальной функции происходит во время выполнения, так что сцену можно не компилить.
+	// Она используется из плагинов редакторов, а включать в них еще и сцену (и всё, что тянет сцена) неохота.
+	// Определение адреса виртуальной функции происходит во время выполнения, так что сцену можно не компилить.
 	/** @brief Получить элемент сцены по его индексу в модели
 	 *	@brief @return
 	 * */
@@ -78,26 +75,27 @@ protected:
 
 	/** @brief Обработать двойной щелчок мыши */
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+
+	virtual void drawBackground( QPainter *painter, const QRectF &rect);
+
 private:
 
-	bool mNeedDrawGrid;
-	void drawGrid();
-	QList<QGraphicsLineItem*> mGridLines;
-	void delUnusedLines();
+	bool mNeedDrawGrid; //true - будет рисоваться сетка (как фон сцены)
+	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	UML::Element *getElemAt(const QPointF &position);
 
 	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(UML::Element const * const element
-		, QMenu &contextMenu, QString const &menuName
-		, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-		, qReal::IdList const &connectableDiagrams, const char *slot) const;
+								 , QMenu &contextMenu, QString const &menuName
+								 , qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
+								 , qReal::IdList const &connectableDiagrams, const char *slot) const;
 
 	void createDisconnectMenu(UML::Element const * const element
-		, QMenu &contextMenu, QString const &menuName
-		, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-		, const char *slot) const;
+							  , QMenu &contextMenu, QString const &menuName
+							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
+							  , const char *slot) const;
 
 	qReal::model::Model *model() const;
 
@@ -120,12 +118,11 @@ private:
 
 public slots:
 	qReal::Id *createElement(const QString &);
-// TODO: Убрать отсюда.
+	// TODO: Убрать отсюда.
 private slots:
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
-	void sceneRectChangedHandler(const QRectF & rect);
 };
