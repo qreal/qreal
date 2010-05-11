@@ -1,14 +1,13 @@
 
-#include    "javaLexer.h"
-#include    "javaParser.h"
-#include    <activityLexer.h>
-#include    <activityParser.h>
-
-#include <Qt/private/qzipreader_p.h>
-#include <Qt/private/qzipwriter_p.h>
+#include "javaLexer.h"
+#include "javaParser.h"
+#include <activityLexer.h>
+#include <activityParser.h>
+#include "structure.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QString>
 
 #include <QFileInfo>
 #include <QDir>
@@ -24,6 +23,7 @@ static javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
 static pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
 static pANTLR3_STRING classAttributesInString(pANTLR3_BASE_TREE tree);
 static QStringList classAttributes(pANTLR3_BASE_TREE tree);
+pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree);
 
 int main (int argc, char *argv[])
 {
@@ -46,13 +46,16 @@ int main (int argc, char *argv[])
         javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
         pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
-        pANTLR3_STRING name = className(tree);
+        pANTLR3_STRING name = getStructure(tree);
         qDebug() << "className = " + QString(QLatin1String((char*)name->chars));
 
-        QStringList attributes = classAttributes(tree);
-        foreach (QString anAttr, attributes) {
-            qDebug() << "attribute = " + anAttr;
-        }
+//        pANTLR3_STRING name = className(tree);
+//        qDebug() << "className = " + QString(QLatin1String((char*)name->chars));
+//
+//        QStringList attributes = classAttributes(tree);
+//        foreach (QString anAttr, attributes) {
+//            qDebug() << "attribute = " + anAttr;
+//        }
     }
 
     qDebug() << "finished parsing OK";
@@ -349,4 +352,57 @@ static QStringList classAttributes(pANTLR3_BASE_TREE tree)
     }
 
     return result;
+}
+
+pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree)
+{
+    pANTLR3_STRING  string;
+    ANTLR3_UINT32   i;
+    ANTLR3_UINT32   n;
+    pANTLR3_BASE_TREE   t;
+
+    if	(tree->children == NULL || tree->children->size(tree->children) == 0)
+    {
+        pANTLR3_STRING toString = tree->toString(tree);
+        QString result = QString(QLatin1String((char*) toString->chars));
+        qDebug() << "result 1 = " + result;
+        return	tree->toString(tree);
+    }
+
+    /* Need a new string with nothing at all in it.
+    */
+    string	= tree->strFactory->newRaw(tree->strFactory);
+
+    if	(tree->isNilNode(tree) == ANTLR3_FALSE)
+    {
+        string->append8	(string, "(");
+
+        pANTLR3_STRING toString = tree->toString(tree);
+        QString result = QString(QLatin1String((char*) toString->chars));
+        qDebug() << "result 2 = " + result;
+
+        string->appendS	(string, tree->toString(tree));
+        string->append8	(string, " ");
+    }
+    if	(tree->children != NULL)
+    {
+        n = tree->children->size(tree->children);
+
+        for	(i = 0; i < n; i++)
+        {
+            t   = (pANTLR3_BASE_TREE) tree->children->get(tree->children, i);
+
+            if  (i > 0)
+            {
+                string->append8(string, " ");
+            }
+            string->appendS(string, getStructure(t));
+        }
+    }
+    if	(tree->isNilNode(tree) == ANTLR3_FALSE)
+    {
+        string->append8(string,")");
+    }
+
+    return  string;
 }
