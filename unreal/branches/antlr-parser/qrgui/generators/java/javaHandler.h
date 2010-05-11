@@ -6,6 +6,7 @@
 
 #include "javaLexer.h"
 #include "javaParser.h"
+#include "structure.h"
 
 namespace qrRepo {
     class RepoApi;
@@ -76,6 +77,9 @@ namespace qReal {
             QString indent();
 
             //Parsing Java Libraries
+            pjavaLexer lxr;
+            QList<structure> structures;
+
             QStringList getAllFilesInDirectory(QString dir_name);
             javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
             pANTLR3_STRING toStringTree(pANTLR3_BASE_TREE tree);
