@@ -20,7 +20,8 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this), mPortsVisible(false), mDragState(None),mEmbeddedLinker(NULL), mElementImpl(impl)
+	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
+	mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -85,22 +86,20 @@ void NodeElement::storeGeometry()
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
 {
-	foreach (QGraphicsItem* childItem, childItems())
-	{
+	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem)
-		{
+		if (curItem) {
 			curItem->moveBy(dx, dy);
 			///returns object to the parent area
-			if (curItem->pos().x() < SIZE_OF_FORESTALLING)
-				curItem->setPos(SIZE_OF_FORESTALLING, curItem->pos().y());
-			if (curItem->pos().y() < SIZE_OF_FORESTALLING)
-				curItem->setPos(curItem->pos().x(), SIZE_OF_FORESTALLING);
+			if (curItem->pos().x() < sizeOfForestalling)
+				curItem->setPos(sizeOfForestalling, curItem->pos().y());
+			if (curItem->pos().y() < sizeOfForestalling)
+				curItem->setPos(curItem->pos().x(), sizeOfForestalling);
 		}
 	}
 }
 
-void NodeElement::moveChildren(QPointF moving)
+void NodeElement::moveChildren(QPointF const &moving)
 {
 	moveChildren(moving.x(), moving.y());
 }
@@ -112,26 +111,24 @@ void NodeElement::resize(QRectF newContents)
 	//childrenMoving - отрицательный сдвиг детей
 	//относительно точки (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
 	QPointF childrenMoving = QPointF(0, 0);
-	foreach (QGraphicsItem* childItem, childItems())
-	{
+	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (!curItem)
 			continue;
 
 		QPointF curItemPos = curItem->pos();
 
-		if (curItemPos.x() < childrenMoving.x() + SIZE_OF_FORESTALLING)
-			childrenMoving.setX(curItemPos.x() - SIZE_OF_FORESTALLING);
-		if (curItemPos.y() < childrenMoving.y() + SIZE_OF_FORESTALLING)
-			childrenMoving.setY(curItemPos.y() - SIZE_OF_FORESTALLING);
+		if (curItemPos.x() < childrenMoving.x() + sizeOfForestalling)
+			childrenMoving.setX(curItemPos.x() - sizeOfForestalling);
+		if (curItemPos.y() < childrenMoving.y() + sizeOfForestalling)
+			childrenMoving.setY(curItemPos.y() - sizeOfForestalling);
 	}
 	setPos(pos() + childrenMoving);//сдвиг объекта из-за детей
 	moveChildren(-childrenMoving);
 	newContents.setTopLeft(childrenMoving);//растяжение объекта из-за детей
 	newContents.moveTo(0, 0);
 
-	foreach (QGraphicsItem* childItem, childItems())
-	{
+	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (!curItem)
 			continue;
@@ -139,30 +136,22 @@ void NodeElement::resize(QRectF newContents)
 		QRectF curChildItemBoundingRect = curItem->mContents;
 		curChildItemBoundingRect.translate(curItem->pos());
 
-		if (curChildItemBoundingRect.left() < newContents.left() + SIZE_OF_FORESTALLING)
-		{
-			newContents.setLeft(curChildItemBoundingRect.left() - SIZE_OF_FORESTALLING);
-		}
+		if (curChildItemBoundingRect.left() < newContents.left() + sizeOfForestalling)
+			newContents.setLeft(curChildItemBoundingRect.left() - sizeOfForestalling);
 
-		if (curChildItemBoundingRect.right() > newContents.right() - SIZE_OF_FORESTALLING)
-		{
-			newContents.setRight(curChildItemBoundingRect.right() + SIZE_OF_FORESTALLING);
-		}
+		if (curChildItemBoundingRect.right() > newContents.right() - sizeOfForestalling)
+			newContents.setRight(curChildItemBoundingRect.right() + sizeOfForestalling);
 
-		if (curChildItemBoundingRect.top() < newContents.top() + SIZE_OF_FORESTALLING)
-		{
-			newContents.setTop(curChildItemBoundingRect.top() - SIZE_OF_FORESTALLING);
-		}
+		if (curChildItemBoundingRect.top() < newContents.top() + sizeOfForestalling)
+			newContents.setTop(curChildItemBoundingRect.top() - sizeOfForestalling);
 
-		if (curChildItemBoundingRect.bottom() > newContents.bottom() - SIZE_OF_FORESTALLING)
-		{
-			newContents.setBottom(curChildItemBoundingRect.bottom() + SIZE_OF_FORESTALLING);
-		}
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - sizeOfForestalling)
+			newContents.setBottom(curChildItemBoundingRect.bottom() + sizeOfForestalling);
 	}
 
 	newContents.moveTo(pos());
 
-	if (!((newContents.width() < OBJECT_MIN_SIZE) || (newContents.height() < OBJECT_MIN_SIZE)))
+	if (!((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize)))
 		setGeometry(newContents);
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
@@ -192,11 +181,11 @@ void NodeElement::delUnusedLines()
 void NodeElement::drawLineY(qreal pointY, qreal myX)
 {
 	bool lineIsFound = false;
-	qreal x1 = myX - widthLineX/2;
-	qreal x2 = myX + widthLineX/2;
-	if (myX - scene()->sceneRect().x() < widthLineX/2)
+	qreal x1 = myX - widthLineX / 2;
+	qreal x2 = myX + widthLineX / 2;
+	if (myX - scene()->sceneRect().x() < widthLineX / 2)
 		x1 = scene()->sceneRect().x() + 10;
-	if (scene()->sceneRect().x() + scene()->sceneRect().width() - myX < widthLineX/2)
+	if (scene()->sceneRect().x() + scene()->sceneRect().width() - myX < widthLineX / 2)
 		x2 = scene()->sceneRect().x() + scene()->sceneRect().width() - 10;
 	QLineF line(x1, pointY, x2, pointY);
 
@@ -213,11 +202,11 @@ void NodeElement::drawLineY(qreal pointY, qreal myX)
 void NodeElement::drawLineX(qreal pointX, qreal myY)
 {
 	bool lineIsFound = false;
-	qreal y1 = myY - widthLineY/2;
-	qreal y2 = myY + widthLineY/2;
-	if (myY - scene()->sceneRect().y() < widthLineY/2)
+	qreal y1 = myY - widthLineY / 2;
+	qreal y2 = myY + widthLineY / 2;
+	if (myY - scene()->sceneRect().y() < widthLineY / 2)
 		y1 = scene()->sceneRect().y() + 10;
-	if (scene()->sceneRect().y() + scene()->sceneRect().height() - myY < widthLineY/2)
+	if (scene()->sceneRect().y() + scene()->sceneRect().height() - myY < widthLineY / 2)
 		y2 = scene()->sceneRect().y() + scene()->sceneRect().height() - 10;
 	QLineF line(pointX, y1, pointX, y2);
 
@@ -251,7 +240,8 @@ bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 }
 
 /*"Строим" вертикальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
+void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways,
+	qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
 {
 	if (deltaX <= radius || doAlways) {
 		drawLineX(pointX, myY);
@@ -263,7 +253,8 @@ void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal ra
 }
 
 /*"Строим" горизонтальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
-void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
+void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways,
+	qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
 {
 	if (deltaY <= radius || doAlways) {
 		drawLineY(pointY, myX);
@@ -304,9 +295,9 @@ void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / fabs(koef);
-	if(fabs(fabs(myX) - fabs(koef) * indexGrid) <= indexGrid / 2)
+	if (fabs(fabs(myX) - fabs(koef) * indexGrid) <= indexGrid / 2)
 		setX(koef * indexGrid);
-	else if(fabs(fabs(myX) - (fabs(koef) + 1)* indexGrid) < indexGrid / 2)
+	else if (fabs(fabs(myX) - (fabs(koef) + 1) * indexGrid) < indexGrid / 2)
 		setX((koef + oneKoef) * indexGrid);
 }
 
@@ -316,18 +307,17 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / fabs(koef);
-	if(fabs(fabs(myY) - fabs(koef) * indexGrid) <= indexGrid / 2)
+	if (fabs(fabs(myY) - fabs(koef) * indexGrid) <= indexGrid / 2)
 		setY(koef * indexGrid);
-	else if(fabs(fabs(myY) - (fabs(koef) + 1)* indexGrid) < indexGrid / 2)
+	else if (fabs(fabs(myY) - (fabs(koef) + 1) * indexGrid) < indexGrid / 2)
 		setY((koef + oneKoef) * indexGrid);
 }
 
 //события мышки
 
-void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
+void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mEmbeddedLinker == NULL)
-	{
+	if (mEmbeddedLinker == NULL) {
 		mEmbeddedLinker = new EmbeddedLinker();
 		mEmbeddedLinker->setMaster(this);
 		scene()->addItem(mEmbeddedLinker);
@@ -335,8 +325,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	mEmbeddedLinker->moveTo(event->pos());
 	mEmbeddedLinker->setCovered(true);
 
-	if (isSelected())
-	{
+	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
 			mDragState = TopLeft;
 		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
@@ -355,15 +344,13 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent * event)
 		event->accept();
 
 	setZValue(1);
-
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	scene()->invalidate();
 	mEmbeddedLinker->setCovered(false);
-	if (mDragState == None)
-	{
+	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 	} else {
 		QRectF newContents = mContents;
@@ -373,43 +360,41 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (parItem)
 			parentPos = parItem->scenePos();
 
-		switch (mDragState)
-		{
-			case TopLeft:
-				newContents.setTopLeft(event->pos());
-				setPos(event->scenePos() - parentPos);
-				break;
-			case Top:
-				newContents.setTop(event->pos().y());
-				setPos(pos().x(), event->scenePos().y() - parentPos.y());
-				break;
-			case TopRight:
-				newContents.setTopRight(event->pos());
-				setPos(pos().x(), event->scenePos().y() - parentPos.y());
-				break;
-			case Left:
-				newContents.setLeft(event->pos().x());
-				setPos(event->scenePos().x() - parentPos.x(), pos().y());
-				break;
-			case Right:
-				newContents.setRight(event->pos().x());
-				break;
-			case BottomLeft:
-				newContents.setBottomLeft(event->pos());
-				setPos(event->scenePos().x() - parentPos.x(), pos().y());
-				break;
-			case Bottom:
-				newContents.setBottom(event->pos().y());
-				break;
-			case BottomRight:
-				newContents.setBottomRight(event->pos());
-				break;
+		switch (mDragState) {
+		case TopLeft:
+			newContents.setTopLeft(event->pos());
+			setPos(event->scenePos() - parentPos);
+			break;
+		case Top:
+			newContents.setTop(event->pos().y());
+			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			break;
+		case TopRight:
+			newContents.setTopRight(event->pos());
+			setPos(pos().x(), event->scenePos().y() - parentPos.y());
+			break;
+		case Left:
+			newContents.setLeft(event->pos().x());
+			setPos(event->scenePos().x() - parentPos.x(), pos().y());
+			break;
+		case Right:
+			newContents.setRight(event->pos().x());
+			break;
+		case BottomLeft:
+			newContents.setBottomLeft(event->pos());
+			setPos(event->scenePos().x() - parentPos.x(), pos().y());
+			break;
+		case Bottom:
+			newContents.setBottom(event->pos().y());
+			break;
+		case BottomRight:
+			newContents.setBottomRight(event->pos());
+			break;
 		case None:
 			break;
 		}
 
-		if (event->modifiers() & Qt::ShiftModifier)
-		{
+		if (event->modifiers() & Qt::ShiftModifier) {
 			qreal size = std::max(newContents.width(), newContents.height());
 			newContents.setWidth(size);
 			newContents.setHeight(size);
@@ -422,8 +407,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	qreal myY1 = scenePos().y() + boundingRect().y();
 
 	if (mSwitchGrid) {
-		int koefX = ((int) myX1) / indexGrid;
-		int koefY = ((int) myY1) / indexGrid;
+		int koefX = static_cast<int>(myX1) / indexGrid;
+		int koefY = static_cast<int>(myY1) / indexGrid;
 
 		makeGridMovingX(myX1, koefX, indexGrid);
 		makeGridMovingY(myY1, koefY, indexGrid);
@@ -457,16 +442,22 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal deltaX2 = fabs(pointX2 - myX2);
 			if (deltaY1 <= radius || deltaY2 <= radius) {
 				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
-				buildLineY(deltaY2, radius, true, radiusJump, pointY2, boundingRect().height(), myY1, myY2, myX1);
+				buildLineY(deltaY2, radius, true, radiusJump, pointY2,
+					boundingRect().height(), myY1, myY2, myX1);
 			}
 			if (deltaX1 <= radius || deltaX2 <= radius) {
 				buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
-				buildLineX(deltaX2, radius, true, radiusJump, pointX2, boundingRect().width(), myX1, myX2, myY1);
+				buildLineX(deltaX2, radius, true, radiusJump, pointX2,
+					boundingRect().width(), myX1, myX2, myY1);
 			}
-			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1, boundingRect().height(), myY1, myY2, myX1);
-			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1, boundingRect().width(), myX1, myX2, myY1);
-			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2, 0, myY1, myY2, myX1);
-			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2, 0, myX1, myX2, myY1);
+			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1,
+				boundingRect().height(), myY1, myY2, myX1);
+			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1,
+				boundingRect().width(), myX1, myX2, myY1);
+			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2,
+				0, myY1, myY2, myX1);
+			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2,
+				0, myX1, myX2, myY1);
 		}
 	}
 }
@@ -485,15 +476,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	NodeElement *newParent = getNodeAt(event->scenePos());
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (newParent)
-	{
+	if (newParent) {
 		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-								mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 
 		newParent->resize(newParent->mContents);
 
-		while (newParent)
-		{
+		while (newParent) {
 			newParent->mContents = newParent->mContents.normalized();
 			newParent->storeGeometry();
 			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
@@ -511,8 +500,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	if (!isSelected())
 		return;
-	if (mEmbeddedLinker == NULL)
-	{
+	if (mEmbeddedLinker == NULL) {
 		mEmbeddedLinker = new EmbeddedLinker();
 		mEmbeddedLinker->setMaster(this);
 		scene()->addItem(mEmbeddedLinker);
@@ -654,7 +642,7 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 		return qMin(b, c);
 	else {
 		qreal p = (a + b + c) / 2;
-		qreal triangleSquare = sqrt(p*(p-a)*(p-b)*(p-c));
+		qreal triangleSquare = sqrt(p * (p - a) * (p - b) * (p - c));
 		qreal minDistance = 2 * triangleSquare / a;
 		return minDistance;
 	}
@@ -670,15 +658,19 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 	qreal nearestPointOfLinePort = 0;
 	QLineF nearestLinePort = newTransform(mLinePorts[linePortNumber]);
 	if (nearestLinePort.x1() == nearestLinePort.x2()) {
-		nearestPointOfLinePort = (location.y() - nearestLinePort.y1()) / (nearestLinePort.y2() - nearestLinePort.y1());
+		nearestPointOfLinePort = (location.y() - nearestLinePort.y1())
+			/ (nearestLinePort.y2() - nearestLinePort.y1());
 	} else if (nearestLinePort.y1() == nearestLinePort.y2()) {
-		nearestPointOfLinePort = (location.x() - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+		nearestPointOfLinePort = (location.x() - nearestLinePort.x1())
+			/ (nearestLinePort.x2() - nearestLinePort.x1());
 	} else {
-		qreal k = (nearestLinePort.y2() - nearestLinePort.y1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+		qreal k = (nearestLinePort.y2() - nearestLinePort.y1())
+			/ (nearestLinePort.x2() - nearestLinePort.x1());
 		qreal b2 = location.y() + 1 / k * location.x();
 		qreal b = nearestLinePort.y1() - k * nearestLinePort.x1();
 		qreal x3 = k / (1 + k * k) * (b2 - b);
-		nearestPointOfLinePort = (x3 - nearestLinePort.x1()) / (nearestLinePort.x2() - nearestLinePort.x1());
+		nearestPointOfLinePort = (x3 - nearestLinePort.x1())
+			/ (nearestLinePort.x2() - nearestLinePort.x1());
 	}
 	return nearestPointOfLinePort;
 }
@@ -687,7 +679,7 @@ qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
 		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
-				   QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
+			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 		{
 			return 1.0 * i;
 		}
@@ -704,65 +696,50 @@ qreal NodeElement::getPortId(const QPointF &location) const
 		path = ps.createStroke(path);
 		if (path.contains(location))
 			return (1.0 * (i + mPointPorts.size()) + qMin(0.9999,
-														  QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
-														  / newTransform(mLinePorts[i]).length() ) );
+				QLineF(QLineF(newTransform(mLinePorts[i])).p1(), location).length()
+				/ newTransform(mLinePorts[i]).length()));
 	}
 
 	qreal minDistance = 0;
 	int numMinDistance = -1;
-	if (mPointPorts.size() != 0)
-	{
+	if (mPointPorts.size() != 0) {
 		numMinDistance = 0;
 		minDistance = distanceFromPointPort(0, location);
-		for(int i = 1; i < mPointPorts.size(); i++)
-		{
+		for (int i = 1; i < mPointPorts.size(); i++) {
 			qreal currentDistance = distanceFromPointPort(i, location);
-			if (currentDistance < minDistance)
-			{
+			if (currentDistance < minDistance) {
 				numMinDistance = i;
 				minDistance = currentDistance;
 			}
 		}
 	}
 
-	if (mLinePorts.size() != 0)
-	{
+	if (mLinePorts.size() != 0) {
 		bool linePort = false;
-		if (numMinDistance == -1)
-		{
+		if (numMinDistance == -1) {
 			numMinDistance = 0;
 			minDistance = minDistanceFromLinePort(0, location);
 			linePort = true;
 		}
-		for(int i = 0; i < mLinePorts.size(); i++)
-		{
+		for (int i = 0; i < mLinePorts.size(); i++) {
 			qreal currentDistance = minDistanceFromLinePort(i, location);
-			if (currentDistance < minDistance)
-			{
+			if (currentDistance < minDistance) {
 				numMinDistance = i;
 				minDistance = currentDistance;
 				linePort = true;
 			}
 		}
-		if (linePort)
-		{
+		if (linePort) {
 			qreal nearestPointOfLinePort = getNearestPointOfLinePort(numMinDistance, location);
 			if (nearestPointOfLinePort < 0)
-			{
 				nearestPointOfLinePort = 0;
-			} else if (nearestPointOfLinePort > 0.9999)
-			{
+			else if (nearestPointOfLinePort > 0.9999)
 				nearestPointOfLinePort = 0.9999;
-			}
 			return 1.0 * (numMinDistance + nearestPointOfLinePort + mPointPorts.size());
 		} else
-		{
 			return 1.0 * numMinDistance;
-		}
 	} else if (numMinDistance >= 0)
-	{
 		return 1.0 * numMinDistance;
-	}
 	return -1.0;
 }
 
@@ -772,11 +749,11 @@ void NodeElement::setPortsVisible(bool value)
 	mPortsVisible = value;
 }
 
-NodeElement *NodeElement::getNodeAt( const QPointF &position )
+NodeElement *NodeElement::getNodeAt(const QPointF &position)
 {
-	foreach( QGraphicsItem *item, scene()->items(position) ) {
+	foreach (QGraphicsItem *item, scene()->items(position)) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
-		if (( e )&&(item!=this))
+		if (e && (item != this))
 			return e;
 	}
 	return 0;
@@ -791,12 +768,11 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 	mElementImpl->paint(painter, mContents);
 }
 
-void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+	QWidget*, SdfRenderer* portRenderer)
 {
-	if (option->levelOfDetail >= 0.5)
-	{
-		if (option->state & QStyle::State_Selected)
-		{
+	if (option->levelOfDetail >= 0.5) {
+		if (option->state & QStyle::State_Selected) {
 			painter->save();
 
 			QBrush b;
@@ -805,22 +781,21 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
-			painter->drawRect(QRectF(mContents.topLeft(),QSizeF(4,4)));
-			painter->drawRect(QRectF(mContents.topRight(),QSizeF(-4,4)));
-			painter->drawRect(QRectF(mContents.bottomLeft(),QSizeF(4,-4)));
+			painter->drawRect(QRectF(mContents.topLeft(), QSizeF(4, 4)));
+			painter->drawRect(QRectF(mContents.topRight(), QSizeF(-4, 4)));
+			painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(4, -4)));
 
 			painter->translate(mContents.bottomRight());
-			painter->drawLine(QLineF(-4,0,0,-4));
-			painter->drawLine(QLineF(-8,0,0,-8));
-			painter->drawLine(QLineF(-12,0,0,-12));
+			painter->drawLine(QLineF(-4, 0, 0, -4));
+			painter->drawLine(QLineF(-8, 0, 0, -8));
+			painter->drawLine(QLineF(-12, 0, 0, -12));
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer)
-		{
+		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer) {
 			painter->save();
 			painter->setOpacity(0.7);
-			portRenderer->render(painter,mContents);
+			portRenderer->render(painter, mContents);
 			painter->restore();
 		}
 	}

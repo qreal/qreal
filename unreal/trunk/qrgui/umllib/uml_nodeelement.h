@@ -104,35 +104,37 @@ namespace UML {
 		qreal recountY2(qreal myY1);
 		void makeGridMovingX(qreal myX, int koef, int indexGrid);
 		void makeGridMovingY(qreal myY, int koef, int indexGrid);
-		enum { OBJECT_MIN_SIZE = 10, SIZE_OF_FORESTALLING = 25 };
+
+		static int const objectMinSize = 10;
+		static int const sizeOfForestalling = 25;
 
 		//события мыши
 
 		/** @brief Обработать событие нажатия кнопки мыши */
-		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event );
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 		/** @brief Обработать событие перемещения мыши во время нажатия */
-		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 		/** @brief Обработать событие отпускания кнопки мыши */
-		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
+		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 		//события наведения мыши
 
 		/** @brief Обработать событие наведения мыши */
-		virtual void hoverEnterEvent( QGraphicsSceneHoverEvent * event );
+		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 
 		/** @brief Обработать событие перемещения мыши над элементом */
-		virtual void hoverMoveEvent( QGraphicsSceneHoverEvent * event );
+		virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
 		/** @brief Обработать событие покидания области элемента мышью */
-		virtual void hoverLeaveEvent( QGraphicsSceneHoverEvent * event );
+		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 		/** @brief Обработать изменение данных объекта
-				 *	@brief @return Измененные данные
-				 * */
+		 *	@brief @return Измененные данные
+		 * */
 		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-									const QVariant &value /**< Величина изменения */);
+			const QVariant &value /**< Величина изменения */);
 
 		bool mPortsVisible;
 
@@ -144,23 +146,33 @@ namespace UML {
 		QRectF mContents;
 
 		/** @brief Направление растяжения элемента */
-		enum DragState { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight };
+		enum DragState {
+			None,
+			TopLeft,
+			Top,
+			TopRight,
+			Left,
+			Right,
+			BottomLeft,
+			Bottom,
+			BottomRight
+		};
 
 		/** @brief Получить объект, расположенный в данной точке сцены
-				*	@brief @return Объект, расположенный в данной точке сцены
-				* */
-		NodeElement *getNodeAt( const QPointF &position /**< Точка на сцене */);
+		*	@brief @return Объект, расположенный в данной точке сцены
+		* */
+		NodeElement *getNodeAt(const QPointF &position /**< Точка на сцене */);
 
 		void adjustLinks();
 
-		QLineF newTransform(const StatLine& port)  const;
+		QLineF newTransform(const StatLine& port) const;
 
 		/** @brief Растянуть объект */
 		void resize(QRectF newContents /**< Новый предполагаемый размер объекта */);
 
 		/** @brief Сдвиг детей объекта */
 		void moveChildren(qreal dx, qreal dy);
-		void moveChildren(QPointF moving /**< Вектор сдвига детей */);
+		void moveChildren(QPointF const &moving /**< Вектор сдвига детей */);
 
 		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
