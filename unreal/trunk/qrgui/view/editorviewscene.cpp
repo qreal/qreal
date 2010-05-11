@@ -5,6 +5,7 @@
 
 #include <QGraphicsTextItem>
 #include <QtGui>
+#include <QtCore/QDebug>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -15,10 +16,28 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-		:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
+	:  QGraphicsScene(parent), mNeedDrawGrid(true), mWindow(NULL), mPrevParent(0)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+}
+
+/*Рисуем сетку*/
+void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
+{
+	qreal sceneX = rect.x(), sceneY = rect.y();
+	int startX = (int)(sceneX + 10) / indexGrid * indexGrid;
+	int endX = (int)(sceneX + rect.width() - 10) / indexGrid * indexGrid;
+	int startY = (int)(sceneY + 10) / indexGrid * indexGrid;
+	int endY = (int)(sceneY + rect.height() - 10) / indexGrid * indexGrid;
+	for (int i = startX; i <= endX; i = i + indexGrid) {
+		QLineF line(i, startY, i, endY);
+		painter->drawLine(line);
+	}
+	for (int i = startY; i <= endY; i = i + indexGrid) {
+		QLineF line(startX, i, endX, i);
+		painter->drawLine(line);
+	}
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -164,9 +183,9 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 	if (edgeMenu->exec(QCursor::pos()) == mWindow->ui.actionDeleteFromDiagram)
 		edgeDeleted = true;
 
-//	Чистка памяти.
-//	foreach(QObject *object, toDelete)
-//		delete object;
+	//	Чистка памяти.
+	//	foreach(QObject *object, toDelete)
+	//		delete object;
 
 	qDebug() << "---launchEdgeMenu() end";
 	return edgeDeleted;
@@ -265,7 +284,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
 
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
-		mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
 
 	delete newMimeData;
 	qDebug() << "---createElement() end";
@@ -294,9 +313,9 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 }
 
 void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
-	, QMenu &contextMenu, QString const &menuName
-	, IdList const &connectableTypes, IdList const &alreadyConnectedElements
-	, IdList const &connectableDiagrams, const char *slot) const
+											  , QMenu &contextMenu, QString const &menuName
+											  , IdList const &connectableTypes, IdList const &alreadyConnectedElements
+											  , IdList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
@@ -325,9 +344,9 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 }
 
 void EditorViewScene::createDisconnectMenu(UML::Element const * const element
-	, QMenu &contextMenu, QString const &menuName
-	, IdList const &outgoingConnections, IdList const &incomingConnections
-	, const char *slot) const
+										   , QMenu &contextMenu, QString const &menuName
+										   , IdList const &outgoingConnections, IdList const &incomingConnections
+										   , const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
@@ -348,30 +367,30 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 	// TODO: Перенести это в элементы, они лучше знают, что они такое, а тут
 	// сцене модель и апи приходится спрашивать.
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
-		, mWindow->manager()->getConnectedTypes(element->uuid().type())
-		, model()->api().outgoingConnections(element->uuid())
-		, model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid())
-		, SLOT(connectActionTriggered())
-	);
+							, mWindow->manager()->getConnectedTypes(element->uuid().type())
+							, model()->api().outgoingConnections(element->uuid())
+							, model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid())
+							, SLOT(connectActionTriggered())
+							);
 
 	createDisconnectMenu(element, contextMenu, tr("Disconnect")
-		, model()->api().outgoingConnections(element->uuid())
-		, model()->api().incomingConnections(element->uuid())
-		, SLOT(disconnectActionTriggered())
-	);
+						 , model()->api().outgoingConnections(element->uuid())
+						 , model()->api().incomingConnections(element->uuid())
+						 , SLOT(disconnectActionTriggered())
+						 );
 
 	createAddConnectionMenu(element, contextMenu, tr("Add usage")
-		, mWindow->manager()->getUsedTypes(element->uuid().type())
-		, model()->api().outgoingUsages(element->uuid())
-		, model()->assistApi().diagramsAbleToBeUsedIn(element->uuid())
-		, SLOT(addUsageActionTriggered())
-	);
+							, mWindow->manager()->getUsedTypes(element->uuid().type())
+							, model()->api().outgoingUsages(element->uuid())
+							, model()->assistApi().diagramsAbleToBeUsedIn(element->uuid())
+							, SLOT(addUsageActionTriggered())
+							);
 
 	createDisconnectMenu(element, contextMenu, tr("Delete usage")
-		, model()->api().outgoingUsages(element->uuid())
-		, model()->api().incomingUsages(element->uuid())
-		, SLOT(deleteUsageActionTriggered())
-	);
+						 , model()->api().outgoingUsages(element->uuid())
+						 , model()->api().incomingUsages(element->uuid())
+						 , SLOT(deleteUsageActionTriggered())
+						 );
 
 	QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
 
@@ -446,7 +465,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 
 	if (parent){
-	qDebug() << "parent: " << parent->uuid().toString();
+		qDebug() << "parent: " << parent->uuid().toString();
 
 		if (!canBeContainedBy(parent->uuid(), element->uuid())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
@@ -464,8 +483,8 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					if (model())
 						model()->changeParent(element->index(), ind, mPrevPosition);
 
-//					elem->setParentItem(mPrevParent);
-//					elem->setPos(mPrevPosition);
+					//					elem->setParentItem(mPrevParent);
+					//					elem->setPos(mPrevPosition);
 					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
 				}
 			}
@@ -591,3 +610,10 @@ qReal::model::Model *EditorViewScene::model() const
 	return dynamic_cast<qReal::model::Model *>(mv_iface->model());
 }
 
+void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+	if (mNeedDrawGrid) {
+		painter->setPen(QPen(Qt::black, 0.05));
+		drawGrid(painter, rect);
+	}
+}
