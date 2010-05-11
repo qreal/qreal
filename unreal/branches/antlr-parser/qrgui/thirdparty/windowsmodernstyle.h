@@ -97,7 +97,7 @@ public:
         PE_WindowGradient = PE_CustomBase + 1
     };
 
-protected slots:
+protected Q_SLOTS:
     int layoutSpacingImplementation( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
         Qt::Orientation orientation, const QStyleOption* option, const QWidget* widget ) const;
 

@@ -4,7 +4,6 @@ CONFIG += rpath_libdirs
 INCLUDEPATH	+=	../qrxml/editors \
 			../qrxml \
 			mainwindow \
-			generators\java\antrl
 
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
@@ -23,7 +22,7 @@ if (equals(QMAKE_CXX, "g++")) {
 }
 
 # Путь до библиотеки с АПИ. Где-нибудь она найдётся...
-LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -L. -lantlr3c_dll
+LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lantlr3c_dll
 
 # Graphical elements
 include (umllib/umllib.pri)

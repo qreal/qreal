@@ -1,3 +1,6 @@
+CONFIG += no_keywords
+INCLUDEPATH += . generators/java/antlr
+
 # XMI
 HEADERS += generators/xmi/xmiHandler.h \
 

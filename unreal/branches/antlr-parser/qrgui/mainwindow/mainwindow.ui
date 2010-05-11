@@ -269,6 +269,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionParse_Hascol_sources"/>
+   <addaction name="actionParse_Java_Libraries"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
@@ -471,6 +472,14 @@
    </property>
    <property name="toolTip">
     <string>Build diagrams from existing Hascol sources</string>
+   </property>
+  </action>
+  <action name="actionParse_Java_Libraries">
+   <property name="text">
+    <string>Parse Java Libraries</string>
+   </property>
+   <property name="toolTip">
+    <string>Parse Java Libraries</string>
    </property>
   </action>
  </widget>

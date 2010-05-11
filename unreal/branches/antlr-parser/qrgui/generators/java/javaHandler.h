@@ -4,6 +4,9 @@
 
 #include "../../kernel/ids.h"
 
+#include "javaLexer.h"
+#include "javaParser.h"
+
 namespace qrRepo {
     class RepoApi;
 }
@@ -18,8 +21,10 @@ namespace qReal {
             explicit JavaHandler(qrRepo::RepoApi const &api);
 
             QString generateToJava(QString const &pathToDir);
+            QString parseJavaLibraries(QString const &pathToDir);
         private:
             bool checkTheModel();
+            bool commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType);
 
             IdList getActivityChildren(Id const &idStartNode, Id const &untilNode);
 
@@ -39,6 +44,7 @@ namespace qReal {
             QString getOperationFactors(Id const &id);
             QString hasModifier(Id const &id, QString const &modifier);
             QString getSuperclass(Id const &id);
+            QString getInterfaces(Id const &id);
             QString getMethodCode(Id const &id);
             QString getFlowGuard(Id const &id);
             QString serializeMultiplicity(Id const &id, QString const &multiplicity) const;
@@ -68,6 +74,12 @@ namespace qReal {
 
             int mIndent;
             QString indent();
+
+            //Parsing Java Libraries
+            QStringList getAllFilesInDirectory(QString dir_name);
+            javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
+            pANTLR3_STRING toStringTree(pANTLR3_BASE_TREE tree);
+            pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
         };
 
     }

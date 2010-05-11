@@ -3,22 +3,22 @@
 using namespace UML;
 
 ContextMenuAction::ContextMenuAction(QString const &text, QObject *parent)
-	: QAction(text, parent)
+    : QAction(text, parent)
 {
-	connect(this, SIGNAL(triggered()), SLOT(trigger()));
+    connect(this, SIGNAL(triggered()), SLOT(trigger()));
 }
 
 void ContextMenuAction::setEventPos(QPointF const &pos)
 {
-	mEventPos = pos;
+    mEventPos = pos;
 }
 
 QPointF ContextMenuAction::eventPos() const
 {
-	return mEventPos;
+    return mEventPos;
 }
 
 void ContextMenuAction::trigger()
 {
-	emit triggered(mEventPos);
+    Q_EMIT triggered(mEventPos);
 }

@@ -16,83 +16,83 @@
 
 namespace qReal {
 
-	namespace model {
+    namespace model {
 
-		class Model : public QAbstractItemModel
-		{
-			Q_OBJECT
+        class Model : public QAbstractItemModel
+        {
+            Q_OBJECT
 
-		public:
-			Model(EditorManager const &editorManager, QString const &workingDirectory);
-			virtual ~Model();
-			QPersistentModelIndex rootIndex() const;
-			virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-			virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-			virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-			virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-			virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-			virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-			virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-			virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-			virtual QModelIndex parent(const QModelIndex &index) const;
-			virtual Qt::DropActions supportedDropActions() const;
-			virtual QStringList mimeTypes() const;
-			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-			virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+        public:
+            Model(EditorManager const &editorManager, QString const &workingDirectory);
+            virtual ~Model();
+            QPersistentModelIndex rootIndex() const;
+            virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+            virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+            virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+            virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+            virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+            virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+            virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+            virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+            virtual QModelIndex parent(const QModelIndex &index) const;
+            virtual Qt::DropActions supportedDropActions() const;
+            virtual QStringList mimeTypes() const;
+            virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+            virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
-			virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+            virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 
-			virtual ModelAssistApi &assistApi();
-			virtual ModelAssistApi const &assistApi() const;
-			qrRepo::RepoApi const &api() const;
-			qrRepo::RepoApi &mutableApi();
+            virtual ModelAssistApi &assistApi();
+            virtual ModelAssistApi const &assistApi() const;
+            qrRepo::RepoApi const &api() const;
+            qrRepo::RepoApi &mutableApi();
 
-			QModelIndex indexById(Id const &id) const;
+            QModelIndex indexById(Id const &id) const;
 
-			void open(QString const &workingDirectory);
-			void reinit();
-			void saveTo(QString const &workingDirectory);
+            void open(QString const &workingDirectory);
+            void reinit();
+            void saveTo(QString const &workingDirectory);
 
-		public slots:
-			void exterminate();
+        public Q_SLOTS:
+            void exterminate();
 
-		signals:
-			void nameChanged(QModelIndex const &index);
+        Q_SIGNALS:
+            void nameChanged(QModelIndex const &index);
 
-		protected:
-			QMultiHash<Id, details::ModelTreeItem*> mTreeItems;
-			QModelIndex index(details::ModelTreeItem const * const item) const;
-			details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
-				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
+        protected:
+            QMultiHash<Id, details::ModelTreeItem*> mTreeItems;
+            QModelIndex index(details::ModelTreeItem const * const item) const;
+            details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
+                const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
-		protected:
-			friend class ModelAssistApi;
-			bool addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position);
+        protected:
+            friend class ModelAssistApi;
+            bool addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position);
 
-		private:
-			qrRepo::RepoApi mApi;
-			details::ModelTreeItem *mRootItem;
-			EditorManager const &mEditorManager;
-			ModelAssistApi mAssistApi;
+        private:
+            qrRepo::RepoApi mApi;
+            details::ModelTreeItem *mRootItem;
+            EditorManager const &mEditorManager;
+            ModelAssistApi mAssistApi;
 
-			Model(Model const &);  // Копировать модель нельзя
-			Model& operator =(Model const &);  // Присваивать тоже
+            Model(Model const &);  // Копировать модель нельзя
+            Model& operator =(Model const &);  // Присваивать тоже
 
-			QString pathToItem(details::ModelTreeItem const * const item) const;
-			void removeConfigurationInClient(details::ModelTreeItem const * const item);
-			void removeModelItems(details::ModelTreeItem * const root);
-			void loadSubtreeFromClient(details::ModelTreeItem * const parent);
-			details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const Id &id);
-			details::ModelTreeItem *parentTreeItem(QModelIndex const &parent) const;
+            QString pathToItem(details::ModelTreeItem const * const item) const;
+            void removeConfigurationInClient(details::ModelTreeItem const * const item);
+            void removeModelItems(details::ModelTreeItem * const root);
+            void loadSubtreeFromClient(details::ModelTreeItem * const parent);
+            details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const Id &id);
+            details::ModelTreeItem *parentTreeItem(QModelIndex const &parent) const;
 
-			QString findPropertyName(Id const &id, int const role) const;
-			bool isDiagram(Id const &id) const;
+            QString findPropertyName(Id const &id, int const role) const;
+            bool isDiagram(Id const &id) const;
 
-			void init();
-			void cleanupTree(details::ModelTreeItem *root);
-			void checkProperties(Id const &id);
-		};
+            void init();
+            void cleanupTree(details::ModelTreeItem *root);
+            void checkProperties(Id const &id);
+        };
 
-	}
+    }
 
 }
