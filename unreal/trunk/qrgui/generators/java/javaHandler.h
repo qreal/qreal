@@ -53,12 +53,9 @@ namespace qReal {
             QString tryCatch(Id const &id);
             QString ifStatement(Id const &id);
             QString whileDoLoop(Id const &id);
-            QString doWhileLoop(Id const &id);
 
             Id findMergeNode(Id const &idDecisionNode);
-            Id findDecisionNode(Id const &idMergeNode);
             Id findNonBodyLink(Id const &idDecisionNode);
-            Id findJoinNode(Id const &idForkNode);
             IdList findIntermediateNodes(Id const &id, Id const &untilNode, bool const closesFunction);
             IdList deleteCommentLinks(IdList &idList);
             IdList deleteConstraintEdges(IdList &idList);

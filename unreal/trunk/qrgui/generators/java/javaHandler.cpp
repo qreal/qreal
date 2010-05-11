@@ -407,15 +407,6 @@ Id JavaHandler::findMergeNode(Id const &idDecisionNode)
     return mergeNode;
 }
 
-Id JavaHandler::findDecisionNode(Id const &idMergeNode)
-{
-    Id decisionNode;
-
-    //it is empty because there is no need in it right now, but will be in the future
-
-    return decisionNode;
-}
-
 Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 {
     Id linkId = Id();
@@ -446,15 +437,6 @@ Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 
 
     return linkId;
-}
-
-Id JavaHandler::findJoinNode(Id const &idForkNode)
-{
-    Id joinNode;
-
-    //it is empty because there is no need in it right now, but will be in the future
-
-    return joinNode;
 }
 
 //Returns "importaint" nodes between startNode (including) and untilNode (excluding)
@@ -1063,13 +1045,6 @@ QString JavaHandler::whileDoLoop(Id const &id)
 \
     mIndent--;
     result += indent() + "}\n";
-
-    return result;
-}
-
-QString JavaHandler::doWhileLoop(Id const &id)
-{
-    QString result = "";
 
     return result;
 }
