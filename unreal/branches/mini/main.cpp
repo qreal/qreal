@@ -1,6 +1,6 @@
 
-#include    <javaLexer.h>
-#include    <javaParser.h>
+#include    "javaLexer.h"
+#include    "javaParser.h"
 #include    <activityLexer.h>
 #include    <activityParser.h>
 
@@ -24,13 +24,12 @@ static javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
 static pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
 static pANTLR3_STRING classAttributesInString(pANTLR3_BASE_TREE tree);
 static QStringList classAttributes(pANTLR3_BASE_TREE tree);
-bool testRead(QString fileName, QString directory);
 
 int main (int argc, char *argv[])
 {
     qDebug() << "start";
 
-    QString path = "D:/Diploma/ANTLR/mini/jdk";
+    QString path = "D:/LeftDocs/mini/jdk";
 //    QString directory = path + "/jdkFiles";
 //    QString filePath = path + "/scr.zip";
 //    bool result = testRead(directory, filePath);
@@ -350,12 +349,4 @@ static QStringList classAttributes(pANTLR3_BASE_TREE tree)
     }
 
     return result;
-}
-
-bool testRead(QString fileName, QString directory)
-{
-    QZipReader zip(fileName); // загружаем файл
-    zip.extractAll(directory); // извлекаем все что в нем в папку directory
-
-    return true;
 }
