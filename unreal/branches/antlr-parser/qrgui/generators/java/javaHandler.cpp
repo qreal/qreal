@@ -14,6 +14,8 @@
 using namespace qReal;
 using namespace generators;
 
+static pjavaLexer lxr;
+
 JavaHandler::JavaHandler(qrRepo::RepoApi const &api)
     : mApi(api)
 {
@@ -37,23 +39,23 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
         javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
         pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
-//        pANTLR3_STRING name = className(tree);
-//        QString typeAndName = QString(QLatin1String((char *) name->chars));
-//        qDebug() << "typeAndName = " + typeAndName;
-//        QStringList typeAndNameList = typeAndName.split(" ");
-//        fileStructure.type = typeAndNameList.at(0);
-//        fileStructure.name = typeAndNameList.at(1);
-//
-//        QStringList attributes = classAttributes(tree);
-//        Q_FOREACH (QString anAttr, attributes) {
-//            if (anAttr.contains("(")) { //method
-//                qDebug() << "method = " + anAttr;
-//            } else { //attribute
-//                qDebug() << "attribute = " + anAttr;
-//            }
-//        }
-//
-//        structures.append(fileStructure);
+        pANTLR3_STRING name = className(tree);
+        QString typeAndName = QString(QLatin1String((char *) name->chars));
+        qDebug() << "typeAndName = " + typeAndName;
+        QStringList typeAndNameList = typeAndName.split(" ");
+        fileStructure.type = typeAndNameList.at(0);
+        fileStructure.name = typeAndNameList.at(1);
+
+        QStringList attributes = classAttributes(tree);
+        Q_FOREACH (QString anAttr, attributes) {
+            if (anAttr.contains("(")) { //method
+                qDebug() << "method = " + anAttr;
+            } else { //attribute
+                qDebug() << "attribute = " + anAttr;
+            }
+        }
+
+        structures.append(fileStructure);
     }
 
     qDebug() << "finished parsing OK";

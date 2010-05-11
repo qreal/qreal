@@ -77,7 +77,6 @@ namespace qReal {
             QString indent();
 
             //Parsing Java Libraries
-            pjavaLexer lxr;
             QList<structure> structures;
 
             QStringList getAllFilesInDirectory(QString dir_name);
