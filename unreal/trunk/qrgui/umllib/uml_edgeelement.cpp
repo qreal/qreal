@@ -23,9 +23,6 @@ using namespace qReal;
 #define M_PI 3.14159265358979323846264338327950288419717
 /** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
-// � еквестирую ещё массу бозона Хиггса!
-// Here you are: The God's particle energy (in GeV)
-#define HIGGS_BOSON_MASS_APPROX 251
 #endif //M_PI
 
 /** @brief Индикатор перемещения связи */
