@@ -1,4 +1,4 @@
-/** @file editorviewscene.cpp
+﻿/** @file editorviewscene.cpp
  * 	@brief Сцена для отрисовки объектов
  * */
 #include "editorviewscene.h"
@@ -26,10 +26,10 @@ EditorViewScene::EditorViewScene(QObject * parent)
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
 	qreal sceneX = rect.x(), sceneY = rect.y();
-	int startX = (int)(sceneX + 10) / indexGrid * indexGrid;
-	int endX = (int)(sceneX + rect.width() - 10) / indexGrid * indexGrid;
-	int startY = (int)(sceneY + 10) / indexGrid * indexGrid;
-	int endY = (int)(sceneY + rect.height() - 10) / indexGrid * indexGrid;
+	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid;
+	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid;
+	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid;
+	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid;
 	for (int i = startX; i <= endX; i = i + indexGrid) {
 		QLineF line(i, startY, i, endY);
 		painter->drawLine(line);
