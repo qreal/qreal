@@ -23,7 +23,7 @@ using namespace qReal;
 #define M_PI 3.14159265358979323846264338327950288419717
 /** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
-// Реквестирую ещё массу бозона Хиггса!
+// � еквестирую ещё массу бозона Хиггса!
 // Here you are: The God's particle energy (in GeV)
 #define HIGGS_BOSON_MASS_APPROX 251
 #endif //M_PI
@@ -243,7 +243,8 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == -1) {
 		Element::mousePressEvent(event);
 		if ((mSrc != NULL) || (mDst != NULL))
-			addPointHandler(event->pos());
+			if (event->buttons() != Qt::RightButton)
+				addPointHandler(event->pos());
 	}
 }
 
@@ -343,7 +344,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 			QPainterPath path;
 			QPainterPathStroker neighbourhood;
-			neighbourhood.setWidth(15);
+			neighbourhood.setWidth(20);
 
 			path.moveTo(mLine[mDragState - 1]);
 			path.lineTo(mLine[mDragState + 1]);
