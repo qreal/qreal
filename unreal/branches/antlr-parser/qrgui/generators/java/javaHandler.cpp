@@ -30,7 +30,6 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
     QStringList files = getAllFilesInDirectory(pathToDir);
     Q_FOREACH (QString aFile, files) {
         qDebug() << aFile;
-        structure fileStructure;
 
         //QString -> char *
         QByteArray byteArray = aFile.toLatin1();
@@ -39,22 +38,24 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
         javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
         pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
-        pANTLR3_STRING name = className(tree);
-        QString typeAndName = QString(QLatin1String((char *) name->chars));
-        qDebug() << "typeAndName = " + typeAndName;
-        QStringList typeAndNameList = typeAndName.split(" ");
-        fileStructure.type = typeAndNameList.at(0);
-        fileStructure.name = typeAndNameList.at(1);
-
         QStringList attributes = classAttributes(tree);
+        QString typeAndName = attributes.takeFirst(); //it is class or interface declaration
+        qDebug() << "typeAndName = " + typeAndName;
+        Structure fileStructure(typeAndName);
+
         Q_FOREACH (QString anAttr, attributes) {
             if (anAttr.contains("(")) { //method
                 qDebug() << "method = " + anAttr;
+                Method method(anAttr);
+                fileStructure.methods.append(method);
             } else { //attribute
                 qDebug() << "attribute = " + anAttr;
+                Attribute attribute(anAttr);
+                fileStructure.attributes.append(attribute);
             }
         }
 
+        qDebug() << fileStructure.serializeMe();
         structures.append(fileStructure);
     }
 
@@ -77,7 +78,6 @@ QStringList JavaHandler::getAllFilesInDirectory(QString dir_name)
                 ret_list += getAllFilesInDirectory(path);
             } else {
                 if (path.endsWith(".java")) {
-                    qDebug() << "adding file with path = " + path;
                     ret_list.append(path);
                 }
             }
@@ -353,7 +353,6 @@ QStringList JavaHandler::classAttributes(pANTLR3_BASE_TREE tree)
 
     return result;
 }
-
 
 //Code Generating
 

@@ -1,8 +1,12 @@
 #include <QtCore/QTextStream>
+#include <QtCore/QStringList>
 
-class attribute
+class Attribute
 {
 public:
+    Attribute(QString declaration);
+    QString serializeMe();
+
     QString visibility;
     bool isStatic;
     bool isFinal;
@@ -11,4 +15,6 @@ public:
     QString type;
     QString name;
     QString defaultValue;
+private:
+    bool setBoolField(QString &declaration, QString fieldString);
 };

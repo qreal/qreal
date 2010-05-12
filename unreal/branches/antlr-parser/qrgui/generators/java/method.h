@@ -2,9 +2,14 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-class method
+#include "attribute.h"
+
+class Method
 {
 public:
+    Method(QString declaration);
+    QString serializeMe();
+
     QString visibility;
     bool isAbstract;
     bool isStatic;
@@ -13,5 +18,8 @@ public:
     bool isNative;
     QString type;
     QString name;
-    QStringList operationFactors;
+    QList<Attribute> operationFactors;
+    QStringList exceptions;
+private:
+    bool setBoolField(QString &declaration, QString fieldString);
 };

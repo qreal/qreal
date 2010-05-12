@@ -1,14 +1,19 @@
-#include "attribute.h"
 #include "method.h"
 
 #include <QtCore/QTextStream>
 #include <QList>
+#include <QtCore/QStringList>
 
-class structure
+class Structure
 {
 public:
+    Structure(QString declaration);
+    QString serializeMe();
+
     QString type;
     QString name;
-    QList<attribute> attributes;
-    QList<method> methods;
+    QList<Attribute> attributes;
+    QList<Method> methods;
+    QStringList extendsClasses;
+    QStringList implementsInterfaces;
 };
