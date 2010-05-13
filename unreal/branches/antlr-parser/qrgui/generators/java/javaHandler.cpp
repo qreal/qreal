@@ -39,24 +39,29 @@ QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
         pANTLR3_BASE_TREE tree = compilationUnit.tree;
 
         QStringList attributes = classAttributes(tree);
-        QString typeAndName = attributes.takeFirst(); //it is class or interface declaration
-        qDebug() << "typeAndName = " + typeAndName;
-        Structure fileStructure(typeAndName);
+        if (!attributes.isEmpty()) {
+            QString structureDeclaration = attributes.takeFirst(); //it is class or interface declaration
+//            qDebug() << "structureDeclaration = " + structureDeclaration;
+            if (structureDeclaration.startsWith("public") && (structureDeclaration.contains("class")
+                    || structureDeclaration.contains("public interface"))) {
+                Structure fileStructure(structureDeclaration);
 
-        Q_FOREACH (QString anAttr, attributes) {
-            if (anAttr.contains("(")) { //method
-                qDebug() << "method = " + anAttr;
-                Method method(anAttr);
-                fileStructure.methods.append(method);
-            } else { //attribute
-                qDebug() << "attribute = " + anAttr;
-                Attribute attribute(anAttr);
-                fileStructure.attributes.append(attribute);
+                Q_FOREACH (QString anAttr, attributes) {
+                    if (anAttr.contains("(")) { //method
+//                        qDebug() << "method = " + anAttr;
+                        Method method(anAttr);
+                        fileStructure.methods.append(method);
+                    } else { //attribute
+//                        qDebug() << "attribute = " + anAttr;
+                        Attribute attribute(anAttr);
+                        fileStructure.attributes.append(attribute);
+                    }
+                }
+
+//                qDebug() << fileStructure.serializeMe();
+//                structures.append(fileStructure);
             }
         }
-
-        qDebug() << fileStructure.serializeMe();
-        structures.append(fileStructure);
     }
 
     qDebug() << "finished parsing OK";

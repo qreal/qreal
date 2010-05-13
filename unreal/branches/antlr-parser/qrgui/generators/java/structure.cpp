@@ -10,6 +10,9 @@ Structure::Structure(QString declaration)
         declaration.remove(0, 1);
     }
 
+    isAbstract = setBoolField(declaration, "abstract");
+    isFinal = setBoolField(declaration, "final");
+
     int index = declaration.indexOf(" implements ");
     if (index != -1) {
         QString implements = declaration.mid(index + QString(" implements ").length());
@@ -59,4 +62,15 @@ QString Structure::serializeMe()
     return type + " " + name + " extends " + extends +
             " implements " + implements + "\nmethods :" + methodsString +
             "\nattributes :" + attributesString;
+}
+
+bool Structure::setBoolField(QString &declaration, QString fieldString)
+{
+    int index = declaration.indexOf(" " + fieldString + " ");
+    if (index != -1) {
+        declaration.remove(index, QString(" " + fieldString).length());
+        return true;
+    } else {
+        return false;
+    }
 }

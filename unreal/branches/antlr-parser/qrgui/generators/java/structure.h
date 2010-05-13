@@ -11,9 +11,13 @@ public:
     QString serializeMe();
 
     QString type;
+    bool isFinal;
+    bool isAbstract;
     QString name;
     QList<Attribute> attributes;
     QList<Method> methods;
     QStringList extendsClasses;
     QStringList implementsInterfaces;
+private:
+    bool setBoolField(QString &declaration, QString fieldString);
 };
