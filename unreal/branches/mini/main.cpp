@@ -37,6 +37,7 @@ int main (int argc, char *argv[])
 
     QString blockStm = "int i = 0;\n";
     out << blockStm;
+    file.close();
 
     QByteArray byteArray = pathToFile.toLatin1();
     char * blockStmFile = byteArray.data();
