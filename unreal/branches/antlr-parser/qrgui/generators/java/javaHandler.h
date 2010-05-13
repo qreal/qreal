@@ -6,6 +6,8 @@
 
 #include "javaLexer.h"
 #include "javaParser.h"
+#include "activityLexer.h"
+#include "activityParser.h"
 #include "structure.h"
 
 namespace qrRepo {
