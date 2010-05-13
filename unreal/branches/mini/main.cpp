@@ -1,4 +1,3 @@
-
 #include "javaLexer.h"
 #include "javaParser.h"
 #include <activityLexer.h>
@@ -14,8 +13,8 @@
 
 #include <QtCore/QDebug>
 
-static    pjavaLexer		    lxr;
-
+static pjavaLexer lxr;
+static pactivityLexer activityLxr;
 
 
 QStringList getJavaFiles(QString dir_name);
@@ -23,32 +22,48 @@ static javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
 static pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
 static pANTLR3_STRING classAttributesInString(pANTLR3_BASE_TREE tree);
 static QStringList classAttributes(pANTLR3_BASE_TREE tree);
-pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree);
+static pANTLR3_STRING treeToString(pANTLR3_BASE_TREE tree);
+static activityParser_compilationUnit_return parseBlock(pANTLR3_UINT8 blockStatement);
 
 int main (int argc, char *argv[])
 {
     qDebug() << "start";
 
-    QString path = "D:/LeftDocs/mini/jdk";
-//    QString directory = path + "/jdkFiles";
-//    QString filePath = path + "/scr.zip";
-//    bool result = testRead(directory, filePath);
-//    QStringList files = getJavaFiles(directory);
-    QStringList files = getJavaFiles(path);
-    foreach (QString aFile, files) {
-//    QString aFile = files.at(1);
-        qDebug() << aFile;
+    QString const pathToFile = "D:/LeftDocs/mini/BlockStatementFile";
+    QFile file(pathToFile);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return 1;
+    QTextStream out(&file);
 
-        //QString -> char *
-        QByteArray byteArray = aFile.toLatin1();
-        char * fileName = byteArray.data();
+    QString blockStm = "int i = 0;\n";
+    out << blockStm;
 
-        javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
-        pANTLR3_BASE_TREE tree = compilationUnit.tree;
+    QByteArray byteArray = pathToFile.toLatin1();
+    char * blockStmFile = byteArray.data();
+    activityParser_compilationUnit_return blockStatement = parseBlock((pANTLR3_UINT8) blockStmFile);
+    pANTLR3_BASE_TREE blockTree = blockStatement.tree;
+    pANTLR3_STRING blockTreeString = blockTree->toStringTree(blockTree);
+    qDebug() << "blockTree = " + QString(QLatin1String((char*) blockTreeString->chars));
 
-        pANTLR3_STRING name = getStructure(tree);
-        qDebug() << "className = " + QString(QLatin1String((char*)name->chars));
-
+//    QString path = "D:/LeftDocs/mini/jdk";
+////    QString directory = path + "/jdkFiles";
+////    QString filePath = path + "/scr.zip";
+////    bool result = testRead(directory, filePath);
+////    QStringList files = getJavaFiles(directory);
+//    QStringList files = getJavaFiles(path);
+//    foreach (QString aFile, files) {
+////    QString aFile = files.at(1);
+//        qDebug() << aFile;
+//
+//        //QString -> char *
+//        QByteArray byteArray = aFile.toLatin1();
+//        char * fileName = byteArray.data();
+//
+//        javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
+//        pANTLR3_BASE_TREE tree = compilationUnit.tree;
+//
+//        structure fileStructure;
+//
 //        pANTLR3_STRING name = className(tree);
 //        qDebug() << "className = " + QString(QLatin1String((char*)name->chars));
 //
@@ -56,7 +71,7 @@ int main (int argc, char *argv[])
 //        foreach (QString anAttr, attributes) {
 //            qDebug() << "attribute = " + anAttr;
 //        }
-    }
+//    }
 
     qDebug() << "finished parsing OK";
 
@@ -354,18 +369,17 @@ static QStringList classAttributes(pANTLR3_BASE_TREE tree)
     return result;
 }
 
-pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree)
+static pANTLR3_STRING treeToString(pANTLR3_BASE_TREE tree)
 {
     pANTLR3_STRING  string;
     ANTLR3_UINT32   i;
     ANTLR3_UINT32   n;
     pANTLR3_BASE_TREE   t;
 
+//    qDebug() << " [type = " + QString((int) tree->getType(tree)) + "] ";
+
     if	(tree->children == NULL || tree->children->size(tree->children) == 0)
     {
-        pANTLR3_STRING toString = tree->toString(tree);
-        QString result = QString(QLatin1String((char*) toString->chars));
-        qDebug() << "result 1 = " + result;
         return	tree->toString(tree);
     }
 
@@ -376,11 +390,6 @@ pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree)
     if	(tree->isNilNode(tree) == ANTLR3_FALSE)
     {
         string->append8	(string, "(");
-
-        pANTLR3_STRING toString = tree->toString(tree);
-        QString result = QString(QLatin1String((char*) toString->chars));
-        qDebug() << "result 2 = " + result;
-
         string->appendS	(string, tree->toString(tree));
         string->append8	(string, " ");
     }
@@ -396,7 +405,7 @@ pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree)
             {
                 string->append8(string, " ");
             }
-            string->appendS(string, getStructure(t));
+            string->appendS(string, treeToString(t));
         }
     }
     if	(tree->isNilNode(tree) == ANTLR3_FALSE)
@@ -405,4 +414,57 @@ pANTLR3_STRING getStructure(pANTLR3_BASE_TREE tree)
     }
 
     return  string;
+}
+
+static activityParser_compilationUnit_return parseBlock(pANTLR3_UINT8 blockStatementFile)
+{
+    activityParser_compilationUnit_return result;
+
+    pANTLR3_INPUT_STREAM input;
+
+    pANTLR3_COMMON_TOKEN_STREAM tstream;
+
+    pactivityParser	psr;
+
+    input = antlr3AsciiFileStreamNew(blockStatementFile);
+
+    if ( input == NULL ) {
+        qDebug() << "File not found: " + QString(QLatin1String((char *)blockStatementFile));
+        exit(1);
+    }
+
+    if (activityLxr == NULL) {
+        activityLxr = activityLexerNew(input);
+    } else {
+        activityLxr->pLexer->setCharStream(activityLxr->pLexer, input);
+    }
+
+    if (activityLxr == NULL) {
+        qDebug() << "Unable to create the lexer due to malloc() failure1\n";
+        exit(ANTLR3_ERR_NOMEM);
+    }
+
+    tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(activityLxr));
+
+    if (tstream == NULL) {
+        qDebug() << "Out of memory trying to allocate token stream\n";
+        exit(ANTLR3_ERR_NOMEM);
+    }
+
+    psr = activityParserNew(tstream);
+
+    if (tstream == NULL) {
+        qDebug() << "Out of memory trying to allocate parser\n";
+        exit(ANTLR3_ERR_NOMEM);
+    }
+
+    tstream->tstream->_LT(tstream->tstream, 1);	// Don't do this normally, just causes lexer to run for timings here
+    //putc('P', stdout); fflush(stdout);
+
+    result = psr->compilationUnit(psr);
+
+    putc('*', stdout);
+    fflush(stdout);
+
+    return result;
 }
