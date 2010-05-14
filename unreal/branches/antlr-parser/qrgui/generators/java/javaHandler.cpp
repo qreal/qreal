@@ -25,51 +25,18 @@ JavaHandler::JavaHandler(qrRepo::RepoApi const &api)
 
 QString JavaHandler::parseJavaLibraries(QString const &pathToDir)
 {
-    qDebug() << "start";
+    qDebug() << "start : pathToDir = " + pathToDir;
 
-    QStringList files = getAllFilesInDirectory(pathToDir);
-    Q_FOREACH (QString aFile, files) {
-        qDebug() << aFile;
-
-        //QString -> char *
-        QByteArray byteArray = aFile.toLatin1();
-        char * fileName = byteArray.data();
-
-        javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
-        pANTLR3_BASE_TREE tree = compilationUnit.tree;
-
-        QStringList attributes = classAttributes(tree);
-        if (!attributes.isEmpty()) {
-            QString structureDeclaration = attributes.takeFirst(); //it is class or interface declaration
-//            qDebug() << "structureDeclaration = " + structureDeclaration;
-            if (structureDeclaration.startsWith("public") && (structureDeclaration.contains("class")
-                    || structureDeclaration.contains("public interface"))) {
-                Structure fileStructure(structureDeclaration);
-
-                Q_FOREACH (QString anAttr, attributes) {
-                    if (anAttr.contains("(")) { //method
-//                        qDebug() << "method = " + anAttr;
-                        Method method(anAttr);
-                        fileStructure.methods.append(method);
-                    } else { //attribute
-//                        qDebug() << "attribute = " + anAttr;
-                        Attribute attribute(anAttr);
-                        fileStructure.attributes.append(attribute);
-                    }
-                }
-
-//                qDebug() << fileStructure.serializeMe();
-//                structures.append(fileStructure);
-            }
-        }
-    }
+    Package javaLibrariesPackage;
+    packages.append(javaLibrariesPackage);
+    QStringList files = getAllFilesInDirectory(pathToDir, javaLibrariesPackage);
 
     qDebug() << "finished parsing OK";
 
     return "";
 }
 
-QStringList JavaHandler::getAllFilesInDirectory(QString dir_name)
+QStringList JavaHandler::getAllFilesInDirectory(QString dir_name, Package &package)
 {
     QStringList ret_list;
     QDir dir(dir_name);
@@ -79,10 +46,55 @@ QStringList JavaHandler::getAllFilesInDirectory(QString dir_name)
         QString path;
         for (iter = info_list.begin() + 2; iter != info_list.end(); iter++) {
             path = iter->absoluteFilePath();
-            if (iter->isDir()) {
-                ret_list += getAllFilesInDirectory(path);
+            if (iter->isDir()) { //it is a directory => creating new package
+                QString packageName = path;
+                packageName.remove(0, dir_name.length() + 1);
+                qDebug() << "packageName = " + packageName;
+                Package newPackage;
+                newPackage.name = packageName;
+                package.packages.append(newPackage);
+
+                ret_list += getAllFilesInDirectory(path, newPackage);
             } else {
-                if (path.endsWith(".java")) {
+                if (path.endsWith(".java")) { //it is a file => creating new structure
+
+                    //-----------------------------------------
+                    qDebug() << path;
+
+                    //QString -> char *
+                    QByteArray byteArray = path.toLatin1();
+                    char * fileName = byteArray.data();
+
+                    javaParser_compilationUnit_return compilationUnit = parseFile((pANTLR3_UINT8)fileName);
+                    pANTLR3_BASE_TREE tree = compilationUnit.tree;
+
+                    QStringList attributes = classAttributes(tree);
+                    if (!attributes.isEmpty()) {
+                        QString structureDeclaration = attributes.takeFirst(); //it is class or interface declaration
+//                        qDebug() << "structureDeclaration = " + structureDeclaration;
+                        if (structureDeclaration.startsWith("public") && (structureDeclaration.contains("class")
+                                || structureDeclaration.contains("public interface"))) {
+                            Structure fileStructure(structureDeclaration);
+
+                            Q_FOREACH (QString anAttr, attributes) {
+                                if (anAttr.contains("(")) { //method
+//                                    qDebug() << "method = " + anAttr;
+                                    Method method(anAttr);
+                                    fileStructure.methods.append(method);
+                                } else { //attribute
+//                                    qDebug() << "attribute = " + anAttr;
+                                    Attribute attribute(anAttr);
+                                    fileStructure.attributes.append(attribute);
+                                }
+                            }
+
+//                            qDebug() << fileStructure.serializeMe();
+                            package.structures.append(fileStructure);
+                        }
+                    }
+                    //---------------------------------------------
+
+
                     ret_list.append(path);
                 }
             }

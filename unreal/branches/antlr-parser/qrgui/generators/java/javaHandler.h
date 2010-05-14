@@ -8,7 +8,7 @@
 #include "javaParser.h"
 #include "activityLexer.h"
 #include "activityParser.h"
-#include "structure.h"
+#include "package.h"
 
 namespace qrRepo {
     class RepoApi;
@@ -79,9 +79,9 @@ namespace qReal {
             QString indent();
 
             //Parsing Java Libraries
-            QList<Structure> structures;
+            QList<Package> packages;
 
-            QStringList getAllFilesInDirectory(QString dir_name);
+            QStringList getAllFilesInDirectory(QString dir_name, Package &package);
             javaParser_compilationUnit_return parseFile(pANTLR3_UINT8 fileName);
             pANTLR3_STRING toStringTree(pANTLR3_BASE_TREE tree);
             pANTLR3_STRING className(pANTLR3_BASE_TREE tree);
