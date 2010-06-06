@@ -2,6 +2,8 @@
  * 	@brief Класс, представляющий объект на диаграмме
  * */
 #include "uml_nodeelement.h"
+#include "../model/model.h"
+#include "../view/editorviewscene.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -10,9 +12,6 @@
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
-
-#include "../model/model.h"
-#include "../view/editorviewscene.h"
 
 #include <math.h>
 
@@ -294,10 +293,10 @@ void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 {
 	int oneKoef = 0;
 	if (koef != 0)
-		oneKoef = koef / fabs(koef);
-	if (fabs(fabs(myX) - fabs(koef) * indexGrid) <= indexGrid / 2)
+		oneKoef = koef / qAbs(koef);
+	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2)
 		setX(koef * indexGrid);
-	else if (fabs(fabs(myX) - (fabs(koef) + 1) * indexGrid) < indexGrid / 2)
+	else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2)
 		setX((koef + oneKoef) * indexGrid);
 }
 
@@ -306,10 +305,10 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 {
 	int oneKoef = 0;
 	if (koef != 0)
-		oneKoef = koef / fabs(koef);
-	if (fabs(fabs(myY) - fabs(koef) * indexGrid) <= indexGrid / 2)
+		oneKoef = koef / qAbs(koef);
+	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2)
 		setY(koef * indexGrid);
-	else if (fabs(fabs(myY) - (fabs(koef) + 1) * indexGrid) < indexGrid / 2)
+	else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2)
 		setY((koef + oneKoef) * indexGrid);
 }
 
@@ -436,10 +435,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		qreal pointY2  = pointY1 + item->boundingRect().height();
 
 		if (pointX1 != myX1 || pointY1 != myY1) {
-			qreal deltaY1 = fabs(pointY1 - myY1);
-			qreal deltaY2 = fabs(pointY2 - myY2);
-			qreal deltaX1 = fabs(pointX1 - myX1);
-			qreal deltaX2 = fabs(pointX2 - myX2);
+			qreal deltaY1 = qAbs(pointY1 - myY1);
+			qreal deltaY2 = qAbs(pointY2 - myY2);
+			qreal deltaX1 = qAbs(pointX1 - myX1);
+			qreal deltaX2 = qAbs(pointX2 - myX2);
 			if (deltaY1 <= radius || deltaY2 <= radius) {
 				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
 				buildLineY(deltaY2, radius, true, radiusJump, pointY2,
@@ -450,13 +449,13 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 				buildLineX(deltaX2, radius, true, radiusJump, pointX2,
 					boundingRect().width(), myX1, myX2, myY1);
 			}
-			buildLineY(fabs(pointY1 - myY2), radius, false, radiusJump, pointY1,
+			buildLineY(qAbs(pointY1 - myY2), radius, false, radiusJump, pointY1,
 				boundingRect().height(), myY1, myY2, myX1);
-			buildLineX(fabs(pointX1 - myX2), radius, false, radiusJump, pointX1,
+			buildLineX(qAbs(pointX1 - myX2), radius, false, radiusJump, pointX1,
 				boundingRect().width(), myX1, myX2, myY1);
-			buildLineY(fabs(pointY2 - myY1), radius, false, radiusJump, pointY2,
+			buildLineY(qAbs(pointY2 - myY1), radius, false, radiusJump, pointY2,
 				0, myY1, myY2, myX1);
-			buildLineX(fabs(pointX2 - myX1), radius, false, radiusJump, pointX2,
+			buildLineX(qAbs(pointX2 - myX1), radius, false, radiusJump, pointX2,
 				0, myX1, myX2, myY1);
 		}
 	}

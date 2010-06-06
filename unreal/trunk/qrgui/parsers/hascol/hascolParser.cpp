@@ -202,7 +202,7 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 
 void HascolParser::doLayout(Id const &diagram, unsigned cellWidth, unsigned cellHeight)
 {
-	unsigned count = mApi.children(diagram).count();
+	qreal count = mApi.children(diagram).count();
 	unsigned rowWidth = ceil(sqrt(count));
 	unsigned currentRow = 0;
 	unsigned currentColumn = 0;
