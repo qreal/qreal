@@ -1,109 +1,108 @@
-ï»¿<?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
- <include>sequence_metamodel</include>
- <namespace>UML 2.1</namespace>
- <editor name="QREAL PARALLEL DIAGRAM" >
-   <non_graph_types>
-  <enum id="qrThreadNameType" name="ThreadNameType" >
-   <value>number</value>
-   <value>string</value>
-   <!--ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÐµÐ½Ð½Ð°Ñ ÑÑ‚Ñ€Ð¾ÐºÐ° = "other"-->
-  </enum>
-   </non_graph_types>
-   <graph_types>
-  <node id="qrpnThread" name="Thread" >
-   <graphics>
-    <view>
-     <picture sizex="20" sizey="100" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="10" y2="100" stroke-width="2" x2="10" fill-style="solid" />
-     </picture>
-     <repo_info>
-      <html:html xmlns:html="http://www.w3.org/html/" >
-       <html:text_from_repo name="threadName" />
-      </html:html>
-     </repo_info>
-    </view>
-   </graphics>
-   <logic>
-    <properties>
-     <property type="enum" name="threadName" >
-      <enum idref="qrThreadNameType" />
-      <default/>
-     </property>
-    </properties>
-    <containers>
-     <container name="thread port" >
-      <contains idref="qrpnPort" role="port" />
-     </container>
-     <container name="threads barrier" >
-      <contains idref="qrpnBarrier" role="barrier" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="qrpnPort" name="Port" >
-   <graphics>
-    <view>
-     <picture sizex="30" sizey="50" >
-      <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="49" stroke-width="1" x2="29" fill-style="solid" />
-     </picture>
-     <ports>
-      <line_port>
-       <start startx="1" starty="1" />
-       <end endx="29" endy="1" />
-      </line_port>
-      <line_port>
-       <start startx="29" starty="1" />
-       <end endx="29" endy="49" />
-      </line_port>
-      <line_port>
-       <start startx="29" starty="49" />
-       <end endx="1" endy="49" />
-      </line_port>
-      <line_port>
-       <start startx="1" starty="49" />
-       <end endx="1" endy="1" />
-      </line_port>
-     </ports>
-    </view>
-   </graphics>
-   <logic>
-    <associations>
-     <assoc_ref idref="qrpaMessageBegin" />
-     <assoc_ref idref="qrpaMessageEnd" />
-     <assoc_ref idref="qrpaMessageToAll" />
-     <assoc_ref idref="qrpaMessageFromAll" />
-    </associations>
-    <containers>
-     <container name="thread port" >
-      <contained_by idref="qrpnThread" role="port" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <node id="qrpnBarrier" name="Barrier" >
-   <graphics>
-    <view>
-     <picture sizex="60" sizey="10" >
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="2" x2="58" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="6" y2="6" stroke-width="2" x2="1" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="16" y2="6" stroke-width="2" x2="11" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="26" y2="6" stroke-width="2" x2="21" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="36" y2="6" stroke-width="2" x2="31" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="46" y2="6" stroke-width="2" x2="41" fill-style="solid" />
-      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="56" y2="6" stroke-width="2" x2="51" fill-style="solid" />
-     </picture>
-    </view>
-   </graphics>
-   <logic>
-    <containers>
-     <container name="threads barrier" >
-      <contained_by idref="qrpnThread" role="barrier" />
-     </container>
-    </containers>
-   </logic>
-  </node>
-  <!--
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>sequence_metamodel</include>
+    <namespace>UML 2.1</namespace>
+    <editor name="QREAL PARALLEL DIAGRAM">
+      <non_graph_types>
+        <enum id="qrThreadNameType" name="ThreadNameType">
+          <value>number</value>
+          <value>string</value>
+          <!--Îïðåäåëåííàÿ ñòðîêà = "other"-->
+        </enum>
+      </non_graph_types>
+      <graph_types>
+        <node path="10, 0 : 10, 100 : " id="qrpnThread" name="Thread">
+          <graphics>
+            <view>
+              <picture sizex="20" sizey="100">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="10" y2="100" stroke-width="2" x2="10" fill-style="solid"/>
+              </picture>
+              <repo_info>
+                <html:html xmlns:html="http://www.w3.org/html/">
+                  <html:text_from_repo name="threadName"/>
+                </html:html>
+              </repo_info>
+            </view>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="enum" name="threadName">
+                <enum idref="qrThreadNameType"/>
+                <default/>
+              </property>
+            </properties>
+            <containers>
+              <container name="thread port">
+                <contains idref="qrpnPort" role="port"/>
+              </container>
+              <container name="threads barrier">
+                <contains idref="qrpnBarrier" role="barrier"/>
+              </container>
+            </containers>
+          </logic>
+        </node>
+        <node id="qrpnPort" name="Port">
+          <graphics>
+            <view>
+              <picture sizex="30" sizey="50">
+                <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="49" stroke-width="1" x2="29" fill-style="solid"/>
+              </picture>
+              <ports>
+                <line_port>
+                  <start startx="1" starty="1"/>
+                  <end endx="29" endy="1"/>
+                </line_port>
+                <line_port>
+                  <start startx="29" starty="1"/>
+                  <end endx="29" endy="49"/>
+                </line_port>
+                <line_port>
+                  <start startx="29" starty="49"/>
+                  <end endx="1" endy="49"/>
+                </line_port>
+                <line_port>
+                  <start startx="1" starty="49"/>
+                  <end endx="1" endy="1"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <associations>
+              <assoc_ref idref="qrpaMessageBegin"/>
+              <assoc_ref idref="qrpaMessageEnd"/>
+              <assoc_ref idref="qrpaMessageToAll"/>
+              <assoc_ref idref="qrpaMessageFromAll"/>
+            </associations>
+            <containers>
+              <container name="thread port">
+                <contained_by idref="qrpnThread" role="port"/>
+              </container>
+            </containers>
+          </logic>
+        </node>
+        <node path="184, 4 : 164, 24 : 144, 4 : " id="qrpnBarrier" name="Barrier">
+          <graphics>
+            <view>
+              <picture sizex="60" sizey="10">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="1" stroke-width="2" x2="58" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="6" y2="6" stroke-width="2" x2="1" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="16" y2="6" stroke-width="2" x2="11" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="26" y2="6" stroke-width="2" x2="21" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="36" y2="6" stroke-width="2" x2="31" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="46" y2="6" stroke-width="2" x2="41" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="56" y2="6" stroke-width="2" x2="51" fill-style="solid"/>
+              </picture>
+            </view>
+          </graphics>
+          <logic>
+            <containers>
+              <container name="threads barrier">
+                <contained_by idref="qrpnThread" role="barrier"/>
+              </container>
+            </containers>
+          </logic>
+        </node>
+        <!--
     <node name="CombinedFragment" id="qrpnCombinedFragment">
       <graphics>
         <view>
@@ -140,56 +139,56 @@
       </logic>
     </node>
     -->
-  <edge id="qrMessage" name="Message" >
-   <graphics>
-    <view>
-     <line_type type="solidLine" />
-    </view>
-   </graphics>
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="message" end_type="open_arrow" id="qrpaMessageBegin" >
-      <begin idref="qrpnPort" />
-     </association>
-     <association role="message" id="qrpaMessageEnd" >
-      <end idref="qrpnPort" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <edge id="qrMessageToAll" name="MessageToAll" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="multiple message" end_type="complex_arrow" id="qrpaMessageToAll" >
-      <begin idref="qrpnPort" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-  <edge id="qrMessageFromAll" name="MessageFromAll" >
-   <logic>
-    <generalizations>
-     <generalization>
-      <parent parent_id="krneRelationship" />
-     </generalization>
-    </generalizations>
-    <associations>
-     <association role="multiple message" end_type="complex_arrow" id="qrpaMessageFromAll" >
-      <end idref="qrpnPort" />
-     </association>
-    </associations>
-   </logic>
-  </edge>
-   </graph_types>
- </editor>
-</metamodel>
+        <edge id="qrMessage" name="Message">
+          <graphics>
+            <view>
+              <line_type type="solidLine"/>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations>
+              <generalization>
+                <parent parent_id="krneRelationship"/>
+              </generalization>
+            </generalizations>
+            <associations>
+              <association role="message" end_type="open_arrow" id="qrpaMessageBegin">
+                <begin idref="qrpnPort"/>
+              </association>
+              <association role="message" id="qrpaMessageEnd">
+                <end idref="qrpnPort"/>
+              </association>
+            </associations>
+          </logic>
+        </edge>
+        <edge id="qrMessageToAll" name="MessageToAll">
+          <logic>
+            <generalizations>
+              <generalization>
+                <parent parent_id="krneRelationship"/>
+              </generalization>
+            </generalizations>
+            <associations>
+              <association role="multiple message" end_type="complex_arrow" id="qrpaMessageToAll">
+                <begin idref="qrpnPort"/>
+              </association>
+            </associations>
+          </logic>
+        </edge>
+        <edge id="qrMessageFromAll" name="MessageFromAll">
+          <logic>
+            <generalizations>
+              <generalization>
+                <parent parent_id="krneRelationship"/>
+              </generalization>
+            </generalizations>
+            <associations>
+              <association role="multiple message" end_type="complex_arrow" id="qrpaMessageFromAll">
+                <end idref="qrpnPort"/>
+              </association>
+            </associations>
+          </logic>
+        </edge>
+      </graph_types>
+    </editor>
+  </metamodel>

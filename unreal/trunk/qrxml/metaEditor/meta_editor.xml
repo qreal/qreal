@@ -1,185 +1,177 @@
-<?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
- <namespace>Meta_editor</namespace>
- <editor name="Meta_editor" >
- <non_graph_types>
-   <enum id="medtMetaEntityType" name="MetaEntityType" >
-	 <value>enumType</value>
-	 <value>node</value>
-	 <value>edge</value>
-   </enum>
-   </non_graph_types>
- <graph_types>
-   <node id="mednMetaEditor" name="MetaEditor">
-	   <graphics>
-		   <view>
-			   <picture sizex="100" sizey="100" >
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="15" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="15" stroke-width="2" x2="0" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="15" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="85" stroke-width="2" x2="0" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="85" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="15" stroke-width="2" x2="100" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="85" stroke-width="2" x2="100" fill-style="solid" />
-				   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="85" fill-style="solid" />
-				   <text i="0" font-fill="#00007f" y1="10" b="0" x1="25" font-name="Helvetica" u="0" font-size="18a" >Editor</text>
-			   </picture>
-			   <repo_info>
-				   <html:html xmlns:html="http://www.w3.org/html/" >
-					   <html:center>
-						   <html:b>
-							   <html:text_from_repo name="name" />
-						   </html:b>
-					   </html:center>
-				   </html:html>
-     			   </repo_info>
-			   <ports>
-				   <line_port>
-					   <start startx="0" starty="50" />
-					   <end endx="5" endy="25" />
-				   </line_port>
-				   <line_port>
-					   <start startx="0" starty="50" />
-					   <end endx="5" endy="75" />
-				   </line_port>
-				   <line_port>
-					   <start startx="100" starty="50" />
-					   <end endx="95" endy="25" />
-				   </line_port>
-				   <line_port>
-					   <start startx="100" starty="50" />
-					   <end endx="95" endy="75" />
-				   </line_port>
-			   </ports>
-		   </view>
-	   </graphics>
-	   <logic>
-		   <generalizations>
-		   </generalizations>
-		   <properties>
-			   <property type="string" name="include" />
-			   <property type="string" name="namespace" />
-			   <property type="string" name="prefix_name" />
-		   </properties>
-		   <containers>
-		   </containers>
-	   </logic>
-   </node>
-   <node id="mednMetaEntity" name="MetaEntity">
-     <graphics>
-       <view>
-         <picture sizex="100" sizey="100" >
-  	   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid" />
-	   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid" />
-	   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid" />
- 	   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid" />
-	   <text i="0" font-fill="#00007f" y1="10" b="0" x1="25" font-name="Helvetica" u="0" font-size="18a" >Entity</text>
-         </picture>
-         <!--<repo_info>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>kernel_metamodel</include>
+    <namespace>Meta_editor</namespace>
+    <editor name="Meta_editor">
+      <non_graph_types>
+        <enum id="medtMetaEntityType" name="MetaEntityType">
+          <value>enumType</value>
+          <value>node</value>
+          <value>edge</value>
+        </enum>
+      </non_graph_types>
+      <graph_types>
+        <node path="15, 100 : 0, 100 : 0, 85 : 0, 15 : 0, 0 : 15, 0 : 85, 0 : 100, 0 : 100, 15 : 100, 85 : 100, 100 : 85, 100 : " id="mednMetaEditor" name="MetaEditor">
+          <graphics>
+            <view>
+              <picture sizex="100" sizey="100">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="15" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="15" stroke-width="2" x2="0" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="15" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="85" stroke-width="2" x2="0" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="85" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="15" stroke-width="2" x2="100" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="85" stroke-width="2" x2="100" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="85" fill-style="solid"/>
+                <text i="0" font-fill="#00007f" y1="10" b="0" x1="25" font-name="Helvetica" u="0" font-size="18a">Editor</text>
+              </picture>
+              <repo_info>
+                <html:html xmlns:html="http://www.w3.org/html/">
+                  <html:center>
+                    <html:b>
+                      <html:text_from_repo name="name"/>
+                    </html:b>
+                  </html:center>
+                </html:html>
+              </repo_info>
+              <ports>
+                <line_port>
+                  <start startx="0" starty="50"/>
+                  <end endx="5" endy="25"/>
+                </line_port>
+                <line_port>
+                  <start startx="0" starty="50"/>
+                  <end endx="5" endy="75"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="50"/>
+                  <end endx="95" endy="25"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="50"/>
+                  <end endx="95" endy="75"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations/>
+            <properties>
+              <property type="string" name="include"/>
+              <property type="string" name="namespace"/>
+              <property type="string" name="prefix_name"/>
+            </properties>
+            <containers/>
+          </logic>
+        </node>
+        <node path="10, 0 : 0, 50 : 10, 100 : 90, 100 : 100, 50 : 90, 0 : " id="mednMetaEntity" name="MetaEntity">
+          <graphics>
+            <view>
+              <picture sizex="100" sizey="100">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
+                <text i="0" font-fill="#00007f" y1="10" b="0" x1="25" font-name="Helvetica" u="0" font-size="18a">Entity</text>
+              </picture>
+              <!--<repo_info>
            <html:html xmlns:html="http://www.w3.org/html/" >
               <html:b>
                  <html:text_from_repo name="name" />
               </html:b>
            </html:html>
          </repo_info>-->
-         <ports>
-           <line_port>
-             <start startx="0" starty="50" />
-             <end endx="5" endy="25" />
-           </line_port>
-           <line_port>
-             <start startx="0" starty="50" />
-             <end endx="5" endy="75" />
-           </line_port>
-	   <line_port>
-		   <start startx="100" starty="50" />
-		   <end endx="95" endy="25" />
-	   </line_port>
-	   <line_port>
-		   <start startx="100" starty="50" />
-		   <end endx="95" endy="75" />
-           </line_port>
-         </ports>
-       </view>
-     </graphics>
-     <logic>
-	     <generalizations>
-	     </generalizations>
-	     <properties>
-		     <property type="enum" name="entity_type" >
-			     <enum idref="medtMetaEntityType" />
-     		     </property>
-		     <property type="string" name="line_type" />
-	     </properties>
-	     <containers>
-	     </containers>
-      </logic>
-   </node>
-   <node id="mednMetaEntityAttribute" name="MetaEntityAttribute">
-     <graphics>
-       <view>
-	 <picture sizex="100" sizey="100" >
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="10" fill-style="solid" />
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="10" fill-style="solid" />
-		   
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="90" fill-style="solid" />
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid" />
-		   <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="90" fill-style="solid" />
-		   <text i="0" font-fill="#00007f" y1="10" b="0" x1="15" font-name="Helvetica" u="0" font-size="15a" >Attribute</text>
-         </picture>
-	 <repo_info>
-		 <html:html xmlns:html="http://www.w3.org/html/" >
-			 <html:b>
-				 <html:text_from_repo name="name" />
-			 </html:b>
-		 </html:html>
-	 </repo_info>
-	 <ports>
-		 <line_port>
-			 <start startx="0" starty="40" />
-			 <end endx="0" endy="80" />
-		 </line_port>
-		 <line_port>
-			 <start startx="100" starty="40" />
-			 <end endx="100" endy="80" />
-		 </line_port>
-         </ports>
-       </view>
-     </graphics>
-     <logic>
-       <generalizations>
-       </generalizations>
-       <properties>
-	       <property type="string" name="attributeType" />
-       </properties>
-       <containers>
-       </containers>
-     </logic>
-   </node>
-   <edge id="medeRelation" name="Relation">
-    <graphics>
-       <view>
-	  <line_type type="solidLine" />
-       </view>
-    </graphics>
-    <logic>
-	<associations>
-		<association end_type="no_arrow" id="caDep1" >
-			<begin idref="krnnElement" />
-		</association>
-		<association end_type="open_arrow" id="acAggr2" >
-			<end idref="krnnElement" />
-		</association>
-       </associations>
-       <generalizations>
-		<generalization>
-			<parent parent_id="krneRelationship" />
-		</generalization>
-	</generalizations>
-     </logic>
-   </edge>
-   </graph_types>
- </editor>
-</metamodel>
+              <ports>
+                <line_port>
+                  <start startx="0" starty="50"/>
+                  <end endx="5" endy="25"/>
+                </line_port>
+                <line_port>
+                  <start startx="0" starty="50"/>
+                  <end endx="5" endy="75"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="50"/>
+                  <end endx="95" endy="25"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="50"/>
+                  <end endx="95" endy="75"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations/>
+            <properties>
+              <property type="enum" name="entity_type">
+                <enum idref="medtMetaEntityType"/>
+              </property>
+              <property type="string" name="line_type"/>
+            </properties>
+            <containers/>
+          </logic>
+        </node>
+        <node path="90, 100 : 100, 100 : 100, 0 : 90, 0 : 10, 0 : 0, 0 : 0, 100 : 10, 100 : " id="mednMetaEntityAttribute" name="MetaEntityAttribute">
+          <graphics>
+            <view>
+              <picture sizex="100" sizey="100">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="10" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="10" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="90" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="90" fill-style="solid"/>
+                <text i="0" font-fill="#00007f" y1="10" b="0" x1="15" font-name="Helvetica" u="0" font-size="15a">Attribute</text>
+              </picture>
+              <repo_info>
+                <html:html xmlns:html="http://www.w3.org/html/">
+                  <html:b>
+                    <html:text_from_repo name="name"/>
+                  </html:b>
+                </html:html>
+              </repo_info>
+              <ports>
+                <line_port>
+                  <start startx="0" starty="40"/>
+                  <end endx="0" endy="80"/>
+                </line_port>
+                <line_port>
+                  <start startx="100" starty="40"/>
+                  <end endx="100" endy="80"/>
+                </line_port>
+              </ports>
+            </view>
+          </graphics>
+          <logic>
+            <generalizations/>
+            <properties>
+              <property type="string" name="attributeType"/>
+            </properties>
+            <containers/>
+          </logic>
+        </node>
+        <edge id="medeRelation" name="Relation">
+          <graphics>
+            <view>
+              <line_type type="solidLine"/>
+            </view>
+          </graphics>
+          <logic>
+            <associations>
+              <association end_type="no_arrow" id="caDep1">
+                <begin idref="krnnElement"/>
+              </association>
+              <association end_type="open_arrow" id="acAggr2">
+                <end idref="krnnElement"/>
+              </association>
+            </associations>
+            <generalizations>
+              <generalization>
+                <parent parent_id="krneRelationship"/>
+              </generalization>
+            </generalizations>
+          </logic>
+        </edge>
+      </graph_types>
+    </editor>
+  </metamodel>

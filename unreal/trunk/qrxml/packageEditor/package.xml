@@ -1,53 +1,52 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
-	<include>../commonXml/kernel_metamodel.xml</include>
-	<namespace>UML 2.1</namespace>
-	<diagram name="Package Diagram" >
-		<graphicTypes>
-			<import name="Kernel::Package Import" as="Package Import" />
-			<import name="Kernel::Package Merge" as="Package Merge" />
-			<node name="Package" >
-				<graphics>
-					<picture sizex="100" sizey="100" >
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="30" fill-style="solid" />
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="0" y2="20a" stroke-width="2" x2="100" fill-style="solid" />
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid" />
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid" />
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="20a" stroke-width="2" x2="30" fill-style="solid" />
-						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid" />
-					</picture>
-					<labels>
-						<label x="0" y="20" textBinded="name"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="40" />
-							<end endx="0" endy="80" />
-						</linePort>
-						<linePort>
-							<start startx="100" starty="40" />
-							<end endx="100" endy="80" />
-						</linePort>
-						<linePort>
-							<start startx="50" starty="20a" />
-							<end endx="80" endy="20a" />
-						</linePort>
-						<linePort>
-							<start startx="20" starty="100" />
-							<end endx="80" endy="100" />
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<generalizations>
-						<parent parentName="Kernel::Package" />
-					</generalizations>
-					<properties>
-						<property type="string" name="vals" />
-						<property type="string" name="methods" />
-					</properties>
-				</logic>
-			</node>
-		</graphicTypes>
-	</diagram>
-</metamodel>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>../commonXml/kernel_metamodel.xml</include>
+    <namespace>UML 2.1</namespace>
+    <diagram name="Package Diagram">
+      <graphicTypes>
+        <import as="Package Import" name="Kernel::Package Import"/>
+        <import as="Package Merge" name="Kernel::Package Merge"/>
+        <node path="0, 0 : 0, 100 : 100, 100 : 100, 0 : 0, 0 : 30, 0 : " name="Package">
+          <graphics>
+            <picture sizex="100" sizey="100">
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="30" fill-style="solid"/>
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="0" y2="20a" stroke-width="2" x2="100" fill-style="solid"/>
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="30" y2="20a" stroke-width="2" x2="30" fill-style="solid"/>
+              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="20a" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+            </picture>
+            <labels>
+              <label x="0" y="20" textBinded="name"/>
+            </labels>
+            <ports>
+              <linePort>
+                <start startx="0" starty="40"/>
+                <end endx="0" endy="80"/>
+              </linePort>
+              <linePort>
+                <start startx="100" starty="40"/>
+                <end endx="100" endy="80"/>
+              </linePort>
+              <linePort>
+                <start startx="50" starty="20a"/>
+                <end endx="80" endy="20a"/>
+              </linePort>
+              <linePort>
+                <start startx="20" starty="100"/>
+                <end endx="80" endy="100"/>
+              </linePort>
+            </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+              <parent parentName="Kernel::Package"/>
+            </generalizations>
+            <properties>
+              <property type="string" name="vals"/>
+              <property type="string" name="methods"/>
+            </properties>
+          </logic>
+        </node>
+      </graphicTypes>
+    </diagram>
+  </metamodel>
