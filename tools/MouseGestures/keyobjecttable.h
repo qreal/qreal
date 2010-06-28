@@ -20,6 +20,7 @@ public:
     Objects getObjects();
     KeyObjectItem at(int pos);
     int size();
+    void clear();
 
 private:
     KeyObjectItem getItem(QString const &name);

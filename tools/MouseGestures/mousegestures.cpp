@@ -8,7 +8,7 @@
 #include "paintmanager.h"
 
 //todo:: что-то форма чересчур поумнела... надо бы ее тупой сделать
-static const QString xmlDir = "../../../unreal/trunk/qrxml";
+static const QString xmlDir = "../../unreal/trunk/qrxml";
 
 MouseGestures::MouseGestures(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MouseGestures)
@@ -30,6 +30,9 @@ void MouseGestures::contextMenuEvent(QContextMenuEvent *event)
     QAction *increase = new QAction("Increase path", this);
     connect(increase, SIGNAL(triggered()), this, SLOT(increasePath()));
     menu.addAction(increase);
+    QAction *decrease = new QAction("Decrease path", this);
+    connect(decrease, SIGNAL(triggered()), this, SLOT(decreasePath()));
+    menu.addAction(decrease);
     menu.exec(event->globalPos());
 }
 
@@ -41,18 +44,29 @@ void MouseGestures::rotatePath()
     ui->twObjectPathTable->currentItem()->setText(Adopter::pathToString(path));
 }
 
-void MouseGestures::increasePath()
+void MouseGestures::increasePath(double koef)
 {
     QString pathStr = ui->twObjectPathTable->currentItem()->text();
     QList<QPoint> path = Adopter::stringToPath(pathStr);
-    path = PathCorrector::increase(path, 2);
+    path = PathCorrector::increase(path, koef);
     ui->twObjectPathTable->currentItem()->setText(Adopter::pathToString(path));
+}
+
+void MouseGestures::increasePath()
+{
+    increasePath(2);
+}
+
+void MouseGestures::decreasePath()
+{
+    increasePath(0.5);
 }
 
 void MouseGestures::save()
 {
+    Objects objects = mKeyObjectTable.getObjects();
     Serializer serializer(mFileName);
-    serializer.serialize(mKeyObjectTable.getObjects());
+    serializer.serialize(objects);
 }
 
 void MouseGestures::changePath()
@@ -82,12 +96,14 @@ void MouseGestures::loadFile()
     mFileName = QFileDialog::getOpenFileName(this,
                                              tr("Open Xml"), xmlDir,
                                              tr("Xml files (*.xml)"));
+    int rowCount = ui->twObjectPathTable->rowCount();
+    for (int i = 0; i < rowCount; i++)
+    {
+        ui->twObjectPathTable->removeRow(0);
+    }
     Serializer serializer(mFileName);
     EntityVector entities = serializer.deserialize();
-    for (int i = 0; i < ui->twObjectPathTable->rowCount(); i++)
-    {
-        ui->twObjectPathTable->removeRow(i);
-    }
+    mKeyObjectTable.clear();
     addEntities(entities);
     showTable();
 }

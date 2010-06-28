@@ -90,12 +90,12 @@ QList<QPoint> PathCorrector::rotate(const QList<QPoint> &path)
     return inversePath;
 }
 
-QList<QPoint> PathCorrector::increase(const QList<QPoint> &path, int k)
+QList<QPoint> PathCorrector::increase(const QList<QPoint> &path, double k)
 {
     QList<QPoint> newPath;
     foreach (QPoint pnt, path)
     {
-        newPath.push_back(pnt * k);
+        newPath.push_back(QPoint((int)(pnt.x() * k), (int) (pnt.y() * k)));
     }
     return newPath;
 }

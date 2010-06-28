@@ -43,10 +43,12 @@ private:
     static const int keyColumn = 2;
     static const int pathColumn = 1;
     static const int objectColumn = 0;
+    void increasePath(double koef);
 
 private slots:
     void rotatePath();
     void increasePath();
+    void decreasePath();
     void loadFile();
     void changePath();
     void drawGesture();

@@ -48,6 +48,11 @@ void KeyObjectTable::add(const Objects &objects)
     }
 }
 
+void KeyObjectTable::clear()
+{
+    mKeyObjectTable.clear();
+}
+
 void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
 {
     mKeyManager = keyManager;
