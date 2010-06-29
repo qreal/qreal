@@ -133,7 +133,7 @@ MainWindow::MainWindow()
 			text += id.editor() + "\n";
 		}
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
-		close();  // Всё, собственно.
+		close();  
 		return;
 	}
 
@@ -229,8 +229,8 @@ void MainWindow::activateItemOrDiagram(Id const &id) {
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
-	// Правило "провязки" - если есть диаграмма первого уровня с тем же именем,
-	// что и у нашего элемента, показываем её.
+	// end-to-end links: if there's a first-level diagram with the same name as
+	// this element, show it
 	QString targetName = mModel->data(idx, Qt::DisplayRole).toString();
 	int rows = mModel->rowCount(mModel->rootIndex());
 	for (int i = 0; i < rows; ++i) {
@@ -517,7 +517,7 @@ void MainWindow::parseHascol()
 
 void MainWindow::openNewTab(const QModelIndex &index)
 {
-	if( index.parent() != QModelIndex() ) // открываем в новом табе только диаграммы первого уровня
+	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
 		return;
 
 	int tabNumber = -1;

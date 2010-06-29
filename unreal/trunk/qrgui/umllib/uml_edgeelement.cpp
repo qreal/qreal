@@ -1,5 +1,5 @@
 /** @file edgeelement.cpp
- * 	@brief Класс, представляющий связь на диаграмме
+ * 	@brief class for an edge on a diagram
  * */
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QStyle>
@@ -19,13 +19,11 @@ using namespace UML;
 using namespace qReal;
 
 #ifndef M_PI
-/** @brief Константа ПИ */
 #define M_PI 3.14159265358979323846264338327950288419717
-/** @brief Константа 1/ПИ */
 #define M_1_PI 1/M_PI;
 #endif //M_PI
 
-/** @brief Индикатор перемещения связи */
+/** @brief indicator of edges' movement */
 // static bool moving = false;
 
 EdgeElement::EdgeElement(ElementImpl *impl)

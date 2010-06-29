@@ -143,9 +143,8 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	Id id = targetObject.data(roles::idRole).value<Id>();
 	mFieldNames = mEditorManager.getPropertyNames(id.type());
 
-	// Сначала в списке должны идти нередактируемые атрибуты, за ними - редактируемые.
-	// Атрибуты и их порядок захардкожены в методах data и setData, так что править
-	// аккуратно.
+	// non-editable fields go first
+	// fields order is hard-coded in data() and setData(), beware
 	mFieldNames.push_front("name");
 	mFieldNames.push_front("repo_id");
 	mFieldNames.push_front("metatype");

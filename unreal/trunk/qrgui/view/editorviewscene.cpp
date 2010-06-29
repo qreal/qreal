@@ -1,7 +1,4 @@
-﻿/** @file editorviewscene.cpp
- * 	@brief Сцена для отрисовки объектов
- * */
-#include "editorviewscene.h"
+﻿#include "editorviewscene.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -22,7 +19,6 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setEnabled(false);
 }
 
-/*Рисуем сетку*/
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
 	qreal sceneX = rect.x(), sceneY = rect.y();
@@ -49,8 +45,7 @@ void EditorViewScene::setEnabled(bool enabled)
 void EditorViewScene::clearScene()
 {
 	foreach (QGraphicsItem *item, items())
-		// Выглядит довольно безумно, но некоторые элементы
-		// оказываются уже удалены, потому как был удалён их родитель.
+		// looks really insane, but some elements were alreadt deleted together with their parent
 		if (items().contains(item))
 			removeItem(item);
 }
@@ -108,8 +103,7 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 {
 	Q_UNUSED(container);
-	Q_UNUSED(candidate); // задолбали ворнинги. убрать, когда пофиксят хмли
-	// Типизированные контейнеры временно закомментированы, надо сначала поправить xml-ки.
+	Q_UNUSED(candidate); // TODO: update xml descriptions to remove
 	return true;
 
 	/*
@@ -124,11 +118,10 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_ASSERT(mWindow);// Значение mWindow должно быть инициализировано
-	// отдельно, через конструктор это делать нехорошо,
-	// поскольку сцена создаётся в сгенерённом ui-шнике.
+	Q_ASSERT(mWindow); // should be initialized separately. 
+	// constuctor is bad for this, because the scene is created in generated .ui file
 
-	// если нет ни одной диаграммы, то ничего не создаем.
+	// if there's no diagrams. create nothing
 	if (mv_iface->model()->rowCount(QModelIndex()) == 0)
 		return;
 
@@ -182,10 +175,6 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 
 	if (edgeMenu->exec(QCursor::pos()) == mWindow->ui.actionDeleteFromDiagram)
 		edgeDeleted = true;
-
-	//	Чистка памяти.
-	//	foreach(QObject *object, toDelete)
-	//		delete object;
 
 	qDebug() << "---launchEdgeMenu() end";
 	return edgeDeleted;
@@ -250,7 +239,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	UML::Element *newParent = NULL;
 
-	// TODO: возможно, это можно сделать проще
+	// TODO: make it simpler
 	qReal::Id id = qReal::Id::loadFromString(uuid);
 	UML::Element *e = mWindow->manager()->graphicalObject(id);
 
@@ -363,9 +352,8 @@ void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const
 {
-	// Пункты меню, отвечающие за провязку, "привязать к".
-	// TODO: Перенести это в элементы, они лучше знают, что они такое, а тут
-	// сцене модель и апи приходится спрашивать.
+	// menu items "connect to"
+	// TODO: move to elements, they can call the model and API themselves 
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
 							, mWindow->manager()->getConnectedTypes(element->uuid().type())
 							, model()->api().outgoingConnections(element->uuid())
@@ -410,7 +398,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		qDebug() << "item: " << item;
 		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
 
-		if (title)  // проверяем, а не зацепились ли мы случайно за надпись, когда начали тащить элемент
+		if (title) // check whether we accidently clicked on a title or not
 			item = item->parentItem();
 
 		if (item) {
@@ -469,7 +457,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 		if (!canBeContainedBy(parent->uuid(), element->uuid())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
-			// фэйл, репарентим элемент обратно
+			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				UML::Element * elem = dynamic_cast < UML::Element * >(item);
 				if (elem && elem->uuid() == element->uuid()) {

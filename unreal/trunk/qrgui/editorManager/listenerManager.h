@@ -14,8 +14,8 @@ namespace qReal {
 	signals:
 		void objectCreated(qReal::Id const &id);
 	private:
-		ListenerManager(ListenerManager const &);  // Копирование запрещено
-		ListenerManager &operator =(ListenerManager const &);  // Присваивание тоже
+		ListenerManager(ListenerManager const &); // Nachahmung ist verboten!
+		ListenerManager &operator =(ListenerManager const &); // Assignment is also forbidden
 
 		void initListeners(QList<Listener *> const &listeners, model::ModelAssistApi *api);
 		void bindListenerSlotsByName(QList<Listener *> const &listeners);

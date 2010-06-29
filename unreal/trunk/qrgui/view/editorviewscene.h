@@ -1,6 +1,3 @@
-/** @file editorviewscene.h
- * 	@brief Сцена для отрисовки объектов
- * */
 #pragma once
 
 #include <QGraphicsScene>
@@ -8,7 +5,7 @@
 #include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
 
-const int indexGrid = 30; //ширина м/д линиями решетки сцены
+const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
 	class EditorViewMViface;
@@ -19,18 +16,13 @@ namespace qReal {
 	}
 }
 
-/** @class EditorViewScene
- *	@brief Сцена для отрисовки объектов
- * */
 class EditorViewScene : public QGraphicsScene
 {
 	Q_OBJECT
 
 public:
-	/** @brief Конструктор  */
-	explicit EditorViewScene(QObject *parent = 0 /**< Родительский объект*/);
+	explicit EditorViewScene(QObject *parent = 0);
 
-	/** @brief Очистить сцену */
 	void clearScene();
 
 
@@ -38,16 +30,10 @@ public:
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
-	/** @brief Получить элемент сцены по его идентификатору
-	 *	@brief @return Элемент сцены
-	 * */
-	virtual UML::Element *getElem(qReal::Id const &uuid);  // Функция виртуальная только для того, чтобы обмануть линкер.
-	// Она используется из плагинов редакторов, а включать в них еще и сцену (и всё, что тянет сцена) неохота.
-	// Определение адреса виртуальной функции происходит во время выполнения, так что сцену можно не компилить.
-	/** @brief Получить элемент сцены по его индексу в модели
-	 *	@brief @return
-	 * */
-	virtual UML::Element *getElemByModelIndex(const QModelIndex& index /**< Индекс элемента в модели */);
+	// is virtual only to trick linker. is used from plugins and generators and we have no intention of 
+	// including the scene (with dependencies) there 
+	virtual UML::Element *getElem(qReal::Id const &uuid);  
+	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
 
 	virtual QPersistentModelIndex rootItem();
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -57,30 +43,23 @@ public:
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
 protected:
-	/** @brief Обработать начало события drag'n'drop */
-	void dragEnterEvent( QGraphicsSceneDragDropEvent *event /**< Событие */ );
-	/** @brief Обработать перемещение элемента при drag'n'drop */
-	void dragMoveEvent( QGraphicsSceneDragDropEvent *event /**< Событие */);
-	/** @brief Обработать завершение события drag'n'drop */
-	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event /**< Событие */);
-	/** @brief Обработать событие drag'n'drop */
-	void dropEvent ( QGraphicsSceneDragDropEvent *event /**< Событие */);
+	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
+	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
+	void dragLeaveEvent( QGraphicsSceneDragDropEvent *event);
+	void dropEvent ( QGraphicsSceneDragDropEvent *event);
 
-	/** @brief Обработать событие нажатия клавиши */
-	void keyPressEvent( QKeyEvent *event /**< Событие */);
+	void keyPressEvent( QKeyEvent *event);
 
-	/** @brief Обработать событие нажатия кнопок мыши */
-	void mousePressEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+	void mousePressEvent( QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
 
-	/** @brief Обработать двойной щелчок мыши */
-	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event /**< Событие */);
+	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private:
 
-	bool mNeedDrawGrid; //true - будет рисоваться сетка (как фон сцены)
+	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	UML::Element *getElemAt(const QPointF &position);
@@ -99,12 +78,9 @@ private:
 
 	qReal::model::Model *model() const;
 
-	/** @brief Новое положение элемента */
 	QPointF newElementsPosition;
 
-	/** @brief Объект, реализующий интерфейс представления в схеме Model/View */
 	qReal::EditorViewMViface *mv_iface;
-	/** @brief Объект, реализующей представление в схеме Model/View */
 	qReal::EditorView *view;
 
 	qReal::MainWindow *mWindow;
@@ -118,7 +94,7 @@ private:
 
 public slots:
 	qReal::Id *createElement(const QString &);
-	// TODO: Убрать отсюда.
+	// TODO: get rid of it here
 private slots:
 	void connectActionTriggered();
 	void goToActionTriggered();

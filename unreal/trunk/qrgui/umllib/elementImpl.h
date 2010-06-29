@@ -11,7 +11,7 @@
 
 namespace UML{
 
-/** @brief Описание линейного порта, реагирующего на абсолютные координаты */
+/** @brief line port description */
 	struct StatLine
 	{
 		QLineF line;
@@ -39,8 +39,8 @@ namespace UML{
 	};
 	
 	/** @class ElementImpl
-	 *	@brief Базовый класс для генерящейся в плагины специфики
-	 *	TODO: поделить на два
+	 *	@brief base class for generated stuff in plugins
+	 *	TODO: split into NodeElementImpl and EdgeElementImpl
 	 * */	
 	class ElementImpl {
 		public:

@@ -73,8 +73,9 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	foreach(Id element, mApi.children(ROOT_ID)) {
 		if (element.type() == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
-			mApi.removeChildren(result);  // Пока что устраиваем локальный экстерминатус.
-			// По идее, надо бы следить за изменёнными элементами, но это хитро.
+			// full exterminatus
+			// should track changed elements, but it's tricky
+			mApi.removeChildren(result);  
 		}
 	}
 
@@ -120,7 +121,7 @@ void HascolParser::parseFile(QString const& fileName)
 
 void HascolParser::initClassifierFields(Id const &classifier)
 {
-	// Это надо отсюда убрать, сделав что-то вроде автозаполнения недостающих полей, как при загрузке.
+	// TODO: remove from here. make something like auto-completion of fields
 	mApi.setProperty(classifier, "clientDependency", "");
 	mApi.setProperty(classifier, "elementImport", "");
 	mApi.setProperty(classifier, "generalization", "");
@@ -181,12 +182,13 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 		for (int i = 0; i < attrs.count(); ++i) {
 			QDomAttr param = attrs.item(i).toAttr();
 			QString paramValue = param.value();
-			paramValue = paramValue.remove("bincompl::");  // Уберём явную квалификацию для сигнатуры bincompl, она всё равно подключается по умолчанию.
+			// removing explicit qualification for bincompl since it's included automatically
+			paramValue = paramValue.remove("bincompl::");  
 			parameters += paramValue + ", ";
 		}
 		parameters.chop(2);
 
-		// Порты на диаграмме отображения портов должны быть без параметров.
+		// ports should be without arguments here
 		Id attrType = Id(portMappingBaseId, "HascolPortMapping_Port");
 		Id portId = addElement(parentOnAPortMap, attrType, portName);
 		mApi.setProperty(portId, "direction", direction);

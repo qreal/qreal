@@ -1,5 +1,5 @@
 /** @file uml_nodeelement.h
- * 	@brief Класс, представляющий объект на диаграмме
+ * 	@brief class for an element object on a diagram
  * */
 
 #pragma once
@@ -16,68 +16,37 @@
 #include "uml_edgeelement.h"
 #include "elementImpl.h"
 
-/** @brief Размер порта объекта */
+/** @brief size of a point port */
 const int kvadratik = 5;
 const int widthLineX = 1400;
 const int widthLineY = 1000;
 
 namespace UML {
-	/** @class NodeElement
-	* 	@brief Класс, представляющий объект на диаграмме
-	 * */
 	class NodeElement : public Element
 	{
 		Q_OBJECT
 
 	public:
-		/** @brief Конструктор */
 		NodeElement(ElementImpl *impl);
-
-		/** @brief Деструктор */
 		virtual ~NodeElement();
+		
+		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
+		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
 
-		/** @brief Отрисовать объект */
-		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-						   QWidget *w, /**< Виджет, на котором осуществляется отрисовка */
-						   SdfRenderer *portrenderer /**< Рендерер портов)*/);
-		virtual void paint(QPainter *, /**< Объект, осуществляющий отрисовку элементов */
-						   const QStyleOptionGraphicsItem *, /**< Настройки отрисовки */
-						   QWidget * /**< Виджет, на котором осуществляется отрисовка */);
-
-		/** @brief Получить область, в рамках которой осуществляется отрисовка объекта
-			 *	@brief @return Область, в рамках которой осуществляется отрисовка объекта
-			 * */
 		QRectF boundingRect() const;
-
-		/** @brief Получить область, в рамках которой возможна параметризация статического SVG
-			 *	@brief @return Область, в рамках которой возможна параметризация статического SVG
-			 * */
 		QRectF contentsRect() const;
 
-		/** @brief Обновить данные элемента из модели */
 		virtual void updateData();
-		/** @brief Установить новые размеры и позицию (не сохраняя в модель) */
 		void setGeometry(QRectF const &geom);
-		/** @brief Сохранить текущие размеры и позицию в модель */
 		void storeGeometry();
-		/** @brief Установить новое имя и сохранить его в модель */
 		virtual void setName(QString name);
 
-		/** @brief Получить расположение порта
-			 *	@brief @return Координаты порта
-			 * */
-		const QPointF getPortPos(qreal id /**< Идентификатор порта */) const;
+		const QPointF getPortPos(qreal id) const;
 
-		/** @brief Получить идентификатор порта
-			 *	@brief @return Идентификатор порта
-			 * */
-		qreal getPortId(const QPointF &location /**< Расположение порта */) const;
+		qreal getPortId(const QPointF &location) const;
 
-		/** @brief Добавить связь */
 		void addEdge(EdgeElement *edge);
 
-		/** @brief Убрать связь */
 		void delEdge(EdgeElement *edge);
 
 		void setPortsVisible(bool value);
@@ -89,7 +58,7 @@ namespace UML {
 
 	private:
 		QList<QGraphicsLineItem*> mLines;
-		bool mSwitchGrid;  //true - данный объект будет двигаться по "решетке", заданной indexGrid
+		bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
 		ContextMenuAction mSwitchGridAction;
 		void delUnusedLines();
 		void drawLineX(qreal pointX, qreal myY);
@@ -108,44 +77,22 @@ namespace UML {
 		static int const objectMinSize = 10;
 		static int const sizeOfForestalling = 25;
 
-		//события мыши
-
-		/** @brief Обработать событие нажатия кнопки мыши */
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-
-		/** @brief Обработать событие перемещения мыши во время нажатия */
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-
-		/** @brief Обработать событие отпускания кнопки мыши */
 		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
-		//события наведения мыши
-
-		/** @brief Обработать событие наведения мыши */
 		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-
-		/** @brief Обработать событие перемещения мыши над элементом */
 		virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-
-		/** @brief Обработать событие покидания области элемента мышью */
 		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-		/** @brief Обработать изменение данных объекта
-		 *	@brief @return Измененные данные
-		 * */
-		virtual QVariant itemChange(GraphicsItemChange change, /**< Тип изменений */
-			const QVariant &value /**< Величина изменения */);
+		virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 		bool mPortsVisible;
 
-		/** @brief Список точечных портов */
 		QList<QPointF> mPointPorts;
-		/** @brief Список портов-линий */
 		QList<StatLine> mLinePorts;
-		/** @brief Область, в которой возможно отображение текста, параметризующего SVG */
 		QRectF mContents;
 
-		/** @brief Направление растяжения элемента */
 		enum DragState {
 			None,
 			TopLeft,
@@ -158,41 +105,31 @@ namespace UML {
 			BottomRight
 		};
 
-		/** @brief Получить объект, расположенный в данной точке сцены
-		*	@brief @return Объект, расположенный в данной точке сцены
-		* */
-		NodeElement *getNodeAt(const QPointF &position /**< Точка на сцене */);
+		NodeElement *getNodeAt(const QPointF &position);
 
 		void adjustLinks();
 
 		QLineF newTransform(const StatLine& port) const;
 
-		/** @brief Растянуть объект */
-		void resize(QRectF newContents /**< Новый предполагаемый размер объекта */);
+		void resize(QRectF newContents);
 
-		/** @brief Сдвиг детей объекта */
 		void moveChildren(qreal dx, qreal dy);
-		void moveChildren(QPointF const &moving /**< Вектор сдвига детей */);
+		void moveChildren(QPointF const &moving);
 
 		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
 		qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
 
-		/** @brief Список ассоциированных с объектом связей */
 		QList<EdgeElement *> mEdgeList;
 
-		/** @brief Направление растяжения */
 		DragState mDragState;
 
-		/** @brief EmbeddedLinker */
 		EmbeddedLinker *mEmbeddedLinker;
 
-		/** @brief Описание двухмерной трансформации объекта */
 		QTransform mTransform;
 
 		ElementImpl* mElementImpl;
 
 		SdfRenderer *mPortRenderer;
 	};
-
 }

@@ -1,6 +1,3 @@
-/** @file editorview.cpp
- * 	@brief Класс, реализующий представление в схеме Model/View
- * */
 #include <QtGui>
 
 #ifdef QT_OPENGL_LIB

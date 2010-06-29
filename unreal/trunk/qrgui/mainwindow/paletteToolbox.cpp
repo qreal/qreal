@@ -19,8 +19,8 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 	layout->setContentsMargins(4, 4, 4, 4);
 
 	QLabel *pic = new QLabel(this);
-	pic->setFixedSize(24, 24);
-	pic->setPixmap(mIcon.pixmap(22, 22));  // 24 - "рамочка"
+	pic->setFixedSize(24, 24); // the frame
+	pic->setPixmap(mIcon.pixmap(22, 22)); 
 	layout->addWidget(pic);
 
 	QLabel *text = new QLabel(this);
@@ -78,7 +78,7 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	mTabs.append(tab);
 	mTabNames.append(name);
 
-	Q_ASSERT(id.idSize() == 2);  // Это должна быть диаграмма
+	Q_ASSERT(id.idSize() == 2); // it should be diagram
 	mCategories[id] = mTabs.size() - 1;
 
 	mComboBox->addItem(name);
@@ -122,10 +122,11 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	if (!child)
 		return;
 
-	Q_ASSERT(child->id().idSize() == 3);  // Это должен быть тип элемента
+	Q_ASSERT(child->id().idSize() == 3); // it should be element type 
 
-	// Id нового элемента генерится здесь. Возможно, не слишком подходящее место
-	// для столь важного действия.
+	// new element's ID is being generated here
+	// may this epic event should take place in some more appropriate place
+
 	Id elementId(child->id(), QUuid::createUuid().toString());
 
 	QByteArray itemData;

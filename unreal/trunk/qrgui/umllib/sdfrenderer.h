@@ -46,8 +46,8 @@ private:
 	QTextStream logtext;
 	QDomDocument doc;
 
-	/** @brief false, если не надо масштабировать с учётом абсолютного задания
-	*	координат, полезно при отрисовке иконок. True по умолчанию.
+	/** @brief is false if we don't need to scale according to absolute
+	 * coords, is useful for rendering icons. default is true
 	**/
 	bool mNeedScale;
 
@@ -71,8 +71,8 @@ private:
 		int first_size);
 	void logger(QString path, QString string);
 
-	/** @brief Не знаю, что оно делает, но не могу смотреть на копипаст :)*/
-	bool while_condition(QString str, int i);
+	/** @brief checks that str[i] is not L, C, M or Z*/
+	bool isNotLCMZ(QString str, int i);
 };
 
 class SdfIconEngineV2: public QIconEngineV2

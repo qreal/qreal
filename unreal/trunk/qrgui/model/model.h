@@ -75,8 +75,8 @@ namespace qReal {
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
 
-			Model(Model const &);  // Копировать модель нельзя
-			Model& operator =(Model const &);  // Присваивать тоже
+			Model(Model const &);  // copying is forbidden
+			Model& operator =(Model const &); // assigment is also forbidden
 
 			QString pathToItem(details::ModelTreeItem const * const item) const;
 			void removeConfigurationInClient(details::ModelTreeItem const * const item);

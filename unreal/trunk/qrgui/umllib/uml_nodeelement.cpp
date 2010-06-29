@@ -1,6 +1,3 @@
-/** @file uml_nodeelement.cpp
- * 	@brief Класс, представляющий объект на диаграмме
- * */
 #include "uml_nodeelement.h"
 #include "../model/model.h"
 #include "../view/editorviewscene.h"
@@ -107,8 +104,8 @@ void NodeElement::resize(QRectF newContents)
 {
 	newContents.moveTo(0, 0);
 
-	//childrenMoving - отрицательный сдвиг детей
-	//относительно точки (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
+	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
+	//whatever it means :)
 	QPointF childrenMoving = QPointF(0, 0);
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
@@ -122,9 +119,9 @@ void NodeElement::resize(QRectF newContents)
 		if (curItemPos.y() < childrenMoving.y() + sizeOfForestalling)
 			childrenMoving.setY(curItemPos.y() - sizeOfForestalling);
 	}
-	setPos(pos() + childrenMoving);//сдвиг объекта из-за детей
+	setPos(pos() + childrenMoving); 
 	moveChildren(-childrenMoving);
-	newContents.setTopLeft(childrenMoving);//растяжение объекта из-за детей
+	newContents.setTopLeft(childrenMoving);
 	newContents.moveTo(0, 0);
 
 	foreach (QGraphicsItem* childItem, childItems()) {
@@ -155,8 +152,7 @@ void NodeElement::resize(QRectF newContents)
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
-		parItem->resize(parItem->mContents);
-		//рекурсивное растяжение родителей
+		parItem->resize(parItem->mContents); // recursive expansion of parents
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
@@ -166,7 +162,6 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 	return result;
 }
 
-/*Удаляем все лишние прямые*/
 void NodeElement::delUnusedLines()
 {
 	for (int i = mLines.size() - 1; i >= 0; i--) {
@@ -176,7 +171,7 @@ void NodeElement::delUnusedLines()
 	}
 }
 
-/*Рисуем горизонтальную линию*/
+//drawing a horizontal line
 void NodeElement::drawLineY(qreal pointY, qreal myX)
 {
 	bool lineIsFound = false;
@@ -188,7 +183,8 @@ void NodeElement::drawLineY(qreal pointY, qreal myX)
 		x2 = scene()->sceneRect().x() + scene()->sceneRect().width() - 10;
 	QLineF line(x1, pointY, x2, pointY);
 
-	/*Проверка есть ли уже данная линия на сцене. Если нет (lineIsFound = false), то добавляем её*/
+	// checking whether the scene already has this line or not.
+	// if not (lineIsFound is false), then adding it
 	foreach (QGraphicsLineItem* lineItem, mLines) {
 		if (lineItem->line().y1() == line.y1() && lineItem->line().y2() == line.y2())
 			lineIsFound = true;
@@ -197,7 +193,7 @@ void NodeElement::drawLineY(qreal pointY, qreal myX)
 		mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
 }
 
-/*Рисуем вертикальную линию*/
+//drawing a vertical line
 void NodeElement::drawLineX(qreal pointX, qreal myY)
 {
 	bool lineIsFound = false;
@@ -209,7 +205,8 @@ void NodeElement::drawLineX(qreal pointX, qreal myY)
 		y2 = scene()->sceneRect().y() + scene()->sceneRect().height() - 10;
 	QLineF line(pointX, y1, pointX, y2);
 
-	/*Проверка есть ли уже данная линия на сцене. Если нет (lineIsFound = false), то добавляем её*/
+	// checking whether the scene already has this line or not.
+	// if not (lineIsFound is false), then adding it
 	foreach (QGraphicsLineItem* lineItem, mLines) {
 		if (lineItem->line().x1() == line.x1() && lineItem->line().x2() == line.x2())
 			lineIsFound = true;
@@ -218,7 +215,7 @@ void NodeElement::drawLineX(qreal pointX, qreal myY)
 		mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
 }
 
-/*Проверяем, надо ли делать "прыжок" к вертикальной линии. Если да, то делаем его*/
+// checking whether we should aligh with the vertical line or not
 bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 {
 	if (deltaX <= radiusJump) {
@@ -228,7 +225,7 @@ bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 	return false;
 }
 
-/*Проверяем, надо ли делать "прыжок" к горизонтальной линии. Если да, то делаем его*/
+// checking whether we should aligh with the horizontal line or not
 bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 {
 	if (deltaY <= radiusJump) {
@@ -238,7 +235,7 @@ bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 	return false;
 }
 
-/*"Строим" вертикальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
+// build a vertical line: draw it and check for alignment
 void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways,
 	qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
 {
@@ -251,7 +248,7 @@ void NodeElement::buildLineX(qreal deltaX, qreal radius, bool doAlways,
 	}
 }
 
-/*"Строим" горизонтальную прямую, т.е. рисуем её и проверяем, нужен ли "прыжок" объекта к ней*/
+// build a horizontal line: draw it and check for alignment
 void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways,
 	qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
 {
@@ -264,31 +261,27 @@ void NodeElement::buildLineY(qreal deltaY, qreal radius, bool doAlways,
 	}
 }
 
-/*Пересчитываем X1*/
 qreal NodeElement::recountX1()
 {
 	return scenePos().x() + boundingRect().x();
 }
 
-/*Пересчитываем X2*/
 qreal NodeElement::recountX2(qreal myX1)
 {
 	return myX1 + boundingRect().width();
 }
 
-/*Пересчитываем Y1*/
 qreal NodeElement::recountY1()
 {
 	return scenePos().y() + boundingRect().y();
 }
 
-/*Пересчитываем Y2*/
 qreal NodeElement::recountY2(qreal myY1)
 {
 	return myY1 + boundingRect().height();
 }
 
-/*Осуществляем вертикальное движение объекта по заданной сетке*/
+// move element vertically according to the grid
 void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 {
 	int oneKoef = 0;
@@ -300,7 +293,7 @@ void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 		setX((koef + oneKoef) * indexGrid);
 }
 
-/*Осуществляем горизонтальное движение объекта по заданной сетке*/
+// move element horizontally according to the grid
 void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 {
 	int oneKoef = 0;
@@ -311,8 +304,6 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 	else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2)
 		setY((koef + oneKoef) * indexGrid);
 }
-
-//события мышки
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -492,8 +483,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mDragState = None;
 	setZValue(0);
 }
-
-//события наведения мыши
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {

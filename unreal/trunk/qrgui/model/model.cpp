@@ -39,7 +39,8 @@ Qt::ItemFlags Model::flags(QModelIndex const &index) const
 		return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsDragEnabled
 			| Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
 	} else {
-		return Qt::ItemIsDropEnabled;  // У нас rootItem представляется невалидным индексом, а в него надо уметь кидать элементы.
+	// root item has invalid index, but we should still be able to drop elements into it
+		return Qt::ItemIsDropEnabled;  
 	}
 }
 

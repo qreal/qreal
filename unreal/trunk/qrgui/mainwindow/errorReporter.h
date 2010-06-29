@@ -36,7 +36,7 @@ namespace qReal {
 			void addError(QString const &message, Id const &position = ROOT_ID);
 			void addCritical(QString const &message, Id const &position = ROOT_ID);
 
-			// Этот метод тут только временно, потом будет красивое окошко со списком ошибок.
+			// TODO: remove it and add nice window with errors list
 			void showErrors(QString const &successMessage) const;
 		private:
 			static QString severityMessage(Error const &error);

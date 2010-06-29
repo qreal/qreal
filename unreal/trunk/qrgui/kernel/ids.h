@@ -22,23 +22,21 @@ namespace qReal {
 		unsigned idSize() const;
 		QUrl toUrl() const;
 		QString toString() const;
-
-		// Метод применим только к ид-шникам элементов, возвращает ид типа
-		// элемента (т.е. отбрасывает id).
+		
+		// applicable only to element's IDs. returnes type's ID
 		Id type() const;
 
-		// Функция приведения к QVariant. Не оператор, дабы избежать проблем с автоприведением.
+		// cast to QVariant. not an operator, to avoid problems with autocasts
 		QVariant toVariant() const;
 
-		// Деструктор по умолчанию ок.
-		// Конструктор копирования по умолчанию ок.
+		// default destructor and copy constuctor are OK
 	private:
 		QString mEditor;
 		QString mDiagram;
 		QString mElement;
 		QString mId;
 
-		// Проверка корректности ид-шника (нужные имена непусты). Используется только для отладки.
+		// used only for debug
 		bool checkIntegrity() const;
 	};
 
@@ -70,8 +68,7 @@ namespace qReal {
 
 }
 
-// qReal::Id может напрямую использоваться в QVariant.
+// qReal::Id and qReal::IdList could be used straight in QVariant
 Q_DECLARE_METATYPE(qReal::Id)
 
-// Список идентификаторов тоже.
 Q_DECLARE_METATYPE(qReal::IdList)

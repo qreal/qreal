@@ -138,14 +138,14 @@ UML::Element* EditorManager::graphicalObject(const Id &id) const
 
 QStringList EditorManager::getPropertyNames(const Id &id) const
 {
-	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
 IdList EditorManager::getContainedTypes(const Id &id) const
 {
-	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
@@ -158,21 +158,21 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 
 IdList EditorManager::getConnectedTypes(const Id &id) const
 {
-	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
 	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element()))
-		// Хак, связанный с отсутствием понятия "Id" в генераторе редакторов.
-		result.append(Id("?", "?", type));
+		// a hack caused by absence  of ID entity in editors generator
+		result.append(Id("?", "?", type));  
 
 	return result;
 }
 
 IdList EditorManager::getUsedTypes(const Id &id) const
 {
-	Q_ASSERT(id.idSize() == 3);  // Операция применима только к типам элементов
+	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 

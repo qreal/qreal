@@ -1,6 +1,3 @@
-/** @file editorviewmviface.h
- * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
- * */
 #pragma once
 
 #include <QAbstractItemView>
@@ -17,103 +14,53 @@ namespace qReal {
 
 	class EditorView;
 
-	/** @class EditorViewMViface
-	 * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
-	 * */
 	class EditorViewMViface : public QAbstractItemView
 	{
 		Q_OBJECT
 
 	public:
-		EditorViewMViface(qReal::EditorView *view, /**< Объект, реализующий представление */
-			EditorViewScene *scene /**< Сцена для отрисовки элементов */
-		);
+		EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
 
 		~EditorViewMViface();
 
-		/** @brief Получить область, занимаемую объектом с данным индексом
-		 *	@brief @return Область, занимаемая объектом с данным индексом
-		 * */
-		QRect visualRect(const QModelIndex &index /**< Индекс элемента в модели */) const;
-		/** @brief Отобразить участок сцены, на котором расположен данный элемент */
-		void scrollTo(const QModelIndex &index, /**< Индекс элемента в модели */
-			ScrollHint hint = EnsureVisible /**< Способ отображения элемента */
-		);
-		/** @brief Получить индекс элемента, расположенного в данной точке сцены
-		 *	@brief @return Индекс элемента
-		 * */
-		QModelIndex indexAt(const QPoint &point /**< Точка сцены */) const;
+		QRect visualRect(const QModelIndex &index) const;
+		void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
+		
+		QModelIndex indexAt(const QPoint &point) const;
 
 		EditorViewScene *scene() const;
 
 	public slots:
-		/** @brief Очистить сцену */
 		void reset();
-		/** @brief Установить индекс корневого элемента представления */
-		void setRootIndex(const QModelIndex &index /**< Индекс */);
-		/** @brief В модели перемещены элементы и надо обновить сцену */
+		void setRootIndex(const QModelIndex &index);
 		void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 		void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 
 	protected slots:
-		/** @brief Обработать изменение данных элемента модели */
-		void dataChanged(const QModelIndex &topLeft, /**< Индекс верхнего левого элемента */
-			const QModelIndex &bottomRight /**< Индекс нижнего правого элемента */
-		);
-		/** @brief Обработать удаление рядов из модели */
-		void rowsAboutToBeRemoved ( const QModelIndex & parent, /**< Индекс элемента модели, ряды которого удаляются */
-			int start, /**< Номер первого удаляемого ряда */
-			int end /**< Номер последнего удаляемого ряда */
-		);
-		/** @brief обработать добавление рядов в модели */
-		void rowsInserted ( const QModelIndex & parent, /**< Индекс элемента модели, к которому добавляются ряды */
-			int start, /**< Номер первого добавленного ряда */
-			int end /**< Номер последнего добавленного ряда */
-		);
+		void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+		void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end);
+		void rowsInserted ( const QModelIndex & parent,	int start, int end);
 
 	protected:
-		/** @brief Изменить положение курсора
-		 *	@brief @return Индекс модели
-		 * */
-		QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, /**< Действие курсора */
-			Qt::KeyboardModifiers modifiers /**< Модификаторы */
-		);
+		QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 
-		/** @brief Получить горизонтальное смещение представления
-		 *	@brief @return Горизонтальное смещение представления
-		 * */
 		int horizontalOffset() const;
-		/** @brief Получить вертикальное смещение представления
-		 *	@brief @return Вертикальное смещение представления
-		 * */
 		int verticalOffset() const;
 
-		/** @brief Узнать, является ли элемент с заданным индексом невидимым
-		 *	@brief @return Является ли элемент с заданным индексом невидимым
-		 * */
-		bool isIndexHidden(const QModelIndex &index /**< Индекс элемента */) const;
+		bool isIndexHidden(const QModelIndex &index) const;
 
-		/** @brief Установить выделение элементов */
-		void setSelection(const QRect& rect, /**< Область сцены*/
-			QItemSelectionModel::SelectionFlags command /**< Тип выделения */
-		);
+		void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
 
-		/** @brief Возвращает регион, в который попадают выделенные элементы
-		 *	@brief @return Регион, в который попадают выделенные элементы
-		 * */
-		QRegion visualRegionForSelection(const QItemSelection &selection /**< Выделение */ ) const;
+		QRegion visualRegionForSelection(const QItemSelection &selection ) const;
 
 	private:
 		typedef QPair<QPersistentModelIndex, UML::Element*> IndexElementPair;
 
-		/** @brief Сцена */
 		EditorViewScene *mScene;
-		/** @brief Представление */
 		qReal::EditorView *mView;
+		
 
-		/** @brief Элементы на сцене. Индексы могут меняться ВНЕЗАПНО, так что
-			использовать мапы, хеши и т.д. с ключами-индексами не получится.
-			Причём, если попробовать, можно замучаться отлаживать. */
+		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 		QSet<IndexElementPair> mItems;
 
 		UML::Element *item(QPersistentModelIndex const &index) const;

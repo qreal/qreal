@@ -57,7 +57,7 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->drawEllipse(mInnerRectangle);
 
 	painter->restore();
-//TODO:	сделать подсвечивание при наведении мыши
+	// TODO: add highlighting on mouse hover events
 }
 
 void EmbeddedLinker::moveTo(QPointF pos)
@@ -106,8 +106,6 @@ QRectF EmbeddedLinker::boundingRect() const
 {
 	return mRectangle;
 }
-
-// Обработка событий мыши
 
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

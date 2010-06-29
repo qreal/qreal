@@ -13,18 +13,17 @@ namespace qReal {
 	const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
 	namespace roles {
-		// Перечисление с ролями, которые активно используются фронтендом,
-		// а посему должны присутствовать у всех сущностей.
+		// roles that are heavily used by front-end. should be present in all entities
 		enum {
-			idRole = Qt::UserRole + 1,  // Идентификатор элемента, типа qReal::Id
-			positionRole,  // Позиция элемента в конкретном контексте (модель сама знает, в каком)
-			configurationRole,  // Конфигурация (форма, размер) элемента в конкретном контексте
-			fromRole,  // Для связей - Id объекта, из которого связь исходит, для объектов - игнорируется
-			toRole,  // Для связей - Id объекта, в который связь входит, для объектов - игнорируется
-			fromPortRole,  // Для связей - идентификатор порта (типа double), из которого связь исходит, для объектов - игнорируется
-			toPortRole,  // Для связей - идентификатор порта, в который связь входит, для объектов - игнорируется
-			customPropertiesBeginRole,  // Начало индексов сгенерированных ролей
-			// Алсо, к обязательным атрибутам относится атрибут name, соответствующий ролям Qt::EditRole и Qt::DisplayRole.
+			idRole = Qt::UserRole + 1, // element's ID. e.g. qReal::Id
+			positionRole, // element's position within current context (model knows which one it is)
+			configurationRole, // element's configuration (e.g. shape, size) within current context
+			fromRole,  // for edges it's an ID of a node, which this edge starts from. is ignored for nodes
+			toRole, // for edges it's an ID of a node, which this edge ends on. is ignored for nodes
+			fromPortRole, // for edges it's a port ID, which this edge starts from. is ignored for nodes  
+			toPortRole, // for edges it's a port ID, which this edge ends on. is ignored for nodes 
+			customPropertiesBeginRole, // generated roles start from this one
+			// also, `name' is also among the mandatory attributes. it's handled by Qt::EditRole and Qt::DisplayRole
 		};
 	}
 }

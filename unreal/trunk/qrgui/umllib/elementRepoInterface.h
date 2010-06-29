@@ -5,7 +5,7 @@
 namespace UML {
 
 	/** @class ElementRepoIface
-	 * 	@brief Интерфейс для получения данных из репо генерящимися в плагины классами
+	 * 	@brief interface for getting data from the repo by plugins' classes
 	 * */
 	class ElementRepoInterface{
 		public:

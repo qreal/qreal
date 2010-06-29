@@ -1,6 +1,3 @@
-/** @file uml_element.cpp
- * 	@brief Базовый класс элемента на диаграмме
- * */
 #include "uml_element.h"
 
 #include <QtGui>
@@ -57,7 +54,9 @@ QString Element::roleValueByName(QString const &roleName) const
 {
 	int roleIndex = roleIndexByName(roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
-		return "";  // Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
+	// we'd better check (in generators) that we're binding on an existing field here
+		return ""; 
+		// Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
 	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
 }
 

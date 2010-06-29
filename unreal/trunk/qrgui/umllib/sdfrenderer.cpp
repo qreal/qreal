@@ -281,7 +281,7 @@ void SdfRenderer::defaultstyle()
 	pen.setWidth(1);
 }
 
-bool SdfRenderer::while_condition(QString str, int i)
+bool SdfRenderer::isNotLCMZ(QString str, int i)
 {
 	return (str[i] != 'L') && (str[i] != 'C') && (str[i] != 'M')
 		&& (str[i] != 'Z') && (i != str.length());
@@ -306,7 +306,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 			if (d_cont[i] == 'M')
 			{
 				j = i + 2;
-				while (while_condition(d_cont, j))
+				while (isNotLCMZ(d_cont, j))
 				{
 					while (d_cont[j] != ' ')
 					{
@@ -335,7 +335,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 			else if (d_cont[i] == 'L')
 			{
 				j = i + 2;
-				while (while_condition(d_cont, j))
+				while (isNotLCMZ(d_cont, j))
 				{
 					while (d_cont[j] != ' ')
 					{
@@ -363,7 +363,7 @@ void SdfRenderer::path_draw(QDomElement &element)
 			 else if (d_cont[i] == 'C')
 			{
 				j = i + 2;
-				while(while_condition(d_cont, j))
+				while(isNotLCMZ(d_cont, j))
 				{
 					while (!(d_cont[j] == ' '))
 					{
@@ -450,7 +450,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 		{
 			if (mNeedScale)
 				pen.setWidth(elem.attribute("stroke-width").toInt());
-			else  // Для отрисовки иконок - ширина всех линий устанавливается в 1.
+			else  // for painting icons. width of all lines should be set to 1
 				pen.setWidth(1);
 		}
 

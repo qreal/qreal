@@ -11,17 +11,15 @@ namespace qReal {
 		class Model;
 
 		/** @class ModelAssistApi
-		 * 	@brief Класс, предназначенный для синхронизации работы с логической
-		 *  моделью и репозиторием и модели. Если в GUI возникает потребность
-		 *  изменить логическую модель каким-то более хитрым способом, чем
-		 *  просто setData, вызывается метод этого класса. Он модифицирует
-		 *  репозиторий и при необходимости оповещает модель об изменении.
-		 *  Представляет собой по сути ещё один интерфейс к модели, может быть,
-		 *  в будущем станет полноценным прокси к репозиторию.
-		 *  Предназначен для того, чтобы как-то контролировать действия GIU в репозитории,
-		 *  метод модели mutableApi должен использоваться только в
-		 *  парсерах, ну и здесь.
-		 * 	*/
+		 *	@brief class used for syncronization of logical model and repo/model.
+		 *	if GUI wants to change model in a way different from setData(), 
+		 *	it should call this class' methods. ModelAssistApi modifies the repo
+		 *	and notifies the model. it's in fact yet another interface to the model
+		 *	and even may become a proxy model for repo one day. 
+		 *	ModelAssistApi used to somehow control GUI's actions towards the repo,
+		 *	model's mutableApi() should be used only in parsers and here
+		 * */
+
 		class ModelAssistApi {
 		public:
 			ModelAssistApi(Model &model, EditorManager const &editorManager);
@@ -34,15 +32,14 @@ namespace qReal {
 
 			virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
 
-			// Методы, добавленные для удобства, реализуются через остальные методы апи.
 			void createConnected(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			qReal::IdList diagramsAbleToBeConnectedTo(qReal::Id const &element) const;
 			qReal::IdList diagramsAbleToBeUsedIn(qReal::Id const &element) const;
 
 		private:
-			ModelAssistApi(ModelAssistApi const &);  // Копирование запрещено.
-			ModelAssistApi& operator =(ModelAssistApi const &);  // Присваивание тоже.
+			ModelAssistApi(ModelAssistApi const &);  // Copying is forbidden
+			ModelAssistApi& operator =(ModelAssistApi const &); // Assignment is forbidden also
 
 			static IdList diagramsFromList(IdList const &list);
 			Id createConnectedElement(Id const &source, Id const &elementType);

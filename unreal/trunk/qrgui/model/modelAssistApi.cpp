@@ -73,8 +73,8 @@ void ModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
 
 IdList ModelAssistApi::diagramsFromList(IdList const &list)
 {
-	// TODO: Диаграммы - это какие-то особые элементы, так что надо, чтобы
-	// редактор умел говорить, что диаграмма, а что - нет.
+	// TODO: diagrams are kinda special, so we need the editor to be able to 
+	// tell us whether this particular element is a diagram or not
 	IdList result;
 	foreach (Id type, list) {
 		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {

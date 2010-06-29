@@ -1,6 +1,3 @@
-/** @file editorviewmviface.cpp
- * 	@brief Класс, реализующий интерфейс представления в схеме Model/View
- * */
 #include <QtGui>
 
 #include "editorviewmviface.h"
@@ -77,7 +74,6 @@ void EditorViewMViface::reset()
 	mScene->clearScene();
 	clearItems();
 
-	//для того, чтобы работало с экстерминатусом.
 	if (model() && model()->rowCount(QModelIndex()) == 0)
 		mScene->setEnabled(false);
 
@@ -108,7 +104,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 		mScene->setEnabled(true);
 
-		//если добавляем диаграмму в корень
+		// if we add a diagram as root element
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
@@ -135,7 +131,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
 
-	// обновляем порты всех линков, т.к. при создании линков они почему-то не находят прицепленных к ним нодов
+	
+	// while creating links sometimes they can't find nodes connected to them
+	// FIXME: updaing all ports of all nodes connected to all links
 	foreach (QGraphicsItem *item, mScene->items()){
 		UML::Element *e = dynamic_cast<UML::Element*>(item);
 		if (e)
@@ -152,8 +150,8 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			delete item(curr);
 		}
 		removeItem(curr);
-	}
-	//потому что из модели элементы удаляются только после того, как удалятся из графической части.
+	
+	// elements from model are deleted after GUI ones
 	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1)
 		mScene->setEnabled(false);
 
@@ -164,13 +162,13 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 {
 	Q_UNUSED(sourceEnd);
 	Q_UNUSED(destinationRow);
-	Q_ASSERT(sourceStart == sourceEnd);  // Можно перемещать только один элемент за раз.
+	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved 
 	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
 
 	if (!item(movedElementIndex)) {
-		// Перемещаемого элемента на сцене уже нет.
-		// TODO: элемент надо добавлять на сцену, если тут его нет, а в модели есть.
-		// Пока такое не рассматриваем.
+		// there's no such element on the scene already
+		// TODO: add element on the scene if there's no such element here, but there's in the model
+		// ignoring there cases now
 		qDebug() << "Trying to move element that already does not exist on a current scene, that's strange";
 		return;
 	}
@@ -178,7 +176,7 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	UML::Element* movedElement = item(movedElementIndex);
 
 	if (!item(destinationParent)) {
-		// Элемента-родителя на сцене нет, так что это скорее всего корневой элемент.
+		// no parent element on the scene, so it should be root element
 		movedElement->setParentItem(NULL);
 		return;
 	}
@@ -197,7 +195,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 
 	Q_ASSERT(movedElementIndex.isValid());
 	if (!item(movedElementIndex)) {
-		// Перемещённого элемента на сцене нет, так что и заботиться о нём не надо
+		// no element on the scene, forget about it
 		return;
 	}
 

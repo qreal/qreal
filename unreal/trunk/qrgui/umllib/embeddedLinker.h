@@ -9,7 +9,7 @@
 namespace UML {
 	class NodeElement;
 	/** @class EmbeddedLinker
-	* 	@brief Небольшой объект рядом с элементом, позволяющий быстро создавать связи.
+	* 	@brief small round thing near the element. provides alternative way to create links
 	 * */
 	class EmbeddedLinker : public QObject, public QGraphicsItem
 	{
@@ -17,43 +17,31 @@ namespace UML {
 		Q_INTERFACES(QGraphicsItem)
 
 	public:
-		/** @brief Конструктор */
 		EmbeddedLinker();
-		/** @brief Конструктор */
 		EmbeddedLinker(QGraphicsItem *parent);
-		/** @brief Деструктор */
 		virtual ~EmbeddedLinker();
 
-		/** @brief Установить элемент, управляющий объектом */
+		/** @brief set element that handles the object */
 		void setMaster(NodeElement *element);
-		/** @brief Сообщить, что NodeElement под указателем мыши */
+		/** @brief notify that mouse cursor is over the NodeElement */
 		void setCovered(bool arg);
 
-		/** @brief Отрисовать объект */
-		virtual void paint(QPainter *p, /**< Объект, осуществляющий отрисовку элементов */
-			const QStyleOptionGraphicsItem *opt, /**< Настройки отрисовки */
-			QWidget *w /**< Виджет, на котором осуществляется отрисовка */);
-		/** @brief Метод перемещения объекта, автоматически помещает объект вне рамок элемента, к которому он прикрепен */
+		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
+		/** @brief moves the object somewhere outside the master element */
 		virtual void moveTo(QPointF pos);
-		/** @brief Ограничивающий прямоугольник */
 		QRectF boundingRect() const;
 
 
-		/** @brief Обработать событие наведения на объект курсора мыши */
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
-
-		/** @brief Обработать событие отпускания кнопки мыши */
 		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
-
-		/** @brief Обработать событие нажатия кнопки мыши */
 		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
 	private:
 		bool covered;
-		/** @brief Элемент, управляющий объектом */
+		/** @brief element that handles this object */
 		NodeElement *master;
-		/** @brief Текущая связь */
+		/** @brief current edge */
 		EdgeElement *mEdge;
-		/** @brief Прямоугольник, ограничивающий объект */
+		/** @brief bounding rect */
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
 	signals:

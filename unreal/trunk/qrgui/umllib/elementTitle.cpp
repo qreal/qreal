@@ -96,7 +96,7 @@ void ElementTitle::startTextInteraction()
 
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	// Нарисовать бэкграунд под текстом, если текст не пустой.
+	// if text is not empty, draw it's background 
 	if (!toPlainText().isEmpty()) {
 		painter->save();
 		painter->setBrush(QBrush(mBackground));

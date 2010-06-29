@@ -29,7 +29,6 @@ namespace qReal {
 			void initDone();
 
 		public slots:
-			/** @brief Сделать данный редактор активным */
 			void setActiveEditor(int const editorIndex);
 
 		private:
@@ -64,15 +63,15 @@ namespace qReal {
 			virtual void mousePressEvent(QMouseEvent *event);
 
 			QHash<Id, int> mCategories;
-			/** @brief Массив содержимого редакторов */
+			/** @brief vector of editors' contents */
 			QVector<QWidget*> mTabs;
-			/** @brief Массив имен редакторов */
+			/** @brief vector of editors' names */
 			QVector<QString> mTabNames;
-			/** @brief Основной layout */
+			/** @brief main layout */
 			QVBoxLayout *mLayout;
-			/** @brief Выпадающий список видимых редаторов */
+			/** @brief Combobox with editors */
 			QComboBox *mComboBox;
-			/** @brief Содержимое активного редактора */
+			/** @brief Area of current editor */
 			QScrollArea *mScrollArea;
 		};
 

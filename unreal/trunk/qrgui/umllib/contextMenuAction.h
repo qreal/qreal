@@ -4,10 +4,9 @@
 
 namespace UML {
 
-	// Наследник QAction, позволяющий себя "извне" параметризовать координатами
-	// события. Полезен для того, чтобы вызывать со сцены обработчики в Element,
-	// поскольку информация о положении курсора относительно сцены будет потеряна,
-	// если её не сохранить тут.
+	// saves cursor's position within the scene
+	// could be useful to call Element's event handlers from the scene
+
 	class ContextMenuAction: public QAction {
 		Q_OBJECT
 	public:

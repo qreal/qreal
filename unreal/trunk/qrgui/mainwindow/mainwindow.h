@@ -34,7 +34,6 @@ namespace qReal {
 
 		ListenerManager *listenerManager();
 
-		/** @brief Интерфейс главного окна */
 		Ui::MainWindowUi ui;
 	public slots:
 		//		void connectRepo();
@@ -55,8 +54,6 @@ namespace qReal {
 		void print();
 		void makeSvg();
 
-		/** @brief � еагирует на изменение выделения на сцене, синхронизируя его с диаграм
-		 * эксплорером. */
 		void sceneSelectionChanged();
 
 		void exportToXmi();
@@ -65,12 +62,8 @@ namespace qReal {
 		void deleteFromScene();
 		void deleteFromScene(QGraphicsItem *target);
 
-		/** @brief Активирует ближайшую к текущей поддиаграмму, содержащую указанный
-		 * элемент, если в ней есть элементы. */
 		void activateSubdiagram(QModelIndex const &idx);
 
-		/** @brief Ищет в модели нужный элемент и открывает соответствующую ему
-		 * диаграмму. */
 		void activateItemOrDiagram(Id const &id);
 
 		EditorView *getCurrentTab();
@@ -92,10 +85,8 @@ namespace qReal {
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
 
-		/** @brief Модель редактора свойств */
 		PropertyEditorModel mPropertyModel;
 
-		/** @brief Делегат */
 		PropertyEditorDelegate mDelegate;
 
 		void loadPlugins();
