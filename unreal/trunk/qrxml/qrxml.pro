@@ -11,7 +11,7 @@ SUBDIRS	= \
 	hascolEditor/hascolEditor.pro \
 #	metaEditor/metaEditor.pro \
 #	networkEditor/networkEditor.pro \
-	orthodoxEditor/orthodoxEditor.pro \
+#	orthodoxEditor/orthodoxEditor.pro \
 #	packageEditor/packageEditor.pro \
 #	parallelEditor/parallelEditor.pro \
 #	requirementsEditor/requirementsEditor.pro \
