@@ -150,6 +150,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			delete item(curr);
 		}
 		removeItem(curr);
+	}	
 	
 	// elements from model are deleted after GUI ones
 	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1)
