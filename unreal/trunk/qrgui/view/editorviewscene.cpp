@@ -140,18 +140,18 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
 	edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
+	edgeMenu->addSeparator();
 
-	const QString title = "Create new element";
-	QMenu *createMenu = new QMenu(title, edgeMenu);
-	toDelete.append(createMenu);
-	edgeMenu->addMenu(createMenu);
+	QMenu *createElemMenu = new QMenu(QString("Create new element"), edgeMenu);
+	toDelete.append(createElemMenu);
+	edgeMenu->addMenu(createElemMenu);
 
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	toDelete.append(menuSignalMapper);
 	foreach(Id editorId, mWindow->manager()->editors())
 	{
-		qDebug() << editorId.editor();
-		QMenu *editor = new QMenu(editorId.editor(), createMenu);
+		qDebug() << "editor: " << editorId.editor();
+		QMenu *editor = new QMenu(editorId.editor(), createElemMenu);
 		toDelete.append(editor);
 		foreach(Id diagramId, mWindow->manager()->diagrams(editorId))
 		{
@@ -168,20 +168,48 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 			}
 			editor->addMenu(diagram);
 		}
-		createMenu->addMenu(editor);
+		createElemMenu->addMenu(editor);
 	}
 
 	mCreatePoint = scenePos;
 	QObject::connect(menuSignalMapper,SIGNAL(mapped(const QString &)),this,SLOT(createElement(const QString &)));
 
-	if (edgeMenu->exec(QCursor::pos()) == mWindow->ui.actionDeleteFromDiagram)
+	QAction* executed;
+	QPoint cursorPos = QCursor::pos();
+	executed = edgeMenu->exec(cursorPos);
+
+	if ((executed != NULL) && (executed == mWindow->ui.actionDeleteFromDiagram)) {
+		qDebug() << "executed: " << executed->text();
 		edgeDeleted = true;
+	} else if (executed != NULL) {
+		qDebug() << "executed: " << executed->text();
+		edgeMenu->clear();
+		edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
+		edgeMenu->addSeparator();
+
+		QMenu *edgeTypeMenu = new QMenu(QString("Edge type"), edgeMenu);
+		toDelete.append(edgeTypeMenu);
+		edgeMenu->addMenu(edgeTypeMenu);
+	
+		//will be implemented after changes in xml structure
+		edgeTypeMenu->addAction(new QAction("(Something)", edgeTypeMenu));
+		//will be implemented after changes in xml structure
+
+		executed = edgeMenu->exec(cursorPos);
+		if (executed == mWindow->ui.actionDeleteFromDiagram) {
+			edgeDeleted = true;
+			removeItem(dynamic_cast<UML::Element*>(itemAt(scenePos)));
+		}
+	} else
+		qDebug() << "executed: nothing";
+
+	//	Cleaning.
+	//	foreach(QObject *object, toDelete)
+	//		delete object;
 
 	qDebug() << "---launchEdgeMenu() end";
 	return edgeDeleted;
 }
-
-
 
 qReal::Id *EditorViewScene::createElement(const QString &str)
 {
