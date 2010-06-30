@@ -24,6 +24,7 @@ bool Type::init(QDomElement const &element, QString const &context)
 		return false;
 	}
 	mDisplayedName = element.attribute("displayedName", mName);
+        mPath = element.attribute("path", "");
 	return true;
 }
 
@@ -40,6 +41,11 @@ bool Type::isResolving() const
 QString Type::name() const
 {
 	return mName;
+}
+
+QString Type::path() const
+{
+        return mPath;
 }
 
 QString Type::qualifiedName() const

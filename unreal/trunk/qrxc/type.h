@@ -20,6 +20,7 @@ public:
 	virtual bool resolve() = 0;
 	bool isResolved() const;
 	QString name() const;
+        QString path() const;
 	QString qualifiedName() const;
 	void setName(QString const &name);
 	void setContext(QString const &newContext);
@@ -47,6 +48,7 @@ protected:
 private:
 	QString mName;  // Неквалифицированное имя метатипа
 	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
-	QString mNativeContext;  // "Родной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
+	QString mNativeContext;  // "� одной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
 	QString mDisplayedName;
+        QString mPath;
 };

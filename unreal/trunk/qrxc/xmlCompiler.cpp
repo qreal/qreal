@@ -158,13 +158,15 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
-		<< "\n"
+                << "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
+                << "\n"
 		<< 	"\tvirtual QList<qReal::Listener*> listeners() const;\n"
 		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
+                << "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -244,7 +246,12 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"
 		<< "\treturn elementsNameMap[diagram][element];\n"
-		<< "}\n\n";
+                << "}\n\n"
+
+                << "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"
+                << "\treturn elementMouseGesturesMap[diagram][element];\n"
+                << "}\n\n";
+
 }
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
