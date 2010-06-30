@@ -40,6 +40,8 @@ public:
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
 
+	void changeNeedDrawGrid();
+
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
 protected:

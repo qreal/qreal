@@ -1,4 +1,4 @@
-﻿#include "editorviewscene.h"
+#include "editorviewscene.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -34,6 +34,7 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 		QLineF line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
+	this->invalidate();
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -118,7 +119,7 @@ bool EditorViewScene::canBeContainedBy(qReal::Id container, qReal::Id candidate)
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_ASSERT(mWindow); // should be initialized separately. 
+	Q_ASSERT(mWindow); // should be initialized separately.
 	// constuctor is bad for this, because the scene is created in generated .ui file
 
 	// if there's no diagrams. create nothing
@@ -353,7 +354,7 @@ void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const
 {
 	// menu items "connect to"
-	// TODO: move to elements, they can call the model and API themselves 
+	// TODO: move to elements, they can call the model and API themselves
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
 							, mWindow->manager()->getConnectedTypes(element->uuid().type())
 							, model()->api().outgoingConnections(element->uuid())
@@ -604,4 +605,9 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 		painter->setPen(QPen(Qt::black, 0.05));
 		drawGrid(painter, rect);
 	}
+}
+
+void EditorViewScene::changeNeedDrawGrid()
+{
+	mNeedDrawGrid = !mNeedDrawGrid;
 }

@@ -30,12 +30,12 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-		: mListenerManager(NULL), mPropertyModel(mEditorManager)
+	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =
-		new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20,270);
@@ -81,9 +81,10 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
-        connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
+	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
+	connect(ui.actionShow_grid, SIGNAL(triggered()), this, SLOT(showGrid()));
 
 	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
@@ -106,10 +107,10 @@ MainWindow::MainWindow()
 	ui.propertyEditor->setItemDelegate(&mDelegate);
 
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-		&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
+			&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
 
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-		this, SLOT(openNewTab(QModelIndex const &)));
+			this, SLOT(openNewTab(QModelIndex const &)));
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 	settings.beginGroup("MainWindow");
@@ -133,7 +134,7 @@ MainWindow::MainWindow()
 			text += id.editor() + "\n";
 		}
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
-		close();  
+		close();
 		return;
 	}
 
@@ -245,7 +246,7 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
 		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-	{
+		{
 		diagramToActivate = diagramToActivate.parent();
 	}
 
@@ -275,7 +276,7 @@ void MainWindow::sceneSelectionChanged()
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
 	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle,
-		".", QFileDialog::ShowDirsOnly);
+															  ".", QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";
@@ -381,16 +382,16 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-			tr("<center>This is <b>QReal</b><br>"
-				"Just another CASE tool</center>"));
+					   tr("<center>This is <b>QReal</b><br>"
+						  "Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-			tr("To begin:\n"
-				"1. To add items to diagrams, drag & drop them from Palette to editor\n"
-				"2. Get more help from author :)"));
+					   tr("To begin:\n"
+						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
+						  "2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -439,21 +440,21 @@ void MainWindow::generateToJava()
 
 void MainWindow::parseJavaLibraries()
 {
-        generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModel->api());
 
-        QString const dirName = QFileDialog::getExistingDirectory(this);
-        if (dirName.isEmpty())
-                return;
+	QString const dirName = QFileDialog::getExistingDirectory(this);
+	if (dirName.isEmpty())
+		return;
 
-        QString const errors = java.parseJavaLibraries(dirName);
+	QString const errors = java.parseJavaLibraries(dirName);
 
-        if (!errors.isEmpty()) {
-                QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-        } else {
-                QMessageBox::information(this, tr("finished"), "Parsing is finished");
-        }
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Parsing is finished");
+	}
 
-        qDebug() << "Done.";
+	qDebug() << "Done.";
 }
 
 void MainWindow::generateToHascol()
@@ -535,8 +536,8 @@ void MainWindow::openNewTab(const QModelIndex &index)
 		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
 		ui.tabs->setCurrentWidget(view);
 
-//		if (!index.isValid())
-//			index = mModel->rootIndex();
+		//		if (!index.isValid())
+		//			index = mModel->rootIndex();
 		initCurrentTab(index);
 	}
 }
@@ -558,9 +559,9 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	getCurrentTab()->mvIface()->setRootIndex(index);
 
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
-		, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
+			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
-		, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
 void MainWindow::updateTab(QModelIndex const &index)
@@ -589,4 +590,9 @@ void MainWindow::closeTab(QModelIndex const &index)
 ListenerManager *MainWindow::listenerManager()
 {
 	return mListenerManager;
+}
+
+void MainWindow::showGrid()
+{
+	getCurrentTab()->changeSceneGrid();
 }

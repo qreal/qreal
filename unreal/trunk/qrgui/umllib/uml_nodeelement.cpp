@@ -220,6 +220,7 @@ bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 {
 	if (deltaX <= radiusJump) {
 		setX(pointX - boundingRect().x());
+		adjustLinks();
 		return true;
 	}
 	return false;
@@ -230,6 +231,7 @@ bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 {
 	if (deltaY <= radiusJump) {
 		setY(pointY - boundingRect().y());
+		adjustLinks();
 		return true;
 	}
 	return false;
@@ -287,10 +289,14 @@ void NodeElement::makeGridMovingX(qreal myX, int koef, int indexGrid)
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / qAbs(koef);
-	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2)
+	if (qAbs(qAbs(myX) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		setX(koef * indexGrid);
-	else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2)
+		adjustLinks();
+	}
+	else if (qAbs(qAbs(myX) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
 		setX((koef + oneKoef) * indexGrid);
+		adjustLinks();
+	}
 }
 
 // move element horizontally according to the grid
@@ -299,10 +305,14 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 	int oneKoef = 0;
 	if (koef != 0)
 		oneKoef = koef / qAbs(koef);
-	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2)
+	if (qAbs(qAbs(myY) - qAbs(koef) * indexGrid) <= indexGrid / 2) {
 		setY(koef * indexGrid);
-	else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2)
+		adjustLinks();
+	}
+	else if (qAbs(qAbs(myY) - (qAbs(koef) + 1) * indexGrid) < indexGrid / 2) {
 		setY((koef + oneKoef) * indexGrid);
+		adjustLinks();
+	}
 }
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -342,6 +352,67 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	mEmbeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
+
+		NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
+		if(parItem == NULL) {
+			qreal myX1 = scenePos().x() + boundingRect().x();
+			qreal myY1 = scenePos().y() + boundingRect().y();
+
+			if (mSwitchGrid) {
+				int koefX = static_cast<int>(myX1) / indexGrid;
+				int koefY = static_cast<int>(myY1) / indexGrid;
+
+				makeGridMovingX(myX1, koefX, indexGrid);
+				makeGridMovingY(myY1, koefY, indexGrid);
+
+				myX1 = scenePos().x() + boundingRect().x();
+				myY1 = scenePos().y() + boundingRect().y();
+			}
+
+			qreal myX2 = myX1 + boundingRect().width();
+			qreal myY2 = myY1 + boundingRect().height();
+
+			qreal radius = 20;
+			qreal radiusJump = 10;
+
+			QList<QGraphicsItem *> list = scene()->items();
+			delUnusedLines();
+			foreach (QGraphicsItem *graphicsItem, list) {
+				NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
+				if (item == NULL)
+					continue;
+				QPointF point = item->scenePos();
+				qreal pointX1 = point.x() + item->boundingRect().x();
+				qreal pointY1  = point.y() + item->boundingRect().y();
+				qreal pointX2 = pointX1  + item->boundingRect().width();
+				qreal pointY2  = pointY1 + item->boundingRect().height();
+
+				if (pointX1 != myX1 || pointY1 != myY1) {
+					qreal deltaY1 = qAbs(pointY1 - myY1);
+					qreal deltaY2 = qAbs(pointY2 - myY2);
+					qreal deltaX1 = qAbs(pointX1 - myX1);
+					qreal deltaX2 = qAbs(pointX2 - myX2);
+					if (deltaY1 <= radius || deltaY2 <= radius) {
+						buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
+						buildLineY(deltaY2, radius, true, radiusJump, pointY2,
+							boundingRect().height(), myY1, myY2, myX1);
+					}
+					if (deltaX1 <= radius || deltaX2 <= radius) {
+						buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
+						buildLineX(deltaX2, radius, true, radiusJump, pointX2,
+							boundingRect().width(), myX1, myX2, myY1);
+					}
+					buildLineY(qAbs(pointY1 - myY2), radius, false, radiusJump, pointY1,
+						boundingRect().height(), myY1, myY2, myX1);
+					buildLineX(qAbs(pointX1 - myX2), radius, false, radiusJump, pointX1,
+						boundingRect().width(), myX1, myX2, myY1);
+					buildLineY(qAbs(pointY2 - myY1), radius, false, radiusJump, pointY2,
+						0, myY1, myY2, myX1);
+					buildLineX(qAbs(pointX2 - myX1), radius, false, radiusJump, pointX2,
+						0, myX1, myX2, myY1);
+				}
+			}
+		}
 	} else {
 		QRectF newContents = mContents;
 
@@ -391,64 +462,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		resize(newContents);
-	}
-
-	qreal myX1 = scenePos().x() + boundingRect().x();
-	qreal myY1 = scenePos().y() + boundingRect().y();
-
-	if (mSwitchGrid) {
-		int koefX = static_cast<int>(myX1) / indexGrid;
-		int koefY = static_cast<int>(myY1) / indexGrid;
-
-		makeGridMovingX(myX1, koefX, indexGrid);
-		makeGridMovingY(myY1, koefY, indexGrid);
-
-		myX1 = scenePos().x() + boundingRect().x();
-		myY1 = scenePos().y() + boundingRect().y();
-	}
-
-	qreal myX2 = myX1 + boundingRect().width();
-	qreal myY2 = myY1 + boundingRect().height();
-
-	qreal radius = 20;
-	qreal radiusJump = 10;
-
-	QList<QGraphicsItem *> list = scene()->items();
-	delUnusedLines();
-	foreach (QGraphicsItem *graphicsItem, list) {
-		NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
-		if (item == NULL)
-			continue;
-		QPointF point = item->scenePos();
-		qreal pointX1 = point.x() + item->boundingRect().x();
-		qreal pointY1  = point.y() + item->boundingRect().y();
-		qreal pointX2 = pointX1  + item->boundingRect().width();
-		qreal pointY2  = pointY1 + item->boundingRect().height();
-
-		if (pointX1 != myX1 || pointY1 != myY1) {
-			qreal deltaY1 = qAbs(pointY1 - myY1);
-			qreal deltaY2 = qAbs(pointY2 - myY2);
-			qreal deltaX1 = qAbs(pointX1 - myX1);
-			qreal deltaX2 = qAbs(pointX2 - myX2);
-			if (deltaY1 <= radius || deltaY2 <= radius) {
-				buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
-				buildLineY(deltaY2, radius, true, radiusJump, pointY2,
-					boundingRect().height(), myY1, myY2, myX1);
-			}
-			if (deltaX1 <= radius || deltaX2 <= radius) {
-				buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
-				buildLineX(deltaX2, radius, true, radiusJump, pointX2,
-					boundingRect().width(), myX1, myX2, myY1);
-			}
-			buildLineY(qAbs(pointY1 - myY2), radius, false, radiusJump, pointY1,
-				boundingRect().height(), myY1, myY2, myX1);
-			buildLineX(qAbs(pointX1 - myX2), radius, false, radiusJump, pointX1,
-				boundingRect().width(), myX1, myX2, myY1);
-			buildLineY(qAbs(pointY2 - myY1), radius, false, radiusJump, pointY2,
-				0, myY1, myY2, myX1);
-			buildLineX(qAbs(pointX2 - myX1), radius, false, radiusJump, pointX2,
-				0, myX1, myX2, myY1);
-		}
 	}
 }
 

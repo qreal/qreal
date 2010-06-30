@@ -53,12 +53,13 @@ namespace qReal {
 		void saveAs();
 		void print();
 		void makeSvg();
+		void showGrid();
 
 		void sceneSelectionChanged();
 
 		void exportToXmi();
 		void generateToJava();
-                void parseJavaLibraries();
+		void parseJavaLibraries();
 		void deleteFromScene();
 		void deleteFromScene(QGraphicsItem *target);
 

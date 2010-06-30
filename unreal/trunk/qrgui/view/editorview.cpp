@@ -9,7 +9,7 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-		: QGraphicsView(parent)
+	: QGraphicsView(parent)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -56,4 +56,9 @@ void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
 	mMVIface->scene()->setMainWindow(mainWindow);
 }
 
+void EditorView::changeSceneGrid()
+{
+	mScene->changeNeedDrawGrid();
+	mScene->invalidate();
+}
 
