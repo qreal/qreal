@@ -6,21 +6,24 @@
 #include <QPoint>
 #include <QList>
 #include <QString>
+#include <QMap>
 
 class MouseMovementManager
 {
 public:
-    MouseMovementManager(qReal::Id diagram, qReal::EditorManager editorManager);
-    void setDiagram(qReal::Id * diagram);
+    MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager editorManager);
+    void setElements(QList<qReal::Id> const & elements);
     void addPoint(QPoint const & point);
     qReal::Id getObject();
     static QList<QPoint> stringToPath(QString const &str);
 
 private:
     static QPoint parsePoint(QString const &str);
+    void createMap();
     QList<QPoint> mPath;
     IKeyManager * mKeyManager;
     KeyManager mKeyStringManager;
     qReal::EditorManager * mEditorManager;
-    qReal::Id * mDiagram;
+    QList<qReal::Id> mElements;
+    QMap<QString, qReal::Id> mGestures;
 };

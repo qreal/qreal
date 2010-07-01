@@ -5,16 +5,32 @@
 const QString comma = ", ";
 const QString pointDelimeter = " : ";
 
-MouseMovementManager::MouseMovementManager(qReal::Id diagram, qReal::EditorManager editorManager)
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager editorManager)
 {
     mKeyManager = &mKeyStringManager;
-    mDiagram = &diagram;
     mEditorManager = &editorManager;
+    setElements(elements);
 }
 
-void MouseMovementManager::setDiagram(qReal::Id *diagram)
+void MouseMovementManager::createMap()
 {
-    mDiagram = diagram;
+    mGestures.clear();
+    foreach (qReal::Id element, mElements)
+    {
+        QString pathStr = mEditorManager->mouseGesture(element);
+        if (!pathStr.isEmpty())
+        {
+            QList<QPoint> path = stringToPath(pathStr);
+            QString key = mKeyManager->getKey(path);
+            mGestures.insert(key, element);
+        }
+    }
+}
+
+void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
+{
+    mElements = elements;
+    createMap();
 }
 
 void MouseMovementManager::addPoint(const QPoint &point)
@@ -50,25 +66,18 @@ qReal::Id MouseMovementManager::getObject()
     float min = e;
     float distance;
     qReal::Id id;
-    //bool found = false;
     mPath = PathCorrector::correctPath(mPath);
     QString key = mKeyManager->getKey(mPath);
     if (key.isEmpty())
         return id;
-    foreach (qReal::Id element, mEditorManager->elements(*mDiagram))
+    foreach (QString idealKey, mGestures.keys())
     {
-        QString pathStr = mEditorManager->mouseGesture(element);
-        if (!pathStr.isEmpty())
+        distance = (float)(LevenshteinDistance::getLevenshteinDistance(idealKey, key) * e
+                           / std::min(key.size(), idealKey.size()));
+        if (distance < min && distance < maxKeyDistance)
         {
-            QString idealKey = mKeyManager->getKey(stringToPath(pathStr));
-            distance = (float)(LevenshteinDistance::getLevenshteinDistance(idealKey, key) * e
-                                / std::min(key.size(), idealKey.size()));
-            if (distance < min && distance < maxKeyDistance)
-            {
-                min = distance;
-                id = element;
-                //found = true;
-            }
+            min = distance;
+            id = mGestures[idealKey];
         }
     }
     return id;
