@@ -14,13 +14,13 @@ using namespace utils;
 using namespace qReal;
 
 Serializer::Serializer(QString const& saveDirName, bool failSafeMode)
-	: mWorkingDir(saveDirName), mFailSafe(failSafeMode)
+	: mWorkingDir(saveDirName + "/save"), mFailSafe(failSafeMode)
 {
 }
 
 void Serializer::setWorkingDir(QString const &workingDir)
 {
-	mWorkingDir = workingDir;
+	mWorkingDir = workingDir + "/save";
 }
 
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
