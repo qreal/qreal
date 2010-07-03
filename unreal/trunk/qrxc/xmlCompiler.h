@@ -38,6 +38,7 @@ private:
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);
 	void generateUsages(utils::OutFile &out);
+        void generatePossibleEdges(utils::OutFile &out);
 	void generateResourceFile();
 
 	class ListMethodGenerator;
@@ -45,6 +46,7 @@ private:
 	class ContainedTypesGenerator;
 	class ConnectionsGenerator;
 	class UsagesGenerator;
+        class PossibleEdgesGenerator;
 
 	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
 };

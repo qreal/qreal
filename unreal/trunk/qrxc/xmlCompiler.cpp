@@ -130,6 +130,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
+                << "#include <QPair>"
 		<< "\n"
 		<< "#include \"../../editorInterface.h\"\n"
 		<< "\n"
@@ -150,6 +151,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
 		<< "\tvirtual QStringList getUsedTypes(QString const &element) const;\n"
+                << "\tvirtual QList<QPair<QPair<QString,QString>,bool> > getPossibleEdges(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
@@ -185,6 +187,7 @@ void XmlCompiler::generatePluginSource()
 	generateContainedTypes(out);
 	generateConnections(out);
 	generateUsages(out);
+        generatePossibleEdges(out);
 
 	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
@@ -324,6 +327,13 @@ public:
 	}
 };
 
+class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+        virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+                return type->generatePossibleEdges(out, isNotFirst);
+        }
+};
+
 void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, ListMethodGenerator const &generator)
 {
 	out() << "QStringList " << mPluginName << "Plugin::" << signature << " const\n"
@@ -340,6 +350,24 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 		out() << "\tQ_UNUSED(element);\n";
 	out() << "\treturn result;\n"
 		<< "}\n\n";
+}
+
+void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
+{
+        PossibleEdgesGenerator generator;
+        out() << "QList<QPair<QPair<QString,QString>,bool> > " << mPluginName << "Plugin::getPossibleEdges(QString const &element) const\n"
+                << "{\n"
+                << "\tQList<QPair<QPair<QString,QString>,bool> > result;\n";
+        bool isNotFirst = false;
+
+        foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+                foreach (Type *type, diagram->types().values())
+                        isNotFirst |= generator.generate(type, out, isNotFirst);
+
+        if (!isNotFirst)
+                out() << "\tQ_UNUSED(element);\n";
+        out() << "\treturn result;\n"
+                << "}\n\n";
 }
 
 void XmlCompiler::generateProperties(OutFile &out)

@@ -3,6 +3,7 @@
 #include <QDomElement>
 #include <QStringList>
 #include <QList>
+#include <QPair>
 
 #include "type.h"
 
@@ -22,6 +23,7 @@ public:
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
+        virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 
 protected:
 	QDomElement mLogic;
@@ -35,6 +37,7 @@ protected:
 	QStringList mContains;
 	QStringList mConnections;
 	QStringList mUsages;
+        QList<QPair<QPair<QString,QString>,bool> > mPossibleEdges;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -55,6 +58,7 @@ private:
 	bool initProperties();
 	bool initContainers();
 	bool initConnections();
+        bool initPossibleEdges();
 	bool initUsages();
 	virtual bool initAssociations() = 0;
 	virtual bool initGraphics() = 0;

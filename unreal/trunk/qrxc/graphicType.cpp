@@ -59,7 +59,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initContainers() && initAssociations()
-			&& initGraphics() && initLabels() && initConnections() && initUsages();
+                        && initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges();
 	}
 	else
 		return false;
@@ -156,6 +156,49 @@ bool GraphicType::initConnections()
 bool GraphicType::initUsages()
 {
 	return initTypeList("usages", "usage", mUsages);
+}
+
+bool GraphicType::initPossibleEdges()
+{
+        QString const listName = "possibleEdges";
+        QString const listElementName = "possibleEdge";
+
+        QDomElement containerElement = mLogic.firstChildElement(listName);
+        if (containerElement.isNull())
+                return true;
+
+        for (QDomElement childElement = containerElement.firstChildElement(listElementName);
+                !childElement.isNull();
+                childElement = childElement.nextSiblingElement(listElementName))
+        {
+                QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
+                QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
+                QString temp = childElement.attribute("directed");
+                bool directed = false;
+
+                if ((beginName == "") || (endName == "") || ((temp != "true") && (temp != "false"))) {
+
+                        qDebug() << beginName;
+                        qDebug() << endName;
+                        qDebug() << temp;
+                        qDebug() << "Error: one of attributes is incorrect " <<
+                            "(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
+                            "\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
+                        return false;
+                }
+                if (temp == "true")
+                    directed = true;
+
+                QPair<QPair<QString,QString>,bool> possibleEdge(qMakePair(beginName,endName),directed);
+
+                if (!mPossibleEdges.contains(possibleEdge))
+                        mPossibleEdges.append(possibleEdge);
+                else {
+                        qDebug() << "ERROR: this triad is already in list " << qualifiedName();
+                        return false;
+                }
+        }
+        return true;
 }
 
 bool GraphicType::initLabels()
@@ -338,6 +381,25 @@ bool GraphicType::generateConnections(OutFile &out, bool isNotFirst)
 bool GraphicType::generateUsages(OutFile &out, bool isNotFirst)
 {
 	return generateListForElement(out, isNotFirst, mUsages);
+}
+
+bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
+{
+    if (mPossibleEdges.isEmpty())
+            return false;
+    generateOneCase(out, isNotFirst);
+
+    out() << "\t\tresult";
+    //suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
+    typedef QPair<QPair<QString,QString>,bool> PossibleEdge;
+    foreach (PossibleEdge element, mPossibleEdges) {
+        QString directed = "false";
+        if (element.second)
+            directed = "true";
+        out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\"))," << directed << ")";
+    }
+    out() << ";\n";
+    return true;
 }
 
 bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const
