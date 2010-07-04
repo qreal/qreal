@@ -26,6 +26,7 @@
 #include "../parsers/hascol/hascolParser.h"
 #include "errorReporter.h"
 #include "../editorManager/listenerManager.h"
+#include "shapeEdit/shapeEdit.h"
 
 using namespace qReal;
 
@@ -79,6 +80,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
+	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -514,6 +516,14 @@ void MainWindow::parseHascol()
 	errors.showErrors("Parsing is finished");
 
 	mModel->reinit();
+}
+
+void MainWindow::openNewEmptyTab()
+{
+	QString text = "Shape Edit";
+	ShapeEdit *wid = new ShapeEdit();
+	ui.tabs->addTab(wid, text);
+	ui.tabs->setCurrentWidget(wid);
 }
 
 void MainWindow::openNewTab(const QModelIndex &index)

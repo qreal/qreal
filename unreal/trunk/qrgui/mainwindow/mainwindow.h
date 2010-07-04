@@ -80,6 +80,7 @@ namespace qReal {
 		void parseHascol();
 		void initCurrentTab(const QModelIndex &rootIndex);
 		void openNewTab(const QModelIndex &index);
+		void openNewEmptyTab();
 
 	private:
 		model::Model *mModel;
