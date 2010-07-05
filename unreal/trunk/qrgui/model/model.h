@@ -52,6 +52,8 @@ namespace qReal {
 			void open(QString const &workingDirectory);
 			void reinit();
 			void saveTo(QString const &workingDirectory);
+                        Id getRootDiagram();
+                        void setRootIndex(QModelIndex const & index);
 
 		public slots:
 			void exterminate();
@@ -74,6 +76,7 @@ namespace qReal {
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
+                        QModelIndex mRootIndex;
 
 			Model(Model const &);  // copying is forbidden
 			Model& operator =(Model const &); // assigment is also forbidden

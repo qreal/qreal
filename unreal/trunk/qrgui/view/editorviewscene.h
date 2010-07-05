@@ -64,6 +64,7 @@ protected:
 private:
 
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+        void initMouseMoveMan();
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	UML::Element *getElemAt(const QPointF &position);

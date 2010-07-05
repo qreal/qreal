@@ -28,6 +28,7 @@ namespace qReal {
 		QList<Id> editors() const;
 		QList<Id> diagrams(Id const &editor) const;
 		QList<Id> elements(Id const &diagram) const;
+                QList<Id> elementsInDiagram(Id const &diagramNode) const;
 
                 QString mouseGesture(Id const &id) const;
 		QString friendlyName(Id const &id) const;

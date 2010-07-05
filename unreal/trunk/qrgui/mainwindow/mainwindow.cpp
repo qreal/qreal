@@ -524,6 +524,7 @@ void MainWindow::openNewEmptyTab()
 	ShapeEdit *wid = new ShapeEdit();
 	ui.tabs->addTab(wid, text);
 	ui.tabs->setCurrentWidget(wid);
+
 }
 
 void MainWindow::openNewTab(const QModelIndex &index)
@@ -531,13 +532,14 @@ void MainWindow::openNewTab(const QModelIndex &index)
 	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
 		return;
 
+        mModel->setRootIndex(index);
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
 			tabNumber = i;
-			break;
-		}
+                        break;
+                    }
 	}
 	if (tabNumber != -1) {
 		ui.tabs->setCurrentIndex(tabNumber);
@@ -555,7 +557,7 @@ void MainWindow::openNewTab(const QModelIndex &index)
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 {
 	getCurrentTab()->setMainWindow(this);
-	QModelIndex index = rootIndex;
+        QModelIndex index = rootIndex;
 
 	changeMiniMapSource(ui.tabs->currentIndex());
 

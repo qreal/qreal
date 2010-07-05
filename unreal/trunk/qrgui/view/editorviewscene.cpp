@@ -17,7 +17,13 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
-        mouseMovementManager = new MouseMovementManager(QList<qReal::Id>(), mWindow->manager());
+}
+
+void EditorViewScene::initMouseMoveMan()
+{
+    qReal::Id diagram = model()->getRootDiagram();
+    QList<qReal::Id> elements = mWindow->manager()->elementsInDiagram(diagram);
+    mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
 }
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
@@ -440,6 +446,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	} else if (event->button() == Qt::RightButton) {
 
+                initMouseMoveMan();
+                mouseMovementManager->addPoint(event->pos());
+
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e)
 			return;
@@ -466,13 +475,16 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		createConnectionSubmenus(menu, e);
 
 		menu.exec(QCursor::pos());
-
-                mouseMovementManager->addPoint(event->pos());
 	}
 }
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
+        if (event->button() == Qt::RightButton)
+        {
+             mouseMovementManager->addPoint(event->pos());
+             qReal::Id id = mouseMovementManager->getObject();
+        }
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
@@ -510,10 +522,6 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
-        if (event->button() == Qt::RightButton)
-        {
-            mouseMovementManager->addPoint(event->pos());
-        }
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

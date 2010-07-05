@@ -35,6 +35,8 @@ namespace qReal {
 		ListenerManager *listenerManager();
 
 		Ui::MainWindowUi ui;
+
+
 	public slots:
 		//		void connectRepo();
 		//		void closeRepo();

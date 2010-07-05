@@ -517,3 +517,12 @@ ModelAssistApi const &Model::assistApi() const
 	return mAssistApi;
 }
 
+Id Model::getRootDiagram()
+{
+    return mRootIndex.data(roles::idRole).value<Id>();
+}
+
+void Model::setRootIndex(const QModelIndex &index)
+{
+    mRootIndex = index;
+}
