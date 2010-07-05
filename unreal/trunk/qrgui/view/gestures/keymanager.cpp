@@ -1,5 +1,5 @@
 #include "keymanager.h"
-#include <QPoint>
+#include <QPointF>
 #include <QString>
 
 static const QString strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -8,16 +8,16 @@ KeyManager::KeyManager()
 {
 }
 
-QString KeyManager::getKey(QList<QPoint> const & path)
+QString KeyManager::getKey(QList<QPointF> const & path)
 {
     analysePoints(path);
     QString key = "";
-    QPoint pntLast (-1, -1);
-    QPoint pntPath;
+    QPointF pntLast (-1, -1);
+    QPointF pntPath;
     if ((mLowerBound - mUpperBound) / iSize > unidimensionalLimit
         || (mRightBound - mLeftBound) / iSize > unidimensionalLimit)
     {
-        foreach (QPoint point, path)
+        foreach (QPointF point, path)
         {
             if((mLowerBound - mUpperBound) / iSize < unidimensionalLimit)
             {
@@ -37,14 +37,14 @@ QString KeyManager::getKey(QList<QPoint> const & path)
             if(pntPath.x() != pntLast.x() || pntPath.y() != pntLast.y())
             {
                 pntLast = pntPath;
-                key += strBase64[pntPath.x() + pntPath.y() * iSize];
+                key += strBase64[(int)(pntPath.x() + pntPath.y() * iSize)];
             }
         }
     }
     return key;
 }
 
-void KeyManager::analysePoints(QList<QPoint> const & path)
+void KeyManager::analysePoints(QList<QPointF> const & path)
 {
     if (path.size() > 0)
     {
@@ -53,7 +53,7 @@ void KeyManager::analysePoints(QList<QPoint> const & path)
         mUpperBound = path[0].y();
         mLowerBound = path[0].y();
     }
-    foreach (QPoint pnt, path)
+    foreach (QPointF pnt, path)
     {
         if (pnt.x() < mLeftBound) mLeftBound = pnt.x();
         if (pnt.x() > mRightBound) mRightBound = pnt.x();

@@ -1,16 +1,16 @@
 #pragma once
 #include "IKeyManager.h"
-#include <QPoint>
+#include <QPointF>
 #include <QList>
 
 class KeyManager : public IKeyManager
 {
 public:
     KeyManager();
-    QString getKey(QList<QPoint> const & path);
+    QString getKey(QList<QPointF> const & path);
 
 private:
-    void analysePoints(QList<QPoint> const & path);
+    void analysePoints(QList<QPointF> const & path);
     void clear();
     int mLeftBound;
     int mRightBound;

@@ -17,6 +17,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+        mouseMovementManager = new MouseMovementManager(QList<qReal::Id>(), mWindow->manager());
 }
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
@@ -465,6 +466,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		createConnectionSubmenus(menu, e);
 
 		menu.exec(QCursor::pos());
+
+                mouseMovementManager->addPoint(event->pos());
 	}
 }
 
@@ -507,6 +510,18 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
+        if (event->button() == Qt::RightButton)
+        {
+            mouseMovementManager->addPoint(event->pos());
+        }
+}
+
+void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        mouseMovementManager->addPoint(event->pos());
+    }
 }
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

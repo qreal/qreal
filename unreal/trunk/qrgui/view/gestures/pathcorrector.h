@@ -1,12 +1,12 @@
 #pragma once
 #include <QList>
-#include <QPoint>
+#include <QPointF>
 
 class PathCorrector
 {
 public:
-    static QList<QPoint> correctPath(QList<QPoint> const & path);
-    static QList<QPoint> getMousePath(QList<QPoint> const & path);
+    static QList<QPointF> correctPath(QList<QPointF> const & path);
+    static QList<QPointF> getMousePath(QList<QPointF> const & path);
 
 private:
     static const double sense = 1;

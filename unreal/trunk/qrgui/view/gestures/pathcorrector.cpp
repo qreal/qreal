@@ -1,25 +1,25 @@
 #include "pathcorrector.h"
 #include "math.h"
-#include <QPoint>
+#include <QPointF>
 
 const double mouseSpeed = 5;
 
-QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
+QList<QPointF> PathCorrector::getMousePath(QList<QPointF> const & path)
 {
-    QList<QPoint> mousePath;
+    QList<QPointF> mousePath;
     if (path.isEmpty())
         return mousePath;
     mousePath.append(path[0]);
     for (int i = 1; i < path.size(); i++)
     {
-        QPoint currentPoint = path[i];
-        QPoint previousPoint = path[i - 1];
+        QPointF currentPoint = path[i];
+        QPointF previousPoint = path[i - 1];
         int length = currentPoint.x() - previousPoint.x();
         int width = currentPoint.y() - previousPoint.y();
         int number = static_cast<int>((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
         for (int j = 1; j <= number; j++)
         {
-            QPoint point(int(previousPoint.x() + length * j / number),
+            QPointF point(int(previousPoint.x() + length * j / number),
                          int(previousPoint.y() + width * j / number));
             mousePath.append(point);
         }
@@ -27,15 +27,15 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
     return mousePath;
 }
 
-QList<QPoint> PathCorrector::correctPath(QList<QPoint> const & path)
+QList<QPointF> PathCorrector::correctPath(QList<QPointF> const & path)
 {
-    QList<QPoint> newPath;
+    QList<QPointF> newPath;
     if (path.isEmpty())
         return newPath;
-    QPoint previousPoint = path[0];
+    QPointF previousPoint = path[0];
     for (int i = 1; i < path.size(); i++)
     {
-        QPoint currentPoint = path[i];
+        QPointF currentPoint = path[i];
         double speed = (currentPoint - previousPoint).manhattanLength();
         double b = sense * (1 - 1 / exp(speedKoef * speed));
         previousPoint.setX((int) (b * currentPoint.x() + (1 - b) * previousPoint.x()));

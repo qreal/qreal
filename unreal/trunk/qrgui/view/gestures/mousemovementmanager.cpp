@@ -5,10 +5,10 @@
 const QString comma = ", ";
 const QString pointDelimeter = " : ";
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager editorManager)
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager)
 {
     mKeyManager = &mKeyStringManager;
-    mEditorManager = &editorManager;
+    mEditorManager = editorManager;
     setElements(elements);
 }
 
@@ -20,7 +20,7 @@ void MouseMovementManager::createMap()
         QString pathStr = mEditorManager->mouseGesture(element);
         if (!pathStr.isEmpty())
         {
-            QList<QPoint> path = stringToPath(pathStr);
+            QList<QPointF> path = stringToPath(pathStr);
             QString key = mKeyManager->getKey(path);
             mGestures.insert(key, element);
         }
@@ -33,30 +33,30 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
     createMap();
 }
 
-void MouseMovementManager::addPoint(const QPoint &point)
+void MouseMovementManager::addPoint(const QPointF &point)
 {
     mPath.push_back(point);
 }
 
-QList<QPoint> MouseMovementManager::stringToPath(QString const &valueStr)
+QList<QPointF> MouseMovementManager::stringToPath(QString const &valueStr)
 {
     QStringList points = valueStr.split(pointDelimeter, QString::SkipEmptyParts);
-    QList<QPoint> result;
+    QList<QPointF> result;
     foreach (QString str, points)
     {
-        QPoint point = parsePoint(str);
+        QPointF point = parsePoint(str);
         result.push_back(point);
     }
     result = PathCorrector::getMousePath(result);
     return result;
 }
 
-QPoint MouseMovementManager::parsePoint(QString const &str)
+QPointF MouseMovementManager::parsePoint(QString const &str)
 {
     bool isInt;
     int x = str.section(comma, 0, 0).toInt(&isInt, 0);
     int y = str.section(comma, 1, 1).toInt(&isInt, 0);
-    return QPoint(x, y);
+    return QPointF(x, y);
 }
 
 qReal::Id MouseMovementManager::getObject()

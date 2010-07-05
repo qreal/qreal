@@ -4,6 +4,7 @@
 
 #include "../kernel/definitions.h"
 #include "../umllib/uml_nodeelement.h"
+#include "gestures/mousemovementmanager.h"
 
 const int indexGrid = 30; // distance between two lines in the grid
 
@@ -54,6 +55,7 @@ protected:
 
 	void mousePressEvent( QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
+        void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
 
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
@@ -91,6 +93,8 @@ private:
 	QGraphicsItem *mPrevParent;
 
 	QPointF mCreatePoint;
+
+        MouseMovementManager * mouseMovementManager;
 
 	friend class qReal::EditorViewMViface;
 
