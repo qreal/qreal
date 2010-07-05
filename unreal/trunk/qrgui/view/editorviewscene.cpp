@@ -21,9 +21,9 @@ EditorViewScene::EditorViewScene(QObject * parent)
 
 void EditorViewScene::initMouseMoveMan()
 {
-    qReal::Id diagram = model()->getRootDiagram();
-    QList<qReal::Id> elements = mWindow->manager()->elementsInDiagram(diagram);
-    mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
+	qReal::Id diagram = model()->getRootDiagram();
+	QList<qReal::Id> elements = mWindow->manager()->elementsInDiagram(diagram);
+	mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
 }
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
@@ -197,7 +197,7 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 		QMenu *edgeTypeMenu = new QMenu(QString("Edge type"), edgeMenu);
 		toDelete.append(edgeTypeMenu);
 		edgeMenu->addMenu(edgeTypeMenu);
-	
+
 		//will be implemented after changes in xml structure
 		edgeTypeMenu->addAction(new QAction("(Something)", edgeTypeMenu));
 		//will be implemented after changes in xml structure
@@ -446,8 +446,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	} else if (event->button() == Qt::RightButton) {
 
-                initMouseMoveMan();
-                mouseMovementManager->addPoint(event->pos());
+				initMouseMoveMan();
+				mouseMovementManager->addPoint(event->pos());
 
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e)
@@ -480,11 +480,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-        if (event->button() == Qt::RightButton)
-        {
-             mouseMovementManager->addPoint(event->pos());
-             qReal::Id id = mouseMovementManager->getObject();
-        }
+		if (event->button() == Qt::RightButton)
+		{
+			 mouseMovementManager->addPoint(event->pos());
+			 qReal::Id id = mouseMovementManager->getObject();
+		}
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
@@ -526,10 +526,11 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton)
-    {
-        mouseMovementManager->addPoint(event->pos());
-    }
+	if (event->button() == Qt::RightButton)
+	{
+		mouseMovementManager->addPoint(event->pos());
+	} else
+		QGraphicsScene::mouseMoveEvent(event);
 }
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
