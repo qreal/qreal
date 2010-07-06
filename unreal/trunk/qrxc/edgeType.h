@@ -16,6 +16,7 @@ public:
 	virtual Type* clone() const;
 	virtual ~EdgeType();
 	virtual void generateCode(utils::OutFile &out);
+	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 
 private:
 	QList<Association*> mAssociations;

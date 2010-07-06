@@ -34,7 +34,9 @@ public:
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst) = 0;
-        virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
+	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
 	void setDiagram(Diagram *diagram);
 	virtual bool isResolving() const;
 
@@ -51,5 +53,5 @@ private:
 	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
 	QString mNativeContext;  // "� одной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
 	QString mDisplayedName;
-        QString mPath;
+	QString mPath;
 };

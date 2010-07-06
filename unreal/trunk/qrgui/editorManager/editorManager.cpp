@@ -201,6 +201,18 @@ IdList EditorManager::getUsedTypes(const Id &id) const
 	return result;
 }
 
+QStringList EditorManager::getEnumValues(Id const &id, const QString &name) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	QStringList result;
+	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
+	foreach (QString value, mPluginIface[id.editor()]->getEnumValues(typeName))
+		result.append(value);
+
+	return result;
+}
+
 IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
 	IdList result;

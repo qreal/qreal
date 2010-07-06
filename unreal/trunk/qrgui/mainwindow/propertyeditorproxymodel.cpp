@@ -75,6 +75,15 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		return QVariant();
 }
 
+QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index)
+{
+	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+	if (im){
+		return im->getEnumValues(targetObject, roleByIndex(index.row()));
+	}
+	return QStringList();
+}
+
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	bool ret = false;

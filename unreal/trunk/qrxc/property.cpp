@@ -12,7 +12,7 @@ bool Property::init(QDomElement const &element)
 		qDebug() << "ERROR: anonymous property found";
 		return false;
 	}
-	QString mType = element.attribute("type");
+	mType = element.attribute("type");
 // Ad kalendas graecas
 #if 0
 	mRealType = qRealType::QRealTypeFactory::getTypeByName(mType);
@@ -41,15 +41,6 @@ bool Property::init(QDomElement const &element)
 		else
 			return false;
 	}
-	else if ((mType != "int") && (mType != "string") && (mType != "bool") && (mType != "text") &&
-		(mType != "positiveInt") && (mType != "nonNegativeInt"))
-	{
-		// Хак: проперти непримитивных типов пока что будут строковыми, это лучше,
-		// чем если их не будет вообще.
-		mType = "string";
-		// qDebug() << "ERROR: unknown type" << mType << "found for property" << name();
-		// return false;
-	}
 	mDescription = element.firstChildElement("description").text();
 	mDefaultValue = element.firstChildElement("default").text();
 	return true;
@@ -69,6 +60,11 @@ bool Property::initReferenceType(QString typeName, QDomElement const &element)
 QString Property::name()
 {
 	return mName;
+}
+
+QString Property::type()
+{
+	return mType;
 }
 
 Property * Property::clone()

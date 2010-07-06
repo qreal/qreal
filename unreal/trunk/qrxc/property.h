@@ -8,6 +8,7 @@ class Property
 public:
 	bool init(QDomElement const &element);
 	QString name();
+	QString type();
 	Property *clone();
 	bool operator == (Property const &other) const;
 	bool operator != (Property const &other) const;

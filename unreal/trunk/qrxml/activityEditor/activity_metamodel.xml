@@ -120,7 +120,7 @@
               <parent parentName="Basic Actions::Accept Event Action"/>
             </generalizations>
             <properties>
-              <property type="string" name="trigger"/>
+              <!--<property type="string" name="trigger"/>-->
               <!-- <property type="Trigger" name="trigger"/> -->
             </properties>
           </logic>
@@ -247,7 +247,7 @@
               <parent parentName="Basic Behaviors::Behavior"/>
             </generalizations>
             <properties>
-              <property type="ActivityNode" name="node"/>
+              <property type="ExpansionKind" name="node"/>
               <property type="ActivityEdge" name="edge"/>
               <property type="ActivityGroup" name="group"/>
               <property type="ExpansionRegion" name="expansionRegion"/>

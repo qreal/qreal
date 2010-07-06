@@ -280,6 +280,7 @@ bool GraphicType::resolve()
 			if (!addProperty(property->clone()))
 				return false;
 	}
+		
 	mResolvingFinished = true;
 	return true;
 }
@@ -350,6 +351,20 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 		return true;
 	}
 	return false;
+}
+
+void GraphicType::generatePropertyTypes(OutFile &out)
+{
+	if (!mVisible)
+		return;
+
+	foreach (Property *property, mProperties) {
+		// skipping basic types since we're not really interested in them
+		if (property->type() == "bool" || property->type() == "string" || property->name() == "int")
+			continue;
+		QString name = NameNormalizer::normalize(qualifiedName());
+		out() << "\tpropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << property->type() << "\";\n";
+	}
 }
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const

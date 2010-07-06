@@ -5,6 +5,7 @@
 #include "../utils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
+#include "enumType.h"
 
 #include <QFile>
 #include <QDir>
@@ -155,7 +156,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
@@ -167,8 +170,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString> > propertyTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
-                << "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -187,7 +191,9 @@ void XmlCompiler::generatePluginSource()
 	generateContainedTypes(out);
 	generateConnections(out);
 	generateUsages(out);
-        generatePossibleEdges(out);
+	generatePossibleEdges(out);
+	generateEnumValues(out);
+	generatePropertyTypesRequests(out);
 
 	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
@@ -222,7 +228,21 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generateNameMapping(out);
+
+	// property types
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
+			type->generatePropertyTypes(out);
+	
 	out() << "}\n\n";
+}
+
+void XmlCompiler::generatePropertyTypesRequests(OutFile &out)
+{
+	out() << "QString " << mPluginName << "Plugin::getPropertyType(QString const &element, QString const &property) const\n{\n"
+		<< "\treturn propertyTypes[element][property];\n" // TODO: merge with getPropertyNames()!!11
+		<< "}\n\n";
 }
 
 void XmlCompiler::generateNameMappingsRequests(OutFile &out)
@@ -329,9 +349,16 @@ public:
 
 class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
-        virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-                return type->generatePossibleEdges(out, isNotFirst);
-        }
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generatePossibleEdges(out, isNotFirst);
+	}
+};
+
+class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generateEnumValues(out, isNotFirst);
+	}
 };
 
 void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, ListMethodGenerator const &generator)
@@ -397,3 +424,24 @@ void XmlCompiler::generateResourceFile()
 		<< "</qresource>\n"
 		<< "</RCC>\n";
 }
+
+void XmlCompiler::generateEnumValues(OutFile &out)
+{
+	out() << "QStringList " << mPluginName << "Plugin::getEnumValues(QString name) const \n{\n"
+		<< "\tQStringList result;\n";
+
+	EnumValuesGenerator generator;
+	bool isNotFirst = false;
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()){
+			isNotFirst |= generator.generate(type, out, isNotFirst);
+		}	
+
+	if (!isNotFirst)
+		out() << "\tQ_UNUSED(name);\n";
+	out() << "\treturn result;\n"
+		<< "}\n\n";
+}
+
+

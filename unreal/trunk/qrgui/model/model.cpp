@@ -134,6 +134,21 @@ QString Model::findPropertyName(Id const &id, int const role) const
 	return properties[role - roles::customPropertiesBeginRole];
 }
 
+QStringList Model::getEnumValues(QModelIndex const &index, int const role) const
+{
+	do {
+		if (!index.isValid())
+			break;
+		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+		if (!item)
+			break;
+		QString selectedProperty = findPropertyName(item->id(), role);
+		return mEditorManager.getEnumValues(item->id(), selectedProperty);
+	} while (false);	
+
+	return QStringList();
+}
+
 QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0)

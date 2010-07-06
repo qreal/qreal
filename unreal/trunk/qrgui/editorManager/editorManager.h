@@ -5,6 +5,7 @@ class QIcon;
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
+#include <QtCore/QStringList>
 
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
@@ -38,6 +39,7 @@ namespace qReal {
 		IdList getContainedTypes(const Id &id) const;
 		IdList getConnectedTypes(const Id &id) const;
 		IdList getUsedTypes(const Id &id) const;
+		QStringList getEnumValues(Id const &id, const QString &name) const;
 
 		bool isEditor(Id const &id) const;
 		bool isDiagram(Id const &id) const;

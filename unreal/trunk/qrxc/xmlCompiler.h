@@ -38,15 +38,18 @@ private:
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);
 	void generateUsages(utils::OutFile &out);
-        void generatePossibleEdges(utils::OutFile &out);
+	void generatePossibleEdges(utils::OutFile &out);
+	void generateEnumValues(utils::OutFile &out);
 	void generateResourceFile();
+	void generatePropertyTypesRequests(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;
 	class ContainedTypesGenerator;
 	class ConnectionsGenerator;
 	class UsagesGenerator;
-        class PossibleEdgesGenerator;
+	class PossibleEdgesGenerator;
+	class EnumValuesGenerator;
 
 	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
 };

@@ -67,7 +67,7 @@
 							<default>sequential</default>
 						</property>
 						<property type="Behavior" name="methods"/>
-						<property type="Classifier" name="raisedException"/>
+<!--						<property type="Classifier" name="raisedException"/>-->
 					</properties>
 				</logic>
 			</node>

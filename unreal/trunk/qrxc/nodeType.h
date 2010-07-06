@@ -17,6 +17,7 @@ public:
 	virtual Type* clone() const;
 	virtual ~NodeType();
 	virtual void generateCode(utils::OutFile &out);
+	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 
 private:
 	QList<Port*> mPorts;
