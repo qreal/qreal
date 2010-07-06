@@ -25,7 +25,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 void EditorViewScene::initMouseMoveMan()
 {
 	qReal::Id diagram = model()->getRootDiagram();
-	QList<qReal::Id> elements = mWindow->manager()->elementsInDiagram(diagram);
+	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
 	mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
 }
 

@@ -25,12 +25,12 @@ namespace qReal {
 	public:
 		explicit EditorManager(QObject *parent = NULL);
 
-		QList<Id> editors() const;
-		QList<Id> diagrams(Id const &editor) const;
-		QList<Id> elements(Id const &diagram) const;
-                QList<Id> elementsInDiagram(Id const &diagramNode) const;
+		IdList editors() const;
+		IdList diagrams(Id const &editor) const;
+		IdList elements(Id const &diagram) const;
+		IdList elementsOnDiagram(Id const &diagramNode) const;
 
-                QString mouseGesture(Id const &id) const;
+		QString mouseGesture(Id const &id) const;
 		QString friendlyName(Id const &id) const;
 		QIcon icon(Id const &id) const;
 		UML::Element* graphicalObject(Id const &id) const;
@@ -56,7 +56,7 @@ namespace qReal {
 
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
-                QMap<QString, EditorInterface *> mPluginIface;
+		QMap<QString, EditorInterface *> mPluginIface;
 
 
 		QDir mPluginsDir;

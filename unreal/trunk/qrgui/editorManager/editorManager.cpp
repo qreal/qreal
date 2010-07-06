@@ -48,18 +48,18 @@ EditorManager::EditorManager(QObject *parent)
 	}
 }
 
-QList<Id> EditorManager::editors() const
+IdList EditorManager::editors() const
 {
-	QList<Id> editors;
+	IdList editors;
 	foreach (QString e, mPluginsLoaded) {
 		editors.append(Id(e));
 	}
 	return editors;
 }
 
-QList<Id> EditorManager::diagrams(const Id &editor) const
+IdList EditorManager::diagrams(const Id &editor) const
 {
-	QList<Id> diagrams;
+	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
 	foreach (QString e, mPluginIface[editor.editor()]->diagrams()) {
@@ -68,26 +68,26 @@ QList<Id> EditorManager::diagrams(const Id &editor) const
 	return diagrams;
 }
 
-QList<Id> EditorManager::elements(const Id &diagram) const
+IdList EditorManager::elements(const Id &diagram) const
 {
-	QList<Id> elements;
+	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-                elements.append(Id(diagram, e));
+		elements.append(Id(diagram, e));
 	}
 	return elements;
 }
 
-QList<Id> EditorManager::elementsInDiagram(const Id &diagram) const
+IdList EditorManager::elementsOnDiagram(const Id &diagram) const
 {
-    QList<Id> elements;
-    Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
+	IdList elements;
+	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-    foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-            elements.append(Id(diagram.editor(), diagram.diagram(), e));
-    }
-    return elements;
+	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+	}
+	return elements;
 }
 bool EditorManager::isEditor(const Id &id) const
 {
@@ -118,7 +118,7 @@ QString EditorManager::friendlyName(const Id &id) const
 			return mPluginIface[id.editor()]->diagramName(id.diagram());
 		case 3:
 			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
-        default:
+		default:
 			Q_ASSERT(!"Malformed Id");
 			return "";
 	}
@@ -126,10 +126,10 @@ QString EditorManager::friendlyName(const Id &id) const
 
 QString EditorManager::mouseGesture(const Id &id) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-        if (id.idSize() != 3)
-            return "";
-        return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (id.idSize() != 3)
+		return "";
+	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
 QIcon EditorManager::icon(const Id &id) const

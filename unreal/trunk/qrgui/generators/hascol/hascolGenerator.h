@@ -42,8 +42,8 @@ namespace qReal {
 			qrRepo::RepoApi const &mApi;
 			gui::ErrorReporter mErrorReporter;
 
-			QList<Id> mPortMappingDiagrams;
-			QList<Id> mActivityDiagrams;
+			IdList mPortMappingDiagrams;
+			IdList mActivityDiagrams;
 		};
 
 	}
