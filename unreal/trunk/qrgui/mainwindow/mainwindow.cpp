@@ -20,6 +20,7 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../generators/xmi/xmiHandler.h"
+#include "../generators/metaGenerator/metaGenerator.h"
 #include "../generators/java/javaHandler.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
@@ -81,6 +82,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
+	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(newGenerateEditor()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -482,6 +484,30 @@ void MainWindow::generateToHascol()
 	errors.showErrors("Generation finished successfully");
 
 	qDebug() << "Done.";
+}
+
+void MainWindow::newGenerateEditor()
+{
+	generators::MetaGenerator metaGenerator(mModel->api());
+
+	QString const fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
+	QString directoryName;
+	QFileInfo fileInfo(fileName);
+	QDir dir(".");
+	bool found = false;
+	while (dir.cdUp() && !found) {
+		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				found = true;
+				directoryName = directory.absolutePath();
+				dir.mkdir(directory.absolutePath() + "/qrxml/" + fileInfo.baseName());
+			}
+		}
+	}
+	metaGenerator.generateEditor(directoryName + "/qrxml/" + fileInfo.baseName() + "/" + fileInfo.baseName());
 }
 
 EditorView * MainWindow::getCurrentTab()

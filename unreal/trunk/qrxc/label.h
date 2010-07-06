@@ -24,4 +24,5 @@ private:
 	QString mTextBinded;
 	QString mReadOnly;
 	QString mBackground;
+	QString mCenter;
 };

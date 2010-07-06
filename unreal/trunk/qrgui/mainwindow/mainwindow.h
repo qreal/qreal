@@ -77,6 +77,7 @@ namespace qReal {
 		void closeTab(int index);
 		void closeTab(QModelIndex const &index);
 		void exterminate();
+		void newGenerateEditor();
 		void generateEditor();
 		void generateToHascol();
 		void parseHascol();

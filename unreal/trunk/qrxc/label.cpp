@@ -9,6 +9,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 {
 	mX = element.attribute("x", "0");
 	mY = element.attribute("y", "0");
+	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
@@ -50,16 +51,16 @@ void Label::generateCodeForUpdateData(OutFile &out)
 	if (mTextBinded.isEmpty()){
 		// Метка статическая.
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-		return;  
-	}	
+		return;
+	}
 	QString field;
 	if (mTextBinded == "name")
 		field = "repo->index().data(Qt::DisplayRole).toString()";
 	else
 		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
-		field = "repo->roleValueByName(\"" + mTextBinded + "\")"; 
-
-	out() << "\t\t\t" + titleName() + "->setHtml(QString(\"%1\").arg(" + field + "));\n";
+		field = "repo->roleValueByName(\"" + mTextBinded + "\")";
+	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
+		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + "));\n";
 }
 
 void Label::generateCodeForFields(OutFile &out)

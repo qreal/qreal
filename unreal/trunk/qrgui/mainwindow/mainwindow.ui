@@ -88,6 +88,7 @@
     <addaction name="actionGenerate_editor"/>
     <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionShape_Edit"/>
+    <addaction name="actionGenerate_Editor"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -498,6 +499,11 @@
   <action name="actionShape_Edit">
    <property name="text">
     <string>Shape Edit</string>
+   </property>
+  </action>
+  <action name="actionGenerate_Editor">
+   <property name="text">
+    <string>Generate Editor</string>
    </property>
   </action>
  </widget>
