@@ -3,6 +3,7 @@
 #include <QGraphicsTextItem>
 #include <QtGui>
 #include <QtCore/QDebug>
+#include <QtCore/QSettings>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -13,8 +14,10 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent), mNeedDrawGrid(true), mWindow(NULL), mPrevParent(0)
+	:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
 {
+	QSettings settings("SPbSU", "QReal");
+	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 }
@@ -662,4 +665,6 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 void EditorViewScene::changeNeedDrawGrid()
 {
 	mNeedDrawGrid = !mNeedDrawGrid;
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ShowGrid", mNeedDrawGrid);
 }
