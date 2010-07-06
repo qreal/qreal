@@ -9,6 +9,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
 #include <QtGui/QWidget>
+#include <QList>
 
 #include "embeddedLinker.h"
 #include "sdfrenderer.h"
@@ -50,6 +51,7 @@ namespace UML {
 		void delEdge(EdgeElement *edge);
 
 		void setPortsVisible(bool value);
+		void hideEmbeddedLinkers();
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
@@ -124,7 +126,11 @@ namespace UML {
 
 		DragState mDragState;
 
-		EmbeddedLinker *mEmbeddedLinker;
+                QStringList possibleEdges;
+                QList<EmbeddedLinker*> embeddedLinkers;
+                bool initPossibleEdges();
+                bool initEmbeddedLinkers();
+		void moveEmbeddedLinkers();
 
 		QTransform mTransform;
 

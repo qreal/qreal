@@ -17,8 +17,9 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
-	mPortsVisible(false), mDragState(None), mEmbeddedLinker(NULL), mElementImpl(impl)
+        mPortsVisible(false), mDragState(None), mElementImpl(impl)
 {
+	initPossibleEdges();
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 	mPortRenderer = new SdfRenderer();
@@ -30,10 +31,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 NodeElement::~NodeElement()
 {
-	foreach (EdgeElement *edge, mEdgeList)
+	foreach(EdgeElement *edge, mEdgeList)
 		edge->removeLink(this);
-
-	foreach (ElementTitle *title, mTitles)
+	foreach(ElementTitle *title, mTitles)
 		delete title;
 
 	delete mPortRenderer;
@@ -317,13 +317,12 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mEmbeddedLinker == NULL) {
-		mEmbeddedLinker = new EmbeddedLinker();
-		mEmbeddedLinker->setMaster(this);
-		scene()->addItem(mEmbeddedLinker);
-	}
-	mEmbeddedLinker->moveTo(event->pos());
-	mEmbeddedLinker->setCovered(true);
+        if (embeddedLinkers.isEmpty())
+            initEmbeddedLinkers();
+        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers) {
+	    moveEmbeddedLinkers();
+            mEmbeddedLinker->setCovered(true);
+        }
 
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -349,7 +348,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	scene()->invalidate();
-	mEmbeddedLinker->setCovered(false);
+        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
+                mEmbeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 
@@ -471,7 +471,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	storeGeometry();
 
-	mEmbeddedLinker->setCovered(true);
+	moveEmbeddedLinkers();
+        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
+            mEmbeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
@@ -499,22 +501,36 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	QList<QGraphicsItem*> graphicsItems = scene()->selectedItems();
+	int length = graphicsItems.size();
+	foreach(QGraphicsItem* item, graphicsItems) {
+	    UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+	    if (edge) {
+		length--;
+		graphicsItems.removeOne(edge);
+	    }
+	}
+	qDebug() << length;
+	if (length > 1) {
+	    foreach(QGraphicsItem* item, scene()->selectedItems()) {
+		UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+		if (node)
+		    node->hideEmbeddedLinkers();
+	    }
+	}
+        Q_UNUSED(event);
 	if (!isSelected())
 		return;
-	if (mEmbeddedLinker == NULL) {
-		mEmbeddedLinker = new EmbeddedLinker();
-		mEmbeddedLinker->setMaster(this);
-		scene()->addItem(mEmbeddedLinker);
-	}
-	mEmbeddedLinker->moveTo(event->pos());
-	mEmbeddedLinker->setCovered(true);
+
+        if (embeddedLinkers.isEmpty())
+            initEmbeddedLinkers();
+        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
+            mEmbeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-	if (!isSelected())
-		return;
-	mEmbeddedLinker->moveTo(event->pos());
+        Q_UNUSED(event);
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -522,7 +538,49 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	Q_UNUSED(event);
 	if (!isSelected())
 		return;
+//        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
+//            mEmbeddedLinker->setCovered(false);
+}
+
+void NodeElement::hideEmbeddedLinkers()
+{
+    foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
 	mEmbeddedLinker->setCovered(false);
+}
+
+bool NodeElement::initPossibleEdges()
+{
+    possibleEdges.append("test1");
+//    possibleEdges.append("test2");
+//    possibleEdges.append("test3");
+
+    return false;
+}
+
+bool NodeElement::initEmbeddedLinkers()
+{    
+    int counter = 0;
+    foreach(QString possibleEdge, possibleEdges) {
+        EmbeddedLinker* mEmbeddedLinker = new EmbeddedLinker();
+        mEmbeddedLinker->setMaster(this);
+        embeddedLinkers.append(mEmbeddedLinker);        
+        scene()->addItem(mEmbeddedLinker);
+        counter++;
+    }
+    moveEmbeddedLinkers();
+
+    return (counter > 0);
+}
+
+void NodeElement::moveEmbeddedLinkers()
+{
+    int index = 0;
+    int maxIndex = embeddedLinkers.size();
+    foreach(EmbeddedLinker* mEmbeddedLinker,embeddedLinkers)
+    {
+	mEmbeddedLinker->takePosition(index,maxIndex);
+	index++;
+    }
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

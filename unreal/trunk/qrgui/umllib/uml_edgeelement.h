@@ -28,6 +28,7 @@ namespace UML {
 			void adjustLink();
 			void removeLink(UML::NodeElement const *from);
 
+			void placeStartTo(QPointF const &place);
 			void placeEndTo(QPointF const &place);
 
 			virtual void connectToPort();

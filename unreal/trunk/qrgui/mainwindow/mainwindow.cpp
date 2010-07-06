@@ -261,7 +261,8 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 void MainWindow::sceneSelectionChanged()
 {
 	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
-	if (graphicsItems.size() == 1) {
+	int length = graphicsItems.size();
+	if (length == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
 			if (elem->index().isValid()) {
@@ -272,13 +273,27 @@ void MainWindow::sceneSelectionChanged()
 	} else {
 		ui.diagramExplorer->setCurrentIndex(QModelIndex());
 		mPropertyModel.setIndex(QModelIndex());
-	}
+
+		foreach(QGraphicsItem* item, graphicsItems) {
+		    UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+		    if (edge) {
+			length--;
+			graphicsItems.removeOne(edge);
+		    }
+		}
+		if (length > 1) {
+		    foreach(QGraphicsItem* item, graphicsItems) {
+			UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+			if (node)
+			    node->hideEmbeddedLinkers();
+		    }
+		}
+	}	
 }
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 {
-	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle,
-															  ".", QFileDialog::ShowDirsOnly);
+	QString const dirName = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
 
 	if (dirName.isEmpty())
 		return "";

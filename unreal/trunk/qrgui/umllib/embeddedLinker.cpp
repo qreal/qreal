@@ -5,6 +5,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
+#include <math.h>
 
 #include "../view/editorviewscene.h"
 
@@ -19,11 +20,16 @@ EmbeddedLinker::EmbeddedLinker()
 	mRectangle = QRectF(-6,-6,12,12);
 	mInnerRectangle = QRectF(-3,-3,6,6);
 	setAcceptsHoverEvents(true);
+
+        //assign edge, color
+        color = Qt::blue;
+
 	QObject::connect(this,SIGNAL(coveredChanged()),this,SLOT(changeShowState()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
 {
+
 }
 
 void EmbeddedLinker::setMaster(NodeElement *element)
@@ -37,7 +43,6 @@ void EmbeddedLinker::setCovered(bool arg)
 {
 	covered = arg;
 	emit coveredChanged();
-//	qDebug() << "covered == " << covered;
 }
 
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
@@ -46,60 +51,48 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->save();
 
 	QBrush brush;
-	brush.setColor(Qt::blue);
+        brush.setColor(color);
 	brush.setStyle(Qt::SolidPattern);
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
-	painter->setPen(Qt::blue);
+        painter->setPen(color);
 
 	painter->drawEllipse(mRectangle);
 	painter->setOpacity(0.7);
 	painter->drawEllipse(mInnerRectangle);
 
 	painter->restore();
-	// TODO: add highlighting on mouse hover events
 }
 
-void EmbeddedLinker::moveTo(QPointF pos)
+void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
-	QRectF bounding = master->boundingRect();
+    const float Pi = 3.141592;
+    QRectF bounding = master->boundingRect();
 
-	float px = pos.x();
-	float py = pos.y();
-	float top = bounding.topLeft().y();
-	float left = bounding.topLeft().x();
-	float right = bounding.bottomRight().x();
-	float bottom = bounding.bottomRight().y();
+    float top = bounding.topLeft().y();
+    float left = bounding.topLeft().x();
+    float right = bounding.bottomRight().x();
+    float bottom = bounding.bottomRight().y();
+    float height = bottom - top;
+    float width = right - left;
 
-	float min = py - top;
-	if (min > bottom - py)
-		min = bottom - py;
-	if (min > px - left)
-		min = px - left;
-	if (min > right - px)
-		min = right - px;
+    char quadrant = 0;
+    float angle = 2*Pi*index/maxIndex;
+    if (angle > Pi/2)
+	quadrant++;
+    if (angle > Pi)
+	quadrant++;
+    if (angle > 3*Pi/2)
+	quadrant++;
 
-	float fx;
-	float fy;
-	//obviously, top != left != right != bottom
-	if ((bottom - py == min) || (py - top == min))
-	{
-		fx = px;
-		if (bottom - py == min)
-			fy = bottom;
-		else
-			fy = top;
-	}
-	else
-	{
-		fy = py;
-		if (right - px == min)
-			fx = right;
-		else
-			fx = left;
-	}
+    float minRadius = qMin(height,width)/1.35;
+    float maxRadius = qMax(height,width)/1.35;
+    float radius = (maxRadius - minRadius)*(Pi/2 - (angle - quadrant*Pi/2))*2/Pi + minRadius;
 
-	this->setPos(fx, fy);
+    float x = left + width/2 + radius*cos(angle + Pi/2);
+    float y = bottom - height/2 - radius*sin(angle + Pi/2);
+
+    this->setPos(x,y);
 }
 
 QRectF EmbeddedLinker::boundingRect() const
@@ -116,6 +109,7 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association";
 		Id *edgeId = scene->createElement(type, event->scenePos());
 		mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
+		mEdge->placeStartTo(master->getPortPos(0));
 		if (mEdge != NULL)
 		{
 			mEdge->setSelected(true);
@@ -152,12 +146,17 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::changeShowState()
 {
+	qDebug() << "segmentation...";
+	QList<QGraphicsItem*> graphicsItems;
+	if (scene())
+	    graphicsItems = scene()->selectedItems();
+	qDebug() << "...fault";
 	if ((!master) || (!scene()) || (!covered) ||
-	((!scene()->selectedItems().contains(master)) && (!scene()->selectedItems().contains(mEdge))))
+	    ((!graphicsItems.contains(master)) && (!graphicsItems.contains(mEdge))))
 	{
 		hide();
 		return;
 	}
-	else if ((scene()->selectedItems().contains(master)) && covered)
+	else if ((graphicsItems.contains(master)) && (graphicsItems.size() == 1) && covered)
 		show();
 }

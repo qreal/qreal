@@ -21,16 +21,15 @@ namespace UML {
 		EmbeddedLinker(QGraphicsItem *parent);
 		virtual ~EmbeddedLinker();
 
+                QRectF boundingRect() const;
+
 		/** @brief set element that handles the object */
 		void setMaster(NodeElement *element);
 		/** @brief notify that mouse cursor is over the NodeElement */
 		void setCovered(bool arg);
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
-		/** @brief moves the object somewhere outside the master element */
-		virtual void moveTo(QPointF pos);
-		QRectF boundingRect() const;
-
+                virtual void takePosition(int index, int maxIndex);
 
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
 		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
@@ -44,6 +43,9 @@ namespace UML {
 		/** @brief bounding rect */
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
+
+                QColor color;
+                UML::EdgeElement* edge;
 	signals:
 		void coveredChanged();
 	public slots:
