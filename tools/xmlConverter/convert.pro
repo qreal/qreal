@@ -6,7 +6,7 @@
 
 QT       -= gui
 QT       += xml
-TARGET = convert
+TARGET = xmlconvert
 CONFIG   += console
 CONFIG   -= app_bundle
 

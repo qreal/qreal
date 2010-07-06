@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QMap>
+#include <QFileInfo>
 
 void bypass(QDomNode n, QDomDocument &doc){
     QDomElement e = n.toElement();
@@ -12,6 +13,9 @@ void bypass(QDomNode n, QDomDocument &doc){
     else
         if(e.tagName() == "graph_types")
             e.setTagName("graphicTypes");
+    else
+        if(e.tagName() == "editor")
+            e.setTagName("diagram");
     else
         if(e.tagName() == "line_type")
             e.setTagName("lineType");
@@ -144,7 +148,7 @@ void bypass(QDomNode n, QDomDocument &doc){
             nParent.removeChild(n);
             n = nSibling;
         }
-
+        
     }else
         if(e.tagName() == "associations"){
         QDomNode childAsso = n.firstChild();
@@ -180,7 +184,7 @@ void bypass(QDomNode n, QDomDocument &doc){
         QDomNodeList listAsso = eParentLog.elementsByTagName("associations");
         listAsso.item(0).toElement().setAttribute("beginType", attrBeginType);
     }
-
+    
     QDomNode child = n.firstChild();
     while(!child.isNull()) {
         QDomNode childSibling = child.nextSibling();
@@ -189,25 +193,25 @@ void bypass(QDomNode n, QDomDocument &doc){
     }
 }
 
-void getId(QDomNode n, QDomDocument &doc, QDomDocument &docId, QList<QString> &listId){
+void getId(QDomNode n, QDomDocument &doc, QDomDocument &docId, QList<QString> &listId, QDomNode &rootId){
     QDomElement e = n.toElement();
     if (e.isNull())
         return;
     else if(e.tagName() == "parent") {
-        QString attrForId = e.attribute("parentName");
+        QString attrForId = e.attribute("parent_id");
         if(!listId.contains(attrForId)){
             listId.append(attrForId);
             QDomElement newId = docId.createElement("id");
-            docId.appendChild(newId);
+            rootId.appendChild(newId);
             newId.setAttribute("was", attrForId);
             newId.setAttribute("now", "");
         }
     }
-
+    
     QDomNode child = n.firstChild();
     while(!child.isNull()) {
         QDomNode childSibling = child.nextSibling();
-        getId(child, doc, docId, listId);
+        getId(child, doc, docId, listId, rootId);
         child = childSibling;
     }
 }
@@ -243,41 +247,87 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     QDomDocument doc;
     QDomDocument docId;
-    QFile file(a.arguments().at(1));
-    if (!file.open(QIODevice::ReadOnly)) {
-        return -1;
-    }
-    if (!doc.setContent(&file)) {
+    if(a.arguments().length() == 3){
+        QFile file(a.arguments().last());
+        if (!file.open(QIODevice::ReadOnly)) {
+            return -1;
+        }
+        if (!doc.setContent(&file)) {
+            file.close();
+            return -1;
+        }
         file.close();
-        return -1;
+        QFile filePro(a.arguments().at(1));
+        if (!filePro.open(QIODevice::ReadWrite | QIODevice::Text))
+            return -1;
+        
+        while (!filePro.atEnd()) {
+            QByteArray line = filePro.readLine();
+            if(line == "\n"){
+                QTextStream stream( &filePro );
+                QFileInfo fileIn(filePro);
+                QString str = "QREAL_EDITOR_NAME = " + fileIn.baseName();
+                stream << str << endl;
+                stream << "include (../editorsCommon.pri)" << endl;
+                break;
+            }
+        }
+        filePro.close();
+        QDomElement docRoot = doc.documentElement();
+        QList<QString> listId;
+        QDomElement rootId = docId.createElement("metamodel");
+        docId.appendChild(rootId);
+        getId(docRoot, doc, docId, listId, rootId);
+        
+        QFile fileId( "idCollector" );
+        if (fileId.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream( &fileId );
+            stream << docId.toString(4) << endl;
+        }
+        fileId.close();
+        return 0;
     }
-    file.close();
-    QDomElement docRoot = doc.documentElement();
-    QList<QString> listId;
-    QMap<QString, QString> mapId;
-    bypass(docRoot, doc);
-    getId(docRoot, doc, docId, listId);
-    QDomElement docRootId = docId.documentElement();
-    map(docRootId, mapId);
-    docRoot = doc.documentElement();
-    changeId(docRoot, mapId);
-    //qDebug() << doc.toString(4);
-
-    QString filename = "outputFile";
-    QFile fileOut( filename );
-    if (fileOut.open(QIODevice::WriteOnly))
-    {
-        QTextStream stream( &fileOut );
-        stream << doc.toString(4) << endl;
+    else {
+        QFile file(a.arguments().at(1));
+        if (!file.open(QIODevice::ReadOnly)) {
+            return -1;
+        }
+        if (!doc.setContent(&file)) {
+            file.close();
+            return -1;
+        }
+        file.close();
+        QFileInfo fileIn(file);
+        file.rename(fileIn.baseName() + "_old.xml");
+        QDomElement docRoot = doc.documentElement();
+        QMap<QString, QString> mapId;
+        bypass(docRoot, doc);
+        QFile fileId("idCollector");
+        if (!fileId.open(QIODevice::ReadOnly)) {
+            return -1;
+        }
+        QString Errorstr = "";
+        int line = 0, column = 0;
+        if (!docId.setContent(&fileId, &Errorstr, &line, &column)) {
+            qDebug() << Errorstr << line << column;
+            fileId.close();
+            return -1;
+        }
+        fileId.close();
+        QDomElement docRootId = docId.documentElement();
+        map(docRootId, mapId);
+        docRoot = doc.documentElement();
+        changeId(docRoot, mapId);
+        
+        QString filename = fileIn.fileName();
+        QFile fileOut( filename );
+        if (fileOut.open(QIODevice::WriteOnly))
+        {
+            QTextStream stream( &fileOut );
+            stream << doc.toString(4) << endl;
+        }
+        fileOut.close();
+        return 0;
     }
-    fileOut.close();
-
-    QFile fileId( "idCollector" );
-    if (fileId.open(QIODevice::WriteOnly))
-    {
-        QTextStream stream( &fileId );
-        stream << docId.toString(4) << endl;
-    }
-    fileId.close();
-    return 0;
 }
