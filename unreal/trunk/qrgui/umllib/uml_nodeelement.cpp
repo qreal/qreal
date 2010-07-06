@@ -17,7 +17,7 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
-        mPortsVisible(false), mDragState(None), mElementImpl(impl)
+	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false)
 {
 	initPossibleEdges();
 	setAcceptHoverEvents(true);
@@ -26,6 +26,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, mPointPorts, mLinePorts, mTitles, mPortRenderer);
 	foreach (ElementTitle *title, mTitles)
 		title->setParentItem(this);
+
+	mFoldedContents = mContents;
+
 	connect(&mSwitchGridAction, SIGNAL(triggered()), this, SLOT(switchGrid()));
 }
 
@@ -333,6 +336,11 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mDragState = BottomRight;
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
+		//
+		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos()))
+			//mIsFolded = !mIsFolded;
+			changeFoldState();
+		//
 		else
 			Element::mousePressEvent(event);
 	}
@@ -820,11 +828,11 @@ NodeElement *NodeElement::getNodeAt(const QPointF &position)
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
 {
+	mElementImpl->paint(painter, mContents);
 	if (mElementImpl->hasPorts())
 		paint(painter, style, widget, mPortRenderer);
 	else
 		paint(painter, style, widget, 0);
-	mElementImpl->paint(painter, mContents);
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -835,8 +843,15 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->save();
 
 			QBrush b;
-			b.setColor(Qt::blue);
+			b.setColor(Qt::green);
 			b.setStyle(Qt::SolidPattern);
+			painter->setBrush(b);
+			painter->setPen(Qt::green);
+			
+			if (mElementImpl->isContainer())
+				painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(20, -20)));
+
+			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
@@ -873,4 +888,41 @@ void NodeElement::delEdge(EdgeElement *edge)
 void NodeElement::switchGrid()
 {
 	mSwitchGrid = !mSwitchGrid;
+}
+
+void NodeElement::changeFoldState()
+{
+	mIsFolded = !mIsFolded;
+	
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem) {
+			curItem->setVisible(!mIsFolded);
+			curItem->setVisibleToLinks(!mIsFolded);
+		}
+	}
+
+	if (mIsFolded) {
+		mCurUnfoldedContents = mContents;
+		mFoldedContents.moveTo(pos());
+		setGeometry(mFoldedContents);
+	}
+	else {
+		mCurUnfoldedContents.moveTo(pos());
+		setGeometry(mCurUnfoldedContents);
+	}
+}
+
+void NodeElement::setVisibleToLinks(bool isVisible)
+{
+	foreach (EdgeElement *curEdge, mEdgeList) {
+		curEdge->setVisible(isVisible);
+	}
+	
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem) {
+			curItem->setVisibleToLinks(isVisible);
+		}
+	}
 }

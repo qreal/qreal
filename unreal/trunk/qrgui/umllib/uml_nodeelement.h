@@ -89,6 +89,9 @@ namespace UML {
 
 		virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+		void changeFoldState();
+		void setVisibleToLinks(bool);
+
 		bool mPortsVisible;
 
 		QList<QPointF> mPointPorts;
@@ -137,5 +140,9 @@ namespace UML {
 		ElementImpl* mElementImpl;
 
 		SdfRenderer *mPortRenderer;
+
+		bool mIsFolded;
+		QRectF mFoldedContents;
+		QRectF mCurUnfoldedContents;
 	};
 }

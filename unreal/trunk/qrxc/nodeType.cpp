@@ -258,6 +258,13 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\t\treturn true;\n"
 		<< "\t\t}\n\n";
 
+	out() << "\t\tbool isContainer()\n\t\t{\n";
+	if (!this->mContains.empty())
+		out() << "\t\t\treturn true;\n";
+	else
+		out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";	
+
 	out() << "\tprivate:\n";
 	if (hasSdf)
 		out() << "\t\tSdfRenderer mRenderer;\n";

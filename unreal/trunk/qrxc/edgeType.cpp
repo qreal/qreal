@@ -122,6 +122,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tvirtual ~" << className << "() {}\n\n"
 		<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 		<< "\t\tbool isNode() { return false; }\n"
+		<< "\t\tbool isContainer() { return false; }\n"
 		<< "\t\tbool hasPorts() { return false; }\n"
 		<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")

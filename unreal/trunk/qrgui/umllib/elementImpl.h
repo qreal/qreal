@@ -54,5 +54,6 @@ namespace UML{
 			virtual Qt::PenStyle getPenStyle() = 0;
 			virtual void drawStartArrow(QPainter *painter) const = 0;
 			virtual void drawEndArrow(QPainter *painter) const = 0;
+			virtual bool isContainer() = 0;
 	};
 }
