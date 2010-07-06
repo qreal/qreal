@@ -277,20 +277,20 @@ void MainWindow::sceneSelectionChanged()
 		mPropertyModel.setIndex(QModelIndex());
 
 		foreach(QGraphicsItem* item, graphicsItems) {
-		    UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
-		    if (edge) {
+			UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+			if (edge) {
 			length--;
 			graphicsItems.removeOne(edge);
-		    }
+			}
 		}
 		if (length > 1) {
-		    foreach(QGraphicsItem* item, graphicsItems) {
+			foreach(QGraphicsItem* item, graphicsItems) {
 			UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
 			if (node)
-			    node->hideEmbeddedLinkers();
-		    }
+				node->hideEmbeddedLinkers();
+			}
 		}
-	}	
+	}
 }
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
@@ -512,14 +512,16 @@ void MainWindow::newGenerateEditor()
 
 EditorView * MainWindow::getCurrentTab()
 {
-	return static_cast<EditorView *>(ui.tabs->currentWidget());
+	return dynamic_cast<EditorView *>(ui.tabs->currentWidget());
 }
 
 void MainWindow::changeMiniMapSource( int index )
 {
 	if (index != -1) {
 		ui.tabs->setEnabled(true);
-		ui.minimapView->setScene(getCurrentTab()->scene());
+		EditorView *editorView = getCurrentTab();
+		if (editorView != NULL)
+			ui.minimapView->setScene(editorView->scene());
 	} else
 		ui.tabs->setEnabled(false);
 }
@@ -573,14 +575,14 @@ void MainWindow::openNewTab(const QModelIndex &index)
 	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
 		return;
 
-        mModel->setRootIndex(index);
+		mModel->setRootIndex(index);
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
 			tabNumber = i;
-                        break;
-                    }
+						break;
+					}
 	}
 	if (tabNumber != -1) {
 		ui.tabs->setCurrentIndex(tabNumber);
@@ -598,7 +600,7 @@ void MainWindow::openNewTab(const QModelIndex &index)
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 {
 	getCurrentTab()->setMainWindow(this);
-        QModelIndex index = rootIndex;
+		QModelIndex index = rootIndex;
 
 	changeMiniMapSource(ui.tabs->currentIndex());
 
