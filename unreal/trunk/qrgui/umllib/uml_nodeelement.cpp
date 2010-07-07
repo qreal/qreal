@@ -339,11 +339,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mDragState = BottomRight;
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
-		//
-		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos()))
-			//mIsFolded = !mIsFolded;
+		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos()) 
+				&& this->mElementImpl->isContainer())
 			changeFoldState();
-		//
 		else
 			Element::mousePressEvent(event);
 	}
