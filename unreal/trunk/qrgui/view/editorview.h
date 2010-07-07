@@ -32,6 +32,9 @@ namespace qReal {
 		void zoomIn();
 		void zoomOut();
 
+	protected:
+		virtual void mouseMoveEvent(QMouseEvent *event);
+
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;

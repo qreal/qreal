@@ -62,3 +62,12 @@ void EditorView::changeSceneGrid()
 	mScene->invalidate();
 }
 
+void EditorView::mouseMoveEvent(QMouseEvent *event)
+{
+	if (event->buttons() & Qt::RightButton)
+		setDragMode(NoDrag);
+	else
+		setDragMode(RubberBandDrag);
+	QGraphicsView::mouseMoveEvent(event);
+}
+
