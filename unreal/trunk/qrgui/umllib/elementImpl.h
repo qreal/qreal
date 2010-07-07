@@ -55,5 +55,6 @@ namespace UML{
 			virtual void drawStartArrow(QPainter *painter) const = 0;
 			virtual void drawEndArrow(QPainter *painter) const = 0;
 			virtual bool isContainer() = 0;
+			virtual bool isSortContainer() = 0;
 	};
 }

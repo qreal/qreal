@@ -93,7 +93,7 @@ namespace UML {
 		virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 		void changeFoldState();
-		void setVisibleToLinks(bool);
+		void setLinksVisible(bool);
 
 		bool mPortsVisible;
 
@@ -123,6 +123,8 @@ namespace UML {
 
 		void moveChildren(qreal dx, qreal dy);
 		void moveChildren(QPointF const &moving);
+
+		void sortChildren();
 
 		qreal minDistanceFromLinePort(int linePortNumber, const QPointF &location) const;
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;

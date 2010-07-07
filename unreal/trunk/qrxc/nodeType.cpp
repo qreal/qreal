@@ -265,6 +265,13 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\treturn false;\n";
 	out() << "\t\t}\n\n";	
 
+	//TODO: add to xmls relevant field
+	out() << "\t\tbool isSortContainer()\n\t\t{\n";
+	//out() << "\t\t\treturn isContainer();\n";
+	out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";	
+	//
+
 	out() << "\tprivate:\n";
 	if (hasSdf)
 		out() << "\t\tSdfRenderer mRenderer;\n";

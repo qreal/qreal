@@ -108,6 +108,9 @@ void NodeElement::resize(QRectF newContents)
 {
 	newContents.moveTo(0, 0);
 
+	if (this->mElementImpl->isSortContainer())
+		sortChildren();
+
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
 	//whatever it means :)
 	QPointF childrenMoving = QPointF(0, 0);
@@ -478,6 +481,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();
+	//
+	NodeElement* oldParentItem = dynamic_cast<NodeElement*>(parentItem());
+	if ((oldParentItem) && (oldParentItem->mElementImpl->isSortContainer()))
+		oldParentItem->resize(oldParentItem->mContents);
+	//
 
 	moveEmbeddedLinkers();
         foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
@@ -932,7 +940,7 @@ void NodeElement::changeFoldState()
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			curItem->setVisible(!mIsFolded);
-			curItem->setVisibleToLinks(!mIsFolded);
+			curItem->setLinksVisible(!mIsFolded);
 		}
 	}
 
@@ -947,7 +955,7 @@ void NodeElement::changeFoldState()
 	}
 }
 
-void NodeElement::setVisibleToLinks(bool isVisible)
+void NodeElement::setLinksVisible(bool isVisible)
 {
 	foreach (EdgeElement *curEdge, mEdgeList) {
 		curEdge->setVisible(isVisible);
@@ -956,7 +964,32 @@ void NodeElement::setVisibleToLinks(bool isVisible)
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
-			curItem->setVisibleToLinks(isVisible);
+			curItem->setLinksVisible(isVisible);
 		}
 	}
+}
+
+void NodeElement::sortChildren()
+{
+	qreal curChildY = sizeOfForestalling;
+	qreal maxChildrenWidth = 0;
+	
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem) {
+			QRectF curChildContents = curItem->mContents;
+			curChildContents.moveTo(sizeOfForestalling, curChildY);
+			curItem->setGeometry(curChildContents);
+			curChildY += curItem->mContents.height();
+			curItem->storeGeometry();
+
+			if (curItem->mContents.width() > maxChildrenWidth)
+				maxChildrenWidth = curItem->mContents.width();
+		}
+	}
+
+	/*
+	QRectF newContents(pos(), maxChildrenWidth + 2 * sizeOfForestalling, curChildPosition.y() + sizeOfForestalling);
+	setGeometry(newContents);
+	*/
 }
