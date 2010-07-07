@@ -177,8 +177,8 @@
               <parent parentName="Kernel::Named Element"/>
             </generalizations>
             <properties>
-              <property type="string" name="type"/>
-              <property type="string" name="defaultValue"/>
+<!--              <property type="string" name="type"/>
+              <property type="string" name="defaultValue"/>-->
               <property type="string" name="isTransient"/>
               <property type="string" name="isVolatile"/>
             </properties>
