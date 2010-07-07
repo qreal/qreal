@@ -38,7 +38,7 @@ protected:
 	QStringList mContains;
 	QStringList mConnections;
 	QStringList mUsages;
-        QList<QPair<QPair<QString,QString>,bool> > mPossibleEdges;
+        QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > mPossibleEdges;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;

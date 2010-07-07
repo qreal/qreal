@@ -29,12 +29,24 @@ namespace UML {
 		void setCovered(bool arg);
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
+
+                virtual void initTitle();
+                virtual void generateColor();
+                virtual void setColor(QColor color);
+
+                virtual void setDirected(bool directed);
+                virtual void setEdgeType(QString edgeType);
+                virtual bool isDirected();
+                virtual QString getEdgeType();
+
                 virtual void takePosition(int index, int maxIndex);
 
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
 		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
 		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
 	private:
+                ElementTitle* title;
+
 		bool covered;
 		/** @brief element that handles this object */
 		NodeElement *master;
@@ -45,6 +57,8 @@ namespace UML {
 		QRectF mInnerRectangle;
 
                 QColor color;
+                bool directed;
+                QString edgeType;
                 UML::EdgeElement* edge;
 	signals:
 		void coveredChanged();

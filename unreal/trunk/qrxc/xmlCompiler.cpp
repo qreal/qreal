@@ -5,6 +5,9 @@
 #include "../utils/xmlUtils.h"
 #include "diagram.h"
 #include "type.h"
+
+#include "edgeType.h"
+#include "nodeType.h"
 #include "enumType.h"
 
 #include <QFile>
@@ -115,8 +118,9 @@ void XmlCompiler::generateElementClasses()
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+            foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
+
 	out() << "}\n\n";
 }
 
@@ -131,7 +135,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
-                << "#include <QPair>"
+		<< "#include <QPair>"
 		<< "\n"
 		<< "#include \"../../editorInterface.h\"\n"
 		<< "\n"
@@ -152,7 +156,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
 		<< "\tvirtual QStringList getUsedTypes(QString const &element) const;\n"
-                << "\tvirtual QList<QPair<QPair<QString,QString>,bool> > getPossibleEdges(QString const &element) const;\n"
+		<< "\tvirtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;\n"
+		<< "\n"
+		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
 		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
@@ -163,8 +169,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
-                << "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
-                << "\n"
+		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
+		<< "\n"
 		<< 	"\tvirtual QList<qReal::Listener*> listeners() const;\n"
 		<< "\n"
 		<< "private:\n"
@@ -192,6 +198,7 @@ void XmlCompiler::generatePluginSource()
 	generateConnections(out);
 	generateUsages(out);
 	generatePossibleEdges(out);
+	generateNodesAndEdges(out);
 	generateEnumValues(out);
 	generatePropertyTypesRequests(out);
 
@@ -234,7 +241,6 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyTypes(out);
-	
 	out() << "}\n\n";
 }
 
@@ -269,12 +275,11 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"
 		<< "\treturn elementsNameMap[diagram][element];\n"
-                << "}\n\n"
+		<< "}\n\n"
 
-                << "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"
-                << "\treturn elementMouseGesturesMap[diagram][element];\n"
-                << "}\n\n";
-
+		<< "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"
+		<< "\treturn elementMouseGesturesMap[diagram][element];\n"
+		<< "}\n\n";
 }
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
@@ -382,9 +387,9 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 {
         PossibleEdgesGenerator generator;
-        out() << "QList<QPair<QPair<QString,QString>,bool> > " << mPluginName << "Plugin::getPossibleEdges(QString const &element) const\n"
+        out() << "QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > " << mPluginName << "Plugin::getPossibleEdges(QString const &element) const\n"
                 << "{\n"
-                << "\tQList<QPair<QPair<QString,QString>,bool> > result;\n";
+                << "\tQList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;\n";
         bool isNotFirst = false;
 
         foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
@@ -395,6 +400,36 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
                 out() << "\tQ_UNUSED(element);\n";
         out() << "\treturn result;\n"
                 << "}\n\n";
+}
+
+void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
+{
+        out() << "//(-1) means \"edge\", (+1) means \"node\"\n";
+        out() << "int " << mPluginName << "Plugin::isNodeOrEdge(QString const &element) const\n"
+                << "{\n";
+        bool isFirst = true;
+        foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+            foreach (Type* type, diagram->types().values()) {
+                int result = 0;
+                EdgeType* edge = dynamic_cast<EdgeType*>(type);
+                NodeType* node = dynamic_cast<NodeType*>(type);
+                if (edge)
+                    result = (-1);
+                else if (node)
+                    result = 1;
+
+                if (!isFirst)
+                    out() << "\telse ";
+                else {
+                    isFirst = false;
+                    out() << "\t";
+                }
+                out() << "if (element == \""
+                        << NameNormalizer::normalize(diagram->name()+"_"+type->displayedName())
+                        << "\")\n"
+                    << "\t\treturn " << result << ";\n";
+            }
+        out() << "\treturn 0;\n}\n";
 }
 
 void XmlCompiler::generateProperties(OutFile &out)
@@ -436,12 +471,10 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values()){
 			isNotFirst |= generator.generate(type, out, isNotFirst);
-		}	
+		}
 
 	if (!isNotFirst)
 		out() << "\tQ_UNUSED(name);\n";
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }
-
-

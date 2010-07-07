@@ -190,26 +190,7 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 
 	if ((executed != NULL) && (executed == mWindow->ui.actionDeleteFromDiagram)) {
 		qDebug() << "executed: " << executed->text();
-		edgeDeleted = true;
-	} else if (executed != NULL) {
-		qDebug() << "executed: " << executed->text();
-		edgeMenu->clear();
-		edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
-		edgeMenu->addSeparator();
-
-		QMenu *edgeTypeMenu = new QMenu(QString("Edge type"), edgeMenu);
-		toDelete.append(edgeTypeMenu);
-		edgeMenu->addMenu(edgeTypeMenu);
-
-		//will be implemented after changes in xml structure
-		edgeTypeMenu->addAction(new QAction("(Something)", edgeTypeMenu));
-		//will be implemented after changes in xml structure
-
-		executed = edgeMenu->exec(cursorPos);
-		if (executed == mWindow->ui.actionDeleteFromDiagram) {
-			edgeDeleted = true;
-			removeItem(dynamic_cast<UML::Element*>(itemAt(scenePos)));
-		}
+                edgeDeleted = true;
 	} else
 		qDebug() << "executed: nothing";
 
@@ -228,7 +209,6 @@ qReal::Id *EditorViewScene::createElement(const QString &str)
 
 qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
-	qDebug() << "createElement(..)" << str;
 	Id typeId = Id::loadFromString(str);
 	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
 
@@ -254,8 +234,6 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 {
-	qDebug() << "---createElement() begin";
-
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
@@ -268,11 +246,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	in_stream >> name;
 	in_stream >> pos;
 
-	qDebug() << "---uuid:       " << uuid;
-	qDebug() << "---pathToItem: " << pathToItem;
-	qDebug() << "---name:       " << name;
-	qDebug() << "---pos:        " << pos;
-
 	QByteArray newItemData;
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
 
@@ -281,8 +254,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	// TODO: make it simpler
 	qReal::Id id = qReal::Id::loadFromString(uuid);
 	UML::Element *e = mWindow->manager()->graphicalObject(id);
-
-	qDebug() << "new element uuid: " << e->uuid().toString();
 
 	if (dynamic_cast<UML::NodeElement*>(e))
 		newParent = getElemAt(scenePos);
@@ -308,14 +279,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);
-
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
-
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
 									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
-
 	delete newMimeData;
-	qDebug() << "---createElement() end";
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)

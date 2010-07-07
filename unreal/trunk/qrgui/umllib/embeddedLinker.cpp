@@ -21,9 +21,7 @@ EmbeddedLinker::EmbeddedLinker()
 	mRectangle = QRectF(-6,-6,12,12);
 	mInnerRectangle = QRectF(-3,-3,6,6);
 	setAcceptsHoverEvents(true);
-
-		//assign edge, color
-		color = Qt::blue;
+        color = Qt::blue;
 
 	QObject::connect(this,SIGNAL(coveredChanged()),this,SLOT(changeShowState()));
 }
@@ -46,17 +44,34 @@ void EmbeddedLinker::setCovered(bool arg)
 	emit coveredChanged();
 }
 
+void EmbeddedLinker::generateColor()
+{
+    int result = 0;
+    QChar *data = edgeType.data();
+    while (!data->isNull()) {
+        result += data->unicode();
+        ++data;
+    }
+    result *= 666;
+    color =QColor(result%192+64,result%128+128,result%64+192).darker(0);
+}
+
+void EmbeddedLinker::setColor(QColor arg)
+{
+        color = arg;
+}
+
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	Q_UNUSED(option);
 	painter->save();
 
 	QBrush brush;
-		brush.setColor(color);
+        brush.setColor(color);
 	brush.setStyle(Qt::SolidPattern);
 	painter->setBrush(brush);
 	painter->setOpacity(0.5);
-		painter->setPen(color);
+        painter->setPen(color);
 
 	painter->drawEllipse(mRectangle);
 	painter->setOpacity(0.7);
@@ -65,35 +80,68 @@ void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 	painter->restore();
 }
 
+void EmbeddedLinker::setDirected(bool arg)
+{
+    directed = arg;
+}
+
+void EmbeddedLinker::initTitle()
+{
+    float textWidth = edgeType.size()*10;
+    int x = 0;
+    int y = 0;
+
+    title = new ElementTitle(x,y,edgeType);
+    title->setParentItem(this);
+    title->setTextWidth(textWidth);
+}
+
+void EmbeddedLinker::setEdgeType(QString arg)
+{
+    edgeType = arg;
+    generateColor();
+    initTitle();
+}
+
+bool EmbeddedLinker::isDirected()
+{
+    return directed;
+}
+
+QString EmbeddedLinker::getEdgeType()
+{
+    return edgeType;
+}
+
 void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
-	const float Pi = 3.141592;
-	QRectF bounding = master->boundingRect();
+    const float Pi = 3.141592;
+    QRectF bounding = master->boundingRect();
 
-	float top = bounding.topLeft().y();
-	float left = bounding.topLeft().x();
-	float right = bounding.bottomRight().x();
-	float bottom = bounding.bottomRight().y();
-	float height = bottom - top;
-	float width = right - left;
+    float top = bounding.topLeft().y();
+    float left = bounding.topLeft().x();
+    float right = bounding.bottomRight().x();
+    float bottom = bounding.bottomRight().y();
+    float height = bottom - top;
+    float width = right - left;
 
-	char quadrant = 0;
-	float angle = 2*Pi*index/maxIndex;
-	if (angle > Pi/2)
-	quadrant++;
-	if (angle > Pi)
-	quadrant++;
-	if (angle > 3*Pi/2)
-	quadrant++;
+    float angle = 2*Pi*index/maxIndex;
 
-	float minRadius = qMin(height,width)/1.35;
-	float maxRadius = qMax(height,width)/1.35;
-	float radius = (maxRadius - minRadius)*(Pi/2 - (angle - quadrant*Pi/2))*2/Pi + minRadius;
+    int rW = width;
+    int rH = height;
+    if (rW < 70)
+        rW *= 1.08;
+    else
+        rW += 12;
+    if (rH < 70)
+        rH *= 1.08;
+    else
+        rH += 12;
 
-	float x = left + width/2 + radius*cos(angle + Pi/2);
-	float y = bottom - height/2 - radius*sin(angle + Pi/2);
+    float x = left + width/2 + rW*cos(angle - Pi/2)/2;
+    float y = bottom - height/2 + rH*sin(angle - Pi/2)/2;
 
-	this->setPos(x,y);
+    this->setPos(x,y);
 }
 
 QRectF EmbeddedLinker::boundingRect() const
@@ -107,18 +155,19 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (scene != NULL)
 	{
-		const QString type = "qrm:/Kernel_metamodel/Kernel/Kernel_Association";
-		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
-		{
-			Id *edgeId = scene->createElement(type, event->scenePos());
-			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
-			mEdge->placeStartTo(master->getPortPos(0));
-		}
+                const QString type = "qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType;
+                
+                if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
+                {
+                        Id *edgeId = scene->createElement(type, event->scenePos());
+                        mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
+                        mEdge->placeStartTo(master->getPortPos(0));
+                }
 		if (mEdge != NULL)
 		{
 			mEdge->setSelected(true);
 			master->setSelected(false);
-			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));	//QCursor?
+                        mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));	//QCursor?
 		}
 		else
 			qDebug() << "*edge == NULL";
@@ -127,15 +176,15 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mEdge != NULL)
-		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+    if (mEdge != NULL)
+            mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	hide();
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
-	if (scene != NULL && mEdge != NULL)
+        if ((scene != NULL) && (mEdge != NULL))
 	{
 		mEdge->hide();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(event->scenePos()));
@@ -151,13 +200,11 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::changeShowState()
 {
-	qDebug() << "segmentation...";
 	QList<QGraphicsItem*> graphicsItems;
 	if (scene())
-		graphicsItems = scene()->selectedItems();
-	qDebug() << "...fault";
+	    graphicsItems = scene()->selectedItems();
 	if ((!master) || (!scene()) || (!covered) ||
-		((!graphicsItems.contains(master)) && (!graphicsItems.contains(mEdge))))
+	    ((!graphicsItems.contains(master)) && (!graphicsItems.contains(mEdge))))
 	{
 		hide();
 		return;

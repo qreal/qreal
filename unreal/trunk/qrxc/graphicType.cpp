@@ -171,8 +171,8 @@ bool GraphicType::initPossibleEdges()
                 !childElement.isNull();
                 childElement = childElement.nextSiblingElement(listElementName))
         {
-                QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
-                QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
+                QString beginName = NameNormalizer::normalize(mDiagram->name()+"::"+childElement.attribute("beginName"));
+                QString endName = NameNormalizer::normalize(mDiagram->name()+"::"+childElement.attribute("endName"));
                 QString temp = childElement.attribute("directed");
                 bool directed = false;
 
@@ -189,12 +189,13 @@ bool GraphicType::initPossibleEdges()
                 if (temp == "true")
                     directed = true;
 
-                QPair<QPair<QString,QString>,bool> possibleEdge(qMakePair(beginName,endName),directed);
+                QString edgeName = NameNormalizer::normalize(qualifiedName());
+                QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
 
                 if (!mPossibleEdges.contains(possibleEdge))
                         mPossibleEdges.append(possibleEdge);
                 else {
-                        qDebug() << "ERROR: this triad is already in list " << qualifiedName();
+                        qDebug() << "ERROR: this edge is already in list " << qualifiedName();
                         return false;
                 }
         }
@@ -280,7 +281,7 @@ bool GraphicType::resolve()
 			if (!addProperty(property->clone()))
 				return false;
 	}
-		
+
 	mResolvingFinished = true;
 	return true;
 }
@@ -406,12 +407,13 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 
     out() << "\t\tresult";
     //suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
-    typedef QPair<QPair<QString,QString>,bool> PossibleEdge;
+    typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
     foreach (PossibleEdge element, mPossibleEdges) {
         QString directed = "false";
-        if (element.second)
+        if (element.second.first)
             directed = "true";
-        out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\"))," << directed << ")";
+        out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
+                << "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
     }
     out() << ";\n";
     return true;

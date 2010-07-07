@@ -51,7 +51,10 @@ namespace UML {
 		void delEdge(EdgeElement *edge);
 
 		void setPortsVisible(bool value);
+
 		void hideEmbeddedLinkers();
+
+                bool initPossibleEdges();
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
@@ -129,9 +132,11 @@ namespace UML {
 
 		DragState mDragState;
 
-                QStringList possibleEdges;
                 QList<EmbeddedLinker*> embeddedLinkers;
-                bool initPossibleEdges();
+                typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+                QSet<PossibleEdge> possibleEdges;
+                QSet<QPair<bool,QString> > possibleEdgeTypes;
+
                 bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
 

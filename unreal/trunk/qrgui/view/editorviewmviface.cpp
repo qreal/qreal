@@ -123,6 +123,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			setItem(current, e);
 			e->updateData();
 			e->connectToPort();
+                        UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(e);
+                        if (node)
+                            node->initPossibleEdges();
 		}
 
 		if (model()->hasChildren(current)) {

@@ -6,7 +6,6 @@ class QIcon;
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
-
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
 #include "listenerManager.h"
@@ -53,6 +52,7 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<Listener *> listeners() const;
 
+                EditorInterface* getEditorInterface(QString editor) const;
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
 

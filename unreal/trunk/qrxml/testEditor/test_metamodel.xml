@@ -132,7 +132,7 @@
             <lineType type="solidLine"/>
           </graphics>
           <logic>
-            <associations endType="no_arrow" beginType="open_arrow">
+            <associations beginType="no_arrow" endType="open_arrow">
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>
@@ -149,7 +149,7 @@
             <lineType type="solidLine"/>
           </graphics>
           <logic>
-            <associations endType="open_arrow" beginType="open_arrow">
+            <associations beginType="open_arrow" endType="open_arrow">
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>

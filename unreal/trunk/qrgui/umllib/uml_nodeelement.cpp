@@ -1,6 +1,7 @@
 #include "uml_nodeelement.h"
 #include "../model/model.h"
 #include "../view/editorviewscene.h"
+#include "../../qrxml/editorInterface.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -9,6 +10,7 @@
 #include <QtGui/QToolTip>
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
+
 
 #include <math.h>
 
@@ -19,7 +21,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
 	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false)
 {
-	initPossibleEdges();
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 	mPortRenderer = new SdfRenderer();
@@ -78,7 +79,7 @@ void NodeElement::adjustLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
+        model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
 	itemModel->setData(mDataIndex, pos(), roles::positionRole);
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
@@ -218,7 +219,7 @@ void NodeElement::drawLineX(qreal pointX, qreal myY)
 		mLines.push_back(scene()->addLine(line, QPen(Qt::black, 0.25, Qt::DashLine)));
 }
 
-// checking whether we should aligh with the vertical line or not
+// checking whether we should align with the vertical line or not
 bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 {
 	if (deltaX <= radiusJump) {
@@ -229,7 +230,7 @@ bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 	return false;
 }
 
-// checking whether we should aligh with the horizontal line or not
+// checking whether we should align with the horizontal line or not
 bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 {
 	if (deltaY <= radiusJump) {
@@ -322,10 +323,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
         if (embeddedLinkers.isEmpty())
             initEmbeddedLinkers();
-        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers) {
-	    moveEmbeddedLinkers();
-            mEmbeddedLinker->setCovered(true);
-        }
+        moveEmbeddedLinkers();
+        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+            embeddedLinker->setCovered(true);
 
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -356,8 +356,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	scene()->invalidate();
-        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-                mEmbeddedLinker->setCovered(false);
+        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+            embeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 
@@ -367,11 +367,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal myY1 = scenePos().y() + boundingRect().y();
 
 			if (mSwitchGrid) {
-				int koefX = static_cast<int>(myX1) / indexGrid;
-				int koefY = static_cast<int>(myY1) / indexGrid;
+                                int coefX = static_cast<int>(myX1) / indexGrid;
+                                int coefY = static_cast<int>(myY1) / indexGrid;
 
-				makeGridMovingX(myX1, koefX, indexGrid);
-				makeGridMovingY(myY1, koefY, indexGrid);
+                                makeGridMovingX(myX1, coefX, indexGrid);
+                                makeGridMovingY(myY1, coefY, indexGrid);
 
 				myX1 = scenePos().x() + boundingRect().x();
 				myY1 = scenePos().y() + boundingRect().y();
@@ -480,8 +480,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-            mEmbeddedLinker->setCovered(true);
+        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+            embeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
@@ -518,7 +518,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 		graphicsItems.removeOne(edge);
 	    }
 	}
-	qDebug() << length;
+
 	if (length > 1) {
 	    foreach(QGraphicsItem* item, scene()->selectedItems()) {
 		UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
@@ -532,8 +532,8 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
         if (embeddedLinkers.isEmpty())
             initEmbeddedLinkers();
-        foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-            mEmbeddedLinker->setCovered(true);
+        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+            embeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -552,27 +552,61 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hideEmbeddedLinkers()
 {
-    foreach(EmbeddedLinker* mEmbeddedLinker, embeddedLinkers)
-	mEmbeddedLinker->setCovered(false);
+    foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+        embeddedLinker->setCovered(false);
 }
 
 bool NodeElement::initPossibleEdges()
 {
-    possibleEdges.append("test1");
-//    possibleEdges.append("test2");
-//    possibleEdges.append("test3");
+    if (!possibleEdges.isEmpty())
+        return true;
+    model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+    if (!itemModel)
+        return false;
+    
+    foreach(QString elementName,
+    itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
+        int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
+        if (ne == -1) {
+            QList<PossibleEdge> list
+            = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
+            foreach(PossibleEdge pEdge, list) {
+                if ((pEdge.first.first == this->uuid().element())
+                || ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
+                    possibleEdges.insert(pEdge);
+                    possibleEdgeTypes.insert(pEdge.second);
+                }
+            }
+        }
+    }
 
-    return false;
+    /**
+    qDebug() << "___________________________";
+    qDebug() << this->uuid().element();
+    if (possibleEdges.isEmpty())
+        qDebug() << "Empty list.";
+    else
+        qDebug() << "---------------------------";
+    foreach(PossibleEdge p, possibleEdges) {
+        qDebug() << p.first.first << " " << p.first.second << " " << p.second.first << " " << p.second.second;
+    }
+    qDebug() << "___________________________";
+    **/
+
+    return (!possibleEdges.isEmpty());
 }
 
 bool NodeElement::initEmbeddedLinkers()
 {    
     int counter = 0;
-    foreach(QString possibleEdge, possibleEdges) {
-        EmbeddedLinker* mEmbeddedLinker = new EmbeddedLinker();
-        mEmbeddedLinker->setMaster(this);
-        embeddedLinkers.append(mEmbeddedLinker);        
-        scene()->addItem(mEmbeddedLinker);
+    typedef QPair<bool,QString> Pair;
+    foreach(Pair type, possibleEdgeTypes) {
+        EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
+        embeddedLinker->setMaster(this);
+        embeddedLinker->setEdgeType(type.second);
+        embeddedLinker->setDirected(type.first);
+        embeddedLinkers.append(embeddedLinker);
+        scene()->addItem(embeddedLinker);
         counter++;
     }
     moveEmbeddedLinkers();
@@ -584,9 +618,9 @@ void NodeElement::moveEmbeddedLinkers()
 {
     int index = 0;
     int maxIndex = embeddedLinkers.size();
-    foreach(EmbeddedLinker* mEmbeddedLinker,embeddedLinkers)
+    foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
     {
-	mEmbeddedLinker->takePosition(index,maxIndex);
+        embeddedLinker->takePosition(index,maxIndex);
 	index++;
     }
 }

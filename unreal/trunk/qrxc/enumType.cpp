@@ -26,11 +26,11 @@ Type* EnumType::clone() const
 
 bool EnumType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
 {
-    if (mValues.isEmpty())
-            return false;
-    generateOneCase(out, isNotFirst);
-    
-    out() << "\t\tresult";
+	if (mValues.isEmpty())
+		return false;
+	generateOneCase(out, isNotFirst);
+
+	out() << "\t\tresult";
 	foreach (QString value, mValues)
 		out() << " << \"" << value << "\"";
 	out() << ";\n";	

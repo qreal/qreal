@@ -263,3 +263,8 @@ QList<Listener*> EditorManager::listeners() const
 		result.append(editor->listeners());
 	return result;
 }
+
+EditorInterface* EditorManager::getEditorInterface(QString editor) const
+{
+        return mPluginIface[editor];
+}
