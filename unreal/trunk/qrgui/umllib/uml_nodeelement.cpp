@@ -126,7 +126,7 @@ void NodeElement::resize(QRectF newContents)
 		if (curItemPos.y() < childrenMoving.y() + sizeOfForestalling)
 			childrenMoving.setY(curItemPos.y() - sizeOfForestalling);
 	}
-	setPos(pos() + childrenMoving); 
+	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
 	newContents.setTopLeft(childrenMoving);
 	newContents.moveTo(0, 0);

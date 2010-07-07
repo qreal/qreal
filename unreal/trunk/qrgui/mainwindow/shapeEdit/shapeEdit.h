@@ -1,9 +1,11 @@
 #pragma once
 
-#include <QWidget>
+#include <QtGui/QWidget>
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
+
 #include "scene.h"
+#include "item.h"
 
 namespace Ui {
 	class ShapeEdit;
@@ -12,28 +14,30 @@ namespace Ui {
 class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
-	ShapeEdit(QWidget *parent = 0);
+	explicit ShapeEdit(QWidget *parent = NULL);
 	~ShapeEdit();
 
-private slots:
-	void saveToXml();
 protected:
 	void changeEvent(QEvent *e);
 
+private slots:
+	void saveToXml();
+
 private:
 	Scene *mScene;
-	qreal mMinPictureX;
-	qreal mMaxPictureX;
-	qreal mMinPictureY;
-	qreal mMaxPictureY;
 	QGraphicsItemGroup mItemGroup;
 	QDomDocument mDocument;
-	Ui::ShapeEdit *ui;
+	QPointF mTopLeftPicture;
+	Ui::ShapeEdit *mUi;
+
 	void exportToXml(QString const &fileName);
 	QDomElement generatePicture();
-	QDomElement generateLine(QGraphicsLineItem* item);
-	QDomElement generateEllipse(QGraphicsEllipseItem* item);
-	QDomElement generateArch(Arch* item);
-	QDomElement setPenBrush(QString const &domName, QPen pen);
-	void setXandY(QDomElement& dom, qreal x1, qreal y1, qreal x2, qreal y2);
+	QDomElement generateLine(Line *item);
+	QDomElement generateEllipse(Ellipse *item);
+	QDomElement generateArch(Arch *item);
+	QDomElement generateRectangle(Rectangle *item);
+	QRectF sceneBoundingRectCoord(Item *item);
+
+	QDomElement setPenBrush(QString const &domName, QPen const &pen, QBrush const &brush);
+	static void setXandY(QDomElement& dom, QRectF const &rect);
 };

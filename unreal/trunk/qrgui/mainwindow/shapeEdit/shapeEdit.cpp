@@ -1,36 +1,33 @@
 #include "shapeEdit.h"
+
 #include "ui_shapeEdit.h"
 #include "../../../utils/outFile.h"
 
 #include <QtGui/QFileDialog>
-#include <QGraphicsItem>
+#include <QtGui/QGraphicsItem>
 
 using namespace utils;
 
 ShapeEdit::ShapeEdit(QWidget *parent) :
 		QWidget(parent),
-		ui(new Ui::ShapeEdit)
+		mUi(new Ui::ShapeEdit)
 {
-	ui->setupUi(this);
+	mUi->setupUi(this);
 
 	mScene = new Scene(this);
-	ui->graphicsView->setScene(mScene);
+	mUi->graphicsView->setScene(mScene);
 
-	mMinPictureX = mScene->itemsBoundingRect().width();
-	mMaxPictureX = mScene->itemsBoundingRect().x();
-	mMinPictureY = mScene->itemsBoundingRect().height();
-	mMaxPictureY = mScene->itemsBoundingRect().y();
-
-	connect(ui->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
-	connect(ui->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
-	connect(ui->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
-	connect(ui->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
-	connect(ui->saveButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
+	connect(mUi->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
+	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
+	connect(mUi->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
+	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
+	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
+	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 }
 
 ShapeEdit::~ShapeEdit()
 {
-	delete ui;
+	delete mUi;
 }
 
 void ShapeEdit::changeEvent(QEvent *e)
@@ -38,107 +35,123 @@ void ShapeEdit::changeEvent(QEvent *e)
 	QWidget::changeEvent(e);
 	switch (e->type()) {
 	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
+		mUi->retranslateUi(this);
 		break;
 	default:
 		break;
 	}
 }
 
-void ShapeEdit::setXandY(QDomElement& dom, qreal x1, qreal y1, qreal x2, qreal y2)
+void ShapeEdit::setXandY(QDomElement& dom, QRectF const &rect)
 {
-	mMaxPictureX = qMax(qMax(x1, x2), mMaxPictureX);
-	mMaxPictureY = qMax(qMax(y1, y2), mMaxPictureY);
-	mMinPictureX = qMin(qMin(x1, x2), mMinPictureX);
-	mMinPictureY = qMin(qMin(y1, y2), mMinPictureY);
-
-	dom.setAttribute("y1", y1);
-	dom.setAttribute("x1", x1);
-	dom.setAttribute("y2", y2);
-	dom.setAttribute("x2", x2);
+	dom.setAttribute("y1", rect.top());
+	dom.setAttribute("x1", rect.left());
+	dom.setAttribute("y2", rect.bottom());
+	dom.setAttribute("x2", rect.right());
 }
 
-QDomElement ShapeEdit::setPenBrush(QString const &domName, QPen pen)
+QDomElement ShapeEdit::setPenBrush(QString const &domName, QPen const &pen, QBrush const &brush)
 {
 	QDomElement dom = mDocument.createElement(domName);
-	dom.setAttribute("fill", pen.brush().color().name());
+	dom.setAttribute("fill", brush.color().name());
 
-	if (pen.brush().style() == Qt::NoBrush)
+	if (brush.style() == Qt::NoBrush)
 		dom.setAttribute("fill-style", "none");
-	if (pen.brush().style() == Qt::SolidPattern)
+	if (brush.style() == Qt::SolidPattern)
 		dom.setAttribute("fill-style", "solid");
 
 	dom.setAttribute("stroke", pen.color().name());
 
 	dom.setAttribute("stroke-width", pen.width());
 
-	if (pen.style() == Qt::SolidLine)
-		dom.setAttribute("stroke-style", "solid");
-	if (pen.style() == Qt::DotLine)
-		dom.setAttribute("stroke-style", "dot");
-	if (pen.style() == Qt::DashLine)
-		dom.setAttribute("stroke-style", "dash");
-	if (pen.style() == Qt::DashDotLine)
-		dom.setAttribute("stroke-style", "dashdot");
-	if (pen.style() == Qt::DashDotDotLine)
-		dom.setAttribute("stroke-style", "dashdotdot");
-	if (pen.style() == Qt::NoPen)
-		dom.setAttribute("stroke-style", "none");
+	QString penStyle;
+	switch (pen.style()) {
+	case Qt::SolidLine:
+		penStyle = "solid";
+		break;
+	case Qt::DotLine:
+		penStyle = "dot";
+		break;
+	case Qt::DashLine:
+		penStyle = "dash";
+		break;
+	case Qt::DashDotLine:
+		penStyle =  "dashdot";
+		break;
+	case Qt::DashDotDotLine:
+		penStyle = "dashdotdot";
+		break;
+	case Qt::NoPen:
+		penStyle = "none";
+		break;
+	default:
+		break;
+	}
+	dom.setAttribute("stroke-style", penStyle);
 
 	return dom;
 }
 
-QDomElement ShapeEdit::generateLine(QGraphicsLineItem* item)
+QRectF ShapeEdit::sceneBoundingRectCoord(Item *item)
 {
-	qreal x1 = item->line().x1();
-	qreal y1 = item->line().y1();
-	qreal x2 = item->line().x2();
-	qreal y2 = item->line().y2();
+	qreal const x1 = item->scenePos().x() + item->boundingRect().x() - mTopLeftPicture.x();
+	qreal const y1 = item->scenePos().y() + item->boundingRect().y() - mTopLeftPicture.y();
+	return QRectF(x1, y1, item->boundingRect().width(), item->boundingRect().height());
+}
 
-	QDomElement line = setPenBrush("line", item->pen());
-	setXandY(line, x1, y1, x2, y2);
+QDomElement ShapeEdit::generateLine(Line* item)
+{
+	qreal const x1 = item->scenePos().x() + item->line().x1() - mTopLeftPicture.x();
+	qreal const y1 = item->scenePos().y() + item->line().y1() - mTopLeftPicture.y();
+	qreal const x2 = item->scenePos().x() + item->line().x2() - mTopLeftPicture.x();
+	qreal const y2 = item->scenePos().y() + item->line().y2() - mTopLeftPicture.y();
+
+	QDomElement line = setPenBrush("line", item->pen(), item->pen().brush());
+	setXandY(line, QRectF(x1, y1, x2 - x1, y2 - y1));
 
 	return line;
 }
 
-QDomElement ShapeEdit::generateEllipse(QGraphicsEllipseItem* item)
+QDomElement ShapeEdit::generateEllipse(Ellipse* item)
 {
-	qreal x1 = item->boundingRect().x();
-	qreal y1 = item->boundingRect().y();
-	qreal x2 = item->boundingRect().x() + item->boundingRect().width();
-	qreal y2 = item->boundingRect().y() + item->boundingRect().height();
-
-	QDomElement ellipse = setPenBrush("ellipse", item->pen());
-	setXandY(ellipse, x1, y1, x2, y2);
+	QDomElement ellipse = setPenBrush("ellipse", item->pen(), item->brush());
+	setXandY(ellipse, sceneBoundingRectCoord(item));
 
 	return ellipse;
 }
 
 QDomElement ShapeEdit::generateArch(Arch* item)
 {
-	qreal x1 = item->boundingRect().x();
-	qreal y1 = item->boundingRect().y();
-	qreal x2 = item->boundingRect().x() + item->boundingRect().width();
-	qreal y2 = item->boundingRect().y() + item->boundingRect().height();
-
 	QDomElement arch = mDocument.createElement("arch");
 	arch.setAttribute("startAngle", item->startAngle());
 	arch.setAttribute("spanAngle", item->spanAngle());
-	setXandY(arch, x1, y1, x2, y2);
+	setXandY(arch, sceneBoundingRectCoord(item));
 
 	return arch;
+}
+
+QDomElement ShapeEdit::generateRectangle(Rectangle* item)
+{
+	QDomElement rectangle = setPenBrush("rectangle", item->pen(), item->brush());
+	setXandY(rectangle, sceneBoundingRectCoord(item));
+
+	return rectangle;
 }
 
 QDomElement ShapeEdit::generatePicture()
 {
 	QDomElement picture = mDocument.createElement("picture");
 
+	mScene->removeItem(mScene->mEmptyRect);
+	mTopLeftPicture = mScene->itemsBoundingRect().topLeft();
+
 	QList<QGraphicsItem *> list = mScene->items();
 	foreach (QGraphicsItem *graphicsItem, list) {
 
-		QGraphicsLineItem* lineItem = dynamic_cast<QGraphicsLineItem*>(graphicsItem);
-		QGraphicsEllipseItem* ellipseItem = dynamic_cast<QGraphicsEllipseItem*>(graphicsItem);
+		Line* lineItem = dynamic_cast<Line*>(graphicsItem);
+		Ellipse* ellipseItem = dynamic_cast<Ellipse*>(graphicsItem);
 		Arch* archItem = dynamic_cast<Arch*>(graphicsItem);
+		Rectangle* rectangleItem = dynamic_cast<Rectangle*>(graphicsItem);
 
 		if (lineItem != NULL) {
 			QDomElement line = generateLine(lineItem);
@@ -146,15 +159,18 @@ QDomElement ShapeEdit::generatePicture()
 		}  else if (archItem != NULL) {
 			QDomElement arch = generateArch(archItem);
 			picture.appendChild(arch);
-		} else if (ellipseItem != NULL && ellipseItem->children().isEmpty()) {
+		} else if (ellipseItem != NULL) {
 			QDomElement ellipse = generateEllipse(ellipseItem);
 			picture.appendChild(ellipse);
+		} else if (rectangleItem != NULL) {
+			QDomElement rectangle = generateRectangle(rectangleItem);
+			picture.appendChild(rectangle);
 		} else
 			continue;
 	}
 
-	picture.setAttribute("sizex", mMaxPictureX - mMinPictureX);
-	picture.setAttribute("sizey", mMaxPictureY - mMinPictureY);
+	picture.setAttribute("sizex", static_cast<int>(mScene->itemsBoundingRect().width()));
+	picture.setAttribute("sizey", static_cast<int>(mScene->itemsBoundingRect().height()));
 
 	return picture;
 }
@@ -175,11 +191,6 @@ void ShapeEdit::exportToXml(QString const &fileName)
 void ShapeEdit::saveToXml()
 {
 	mDocument.clear();
-	mMinPictureX = mScene->itemsBoundingRect().x() + mScene->itemsBoundingRect().width();
-	mMaxPictureX = mScene->itemsBoundingRect().x();
-	mMinPictureY = mScene->itemsBoundingRect().y() + mScene->itemsBoundingRect().height();
-	mMaxPictureY = mScene->itemsBoundingRect().y();
-
 	QString fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty())
 		return;
