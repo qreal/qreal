@@ -21,7 +21,7 @@ if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-# Путь до библиотеки с АПИ. Где-нибудь она найдётся...
+# Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
 LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo
 
 # Graphical elements
