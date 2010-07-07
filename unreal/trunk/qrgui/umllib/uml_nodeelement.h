@@ -54,7 +54,7 @@ namespace UML {
 
 		void hideEmbeddedLinkers();
 
-                bool initPossibleEdges();
+		virtual bool initPossibleEdges();
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
 

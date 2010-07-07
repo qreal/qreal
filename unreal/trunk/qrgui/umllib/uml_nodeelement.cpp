@@ -79,7 +79,7 @@ void NodeElement::adjustLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-        model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
+	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
 	itemModel->setData(mDataIndex, pos(), roles::positionRole);
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
@@ -566,71 +566,64 @@ void NodeElement::hideEmbeddedLinkers()
 
 bool NodeElement::initPossibleEdges()
 {
-    if (!possibleEdges.isEmpty())
-        return true;
-    model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-    if (!itemModel)
-        return false;
-    
-    foreach(QString elementName,
-    itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
-        int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
-        if (ne == -1) {
-            QList<PossibleEdge> list
-            = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
-            foreach(PossibleEdge pEdge, list) {
-                if ((pEdge.first.first == this->uuid().element())
-                || ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
-                    possibleEdges.insert(pEdge);
-                    possibleEdgeTypes.insert(pEdge.second);
-                }
-            }
-        }
-    }
+	if (!possibleEdges.isEmpty())
+		return true;
+	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+	if (!itemModel)
+		return false;
 
-    /**
-    qDebug() << "___________________________";
-    qDebug() << this->uuid().element();
-    if (possibleEdges.isEmpty())
-        qDebug() << "Empty list.";
-    else
-        qDebug() << "---------------------------";
-    foreach(PossibleEdge p, possibleEdges) {
-        qDebug() << p.first.first << " " << p.first.second << " " << p.second.first << " " << p.second.second;
-    }
-    qDebug() << "___________________________";
-    **/
+	foreach(QString elementName,
+	itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
+		int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
+		if (ne == -1) {
+			QList<PossibleEdge> list
+			= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
+			foreach(PossibleEdge pEdge, list) {
+				if ((pEdge.first.first == this->uuid().element())
+				|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
+					possibleEdges.insert(pEdge);
+					possibleEdgeTypes.insert(pEdge.second);
+				}
+			}
+		}
+	}
 
-    return (!possibleEdges.isEmpty());
+	return (!possibleEdges.isEmpty());
 }
 
 bool NodeElement::initEmbeddedLinkers()
-{    
-    int counter = 0;
-    typedef QPair<bool,QString> Pair;
-    foreach(Pair type, possibleEdgeTypes) {
-        EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
-        embeddedLinker->setMaster(this);
-        embeddedLinker->setEdgeType(type.second);
-        embeddedLinker->setDirected(type.first);
-        embeddedLinkers.append(embeddedLinker);
-        scene()->addItem(embeddedLinker);
-        counter++;
-    }
-    moveEmbeddedLinkers();
+{
+	int counter = 0;
+	typedef QPair<bool,QString> Pair;
+	QSet<QString> usedEdges;
+	foreach(Pair type, possibleEdgeTypes) {
+		if (usedEdges.contains(type.second))
+			continue;
+		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
+		scene()->addItem(embeddedLinker);
+		embeddedLinker->setEdgeType(type.second);
+		embeddedLinker->setDirected(type.first);
+		embeddedLinkers.append(embeddedLinker);
+		embeddedLinker->setMaster(this);
+		usedEdges.insert(type.second);
+		counter++;
+	}
+	moveEmbeddedLinkers();
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->initTitle();
 
-    return (counter > 0);
+	return (counter > 0);
 }
 
 void NodeElement::moveEmbeddedLinkers()
 {
-    int index = 0;
-    int maxIndex = embeddedLinkers.size();
-    foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-    {
-        embeddedLinker->takePosition(index,maxIndex);
+	int index = 0;
+	int maxIndex = embeddedLinkers.size();
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	{
+		embeddedLinker->takePosition(index,maxIndex);
 	index++;
-    }
+	}
 }
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)

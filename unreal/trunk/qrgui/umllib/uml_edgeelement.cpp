@@ -6,14 +6,14 @@
 #include <QtGui/QTextDocument>
 #include <QtGui/QMenu>
 #include <QtCore/QSettings>
+#include <QDebug>
 #include <math.h>
 
-#include "../view/editorviewscene.h"
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
 #include "../model/model.h"
-
-#include <QDebug>
+#include "../view/editorviewscene.h"
+#include "../../qrxml/editorInterface.h"
 
 using namespace UML;
 using namespace qReal;
@@ -295,6 +295,18 @@ void EdgeElement::connectToPort()
 	adjustLink();
 }
 
+bool EdgeElement::initPossibleEdges()
+{
+	if (!possibleEdges.isEmpty())
+		return true;
+	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+	if (!itemModel)
+		return false;
+	possibleEdges = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(uuid().element());
+
+	return (!possibleEdges.isEmpty());
+}
+
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	NodeElement *new_src = getNodeAt(mLine.first());
@@ -418,6 +430,11 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions()
 	result.push_back(&mDelPointAction);
 	result.push_back(&mSquarizeAction);
 	return result;
+}
+
+QList<PossibleEdge> EdgeElement::getPossibleEdges()
+{
+	return possibleEdges;
 }
 
 void EdgeElement::delPointHandler(QPointF const &pos)

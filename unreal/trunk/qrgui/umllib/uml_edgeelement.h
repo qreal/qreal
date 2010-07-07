@@ -1,9 +1,13 @@
 #pragma once
 
+#include <QList>
+#include <QPair>
+
 #include "uml_element.h"
 #include "elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
+typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
 
 namespace UML {
 	enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
@@ -24,7 +28,9 @@ namespace UML {
 			virtual QRectF boundingRect() const;
 			QPainterPath shape() const;
 			virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
-		
+
+			virtual bool initPossibleEdges();
+
 			void adjustLink();
 			void removeLink(UML::NodeElement const *from);
 
@@ -35,6 +41,7 @@ namespace UML {
 
 			virtual QList<ContextMenuAction*> contextMenuActions();
 
+			QList<PossibleEdge> getPossibleEdges();
 		protected:
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -54,6 +61,8 @@ namespace UML {
 			void delPointHandler(QPointF const &pos);
 			void squarizeHandler(QPointF const &pos);
 		private:
+
+			QList<PossibleEdge> possibleEdges;
 
 			int getPoint(const QPointF &location);
 			NodeElement *getNodeAt(const QPointF &position);

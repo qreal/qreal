@@ -109,6 +109,36 @@
             </generalizations>
           </logic>
         </node>
+	<node displayedName="Node04" name="Node04">
+		<graphics>
+			<picture sizex="20" sizey="20">
+				<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
+			</picture>
+			<ports>
+				<linePort>
+					<start startx="0" starty="0"/>
+					<end endx="0" endy="20"/>
+				</linePort>
+				<linePort>
+					<start startx="20" starty="0"/>
+					<end endx="20" endy="20"/>
+				</linePort>
+				<linePort>
+					<start startx="0" starty="0"/>
+					<end endx="20" endy="0"/>
+				</linePort>
+				<linePort>
+					<start startx="0" starty="20"/>
+					<end endx="20" endy="20"/>
+				</linePort>
+			</ports>
+		</graphics>
+		<logic>
+			<generalizations>
+				<parent parentName="Kernel::Element"/>
+			</generalizations>
+		</logic>
+        </node>	
 
         <edge displayedName="Edge00" name="Edge00">
           <graphics>
@@ -124,6 +154,7 @@
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="false"/>
 			<possibleEdge beginName="Node01" endName="Node03" directed="false"/>
+			<possibleEdge beginName="Node04" endName="Node01" directed="true"/>
 		</possibleEdges>
           </logic>
         </edge>
@@ -141,6 +172,7 @@
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="true"/>
 			<possibleEdge beginName="Node01" endName="Node03" directed="true"/>
+			<possibleEdge beginName="Node04" endName="Node01" directed="true"/>
 		</possibleEdges>
           </logic>
         </edge>
@@ -157,10 +189,44 @@
             </generalizations>
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="false"/>
+			<possibleEdge beginName="Node04" endName="Node01" directed="true"/>
 		</possibleEdges>
           </logic>
         </edge>
-
+	<edge displayedName="EdgeAB" name="EdgeAB">
+		<graphics>
+			<lineType type="solidLine"/>
+		</graphics>
+		<logic>
+			<associations beginType="open_arrow" endType="close_arrow">
+				<association beginName="Constraint" endName="Activity"/>
+			</associations>
+			<generalizations>
+				<parent parentName="Kernel::Relationship"/>
+			</generalizations>
+			<possibleEdges>
+				<possibleEdge beginName="Node04" endName="Node01" directed="true"/>
+			</possibleEdges>
+		</logic>
+        </edge>
+	<edge displayedName="EdgeBB" name="EdgeBB">
+		<graphics>
+			<lineType type="solidLine"/>
+		</graphics>
+		<logic>
+			<associations beginType="close_arrow" endType="close_arrow">
+				<association beginName="Constraint" endName="Activity"/>
+			</associations>
+			<generalizations>
+				<parent parentName="Kernel::Relationship"/>
+			</generalizations>
+			<possibleEdges>
+				<possibleEdge beginName="Node04" endName="Node01" directed="true"/>
+				<possibleEdge beginName="Node04" endName="EdgeBB" directed="false"/>
+			</possibleEdges>
+		</logic>
+        </edge>	
+	
       </graphicTypes>
     </diagram>
   </metamodel>

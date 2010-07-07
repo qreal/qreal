@@ -33,6 +33,8 @@ namespace UML {
 		virtual void connectToPort() { }
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
+		virtual bool initPossibleEdges() = 0;
+
 		// for inline editing we should be able to change properties value. right now via graphical 
 		// representation. also labels could store indices and get data themselves
 		virtual void setRoleValueByName(QString const &roleName, QString const &value);

@@ -27,7 +27,7 @@ public:
 	void clearScene();
 
 
-	virtual bool launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos);
+	virtual bool launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
@@ -55,7 +55,7 @@ protected:
 
 	void mousePressEvent( QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent ( QGraphicsSceneMouseEvent * mouseEvent );
-        void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
+	void mouseMoveEvent (QGraphicsSceneMouseEvent *event);
 
 	void mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event);
 
@@ -64,7 +64,7 @@ protected:
 private:
 
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
-        void initMouseMoveMan();
+	void initMouseMoveMan();
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	UML::Element *getElemAt(const QPointF &position);

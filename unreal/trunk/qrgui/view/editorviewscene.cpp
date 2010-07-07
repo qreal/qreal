@@ -139,10 +139,9 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	createElement(event->mimeData(),event->scenePos());
 }
 
-bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
+bool EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos)
 {
 	bool edgeDeleted = false;
-	qDebug() << "---launchEdgeMenu() begin";
 	edge->setSelected(true);
 
 	QList<QObject*> toDelete;
@@ -158,27 +157,22 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	toDelete.append(menuSignalMapper);
-	foreach(Id editorId, mWindow->manager()->editors())
-	{
-		qDebug() << "editor: " << editorId.editor();
-		QMenu *editor = new QMenu(editorId.editor(), createElemMenu);
-		toDelete.append(editor);
-		foreach(Id diagramId, mWindow->manager()->diagrams(editorId))
-		{
-			QMenu *diagram = new QMenu(diagramId.diagram(), editor);
-			toDelete.append(diagram);
-			foreach(Id elementId, mWindow->manager()->elements(diagramId))
-			{
-				QAction *element = new QAction(elementId.element(), diagram);
-				diagram->addAction(element);
-				toDelete.append(element);
 
-				QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-				menuSignalMapper->setMapping(element, elementId.toString());
-			}
-			editor->addMenu(diagram);
-		}
-		createElemMenu->addMenu(editor);
+	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
+	{
+		qDebug() << pEdge.first.first << " - " << pEdge.first.second << " | " << pEdge.second.first;
+		QString target;
+		if (pEdge.first.first == node->uuid().element())
+			target = pEdge.first.second;
+		else if ((pEdge.first.second == node->uuid().element()) && (!pEdge.second.first))
+			target = pEdge.first.first;
+		else continue;
+
+		QAction* element = new QAction(pEdge.first.second,createElemMenu);
+		createElemMenu->addAction(element);
+		toDelete.append(element);
+		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
+		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target);
 	}
 
 	mCreatePoint = scenePos;
@@ -188,17 +182,13 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement *edge, QPointF scenePos)
 	QPoint cursorPos = QCursor::pos();
 	executed = edgeMenu->exec(cursorPos);
 
-	if ((executed != NULL) && (executed == mWindow->ui.actionDeleteFromDiagram)) {
-		qDebug() << "executed: " << executed->text();
-                edgeDeleted = true;
-	} else
-		qDebug() << "executed: nothing";
+	if ((executed != NULL) && (executed == mWindow->ui.actionDeleteFromDiagram))
+			edgeDeleted = true;
 
 	//	Cleaning.
 	//	foreach(QObject *object, toDelete)
 	//		delete object;
 
-	qDebug() << "---launchEdgeMenu() end";
 	return edgeDeleted;
 }
 

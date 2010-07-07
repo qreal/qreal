@@ -113,7 +113,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		if (uuid == ROOT_ID)
 			continue;
 
-		UML::Element *e = mScene->mainWindow()->manager()->graphicalObject(uuid);
+		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		if (e) {
 			e->setIndex(current);
 			if (parent_uuid != Id() && item(parent) != NULL)
@@ -123,9 +123,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			setItem(current, e);
 			e->updateData();
 			e->connectToPort();
-                        UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(e);
-                        if (node)
-                            node->initPossibleEdges();
+			e->initPossibleEdges();
 		}
 
 		if (model()->hasChildren(current)) {
