@@ -154,9 +154,8 @@ void changeAssociations(QDomNode &node)
 	}
 }
 
-void changeEndBeginType(QDomNode &node, QDomElement &enode, QString const &str)
+QDomNodeList changeEndBeginType(QDomNode &node)
 {
-	QString attrType = enode.attribute("type");
 	QDomNode nodeParent = node.parentNode();
 	QDomNode nextSibling = node.nextSibling();
 	nodeParent.removeChild(node);
@@ -166,10 +165,28 @@ void changeEndBeginType(QDomNode &node, QDomElement &enode, QString const &str)
 	QDomNodeList listLog = enParentParent.elementsByTagName("logic");
 	QDomElement eParentLog = listLog.item(0).toElement();
 	QDomNodeList listAsso = eParentLog.elementsByTagName("associations");
-	listAsso.item(0).toElement().setAttribute(str, attrType);
+	return listAsso;
 }
 
-void bypass(QDomNode node, QDomDocument &doc)
+void changeEndType(QDomNode &node, QDomElement &enode)
+{
+
+	QDomNodeList listAsso = changeEndBeginType(node);
+	QString attrEndType = enode.attribute("type");
+	listAsso.item(0).toElement().setAttribute("endType", attrEndType);
+	if (!listAsso.item(0).toElement().hasAttribute("beginType"))
+		listAsso.item(0).toElement().setAttribute("beginType", "no_arrow");
+}
+void changeBeginType(QDomNode &node, QDomElement &enode)
+{
+	QDomNodeList listAsso = changeEndBeginType(node);
+	QString attrBeginType = enode.attribute("type");
+	listAsso.item(0).toElement().setAttribute("beginType", attrBeginType);
+	if (!listAsso.item(0).toElement().hasAttribute("endType"))
+		listAsso.item(0).toElement().setAttribute("endType", "no_arrow");
+}
+
+void bypass(QDomNode &node, QDomDocument &doc)
 {
 	QDomElement enode = node.toElement();
 	if (enode.isNull())
@@ -194,12 +211,17 @@ void bypass(QDomNode node, QDomDocument &doc)
 		changeInclude(node);
 	else if (enode.tagName() == "containers")
 		changeContainers(node, enode, doc);
-	else if (enode.tagName() == "associations")
+	else if (enode.tagName() == "associations")  {
 		changeAssociations(node);
+		QDomElement enodeChild = doc.createElement("association");
+		enodeChild.setAttribute("beginName", "Element");
+		enodeChild.setAttribute("endName", "Element");
+		enode.appendChild(enodeChild);
+	}
 	else if (enode.tagName() == "end_type")
-		changeEndBeginType(node, enode, "endType");
+		changeEndType(node, enode);
 	else if (enode.tagName() == "begin_type")
-		changeEndBeginType(node, enode, "beginType");
+		changeBeginType(node, enode);
 
 	QDomNode child = node.firstChild();
 	while(!child.isNull()) {
@@ -209,7 +231,7 @@ void bypass(QDomNode node, QDomDocument &doc)
 	}
 }
 
-void getId(QDomNode node, QDomDocument &doc, QDomDocument &docId, QList<QString> &listId, QDomNode &rootId)
+void getId(QDomNode &node, QDomDocument &doc, QDomDocument &docId, QList<QString> &listId, QDomNode &rootId)
 {
 	QDomElement enode = node.toElement();
 	if (enode.isNull())
@@ -233,19 +255,19 @@ void getId(QDomNode node, QDomDocument &doc, QDomDocument &docId, QList<QString>
 	}
 }
 
-void map(QDomNode node, QMap<QString, QString> &mapId)
+void map(QDomNode &node, QMap<QString, QString> &mapId)
 {
 	QDomElement e = node.toElement();
 	mapId.insert(e.attribute("was"), e.attribute("now"));
-	QDomNode neighbor = node.nextSibling();
-	while (!neighbor.isNull()) {
-		QDomNode neighborSibling = neighbor.nextSibling();
-		map(neighbor, mapId);
-		neighbor = neighborSibling;
+	QDomNode child = node.firstChild();
+	while (!child.isNull()) {
+		QDomNode childSibling = child.nextSibling();
+		map(child, mapId);
+		child = childSibling;
 	}
 }
 
-void changeId(QDomNode node, QMap<QString, QString> &mapId)
+void changeId(QDomNode &node, QMap<QString, QString> &mapId)
 {
 	QDomElement e = node.toElement();
 	if (e.isNull())
