@@ -19,7 +19,8 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
-	mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false)
+		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
+		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -88,7 +89,7 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 {
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem) {
+		if (curItem && !curItem->getPortStatus()) {
 			curItem->moveBy(dx, dy);
 			///returns object to the parent area
 			if (curItem->pos().x() < sizeOfForestalling)
@@ -116,7 +117,9 @@ void NodeElement::resize(QRectF newContents)
 	QPointF childrenMoving = QPointF(0, 0);
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem)
+		if (curItem && (curItem->getPortStatus()))
+			curItem->resizeChild(newContents, mContents);
+		if (!curItem || curItem->getPortStatus())
 			continue;
 
 		QPointF curItemPos = curItem->pos();
@@ -133,7 +136,7 @@ void NodeElement::resize(QRectF newContents)
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem)
+		if (!curItem || curItem->getPortStatus())
 			continue;
 
 		QRectF curChildItemBoundingRect = curItem->mContents;
@@ -324,11 +327,11 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-        if (embeddedLinkers.isEmpty())
-            initEmbeddedLinkers();
-        moveEmbeddedLinkers();
-        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-            embeddedLinker->setCovered(true);
+		if (embeddedLinkers.isEmpty())
+			initEmbeddedLinkers();
+		moveEmbeddedLinkers();
+		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+			embeddedLinker->setCovered(true);
 
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -339,7 +342,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mDragState = BottomRight;
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos()) 
+		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos())
 				&& this->mElementImpl->isContainer())
 			changeFoldState();
 		else
@@ -351,14 +354,16 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (event->button() == Qt::RightButton)
 		event->accept();
 
+	mLeftPressed = true;
+
 	setZValue(1);
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	scene()->invalidate();
-        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-            embeddedLinker->setCovered(false);
+		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+			embeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 
@@ -368,11 +373,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal myY1 = scenePos().y() + boundingRect().y();
 
 			if (mSwitchGrid) {
-                                int coefX = static_cast<int>(myX1) / indexGrid;
-                                int coefY = static_cast<int>(myY1) / indexGrid;
+								int coefX = static_cast<int>(myX1) / indexGrid;
+								int coefY = static_cast<int>(myY1) / indexGrid;
 
-                                makeGridMovingX(myX1, coefX, indexGrid);
-                                makeGridMovingY(myY1, coefY, indexGrid);
+								makeGridMovingX(myX1, coefX, indexGrid);
+								makeGridMovingY(myY1, coefY, indexGrid);
 
 				myX1 = scenePos().x() + boundingRect().x();
 				myY1 = scenePos().y() + boundingRect().y();
@@ -472,7 +477,109 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		resize(newContents);
 	}
-}
+		if (getPortStatus())
+		{
+			if (mLeftPressed)
+			{
+				if (mPos == QPointF(0,0))
+					mPos = this->pos();
+				QGraphicsItem* item = NULL;
+				QPointF position = event->scenePos();
+				QGraphicsScene* sc = this->scene();
+				item = sc->items(position).value(1);
+				NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
+				QPointF posInItem = QPointF(0,0);
+				if (actionItem && ((actionItem == mParentNodeElement) || (!mParentNodeElement)))
+				{
+					if (actionItem->getHavePortStatus())
+					{
+						double xHor = actionItem->getXHor();
+						double xVert = actionItem->getXVert();
+						double yHor = actionItem->getYHor();
+						double yVert = actionItem->getYVert();
+						posInItem = actionItem->mapFromScene(position);
+						if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
+							|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
+							{
+							this->setParentItem(actionItem);
+							mParentNodeElement = actionItem;
+							mPos = this->pos();
+							if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor))
+								inHor = true;
+							else
+								inHor = false;
+						}
+						else
+						{
+							if (inHor)
+							{
+								if (actionItem->isNoBorderY(posInItem, xHor, yHor))
+								{
+									double x = posInItem.x();
+									double y = mPos.y();
+									mPos = QPointF(x,y);
+									setPos(mPos);
+								}
+								else
+									setPos(mPos);
+							}
+							else
+							{
+								if (actionItem->isNoBorderX(posInItem, xVert, yVert))
+								{
+									double x = mPos.x();
+									double y = posInItem.y();
+									mPos = QPointF(x,y);
+									setPos(mPos);
+								}
+								else
+									setPos(mPos);
+							}
+						}
+					}
+				}
+				else
+				{
+					if ((mParentNodeElement) && (mParentNodeElement->getHavePortStatus()))
+					{
+						setPos(mPos);
+						if (mParentNodeElement)
+						{
+							posInItem = mParentNodeElement->mapFromScene(position);
+							double xHor = mParentNodeElement->getXHor();
+							double xVert = mParentNodeElement->getXVert();
+							double yHor = mParentNodeElement->getYHor();
+							double yVert = mParentNodeElement->getYVert();
+							if (inHor)
+							{
+								if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
+								{
+									double x = posInItem.x();
+									double y = mPos.y();
+									mPos = QPointF(x,y);
+									setPos(mPos);
+								}
+								else
+									setPos(mPos);
+							}
+							else
+							{
+								if (mParentNodeElement->isNoBorderX(posInItem, xVert, yVert))
+								{
+									double x = mPos.x();
+									double y = posInItem.y();
+									mPos = QPointF(x,y);
+									setPos(mPos);
+								}
+								else
+									setPos(mPos);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -486,28 +593,31 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	//
 
 	moveEmbeddedLinkers();
-        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-            embeddedLinker->setCovered(true);
+		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+			embeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
-	NodeElement *newParent = getNodeAt(event->scenePos());
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (newParent) {
-		itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-			mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+	if (!getPortStatus())
+	{
+		NodeElement *newParent = getNodeAt(event->scenePos());
+		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+		if (newParent) {
+			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+				mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 
-		newParent->resize(newParent->mContents);
+			newParent->resize(newParent->mContents);
 
-		while (newParent) {
-			newParent->mContents = newParent->mContents.normalized();
-			newParent->storeGeometry();
-			newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
-		}
-	} else
-		itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+			while (newParent) {
+				newParent->mContents = newParent->mContents.normalized();
+				newParent->storeGeometry();
+				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
+			}
+		} else
+			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+	}
 
 	mDragState = None;
 	setZValue(0);
@@ -518,33 +628,33 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 	QList<QGraphicsItem*> graphicsItems = scene()->selectedItems();
 	int length = graphicsItems.size();
 	foreach(QGraphicsItem* item, graphicsItems) {
-	    UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
-	    if (edge) {
+		UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+		if (edge) {
 		length--;
 		graphicsItems.removeOne(edge);
-	    }
+		}
 	}
 
 	if (length > 1) {
-	    foreach(QGraphicsItem* item, scene()->selectedItems()) {
+		foreach(QGraphicsItem* item, scene()->selectedItems()) {
 		UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
 		if (node)
-		    node->hideEmbeddedLinkers();
-	    }
+			node->hideEmbeddedLinkers();
+		}
 	}
-        Q_UNUSED(event);
+		Q_UNUSED(event);
 	if (!isSelected())
 		return;
 
-        if (embeddedLinkers.isEmpty())
-            initEmbeddedLinkers();
-        foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-            embeddedLinker->setCovered(true);
+		if (embeddedLinkers.isEmpty())
+			initEmbeddedLinkers();
+		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+			embeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
-        Q_UNUSED(event);
+		Q_UNUSED(event);
 }
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -558,8 +668,8 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hideEmbeddedLinkers()
 {
-    foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-        embeddedLinker->setCovered(false);
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(false);
 }
 
 bool NodeElement::initPossibleEdges()
@@ -880,7 +990,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			b.setStyle(Qt::SolidPattern);
 			painter->setBrush(b);
 			painter->setPen(Qt::green);
-			
+
 			if (mElementImpl->isContainer())
 				painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(20, -20)));
 
@@ -926,7 +1036,7 @@ void NodeElement::switchGrid()
 void NodeElement::changeFoldState()
 {
 	mIsFolded = !mIsFolded;
-	
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
@@ -951,7 +1061,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 	foreach (EdgeElement *curEdge, mEdgeList) {
 		curEdge->setVisible(isVisible);
 	}
-	
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
@@ -964,7 +1074,7 @@ void NodeElement::sortChildren()
 {
 	qreal curChildY = sizeOfForestalling;
 	qreal maxChildrenWidth = 0;
-	
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
@@ -983,4 +1093,137 @@ void NodeElement::sortChildren()
 	QRectF newContents(pos(), maxChildrenWidth + 2 * sizeOfForestalling, curChildPosition.y() + sizeOfForestalling);
 	setGeometry(newContents);
 	*/
+}
+
+bool NodeElement::getPortStatus()
+{
+	return mElementImpl->isPort();
+}
+
+bool NodeElement::getHavePortStatus()
+{
+   return mElementImpl->isHavePin();
+}
+
+double NodeElement::getXHor()
+{
+	return mElementImpl->getXHorBord();
+}
+
+double NodeElement::getYHor()
+{
+	return mElementImpl->getYHorBord();
+}
+
+double NodeElement::getXVert()
+{
+	return mElementImpl->getXVertBord();
+}
+
+double NodeElement::getYVert()
+{
+	return mElementImpl->getYVertBord();
+}
+
+bool NodeElement::isLowSide(QPointF& point, double x, double y) const
+{
+	double m_x = point.rx();
+	double m_y = point.ry();
+	QRectF rc = boundingRect();
+	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x) && (m_y >= rc.y() + rc.height() - y)
+			&& (m_y <= rc.y() + rc.height() + y);
+}
+
+bool NodeElement::isHighSide(QPointF& point, double x, double y) const
+{
+	double m_x = point.rx();
+	double m_y = point.ry();
+	QRectF rc = boundingRect();
+	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x) && (m_y >= rc.y() - y)
+			&& (m_y <= rc.y() + y);
+}
+
+bool NodeElement::isLeftSide(QPointF& point, double x, double y) const
+{
+	double m_x = point.rx();
+	double m_y = point.ry();
+	QRectF rc = boundingRect();
+	return (m_x >= rc.x() - x) && (m_x <= rc.x() + x) && (m_y >= rc.y() + y)
+			&& (m_y <= rc.y() + rc.height() - y);
+}
+
+bool NodeElement::isRightSide(QPointF& point, double x, double y) const
+{
+	double m_x = point.rx();
+	double m_y = point.ry();
+	QRectF rc = boundingRect();
+	return (m_x >= rc.x() + rc.width() - x) && (m_x <= rc.x() + rc.width() + x) && (m_y >= rc.y() + y)
+			&& (m_y <= rc.y() + rc.height() - y);
+}
+
+bool NodeElement::isNoBorderX(QPointF& point, double x, double y) const
+{
+	double m_y = point.ry();
+	QRectF rc = boundingRect();
+	return (m_y >= rc.y() + y) && (m_y <= rc.y() + rc.height() - y);
+}
+
+bool NodeElement::isNoBorderY(QPointF& point, double x, double y) const
+{
+	double m_x = point.rx();
+	QRectF rc = boundingRect();
+	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x);
+}
+
+void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
+{
+	if (!mParentNodeElement)
+	{
+		QGraphicsItem* item = parentItem();
+		mParentNodeElement = dynamic_cast<NodeElement*>(item);
+	}
+	if (mPos == QPointF(0,0))
+		mPos = this->pos();
+	double xHor = mParentNodeElement->getXHor();
+	double xVert = mParentNodeElement->getXVert();
+	double yHor = mParentNodeElement->getYHor();
+	double yVert = mParentNodeElement->getYVert();
+	if (mParentNodeElement->isLowSide(mPos, xHor, yHor))
+	{
+		double x = mPos.x() - oldContents.x();
+		double a = oldContents.x() + oldContents.width();
+		double b = newContents.x() + newContents.width();
+		double dy = newContents.height() - oldContents.height();
+		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
+		setPos(mPos);
+	}
+	if (mParentNodeElement->isHighSide(mPos, xHor, yHor))
+	{
+		double x = mPos.x() - oldContents.x();
+		double a = oldContents.x() + oldContents.width();
+		double b = newContents.x() + newContents.width();
+		double dy = 0;
+		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
+		setPos(mPos);
+	}
+	if (mParentNodeElement->isRightSide(mPos, xVert, yVert))
+	{
+		double y = mPos.y() - oldContents.y();
+		double a = oldContents.y() + oldContents.height();
+		double b = newContents.y() + newContents.height();
+		double dx = newContents.width() - oldContents.width();
+		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
+		setPos(mPos);
+	}
+	if (mParentNodeElement->isLeftSide(mPos, xVert, yVert))
+	{
+		double y = mPos.y() - oldContents.y();
+		double a = oldContents.y() + oldContents.height();
+		double b = newContents.y() + newContents.height();
+		double dx = 0;
+		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
+		setPos(mPos);
+	}
+	storeGeometry();
+	return;
 }

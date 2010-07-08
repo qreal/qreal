@@ -30,7 +30,7 @@ namespace UML {
 	public:
 		NodeElement(ElementImpl *impl);
 		virtual ~NodeElement();
-		
+
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w, SdfRenderer *portrenderer);
 		virtual void paint(QPainter *,  const QStyleOptionGraphicsItem *, QWidget *);
 
@@ -56,9 +56,41 @@ namespace UML {
 
 		virtual bool initPossibleEdges();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		bool getPortStatus();
+
+		bool getHavePortStatus();
+
+		double getXHor();
+		double getYHor();
+		double getXVert();
+		double getYVert();
+
+		bool isLowSide(QPointF& point, double x, double y) const;
+		bool isHighSide(QPointF& point, double x, double y) const;
+		bool isLeftSide(QPointF& point, double x, double y) const;
+		bool isRightSide(QPointF& point, double x, double y) const;
+		bool isNoBorderX(QPointF& point, double x, double y) const;
+		bool isNoBorderY(QPointF& point, double x, double y) const;
+
+		void resizeChild(QRectF newContents, QRectF oldContents);
+
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
-	private slots :
+	private slots:
 		void switchGrid();
 
 	private:
@@ -151,5 +183,12 @@ namespace UML {
 		bool mIsFolded;
 		QRectF mFoldedContents;
 		QRectF mCurUnfoldedContents;
+
+		bool mLeftPressed;
+
+		NodeElement* mParentNodeElement;
+
+		QPointF mPos;
+		bool inHor;
 	};
 }

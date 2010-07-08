@@ -19,15 +19,15 @@ namespace UML{
 		bool prop_y1;
 		bool prop_x2;
 		bool prop_y2;
-	
+
 		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
 			prop_x2(false), prop_y2(false) {}
-	
+
 		operator QLineF () const
 		{
 			return line;
 		}
-	
+
 		void operator = (QLineF const &l)
 		{
 			line = l;
@@ -37,14 +37,14 @@ namespace UML{
 			prop_y2 = false;
 		}
 	};
-	
+
 	/** @class ElementImpl
 	 *	@brief base class for generated stuff in plugins
 	 *	TODO: split into NodeElementImpl and EdgeElementImpl
-	 * */	
+	 * */
 	class ElementImpl {
 		public:
-			virtual void init(QRectF &contents, QList<QPointF> &pointPorts, 
+			virtual void init(QRectF &contents, QList<QPointF> &pointPorts,
 							QList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) = 0;
 			virtual void init(QList<ElementTitle*> &titles) = 0;
 			virtual void paint(QPainter *painter, QRectF &contents) = 0;
@@ -56,5 +56,11 @@ namespace UML{
 			virtual void drawEndArrow(QPainter *painter) const = 0;
 			virtual bool isContainer() = 0;
 			virtual bool isSortContainer() = 0;
+			virtual bool isPort() = 0;
+			virtual bool isHavePin() = 0;
+			virtual double getXHorBord() = 0;
+			virtual double getYHorBord() = 0;
+			virtual double getXVertBord() = 0;
+			virtual double getYVertBord() = 0;
 	};
 }

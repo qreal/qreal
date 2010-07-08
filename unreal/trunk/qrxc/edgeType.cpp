@@ -46,7 +46,7 @@ bool EdgeType::initAssociations()
 		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
-	for (QDomElement element = associationsElement.firstChildElement("association"); 
+	for (QDomElement element = associationsElement.firstChildElement("association");
 		!element.isNull();
 		element = element.nextSiblingElement("association"))
 	{
@@ -124,11 +124,17 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tbool isNode() { return false; }\n"
 		<< "\t\tbool isContainer() { return false; }\n"
 		<< "\t\tbool isSortContainer() { return false; }\n"
+		<< "\t\tbool isPort() { return false; }\n"
+		<< "\t\tbool isHavePin() { return false; }\n"
+		<< "\t\tdouble getXHorBord() { return 0; }\n"
+		<< "\t\tdouble getYHorBord() { return 0; }\n"
+		<< "\t\tdouble getXVertBord() { return 0; }\n"
+		<< "\t\tdouble getYVertBord() { return 0; }\n"
 		<< "\t\tbool hasPorts() { return false; }\n"
 		<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
-	else	
+	else
 		out() << "return Qt::SolidLine; }\n";
 	out() << "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {\n";
@@ -143,7 +149,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else		
+	else
 		mLabels[0]->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n";

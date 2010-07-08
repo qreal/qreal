@@ -183,6 +183,7 @@
               <usage type="ClassDiagram::ClassMethod"/>
               <usage type="ClassDiagram::ClassField"/>
             </usages>
+			<action/>
           </logic>
         </node>
         <node displayedName="Action Input Pin" name="ActionInputPin">
@@ -213,6 +214,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Action Input Pin"/>
             </generalizations>
+			<pin/>
           </logic>
         </node>
         <node displayedName="Activity" name="Activity">
@@ -726,6 +728,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Input Pin"/>
             </generalizations>
+			<pin/>
           </logic>
         </node>
         <node displayedName="Interruptible Activity Region" name="InterruptibleActivityRegion">
@@ -906,6 +909,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Output Pin"/>
             </generalizations>
+			<pin/>
           </logic>
         </node>
         <node displayedName="Parameter" name="Parameter">
