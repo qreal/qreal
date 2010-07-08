@@ -13,15 +13,15 @@ class MouseMovementManager
 public:
     MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager);
     void setElements(QList<qReal::Id> const & elements);
-    void addPoint(QPointF const & point);
+    void addPoint(QPoint const & point);
     void clear();
     qReal::Id getObject();
-    static QList<QPointF> stringToPath(QString const &str);
+    static QList<QPoint> stringToPath(QString const &str);
 
 private:
-    static QPointF parsePoint(QString const &str);
+    static QPoint parsePoint(QString const &str);
     void createMap();
-    QList<QPointF> mPath;
+    QList<QPoint> mPath;
     IKeyManager * mKeyManager;
     KeyManager mKeyStringManager;
     qReal::EditorManager * mEditorManager;

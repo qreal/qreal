@@ -7,10 +7,10 @@ class KeyManager : public IKeyManager
 {
 public:
     KeyManager();
-    QString getKey(QList<QPointF> const & path);
+    QString getKey(QList<QPoint> const & path);
 
 private:
-    void analysePoints(QList<QPointF> const & path);
+    void analysePoints(QList<QPoint> const & path);
     void clear();
     int mLeftBound;
     int mRightBound;
