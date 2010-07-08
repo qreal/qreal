@@ -452,7 +452,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
             mouseMovementManager->addPoint(event->screenPos());
             qReal::Id id = mouseMovementManager->getObject();
             if (id.element() != "")
-                createElement(id.toString(), event->pos());
+                createElement(id.toString(), event->scenePos());
             mRightButtonPressed = false;
             mouseMovementManager->clear();
         }
