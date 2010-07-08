@@ -112,7 +112,7 @@ namespace UML {
 		void makeGridMovingY(qreal myY, int koef, int indexGrid);
 
 		static int const objectMinSize = 10;
-		static int const sizeOfForestalling = 25;
+		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
 
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

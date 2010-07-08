@@ -265,6 +265,13 @@
             <container>
               <contains type="ActivityDiagram::Action"/>
               <contains type="ActivityDiagram::Accept Event Action"/>
+	      <properties>
+                <sortContainer/>
+                <forestalling size="25"/>
+                <childrenForestalling size="5"/>
+                <minimzeToChildren/>
+                <banChildrenMove/>
+              </properties>
             </container>
           </logic>
         </node>

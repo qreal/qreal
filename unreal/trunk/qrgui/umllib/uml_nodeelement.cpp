@@ -32,6 +32,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mFoldedContents = mContents;
 
 	connect(&mSwitchGridAction, SIGNAL(triggered()), this, SLOT(switchGrid()));
+
+	//resize(mContents);
 }
 
 NodeElement::~NodeElement()
@@ -92,10 +94,10 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 		if (curItem && !curItem->getPortStatus()) {
 			curItem->moveBy(dx, dy);
 			///returns object to the parent area
-			if (curItem->pos().x() < sizeOfForestalling)
-				curItem->setPos(sizeOfForestalling, curItem->pos().y());
-			if (curItem->pos().y() < sizeOfForestalling)
-				curItem->setPos(curItem->pos().x(), sizeOfForestalling);
+			if (curItem->pos().x() < mElementImpl->sizeOfForestalling())
+				curItem->setPos(mElementImpl->sizeOfForestalling(), curItem->pos().y());
+			if (curItem->pos().y() < mElementImpl->sizeOfForestalling())
+				curItem->setPos(curItem->pos().x(), mElementImpl->sizeOfForestalling());
 		}
 	}
 }
@@ -124,10 +126,10 @@ void NodeElement::resize(QRectF newContents)
 
 		QPointF curItemPos = curItem->pos();
 
-		if (curItemPos.x() < childrenMoving.x() + sizeOfForestalling)
-			childrenMoving.setX(curItemPos.x() - sizeOfForestalling);
-		if (curItemPos.y() < childrenMoving.y() + sizeOfForestalling)
-			childrenMoving.setY(curItemPos.y() - sizeOfForestalling);
+		if (curItemPos.x() < childrenMoving.x() + mElementImpl->sizeOfForestalling())
+			childrenMoving.setX(curItemPos.x() - mElementImpl->sizeOfForestalling());
+		if (curItemPos.y() < childrenMoving.y() + mElementImpl->sizeOfForestalling())
+			childrenMoving.setY(curItemPos.y() - mElementImpl->sizeOfForestalling());
 	}
 	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
@@ -142,17 +144,17 @@ void NodeElement::resize(QRectF newContents)
 		QRectF curChildItemBoundingRect = curItem->mContents;
 		curChildItemBoundingRect.translate(curItem->pos());
 
-		if (curChildItemBoundingRect.left() < newContents.left() + sizeOfForestalling)
-			newContents.setLeft(curChildItemBoundingRect.left() - sizeOfForestalling);
+		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling())
+			newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
 
-		if (curChildItemBoundingRect.right() > newContents.right() - sizeOfForestalling)
-			newContents.setRight(curChildItemBoundingRect.right() + sizeOfForestalling);
+		if (curChildItemBoundingRect.right() > newContents.right() - mElementImpl->sizeOfForestalling())
+			newContents.setRight(curChildItemBoundingRect.right() + mElementImpl->sizeOfForestalling());
 
-		if (curChildItemBoundingRect.top() < newContents.top() + sizeOfForestalling)
-			newContents.setTop(curChildItemBoundingRect.top() - sizeOfForestalling);
+		if (curChildItemBoundingRect.top() < newContents.top() + mElementImpl->sizeOfForestalling())
+			newContents.setTop(curChildItemBoundingRect.top() - mElementImpl->sizeOfForestalling());
 
-		if (curChildItemBoundingRect.bottom() > newContents.bottom() - sizeOfForestalling)
-			newContents.setBottom(curChildItemBoundingRect.bottom() + sizeOfForestalling);
+		if (curChildItemBoundingRect.bottom() > newContents.bottom() - mElementImpl->sizeOfForestalling())
+			newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
 	}
 
 	newContents.moveTo(pos());
@@ -1072,16 +1074,16 @@ void NodeElement::setLinksVisible(bool isVisible)
 
 void NodeElement::sortChildren()
 {
-	qreal curChildY = sizeOfForestalling;
+	qreal curChildY = mElementImpl->sizeOfForestalling();
 	qreal maxChildrenWidth = 0;
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			QRectF curChildContents = curItem->mContents;
-			curChildContents.moveTo(sizeOfForestalling, curChildY);
+			curChildContents.moveTo(mElementImpl->sizeOfForestalling(), curChildY);
 			curItem->setGeometry(curChildContents);
-			curChildY += curItem->mContents.height();
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
 			curItem->storeGeometry();
 
 			if (curItem->mContents.width() > maxChildrenWidth)
@@ -1090,7 +1092,7 @@ void NodeElement::sortChildren()
 	}
 
 	/*
-	QRectF newContents(pos(), maxChildrenWidth + 2 * sizeOfForestalling, curChildPosition.y() + sizeOfForestalling);
+	QRectF newContents(pos(), maxChildrenWidth + 2 * mElementImpl->sizeOfForestalling(), curChildPosition.y() + mElementImpl->sizeOfForestalling());
 	setGeometry(newContents);
 	*/
 }

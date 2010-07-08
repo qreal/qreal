@@ -27,6 +27,16 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 
 protected:
+	struct ContainerProperties {
+		ContainerProperties();
+
+		bool isSortContainer;
+		int sizeOfForestalling;
+		int sizeOfChildrenForestalling;
+		bool isChildrenMovable;
+		bool isMinimizingToChildren;
+	};
+
 	QDomElement mLogic;
 	QDomElement mGraphics;
 	QStringList mParents;
@@ -36,6 +46,7 @@ protected:
 	int mHeight;
 	QList<Label*> mLabels;
 	QStringList mContains;
+	ContainerProperties mContainerProperties;
 	QStringList mConnections;
 	QStringList mUsages;
         QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > mPossibleEdges;
@@ -58,6 +69,7 @@ private:
 	bool initParents();
 	bool initProperties();
 	bool initContainers();
+	bool initContainerProperties();
 	bool initConnections();
         bool initPossibleEdges();
 	bool initUsages();

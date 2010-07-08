@@ -78,9 +78,9 @@ bool NodeType::initPorts()
 
 bool NodeType::initPointPorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
-	!portElement.isNull();
-	portElement = portElement.nextSiblingElement("pointPort"))
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); 
+		!portElement.isNull();
+		portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		Port *pointPort = new PointPort();
 		if (!pointPort->init(portElement, mWidth, mHeight)) {
@@ -94,9 +94,9 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 
 bool NodeType::initLinePorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("linePort");
-	!portElement.isNull();
-	portElement = portElement.nextSiblingElement("linePort"))
+	for (QDomElement portElement = portsElement.firstChildElement("linePort"); 
+		!portElement.isNull();
+		portElement = portElement.nextSiblingElement("linePort"))
 	{
 		Port *linePort = new LinePort();
 		if (!linePort->init(portElement, mWidth, mHeight))
@@ -146,7 +146,7 @@ void NodeType::generatePorts() const
 void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("pointPort"))
+		portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		out() << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
 		out() << "x1=\""<<portElement.attribute("x") << "\" y1=\""<<portElement.attribute("y") << "\" ";
@@ -160,7 +160,7 @@ void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out)
 void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("linePort"))
+		portElement = portElement.nextSiblingElement("linePort"))
 	{
 		QDomElement portStartElement = portElement.firstChildElement("start");
 		QDomElement portEndElement = portElement.firstChildElement("end");
@@ -205,10 +205,10 @@ void NodeType::generateCode(OutFile &out)
 	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
-			<< "\tpublic:\n"
-			<< "\t\tvoid init(QList<ElementTitle*> &) {}\n\n"
-			<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
-			<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) {\n";
+		<< "\tpublic:\n"
+		<< "\t\tvoid init(QList<ElementTitle*> &) {}\n\n"
+		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
+		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) {\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -231,7 +231,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
-			<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
+		<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
 
 	foreach (Port *port, mPorts)
 		port->generateCode(out);
@@ -240,8 +240,8 @@ void NodeType::generateCode(OutFile &out)
 		label->generateCodeForConstructor(out);
 
 	out() << "\t\t}\n\n"
-			<< "\t\t~" << className << "() {}\n\n"
-			<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
+		<< "\t\t~" << className << "() {}\n\n"
+		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)
 		out() << "\t\t\tmRenderer.render(painter, contents);\n";
@@ -249,28 +249,28 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t}\n\n";
 
 	out() << "\t\tQt::PenStyle getPenStyle() { return Qt::SolidLine; }\n\n"
-			<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
-			<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
-			<< "\t\tbool hasPorts()\n\t\t{\n";
+		<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
+		<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
+		<< "\t\tbool hasPorts()\n\t\t{\n";
 
 	if (hasPorts)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
+	out() << "\t\t}\n\n";	
 
 	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else
+	else		
 		foreach (Label *label, mLabels)
 			label->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n"
-			<< "\t\tbool isNode()\n\t\t{\n"
-			<< "\t\t\treturn true;\n"
-			<< "\t\t}\n\n";
+		<< "\t\tbool isNode()\n\t\t{\n"
+		<< "\t\t\treturn true;\n"
+		<< "\t\t}\n\n";
 
 	out() << "\t\tbool isContainer()\n\t\t{\n";
 	if (!this->mContains.empty())
@@ -279,12 +279,34 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\treturn false;\n";
 	out() << "\t\t}\n\n";	
 
-	//TODO: add to xmls relevant field
 	out() << "\t\tbool isSortContainer()\n\t\t{\n";
-	//out() << "\t\t\treturn isContainer();\n";
-	out() << "\t\t\treturn false;\n";
+	if (mContainerProperties.isSortContainer)
+		out() << "\t\t\treturn true;\n";
+	else
+		out() << "\t\t\treturn false;\n";
 	out() << "\t\t}\n\n";	
-	//
+	
+	out() << "\t\tint sizeOfForestalling()\n\t\t{\n";
+	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n";
+	out() << "\t\t}\n\n";	
+	
+	out() << "\t\tint sizeOfChildrenForestalling()\n\t\t{\n";
+	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfChildrenForestalling) + ";\n";
+	out() << "\t\t}\n\n";	
+
+	out() << "\t\tbool isChildrenMovable()\n\t\t{\n";
+	if (mContainerProperties.isChildrenMovable)
+		out() << "\t\t\treturn true;\n";
+	else
+		out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";	
+
+	out() << "\t\tbool isMinimizingToChildren()\n\t\t{\n";
+	if (mContainerProperties.isMinimizingToChildren)
+		out() << "\t\t\treturn true;\n";
+	else
+		out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";	
 
 	out() << "\t\tbool isPort()\n\t\t{\n";
 	if (mIsPin)

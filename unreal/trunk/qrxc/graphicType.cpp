@@ -11,6 +11,10 @@ using namespace utils;
 
 const int MAX_LINE_LENGTH = 60;
 
+GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
+	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false) 
+{}
+
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	: mResolvingFlag(resolvingFlag)
 {
@@ -59,7 +63,8 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initContainers() && initAssociations()
-                        && initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges();
+                        && initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
+			&& initContainerProperties();
 	}
 	else
 		return false;
@@ -156,6 +161,45 @@ bool GraphicType::initConnections()
 bool GraphicType::initUsages()
 {
 	return initTypeList("usages", "usage", mUsages);
+}
+
+bool GraphicType::initContainerProperties()
+{
+	QDomElement containerElement = mLogic.firstChildElement("container");
+	if (containerElement.isNull())
+		return true;
+
+	QDomElement containerPropertiesElement = containerElement.firstChildElement("properties");
+	if (containerPropertiesElement.isNull())
+		return true;
+
+	for (QDomElement childElement = containerPropertiesElement.firstChildElement();
+		!childElement.isNull();
+		childElement = childElement.nextSiblingElement())
+	{
+		if (childElement.tagName() == "sortContainer") {
+			mContainerProperties.isSortContainer = true;
+		} else if (childElement.tagName() == "forestalling") {
+			QString sizeAttribute = childElement.attribute("size");
+			bool isSizeOk = false;
+			mContainerProperties.sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
+			if (!isSizeOk)
+				return false;
+		} else if (childElement.tagName() == "childrenForestalling") {
+			QString sizeAttribute = childElement.attribute("size");
+			bool isSizeOk = false;
+			mContainerProperties.sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
+			if (!isSizeOk)
+				return false;
+		} else if (childElement.tagName() == "minimizeToChildren")
+		{
+			mContainerProperties.isMinimizingToChildren = true;
+		} else if (childElement.tagName() == "banChildrenMove"){
+			mContainerProperties.isChildrenMovable = false;
+		}
+	}
+
+	return true;
 }
 
 bool GraphicType::initPossibleEdges()
