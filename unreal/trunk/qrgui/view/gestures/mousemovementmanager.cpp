@@ -12,6 +12,11 @@ MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::Edi
     setElements(elements);
 }
 
+void MouseMovementManager::clear()
+{
+    mPath.clear();
+}
+
 void MouseMovementManager::createMap()
 {
     mGestures.clear();

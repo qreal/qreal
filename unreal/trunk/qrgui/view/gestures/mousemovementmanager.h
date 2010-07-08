@@ -14,6 +14,7 @@ public:
     MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager);
     void setElements(QList<qReal::Id> const & elements);
     void addPoint(QPointF const & point);
+    void clear();
     qReal::Id getObject();
     static QList<QPointF> stringToPath(QString const &str);
 

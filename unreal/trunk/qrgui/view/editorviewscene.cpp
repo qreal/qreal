@@ -20,6 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+        mRightButtonPressed = false;
 }
 
 void EditorViewScene::initMouseMoveMan()
@@ -103,6 +104,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+    qDebug() << "wall";
 	Q_UNUSED(event);
 }
 
@@ -406,8 +408,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	} else if (event->button() == Qt::RightButton) {
 
-				initMouseMoveMan();
-				mouseMovementManager->addPoint(event->pos());
+                initMouseMoveMan();
+                mouseMovementManager->addPoint(event->scenePos());
+                mRightButtonPressed = true;
 
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e)
@@ -440,15 +443,21 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-		if (event->button() == Qt::RightButton)
-		{
-			 mouseMovementManager->addPoint(event->pos());
-			 qReal::Id id = mouseMovementManager->getObject();
-		}
+
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
-	UML::Element *element = getElemAt(event->scenePos());
+        if (event->button() == Qt::RightButton)
+        {
+            mouseMovementManager->addPoint(event->scenePos());
+            qReal::Id id = mouseMovementManager->getObject();
+            if (id.element() != "")
+                createElement(id.toString(), event->pos());
+            mRightButtonPressed = false;
+            mouseMovementManager->clear();
+        }
+
+        UML::Element *element = getElemAt(event->scenePos());
 	if (!element)
 		return;
 
@@ -479,19 +488,20 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					//					elem->setPos(mPrevPosition);
 					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
 				}
-			}
+                        }
 		}
 	}
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
-		mouseMovementManager->addPoint(event->pos());
-	} else
-		QGraphicsScene::mouseMoveEvent(event);
+        // button isn't recognized while mouse moves
+        if (mRightButtonPressed)
+            mouseMovementManager->addPoint(event->scenePos());
+        else
+            QGraphicsScene::mouseMoveEvent(event);
 }
+
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
