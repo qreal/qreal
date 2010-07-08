@@ -25,6 +25,7 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
 #include "../parsers/hascol/hascolParser.h"
+#include "../parsers/xml/xmlParser.h"
 #include "errorReporter.h"
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
@@ -83,6 +84,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(newGenerateEditor()));
+	connect(ui.actionPasre_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -508,6 +510,18 @@ void MainWindow::newGenerateEditor()
 		}
 	}
 	metaGenerator.generateEditor(directoryName + "/qrxml/" + fileInfo.baseName() + "/" + fileInfo.baseName());
+}
+
+void MainWindow::parseEditorXml()
+{
+	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"));
+	if (fileName == "")
+		return;
+
+	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+	parser.parseFile(fileName);
+
+	mModel->reinit();
 }
 
 EditorView * MainWindow::getCurrentTab()

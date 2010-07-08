@@ -3,7 +3,7 @@
     <namespace>UML 2.0</namespace>
     <diagram name="MetaEditor" displayedName="Meta Editor">
       <nonGraphicTypes>
-        <enum name="MetaEntityType" name="MetaEntity Type">
+        <enum name="MetaEntityType" displayedName="MetaEntity Type">
           <value>enumType</value>
           <value>node</value>
           <value>edge</value>
@@ -28,6 +28,7 @@
           <logic>
 			<generalizations/>
 			<properties>
+			  <property type="string" name="displayedName"/>
 			  <property type="string" name="include"/>
 			</properties>
 			<containers/>
