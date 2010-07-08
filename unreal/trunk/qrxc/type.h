@@ -18,15 +18,20 @@ public:
 	virtual Type* clone() const = 0;
 	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve() = 0;
+	virtual bool isResolving() const;
 	bool isResolved() const;
+
 	QString name() const;
-        QString path() const;
+	QString path() const;
 	QString qualifiedName() const;
-	void setName(QString const &name);
-	void setContext(QString const &newContext);
 	QString displayedName() const;
-	void setDisplayedName(QString const &displayedName);
+
 	QMap<QString, Property*> properties() const;
+
+	void setName(QString const &name);
+	void setDiagram(Diagram *diagram);
+	void setContext(QString const &newContext);
+	void setDisplayedName(QString const &displayedName);
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
@@ -37,8 +42,6 @@ public:
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
-	void setDiagram(Diagram *diagram);
-	virtual bool isResolving() const;
 
 protected:
 	void copyFields(Type *type) const;

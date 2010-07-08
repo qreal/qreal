@@ -20,7 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
-        mRightButtonPressed = false;
+	mRightButtonPressed = false;
 }
 
 void EditorViewScene::initMouseMoveMan()
@@ -161,7 +161,6 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* n
 
 	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
 	{
-		qDebug() << pEdge.first.first << " - " << pEdge.first.second << " | " << pEdge.second.first;
 		QString target;
 		if (pEdge.first.first == node->uuid().element())
 			target = pEdge.first.second;
@@ -407,9 +406,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	} else if (event->button() == Qt::RightButton) {
 
-                initMouseMoveMan();
-                mouseMovementManager->addPoint(event->screenPos());
-                mRightButtonPressed = true;
+		initMouseMoveMan();
+		mouseMovementManager->addPoint(event->screenPos());
+		mRightButtonPressed = true;
 
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e)
@@ -446,18 +445,18 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
-        if (event->button() == Qt::RightButton)
-        {
-            mouseMovementManager->addPoint(event->screenPos());
-            qReal::Id id = mouseMovementManager->getObject();
-            QPointF pos(mouseMovementManager->pos() - event->screenPos());
-            if (id.element() != "")
-                createElement(id.toString(), pos + event->scenePos());
-            mRightButtonPressed = false;
-            mouseMovementManager->clear();
-        }
+	if (event->button() == Qt::RightButton)
+	{
+		mouseMovementManager->addPoint(event->screenPos());
+		qReal::Id id = mouseMovementManager->getObject();
+		QPointF pos(mouseMovementManager->pos() - event->screenPos());
+		if (id.element() != "")
+			createElement(id.toString(), pos + event->scenePos());
+			mRightButtonPressed = false;
+			mouseMovementManager->clear();
+	}
 
-        UML::Element *element = getElemAt(event->scenePos());
+	UML::Element *element = getElemAt(event->scenePos());
 	if (!element)
 		return;
 
@@ -495,12 +494,12 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "";
-        // button isn't recognized while mouse moves
-        if (mRightButtonPressed)
-            mouseMovementManager->addPoint(event->screenPos());
-        else
-            QGraphicsScene::mouseMoveEvent(event);
+	qDebug() << "";
+		// button isn't recognized while mouse moves
+		if (mRightButtonPressed)
+			mouseMovementManager->addPoint(event->screenPos());
+		else
+			QGraphicsScene::mouseMoveEvent(event);
 }
 
 

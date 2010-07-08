@@ -329,11 +329,12 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-		if (embeddedLinkers.isEmpty())
-			initEmbeddedLinkers();
-		moveEmbeddedLinkers();
-		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-			embeddedLinker->setCovered(true);
+	qDebug() << "mousePress (NODE)";
+	if (embeddedLinkers.isEmpty())
+		initEmbeddedLinkers();
+	moveEmbeddedLinkers();
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(true);
 
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
@@ -357,7 +358,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		event->accept();
 
 	mLeftPressed = true;
-
 	setZValue(1);
 }
 

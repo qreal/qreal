@@ -27,6 +27,8 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 
 protected:
+	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+	
 	struct ContainerProperties {
 		ContainerProperties();
 
@@ -36,7 +38,7 @@ protected:
 		bool isChildrenMovable;
 		bool isMinimizingToChildren;
 	};
-
+	
 	QDomElement mLogic;
 	QDomElement mGraphics;
 	QStringList mParents;
@@ -49,7 +51,7 @@ protected:
 	ContainerProperties mContainerProperties;
 	QStringList mConnections;
 	QStringList mUsages;
-        QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > mPossibleEdges;
+	QList<PossibleEdge> mPossibleEdges;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -66,22 +68,22 @@ private:
 
 	bool mResolving;
 
+	bool initLabels();
+	bool initUsages();
 	bool initParents();
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();
 	bool initConnections();
-        bool initPossibleEdges();
-	bool initUsages();
-	virtual bool initAssociations() = 0;
-	virtual bool initGraphics() = 0;
-	bool initLabels();
-	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
-	bool addProperty(Property *property);
-	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
-
-	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
-
+	bool initPossibleEdges();
 	bool initTypeList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList) const;
+
+	virtual bool initGraphics() = 0;
+	virtual bool initAssociations() = 0;
+	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
+
+	bool addProperty(Property *property);
+	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
+	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 };

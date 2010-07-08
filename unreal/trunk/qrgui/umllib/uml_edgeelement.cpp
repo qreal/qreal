@@ -232,7 +232,6 @@ void EdgeElement::updateLongestPart()
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	mDragState = -1;
-
 	mDragState = getPoint(event->pos());
 
 	if (mDragState == -1) {

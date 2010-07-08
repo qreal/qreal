@@ -21,7 +21,7 @@ namespace UML {
 		EmbeddedLinker(QGraphicsItem *parent);
 		virtual ~EmbeddedLinker();
 
-                QRectF boundingRect() const;
+		QRectF boundingRect() const;
 
 		/** @brief set element that handles the object */
 		void setMaster(NodeElement *element);
@@ -30,22 +30,22 @@ namespace UML {
 
 		virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w );
 
-                virtual void initTitle();
-                virtual void generateColor();
-                virtual void setColor(QColor color);
+		virtual void initTitle();
+		virtual void generateColor();
+		virtual void setColor(QColor color);
 
-                virtual void setDirected(bool directed);
-                virtual void setEdgeType(QString edgeType);
-                virtual bool isDirected();
-                virtual QString getEdgeType();
+		virtual void setDirected(bool directed);
+		virtual void setEdgeType(QString edgeType);
+		virtual bool isDirected();
+		virtual QString getEdgeType();
 
-                virtual void takePosition(int index, int maxIndex);
+		virtual void takePosition(int index, int maxIndex);
 
 		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event);
 		virtual void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event);
 		virtual void mousePressEvent( QGraphicsSceneMouseEvent * event);
 	private:
-                ElementTitle* title;
+		ElementTitle* title;
 
 		bool covered;
 		/** @brief element that handles this object */
@@ -56,10 +56,10 @@ namespace UML {
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
 
-                QColor color;
-                bool directed;
-                QString edgeType;
-                UML::EdgeElement* edge;
+		QColor color;
+		bool directed;
+		QString edgeType;
+		UML::EdgeElement* edge;
 	signals:
 		void coveredChanged();
 	public slots:

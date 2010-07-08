@@ -166,12 +166,12 @@ namespace UML {
 
 		DragState mDragState;
 
-                QList<EmbeddedLinker*> embeddedLinkers;
-                typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
-                QSet<PossibleEdge> possibleEdges;
-                QSet<QPair<bool,QString> > possibleEdgeTypes;
+		QList<EmbeddedLinker*> embeddedLinkers;
+		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+		QSet<PossibleEdge> possibleEdges;
+		QSet<QPair<bool,QString> > possibleEdgeTypes;
 
-                bool initEmbeddedLinkers();
+		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
 
 		QTransform mTransform;

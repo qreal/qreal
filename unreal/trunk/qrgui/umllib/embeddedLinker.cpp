@@ -87,7 +87,10 @@ void EmbeddedLinker::setDirected(bool arg)
 
 void EmbeddedLinker::initTitle()
 {
-	float textWidth = edgeType.size()*8;
+	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
+	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType));
+
+	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = master->boundingRect().right() - master->boundingRect().left();
 	float rectHeight = master->boundingRect().bottom() - master->boundingRect().top();
 
@@ -103,7 +106,7 @@ void EmbeddedLinker::initTitle()
 	else if (this->scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	title = new ElementTitle(x,y,edgeType);
+	title = new ElementTitle(x,y,edgeTypeFriendly);
 	title->setTextWidth(textWidth);
 	title->setParentItem(this);
 }
@@ -137,22 +140,58 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	float width = right - left;
 
 	float angle = 2*Pi*index/maxIndex;
+	float indent = 5;
 
 	int rW = width;
 	int rH = height;
-	if (rW < 70)
-		rW *= 1.08;
+	if (rW < 150)
+		rW *= 1.5;
 	else
-		rW += 12;
-	if (rH < 70)
-		rH *= 1.08;
+		rW += indent;
+	if (rH < 150)
+		rH *= 1.5;
 	else
-		rH += 12;
+		rH += indent;
 
-	float x = left + width/2 + rW*cos(angle - Pi/2)/2;
-	float y = bottom - height/2 + rH*sin(angle - Pi/2)/2;
+	float px = left + width/2 + rW*cos(angle - Pi/2)/2;
+	float py = bottom - height/2 + rH*sin(angle - Pi/2)/2;
 
-	this->setPos(x,y);
+	//if linker covers master node:
+
+	float min = py - top;
+	if (min > bottom - py)
+		min = bottom - py;
+	if (min > px - left)
+		min = px - left;
+	if (min > right - px)
+		min = right - px;
+
+	float fx;
+	float fy;
+
+	//obviously, top != left != right != bottom
+	if ((bottom - py == min) || (py - top == min))
+	{
+		fx = px;
+		if (bottom - py == min)
+			fy = bottom + indent;
+		else
+			fy = top - indent;
+	}
+	else
+	{
+		fy = py;
+		if (right - px == min)
+			fx = right + indent;
+		else
+			fx = left - indent;
+	}
+
+	this->setPos(fx,fy);
+
+	//useful for debug:
+	//scene()->addPolygon(master->mapToScene(master->boundingRect().left(),master->boundingRect().top(),
+	//									master->boundingRect().width(),master->boundingRect().height()));
 }
 
 QRectF EmbeddedLinker::boundingRect() const
@@ -162,6 +201,7 @@ QRectF EmbeddedLinker::boundingRect() const
 
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "mousePress (LINKER)";
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
 	if (scene != NULL)
@@ -177,19 +217,21 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		{
 			mEdge->setSelected(true);
 			master->setSelected(false);
-			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));	//QCursor?
+			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 		}
 	}
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "mouseMove (LINKER)";
 	if (mEdge != NULL)
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "mouseRelease (LINKER)";
 	hide();
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 	if ((scene != NULL) && (mEdge != NULL))
@@ -201,7 +243,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			if (scene->launchEdgeMenu(mEdge, master, event->scenePos()))
 				mEdge = NULL;
 	}
-
 	if (mEdge != NULL)
 		mEdge->connectToPort();
 }

@@ -63,7 +63,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initContainers() && initAssociations()
-                        && initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
+			&& initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
 			&& initContainerProperties();
 	}
 	else
@@ -324,6 +324,11 @@ bool GraphicType::resolve()
 		foreach (Property *property, parent->properties().values())
 			if (!addProperty(property->clone()))
 				return false;
+
+		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
+		if (gParent)
+			foreach (PossibleEdge pEdge,gParent->mPossibleEdges)
+				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,mDiagram->name()+"_"+name())));
 	}
 
 	mResolvingFinished = true;
@@ -336,14 +341,13 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-                QString pathStr = path();
-                out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
-                if (!pathStr.isEmpty())
-                {
-                    out() << "\telementMouseGesturesMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << pathStr << "\";\n";
-                }
-            }
-
+		QString pathStr = path();
+		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
+		if (!pathStr.isEmpty())
+		{
+			out() << "\telementMouseGesturesMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << pathStr << "\";\n";
+		}
+	}
 }
 
 bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
