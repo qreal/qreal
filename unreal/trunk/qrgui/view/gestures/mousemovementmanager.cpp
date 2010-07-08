@@ -40,7 +40,13 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
 
 void MouseMovementManager::addPoint(const QPoint &point)
 {
+    mCentre = ((mPath.count() * mCentre + point) / (mPath.count() + 1));
     mPath.push_back(point);
+}
+
+QPoint MouseMovementManager::pos()
+{
+    return mCentre;
 }
 
 QList<QPoint> MouseMovementManager::stringToPath(QString const &valueStr)

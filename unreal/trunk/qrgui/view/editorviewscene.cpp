@@ -104,7 +104,6 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
-    qDebug() << "wall";
 	Q_UNUSED(event);
 }
 
@@ -451,8 +450,9 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
         {
             mouseMovementManager->addPoint(event->screenPos());
             qReal::Id id = mouseMovementManager->getObject();
+            QPointF pos(mouseMovementManager->pos() - event->screenPos());
             if (id.element() != "")
-                createElement(id.toString(), event->scenePos());
+                createElement(id.toString(), pos + event->scenePos());
             mRightButtonPressed = false;
             mouseMovementManager->clear();
         }
@@ -495,6 +495,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    qDebug() << "";
         // button isn't recognized while mouse moves
         if (mRightButtonPressed)
             mouseMovementManager->addPoint(event->screenPos());

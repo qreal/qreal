@@ -17,6 +17,7 @@ public:
     void clear();
     qReal::Id getObject();
     static QList<QPoint> stringToPath(QString const &str);
+    QPoint pos();
 
 private:
     static QPoint parsePoint(QString const &str);
@@ -27,4 +28,5 @@ private:
     qReal::EditorManager * mEditorManager;
     QList<qReal::Id> mElements;
     QMap<QString, qReal::Id> mGestures;
+    QPoint mCentre;
 };
