@@ -77,6 +77,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index)
 {
+	if (index.row() <= 2) // metatype, id and name are definitely not enums
+		return QStringList();
 	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
 	if (im){
 		return im->getEnumValues(targetObject, roleByIndex(index.row()));
