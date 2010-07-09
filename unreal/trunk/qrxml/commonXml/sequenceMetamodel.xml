@@ -80,8 +80,7 @@
 				</labels>
 				<logic>
 					<properties>
-						<property type="enum" name="kind" >
-							<enum nameReference="Combined Fragment Kind" />
+						<property type="Combined Fragment Kind" name="kind" >
 						</property>
 						<property type="string" name="alternative" />
 						<!-- оно есть только у alt-->

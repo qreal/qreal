@@ -30,7 +30,7 @@ public:
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 	void setSourceModel(QAbstractItemModel *sourceModel);
-	QStringList getEnumValues(const QModelIndex &index);
+	QStringList getEnumValues(const QModelIndex &index) const;
 
 public slots:
 	void setIndex(const QModelIndex &sourceIndex);

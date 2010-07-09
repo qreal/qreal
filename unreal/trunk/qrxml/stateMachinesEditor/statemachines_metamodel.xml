@@ -137,9 +137,7 @@
               </html:html>
             </repo_info>
             <properties>
-              <property type="enum" name="kind">
-                <enum idref="smtTransitionkind"/>
-              </property>
+              <property type="smtTransitionkind" name="kind"/>
             </properties>
             <generalizations>
               <generalization>

@@ -2,6 +2,10 @@
     <namespace>UML 2.1</namespace>
     <diagram name="Kernel">
       <nonGraphicTypes>
+        <enum name="bool">
+          <value>false</value>
+          <value>true</value>
+        </enum>
         <enum name="Aggregation Kind">
           <value>none</value>
           <value>shared</value>
@@ -255,8 +259,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="enum" name="visibility">
-                <enum nameReference="Visibility Kind"/>
+              <property type="Visibility Kind" name="visibility">
                 <default>public</default>
               </property>
               <property type="string" name="alias"/>
@@ -460,8 +463,7 @@
 							Поэтому свойство name добавляется автоматически всем, даже кому не нужно.
 							Указывать его в xml-ке не надо - иначе будет ворнинг компилятора -->
               <!-- <property type="string" name="name" /> -->
-              <property type="enum" name="visibility">
-                <enum nameReference="Visibility Kind"/>
+              <property type="Visibility Kind" name="visibility">
                 <default>private</default>
               </property>
               <property type="Dependency" name="clientDependency"/>
@@ -576,8 +578,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="enum" name="visibility">
-                <enum nameReference="Visibility Kind"/>
+              <property type="Visibility Kind" name="visibility">
                 <default>public</default>
               </property>
             </properties>
@@ -606,8 +607,7 @@
               <parent parentName="Typed Element"/>
             </generalizations>
             <properties>
-              <property type="enum" name="direction">
-                <enum nameReference="Parameter Direction Kind"/>
+              <property type="Parameter Direction Kind" name="direction">
                 <default>in</default>
               </property>
               <property type="Value Specification" name="defaultValue"/>
@@ -627,8 +627,7 @@
               <parent parentName="Structural Feature"/>
             </generalizations>
             <properties>
-              <property type="enum" name="aggregation">
-                <enum nameReference="Aggregation Kind"/>
+              <property type="Aggregation Kind" name="aggregation">
                 <default>none</default>
               </property>
               <property type="bool" name="isDerivedUnion">

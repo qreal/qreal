@@ -5,10 +5,12 @@
 #include <QtCore/QMap>
 #include <QtCore/QDir>
 #include <QtCore/QPair>
+#include <QtCore/QSet>
 
 class XmlCompiler;
 class Diagram;
 class Type;
+class EnumType;
 
 namespace utils {
 	class OutFile;
@@ -23,6 +25,7 @@ public:
 	bool isLoaded();
 	bool load(QDir const &currentDir);
 	Type *findType(QString const &name);
+	QSet<EnumType*> getAllEnumTypes();
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 

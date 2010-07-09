@@ -2,6 +2,7 @@
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "type.h"
+#include "enumType.h"
 #include "../utils/outFile.h"
 
 #include <QDebug>
@@ -110,6 +111,26 @@ Type* Editor::findType(QString const &name)
 			return type;
 	}
 	return NULL;
+}
+
+QSet<EnumType*> Editor::getAllEnumTypes()
+{
+	EnumType *current = NULL;
+	QSet<EnumType*> result;
+
+	foreach (Diagram *diagram, mDiagrams.values()) {
+		foreach (Type *type, diagram->types()) {
+			current = dynamic_cast<EnumType*>(type);
+			if (current)
+				result << current;
+		}
+	}
+
+	foreach (Editor *editor, mIncludes) {
+		result += editor->getAllEnumTypes();
+	}
+
+	return result;
 }
 
 Diagram* Editor::findDiagram(QString const &name)

@@ -57,6 +57,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 	if (role != Qt::DisplayRole)
 		return QVariant();
+	
 
 	if (index.column() == 0) {
 		return mFieldNames.at(index.row());
@@ -68,14 +69,15 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
 		} else if (index.row() == 1)
 			return targetObject.data(roles::idRole).value<Id>().id();
-		else if (index.row() == 2)
+		else if (index.row() == 2) {
 			return targetObject.data(Qt::DisplayRole);
+		}	
 		return QVariant();
 	} else
 		return QVariant();
 }
 
-QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index)
+QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index) const
 {
 	if (index.row() <= 2) // metatype, id and name are definitely not enums
 		return QStringList();

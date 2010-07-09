@@ -25,10 +25,7 @@
           </graphics>
           <logic>
             <properties>
-              <property type="enum" name="threadName">
-                <enum idref="qrThreadNameType"/>
-                <default/>
-              </property>
+              <property type="qrThreadNameType" name="threadName"/>
             </properties>
             <containers>
               <container name="thread port">

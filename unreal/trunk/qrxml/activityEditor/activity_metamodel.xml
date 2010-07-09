@@ -875,8 +875,7 @@
               <parent parentName="ActivityNode"/>
             </generalizations>
             <properties>
-              <property type="enum" name="ordering">
-                <enum nameReference="acttObjectNodeOrderingKind"/>
+              <property type="Object Node Ordering Kind" name="ordering">
                 <default>FIFO</default>
               </property>
               <property type="bool" name="isControlType">
@@ -925,8 +924,7 @@
               <parent parentName="Kernel::Parameter"/>
             </generalizations>
             <properties>
-              <property type="enum" name="effect">
-                <enum nameReference="ParameterEffectKind"/>
+              <property type="Parameter Effect Kind" name="effect">
               </property>
               <property type="bool" name="isException">
                 <default>false</default>

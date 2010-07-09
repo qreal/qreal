@@ -39,11 +39,11 @@ namespace qReal {
 		virtual QString editorName() const = 0;
 		virtual QString diagramName(QString const &diagram) const = 0;
 		virtual QString elementName(QString const &diagram, QString const &element) const = 0;
-                virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
+		virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
 
 		virtual QList<qReal::Listener*> listeners() const = 0;
 	};
 
 }
 
-Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.7")
+Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.8")

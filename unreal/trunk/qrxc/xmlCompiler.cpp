@@ -468,10 +468,8 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values()){
-			isNotFirst |= generator.generate(type, out, isNotFirst);
-		}
+	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes())
+		isNotFirst |= generator.generate(type, out, isNotFirst);
 
 	if (!isNotFirst)
 		out() << "\tQ_UNUSED(name);\n";

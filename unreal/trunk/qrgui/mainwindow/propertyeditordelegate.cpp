@@ -17,7 +17,6 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 {
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
 	QStringList values = model->getEnumValues(index);
-	qDebug() << "values:" << values;
 	if (!values.isEmpty()){
 		QComboBox *editor = new QComboBox(parent);
 		foreach (QString item, values)
@@ -36,6 +35,11 @@ void PropertyEditorDelegate::setEditorData(QWidget *editor,
 	QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(editor);
 	if (lineEdit)
 		lineEdit->setText(value);
+	else {
+		QComboBox *comboEdit = dynamic_cast<QComboBox*>(editor);
+		if (comboEdit)
+			comboEdit->setCurrentIndex(comboEdit->findText(value));
+	}
 }
 
 void PropertyEditorDelegate::setModelData(QWidget *editor,
@@ -43,7 +47,8 @@ void PropertyEditorDelegate::setModelData(QWidget *editor,
 										  const QModelIndex &index) const
 {
 	QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(editor);
-	QString value = lineEdit ? lineEdit->text() : "";
+	QComboBox *comboEdit = dynamic_cast<QComboBox*>(editor);
+	QString value = lineEdit ? lineEdit->text() : (comboEdit ? comboEdit->currentText() : "");
 
 	model->setData(index, value, Qt::EditRole);
 }
