@@ -11,6 +11,7 @@ Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent)
 
 void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	Q_UNUSED(widget);
 	painter->setPen(mPen);
 	drawItem(painter);
 	if (option->state & QStyle::State_Selected) {

@@ -214,8 +214,8 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, Id nodeId)
 			setContainers(attribute, nodeId);
 		if (attribute.tagName() == "connections")
 			setConnections(attribute, nodeId);
-		if (attribute.tagName() == "usages");
-		setUsages(attribute, nodeId);
+		if (attribute.tagName() == "usages")
+			setUsages(attribute, nodeId);
 	}
 }
 
@@ -260,6 +260,7 @@ void XmlParser::setProperties(const QDomElement &element, Id elementId)
 
 void XmlParser::setContainers(const QDomElement &element, Id elementId)
 {
+	Q_UNUSED(elementId);
 	QDomNodeList contains = element.childNodes();
 
 	for (unsigned i = 0; i < contains.length(); ++i) {

@@ -1165,6 +1165,7 @@ bool NodeElement::isRightSide(QPointF& point, double x, double y) const
 
 bool NodeElement::isNoBorderX(QPointF& point, double x, double y) const
 {
+	Q_UNUSED(x);
 	double m_y = point.ry();
 	QRectF rc = boundingRect();
 	return (m_y >= rc.y() + y) && (m_y <= rc.y() + rc.height() - y);
@@ -1172,6 +1173,7 @@ bool NodeElement::isNoBorderX(QPointF& point, double x, double y) const
 
 bool NodeElement::isNoBorderY(QPointF& point, double x, double y) const
 {
+	Q_UNUSED(y);
 	double m_x = point.rx();
 	QRectF rc = boundingRect();
 	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x);
