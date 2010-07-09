@@ -405,14 +405,13 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 	} else if (event->button() == Qt::RightButton) {
-
-		initMouseMoveMan();
-		mouseMovementManager->addPoint(event->screenPos());
-		mRightButtonPressed = true;
-
 		UML::Element *e = getElemAt(event->scenePos());
-		if (!e)
+		if (!e) {
+			initMouseMoveMan();
+			mouseMovementManager->addPoint(event->screenPos());
+			mRightButtonPressed = true;
 			return;
+		}
 		if (!e->isSelected()) {
 			clearSelection();
 			e->setSelected(true);
@@ -441,7 +440,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
@@ -487,14 +485,13 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 					//					elem->setPos(mPrevPosition);
 					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
 				}
-                        }
+			}
 		}
 	}
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "";
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed)
 			mouseMovementManager->addPoint(event->screenPos());

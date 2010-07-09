@@ -264,6 +264,8 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
+	if (!getCurrentTab())
+		return;
 	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
 	int length = graphicsItems.size();
 	if (length == 1) {
