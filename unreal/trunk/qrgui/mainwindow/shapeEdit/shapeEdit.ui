@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>552</width>
+    <height>470</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="9">
+   <item row="0" column="1" rowspan="12">
     <widget class="QGraphicsView" name="graphicsView"/>
    </item>
    <item row="1" column="0">
@@ -63,13 +63,27 @@
     </widget>
    </item>
    <item row="6" column="0">
+    <widget class="QPushButton" name="addPointPortButton">
+     <property name="text">
+      <string>Add Point Port</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QPushButton" name="addLinePortButton">
+     <property name="text">
+      <string>Add Line Port</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
     <widget class="QPushButton" name="clearButton">
      <property name="text">
       <string>Clear</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="9" column="0">
     <widget class="QPushButton" name="saveButton">
      <property name="text">
       <string>Save to Xml</string>

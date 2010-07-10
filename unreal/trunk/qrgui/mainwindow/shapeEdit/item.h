@@ -3,6 +3,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPen>
 #include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QPainter>
 
 class Item : public QGraphicsItem
 {

@@ -10,6 +10,8 @@
 #include "ellipse.h"
 #include "rectangle.h"
 #include "text.h"
+#include "pointPort.h"
+#include "linePort.h"
 #include "../umllib/elementTitle.h"
 
 using namespace UML;
@@ -20,6 +22,7 @@ class Scene : public QGraphicsScene
 public:
 	Scene(QObject *parent = 0);
 	QGraphicsRectItem *mEmptyRect;
+
 private slots:
 	void drawLine();
 	void drawEllipse();
@@ -28,6 +31,9 @@ private slots:
 	void addText();
 	void addDynamicText();
 	void clearScene();
+	void addPointPort();
+	void addLinePort();
+
 private:
 	bool mWaitLine;
 	bool mWaitMoveLine;
@@ -38,12 +44,16 @@ private:
 	bool mWaitMoveRectangle;
 	bool mWaitText;
 	bool mWaitDynamicText;
+	bool mWaitPointPort;
+	bool mWaitLinePort;
 	int mCount;
 	Line *mLine;
 	Ellipse *mEllipse;
 	Arch *mArch;
 	Rectangle *mRectangle;
-	Text* mText;
+	Text *mText;
+	PointPort *mPointPort;
+	LinePort *mLinePort;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;

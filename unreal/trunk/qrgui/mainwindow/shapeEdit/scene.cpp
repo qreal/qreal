@@ -7,7 +7,8 @@ Scene::Scene(QObject * parent)
 	:  QGraphicsScene(parent), mWaitLine(false), mWaitMoveLine(false)
 	, mWaitEllipse(false), mWaitMoveEllipse(false), mWaitArch(false)
 	, mWaitRectangle(false), mWaitMoveRectangle(false)
-	, mWaitText(false), mWaitDynamicText(false), mCount(0)
+	, mWaitText(false), mWaitDynamicText(false)
+	, mWaitPointPort(false), mWaitLinePort(false), mCount(0)
 {
 	setItemIndexMethod(NoIndex);
 	mEmptyRect = addRect(0, 0, 710, 600, QPen(Qt::white));
@@ -28,7 +29,10 @@ void Scene::setX2andY2(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mLine->setBottomRight(mX2, mY2);
+	if (mWaitLinePort)
+		mLinePort->setBottomRight(mX2, mY2);
+	else
+		mLine->setBottomRight(mX2, mY2);
 }
 
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
@@ -52,8 +56,14 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsScene::mousePressEvent(event);
 	if (mWaitLine) {
 		setX1andY1(event);
-		mLine = new Line(mX1, mY1, mX1, mY1, NULL);
-		addItem(mLine);
+		if (mWaitLinePort) {
+			mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
+			addItem(mLinePort);
+		}
+		else {
+			mLine = new Line(mX1, mY1, mX1, mY1, NULL);
+			addItem(mLine);
+		}
 		mWaitMoveLine = true;
 	} else if (mWaitEllipse) {
 		setX1andY1(event);
@@ -79,12 +89,17 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (mWaitText) {
 		setX1andY1(event);
 		if (mWaitDynamicText)
-			mText = new Text(mX1, mY1, "text", true, NULL);
+			mText = new Text(mX1, mY1, "name", true, NULL);
 		else
 			mText = new Text(mX1, mY1, "text", false, NULL);
 		addItem(mText);
 		mWaitText = false;
 		mWaitDynamicText = false;
+	} else if (mWaitPointPort) {
+		setX1andY1(event);
+		mPointPort = new PointPort(mX1, mY1, NULL);
+		addItem(mPointPort);
+		mWaitPointPort = false;
 	}
 }
 
@@ -106,7 +121,8 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (mWaitLine) {
 		reshapeLine(event);
 		mWaitLine = false;
-		mWaitMoveLine= false;
+		mWaitMoveLine = false;
+		mWaitLinePort = false;
 	} else if (mWaitEllipse) {
 		reshapeEllipse(event);
 		mWaitEllipse = false;
@@ -149,6 +165,17 @@ void Scene::addDynamicText()
 {
 	mWaitText = true;
 	mWaitDynamicText = true;
+}
+
+void Scene::addPointPort()
+{
+	mWaitPointPort = true;
+}
+
+void Scene::addLinePort()
+{
+	mWaitLine = true;
+	mWaitLinePort = true;
 }
 
 void Scene::clearScene()

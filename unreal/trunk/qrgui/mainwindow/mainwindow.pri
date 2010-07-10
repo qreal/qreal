@@ -10,7 +10,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/item.h \
 	mainwindow/shapeEdit/ellipse.h \
 	mainwindow/shapeEdit/rectangle.h \
-	mainwindow/shapeEdit/text.h
+	mainwindow/shapeEdit/text.h \
+	mainwindow/shapeEdit/pointPort.h \
+	mainwindow/shapeEdit/linePort.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -23,6 +25,8 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/item.cpp \
 	mainwindow/shapeEdit/ellipse.cpp \
 	mainwindow/shapeEdit/rectangle.cpp \
-	mainwindow/shapeEdit/text.cpp
+	mainwindow/shapeEdit/text.cpp \
+	mainwindow/shapeEdit/pointPort.cpp \
+	mainwindow/shapeEdit/linePort.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui

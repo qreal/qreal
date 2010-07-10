@@ -5,7 +5,7 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
-#include <QPair>
+#include <QList>
 #include <QDebug>
 
 using namespace utils;
@@ -25,6 +25,8 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
 	connect(mUi->addTextButton, SIGNAL(pressed()), mScene, SLOT(addText()));
 	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
+	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
+	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
 	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 }
@@ -154,10 +156,40 @@ QDomElement ShapeEdit::generateText(Text* item)
 	return text;
 }
 
-QPair<QDomElement, QDomElement> ShapeEdit::generatePicture()
+QDomElement ShapeEdit::generatePointPort(PointPort* item)
+{
+	QDomElement pointPort = mDocument.createElement("pointPort");
+	qreal const x = item->boundingRect().center().x() - mTopLeftPicture.x();
+	qreal const y = item->boundingRect().center().y() - mTopLeftPicture.y();
+	pointPort.setAttribute("y", y);
+	pointPort.setAttribute("x", x);
+
+	return pointPort;
+}
+
+QDomElement ShapeEdit::generateLinePort(LinePort* item)
+{
+	QDomElement linePort = mDocument.createElement("linePort");
+	QRectF rect = sceneBoundingRectCoord(item);
+
+	QDomElement start  = mDocument.createElement("start");
+	linePort.appendChild(start);
+	start.setAttribute("starty", rect.top());
+	start.setAttribute("startx", rect.left());
+
+	QDomElement end  = mDocument.createElement("end");
+	linePort.appendChild(end);
+	end.setAttribute("endy", rect.bottom());
+	end.setAttribute("endx", rect.right());
+
+	return linePort;
+}
+
+QList<QDomElement> ShapeEdit::generateGraphics()
 {
 	QDomElement picture = mDocument.createElement("picture");
 	QDomElement label = mDocument.createElement("labels");
+	QDomElement ports = mDocument.createElement("ports");
 
 	mScene->removeItem(mScene->mEmptyRect);
 	mTopLeftPicture = mScene->itemsBoundingRect().topLeft();
@@ -170,11 +202,10 @@ QPair<QDomElement, QDomElement> ShapeEdit::generatePicture()
 		Arch* archItem = dynamic_cast<Arch*>(graphicsItem);
 		Rectangle* rectangleItem = dynamic_cast<Rectangle*>(graphicsItem);
 		Text* textItem = dynamic_cast<Text*>(graphicsItem);
+		PointPort* pointPortItem = dynamic_cast<PointPort*>(graphicsItem);
+		LinePort* linePortItem = dynamic_cast<LinePort*>(graphicsItem);
 
-		if (lineItem != NULL) {
-			QDomElement line = generateLine(lineItem);
-			picture.appendChild(line);
-		}  else if (archItem != NULL) {
+		if (archItem != NULL) {
 			QDomElement arch = generateArch(archItem);
 			picture.appendChild(arch);
 		} else if (ellipseItem != NULL) {
@@ -186,6 +217,15 @@ QPair<QDomElement, QDomElement> ShapeEdit::generatePicture()
 		} else if (textItem != NULL) {
 			QDomElement text = generateText(textItem);
 			label.appendChild(text);
+		} else if (pointPortItem != NULL) {
+			QDomElement pointPort = generatePointPort(pointPortItem);
+			ports.appendChild(pointPort);
+		} else if (linePortItem != NULL) {
+			QDomElement linePort = generateLinePort(linePortItem);
+			ports.appendChild(linePort);
+		} else if (lineItem != NULL) {
+			QDomElement line = generateLine(lineItem);
+			picture.appendChild(line);
 		}
 		else
 			continue;
@@ -194,10 +234,12 @@ QPair<QDomElement, QDomElement> ShapeEdit::generatePicture()
 	picture.setAttribute("sizex", static_cast<int>(mScene->itemsBoundingRect().width()));
 	picture.setAttribute("sizey", static_cast<int>(mScene->itemsBoundingRect().height()));
 
-	QPair<QDomElement, QDomElement> pair;
-	pair.first = picture;
-	pair.second = label;
-	return pair;
+	QList<QDomElement> domList;
+	domList.push_back(picture);
+	domList.push_back(label);
+	domList.push_back(ports);
+
+	return domList;
 }
 
 void ShapeEdit::exportToXml(QString const &fileName)
@@ -206,11 +248,9 @@ void ShapeEdit::exportToXml(QString const &fileName)
 	QDomElement graphics = mDocument.createElement("graphics");
 	mDocument.appendChild(graphics);
 
-	QDomElement picture = generatePicture().first;
-	graphics.appendChild(picture);
-
-	QDomElement label = generatePicture().second;
-	graphics.appendChild(label);
+	QList<QDomElement> list = generateGraphics();
+	foreach (QDomElement domItem, list)
+		graphics.appendChild(domItem);
 
 	file() << "<?xml version='1.0' encoding='utf-8'?>\n";
 	file() << mDocument.toString(4);
