@@ -201,7 +201,7 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setContainers(attribute, nodeId);
 		if (attribute.tagName() == "connections")
 			setConnections(attribute, nodeId);
-		if (attribute.tagName() == "usages");
+		if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
 		if (attribute.tagName() == "possibleEdges")
 			setPossibleEdges(attribute, nodeId);
