@@ -131,15 +131,6 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
-
-	
-	// while creating links sometimes they can't find nodes connected to them
-	// FIXME: updaing all ports of all nodes connected to all links
-	foreach (QGraphicsItem *item, mScene->items()){
-		UML::Element *e = dynamic_cast<UML::Element*>(item);
-		if (e)
-			e->connectToPort();
-	}
 }
 
 void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int start, int end)
@@ -151,8 +142,8 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 			delete item(curr);
 		}
 		removeItem(curr);
-	}	
-	
+	}
+
 	// elements from model are deleted after GUI ones
 	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1)
 		mScene->setEnabled(false);
@@ -164,7 +155,7 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 {
 	Q_UNUSED(sourceEnd);
 	Q_UNUSED(destinationRow);
-	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved 
+	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
 	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
 
 	if (!item(movedElementIndex)) {

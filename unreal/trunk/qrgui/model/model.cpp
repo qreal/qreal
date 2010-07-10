@@ -30,7 +30,13 @@ void Model::init()
 {
 	mTreeItems.insert(ROOT_ID, mRootItem);
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
+
+	// Turn off view notification while loading. Model can be inconsistent during a process,
+	// so views shall not update themselves before time. It is important for
+	// scene, where adding edge before adding nodes may lead to disconnected edge.
+	blockSignals(true);
 	loadSubtreeFromClient(mRootItem);
+	blockSignals(false);
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -40,7 +46,7 @@ Qt::ItemFlags Model::flags(QModelIndex const &index) const
 			| Qt::ItemIsDropEnabled | Qt::ItemIsEnabled;
 	} else {
 	// root item has invalid index, but we should still be able to drop elements into it
-		return Qt::ItemIsDropEnabled;  
+		return Qt::ItemIsDropEnabled;
 	}
 }
 
@@ -144,7 +150,7 @@ QStringList Model::getEnumValues(QModelIndex const &index, int const role) const
 			break;
 		QString selectedProperty = findPropertyName(item->id(), role);
 		return mEditorManager.getEnumValues(item->id(), selectedProperty);
-	} while (false);	
+	} while (false);
 
 	return QStringList();
 }
@@ -534,10 +540,10 @@ ModelAssistApi const &Model::assistApi() const
 
 Id Model::getRootDiagram()
 {
-    return mRootIndex.data(roles::idRole).value<Id>();
+	return mRootIndex.data(roles::idRole).value<Id>();
 }
 
 void Model::setRootIndex(const QModelIndex &index)
 {
-    mRootIndex = index;
+	mRootIndex = index;
 }
