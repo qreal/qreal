@@ -178,6 +178,15 @@ void Scene::addLinePort()
 	mWaitLinePort = true;
 }
 
+void Scene::deleteItem()
+{
+	QList<QGraphicsItem *> list = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, list) {
+		removeItem(graphicsItem);
+		delete graphicsItem;
+	}
+}
+
 void Scene::clearScene()
 {
 	clear();

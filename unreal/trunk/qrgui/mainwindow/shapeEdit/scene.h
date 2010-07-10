@@ -33,6 +33,7 @@ private slots:
 	void clearScene();
 	void addPointPort();
 	void addLinePort();
+	void deleteItem();
 
 private:
 	bool mWaitLine;

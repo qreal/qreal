@@ -27,6 +27,7 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
 	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
 	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
+	connect(mUi->deleteItemButton, SIGNAL(pressed()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 }
