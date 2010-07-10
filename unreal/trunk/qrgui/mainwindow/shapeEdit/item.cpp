@@ -32,6 +32,11 @@ void Item::drawExtractionForItem(QPainter* painter)
 	painter->drawPoint(mX2, mY2);
 }
 
+void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mouseMoveEvent(event);
+}
+
 QPen Item::pen() const
 {
 	return mPen;
@@ -57,4 +62,20 @@ void Item::setBottomRight(qreal x, qreal y)
 	mX2 = x;
 	mY2 = y;
 	update();
+}
+
+void Item::reshapeRectWithShift()
+{
+	qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
+	if(mX2 > mX1) {
+		if (mY2 > mY1)
+			setBottomRight(mX1 + size, mY1 + size);
+		else
+			setBottomRight(mX1 + size, mY1 - size);
+	} else {
+		if (mY2 > mY1)
+			setBottomRight(mX1 - size, mY1 + size);
+		else
+			setBottomRight(mX1 - size, mY1 - size);
+	}
 }

@@ -5,6 +5,8 @@
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
+#include <QPair>
+#include <QDebug>
 
 using namespace utils;
 
@@ -21,6 +23,8 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
 	connect(mUi->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
 	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
+	connect(mUi->addTextButton, SIGNAL(pressed()), mScene, SLOT(addText()));
+	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
 	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 }
@@ -138,9 +142,22 @@ QDomElement ShapeEdit::generateRectangle(Rectangle* item)
 	return rectangle;
 }
 
-QDomElement ShapeEdit::generatePicture()
+QDomElement ShapeEdit::generateText(Text* item)
+{
+	QDomElement text = mDocument.createElement("label");
+	qreal const x1 = item->boundingRect().x() + item->scenePos().x() - mTopLeftPicture.x();
+	qreal const y1 = item->boundingRect().y() + item->scenePos().y() - mTopLeftPicture.y();
+	text.setAttribute("y", y1);
+	text.setAttribute("x", x1);
+	text.setAttribute(item->isDynamicText() ? "textBinded" : "text", item->toPlainText());
+
+	return text;
+}
+
+QPair<QDomElement, QDomElement> ShapeEdit::generatePicture()
 {
 	QDomElement picture = mDocument.createElement("picture");
+	QDomElement label = mDocument.createElement("labels");
 
 	mScene->removeItem(mScene->mEmptyRect);
 	mTopLeftPicture = mScene->itemsBoundingRect().topLeft();
@@ -152,6 +169,7 @@ QDomElement ShapeEdit::generatePicture()
 		Ellipse* ellipseItem = dynamic_cast<Ellipse*>(graphicsItem);
 		Arch* archItem = dynamic_cast<Arch*>(graphicsItem);
 		Rectangle* rectangleItem = dynamic_cast<Rectangle*>(graphicsItem);
+		Text* textItem = dynamic_cast<Text*>(graphicsItem);
 
 		if (lineItem != NULL) {
 			QDomElement line = generateLine(lineItem);
@@ -165,14 +183,21 @@ QDomElement ShapeEdit::generatePicture()
 		} else if (rectangleItem != NULL) {
 			QDomElement rectangle = generateRectangle(rectangleItem);
 			picture.appendChild(rectangle);
-		} else
+		} else if (textItem != NULL) {
+			QDomElement text = generateText(textItem);
+			label.appendChild(text);
+		}
+		else
 			continue;
 	}
 
 	picture.setAttribute("sizex", static_cast<int>(mScene->itemsBoundingRect().width()));
 	picture.setAttribute("sizey", static_cast<int>(mScene->itemsBoundingRect().height()));
 
-	return picture;
+	QPair<QDomElement, QDomElement> pair;
+	pair.first = picture;
+	pair.second = label;
+	return pair;
 }
 
 void ShapeEdit::exportToXml(QString const &fileName)
@@ -181,8 +206,11 @@ void ShapeEdit::exportToXml(QString const &fileName)
 	QDomElement graphics = mDocument.createElement("graphics");
 	mDocument.appendChild(graphics);
 
-	QDomElement picture = generatePicture();
+	QDomElement picture = generatePicture().first;
 	graphics.appendChild(picture);
+
+	QDomElement label = generatePicture().second;
+	graphics.appendChild(label);
 
 	file() << "<?xml version='1.0' encoding='utf-8'?>\n";
 	file() << mDocument.toString(4);

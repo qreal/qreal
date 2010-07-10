@@ -3,11 +3,16 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+
 #include "item.h"
 #include "arch.h"
 #include "line.h"
 #include "ellipse.h"
 #include "rectangle.h"
+#include "text.h"
+#include "../umllib/elementTitle.h"
+
+using namespace UML;
 
 class Scene : public QGraphicsScene
 {
@@ -20,17 +25,25 @@ private slots:
 	void drawEllipse();
 	void drawArc();
 	void drawRectangle();
+	void addText();
+	void addDynamicText();
 	void clearScene();
 private:
 	bool mWaitLine;
+	bool mWaitMoveLine;
 	bool mWaitEllipse;
+	bool mWaitMoveEllipse;
 	bool mWaitArch;
 	bool mWaitRectangle;
+	bool mWaitMoveRectangle;
+	bool mWaitText;
+	bool mWaitDynamicText;
 	int mCount;
 	Line *mLine;
 	Ellipse *mEllipse;
 	Arch *mArch;
 	Rectangle *mRectangle;
+	Text* mText;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;

@@ -31,11 +31,12 @@ private:
 	Ui::ShapeEdit *mUi;
 
 	void exportToXml(QString const &fileName);
-	QDomElement generatePicture();
+	QPair<QDomElement, QDomElement> generatePicture();
 	QDomElement generateLine(Line *item);
 	QDomElement generateEllipse(Ellipse *item);
 	QDomElement generateArch(Arch *item);
 	QDomElement generateRectangle(Rectangle *item);
+	QDomElement generateText(Text *item);
 	QRectF sceneBoundingRectCoord(Item *item);
 
 	QDomElement setPenBrush(QString const &domName, QPen const &pen, QBrush const &brush);

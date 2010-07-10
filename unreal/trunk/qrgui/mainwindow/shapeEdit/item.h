@@ -1,7 +1,8 @@
 #pragma once
 
-#include <QGraphicsItem>
-#include <QPen>
+#include <QtGui/QGraphicsItem>
+#include <QtGui/QPen>
+#include <QtGui/QGraphicsSceneMouseEvent>
 
 class Item : public QGraphicsItem
 {
@@ -11,12 +12,14 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 	QPen pen() const;
 	QBrush brush() const;
 	void setBrush(const QBrush& brush);
 	void setPen(const QPen& pen);
 	void setBottomRight(qreal x, qreal y);
+	void reshapeRectWithShift();
 
 protected:
 	QPen mPen;
