@@ -275,23 +275,23 @@ void MainWindow::sceneSelectionChanged()
 				ui.diagramExplorer->setCurrentIndex(elem->index());
 				mPropertyModel.setIndex(elem->index());
 			}
-		}
-	} else {
-		ui.diagramExplorer->setCurrentIndex(QModelIndex());
-		mPropertyModel.setIndex(QModelIndex());
+		} else {
+			ui.diagramExplorer->setCurrentIndex(QModelIndex());
+			mPropertyModel.setIndex(QModelIndex());
 
-		foreach(QGraphicsItem* item, graphicsItems) {
-			UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
-			if (edge) {
-			length--;
-			graphicsItems.removeOne(edge);
-			}
-		}
-		if (length > 1) {
 			foreach(QGraphicsItem* item, graphicsItems) {
-			UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
-			if (node)
-				node->hideEmbeddedLinkers();
+				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+				if (edge) {
+					length--;
+					graphicsItems.removeOne(edge);
+				}
+			}
+			if (length > 1) {
+				foreach(QGraphicsItem* item, graphicsItems) {
+					UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+					if (node)
+						node->hideEmbeddedLinkers();
+				}
 			}
 		}
 	}
@@ -510,6 +510,10 @@ void MainWindow::newGenerateEditor()
 				dir.mkdir(directory.absolutePath() + "/qrxml/" + fileInfo.baseName());
 			}
 		}
+	}
+	if (!found) {
+		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
+		return;
 	}
 	metaGenerator.generateEditor(directoryName + "/qrxml/" + fileInfo.baseName() + "/" + fileInfo.baseName());
 }

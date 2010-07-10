@@ -22,23 +22,24 @@ XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
 
 void XmlParser::parseFile(const QString &fileName)
 {
-	QDomDocument doc = utils::xmlUtils::loadDocument(fileName);
+	QDomDocument const doc = utils::xmlUtils::loadDocument(fileName);
 
 	initMetamodel(doc);
 
-	QDomNodeList diagrams = doc.elementsByTagName("diagram");
+	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
 
 	for (unsigned i = 0; i < diagrams.length(); ++i) {
 		QDomElement diagram = diagrams.at(i).toElement();
 		initDiagram (diagram, mMetamodel, diagram.attribute("name", "diagram"), diagram.attribute("displayedName", "diagram"));
 	}
+	qDebug() << "elements = " << mApi.elementsCount();
 }
 
 void XmlParser::initMetamodel(const QDomDocument &document)
 {
 	mMetamodel = Id("Meta_editor", "MetaEditor", "MetaEditor_MetamodelDiagram", QUuid::createUuid().toString());
 
-	QDomNodeList includeList = document.elementsByTagName("include");
+	QDomNodeList const includeList = document.elementsByTagName("include");
 	QString includeListString = "";
 
 	for (unsigned i = 0; i < includeList.length(); ++i) {
@@ -49,19 +50,17 @@ void XmlParser::initMetamodel(const QDomDocument &document)
 	mApi.setProperty(mMetamodel, "include", includeListString);
 }
 
-void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent, const QString &name, const QString &displayedName)
+void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
+		const QString &name, const QString &displayedName)
 {
 	Id diagramId("Meta_editor", "MetaEditor", "MetaEditor_MetaEditorDiagramNode", QUuid::createUuid().toString());
 
 	setStandartConfigurations(diagramId, parent, name, displayedName);
 
-	mApi.setProperty(diagramId, "position", QPointF(0,0));
-	mApi.setProperty(diagramId, "configuration", QVariant(QPolygon()));
-
 	createDiagramAttributes(diagram, diagramId);
 }
 
-void XmlParser::createDiagramAttributes(const QDomElement &diagram, Id diagramId)
+void XmlParser::createDiagramAttributes(const QDomElement &diagram, const Id &diagramId)
 {
 	QDomNodeList diagramAttributes = diagram.childNodes();
 
@@ -74,7 +73,7 @@ void XmlParser::createDiagramAttributes(const QDomElement &diagram, Id diagramId
 	}
 }
 
-void XmlParser::createNonGraphicElements(const QDomElement &type, Id diagramId)
+void XmlParser::createNonGraphicElements(const QDomElement &type, const Id &diagramId)
 {
 	QDomNodeList enums = type.childNodes();
 
@@ -85,7 +84,7 @@ void XmlParser::createNonGraphicElements(const QDomElement &type, Id diagramId)
 	}
 }
 
-void XmlParser::createGraphicElements(const QDomElement &type, Id diagramId)
+void XmlParser::createGraphicElements(const QDomElement &type, const Id &diagramId)
 {
 	QDomNodeList graphicElements = type.childNodes();
 
@@ -101,84 +100,72 @@ void XmlParser::createGraphicElements(const QDomElement &type, Id diagramId)
 	initContainer();
 }
 
-void XmlParser::initEnum(const QDomElement &enumElement, Id diagramId)
+void XmlParser::initEnum(const QDomElement &enumElement, const Id &diagramId)
 {
 	Id enumId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityEnum", QUuid::createUuid().toString());
 
-	setStandartConfigurations(enumId, diagramId, enumElement.attribute("name", ""), enumElement.attribute("displayedName", ""));
-
-	mApi.setProperty(enumId, "position", QPointF(0,0));
-	mApi.setProperty(enumId, "configuration", QVariant(QPolygon()));
+	setStandartConfigurations(enumId, diagramId, enumElement.attribute("name", ""),
+			enumElement.attribute("displayedName", ""));
 
 	setEnumAttributes(enumElement, enumId);
 }
 
-void XmlParser::initNode(const QDomElement &node, Id diagramId)
+void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 {
 	Id nodeId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityNode", QUuid::createUuid().toString());
-	mElements.insert(nodeId, node.attribute("name", ""));
+	mElements.insert(nodeId, node.attribute("name", " "));
 
-	setStandartConfigurations(nodeId, diagramId, node.attribute("name", ""), node.attribute("displayedName", ""));
-
-	mApi.setProperty(nodeId, "position", QPointF(0,0));
-	mApi.setProperty(nodeId, "configuration", QVariant(QPolygon()));
+	setStandartConfigurations(nodeId, diagramId, node.attribute("name", " "),
+			node.attribute("displayedName", " "));
 
 	setNodeAttributes(node, nodeId);
 }
 
-void XmlParser::initEdge(const QDomElement &edge, Id diagramId)
+void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
 {
 	Id edgeId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityEdge", QUuid::createUuid().toString());
 	mElements.insert(edgeId, edge.attribute("name", ""));
 
-	setStandartConfigurations(edgeId, diagramId, edge.attribute("name", ""), edge.attribute("displayedName", ""));
-
-	mApi.setProperty(edgeId, "position", QPointF(0,0));
-	mApi.setProperty(edgeId, "configuration", QVariant(QPolygon()));
+	setStandartConfigurations(edgeId, diagramId, edge.attribute("name", ""),
+			edge.attribute("displayedName", ""));
 
 	setEdgeAttributes(edge, edgeId);
 }
 
-void XmlParser::initImport(const QDomElement &import, Id diagramId)
+void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 {
-	Id importationId("Meta_editor", "MetaEditor", "MetaEditor_Importation", QUuid::createUuid().toString());
+	Id importationId("Meta_editor", "MetaEditor", "MetaEditor_Importation",
+			QUuid::createUuid().toString());
 
 	QStringList nameList = import.attribute("name", "").split("::", QString::SkipEmptyParts);
-
-	setStandartConfigurations(importationId, diagramId, nameList.at(0), import.attribute("displayedName", ""));
-
+	setStandartConfigurations(importationId, diagramId, nameList.at(0),
+			import.attribute("displayedName", ""));
 	mApi.setProperty(importationId, "as", import.attribute("as", ""));
 
-	mApi.setProperty(importationId, "position", QPointF(0,0));
-	mApi.setProperty(importationId, "configuration", QVariant(QPolygon()));
-
-	Id importObjectId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityImported", QUuid::createUuid().toString());
+	Id importObjectId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityImported",
+			QUuid::createUuid().toString());
 
 	setStandartConfigurations(importObjectId, diagramId, nameList.at(1), nameList.at(1));
-
-	mApi.setProperty(importObjectId, "position", QPointF(0,0));
-	mApi.setProperty(importObjectId, "configuration", QVariant(QPolygon()));
 }
 
-void XmlParser::setEnumAttributes(const QDomElement &enumElement, Id enumId)
+void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)
 {
 	QDomNodeList values = enumElement.childNodes();
 
 	for (unsigned i = 0; i < values.length(); ++i) {
 		QDomElement value = values.at(i).toElement();
 		if (value.tagName() == "value"){
-			Id valueId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityValue", QUuid::createUuid().toString());
+			Id valueId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityValue",
+					QUuid::createUuid().toString());
 
-			setStandartConfigurations(valueId, enumId, value.attribute("name", ""), value.attribute("displayedName", ""));
-
-			mApi.setProperty(valueId, "position", QPointF(0,0));
-			mApi.setProperty(valueId, "configuration", QVariant(QPolygon()));
+			setStandartConfigurations(valueId, enumId, value.attribute("name", ""),
+					value.attribute("displayedName", ""));
 
 			mApi.setProperty(valueId, "valueName", value.text());
 		}
 	}
 }
-void XmlParser::setNodeAttributes(const QDomElement &node, Id nodeId)
+void XmlParser::setNodeAttributes(const QDomElement &node, const Id &nodeId)
 {
 	QDomNodeList nodeList = node.childNodes();
 
@@ -189,7 +176,7 @@ void XmlParser::setNodeAttributes(const QDomElement &node, Id nodeId)
 	}
 }
 
-void XmlParser::setEdgeAttributes(const QDomElement &edge, Id edgeId)
+void XmlParser::setEdgeAttributes(const QDomElement &edge, const Id &edgeId)
 {
 	QDomNodeList edgeList = edge.childNodes();
 
@@ -200,7 +187,7 @@ void XmlParser::setEdgeAttributes(const QDomElement &edge, Id edgeId)
 	}
 }
 
-void XmlParser::setNodeConfigurations(const QDomElement &tag, Id nodeId)
+void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 {
 	QDomNodeList nodeAttributes = tag.childNodes();
 
@@ -214,12 +201,18 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, Id nodeId)
 			setContainers(attribute, nodeId);
 		if (attribute.tagName() == "connections")
 			setConnections(attribute, nodeId);
-		if (attribute.tagName() == "usages")
+		if (attribute.tagName() == "usages");
 			setUsages(attribute, nodeId);
+		if (attribute.tagName() == "possibleEdges")
+			setPossibleEdges(attribute, nodeId);
+		if (attribute.tagName() == "pin")
+			setPin(nodeId);
+		if (attribute.tagName() == "action")
+			setAction(nodeId);
 	}
 }
 
-void XmlParser::setEdgeConfigurations(const QDomElement &tag, Id edgeId)
+void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)
 {
 	QDomNodeList edgeAttributes = tag.childNodes();
 
@@ -229,14 +222,12 @@ void XmlParser::setEdgeConfigurations(const QDomElement &tag, Id edgeId)
 			setGeneralization(attribute, edgeId);
 		if (attribute.tagName() == "properties")
 			setProperties(attribute, edgeId);
-		if (attribute.tagName() == "container")
-			setContainers(attribute, edgeId);
 		if (attribute.tagName() == "assotiations")
 			setAssotiations(attribute, edgeId);
 	}
 }
 
-void XmlParser::setGeneralization(const QDomElement &element, Id elementId)
+void XmlParser::setGeneralization(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList generalizations = element.childNodes();
 
@@ -247,7 +238,7 @@ void XmlParser::setGeneralization(const QDomElement &element, Id elementId)
 	}
 }
 
-void XmlParser::setProperties(const QDomElement &element, Id elementId)
+void XmlParser::setProperties(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList properties = element.childNodes();
 
@@ -258,18 +249,48 @@ void XmlParser::setProperties(const QDomElement &element, Id elementId)
 	}
 }
 
-void XmlParser::setContainers(const QDomElement &element, Id elementId)
+void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 {
-	Q_UNUSED(elementId);
-	QDomNodeList contains = element.childNodes();
-
-	for (unsigned i = 0; i < contains.length(); ++i) {
-		QDomElement contain = contains.at(i).toElement();
-		mContainerList.insert(contain.attribute("name", ""),element.attribute("name", ""));
+	QDomNodeList containsElements = element.childNodes();
+	for (unsigned i = 0; i < containsElements.length(); ++i) {
+		QDomElement contains = containsElements.at(i).toElement();
+		if (contains.tagName() == "contains") {
+			QStringList type = contains.attribute("type", "").split("::", QString::SkipEmptyParts);
+			mContainerList.insert((type.size() > 1) ? type.at(1) : "",
+					mApi.stringProperty(elementId, "name"));
+		}
+		if (contains.tagName() == "properties")
+			setContainerProperties(contains, elementId);
 	}
 }
 
-void XmlParser::setConnections(const QDomElement &element, Id elementId)
+void XmlParser::setContainerProperties(const QDomElement &element, const Id &elementId)
+{
+	QDomNodeList properties = element.childNodes();
+	if (properties.size() > 0) {
+		Id containerProperties("Meta_editor", "MetaEditor",
+				"MetaEditor_MetaEntityPropertiesAsContainer", QUuid::createUuid().toString());
+		setStandartConfigurations(containerProperties, elementId,
+				"properties", "");
+	for (unsigned i = 0; i < properties.length(); ++i) {
+		QDomElement property = properties.at(i).toElement();
+			if (property.tagName() == "softContainer")
+				mApi.setProperty(containerProperties, "softContainer", "true");
+			if (property.tagName() == "forestalling")
+				mApi.setProperty(containerProperties, "forestalling size",
+						property.attribute("size", ""));
+			if (property.tagName() == "childrenForestalling")
+				mApi.setProperty(containerProperties, "childrenForestalling size",
+						property.attribute("size", ""));
+			if (property.tagName() == "minimzeToChildren")
+				mApi.setProperty(containerProperties, "minimzeToChildren", "true");
+			if (property.tagName() == "banChildrenMove")
+				mApi.setProperty(containerProperties, "banChildrenMove", "true");
+		}
+	}
+}
+
+void XmlParser::setConnections(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList connections = element.childNodes();
 
@@ -280,7 +301,7 @@ void XmlParser::setConnections(const QDomElement &element, Id elementId)
 	}
 }
 
-void XmlParser::setUsages(const QDomElement &element, Id elementId)
+void XmlParser::setUsages(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList usages = element.childNodes();
 
@@ -291,82 +312,111 @@ void XmlParser::setUsages(const QDomElement &element, Id elementId)
 	}
 }
 
-void XmlParser::setAssotiations(const QDomElement &element, Id elementId)
+void XmlParser::setAssotiations(const QDomElement &element, const Id &elementId)
 {
-	Id assotiationId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityAssotiation", QUuid::createUuid().toString());
+	Id assotiationId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityAssotiation",
+			QUuid::createUuid().toString());
 	QDomNodeList assotiations = element.childNodes();
 
 	QDomElement assotiation = assotiations.at(0).toElement();
 
 	setStandartConfigurations(assotiationId, elementId, assotiation.attribute("name", ""),
-							  assotiation.attribute("displayedName", ""));
+			assotiation.attribute("displayedName", ""));
 
 	mApi.setProperty(assotiationId, "beginType", element.attribute("beginType", ""));
 	mApi.setProperty(assotiationId, "endType", element.attribute("endType", ""));
 	mApi.setProperty(assotiationId, "beginName", assotiation.attribute("beginName", ""));
 	mApi.setProperty(assotiationId, "endName", assotiation.attribute("endName", ""));
-
-	mApi.setProperty(assotiationId, "position", QPointF(0,0));
-	mApi.setProperty(assotiationId, "configuration", QVariant(QPolygon()));
 }
 
-void XmlParser::initProperty(const QDomElement &property, Id elementId)
+void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId)
 {
-	Id propertyId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntity_Attribute", QUuid::createUuid().toString());
+	QDomNodeList possibleEdges = element.childNodes();
 
-	setStandartConfigurations(propertyId, elementId, property.attribute("name", ""), property.attribute("displayedName", ""));
+	for (unsigned i = 0; i < possibleEdges.length(); ++i) {
+		QDomElement possibleEdge = possibleEdges.at(i).toElement();
+		if (possibleEdge.tagName() == "possibleEdge")
+			initPossibleEdge(possibleEdge, elementId);
+	}
+}
+
+void XmlParser::setPin(const Id &elementId)
+{
+	mApi.setProperty(elementId, "is Pin", "true");
+}
+
+void XmlParser::setAction(const Id &elementId)
+{
+	mApi.setProperty(elementId, "is Action", "true");
+}
+
+void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)
+{
+	Id possibleEdgeId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityPossibleEdge",
+			QUuid::createUuid().toString());
+
+	setStandartConfigurations(possibleEdgeId, elementId, possibleEdge.attribute("name", ""),
+			possibleEdge.attribute("displayedName", ""));
+
+	mApi.setProperty(possibleEdgeId, "beginName", possibleEdge.attribute("beginName", ""));
+	mApi.setProperty(possibleEdgeId, "endName", possibleEdge.attribute("endName", ""));
+	mApi.setProperty(possibleEdgeId, "directed", possibleEdge.attribute("directed", "false"));
+}
+
+void XmlParser::initProperty(const QDomElement &property, const Id &elementId)
+{
+	Id propertyId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntity_Attribute",
+			QUuid::createUuid().toString());
+
+	setStandartConfigurations(propertyId, elementId, property.attribute("name", ""),
+			property.attribute("displayedName", ""));
 
 	mApi.setProperty(propertyId, "type", property.attribute("type", ""));
-	mApi.setProperty(propertyId, "attributeType", property.attribute("attributeType", "0"));
+	mApi.setProperty(propertyId, "attributeType", property.attribute("type", "0"));
 
 	QDomNodeList defaultValue = property.childNodes();
 	if (!defaultValue.isEmpty())
-		mApi.setProperty(propertyId, "defaultValue", defaultValue.at(0).toElement().attribute("defaultValue", "false"));
-
-	mApi.setProperty(propertyId, "position", QPointF(0,0));
-	mApi.setProperty(propertyId, "configuration", QVariant(QPolygon()));
+		mApi.setProperty(propertyId, "defaultValue",
+				defaultValue.at(0).toElement().attribute("defaultValue", "false"));
 }
 
-void XmlParser::initConnection(const QDomElement &connection, Id elementId)
+void XmlParser::initConnection(const QDomElement &connection, const Id &elementId)
 {
-	Id connectionId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityConnection", QUuid::createUuid().toString());
+	Id connectionId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityConnection",
+			QUuid::createUuid().toString());
 
-	setStandartConfigurations(connectionId, elementId, connection.attribute("name", ""), connection.attribute("displayedName", ""));
+	setStandartConfigurations(connectionId, elementId, connection.attribute("name", ""),
+			connection.attribute("displayedName", ""));
 
 	mApi.setProperty(connectionId, "type", connection.attribute("type", ""));
-
-	mApi.setProperty(connectionId, "position", QPointF(0,0));
-	mApi.setProperty(connectionId, "configuration", QVariant(QPolygon()));
 }
 
-void XmlParser::initUsage(const QDomElement &usage, Id elementId)
+void XmlParser::initUsage(const QDomElement &usage, const Id &elementId)
 {
-	Id usageId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityUsage", QUuid::createUuid().toString());
+	Id usageId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityUsage",
+			QUuid::createUuid().toString());
 
-	setStandartConfigurations(usageId, elementId, usage.attribute("name", ""), usage.attribute("displayedName", ""));
+	setStandartConfigurations(usageId, elementId, usage.attribute("name", ""),
+			usage.attribute("displayedName", ""));
 
 	mApi.setProperty(usageId, "type", usage.attribute("type", ""));
-
-	mApi.setProperty(usageId, "position", QPointF(0,0));
-	mApi.setProperty(usageId, "configuration", QVariant(QPolygon()));
 }
 
-void XmlParser::initGeneralization(const QDomElement &generalization, Id elementId)
+void XmlParser::initGeneralization(const QDomElement &generalization, const Id &elementId)
 {
-	Id generalizationId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityImported", QUuid::createUuid().toString());
+	Id generalizationId("Meta_editor", "MetaEditor", "MetaEditor_MetaEntityImported",
+			QUuid::createUuid().toString());
 
-	setStandartConfigurations(generalizationId, elementId, generalization.attribute("name", ""), generalization.attribute("displayedName", ""));
+	setStandartConfigurations(generalizationId, elementId, generalization.attribute("name", ""),
+			generalization.attribute("displayedName", ""));
 
 	mApi.setProperty(generalizationId, "parentName", generalization.attribute("parentName", ""));
 
-	mApi.setProperty(generalizationId, "position", QPointF(0,0));
-	mApi.setProperty(generalizationId, "configuration", QVariant(QPolygon()));
+	Id inheritanceId("Meta_editor", "MetaEditor", "MetaEditor_Inheritance",
+			QUuid::createUuid().toString());
 
-	Id inheritanceId("Meta_editor", "MetaEditor", "MetaEditor_Inheritance", QUuid::createUuid().toString());
-
-	setStandartConfigurations(inheritanceId, elementId, generalization.attribute("name", ""), generalization.attribute("displayedName", ""));
-	mApi.setProperty(inheritanceId, "position", QPointF(0,0));
-	mApi.setProperty(inheritanceId, "configuration", QVariant(QPolygon()));
+	setStandartConfigurations(inheritanceId, elementId, generalization.attribute("name", ""),
+			generalization.attribute("displayedName", ""));
 }
 
 void XmlParser::initContainer()
@@ -375,14 +425,15 @@ void XmlParser::initContainer()
 		QString name = mElements[key];
 		mApi.setProperty(key, "container", mContainerList[name]);
 	}
-
 }
 
-void XmlParser::setStandartConfigurations(Id id, Id parent, const QString &name, const QString &displayedName)
+void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
+		const QString &name, const QString &displayedName)
 {
 	mApi.addChild(parent, id);
 	mApi.setProperty(id, "name", name);
-	mApi.setProperty(id, "displayedName", displayedName);
+	if (displayedName != "")
+		mApi.setProperty(id, "displayedName", displayedName);
 	mApi.setProperty(id, "from", ROOT_ID.toVariant());
 	mApi.setProperty(id, "to", ROOT_ID.toVariant());
 	mApi.setProperty(id, "fromPort", 0.0);
@@ -392,5 +443,8 @@ void XmlParser::setStandartConfigurations(Id id, Id parent, const QString &name,
 	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+
+	mApi.setProperty(id, "position", QPointF(0,0));
+	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
 }

@@ -73,6 +73,7 @@ namespace qrRepo {
 
 		//Returns all elements with .element() == type
 		qReal::IdList elementsByType(QString const &type) const;
+		int elementsCount() const;
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

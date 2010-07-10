@@ -350,3 +350,8 @@ IdList RepoApi::elementsByType(QString const &type) const
 	}
 	return result;
 }
+
+int RepoApi::elementsCount() const
+{
+	return mClient.elements().size();
+}
