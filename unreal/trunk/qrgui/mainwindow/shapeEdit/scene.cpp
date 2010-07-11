@@ -51,6 +51,21 @@ void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
 		mRectangle->reshapeRectWithShift();
 }
 
+void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
+{
+	QList<QGraphicsItem *> list = items(event->scenePos());
+	foreach (QGraphicsItem *graphicsItem, list)
+		graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, false);
+	item->setFlag(QGraphicsItem::ItemIsMovable, true);
+}
+
+void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
+{
+	QList<QGraphicsItem *> list = items(event->scenePos());
+	foreach (QGraphicsItem *graphicsItem, list)
+		graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+}
+
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
@@ -59,16 +74,19 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		if (mWaitLinePort) {
 			mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
 			addItem(mLinePort);
+			removeMoveFlag(event, mLinePort);
 		}
 		else {
 			mLine = new Line(mX1, mY1, mX1, mY1, NULL);
 			addItem(mLine);
+			removeMoveFlag(event, mLine);
 		}
 		mWaitMoveLine = true;
 	} else if (mWaitEllipse) {
 		setX1andY1(event);
 		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
 		addItem(mEllipse);
+		removeMoveFlag(event, mEllipse);
 		mWaitMoveEllipse = true;
 	} else if (mWaitArch && (mCount <= 2)) {
 		if (mCount == 1) {
@@ -85,6 +103,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
 		addItem(mRectangle);
+		removeMoveFlag(event, mRectangle);
 		mWaitMoveRectangle = true;
 	} else if (mWaitText) {
 		setX1andY1(event);
@@ -99,6 +118,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mPointPort = new PointPort(mX1, mY1, NULL);
 		addItem(mPointPort);
+		removeMoveFlag(event, mPointPort);
 		mWaitPointPort = false;
 	}
 }
@@ -132,6 +152,7 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		mWaitRectangle = false;
 		mWaitMoveRectangle = false;
 	}
+	setMoveFlag(event);
 }
 
 void Scene::drawLine()

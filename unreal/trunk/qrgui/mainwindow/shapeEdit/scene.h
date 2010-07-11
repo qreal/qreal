@@ -66,6 +66,9 @@ private:
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 
+	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
+	void setMoveFlag(QGraphicsSceneMouseEvent *event);
+
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
