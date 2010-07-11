@@ -21,43 +21,51 @@ MetaGenerator::MetaGenerator(qrRepo::RepoApi const &api)
 {
 }
 
-QString MetaGenerator::generateEditor(QString const &pathToFile)
+QHash<Id, QString> MetaGenerator::getMetamodelList()
 {
 	Id repoId = ROOT_ID;
-	IdList metamodels = mApi.children(repoId);
+	IdList const metamodels = mApi.children(repoId);
+	QHash<Id, QString> metamodelList;
+
+	foreach (Id const key, metamodels) {
+		QString const objectType = mApi.typeName(key);
+		if (objectType == "MetaEditor_MetamodelDiagram") {
+			if (mApi.stringProperty(key, "name of the directory") != "")
+				metamodelList.insert(key, mApi.stringProperty(key, "name of the directory"));
+			else
+				QMessageBox::warning(NULL, QObject::tr("error"), "Enter the name of the directory for saving");
+		}
+	}
+	return metamodelList;
+}
+
+QString MetaGenerator::generateEditor(Id const metamodelId, const QString &pathToFile)
+{
 	QString includeProList;
 	QFileInfo fileName(pathToFile);
 	QString baseName = fileName.baseName();
 
-	if (metamodels.size() > 1) {
-		QMessageBox::warning(NULL, QObject::tr("error"),
-				"Sorry, you cannot generate more than one metamodel at once. Please, create one metamodel and try again");
+	QDomElement metamodel = mDocument.createElement("metamodel");
+	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
+	mDocument.appendChild(metamodel);
+
+	QString const includeFile = mApi.stringProperty(metamodelId, "include");
+	QStringList const includeList = includeFile.split(", ", QString::SkipEmptyParts);
+	foreach (QString const name, includeList) {
+		includeProList += " " + name;
+		QDomElement include = mDocument.createElement("include");
+		QDomText value = mDocument.createTextNode(name);
+		include.appendChild(value);
+		metamodel.appendChild(include);
 	}
-	foreach (Id const idChild, metamodels) {
-		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEditor_MetamodelDiagram") {
-			QDomElement metamodel = mDocument.createElement("metamodel");
-			metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
-			mDocument.appendChild(metamodel);
 
-			QString const includeFile = mApi.stringProperty(idChild, "include");
-			QStringList const includeList = includeFile.split(", ", QString::SkipEmptyParts);
-			foreach (QString const name, includeList) {
-				includeProList += " " + name;
-				QDomElement include = mDocument.createElement("include");
-				QDomText value = mDocument.createTextNode(name);
-				include.appendChild(value);
-				metamodel.appendChild(include);
-			}
+	QDomElement nameSpace = mDocument.createElement("namespace");
+	QDomText nameSpaceName = mDocument.createTextNode("UML 2.0");
+	nameSpace.appendChild(nameSpaceName);
+	metamodel.appendChild(nameSpace);
 
-			QDomElement nameSpace = mDocument.createElement("namespace");
-			QDomText nameSpaceName = mDocument.createTextNode("UML 2.0");
-			nameSpace.appendChild(nameSpaceName);
-			metamodel.appendChild(nameSpace);
+	createDiagrams (metamodel, metamodelId);
 
-			createDiagrams (metamodel, idChild);
-		}
-	}
 	OutFile outpro(pathToFile + ".pro");
 	outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
 	if (includeProList != "")
@@ -69,6 +77,7 @@ QString MetaGenerator::generateEditor(QString const &pathToFile)
 	OutFile outxml(pathToFile + ".xml");
 	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
 	outxml() << mDocument.toString(4);
+	mDocument.clear();
 	return "";
 
 }
@@ -80,8 +89,8 @@ void MetaGenerator::createDiagrams(QDomElement &parent, const Id &id)
 		QString const objectType = mApi.typeName(typeDiagram);
 		if (objectType == "MetaEditor_MetaEditorDiagramNode") {
 			QDomElement diagram = mDocument.createElement("diagram");
-			correctness (diagram, "name", mApi.name(typeDiagram));
-			correctness (diagram, "displayedName", mApi.stringProperty(typeDiagram, "displayedName"));
+			ensureCorrectness (diagram, "name", mApi.name(typeDiagram));
+			ensureCorrectness (diagram, "displayedName", mApi.stringProperty(typeDiagram, "displayedName"));
 			parent.appendChild(diagram);
 
 			serializeObjects(diagram, typeDiagram);
@@ -125,9 +134,9 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 {
 	QDomElement node = mDocument.createElement("node");
-	correctness(node, "name", mApi.name(id));
+	ensureCorrectness(node, "name", mApi.name(id));
 	QString name = mApi.name(id);
-	correctness(node, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(node, "displayedName", mApi.stringProperty(id, "displayedName"));
 	parent.appendChild(node);
 
 	QDomElement logic = mDocument.createElement("logic");
@@ -145,9 +154,15 @@ void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 void MetaGenerator::createEdge(QDomElement &parent, Id const &id)
 {
 	QDomElement edge = mDocument.createElement("edge");
-	correctness(edge, "name", mApi.name(id));
-	correctness(edge, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(edge, "name", mApi.name(id));
+	ensureCorrectness(edge, "displayedName", mApi.stringProperty(id, "displayedName"));
 	parent.appendChild(edge);
+
+	QDomElement graphics = mDocument.createElement("graphics");
+	edge.appendChild(graphics);
+	QDomElement lineType = mDocument.createElement("lineType");
+	ensureCorrectness(lineType, "type", mApi.stringProperty(id, "lineType"));
+	graphics.appendChild(lineType);
 
 	QDomElement logic = mDocument.createElement("logic");
 	edge.appendChild(logic);
@@ -159,8 +174,8 @@ void MetaGenerator::createEdge(QDomElement &parent, Id const &id)
 void MetaGenerator::createEnum(QDomElement &parent,Id const &id)
 {
 	QDomElement enumElement = mDocument.createElement("enum");
-	correctness(enumElement, "name", mApi.name(id));
-	correctness(enumElement, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(enumElement, "name", mApi.name(id));
+	ensureCorrectness(enumElement, "displayedName", mApi.stringProperty(id, "displayedName"));
 	parent.appendChild(enumElement);
 
 	setValues(enumElement, id);
@@ -177,8 +192,8 @@ void MetaGenerator::setLogicAttributes(QDomElement &parent,Id const &id)
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == "MetaEditor_MetaEntity_Attribute"){
 			QDomElement property = mDocument.createElement("property");
-			correctness(property, "type", mApi.stringProperty(idChild, "attributeType"));
-			correctness(property, "name", mApi.name(idChild));
+			ensureCorrectness(property, "type", mApi.stringProperty(idChild, "attributeType"));
+			ensureCorrectness(property, "name", mApi.name(idChild));
 			if (mApi.stringProperty(idChild, "defaultValue") != "") {
 				QDomElement defaultTag = mDocument.createElement("default");
 				QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));
@@ -195,7 +210,7 @@ void MetaGenerator::setLogicAttributes(QDomElement &parent,Id const &id)
 		foreach (Id const idOut, out){
 			Id const idImported = mApi.to(idOut);
 			QDomElement newRelation = mDocument.createElement("parent");
-			correctness(newRelation, "parentName", mApi.stringProperty(idImported, "name"));
+			ensureCorrectness(newRelation, "parentName", mApi.stringProperty(idImported, "name"));
 			relation.appendChild(newRelation);
 		}
 	}
@@ -223,13 +238,13 @@ void MetaGenerator::setAssotiations(QDomElement &parent, const Id &id)
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == "MetaEditor_MetaEntityAssotiation") {
 			QDomElement assotiationTag = mDocument.createElement("assotiations");
-			correctness(assotiationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
-			correctness(assotiationTag, "endType", mApi.stringProperty(idChild, "endType"));
+			ensureCorrectness(assotiationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
+			ensureCorrectness(assotiationTag, "endType", mApi.stringProperty(idChild, "endType"));
 			parent.appendChild(assotiationTag);
 
 			QDomElement assotiation = mDocument.createElement("assotiation");
-			correctness(assotiation, "beginName", mApi.stringProperty(idChild, "beginName"));
-			correctness(assotiation, "endName", mApi.stringProperty(idChild, "endName"));
+			ensureCorrectness(assotiation, "beginName", mApi.stringProperty(idChild, "beginName"));
+			ensureCorrectness(assotiation, "endName", mApi.stringProperty(idChild, "endName"));
 			assotiationTag.appendChild(assotiation);
 		}
 	}
@@ -257,7 +272,7 @@ void MetaGenerator::newSetConnections(QDomElement &parent, const Id &id,
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == typeName) {
 			QDomElement connection = mDocument.createElement(internalTagName);
-			correctness(connection,"type", mApi.stringProperty(idChild, "Type"));
+			ensureCorrectness(connection,"type", mApi.stringProperty(idChild, "Type"));
 			connectionsTag.appendChild(connection);
 		}
 	}
@@ -275,9 +290,9 @@ void MetaGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 		if (objectType == "MetaEditor_MetaEntityPossibleEdge") {
 			QDomElement possibleEdge = mDocument.createElement("possibleEdge");
 			possibleEdges.appendChild(possibleEdge);
-			correctness(possibleEdge, "beginName", mApi.stringProperty(idChild, "beginName"));
-			correctness(possibleEdge, "endName", mApi.stringProperty(idChild, "endName"));
-			correctness(possibleEdge, "directed", mApi.stringProperty(idChild, "directed"));
+			ensureCorrectness(possibleEdge, "beginName", mApi.stringProperty(idChild, "beginName"));
+			ensureCorrectness(possibleEdge, "endName", mApi.stringProperty(idChild, "endName"));
+			ensureCorrectness(possibleEdge, "directed", mApi.stringProperty(idChild, "directed"));
 		}
 	}
 }
@@ -308,7 +323,7 @@ void MetaGenerator::setContainer(QDomElement &parent, QString name, const Id &id
 	foreach (Id const idChild, mElements) {
 		if ((mApi.stringProperty(idChild, "container")) == name) {
 			QDomElement contains = mDocument.createElement("contains");
-			correctness(contains, "type", mDiagramName + "::" + mApi.name(idChild));
+			ensureCorrectness(contains, "type", mDiagramName + "::" + mApi.name(idChild));
 			container.appendChild(contains);
 		}
 	}
@@ -328,10 +343,10 @@ void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
 				properties.appendChild(softContainer);
 				QDomElement forestalling = mDocument.createElement("forestalling");
 				properties.appendChild(forestalling);
-				correctness (forestalling, "size", mApi.stringProperty(idChild, "forestalling size"));
+				ensureCorrectness (forestalling, "size", mApi.stringProperty(idChild, "forestalling size"));
 				QDomElement childrenForestalling = mDocument.createElement("childrenForestalling");
 				properties.appendChild(childrenForestalling);
-				correctness (childrenForestalling, "size", mApi.stringProperty(idChild, "childrenForestalling size"));
+				ensureCorrectness (childrenForestalling, "size", mApi.stringProperty(idChild, "childrenForestalling size"));
 				if (mApi.stringProperty(idChild, "minimzeToChildren") == "true") {
 					QDomElement minimzeToChildren = mDocument.createElement("minimzeToChildren");
 					properties.appendChild(minimzeToChildren);
@@ -353,15 +368,15 @@ void MetaGenerator::setImported(QDomElement &parent, const Id &idParent)
 		if (mApi.typeName(idChild) == "MetaEditor_Importation") {
 			Id const idImported = mApi.to(idChild);
 			QDomElement import = mDocument.createElement("import");
-			correctness(import, "name", mApi.stringProperty(idImported, "name") + "::" + mApi.stringProperty(idChild, "name"));
-			correctness(import, "as", mApi.stringProperty(idChild, "as"));
-			correctness(import, "displayedName", mApi.stringProperty(idChild, "displayedName"));
+			ensureCorrectness(import, "name", mApi.stringProperty(idImported, "name") + "::" + mApi.stringProperty(idChild, "name"));
+			ensureCorrectness(import, "as", mApi.stringProperty(idChild, "as"));
+			ensureCorrectness(import, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			parent.appendChild(import);
 		}
 	}
 }
 
-void MetaGenerator::correctness(QDomElement element, const QString &tagName, const QString &value)
+void MetaGenerator::ensureCorrectness(QDomElement element, const QString &tagName, const QString &value)
 {
 	if (value == "") {
 		QMessageBox::warning(NULL, QObject::tr("error"),

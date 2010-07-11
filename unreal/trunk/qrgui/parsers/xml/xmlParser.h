@@ -4,7 +4,8 @@
 #include <QtXml/QDomElement>
 
 #include "../../kernel/ids.h"
-#include <QMap>
+#include <QtCore/QHash>
+#include <QtCore/QFileInfo>
 
 namespace qrRepo {
 	class RepoApi;
@@ -30,7 +31,7 @@ namespace qReal {
 			QHash<Id, QString> mElements;
 			QHash<QString, QString> mContainerList;
 
-			void initMetamodel(QDomDocument const &document);
+			void initMetamodel(QDomDocument const &document, QString const &directoryName);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
 			void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
 			void createGraphicElements(QDomElement const &type, Id const &diagramId);
@@ -55,6 +56,7 @@ namespace qReal {
 			void setPossibleEdges(QDomElement const &element, Id const &elementId);
 			void setPin(Id const &elementId);
 			void setAction(Id const &elementId);
+			void setLineType(QDomElement const &tag, Id const &edgeId);
 			void initPossibleEdge(QDomElement const &possibleEdge, Id const &elementId);
 			void initDiagram(QDomElement const &diagram, Id const &parent,
 					QString const &name, QString const &displayedName);

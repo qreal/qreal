@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
+#include <QtCore/QHash>
 
 #include "../../kernel/ids.h"
 
@@ -19,7 +20,8 @@ namespace qReal {
 		public:
 			explicit MetaGenerator(qrRepo::RepoApi const &api);
 
-			QString generateEditor(QString const &pathToFile);
+			QHash<Id, QString> getMetamodelList();
+			QString generateEditor(Id const metamodelId, QString const &pathToFile);
 		private:
 			void serializeObjects(QDomElement &parent, Id const &idParent);
 			void createNode(QDomElement &parent, Id const &id);
@@ -40,7 +42,7 @@ namespace qReal {
 			void setImported(QDomElement &parent, Id const &idParent);
 			void newSetConnections(QDomElement &parent, const Id &id,
 					QString const &commonTagName, QString const &internalTagName, QString const &typeName);
-			void correctness (QDomElement element,QString const &tagName, QString const &value);
+			void ensureCorrectness (QDomElement element,QString const &tagName, QString const &value);
 
 			qrRepo::RepoApi const &mApi;
 			QDomDocument mDocument;

@@ -8,6 +8,11 @@
           <value>open_arrow</value>
           <value>close_arrow</value>
         </enum>
+		<enum name="lineTypes" displayedName="lineTypes">
+		  <value>solidLine</value>
+		  <value>dashLine</value>
+		  <value>dotLine</value>
+		</enum>
       </nonGraphicTypes>
       <graphicTypes>
 	    <node name="MetamodelDiagram" displayedName="Metamodel Diagram">
@@ -30,6 +35,7 @@
 			<properties>
 			  <property type="string" name="displayedName"/>
 			  <property type="string" name="include"/>
+			  <property type="string" name="name of the directory"/>
 			</properties>
 			<containers/>
           </logic>
@@ -161,6 +167,9 @@
             <properties>
 			  <property type="string" name="container"/>
               <property type="string" name="displayedName"/>
+			  <property type="lineTypes" name="lineType">
+				<default>solidLine</default>
+			  </property>	
             </properties>
             <container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>

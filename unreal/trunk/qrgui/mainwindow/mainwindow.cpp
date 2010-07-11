@@ -494,11 +494,9 @@ void MainWindow::newGenerateEditor()
 {
 	generators::MetaGenerator metaGenerator(mModel->api());
 
-	QString const fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty())
-		return;
 	QString directoryName;
-	QFileInfo fileInfo(fileName);
+	QFileInfo directoryXml;
+	const QHash<Id, QString> metamodelList = metaGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -506,8 +504,8 @@ void MainWindow::newGenerateEditor()
 		foreach (QFileInfo const directory, infoList){
 			if (directory.baseName() == "qrxml") {
 				found = true;
+				directoryXml = directory;
 				directoryName = directory.absolutePath();
-				dir.mkdir(directory.absolutePath() + "/qrxml/" + fileInfo.baseName());
 			}
 		}
 	}
@@ -515,7 +513,10 @@ void MainWindow::newGenerateEditor()
 		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
 		return;
 	}
-	metaGenerator.generateEditor(directoryName + "/qrxml/" + fileInfo.baseName() + "/" + fileInfo.baseName());
+	foreach (Id const key, metamodelList.keys()) {
+		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
+		metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+	}
 }
 
 void MainWindow::parseEditorXml()

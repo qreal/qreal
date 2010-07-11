@@ -24,7 +24,7 @@ void XmlParser::parseFile(const QString &fileName)
 {
 	QDomDocument const doc = utils::xmlUtils::loadDocument(fileName);
 
-	initMetamodel(doc);
+	initMetamodel(doc, fileName);
 
 	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
 
@@ -35,8 +35,11 @@ void XmlParser::parseFile(const QString &fileName)
 	qDebug() << "elements = " << mApi.elementsCount();
 }
 
-void XmlParser::initMetamodel(const QDomDocument &document)
+void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName)
 {
+	QFileInfo fileName(directoryName);
+	QString fileBaseName = fileName.baseName();
+
 	mMetamodel = Id("Meta_editor", "MetaEditor", "MetaEditor_MetamodelDiagram", QUuid::createUuid().toString());
 
 	QDomNodeList const includeList = document.elementsByTagName("include");
@@ -48,6 +51,7 @@ void XmlParser::initMetamodel(const QDomDocument &document)
 	}
 	setStandartConfigurations(mMetamodel, ROOT_ID, "Metamodel", "");
 	mApi.setProperty(mMetamodel, "include", includeListString);
+	mApi.setProperty(mMetamodel, "name of the directory", fileBaseName);
 }
 
 void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
@@ -182,6 +186,8 @@ void XmlParser::setEdgeAttributes(const QDomElement &edge, const Id &edgeId)
 
 	for (unsigned i = 0; i < edgeList.length(); ++i) {
 		QDomElement tag = edgeList.at(i).toElement();
+		if (tag.tagName() == "graphics")
+			setLineType(tag, edgeId);
 		if (tag.tagName() == "logic")
 			setEdgeConfigurations(tag, edgeId);
 	}
@@ -209,6 +215,16 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setPin(nodeId);
 		if (attribute.tagName() == "action")
 			setAction(nodeId);
+	}
+}
+
+void XmlParser::setLineType(const QDomElement &tag, const Id &edgeId)
+{
+	QDomNodeList lineTypes = tag.childNodes();
+
+	if (lineTypes.length() > 0) {
+		QDomElement lineType = lineTypes.at(0).toElement();
+		mApi.setProperty(edgeId, "lineType", lineType.attribute("type", ""));
 	}
 }
 
