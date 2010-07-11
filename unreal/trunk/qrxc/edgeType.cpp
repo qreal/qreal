@@ -110,14 +110,15 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
 		<< "\t\tvoid init(QRectF &, QList<QPointF> &, QList<StatLine> &,\n"
-		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &factory,\n"
+		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &,\n"
 		<< "\t\t\t\t\t\t\t\t\t\t\tQList<ElementTitleInterface*> &,SdfRenderer *) {}\n\n"
 		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
 	else
-		out() << "\t\t\tQ_UNUSED(titles);\n";
+		out() << "\t\t\tQ_UNUSED(titles);\n"
+			<< "\t\t\tQ_UNUSED(factory);\n";
 
 	out() << "\t\t}\n\n"
 		<< "\t\tvirtual ~" << className << "() {}\n\n"

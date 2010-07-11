@@ -1,4 +1,4 @@
-swin32-msvc* {
+win32-msvc* {
 	CONFIG(debug, debug|release) {
 		QRXC = qrxc\debug\qrxc.exe
 	} else:CONFIG(release, debug|release){
