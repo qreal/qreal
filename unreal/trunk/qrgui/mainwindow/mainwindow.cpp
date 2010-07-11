@@ -669,5 +669,7 @@ ListenerManager *MainWindow::listenerManager()
 
 void MainWindow::showGrid()
 {
-	getCurrentTab()->changeSceneGrid();
+	EditorView *tmpView = getCurrentTab();
+	if (tmpView != NULL)
+		tmpView->changeSceneGrid();
 }
