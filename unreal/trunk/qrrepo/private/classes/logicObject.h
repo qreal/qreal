@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../qrgui/kernel/definitions.h"
+#include "../../../qrgui/kernel/roles.h"
 
 #include <QMap>
 #include <QVariant>

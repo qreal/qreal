@@ -2,7 +2,7 @@
 
 #include <QGraphicsScene>
 
-#include "../kernel/definitions.h"
+#include "../kernel/roles.h"
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
 
@@ -31,9 +31,9 @@ public:
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
-	// is virtual only to trick linker. is used from plugins and generators and we have no intention of 
-	// including the scene (with dependencies) there 
-	virtual UML::Element *getElem(qReal::Id const &uuid);  
+	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
+	// including the scene (with dependencies) there
+	virtual UML::Element *getElem(qReal::Id const &uuid);
 	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
 
 	virtual QPersistentModelIndex rootItem();
@@ -96,7 +96,7 @@ private:
 
 	QPointF mCreatePoint;
 
-        MouseMovementManager * mouseMovementManager;
+		MouseMovementManager * mouseMovementManager;
 
 	friend class qReal::EditorViewMViface;
 

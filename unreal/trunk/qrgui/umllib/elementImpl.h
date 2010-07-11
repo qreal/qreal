@@ -7,7 +7,7 @@
 #include <QPainter>
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
-#include "sdfrenderer.h"
+#include "sdfRendererInterface.h"
 
 namespace UML{
 

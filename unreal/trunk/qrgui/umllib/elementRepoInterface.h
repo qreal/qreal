@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QString>
+#include <QtCore/QString>
+#include <QtCore/QPersistentModelIndex>
 
 namespace UML {
 

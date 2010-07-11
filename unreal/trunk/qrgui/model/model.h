@@ -9,7 +9,7 @@
 #include <QPersistentModelIndex>
 
 #include "../../qrrepo/repoApi.h"
-#include "../kernel/definitions.h"
+#include "../kernel/roles.h"
 #include "classes/modelTreeItem.h"
 #include "../editorManager/editorManager.h"
 #include "modelAssistApi.h"
@@ -52,8 +52,8 @@ namespace qReal {
 			void open(QString const &workingDirectory);
 			void reinit();
 			void saveTo(QString const &workingDirectory);
-                        Id getRootDiagram();
-                        void setRootIndex(QModelIndex const & index);
+						Id getRootDiagram();
+						void setRootIndex(QModelIndex const & index);
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 		public slots:
@@ -77,7 +77,7 @@ namespace qReal {
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
-                        QModelIndex mRootIndex;
+						QModelIndex mRootIndex;
 
 			Model(Model const &);  // copying is forbidden
 			Model& operator =(Model const &); // assigment is also forbidden

@@ -3,7 +3,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "../kernel/definitions.h"
+#include "../kernel/roles.h"
 #include "uml_edgeelement.h"
 
 namespace UML {

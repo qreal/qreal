@@ -156,9 +156,9 @@ void Editor::generateListenerIncludes(utils::OutFile &out) const
 
 void Editor::generateListenerFactory(utils::OutFile &out, QString const &pluginName) const
 {
-	out() << "QList<qReal::Listener*> " + pluginName + "Plugin::listeners() const\n"
+	out() << "QList<qReal::ListenerInterface*> " + pluginName + "Plugin::listeners() const\n"
 		<< "{\n"
-		<< "\tQList<qReal::Listener*> result;\n";
+		<< "\tQList<qReal::ListenerInterface*> result;\n";
 
 	typedef QPair<QString, QString> StringPair;
 	foreach (StringPair listener, mListeners)

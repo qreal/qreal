@@ -20,7 +20,7 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 
 	QLabel *pic = new QLabel(this);
 	pic->setFixedSize(24, 24); // the frame
-	pic->setPixmap(mIcon.pixmap(22, 22)); 
+	pic->setPixmap(mIcon.pixmap(22, 22));
 	layout->addWidget(pic);
 
 	QLabel *text = new QLabel(this);
@@ -122,7 +122,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	if (!child)
 		return;
 
-	Q_ASSERT(child->id().idSize() == 3); // it should be element type 
+	Q_ASSERT(child->id().idSize() == 3); // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place

@@ -3,10 +3,11 @@
 #include <QtCore/QObject>
 
 #include "../model/modelAssistApi.h"
+#include "listenerInterface.h"
 
 namespace qReal {
 
-	class Listener: public QObject {
+	class Listener: public ListenerInterface {
 		Q_OBJECT
 	public:
 		Listener(): mApi(NULL) {}

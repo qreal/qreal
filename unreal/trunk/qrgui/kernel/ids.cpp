@@ -26,6 +26,11 @@ Id Id::loadFromString(QString const &string)
 	return result;
 }
 
+Id Id::getRootId()
+{
+	return Id("ROOT_ID","ROOT_ID","ROOT_ID","ROOT_ID");
+}
+
 Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)
 	: mEditor(editor), mDiagram(diagram), mElement(element), mId(id)
 {

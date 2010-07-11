@@ -4,7 +4,7 @@
 #include <QtGui/QAction>
 #include <QtCore/QModelIndex>
 
-#include "../kernel/definitions.h"
+#include "../kernel/roles.h"
 #include "elementRepoInterface.h"
 #include "elementTitle.h"
 

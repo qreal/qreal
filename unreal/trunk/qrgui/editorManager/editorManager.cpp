@@ -261,8 +261,13 @@ Id EditorManager::findElementByType(QString const &type) const
 QList<Listener*> EditorManager::listeners() const
 {
 	QList<Listener*> result;
-	foreach (EditorInterface *editor, mPluginIface.values())
-		result.append(editor->listeners());
+	foreach (EditorInterface *editor, mPluginIface.values()){
+		QList<ListenerInterface*> tmp = editor->listeners();
+		foreach (ListenerInterface *iface, tmp){
+			Listener *listener = dynamic_cast<Listener*>(iface);
+			result.append(listener);
+		}
+	}
 	return result;
 }
 

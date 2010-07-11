@@ -113,12 +113,13 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n"
+		<< "#include \"../../../qrgui/umllib/uml_element.h\"\n"
 		<< "#include \"../../../qrgui/umllib/elementRepoInterface.h\"\n"
-		//<< "#include \"../../../qrgui/umllib/sdfRendererInterface.h\"\n\n"
+		<< "#include \"../../../qrgui/umllib/elementTitleHelpers.h\"\n\n"
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-			foreach (Type *type, diagram->types().values())
+		foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
 
 	out() << "}\n\n";
@@ -171,7 +172,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
-		<< 	"\tvirtual QList<qReal::Listener*> listeners() const;\n"
+		<< 	"\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
 		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"

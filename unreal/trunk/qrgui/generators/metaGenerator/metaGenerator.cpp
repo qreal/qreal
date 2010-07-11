@@ -7,7 +7,7 @@
 #include <QtCore/QFileInfo>
 #include <QMessageBox>
 
-#include "../../kernel/definitions.h"
+#include "../../kernel/roles.h"
 #include "../../../qrrepo/repoApi.h"
 
 #include "../../../utils/outFile.h"
