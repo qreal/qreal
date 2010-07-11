@@ -85,6 +85,7 @@ namespace qReal {
 		void initCurrentTab(const QModelIndex &rootIndex);
 		void openNewTab(const QModelIndex &index);
 		void openNewEmptyTab();
+		void switchGrid(bool isChecked);
 
 	private:
 		model::Model *mModel;

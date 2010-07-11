@@ -18,7 +18,7 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mSwitchGrid(false), mSwitchGridAction("Switch on/off grid", this),
+	: mSwitchGrid(false), mSwitchGridAction("Switch on grid", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true)
 {
@@ -40,7 +40,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mFoldedContents = mContents;
 
-	connect(&mSwitchGridAction, SIGNAL(triggered()), this, SLOT(switchGrid()));
+	mSwitchGridAction.setCheckable(true);
+	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
 	//resize(mContents);
 }
@@ -182,6 +183,16 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
 	return result;
+}
+
+void NodeElement::switchOnGrid()
+{
+	mSwitchGrid = true;
+}
+
+void NodeElement::switchOffGrid()
+{
+	mSwitchGrid = false;
 }
 
 void NodeElement::delUnusedLines()
@@ -1040,9 +1051,9 @@ void NodeElement::delEdge(EdgeElement *edge)
 	mEdgeList.removeAt(mEdgeList.indexOf(edge));
 }
 
-void NodeElement::switchGrid()
+void NodeElement::switchGrid(bool isChecked)
 {
-	mSwitchGrid = !mSwitchGrid;
+	mSwitchGrid = isChecked;
 }
 
 void NodeElement::changeFoldState()

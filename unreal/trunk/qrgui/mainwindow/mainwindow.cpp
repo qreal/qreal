@@ -91,6 +91,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(ui.actionShow_grid, SIGNAL(triggered()), this, SLOT(showGrid()));
+	connect(ui.actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
 	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
@@ -673,4 +674,21 @@ void MainWindow::showGrid()
 	EditorView *tmpView = getCurrentTab();
 	if (tmpView != NULL)
 		tmpView->changeSceneGrid();
+}
+
+void MainWindow::switchGrid(bool isChecked)
+{
+	EditorView *tmpView = getCurrentTab();
+	if (tmpView != NULL) {
+		QList<QGraphicsItem *> list = tmpView->scene()->items();
+		foreach (QGraphicsItem *item, list) {
+			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+			if (nodeItem != NULL) {
+				if (isChecked)
+					nodeItem->switchOnGrid();
+				else
+					nodeItem->switchOffGrid();
+			}
+		}
+	}
 }

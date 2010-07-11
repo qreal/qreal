@@ -75,9 +75,11 @@ namespace UML {
 		void resizeChild(QRectF newContents, QRectF oldContents);
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
+		void switchOnGrid();
+		void switchOffGrid();
 
 	private slots:
-		void switchGrid();
+		void switchGrid(bool isChecked);
 
 	private:
 		QList<QGraphicsLineItem*> mLines;
