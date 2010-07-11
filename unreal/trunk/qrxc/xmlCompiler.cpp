@@ -114,11 +114,11 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n"
 		<< "#include \"../../../qrgui/umllib/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/umllib/sdfrenderer.h\"\n\n"
+		//<< "#include \"../../../qrgui/umllib/sdfRendererInterface.h\"\n\n"
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-            foreach (Type *type, diagram->types().values())
+			foreach (Type *type, diagram->types().values())
 			type->generateCode(out);
 
 	out() << "}\n\n";
@@ -160,7 +160,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
-		<< "\tvirtual QIcon getIcon(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
@@ -261,8 +261,8 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn elementsNameMap[diagram].keys();\n"
 		<< "}\n\n"
 
-		<< "QIcon " << mPluginName << "Plugin::getIcon(QString const &/*diagram*/, QString const &element) const\n{\n"
-		<< "\treturn QIcon(new SdfIconEngineV2(\":/\" + element + \"Class.sdf\"));\n"
+		<< "QIcon " << mPluginName << "Plugin::getIcon(SdfIconEngineV2Interface *engine) const\n{\n"
+		<< "\treturn QIcon(engine);\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::editorName() const\n{\n"

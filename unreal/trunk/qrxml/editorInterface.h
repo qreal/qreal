@@ -26,11 +26,11 @@ namespace qReal {
 		virtual QStringList getTypesContainedBy(QString const &element) const = 0;
 		virtual QStringList getConnectedTypes(QString const &element) const = 0;
 		virtual QStringList getUsedTypes(QString const &element) const = 0;
-                virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const = 0;
+				virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const = 0;
 
-                virtual int isNodeOrEdge(QString const &element) const = 0;
+				virtual int isNodeOrEdge(QString const &element) const = 0;
 
-		virtual QIcon getIcon(QString const &diagram, QString const &element) const = 0;
+		virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const = 0;
 		virtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const = 0;
 		virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const = 0;
 		virtual QString getPropertyType(QString const &element, QString const &name) const = 0;

@@ -165,6 +165,7 @@ namespace UML {
 		ElementImpl* mElementImpl;
 
 		SdfRenderer *mPortRenderer;
+		SdfRenderer *mRenderer;
 
 		bool mIsFolded;
 		QRectF mFoldedContents;

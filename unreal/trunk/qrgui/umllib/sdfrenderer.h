@@ -9,8 +9,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QtGui/QIconEngine>
+#include "sdfRendererInterface.h"
 
-class SdfRenderer : public QObject
+class SdfRenderer : public SdfRendererInterface
 {
 	Q_OBJECT
 
@@ -75,7 +76,7 @@ private:
 	bool isNotLCMZ(QString str, int i);
 };
 
-class SdfIconEngineV2: public QIconEngineV2
+class SdfIconEngineV2: public SdfIconEngineV2Interface
 {
 public:
 	SdfIconEngineV2(QString const &file);

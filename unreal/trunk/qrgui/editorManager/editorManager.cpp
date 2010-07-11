@@ -135,7 +135,9 @@ QString EditorManager::mouseGesture(const Id &id) const
 QIcon EditorManager::icon(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getIcon(id.diagram(), id.element());
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/" + id.element() + "Class.sdf");
+	// QIcon will take ownership of engine, no need for us to delete
+	return mPluginIface[id.editor()]->getIcon(engine);
 }
 
 UML::Element* EditorManager::graphicalObject(const Id &id) const
@@ -183,7 +185,7 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	IdList result;
 	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element()))
 		// a hack caused by absence  of ID entity in editors generator
-		result.append(Id("?", "?", type));  
+		result.append(Id("?", "?", type));
 
 	return result;
 }
@@ -266,5 +268,5 @@ QList<Listener*> EditorManager::listeners() const
 
 EditorInterface* EditorManager::getEditorInterface(QString editor) const
 {
-        return mPluginIface[editor];
+		return mPluginIface[editor];
 }

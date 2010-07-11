@@ -209,7 +209,7 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
-		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRenderer *portRenderer) {\n";
+		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) {\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -221,7 +221,8 @@ void NodeType::generateCode(OutFile &out)
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
-		out() << "\t\t\tmRenderer.load(QString(\":/" << className << "Class.sdf\"));\n";
+		out() << "\t\t\tmRenderer = renderer;\n"
+				"\t\t\tmRenderer->load(QString(\":/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
 	} else
 		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
@@ -246,7 +247,7 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)
-		out() << "\t\t\tmRenderer.render(painter, contents);\n";
+		out() << "\t\t\tmRenderer->render(painter, contents);\n";
 
 	out() << "\t\t}\n\n";
 
@@ -364,7 +365,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 	out() << "\tprivate:\n";
 	if (hasSdf)
-		out() << "\t\tSdfRenderer mRenderer;\n";
+		out() << "\t\tSdfRendererInterface *mRenderer;\n";
 	foreach (Label *label, mLabels)
 		label->generateCodeForFields(out);
 	out() << "\t};";

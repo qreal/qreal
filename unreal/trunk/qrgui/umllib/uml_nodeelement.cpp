@@ -24,10 +24,12 @@ NodeElement::NodeElement(ElementImpl* impl)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
+
 	mPortRenderer = new SdfRenderer();
+	mRenderer = new SdfRenderer();
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mPortRenderer);
+	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mPortRenderer, mRenderer);
 	foreach (ElementTitleInterface *titleIface, titles){
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)
@@ -51,6 +53,7 @@ NodeElement::~NodeElement()
 		delete title;
 
 	delete mPortRenderer;
+	delete mRenderer;
 	delete mElementImpl;
 }
 
