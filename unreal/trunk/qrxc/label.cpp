@@ -31,11 +31,11 @@ void Label::generateCodeForConstructor(OutFile &out)
 {
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
-		out() << "			" + titleName() + " = new ElementTitle("
+		out() << "			" + titleName() + " = factory.createTitle("
 				+ mX + ", " + mY + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
-		out() << "			" + titleName() + " = new ElementTitle("
+		out() << "			" + titleName() + " = factory.createTitle("
 				+ mX + ", " + mY + ", \"" + mText + "\");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
@@ -65,5 +65,5 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 void Label::generateCodeForFields(OutFile &out)
 {
-	out() << "		ElementTitle *" + titleName() + ";\n";
+	out() << "		ElementTitleInterface *" + titleName() + ";\n";
 }

@@ -5,7 +5,7 @@
 #include <QRectF>
 #include <QPointF>
 #include <QPainter>
-#include "elementTitle.h"
+#include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfrenderer.h"
 
@@ -19,15 +19,15 @@ namespace UML{
 		bool prop_y1;
 		bool prop_x2;
 		bool prop_y2;
-	
+
 		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
 			prop_x2(false), prop_y2(false) {}
-	
+
 		operator QLineF () const
 		{
 			return line;
 		}
-	
+
 		void operator = (QLineF const &l)
 		{
 			line = l;
@@ -37,16 +37,18 @@ namespace UML{
 			prop_y2 = false;
 		}
 	};
-	
+
 	/** @class ElementImpl
 	 *	@brief base class for generated stuff in plugins
 	 *	TODO: split into NodeElementImpl and EdgeElementImpl
-	 * */	
+	 * */
 	class ElementImpl {
 		public:
-			virtual void init(QRectF &contents, QList<QPointF> &pointPorts, 
-							QList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) = 0;
-			virtual void init(QList<ElementTitle*> &titles) = 0;
+			virtual void init(QRectF &contents, QList<QPointF> &pointPorts,
+					QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+					QList<ElementTitleInterface*> &titles, SdfRenderer *portRenderer) = 0;
+			virtual void init(ElementTitleFactoryInterface &factory,
+								QList<ElementTitleInterface*> &titles) = 0;
 			virtual void paint(QPainter *painter, QRectF &contents) = 0;
 			virtual void updateData(ElementRepoInterface *repo) const = 0;
 			virtual bool isNode() = 0;
@@ -54,7 +56,7 @@ namespace UML{
 			virtual Qt::PenStyle getPenStyle() = 0;
 			virtual void drawStartArrow(QPainter *painter) const = 0;
 			virtual void drawEndArrow(QPainter *painter) const = 0;
-				
+
 			/*Container properties*/
 			virtual bool isContainer() = 0;
 			virtual bool isSortContainer() = 0;

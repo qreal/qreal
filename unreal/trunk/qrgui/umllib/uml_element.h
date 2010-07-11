@@ -7,6 +7,7 @@
 #include "../kernel/definitions.h"
 #include "elementRepoInterface.h"
 #include "elementTitle.h"
+
 #include "contextMenuAction.h"
 #include "elementImpl.h"
 
@@ -35,7 +36,7 @@ namespace UML {
 
 		virtual bool initPossibleEdges() = 0;
 
-		// for inline editing we should be able to change properties value. right now via graphical 
+		// for inline editing we should be able to change properties value. right now via graphical
 		// representation. also labels could store indices and get data themselves
 		virtual void setRoleValueByName(QString const &roleName, QString const &value);
 	protected:

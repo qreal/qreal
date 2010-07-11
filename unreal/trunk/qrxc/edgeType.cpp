@@ -46,7 +46,7 @@ bool EdgeType::initAssociations()
 		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
-	for (QDomElement element = associationsElement.firstChildElement("association"); 
+	for (QDomElement element = associationsElement.firstChildElement("association");
 		!element.isNull();
 		element = element.nextSiblingElement("association"))
 	{
@@ -109,9 +109,10 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
-		<< "\t\tvoid init(QRectF &, QList<QPointF> &,\n"
-		<< "\t\t\t\t\t\t\t\t\t\t\tQList<StatLine> &, QList<ElementTitle*> &, SdfRenderer *) {}\n\n"
-		<< "\t\tvoid init(QList<ElementTitle*> &titles)\n\t\t{\n";
+		<< "\t\tvoid init(QRectF &, QList<QPointF> &, QList<StatLine> &,\n"
+		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &factory,\n"
+		<< "\t\t\t\t\t\t\t\t\t\t\tQList<ElementTitleInterface*> &,SdfRenderer *) {}\n\n"
+		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
@@ -138,7 +139,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")
 		out() << "return " << mLineType << "; }\n";
-	else	
+	else
 		out() << "return Qt::SolidLine; }\n";
 	out() << "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {\n";
@@ -153,7 +154,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else		
+	else
 		mLabels[0]->generateCodeForUpdateData(out);
 
 	out() << "\t\t}\n\n";

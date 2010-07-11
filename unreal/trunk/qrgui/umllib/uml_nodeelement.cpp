@@ -25,9 +25,16 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 	mPortRenderer = new SdfRenderer();
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, mTitles, mPortRenderer);
-	foreach (ElementTitle *title, mTitles)
+	ElementTitleFactory factory;
+	QList<ElementTitleInterface*> titles;
+	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mPortRenderer);
+	foreach (ElementTitleInterface *titleIface, titles){
+		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
+		if (!title)
+			continue;
 		title->setParentItem(this);
+		mTitles.append(title);
+	}
 
 	mFoldedContents = mContents;
 

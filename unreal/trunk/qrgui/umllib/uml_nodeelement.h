@@ -56,20 +56,6 @@ namespace UML {
 
 		virtual bool initPossibleEdges();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		bool getPortStatus();
 
 		bool getHavePortStatus();

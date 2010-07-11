@@ -78,7 +78,7 @@ bool NodeType::initPorts()
 
 bool NodeType::initPointPorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); 
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
 		!portElement.isNull();
 		portElement = portElement.nextSiblingElement("pointPort"))
 	{
@@ -94,7 +94,7 @@ bool NodeType::initPointPorts(QDomElement const &portsElement)
 
 bool NodeType::initLinePorts(QDomElement const &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("linePort"); 
+	for (QDomElement portElement = portsElement.firstChildElement("linePort");
 		!portElement.isNull();
 		portElement = portElement.nextSiblingElement("linePort"))
 	{
@@ -206,16 +206,18 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n"
-		<< "\t\tvoid init(QList<ElementTitle*> &) {}\n\n"
+		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
-		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, QList<ElementTitle*> &titles, SdfRenderer *portRenderer) {\n";
+		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
+		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRenderer *portRenderer) {\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
 	if (!hasLinePorts())
 		out() << "\t\t\tQ_UNUSED(linePorts);\n";
 	if (mLabels.size() == 0)
-		out() << "\t\t\tQ_UNUSED(titles);\n";
+		out() << "\t\t\tQ_UNUSED(titles);\n"
+			<<"\t\tQ_UNUSED(factory);\n";
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
@@ -257,13 +259,13 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";	
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else		
+	else
 		foreach (Label *label, mLabels)
 			label->generateCodeForUpdateData(out);
 
@@ -277,36 +279,36 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";	
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tbool isSortContainer()\n\t\t{\n";
 	if (mContainerProperties.isSortContainer)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";	
-	
+	out() << "\t\t}\n\n";
+
 	out() << "\t\tint sizeOfForestalling()\n\t\t{\n";
 	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n";
-	out() << "\t\t}\n\n";	
-	
+	out() << "\t\t}\n\n";
+
 	out() << "\t\tint sizeOfChildrenForestalling()\n\t\t{\n";
 	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfChildrenForestalling) + ";\n";
-	out() << "\t\t}\n\n";	
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tbool isChildrenMovable()\n\t\t{\n";
 	if (mContainerProperties.isChildrenMovable)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";	
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tbool isMinimizingToChildren()\n\t\t{\n";
 	if (mContainerProperties.isMinimizingToChildren)
 		out() << "\t\t\treturn true;\n";
 	else
 		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";	
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tbool isPort()\n\t\t{\n";
 	if (mIsPin)

@@ -50,9 +50,17 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	QSettings settings("SPbSU", "QReal");
 	mChaoticEdition = settings.value("ChaoticEdition", false).toBool();
 
-	mElementImpl->init(mTitles);
-	foreach (ElementTitle *title, mTitles)
+	ElementTitleFactory factory;
+
+	QList<ElementTitleInterface*> titles;
+	mElementImpl->init(factory, titles);
+	foreach (ElementTitleInterface *titleIface, titles){
+		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
+		if (!title)
+			continue;
 		title->setParentItem(this);
+		mTitles.append(title);
+	}
 }
 
 EdgeElement::~EdgeElement()
