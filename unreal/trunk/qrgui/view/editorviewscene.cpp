@@ -4,6 +4,7 @@
 #include <QtGui>
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
+#include <QGraphicsItem>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -25,7 +26,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 
 void EditorViewScene::initMouseMoveMan()
 {
-	qReal::Id diagram = model()->getRootDiagram();
+        qReal::Id diagram = model()->getRootDiagram();
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
 	mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
 }
@@ -408,7 +409,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e) {
 			initMouseMoveMan();
-			mouseMovementManager->addPoint(event->screenPos());
+                        mouseMovementManager->addPoint(event->scenePos());
 			mRightButtonPressed = true;
 			return;
 		}
@@ -445,13 +446,13 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	if (event->button() == Qt::RightButton)
 	{
-		mouseMovementManager->addPoint(event->screenPos());
+                mouseMovementManager->addPoint(event->scenePos());
 		qReal::Id id = mouseMovementManager->getObject();
-		QPointF pos(mouseMovementManager->pos() - event->screenPos());
 		if (id.element() != "")
-			createElement(id.toString(), pos + event->scenePos());
+                        createElement(id.toString(), mouseMovementManager->pos());
 			mRightButtonPressed = false;
 			mouseMovementManager->clear();
+                        deleteGesture();
 	}
 
 	UML::Element *element = getElemAt(event->scenePos());
@@ -494,7 +495,10 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed)
-			mouseMovementManager->addPoint(event->screenPos());
+                {
+                        mouseMovementManager->addPoint(event->scenePos());
+                        drawGesture();
+                }
 		else
 			QGraphicsScene::mouseMoveEvent(event);
 }
@@ -631,4 +635,20 @@ void EditorViewScene::changeNeedDrawGrid()
 	mNeedDrawGrid = !mNeedDrawGrid;
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ShowGrid", mNeedDrawGrid);
+}
+
+void EditorViewScene::drawGesture()
+{
+    QLineF line = mouseMovementManager->newLine();
+    QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
+    this->addItem(item);
+    mGesture.push_back(item);
+}
+
+void EditorViewScene::deleteGesture()
+{
+    foreach (QGraphicsLineItem * item, mGesture)
+    {
+        this->removeItem(item);;
+    }
 }

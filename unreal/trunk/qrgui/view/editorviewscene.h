@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QGraphicsScene>
-
+#include <QGraphicsLineItem>
 #include "../kernel/roles.h"
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
@@ -65,7 +65,11 @@ private:
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
-	void initMouseMoveMan();
+
+        void initMouseMoveMan();
+        void drawGesture();
+        void deleteGesture();
+
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
 	UML::Element *getElemAt(const QPointF &position);
@@ -82,9 +86,10 @@ private:
 							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 							  , const char *slot) const;
 
-	qReal::model::Model *model() const;
+        qReal::model::Model *model() const;
 
 	QPointF newElementsPosition;
+        QList<QGraphicsLineItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;
@@ -104,6 +109,7 @@ public slots:
 	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 private slots:
+
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();

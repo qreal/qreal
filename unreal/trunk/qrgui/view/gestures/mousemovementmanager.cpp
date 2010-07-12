@@ -17,6 +17,17 @@ void MouseMovementManager::clear()
     mPath.clear();
 }
 
+QLineF MouseMovementManager::newLine()
+{
+    QLineF line;
+    if (mPath.size() > 1)
+    {
+        line.setP1(mPath[mPath.size() - 2]);
+        line.setP2(mPath.back());
+    }
+    return line;
+}
+
 void MouseMovementManager::createMap()
 {
     mGestures.clear();
@@ -38,13 +49,13 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
     createMap();
 }
 
-void MouseMovementManager::addPoint(const QPoint &point)
+void MouseMovementManager::addPoint(const QPointF &point)
 {
     mCentre = ((mPath.count() * mCentre + point) / (mPath.count() + 1));
-    mPath.push_back(point);
+    mPath.push_back(QPoint((int)point.x(), (int)point.y()));
 }
 
-QPoint MouseMovementManager::pos()
+QPointF MouseMovementManager::pos()
 {
     return mCentre;
 }

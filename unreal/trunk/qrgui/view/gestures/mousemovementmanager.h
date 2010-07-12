@@ -4,6 +4,8 @@
 #include "../../kernel/ids.h"
 #include "../../editorManager/editorManager.h"
 #include <QPointF>
+#include <QPoint>
+#include <QLineF>
 #include <QList>
 #include <QString>
 #include <QMap>
@@ -13,11 +15,12 @@ class MouseMovementManager
 public:
     MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager);
     void setElements(QList<qReal::Id> const & elements);
-    void addPoint(QPoint const & point);
+    void addPoint(QPointF const & point);
     void clear();
     qReal::Id getObject();
     static QList<QPoint> stringToPath(QString const &str);
-    QPoint pos();
+    QPointF pos();
+    QLineF newLine();
 
 private:
     static QPoint parsePoint(QString const &str);
@@ -28,5 +31,5 @@ private:
     qReal::EditorManager * mEditorManager;
     QList<qReal::Id> mElements;
     QMap<QString, qReal::Id> mGestures;
-    QPoint mCentre;
+    QPointF mCentre;
 };
