@@ -124,6 +124,9 @@ void NodeElement::resize(QRectF newContents)
 
 	if (this->mElementImpl->isSortContainer())
 		sortChildren();
+	
+	if (this->mElementImpl->isMinimizingToChildren())
+		newContents = QRectF(0, 0, 0, 0);
 
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
 	//whatever it means :)
@@ -172,6 +175,8 @@ void NodeElement::resize(QRectF newContents)
 
 	if (!((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize)))
 		setGeometry(newContents);
+	else
+		setGeometry(mFoldedContents);
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
