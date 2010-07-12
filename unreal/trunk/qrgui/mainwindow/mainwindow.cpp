@@ -589,7 +589,6 @@ void MainWindow::openNewEmptyTab()
 	ShapeEdit *wid = new ShapeEdit();
 	ui.tabs->addTab(wid, text);
 	ui.tabs->setCurrentWidget(wid);
-
 }
 
 void MainWindow::openNewTab(const QModelIndex &index)

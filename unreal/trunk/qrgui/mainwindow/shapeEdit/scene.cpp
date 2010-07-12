@@ -1,6 +1,5 @@
 #include "scene.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QPointF>
 
 Scene::Scene(QObject * parent)
@@ -8,7 +7,7 @@ Scene::Scene(QObject * parent)
 	, mWaitEllipse(false), mWaitMoveEllipse(false), mWaitArch(false)
 	, mWaitRectangle(false), mWaitMoveRectangle(false)
 	, mWaitText(false), mWaitDynamicText(false)
-	, mWaitPointPort(false), mWaitLinePort(false), mCount(0)
+	, mWaitPointPort(false), mWaitLinePort(false), mCount(0), mGraphicsItem(NULL)
 {
 	setItemIndexMethod(NoIndex);
 	mEmptyRect = addRect(0, 0, 710, 600, QPen(Qt::white));
@@ -30,15 +29,15 @@ void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	if (mWaitLinePort)
-		mLinePort->setBottomRight(mX2, mY2);
+		mLinePort->setX2andY2(mX2, mY2);
 	else
-		mLine->setBottomRight(mX2, mY2);
+		mLine->setX2andY2(mX2, mY2);
 }
 
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mEllipse->setBottomRight(mX2, mY2);
+	mEllipse->setX2andY2(mX2, mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mEllipse->reshapeRectWithShift();
 }
@@ -46,9 +45,16 @@ void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mRectangle->setBottomRight(mX2, mY2);
+	mRectangle->setX2andY2(mX2, mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mRectangle->reshapeRectWithShift();
+}
+
+void Scene::reshapeItem(QGraphicsSceneMouseEvent *event)
+{
+	setX2andY2(event);
+	if (mGraphicsItem != NULL)
+		mGraphicsItem->resizeItem(event);
 }
 
 void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
@@ -56,14 +62,16 @@ void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list)
 		graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, false);
-	item->setFlag(QGraphicsItem::ItemIsMovable, true);
+	if (item != mEmptyRect)
+		item->setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list)
-		graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+		if (graphicsItem != mEmptyRect)
+			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -120,6 +128,12 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		addItem(mPointPort);
 		removeMoveFlag(event, mPointPort);
 		mWaitPointPort = false;
+	} else { // if we wait some resize
+		setX1andY1(event);
+		mGraphicsItem = dynamic_cast<Item *>(itemAt(event->scenePos()));
+		if (mGraphicsItem != NULL) {
+			mGraphicsItem->changeDragState(mX1, mY1);
+		}
 	}
 }
 
@@ -132,6 +146,8 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 		reshapeEllipse(event);
 	else if (mWaitRectangle && mWaitMoveRectangle)
 		reshapeRectangle(event);
+	else // if we wait some resize
+		reshapeItem(event);
 	update();
 }
 
@@ -152,6 +168,9 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		mWaitRectangle = false;
 		mWaitMoveRectangle = false;
 	}
+	else // if we wait some resize
+		reshapeItem(event);
+	mGraphicsItem = NULL;
 	setMoveFlag(event);
 }
 

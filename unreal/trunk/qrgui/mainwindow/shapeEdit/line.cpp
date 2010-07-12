@@ -40,11 +40,35 @@ QPainterPath Line::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-	ps.setWidth(5);
+	ps.setWidth(9);
 
 	path.moveTo(mX1, mY1);
 	path.lineTo(mX2, mY2);
 	path = ps.createStroke(path);
 
 	return path;
+}
+
+void Line::changeDragState(qreal x, qreal y)
+{
+	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+		mDragState = TopLeft;
+	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+			mDragState = BottomRight;
+	else
+		mDragState = None;
+}
+
+void Line::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+	qreal x = mapFromScene(event->scenePos()).x();
+	qreal y = mapFromScene(event->scenePos()).y();
+	if (mDragState != None)
+		setFlag(QGraphicsItem::ItemIsMovable, false);
+	if (mDragState == TopLeft) {
+		setX1andY1(x, y);
+	}
+	else if (mDragState == BottomRight) {
+			setX2andY2(x, y);
+	}
 }

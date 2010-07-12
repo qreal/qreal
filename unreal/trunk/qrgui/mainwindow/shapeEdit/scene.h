@@ -55,6 +55,7 @@ private:
 	Text *mText;
 	PointPort *mPointPort;
 	LinePort *mLinePort;
+	Item *mGraphicsItem;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;
@@ -65,6 +66,7 @@ private:
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
+	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);

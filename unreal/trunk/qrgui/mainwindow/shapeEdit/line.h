@@ -11,4 +11,6 @@ public:
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter);
 	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void changeDragState(qreal x, qreal y);
+	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 };

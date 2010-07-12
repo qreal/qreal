@@ -3,7 +3,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 
-Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent)
+Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent), mDragState(None)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -57,11 +57,44 @@ void Item::setPen(QPen const &pen)
 	mPen = pen;
 }
 
-void Item::setBottomRight(qreal x, qreal y)
+void Item::swap(qreal &x, qreal &y)
+{
+	qreal tmp = x;
+	x = y;
+	y = tmp;
+}
+
+void Item::setX1andY1(qreal x, qreal y)
+{
+	mX1 = x;
+	mY1 = y;
+	update();
+}
+
+void Item::setX1andY2(qreal x, qreal y)
+{
+	mX1 = x;
+	mY2 = y;
+	update();
+}
+
+void Item::setX2andY1(qreal x, qreal y)
+{
+	mX2 = x;
+	mY1 = y;
+	update();
+}
+
+void Item::setX2andY2(qreal x, qreal y)
 {
 	mX2 = x;
 	mY2 = y;
 	update();
+}
+
+void Item::setNoneDragState()
+{
+	mDragState = None;
 }
 
 void Item::reshapeRectWithShift()
@@ -69,13 +102,58 @@ void Item::reshapeRectWithShift()
 	qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
 	if(mX2 > mX1) {
 		if (mY2 > mY1)
-			setBottomRight(mX1 + size, mY1 + size);
+			setX2andY2(mX1 + size, mY1 + size);
 		else
-			setBottomRight(mX1 + size, mY1 - size);
+			setX2andY2(mX1 + size, mY1 - size);
 	} else {
 		if (mY2 > mY1)
-			setBottomRight(mX1 - size, mY1 + size);
+			setX2andY2(mX1 - size, mY1 + size);
 		else
-			setBottomRight(mX1 - size, mY1 - size);
+			setX2andY2(mX1 - size, mY1 - size);
+	}
+}
+
+void Item::changeDragState(qreal x, qreal y)
+{
+	if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().topLeft(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+		mDragState = TopLeft;
+	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().topRight(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+			mDragState = TopRight;
+	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().bottomLeft(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+			mDragState = BottomLeft;
+	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().bottomRight(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+			mDragState = BottomRight;
+	else
+		mDragState = None;
+}
+
+void Item::calcResizeItem(QGraphicsSceneMouseEvent *event)
+{
+	qreal x = mapFromScene(event->scenePos()).x();
+	qreal y = mapFromScene(event->scenePos()).y();
+	if (mDragState != None)
+			setFlag(QGraphicsItem::ItemIsMovable, false);
+	if (mDragState == TopLeft) {
+		setX1andY1(x, y);
+	}
+	else if (mDragState == TopRight) {
+		setX2andY1(x, y);
+	}
+	else if (mDragState == BottomLeft) {
+		setX1andY2(x, y);
+	}
+	else if (mDragState == BottomRight) {
+		setX2andY2(x, y);
+	}
+}
+
+void Item::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+	if (mDragState != None) {
+		if (mX1 > mX2)
+			swap(mX2, mX1);
+		if (mY1 > mY2)
+			swap(mY1, mY2);
+		calcResizeItem(event);
 	}
 }

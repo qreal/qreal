@@ -31,3 +31,11 @@ void PointPort::drawExtractionForItem(QPainter* painter)
 	painter->setPen(pen);
 	Item::drawExtractionForItem(painter);
 }
+
+void PointPort::changeDragState(qreal x, qreal y)
+{
+}
+
+void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+}
