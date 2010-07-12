@@ -33,8 +33,18 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager)
+	: mListenerManager(NULL), mPropertyModel(mEditorManager), isSave(0)
 {
+	mbox.setText("The document has been modified.");
+	mbox.setInformativeText("Do you want to save your changes?");
+	mbox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard
+							| QMessageBox::Cancel);
+
+	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)),
+			this, SLOT(slotInc(QAbstractButton*)));
+	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)),
+			&mbox, SLOT(close()));
+	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(close()));
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
 	QSplashScreen* splash =
@@ -167,6 +177,17 @@ MainWindow::MainWindow()
 	delete splash;
 }
 
+void MainWindow::slotInc(QAbstractButton* button)
+{
+	QString txt = button->text();
+	if (txt == "Save")
+		isSave = 1;
+	if (txt == "Cancel")
+		isSave = 3;
+	if (txt == "Discard")
+		isSave = 2;
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
@@ -178,6 +199,8 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 
 MainWindow::~MainWindow()
 {
+	if (isSave == 1)
+		mModel->save();
 	delete mModel;
 	delete mListenerManager;
 }
@@ -189,7 +212,21 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	settings.setValue("size", size());
 	settings.setValue("pos", pos());
 	settings.endGroup();
-	event->accept();
+	if (isSave && (isSave != 3))
+		event->accept();
+	else
+	{
+		if (isSave == 3)
+		{
+			event->ignore();
+			isSave = 0;
+		}
+		else
+		{
+			mbox.show();
+			event->ignore();
+		}
+	}
 }
 
 void MainWindow::loadPlugins()

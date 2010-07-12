@@ -54,6 +54,7 @@ namespace qReal {
 			void saveTo(QString const &workingDirectory);
 						Id getRootDiagram();
 						void setRootIndex(QModelIndex const & index);
+			void save();
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 		public slots:

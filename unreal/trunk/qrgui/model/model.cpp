@@ -477,6 +477,11 @@ void Model::saveTo(QString const &workingDirectory)
 	mApi.saveTo(workingDirectory);
 }
 
+void Model::save()
+{
+	mApi.save();
+}
+
 void Model::reinit()
 {
 	cleanupTree(mRootItem);

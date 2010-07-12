@@ -26,7 +26,7 @@ Client::~Client()
 {
 	delete mObjects[ROOT_ID];
 	mObjects.remove(ROOT_ID);
-	serializer.saveToDisk(mObjects.values());
+	//serializer.saveToDisk(mObjects.values());
 }
 
 IdList Client::children(Id const &id) const

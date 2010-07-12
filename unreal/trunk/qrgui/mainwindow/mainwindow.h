@@ -4,6 +4,7 @@
 #include <QtSql/QSqlDatabase>
 #include <QtCore/QDir>
 #include <QSplashScreen>
+#include <QtGui>
 
 #include "ui_mainwindow.h"
 
@@ -35,11 +36,15 @@ namespace qReal {
 		ListenerManager *listenerManager();
 
 		Ui::MainWindowUi ui;
+		//QDialogButtonBox* dbox;
+		QMessageBox mbox;
 
 
 	public slots:
 		//		void connectRepo();
 		//		void closeRepo();
+		void slotInc(QAbstractButton*);
+
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
@@ -96,6 +101,8 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 
 		PropertyEditorDelegate mDelegate;
+
+		int isSave;
 
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
