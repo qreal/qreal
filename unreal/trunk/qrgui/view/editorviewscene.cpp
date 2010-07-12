@@ -246,6 +246,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	qReal::Id id = qReal::Id::loadFromString(uuid);
 	UML::Element *e = mWindow->manager()->graphicalObject(id);
 
+	// TODO: what is it??
 	if (dynamic_cast<UML::NodeElement*>(e))
 		newParent = getElemAt(scenePos);
 

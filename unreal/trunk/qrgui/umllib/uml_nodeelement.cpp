@@ -171,7 +171,6 @@ void NodeElement::resize(QRectF newContents)
 			newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
 	}
 
-
 	if ((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize))
 		newContents = mFoldedContents;
 
@@ -799,6 +798,13 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 	case ItemPositionHasChanged:
 		adjustLinks();
 		return value;
+
+	case ItemChildAddedChange:
+	case ItemChildRemovedChange:
+		if (dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>()))
+			updateByChild();
+		return QGraphicsItem::itemChange(change, value);
+
 	default:
 		return QGraphicsItem::itemChange(change, value);
 	}
@@ -1045,11 +1051,18 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->save();
 
 			QBrush b;
-			b.setColor(Qt::green);
 			b.setStyle(Qt::SolidPattern);
-			painter->setBrush(b);
-			painter->setPen(Qt::green);
 
+			if (mIsFolded) {
+				b.setColor(Qt::red);
+				painter->setPen(Qt::red);
+			}
+			else {
+				b.setColor(Qt::green);
+				painter->setPen(Qt::green);
+			}
+			painter->setBrush(b);
+			
 			if (mElementImpl->isContainer())
 				painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(20, -20)));
 
@@ -1288,4 +1301,9 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	}
 	storeGeometry();
 	return;
+}
+
+void NodeElement::updateByChild()
+{
+	resize(mContents);
 }
