@@ -594,7 +594,10 @@ void MainWindow::changeMiniMapSource( int index )
 		if (editorView != NULL)
 			ui.minimapView->setScene(editorView->scene());
 	} else
+	{
 		ui.tabs->setEnabled(false);
+		ui.minimapView->setScene(0);;
+	}
 }
 
 void qReal::MainWindow::closeTab( int index )
