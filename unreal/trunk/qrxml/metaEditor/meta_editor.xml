@@ -6,7 +6,10 @@
         <enum name="assotiationTypes" displayedName="assotiationTypes">
           <value>no_arrow</value>
           <value>open_arrow</value>
-          <value>close_arrow</value>
+          <value>empty_arrow</value>
+		  <value>filled_arrow</value>
+		  <value>empty_rhomb</value>
+		  <value>filled_rhomb</value>
         </enum>
 		<enum name="lineTypes" displayedName="lineTypes">
 		  <value>solidLine</value>
@@ -471,12 +474,12 @@
 		  </graphics>
 		  <logic>
 		    <properties>
-			  <property type="bool" name="softContainer">
+			  <property type="bool" name="sortContainer">
 				<default>false</default>
 			  </property>
 			  <property type="string" name="forestalling size"/>
 			  <property type="string" name="childrenForestalling size"/>
-			  <property type="bool" name="minimzeToChildren">
+			  <property type="bool" name="minimizeToChildren">
 			    <default>false</default>
 			  </property>
 			  <property type="bool" name="banChildrenMove">

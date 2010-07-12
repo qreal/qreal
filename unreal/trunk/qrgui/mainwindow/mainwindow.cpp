@@ -497,6 +497,7 @@ void MainWindow::newGenerateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
+	gui::ErrorReporter errors;
 	const QHash<Id, QString> metamodelList = metaGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
@@ -516,7 +517,8 @@ void MainWindow::newGenerateEditor()
 	}
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		errors.showErrors("Generation finished successfully");
 	}
 }
 
@@ -691,3 +693,4 @@ void MainWindow::switchGrid(bool isChecked)
 		}
 	}
 }
+

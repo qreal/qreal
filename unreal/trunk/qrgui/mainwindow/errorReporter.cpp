@@ -66,7 +66,7 @@ void ErrorReporter::showErrors(QString const &successMessage) const
 		message += severityMessage(error) + " ";
 		message += error.message() + "\n";
 		if (error.position() != ROOT_ID)
-			message += "    at " + error.position().toString() + "\n";
+			message += "    at " + error.position().toString() + "\n\n";
 	}
 
 	Error::Severity const totalSeverity = maxSeverity();
