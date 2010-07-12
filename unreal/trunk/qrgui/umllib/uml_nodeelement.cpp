@@ -29,7 +29,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mRenderer = new SdfRenderer();
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
-	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mPortRenderer, mRenderer);
+	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
 	foreach (ElementTitleInterface *titleIface, titles){
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)

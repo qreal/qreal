@@ -47,7 +47,7 @@ namespace UML{
 			virtual void init(QRectF &contents, QList<QPointF> &pointPorts,
 					QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					QList<ElementTitleInterface*> &titles,
-					SdfRendererInterface *portRenderer, SdfRendererInterface *renderer) = 0;
+					SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) = 0;
 			virtual void init(ElementTitleFactoryInterface &factory,
 								QList<ElementTitleInterface*> &titles) = 0;
 			virtual void paint(QPainter *painter, QRectF &contents) = 0;
