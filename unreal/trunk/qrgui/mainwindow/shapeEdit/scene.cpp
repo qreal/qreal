@@ -3,11 +3,7 @@
 #include <QtCore/QPointF>
 
 Scene::Scene(QObject * parent)
-	:  QGraphicsScene(parent), mWaitLine(false), mWaitMoveLine(false)
-	, mWaitEllipse(false), mWaitMoveEllipse(false), mWaitArch(false)
-	, mWaitRectangle(false), mWaitMoveRectangle(false)
-	, mWaitText(false), mWaitDynamicText(false)
-	, mWaitPointPort(false), mWaitLinePort(false), mCount(0), mGraphicsItem(NULL)
+	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL)
 {
 	setItemIndexMethod(NoIndex);
 	mEmptyRect = addRect(0, 0, 710, 600, QPen(Qt::white));
@@ -28,10 +24,13 @@ void Scene::setX2andY2(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	if (mWaitLinePort)
-		mLinePort->setX2andY2(mX2, mY2);
-	else
-		mLine->setX2andY2(mX2, mY2);
+	mLine->setX2andY2(mX2, mY2);
+}
+
+void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
+{
+	setX2andY2(event);
+	mLinePort->setX2andY2(mX2, mY2);
 }
 
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
@@ -77,145 +76,153 @@ void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
-	if (mWaitLine) {
+	switch (mItemType) {
+	case line :
 		setX1andY1(event);
-		if (mWaitLinePort) {
-			mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
-			addItem(mLinePort);
-			removeMoveFlag(event, mLinePort);
-		}
-		else {
-			mLine = new Line(mX1, mY1, mX1, mY1, NULL);
-			addItem(mLine);
-			removeMoveFlag(event, mLine);
-		}
-		mWaitMoveLine = true;
-	} else if (mWaitEllipse) {
+		mLine = new Line(mX1, mY1, mX1, mY1, NULL);
+		addItem(mLine);
+		removeMoveFlag(event, mLine);
+		mWaitMove = true;
+		break;
+	case ellipse :
 		setX1andY1(event);
 		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
 		addItem(mEllipse);
 		removeMoveFlag(event, mEllipse);
-		mWaitMoveEllipse = true;
-	} else if (mWaitArch && (mCount <= 2)) {
-		if (mCount == 1) {
-			setX1andY1(event);
-		} else if (mCount == 2) {
-			setX2andY2(event);
-			mArch = new Arch(mX1, mY1, mX2, mY2, mEllipse);
-			removeItem(mEllipse);
-			addItem(mArch);
-			mWaitArch = false;
-		}
-		mCount++;
-	} else if (mWaitRectangle) {
+		mWaitMove = true;
+		break;
+	case rectangle :
 		setX1andY1(event);
 		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
 		addItem(mRectangle);
 		removeMoveFlag(event, mRectangle);
-		mWaitMoveRectangle = true;
-	} else if (mWaitText) {
+		mWaitMove = true;
+		break;
+	case text:
 		setX1andY1(event);
-		if (mWaitDynamicText)
-			mText = new Text(mX1, mY1, "name", true, NULL);
-		else
-			mText = new Text(mX1, mY1, "text", false, NULL);
+		mText = new Text(mX1, mY1, "text", false, NULL);
 		addItem(mText);
-		mWaitText = false;
-		mWaitDynamicText = false;
-	} else if (mWaitPointPort) {
+		break;
+	case dynamicText :
+		setX1andY1(event);
+		mText = new Text(mX1, mY1, "name", true, NULL);
+		addItem(mText);
+		break;
+	case pointPort :
 		setX1andY1(event);
 		mPointPort = new PointPort(mX1, mY1, NULL);
 		addItem(mPointPort);
 		removeMoveFlag(event, mPointPort);
-		mWaitPointPort = false;
-	} else { // if we wait some resize
+		break;
+	case linePort :
+		setX1andY1(event);
+		mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
+		addItem(mLinePort);
+		removeMoveFlag(event, mLinePort);
+		mWaitMove = true;
+		break;
+	default:  // if we wait some resize
 		setX1andY1(event);
 		mGraphicsItem = dynamic_cast<Item *>(itemAt(event->scenePos()));
 		if (mGraphicsItem != NULL) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 		}
+		break;
 	}
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseMoveEvent(event);
-	if (mWaitLine && mWaitMoveLine)
-		reshapeLine(event);
-	else if (mWaitEllipse && mWaitMoveEllipse)
-		reshapeEllipse(event);
-	else if (mWaitRectangle && mWaitMoveRectangle)
-		reshapeRectangle(event);
-	else // if we wait some resize
+	switch (mItemType) {
+	case line :
+		if (mWaitMove)
+			reshapeLine(event);
+		break;
+	case ellipse :
+		if (mWaitMove)
+			reshapeEllipse(event);
+		break;
+	case rectangle :
+		if (mWaitMove)
+			reshapeRectangle(event);
+		break;
+	case linePort :
+		if (mWaitMove)
+			reshapeLinePort(event);
+		break;
+	default:  // if we wait some resize
 		reshapeItem(event);
+		break;
+	}
 	update();
 }
 
 void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
 	QGraphicsScene::mouseReleaseEvent(event);
-	if (mWaitLine) {
+	switch (mItemType) {
+	case line :
 		reshapeLine(event);
-		mWaitLine = false;
-		mWaitMoveLine = false;
-		mWaitLinePort = false;
-	} else if (mWaitEllipse) {
+		break;
+	case ellipse :
 		reshapeEllipse(event);
-		mWaitEllipse = false;
-		mWaitMoveEllipse = false;
-	} else if (mWaitRectangle) {
+		break;
+	case rectangle :
 		reshapeRectangle(event);
-		mWaitRectangle = false;
-		mWaitMoveRectangle = false;
-	}
-	else // if we wait some resize
+		break;
+	case linePort :
+		reshapeLinePort(event);
+		break;
+	default:  // if we wait some resize
 		reshapeItem(event);
+		break;
+	}
+	mItemType = none;
+	mWaitMove = false;
 	mGraphicsItem = NULL;
 	setMoveFlag(event);
 }
 
 void Scene::drawLine()
 {
-	mWaitLine = true;
+	mItemType = line;
 }
 
 void Scene::drawEllipse()
 {
-	mWaitEllipse = true;
+	mItemType = ellipse;
 }
 
 void Scene::drawArc()
 {
-	mWaitEllipse = true;
-	mWaitArch = true;
+	mItemType = arch;
 	mCount = 1;
 }
 
 void Scene::drawRectangle()
 {
-	mWaitRectangle = true;
+	mItemType = rectangle;
 }
 
 void Scene::addText()
 {
-	mWaitText = true;
+	mItemType = text;
 }
 
 void Scene::addDynamicText()
 {
-	mWaitText = true;
-	mWaitDynamicText = true;
+	mItemType = dynamicText;
 }
 
 void Scene::addPointPort()
 {
-	mWaitPointPort = true;
+	mItemType = pointPort;
 }
 
 void Scene::addLinePort()
 {
-	mWaitLine = true;
-	mWaitLinePort = true;
+	mItemType = linePort;
 }
 
 void Scene::deleteItem()

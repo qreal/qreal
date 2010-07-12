@@ -36,17 +36,19 @@ private slots:
 	void deleteItem();
 
 private:
-	bool mWaitLine;
-	bool mWaitMoveLine;
-	bool mWaitEllipse;
-	bool mWaitMoveEllipse;
-	bool mWaitArch;
-	bool mWaitRectangle;
-	bool mWaitMoveRectangle;
-	bool mWaitText;
-	bool mWaitDynamicText;
-	bool mWaitPointPort;
-	bool mWaitLinePort;
+	enum ItemTypes {
+		none,
+		line,
+		ellipse,
+		arch,
+		rectangle,
+		text,
+		dynamicText,
+		pointPort,
+		linePort
+	};
+	ItemTypes mItemType;
+	bool mWaitMove;
 	int mCount;
 	Line *mLine;
 	Ellipse *mEllipse;
@@ -64,6 +66,7 @@ private:
 	void setX1andY1(QGraphicsSceneMouseEvent *event);
 	void setX2andY2(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
+	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeItem(QGraphicsSceneMouseEvent *event);

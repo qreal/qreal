@@ -115,13 +115,13 @@ void Item::reshapeRectWithShift()
 
 void Item::changeDragState(qreal x, qreal y)
 {
-	if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().topLeft(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
 		mDragState = TopLeft;
-	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().topRight(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+	else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
 			mDragState = TopRight;
-	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().bottomLeft(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+	else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
 			mDragState = BottomLeft;
-	else if (QRectF(QPointF(scenePos().x(), scenePos().y()) + boundingRect().bottomRight(), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
+	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
 			mDragState = BottomRight;
 	else
 		mDragState = None;
@@ -132,28 +132,19 @@ void Item::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal x = mapFromScene(event->scenePos()).x();
 	qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None)
-			setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft) {
+		setFlag(QGraphicsItem::ItemIsMovable, false);
+	if (mDragState == TopLeft)
 		setX1andY1(x, y);
-	}
-	else if (mDragState == TopRight) {
+	else if (mDragState == TopRight)
 		setX2andY1(x, y);
-	}
-	else if (mDragState == BottomLeft) {
+	else if (mDragState == BottomLeft)
 		setX1andY2(x, y);
-	}
-	else if (mDragState == BottomRight) {
+	else if (mDragState == BottomRight)
 		setX2andY2(x, y);
-	}
 }
 
 void Item::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState != None) {
-		if (mX1 > mX2)
-			swap(mX2, mX1);
-		if (mY1 > mY2)
-			swap(mY1, mY2);
+	if (mDragState != None)
 		calcResizeItem(event);
-	}
 }

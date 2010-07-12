@@ -49,26 +49,8 @@ QPainterPath Line::shape() const
 	return path;
 }
 
-void Line::changeDragState(qreal x, qreal y)
-{
-	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
-		mDragState = TopLeft;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
-			mDragState = BottomRight;
-	else
-		mDragState = None;
-}
-
 void Line::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	qreal x = mapFromScene(event->scenePos()).x();
-	qreal y = mapFromScene(event->scenePos()).y();
-	if (mDragState != None)
-		setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft) {
-		setX1andY1(x, y);
-	}
-	else if (mDragState == BottomRight) {
-			setX2andY2(x, y);
-	}
+	if (mDragState == TopLeft || mDragState == BottomRight)
+		Item::resizeItem(event);
 }
