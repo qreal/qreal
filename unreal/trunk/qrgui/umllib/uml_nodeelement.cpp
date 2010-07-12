@@ -171,12 +171,12 @@ void NodeElement::resize(QRectF newContents)
 			newContents.setBottom(curChildItemBoundingRect.bottom() + mElementImpl->sizeOfForestalling());
 	}
 
-	newContents.moveTo(pos());
 
-	if (!((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize)))
-		setGeometry(newContents);
-	else
-		setGeometry(mFoldedContents);
+	if ((newContents.width() < objectMinSize) || (newContents.height() < objectMinSize))
+		newContents = mFoldedContents;
+
+	newContents.moveTo(pos());
+	setGeometry(newContents);
 
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
@@ -390,8 +390,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	scene()->invalidate();
-		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-			embeddedLinker->setCovered(false);
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 
@@ -401,11 +401,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal myY1 = scenePos().y() + boundingRect().y();
 
 			if (mSwitchGrid) {
-								int coefX = static_cast<int>(myX1) / indexGrid;
-								int coefY = static_cast<int>(myY1) / indexGrid;
+				int coefX = static_cast<int>(myX1) / indexGrid;
+				int coefY = static_cast<int>(myY1) / indexGrid;
 
-								makeGridMovingX(myX1, coefX, indexGrid);
-								makeGridMovingY(myY1, coefY, indexGrid);
+				makeGridMovingX(myX1, coefX, indexGrid);
+				makeGridMovingY(myY1, coefY, indexGrid);
 
 				myX1 = scenePos().x() + boundingRect().x();
 				myY1 = scenePos().y() + boundingRect().y();
@@ -437,21 +437,21 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 					if (deltaY1 <= radius || deltaY2 <= radius) {
 						buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
 						buildLineY(deltaY2, radius, true, radiusJump, pointY2,
-							boundingRect().height(), myY1, myY2, myX1);
+								boundingRect().height(), myY1, myY2, myX1);
 					}
 					if (deltaX1 <= radius || deltaX2 <= radius) {
 						buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
 						buildLineX(deltaX2, radius, true, radiusJump, pointX2,
-							boundingRect().width(), myX1, myX2, myY1);
+								boundingRect().width(), myX1, myX2, myY1);
 					}
 					buildLineY(qAbs(pointY1 - myY2), radius, false, radiusJump, pointY1,
-						boundingRect().height(), myY1, myY2, myX1);
+							boundingRect().height(), myY1, myY2, myX1);
 					buildLineX(qAbs(pointX1 - myX2), radius, false, radiusJump, pointX1,
-						boundingRect().width(), myX1, myX2, myY1);
+							boundingRect().width(), myX1, myX2, myY1);
 					buildLineY(qAbs(pointY2 - myY1), radius, false, radiusJump, pointY2,
-						0, myY1, myY2, myX1);
+							0, myY1, myY2, myX1);
 					buildLineX(qAbs(pointX2 - myX1), radius, false, radiusJump, pointX2,
-						0, myX1, myX2, myY1);
+							0, myX1, myX2, myY1);
 				}
 			}
 		}
@@ -464,37 +464,37 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 
 		switch (mDragState) {
-		case TopLeft:
-			newContents.setTopLeft(event->pos());
-			setPos(event->scenePos() - parentPos);
-			break;
-		case Top:
-			newContents.setTop(event->pos().y());
-			setPos(pos().x(), event->scenePos().y() - parentPos.y());
-			break;
-		case TopRight:
-			newContents.setTopRight(event->pos());
-			setPos(pos().x(), event->scenePos().y() - parentPos.y());
-			break;
-		case Left:
-			newContents.setLeft(event->pos().x());
-			setPos(event->scenePos().x() - parentPos.x(), pos().y());
-			break;
-		case Right:
-			newContents.setRight(event->pos().x());
-			break;
-		case BottomLeft:
-			newContents.setBottomLeft(event->pos());
-			setPos(event->scenePos().x() - parentPos.x(), pos().y());
-			break;
-		case Bottom:
-			newContents.setBottom(event->pos().y());
-			break;
-		case BottomRight:
-			newContents.setBottomRight(event->pos());
-			break;
-		case None:
-			break;
+			case TopLeft:
+				newContents.setTopLeft(event->pos());
+				setPos(event->scenePos() - parentPos);
+				break;
+			case Top:
+				newContents.setTop(event->pos().y());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
+				break;
+			case TopRight:
+				newContents.setTopRight(event->pos());
+				setPos(pos().x(), event->scenePos().y() - parentPos.y());
+				break;
+			case Left:
+				newContents.setLeft(event->pos().x());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
+				break;
+			case Right:
+				newContents.setRight(event->pos().x());
+				break;
+			case BottomLeft:
+				newContents.setBottomLeft(event->pos());
+				setPos(event->scenePos().x() - parentPos.x(), pos().y());
+				break;
+			case Bottom:
+				newContents.setBottom(event->pos().y());
+				break;
+			case BottomRight:
+				newContents.setBottomRight(event->pos());
+				break;
+			case None:
+				break;
 		}
 
 		if (event->modifiers() & Qt::ShiftModifier) {
@@ -505,109 +505,109 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		resize(newContents);
 	}
-		if (getPortStatus())
+	if (getPortStatus())
+	{
+		if (mLeftPressed)
 		{
-			if (mLeftPressed)
+			if (mPos == QPointF(0,0))
+				mPos = this->pos();
+			QGraphicsItem* item = NULL;
+			QPointF position = event->scenePos();
+			QGraphicsScene* sc = this->scene();
+			item = sc->items(position).value(1);
+			NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
+			QPointF posInItem = QPointF(0,0);
+			if (actionItem && ((actionItem == mParentNodeElement) || (!mParentNodeElement)))
 			{
-				if (mPos == QPointF(0,0))
-					mPos = this->pos();
-				QGraphicsItem* item = NULL;
-				QPointF position = event->scenePos();
-				QGraphicsScene* sc = this->scene();
-				item = sc->items(position).value(1);
-				NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
-				QPointF posInItem = QPointF(0,0);
-				if (actionItem && ((actionItem == mParentNodeElement) || (!mParentNodeElement)))
+				if (actionItem->getHavePortStatus())
 				{
-					if (actionItem->getHavePortStatus())
-					{
-						double xHor = actionItem->getXHor();
-						double xVert = actionItem->getXVert();
-						double yHor = actionItem->getYHor();
-						double yVert = actionItem->getYVert();
-						posInItem = actionItem->mapFromScene(position);
-						if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
+					double xHor = actionItem->getXHor();
+					double xVert = actionItem->getXVert();
+					double yHor = actionItem->getYHor();
+					double yVert = actionItem->getYVert();
+					posInItem = actionItem->mapFromScene(position);
+					if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
 							|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
+					{
+						this->setParentItem(actionItem);
+						mParentNodeElement = actionItem;
+						mPos = this->pos();
+						if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor))
+							inHor = true;
+						else
+							inHor = false;
+					}
+					else
+					{
+						if (inHor)
+						{
+							if (actionItem->isNoBorderY(posInItem, xHor, yHor))
 							{
-							this->setParentItem(actionItem);
-							mParentNodeElement = actionItem;
-							mPos = this->pos();
-							if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor))
-								inHor = true;
+								double x = posInItem.x();
+								double y = mPos.y();
+								mPos = QPointF(x,y);
+								setPos(mPos);
+							}
 							else
-								inHor = false;
+								setPos(mPos);
 						}
 						else
 						{
-							if (inHor)
+							if (actionItem->isNoBorderX(posInItem, xVert, yVert))
 							{
-								if (actionItem->isNoBorderY(posInItem, xHor, yHor))
-								{
-									double x = posInItem.x();
-									double y = mPos.y();
-									mPos = QPointF(x,y);
-									setPos(mPos);
-								}
-								else
-									setPos(mPos);
+								double x = mPos.x();
+								double y = posInItem.y();
+								mPos = QPointF(x,y);
+								setPos(mPos);
 							}
 							else
-							{
-								if (actionItem->isNoBorderX(posInItem, xVert, yVert))
-								{
-									double x = mPos.x();
-									double y = posInItem.y();
-									mPos = QPointF(x,y);
-									setPos(mPos);
-								}
-								else
-									setPos(mPos);
-							}
+								setPos(mPos);
 						}
 					}
 				}
-				else
+			}
+			else
+			{
+				if ((mParentNodeElement) && (mParentNodeElement->getHavePortStatus()))
 				{
-					if ((mParentNodeElement) && (mParentNodeElement->getHavePortStatus()))
+					setPos(mPos);
+					if (mParentNodeElement)
 					{
-						setPos(mPos);
-						if (mParentNodeElement)
+						posInItem = mParentNodeElement->mapFromScene(position);
+						double xHor = mParentNodeElement->getXHor();
+						double xVert = mParentNodeElement->getXVert();
+						double yHor = mParentNodeElement->getYHor();
+						double yVert = mParentNodeElement->getYVert();
+						if (inHor)
 						{
-							posInItem = mParentNodeElement->mapFromScene(position);
-							double xHor = mParentNodeElement->getXHor();
-							double xVert = mParentNodeElement->getXVert();
-							double yHor = mParentNodeElement->getYHor();
-							double yVert = mParentNodeElement->getYVert();
-							if (inHor)
+							if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
 							{
-								if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
-								{
-									double x = posInItem.x();
-									double y = mPos.y();
-									mPos = QPointF(x,y);
-									setPos(mPos);
-								}
-								else
-									setPos(mPos);
+								double x = posInItem.x();
+								double y = mPos.y();
+								mPos = QPointF(x,y);
+								setPos(mPos);
 							}
 							else
+								setPos(mPos);
+						}
+						else
+						{
+							if (mParentNodeElement->isNoBorderX(posInItem, xVert, yVert))
 							{
-								if (mParentNodeElement->isNoBorderX(posInItem, xVert, yVert))
-								{
-									double x = mPos.x();
-									double y = posInItem.y();
-									mPos = QPointF(x,y);
-									setPos(mPos);
-								}
-								else
-									setPos(mPos);
+								double x = mPos.x();
+								double y = posInItem.y();
+								mPos = QPointF(x,y);
+								setPos(mPos);
 							}
+							else
+								setPos(mPos);
 						}
 					}
 				}
 			}
 		}
 	}
+}
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
