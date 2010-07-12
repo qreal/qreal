@@ -1213,7 +1213,8 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	double xVert = mParentNodeElement->getXVert();
 	double yHor = mParentNodeElement->getYHor();
 	double yVert = mParentNodeElement->getYVert();
-	if (mParentNodeElement->isLowSide(mPos, xHor, yHor))
+	QPointF posi = pos();
+	if (mParentNodeElement->isLowSide(posi, xHor, yHor+5))
 	{
 		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
@@ -1222,7 +1223,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isHighSide(mPos, xHor, yHor))
+	if (mParentNodeElement->isHighSide(posi, xHor, yHor))
 	{
 		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
@@ -1231,7 +1232,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isRightSide(mPos, xVert, yVert))
+	if (mParentNodeElement->isRightSide(posi, xVert+5, yVert))
 	{
 		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
@@ -1240,7 +1241,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isLeftSide(mPos, xVert, yVert))
+	if (mParentNodeElement->isLeftSide(posi, xVert, yVert))
 	{
 		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
