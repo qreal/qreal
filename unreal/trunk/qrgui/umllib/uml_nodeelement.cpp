@@ -614,11 +614,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();
-	//
-	NodeElement* oldParentItem = dynamic_cast<NodeElement*>(parentItem());
-	if ((oldParentItem) && (oldParentItem->mElementImpl->isSortContainer()))
-		oldParentItem->resize(oldParentItem->mContents);
-	//
+	
+	NodeElement* oldParentItem = dynamic_cast<NodeElement*>(parentItem());//инициализация здесь, тк потом его не достать
 
 	moveEmbeddedLinkers();
 		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
@@ -629,7 +626,38 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (!getPortStatus())
 	{
-		NodeElement *newParent = getNodeAt(event->scenePos());
+		QPointF newParentInnerPoint = event->scenePos();
+		switch (mDragState) {
+			case TopLeft:
+				newParentInnerPoint = scenePos();
+				break;
+			case Top:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, 0);
+				break;
+			case TopRight:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), 0);
+				break;
+			case Left:
+				newParentInnerPoint = scenePos() + QPointF(0, mContents.height()/2);
+				break;
+			case Right:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height() / 2);
+				break;
+			case BottomLeft:
+				newParentInnerPoint = scenePos() + QPointF(0, mContents.height());
+				break;
+			case Bottom:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width() / 2, mContents.height());
+				break;
+			case BottomRight:
+				newParentInnerPoint = scenePos() + QPointF(mContents.width(), mContents.height());
+				break;
+			case None:
+				break;
+		}
+
+		NodeElement *newParent = getNodeAt(newParentInnerPoint);
+
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 		if (newParent) {
@@ -646,6 +674,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		} else
 			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 	}
+	
+	if (oldParentItem)
+		oldParentItem->resize(oldParentItem->mContents);
 
 	mDragState = None;
 	setZValue(0);
