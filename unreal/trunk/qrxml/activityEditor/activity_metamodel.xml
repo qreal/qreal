@@ -269,7 +269,7 @@
                 <sortContainer/>
                 <forestalling size="25"/>
                 <childrenForestalling size="5"/>
-                <minimzeToChildren/>
+                <minimizeToChildren/>
                 <banChildrenMove/>
               </properties>
             </container>
