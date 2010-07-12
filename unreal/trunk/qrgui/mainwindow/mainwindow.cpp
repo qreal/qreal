@@ -78,6 +78,7 @@ MainWindow::MainWindow()
 	connect(ui.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
+	connect(ui.actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
@@ -422,6 +423,15 @@ void MainWindow::toggleShowSplash(bool show)
 {
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ShowSplashScreen", show);
+}
+
+void MainWindow::doCommit()
+{
+	QString const Path = getWorkingDir(tr("Select directory with working copy"));
+	if (Path.isEmpty())
+		return;
+
+
 }
 
 void MainWindow::exportToXmi()

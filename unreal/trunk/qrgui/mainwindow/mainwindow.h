@@ -59,6 +59,7 @@ namespace qReal {
 
 		void sceneSelectionChanged();
 
+		void doCommit();
 		void exportToXmi();
 		void generateToJava();
 		void parseJavaLibraries();

@@ -57,5 +57,5 @@ include (../utils/utils.pri)
 # Код, скачанный из интернета.
 include (thirdparty/thirdparty.pri)
 
-# Управление плагинами.
+# Управление плагинами. Plugin managment
 include (editorManager/editorManager.pri)

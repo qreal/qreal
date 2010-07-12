@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>678</width>
+    <width>738</width>
     <height>559</height>
    </rect>
   </property>
@@ -35,8 +35,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>678</width>
-     <height>21</height>
+     <width>738</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -148,6 +148,7 @@
    </attribute>
    <addaction name="actionPrint"/>
    <addaction name="actionSave"/>
+   <addaction name="actionCommit"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
    <property name="windowTitle">
@@ -520,6 +521,11 @@
    </property>
    <property name="text">
     <string>Switch on grid</string>
+   </property>
+  </action>
+  <action name="actionCommit">
+   <property name="text">
+    <string>Commit</string>
    </property>
   </action>
  </widget>
