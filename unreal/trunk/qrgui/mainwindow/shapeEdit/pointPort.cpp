@@ -34,8 +34,11 @@ void PointPort::drawExtractionForItem(QPainter* painter)
 
 void PointPort::changeDragState(qreal x, qreal y)
 {
+	Q_UNUSED(x);
+	Q_UNUSED(y);
 }
 
 void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 {
+	Q_UNUSED(event);
 }
