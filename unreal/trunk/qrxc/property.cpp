@@ -67,6 +67,11 @@ QString Property::type()
 	return mType;
 }
 
+QString Property::defaultValue()
+{
+	return mDefaultValue;
+}
+
 Property * Property::clone()
 {
 	Property *result = new Property();

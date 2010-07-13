@@ -406,13 +406,20 @@ void GraphicType::generatePropertyTypes(OutFile &out)
 {
 	if (!mVisible)
 		return;
+	
+	QString name = NameNormalizer::normalize(qualifiedName());
 
 	foreach (Property *property, mProperties) {
 		// skipping basic types since we're not really interested in them
 		if (property->type() == "string" || property->name() == "int")
 			continue;
-		QString name = NameNormalizer::normalize(qualifiedName());
 		out() << "\tpropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << property->type() << "\";\n";
+	}
+
+	foreach (Property *property, mProperties) {
+		if (!property->defaultValue().isEmpty())
+			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name() 
+									<< "\"] = \"" << property->defaultValue() << "\";\n";
 	}
 }
 

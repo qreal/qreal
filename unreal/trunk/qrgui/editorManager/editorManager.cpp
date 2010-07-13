@@ -148,12 +148,10 @@ UML::Element* EditorManager::graphicalObject(const Id &id) const
 		qDebug() << "no impl";
 		return 0;
 	}
-	UML::Element *el;
 	if (impl->isNode())
-		el = new UML::NodeElement(impl);
-	else
-		el = new UML::EdgeElement(impl);
-	return el;
+		return new UML::NodeElement(impl);
+	
+	return  new UML::EdgeElement(impl);
 }
 
 QStringList EditorManager::getPropertyNames(const Id &id) const
@@ -206,13 +204,20 @@ IdList EditorManager::getUsedTypes(const Id &id) const
 QStringList EditorManager::getEnumValues(Id const &id, const QString &name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	QStringList result;
 	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
-	foreach (QString value, mPluginIface[id.editor()]->getEnumValues(typeName))
-		result.append(value);
+	return mPluginIface[id.editor()]->getEnumValues(typeName);
+}
 
-	return result;
+QString EditorManager::getDefaultPropertyValue(Id const &id, QString name) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPropertyDefaultValue(id.element(), name);
+}
+
+QStringList EditorManager::getPropertiesWithDefaultValues(Id const &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
 }
 
 IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const

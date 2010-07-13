@@ -43,6 +43,7 @@ private:
 	void generateEnumValues(utils::OutFile &out);
 	void generateResourceFile();
 	void generatePropertyTypesRequests(utils::OutFile &out);
+	void generatePropertyDefaultsRequests(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;

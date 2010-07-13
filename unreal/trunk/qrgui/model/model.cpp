@@ -385,13 +385,11 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
 		QStringList properties = mEditorManager.getPropertyNames(id.type());
-		foreach (QString property, properties) {
-			// Здесь должна быть инициализация значениями по умолчанию
-			// (а ещё лучше, если не здесь). Считать этот код временным хаком,
-			// пока нет системы типов.
-			mApi.setProperty(id, property, "");
-		}
-	endInsertRows();
+		foreach (QString property, properties) 
+		// for those properties that doesn't have default values, plugin will return empty string
+			mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+		
+		endInsertRows();
 	return item;
 }
 

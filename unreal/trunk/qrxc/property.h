@@ -9,6 +9,7 @@ public:
 	bool init(QDomElement const &element);
 	QString name();
 	QString type();
+	QString defaultValue();
 	Property *clone();
 	bool operator == (Property const &other) const;
 	bool operator != (Property const &other) const;

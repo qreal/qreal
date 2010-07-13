@@ -153,6 +153,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QStringList diagrams() const;\n"
 		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
+		<< "\tvirtual QStringList getPropertiesWithDefaultValues(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
@@ -164,6 +165,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;\n"
 		<< "\tvirtual UML::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
+		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
 		<< "\n"
@@ -178,6 +180,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > propertyTypes;\n"
+		<< "\tQMap<QString, QMap<QString, QString> > propertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "};\n"
@@ -202,6 +205,7 @@ void XmlCompiler::generatePluginSource()
 	generateNodesAndEdges(out);
 	generateEnumValues(out);
 	generatePropertyTypesRequests(out);
+	generatePropertyDefaultsRequests(out);
 
 	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
@@ -252,6 +256,13 @@ void XmlCompiler::generatePropertyTypesRequests(OutFile &out)
 		<< "}\n\n";
 }
 
+void XmlCompiler::generatePropertyDefaultsRequests(OutFile &out)
+{
+	out() << "QString " << mPluginName << "Plugin::getPropertyDefaultValue(QString const &element, QString const &property) const\n{\n"
+		<< "\treturn propertyDefault[element][property];\n" // TODO: merge with getPropertyNames()!!11
+		<< "}\n\n";
+}
+
 void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 {
 	out() << "QStringList " << mPluginName << "Plugin::diagrams() const\n{\n"
@@ -260,6 +271,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QStringList " << mPluginName << "Plugin::elements(QString const &diagram) const\n{\n"
 		<< "\treturn elementsNameMap[diagram].keys();\n"
+		<< "}\n\n"
+		
+		<< "QStringList " << mPluginName << "Plugin::getPropertiesWithDefaultValues(QString const &element) const\n{\n"
+		<< "\treturn propertyDefault[element].keys();\n"
 		<< "}\n\n"
 
 		<< "QIcon " << mPluginName << "Plugin::getIcon(SdfIconEngineV2Interface *engine) const\n{\n"
