@@ -214,19 +214,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	settings.setValue("size", size());
 	settings.setValue("pos", pos());
 	settings.endGroup();
-	if (isSave && (isSave != 3))
-		event->accept();
-	else
+	if (mModel->isChanged())
 	{
-		if (isSave == 3)
-		{
-			event->ignore();
-			isSave = 0;
-		}
+		if (isSave && (isSave != 3))
+			event->accept();
 		else
 		{
-			mbox.show();
-			event->ignore();
+			if (isSave == 3)
+			{
+				event->ignore();
+				isSave = 0;
+			}
+			else
+			{
+				mbox.show();
+				event->ignore();
+			}
 		}
 	}
 }

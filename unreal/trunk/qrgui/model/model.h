@@ -56,6 +56,8 @@ namespace qReal {
 						void setRootIndex(QModelIndex const & index);
 			void save();
 
+			bool isChanged();
+
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 		public slots:
 			void exterminate();
@@ -96,6 +98,8 @@ namespace qReal {
 			void init();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
+
+			bool useFlagOfChange;
 		};
 
 	}

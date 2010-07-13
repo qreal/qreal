@@ -5,7 +5,7 @@ using namespace qrRepo::details;
 using namespace qReal;
 
 RepoApi::RepoApi(QString const &workingDirectory)
-	: mClient(workingDirectory)
+	: mIsChange(false), mClient(workingDirectory)
 {
 }
 
@@ -18,6 +18,7 @@ QString RepoApi::name(Id const &id) const
 void RepoApi::setName(Id const &id, QString const &name)
 {
 	mClient.setProperty(id, "name", name);
+	mIsChange = true;
 }
 
 IdList RepoApi::children(Id const &id) const
@@ -28,17 +29,20 @@ IdList RepoApi::children(Id const &id) const
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);
+	mIsChange = true;
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
 	mClient.removeChild(id, child);
+	mIsChange = true;
 }
 
 void RepoApi::removeChildren(qReal::Id const &id)
 {
 	foreach (Id const child, children(id))
 		removeChild(id, child);
+	mIsChange = true;
 }
 
 void RepoApi::removeElement(Id const &id)
@@ -93,6 +97,8 @@ void RepoApi::removeElement(Id const &id)
 
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
+
+	mIsChange = true;
 }
 
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
@@ -102,6 +108,7 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 			removeFromList(target, "links", id);
 		}
 	}
+	mIsChange = true;
 }
 
 IdList RepoApi::parents(Id const &id) const
@@ -112,11 +119,13 @@ IdList RepoApi::parents(Id const &id) const
 void RepoApi::addParent(Id const &id, Id const &parent)
 {
 	mClient.addParent(id, parent);
+	mIsChange = true;
 }
 
 void RepoApi::removeParent(qReal::Id const &id, qReal::Id const &parent)
 {
 	mClient.removeParent(id, parent);
+	mIsChange = true;
 }
 
 IdList RepoApi::links(Id const &id, QString const &direction) const
@@ -160,12 +169,14 @@ void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingConnections", destination);
 	addToIdList(destination, "incomingConnections", source);
+	mIsChange = true;
 }
 
 void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingConnections", destination);
 	removeFromList(destination, "incomingConnections", source);
+	mIsChange = true;
 }
 
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
@@ -182,12 +193,14 @@ void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingUsages", destination);
 	addToIdList(destination, "incomingUsages", source);
+	mIsChange = true;
 }
 
 void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingUsages", destination);
 	removeFromList(destination, "incomingUsages", source);
+	mIsChange = true;
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -209,11 +222,13 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	mClient.setProperty(id, propertyName, value);
+	mIsChange = true;
 }
 
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
 	mClient.removeProperty(id, propertyName);
+	mIsChange = true;
 }
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
@@ -233,6 +248,7 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 	removeFromList(prev, "links", id);
 	mClient.setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id);
+	mIsChange = true;
 }
 
 Id RepoApi::to(Id const &id) const
@@ -247,6 +263,7 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	removeFromList(prev, "links", id);
 	mClient.setProperty(id, "to", to.toVariant());
 	addToIdList(to, "links", id);
+	mIsChange = true;
 }
 
 double RepoApi::fromPort(Id const &id) const
@@ -258,6 +275,7 @@ double RepoApi::fromPort(Id const &id) const
 void RepoApi::setFromPort(Id const &id, double fromPort)
 {
 	mClient.setProperty(id, "fromPort", fromPort);
+	mIsChange = true;
 }
 
 double RepoApi::toPort(Id const &id) const
@@ -269,16 +287,19 @@ double RepoApi::toPort(Id const &id) const
 void RepoApi::setToPort(Id const &id, double toPort)
 {
 	mClient.setProperty(id, "toPort", toPort);
+	mIsChange = true;
 }
 
 void RepoApi::exterminate()
 {
 	mClient.exterminate();
+	mIsChange = true;
 }
 
 void RepoApi::open(QString const &workingDir)
 {
 	mClient.open(workingDir);
+	mIsChange = true;
 }
 
 void RepoApi::save() const
@@ -304,6 +325,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	list.append(data);
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
+	mIsChange = true;
 }
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data)
@@ -315,6 +337,7 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 	list.removeAll(data);
 
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
+	mIsChange = true;
 }
 
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
