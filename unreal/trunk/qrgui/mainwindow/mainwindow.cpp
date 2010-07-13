@@ -29,7 +29,7 @@
 #include "errorReporter.h"
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
-#include "gesturesShow/gestureswindow.h"
+//#include "gesturesShow/gestureswindow.h"
 
 using namespace qReal;
 
@@ -748,8 +748,8 @@ void MainWindow::switchGrid(bool isChecked)
 
 void MainWindow::showGestures()
 {
-    QString text = "Gestures Show";
-    GesturesWindow *wid = new GesturesWindow();
-    ui.tabs->addTab(wid, text);
-    ui.tabs->setCurrentWidget(wid);
+//    QString text = "Gestures Show";
+//    GesturesWindow *wid = new GesturesWindow();
+//    ui.tabs->addTab(wid, text);
+//    ui.tabs->setCurrentWidget(wid);
 }
