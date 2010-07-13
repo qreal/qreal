@@ -1305,5 +1305,11 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 
 void NodeElement::updateByChild()
 {
+	//обновился список детей
+	//в свернутом состоянии в контейнер можно лишь добавить элемент
+	if (mIsFolded)
+	{
+		changeFoldState();
+	}
 	resize(mContents);
 }
