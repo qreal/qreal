@@ -124,7 +124,7 @@ void NodeElement::resize(QRectF newContents)
 
 	if (this->mElementImpl->isSortContainer())
 		sortChildren();
-	
+
 	if (this->mElementImpl->isMinimizingToChildren())
 		newContents = QRectF(0, 0, 0, 0);
 
@@ -133,7 +133,7 @@ void NodeElement::resize(QRectF newContents)
 	QPointF childrenMoving = QPointF(0, 0);
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && (curItem->getPortStatus()))
+		if (curItem && (curItem->getPortStatus() && (newContents != mContents)))
 			curItem->resizeChild(newContents, mContents);
 		if (!curItem || curItem->getPortStatus())
 			continue;
@@ -613,7 +613,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();
-	
+
 	NodeElement* oldParentItem = dynamic_cast<NodeElement*>(parentItem());//инициализация здесь, тк потом его не достать
 
 	moveEmbeddedLinkers();
@@ -673,7 +673,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		} else
 			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 	}
-	
+
 	if (oldParentItem)
 		oldParentItem->resize(oldParentItem->mContents);
 
@@ -1062,7 +1062,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 				painter->setPen(Qt::green);
 			}
 			painter->setBrush(b);
-			
+
 			if (mElementImpl->isContainer())
 				painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(20, -20)));
 

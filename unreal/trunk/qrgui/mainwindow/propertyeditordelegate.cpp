@@ -21,7 +21,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		QComboBox *editor = new QComboBox(parent);
 		foreach (QString item, values)
 			editor->addItem(item);
-		return editor;	
+		return editor;
 	}
 	QLineEdit *editor = new QLineEdit(parent);
 	return editor;
@@ -31,7 +31,7 @@ void PropertyEditorDelegate::setEditorData(QWidget *editor,
 										   const QModelIndex &index) const
 {
 	QString value = index.model()->data(index, Qt::DisplayRole).toString();
-	
+
 	QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(editor);
 	if (lineEdit)
 		lineEdit->setText(value);
