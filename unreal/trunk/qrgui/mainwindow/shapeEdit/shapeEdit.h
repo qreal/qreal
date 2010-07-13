@@ -16,12 +16,14 @@ class ShapeEdit : public QWidget {
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	~ShapeEdit();
-
+signals:
+	void shapeSaved(QString const &shape);
 protected:
 	void changeEvent(QEvent *e);
 
 private slots:
 	void saveToXml();
+	void save();
 
 private:
 	Scene *mScene;
@@ -30,17 +32,7 @@ private:
 	QPointF mTopLeftPicture;
 	Ui::ShapeEdit *mUi;
 
+	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
-	QDomElement generateLine(Line *item);
-	QDomElement generateEllipse(Ellipse *item);
-	QDomElement generateArch(Arch *item);
-	QDomElement generateRectangle(Rectangle *item);
-	QDomElement generateText(Text *item);
-	QDomElement generatePointPort(PointPort* item);
-	QDomElement generateLinePort(LinePort* item);
-	QRectF sceneBoundingRectCoord(Item *item);
-
-	QDomElement setPenBrush(QString const &domName, QPen const &pen, QBrush const &brush);
-	static void setXandY(QDomElement& dom, QRectF const &rect);
 };

@@ -32,6 +32,7 @@ Arch::Arch(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0)
 {
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
+	mDomElementType = pictureType;
 	QPointF center = parent->boundingRect().center();
 	int alpha = countAngle(x1, y1, center);
 	int beta = countAngle(x2, y2, center);
@@ -67,7 +68,19 @@ QRectF Arch::boundingRect() const
 	return path.boundingRect();
 }
 
-void Arch::drawItem(QPainter* painter)
+void Arch::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
 	painter->drawArc(mRect, mStartAngle, mSpanAngle);
+}
+
+QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+{
+	QDomElement arch = document.createElement("arch");
+	arch.setAttribute("startAngle", mStartAngle);
+	arch.setAttribute("spanAngle", mSpanAngle);
+	setXandY(arch, sceneBoundingRectCoord(topLeftPicture));
+
+	return QPair<QDomElement, Item::DomElementTypes>(arch, mDomElementType);
 }

@@ -9,7 +9,9 @@ public:
 	QLineF line() const;
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
-	virtual void drawItem(QPainter* painter);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 };

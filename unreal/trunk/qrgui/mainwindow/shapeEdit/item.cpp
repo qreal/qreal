@@ -3,7 +3,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
 
-Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent), mDragState(None)
+Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent), mDomElementType(noneType), mDragState(None)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -13,7 +13,7 @@ void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWid
 {
 	Q_UNUSED(widget);
 	painter->setPen(mPen);
-	drawItem(painter);
+	drawItem(painter, option, widget);
 	if (option->state & QStyle::State_Selected) {
 		painter->save();
 		QPen pen(Qt::red);
@@ -118,11 +118,11 @@ void Item::changeDragState(qreal x, qreal y)
 	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
 		mDragState = TopLeft;
 	else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
-			mDragState = TopRight;
+		mDragState = TopRight;
 	else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
-			mDragState = BottomLeft;
+		mDragState = BottomLeft;
 	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-5, -5, 5, 5).contains(QPointF(x, y)))
-			mDragState = BottomRight;
+		mDragState = BottomRight;
 	else
 		mDragState = None;
 }
@@ -147,4 +147,61 @@ void Item::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState != None)
 		calcResizeItem(event);
+}
+
+void Item::setXandY(QDomElement& dom, QRectF const &rect)
+{
+	dom.setAttribute("y1", rect.top());
+	dom.setAttribute("x1", rect.left());
+	dom.setAttribute("y2", rect.bottom());
+	dom.setAttribute("x2", rect.right());
+}
+
+QDomElement Item::setPenBrush(QDomDocument &document, QString const &domName)
+{
+	QDomElement dom = document.createElement(domName);
+	dom.setAttribute("fill", mBrush.color().name());
+
+	if (mBrush.style() == Qt::NoBrush)
+		dom.setAttribute("fill-style", "none");
+	if (mBrush.style() == Qt::SolidPattern)
+		dom.setAttribute("fill-style", "solid");
+
+	dom.setAttribute("stroke", mPen.color().name());
+
+	dom.setAttribute("stroke-width", mPen.width());
+
+	QString penStyle;
+	switch (mPen.style()) {
+	case Qt::SolidLine:
+		penStyle = "solid";
+		break;
+	case Qt::DotLine:
+		penStyle = "dot";
+		break;
+	case Qt::DashLine:
+		penStyle = "dash";
+		break;
+	case Qt::DashDotLine:
+		penStyle =  "dashdot";
+		break;
+	case Qt::DashDotDotLine:
+		penStyle = "dashdotdot";
+		break;
+	case Qt::NoPen:
+		penStyle = "none";
+		break;
+	default:
+		break;
+	}
+	dom.setAttribute("stroke-style", penStyle);
+
+	return dom;
+}
+
+QRectF Item::sceneBoundingRectCoord(QPointF const &topLeftPicture)
+{
+	qreal const x1 = scenePos().x() + boundingRect().x() - topLeftPicture.x();
+	qreal const y1 = scenePos().y() + boundingRect().y() - topLeftPicture.y();
+	return QRectF(x1, y1, boundingRect().width(), boundingRect().height());
 }

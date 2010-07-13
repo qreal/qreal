@@ -4,7 +4,8 @@
 #include <QtGui/QPen>
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
-
+#include <QtXml/QDomDocument>
+#include <QtCore/QPair>
 
 class Item : public QGraphicsItem
 {
@@ -16,10 +17,17 @@ public:
 		BottomLeft,
 		BottomRight
 	};
+	enum DomElementTypes {
+		noneType,
+		pictureType,
+		labelType,
+		portType
+	};
+
 	Item(QGraphicsItem* parent = 0);
 	virtual QRectF boundingRect() const = 0;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawItem(QPainter* painter) = 0;
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
@@ -38,7 +46,14 @@ public:
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
+	//for save to xml
+	void setXandY(QDomElement& dom, QRectF const &rect);
+	QDomElement setPenBrush(QDomDocument &document, QString const &domName);
+	QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture) = 0;
+
 protected:
+	DomElementTypes mDomElementType;
 	DragState mDragState;
 	QPen mPen;
 	QBrush mBrush;

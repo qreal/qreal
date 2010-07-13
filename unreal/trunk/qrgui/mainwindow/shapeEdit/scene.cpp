@@ -59,8 +59,11 @@ void Scene::reshapeItem(QGraphicsSceneMouseEvent *event)
 void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list)
-		graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, false);
+	foreach (QGraphicsItem *graphicsItem, list) {
+		Item *item = dynamic_cast<Item *>(graphicsItem);
+		if (item != NULL)
+			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+	}
 	if (item != mEmptyRect)
 		item->setFlag(QGraphicsItem::ItemIsMovable, true);
 }
@@ -68,9 +71,11 @@ void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
 void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list)
-		if (graphicsItem != mEmptyRect)
+	foreach (QGraphicsItem *graphicsItem, list){
+		Item *item = dynamic_cast<Item *>(graphicsItem);
+		if (item != NULL)
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+	}
 }
 
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -100,12 +105,12 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case text:
 		setX1andY1(event);
-		mText = new Text(mX1, mY1, "text", false, NULL);
+		mText = new Text(mX1, mY1, "text", false);
 		addItem(mText);
 		break;
 	case dynamicText :
 		setX1andY1(event);
-		mText = new Text(mX1, mY1, "name", true, NULL);
+		mText = new Text(mX1, mY1, "name", true);
 		addItem(mText);
 		break;
 	case pointPort :
@@ -238,4 +243,3 @@ void Scene::clearScene()
 {
 	clear();
 }
-

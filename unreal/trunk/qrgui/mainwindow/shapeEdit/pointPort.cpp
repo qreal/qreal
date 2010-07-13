@@ -10,6 +10,7 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 	mY2 = y + mRadius * 0.8;
 	mPen = QPen(Qt::blue);
 	mBrush = QBrush(Qt::SolidPattern);
+	mDomElementType = portType;
 }
 
 QRectF PointPort::boundingRect() const
@@ -17,8 +18,10 @@ QRectF PointPort::boundingRect() const
 	return mRect;
 }
 
-void PointPort::drawItem(QPainter* painter)
+void PointPort::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
 	painter->setPen(mPen);
 	painter->setBrush(mBrush);
 	painter->drawEllipse(mRect);
@@ -41,4 +44,15 @@ void PointPort::changeDragState(qreal x, qreal y)
 void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event);
+}
+
+QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+{
+	QDomElement pointPort = document.createElement("pointPort");
+	qreal const x = boundingRect().center().x() - topLeftPicture.x();
+	qreal const y = boundingRect().center().y() - topLeftPicture.y();
+	pointPort.setAttribute("y", y);
+	pointPort.setAttribute("x", x);
+
+	return QPair<QDomElement, Item::DomElementTypes>(pointPort, mDomElementType);
 }

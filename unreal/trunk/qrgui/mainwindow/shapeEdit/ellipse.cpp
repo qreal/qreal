@@ -5,6 +5,7 @@ Ellipse::Ellipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 {
 	mPen.setColor(Qt::blue);
 	mBrush.setStyle(Qt::NoBrush);
+	mDomElementType = pictureType;
 	mX1 = x1;
 	mY1 = y1;
 	mX2 = x2;
@@ -16,8 +17,10 @@ QRectF Ellipse::boundingRect() const
 	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1));
 }
 
-void Ellipse::drawItem(QPainter* painter)
+void Ellipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+	Q_UNUSED(option);
+	Q_UNUSED(widget);
 	if(mX2 > mX1) {
 		if (mY2 > mY1)
 			painter->drawEllipse(mX1, mY1, mX2 - mX1, mY2 - mY1);
@@ -31,4 +34,10 @@ void Ellipse::drawItem(QPainter* painter)
 	}
 }
 
+QPair<QDomElement, Item::DomElementTypes> Ellipse::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+{
+	QDomElement ellipse = setPenBrush(document, "ellipse");
+	setXandY(ellipse, sceneBoundingRectCoord(topLeftPicture));
 
+	return QPair<QDomElement, Item::DomElementTypes>(ellipse, mDomElementType);
+}

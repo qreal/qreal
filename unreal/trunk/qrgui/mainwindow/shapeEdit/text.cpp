@@ -1,42 +1,38 @@
 #include "text.h"
 
 #include <QtGui/QCursor>
-#include <QDebug>
 #include <QStyleOptionGraphicsItem>
 #include <QPainter>
 
-Text::Text(qreal x, qreal y, QString const &text, bool isDynamic, QGraphicsTextItem *parent)
-	: QGraphicsTextItem(parent), mIsDynamicText(isDynamic)
+Text::Text(qreal x, qreal y, QString const &text, bool isDynamic)
+	: Item(NULL), mIsDynamicText(isDynamic)
 {
-	setTextInteractionFlags(Qt::TextEditorInteraction);
-	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setFlag(QGraphicsItem::ItemIsMovable, true);
+	mDomElementType = labelType;
+	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
 	setPos(x, y);
-	setHtml(text);
+	mText.setHtml(text);
+	mText.setParentItem(this);
 }
 
-void Text::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void Text::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	QGraphicsTextItem::paint(painter, option, widget);
+	mText.paint(painter, option, widget);
 	if (mIsDynamicText)
 		drawForDynamicText(painter);
-	if (option->state & QStyle::State_Selected) {
-		painter->save();
-		QPen pen(Qt::red);
-		pen.setWidth(3);
-		painter->setPen(pen);
-		drawExtractionForItem(painter);
-		painter->restore();
-	}
 }
 
 void Text::drawExtractionForItem(QPainter* painter)
 {
-	mRect = boundingRect();
+	mRect = mText.boundingRect();
 	painter->drawPoint(mRect.left(), mRect.top());
 	painter->drawPoint(mRect.left(), mRect.bottom());
 	painter->drawPoint(mRect.right(), mRect.top());
 	painter->drawPoint(mRect.right(), mRect.bottom());
+}
+
+QRectF Text::boundingRect() const
+{
+	return mText.boundingRect().adjusted(-8, -8, 8, 8);
 }
 
 void Text::drawForDynamicText(QPainter* painter)
@@ -44,10 +40,27 @@ void Text::drawForDynamicText(QPainter* painter)
 	QPen pen(Qt::green);
 	pen.setWidth(2);
 	painter->setPen(pen);
-	painter->drawRect(boundingRect());
+	painter->drawRect(mText.boundingRect());
 }
 
 bool Text::isDynamicText()
 {
 	return mIsDynamicText;
+}
+
+QGraphicsTextItem const& Text::getText()
+{
+	return mText;
+}
+
+QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+{
+	QDomElement text = document.createElement("label");
+	qreal const x1 = boundingRect().x() + scenePos().x() - topLeftPicture.x();
+	qreal const y1 = boundingRect().y() + scenePos().y() - topLeftPicture.y();
+	text.setAttribute("y", y1);
+	text.setAttribute("x", x1);
+	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());
+
+	return QPair<QDomElement, Item::DomElementTypes>(text, mDomElementType);
 }
