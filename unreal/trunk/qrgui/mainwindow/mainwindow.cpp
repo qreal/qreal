@@ -29,6 +29,7 @@
 #include "errorReporter.h"
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
+#include "gesturesShow/gestureswindow.h"
 
 using namespace qReal;
 
@@ -108,6 +109,7 @@ MainWindow::MainWindow()
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(ui.actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+        connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -744,3 +746,10 @@ void MainWindow::switchGrid(bool isChecked)
 	}
 }
 
+void MainWindow::showGestures()
+{
+    QString text = "Gestures Show";
+    GesturesWindow *wid = new GesturesWindow();
+    ui.tabs->addTab(wid, text);
+    ui.tabs->setCurrentWidget(wid);
+}

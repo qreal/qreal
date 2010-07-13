@@ -14,7 +14,7 @@
    <string>QReal</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../qrgui.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -92,10 +92,17 @@
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionPasre_Editor_xml"/>
    </widget>
+   <widget class="QMenu" name="menuMouse_gestures">
+    <property name="title">
+     <string>Mouse gestures</string>
+    </property>
+    <addaction name="actionShow"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -294,7 +301,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
    <property name="text">
@@ -303,7 +310,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
    <property name="text">
@@ -331,7 +338,7 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -434,7 +441,7 @@
   </action>
   <action name="actionClear">
    <property name="icon">
-    <iconset>
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
@@ -528,6 +535,11 @@
     <string>Commit</string>
    </property>
   </action>
+  <action name="actionShow">
+   <property name="text">
+    <string>Show</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
@@ -538,6 +550,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../qrgui.qrc"/>
+ </resources>
  <connections/>
 </ui>
