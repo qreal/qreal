@@ -201,7 +201,6 @@ QRectF EmbeddedLinker::boundingRect() const
 
 void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "mousePress (LINKER)";
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
 	if (scene != NULL)
@@ -211,40 +210,52 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		{
 			Id *edgeId = scene->createElement(type, event->scenePos());
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
-			mEdge->placeStartTo(master->getPortPos(0));
 		}
 		if (mEdge != NULL)
 		{
 			mEdge->setSelected(true);
 			master->setSelected(false);
-			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
+			mEdge->placeStartTo(master->getNearestPort(event->pos()));
+			mEdge->placeEndTo(event->pos());
 		}
 	}
 }
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "mouseMove (LINKER)";
 	if (mEdge != NULL)
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "mouseRelease (LINKER)";
 	hide();
-	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
-	if ((scene != NULL) && (mEdge != NULL))
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(master->scene());
+	if ((scene) && (mEdge))
 	{
 		mEdge->hide();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(event->scenePos()));
 		mEdge->show();
-		if (under == NULL)
-			if (scene->launchEdgeMenu(mEdge, master, event->scenePos()))
+		int result = 0;
+		UML::NodeElement* target;
+
+		if (!under) {
+			result = scene->launchEdgeMenu(mEdge, master, event->scenePos());
+			if (result == -1)
 				mEdge = NULL;
+			else if ((result == +1) && (scene->getLastCreated()))
+			{
+				target = dynamic_cast<UML::NodeElement*>(scene->getLastCreated());
+				if (target) {
+					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
+					mEdge->connectToPort();	//it provokes to move target somehow, so it needs to place edge end and connect to port again
+					mEdge->placeEndTo(mapFromItem(target,target->getNearestPort(target->pos())));
+				}
+			}
+		}
+		if (result != -1)
+			mEdge->connectToPort();
 	}
-	if (mEdge != NULL)
-		mEdge->connectToPort();
 }
 
 void EmbeddedLinker::changeShowState()

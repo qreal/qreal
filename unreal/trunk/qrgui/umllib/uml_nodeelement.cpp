@@ -11,7 +11,6 @@
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 
-
 #include <math.h>
 
 using namespace UML;
@@ -354,7 +353,6 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "mousePress (NODE)";
 	if (embeddedLinkers.isEmpty())
 		initEmbeddedLinkers();
 	moveEmbeddedLinkers();
@@ -875,6 +873,41 @@ const QPointF NodeElement::getPortPos(qreal id) const
 		return QPointF(0, 0);
 }
 
+const QPointF NodeElement::getNearestPort(QPointF location) const
+{
+	int num = 0;
+	QPointF min;
+	if (mPointPorts.size() > 0)
+		min = mPointPorts[0];
+	else if (mLinePorts.size() > 0)
+		min = mLinePorts[0].line.p1();
+	else
+		return location;
+
+	foreach (QPointF port, mPointPorts) {
+		qreal minDistance = sqrt(pow((min.x()-location.x()),2) + pow((min.y()-location.y()),2));
+		if (distanceFromPointPort(num, location) < minDistance)
+			min = port;
+		num++;
+	}
+	if (num > 0)
+		return min;
+
+	num = 0;
+	foreach (StatLine line, mLinePorts) {
+		qreal k = getNearestPointOfLinePort(num, location);
+		QPointF port = QPointF((line.line.p1().x()*(1-k)+line.line.p2().x()*k),
+			(line.line.p1().y()*(1-k)+line.line.p2().y()*k));
+		qreal minDistance = sqrt(pow((min.x()-location.x()),2) + pow((min.y()-location.y()),2));
+		qreal distance = sqrt(pow((port.x()-location.x()),2) + pow((port.y()-location.y()),2));
+		if (distance < minDistance)
+			min = port;
+		num++;
+	}
+
+	return min;
+}
+
 QLineF NodeElement::newTransform(const StatLine& port) const
 {
 	float x1 = 0.0;
@@ -1174,7 +1207,7 @@ bool NodeElement::getPortStatus()
 
 bool NodeElement::getHavePortStatus()
 {
-   return mElementImpl->isHavePin();
+	return mElementImpl->isHavePin();
 }
 
 double NodeElement::getXHor()

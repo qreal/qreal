@@ -27,7 +27,7 @@ public:
 	void clearScene();
 
 
-	virtual bool launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
+	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
@@ -45,6 +45,7 @@ public:
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
+	UML::Element* getLastCreated();
 protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
@@ -62,13 +63,14 @@ protected:
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
 private:
+	UML::Element* lastCreatedWithEdge;
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
-        void initMouseMoveMan();
-        void drawGesture();
-        void deleteGesture();
+	void initMouseMoveMan();
+	void drawGesture();
+	void deleteGesture();
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
@@ -86,10 +88,10 @@ private:
 							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 							  , const char *slot) const;
 
-        qReal::model::Model *model() const;
+	qReal::model::Model *model() const;
 
 	QPointF newElementsPosition;
-        QList<QGraphicsLineItem*> mGesture;
+	QList<QGraphicsLineItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;

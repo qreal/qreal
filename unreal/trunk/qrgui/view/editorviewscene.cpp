@@ -141,15 +141,15 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	createElement(event->mimeData(),event->scenePos());
 }
 
-bool EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos)
+int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos)
 {
-	bool edgeDeleted = false;
 	edge->setSelected(true);
 
 	QList<QObject*> toDelete;
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
+	edgeMenu->addAction(QString("Throw"));
 	edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
 	edgeMenu->addSeparator();
 
@@ -169,7 +169,7 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* n
 			target = pEdge.first.first;
 		else continue;
 
-		QAction* element = new QAction(pEdge.first.second,createElemMenu);
+		QAction* element = new QAction(target,createElemMenu);
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
@@ -183,19 +183,26 @@ bool EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* n
 	QPoint cursorPos = QCursor::pos();
 	executed = edgeMenu->exec(cursorPos);
 
-	if ((executed != NULL) && (executed == mWindow->ui.actionDeleteFromDiagram))
-			edgeDeleted = true;
+	int result = 0;
+	if (executed) {
+		if (executed == mWindow->ui.actionDeleteFromDiagram)
+			result = -1;
+		else if (!(executed->text() == "Throw"))
+			result = +1;
+	}
 
 	//	Cleaning.
 	//	foreach(QObject *object, toDelete)
 	//		delete object;
 
-	return edgeDeleted;
+	return result;
 }
 
 qReal::Id *EditorViewScene::createElement(const QString &str)
 {
-	return createElement(str, mCreatePoint);
+	qReal::Id* result = createElement(str, mCreatePoint);
+	lastCreatedWithEdge = getElem(*result);
+	return result;
 }
 
 qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
@@ -244,7 +251,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	// TODO: make it simpler
 	qReal::Id id = qReal::Id::loadFromString(uuid);
-	UML::Element *e = mWindow->manager()->graphicalObject(id);
+	UML::Element* e = mWindow->manager()->graphicalObject(id);
 
 	// TODO: what is it??
 	if (dynamic_cast<UML::NodeElement*>(e))
@@ -275,6 +282,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
 									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
 	delete newMimeData;
+}
+
+UML::Element* EditorViewScene::getLastCreated()
+{
+	return lastCreatedWithEdge;
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)

@@ -43,6 +43,7 @@ namespace UML {
 		virtual void setName(QString name);
 
 		const QPointF getPortPos(qreal id) const;
+		const QPointF getNearestPort(QPointF location) const;
 
 		qreal getPortId(const QPointF &location) const;
 
