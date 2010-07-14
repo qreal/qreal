@@ -217,7 +217,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QString uuid = objectId->toString();
 	QString pathToItem = ROOT_ID.toString();
 	QString name = "(anonymous something)";
-	QPointF pos = QPointF(0,0);
+	QPointF pos = QPointF(0, 0);
 	stream << uuid;
 	stream << pathToItem;
 	stream << name;

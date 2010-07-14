@@ -141,7 +141,8 @@ namespace UML {
 		QLineF newTransform(const StatLine& port) const;
 
 		void resize(QRectF newContents);
-		void updateByChild();
+		void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
+		void updateByNewParent();
 		
 		void moveChildren(qreal dx, qreal dy);
 		void moveChildren(QPointF const &moving);

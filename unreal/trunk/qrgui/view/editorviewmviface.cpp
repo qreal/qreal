@@ -114,7 +114,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 
 		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(uuid);
+		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		if (e) {
+			e->setPos(ePos);
+			//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
+
 			e->setIndex(current);
 			if (parent_uuid != Id() && item(parent) != NULL)
 				e->setParentItem(item(parent));

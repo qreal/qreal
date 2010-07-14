@@ -137,7 +137,7 @@ void NodeElement::resize(QRectF newContents)
 		if (!curItem || curItem->getPortStatus())
 			continue;
 
-		QPointF curItemPos = curItem->pos();
+		QPointF curItemPos = curItem->scenePos() - scenePos();
 
 		if (curItemPos.x() < childrenMoving.x() + mElementImpl->sizeOfForestalling())
 			childrenMoving.setX(curItemPos.x() - mElementImpl->sizeOfForestalling());
@@ -612,18 +612,19 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mContents = mContents.normalized();
 	storeGeometry();
 
-	NodeElement* oldParentItem = dynamic_cast<NodeElement*>(parentItem());//инициализация здесь, тк потом его не достать
-
 	moveEmbeddedLinkers();
 		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
 			embeddedLinker->setCovered(true);
 
-	if (mDragState == None)
+	if (mDragState == None || !(this->flags() & ItemIsMovable))
+	//if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
 	if (!getPortStatus())
 	{
 		QPointF newParentInnerPoint = event->scenePos();
+		//switch нужен для случая, когда мы не можем растягивать объект. 
+		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
 		switch (mDragState) {
 			case TopLeft:
 				newParentInnerPoint = scenePos();
@@ -658,8 +659,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 		if (newParent) {
-			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-				mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			if (this->flags() & ItemIsMovable)
+				itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+						mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 
 			newParent->resize(newParent->mContents);
 
@@ -669,11 +671,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+			if (this->flags() & ItemIsMovable)
+				itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 	}
-
-	if (oldParentItem)
-		oldParentItem->resize(oldParentItem->mContents);
 
 	mDragState = None;
 	setZValue(0);
@@ -792,16 +792,27 @@ void NodeElement::moveEmbeddedLinkers()
 
 QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+	bool isItemAddedOrDeleted = false;
+	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
+	NodeElement *parent = dynamic_cast<NodeElement*>(parentItem());
+
 	switch (change) {
 	case ItemPositionHasChanged:
 		adjustLinks();
+		if (parent)
+			parent->updateByChild(this, false);
 		return value;
 
 	case ItemChildAddedChange:
 	case ItemChildRemovedChange:
-		if (dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>()))
-			updateByChild();
-		return QGraphicsItem::itemChange(change, value);
+		isItemAddedOrDeleted = true;
+		if (item)
+			updateByChild(item, isItemAddedOrDeleted);
+		return value;
+
+	case ItemParentHasChanged:
+		updateByNewParent();
+		return value;
 
 	default:
 		return QGraphicsItem::itemChange(change, value);
@@ -1336,13 +1347,19 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	return;
 }
 
-void NodeElement::updateByChild()
+void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
-	//обновился список детей
-	//в свернутом состоянии в контейнер можно лишь добавить элемент
-	if (mIsFolded)
-	{
+	if (mIsFolded && isItemAddedOrDeleted && (item != 0)) {
 		changeFoldState();
 	}
 	resize(mContents);
+}
+
+void NodeElement::updateByNewParent()
+{
+	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	if (!parent || parent->mElementImpl->isChildrenMovable())
+		setFlag(ItemIsMovable, true);
+	else
+		setFlag(ItemIsMovable, false);
 }
