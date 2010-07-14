@@ -68,9 +68,9 @@ private:
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
-	void initMouseMoveMan();
-	void drawGesture();
-	void deleteGesture();
+
+        void drawGesture();
+        void deleteGesture();
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
@@ -108,6 +108,7 @@ private:
 	friend class qReal::EditorViewMViface;
 
 public slots:
+
 	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 private slots:
@@ -117,4 +118,7 @@ private slots:
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
-};
+        void printElementsOfRootDiagram();
+        void drawIdealGesture();
+        void initMouseMoveMan();
+    };

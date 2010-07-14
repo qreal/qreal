@@ -11,6 +11,8 @@
 #include "../editorManager/editorManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
+#include "igesturespainter.h"
+#include "gesturesShow/gestureswidget.h"
 
 namespace qReal {
 
@@ -34,6 +36,8 @@ namespace qReal {
 		}
 
 		ListenerManager *listenerManager();
+
+                IGesturesPainter *gesturesPainter();
 
 		Ui::MainWindowUi ui;
 		//QDialogButtonBox* dbox;
@@ -103,6 +107,8 @@ namespace qReal {
 
 		PropertyEditorDelegate mDelegate;
 
+                GesturesWidget * mGesturesWidget;
+
 		int isSave;
 
 		void loadPlugins();
@@ -111,6 +117,10 @@ namespace qReal {
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
-	};
+            signals:
+                void gesturesShowed();
+                void currentIdealGestureChanged();
+                void tabOpened();
+            };
 
 }

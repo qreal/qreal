@@ -22,14 +22,30 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
+
+}
+
+void EditorViewScene::drawIdealGesture()
+{
+    mouseMovementManager->drawIdealPath();
+}
+
+void EditorViewScene::printElementsOfRootDiagram()
+{
+    mouseMovementManager->setGesturesPainter(mWindow->gesturesPainter());
+    mouseMovementManager->printElements();
 }
 
 void EditorViewScene::initMouseMoveMan()
 {
         qReal::Id diagram = model()->getRootDiagram();
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
-	mouseMovementManager = new MouseMovementManager(elements, mWindow->manager());
-}
+        mouseMovementManager = new MouseMovementManager(elements,
+                                                        mWindow->manager(),
+                                                        mWindow->gesturesPainter());
+        connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
+        connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
+    }
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
@@ -426,7 +442,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::RightButton) {
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e) {
-			initMouseMoveMan();
                         mouseMovementManager->addPoint(event->scenePos());
 			mRightButtonPressed = true;
 			return;
@@ -576,6 +591,7 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
+        connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const

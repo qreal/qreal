@@ -12,7 +12,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/rectangle.h \
 	mainwindow/shapeEdit/text.h \
 	mainwindow/shapeEdit/pointPort.h \
-	mainwindow/shapeEdit/linePort.h
+	mainwindow/shapeEdit/linePort.h \
+    mainwindow/gesturesShow/gestureswidget.h \
+    mainwindow/igesturespainter.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -27,6 +29,8 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/rectangle.cpp \
 	mainwindow/shapeEdit/text.cpp \
 	mainwindow/shapeEdit/pointPort.cpp \
-	mainwindow/shapeEdit/linePort.cpp
+	mainwindow/shapeEdit/linePort.cpp \
+    mainwindow/gesturesShow/gestureswidget.cpp
 FORMS += mainwindow/mainwindow.ui \
-	mainwindow/shapeEdit/shapeEdit.ui
+	mainwindow/shapeEdit/shapeEdit.ui \
+    mainwindow/gesturesShow/gestureswidget.ui

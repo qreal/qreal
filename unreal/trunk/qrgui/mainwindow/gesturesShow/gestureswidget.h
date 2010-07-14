@@ -1,34 +1,41 @@
 #pragma once
+
 #include <QWidget>
-#include <QMainWindow>
 #include <QGraphicsScene>
 #include <QTimer>
+#include <QList>
+#include <QPoint>
+#include <QString>
+#include "../igesturespainter.h"
 
 namespace Ui {
-    class GesturesWindow;
+    class GesturesWidget;
 }
 
-class GesturesWindow : public QMainWindow
+class GesturesWidget : public QWidget, public IGesturesPainter
 {
     Q_OBJECT
 
 public:
-    explicit GesturesWindow(QWidget *parent = 0);
-    ~GesturesWindow();
+    explicit GesturesWidget(QWidget *parent = 0);
+    ~GesturesWidget();
+    void draw(QList<QPoint> const & path);
     QString currentElement();
-    void draw(QList<QPoint> const & idealPath);
     void setElements(QList<QString> const & elements);
 
+signals:
+    void currentElementChanged();
+
 private:
-    Ui::GesturesWindow *ui;
-    QTimer *mTimer;
+    Ui::GesturesWidget *ui;
     QGraphicsScene *mGestureScene;
+    QTimer *mTimer;
     QList<QPoint> mPath;
     static const int pointsAtSegment = 5;
     int mCurrentPointNumber;
     static int coord(int previous, int next, int part);
 
 private slots:
-    void draw();
-};
+    void drawGesture();
 
+};

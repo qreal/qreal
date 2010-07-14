@@ -29,7 +29,7 @@
 #include "errorReporter.h"
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
-//#include "gesturesShow/gestureswindow.h"
+#include "gesturesShow/gestureswidget.h"
 
 using namespace qReal;
 
@@ -110,6 +110,8 @@ MainWindow::MainWindow()
 	connect(ui.actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
         connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+
+
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -159,6 +161,7 @@ MainWindow::MainWindow()
 	}
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
+        this->mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -690,11 +693,12 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setModel(mModel);
 	getCurrentTab()->mvIface()->setRootIndex(index);
-
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+
+        emit tabOpened();
 }
 
 void MainWindow::updateTab(QModelIndex const &index)
@@ -751,8 +755,15 @@ void MainWindow::switchGrid(bool isChecked)
 
 void MainWindow::showGestures()
 {
-//    QString text = "Gestures Show";
-//    GesturesWindow *wid = new GesturesWindow();
-//    ui.tabs->addTab(wid, text);
-//    ui.tabs->setCurrentWidget(wid);
+    QString text = "Gestures Show";
+    mGesturesWidget = new GesturesWidget();
+    ui.tabs->addTab(mGesturesWidget, text);
+    ui.tabs->setCurrentWidget(mGesturesWidget);
+    connect(this->mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
+    emit gesturesShowed();
+}
+
+IGesturesPainter * MainWindow::gesturesPainter()
+{
+    return this->mGesturesWidget;
 }

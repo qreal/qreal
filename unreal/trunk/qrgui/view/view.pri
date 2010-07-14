@@ -5,7 +5,7 @@ HEADERS += view/editorview.h \
     view/gestures/mousemovementmanager.h \
     view/gestures/levenshteindistance.h \
     view/gestures/keymanager.h \
-    view/gestures/IKeyManager.h
+    view/gestures/ikeymanager.h
 
 SOURCES += view/editorview.cpp \
     view/editorviewscene.cpp \

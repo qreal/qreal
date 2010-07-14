@@ -5,11 +5,41 @@
 const QString comma = ", ";
 const QString pointDelimeter = " : ";
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager)
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager * editorManager,
+                                           IGesturesPainter *gesturesPaintManager)
 {
     mKeyManager = &mKeyStringManager;
     mEditorManager = editorManager;
+    mGesturesPaintMan = gesturesPaintManager;
     setElements(elements);
+}
+
+void MouseMovementManager::setGesturesPainter(IGesturesPainter *gesturesPainter)
+{
+    mGesturesPaintMan = gesturesPainter;
+}
+
+void MouseMovementManager::drawIdealPath()
+{
+    QString currentElement = mGesturesPaintMan->currentElement();
+    foreach (qReal::Id element, mGestures.values())
+    {
+        if (element.element() == currentElement)
+        {
+            QString path = mEditorManager->mouseGesture(element);
+            mGesturesPaintMan->draw(stringToPath(path));
+        }
+    }
+}
+
+void MouseMovementManager::printElements()
+{
+    QList<QString> elements;
+    foreach (qReal::Id element, mGestures.values())
+    {
+        elements.push_back(element.element());
+    }
+    mGesturesPaintMan->setElements(elements);
 }
 
 void MouseMovementManager::clear()
