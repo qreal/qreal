@@ -12,7 +12,7 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
             this, SIGNAL(currentElementChanged()));
     mTimer = new QTimer(this);
     QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
-    mTimer->start(250);
+    mTimer->start(50);
 }
 
 GesturesWidget::~GesturesWidget()

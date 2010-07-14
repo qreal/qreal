@@ -12,7 +12,6 @@
 #include <QMap>
 
 
-//todo:: унаследовать  от QObject
 class MouseMovementManager
 {
 public:
