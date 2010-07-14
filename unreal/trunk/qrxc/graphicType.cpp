@@ -12,7 +12,7 @@ using namespace utils;
 const int MAX_LINE_LENGTH = 60;
 
 GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
-	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false) 
+	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false)
 {}
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -191,11 +191,12 @@ bool GraphicType::initContainerProperties()
 			mContainerProperties.sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
 			if (!isSizeOk)
 				return false;
-		} else if (childElement.tagName() == "minimizeToChildren")
-		{
+		} else if (childElement.tagName() == "minimizeToChildren") {
 			mContainerProperties.isMinimizingToChildren = true;
-		} else if (childElement.tagName() == "banChildrenMove"){
+		} else if (childElement.tagName() == "banChildrenMove") {
 			mContainerProperties.isChildrenMovable = false;
+		} else if (childElement.tagName() == "itIsClass") {
+			mContainerProperties.isClass = true;
 		}
 	}
 

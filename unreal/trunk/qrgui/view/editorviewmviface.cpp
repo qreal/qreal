@@ -115,6 +115,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(uuid);
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+		bool needToProcessChildren = true;
 		if (e) {
 			e->setPos(ePos);
 			//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
@@ -128,11 +129,45 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			e->updateData();
 			e->connectToPort();
 			e->initPossibleEdges();
+
+			UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
+			
+			if (nodeE && nodeE->isClass()) {
+				needToProcessChildren = false;
+				
+				for (int i = 0; i < 2; i++) {
+					Id newUuid = Id("Activity_metamodel", "ActivityDiagram", 
+							"ActivityDiagram_Action", QUuid::createUuid().toString());
+
+					QByteArray data;
+					QMimeData *mimeData = new QMimeData();
+					QDataStream stream(&data, QIODevice::WriteOnly);
+					QString mimeType = QString("application/x-real-uml-data");
+					QString newElemUuid = newUuid.toString(); //TODO: normal string
+					QString pathToItem = ROOT_ID.toString();
+					QString name = "(anonymous something)";
+					QPointF pos = QPointF(0, 0);
+					stream << newElemUuid;
+					stream << pathToItem;
+					stream << name;
+					stream << pos;
+
+					mimeData->setData(mimeType, data);
+
+					model()->dropMimeData(mimeData, Qt::CopyAction, model()->rowCount(current), 0, current);
+
+					delete mimeData;
+				}
+			}
 		}
 
-		if (model()->hasChildren(current)) {
+		qDebug() << "Before model children process" << uuid.element();
+
+		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
+		
+		qDebug() << "After model children process" << uuid.element();
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
 }

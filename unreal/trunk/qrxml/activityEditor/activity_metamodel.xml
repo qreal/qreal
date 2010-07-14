@@ -271,6 +271,7 @@
                 <childrenForestalling size="5"/>
                 <minimizeToChildren/>
                 <banChildrenMove/>
+                <itIsClass/>
               </properties>
             </container>
           </logic>

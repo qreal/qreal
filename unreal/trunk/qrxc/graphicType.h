@@ -37,6 +37,7 @@ protected:
 		int sizeOfChildrenForestalling;
 		bool isChildrenMovable;
 		bool isMinimizingToChildren;
+		bool isClass;
 	};
 	
 	QDomElement mLogic;

@@ -79,6 +79,8 @@ namespace UML {
 		void switchOnGrid();
 		void switchOffGrid();
 
+		bool isClass();
+
 	private slots:
 		void switchGrid(bool isChecked);
 

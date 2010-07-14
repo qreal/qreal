@@ -311,6 +311,13 @@ void NodeType::generateCode(OutFile &out)
 	else
 		out() << "\t\t\treturn false;\n";
 	out() << "\t\t}\n\n";
+	
+	out() << "\t\tbool isClass()\n\t\t{\n";
+	if (mContainerProperties.isClass)
+		out() << "\t\t\treturn true;\n";
+	else
+		out() << "\t\t\treturn false;\n";
+	out() << "\t\t}\n\n";
 
 	out() << "\t\tbool isPort()\n\t\t{\n";
 	if (mIsPin)

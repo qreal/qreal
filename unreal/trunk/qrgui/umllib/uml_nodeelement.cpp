@@ -1360,3 +1360,8 @@ void NodeElement::updateByNewParent()
 	else
 		setFlag(ItemIsMovable, false);
 }
+
+bool NodeElement::isClass()
+{
+	return mElementImpl->isClass();
+}

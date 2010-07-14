@@ -130,6 +130,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
 		<< "\t\tbool isChildrenMovable() { return false; }\n"
 		<< "\t\tbool isMinimizingToChildren() { return false; }\n"
+		<< "\t\tbool isClass() { return false; }\n"
 		<< "\t\tbool isPort() { return false; }\n"
 		<< "\t\tbool isHavePin() { return false; }\n"
 		<< "\t\tdouble getXHorBord() { return 0; }\n"
