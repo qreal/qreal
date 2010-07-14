@@ -1,5 +1,5 @@
 #pragma once
-#include "ikeymanager.h"
+#include "IKeyManager.h"
 #include <QPointF>
 #include <QList>
 

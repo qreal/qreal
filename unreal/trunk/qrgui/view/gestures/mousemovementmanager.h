@@ -1,5 +1,5 @@
 #pragma once
-#include "ikeymanager.h"
+#include "IKeyManager.h"
 #include "keymanager.h"
 #include "../../kernel/ids.h"
 #include "../../editorManager/editorManager.h"
