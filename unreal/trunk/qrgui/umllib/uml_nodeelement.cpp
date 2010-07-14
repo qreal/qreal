@@ -616,8 +616,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
 			embeddedLinker->setCovered(true);
 
-	if (mDragState == None || !(this->flags() & ItemIsMovable))
-	//if (mDragState == None)
+	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
 	if (!getPortStatus())
