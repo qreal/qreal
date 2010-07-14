@@ -619,7 +619,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
-	if (!getPortStatus())
+	if (!getPortStatus() && (flags() & ItemIsMovable))
 	{
 		QPointF newParentInnerPoint = event->scenePos();
 		//switch нужен для случая, когда мы не можем растягивать объект. 
@@ -658,9 +658,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 		if (newParent) {
-			if (this->flags() & ItemIsMovable)
-				itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-						mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
+					mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
 
 			newParent->resize(newParent->mContents);
 
@@ -670,8 +669,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			if (this->flags() & ItemIsMovable)
-				itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
 	}
 
 	mDragState = None;
