@@ -149,8 +149,8 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
-	edgeMenu->addAction(QString("Throw"));
 	edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
+	edgeMenu->addAction(QString("Discard"));
 	edgeMenu->addSeparator();
 
 	QMenu *createElemMenu = new QMenu(QString("Create new element"), edgeMenu);
@@ -187,7 +187,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	if (executed) {
 		if (executed == mWindow->ui.actionDeleteFromDiagram)
 			result = -1;
-		else if (!(executed->text() == "Throw"))
+		else if (!(executed->text() == "Discard"))
 			result = +1;
 	}
 
@@ -265,6 +265,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
 		}
+
+		//temporary solution for chaotic changes of coordinates of created elements with edge menu
+		UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(newParent);
+		if (edge)
+			newParent = NULL;
 	}
 
 	stream << uuid;

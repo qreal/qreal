@@ -25,6 +25,7 @@
         </enum>
       </nonGraphicTypes>
       <graphicTypes>
+
         <edge name="Association">
           <graphics>
             <lineType type="solidLine"/>
@@ -46,6 +47,7 @@
             </properties>
           </logic>
         </edge>
+	
         <edge name="Directed Association">
           <!-- it doesn't exist. The problem is that Association has 2 different pictures and we can do it just entering a Directed Relation -->
           <graphics>
@@ -60,6 +62,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <node name="Behavioral Feature">
           <logic>
             <generalizations>
@@ -227,6 +230,7 @@
             </properties>
           </logic>
         </node>
+	
         <edge name="Directed Relationship">
           <graphics>
             <lineType type="solidLine"/>
@@ -240,6 +244,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <node name="Element">
           <logic>
             <properties>
@@ -247,6 +252,7 @@
             </properties>
           </logic>
         </node>
+	
         <edge name="Element Import">
           <graphics>
             <lineType type="dashLine"/>
@@ -266,6 +272,7 @@
             </properties>
           </logic>
         </edge>
+	
         <node name="Enumeration">
           <logic>
             <generalizations>
@@ -309,6 +316,7 @@
             </properties>
           </logic>
         </node>
+	
         <edge name="Generalization">
           <graphics>
             <lineType type="solidLine"/>
@@ -328,6 +336,7 @@
             </properties>
           </logic>
         </edge>
+	
         <node path="0, 50 : 75, 50 : 75, 0 : 0, 0 : " name="Instance Specification">
           <graphics>
             <picture sizex="150" sizey="210">
@@ -459,9 +468,9 @@
               <parent parentName="Element"/>
             </generalizations>
             <properties>
-              <!-- В риале все элементы имеют имя, оно нужно хотя бы для отображения в диаграм эксплорере.
-							Поэтому свойство name добавляется автоматически всем, даже кому не нужно.
-							Указывать его в xml-ке не надо - иначе будет ворнинг компилятора -->
+              <!-- пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+							пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ name пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
+							пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ xml-пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -->
               <!-- <property type="string" name="name" /> -->
               <property type="Visibility Kind" name="visibility">
                 <default>private</default>
@@ -563,6 +572,7 @@
             <properties/>
           </logic>
         </node>
+	
         <edge name="Package Import">
           <graphics>
             <lineType type="dashLine"/>
@@ -584,6 +594,7 @@
             </properties>
           </logic>
         </edge>
+	
         <edge name="Package Merge">
           <graphics>
             <lineType type="dashLine"/>
@@ -600,6 +611,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <node name="Parameter">
           <logic>
             <generalizations>
@@ -660,6 +672,7 @@
             </properties>
           </logic>
         </node>
+	
         <edge name="Relationship">
           <logic>
             <generalizations>
@@ -667,6 +680,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <node name="Slot">
           <logic>
             <generalizations>
@@ -747,6 +761,7 @@
             </properties>
           </logic>
         </node>
+	
         <edge name="Comment Link">
           <graphics>
             <lineType type="dashLine"/>
@@ -757,6 +772,7 @@
             </associations>
           </logic>
         </edge>
+	
         <edge name="Substitution">
           <!-- from Dependencies -->
           <graphics>
@@ -771,6 +787,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <edge name="Realization">
           <!-- from Dependencies -->
           <graphics>
@@ -786,6 +803,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <edge name="Abstraction">
           <!-- from Dependencies -->
           <logic>
@@ -797,6 +815,7 @@
             </properties>
           </logic>
         </edge>
+	
         <edge name="Dependency">
           <!-- from Dependencies -->
           <graphics>
@@ -812,6 +831,7 @@
             </generalizations>
           </logic>
         </edge>
+	
         <node name="Generalization Set">
           <!-- from PowerTypes -->
           <logic>
