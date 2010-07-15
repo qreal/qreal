@@ -791,7 +791,6 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
-	Q_UNUSED(parent);
 
 	switch (change) {
 	case ItemPositionHasChanged:
