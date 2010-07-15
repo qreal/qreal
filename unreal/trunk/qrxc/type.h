@@ -42,6 +42,8 @@ public:
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
+	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
+	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;	
 
 protected:
 	void copyFields(Type *type) const;

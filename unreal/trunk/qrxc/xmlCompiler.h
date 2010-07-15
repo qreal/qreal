@@ -31,7 +31,11 @@ private:
 	void generatePluginHeader();
 	void generatePluginSource();
 	void generateIncludes(utils::OutFile &out);
+	void generateInitPlugin(utils::OutFile &out);
 	void generateNameMappings(utils::OutFile &out);
+	void generateMouseGestureMap(utils::OutFile &out);
+	void generatePropertyMap(utils::OutFile &out);
+	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);

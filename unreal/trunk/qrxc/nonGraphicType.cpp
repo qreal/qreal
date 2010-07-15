@@ -59,7 +59,13 @@ bool NonGraphicType::generateUsages(OutFile &out, bool isNotFirst)
 
 bool NonGraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
-        Q_UNUSED(out)
-        Q_UNUSED(isNotFirst)
-        return false;
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
+	return false;
 }
+
+void NonGraphicType::generateMouseGesturesMap(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+

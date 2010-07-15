@@ -204,13 +204,13 @@ void NodeType::generateCode(OutFile &out)
 	bool hasSdf = false;
 	bool hasPorts = false;
 
-	out() << "\tclass " << className << " : public ElementImpl {\n"
+	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
 		<< "\tpublic:\n"
 		<< "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
-		<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer) {\n";
+		<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -218,7 +218,7 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\tQ_UNUSED(linePorts);\n";
 	if (mLabels.size() == 0)
 		out() << "\t\t\tQ_UNUSED(titles);\n"
-			<<"\t\tQ_UNUSED(factory);\n";
+			<<"\t\t\tQ_UNUSED(factory);\n";
 
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {

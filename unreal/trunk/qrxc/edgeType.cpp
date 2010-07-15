@@ -144,11 +144,11 @@ void EdgeType::generateCode(OutFile &out)
 	else
 		out() << "return Qt::SolidLine; }\n";
 	out() << "\tprotected:\n"
-		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const {\n";
+		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
 	generateEdgeStyle(mBeginType, out);
 
-	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const {\n";
+	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const\n\t\t{\n";
 
 	generateEdgeStyle(mEndType, out);
 

@@ -137,7 +137,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				
 				for (int i = 0; i < 2; i++) {
 					Id newUuid = Id("Activity_metamodel", "ActivityDiagram", 
-							"ActivityDiagram_Action", QUuid::createUuid().toString());
+							"Action", QUuid::createUuid().toString());
 
 					QByteArray data;
 					QMimeData *mimeData = new QMimeData();

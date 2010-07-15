@@ -148,6 +148,10 @@ void XmlCompiler::generatePluginHeader()
 		<< "\t" << mPluginName << "Plugin();\n"
 		<< "\n"
 		<< "\tvirtual void initPlugin();\n"
+		<< "\tvirtual void initMouseGestureMap();\n"
+		<< "\tvirtual void initNameMap();\n"
+		<< "\tvirtual void initPropertyMap();\n"
+		<< "\tvirtual void initPropertyDefaultsMap();\n"
 		<< "\n"
 		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
@@ -194,7 +198,7 @@ void XmlCompiler::generatePluginSource()
 	OutFile out(fileName);
 
 	generateIncludes(out);
-	generateNameMappings(out);
+	generateInitPlugin(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateProperties(out);
@@ -222,14 +226,28 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
 	out() << "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
-		<< mPluginName << "Plugin::" << mPluginName << "Plugin(){\n"
+		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
+}
+void XmlCompiler::generateInitPlugin(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
+		<< "\tinitNameMap();\n"
+		<< "\tinitMouseGestureMap();\n"
+		<< "\tinitPropertyMap();\n"
+		<< "\tinitPropertyDefaultsMap();\n"
+		<< "}\n\n";
+	
+	generateNameMappings(out);
+	generateMouseGestureMap(out);
+	generatePropertyMap(out);
+	generatePropertyDefaultsMap(out);
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
 {
-	out() << "void " << mPluginName << "Plugin::initPlugin(){\n";
+	out() << "void " << mPluginName << "Plugin::initNameMap()\n{\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
@@ -243,10 +261,36 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	// property types
 
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generateMouseGestureMap(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initMouseGestureMap()\n{\n";
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
+			type->generateMouseGesturesMap(out);
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generatePropertyMap(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initPropertyMap()\n{\n";
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyTypes(out);
 	out() << "}\n\n";
+
+}
+
+void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initPropertyDefaultsMap()\n{\n";
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
+			type->generatePropertyDefaults(out);
+	out() << "}\n\n";
+
 }
 
 void XmlCompiler::generatePropertyTypesRequests(OutFile &out)
@@ -441,7 +485,7 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 				out() << "\t";
 			}
 			out() << "if (element == \""
-				<< NameNormalizer::normalize(diagram->name()+"_"+type->displayedName())
+				<< NameNormalizer::normalize(type->qualifiedName())
 				<< "\")\n"
 				<< "\t\treturn " << result << ";\n";
 		}

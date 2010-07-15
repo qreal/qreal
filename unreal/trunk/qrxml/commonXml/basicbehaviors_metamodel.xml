@@ -62,7 +62,7 @@
 						<parent parentName="Kernel::Behavioral Feature"/>
 					</generalizations>
 					<properties>
-						<property type="Call Concurrency Kind" name="concurrency">
+						<property type="CallConcurrencyKind" name="concurrency">
 							<default>sequential</default>
 						</property>
 						<property type="Behavior" name="methods"/>

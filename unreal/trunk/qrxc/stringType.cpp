@@ -19,3 +19,26 @@ Type* StringType::clone() const
 	result->mRegularExpression = mRegularExpression;
 	return result;
 }
+
+bool StringType::generateEnumValues(utils::OutFile &out, bool isNotFirst) 
+{ 
+	Q_UNUSED(out);
+	Q_UNUSED(isNotFirst);
+	return false; 
+}
+
+void StringType::generatePropertyTypes(utils::OutFile &out) 
+{
+	Q_UNUSED(out);
+}
+
+void StringType::generatePropertyDefaults(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+
+void StringType::generateMouseGesturesMap(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+

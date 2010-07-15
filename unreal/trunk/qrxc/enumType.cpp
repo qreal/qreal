@@ -47,4 +47,18 @@ void EnumType::generateOneCase(utils::OutFile &out, bool isNotFirst) const
 		out() << "\telse if (name == \"" << name() << "\")\n";
 }
 
+void EnumType::generatePropertyTypes(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+
+void EnumType::generatePropertyDefaults(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
+
+void EnumType::generateMouseGesturesMap(utils::OutFile &out)
+{
+	Q_UNUSED(out);
+}
 

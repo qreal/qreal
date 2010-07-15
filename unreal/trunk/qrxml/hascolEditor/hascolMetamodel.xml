@@ -227,7 +227,7 @@
       <!-- ?? ????????? ????????? ??????????? ???????? - ??-??? ?????????? -->
       <graphicTypes>
         <import as="PortMappingRelation" displayedName="Port Mapping Relation" name="Kernel::Directed Association"/>
-        <import as="FunctorFormalParameter" displayedName="Functor Parameter" name="HascolStructure::FunctorFormalParameter"/>
+        <import as="PortFunctorFormalParameter" displayedName="Functor Parameter" name="HascolStructure::FunctorFormalParameter"/> 
         <node displayedName="Port Mapping Diagram" path="90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 0 : " name="HascolPortMappingDiagram">
           <graphics>
             <picture sizex="200" sizey="200">

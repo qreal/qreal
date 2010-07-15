@@ -13,7 +13,7 @@
 					<properties>
 						<property type="bool" name="isUnmarshall" />
 						<property type="Trigger" name="trigger" />
-						<property type="Output Pin" name="result" />
+						<property type="OutputPin" name="result" />
 					</properties>
 				</logic>
 			</node>
@@ -23,8 +23,8 @@
 						<parent parentName="Kernel::Named Element"/>
 					</generalizations>
 					<properties>
-					  <property type="Input Pin" name="input"/>
-					  <property type="Output Pin" name="output"/>
+					  <property type="InputPin" name="input"/>
+					  <property type="OutputPin" name="output"/>
 					</properties>
 				</logic>
 			</node>
@@ -36,7 +36,7 @@
 					</generalizations>
 					<properties>
 						<property type="Event" name="event" />
-						<property type="Accept Event Action" name="trigger" />
+						<property type="AcceptEventAction" name="trigger" />
 					</properties>
 				</logic>
 			</node>
@@ -46,7 +46,7 @@
 						<parent parentName="Pin"/>
 					</generalizations>
 					<properties>
-						<property type="Accept Event Action" name="result" />
+						<property type="AcceptEventAction" name="result" />
 						<property type="Action" name="output" />
 					</properties>
 				</logic>
@@ -96,8 +96,8 @@
 						<parent parentName="Action"/>
 					</generalizations>
 					<properties>
-						<property type="Value Specification" name="value" />
-						<property type="Output Pin" name="result" />
+						<property type="ValueSpecification" name="value" />
+						<property type="OutputPin" name="result" />
 					</properties>
 				</logic>
 			</node>
@@ -110,7 +110,7 @@
 						<property type="bool" name="isReplaceAll">
 							<default>false</default>
 						</property>
-						<property type="Input Pin" name="insertAt"/>
+						<property type="InputPin" name="insertAt"/>
 					</properties>
 				</logic>
 			</node>
@@ -120,7 +120,7 @@
 						<parent parentName="Variable Action"/>
 					</generalizations>
 					<properties>
-						<property type="Input Pin" name="value" />
+						<property type="InputPin" name="value" />
 					</properties>
 				</logic>
 			</node>
@@ -151,7 +151,7 @@
 						<property type="bool" name="isSynchronous">
 							<default>true</default>
 						</property>
-						<property type="Output Pin" name="result"/>
+						<property type="OutputPin" name="result"/>
 					</properties>
 				</logic>
 			</node>
@@ -171,7 +171,7 @@
 						<parent parentName="Call Action" />
 					</generalizations>
 						<properties>
-							<property type="Input Pin" name="target"/>
+							<property type="InputPin" name="target"/>
 							<property type="Operation" name="operation"/>
 						</properties>
 				</logic>
@@ -182,8 +182,8 @@
 						<parent parentName="Invocation Action"/>
 					</generalizations>
 					<properties>
-						<property type="Input Pin" name="request"/>
-						<property type="Input Pin" name="target"/>
+						<property type="InputPin" name="request"/>
+						<property type="InputPin" name="target"/>
 					</properties>
 				</logic>
 			</node>
@@ -193,7 +193,7 @@
 						<parent parentName="Action"/>
 					</generalizations>
 					<properties>
-						<property type="Input Pin" name="argument"/>
+						<property type="InputPin" name="argument"/>
 					</properties>
 				</logic>
 			</node>
@@ -204,7 +204,7 @@
 					</generalizations>
 					<properties>
 						<property type="Signal" name="signal"/>
-						<property type="Input Pin" name="target"/>
+						<property type="InputPin" name="target"/>
 					</properties>
 				</logic>
 			</node>
@@ -225,9 +225,9 @@
 						<parent parentName="Action"/>
 					</generalizations>
 					<properties>
-						<property type="Input Pin" name="object"/>
+						<property type="InputPin" name="object"/>
 						<property type="Classifier" name="unmarshallType"/>
-						<property type="Output Pin" name="result"/>
+						<property type="OutputPin" name="result"/>
 					</properties>
 				</logic>
 			</node>
@@ -237,7 +237,7 @@
 						<parent parentName="Input Pin"/>
 					</generalizations>
 					<properties>
-						<property type="Value Specification" name="value"/>
+						<property type="ValueSpecification" name="value"/>
 					</properties>
 				</logic>
 			</node>

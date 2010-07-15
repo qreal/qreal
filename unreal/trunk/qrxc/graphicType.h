@@ -10,6 +10,8 @@
 class Label;
 class Diagram;
 
+const int maxLineLength = 80;
+
 class GraphicType : public Type
 {
 public:
@@ -25,6 +27,8 @@ public:
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyTypes(utils::OutFile &out);
+	virtual void generatePropertyDefaults(utils::OutFile &out);
+	virtual void generateMouseGesturesMap(utils::OutFile &out);
 
 protected:
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;

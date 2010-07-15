@@ -1,10 +1,13 @@
 #include "nameNormalizer.h"
 
-#include <QStringList>
+#include <QtCore/QStringList>
+#include <QtCore/QDebug>
 
 QString NameNormalizer::normalize(QString const &name)
 {
 	QString result = name;
+	if (name.contains("::"))
+		result = result.right(result.length() - result.lastIndexOf("::") - 2);
 	result = result.simplified().replace(" ", "_");
 	result = result.replace("::", "_");
 	result = upperFirst(result);

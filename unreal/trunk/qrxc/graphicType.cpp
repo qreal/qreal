@@ -9,8 +9,6 @@
 
 using namespace utils;
 
-const int MAX_LINE_LENGTH = 60;
-
 GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
 	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false)
 {}
@@ -216,8 +214,8 @@ bool GraphicType::initPossibleEdges()
                 !childElement.isNull();
                 childElement = childElement.nextSiblingElement(listElementName))
         {
-                QString beginName = NameNormalizer::normalize(mDiagram->name()+"::"+childElement.attribute("beginName"));
-                QString endName = NameNormalizer::normalize(mDiagram->name()+"::"+childElement.attribute("endName"));
+                QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
+                QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
                 QString temp = childElement.attribute("directed");
                 bool directed = false;
 
@@ -342,12 +340,37 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-		QString pathStr = path();
 		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
-		if (!pathStr.isEmpty())
-		{
-			out() << "\telementMouseGesturesMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << pathStr << "\";\n";
-		}
+	}
+}
+
+void GraphicType::generateMouseGesturesMap(OutFile &out)
+{
+	if (mVisible) {
+		QString pathStr = path();
+		QString output = "";
+		if (pathStr.isEmpty()) 
+			return;
+		
+		output =  "\telementMouseGesturesMap[\"" + NameNormalizer::normalize(mDiagram->name()) + "\"][\"" + 
+											NameNormalizer::normalize(qualifiedName()) + "\"] = ";
+		out() << output;
+	
+		if (pathStr.length() > maxLineLength - output.length()) {
+			out() << "\"" << pathStr.left(maxLineLength - output.length());
+			pathStr.remove(0, maxLineLength - output.length());
+			QString prefix = "\t\t\t\"";
+			do {
+				out() << "\"\n" << prefix << pathStr.left(maxLineLength);
+				pathStr.remove(0, maxLineLength);
+			} while (pathStr.length() > maxLineLength);
+			
+			if (pathStr.length() > 0)
+				out() << "\"\n" << prefix << pathStr;
+				
+		} else 
+			out() << "\"" << pathStr;
+		out() << "\";\n";
 	}
 }
 
@@ -388,7 +411,7 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst)
 			}
 
 			propertiesString += QString(" << \"" + property->name() + "\"");
-			if (propertiesString.length() >= MAX_LINE_LENGTH) {
+			if (propertiesString.length() >= maxLineLength) {
 				out() << propertiesString;
 				propertiesString = "\n\t\t";
 			}
@@ -414,14 +437,20 @@ void GraphicType::generatePropertyTypes(OutFile &out)
 		// skipping basic types since we're not really interested in them
 		if (property->type() == "string" || property->name() == "int")
 			continue;
-		out() << "\tpropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << property->type() << "\";\n";
+		out() << "\tpropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << NameNormalizer::normalize(property->type()) << "\";\n";
 	}
+}
 
-	foreach (Property *property, mProperties) {
+void GraphicType::generatePropertyDefaults(OutFile &out)
+{
+	if (!mVisible)
+		return;
+	
+	QString name = NameNormalizer::normalize(qualifiedName());
+	foreach (Property *property, mProperties) 
 		if (!property->defaultValue().isEmpty())
 			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name() 
 									<< "\"] = \"" << property->defaultValue() << "\";\n";
-	}
 }
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const

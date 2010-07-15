@@ -324,7 +324,7 @@
         <node displayedName="Activity Group" name="ActivityGroup">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Element"/>
+              <parent parentName="Kernel::KernelElement"/>
             </generalizations>
             <properties>
               <property type="Activity" name="activity"/>
@@ -413,7 +413,7 @@
               <property type="ActivityEdge" name="edge"/>
               <property type="ActivityPartition" name="superPartition"/>
               <property type="ActivityPartition" name="subPartition"/>
-              <property type="Kernel::Element" name="represents"/>
+              <property type="Kernel::KernelElement" name="represents"/>
               <property type="ActivityPartition" name="superPartition"/>
               <property type="ActivityPartition" name="subPartition"/>
             </properties>
@@ -470,11 +470,11 @@
         <node displayedName="Clause" name="Clause">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Element"/>
+              <parent parentName="Kernel::KernelElement"/>
             </generalizations>
             <properties>
-              <property type="Executable Node" name="test"/>
-              <property type="Executable Node" name="body"/>
+              <property type="ExecutableNode" name="test"/>
+              <property type="ExecutableNode" name="body"/>
               <property type="Clause" name="predecessorClause"/>
               <property type="Clause" name="successorClause"/>
               <property type="OutputPin" name="decider"/>
@@ -582,7 +582,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Element"/>
+              <parent parentName="Kernel::KernelElement"/>
             </generalizations>
             <properties>
               <property type="Kernel::Classifier" name="exceptionType"/>
@@ -775,7 +775,7 @@
               <property type="bool" name="isCombineDuplicate">
                 <default>true</default>
               </property>
-              <property type="Value Specification" name="joinSpec"/>
+              <property type="ValueSpecification" name="joinSpec"/>
             </properties>
             <connections>
               <connection type="ActivityDiagram::ForkNode"/>
@@ -876,7 +876,7 @@
               <parent parentName="ActivityNode"/>
             </generalizations>
             <properties>
-              <property type="Object Node Ordering Kind" name="ordering">
+              <property type="ObjectNodeOrderingKind" name="ordering">
                 <default>FIFO</default>
               </property>
               <property type="bool" name="isControlType">
@@ -925,7 +925,7 @@
               <parent parentName="Kernel::Parameter"/>
             </generalizations>
             <properties>
-              <property type="Parameter Effect Kind" name="effect">
+              <property type="ParameterEffectKind" name="effect">
               </property>
               <property type="bool" name="isException">
                 <default>false</default>
@@ -935,7 +935,7 @@
               </property>
             </properties>
             <properties>
-              <property type="Parameter Set" name="parameterSet"/>
+              <property type="ParameterSet" name="parameterSet"/>
             </properties>
           </logic>
         </node>

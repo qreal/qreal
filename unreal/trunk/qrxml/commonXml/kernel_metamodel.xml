@@ -129,7 +129,7 @@
               <property type="Generalization" name="generalization"/>
               <property type="Classifier" name="redefinedClassifier"/>
               <property type="Substitution" name="substitution"/>
-              <property type="Generalization Set" name="powertypeExtent"/>
+              <property type="GeneralizationSet" name="powertypeExtent"/>
             </properties>
           </logic>
         </node>
@@ -168,11 +168,11 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Element"/>
+              <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
               <property type="string" name="body"/>
-              <property type="Element" name="annotatedElement"/>
+              <property type="KernelElement" name="annotatedElement"/>
             </properties>
           </logic>
         </node>
@@ -214,8 +214,8 @@
               <parent parentName="Packageable Element"/>
             </generalizations>
             <properties>
-              <property type="Element" name="constrainedElement"/>
-              <property type="Value Specification" name="specification"/>
+              <property type="KernelElement" name="constrainedElement"/>
+              <property type="ValueSpecification" name="specification"/>
             </properties>
           </logic>
         </node>
@@ -237,7 +237,7 @@
           </graphics>
           <logic>
             <associations endType="open_arrow" beginType="no_arrow">
-              <association beginName="Element" endName="Element"/>
+              <association beginName="KernelElement" endName="KernelElement"/>
             </associations>
             <generalizations>
               <parent parentName="Relationship"/>
@@ -245,7 +245,7 @@
           </logic>
         </edge>
 	
-        <node name="Element">
+        <node name="KernelElement">
           <logic>
             <properties>
               <property type="Comment" name="ownedComment"/>
@@ -265,7 +265,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>public</default>
               </property>
               <property type="string" name="alias"/>
@@ -279,7 +279,7 @@
               <parent parentName="Data Type"/>
             </generalizations>
             <properties>
-              <property type="Enumeration Literal" name="ownedLiteral"/>
+              <property type="EnumerationLiteral" name="ownedLiteral"/>
             </properties>
           </logic>
         </node>
@@ -300,7 +300,7 @@
             </generalizations>
             <properties>
               <property type="string" name="symbol"/>
-              <property type="Value Specification" name="operand"/>
+              <property type="ValueSpecification" name="operand"/>
             </properties>
           </logic>
         </node>
@@ -332,7 +332,7 @@
               <property type="bool" name="isSubstitutable">
                 <default>true</default>
               </property>
-              <property type="Generalization Set" name="generalizationSet"/>
+              <property type="GeneralizationSet" name="generalizationSet"/>
             </properties>
           </logic>
         </edge>
@@ -373,7 +373,7 @@
             <properties>
               <property type="Classifier" name="classifier"/>
               <property type="Slot" name="slot"/>
-              <property type="Value Specification" name="specification"/>
+              <property type="ValueSpecification" name="specification"/>
             </properties>
           </logic>
         </node>
@@ -383,7 +383,7 @@
               <parent parentName="Value Specification"/>
             </generalizations>
             <properties>
-              <property type="Instance Specification" name="instance"/>
+              <property type="InstanceSpecification" name="instance"/>
             </properties>
           </logic>
         </node>
@@ -448,7 +448,7 @@
         <node name="Multiplicity Element">
           <logic>
             <generalizations>
-              <parent parentName="Element"/>
+              <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isOrdered">
@@ -457,22 +457,22 @@
               <property type="bool" name="isUnique">
                 <default>true</default>
               </property>
-              <property type="Value Specification" name="lowerValue"/>
-              <property type="Value Specification" name="upperValue"/>
+              <property type="ValueSpecification" name="lowerValue"/>
+              <property type="ValueSpecification" name="upperValue"/>
             </properties>
           </logic>
         </node>
         <node name="Named Element">
           <logic>
             <generalizations>
-              <parent parentName="Element"/>
+              <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
               <!-- � ����� ��� �������� ����� ���, ��� ����� ���� �� ��� ����������� � ������� ����������.
 							������� �������� name ����������� ������������� ����, ���� ���� �� �����.
 							��������� ��� � xml-�� �� ���� - ����� ����� ������� ����������� -->
               <!-- <property type="string" name="name" /> -->
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>private</default>
               </property>
               <property type="Dependency" name="clientDependency"/>
@@ -485,9 +485,9 @@
               <parent parentName="Named Element"/>
             </generalizations>
             <properties>
-              <property type="Element Import" name="elementImport"/>
+              <property type="ElementImport" name="elementImport"/>
               <property type="Constraint" name="ownedRule"/>
-              <property type="Package Import" name="packageImport"/>
+              <property type="PackageImport" name="packageImport"/>
             </properties>
           </logic>
         </node>
@@ -588,7 +588,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>public</default>
               </property>
             </properties>
@@ -619,10 +619,10 @@
               <parent parentName="Typed Element"/>
             </generalizations>
             <properties>
-              <property type="Parameter Direction Kind" name="direction">
+              <property type="ParameterDirectionKind" name="direction">
                 <default>in</default>
               </property>
-              <property type="Value Specification" name="defaultValue"/>
+              <property type="ValueSpecification" name="defaultValue"/>
             </properties>
           </logic>
         </node>
@@ -639,7 +639,7 @@
               <parent parentName="Structural Feature"/>
             </generalizations>
             <properties>
-              <property type="Aggregation Kind" name="aggregation">
+              <property type="AggregationKind" name="aggregation">
                 <default>none</default>
               </property>
               <property type="bool" name="isDerivedUnion">
@@ -650,8 +650,8 @@
               </property>
               <property type="Association" name="association"/>
               <property type="Association" name="owningAssociation"/>
-              <property type="Data Type" name="datatype"/>
-              <property type="Value Specification" name="defaultValue"/>
+              <property type="DataType" name="datatype"/>
+              <property type="ValueSpecification" name="defaultValue"/>
               <property type="Property" name="redefinedProperty"/>
               <property type="Property" name="subsettedProperty"/>
               <property type="Class" name="class"/>
@@ -676,7 +676,7 @@
         <edge name="Relationship">
           <logic>
             <generalizations>
-              <parent parentName="Element"/>
+              <parent parentName="KernelElement"/>
             </generalizations>
           </logic>
         </edge>
@@ -684,12 +684,12 @@
         <node name="Slot">
           <logic>
             <generalizations>
-              <parent parentName="Element"/>
+              <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
-              <property type="Structural Feature" name="definingFeature"/>
-              <property type="Instance Specification" name="owningInstance"/>
-              <property type="Value Specification" name="value"/>
+              <property type="StructuralFeature" name="definingFeature"/>
+              <property type="InstanceSpecification" name="owningInstance"/>
+              <property type="ValueSpecification" name="value"/>
             </properties>
           </logic>
         </node>
@@ -768,7 +768,7 @@
           </graphics>
           <logic>
             <associations endType="no_arrow" beginType="no_arrow">
-              <association beginName="Element" endName="Element"/>
+              <association beginName="KernelElement" endName="KernelElement"/>
             </associations>
           </logic>
         </edge>
@@ -795,7 +795,7 @@
           </graphics>
           <logic>
             <associations endType="empty_arrow" beginType="no_arrow">
-              <association beginName="Element" endName="Element"/>
+              <association beginName="KernelElement" endName="KernelElement"/>
               <!-- not sure about begin & end names -->
             </associations>
             <generalizations>
