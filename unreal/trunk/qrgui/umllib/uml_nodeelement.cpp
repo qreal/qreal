@@ -796,8 +796,6 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 	switch (change) {
 	case ItemPositionHasChanged:
 		adjustLinks();
-		if (parent)
-			parent->updateByChild(this, false);
 		return value;
 
 	case ItemChildAddedChange:
