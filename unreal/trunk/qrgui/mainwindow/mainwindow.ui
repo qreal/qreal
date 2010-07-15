@@ -519,7 +519,7 @@
   </action>
   <action name="actionParse_Editor_xml">
    <property name="text">
-    <string>Pasre Editor xml</string>
+    <string>Parse Editor xml</string>
    </property>
   </action>
   <action name="actionSwitch_on_grid">
