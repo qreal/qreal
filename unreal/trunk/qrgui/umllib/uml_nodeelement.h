@@ -145,7 +145,7 @@ namespace UML {
 		void resize(QRectF newContents);
 		void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
 		void updateByNewParent();
-		
+
 		void moveChildren(qreal dx, qreal dy);
 		void moveChildren(QPointF const &moving);
 
