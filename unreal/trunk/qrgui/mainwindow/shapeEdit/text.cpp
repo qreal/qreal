@@ -1,8 +1,8 @@
 #include "text.h"
 
 #include <QtGui/QCursor>
-#include <QStyleOptionGraphicsItem>
-#include <QPainter>
+#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtGui/QPainter>
 
 Text::Text(qreal x, qreal y, QString const &text, bool isDynamic)
 	: Item(NULL), mIsDynamicText(isDynamic)
@@ -32,7 +32,7 @@ void Text::drawExtractionForItem(QPainter* painter)
 
 QRectF Text::boundingRect() const
 {
-	return mText.boundingRect().adjusted(-10, -10, 10, 10);
+	return mText.boundingRect().adjusted(-drift, -drift, drift, drift);
 }
 
 void Text::drawForDynamicText(QPainter* painter)

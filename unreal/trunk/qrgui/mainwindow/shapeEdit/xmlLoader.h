@@ -28,7 +28,16 @@ private:
 	void readArch(QDomElement const &arch);
 	void readRectangle(QDomElement const &rectangle);
 	void readStylus(QDomElement const &stylus);
+	void readPath(QDomElement const &element);
 	void readLabel(QDomElement const &label);
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);
+
+	bool isNotLCMZ(QString str, int i);
+	int mStartX;
+	int mStartY;
+	int i;
+	int j;
+	QString s1;
+	QString s2;
 };

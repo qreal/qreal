@@ -1,6 +1,6 @@
 #include "arch.h"
 #include "math.h"
-#include <QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsSceneMouseEvent>
 
 int Arch::countAngle(qreal x, qreal y, QPointF const &center)
 {

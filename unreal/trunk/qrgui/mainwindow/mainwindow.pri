@@ -23,7 +23,7 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h \
-
+	mainwindow/shapeEdit/path.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -45,6 +45,7 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/xmlLoader.cpp \
 	mainwindow/shapeEdit/stylus.cpp \
 	mainwindow/shapeEdit/colorlisteditor.cpp \
+	mainwindow/shapeEdit/path.cpp
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/refWindow.cpp \
 

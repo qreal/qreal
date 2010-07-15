@@ -1,5 +1,4 @@
 #include "pointPort.h"
-#include <QDebug>
 
 PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 {

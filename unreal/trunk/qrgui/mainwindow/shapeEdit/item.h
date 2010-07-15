@@ -7,6 +7,9 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
 
+const int drift = 15;
+const int resizeDrift = 10;
+
 class Item : public QGraphicsItem
 {
 public:

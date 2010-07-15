@@ -67,6 +67,8 @@ void XmlLoader::readPicture(QDomElement const &picture)
 			readRectangle(type);
 		else if (type.tagName() == "stylus")
 			readStylus(type);
+		else if (type.tagName() == "path")
+			readPath(type);
 		else
 			qDebug() << "ololo_picture";
 	}
@@ -168,6 +170,166 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			qDebug() << "ololo_stylus";
 	}
 	mScene->addItem(stylusItem);
+}
+
+bool XmlLoader::isNotLCMZ(QString str, int i)
+{
+	return (str[i] != 'L') && (str[i] != 'C') && (str[i] != 'M')
+		&& (str[i] != 'Z') && (i != str.length());
+}
+
+void XmlLoader::readPath(QDomElement const &element)
+{
+	QPointF end_point;
+	QPointF c1;
+	QPointF c2;
+	QDomElement elem = element;
+	QPainterPath path;
+
+	if (!elem.isNull())
+	{
+		QString d_cont;
+		d_cont = elem.attribute("d").remove(0, 1);
+		d_cont.append(" Z");
+
+		for (i = 0; i < d_cont.length() - 1;)
+		{
+			if (d_cont[i] == 'M')
+			{
+				j = i + 2;
+				while (isNotLCMZ(d_cont, j))
+				{
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					end_point.setX(s1.toFloat()+ mStartX);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					end_point.setY(s1.toFloat() + mStartY);
+					++j;
+					s1.clear();
+				}
+
+				path.moveTo(end_point);
+				i = j;
+			}
+			else if (d_cont[i] == 'L')
+			{
+				j = i + 2;
+				while (isNotLCMZ(d_cont, j))
+				{
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					end_point.setX(s1.toFloat()+ mStartX);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+					end_point.setY(s1.toFloat() + mStartY);
+					++j;
+					s1.clear();
+				}
+
+				 path.lineTo(end_point);
+				 i = j;
+			}
+			 else if (d_cont[i] == 'C')
+			{
+				j = i + 2;
+				while(isNotLCMZ(d_cont, j))
+				{
+					while (!(d_cont[j] == ' '))
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					c1.setX(s1.toFloat() + mStartX);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					c1.setY(s1.toFloat() + mStartY);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					c2.setX(s1.toFloat() + mStartX);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					c2.setY(s1.toFloat() + mStartY);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					end_point.setX(s1.toFloat() + mStartX);
+					s1.clear();
+					++j;
+
+					while (d_cont[j] != ' ')
+					{
+						s1.append(d_cont[j]);
+						++j;
+					}
+
+					end_point.setY(s1.toFloat() + mStartY);
+					s1.clear();
+					++j;
+				}
+
+				path.cubicTo(c1, c2, end_point);
+				i = j;
+
+			} else if (d_cont[i] == 'Z')
+			{
+				path.closeSubpath();
+			}
+		}
+	}
+	Path *item = new Path(path);
+	item->translate(mDrift.x(), mDrift.y());
+	item->readPenBrush(elem);
+	mScene->addItem(item);
 }
 
 void XmlLoader::readLabel(QDomElement const &label)

@@ -67,8 +67,11 @@ void Stylus::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void Stylus::drawExtractionForItem(QPainter* painter)
 {
-	painter->drawPoint(mX1, mY1);
-	painter->drawPoint(mX2, mY2);
+	mRect = boundingRect();
+	painter->drawPoint(mRect.left(), mRect.top());
+	painter->drawPoint(mRect.left(), mRect.bottom());
+	painter->drawPoint(mRect.right(), mRect.top());
+	painter->drawPoint(mRect.right(), mRect.bottom());
 }
 
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)

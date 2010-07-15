@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsItem>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsView>
 
 #include "item.h"
 #include "arch.h"
@@ -14,6 +14,7 @@
 #include "pointPort.h"
 #include "linePort.h"
 #include "stylus.h"
+#include "path.h"
 #include "../umllib/elementTitle.h"
 
 using namespace UML;

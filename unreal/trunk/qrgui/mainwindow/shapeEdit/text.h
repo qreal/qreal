@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtGui/QGraphicsTextItem>
-#include <QStyleOptionGraphicsItem>
-#include <QPainter>
-#include <QFont>
+#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtGui/QPainter>
+#include <QtGui/QFont>
 
 #include "item.h"
 

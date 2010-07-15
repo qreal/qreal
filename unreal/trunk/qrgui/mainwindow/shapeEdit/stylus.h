@@ -1,7 +1,7 @@
 #pragma once
 #include "item.h"
 #include "line.h"
-#include <QList>
+#include <QtCore/QList>
 
 class Stylus : public Item
 {

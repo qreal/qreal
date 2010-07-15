@@ -622,7 +622,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!getPortStatus() && (flags() & ItemIsMovable))
 	{
 		QPointF newParentInnerPoint = event->scenePos();
-		//switch нужен для случая, когда мы не можем растягивать объект. 
+		//switch нужен для случая, когда мы не можем растягивать объект.
 		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
 		switch (mDragState) {
 			case TopLeft:
@@ -791,6 +791,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
+	Q_UNUSED(parent);
 
 	switch (change) {
 	case ItemPositionHasChanged:

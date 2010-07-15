@@ -1,6 +1,6 @@
 #pragma once
 #include "item.h"
-#include <QPainter>
+#include <QtGui/QPainter>
 
 class Ellipse : public Item
 {

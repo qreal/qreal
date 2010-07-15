@@ -1,7 +1,7 @@
 #include "line.h"
-#include <QPainter>
-#include <QStyle>
-#include <QStyleOptionGraphicsItem>
+#include <QtGui/QPainter>
+#include <QtGui/QStyle>
+#include <QtGui/QStyleOptionGraphicsItem>
 
 Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent)
@@ -43,7 +43,7 @@ QPainterPath Line::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-	ps.setWidth(10);
+	ps.setWidth(drift);
 
 	path.moveTo(mX1, mY1);
 	path.lineTo(mX2, mY2);

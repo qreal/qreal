@@ -1,7 +1,6 @@
 #include "scene.h"
 
 #include <QtCore/QPointF>
-#include <QDebug>
 
 Scene::Scene(QGraphicsView *view, QObject * parent)
 	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL)
