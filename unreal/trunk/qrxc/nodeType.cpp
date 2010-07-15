@@ -257,13 +257,9 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
 		<< "\t\tbool hasPorts()\n\t\t{\n";
 
-	if (hasPorts)
-		out() << "\t\t\treturn true;\n";
-	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
+	out() << (hasPorts ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+		<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
@@ -274,103 +270,72 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t}\n\n"
 		<< "\t\tbool isNode()\n\t\t{\n"
 		<< "\t\t\treturn true;\n"
+		<< "\t\t}\n\n"
+		
+		<< "\t\tbool isContainer()\n\t\t{\n"
+		<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+		
+		<< "\t\tbool isSortContainer()\n\t\t{\n" 
+		<< (mContainerProperties.isSortContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+
+		<< "\t\tint sizeOfForestalling()\n\t\t{\n"
+		<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
+		<< "\t\t}\n\n"
+
+		<< "\t\tint sizeOfChildrenForestalling()\n\t\t{\n"
+		<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
+		<< "\t\t}\n\n"
+
+		<< "\t\tbool isChildrenMovable()\n\t\t{\n"
+		<< (mContainerProperties.isChildrenMovable ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+
+		<< "\t\tbool isMinimizingToChildren()\n\t\t{\n"
+		<< (mContainerProperties.isMinimizingToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+	
+		<< "\t\tbool isClass()\n\t\t{\n"
+		<< (mContainerProperties.isClass ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+
+		<< "\t\tbool isPort()\n\t\t{\n"
+		<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+		
+		<< "\t\tbool isHavePin()\n\t\t{\n"
+		<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t\treturn false;\n"
 		<< "\t\t}\n\n";
 
-	out() << "\t\tbool isContainer()\n\t\t{\n";
-	if (!this->mContains.empty())
-		out() << "\t\t\treturn true;\n";
+	if (mIsHavePin)
+		out() << "\t\tdouble getXHorBord()\n\t\t{\n"
+			<< "\t\t\treturn 30;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getYHorBord()\n\t\t{\n"
+			<< "\t\t\treturn 15;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getXVertBord()\n\t\t{\n"
+			<< "\t\t\treturn 15;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getYVertBord()\n\t\t{\n"
+			<< "\t\t\treturn 25;\n"
+			<< "\t\t}\n\n";
 	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tbool isSortContainer()\n\t\t{\n";
-	if (mContainerProperties.isSortContainer)
-		out() << "\t\t\treturn true;\n";
-	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tint sizeOfForestalling()\n\t\t{\n";
-	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tint sizeOfChildrenForestalling()\n\t\t{\n";
-	out() << "\t\t\treturn " + QString::number(mContainerProperties.sizeOfChildrenForestalling) + ";\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tbool isChildrenMovable()\n\t\t{\n";
-	if (mContainerProperties.isChildrenMovable)
-		out() << "\t\t\treturn true;\n";
-	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tbool isMinimizingToChildren()\n\t\t{\n";
-	if (mContainerProperties.isMinimizingToChildren)
-		out() << "\t\t\treturn true;\n";
-	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
+		out() << "\t\tdouble getXHorBord()\n\t\t{\n"
+			<< "\t\t\treturn 0;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getYHorBord()\n\t\t{\n"
+			<< "\t\t\treturn 0;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getXVertBord()\n\t\t{\n"
+			<< "\t\t\treturn 0;\n"
+			<< "\t\t}\n\n"
+			<< "\t\tdouble getYVertBord()\n\t\t{\n"
+			<< "\t\t\treturn 0;\n"
+			<< "\t\t}\n\n";
 	
-	out() << "\t\tbool isClass()\n\t\t{\n";
-	if (mContainerProperties.isClass)
-		out() << "\t\t\treturn true;\n";
-	else
-		out() << "\t\t\treturn false;\n";
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tbool isPort()\n\t\t{\n";
-	if (mIsPin)
-	{
-		out()   << "\t\t\treturn true;\n";
-
-	}
-	else
-	{
-		out() << "\t\t\treturn false;\n";
-	}
-	out() << "\t\t}\n\n";
-	out() << "\t\tbool isHavePin()\n\t\t{\n";
-	if (mIsHavePin)
-	{
-		out()   << "\t\t\treturn true;\n";
-
-	}
-	else
-	{
-		out() << "\t\t\treturn false;\n";
-	}
-	out() << "\t\t}\n\n";
-	if (mIsHavePin)
-	{
-		out() << "\t\tdouble getXHorBord()\n\t\t{\n";
-		out() << "\t\t\treturn 30;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getYHorBord()\n\t\t{\n";
-		out() << "\t\t\treturn 15;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getXVertBord()\n\t\t{\n";
-		out() << "\t\t\treturn 15;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getYVertBord()\n\t\t{\n";
-		out() << "\t\t\treturn 25;\n";
-		out() << "\t\t}\n\n";
-	}
-	else
-	{
-		out() << "\t\tdouble getXHorBord()\n\t\t{\n";
-		out() << "\t\t\treturn 0;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getYHorBord()\n\t\t{\n";
-		out() << "\t\t\treturn 0;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getXVertBord()\n\t\t{\n";
-		out() << "\t\t\treturn 0;\n";
-		out() << "\t\t}\n\n";
-		out() << "\t\tdouble getYVertBord()\n\t\t{\n";
-		out() << "\t\t\treturn 0;\n";
-		out() << "\t\t}\n\n";
-	}
 	out() << "\tprivate:\n";
 	if (hasSdf)
 		out() << "\t\tSdfRendererInterface *mRenderer;\n";
