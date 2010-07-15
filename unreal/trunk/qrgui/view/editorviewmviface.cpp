@@ -169,13 +169,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			}
 		}
 
-		qDebug() << "Before model children process" << uuid.element();
-
 		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
-		
-		qDebug() << "After model children process" << uuid.element();
 	}
 	QAbstractItemView::rowsInserted(parent, start, end);
 }

@@ -650,6 +650,9 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 
 	int ph = mRenderer.pictureHeight();
 	int pw = mRenderer.pictureWidth();
+	if (pw == 0 || ph == 0) { // SUDDENLY!!11
+		return;
+	}	
 	// Take picture aspect into account
 	QRect resRect = rect;
 	if (rh * pw < ph * rw)
