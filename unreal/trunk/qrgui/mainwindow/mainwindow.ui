@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -90,7 +90,7 @@
     <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionPasre_Editor_xml"/>
+    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <widget class="QMenu" name="menuMouse_gestures">
     <property name="title">
@@ -517,7 +517,7 @@
     <string>Generate Editor</string>
    </property>
   </action>
-  <action name="actionPasre_Editor_xml">
+  <action name="actionParse_Editor_xml">
    <property name="text">
     <string>Pasre Editor xml</string>
    </property>

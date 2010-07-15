@@ -31,6 +31,8 @@
 #include "shapeEdit/shapeEdit.h"
 #include "gesturesShow/gestureswidget.h"
 #include "openShapeEditorButton.h"
+#include "../qrrepo/svnClient.h"
+
 
 using namespace qReal;
 
@@ -97,7 +99,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(newGenerateEditor()));
-	connect(ui.actionPasre_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -480,11 +482,27 @@ void MainWindow::toggleShowSplash(bool show)
 
 void MainWindow::doCommit()
 {
-	QString const Path = getWorkingDir(tr("Select directory with working copy"));
-	if (Path.isEmpty())
+//	QString const Path = getWorkingDir(tr("Select directory with working copy"));
+//	QString const path = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
+	QString select = tr("Select directory to commit");
+	QString path = QFileDialog::getExistingDirectory(this, select);
+
+	if (path.isEmpty())
 		return;
-
-
+/*	char* p;
+	QByteArray p1 = path.toAscii();
+	p = p1.data();
+	SvnClient client(p, "", "");
+//	client.commit(path, )
+	QString *messag = new QString;
+	int revision = client.commit(*messag);
+	if (revision > 0)
+	{
+		QString success = tr("Committed successfully to revision ");
+		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
+	}
+	else
+		QMessageBox::information(this, tr("Error"), *messag);*/
 }
 
 void MainWindow::exportToXmi()
