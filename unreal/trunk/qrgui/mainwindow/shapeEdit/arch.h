@@ -14,6 +14,8 @@ public:
 	static int sign(int x);
 	static int countAngle(qreal x, qreal y, QPointF const &center);
 	void countSpanAngle(qreal alpha, qreal beta);
+	void setStartAngle(int start);
+	void setSpanAngle(int span);
 
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

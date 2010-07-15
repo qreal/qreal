@@ -32,10 +32,19 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 	static void swap(qreal &x, qreal &y);
+	static QStringList getPenStyleList();
+	static QStringList getBrushStyleList();
 	QPen pen() const;
 	QBrush brush() const;
 	void setBrush(const QBrush& brush);
 	void setPen(const QPen& pen);
+	void setPenStyle(const QString& text);
+	void setPenWidth(int width);
+	void setPenColor(const QString& text);
+	void setBrushStyle(const QString& text);
+	void setBrushColor(const QString& text);
+	void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
+
 	void setX1andY1(qreal x, qreal y);
 	void setX1andY2(qreal x, qreal y);
 	void setX2andY1(qreal x, qreal y);
@@ -43,14 +52,17 @@ public:
 	void setNoneDragState();
 	void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
+	DragState getDragState() const;
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
 	//for save to xml
 	void setXandY(QDomElement& dom, QRectF const &rect);
-	QDomElement setPenBrush(QDomDocument &document, QString const &domName);
+	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
 	QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture) = 0;
+
+	void readPenBrush(QDomElement const &docItem);
 
 protected:
 	DomElementTypes mDomElementType;

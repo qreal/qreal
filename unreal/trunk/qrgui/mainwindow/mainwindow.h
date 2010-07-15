@@ -96,7 +96,7 @@ namespace qReal {
 		void openNewTab(const QModelIndex &index);
 		void openNewEmptyTab();
 		void switchGrid(bool isChecked);
-                void showGestures();
+		void showGestures();
 
 	private:
 		model::Model *mModel;
@@ -113,7 +113,7 @@ namespace qReal {
 
 		void loadPlugins();
 		virtual void closeEvent(QCloseEvent *event);
-                void deleteFromExplorer();
+		void deleteFromExplorer();
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 

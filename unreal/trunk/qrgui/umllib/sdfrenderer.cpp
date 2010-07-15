@@ -94,6 +94,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 			{
 				path_draw(elem);
 			}
+			else if(elem.tagName()=="stylus")
+			{
+				stylus_draw(elem);
+			}
 		}
 		node = node.nextSibling();
 	}
@@ -439,6 +443,25 @@ void SdfRenderer::path_draw(QDomElement &element)
 
 	parsestyle(element);
 	painter->drawPath(path);
+}
+
+void SdfRenderer::stylus_draw(QDomElement &element)
+{
+	QDomNode node = element.firstChild();
+	while(!node.isNull())
+	{
+		QDomElement elem = node.toElement();
+		if(!elem.isNull())
+		{
+			if (elem.tagName()=="line")
+			{
+				line(elem);
+			}
+			else
+				qDebug() << "ololo";
+		}
+		node = node.nextSibling();
+	}
 }
 
 void SdfRenderer::parsestyle(QDomElement &element)

@@ -36,7 +36,7 @@ void Rectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* opti
 
 QPair<QDomElement, Item::DomElementTypes> Rectangle::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
-	QDomElement rectangle = setPenBrush(document, "rectangle");
+	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");
 	setXandY(rectangle, sceneBoundingRectCoord(topLeftPicture));
 
 	return QPair<QDomElement, Item::DomElementTypes>(rectangle, mDomElementType);

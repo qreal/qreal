@@ -1,4 +1,5 @@
 #include "pointPort.h"
+#include <QDebug>
 
 PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 {
@@ -10,6 +11,7 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 	mY2 = y + mRadius * 0.8;
 	mPen = QPen(Qt::blue);
 	mBrush = QBrush(Qt::SolidPattern);
+	mBrush.setColor(Qt::blue);
 	mDomElementType = portType;
 }
 
@@ -49,8 +51,8 @@ void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
 	QDomElement pointPort = document.createElement("pointPort");
-	qreal const x = boundingRect().center().x() - topLeftPicture.x();
-	qreal const y = boundingRect().center().y() - topLeftPicture.y();
+	qreal const x = scenePos().x() + boundingRect().x() + mRadius / 2 - topLeftPicture.x();
+	qreal const y = scenePos().y() + boundingRect().y() + mRadius / 2 - topLeftPicture.y();
 	pointPort.setAttribute("y", y);
 	pointPort.setAttribute("x", x);
 

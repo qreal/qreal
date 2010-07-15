@@ -18,12 +18,14 @@ public:
 	~ShapeEdit();
 signals:
 	void shapeSaved(QString const &shape);
+
 protected:
 	void changeEvent(QEvent *e);
 
 private slots:
 	void saveToXml();
 	void save();
+	void open();
 
 private:
 	Scene *mScene;
@@ -35,4 +37,6 @@ private:
 	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
+
+	void load(const QString &text);
 };

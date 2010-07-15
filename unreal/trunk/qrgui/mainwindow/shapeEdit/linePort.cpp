@@ -14,17 +14,21 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
 	QDomElement linePort = document.createElement("linePort");
-	QRectF rect = sceneBoundingRectCoord(topLeftPicture);
+
+	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
+	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();
+	qreal const x2 = scenePos().x() + line().x2() - topLeftPicture.x();
+	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QDomElement start  = document.createElement("start");
 	linePort.appendChild(start);
-	start.setAttribute("starty", rect.top());
-	start.setAttribute("startx", rect.left());
+	start.setAttribute("starty", y1);
+	start.setAttribute("startx", x1);
 
 	QDomElement end  = document.createElement("end");
 	linePort.appendChild(end);
-	end.setAttribute("endy", rect.bottom());
-	end.setAttribute("endx", rect.right());
+	end.setAttribute("endy", y2);
+	end.setAttribute("endx", x2);
 
 	return QPair<QDomElement, Item::DomElementTypes>(linePort, mDomElementType);
 }

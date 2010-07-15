@@ -33,12 +33,12 @@ Arch::Arch(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0)
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
-	QPointF center = parent->boundingRect().center();
+	mRect = QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 -y1));
+	QPointF center = mRect.center();
 	int alpha = countAngle(x1, y1, center);
 	int beta = countAngle(x2, y2, center);
 	mStartAngle = alpha;
 	countSpanAngle(alpha, beta);
-	mRect = parent->boundingRect();
 }
 
 int Arch::startAngle() const
@@ -49,6 +49,16 @@ int Arch::startAngle() const
 int Arch::spanAngle() const
 {
 	return mSpanAngle;
+}
+
+void Arch::setStartAngle(int start)
+{
+	mStartAngle = start;
+}
+
+void Arch::setSpanAngle(int span)
+{
+	mSpanAngle = span;
 }
 
 QRectF Arch::boundingRect() const

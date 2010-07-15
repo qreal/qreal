@@ -13,8 +13,12 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/text.h \
 	mainwindow/shapeEdit/pointPort.h \
 	mainwindow/shapeEdit/linePort.h \
-    mainwindow/gesturesShow/gestureswidget.h \
-    mainwindow/igesturespainter.h
+	mainwindow/shapeEdit/xmlLoader.h \
+	mainwindow/shapeEdit/stylus.h \
+	mainwindow/gesturesShow/gestureswidget.h \
+	mainwindow/igesturespainter.h \
+	mainwindow/shapeEdit/colorlisteditor.h \
+
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -30,7 +34,11 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/text.cpp \
 	mainwindow/shapeEdit/pointPort.cpp \
 	mainwindow/shapeEdit/linePort.cpp \
-    mainwindow/gesturesShow/gestureswidget.cpp
+	mainwindow/shapeEdit/xmlLoader.cpp \
+	mainwindow/shapeEdit/stylus.cpp \
+	mainwindow/gesturesShow/gestureswidget.cpp \
+	mainwindow/shapeEdit/colorlisteditor.cpp \
+
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
-    mainwindow/gesturesShow/gestureswidget.ui
+	mainwindow/gesturesShow/gestureswidget.ui

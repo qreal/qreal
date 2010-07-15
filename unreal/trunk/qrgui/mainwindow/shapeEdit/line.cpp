@@ -43,7 +43,7 @@ QPainterPath Line::shape() const
 	path.setFillRule(Qt::WindingFill);
 
 	QPainterPathStroker ps;
-	ps.setWidth(9);
+	ps.setWidth(10);
 
 	path.moveTo(mX1, mY1);
 	path.lineTo(mX2, mY2);
@@ -65,7 +65,7 @@ QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &docum
 	qreal const x2 = scenePos().x() + line().x2() - topLeftPicture.x();
 	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
-	QDomElement line = setPenBrush(document, "line");
+	QDomElement line = setPenBrushToDoc(document, "line");
 	setXandY(line, QRectF(x1, y1, x2 - x1, y2 - y1));
 
 	return QPair<QDomElement, Item::DomElementTypes>(line, mDomElementType);

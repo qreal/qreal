@@ -109,7 +109,7 @@ MainWindow::MainWindow()
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(ui.actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-        connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+	connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));

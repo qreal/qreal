@@ -1,11 +1,16 @@
 #include "shapeEdit.h"
 
+#include "colorlisteditor.h"
 #include "ui_shapeEdit.h"
 #include "../../../utils/outFile.h"
+#include "../../../utils/xmlUtils.h"
+#include "XmlLoader.h"
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
-#include <QList>
+#include <QtCore/QList>
+#include <QtGui/QComboBox>
+#include <QtGui/QSpinBox>
 
 using namespace utils;
 
@@ -15,8 +20,18 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 {
 	mUi->setupUi(this);
 
-	mScene = new Scene(this);
+	mScene = new Scene(mUi->graphicsView, this);
 	mUi->graphicsView->setScene(mScene);
+	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+
+	QStringList penStyleList = Item::getPenStyleList();
+	mUi->penStyleComboBox->addItems(penStyleList);
+	mUi->penWidthSpinBox->setRange(0, 13);
+	mUi->penColorComboBox->setColor(QColor("black"));
+
+	QStringList brushStyleList = Item::getBrushStyleList();
+	mUi->brushStyleComboBox->addItems(brushStyleList);
+	mUi->brushColorComboBox->setColor(QColor("black"));
 
 	connect(mUi->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
 	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
@@ -26,10 +41,17 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
 	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
 	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
+	connect(mUi->stylusButton, SIGNAL(pressed()), mScene, SLOT(addStylus()));
+	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
+	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushStyle(const QString &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushColor(const QString &)));
 	connect(mUi->deleteItemButton, SIGNAL(pressed()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
+	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
 }
 
 ShapeEdit::~ShapeEdit()
@@ -88,6 +110,7 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	domList.push_back(picture);
 	domList.push_back(label);
 	domList.push_back(ports);
+	mScene->mEmptyRect = mScene->addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
 
 	return domList;
 }
@@ -124,4 +147,22 @@ void ShapeEdit::save()
 {
 	generateDom();
 	emit shapeSaved(mDocument.toString(4));
+}
+
+void ShapeEdit::open()
+{
+	mDocument.clear();
+	QString fileName = QFileDialog::getOpenFileName(this);
+	if (fileName.isEmpty())
+		return;
+	XmlLoader loader(mScene);
+	loader.readFile(fileName);
+}
+
+void ShapeEdit::load(const QString &text)
+{
+	if (text.isEmpty())
+		return;
+	XmlLoader loader(mScene);
+	loader.readString(text);
 }

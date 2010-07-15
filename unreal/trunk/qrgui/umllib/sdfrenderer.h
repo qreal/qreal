@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QtGui/QIconEngine>
+#include <QDebug>
 #include "sdfRendererInterface.h"
 
 class SdfRenderer : public SdfRendererInterface
@@ -64,6 +65,7 @@ private:
 	void point (QDomElement &element);
 	void defaultstyle();
 	void path_draw(QDomElement &element);
+	void stylus_draw(QDomElement &element);
 	float x1_def(QDomElement &element);
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);

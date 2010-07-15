@@ -32,7 +32,7 @@ void Text::drawExtractionForItem(QPainter* painter)
 
 QRectF Text::boundingRect() const
 {
-	return mText.boundingRect().adjusted(-8, -8, 8, 8);
+	return mText.boundingRect().adjusted(-10, -10, 10, 10);
 }
 
 void Text::drawForDynamicText(QPainter* painter)
@@ -56,11 +56,16 @@ QGraphicsTextItem const& Text::getText()
 QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
 	QDomElement text = document.createElement("label");
-	qreal const x1 = boundingRect().x() + scenePos().x() - topLeftPicture.x();
-	qreal const y1 = boundingRect().y() + scenePos().y() - topLeftPicture.y();
+	qreal const x1 = mText.boundingRect().x() + scenePos().x() - topLeftPicture.x();
+	qreal const y1 = mText.boundingRect().y() + scenePos().y() - topLeftPicture.y();
 	text.setAttribute("y", y1);
 	text.setAttribute("x", x1);
 	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());
 
 	return QPair<QDomElement, Item::DomElementTypes>(text, mDomElementType);
+}
+
+void Text::setIsDynamicText(bool isDynamic)
+{
+	mIsDynamicText = isDynamic;
 }
