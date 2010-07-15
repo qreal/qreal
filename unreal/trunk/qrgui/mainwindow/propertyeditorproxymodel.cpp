@@ -88,6 +88,21 @@ QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index) const
 	return QStringList();
 }
 
+QString PropertyEditorModel::getTypeName(const QModelIndex &index) const
+{
+	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+	if (im){
+		return im->getTypeName(targetObject, roleByIndex(index.row()));
+	}
+	return QString();
+}
+
+qrRepo::RepoApi const & PropertyEditorModel::getApi() const
+{
+	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+	return im->api();
+}
+
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	bool ret = false;

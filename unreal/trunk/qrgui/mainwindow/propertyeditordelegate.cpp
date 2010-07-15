@@ -3,10 +3,14 @@
 #include <QtCore/QDebug>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QPushButton>
 
 #include "../model/model.h"
 #include "mainwindow.h"
 #include "openShapeEditorButton.h"
+
+#include "referenceTypeWindow.h"
+#include "buttonRefWindow.h"
 
 using namespace qReal;
 
@@ -37,6 +41,15 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		foreach (QString item, values)
 			editor->addItem(item);
 		return editor;
+	}
+	if (index.row() != 2)
+	{
+		QString typeName = model->getTypeName(index);
+		if ((typeName != "int") && (typeName != "string"))
+		{
+			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()));
+			return button;
+		}
 	}
 	QLineEdit *editor = new QLineEdit(parent);
 	return editor;

@@ -150,7 +150,7 @@ UML::Element* EditorManager::graphicalObject(const Id &id) const
 	}
 	if (impl->isNode())
 		return new UML::NodeElement(impl);
-	
+
 	return  new UML::EdgeElement(impl);
 }
 
@@ -206,6 +206,11 @@ QStringList EditorManager::getEnumValues(Id const &id, const QString &name) cons
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
 	return mPluginIface[id.editor()]->getEnumValues(typeName);
+}
+
+QString EditorManager::getTypeName(const Id &id, const QString &name) const
+{
+	return mPluginIface[id.editor()]->getPropertyType(id.element(), name);
 }
 
 QString EditorManager::getDefaultPropertyValue(Id const &id, QString name) const

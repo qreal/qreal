@@ -39,6 +39,7 @@ namespace qReal {
 		IdList getConnectedTypes(const Id &id) const;
 		IdList getUsedTypes(const Id &id) const;
 		QStringList getEnumValues(Id const &id, const QString &name) const;
+		QString getTypeName(Id const &id, const QString &name) const;
 
 		bool isEditor(Id const &id) const;
 		bool isDiagram(Id const &id) const;
@@ -54,7 +55,7 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<Listener *> listeners() const;
 
-                EditorInterface* getEditorInterface(QString editor) const;
+				EditorInterface* getEditorInterface(QString editor) const;
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
 

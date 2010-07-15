@@ -156,6 +156,21 @@ QStringList Model::getEnumValues(QModelIndex const &index, int const role) const
 	return QStringList();
 }
 
+QString Model::getTypeName(QModelIndex const &index, int const role) const
+{
+	do {
+		if (!index.isValid())
+			break;
+		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+		if (!item)
+			break;
+		QString selectedProperty = findPropertyName(item->id(), role);
+		return mEditorManager.getTypeName(item->id(), selectedProperty);
+	} while (false);
+
+	return QString();
+}
+
 QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0)
@@ -385,10 +400,10 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
 		QStringList properties = mEditorManager.getPropertyNames(id.type());
-		foreach (QString property, properties) 
+		foreach (QString property, properties)
 		// for those properties that doesn't have default values, plugin will return empty string
 			mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
-		
+
 		endInsertRows();
 	return item;
 }
@@ -555,4 +570,9 @@ void Model::setRootIndex(const QModelIndex &index)
 bool Model::isChanged()
 {
 	return mApi.mIsChange;
+}
+
+void Model::setIsChanged(bool bl)
+{
+	mApi.mIsChange = bl;
 }

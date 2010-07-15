@@ -204,12 +204,12 @@ bool GraphicType::initContainerProperties()
 
 bool GraphicType::initPossibleEdges()
 {
-        QString const listName = "possibleEdges";
-        QString const listElementName = "possibleEdge";
+		QString const listName = "possibleEdges";
+		QString const listElementName = "possibleEdge";
 
-        QDomElement containerElement = mLogic.firstChildElement(listName);
-        if (containerElement.isNull())
-                return true;
+		QDomElement containerElement = mLogic.firstChildElement(listName);
+		if (containerElement.isNull())
+				return true;
 
         for (QDomElement childElement = containerElement.firstChildElement(listElementName);
                 !childElement.isNull();
@@ -220,30 +220,30 @@ bool GraphicType::initPossibleEdges()
                 QString temp = childElement.attribute("directed");
                 bool directed = false;
 
-                if ((beginName == "") || (endName == "") || ((temp != "true") && (temp != "false"))) {
+				if ((beginName == "") || (endName == "") || ((temp != "true") && (temp != "false"))) {
 
-                        qDebug() << beginName;
-                        qDebug() << endName;
-                        qDebug() << temp;
-                        qDebug() << "Error: one of attributes is incorrect " <<
-                            "(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
-                            "\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
-                        return false;
-                }
-                if (temp == "true")
-                    directed = true;
+						qDebug() << beginName;
+						qDebug() << endName;
+						qDebug() << temp;
+						qDebug() << "Error: one of attributes is incorrect " <<
+							"(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
+							"\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
+						return false;
+				}
+				if (temp == "true")
+					directed = true;
 
-                QString edgeName = NameNormalizer::normalize(qualifiedName());
-                QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
+				QString edgeName = NameNormalizer::normalize(qualifiedName());
+				QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
 
-                if (!mPossibleEdges.contains(possibleEdge))
-                        mPossibleEdges.append(possibleEdge);
-                else {
-                        qDebug() << "ERROR: this edge is already in list " << qualifiedName();
-                        return false;
-                }
-        }
-        return true;
+				if (!mPossibleEdges.contains(possibleEdge))
+						mPossibleEdges.append(possibleEdge);
+				else {
+						qDebug() << "ERROR: this edge is already in list " << qualifiedName();
+						return false;
+				}
+		}
+		return true;
 }
 
 bool GraphicType::initLabels()
@@ -431,7 +431,7 @@ void GraphicType::generatePropertyTypes(OutFile &out)
 {
 	if (!mVisible)
 		return;
-	
+
 	QString name = NameNormalizer::normalize(qualifiedName());
 
 	foreach (Property *property, mProperties) {
@@ -450,7 +450,7 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 	QString name = NameNormalizer::normalize(qualifiedName());
 	foreach (Property *property, mProperties) 
 		if (!property->defaultValue().isEmpty())
-			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name() 
+			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name()
 									<< "\"] = \"" << property->defaultValue() << "\";\n";
 }
 
@@ -487,22 +487,22 @@ bool GraphicType::generateUsages(OutFile &out, bool isNotFirst)
 
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
-    if (mPossibleEdges.isEmpty())
-            return false;
-    generateOneCase(out, isNotFirst);
+	if (mPossibleEdges.isEmpty())
+			return false;
+	generateOneCase(out, isNotFirst);
 
-    out() << "\t\tresult";
-    //suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
-    typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
-    foreach (PossibleEdge element, mPossibleEdges) {
-        QString directed = "false";
-        if (element.second.first)
-            directed = "true";
-        out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
-                << "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
-    }
-    out() << ";\n";
-    return true;
+	out() << "\t\tresult";
+	//suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
+	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+	foreach (PossibleEdge element, mPossibleEdges) {
+		QString directed = "false";
+		if (element.second.first)
+			directed = "true";
+		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
+				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
+	}
+	out() << ";\n";
+	return true;
 }
 
 bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const

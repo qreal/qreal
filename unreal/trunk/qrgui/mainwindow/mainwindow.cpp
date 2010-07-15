@@ -180,6 +180,7 @@ MainWindow::MainWindow()
 	if (mModel->rowCount() > 0)
 		openNewTab(mModel->index(0, 0, QModelIndex()));
 
+	mModel->setIsChanged(false);
 	progress->setValue(100);
 	if (showSplash)
 		splash->close();

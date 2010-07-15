@@ -40,7 +40,6 @@ namespace qReal {
 			virtual QString getPropertyType(QString const &element, QString const &name) const = 0;
 			virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const = 0;
 			virtual QStringList getEnumValues(QString name) const = 0;
-			//virtual QString getTypeName(Id const &id, const QString &name)
 
 			virtual QString editorName() const = 0;
 			virtual QString diagramName(QString const &diagram) const = 0;

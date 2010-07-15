@@ -7,6 +7,7 @@
 #include <QtCore/QStringList>
 
 #include "../editorManager/editorManager.h"
+#include "../../qrrepo/repoApi.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств
@@ -32,6 +33,8 @@ public:
 
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	QStringList getEnumValues(const QModelIndex &index) const;
+	QString getTypeName(const QModelIndex &index) const;
+	qrRepo::RepoApi const &getApi() const;
 
 	QModelIndex getModelIndex() const;
 

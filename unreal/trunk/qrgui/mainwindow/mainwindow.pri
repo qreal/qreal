@@ -19,6 +19,10 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/gesturesShow/gestureswidget.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/shapeEdit/colorlisteditor.h \
+	mainwindow/igesturespainter.h \
+	mainwindow/buttonRefWindow.h \
+	mainwindow/refWindow.h
+
 
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
@@ -40,7 +44,11 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/stylus.cpp \
 	mainwindow/gesturesShow/gestureswidget.cpp \
 	mainwindow/shapeEdit/colorlisteditor.cpp \
+	mainwindow/buttonRefWindow.cpp \
+	mainwindow/refWindow.cpp \
+
 
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
-	mainwindow/gesturesShow/gestureswidget.ui
+	mainwindow/gesturesShow/gestureswidget.ui \
+	mainwindow/refWindow.ui
