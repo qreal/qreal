@@ -173,7 +173,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 void XmlLoader::readLabel(QDomElement const &label)
 {
 	QPointF point = readXandY(label);
-	Text* item;
+	Text* item = NULL;
 	if (label.hasAttribute("text")) {
 		item = new Text(point.x(), point.y(), label.attribute("text", ""));
 		item->setIsDynamicText(false);
