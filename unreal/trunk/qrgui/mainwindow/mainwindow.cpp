@@ -30,6 +30,7 @@
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
 #include "gesturesShow/gestureswidget.h"
+#include "preferencesDialog.h"
 #include "openShapeEditorButton.h"
 //#include "../qrrepo/svnClient.h"
 
@@ -100,6 +101,7 @@ MainWindow::MainWindow()
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(newGenerateEditor()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
@@ -113,7 +115,6 @@ MainWindow::MainWindow()
 	connect(ui.actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-
 
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
@@ -672,6 +673,12 @@ void MainWindow::parseHascol()
 	errors.showErrors("Parsing is finished");
 
 	mModel->reinit();
+}
+
+void MainWindow::showPreferencesDialog()
+{
+	PreferencesDialog preferencesDialog;
+	preferencesDialog.exec();
 }
 
 void MainWindow::openNewEmptyTab()

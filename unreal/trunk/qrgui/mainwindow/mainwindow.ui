@@ -91,6 +91,7 @@
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuMouse_gestures">
     <property name="title">
@@ -538,6 +539,11 @@
   <action name="actionShow">
    <property name="text">
     <string>Show</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
  </widget>

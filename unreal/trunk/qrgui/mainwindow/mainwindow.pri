@@ -14,15 +14,15 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/text.h \
 	mainwindow/shapeEdit/pointPort.h \
 	mainwindow/shapeEdit/linePort.h \
-	mainwindow/shapeEdit/xmlLoader.h \
-	mainwindow/shapeEdit/stylus.h \
 	mainwindow/gesturesShow/gestureswidget.h \
 	mainwindow/igesturespainter.h \
+	mainwindow/preferencesDialog.h \
+	mainwindow/shapeEdit/xmlLoader.h \
+	mainwindow/shapeEdit/stylus.h \
 	mainwindow/shapeEdit/colorlisteditor.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/buttonRefWindow.h \
-	mainwindow/refWindow.h
-
+	mainwindow/refWindow.h \
 
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
@@ -40,15 +40,16 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/text.cpp \
 	mainwindow/shapeEdit/pointPort.cpp \
 	mainwindow/shapeEdit/linePort.cpp \
+	mainwindow/gesturesShow/gestureswidget.cpp \
+	mainwindow/preferencesDialog.cpp \
 	mainwindow/shapeEdit/xmlLoader.cpp \
 	mainwindow/shapeEdit/stylus.cpp \
-	mainwindow/gesturesShow/gestureswidget.cpp \
 	mainwindow/shapeEdit/colorlisteditor.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/refWindow.cpp \
 
-
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \
-	mainwindow/refWindow.ui
+	mainwindow/preferencesDialog.ui \
+	mainwindow/refWindow.ui \

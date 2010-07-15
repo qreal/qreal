@@ -19,7 +19,7 @@ namespace qReal {
 	class EditorView;
 	class ListenerManager;
 
-	namespace model  {
+	namespace model {
 		class Model;
 	}
 
@@ -37,7 +37,7 @@ namespace qReal {
 
 		ListenerManager *listenerManager();
 
-                IGesturesPainter *gesturesPainter();
+				IGesturesPainter *gesturesPainter();
 
 		Ui::MainWindowUi ui;
 		//QDialogButtonBox* dbox;
@@ -92,6 +92,7 @@ namespace qReal {
 		void generateEditor();
 		void generateToHascol();
 		void parseHascol();
+		void showPreferencesDialog();
 		void initCurrentTab(const QModelIndex &rootIndex);
 		void openNewTab(const QModelIndex &index);
 		void openNewEmptyTab();
@@ -108,7 +109,7 @@ namespace qReal {
 
 		PropertyEditorDelegate mDelegate;
 
-                GesturesWidget * mGesturesWidget;
+				GesturesWidget * mGesturesWidget;
 
 		int isSave;
 
@@ -118,10 +119,10 @@ namespace qReal {
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
-            signals:
-                void gesturesShowed();
-                void currentIdealGestureChanged();
-                void tabOpened();
-            };
+			signals:
+				void gesturesShowed();
+				void currentIdealGestureChanged();
+				void tabOpened();
+			};
 
 }
