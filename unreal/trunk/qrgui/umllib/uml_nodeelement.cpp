@@ -1164,6 +1164,10 @@ void NodeElement::changeFoldState()
 		mCurUnfoldedContents.moveTo(pos());
 		setGeometry(mCurUnfoldedContents);
 	}
+
+	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
+	if (parent)
+		parent->resize(parent->mContents);
 }
 
 void NodeElement::setLinksVisible(bool isVisible)
