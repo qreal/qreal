@@ -1183,7 +1183,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 
 void NodeElement::sortChildren()
 {
-	qreal curChildY = mElementImpl->sizeOfForestalling();
+	qreal curChildY = mElementImpl->sizeOfForestalling() + 25; //25 - for container name
 	qreal maxChildrenWidth = 0;
 
 	foreach (QGraphicsItem* childItem, childItems()) {

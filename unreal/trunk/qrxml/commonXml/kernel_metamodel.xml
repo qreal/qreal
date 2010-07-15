@@ -75,12 +75,11 @@
             </properties>
           </logic>
         </node>
+
         <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="Class">
           <graphics>
             <picture sizex="150" sizey="210">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210" stroke-width="1" x2="150" fill-style="solid"/>
-              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="25a" x1="0" y2="25a" stroke-width="1" x2="150" fill-style="solid"/>
-              <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="1" x2="150" fill-style="solid"/>
             </picture>
             <labels>
               <label x="3" y="3" textBinded="name"/>
@@ -113,8 +112,69 @@
               <property type="Property" name="ownedAttribute"/>
               <property type="Operation" name="ownedOperation"/>
             </properties>
+            <container>
+              <contains type="MethodsContainer"/>
+              <contains type="FieldsContainer"/>
+              <properties>
+                <sortContainer/>
+<!--
+                <forestalling size="25"/>
+                <childrenForestalling size="5"/>
+-->
+                <minimizeToChildren/>
+                <banChildrenMove/>
+                <itIsClass/>
+              </properties>
+            </container>
           </logic>
         </node>
+
+        <node name="MethodsContainer">
+          <graphics>
+            <picture sizex="150" sizey="25">
+              <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
+            </picture>
+          </graphics>
+          <logic>
+            <generalizations>
+              <parent parentName="Kernel::KernelElement"/>
+            </generalizations>
+            <container>
+<!--
+              <contains type="Method">
+-->
+              <properties>
+                <sortContainer/>
+                <minimizeToChildren/>
+                <banChildrenMove/>
+              </properties>
+            </container>
+          </logic>
+        </node>
+
+        <node name="FieldsContainer">
+          <graphics>
+            <picture sizex="150" sizey="25">
+              <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
+            </picture>
+          </graphics>
+          <logic>
+            <generalizations>
+              <parent parentName="Kernel::KernelElement"/>
+            </generalizations>
+            <container>
+<!--
+              <contains type="Field">
+-->
+              <properties>
+                <sortContainer/>
+                <minimizeToChildren/>
+                <banChildrenMove/>
+              </properties>
+            </container>
+          </logic>
+        </node>
+
         <node name="Classifier">
           <logic>
             <generalizations>

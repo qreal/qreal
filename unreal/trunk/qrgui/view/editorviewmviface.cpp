@@ -131,13 +131,21 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			e->initPossibleEdges();
 
 			UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
-			
-			if (nodeE && nodeE->isClass()) {
+		
+			qDebug() << "Uuid ___" << uuid.toString();
+
+			if (nodeE && uuid.element() == "Class") {
 				needToProcessChildren = false;
 				
 				for (int i = 0; i < 2; i++) {
-					Id newUuid = Id("Activity_metamodel", "ActivityDiagram", 
-							"Action", QUuid::createUuid().toString());
+					QString curChildElementType;
+					if (i == 0)
+						curChildElementType = "MethodsContainer";
+					else
+						curChildElementType = "FieldsContainer";
+
+					Id newUuid = Id("Kernel_metamodel", "Kernel", 
+							curChildElementType, QUuid::createUuid().toString());
 
 					QByteArray data;
 					QMimeData *mimeData = new QMimeData();
