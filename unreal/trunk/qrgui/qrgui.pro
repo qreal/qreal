@@ -3,7 +3,8 @@ CONFIG += rpath_libdirs
 
 INCLUDEPATH	+=	../qrxml/editors \
 			../qrxml \
-			mainwindow
+			mainwindow \
+			mainwindow/shapeEdit
 
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
