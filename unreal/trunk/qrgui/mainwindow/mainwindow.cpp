@@ -31,7 +31,7 @@
 #include "shapeEdit/shapeEdit.h"
 #include "gesturesShow/gestureswidget.h"
 #include "openShapeEditorButton.h"
-#include "../qrrepo/svnClient.h"
+//#include "../qrrepo/svnClient.h"
 
 
 using namespace qReal;
