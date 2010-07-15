@@ -368,7 +368,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mDragState = BottomRight;
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(20, -20)).contains(event->pos())
+		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
 				&& this->mElementImpl->isContainer())
 			changeFoldState();
 		else
@@ -1103,7 +1103,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->setBrush(b);
 
 			if (mElementImpl->isContainer())
-				painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(20, -20)));
+				painter->drawRect(QRectF(mContents.topLeft(), QSizeF(20, 20)));
 
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
