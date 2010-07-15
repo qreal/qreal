@@ -135,7 +135,7 @@
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
             </picture>
             <labels>
-              <label x="30" y="0" textBinded="name"/>
+              <label x="30" y="0" text="Methods"/>
             </labels>
           </graphics>
           <logic>
@@ -174,7 +174,7 @@
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
             </picture>
             <labels>
-              <label x="30" y="0" textBinded="name"/>
+              <label x="30" y="0" text="Fields"/>
             </labels>
           </graphics>
           <logic>

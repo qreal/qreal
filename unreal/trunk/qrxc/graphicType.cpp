@@ -47,6 +47,7 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mVisible = mVisible;
 	type->mWidth = mWidth;
 	type->mContainerProperties = mContainerProperties;
+	type->mContains = mContains;
 }
 
 bool GraphicType::init(QDomElement const &element, QString const &context)

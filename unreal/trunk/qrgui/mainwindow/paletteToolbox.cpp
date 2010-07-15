@@ -134,7 +134,7 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
 	stream << ROOT_ID.toString();  // pathToItem
-	stream << QString("(anonymous " + child->text() + ")");
+	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
 
 	QMimeData *mimeData = new QMimeData;

@@ -9,7 +9,7 @@
 #include "mainwindow.h"
 #include "openShapeEditorButton.h"
 
-#include "referenceTypeWindow.h"
+#include "referencetypewindow.h"
 #include "buttonRefWindow.h"
 
 using namespace qReal;
