@@ -6,6 +6,10 @@
 #include <QSize>
 #include <QLineEdit>
 
+namespace qReal {
+	class MainWindow;
+}
+
 class PropertyEditorDelegate : public QItemDelegate
 {
 	Q_OBJECT
@@ -21,5 +25,9 @@ public:
 
 	void updateEditorGeometry(QWidget *editor,
 							  const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setMainWindow(qReal::MainWindow *mainwindow);
+
+private:
+	qReal::MainWindow *mMainWindow;
 
 };

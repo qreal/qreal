@@ -4,19 +4,21 @@
 #include "ui_shapeEdit.h"
 #include "../../../utils/outFile.h"
 #include "../../../utils/xmlUtils.h"
-#include "XmlLoader.h"
+#include "xmlLoader.h"
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
 #include <QtCore/QList>
 #include <QtGui/QComboBox>
 #include <QtGui/QSpinBox>
+#include <QDebug>
 
 using namespace utils;
 
 ShapeEdit::ShapeEdit(QWidget *parent) :
 		QWidget(parent),
-		mUi(new Ui::ShapeEdit)
+		mUi(new Ui::ShapeEdit), mRole(0)
+
 {
 	mUi->setupUi(this);
 
@@ -52,6 +54,28 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
+}
+
+ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
+{
+	mUi->setupUi(this);
+
+	mScene = new Scene(mUi->graphicsView, this);
+	mUi->graphicsView->setScene(mScene);
+
+	connect(mUi->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
+	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
+	connect(mUi->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
+	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
+	connect(mUi->addTextButton, SIGNAL(pressed()), mScene, SLOT(addText()));
+	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
+	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
+	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
+	connect(mUi->deleteItemButton, SIGNAL(pressed()), mScene, SLOT(deleteItem()));
+	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
+	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
+	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 }
 
 ShapeEdit::~ShapeEdit()
@@ -146,7 +170,7 @@ void ShapeEdit::saveToXml()
 void ShapeEdit::save()
 {
 	generateDom();
-	emit shapeSaved(mDocument.toString(4));
+	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 }
 
 void ShapeEdit::open()

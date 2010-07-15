@@ -21,8 +21,9 @@ public:
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
+	int roleByIndex(int const index) const;
 
-	Qt::ItemFlags flags (const QModelIndex &index) const;
+	Qt::ItemFlags flags(const QModelIndex &index) const;
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -31,6 +32,8 @@ public:
 
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	QStringList getEnumValues(const QModelIndex &index) const;
+
+	QModelIndex getModelIndex() const;
 
 public slots:
 	void setIndex(const QModelIndex &sourceIndex);
@@ -49,6 +52,4 @@ private:
 	int mEditablePseudoAttributesCount;
 
 	qReal::EditorManager const &mEditorManager;
-
-	int roleByIndex(int const index) const;
 };

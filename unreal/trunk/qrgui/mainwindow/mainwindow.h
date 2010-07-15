@@ -97,6 +97,7 @@ namespace qReal {
 		void openNewEmptyTab();
 		void switchGrid(bool isChecked);
 		void showGestures();
+		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	private:
 		model::Model *mModel;

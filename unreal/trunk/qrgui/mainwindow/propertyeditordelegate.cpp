@@ -2,8 +2,12 @@
 #include "propertyeditorproxymodel.h"
 #include <QtCore/QDebug>
 #include <QtGui/QComboBox>
+#include <QtGui/QPushButton>
 
 #include "../model/model.h"
+#include "mainwindow.h"
+#include "openShapeEditorButton.h"
+
 using namespace qReal;
 
 PropertyEditorDelegate::PropertyEditorDelegate(QObject *parent)
@@ -16,8 +20,19 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 											  const QModelIndex &index) const
 {
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
+	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
+	if (propertyName == "set Shape") {
+		QString propertyValue = model->data(index.sibling(index.row(), index.column()), Qt::DisplayRole).toString();
+		model->setData(index, "", Qt::DisplayRole);
+		QPersistentModelIndex const myIndex = model->getModelIndex();
+		int role = model->roleByIndex(index.row());
+		OpenShapeEditorButton *button = new OpenShapeEditorButton(parent, myIndex, role, propertyValue);
+		button->setText("open Shape Edit");
+		QObject::connect(button, SIGNAL(clicked()), mMainWindow, SLOT(openNewEmptyTab()));
+		return button;
+	}
 	QStringList values = model->getEnumValues(index);
-	if (!values.isEmpty()){
+	if (!values.isEmpty()) {
 		QComboBox *editor = new QComboBox(parent);
 		foreach (QString item, values)
 			editor->addItem(item);
@@ -57,4 +72,9 @@ void PropertyEditorDelegate::updateEditorGeometry(QWidget *editor,
 												  const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
 {
 	editor->setGeometry(option.rect);
+}
+
+void PropertyEditorDelegate::setMainWindow(MainWindow *mainwindow)
+{
+	mMainWindow = mainwindow;
 }

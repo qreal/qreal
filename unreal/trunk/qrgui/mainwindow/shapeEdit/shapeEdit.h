@@ -15,9 +15,11 @@ class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
+	ShapeEdit(QPersistentModelIndex const &index, int const &role);
+	void load(const QString &text);
 	~ShapeEdit();
 signals:
-	void shapeSaved(QString const &shape);
+	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -33,10 +35,10 @@ private:
 	QDomDocument mDocument;
 	QPointF mTopLeftPicture;
 	Ui::ShapeEdit *mUi;
+	QPersistentModelIndex const mIndex;
+	int const mRole;
 
 	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
-
-	void load(const QString &text);
 };

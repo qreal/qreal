@@ -11,6 +11,8 @@
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
+#include "../../editorManager/editorManager.h"
+#include "../../kernel/exception/exception.h"
 
 using namespace qReal;
 using namespace parsers;
@@ -183,6 +185,14 @@ void XmlParser::setNodeAttributes(const QDomElement &node, const Id &nodeId)
 		QDomElement tag = nodeList.at(i).toElement();
 		if (tag.tagName() == "logic")
 			setNodeConfigurations(tag, nodeId);
+		if (tag.tagName() == "graphics") {
+			QDomDocument document;
+			document.createElement("document");
+			QDomNode nodeCopy = tag.cloneNode();
+			document.importNode(nodeCopy, true);
+			document.appendChild(nodeCopy);
+			mApi.setProperty(nodeId, "set Shape", document.toString());
+		}
 	}
 }
 
@@ -450,6 +460,8 @@ void XmlParser::initContainer()
 void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 		const QString &name, const QString &displayedName)
 {
+	if (!mEditorManager.hasElement(id.type()))
+		throw Exception(QString("%1 doesn't exist").arg(id.type().toString()));
 	mApi.addChild(parent, id);
 	mApi.setProperty(id, "name", name);
 	if (displayedName != "")

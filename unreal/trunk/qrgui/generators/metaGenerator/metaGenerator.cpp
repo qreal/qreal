@@ -139,6 +139,10 @@ void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
 	parent.appendChild(node);
 
+	QDomDocument graphics;
+	graphics.setContent(mApi.stringProperty(id, "set Shape"));
+	node.appendChild(graphics);
+
 	QDomElement logic = mDocument.createElement("logic");
 	node.appendChild(logic);
 
@@ -161,7 +165,7 @@ void MetaGenerator::createEdge(QDomElement &parent, Id const &id)
 	QDomElement graphics = mDocument.createElement("graphics");
 	edge.appendChild(graphics);
 	QDomElement lineType = mDocument.createElement("lineType");
-	ensureCorrectness(id, edge, "type", mApi.stringProperty(id, "lineType"));
+	ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
 	graphics.appendChild(lineType);
 
 	QDomElement logic = mDocument.createElement("logic");
@@ -378,11 +382,22 @@ void MetaGenerator::setImported(QDomElement &parent, const Id &idParent)
 
 void MetaGenerator::ensureCorrectness(const Id &id, QDomElement element, const QString &tagName, const QString &value)
 {
+	QString tag = tagName;
 	if (value == "") {
 		mErrorReporter.addWarning(QString ("not filled %1\n").arg(tagName),id);
 		element.setAttribute(tagName, "");
 	}
 	else
-		element.setAttribute(tagName, value);
+		if (tag == "name") {
+		QRegExp patten;
+		patten.setPattern("[A-Za-z_]+([A-Za-z_0-9 ]*)");
+		if ((patten.exactMatch(value)))
+			element.setAttribute(tagName, value);
+		else {
+			mErrorReporter.addWarning("wrong name\n",id);
+			element.setAttribute(tagName, value);
+		}
+	}
+	else element.setAttribute(tagName, value);
 }
 

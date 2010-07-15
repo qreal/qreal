@@ -30,6 +30,7 @@
 #include "../editorManager/listenerManager.h"
 #include "shapeEdit/shapeEdit.h"
 #include "gesturesShow/gestureswidget.h"
+#include "openShapeEditorButton.h"
 
 using namespace qReal;
 
@@ -127,6 +128,7 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&mDelegate);
+	mDelegate.setMainWindow(this);
 
 	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
 			&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
@@ -161,7 +163,7 @@ MainWindow::MainWindow()
 	}
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
-        this->mGesturesWidget = new GesturesWidget();
+		this->mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -382,6 +384,12 @@ void MainWindow::saveAs()
 	mModel->saveTo(dirName);
 }
 
+void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
+{
+	mModel->setData(index, data, role);
+	qDebug() << "data=" << mModel->data(index, role);
+}
+
 void MainWindow::print()
 {
 	QPrinter printer(QPrinter::HighResolution);
@@ -579,6 +587,10 @@ void MainWindow::newGenerateEditor()
 
 void MainWindow::parseEditorXml()
 {
+	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
+		QMessageBox::warning(this, tr("error"), "required plugin is not loaded =Р");
+		return;
+	}
 	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"));
 	if (fileName == "")
 		return;
@@ -645,10 +657,25 @@ void MainWindow::parseHascol()
 
 void MainWindow::openNewEmptyTab()
 {
+	QObject *object = sender();
+	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
 	QString text = "Shape Edit";
-	ShapeEdit *wid = new ShapeEdit();
-	ui.tabs->addTab(wid, text);
-	ui.tabs->setCurrentWidget(wid);
+	ShapeEdit *shapeEdit;
+	if (button != NULL) {
+		QPersistentModelIndex index = button->getIndex();
+		int role = button->getRole();
+		QString propertyValue = button->getPropertyValue();
+		shapeEdit = new ShapeEdit(index, role);
+		if (propertyValue != "")
+			shapeEdit->load(propertyValue);
+		mModel->setData(index, propertyValue, role);
+		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+	}
+	else {
+		shapeEdit = new ShapeEdit();
+	}
+	ui.tabs->addTab(shapeEdit, text);
+	ui.tabs->setCurrentWidget(shapeEdit);
 }
 
 void MainWindow::openNewTab(const QModelIndex &index)
@@ -656,14 +683,14 @@ void MainWindow::openNewTab(const QModelIndex &index)
 	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
 		return;
 
-		mModel->setRootIndex(index);
+	mModel->setRootIndex(index);
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
 			tabNumber = i;
-						break;
-					}
+			break;
+		}
 	}
 	if (tabNumber != -1) {
 		ui.tabs->setCurrentIndex(tabNumber);
@@ -681,7 +708,7 @@ void MainWindow::openNewTab(const QModelIndex &index)
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 {
 	getCurrentTab()->setMainWindow(this);
-		QModelIndex index = rootIndex;
+	QModelIndex index = rootIndex;
 
 	changeMiniMapSource(ui.tabs->currentIndex());
 
@@ -698,7 +725,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
-        emit tabOpened();
+		emit tabOpened();
 }
 
 void MainWindow::updateTab(QModelIndex const &index)
@@ -755,15 +782,15 @@ void MainWindow::switchGrid(bool isChecked)
 
 void MainWindow::showGestures()
 {
-    QString text = "Gestures Show";
-    mGesturesWidget = new GesturesWidget();
-    ui.tabs->addTab(mGesturesWidget, text);
-    ui.tabs->setCurrentWidget(mGesturesWidget);
-    connect(this->mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
-    emit gesturesShowed();
+	QString text = "Gestures Show";
+	mGesturesWidget = new GesturesWidget();
+	ui.tabs->addTab(mGesturesWidget, text);
+	ui.tabs->setCurrentWidget(mGesturesWidget);
+	connect(this->mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
+	emit gesturesShowed();
 }
 
 IGesturesPainter * MainWindow::gesturesPainter()
 {
-    return this->mGesturesWidget;
+	return this->mGesturesWidget;
 }
