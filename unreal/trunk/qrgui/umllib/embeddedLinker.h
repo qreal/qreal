@@ -56,6 +56,9 @@ namespace UML {
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
 
+		float size;
+		float indent;
+
 		QColor color;
 		bool directed;
 		QString edgeType;

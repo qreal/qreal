@@ -5,6 +5,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
+#include <QSettings>
 #include <math.h>
 
 #include "../view/editorviewscene.h"
@@ -15,11 +16,15 @@ using namespace qReal;
 
 EmbeddedLinker::EmbeddedLinker()
 {
+	QSettings settings("SPbSU", "QReal");
+	size = settings.value("EmbeddedLinkerSize", 6).toFloat();
+	indent = settings.value("EmbeddedLinkerIndent", 5).toFloat();
+
 	covered = false;
 	master = NULL;
 	mEdge = NULL;
-	mRectangle = QRectF(-6,-6,12,12);
-	mInnerRectangle = QRectF(-3,-3,6,6);
+	mRectangle = QRectF(-size,-size,size*2,size*2);
+	mInnerRectangle = QRectF(-size/2,-size/2,size,size);
 	setAcceptsHoverEvents(true);
 	color = Qt::blue;
 
@@ -140,18 +145,17 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	float width = right - left;
 
 	float angle = 2*Pi*index/maxIndex;
-	float indent = 5;
 
 	int rW = width;
 	int rH = height;
 	if (rW < 150)
 		rW *= 1.5;
 	else
-		rW += indent;
+		rW += 5;
 	if (rH < 150)
 		rH *= 1.5;
 	else
-		rH += indent;
+		rH += 5;
 
 	float px = left + width/2 + rW*cos(angle - Pi/2)/2;
 	float py = bottom - height/2 + rH*sin(angle - Pi/2)/2;

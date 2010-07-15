@@ -17,8 +17,8 @@ protected:
 
 private:
 	Ui::PreferencesDialog *ui;
-
 	void applyChanges();
+	void initPreferences();
 private slots:
 	void on_applyButton_clicked();
 	void on_okButton_clicked();

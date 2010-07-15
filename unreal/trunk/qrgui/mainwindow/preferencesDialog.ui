@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
+    <width>240</width>
     <height>280</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>440</width>
+    <width>240</width>
     <height>280</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>440</width>
+    <width>240</width>
     <height>280</height>
    </size>
   </property>
@@ -28,7 +28,7 @@
   <widget class="QPushButton" name="applyButton">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>140</x>
      <y>250</y>
      <width>79</width>
      <height>25</height>
@@ -41,7 +41,7 @@
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>60</x>
      <y>250</y>
      <width>79</width>
      <height>25</height>
@@ -56,12 +56,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>421</width>
+     <width>221</width>
      <height>231</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="editorTab">
     <attribute name="title">
@@ -82,7 +82,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QCheckBox" name="checkBox">
+     <widget class="QCheckBox" name="showGridCheckBox">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -95,7 +95,7 @@
        <string>Show grid</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_2">
+     <widget class="QCheckBox" name="activateGridCheckBox">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -106,6 +106,9 @@
       </property>
       <property name="text">
        <string>Activate grid</string>
+      </property>
+      <property name="tristate">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -150,7 +153,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QSlider" name="horizontalSlider">
+     <widget class="QSlider" name="embeddedLinkerSizeSlider">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -158,6 +161,12 @@
         <width>91</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="minimum">
+       <number>4</number>
+      </property>
+      <property name="maximum">
+       <number>20</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -176,7 +185,7 @@
        <string>Size</string>
       </property>
      </widget>
-     <widget class="QSlider" name="horizontalSlider_2">
+     <widget class="QSlider" name="embeddedLinkerIndentSlider">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -184,6 +193,12 @@
         <width>91</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="minimum">
+       <number>5</number>
+      </property>
+      <property name="maximum">
+       <number>20</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -199,27 +214,19 @@
        </rect>
       </property>
       <property name="text">
-       <string>Distance</string>
+       <string>Indent</string>
       </property>
      </widget>
     </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>10</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Graphics</string>
-     </property>
-    </widget>
+   </widget>
+   <widget class="QWidget" name="miscTab">
+    <attribute name="title">
+     <string>Miscelanious</string>
+    </attribute>
     <widget class="QFrame" name="frame_3">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>20</x>
        <y>30</y>
        <width>171</width>
        <height>61</height>
@@ -231,7 +238,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QCheckBox" name="checkBox_3">
+     <widget class="QCheckBox" name="antialiasingCheckBox">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -244,7 +251,7 @@
        <string>Antialiasing</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="checkBox_4">
+     <widget class="QCheckBox" name="openGLCheckBox">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -258,16 +265,74 @@
       </property>
      </widget>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>Tab 1</string>
-    </attribute>
-   </widget>
-   <widget class="QWidget" name="tab_2">
-    <attribute name="title">
-     <string>Tab 2</string>
-    </attribute>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>61</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Graphics</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>61</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Other</string>
+     </property>
+    </widget>
+    <widget class="QFrame" name="frame_4">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>120</y>
+       <width>171</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QCheckBox" name="splashScreenCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Show splashscreen</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="chaoticEditionCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>141</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Chaotic Edition</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
  </widget>

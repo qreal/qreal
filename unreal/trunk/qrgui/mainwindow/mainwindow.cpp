@@ -51,7 +51,7 @@ MainWindow::MainWindow()
 			&mbox, SLOT(close()));
 	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(close()));
 	QSettings settings("SPbSU", "QReal");
-	bool showSplash = settings.value("ShowSplashScreen", true).toBool();
+	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -479,7 +479,7 @@ void MainWindow::showHelp()
 void MainWindow::toggleShowSplash(bool show)
 {
 	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowSplashScreen", show);
+	settings.setValue("Splashscreen", show);
 }
 
 void MainWindow::doCommit()

@@ -27,25 +27,25 @@ EditorViewScene::EditorViewScene(QObject * parent)
 
 void EditorViewScene::drawIdealGesture()
 {
-    mouseMovementManager->drawIdealPath();
+	mouseMovementManager->drawIdealPath();
 }
 
 void EditorViewScene::printElementsOfRootDiagram()
 {
-    mouseMovementManager->setGesturesPainter(mWindow->gesturesPainter());
-    mouseMovementManager->printElements();
+	mouseMovementManager->setGesturesPainter(mWindow->gesturesPainter());
+	mouseMovementManager->printElements();
 }
 
 void EditorViewScene::initMouseMoveMan()
 {
-        qReal::Id diagram = model()->getRootDiagram();
+		qReal::Id diagram = model()->getRootDiagram();
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
-        mouseMovementManager = new MouseMovementManager(elements,
-                                                        mWindow->manager(),
-                                                        mWindow->gesturesPainter());
-        connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
-        connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
-    }
+		mouseMovementManager = new MouseMovementManager(elements,
+														mWindow->manager(),
+														mWindow->gesturesPainter());
+		connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
+		connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
+	}
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
@@ -442,7 +442,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::RightButton) {
 		UML::Element *e = getElemAt(event->scenePos());
 		if (!e) {
-                        mouseMovementManager->addPoint(event->scenePos());
+						mouseMovementManager->addPoint(event->scenePos());
 			mRightButtonPressed = true;
 			return;
 		}
@@ -479,13 +479,13 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 	if (event->button() == Qt::RightButton)
 	{
-                mouseMovementManager->addPoint(event->scenePos());
+				mouseMovementManager->addPoint(event->scenePos());
 		qReal::Id id = mouseMovementManager->getObject();
 		if (id.element() != "")
-                        createElement(id.toString(), mouseMovementManager->pos());
+						createElement(id.toString(), mouseMovementManager->pos());
 			mRightButtonPressed = false;
 			mouseMovementManager->clear();
-                        deleteGesture();
+						deleteGesture();
 	}
 
 	UML::Element *element = getElemAt(event->scenePos());
@@ -528,10 +528,10 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed)
-                {
-                        mouseMovementManager->addPoint(event->scenePos());
-                        drawGesture();
-                }
+				{
+						mouseMovementManager->addPoint(event->scenePos());
+						drawGesture();
+				}
 		else
 			QGraphicsScene::mouseMoveEvent(event);
 }
@@ -591,7 +591,7 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-        connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+		connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
@@ -673,16 +673,16 @@ void EditorViewScene::changeNeedDrawGrid()
 
 void EditorViewScene::drawGesture()
 {
-    QLineF line = mouseMovementManager->newLine();
-    QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
-    this->addItem(item);
-    mGesture.push_back(item);
+	QLineF line = mouseMovementManager->newLine();
+	QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
+	this->addItem(item);
+	mGesture.push_back(item);
 }
 
 void EditorViewScene::deleteGesture()
 {
-    foreach (QGraphicsLineItem * item, mGesture)
-    {
-        this->removeItem(item);;
-    }
+	foreach (QGraphicsLineItem * item, mGesture)
+	{
+		this->removeItem(item);;
+	}
 }
