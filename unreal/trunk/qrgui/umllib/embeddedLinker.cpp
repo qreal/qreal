@@ -220,7 +220,8 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->setSelected(true);
 			master->setSelected(false);
 
-			QPointF point = event->pos();
+			QPointF point = mapToItem(master,event->pos());
+			/**
 			if (point.x() > master->boundingRect().right())
 				point.setX(master->boundingRect().right());
 			if (point.x() < master->boundingRect().left())
@@ -229,10 +230,10 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				point.setY(master->boundingRect().bottom());
 			if (point.y() < master->boundingRect().top())
 				point.setY(master->boundingRect().top());
-			//no effect
+			**/
 
-			mEdge->placeStartTo(master->getNearestPort(point));
-			mEdge->placeEndTo(event->pos());
+			mEdge->placeStartTo(mEdge->mapFromItem(master,master->getNearestPort(point)));
+			mEdge->placeEndTo(mapToItem(mEdge,event->pos()));
 		}
 	}
 }

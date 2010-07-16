@@ -880,32 +880,41 @@ const QPointF NodeElement::getPortPos(qreal id) const
 
 const QPointF NodeElement::getNearestPort(QPointF location) const
 {
-	int num = 0;
 	QPointF min;
-	if (mPointPorts.size() > 0)
-		min = mPointPorts[0];
+	if (mPointPorts.size() > 0) {
+		min.setX(mPointPorts[0].x()*boundingRect().width() + boundingRect().left());
+		min.setY(mPointPorts[0].y()*boundingRect().height() + boundingRect().top());
+	}
 	else if (mLinePorts.size() > 0)
 		min = mLinePorts[0].line.p1();
 	else
 		return location;
 
 	foreach (QPointF port, mPointPorts) {
-		qreal minDistance = sqrt(pow((min.x()-location.x()),2) + pow((min.y()-location.y()),2));
-		if (distanceFromPointPort(num, location) < minDistance)
+		port.setX(port.x()*boundingRect().width() + boundingRect().left());
+		port.setY(port.y()*boundingRect().height() + boundingRect().top());
+		qDebug() << "||-2: " << location;
+		qDebug() << "||-1: " << min;
+		qDebug() << "||+0: " << port;
+		qDebug() << "||+1: " << QLineF(min, location).length();
+		qDebug() << "||+2: " << QLineF(port, location).length();
+		if (QLineF(port, location).length() < QLineF(min, location).length())
 			min = port;
-		num++;
 	}
-	if (num > 0)
+	if (mPointPorts.size() > 0)
 		return min;
 
-	num = 0;
+	//TODO: improve line port search
+	int num = 0;
 	foreach (StatLine line, mLinePorts) {
 		qreal k = getNearestPointOfLinePort(num, location);
 		QPointF port = QPointF((line.line.p1().x()*(1-k)+line.line.p2().x()*k),
 			(line.line.p1().y()*(1-k)+line.line.p2().y()*k));
-		qreal minDistance = sqrt(pow((min.x()-location.x()),2) + pow((min.y()-location.y()),2));
-		qreal distance = sqrt(pow((port.x()-location.x()),2) + pow((port.y()-location.y()),2));
-		if (distance < minDistance)
+
+		qDebug() << "||1: " << QLineF(min, location).length();
+		qDebug() << "||2: " << QLineF(port, location).length();
+
+		if (QLineF(port, location).length() < QLineF(min, location).length())
 			min = port;
 		num++;
 	}
