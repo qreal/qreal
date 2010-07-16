@@ -676,18 +676,36 @@ void MainWindow::newGenerateEditor()
 		QString normalizeDirName = (metamodelList[key]).at(0).toUpper() + (metamodelList[key]).mid(1);
 
 		if (errors.showErrors("Generation finished successfully")) {
+
+			QProgressBar *progress = new QProgressBar(this);
+			progress->show();
+
+			QApplication::processEvents();
+
+			progress->move(530,335);
+			progress->setFixedWidth(240);
+			progress->setFixedHeight(20);
+			progress->setRange(0, 100);
+			progress->setValue(5);
+
 			if (mEditorManager.editors().contains(Id(normalizeDirName))) {
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
 					ui.paletteToolbox->deleteDiagramType(diagram);
 
 				mEditorManager.unloadPlugin(metamodelList[key] + ".dll");
 			}
+
+			progress->setValue(20);
+
 			QProcess builder;
 			builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelList[key]);
 			builder.start("qmake");
 			if (builder.waitForFinished()) {
+				progress->setValue(60);
 				builder.start("mingw32-make");
 				if (builder.waitForFinished()) {
+
+					progress->setValue(80);
 
 					mEditorManager.loadPlugin(metamodelList[key] + ".dll");
 
@@ -698,8 +716,11 @@ void MainWindow::newGenerateEditor()
 							ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
 					}
 					ui.paletteToolbox->initDone();
+					progress->setValue(100);
 				}
 			}
+			progress->close();
+			delete progress;
 		}
 	}
 }

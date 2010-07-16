@@ -65,6 +65,7 @@ namespace qReal {
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
 		QMap<QString, EditorInterface *> mPluginIface;
+		QMap<QString, QPluginLoader *> mLoaders;
 
 		QDir mPluginsDir;
 		QStringList mPluginFileNames;

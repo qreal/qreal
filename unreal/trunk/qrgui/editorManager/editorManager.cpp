@@ -31,6 +31,7 @@ EditorManager::EditorManager(QObject *parent)
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
 		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		mLoaders.insert(fileName, loader);
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
@@ -50,6 +51,7 @@ EditorManager::EditorManager(QObject *parent)
 void EditorManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	mLoaders.insert(pluginName, loader);
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
@@ -65,10 +67,8 @@ void EditorManager::loadPlugin(const QString &pluginName)
 
 void EditorManager::unloadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	QPluginLoader *loader = mLoaders[pluginName];
 	loader->unload();
-	qDebug() << "unload plugin = " << loader->unload();
-	qDebug() << "errors = " << loader->errorString();
 }
 
 IdList EditorManager::editors() const
