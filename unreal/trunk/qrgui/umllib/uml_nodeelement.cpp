@@ -893,11 +893,6 @@ const QPointF NodeElement::getNearestPort(QPointF location) const
 	foreach (QPointF port, mPointPorts) {
 		port.setX(port.x()*boundingRect().width() + boundingRect().left());
 		port.setY(port.y()*boundingRect().height() + boundingRect().top());
-		qDebug() << "||-2: " << location;
-		qDebug() << "||-1: " << min;
-		qDebug() << "||+0: " << port;
-		qDebug() << "||+1: " << QLineF(min, location).length();
-		qDebug() << "||+2: " << QLineF(port, location).length();
 		if (QLineF(port, location).length() < QLineF(min, location).length())
 			min = port;
 	}
@@ -910,10 +905,6 @@ const QPointF NodeElement::getNearestPort(QPointF location) const
 		qreal k = getNearestPointOfLinePort(num, location);
 		QPointF port = QPointF((line.line.p1().x()*(1-k)+line.line.p2().x()*k),
 			(line.line.p1().y()*(1-k)+line.line.p2().y()*k));
-
-		qDebug() << "||1: " << QLineF(min, location).length();
-		qDebug() << "||2: " << QLineF(port, location).length();
-
 		if (QLineF(port, location).length() < QLineF(min, location).length())
 			min = port;
 		num++;
