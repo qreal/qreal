@@ -112,6 +112,16 @@ void PaletteToolbox::initDone()
 	setActiveEditor(0);
 }
 
+QComboBox* PaletteToolbox::getComboBox()
+{
+	return mComboBox;
+}
+
+QVector<QString> PaletteToolbox::getTabNames()
+{
+	return mTabNames;
+}
+
 void PaletteToolbox::dragEnterEvent(QDragEnterEvent * /*event*/)
 {
 }

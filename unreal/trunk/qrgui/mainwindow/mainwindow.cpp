@@ -849,6 +849,16 @@ void MainWindow::openNewTab(const QModelIndex &index)
 		//			index = mModel->rootIndex();
 		initCurrentTab(index);
 	}
+
+	//changing of palette active editor:
+	int i = 0;
+	foreach(QString name, ui.paletteToolbox->getTabNames()) {
+		//this condition is not good because of strings comparing
+		if ((index.model()->itemData(index).value(0).value<QString>()).contains(name.trimmed())) {
+			ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
+		}
+		i++;
+	}
 }
 
 void MainWindow::initCurrentTab(const QModelIndex &rootIndex)

@@ -29,6 +29,10 @@ namespace qReal {
 			void initDone();
 			void deleteDiagramType(Id const &id);
 
+			QComboBox* getComboBox();
+
+			QVector<QString> getTabNames();
+
 		public slots:
 			void setActiveEditor(int const editorIndex);
 
