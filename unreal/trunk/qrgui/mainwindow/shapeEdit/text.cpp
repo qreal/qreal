@@ -28,6 +28,15 @@ void Text::drawExtractionForItem(QPainter* painter)
 	painter->drawPoint(mRect.left(), mRect.bottom());
 	painter->drawPoint(mRect.right(), mRect.top());
 	painter->drawPoint(mRect.right(), mRect.bottom());
+
+	setPenBrushDriftRect(painter);
+	painter->drawRect(boundingRect());
+	drawFieldForResizeItem(painter);
+}
+
+void Text::drawFieldForResizeItem(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 QRectF Text::boundingRect() const
@@ -68,4 +77,10 @@ QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &docum
 void Text::setIsDynamicText(bool isDynamic)
 {
 	mIsDynamicText = isDynamic;
+}
+
+void Text::setZValueAll(int const &index)
+{
+	mText.setZValue(index);
+	setZValue(index);
 }

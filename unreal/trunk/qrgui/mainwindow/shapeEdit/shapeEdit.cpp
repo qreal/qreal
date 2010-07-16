@@ -10,14 +10,24 @@
 #include <QtCore/QList>
 #include <QtGui/QComboBox>
 #include <QtGui/QSpinBox>
-#include <QDebug>
 
 using namespace utils;
 
-ShapeEdit::ShapeEdit(QWidget *parent) :
-		QWidget(parent),
-		mUi(new Ui::ShapeEdit), mRole(0)
+ShapeEdit::ShapeEdit(QWidget *parent)
+	: QWidget(parent), mUi(new Ui::ShapeEdit), mRole(0)
 
+{
+	init();
+}
+
+ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
+{
+	init();
+	mUi->saveButton->setEnabled(true);
+}
+
+void ShapeEdit::init()
 {
 	mUi->setupUi(this);
 
@@ -32,49 +42,41 @@ ShapeEdit::ShapeEdit(QWidget *parent) :
 
 	QStringList brushStyleList = Item::getBrushStyleList();
 	mUi->brushStyleComboBox->addItems(brushStyleList);
-	mUi->brushColorComboBox->setColor(QColor("black"));
+	mUi->brushColorComboBox->setColor(QColor("white"));
 
-	connect(mUi->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
-	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
-	connect(mUi->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
-	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
-	connect(mUi->addTextButton, SIGNAL(pressed()), mScene, SLOT(addText()));
-	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
-	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
-	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
-	connect(mUi->stylusButton, SIGNAL(pressed()), mScene, SLOT(addStylus()));
+	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), mScene, SLOT(drawLine(bool)));
+	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), mScene, SLOT(drawEllipse(bool)));
+	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), mScene, SLOT(drawCurve(bool)));
+	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), mScene, SLOT(drawRectangle(bool)));
+	connect(mUi->addTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addText(bool)));
+	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addDynamicText(bool)));
+	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), mScene, SLOT(addPointPort(bool)));
+	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), mScene, SLOT(addLinePort(bool)));
+	connect(mUi->stylusButton, SIGNAL(clicked(bool)), mScene, SLOT(addStylus(bool)));
+	connect(mUi->noneButton, SIGNAL(clicked(bool)), mScene, SLOT(addNone(bool)));
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
 	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushStyle(const QString &)));
 	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushColor(const QString &)));
-	connect(mUi->deleteItemButton, SIGNAL(pressed()), mScene, SLOT(deleteItem()));
-	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
+	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
+	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
+
+	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
+	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
 }
 
-ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
-	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
+void ShapeEdit::initPalette()
 {
-	mUi->setupUi(this);
+	mUi->penStyleComboBox->setCurrentIndex(0);
+	mUi->penWidthSpinBox->setValue(0);
+	mUi->penColorComboBox->setColor(QColor("black"));
 
-	mScene = new Scene(mUi->graphicsView, this);
-	mUi->graphicsView->setScene(mScene);
-
-	connect(mUi->drawLineButton, SIGNAL(pressed()), mScene, SLOT(drawLine()));
-	connect(mUi->drawEllipseButton, SIGNAL(pressed()), mScene, SLOT(drawEllipse()));
-	connect(mUi->drawArcButton, SIGNAL(pressed()), mScene, SLOT(drawArc()));
-	connect(mUi->drawRectButton, SIGNAL(pressed()), mScene, SLOT(drawRectangle()));
-	connect(mUi->addTextButton, SIGNAL(pressed()), mScene, SLOT(addText()));
-	connect(mUi->addDynamicTextButton, SIGNAL(pressed()), mScene, SLOT(addDynamicText()));
-	connect(mUi->addPointPortButton, SIGNAL(pressed()), mScene, SLOT(addPointPort()));
-	connect(mUi->addLinePortButton, SIGNAL(pressed()), mScene, SLOT(addLinePort()));
-	connect(mUi->deleteItemButton, SIGNAL(pressed()), mScene, SLOT(deleteItem()));
-	connect(mUi->clearButton, SIGNAL(pressed()), mScene, SLOT(clearScene()));
-	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
-	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
+	mUi->brushStyleComboBox->setCurrentIndex(0);
+	mUi->brushColorComboBox->setColor(QColor("white"));
 }
 
 ShapeEdit::~ShapeEdit()
@@ -188,4 +190,58 @@ void ShapeEdit::load(const QString &text)
 		return;
 	XmlLoader loader(mScene);
 	loader.readString(text);
+}
+
+void ShapeEdit::setNoPalette()
+{
+	initPalette();
+}
+
+void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
+{
+	if (penStyle == Qt::SolidLine)
+		mUi->penStyleComboBox->setCurrentIndex(0);
+	else if (penStyle == Qt::DotLine)
+		mUi->penStyleComboBox->setCurrentIndex(1);
+	else if (penStyle == Qt::DashLine)
+		mUi->penStyleComboBox->setCurrentIndex(2);
+	else if (penStyle == Qt::DashDotLine)
+		mUi->penStyleComboBox->setCurrentIndex(3);
+	else if (penStyle == Qt::DashDotDotLine)
+		mUi->penStyleComboBox->setCurrentIndex(4);
+	else if (penStyle == Qt::NoPen)
+		mUi->penStyleComboBox->setCurrentIndex(5);
+}
+
+void ShapeEdit::setValuePenColorComboBox(QColor penColor)
+{
+	mUi->penColorComboBox->setColor(penColor);
+}
+
+void ShapeEdit::setValueBrushStyleComboBox(Qt::BrushStyle brushStyle)
+{
+	if (brushStyle == Qt::SolidPattern)
+		mUi->brushStyleComboBox->setCurrentIndex(1);
+	else if (brushStyle == Qt::NoBrush)
+		mUi->brushStyleComboBox->setCurrentIndex(0);
+}
+
+void ShapeEdit::setValuePenWidthSpinBox(int width)
+{
+	mUi->penWidthSpinBox->setValue(width);
+}
+
+void ShapeEdit::setValueBrushColorComboBox(QColor brushColor)
+{
+	mUi->brushColorComboBox->setColor(brushColor);
+}
+
+void ShapeEdit::setItemPalette(QPen const &penItem, QBrush const &brushItem)
+{
+	setValuePenStyleComboBox(penItem.style());
+	setValuePenWidthSpinBox(penItem.width());
+	setValuePenColorComboBox(penItem.color());
+
+	setValueBrushStyleComboBox(brushItem.style());
+	setValueBrushColorComboBox(brushItem.color());
 }

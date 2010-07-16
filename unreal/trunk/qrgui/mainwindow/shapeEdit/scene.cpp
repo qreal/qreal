@@ -8,6 +8,12 @@ Scene::Scene(QGraphicsView *view, QObject * parent)
 	mView = view;
 	setItemIndexMethod(NoIndex);
 	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	setEmptyPenBrushItems();
+	connect(this, SIGNAL(selectionChanged ()), this, SLOT(changePalette()));
+}
+
+void Scene::setEmptyPenBrushItems()
+{
 	mPenStyleItems = "Solid";
 	mPenWidthItems = 0;
 	mPenColorItems = "black";
@@ -80,9 +86,9 @@ void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list) {
-		Item *item = dynamic_cast<Item *>(graphicsItem);
-		if (item != NULL)
-			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+		Item *grItem = dynamic_cast<Item *>(graphicsItem);
+		if (grItem != NULL)
+			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
 	if (item != mEmptyRect)
 		item->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -95,6 +101,18 @@ void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 		Item *item = dynamic_cast<Item *>(graphicsItem);
 		if (item != NULL)
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+	}
+}
+
+void Scene::setZValueItems(int index)
+{
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Text* item = dynamic_cast<Text*>(graphicsItem);
+		if (item != NULL)
+			item->setZValueAll(index);
+		else
+			graphicsItem->setZValue(index);
 	}
 }
 
@@ -150,7 +168,6 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mPointPort = new PointPort(mX1, mY1, NULL);
 		addItem(mPointPort);
-		removeMoveFlag(event, mPointPort);
 		break;
 	case linePort :
 		setX1andY1(event);
@@ -169,6 +186,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 		break;
 	}
+	setZValueItems(items().size() + 1);
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
@@ -201,6 +219,7 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 		reshapeItem(event);
 		break;
 	}
+	setZValueItems(items().size() + 1);
 	update();
 }
 
@@ -229,57 +248,75 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 		reshapeItem(event);
 		break;
 	}
-	mItemType = none;
+	setZValueItems(0);
 	mWaitMove = false;
 	mGraphicsItem = NULL;
 	setMoveFlag(event);
 	mView->setDragMode(QGraphicsView::RubberBandDrag);
 }
 
-void Scene::drawLine()
+void Scene::drawLine(bool checked)
 {
-	mItemType = line;
+	if (checked)
+		mItemType = line;
 }
 
-void Scene::drawEllipse()
+void Scene::drawEllipse(bool checked)
 {
-	mItemType = ellipse;
+	if (checked)
+		mItemType = ellipse;
 }
 
-void Scene::drawArc()
+void Scene::drawCurve(bool checked)
 {
-	mItemType = arch;
-	mCount = 1;
+	if (checked) {
+		mItemType = curve;
+		mCount = 1;
+	}
 }
 
-void Scene::drawRectangle()
+void Scene::drawRectangle(bool checked)
 {
-	mItemType = rectangle;
+	if (checked)
+		mItemType = rectangle;
 }
 
-void Scene::addText()
+void Scene::addText(bool checked)
 {
-	mItemType = text;
+	if (checked)
+		mItemType = text;
 }
 
-void Scene::addDynamicText()
+void Scene::addDynamicText(bool checked)
 {
-	mItemType = dynamicText;
+	if (checked)
+		mItemType = dynamicText;
 }
 
-void Scene::addPointPort()
+void Scene::addPointPort(bool checked)
 {
-	mItemType = pointPort;
+	if (checked)
+		mItemType = pointPort;
 }
 
-void Scene::addLinePort()
+void Scene::addLinePort(bool checked)
 {
-	mItemType = linePort;
+	if (checked)
+		mItemType = linePort;
 }
 
-void Scene::addStylus()
+void Scene::addStylus(bool checked)
 {
-	mItemType = stylus;
+	if (checked)
+		mItemType = stylus;
+}
+
+void Scene::addNone(bool checked)
+{
+	if (checked) {
+		mItemType = none;
+		mCount = 0;
+	}
 }
 
 void Scene::deleteItem()
@@ -300,24 +337,126 @@ void Scene::clearScene()
 void Scene::changePenStyle(const QString &text)
 {
 	mPenStyleItems = text;
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		if (item != NULL)
+			item->setPenStyle(text);
+	}
+	update();
 }
 
 void Scene::changePenWidth(int width)
 {
 	mPenWidthItems = width;
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		if (item != NULL)
+			item->setPenWidth(width);
+	}
+	update();
 }
 
 void Scene::changePenColor(const QString &text)
 {
 	mPenColorItems = text;
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		if (item != NULL)
+			item->setPenColor(text);
+	}
+	update();
 }
 
 void Scene::changeBrushStyle(const QString &text)
 {
 	mBrushStyleItems = text;
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		if (item != NULL)
+			item->setBrushStyle(text);
+	}
+	update();
 }
 
 void Scene::changeBrushColor(const QString &text)
 {
 	mBrushColorItems = text;
+	mListSelectedItems = selectedItems();
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		if (item != NULL)
+			item->setBrushColor(text);
+	}
+	update();
+}
+
+QString Scene::convertPenToString(QPen const &pen)
+{
+	QString penStyle;
+	switch (pen.style()) {
+	case Qt::SolidLine:
+		penStyle = "Solid";
+		break;
+	case Qt::DotLine:
+		penStyle = "Dot";
+		break;
+	case Qt::DashLine:
+		penStyle = "Dash";
+		break;
+	case Qt::DashDotLine:
+		penStyle =  "DashDot";
+		break;
+	case Qt::DashDotDotLine:
+		penStyle = "DashDotDot";
+		break;
+	case Qt::NoPen:
+		penStyle = "None";
+		break;
+	default:
+		break;
+	}
+	return penStyle;
+}
+
+QString Scene::convertBrushToString(QBrush const &brush)
+{
+	QString brushStyle;
+	if (brush.style() == Qt::NoBrush)
+		brushStyle = "None";
+	if (brush.style() == Qt::SolidPattern)
+		brushStyle = "Solid";
+	return brushStyle;
+}
+
+void Scene::setPenBrushItems(QPen const &pen, QBrush const &brush)
+{
+	mPenStyleItems = convertPenToString(pen);
+	mPenWidthItems = pen.width();
+	mPenColorItems = pen.color().name();
+	mBrushStyleItems = convertBrushToString(brush);
+	mBrushColorItems = brush.color().name();
+}
+
+void Scene::changePalette()
+{
+	if(mItemType == none) {
+		mListSelectedItems = selectedItems();
+		if (mListSelectedItems.isEmpty()) {
+			emit noSelectedItems();
+			setEmptyPenBrushItems();
+		}
+		else {
+			Item* item = dynamic_cast<Item*>(mListSelectedItems.back());
+			if (item != NULL) {
+				QPen penItem = item->pen();
+				QBrush brushItem = item->brush();
+				emit existSelectedItems(penItem, brushItem);
+				setPenBrushItems(penItem, brushItem);
+			}
+		}
+	}
 }

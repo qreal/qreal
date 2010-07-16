@@ -8,17 +8,17 @@
 class Arch : public Item
 {
 public:
-	Arch(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent);
+	Arch(QRectF rect, int startAngle, int spanAngle, Item* parent);
 	int startAngle() const;
 	int spanAngle() const;
-	static int sign(int x);
-	static int countAngle(qreal x, qreal y, QPointF const &center);
-	void countSpanAngle(qreal alpha, qreal beta);
 	void setStartAngle(int start);
 	void setSpanAngle(int span);
 
 	virtual QRectF boundingRect() const;
+	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 

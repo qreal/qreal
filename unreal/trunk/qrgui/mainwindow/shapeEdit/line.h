@@ -11,6 +11,7 @@ public:
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);

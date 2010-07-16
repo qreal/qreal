@@ -28,11 +28,15 @@ public:
 	};
 
 	Item(QGraphicsItem* parent = 0);
+	static int sign(int x);
+	static qreal length(QPointF const &point1, QPointF const &point2);
 	virtual QRectF boundingRect() const = 0;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	void setPenBrushDriftRect(QPainter* painter);
 
 	static void swap(qreal &x, qreal &y);
 	static QStringList getPenStyleList();
@@ -62,7 +66,7 @@ public:
 	//for save to xml
 	void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
-	QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
+	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture) = 0;
 
 	void readPenBrush(QDomElement const &docItem);

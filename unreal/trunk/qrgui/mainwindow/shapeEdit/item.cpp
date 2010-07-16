@@ -1,4 +1,6 @@
 #include "item.h"
+#include "math.h"
+
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -8,6 +10,16 @@ Item::Item(QGraphicsItem* parent) : QGraphicsItem(parent), mDomElementType(noneT
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	mBrush.setColor(mPen.color());
+}
+
+int Item::sign(int x)
+{
+	return x > 0 ? 1 : -1;
+}
+
+qreal Item::length(QPointF const &point1, QPointF const &point2)
+{
+	return sqrt(pow((point1.x() - point2.x()), 2) + pow((point1.y() - point2.y()), 2));
 }
 
 void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -32,6 +44,32 @@ void Item::drawExtractionForItem(QPainter* painter)
 	painter->drawPoint(mX1, mY2);
 	painter->drawPoint(mX2, mY1);
 	painter->drawPoint(mX2, mY2);
+	drawFieldForResizeItem(painter);
+}
+
+void Item::drawFieldForResizeItem(QPainter* painter)
+{
+	setPenBrushDriftRect(painter);
+	qreal x1= boundingRect().left();
+	qreal x2 = boundingRect().right();
+	qreal y1 = boundingRect().top();
+	qreal y2 = boundingRect().bottom();
+	painter->drawRect(x1, y1, resizeDrift, resizeDrift);
+	painter->drawRect(x2 - resizeDrift, y2 - resizeDrift, resizeDrift, resizeDrift);
+	painter->drawRect(x1, y2 - resizeDrift, resizeDrift, resizeDrift);
+	painter->drawRect(x2 - resizeDrift, y1, resizeDrift, resizeDrift);
+}
+
+void Item::setPenBrushDriftRect(QPainter* painter)
+{
+	QPen pen(QColor("whitesmoke"));
+	pen.setStyle(Qt::SolidLine);
+	pen.setWidth(0);
+	QBrush brush;
+	brush.setStyle(Qt::NoBrush);
+	brush.setColor(Qt::white);
+	painter->setPen(pen);
+	painter->setBrush(brush);
 }
 
 void Item::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -154,6 +192,8 @@ void Item::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState != None)
 		calcResizeItem(event);
+	else
+		setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 void Item::setXandY(QDomElement& dom, QRectF const &rect)

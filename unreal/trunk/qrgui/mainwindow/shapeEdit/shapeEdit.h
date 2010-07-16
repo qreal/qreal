@@ -28,6 +28,8 @@ private slots:
 	void saveToXml();
 	void save();
 	void open();
+	void setNoPalette();
+	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 
 private:
 	Scene *mScene;
@@ -37,6 +39,14 @@ private:
 	Ui::ShapeEdit *mUi;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
+	void initPalette();
+	void init();
+
+	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
+	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenWidthSpinBox(int width);
+	void setValueBrushStyleComboBox(Qt::BrushStyle brushStyle);
+	void setValueBrushColorComboBox(QColor brushColor);
 
 	void generateDom();
 	void exportToXml(QString const &fileName);

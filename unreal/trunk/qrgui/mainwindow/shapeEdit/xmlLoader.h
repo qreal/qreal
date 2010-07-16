@@ -17,6 +17,7 @@ private:
 	Scene *mScene;
 	QPointF mDrift;
 
+	void readDocument();
 	void readGraphics(QDomElement const &graphic);
 	void readPicture(QDomElement const &picture);
 	void readLabels(QDomElement const &label);
@@ -34,10 +35,4 @@ private:
 	void readPointPort(QDomElement const &pointPort);
 
 	bool isNotLCMZ(QString str, int i);
-	int mStartX;
-	int mStartY;
-	int i;
-	int j;
-	QString s1;
-	QString s2;
 };

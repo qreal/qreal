@@ -19,5 +19,6 @@ public:
 	QPainterPath shape() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
+	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 };

@@ -4,6 +4,7 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QGraphicsView>
+#include <QtCore/QList>
 
 #include "item.h"
 #include "arch.h"
@@ -30,36 +31,42 @@ public:
 	QGraphicsRectItem *mEmptyRect;
 	QPointF centerEmpty();
 
+signals:
+	void noSelectedItems();
+	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
+
 private slots:
-	void drawLine();
-	void drawEllipse();
-	void drawArc();
-	void drawRectangle();
-	void addText();
-	void addDynamicText();
+	void drawLine(bool checked);
+	void drawEllipse(bool checked);
+	void drawCurve(bool checked);
+	void drawRectangle(bool checked);
+	void addText(bool checked);
+	void addDynamicText(bool checked);
 	void clearScene();
-	void addPointPort();
-	void addLinePort();
-	void addStylus();
+	void addPointPort(bool checked);
+	void addLinePort(bool checked);
+	void addStylus(bool checked);
+	void addNone(bool checked);
 	void deleteItem();
 	void changePenStyle(const QString &text);
 	void changePenWidth(int width);
 	void changePenColor(const QString &text);
 	void changeBrushStyle(const QString &text);
 	void changeBrushColor(const QString &text);
+	void changePalette();
 
 private:
 	enum ItemTypes {
 		none,
 		line,
 		ellipse,
-		arch,
 		rectangle,
 		text,
 		dynamicText,
 		pointPort,
 		linePort,
-		stylus
+		stylus,
+		curve
 	};
 	QGraphicsView *mView;
 	ItemTypes mItemType;
@@ -67,7 +74,6 @@ private:
 	int mCount;
 	Line *mLine;
 	Ellipse *mEllipse;
-	Arch *mArch;
 	Rectangle *mRectangle;
 	Text *mText;
 	PointPort *mPointPort;
@@ -83,7 +89,12 @@ private:
 	QString mPenColorItems;
 	QString mBrushStyleItems;
 	QString mBrushColorItems;
+	QList<QGraphicsItem *> mListSelectedItems;
 
+	QString convertPenToString(QPen const &pen);
+	QString convertBrushToString(QBrush const &brush);
+	void setPenBrushItems(QPen const &pen, QBrush const &brush);
+	void setEmptyPenBrushItems();
 	void setX1andY1(QGraphicsSceneMouseEvent *event);
 	void setX2andY2(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
@@ -95,6 +106,7 @@ private:
 
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);
+	void setZValueItems(int index);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

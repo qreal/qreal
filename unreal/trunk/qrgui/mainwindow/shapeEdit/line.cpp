@@ -16,7 +16,7 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 
 QRectF Line::boundingRect() const
 {
-	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1));
+	return QRectF(qMin(mX1, mX2) - mPen.width(), qMin(mY1, mY2) - mPen.width(), abs(mX2 - mX1) + mPen.width(), abs(mY2 - mY1) + mPen.width()).adjusted(-drift, -drift, drift, drift);
 }
 
 void Line::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -30,6 +30,16 @@ void Line::drawExtractionForItem(QPainter* painter)
 {
 	painter->drawPoint(mX1, mY1);
 	painter->drawPoint(mX2, mY2);
+
+	setPenBrushDriftRect(painter);
+	painter->drawPath(shape());
+	drawFieldForResizeItem(painter);
+}
+
+void Line::drawFieldForResizeItem(QPainter* painter)
+{
+	painter->drawEllipse(QPointF(mX1, mY1), resizeDrift, resizeDrift);
+	painter->drawEllipse(QPointF(mX2, mY2), resizeDrift, resizeDrift);
 }
 
 QLineF Line::line() const

@@ -2,43 +2,21 @@
 #include "math.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 
-int Arch::countAngle(qreal x, qreal y, QPointF const &center)
-{
-	return (atan2((center.y() - y), (x - center.x())))* 360 * 16 / M_PI;
-}
+#include <QDebug>
 
-int Arch::sign(int x)
-{
-	return x > 0 ? 1 : -1;
-}
-
-void Arch::countSpanAngle(qreal alpha, qreal beta)
-{
-	if (sign(alpha) == sign(beta)) {
-		if (alpha < beta)
-			mSpanAngle = abs(beta - alpha);
-		else
-			mSpanAngle = 2 * 360 * 16 - abs(beta - alpha);
-	}
-	else {
-		if (sign(beta) < 0)
-			beta += 2 * 360 * 16;
-		mSpanAngle = abs(beta - alpha);
-	}
-}
-
-Arch::Arch(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0)
+Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
-	mRect = QRectF(qMin(x1, x2), qMin(y1, y2), abs(x2 - x1), abs(y2 -y1));
-	QPointF center = mRect.center();
-	int alpha = countAngle(x1, y1, center);
-	int beta = countAngle(x2, y2, center);
-	mStartAngle = alpha;
-	countSpanAngle(alpha, beta);
+	mX1 = rect.left();
+	mX2 = rect.right();
+	mY1 = rect.top();
+	mY2 = rect.bottom();
+	mSpanAngle = spanAngle;
+	mStartAngle = startAngle;
+	mRect = rect;
 }
 
 int Arch::startAngle() const
@@ -85,9 +63,29 @@ void Arch::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 	painter->drawArc(mRect, mStartAngle, mSpanAngle);
 }
 
+void Arch::drawExtractionForItem(QPainter* painter)
+{
+	painter->drawPoint(boundingRect().topLeft());
+	painter->drawPoint(boundingRect().topRight());
+	painter->drawPoint(boundingRect().bottomLeft());
+	painter->drawPoint(boundingRect().bottomRight());
+}
+
+void Arch::resizeItem(QGraphicsSceneMouseEvent *event)
+{
+	Q_UNUSED(event);
+}
+
+QRectF Arch::sceneBoundingRectCoord(QPointF const &topLeftPicture)
+{
+	qreal const x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
+	qreal const y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
+	return QRectF(x1, y1, mRect.width(), mRect.height());
+}
+
 QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
-	QDomElement arch = document.createElement("arch");
+	QDomElement arch = document.createElement("arc");
 	arch.setAttribute("startAngle", mStartAngle);
 	arch.setAttribute("spanAngle", mSpanAngle);
 	setXandY(arch, sceneBoundingRectCoord(topLeftPicture));

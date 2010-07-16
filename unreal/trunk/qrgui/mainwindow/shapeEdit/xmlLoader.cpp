@@ -11,19 +11,18 @@ XmlLoader::XmlLoader(Scene *scene)
 void XmlLoader::readString(const QString &text)
 {
 	mDocument.setContent(text);
-	QDomNodeList const graphics = mDocument.elementsByTagName("graphics");
-
-	for (unsigned i = 0; i < graphics.length(); ++i) {
-		QDomElement graphic = graphics.at(i).toElement();
-		readGraphics(graphic);
-	}
+	readDocument();
 }
 
 void XmlLoader::readFile(const QString &fileName)
 {
 	mDocument = utils::xmlUtils::loadDocument(fileName);
-	QDomNodeList const graphics = mDocument.elementsByTagName("graphics");
+	readDocument();
+}
 
+void XmlLoader::readDocument()
+{
+	QDomNodeList const graphics = mDocument.elementsByTagName("graphics");
 	for (unsigned i = 0; i < graphics.length(); ++i) {
 		QDomElement graphic = graphics.at(i).toElement();
 		readGraphics(graphic);
@@ -137,11 +136,9 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 void XmlLoader::readArch(QDomElement const &arch)
 {
 	QRectF rect = readRectOfXandY(arch);
-	Arch* item = new Arch(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	int spanAngle = arch.attribute("spanAngle", "0").toInt();
 	int startAngle = arch.attribute("startAngle", "0").toInt();
-	item->setSpanAngle(spanAngle);
-	item->setStartAngle(startAngle);
+	Arch* item = new Arch(rect, startAngle, spanAngle, NULL);
 	mScene->addItem(item);
 }
 
@@ -180,7 +177,8 @@ bool XmlLoader::isNotLCMZ(QString str, int i)
 
 void XmlLoader::readPath(QDomElement const &element)
 {
-	QPointF end_point;
+	QString tempStr;
+	QPointF endPoint;
 	QPointF c1;
 	QPointF c2;
 	QDomElement elem = element;
@@ -188,139 +186,140 @@ void XmlLoader::readPath(QDomElement const &element)
 
 	if (!elem.isNull())
 	{
-		QString d_cont;
-		d_cont = elem.attribute("d").remove(0, 1);
-		d_cont.append(" Z");
+		QString dCont;
+		dCont = elem.attribute("d").remove(0, 1);
+		dCont.append(" Z");
 
-		for (i = 0; i < d_cont.length() - 1;)
+		for (int i = 0; i < dCont.length() - 1;)
 		{
-			if (d_cont[i] == 'M')
+			int j = 0;
+			if (dCont[i] == 'M')
 			{
 				j = i + 2;
-				while (isNotLCMZ(d_cont, j))
+				while (isNotLCMZ(dCont, j))
 				{
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					end_point.setX(s1.toFloat()+ mStartX);
-					s1.clear();
+					endPoint.setX(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					end_point.setY(s1.toFloat() + mStartY);
+					endPoint.setY(tempStr.toFloat());
 					++j;
-					s1.clear();
+					tempStr.clear();
 				}
 
-				path.moveTo(end_point);
+				path.moveTo(endPoint);
 				i = j;
 			}
-			else if (d_cont[i] == 'L')
+			else if (dCont[i] == 'L')
 			{
 				j = i + 2;
-				while (isNotLCMZ(d_cont, j))
+				while (isNotLCMZ(dCont, j))
 				{
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					end_point.setX(s1.toFloat()+ mStartX);
-					s1.clear();
+					endPoint.setX(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
-					end_point.setY(s1.toFloat() + mStartY);
+					endPoint.setY(tempStr.toFloat());
 					++j;
-					s1.clear();
+					tempStr.clear();
 				}
 
-				 path.lineTo(end_point);
+				 path.lineTo(endPoint);
 				 i = j;
 			}
-			 else if (d_cont[i] == 'C')
+			 else if (dCont[i] == 'C')
 			{
 				j = i + 2;
-				while(isNotLCMZ(d_cont, j))
+				while(isNotLCMZ(dCont, j))
 				{
-					while (!(d_cont[j] == ' '))
+					while (!(dCont[j] == ' '))
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					c1.setX(s1.toFloat() + mStartX);
-					s1.clear();
+					c1.setX(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					c1.setY(s1.toFloat() + mStartY);
-					s1.clear();
+					c1.setY(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					c2.setX(s1.toFloat() + mStartX);
-					s1.clear();
+					c2.setX(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					c2.setY(s1.toFloat() + mStartY);
-					s1.clear();
+					c2.setY(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					end_point.setX(s1.toFloat() + mStartX);
-					s1.clear();
+					endPoint.setX(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 
-					while (d_cont[j] != ' ')
+					while (dCont[j] != ' ')
 					{
-						s1.append(d_cont[j]);
+						tempStr.append(dCont[j]);
 						++j;
 					}
 
-					end_point.setY(s1.toFloat() + mStartY);
-					s1.clear();
+					endPoint.setY(tempStr.toFloat());
+					tempStr.clear();
 					++j;
 				}
 
-				path.cubicTo(c1, c2, end_point);
+				path.cubicTo(c1, c2, endPoint);
 				i = j;
 
-			} else if (d_cont[i] == 'Z')
+			} else if (dCont[i] == 'Z')
 			{
 				path.closeSubpath();
 			}

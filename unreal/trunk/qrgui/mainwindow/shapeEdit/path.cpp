@@ -22,6 +22,12 @@ void Path::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 void Path::drawExtractionForItem(QPainter* painter)
 {
 	Q_UNUSED(painter);
+	drawFieldForResizeItem(painter);
+}
+
+void Path::drawFieldForResizeItem(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 QPair<QDomElement, Item::DomElementTypes> Path::generateItem(QDomDocument &document, QPointF const &topLeftPicture)

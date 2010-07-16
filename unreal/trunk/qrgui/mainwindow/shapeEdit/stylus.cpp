@@ -72,6 +72,15 @@ void Stylus::drawExtractionForItem(QPainter* painter)
 	painter->drawPoint(mRect.left(), mRect.bottom());
 	painter->drawPoint(mRect.right(), mRect.top());
 	painter->drawPoint(mRect.right(), mRect.bottom());
+
+	/*setPenBrushDriftRect(painter);
+	painter->drawPath(shape());
+	drawFieldForResizeItem(painter);*/
+}
+
+void Stylus::drawFieldForResizeItem(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)

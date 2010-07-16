@@ -34,6 +34,12 @@ void PointPort::drawExtractionForItem(QPainter* painter)
 	pen.setWidth(mRadius / 2.3);
 	painter->setPen(pen);
 	Item::drawExtractionForItem(painter);
+	drawFieldForResizeItem(painter);
+}
+
+void PointPort::drawFieldForResizeItem(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 void PointPort::changeDragState(qreal x, qreal y)
