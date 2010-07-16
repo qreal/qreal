@@ -1,7 +1,7 @@
 #include "model.h"
-#include <QtCore/QDebug>
-#include <QtGui/QPolygon>
 #include <QtGui/QIcon>
+#include <QtGui/QPolygon>
+#include <QtCore/QDebug>
 #include <QtCore/QUuid>
 
 using namespace qReal;

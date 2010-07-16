@@ -11,10 +11,9 @@
 #include <QtGui/QPrintDialog>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
-#include <QtCore/QtDebug>
+#include <QtCore/QDebug>
 
 #include <QtGui/QDialog>
-#include <QtGui/QGridLayout>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
@@ -39,8 +38,6 @@
 #include "preferencesDialog.h"
 #include "openShapeEditorButton.h"
 //#include "../qrrepo/svnClient.h"
-
-#include "../kernel/exception/exception.h"
 
 
 using namespace qReal;
@@ -292,7 +289,6 @@ void MainWindow::chooseDiagram()
 			i++;
 		}
 	}
-	diagramsListWidget.setCurrentRow(0);
 
 	QPushButton cancelButton;
 	cancelButton.setText("Cancel");
@@ -303,6 +299,7 @@ void MainWindow::chooseDiagram()
 	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInListDeselect()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	diagramsListWidget.setCurrentRow(0);
 
 	vLayout.addWidget(&label);
 	vLayout.addWidget(&diagramsListWidget);
