@@ -5,6 +5,7 @@ class QIcon;
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
+#include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
@@ -29,6 +30,8 @@ namespace qReal {
 		IdList diagrams(Id const &editor) const;
 		IdList elements(Id const &diagram) const;
 		IdList elementsOnDiagram(Id const &diagramNode) const;
+		void loadPlugin(QString const &pluginName);
+		void unloadPlugin(QString const &pluginName);
 
 		QString mouseGesture(Id const &id) const;
 		QString friendlyName(Id const &id) const;
@@ -62,7 +65,6 @@ namespace qReal {
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
 		QMap<QString, EditorInterface *> mPluginIface;
-
 
 		QDir mPluginsDir;
 		QStringList mPluginFileNames;

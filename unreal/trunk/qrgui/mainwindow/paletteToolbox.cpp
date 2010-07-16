@@ -96,6 +96,16 @@ void PaletteToolbox::addItemType(Id const &id, QString const &name, QIcon const 
 	tab->layout()->addWidget(element);
 }
 
+void PaletteToolbox::deleteDiagramType(const Id &id)
+{
+	if (mCategories.contains(id)) {
+		mComboBox->removeItem(mCategories[id]);
+		mTabNames.remove(mCategories[id]);
+		mTabs.remove(mCategories[id]);
+		mCategories.remove(id);
+	}
+}
+
 void PaletteToolbox::initDone()
 {
 	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));

@@ -1,6 +1,5 @@
 #include "editorManager.h"
 
-#include <QtCore/QPluginLoader>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
@@ -31,8 +30,8 @@ EditorManager::EditorManager(QObject *parent)
 	mPluginsDir.cd("plugins");
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
-		QPluginLoader loader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader.instance();
+		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		QObject *plugin = loader->instance();
 
 		if (plugin) {
 			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
@@ -41,11 +40,35 @@ EditorManager::EditorManager(QObject *parent)
 				mPluginIface[iEditor->id()] = iEditor;
 			}
 		} else {
-			qDebug() << "Plugin loading failed: " << loader.errorString();
+			qDebug() << "Plugin loading failed: " << loader->errorString();
 			// Keep silent.
-			// QMessageBox::warning(0, "QReal Plugin", loader.errorString() );
+			// QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
 		}
 	}
+}
+
+void EditorManager::loadPlugin(const QString &pluginName)
+{
+	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	QObject *plugin = loader->instance();
+
+	if (plugin) {
+		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+		if (iEditor) {
+			mPluginsLoaded += iEditor->id();
+			mPluginIface[iEditor->id()] = iEditor;
+		}
+	} else {
+		QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
+	}
+}
+
+void EditorManager::unloadPlugin(const QString &pluginName)
+{
+	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	loader->unload();
+	qDebug() << "unload plugin = " << loader->unload();
+	qDebug() << "errors = " << loader->errorString();
 }
 
 IdList EditorManager::editors() const
@@ -112,15 +135,15 @@ QString EditorManager::friendlyName(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	switch (id.idSize()) {
-		case 1:
-			return mPluginIface[id.editor()]->editorName();
-		case 2:
-			return mPluginIface[id.editor()]->diagramName(id.diagram());
-		case 3:
-			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
-		default:
-			Q_ASSERT(!"Malformed Id");
-			return "";
+	case 1:
+		return mPluginIface[id.editor()]->editorName();
+	case 2:
+		return mPluginIface[id.editor()]->diagramName(id.diagram());
+	case 3:
+		return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+	default:
+		Q_ASSERT(!"Malformed Id");
+		return "";
 	}
 }
 
@@ -283,5 +306,5 @@ QList<Listener*> EditorManager::listeners() const
 
 EditorInterface* EditorManager::getEditorInterface(QString editor) const
 {
-		return mPluginIface[editor];
+	return mPluginIface[editor];
 }

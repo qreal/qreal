@@ -52,13 +52,13 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	mErrors.append(error);
 }
 
-void ErrorReporter::showErrors(QString const &successMessage) const
+bool ErrorReporter::showErrors(QString const &successMessage) const
 {
 	QString const windowTitle = "Results";
 
 	if (mErrors.isEmpty()) {
 		QMessageBox::information(NULL, windowTitle, successMessage);
-		return;
+		return true;
 	}
 
 	QString message;
@@ -86,6 +86,7 @@ void ErrorReporter::showErrors(QString const &successMessage) const
 	default:
 		throw new Exception("Incorrect total severity");
 	}
+	return false;
 }
 
 Error::Severity ErrorReporter::maxSeverity() const

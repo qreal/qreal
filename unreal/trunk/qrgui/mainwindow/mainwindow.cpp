@@ -166,7 +166,7 @@ MainWindow::MainWindow()
 	}
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
-		this->mGesturesWidget = new GesturesWidget();
+	this->mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -391,7 +391,6 @@ void MainWindow::saveAs()
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
 {
 	mModel->setData(index, data, role);
-	qDebug() << "data=" << mModel->data(index, role);
 }
 
 void MainWindow::print()
@@ -484,14 +483,14 @@ void MainWindow::toggleShowSplash(bool show)
 
 void MainWindow::doCommit()
 {
-//	QString const Path = getWorkingDir(tr("Select directory with working copy"));
-//	QString const path = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
+	//	QString const Path = getWorkingDir(tr("Select directory with working copy"));
+	//	QString const path = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
 	QString select = tr("Select directory to commit");
 	QString path = QFileDialog::getExistingDirectory(this, select);
 
 	if (path.isEmpty())
 		return;
-/*	char* p;
+	/*	char* p;
 	QByteArray p1 = path.toAscii();
 	p = p1.data();
 	SvnClient client(p, "", "");
@@ -601,14 +600,42 @@ void MainWindow::newGenerateEditor()
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
-		errors.showErrors("Generation finished successfully");
+
+		QString normalizeDirName = (metamodelList[key]).at(0).toUpper() + (metamodelList[key]).mid(1);
+
+		if (errors.showErrors("Generation finished successfully")) {
+			if (mEditorManager.editors().contains(Id(normalizeDirName))) {
+				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
+					ui.paletteToolbox->deleteDiagramType(diagram);
+
+				mEditorManager.unloadPlugin(metamodelList[key] + ".dll");
+			}
+			QProcess builder;
+			builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelList[key]);
+			builder.start("qmake");
+			if (builder.waitForFinished()) {
+				builder.start("mingw32-make");
+				if (builder.waitForFinished()) {
+
+					mEditorManager.loadPlugin(metamodelList[key] + ".dll");
+
+					foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
+						ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+
+						foreach (Id const element, mEditorManager.elements(diagram))
+							ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+					}
+					ui.paletteToolbox->initDone();
+				}
+			}
+		}
 	}
 }
 
 void MainWindow::parseEditorXml()
 {
 	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
-		QMessageBox::warning(this, tr("error"), "required plugin is not loaded =Р");
+		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
 	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"));
@@ -686,7 +713,7 @@ void MainWindow::openNewEmptyTab()
 	QObject *object = sender();
 	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
 	QString text = "Shape Edit";
-	ShapeEdit *shapeEdit;
+	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
 		QPersistentModelIndex index = button->getIndex();
 		int role = button->getRole();
@@ -751,7 +778,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
-		emit tabOpened();
+	emit tabOpened();
 }
 
 void MainWindow::updateTab(QModelIndex const &index)

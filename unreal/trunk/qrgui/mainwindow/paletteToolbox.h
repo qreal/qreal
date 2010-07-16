@@ -27,6 +27,7 @@ namespace qReal {
 			void addDiagramType(Id const &id, QString const &name);
 			void addItemType(Id const &id, QString const &name, QIcon const &icon);
 			void initDone();
+			void deleteDiagramType(Id const &id);
 
 		public slots:
 			void setActiveEditor(int const editorIndex);

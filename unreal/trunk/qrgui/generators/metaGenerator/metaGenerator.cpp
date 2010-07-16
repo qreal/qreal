@@ -29,7 +29,7 @@ QHash<Id, QString> MetaGenerator::getMetamodelList()
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = mApi.typeName(key);
-		if (objectType == "MetaEditor_MetamodelDiagram") {
+		if (objectType == "MetamodelDiagram") {
 			if (mApi.stringProperty(key, "name of the directory") != "")
 				metamodelList.insert(key, mApi.stringProperty(key, "name of the directory"));
 			else
@@ -87,7 +87,7 @@ void MetaGenerator::createDiagrams(QDomElement &parent, const Id &id)
 	IdList rootDiagrams = mApi.children(id);
 	foreach (Id const typeDiagram, rootDiagrams) {
 		QString const objectType = mApi.typeName(typeDiagram);
-		if (objectType == "MetaEditor_MetaEditorDiagramNode") {
+		if (objectType == "MetaEditorDiagramNode") {
 			QDomElement diagram = mDocument.createElement("diagram");
 			ensureCorrectness (typeDiagram, diagram, "name", mApi.name(typeDiagram));
 			ensureCorrectness (typeDiagram, diagram, "displayedName", mApi.stringProperty(typeDiagram, "displayedName"));
@@ -110,7 +110,7 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	foreach (Id const id, childElems) {
 		if (idParent != ROOT_ID) {
 			QString const objectType = mApi.typeName(id);
-			if (objectType == "MetaEditor_MetaEntityEnum")
+			if (objectType == "MetaEntityEnum")
 				createEnum(tagNonGraphic, id);
 		}
 	}
@@ -123,9 +123,9 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	foreach (Id const id, childElems) {
 		if (idParent != ROOT_ID) {
 			QString const objectType = mApi.typeName(id);
-			if (objectType == "MetaEditor_MetaEntityNode")
+			if (objectType == "MetaEntityNode")
 				createNode (tagGraphic, id);
-			if (objectType == "MetaEditor_MetaEntityEdge")
+			if (objectType == "MetaEntityEdge")
 				createEdge (tagGraphic, id);
 		}
 	}
@@ -194,7 +194,7 @@ void MetaGenerator::setLogicAttributes(QDomElement &parent,Id const &id)
 	foreach (Id const idChild, childElems)
 		if (idChild != ROOT_ID) {
 		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEditor_MetaEntity_Attribute"){
+		if (objectType == "MetaEntity_Attribute"){
 			QDomElement property = mDocument.createElement("property");
 			ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
 			ensureCorrectness(idChild, property, "name", mApi.name(idChild));
@@ -240,7 +240,7 @@ void MetaGenerator::setAssotiations(QDomElement &parent, const Id &id)
 
 	foreach (Id const idChild, childElems) {
 		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEditor_MetaEntityAssotiation") {
+		if (objectType == "MetaEntityAssotiation") {
 			QDomElement assotiationTag = mDocument.createElement("assotiations");
 			ensureCorrectness(idChild, assotiationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
 			ensureCorrectness(idChild, assotiationTag, "endType", mApi.stringProperty(idChild, "endType"));
@@ -256,12 +256,12 @@ void MetaGenerator::setAssotiations(QDomElement &parent, const Id &id)
 
 void MetaGenerator::setUsages(QDomElement &parent, const Id &id)
 {
-	newSetConnections(parent, id, "usages", "usage", "MetaEditor_MetaEntityUsage");
+	newSetConnections(parent, id, "usages", "usage", "MetaEntityUsage");
 }
 
 void MetaGenerator::setConnections(QDomElement &parent, const Id &id)
 {
-	newSetConnections(parent, id, "connections", "connection", "MetaEditor_MetaEntityConnection");
+	newSetConnections(parent, id, "connections", "connection", "MetaEntityConnection");
 }
 
 void MetaGenerator::newSetConnections(QDomElement &parent, const Id &id,
@@ -291,7 +291,7 @@ void MetaGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 
 	foreach (Id const idChild, childElems) {
 		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEditor_MetaEntityPossibleEdge") {
+		if (objectType == "MetaEntityPossibleEdge") {
 			QDomElement possibleEdge = mDocument.createElement("possibleEdge");
 			possibleEdges.appendChild(possibleEdge);
 			ensureCorrectness(idChild, possibleEdge, "beginName", mApi.stringProperty(idChild, "beginName"));
@@ -339,7 +339,7 @@ void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
 	IdList elements = mApi.children(id);
 
 	foreach (Id const idChild, elements) {
-		if (mApi.typeName(idChild) == "MetaEditor_MetaEntityPropertiesAsContainer") {
+		if (mApi.typeName(idChild) == "MetaEntityPropertiesAsContainer") {
 			QDomElement properties = mDocument.createElement("properties");
 			parent.appendChild(properties);
 			if (mApi.stringProperty(idChild, "sortContainer") == "true") {
@@ -369,7 +369,7 @@ void MetaGenerator::setImported(QDomElement &parent, const Id &idParent)
 	IdList out = mApi.outgoingLinks(idParent);
 
 	foreach (Id const idChild, out) {
-		if (mApi.typeName(idChild) == "MetaEditor_Importation") {
+		if (mApi.typeName(idChild) == "Importation") {
 			Id const idImported = mApi.to(idChild);
 			QDomElement import = mDocument.createElement("import");
 			ensureCorrectness(idChild, import, "name", mApi.stringProperty(idImported, "name") + "::" + mApi.stringProperty(idChild, "name"));

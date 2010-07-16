@@ -27,7 +27,6 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
 	if (propertyName == "set Shape") {
 		QString propertyValue = model->data(index.sibling(index.row(), index.column()), Qt::DisplayRole).toString();
-		model->setData(index, "", Qt::DisplayRole);
 		QPersistentModelIndex const myIndex = model->getModelIndex();
 		int role = model->roleByIndex(index.row());
 		OpenShapeEditorButton *button = new OpenShapeEditorButton(parent, myIndex, role, propertyValue);
@@ -45,7 +44,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 	if (index.row() != 2)
 	{
 		QString typeName = model->getTypeName(index);
-		if ((typeName != "int") && (typeName != "string"))
+		if ((typeName != "int") && (typeName != "string") && (typeName != ""))
 		{
 			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()));
 			return button;
