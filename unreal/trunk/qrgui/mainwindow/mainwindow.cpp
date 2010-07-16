@@ -11,8 +11,14 @@
 #include <QtGui/QPrintDialog>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+#include <QtCore/QtDebug>
 
-#include <QtCore/QDebug>
+#include <QtGui/QDialog>
+#include <QtGui/QGridLayout>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QListWidget>
+
 
 #include "../dialogs/plugindialog.h"
 #include "editorInterface.h"
@@ -33,6 +39,8 @@
 #include "preferencesDialog.h"
 #include "openShapeEditorButton.h"
 //#include "../qrrepo/svnClient.h"
+
+#include "../kernel/exception/exception.h"
 
 
 using namespace qReal;
@@ -186,6 +194,8 @@ MainWindow::MainWindow()
 	if (showSplash)
 		splash->close();
 	delete splash;
+
+	chooseDiagram();
 }
 
 void MainWindow::slotInc(QAbstractButton* button)
@@ -255,6 +265,71 @@ void MainWindow::loadPlugins()
 		}
 	}
 	ui.paletteToolbox->initDone();
+}
+
+void MainWindow::chooseDiagram()
+{
+	if (getCurrentTab())
+		return;
+	QDialog dialog;
+	QVBoxLayout vLayout;
+	QHBoxLayout hLayout;
+	dialog.setLayout(&vLayout);
+	dialog.setMinimumSize(320,240);
+	dialog.setMaximumSize(320,240);
+	dialog.setWindowTitle("Choose new diagram");
+
+	QLabel label;
+	label.setText(QString("There is no existing diagram,\n choose diagram you want work with:"));
+	QListWidget diagramsListWidget;
+	diagramsListWidget.setParent(&dialog);
+
+	int i = 0;
+	foreach(Id editor, manager()->editors()) {
+		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
+			diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram());
+			diagramsListWidget.addItem(diagram.diagram());
+			i++;
+		}
+	}
+	diagramsListWidget.setCurrentRow(0);
+
+	QPushButton cancelButton;
+	cancelButton.setText("Cancel");
+	QPushButton okButton;
+	okButton.setText("Done");
+
+	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInListSelected(int)));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInListDeselect()));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+
+	vLayout.addWidget(&label);
+	vLayout.addWidget(&diagramsListWidget);
+	hLayout.addWidget(&cancelButton);
+	hLayout.addWidget(&okButton);
+	vLayout.addLayout(&hLayout);
+
+	dialog.exec();
+}
+
+void MainWindow::diagramInListDeselect()
+{
+	deleteFromExplorer();
+}
+
+void MainWindow::diagramInListSelected(int num)
+{
+	deleteFromExplorer();
+	createDiagram(diagramsList.at(num));
+}
+
+void MainWindow::createDiagram(const QString &idString)
+{
+	Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
+	QModelIndex index = mModel->indexById(created);
+	ui.diagramExplorer->setCurrentIndex(index);
+	openNewTab(index);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)

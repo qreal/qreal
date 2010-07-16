@@ -100,6 +100,8 @@ namespace qReal {
 		void showGestures();
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
+		void diagramInListDeselect();
+		void diagramInListSelected(int num);
 	private:
 		model::Model *mModel;
 		EditorManager mEditorManager;
@@ -109,11 +111,15 @@ namespace qReal {
 
 		PropertyEditorDelegate mDelegate;
 
-				GesturesWidget * mGesturesWidget;
+		GesturesWidget * mGesturesWidget;
 
 		int isSave;
 
 		void loadPlugins();
+		void chooseDiagram();
+		QStringList diagramsList;
+		void createDiagram(const QString &idString);
+
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
 		void keyPressEvent(QKeyEvent *event);

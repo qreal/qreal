@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive);
+	return ((id.idSize() == 3) || (id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)));
 }
 
 void Model::init()
@@ -369,13 +369,13 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 
 	if (isDiagram(id)) {
 		if (!isDiagram(parentItem->id()) && parentItem != mRootItem) {
-			qDebug() << "Диаграмму нельзя добавить в элемент.";
+			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
 		}
 	}
 	else {
 		if (parentItem == mRootItem) {
-			qDebug() << "Элемент можно добавить только на диаграмму";
+			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
 	}

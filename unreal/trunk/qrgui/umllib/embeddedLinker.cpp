@@ -219,7 +219,19 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		{
 			mEdge->setSelected(true);
 			master->setSelected(false);
-			mEdge->placeStartTo(master->getNearestPort(event->pos()));
+
+			QPointF point = event->pos();
+			if (point.x() > master->boundingRect().right())
+				point.setX(master->boundingRect().right());
+			if (point.x() < master->boundingRect().left())
+				point.setX(master->boundingRect().left());
+			if (point.y() > master->boundingRect().bottom())
+				point.setY(master->boundingRect().bottom());
+			if (point.y() < master->boundingRect().top())
+				point.setY(master->boundingRect().top());
+			//no effect
+
+			mEdge->placeStartTo(master->getNearestPort(point));
 			mEdge->placeEndTo(event->pos());
 		}
 	}
