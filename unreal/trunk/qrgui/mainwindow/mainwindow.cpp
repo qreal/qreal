@@ -726,6 +726,8 @@ void MainWindow::newGenerateEditor()
 					progress->setValue(100);
 				}
 			}
+			if (progress->value() != 100)
+				QMessageBox::warning(this, tr("error"), "cannot load new editor");
 			progress->close();
 			delete progress;
 		}

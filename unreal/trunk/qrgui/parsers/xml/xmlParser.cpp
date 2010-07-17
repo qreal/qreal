@@ -18,7 +18,9 @@ using namespace qReal;
 using namespace parsers;
 
 XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager)
+	: mApi(api), mEditorManager(editorManager), mCurrentRow(0), mCurrentColumn(0),
+	mCurrentWidth(0), mCurrentHigh(0), mCurrentPositionElementX(0),
+	mCurrentPositionElementY(0), mPosition(0)
 {
 }
 
@@ -118,6 +120,14 @@ void XmlParser::initEnum(const QDomElement &enumElement, const Id &diagramId)
 			enumElement.attribute("displayedName", ""));
 
 	setEnumAttributes(enumElement, enumId);
+
+	mPosition += mCurrentHigh;
+	qDebug() << "mPosition=" << mPosition;
+	mApi.setProperty(enumId, "position", QPointF(mCurrentPositionElementX, mPosition));
+	setChildrenPositions(enumId, 150, 105);
+	mApi.setProperty(enumId, "configuration", QVariant(QPolygon()));
+	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
+	mApi.setProperty(enumId, "configuration", QVariant(QPolygon(value, false)));*/
 }
 
 void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
@@ -130,6 +140,14 @@ void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 			node.attribute("displayedName", ""));
 
 	setNodeAttributes(node, nodeId);
+
+	mPosition += mCurrentHigh;
+	qDebug() << "mPosition=" << mPosition;
+	mApi.setProperty(nodeId, "position", QPointF(mCurrentPositionElementX, mPosition));
+	setChildrenPositions(nodeId, 150, 105);
+	mApi.setProperty(nodeId, "configuration", QVariant(QPolygon()));
+	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
+	mApi.setProperty(nodeId, "configuration", QVariant(QPolygon(value, false)));*/
 }
 
 void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
@@ -142,6 +160,14 @@ void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
 			edge.attribute("displayedName", ""));
 
 	setEdgeAttributes(edge, edgeId);
+
+	mPosition += mCurrentHigh;
+	qDebug() << "mPosition=" << mPosition;
+	mApi.setProperty(edgeId, "position", QPointF(mCurrentPositionElementX, mPosition));
+	setChildrenPositions(edgeId, 150, 105);
+	mApi.setProperty(edgeId, "configuration", QVariant(QPolygon()));
+	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
+	mApi.setProperty(edgeId, "configuration", QVariant(QPolygon(value, false)));*/
 }
 
 void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
@@ -479,4 +505,28 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 	mApi.setProperty(id, "position", QPointF(0,0));
 	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
+}
+
+void XmlParser::setChildrenPositions(const Id &id, unsigned cellWidth, unsigned cellHeight)
+{
+	int rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(id).count())));
+	int currentRow = mCurrentRow;
+	int currentColumn = 0;
+
+	//qDebug() << "in setChildrenPosition=" << currentRow * cellHeight;
+	foreach(Id element, mApi.children(id)) {
+		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth, currentRow * cellHeight));
+		++currentColumn;
+		if (currentColumn >= rowWidth) {
+			currentColumn = 0;
+			++currentRow;
+		}
+	}
+	if (rowWidth > mCurrentColumn)
+		mCurrentColumn = rowWidth;
+	mCurrentWidth = rowWidth * cellWidth;
+	mCurrentHigh = (currentRow - mCurrentRow) * cellHeight;
+	mCurrentRow = currentRow;
+	if (rowWidth > mCurrentPositionElementY)
+		mCurrentPositionElementY = rowWidth;
 }

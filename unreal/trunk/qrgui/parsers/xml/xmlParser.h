@@ -30,6 +30,13 @@ namespace qReal {
 			Id mMetamodel;
 			QHash<Id, QString> mElements;
 			QHash<QString, QString> mContainerList;
+			int mCurrentRow;
+			int mCurrentColumn;
+			int mCurrentWidth;
+			int mCurrentHigh;
+			int mCurrentPositionElementX;
+			int mCurrentPositionElementY;
+			int mPosition;
 
 			void initMetamodel(QDomDocument const &document, QString const &directoryName);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
@@ -65,6 +72,8 @@ namespace qReal {
 			void initUsage(QDomElement const &usage, Id const &elementId);
 			void initGeneralization(QDomElement const &generalization, Id const &elementId);
 			void initContainer();
+
+			void setChildrenPositions(Id const &id, unsigned cellWidth, unsigned cellHeight);
 		};
 	}
 }
