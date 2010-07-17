@@ -42,9 +42,9 @@ void EnumType::generateOneCase(utils::OutFile &out, bool isNotFirst) const
 	//QString name = NameNormalizer::normalize(qualifiedName());
 	
 	if (!isNotFirst)
-		out() << "\tif (name == \"" << name() << "\")\n";
+		out() << "\tif (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
 	else
-		out() << "\telse if (name == \"" << name() << "\")\n";
+		out() << "\telse if (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
 }
 
 void EnumType::generatePropertyTypes(utils::OutFile &out)

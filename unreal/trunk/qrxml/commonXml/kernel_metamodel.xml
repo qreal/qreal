@@ -357,7 +357,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="VisibilityKind" name="visibility">
+              <property type="Visibility Kind" name="visibility">
                 <default>public</default>
               </property>
               <property type="string" name="alias"/>
@@ -564,7 +564,7 @@
 							������� �������� name ����������� ������������� ����, ���� ���� �� �����.
 							��������� ��� � xml-�� �� ���� - ����� ����� ������� ����������� -->
               <!-- <property type="string" name="name" /> -->
-              <property type="VisibilityKind" name="visibility">
+              <property type="Visibility Kind" name="visibility">
                 <default>private</default>
               </property>
               <property type="Dependency" name="clientDependency"/>
@@ -680,7 +680,7 @@
               <parent parentName="Directed Relationship"/>
             </generalizations>
             <properties>
-              <property type="VisibilityKind" name="visibility">
+              <property type="Visibility Kind" name="visibility">
                 <default>public</default>
               </property>
             </properties>
