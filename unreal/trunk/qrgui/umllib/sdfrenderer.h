@@ -66,6 +66,7 @@ private:
 	void defaultstyle();
 	void path_draw(QDomElement &element);
 	void stylus_draw(QDomElement &element);
+	void curve_draw(QDomElement &element);
 	float x1_def(QDomElement &element);
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);

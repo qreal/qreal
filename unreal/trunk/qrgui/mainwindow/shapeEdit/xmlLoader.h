@@ -30,6 +30,7 @@ private:
 	void readRectangle(QDomElement const &rectangle);
 	void readStylus(QDomElement const &stylus);
 	void readPath(QDomElement const &element);
+	void readCurve(QDomElement const &element);
 	void readLabel(QDomElement const &label);
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);

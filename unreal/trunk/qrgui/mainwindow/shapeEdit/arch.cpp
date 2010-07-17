@@ -2,8 +2,6 @@
 #include "math.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 
-#include <QDebug>
-
 Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {

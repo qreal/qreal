@@ -42,7 +42,7 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 		else if (type.tagName() == "ports")
 			readPorts(type);
 		else
-			qDebug() << "ololo_graphics";
+			qDebug() << "Incorrect graphics tag";
 	}
 }
 
@@ -68,8 +68,10 @@ void XmlLoader::readPicture(QDomElement const &picture)
 			readStylus(type);
 		else if (type.tagName() == "path")
 			readPath(type);
+		else if (type.tagName() == "curve")
+			readCurve(type);
 		else
-			qDebug() << "ololo_picture";
+			qDebug() << "Incorrect picture tag";
 	}
 }
 
@@ -82,7 +84,7 @@ void XmlLoader::readLabels(QDomElement const &label)
 		if (type.tagName() == "label")
 			readLabel(type);
 		else
-			qDebug() << "ololo_labelS";
+			qDebug() << "Incorrect labels tag";
 	}
 }
 
@@ -97,7 +99,7 @@ void XmlLoader::readPorts(QDomElement const &port)
 		else if (type.tagName() == "pointPort")
 			readPointPort(type);
 		else
-			qDebug() << "ololo_ports";
+			qDebug() << "Incorrect ports tag";
 	}
 }
 
@@ -164,7 +166,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			stylusItem->mListLine.push_back(item);
 		}
 		else
-			qDebug() << "ololo_stylus";
+			qDebug() << "Incorrect stylus tag";
 	}
 	mScene->addItem(stylusItem);
 }
@@ -331,6 +333,36 @@ void XmlLoader::readPath(QDomElement const &element)
 	mScene->addItem(item);
 }
 
+void XmlLoader::readCurve(QDomElement const &curve)
+{
+	QDomNodeList curveAttributes = curve.childNodes();
+	qreal x1 = 0;
+	qreal y1 = 0;
+	qreal x2 = 0;
+	qreal y2 = 0;
+	qreal x3 = 0;
+	qreal y3 = 0;
+	for (unsigned i = 0; i < curveAttributes.length(); ++i) {
+		QDomElement type = curveAttributes.at(i).toElement();
+		if (type.tagName() == "start") {
+			x1 = (type.attribute("startx", "0")).toDouble() + mDrift.x();
+			y1 = (type.attribute("starty", "0")).toDouble() + mDrift.y();
+		}
+		else if (type.tagName() == "end") {
+			x2 = (type.attribute("endx", "0")).toDouble() + mDrift.x();
+			y2 = (type.attribute("endy", "0")).toDouble() + mDrift.y();
+		} else if (type.tagName() == "ctrl") {
+			x3 = (type.attribute("x", "0")).toDouble() + mDrift.x();
+			y3 = (type.attribute("y", "0")).toDouble() + mDrift.y();
+		} else
+			qDebug() << "Incorrect curve tag";
+
+	}
+	Curve* item = new Curve(QPointF(x1, y1), QPointF(x2, y2), QPointF(x3, y3));
+	item->readPenBrush(curve);
+	mScene->addItem(item);
+}
+
 void XmlLoader::readLabel(QDomElement const &label)
 {
 	QPointF point = readXandY(label);
@@ -343,7 +375,7 @@ void XmlLoader::readLabel(QDomElement const &label)
 		item->setIsDynamicText(true);
 	}
 	else
-		qDebug() << "ololo_label";
+		qDebug() << "Incorrect label tag";
 	mScene->addItem(item);
 }
 
@@ -364,7 +396,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 			x2 = (type.attribute("endx", "0")).toDouble() + mDrift.x();
 			y2 = (type.attribute("endy", "0")).toDouble() + mDrift.y();
 		} else
-			qDebug() << "ololo_linePort";
+			qDebug() << "Incorrect linePort tag";
 
 	}
 	LinePort* item = new LinePort(x1, y1, x2, y2, NULL);

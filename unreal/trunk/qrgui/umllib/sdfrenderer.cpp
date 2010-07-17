@@ -98,6 +98,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 			{
 				stylus_draw(elem);
 			}
+			else if(elem.tagName()=="curve")
+			{
+				curve_draw(elem);
+			}
 		}
 		node = node.nextSibling();
 	}
@@ -457,11 +461,45 @@ void SdfRenderer::stylus_draw(QDomElement &element)
 			{
 				line(elem);
 			}
-			else
-				qDebug() << "ololo";
 		}
 		node = node.nextSibling();
 	}
+}
+
+void SdfRenderer::curve_draw(QDomElement &element)
+{
+	QDomNode node = element.firstChild();
+	QPointF start(0, 0);
+	QPointF end(0, 0);
+	QPoint c1(0, 0);
+	while(!node.isNull())
+	{
+		QDomElement elem = node.toElement();
+		if(!elem.isNull())
+		{
+			if (elem.tagName() == "start")
+			{
+				start.setX(elem.attribute("startx").toDouble());
+				start.setY(elem.attribute("starty").toDouble());
+			}
+			else if (elem.tagName() == "end")
+			{
+				end.setX(elem.attribute("endx").toDouble());
+				end.setY(elem.attribute("endy").toDouble());
+			}
+			else if (elem.tagName() == "ctrl")
+			{
+				c1.setX(elem.attribute("x").toDouble());
+				c1.setY(elem.attribute("y").toDouble());
+			}
+		}
+		node = node.nextSibling();
+	}
+
+	QPainterPath path(start);
+	path.quadTo(c1, end);
+	parsestyle(element);
+	painter->drawPath(path);
 }
 
 void SdfRenderer::parsestyle(QDomElement &element)
@@ -652,7 +690,7 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	int pw = mRenderer.pictureWidth();
 	if (pw == 0 || ph == 0) { // SUDDENLY!!11
 		return;
-	}	
+	}
 	// Take picture aspect into account
 	QRect resRect = rect;
 	if (rh * pw < ph * rw)

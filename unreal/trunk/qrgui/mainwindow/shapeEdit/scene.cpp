@@ -38,6 +38,13 @@ void Scene::setX2andY2(QGraphicsSceneMouseEvent *event)
 	mY2 = event->scenePos().y();
 }
 
+QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
+{
+	qreal x = event->scenePos().x();
+	qreal y = event->scenePos().y();
+	return QPointF(x, y);
+}
+
 void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
@@ -72,6 +79,18 @@ void Scene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 	mStylus->addLine(mX2, mY2);
 }
 
+void Scene::reshapeCurveFirst(QGraphicsSceneMouseEvent *event)
+{
+	setX2andY2(event);
+	mCurve->setX2andY2(mX2, mY2);
+}
+
+void Scene::reshapeCurveSecond(QGraphicsSceneMouseEvent *event)
+{
+	mC1 = setCXandCY(event);
+	mCurve->setCXandCY(mC1.x(), mC1.y());
+}
+
 void Scene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
@@ -79,6 +98,16 @@ void Scene::reshapeItem(QGraphicsSceneMouseEvent *event)
 		if (mGraphicsItem->getDragState() != Item::None)
 			mView->setDragMode(QGraphicsView::NoDrag);
 		mGraphicsItem->resizeItem(event);
+	}
+}
+
+void Scene::reshapeItem(QGraphicsSceneMouseEvent *event, Item *item)
+{
+	setX2andY2(event);
+	if (item != NULL) {
+		if (item->getDragState() != Item::None)
+			mView->setDragMode(QGraphicsView::NoDrag);
+		item->resizeItem(event);
 	}
 }
 
@@ -90,7 +119,7 @@ void Scene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
 		if (grItem != NULL)
 			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);
 	}
-	if (item != mEmptyRect)
+	if (item!= NULL && item != mEmptyRect)
 		item->setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
@@ -116,64 +145,121 @@ void Scene::setZValueItems(int index)
 	}
 }
 
+QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
+{
+	QList<Item *> list = selectedSceneItems();
+	foreach (Item *item, list) {
+		item->changeDragState(x, y);
+		if (item->getDragState() != Item::None)  {
+			mView->setDragMode(QGraphicsView::NoDrag);
+			return QPair<bool, Item *>(true, item);
+		}
+	}
+	return QPair<bool, Item *>(false, NULL);
+}
+
 void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
 	if (mItemType != none)
 		mView->setDragMode(QGraphicsView::NoDrag);
 	switch (mItemType) {
+	case curve:
+		if (mCount == 1) {
+			setX1andY1(event);
+			mNeedResize = checkOnResize(mX1, mY1);
+			if (mNeedResize.first) {
+				mWaitMove = true;
+				mCount = 1;
+				break;
+			}
+		}
+		else if (mCount == 2)
+			reshapeCurveFirst(event);
+		else if (mCount == 3)
+			reshapeCurveSecond(event);
+		removeMoveFlag(event, NULL);
+		mCount++;
+		break;
 	case stylus :
 		setX1andY1(event);
-		mStylus = new Stylus(mX1, mY1, NULL);
-		mStylus->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-		addItem(mStylus);
-		removeMoveFlag(event, mStylus);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mStylus = new Stylus(mX1, mY1, NULL);
+			mStylus->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
+			addItem(mStylus);
+			removeMoveFlag(event, mStylus);
+		}
 		mWaitMove = true;
 		break;
 	case line :
 		setX1andY1(event);
-		mLine = new Line(mX1, mY1, mX1, mY1, NULL);
-		mLine->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-		addItem(mLine);
-		removeMoveFlag(event, mLine);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mLine = new Line(mX1, mY1, mX1, mY1, NULL);
+			mLine->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
+			addItem(mLine);
+			removeMoveFlag(event, mLine);
+		}
 		mWaitMove = true;
 		break;
 	case ellipse :
 		setX1andY1(event);
-		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
-		mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-		addItem(mEllipse);
-		removeMoveFlag(event, mEllipse);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
+			mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
+			addItem(mEllipse);
+			removeMoveFlag(event, mEllipse);
+		}
 		mWaitMove = true;
 		break;
 	case rectangle :
 		setX1andY1(event);
-		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
-		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
-		addItem(mRectangle);
-		removeMoveFlag(event, mRectangle);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
+			mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
+			addItem(mRectangle);
+			removeMoveFlag(event, mRectangle);
+		}
 		mWaitMove = true;
 		break;
 	case text:
 		setX1andY1(event);
-		mText = new Text(mX1, mY1, "text", false);
-		addItem(mText);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mText = new Text(mX1, mY1, "text", false);
+			addItem(mText);
+		} else
+			mWaitMove = true;//for resize
 		break;
 	case dynamicText :
 		setX1andY1(event);
-		mText = new Text(mX1, mY1, "name", true);
-		addItem(mText);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mText = new Text(mX1, mY1, "name", true);
+			addItem(mText);
+		} else
+			mWaitMove = true;//for resize
 		break;
 	case pointPort :
 		setX1andY1(event);
-		mPointPort = new PointPort(mX1, mY1, NULL);
-		addItem(mPointPort);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mPointPort = new PointPort(mX1, mY1, NULL);
+			addItem(mPointPort);
+		} else
+			mWaitMove = true;//for resize
 		break;
 	case linePort :
 		setX1andY1(event);
-		mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
-		addItem(mLinePort);
-		removeMoveFlag(event, mLinePort);
+		mNeedResize = checkOnResize(mX1, mY1);
+		if (!mNeedResize.first) {
+			mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
+			addItem(mLinePort);
+			removeMoveFlag(event, mLinePort);
+		}
 		mWaitMove = true;
 		break;
 	default:  // if we wait some resize
@@ -196,24 +282,57 @@ void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
 		mView->setDragMode(QGraphicsView::NoDrag);
 	switch (mItemType) {
 	case stylus :
-		if (mWaitMove)
-			reshapeStylus(event);
+		if (mWaitMove) {
+			if (!mNeedResize.first)
+				reshapeStylus(event);
+			else
+				reshapeItem(event, mNeedResize.second);
+		}
 		break;
 	case line :
-		if (mWaitMove)
-			reshapeLine(event);
+		if (mWaitMove) {
+			if (!mNeedResize.first)
+				reshapeLine(event);
+			else
+				reshapeItem(event, mNeedResize.second);
+		}
 		break;
 	case ellipse :
-		if (mWaitMove)
-			reshapeEllipse(event);
+		if (mWaitMove) {
+			if (!mNeedResize.first)
+				reshapeEllipse(event);
+			else
+				reshapeItem(event, mNeedResize.second);
+		}
 		break;
 	case rectangle :
-		if (mWaitMove)
-			reshapeRectangle(event);
+		if (mWaitMove) {
+			if (!mNeedResize.first)
+				reshapeRectangle(event);
+			else
+				reshapeItem(event, mNeedResize.second);
+		}
+		break;
+	case curve:
+		if (mCount == 2) {
+			if (mCurve != NULL)
+				reshapeCurveFirst(event);
+		} else if (mCount == 3)
+			reshapeCurveSecond(event);
+	case text:
+	case dynamicText :
+	case pointPort :
+		if (mWaitMove && mNeedResize.first) {
+			reshapeItem(event, mNeedResize.second);
+		}
 		break;
 	case linePort :
-		if (mWaitMove)
-			reshapeLinePort(event);
+		if (mWaitMove) {
+			if (!mNeedResize.first)
+				reshapeLinePort(event);
+			else
+				reshapeItem(event, mNeedResize.second);
+		}
 		break;
 	default:  // if we wait some resize
 		reshapeItem(event);
@@ -229,20 +348,54 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (mItemType != none)
 		mView->setDragMode(QGraphicsView::NoDrag);
 	switch (mItemType) {
+	case curve:
+		if (mCount == 2) {
+			setX2andY2(event);
+			mCurve = new Curve(QPointF(mX1, mY1), QPointF(mX2, mY2), QPointF(mX1, mY1));
+			mCurve->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
+			addItem(mCurve);
+		} else if (mCount == 3)
+			reshapeCurveSecond(event);
+		else if (mCount == 4) {
+			mCount = 1;
+			mCurve = NULL;
+		}
+		break;
 	case stylus :
-		reshapeStylus(event);
+		if (!mNeedResize.first)
+			reshapeStylus(event);
+		else
+			reshapeItem(event, mNeedResize.second);
 		break;
 	case line :
-		reshapeLine(event);
+		if (!mNeedResize.first)
+			reshapeLine(event);
+		else
+			reshapeItem(event, mNeedResize.second);
 		break;
 	case ellipse :
-		reshapeEllipse(event);
+		if (!mNeedResize.first)
+			reshapeEllipse(event);
+		else
+			reshapeItem(event, mNeedResize.second);
 		break;
 	case rectangle :
-		reshapeRectangle(event);
+		if (!mNeedResize.first)
+			reshapeRectangle(event);
+		else
+			reshapeItem(event, mNeedResize.second);
+		break;
+	case text:
+	case dynamicText :
+	case pointPort :
+		if (mNeedResize.first)
+			reshapeItem(event, mNeedResize.second);
 		break;
 	case linePort :
-		reshapeLinePort(event);
+		if (!mNeedResize.first)
+			reshapeLinePort(event);
+		else
+			reshapeItem(event, mNeedResize.second);
 		break;
 	default:  // if we wait some resize
 		reshapeItem(event);
@@ -334,63 +487,55 @@ void Scene::clearScene()
 	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
 }
 
-void Scene::changePenStyle(const QString &text)
+QList<Item *> Scene::selectedSceneItems()
 {
-	mPenStyleItems = text;
+	QList<Item *> resList;
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL)
-			item->setPenStyle(text);
+			resList.push_back(item);
 	}
+	return resList;
+}
+
+void Scene::changePenStyle(const QString &text)
+{
+	mPenStyleItems = text;
+	foreach (Item *item, selectedSceneItems())
+		item->setPenStyle(text);
 	update();
 }
 
 void Scene::changePenWidth(int width)
 {
 	mPenWidthItems = width;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
-			item->setPenWidth(width);
-	}
+	foreach (Item *item, selectedSceneItems())
+		item->setPenWidth(width);
 	update();
 }
 
 void Scene::changePenColor(const QString &text)
 {
 	mPenColorItems = text;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
-			item->setPenColor(text);
-	}
+	foreach (Item *item, selectedSceneItems())
+		item->setPenColor(text);
 	update();
 }
 
 void Scene::changeBrushStyle(const QString &text)
 {
 	mBrushStyleItems = text;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
-			item->setBrushStyle(text);
-	}
+	foreach (Item *item, selectedSceneItems())
+		item->setBrushStyle(text);
 	update();
 }
 
 void Scene::changeBrushColor(const QString &text)
 {
 	mBrushColorItems = text;
-	mListSelectedItems = selectedItems();
-	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Item* item = dynamic_cast<Item*>(graphicsItem);
-		if (item != NULL)
-			item->setBrushColor(text);
-	}
+	foreach (Item *item, selectedSceneItems())
+		item->setBrushColor(text);
 	update();
 }
 

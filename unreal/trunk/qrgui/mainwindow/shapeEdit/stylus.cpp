@@ -83,6 +83,36 @@ void Stylus::drawFieldForResizeItem(QPainter* painter)
 	Q_UNUSED(painter);
 }
 
+void Stylus::setPenStyle(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setPenStyle(text);
+}
+
+void Stylus::setPenWidth(int width)
+{
+	foreach (Line *line, mListLine)
+		line->setPenWidth(width);
+}
+
+void Stylus::setPenColor(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setPenColor(text);
+}
+
+void Stylus::setBrushStyle(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setBrushStyle(text);
+}
+
+void Stylus::setBrushColor(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setBrushColor(text);
+}
+
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");

@@ -18,7 +18,8 @@ public:
 		TopLeft,
 		TopRight,
 		BottomLeft,
-		BottomRight
+		BottomRight,
+		Ctrl
 	};
 	enum DomElementTypes {
 		noneType,
@@ -45,11 +46,11 @@ public:
 	QBrush brush() const;
 	void setBrush(const QBrush& brush);
 	void setPen(const QPen& pen);
-	void setPenStyle(const QString& text);
-	void setPenWidth(int width);
-	void setPenColor(const QString& text);
-	void setBrushStyle(const QString& text);
-	void setBrushColor(const QString& text);
+	virtual void setPenStyle(const QString& text);
+	virtual void setPenWidth(int width);
+	virtual void setPenColor(const QString& text);
+	virtual void setBrushStyle(const QString& text);
+	virtual void setBrushColor(const QString& text);
 	void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
 
 	void setX1andY1(qreal x, qreal y);

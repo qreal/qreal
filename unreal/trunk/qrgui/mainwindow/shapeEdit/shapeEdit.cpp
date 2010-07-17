@@ -34,6 +34,7 @@ void ShapeEdit::init()
 	mScene = new Scene(mUi->graphicsView, this);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
+	mUi->graphicsView->setMouseTracking(true);
 
 	QStringList penStyleList = Item::getPenStyleList();
 	mUi->penStyleComboBox->addItems(penStyleList);

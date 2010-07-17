@@ -71,7 +71,7 @@
    <item row="2" column="0">
     <widget class="QPushButton" name="drawCurveButton">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="text">
       <string>Draw Curve</string>
@@ -417,8 +417,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>142</width>
-        <height>86</height>
+        <width>98</width>
+        <height>28</height>
        </rect>
       </property>
       <attribute name="label">
