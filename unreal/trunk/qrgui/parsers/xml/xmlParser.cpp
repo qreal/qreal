@@ -18,9 +18,8 @@ using namespace qReal;
 using namespace parsers;
 
 XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
-	: mApi(api), mEditorManager(editorManager), mCurrentRow(0), mCurrentColumn(0),
-	mCurrentWidth(0), mCurrentHigh(0), mCurrentPositionElementX(0),
-	mCurrentPositionElementY(0), mPosition(0)
+	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
+	mCurrentMoveWidth(0), mMoveWidth(0), mMoveHigh(0), mCurrentWidth(0), mCurrentHigh(0)
 {
 }
 
@@ -37,7 +36,6 @@ void XmlParser::parseFile(const QString &fileName)
 		initDiagram (diagram, mMetamodel, diagram.attribute("name", "diagram"),
 				diagram.attribute("displayedName", "diagram"));
 	}
-	qDebug() << "elements = " << mApi.elementsCount();
 }
 
 void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName)
@@ -74,6 +72,11 @@ void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
 void XmlParser::createDiagramAttributes(const QDomElement &diagram, const Id &diagramId)
 {
 	QDomNodeList diagramAttributes = diagram.childNodes();
+
+	int elements = 0;
+	for (unsigned i = 0; i < diagramAttributes.length(); ++i)
+		elements += diagramAttributes.at(i).toElement().childNodes().length();
+	mElementsColumn = ceil(sqrt(static_cast<qreal>(elements)));
 
 	for (unsigned i = 0; i < diagramAttributes.length(); ++i) {
 		QDomElement type = diagramAttributes.at(i).toElement();
@@ -120,14 +123,7 @@ void XmlParser::initEnum(const QDomElement &enumElement, const Id &diagramId)
 			enumElement.attribute("displayedName", ""));
 
 	setEnumAttributes(enumElement, enumId);
-
-	mPosition += mCurrentHigh;
-	qDebug() << "mPosition=" << mPosition;
-	mApi.setProperty(enumId, "position", QPointF(mCurrentPositionElementX, mPosition));
-	setChildrenPositions(enumId, 150, 105);
-	mApi.setProperty(enumId, "configuration", QVariant(QPolygon()));
-	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
-	mApi.setProperty(enumId, "configuration", QVariant(QPolygon(value, false)));*/
+	setElementPosition(enumId);
 }
 
 void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
@@ -140,14 +136,7 @@ void XmlParser::initNode(const QDomElement &node, const Id &diagramId)
 			node.attribute("displayedName", ""));
 
 	setNodeAttributes(node, nodeId);
-
-	mPosition += mCurrentHigh;
-	qDebug() << "mPosition=" << mPosition;
-	mApi.setProperty(nodeId, "position", QPointF(mCurrentPositionElementX, mPosition));
-	setChildrenPositions(nodeId, 150, 105);
-	mApi.setProperty(nodeId, "configuration", QVariant(QPolygon()));
-	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
-	mApi.setProperty(nodeId, "configuration", QVariant(QPolygon(value, false)));*/
+	setElementPosition(nodeId);
 }
 
 void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
@@ -160,14 +149,7 @@ void XmlParser::initEdge(const QDomElement &edge, const Id &diagramId)
 			edge.attribute("displayedName", ""));
 
 	setEdgeAttributes(edge, edgeId);
-
-	mPosition += mCurrentHigh;
-	qDebug() << "mPosition=" << mPosition;
-	mApi.setProperty(edgeId, "position", QPointF(mCurrentPositionElementX, mPosition));
-	setChildrenPositions(edgeId, 150, 105);
-	mApi.setProperty(edgeId, "configuration", QVariant(QPolygon()));
-	/*QRect const value = QRect(mCurrentPositionElementX, mPosition, mCurrentWidth, mCurrentHigh);
-	mApi.setProperty(edgeId, "configuration", QVariant(QPolygon(value, false)));*/
+	setElementPosition(edgeId);
 }
 
 void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
@@ -180,10 +162,15 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 			import.attribute("displayedName", ""));
 	mApi.setProperty(importationId, "as", import.attribute("as", ""));
 
+	mMoveHigh += mCurrentHigh;
+	mApi.setProperty(importationId, "position", QPointF(mMoveWidth, mMoveHigh));
+
 	Id importObjectId("Meta_editor", "MetaEditor", "MetaEntityImported",
 			QUuid::createUuid().toString());
 
 	setStandartConfigurations(importObjectId, diagramId, nameList.at(0), nameList.at(0));
+	mApi.setProperty(importationId, "position", QPointF(mMoveWidth, mMoveHigh));
+	checkIndex();
 }
 
 void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)
@@ -510,23 +497,40 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 void XmlParser::setChildrenPositions(const Id &id, unsigned cellWidth, unsigned cellHeight)
 {
 	int rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(id).count())));
-	int currentRow = mCurrentRow;
+	int currentRow = 0;
 	int currentColumn = 0;
 
-	//qDebug() << "in setChildrenPosition=" << currentRow * cellHeight;
 	foreach(Id element, mApi.children(id)) {
-		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth, currentRow * cellHeight));
+		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth + 5, currentRow * cellHeight + 5));
 		++currentColumn;
 		if (currentColumn >= rowWidth) {
 			currentColumn = 0;
 			++currentRow;
 		}
 	}
-	if (rowWidth > mCurrentColumn)
-		mCurrentColumn = rowWidth;
-	mCurrentWidth = rowWidth * cellWidth;
-	mCurrentHigh = (currentRow - mCurrentRow) * cellHeight;
-	mCurrentRow = currentRow;
-	if (rowWidth > mCurrentPositionElementY)
-		mCurrentPositionElementY = rowWidth;
+	mCurrentWidth = rowWidth * cellWidth + 50;
+	mCurrentHigh = currentRow * cellHeight + 50;
+	if (mCurrentWidth > mCurrentMoveWidth)
+		mCurrentMoveWidth = mCurrentWidth;
+}
+
+void XmlParser::checkIndex()
+{
+	++mElementCurrentColumn;
+	if (mElementCurrentColumn >= mElementsColumn) {
+		mElementCurrentColumn = 0;
+		mMoveHigh = 0;
+		mMoveWidth += mCurrentMoveWidth;
+		mCurrentMoveWidth = 0;
+	}
+}
+
+void XmlParser::setElementPosition(const Id &id)
+{
+	mMoveHigh += mCurrentHigh;
+	mApi.setProperty(id, "position", QPointF(mMoveWidth, mMoveHigh));
+	setChildrenPositions(id, 150, 105);
+	QRect const value = QRect(mMoveWidth, mMoveHigh, mCurrentWidth, mCurrentHigh);
+	mApi.setProperty(id, "configuration", QVariant(QPolygon(value, false)));
+	checkIndex();
 }
