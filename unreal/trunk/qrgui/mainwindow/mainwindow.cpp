@@ -43,18 +43,8 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager), isSave(0)
+	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
-	mbox.setText("The document has been modified.");
-	mbox.setInformativeText("Do you want to save your changes?");
-	mbox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard
-							| QMessageBox::Cancel);
-
-	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)),
-			this, SLOT(slotInc(QAbstractButton*)));
-	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)),
-			&mbox, SLOT(close()));
-	connect(&mbox, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(close()));
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
@@ -145,16 +135,19 @@ MainWindow::MainWindow()
 			this, SLOT(openNewTab(QModelIndex const &)));
 
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
-	settings.beginGroup("MainWindow");
-	resize(settings.value("size", QSize(1024, 800)).toSize());
-	move(settings.value("pos", QPoint(0, 0)).toPoint());
-	settings.endGroup();
-	progress->setValue(60);
 
+	progress->setValue(60);
 	loadPlugins();
 	showMaximized();
-
 	progress->setValue(70);
+
+	settings.beginGroup("MainWindow");
+	if (!settings.value("maximized", true).toBool()) {
+		showNormal();
+		resize(settings.value("size", QSize(1024, 800)).toSize());
+		move(settings.value("pos", QPoint(0, 0)).toPoint());
+	}
+	settings.endGroup();
 
 	QString workingDir = settings.value("workingDir", "./save").toString();
 
@@ -192,18 +185,8 @@ MainWindow::MainWindow()
 		splash->close();
 	delete splash;
 
-	chooseDiagram();
-}
-
-void MainWindow::slotInc(QAbstractButton* button)
-{
-	QString txt = button->text();
-	if (txt == "Save")
-		isSave = 1;
-	if (txt == "Cancel")
-		isSave = 3;
-	if (txt == "Discard")
-		isSave = 2;
+	if (settings.value("diagramCreateSuggestion", true).toBool())
+		chooseDiagram();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -217,36 +200,60 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 
 MainWindow::~MainWindow()
 {
-	if (isSave == 1)
-		mModel->save();
 	delete mModel;
 	delete mListenerManager;
 }
 
+void MainWindow::suggestToSave()
+{
+	QDialog dialog;
+	QVBoxLayout vLayout;
+	QHBoxLayout hLayout;
+	QPushButton saveButton;
+	QPushButton cancelButton;
+	QPushButton discardButton;
+	saveButton.setText("Save");
+	cancelButton.setText("Cancel");
+	discardButton.setText("Discard");
+	hLayout.addWidget(&saveButton);
+	hLayout.addWidget(&cancelButton);
+	hLayout.addWidget(&discardButton);
+	QString text = QString("The document has been modified.\n");
+	text += QString("Do you want to save your changes?");
+	QLabel label(text);
+	vLayout.addWidget(&label);
+	vLayout.addLayout(&hLayout);
+	dialog.setLayout(&vLayout);
+
+	QObject::connect(&saveButton,SIGNAL(clicked()),mModel,SLOT(save()));
+	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
+	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+
+	dialog.exec();
+}
+
+void MainWindow::finalClose()
+{
+	clEvent->accept();
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	clEvent = event;
 	QSettings settings("SPbSU", "QReal");
-	settings.beginGroup("MainWindow");
-	settings.setValue("size", size());
-	settings.setValue("pos", pos());
-	settings.endGroup();
-	if (mModel->isChanged())
-	{
-		if (isSave && (isSave != 3))
-			event->accept();
-		else
-		{
-			if (isSave == 3)
-			{
-				event->ignore();
-				isSave = 0;
-			}
-			else
-			{
-				mbox.show();
-				event->ignore();
-			}
-		}
+	qDebug() << "closeEvent()";
+	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
+		event->ignore();
+		suggestToSave();
+	} else {
+		settings.beginGroup("MainWindow");
+		settings.setValue("maximized", isMaximized());
+		settings.setValue("size", size());
+		settings.setValue("pos", pos());
+		settings.endGroup();
 	}
 }
 
@@ -851,13 +858,17 @@ void MainWindow::openNewTab(const QModelIndex &index)
 	}
 
 	//changing of palette active editor:
-	int i = 0;
-	foreach(QString name, ui.paletteToolbox->getTabNames()) {
-		//this condition is not good because of strings comparing
-		if ((index.model()->itemData(index).value(0).value<QString>()).contains(name.trimmed())) {
-			ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
+	QSettings settings("SPbSU", "QReal");
+	if (settings.value("PaletteTabSwitching", true).toBool())
+	{
+		int i = 0;
+		foreach(QString name, ui.paletteToolbox->getTabNames()) {
+			//this condition is not good because of strings comparing
+			if ((index.model()->itemData(index).value(0).value<QString>()).contains(name.trimmed())) {
+				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
+			}
+			i++;
 		}
-		i++;
 	}
 }
 

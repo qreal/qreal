@@ -40,14 +40,11 @@ namespace qReal {
 				IGesturesPainter *gesturesPainter();
 
 		Ui::MainWindowUi ui;
-		//QDialogButtonBox* dbox;
-		QMessageBox mbox;
 
-
+		void suggestToSave();
 	public slots:
 		//		void connectRepo();
 		//		void closeRepo();
-		void slotInc(QAbstractButton*);
 
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
@@ -65,6 +62,8 @@ namespace qReal {
 		void print();
 		void makeSvg();
 		void showGrid();
+
+		void finalClose();
 
 		void sceneSelectionChanged();
 
@@ -103,6 +102,7 @@ namespace qReal {
 		void diagramInListDeselect();
 		void diagramInListSelected(int num);
 	private:
+		QCloseEvent* clEvent;
 		model::Model *mModel;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
@@ -112,8 +112,6 @@ namespace qReal {
 		PropertyEditorDelegate mDelegate;
 
 		GesturesWidget * mGesturesWidget;
-
-		int isSave;
 
 		void loadPlugins();
 		void chooseDiagram();

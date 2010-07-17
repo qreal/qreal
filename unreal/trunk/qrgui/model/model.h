@@ -54,15 +54,14 @@ namespace qReal {
 			void saveTo(QString const &workingDirectory);
 						Id getRootDiagram();
 						void setRootIndex(QModelIndex const & index);
-			void save();
 
 			bool isChanged();
-
 			void setIsChanged(bool bl);
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 		public slots:
+			void save();
 			void exterminate();
 
 		signals:

@@ -22,7 +22,10 @@ void PreferencesDialog::initPreferences()
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
 
+	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
+	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
+	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
 	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", true).toBool());
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
@@ -36,7 +39,10 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
 	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
 
+	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
+	settings.setValue("PaletteTabSwitching", ui->paletteTabCheckBox->isChecked());
 	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
+	settings.setValue("SaveExitSuggestion", ui->saveExitCheckBox->isChecked());
 	settings.setValue("Splashscreen", ui->splashScreenCheckBox->isChecked());
 	settings.setValue("ActivateGrid", ui->activateGridCheckBox->isChecked());
 	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
