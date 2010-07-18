@@ -36,7 +36,7 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 	loadSubtreeFromClient(mRootItem);
-	mApi.mIsChange = false;
+	mApi.resetChangedDiagrams();
 	blockSignals(false);
 }
 
@@ -569,10 +569,6 @@ void Model::setRootIndex(const QModelIndex &index)
 
 bool Model::isChanged()
 {
-	return mApi.mIsChange;
+	return (mApi.getChangedDiagrams().size() > 0);
 }
 
-void Model::setIsChanged(bool bl)
-{
-	mApi.mIsChange = bl;
-}

@@ -369,7 +369,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="justSomeWidget" native="true">
        <property name="geometry">
         <rect>
          <x>0</x>

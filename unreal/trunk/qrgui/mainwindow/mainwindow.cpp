@@ -976,7 +976,7 @@ QListWidget* MainWindow::createSaveListWidget()
 	int i =0;
 	foreach(Id id, toSave) {
 		listWidget->addItem(id.diagram());
-		if (mModel->api().changed.contains(id.diagramId())) {
+		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
 			checked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 			qDebug() << "checked: " << id.toString() << " at row: " << i;

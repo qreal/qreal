@@ -79,7 +79,8 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
-		QSet<qReal::Id> changed;//TODO: optimize for not appending duplicate
+		qReal::IdList getChangedDiagrams() const;
+		void resetChangedDiagrams();
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
@@ -91,6 +92,7 @@ namespace qrRepo {
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
+		QSet<qReal::Id> mDiagramsChanged;//TODO: optimize for not appending duplicate
 		details::Client mClient;
 	};
 
