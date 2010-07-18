@@ -1,0 +1,39 @@
+// This file is released into the public domain
+
+mprintf("Start Scilab 2 C module\n");
+
+etc_tlbx  = get_absolute_file_path("scilab2c.start");
+etc_tlbx  = getshortpathname(etc_tlbx);
+root_tlbx = strncpy( etc_tlbx, length(etc_tlbx)-length('\etc\') );
+
+//Load  functions library
+// =============================================================================
+pathmacros = pathconvert( root_tlbx ) + 'macros'+ filesep();
+mprintf("\tLoad macros\n");
+sci2c_mainlib            = lib(pathmacros);
+sci2c_ASTManagementlib   = lib(pathmacros + "ASTManagement"      + filesep());
+sci2c_CCodeGenerationlib = lib(pathmacros + "CCodeGeneration"    + filesep());
+sci2c_ErrorMessageslib   = lib(pathmacros + "ErrorMessages"      + filesep());
+sci2c_FunAnnotationlib   = lib(pathmacros + "FunctionAnnotation" + filesep());
+sci2c_FunListlib         = lib(pathmacros + "FunctionList"       + filesep());
+sci2c_GenFunctionslib    = lib(pathmacros + "GeneralFunctions"   + filesep());
+sci2c_SymbolTablelib     = lib(pathmacros + "SymbolTable"        + filesep());
+sci2c_ToolInitlib        = lib(pathmacros + "ToolInitialization" + filesep());
+sci2c_finDeps            = lib(pathmacros + "findDeps"           + filesep());
+clear pathmacros;
+
+// Load and add help chapter
+// =============================================================================
+
+if or(getscilabmode() == ["NW";"STD"]) then
+	mprintf("\tLoad help\n");
+	path_addchapter = pathconvert(root_tlbx+"/jar");
+	if ( isdir(path_addchapter) <> [] ) then
+		add_help_chapter("Scilab 2 C", path_addchapter, %F);
+	clear add_help_chapter path_addchapter
+	end
+end
+
+// =============================================================================
+clear root_tlbx;
+clear etc_tlbx;

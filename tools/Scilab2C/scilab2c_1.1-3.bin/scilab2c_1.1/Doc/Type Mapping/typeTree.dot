@@ -1,0 +1,75 @@
+digraph typeTree{
+
+Root [label="Variable"];
+Scalar [label="Scalar"];
+Matrix [label="Matrix"];
+
+Empty [label="Empty Matrix"];
+
+
+SBoolean [label="Boolean"];
+MBoolean [label="Boolean"];
+
+SReal [label="Real"];
+SDReal [label="double"];
+SFReal [label="float"];
+
+MReal [label="Real"];
+MDReal [label="double"];
+MFReal [label="float"];
+
+SComplex [label="Complex"];
+SDComplex [label="double"];
+SFComplex [label="float"];
+
+MComplex [label="Complex"];
+MDComplex [label="double"];
+MFComplex [label="float"];
+
+SInteger [label="Integer"];
+MInteger [label="Integer"];
+
+
+
+Root -> {
+	Scalar;
+	Matrix;
+}
+
+Scalar -> {
+	SBoolean;
+	SReal;
+	SComplex;
+	SInteger;
+}
+
+Matrix -> {
+	MBoolean;
+	MReal;
+	MComplex;
+	MInteger;
+	Empty;
+}
+
+SReal -> {
+	SFReal;
+	SDReal;
+}
+
+SComplex -> {
+	SDComplex;
+	SFComplex;
+}
+
+MReal -> {
+	MFReal;
+	MDReal;
+}
+
+MComplex -> {
+	MDComplex;
+	MFComplex;
+}
+
+
+}

@@ -1,0 +1,6 @@
+LIBRARY    auxiliaryFunctions.dll
+
+
+EXPORTS
+cconjs
+zconjs

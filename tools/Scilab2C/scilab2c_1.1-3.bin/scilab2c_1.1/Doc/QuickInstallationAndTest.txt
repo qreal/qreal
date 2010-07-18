@@ -1,0 +1,19 @@
+-----------------------------------
+--- QUICK INSTALLATION OF SCI2C ---
+-----------------------------------
+1. Install scilab-5.0.1.exe. Download available at www.scilab.org
+2. Copy sci2ctool-0.3 into your PC.
+
+---------------------------
+--- QUICK TEST OF SCI2C ---
+---------------------------
+1. Configure CCompilerPathStyle parameter of "sci2ctool-0.3\SCI2CTests\test999_WorkingDir\SCI2CInputParameters.sce" file
+2. Open scilab
+4. Enter (cd) in sci2ctool-0.3\Scilab2C 
+5. Type mclose('all')
+6. Type exec LaunchRunSCI2C.sci
+7. Answer y to "Start translation [y/n]:" question.
+8. At the end of the of the translation in sci2ctool-0.3\SCI2CTests\test999_WorkingDir\C_Code the C code should be available.
+9. Compile and execute the C code by using makefile in sci2ctool-0.3\SCI2CTests\test999_WorkingDir\C_Code
+10. Launch again Sci2C -> exec LaunchRunSCI2C.sci -> Answer n to "Start translation [y/n]:" question.
+11. Compare C results with Scilab results. -> If they are the same, installation has been performed correctly!!!

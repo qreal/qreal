@@ -1,0 +1,14 @@
+UpdateSCI2CInfo
+ManageNextConversion
+INIT_SharedInfoEqual
+INIT_SCI2C
+INIT_RemoveDirs
+INIT_LoadLibraries
+INIT_GenSharedInfo
+INIT_GenLibraries
+INIT_GenFileInfo
+INIT_GenAnnFLFunctions
+INIT_FillSCI2LibCDirs
+INIT_CreateDirs
+floatcomplex
+doublecomplex

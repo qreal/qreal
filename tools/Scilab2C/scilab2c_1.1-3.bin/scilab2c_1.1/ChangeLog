@@ -1,0 +1,447 @@
+2007-09-07  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/auxiliaryFunctions/includes/rand.h :
+	Modification of funtions prototypes.
+	Array generation must be in a given array.
+
+2007-08-30  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/auxiliaryFunctions/pythag :
+	Add Pythag mangement for complex type.
+
+2007-07-11  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/*/Makefile.* :
+	Update Autotools version.
+	* src/configure :
+	Update Autotools version.
+
+2007-07-11  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/type/doubleComplex.c :
+	Begin complex operations. Must be improved/tested.
+
+2007-06-XX  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/acos :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/acosh :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/asin :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/asinh :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/atan :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/atanh :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/cos :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/cosh :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/exp :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/exp10 :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/log :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/log10 :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/sin :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/sinh :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/sqrt :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/tan :
+	Finalise Prototyping, add dummy code with FIXME.
+	* src/elementaryFunctions/tanh :
+	Finalise Prototyping, add dummy code with FIXME.
+
+2007-05-07  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/isnan :
+	New Nan detection function. Must be improved !
+
+2007-04-27  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/isempty :
+	[RELEASE] Ending IsEmpty implementation AND tests.
+
+2007-04-26  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/find :
+	[RELEASE] Ending Find implementation AND tests.
+
+2007-04-25  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/abs :
+	[RELEASE] Ending Absolute Value implementation AND tests.
+
+2007-04-24  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/find :
+	New find implementation.
+
+2007-04-23  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/AuxiliaryFunctions/abs :
+	New Absolute Value implementation.
+	* src/AuxiliaryFunctions/pythag :
+	New Pythagore function : sqrt(a^2 + b^2)
+
+2007-04-20  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/ElementaryFunctions/sinh :
+	[RELEASE] Ending Hyperbolic Sine implementation AND tests.
+
+2007-04-19  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/ElementaryFunctions/cosh :
+	[RELEASE] Ending Hyperbolic Cosine implementation AND tests.
+
+2007-04-18  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/ElementaryFunctions/sin :
+	[RELEASE] Ending Sine implementation AND tests.
+
+2007-04-17  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/ElementaryFunctions/cos :
+	[RELEASE] Ending Cosine implementation AND tests.
+
+2007-04-16  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test :
+	Removing tests to add it under Autotools management.
+
+2007-03-25  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/*/Makefile.am :
+	Migration to Autotools.
+	* src/elementaryFunctions/*/Makefile.in :
+	Migration to Autotools.
+
+
+2007-03-23  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/sqrt/* :
+	Adding Square Root module.
+	* src/elementaryfunctions/log/* :
+	Adding Logarithm module.
+
+2007-03-22  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/type/testFloatComplex.c :
+	Best fit C99.
+	* src/type/testFloatComplex.h :
+	Best fit C99.
+	* src/type/testDoubleComplex.c :
+	Best fit C99.
+	* src/type/testDoubleComplex.h :
+	Best fit C99.
+	* src/configure.ac :
+	Enable STD C99 compilation process.
+
+2007-03-20  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/type/Makefile :
+	Removed : delegate to AutoTools.
+	* src/type/Makefile.am :
+	Automake file.
+	* src/type/Makefile.in :
+	Automake generated file : ./configure needed.
+	* src/type/testFloatComplex.c :
+	Test Float Complex generation :
+	Assert + AutoCheck through AutoTools.
+	* src/type/testDoubleComplex.c :
+	Test Double Complex generation :
+	Assert + AutoCheck through AutoTools.
+
+2007-03-19  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test/Makefile :
+	Link with my Complex Library.
+	* src/test/testCos.c :
+	Finishing all kind of tests.
+	* src/elementaryFunctions/*/*a.c :
+	Remove StrideX and StrideY useless parameters.
+	* src/elementaryFunctions/includes/*.h :
+	Update headers with right parameters.
+	Add Dioxygen style documentation.
+
+2007-02-23  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test/*.c :
+	Better dependancies with includes.
+	* src/test/Makedile :
+	Changing includes / headers / link.
+	* src/misc :
+	_MOVED_ : Becoming includes.
+	* src/includes :
+	For general headers includings.
+	* src/auxiliaryFunctions/includes :
+	Add includes directory for profiling functions.
+	* src/auxiliaryFunctions/*/*.h :
+	Moving headers to includes.
+	* src/auxiliaryFunctions/*/*.c :
+	Better dependancies with includes.
+	* src/auxiliaryFunctions/*/Makedile :
+	Changing includes / headers / link.
+	* src/elementaryFunctions/includes :
+	Add includes directory for profiling functions.
+	* src/elementaryFunctions/*/*.h :
+	Moving headers to includes.
+	* src/elementaryFunctions/*/*.c :
+	Better dependancies with includes.
+	* src/elementaryFunctions/*/Makedile :
+	Changing includes / headers / link.
+	* src/type/doubleComplexC99.h :
+	_REMOVED_ : All declarations are put in
+	src/type/doubleComplex.h .
+	* src/type/floatComplexC99.h :
+	_REMOVED_ : All declarations are put in
+	src/type/floatComplex.h .
+
+2007-02-15  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test/testIsEmpty.c :
+	Add some tests.
+	* src/test/Makefile :
+	Some trouble with link... Better in this order !
+
+2007-02-14  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test/test*.c :
+	Add some FIXME in order to remember to code some tests.
+	* src/test/testFind.c :
+	Testing of the find function.
+	* src/test/testIsEmpty.c :
+	Testing of the isEmpty function.
+	* src/misc :
+	Create for misc includes.
+	* src/auxiliaryFunctions/find/notFound.h :
+	Moved
+	* src/misc/notFound.h :
+	Better use here.
+	* */*/Makefile :
+	Modify all Makefiles. Remove -pedantic.
+	Must be crazy to use this...
+	* src/auxiliaryFunctions/isempty :
+	IsEmpty functions implementation.
+	* src/auxiliaryFunctions/isempty/{sdcz}isEmptya.c :
+	Implementation : s(float) d(double)
+			 c(floatComplex) z(doubleComplex)
+
+2007-02-13  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/tanh/ztanhs.c :
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/tanh/ctanhs.c :
+	Fixed with C99 Complex but Scilab computation.
+	* src/auxiliaryFunctions/find :
+	Find not null element in list.
+	* src/auxiliaryFunctions/find/{sdcz}finda.c :
+	Implementation : s(float) d(double)
+			 c(floatComplex) z(doubleComplex)
+	* src/auxiliaryFunctions/find/find.h :
+	Interface.
+	* src/auxiliaryFunctions/find/notFound.h :
+	Constant if all elements are not null.
+
+2007-02-12  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/sinh/zsinhs.c
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/sinh/csinhs.c
+	Fixed with C99 Complex but Scilab computation.
+
+2007-02-09  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/exp/cexps.c :
+	Implementation.
+	* src/elementaryFunctions/exp/zexps.c :
+	Implementation.
+
+2007-02-08  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/auxiliaryFunctions/sign :
+	Signe of a float or double.
+	* src/auxiliaryFunctions/sign/sign.h :
+	Interface
+	* src/auxiliaryFunctions/sign/{sd}signs.c :
+	Implementation : s(float) d(double)
+
+2007-02-07  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/auxiliaryFunctions :
+	Some misc Functions used in many cases.
+
+2007-02-06  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/cosh/zcoshs.c
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/cosh/ccoshs.c
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/sin/zsins.c
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/sin/csins.c
+	Fixed with C99 Complex but Scilab computation.
+
+2007-02-05  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/type :
+	Add C99 compatibility. Float implementation.
+	* src/elementaryFunctions/cos/zcoss.c
+	Fixed with C99 Complex but Scilab computation.
+	* src/elementaryFunctions/cos/ccoss.c
+	Fixed with C99 Complex but Scilab computation.
+
+2007-02-02  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/type :
+	Add C99 compatibility. Double implementation.
+
+2007-01-31  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/*.c :
+	Remove Multi Complex definition.
+	* src/type/doubleComplex.h :
+	Used as C99 Complex interface or hand-made complex.
+	* src/type/floatComplex.h :
+	Used as C99 Complex interface or hand-made complex.
+	* src/*/Makefile :
+	Add -std=c99 flag for native c99 complex compilation.
+	* src/elementaryFunctions/exp :
+	Exponential functions.
+	* src/test/testExp.c :
+	Add some Exponential functions tests.
+
+2007-01-29  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/tan :
+	Tangeant functions.
+	* src/elementaryFunctions/tanh :
+	Hyperbolic Tangeant functions.
+	* src/test/testCosh.c :
+	Add some Hyperbolic Cosine tests.
+	* src/test/tesSinh.c :
+	Add some Hyperbolic Sine tests.
+	* src/test/testTan.c :
+	Add some Tangeant tests.
+	* src/test/tesTanh.c :
+	Add some Hyperbolic Tangeant tests.
+
+
+2007-01-19  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/cosh :
+	Hyperbolic Cosine functions
+	* src/elementaryFunctions/sinh :
+	Hyperbolic Sine functions
+
+2007-01-05  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/elementaryFunctions/acos :
+	ArcCosine functions
+	* src/elementaryFunctions/asin :
+	ArcSine functions
+
+2006-12-11  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test/testCos.c :
+	Add some cosine tests.
+	* src/test/tesSin.c :
+	Add some sine tests.
+	* README :
+	Add some standards and style definitions.
+
+2006-12-08  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* src/test :
+	Test files for libraries.
+	* src/elementaryFunctions/cos :
+	Cosine functions
+	* src/elementaryFunctions/sin :
+	Sine functions
+
+
+2006-12-04  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Group functions:
+	Group all same name functions, ignore type.
+	* Inverse Cosinus [acos]:
+	Done for Real and Complex type.
+	* Inverse Hyperbolic Cosinus [acosh]:
+	Done for Real and Complex type.
+	* Inverse Sinus [asin]:
+	Done for Real and Complex type.
+	* Inverse Hyperbolic Sinus [asinh]:
+	Done for Real and Complex type.
+	* Inverse Tangeant [atan]:
+	Done for Real and Complex type.
+
+2006-11-30  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Hyperbolic Cosinus [cosh]:
+	Done for Real and Complex type.
+	* Hyperboloc Sinus [sinh]:
+	Done for Real and Complex type.
+	* Hyperbolic Tangeant [tanh]:
+	Done for Real and Complex type.
+	* src:
+	To put basic sources.
+	* src/type:
+	To put complex types.
+	* src/type/doubleComplex.{ch}:
+	Simple definition of complex as struct of double.
+
+2006-11-29  Bruno JOFRET  <brunojofret@inria.fr>
+
+	* Pythagore [pythag]:
+	Done for Real Type.
+	* LAPACK [dlamch]:
+	Add dlamch.help to keep an eye on each option.
+	* Icrease logarithm [log1p]:
+	Done for Real Type.
+	* Exponential [exp]:
+	Done for Real and Complex Type.
+	* ArcTangeante2 [atan2]:
+	Done for Real Type.
+
+2006-11-28  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Logarithm [log]:
+	Correction : Log for a negative Real call Log as complex.
+	* Root [sqrt]:
+	Done for Real and Complex.
+
+2006-11-27  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Number Sign [sign]:
+	Done for Real Type.
+	* Abslute Value [abs]:
+	Done for Real Type.
+
+2006-11-18  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Tangeant [tan]:
+	Done for Real and Complex Type.
+	* Logarithm [log]:
+	Done for Real and Complex Type.
+
+2006-11-15  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* Cosinus [cos]:
+	Done for Real and Complex Type.
+	* Sinus [sin]:
+	Done for Real and Complex Type.
+
+2006-11-13  Bruno JOFRET  <bruno.jofret@inria.fr>
+
+	* TrigonometricsDependeces.dot :
+	First dependences...
+	Evaluating all depences in order to find atomic calls.
+
+
+

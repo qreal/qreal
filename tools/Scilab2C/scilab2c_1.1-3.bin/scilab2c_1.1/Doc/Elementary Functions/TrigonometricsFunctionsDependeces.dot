@@ -1,0 +1,464 @@
+digraph TrigonometricsFunctions {
+	node [shape=circle];
+
+//
+// -*- Basic Call -*-
+//
+F77_Call [label="Fortan Call", shape=doublecircle, color=green];
+C_Call [label="C Call", shape=doublecircle, color=blue];
+LAPACK_Call [label="LAPACK Call", shape=doublecircle, color=red];
+
+//
+// -*- Specific LAPACK Call -*-
+//
+Dlamch_E_Call [label="dlamch('E')", comment="Précision Machine - LAPACK", shape=doublecircle, color=red];
+Dlamch_U_Call [label="dlamch('U')", comment="Borne Inférieure - LAPACK", shape=doublecircle, color=red];
+Dlamch_O_Call [label="dlamch('O')", comment="Borne Supérieure - LAPACK", shape=doublecircle, color=red];
+
+//
+// -*- Functions definition -*-
+//
+
+// Cosinus
+Cos_Real [label="cos(R)"];
+Cos_Complex [label="cos(C)"];
+Cos_Hyperbolic_Real [label="ch(R)"];
+Cos_Hyperbolic_Complex [label="ch(C)"];
+
+// ArcCosinus
+ACos_Real [label="acos(R)"];
+ACos_Complex [label="acos(C)"];
+ACos_Hyperbolic_Real [label="ach(R)"];
+ACos_Hyperbolic_Complex [label="ach(C)"];
+
+// Sinus
+Sin_Real [label="sin(R)"];
+Sin_Complex [label="sin(C)"];
+Sin_Hyperbolic_Real [label="sh(R)"];
+Sin_Hyperbolic_Complex [label="sh(C)"];
+
+// ArcSinus
+ASin_Real [label="asin(R)"];
+ASin_Complex [label="asin(C)"];
+ASin_Hyperbolic_Real [label="ash(R)"];
+ASin_Hyperbolic_Complex [label="ash(C)"];
+
+// Tangeante
+Tan_Real [label="tan(R)"];
+Tan_Complex [label="tan(C)", comment="wtan"];
+Tan_Hyperbolic_Real [label="tanh(R)"];
+Tan_Hyperbolic_Complex [label="tanh(C)"];
+
+// ArcTangeante
+ATan_Real [label="atan(R)"];
+ATan_Complex [label="atan(C)", comment="watan"];
+ATan_Hyperbolic_Real [label="atanh(R)"];
+ATan_Hyperbolic_Complex [label="atanh(C)"];
+
+// ArcTaneante2
+ATan2_Real [label="atan2(R)"];
+
+// Exponentielle
+Exp_Real [label="exp(R)"];
+Exp_Complex [label="exp(C)"];
+
+// Log
+Log_Real [label="log(R)"];
+Log_Positive_Real [label="log(R+)"];
+Log_Negative_Real [label="log(R-)"];
+Log_Complex [label="log(C)"];
+
+// Log1p
+Log1p_Real [label="log1p(R)"];
+
+// Racine Carrée
+Sqrt_Real [label="sqrt(R)"];
+Sqrt_Positive_Real [label="sqrt(R+)"];
+Sqrt_Negative_Real [label="sqrt(R-)"];
+Sqrt_Complex [label="sqrt(C)", comment="wsqrt"];
+
+// Partie Imaginaire
+Imag_Complex [label="imag(C)"];
+
+// Valeur Absolue
+Abs_Real [label="abs(R)", comment="|R|"];
+
+// Signe
+Sign_Real [label="sign(R)"];
+
+// Pythagore
+Pythag_Real [label="pythag(R)"];
+
+
+//
+// -*- Functions call links -*-
+//
+subgraph clusterLAPACK {
+	style=filled;
+	color=lightsteelblue;
+	label="LAPACK";
+	// -*- DLAMCH -*-
+	Dlamch_E_Call -> LAPACK_Call;
+	Dlamch_U_Call -> LAPACK_Call;
+	Dlamch_O_Call -> LAPACK_Call;
+}
+
+
+// -*- COS -*-
+//
+// cos(a+ib) = cos(a).ch(b) - i.sin(a).sh(b)
+Cos_Complex  -> {
+	Cos_Real
+	Sin_Real
+	Cos_Hyperbolic_Real
+	Sin_Hyperbolic_Real
+	};
+
+// Call a cosinus function in F77 math lib
+Cos_Real -> F77_Call;
+
+
+// -*- ACOS -*-
+//
+// acos(a+ib) = see $SCIHOME/modules/elementaries_functions/src/fortran/wacos.f
+ACos_Complex -> {
+	Dlamch_O_Call
+	Dlamch_E_Call
+	Dlamch_U_Call
+	Sqrt_Real
+	Abs_Real
+	ACos_Real
+	ATan_Real
+	Log1p_Real
+	Log_Real
+	Sign_Real
+	};
+
+// Call an inverse cosine function in F77 math lib
+ACos_Real -> F77_Call;
+
+
+// -*- COSH -*-
+//
+// ch(z) = cos(i.z)
+Cos_Hyperbolic_Complex -> {
+	Cos_Complex
+	};
+
+// ch(x) = 1/2 . exp(|x|) + exp(-|x|)
+Cos_Hyperbolic_Real -> {
+	Exp_Real
+	Abs_Real
+	};
+
+
+// -*- ACOSH -*-
+//
+// acosh(z) = sign(-imag(acos(z)) i acos(z)
+ACos_Hyperbolic_Complex -> {
+	Imag_Complex
+	ACos_Complex
+	};
+	// acosh(z) = sign(-imag(acos(z)) i acos(
+	ACos_Hyperbolic_Real -> {
+		Imag_Complex
+		ACos_Complex
+		Min_Real
+		};
+
+
+// -*- SIN -*-
+//
+// sin(a+ib) = sin(a).ch(b) + i.cos(a).sh(b)
+Sin_Complex -> {
+	Cos_Real
+	Sin_Real
+	Cos_Hyperbolic_Real
+	Sin_Hyperbolic_Real
+	};
+
+// Call a sinus function in F77 math lib
+Sin_Real -> F77_Call;
+
+
+// -*- ASIN -*-
+//
+// asin(a+ib) = see $SCIHOME/modules/elementaries_functions/src/fortran/wasin.f
+ASin_Complex -> {
+	Dlamch_O_Call
+	Dlamch_U_Call
+	Dlamch_E_Call
+	Abs_Real
+	Sqrt_Real
+	ASin_Real
+	ATan_Real
+	Log1p_Real
+	Log_Real
+	Sign_Real
+	};
+
+// Call an inverse sine function in F77 math lib
+ASin_Real -> F77_Call;
+
+
+// -*- SINH -*-
+//
+// sh(z) = -i.sin(i.z)
+Sin_Hyperbolic_Complex -> {
+	Sin_Complex
+	};
+
+// sh(x) = imag(sin(i.x))
+Sin_Hyperbolic_Real -> {
+	Sin_Complex
+	Imag_Complex
+	};
+
+
+// -*- ASINH -*-
+//
+// asinh(z) = -i asin(i z)
+ASin_Hyperbolic_Complex -> {
+	ASin_Complex
+	};
+
+// asinh(z) = -i asin(i z)
+ASin_Hyperbolic_Real -> {
+	ASin_Complex
+	Imag_Complex
+	};
+
+
+// -*- TAN -*-
+//
+// tan(a+ib) = x_r + i.x_i
+//
+// x_r= 1/2 sin(2.a) / d
+//
+// x_i = | sh(2.b) / 2.d	si |b| <= L
+//	 | sign(a)
+//
+// d = cos(a)^2 + sh(b)^2
+//
+// L = 1 + log(2 / sqrt(dlamch('e')))
+Tan_Complex -> {
+	Cos_Real
+	Sin_Hyperbolic_Real
+	Log_Real
+	Sqrt_Real
+	Dlamch_E_Call
+	Abs_Real
+	Sign_Real
+	};
+
+// Call a tangeante function in F77 math lib
+Tan_Real -> F77_Call;
+
+
+//
+// -*- ATAN -*-
+//
+ATan_Complex -> {
+	Dlamch_O_Call
+	ATan_Real
+	Abs_Real
+	Sign_Real
+	Log_Real
+	ATan2_Real
+	};
+
+// Call an inverse tangeant function in F77 math lib
+ATan_Real -> F77_Call;
+
+
+// -*- TANH -*-
+//
+// tanh(z) = -i.tan(i.z)
+Tan_Hyperbolic_Complex -> {
+	Tan_Complex
+	};
+
+// tanh(x) = imag(tan(i.x))
+Tan_Hyperbolic_Real -> {
+	Tan_Complex
+	Imag_Complex
+	};
+
+// -*- ATANH -*-
+//
+// atanh(z) = i atan(-i z)
+ATan_Hyperbolic_Complex -> {
+	ATan_Complex
+	};
+
+// atanh(x) = -imag(atan(i.x)) | i.atan(-i.x)
+ATan_Hyperbolic_Real -> {
+	ATan_Complex
+	Imag_Complex
+	};
+
+
+// -*- LOG -*-
+//
+// log(a+ib) = x_r + i.x_i
+//
+// Constantes :
+//		L_inf = sqrt(dlamch('U'))
+//		L_sup = sqrt(R_max / 2)
+//		R_max = dlamch('O')
+//		t = pythag(|a|,|b|)
+//		r = |b|/|a|
+//
+// x_i = atan2(b, a)
+//
+// x_r = | 1/2 logp1((|a|-1)(|a|+1) + |b|^2)		si 1/2 <= |a| <= sqrt(2)
+//	 | 1/2 log(|a|^2 + |b|^2)			si L_inf < |b| && |a| < L_sup
+//	 | |a|						si |a| > R_max
+//	 | log(t)					si t <= R_max
+//	 | log(|a|) + 1/2 logp1(r^2)			sinon
+Log_Complex -> {
+	Sqrt_Real
+	Dlamch_U_Call
+	Dlamch_O_Call
+	Pythag_Real
+	Log1p_Real
+	Log_Real
+	Abs_Real
+	Pythag_Real
+	ATan2_Real
+	};
+
+// Separate positive and negative case
+Log_Real -> {
+	Log_Positive_Real
+	Log_Negative_Real
+	};
+
+// Call another log function, treat it as complex
+Log_Negative_Real -> Log_Complex;
+
+// Call a log function in F77 math lib
+Log_Positive_Real -> F77_Call;
+
+// Call a log1p function in F77 math lib
+Log1p_Real -> F77_Call;
+
+
+// -*- SQRT -*-
+//
+// sqrt(a+ib) = x_r + i.x_i
+//
+// Constantes :
+//		Rmax = dlamch('O')
+//		BRmin = 2.dlamch('U')
+//		t = sqrt(2.|a| + pythag(a,b))
+//
+// (1) a = 0
+//~~~~~~~~~~~~
+// x_r = | sqrt(|b| / 2)		si |b| <= BRmin
+//	 | sqrt(|b|).sqrt(1/2)
+//
+// x_i = sign(b).x_r
+//
+// (2) |a| >= BRmax && |b| >= BRmax
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//  - Si t > Rmax
+//	a = a / 16
+//      b = b / 16
+//      t = sqrt(2.|a| + pythag(a,b))
+//	x_r = | 2.t		si a >= 0
+//	      | 4.|b| / t
+//	x_i = | 4.b / t		si a >= 0
+//	      | 2.sign(b).t
+//
+//  - Sinon
+//
+//	x_r = | t / 2		si a >= 0
+//	      | |b| / t
+//
+//	x_i = | b / t		si a >= 0
+//	      | sign(b) / 2.t
+//
+// (3) Tous les cas pourris
+//~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// x_r = | a + b		si a is NaN && b is NaN
+//	 | |b|			si |b| > Rmax
+//	 | 0			si a < -Rmax
+//	 | a
+//
+// x_i = | a + b		si a is NaN && b is NaN
+//	 | b			si |b| > Rmax
+//	 | sign(b).|a|		si a < -Rmax
+//	 | 0
+//
+Sqrt_Complex -> {
+	Abs_Real
+	Sqrt_Real
+	Sign_Real
+	Pythag_Real
+	Dlamch_U_Call
+	Dlamch_O_Call
+	};
+
+// Separate positive and negative case
+Sqrt_Real -> {
+	Sqrt_Positive_Real
+	Sqrt_Negative_Real
+	};
+
+// Call another sqrt function, treat it as complex
+Sqrt_Negative_Real -> Sqrt_Complex;
+
+// Call a sqrt function in F77 math lib
+Sqrt_Positive_Real -> F77_Call;
+
+// -*- PYTHAG -*-
+//
+// pythag(a,b) = sqrt(a^2 + b^2)
+//
+//
+Pythag_Real -> {
+	Sqrt_Real
+	Dlamch_O_Call
+	};
+
+
+
+// -*- SIGN -*-
+//
+// Call a sign function in F77 math lib
+Sign_Real -> F77_Call;
+
+
+// -*- ABS -*-
+//
+// Call a abs function in F77 math lib
+Abs_Real -> F77_Call;
+
+
+// -*- EXP -*-
+//
+// exp(a+i.b) = exp(a).cos(b) + i.exp(a)sin(b)
+Exp_Complex -> {
+	Exp_Real
+	Cos_Real
+	Sin_Real
+	};
+
+// Call a exp function in F77 math lib
+Exp_Real -> F77_Call;
+
+
+// -*- ATAN2 -*-
+//
+// Call atan2 function in C math lib
+ATan2_Real -> C_Call;
+
+
+// -*- IMAG -*-
+//
+// Call a imag function in F77 math lib
+Imag_Complex -> F77_Call;
+
+}

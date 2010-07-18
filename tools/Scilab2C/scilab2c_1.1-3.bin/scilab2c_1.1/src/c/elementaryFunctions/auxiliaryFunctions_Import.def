@@ -1,0 +1,8 @@
+LIBRARY    auxiliaryFunctions.dll
+
+
+EXPORTS
+sabss
+dabss
+spythags
+dpythags

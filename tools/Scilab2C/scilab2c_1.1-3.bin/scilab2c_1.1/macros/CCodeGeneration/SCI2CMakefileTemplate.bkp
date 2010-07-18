@@ -1,0 +1,230 @@
+
+# --- C COMPILER ---
+CC = gcc
+CFLAGS = -Wall -pedantic -O3 -I $(HSRCDIR)
+# ---------------------------
+# --- END USER PARAMETERS ---
+# ---------------------------
+
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+# DON'T TOUCH ANYTHING BELOW THIS LINE 
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+# ------------------------------------
+
+ELEMENTARY_FUNCTIONS_DIR = $(CSRCDIR)/src/elementaryFunctions
+CFLAGS_ELEMENTARY_FUNCTIONS   = -I $(ELEMENTARY_FUNCTIONS_DIR)/includes -I $(ELEMENTARY_FUNCTIONS_DIR)/interfaces
+
+
+EXEFILE = $(SCI2CDIR)/$(EXEFILENAME)
+
+objects = \
+	$(OBJDIR)/doubleComplex.o \
+	$(OBJDIR)/floatComplex.o \
+	$(OBJDIR)/RealToComplex.o \
+	$(OBJDIR)/conj.o \
+	$(OBJDIR)/disp.o \
+	$(OBJDIR)/ones.o \
+	$(OBJDIR)/zeros.o \
+	$(OBJDIR)/OpApex.o \
+	$(OBJDIR)/OpColon.o \
+	$(OBJDIR)/OpDotStar.o \
+	$(OBJDIR)/OpDotHat.o \
+	$(OBJDIR)/OpDotSlash.o \
+	$(OBJDIR)/OpEqual.o \
+	$(OBJDIR)/OpPlus.o \
+	$(OBJDIR)/OpMinus.o \
+	$(OBJDIR)/OpStar.o \
+	$(OBJDIR)/OpIns.o \
+	$(OBJDIR)/OpExt.o \
+	$(OBJDIR)/OpRc.o \
+	$(OBJDIR)/OpCc.o \
+	$(OBJDIR)/cos.o \
+	$(OBJDIR)/cosh.o \
+	$(OBJDIR)/sin.o \
+	$(OBJDIR)/sinh.o  \
+	$(OBJDIR)/FileManagement.o \
+	$(OBJDIR)/OpLogLt.o \
+	$(OBJDIR)/OpLogGt.o \
+	$(OBJDIR)/OpLogGe.o \
+	$(OBJDIR)/OpLogLe.o \
+	$(OBJDIR)/OpLogEq.o \
+	$(OBJDIR)/Find.o \
+	$(OBJDIR)/ConvertPrecision.o \
+	$(OBJDIR)/SCI2Cfft.o \
+	$(OBJDIR)/SCI2Cconvol.o \
+	$(OBJDIR)/ssqrts.o \
+	$(OBJDIR)/dsqrts.o \
+	$(OBJDIR)/csqrts.o \
+	$(OBJDIR)/zsqrts.o \
+	$(OBJDIR)/ssqrta.o \
+	$(OBJDIR)/dsqrta.o \
+	$(OBJDIR)/csqrta.o \
+	$(OBJDIR)/zsqrta.o 
+
+# ---------------
+# --- TARGETS ---
+# ---------------
+compileexecute: $(objects) 
+	@echo " "
+	@echo "============================"
+	@echo "Generation of the executable"
+	@echo "============================"
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) $(objects) $(SCI2CDIR)/*.c -o $(EXEFILE)
+	@echo " "
+	@echo "=============="
+	@echo "Executing code"
+	@echo "=============="
+	$(EXEFILE)
+
+clean:  
+	@echo " "
+	@echo "============================="
+	@echo "Removing only exe + obj files"
+	@echo "============================="
+	rm -rf $(EXEFILE)
+	rm -rf $(objects)
+	@echo " "
+
+cleanexe:  
+	@echo " "
+	@echo "=========================="
+	@echo "Removing only the exe file"
+	@echo "=========================="
+	rm -rf $(EXEFILE)
+	@echo " "
+
+$(OBJDIR)/doubleComplex.o: $(CSRCDIR)/doubleComplex.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/doubleComplex.c -o $(OBJDIR)/doubleComplex.o
+
+$(OBJDIR)/floatComplex.o: $(CSRCDIR)/floatComplex.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/floatComplex.c -o $(OBJDIR)/floatComplex.o
+
+$(OBJDIR)/RealToComplex.o: $(CSRCDIR)/RealToComplex.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/RealToComplex.c -o $(OBJDIR)/RealToComplex.o
+
+$(OBJDIR)/conj.o: $(CSRCDIR)/conj.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/conj.c -o $(OBJDIR)/conj.o
+
+$(OBJDIR)/disp.o: $(CSRCDIR)/disp.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/disp.c	-o $(OBJDIR)/disp.o 
+
+$(OBJDIR)/zeros.o: $(CSRCDIR)/zeros.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/zeros.c -o $(OBJDIR)/zeros.o
+
+$(OBJDIR)/ones.o: $(CSRCDIR)/ones.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/ones.c -o $(OBJDIR)/ones.o
+
+$(OBJDIR)/OpApex.o: $(CSRCDIR)/OpApex.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpApex.c -o $(OBJDIR)/OpApex.o
+
+$(OBJDIR)/OpColon.o: $(CSRCDIR)/OpColon.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpColon.c -o $(OBJDIR)/OpColon.o
+
+$(OBJDIR)/OpDotStar.o: $(CSRCDIR)/OpDotStar.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpDotStar.c -o $(OBJDIR)/OpDotStar.o
+
+$(OBJDIR)/OpDotHat.o: $(CSRCDIR)/OpDotHat.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpDotHat.c -o $(OBJDIR)/OpDotHat.o
+
+$(OBJDIR)/OpDotSlash.o: $(CSRCDIR)/OpDotSlash.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpDotSlash.c -o $(OBJDIR)/OpDotSlash.o
+
+$(OBJDIR)/OpEqual.o: $(CSRCDIR)/OpEqual.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpEqual.c -o $(OBJDIR)/OpEqual.o
+
+$(OBJDIR)/OpPlus.o: $(CSRCDIR)/OpPlus.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpPlus.c -o $(OBJDIR)/OpPlus.o
+   
+$(OBJDIR)/OpMinus.o: $(CSRCDIR)/OpMinus.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpMinus.c -o $(OBJDIR)/OpMinus.o
+   
+$(OBJDIR)/OpStar.o: $(CSRCDIR)/OpStar.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpStar.c -o $(OBJDIR)/OpStar.o
+
+$(OBJDIR)/OpIns.o: $(CSRCDIR)/OpIns.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpIns.c -o $(OBJDIR)/OpIns.o
+   
+$(OBJDIR)/OpExt.o: $(CSRCDIR)/OpExt.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpExt.c -o $(OBJDIR)/OpExt.o
+
+$(OBJDIR)/OpRc.o: $(CSRCDIR)/OpRc.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpRc.c -o $(OBJDIR)/OpRc.o
+   
+$(OBJDIR)/OpCc.o: $(CSRCDIR)/OpCc.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpCc.c -o $(OBJDIR)/OpCc.o
+
+$(OBJDIR)/cos.o: $(CSRCDIR)/cos.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/cos.c -o $(OBJDIR)/cos.o
+
+$(OBJDIR)/cosh.o: $(CSRCDIR)/cosh.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/cosh.c -o $(OBJDIR)/cosh.o
+
+$(OBJDIR)/sin.o: $(CSRCDIR)/sin.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/sin.c -o $(OBJDIR)/sin.o
+   
+$(OBJDIR)/sinh.o: $(CSRCDIR)/sinh.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/sinh.c -o $(OBJDIR)/sinh.o 
+
+$(OBJDIR)/FileManagement.o: $(CSRCDIR)/FileManagement.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/FileManagement.c -o $(OBJDIR)/FileManagement.o 
+
+$(OBJDIR)/OpLogLt.o: $(CSRCDIR)/OpLogLt.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpLogLt.c -o $(OBJDIR)/OpLogLt.o 
+
+$(OBJDIR)/OpLogGt.o: $(CSRCDIR)/OpLogGt.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpLogGt.c -o $(OBJDIR)/OpLogGt.o 
+
+$(OBJDIR)/OpLogLe.o: $(CSRCDIR)/OpLogLe.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpLogLe.c -o $(OBJDIR)/OpLogLe.o 
+
+$(OBJDIR)/OpLogGe.o: $(CSRCDIR)/OpLogGe.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpLogGe.c -o $(OBJDIR)/OpLogGe.o 
+
+$(OBJDIR)/OpLogEq.o: $(CSRCDIR)/OpLogEq.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/OpLogEq.c -o $(OBJDIR)/OpLogEq.o 
+
+$(OBJDIR)/Find.o: $(CSRCDIR)/Find.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/Find.c -o $(OBJDIR)/Find.o 
+
+$(OBJDIR)/ConvertPrecision.o: $(CSRCDIR)/ConvertPrecision.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/ConvertPrecision.c -o $(OBJDIR)/ConvertPrecision.o 
+
+$(OBJDIR)/SCI2Cfft.o: $(CSRCDIR)/SCI2Cfft.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/SCI2Cfft.c -o $(OBJDIR)/SCI2Cfft.o 
+
+$(OBJDIR)/SCI2Cconvol.o: $(CSRCDIR)/SCI2Cconvol.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCDIR)/SCI2Cconvol.c -o $(OBJDIR)/SCI2Cconvol.o 
+
+$(OBJDIR)/sqrt.o: $(CSRCELEMFUNDIR)/sqrt/*sqrt*.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) -c $(CSRCELEMFUNDIR)/sqrt/*sqrt*.c -o $(OBJDIR)/sqrt.o 
+
+$(OBJDIR)/ssqrts.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/ssqrts.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/ssqrts.c -o $(OBJDIR)/ssqrts.o 
+   
+$(OBJDIR)/dsqrts.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/dsqrts.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/dsqrts.c -o $(OBJDIR)/dsqrts.o 
+
+$(OBJDIR)/csqrts.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/csqrts.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/csqrts.c -o $(OBJDIR)/csqrts.o 
+
+$(OBJDIR)/zsqrts.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/zsqrts.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/zsqrts.c -o $(OBJDIR)/zsqrts.o 
+
+$(OBJDIR)/ssqrta.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/ssqrta.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/ssqrta.c -o $(OBJDIR)/ssqrta.o 
+
+$(OBJDIR)/dsqrta.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/dsqrta.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/dsqrta.c -o $(OBJDIR)/dsqrta.o 
+
+$(OBJDIR)/csqrta.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/csqrta.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/csqrta.c -o $(OBJDIR)/csqrta.o 
+
+$(OBJDIR)/zsqrta.o: $(CSRCDIR)/src/elementaryFunctions/sqrt/zsqrta.c $(HSRCDIR)/*.h
+	$(CC) $(CFLAGS) $(CFLAGS_ELEMENTARY_FUNCTIONS) -c $(ELEMENTARY_FUNCTIONS_DIR)/sqrt/zsqrta.c -o $(OBJDIR)/zsqrta.o
