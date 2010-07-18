@@ -8,6 +8,7 @@ QString const utilsTemplate = "utils.template";
 QString const metamodelNameTag = "@@MetamodelName@@";
 QString const initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 QString const initElementNameMapLineTag = "@@InitElementNameMapLine@@";
+QString const initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramDisplayedNameTag = "@@DiagramDisplayedName@@";
 QString const elementNameTag = "@@ElementName@@";

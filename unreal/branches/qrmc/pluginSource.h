@@ -13,6 +13,8 @@ public:
 	bool generate(QString const &sourceTemplate, QMap<QString, QString> const &utils);
 	void generateDiagramsMap();
 	void generateElementsMap();
+	void generateMouseGesturesMap();
+	void generatePropertyTypesMap();
 
 private:
 

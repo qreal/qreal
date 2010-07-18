@@ -14,6 +14,7 @@ PluginSource::~PluginSource()
 
 void PluginSource::init(qrRepo::RepoApi &repo, qReal::Id metamodelId)
 {
+	mApi = &repo; // will need it on generation stage
 	qDebug() << "init id" << metamodelId.toString();
 	foreach(qReal::Id diagramId, repo.children(metamodelId)) {
 		initDiagram(repo, diagramId);
@@ -23,7 +24,6 @@ void PluginSource::init(qrRepo::RepoApi &repo, qReal::Id metamodelId)
 
 void PluginSource::initDiagram(qrRepo::RepoApi &repo, qReal::Id diagramId)
 {
-	mApi = &repo; // will need it on generation stage
 	Diagram diagram;
 	diagram.name = repo.name(diagramId);
 	diagram.displayedName = repo.property(diagramId, "displayedName").toString();
@@ -36,7 +36,7 @@ void PluginSource::initDiagram(qrRepo::RepoApi &repo, qReal::Id diagramId)
 		element.id = elementId;
 		if (element.displayedName.isEmpty()) // in case of incorrect metamodels
 			element.displayedName = element.name;
-//		qDebug() << element.name << elementId.toString() << elementId.element();
+		qDebug() << element.name << elementId.toString() << elementId.element();
 		diagram.elements << element;
 	}
 
@@ -66,6 +66,8 @@ bool PluginSource::generate(QString const &sourceTemplate, QMap<QString, QString
 
 	generateDiagramsMap();
 	generateElementsMap();
+	generateMouseGesturesMap();
+	generatePropertyTypesMap();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag, mName);
@@ -93,7 +95,7 @@ void PluginSource::generateDiagramsMap()
 void PluginSource::generateElementsMap()
 {
 	// filling template for elementsNameMap inits
-	QString initNameMapBody = "";
+	QString initElementsMapBody = "";
 	QString const line = mUtilsTemplate[initElementNameMapLineTag];
 	foreach(Diagram diagram, mDiagrams)	{
 		foreach(Element el, diagram.elements) {
@@ -104,7 +106,7 @@ void PluginSource::generateElementsMap()
 				// TODO: request needed diagrams and resolve all imports as qrxc does
 				continue;
 
-			qDebug() << el.id.element() << "has set shape prop: " << mApi->hasProperty(el.id, "set Shape");
+//			qDebug() << el.id.element() << "has set shape prop: " << mApi->hasProperty(el.id, "set Shape");
 
 //			if (el.id.element() == "MetaEntityNode") {
 //				if (mApi->stringProperty(el.id, "set Shape").isEmpty())
@@ -114,12 +116,30 @@ void PluginSource::generateElementsMap()
 //			}
 
 			QString newline = line;
-			initNameMapBody += newline.replace(elementNameTag, el.name)
+			initElementsMapBody += newline.replace(elementNameTag, el.name)
 								.replace(elementDisplayedNameTag, el.displayedName)
 								.replace(diagramNameTag, diagram.name)
 								 + "\n";
 		}
 	}
 	// inserting generated lines into main template
-	mSourceTemplate.replace(initElementNameMapLineTag, initNameMapBody);
+	mSourceTemplate.replace(initElementNameMapLineTag, initElementsMapBody);
+}
+
+void PluginSource::generateMouseGesturesMap()
+{
+	// waiting for an appropriate property in metaeditor
+}
+
+void PluginSource::generatePropertyTypesMap()
+{
+	// preparing template for propertyTypes map inits
+	QString initPropTypesMapBody = "";
+	QString const line = mUtilsTemplate[initPropertyTypesMapLineTag];
+	foreach(Diagram diagram, mDiagrams)	{
+		QString newline = line;
+		// TODO: resolve properties
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initPropertyTypesMapLineTag, initPropTypesMapBody);
 }

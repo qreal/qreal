@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 //	}
 
 //	QString workingCopyDir = args[1];
-	QString workingCopyDir = "../qrgui/save";
+	QString workingCopyDir = "../../trunk/qrgui/save";
 
 	MetaCompiler metaCompiler(workingCopyDir);
 	if (!metaCompiler.compile()) {
