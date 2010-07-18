@@ -3,6 +3,8 @@
 #include "stack-c.h"
 #include "call_scilab.h"
 #include "MatrixWork.cpp"
+#include <QFile>
+#include <QTextStream>
 
 
 int main(int argc, char *argv[])
@@ -11,13 +13,14 @@ int main(int argc, char *argv[])
     
 
     MatrixWork mw;
-    
-    static double A[]={1,2,3,4};  int mA=2,nA=2;
-    static double B[]={4,5,6,7};  int mB=2,nB=2;
-    
+
     mw.StartWork();
-    mw.GetElementSum(A, nA, mA);
-    mw.GetMatrixSum(A, nA, mA, B, nB, mB);
+
+    SendScilabJob("cd D:\\QT\\scilab2c_1.1-3.bin\\scilab2c_1.1");
+
+    SendScilabJob("exec loader.sce");
+
+    SendScilabJob("scilab2c('D:\\QT\\scilab2c_1.1-3.bin\\scilab2c_1.1\\tests\\unit_tests\\test_double_abs.sci', 'D:\\Study')");
     
     return a.exec();
 
