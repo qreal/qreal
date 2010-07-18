@@ -514,6 +514,17 @@ void Model::exterminate()
 	reinit();
 }
 
+void Model::resetChangedDiagrams()
+{
+	mApi.resetChangedDiagrams();
+}
+
+void Model::resetChangedDiagrams(const IdList &list)
+{
+	mApi.resetChangedDiagrams(list);
+}
+
+
 void Model::cleanupTree(ModelTreeItem *root)
 {
 	foreach (ModelTreeItem *childItem, root->children()) {

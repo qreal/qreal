@@ -344,7 +344,7 @@
        <x>20</x>
        <y>30</y>
        <width>171</width>
-       <height>61</height>
+       <height>41</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -384,9 +384,9 @@
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>120</y>
+       <y>110</y>
        <width>171</width>
-       <height>61</height>
+       <height>71</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -421,12 +421,25 @@
        <string>Save on exit</string>
       </property>
      </widget>
+     <widget class="QCheckBox" name="chooseDiagramsToSaveCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>151</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Choose diagrams to save</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QLabel" name="label_8">
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>100</y>
+       <y>90</y>
        <width>61</width>
        <height>16</height>
       </rect>

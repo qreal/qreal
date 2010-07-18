@@ -81,6 +81,7 @@ namespace qrRepo {
 
 		qReal::IdList getChangedDiagrams() const;
 		void resetChangedDiagrams();
+		void resetChangedDiagrams(const qReal::IdList &list);
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

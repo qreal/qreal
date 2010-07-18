@@ -25,7 +25,7 @@ void Serializer::setWorkingDir(QString const &workingDir)
 
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 {
-	clearDir(mWorkingDir);
+//	clearDir(mWorkingDir);
 	foreach (LogicObject *object, objects) {
 		QString filePath = createDirectory(object->id());
 

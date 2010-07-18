@@ -213,8 +213,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	clEvent = event;
 	QSettings settings("SPbSU", "QReal");
 	qDebug() << "closeEvent()";
-	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())
-		&& (ui.diagramExplorer->currentIndex().row() > -1)) {
+	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
 		event->ignore();
 		suggestToSave();
 	} else {
@@ -927,6 +926,13 @@ void MainWindow::createDiagram(const QString &idString)
 
 void MainWindow::save()
 {
+	QSettings settings("SPbSU", "QReal");
+	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
+		toSave = mModel->api().children(ROOT_ID);
+		saveIds();
+		return;
+	}
+
 	QDialog dialog;
 	QVBoxLayout vLayout;
 	QHBoxLayout hLayout;
@@ -952,10 +958,15 @@ void MainWindow::save()
 
 void MainWindow::saveIds()
 {
-	if (toSave == mModel->api().children(ROOT_ID))
+	if (toSave == mModel->api().children(ROOT_ID)) {
 		mModel->api().save();
-	else
+		mModel->resetChangedDiagrams();
+	}
+	else {
 		mModel->api().save(toSave);
+		mModel->resetChangedDiagrams(toSave);
+	}
+	
 }
 
 void MainWindow::saveAs()
@@ -969,10 +980,12 @@ void MainWindow::saveAs()
 
 QListWidget* MainWindow::createSaveListWidget()
 {
+	//TODO: add deleted diagrams to list
 	checked = new bool[toSave.size()];
 	toSave = mModel->api().children(ROOT_ID);
 
 	QListWidget *listWidget = new QListWidget();
+
 	int i =0;
 	foreach(Id id, toSave) {
 		listWidget->addItem(id.diagram());
@@ -1033,11 +1046,18 @@ void MainWindow::suggestToSave()
 	QLabel label(text);
 	vLayout.addWidget(&label);
 
-	QWidget* saveWidget = createSaveListWidget();
-	vLayout.addWidget(saveWidget);
+	QWidget* saveListWidget = createSaveListWidget();
+	vLayout.addWidget(saveListWidget);
+	QSettings settings("SPbSU", "QReal");
+	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
+		saveListWidget->hide();
+		vLayout.removeWidget(saveListWidget);
+	}
+
 	vLayout.addLayout(&hLayout);
 	dialog.setLayout(&vLayout);
-	saveWidget->show();
+	if (settings.value("ChooseDiagramsToSave", true).toBool())
+		saveListWidget->show();
 
 	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));

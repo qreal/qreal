@@ -22,6 +22,8 @@ void PreferencesDialog::initPreferences()
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
 
+	ui->chooseDiagramsToSaveCheckBox->setChecked(
+		settings.value("ChooseDiagramsToSave", true).toBool());
 	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
@@ -39,6 +41,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
 	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
 
+	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
 	settings.setValue("PaletteTabSwitching", ui->paletteTabCheckBox->isChecked());
 	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());

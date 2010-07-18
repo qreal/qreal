@@ -396,3 +396,9 @@ void RepoApi::resetChangedDiagrams()
 {
 	mDiagramsChanged.clear();
 }
+
+void RepoApi::resetChangedDiagrams(const IdList &list)
+{
+	foreach(Id id, list)
+		mDiagramsChanged.remove(id);
+}
