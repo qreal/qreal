@@ -518,13 +518,14 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			{
 				if (actionItem->getHavePortStatus())
 				{
-					double xHor = actionItem->getXHor();
-					double xVert = actionItem->getXVert();
-					double yHor = actionItem->getYHor();
-					double yVert = actionItem->getYVert();
+					QList<double> list = actionItem->getBordersValues();
+					double xHor = list[0];
+					double yHor = list[1];
+					double xVert = list[2];
+					double yVert = list[3];
 					posInItem = actionItem->mapFromScene(position);
 					if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
-							|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
+						|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
 					{
 						this->setParentItem(actionItem);
 						mParentNodeElement = actionItem;
@@ -571,10 +572,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 					if (mParentNodeElement)
 					{
 						posInItem = mParentNodeElement->mapFromScene(position);
-						double xHor = mParentNodeElement->getXHor();
-						double xVert = mParentNodeElement->getXVert();
-						double yHor = mParentNodeElement->getYHor();
-						double yVert = mParentNodeElement->getYVert();
+						QList<double> list = mParentNodeElement->getBordersValues();
+						double xHor = list[0];
+						double yHor = list[1];
+						double xVert = list[2];
+						double yVert = list[3];
 						if (inHor)
 						{
 							if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
@@ -1219,7 +1221,7 @@ bool NodeElement::getHavePortStatus()
 	return mElementImpl->isHavePin();
 }
 
-double NodeElement::getXHor()
+/*double NodeElement::getXHor()
 {
 	return mElementImpl->getXHorBord();
 }
@@ -1237,7 +1239,7 @@ double NodeElement::getXVert()
 double NodeElement::getYVert()
 {
 	return mElementImpl->getYVertBord();
-}
+}*/
 
 bool NodeElement::isLowSide(QPointF& point, double x, double y) const
 {
@@ -1300,10 +1302,11 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	}
 	if (mPos == QPointF(0,0))
 		mPos = this->pos();
-	double xHor = mParentNodeElement->getXHor();
-	double xVert = mParentNodeElement->getXVert();
-	double yHor = mParentNodeElement->getYHor();
-	double yVert = mParentNodeElement->getYVert();
+	QList<double> list = mParentNodeElement->getBordersValues();
+	double xHor = list[0];
+	double yHor = list[1];
+	double xVert = list[2];
+	double yVert = list[3];
 	QPointF posi = pos();
 	if (mParentNodeElement->isLowSide(posi, xHor, yHor+5))
 	{
@@ -1365,4 +1368,9 @@ void NodeElement::updateByNewParent()
 bool NodeElement::isClass()
 {
 	return mElementImpl->isClass();
+}
+
+QList<double> NodeElement::getBordersValues()
+{
+		return mElementImpl->getBorders();
 }

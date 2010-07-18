@@ -133,10 +133,11 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tbool isClass() { return false; }\n"
 		<< "\t\tbool isPort() { return false; }\n"
 		<< "\t\tbool isHavePin() { return false; }\n"
-		<< "\t\tdouble getXHorBord() { return 0; }\n"
-		<< "\t\tdouble getYHorBord() { return 0; }\n"
-		<< "\t\tdouble getXVertBord() { return 0; }\n"
-		<< "\t\tdouble getYVertBord() { return 0; }\n"
+		<< "\t\tQList<double> getBorders()\n\t\t{\n"
+		<< "\t\t\tQList<double> list;\n"
+		<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
+		<< "\t\t\treturn list;\n"
+		<< "\t\t}\n"
 		<< "\t\tbool hasPorts() { return false; }\n"
 		<< "\t\tQt::PenStyle getPenStyle() { ";
 	if (mLineType != "")

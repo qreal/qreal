@@ -69,9 +69,10 @@ namespace UML{
 
 			virtual bool isPort() = 0;
 			virtual bool isHavePin() = 0;
-			virtual double getXHorBord() = 0;
+                        /*virtual double getXHorBord() = 0;
 			virtual double getYHorBord() = 0;
 			virtual double getXVertBord() = 0;
-			virtual double getYVertBord() = 0;
+                        virtual double getYVertBord() = 0;*/
+                        virtual QList<double> getBorders() = 0;
 	};
 }
