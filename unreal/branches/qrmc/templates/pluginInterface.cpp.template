@@ -1,0 +1,153 @@
+#include "pluginInterface.h"
+
+#include "elements.h"
+
+
+Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin)
+
+@@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
+{
+	initPlugin();
+}
+
+void @@MetamodelName@@Plugin::initPlugin()
+{
+	initNameMap();
+	initMouseGestureMap();
+	initPropertyMap();
+	initPropertyDefaultsMap();
+}
+
+void @@MetamodelName@@Plugin::initNameMap()
+{
+@@InitDiagramNameMapLine@@
+
+@@InitElementNameMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initMouseGestureMap()
+{
+@@InitMouseGesturesMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initPropertyMap()
+{
+@@InitPropertyTypesMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initPropertyDefaultsMap()
+{
+@@InitPropertyDefaultMapLine@@
+}
+
+QStringList @@MetamodelName@@Plugin::diagrams() const
+{
+	return diagramNameMap.keys();
+}
+
+QStringList @@MetamodelName@@Plugin::elements(QString const &diagram) const
+{
+	return elementsNameMap[diagram].keys();
+}
+
+QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(QString const &element) const
+{
+	return propertyDefault[element].keys();
+}
+
+QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const
+{
+	return QIcon(engine);
+}
+
+QString @@MetamodelName@@Plugin::editorName() const
+{
+	 return "@@MetamodelName@@ Editor";
+}
+
+QString @@MetamodelName@@Plugin::diagramName(QString const &diagram) const
+{
+	return diagramNameMap[diagram];
+}
+
+QString @@MetamodelName@@Plugin::elementName(QString const &diagram, QString const &element) const
+{
+	return elementsNameMap[diagram][element];
+}
+
+QString @@MetamodelName@@Plugin::elementMouseGesture(QString const &diagram, QString const &element) const
+{
+	return elementMouseGesturesMap[diagram][element];
+}
+
+UML::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
+{
+@@GetGraphicalObjectLine@@
+
+	Q_ASSERT(!"Request for creation of an element with unknown name");
+	return NULL;
+}
+
+QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const
+{
+	QStringList result;
+@@GetPropertyNamesLine@@
+	return result;
+}
+
+QStringList @@MetamodelName@@Plugin::getTypesContainedBy(QString const &element) const
+{
+	QStringList result;
+@@GetContainedByLine@@
+	return result;
+}
+
+QStringList @@MetamodelName@@Plugin::getConnectedTypes(QString const &element) const
+{
+	QStringList result;
+@@GetConnectedTypesLine@@
+	return result;
+}
+
+QStringList @@MetamodelName@@Plugin::getUsedTypes(QString const &element) const
+{
+	QStringList result;
+@@GetUsedTypesLine@@
+	return result;
+}
+
+QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plugin::getPossibleEdges(QString const &element) const
+{
+	QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;
+	Q_UNUSED(element);
+	return result;
+}
+
+//(-1) means "edge", (+1) means "node"
+int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
+{
+@@IsNodeOrEdgeLine@@
+	return 0;
+}
+QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
+{
+	QStringList result;
+@@GetEnumValuesLine@@
+	return result;
+}
+
+QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const
+{
+	return propertyTypes[element][property];
+}
+
+QString @@MetamodelName@@Plugin::getPropertyDefaultValue(QString const &element, QString const &property) const
+{
+	return propertyDefault[element][property];
+}
+
+QList<qReal::ListenerInterface*> @@MetamodelName@@Plugin::listeners() const
+{
+	QList<qReal::ListenerInterface*> result;
+	return result;
+}
