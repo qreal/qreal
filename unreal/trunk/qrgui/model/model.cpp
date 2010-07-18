@@ -494,7 +494,6 @@ void Model::saveTo(QString const &workingDirectory)
 void Model::save()
 {
 	mApi.save();
-	mApi.mIsChange = false;
 }
 
 void Model::reinit()

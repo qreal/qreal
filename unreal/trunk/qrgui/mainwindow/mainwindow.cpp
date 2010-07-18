@@ -455,6 +455,7 @@ void MainWindow::open()
 void MainWindow::save()
 {
 	mModel->api().save();
+	mModel->setIsChanged(false);
 }
 
 void MainWindow::saveAs()
