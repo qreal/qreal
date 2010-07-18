@@ -3,9 +3,9 @@
 
 #include <QtCore/QDebug>
 
+using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
-using namespace qReal;
 
 bool const failSafe = true;
 
@@ -169,9 +169,26 @@ void Client::addChildrenToRootObject()
 	}
 }
 
+QList<LogicObject*> Client::allChildrenOf(Id id) const
+{
+	QList<LogicObject*> result;
+	result.append(mObjects[id]);
+	foreach(Id childId,mObjects[id]->children())
+		result.append(allChildrenOf(childId));
+	return result;
+}
+
 void Client::save() const
 {
 	serializer.saveToDisk(mObjects.values());
+}
+
+void Client::save(IdList list) const
+{
+	QList<LogicObject*> toSave;
+	foreach(Id id, list)
+		toSave.append(allChildrenOf(id));
+	serializer.saveToDisk(toSave);
 }
 
 void Client::saveTo(QString const &workingDir)

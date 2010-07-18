@@ -65,6 +65,16 @@ QString Id::editor() const
 	return mEditor;
 }
 
+Id Id::editorId() const
+{
+	return Id(mEditor);
+}
+
+Id Id::diagramId() const
+{
+	return Id(mEditor,mDiagram);
+}
+
 QString Id::diagram() const
 {
 	return mDiagram;

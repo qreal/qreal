@@ -56,7 +56,6 @@ namespace qReal {
 						void setRootIndex(QModelIndex const & index);
 
 			bool isChanged();
-			void setIsChanged(bool bl);
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;

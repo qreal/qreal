@@ -4,6 +4,8 @@
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
 
+#include <QSet>
+
 namespace qrRepo {
 
 	class QRREPO_EXPORT RepoApi {
@@ -62,8 +64,10 @@ namespace qrRepo {
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
 		void exterminate();
-		void open(QString const &workingDir);
+
 		void save() const;
+		void save(qReal::IdList list) const;
+		void open(QString const &workingDir);
 		void saveTo(QString const &workingDir);
 
 
@@ -75,7 +79,7 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
-		bool mIsChange;
+		QSet<qReal::Id> changed;//TODO: optimize for not appending duplicate
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.

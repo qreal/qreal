@@ -179,14 +179,13 @@ MainWindow::MainWindow()
 	if (mModel->rowCount() > 0)
 		openNewTab(mModel->index(0, 0, QModelIndex()));
 
-	mModel->setIsChanged(false);
 	progress->setValue(100);
 	if (showSplash)
 		splash->close();
 	delete splash;
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
-		chooseDiagram();
+		suggestToCreateDiagram();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -204,37 +203,6 @@ MainWindow::~MainWindow()
 	delete mListenerManager;
 }
 
-void MainWindow::suggestToSave()
-{
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	QPushButton saveButton;
-	QPushButton cancelButton;
-	QPushButton discardButton;
-	saveButton.setText("Save");
-	cancelButton.setText("Cancel");
-	discardButton.setText("Discard");
-	hLayout.addWidget(&saveButton);
-	hLayout.addWidget(&cancelButton);
-	hLayout.addWidget(&discardButton);
-	QString text = QString("The document has been modified.\n");
-	text += QString("Do you want to save your changes?");
-	QLabel label(text);
-	vLayout.addWidget(&label);
-	vLayout.addLayout(&hLayout);
-	dialog.setLayout(&vLayout);
-
-	QObject::connect(&saveButton,SIGNAL(clicked()),mModel,SLOT(save()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-
-	dialog.exec();
-}
-
 void MainWindow::finalClose()
 {
 	clEvent->accept();
@@ -245,7 +213,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	clEvent = event;
 	QSettings settings("SPbSU", "QReal");
 	qDebug() << "closeEvent()";
-	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
+	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())
+		&& (ui.diagramExplorer->currentIndex().row() > -1)) {
 		event->ignore();
 		suggestToSave();
 	} else {
@@ -269,71 +238,6 @@ void MainWindow::loadPlugins()
 		}
 	}
 	ui.paletteToolbox->initDone();
-}
-
-void MainWindow::chooseDiagram()
-{
-	if (getCurrentTab())
-		return;
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	dialog.setLayout(&vLayout);
-	dialog.setMinimumSize(320,240);
-	dialog.setMaximumSize(320,240);
-	dialog.setWindowTitle("Choose new diagram");
-
-	QLabel label;
-	label.setText(QString("There is no existing diagram,\n choose diagram you want work with:"));
-	QListWidget diagramsListWidget;
-	diagramsListWidget.setParent(&dialog);
-
-	int i = 0;
-	foreach(Id editor, manager()->editors()) {
-		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
-			diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram());
-			diagramsListWidget.addItem(diagram.diagram());
-			i++;
-		}
-	}
-
-	QPushButton cancelButton;
-	cancelButton.setText("Cancel");
-	QPushButton okButton;
-	okButton.setText("Done");
-
-	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInListSelected(int)));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInListDeselect()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	diagramsListWidget.setCurrentRow(0);
-
-	vLayout.addWidget(&label);
-	vLayout.addWidget(&diagramsListWidget);
-	hLayout.addWidget(&cancelButton);
-	hLayout.addWidget(&okButton);
-	vLayout.addLayout(&hLayout);
-
-	dialog.exec();
-}
-
-void MainWindow::diagramInListDeselect()
-{
-	deleteFromExplorer();
-}
-
-void MainWindow::diagramInListSelected(int num)
-{
-	deleteFromExplorer();
-	createDiagram(diagramsList.at(num));
-}
-
-void MainWindow::createDiagram(const QString &idString)
-{
-	Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
-	QModelIndex index = mModel->indexById(created);
-	ui.diagramExplorer->setCurrentIndex(index);
-	openNewTab(index);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -450,22 +354,6 @@ void MainWindow::open()
 		return;
 
 	mModel->open(dirName);
-}
-
-void MainWindow::save()
-{
-	mModel->api().save();
-	mModel->setIsChanged(false);
-}
-
-void MainWindow::saveAs()
-{
-	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
-
-	if (dirName.isEmpty())
-		return;
-
-	mModel->saveTo(dirName);
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
@@ -963,4 +851,201 @@ void MainWindow::showGestures()
 IGesturesPainter * MainWindow::gesturesPainter()
 {
 	return this->mGesturesWidget;
+}
+
+
+
+void MainWindow::suggestToCreateDiagram()
+{
+	if (getCurrentTab())
+		return;
+	QDialog dialog;
+	QVBoxLayout vLayout;
+	QHBoxLayout hLayout;
+	dialog.setLayout(&vLayout);
+	dialog.setMinimumSize(320,240);
+	dialog.setMaximumSize(320,240);
+	dialog.setWindowTitle("Choose new diagram");
+
+	QLabel label;
+	label.setText(QString("There is no existing diagram,\n choose diagram you want work with:"));
+	QListWidget diagramsListWidget;
+	diagramsListWidget.setParent(&dialog);
+
+	int i = 0;
+	foreach(Id editor, manager()->editors()) {
+		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
+			//hack
+			if (diagram.diagram() != "Kernel")
+				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagram.diagram()+"Node");
+			else
+				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/Diagram");
+			//
+			diagramsListWidget.addItem(diagram.diagram());
+			i++;
+		}
+	}
+
+	QPushButton cancelButton;
+	cancelButton.setText("Cancel");
+	QPushButton okButton;
+	okButton.setText("Done");
+
+	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInCreateListDeselect()));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	diagramsListWidget.setCurrentRow(0);
+
+	vLayout.addWidget(&label);
+	vLayout.addWidget(&diagramsListWidget);
+	hLayout.addWidget(&cancelButton);
+	hLayout.addWidget(&okButton);
+	vLayout.addLayout(&hLayout);
+
+	dialog.exec();
+}
+
+void MainWindow::diagramInCreateListDeselect()
+{
+	deleteFromExplorer();
+}
+
+void MainWindow::diagramInCreateListSelected(int num)
+{
+	deleteFromExplorer();
+	createDiagram(diagramsList.at(num));
+}
+
+void MainWindow::createDiagram(const QString &idString)
+{
+	Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
+	QModelIndex index = mModel->indexById(created);
+	ui.diagramExplorer->setCurrentIndex(index);
+	openNewTab(index);
+}
+
+void MainWindow::save()
+{
+	QDialog dialog;
+	QVBoxLayout vLayout;
+	QHBoxLayout hLayout;
+	QPushButton saveButton;
+	QPushButton cancelButton;
+	saveButton.setText("Save");
+	cancelButton.setText("Cancel");
+	QWidget* saveListWidget = createSaveListWidget();
+	vLayout.addWidget(saveListWidget);
+
+	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
+
+	hLayout.addWidget(&saveButton);
+	hLayout.addWidget(&cancelButton);
+
+	vLayout.addLayout(&hLayout);
+	dialog.setLayout(&vLayout);
+	saveListWidget->show();
+	dialog.exec();
+}
+
+void MainWindow::saveIds()
+{
+	if (toSave == mModel->api().children(ROOT_ID))
+		mModel->api().save();
+	else
+		mModel->api().save(toSave);
+}
+
+void MainWindow::saveAs()
+{
+	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
+	if (dirName.isEmpty())
+		return;
+
+	mModel->saveTo(dirName);
+}
+
+QListWidget* MainWindow::createSaveListWidget()
+{
+	checked = new bool[toSave.size()];
+	toSave = mModel->api().children(ROOT_ID);
+
+	QListWidget *listWidget = new QListWidget();
+	int i =0;
+	foreach(Id id, toSave) {
+		listWidget->addItem(id.diagram());
+		if (mModel->api().changed.contains(id.diagramId())) {
+			checked[i] = true;
+			listWidget->item(i)->setCheckState(Qt::Checked);
+			qDebug() << "checked: " << id.toString() << " at row: " << i;
+		} else {
+			listWidget->item(i)->setCheckState(Qt::Unchecked);
+			checked[i] = false;
+		}
+		i++;
+	}
+
+	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
+					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
+
+	return listWidget;
+}
+
+void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
+{
+	QListWidget* listWidget = diagram->listWidget();
+	if (diagram->checkState() == Qt::Unchecked)
+		checked[listWidget->row(diagram)] = false;
+	else if (diagram->checkState() == Qt::Checked)
+		checked[listWidget->row(diagram)] = true;
+}
+
+void MainWindow::saveListClosed()
+{
+	IdList toRemove;
+	for(int i = 0; i < toSave.size(); i++)
+		if (!checked[i])
+			toRemove.append(toSave.at(i));
+	foreach(Id id, toRemove)
+		toSave.removeOne(id);
+
+	saveIds();
+}
+
+void MainWindow::suggestToSave()
+{
+	QDialog dialog;
+	QVBoxLayout vLayout;
+	QHBoxLayout hLayout;
+	QPushButton saveButton;
+	QPushButton cancelButton;
+	QPushButton discardButton;
+	saveButton.setText("Save");
+	cancelButton.setText("Cancel");
+	discardButton.setText("Discard");
+	hLayout.addWidget(&saveButton);
+	hLayout.addWidget(&cancelButton);
+	hLayout.addWidget(&discardButton);
+	QString text = QString("The document has been modified.\n");
+	text += QString("Do you want to save your changes?");
+	QLabel label(text);
+	vLayout.addWidget(&label);
+
+	QWidget* saveWidget = createSaveListWidget();
+	vLayout.addWidget(saveWidget);
+	vLayout.addLayout(&hLayout);
+	dialog.setLayout(&vLayout);
+	saveWidget->show();
+
+	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
+	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
+	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
+	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+
+	dialog.setWindowTitle(QString("Saving"));
+	dialog.exec();
 }

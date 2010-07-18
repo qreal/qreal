@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../../qrgui/kernel/definitions.h"
+#include "../../qrgui/kernel/ids.h"
 #include "classes/logicObject.h"
-#include "serializer.h"
 #include "qrRepoGlobal.h"
+#include "serializer.h"
 
 #include <QHash>
 
@@ -36,9 +37,12 @@ namespace qrRepo {
 
 			void exterminate();
 			void open(QString const &workingDir);
+
 			void save() const;
+			void save(qReal::IdList list) const;
 			void saveTo(QString const &workingDir);
 
+			QList<LogicObject*> allChildrenOf(qReal::Id id) const;
 		private:
 			void init();
 

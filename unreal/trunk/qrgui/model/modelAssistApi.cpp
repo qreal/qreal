@@ -39,7 +39,7 @@ void ModelAssistApi::deleteUsage(qReal::Id const &source, qReal::Id const &desti
 
 Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
 {
-	Q_ASSERT((type.idSize() == 3) || (type.idSize() == 2));
+	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
