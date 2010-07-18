@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return ((id.idSize() == 3) || (id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)));
+	return (id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive));
 }
 
 void Model::init()
@@ -38,6 +38,7 @@ void Model::init()
 	loadSubtreeFromClient(mRootItem);
 	mApi.resetChangedDiagrams();
 	blockSignals(false);
+	mApi.resetChangedDiagrams();
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -494,6 +495,7 @@ void Model::saveTo(QString const &workingDirectory)
 void Model::save()
 {
 	mApi.save();
+	mApi.resetChangedDiagrams();
 }
 
 void Model::reinit()
@@ -571,4 +573,3 @@ bool Model::isChanged()
 {
 	return (mApi.getChangedDiagrams().size() > 0);
 }
-
