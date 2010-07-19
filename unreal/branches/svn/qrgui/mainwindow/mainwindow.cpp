@@ -37,7 +37,7 @@
 #include "gesturesShow/gestureswidget.h"
 #include "preferencesDialog.h"
 #include "openShapeEditorButton.h"
-//#include "../qrrepo/svnClient.h"
+#include "../qrrepo/svnClient.h"
 
 
 using namespace qReal;
@@ -48,7 +48,7 @@ MainWindow::MainWindow()
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20,270);
@@ -450,27 +450,24 @@ void MainWindow::toggleShowSplash(bool show)
 
 void MainWindow::doCommit()
 {
-	//	QString const Path = getWorkingDir(tr("Select directory with working copy"));
-	//	QString const path = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
-	QString select = tr("Select directory to commit");
+	QString select = tr("Select working directory for commit");
 	QString path = QFileDialog::getExistingDirectory(this, select);
 
 	if (path.isEmpty())
 		return;
-	/*	char* p;
-	QByteArray p1 = path.toAscii();
-	p = p1.data();
-	SvnClient client(p, "", "");
-//	client.commit(path, )
+	QMessageBox::information(this, tr("Selected path is"), path);
+	char* p = path.toAscii().data();
+	SvnClient client(p, "test", "test");
+	//	client.commit(path, )
 	QString *messag = new QString;
-	int revision = client.commit(*messag);
+	long revision = client.commit(*messag);
 	if (revision > 0)
 	{
 		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
+		QMessageBox::information(this, tr("Success"), success.append(QString::number(revision)));
 	}
 	else
-		QMessageBox::information(this, tr("Error"), *messag);*/
+		QMessageBox::information(this, tr("Error"), *messag);
 }
 
 void MainWindow::exportToXmi()
