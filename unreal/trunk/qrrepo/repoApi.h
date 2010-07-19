@@ -67,8 +67,10 @@ namespace qrRepo {
 
 		void save() const;
 		void save(qReal::IdList list) const;
-		void open(QString const &workingDir);
 		void saveTo(QString const &workingDir);
+		void remove(qReal::IdList list) const;
+
+		void open(QString const &workingDir);
 
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
@@ -79,8 +81,10 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
+		qReal::IdList getOpenedDiagrams() const;
 		qReal::IdList getChangedDiagrams() const;
 		void resetChangedDiagrams();
+		void addOpenedDiagram(const qReal::Id &id);
 		void resetChangedDiagrams(const qReal::IdList &list);
 
 	private:
@@ -93,7 +97,9 @@ namespace qrRepo {
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
-		QSet<qReal::Id> mDiagramsChanged;//TODO: optimize for not appending duplicate
+		QSet<qReal::Id> mDiagramsOpened;
+		QSet<qReal::Id> mDiagramsChanged;
+
 		details::Client mClient;
 	};
 

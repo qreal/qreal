@@ -304,9 +304,17 @@ void RepoApi::open(QString const &workingDir)
 	mClient.open(workingDir);
 }
 
+
+
 void RepoApi::save() const
 {
-	mClient.save();
+	mClient.saveAll();
+}
+
+void RepoApi::saveTo(QString const &workingDir)
+{
+	mClient.setWorkingDir(workingDir);
+	mClient.saveAll();
 }
 
 void RepoApi::save(qReal::IdList list) const
@@ -314,10 +322,12 @@ void RepoApi::save(qReal::IdList list) const
 	mClient.save(list);
 }
 
-void RepoApi::saveTo(QString const &workingDir)
+void RepoApi::remove(qReal::IdList list) const
 {
-	mClient.saveTo(workingDir);
+	mClient.remove(list);
 }
+
+
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {
@@ -387,6 +397,11 @@ int RepoApi::elementsCount() const
 	return mClient.elements().size();
 }
 
+IdList RepoApi::getOpenedDiagrams() const
+{
+	return mDiagramsOpened.values();
+}
+
 IdList RepoApi::getChangedDiagrams() const
 {
 	return mDiagramsChanged.values();
@@ -395,6 +410,11 @@ IdList RepoApi::getChangedDiagrams() const
 void RepoApi::resetChangedDiagrams()
 {
 	mDiagramsChanged.clear();
+}
+
+void RepoApi::addOpenedDiagram(const Id &id)
+{
+	mDiagramsOpened.insert(id);
 }
 
 void RepoApi::resetChangedDiagrams(const IdList &list)

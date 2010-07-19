@@ -7,18 +7,17 @@ class QIcon;
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
+
+#include "listenerManager.h"
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
-#include "listenerManager.h"
+#include "../../qrxml/editorInterface.h"
 
 namespace qrRepo {
 	class RepoApi;
 }
 
 namespace qReal {
-
-	class EditorInterface;
-
 	class EditorManager : public QObject
 	{
 		Q_OBJECT

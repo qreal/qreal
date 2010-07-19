@@ -925,8 +925,7 @@ void MainWindow::save()
 {
 	QSettings settings("SPbSU", "QReal");
 	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		toSave = mModel->api().children(ROOT_ID);
-		saveIds();
+		saveAll();
 		return;
 	}
 
@@ -953,20 +952,21 @@ void MainWindow::save()
 	dialog.exec();
 }
 
-void MainWindow::saveIds()
+void MainWindow::saveAll()
 {
-	if (toSave == mModel->api().children(ROOT_ID)) {
-		mModel->api().save();
-		mModel->resetChangedDiagrams();
-	}
-	else {
-		mModel->api().save(toSave);
-		mModel->resetChangedDiagrams(toSave);
-	}
-
+	mModel->api().save();
+	mModel->resetChangedDiagrams();
 }
 
-void MainWindow::saveAs()
+void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
+{
+	mModel->api().save(toSave);
+	mModel->api().remove(toRemove);
+	mModel->resetChangedDiagrams(toSave);
+	mModel->resetChangedDiagrams(toRemove);
+}
+
+void MainWindow::saveAs()	//TODO: change
 {
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
@@ -977,29 +977,25 @@ void MainWindow::saveAs()
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-	//TODO: add deleted diagrams to list
-	checked = new bool[toSave.size()];
-	toSave = mModel->api().children(ROOT_ID);
-
+	saveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
-	foreach(Id id, toSave) {
+	foreach(Id id, mModel->api().getOpenedDiagrams()) {
 		listWidget->addItem(id.diagram());
 		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
-			checked[i] = true;
+			saveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 			qDebug() << "checked: " << id.toString() << " at row: " << i;
 		} else {
 			listWidget->item(i)->setCheckState(Qt::Unchecked);
-			checked[i] = false;
+			saveListChecked[i] = false;
 		}
 		i++;
 	}
 
 	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
 					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
-
 	return listWidget;
 }
 
@@ -1007,21 +1003,30 @@ void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
 {
 	QListWidget* listWidget = diagram->listWidget();
 	if (diagram->checkState() == Qt::Unchecked)
-		checked[listWidget->row(diagram)] = false;
+		saveListChecked[listWidget->row(diagram)] = false;
 	else if (diagram->checkState() == Qt::Checked)
-		checked[listWidget->row(diagram)] = true;
+		saveListChecked[listWidget->row(diagram)] = true;
 }
 
 void MainWindow::saveListClosed()
 {
+	IdList toSave;
 	IdList toRemove;
-	for(int i = 0; i < toSave.size(); i++)
-		if (!checked[i])
-			toRemove.append(toSave.at(i));
-	foreach(Id id, toRemove)
-		toSave.removeOne(id);
+	IdList current = mModel->api().children(ROOT_ID);
+	IdList opened = mModel->api().getOpenedDiagrams();
 
-	saveIds();
+	int i = 0;
+	foreach(Id id, opened) {
+		if (saveListChecked[i])
+			continue;
+		if (current.contains(id))
+			toSave.append(id);
+		else
+			toRemove.append(id);
+		i++;
+	}
+
+	saveIds(toSave, toRemove);
 }
 
 void MainWindow::suggestToSave()
@@ -1049,7 +1054,9 @@ void MainWindow::suggestToSave()
 	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
 		saveListWidget->hide();
 		vLayout.removeWidget(saveListWidget);
-	}
+		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveAll()));
+	} else
+		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
 
 	vLayout.addLayout(&hLayout);
 	dialog.setLayout(&vLayout);
@@ -1058,7 +1065,6 @@ void MainWindow::suggestToSave()
 
 	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
 	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));

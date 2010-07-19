@@ -58,7 +58,9 @@ namespace qReal {
 		void open();
 		void save();
 		void saveAs();
-		void saveIds();
+		void saveAll();
+		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
+
 		void print();
 		void makeSvg();
 		void showGrid();
@@ -113,15 +115,14 @@ namespace qReal {
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget * mGesturesWidget;
 
-		IdList toSave;
-		bool* checked;
-
 		void loadPlugins();
 
+		bool* saveListChecked;
 		QListWidget* createSaveListWidget();
 
 		void suggestToSave();
 		void suggestToCreateDiagram();
+
 		QStringList diagramsList;
 		void createDiagram(const QString &idString);
 

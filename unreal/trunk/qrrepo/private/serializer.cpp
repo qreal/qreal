@@ -18,6 +18,17 @@ Serializer::Serializer(QString const& saveDirName, bool failSafeMode)
 {
 }
 
+void Serializer::clearWorkingDir() const
+{
+	clearDir(mWorkingDir);
+}
+
+void Serializer::clearDiagramDir(Id id) const
+{
+	QString filePath = pathToElement(id);
+	clearDir(filePath);
+}
+
 void Serializer::setWorkingDir(QString const &workingDir)
 {
 	mWorkingDir = workingDir + "/save";
@@ -25,7 +36,6 @@ void Serializer::setWorkingDir(QString const &workingDir)
 
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 {
-//	clearDir(mWorkingDir);
 	foreach (LogicObject *object, objects) {
 		QString filePath = createDirectory(object->id());
 
@@ -42,6 +52,17 @@ void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 		doc.save(out(), 2);
 	}
 }
+
+void Serializer::removeFromDisk(QList<LogicObject*> const &objects) const
+{
+	foreach (LogicObject *object, objects) {
+		QString filePath = pathToElement(object->id());
+		QDir dir;
+		dir.remove(filePath);
+	}
+}
+
+
 
 void Serializer::loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash)
 {
@@ -245,6 +266,19 @@ QString Serializer::serializeQPolygon(QPolygon const &p)
 		result += serializeQPointF(point) + " : ";
 	}
 	return result;
+}
+
+QString Serializer::pathToElement(Id const &id) const
+{
+	QString dirName = mWorkingDir;
+
+	QStringList partsList = id.toString().split('/');
+	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
+	for (int i = 1; i < partsList.size() - 1; ++i) {
+		dirName += "/" + partsList[i];
+	}
+
+	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
 QString Serializer::createDirectory(Id const &id) const

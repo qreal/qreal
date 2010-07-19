@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return (id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive));
+	return ((id != ROOT_ID) && (id.element() == assistApi().editorManager().getEditorInterface(id.editor())->diagramNodeName(id.diagram())));
 }
 
 void Model::init()
@@ -200,7 +200,6 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 	else {
 		for (int i = row; i < row + count; ++i) {
 			ModelTreeItem *child = parentItem->children().at(i);
-
 			mApi.removeElement(child->id());
 			removeModelItems(child);
 
@@ -369,6 +368,8 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	Q_UNUSED(action)
 
 	if (isDiagram(id)) {
+			mApi.addOpenedDiagram(id);
+			qDebug() << id.toString();
 		if (!isDiagram(parentItem->id()) && parentItem != mRootItem) {
 			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
@@ -452,6 +453,11 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 
 ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
+	if (isDiagram(id)) {
+			mApi.addOpenedDiagram(id);
+			qDebug() << id.toString();
+		}
+
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);

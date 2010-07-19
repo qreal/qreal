@@ -38,9 +38,10 @@ namespace qrRepo {
 			void exterminate();
 			void open(QString const &workingDir);
 
-			void save() const;
+			void saveAll() const;
 			void save(qReal::IdList list) const;
-			void saveTo(QString const &workingDir);
+			void remove(qReal::IdList list) const;
+			void setWorkingDir(QString const &workingDir);
 
 			QList<LogicObject*> allChildrenOf(qReal::Id id) const;
 		private:

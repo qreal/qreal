@@ -178,23 +178,35 @@ QList<LogicObject*> Client::allChildrenOf(Id id) const
 	return result;
 }
 
-void Client::save() const
+void Client::saveAll() const
 {
+	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 }
 
 void Client::save(IdList list) const
 {
 	QList<LogicObject*> toSave;
-	foreach(Id id, list)
-		toSave.append(allChildrenOf(id));
+	foreach(Id id, list) {
+		toSave.append(mObjects[id]);
+		serializer.clearDiagramDir(id);
+	}
 	serializer.saveToDisk(toSave);
 }
 
-void Client::saveTo(QString const &workingDir)
+void Client::remove(IdList list) const
+{
+	QList<LogicObject*> toRemove;
+	foreach(Id id, list) {
+		toRemove.append(mObjects[id]);
+		serializer.clearDiagramDir(id);
+	}
+	serializer.removeFromDisk(toRemove);
+}
+
+void Client::setWorkingDir(QString const &workingDir)
 {
 	serializer.setWorkingDir(workingDir);
-	serializer.saveToDisk(mObjects.values());
 }
 
 void Client::printDebug() const

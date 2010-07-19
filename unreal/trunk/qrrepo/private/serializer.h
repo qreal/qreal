@@ -13,22 +13,26 @@ namespace qrRepo {
 		class Serializer {
 		public:
 			Serializer(QString const& saveDirName, bool failSafeMode);
+			void clearWorkingDir() const;
+			void clearDiagramDir(qReal::Id id) const;
 			void setWorkingDir(QString const& workingDir);
 			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
 			void saveToDisk(QList<LogicObject*> const &objects) const;
+			void removeFromDisk(QList<LogicObject*> const &objects) const;
 
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash);
 
+			QString pathToElement(qReal::Id const &id) const;
 			QString createDirectory(qReal::Id const &id) const;
 
 			LogicObject *parseLogicObject(QDomElement const &elem);
+			static void clearDir(QString const &path);
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);
 			static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
 			static bool loadProperties(QDomElement const &elem, LogicObject &object);
 			static QPointF parsePointF(QString const &str);
 
-			static void clearDir(QString const &path);
 			static QString serializeQVariant(QVariant const &v);
 			static QString serializeQPointF(QPointF const &p);
 			static QString serializeQPolygon(QPolygon const &p);
