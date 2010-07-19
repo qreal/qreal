@@ -28,6 +28,7 @@ namespace qReal {
 			qrRepo::RepoApi &mApi;
 			EditorManager const &mEditorManager;
 			Id mMetamodel;
+			Id mDiagram;
 			QHash<Id, QString> mElements;
 			QHash<QString, QString> mContainerList;
 			int mElementsColumn;
@@ -38,7 +39,8 @@ namespace qReal {
 			int mCurrentWidth;
 			int mCurrentHigh;
 
-			void initMetamodel(QDomDocument const &document, QString const &directoryName);
+			Id getPackageId();
+			void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &id);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
 			void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
 			void createGraphicElements(QDomElement const &type, Id const &diagramId);

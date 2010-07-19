@@ -212,7 +212,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	clEvent = event;
 	QSettings settings("SPbSU", "QReal");
-	qDebug() << "closeEvent()";
 	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
 		event->ignore();
 		suggestToSave();
@@ -801,7 +800,6 @@ void MainWindow::closeTab(QModelIndex const &index)
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
-			qDebug() << " closing tab" << i;
 			closeTab(i);
 			return;
 		}

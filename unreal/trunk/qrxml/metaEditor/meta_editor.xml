@@ -18,6 +18,36 @@
 		</enum>
 	  </nonGraphicTypes>
 	  <graphicTypes>
+		<node name="PackageDiagram" displayedName="Package Diagram">
+		  <graphics>
+			<picture sizex="100" sizey="100">
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Package</text>
+			</picture>
+			<labels>
+			  <label x="10" y="10" textBinded="name" center="true"/>
+			</labels>
+			<ports>
+			  <linePort>
+				<start startx="0" starty="10"/>
+				<end endx="0" endy="90"/>
+			  </linePort>
+			  <linePort>
+				<start startx="100" starty="10"/>
+				<end endx="100" endy="90"/>
+			  </linePort>
+			</ports>
+		  </graphics>
+		  <logic>
+			<generalizations>
+			  <parent parentName="Kernel::Diagram"/>
+			</generalizations>
+			<properties/>
+		  </logic>
+		</node>
 		<node name="MetamodelDiagram" displayedName="Metamodel Diagram">
 		  <graphics>
 			<picture sizex="30" sizey="30">
@@ -41,6 +71,9 @@
 			  <property type="string" name="name of the directory"/>
 			</properties>
 			<containers/>
+			<connections>
+			  <connection type="MetaEditor::MetamodelDiagram"/>
+			</connections>
 		  </logic>
 		</node>
 		<node  name="MetaEditorDiagramNode" displayedName="Meta Editor Diagram">
@@ -79,7 +112,7 @@
 			  <contains type="MetaEditor::MetaEntityNode"/>
 			  <contains type="MetaEditor::MetaEntityEdge"/>
 			  <contains type="MetaEditor::MetaEntityEnum"/>
-			  <contains type="MetaEditor::Importation"/>
+			  <contains type="MetaEditor::MetaEntityImport"/>
 			  <contains type="MetaEditor::Inheritance"/>
 			</container>
 		  </logic>
@@ -123,15 +156,22 @@
 			  <property type="bool" name="is Action">
 				<default>false</default>
 			  </property>
+			  <property type="string" name="Path"/>
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
 			  <contains type="MetaEditor::MetaEntityConnetction"/>
 			  <contains type="MetaEditor::MetaEntityUsage"/>
 			  <contains type="MetaEditor::Inheritance"/>
-			  <contains type="MetaEditor::Importation"/>
 			  <contains type="MetaEditor::MetaEntityPossibleEdge"/>
 			  <contains type="MetaEditor::MetaEntityPropertiesAsContainer"/>
+			  <properties>
+			  <sortContainer/>
+			  <minimizeToChildren/>
+			  <banChildrenMove/>
+			  <forestalling size="5"/>
+			  <childrenForestalling size="5"/>
+			  </properties>
 			</container>
 		  </logic>
 		</node>
@@ -180,6 +220,13 @@
 			  <contains type="MetaEditor::MetaEntityAssotiation"/>
 			  <contains type="MetaEditor::Inheritance"/>
 			  <contains type="MetaEditor::Importation"/>
+			  <properties>
+			  <sortContainer/>
+			  <minimizeToChildren/>
+			  <banChildrenMove/>
+			  <forestalling size="5"/>
+			  <childrenForestalling size="5"/>
+			  </properties>
 			</container>
 		  </logic>
 		</node>
@@ -216,6 +263,13 @@
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntityValue"/>
+			  <properties>
+			  <sortContainer/>
+			  <minimizeToChildren/>
+			  <banChildrenMove/>
+			  <forestalling size="5"/>
+			  <childrenForestalling size="5"/>
+			  </properties>
 			</container>
 		  </logic>
 		</node>
@@ -245,21 +299,54 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="string" name="attributeType"/>	
+			  <property type="string" name="attributeType"/>
 			  <property type="string" name="displayedName"/>
 			  <property type="string" name="defaultValue"/>
 			</properties>
 			<containers/>
 		  </logic>
 		</node>
-		<node name="MetaEntityImported" displayedName="Imported">
+		<node name="MetaEntityImport" displayedName="Import">
 		  <graphics>
 			<picture sizex="100" sizey="100">
 			  <line stroke-style="dash" x1="0" y1="0" x2="0" y2="100"/>
 			  <line stroke-style="dash" x1="0" y1="0" x2="100" y2="0"/>
 			  <line stroke-style="dash" x1="0" y1="100" x2="100" y2="100"/>
 			  <line stroke-style="dash" x1="100" y1="0" x2="100" y2="100"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Imported</text>
+			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Import</text>
+			</picture>
+			<labels>
+			  <label x="10" y="10" textBinded="name" center="true"/>
+			</labels>
+			<ports>
+			  <linePort>
+				<start startx="20" starty="0"/>
+				<end endx="80" endy="0"/>
+			  </linePort>
+			  <linePort>
+				<start startx="20" starty="100"/>
+				<end endx="80" endy="100"/>
+			  </linePort>
+			</ports>
+		  </graphics>
+		  <logic>
+			<generalizations/>
+			<properties>
+			  <property type="string" name="displayedName"/>
+			  <property type="string" name="Imported from"/>
+			  <property type="string" name="as"/>
+			</properties>
+			<containers/>
+		  </logic>
+		</node>
+				<node name="MetaEntityParent" displayedName="Parent">
+		  <graphics>
+			<picture sizex="100" sizey="40">
+			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
+			  <line stroke-style="dot" x1="0" y1="0" x2="100" y2="0"/>
+			  <line stroke-style="dot" x1="0" y1="40" x2="100" y2="40"/>
+			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="40"/>
+			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Parent</text>
 			</picture>
 			<labels>
 			  <label x="10" y="10" textBinded="name" center="true"/>
@@ -293,7 +380,7 @@
 			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>
 			</picture>
 			<labels>
-			  <label x="10" y="15" textBinded="name" center="true"/>
+			  <label x="10" y="15" textBinded="valueName" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -342,7 +429,6 @@
 			<generalizations/>
 			<properties>
 			  <property type="string" name="Type"/>
-			  <property type="string" name="name"/>
 			</properties>
 			<containers/>
 		  </logic>
@@ -394,7 +480,7 @@
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Usage</text>
 			</picture>
 			<labels>
-			  <label x="20" y="10" textBinded="name"/>
+			  <label x="20" y="10" textBinded="name" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -415,12 +501,12 @@
 			<containers/>
 		  </logic>
 		</node>
-		<edge name="Inheritance" displayedName="Inheritance">
+		<!--<edge name="Inheritance" displayedName="Inheritance">
 		  <graphics>
-			<lineType type="dashLine"/>
+			<lineType type="solidLine"/>
 		  </graphics>
 		  <logic>
-			<associations endType="no_arrow" beginType="open_arrow">
+			<associations endType="filled_arrow" beginType="no_arrow">
 			  <association beginName="Inheritance1" endName="Inheritance2"/>
 			</associations>
 			<generalizations>
@@ -428,24 +514,19 @@
 			</generalizations>
 		  </logic>
 		</edge>
-		<edge name="Importation" displayedName="Importation">
+		<edge name="Container" displayedName="Container">
 		  <graphics>
-			<lineType type="dotLine"/>
+			<lineType type="solidLine"/>
 		  </graphics>
 		  <logic>
-			<properties>
-			  <property type="string" name="name"/>
-			  <property type="string" name="as"/>
-			  <property type="string" name="displayedName"/>
-			</properties>
 			<associations endType="no_arrow" beginType="open_arrow">
-			  <association beginName="Importation1" endName="Importation2"/>
+			  <association beginName="Container1" endName="Container2"/>
 			</associations>
 			<generalizations>
 			  <parent parentName="Kernel::Relationship"/>
 			</generalizations>
 		  </logic>
-		</edge>
+		</edge>-->
 		<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
 		  <graphics>
 			<picture sizex="25" sizey="25">

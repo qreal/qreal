@@ -426,7 +426,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if( event->button() == Qt::LeftButton ){
 		QGraphicsItem *item = itemAt(event->scenePos());
-		qDebug() << "item: " << item;
 		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
 
 		if (title) // check whether we accidently clicked on a title or not

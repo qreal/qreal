@@ -24,6 +24,12 @@ MetaGenerator::MetaGenerator(qrRepo::RepoApi const &api)
 QHash<Id, QString> MetaGenerator::getMetamodelList()
 {
 	Id repoId = ROOT_ID;
+	/*IdList const packages = mApi.children(repoId);
+	foreach (Id id, packages) {
+		if (id.element() == "PackageDiagram")
+			repoId = id;
+	}*/
+
 	IdList const metamodels = mApi.children(repoId);
 	QHash<Id, QString> metamodelList;
 
@@ -118,11 +124,11 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	QDomElement tagGraphic = mDocument.createElement("graphicTypes");
 	parent.appendChild(tagGraphic);
 
-	setImported(tagGraphic, idParent);
-
 	foreach (Id const id, childElems) {
 		if (idParent != ROOT_ID) {
 			QString const objectType = mApi.typeName(id);
+			if (objectType == "MetaEntityImport")
+				createImport(tagGraphic, id);
 			if (objectType == "MetaEntityNode")
 				createNode (tagGraphic, id);
 			if (objectType == "MetaEntityEdge")
@@ -131,12 +137,23 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	}
 }
 
+void MetaGenerator::createImport(QDomElement &parent, const Id &id)
+{
+	QDomElement import = mDocument.createElement("import");
+	ensureCorrectness(id, import, "name", mApi.stringProperty(id, "Imported from") + "::" + mApi.name(id));
+	ensureCorrectness(id, import, "displayedName", mApi.stringProperty(id, "displayedName"));
+	ensureCorrectness(id, import, "as", mApi.stringProperty(id, "as"));
+	parent.appendChild(import);
+}
+
 void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 {
 	QDomElement node = mDocument.createElement("node");
 	ensureCorrectness(id, node, "name", mApi.name(id));
 	QString name = mApi.name(id);
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
+	if (mApi.stringProperty(id, "Path") != "")
+		node.setAttribute("path", mApi.stringProperty(id, "Path"));
 	parent.appendChild(node);
 
 	QDomDocument graphics;
@@ -153,6 +170,7 @@ void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 	setLogicAttributes(logic, id);
 	setPin(logic, id);
 	setAction(logic, id);
+	setGeneralization(logic, id);
 }
 
 void MetaGenerator::createEdge(QDomElement &parent, Id const &id)
@@ -172,6 +190,7 @@ void MetaGenerator::createEdge(QDomElement &parent, Id const &id)
 	edge.appendChild(logic);
 
 	setAssotiations(logic, id);
+	setGeneralization(logic, id);
 	setLogicAttributes(logic, id);
 }
 
@@ -183,6 +202,22 @@ void MetaGenerator::createEnum(QDomElement &parent,Id const &id)
 	parent.appendChild(enumElement);
 
 	setValues(enumElement, id);
+}
+
+void MetaGenerator::setGeneralization(QDomElement &parent, const Id &id)
+{
+	QDomElement generalizations = mDocument.createElement("generalizations");
+	parent.appendChild(generalizations);
+
+	IdList parents = mApi.children(id);
+	foreach (Id const id, parents) {
+		QString objectType = mApi.typeName(id);
+		if (objectType == "MetaEntityParent") {
+			QDomElement parent = mDocument.createElement("parent");
+			ensureCorrectness(id, parent, "parentName", mApi.stringProperty(id, "name"));
+			generalizations.appendChild(parent);
+		}
+	}
 }
 
 void MetaGenerator::setLogicAttributes(QDomElement &parent,Id const &id)
@@ -207,17 +242,19 @@ void MetaGenerator::setLogicAttributes(QDomElement &parent,Id const &id)
 			tagProperties.appendChild(property);
 		}
 	}
-	QDomElement relation = mDocument.createElement("generalizations");
+	/*QDomElement relation = mDocument.createElement("generalizations");
 	parent.appendChild(relation);
 	IdList const out = mApi.outgoingLinks(id);
 	if (!out.empty()) {
 		foreach (Id const idOut, out){
-			Id const idImported = mApi.to(idOut);
-			QDomElement newRelation = mDocument.createElement("parent");
-			ensureCorrectness(idImported, newRelation, "parentName", mApi.stringProperty(idImported, "name"));
-			relation.appendChild(newRelation);
+			Id const parentId = mApi.to(idOut);
+			if (mApi.typeName(parentId) == "MetaEntityParent") {
+				QDomElement newRelation = mDocument.createElement("parent");
+				ensureCorrectness(parentId, newRelation, "parentName", mApi.stringProperty(parentId, "name"));
+				relation.appendChild(newRelation);
+			}
 		}
-	}
+	}*/
 }
 
 void MetaGenerator::setValues(QDomElement &parent, const Id &id)
@@ -360,22 +397,6 @@ void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
 				QDomElement banChildrenMove = mDocument.createElement("banChildrenMove");
 				properties.appendChild(banChildrenMove);
 			}
-		}
-	}
-}
-
-void MetaGenerator::setImported(QDomElement &parent, const Id &idParent)
-{
-	IdList out = mApi.outgoingLinks(idParent);
-
-	foreach (Id const idChild, out) {
-		if (mApi.typeName(idChild) == "Importation") {
-			Id const idImported = mApi.to(idChild);
-			QDomElement import = mDocument.createElement("import");
-			ensureCorrectness(idChild, import, "name", mApi.stringProperty(idImported, "name") + "::" + mApi.stringProperty(idChild, "name"));
-			ensureCorrectness(idChild, import, "as", mApi.stringProperty(idChild, "as"));
-			ensureCorrectness(idChild, import, "displayedName", mApi.stringProperty(idChild, "displayedName"));
-			parent.appendChild(import);
 		}
 	}
 }
