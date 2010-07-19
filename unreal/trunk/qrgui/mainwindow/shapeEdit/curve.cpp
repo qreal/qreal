@@ -14,6 +14,7 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mC1 = c1;
 	mCurvePath = new QPainterPath(QPointF(mX1, mY1));
 	mCurvePath->quadTo(mC1, QPointF(mX2, mY2));
+	mBoundingRect = boundingRect();
 }
 
 QPainterPath Curve::shape() const
@@ -80,6 +81,11 @@ void Curve::drawFieldForResizeItem(QPainter* painter)
 	painter->drawEllipse(QPointF(mX1, mY1), resizeDrift, resizeDrift);
 	painter->drawEllipse(QPointF(mX2, mY2), resizeDrift, resizeDrift);
 	painter->drawEllipse(mC1, resizeDrift, resizeDrift);
+}
+
+void Curve::drawScalingRects(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 void Curve::setCXandCY(qreal x, qreal y)

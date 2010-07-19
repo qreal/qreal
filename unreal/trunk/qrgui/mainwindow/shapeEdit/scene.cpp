@@ -150,6 +150,7 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 	QList<Item *> list = selectedSceneItems();
 	foreach (Item *item, list) {
 		item->changeDragState(x, y);
+		item->changeScalingPointState(x, y);
 		if (item->getDragState() != Item::None)  {
 			mView->setDragMode(QGraphicsView::NoDrag);
 			return QPair<bool, Item *>(true, item);
@@ -267,8 +268,13 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mGraphicsItem = dynamic_cast<Item *>(itemAt(event->scenePos()));
 		if (mGraphicsItem != NULL) {
 			mGraphicsItem->changeDragState(mX1, mY1);
+			mGraphicsItem->changeScalingPointState(mX1, mY1);
 			if (mGraphicsItem->getDragState() != Item::None)
 				mView->setDragMode(QGraphicsView::NoDrag);
+			if (mGraphicsItem->getScalingPointState() != Item::noneScale) {
+				mGraphicsItem->setScalingPointColor();
+				update();
+			}
 		}
 		break;
 	}

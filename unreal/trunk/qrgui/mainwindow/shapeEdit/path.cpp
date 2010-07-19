@@ -5,6 +5,7 @@ Path::Path(QPainterPath const &path) : Item(NULL)
 {
 	mPath = path;
 	mDomElementType = Item::pictureType;
+	mBoundingRect = boundingRect();
 }
 
 QRectF Path::boundingRect() const
@@ -26,6 +27,11 @@ void Path::drawExtractionForItem(QPainter* painter)
 }
 
 void Path::drawFieldForResizeItem(QPainter* painter)
+{
+	Q_UNUSED(painter);
+}
+
+void Path::drawScalingRects(QPainter* painter)
 {
 	Q_UNUSED(painter);
 }

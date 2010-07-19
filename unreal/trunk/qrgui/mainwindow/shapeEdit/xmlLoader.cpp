@@ -6,6 +6,21 @@
 XmlLoader::XmlLoader(Scene *scene)
 {
 	mScene = scene;
+	initListScalePoint();
+}
+
+void XmlLoader::initListScalePoint()
+{
+	mListScalePoint.clear();
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::topLeftX, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::topRightX, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomLeftX, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomRightX, QColor(Qt::black)));
+
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::topLeftY, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::topRightY, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomLeftY, QColor(Qt::black)));
+	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomRightY, QColor(Qt::black)));
 }
 
 void XmlLoader::readString(const QString &text)
@@ -103,27 +118,128 @@ void XmlLoader::readPorts(QDomElement const &port)
 	}
 }
 
+QPair<QString, bool> XmlLoader::readScaleCoord(QString point, QDomElement const &docItem)
+{
+	QString text = docItem.attribute(point, "0");
+	if (text.endsWith("a")) {
+		text.truncate(text.size() - 1);
+		return QPair<QString, bool>(text, true);
+	}
+	return QPair<QString, bool>(text, false);
+}
+
+void XmlLoader::changeScaleColor(int i)
+{
+	mListScalePoint.insert(i, QPair<Item::ScalingPointState, QColor>(mListScalePoint.at(i).first, QColor(Qt::red)));
+	mListScalePoint.removeAt(i + 1);
+}
+
+void XmlLoader::checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2)
+{
+	if (pointX1.second)
+		changeScaleColor(0);
+	if (pointX2.second)
+		changeScaleColor(3);
+	if (pointY1.second)
+		changeScaleColor(4);
+	if (pointY2.second)
+		changeScaleColor(7);
+}
+
 QRectF XmlLoader::readRectOfXandY(QDomElement const &docItem)
 {
-	qreal x1 = (docItem.attribute("x1", "0")).toDouble() + mDrift.x();
-	qreal x2 = (docItem.attribute("x2", "0")).toDouble() + mDrift.x();
-	qreal y1 = (docItem.attribute("y1", "0")).toDouble() + mDrift.y();
-	qreal y2 = (docItem.attribute("y2", "0")).toDouble() + mDrift.y();
+	initListScalePoint();
+	QPair<QString, bool> pointX1 = readScaleCoord("x1", docItem);
+	QPair<QString, bool> pointX2 = readScaleCoord("x2", docItem);
+	QPair<QString, bool> pointY1 = readScaleCoord("y1", docItem);
+	QPair<QString, bool> pointY2 = readScaleCoord("y2", docItem);
+
+	qreal x1 = pointX1.first.toDouble() + mDrift.x();
+	qreal x2 = pointX2.first.toDouble() + mDrift.x();
+	qreal y1 = pointY1.first.toDouble() + mDrift.y();
+	qreal y2 = pointY2.first.toDouble() + mDrift.y();
+
+	checkScale(pointX1, pointX2, pointY1, pointY2);
+
 	return QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+}
+
+QPair<QPointF, QPointF> XmlLoader::readLineOfXandY(QDomElement const &docItem)
+{
+	initListScalePoint();
+	QPair<QString, bool> pointX1 = readScaleCoord("x1", docItem);
+	QPair<QString, bool> pointX2 = readScaleCoord("x2", docItem);
+	QPair<QString, bool> pointY1 = readScaleCoord("y1", docItem);
+	QPair<QString, bool> pointY2 = readScaleCoord("y2", docItem);
+
+	qreal x1 = pointX1.first.toDouble() + mDrift.x();
+	qreal x2 = pointX2.first.toDouble() + mDrift.x();
+	qreal y1 = pointY1.first.toDouble() + mDrift.y();
+	qreal y2 = pointY2.first.toDouble() + mDrift.y();
+
+	if (x2 > x1) {
+		if (y2 > y1) {
+			if (pointX1.second)
+				changeScaleColor(0);
+			if (pointX2.second)
+				changeScaleColor(3);
+			if (pointY1.second)
+				changeScaleColor(4);
+			if (pointY2.second)
+				changeScaleColor(7);
+		} else {
+			if (pointX1.second)
+				changeScaleColor(2);
+			if (pointX2.second)
+				changeScaleColor(1);
+			if (pointY1.second)
+				changeScaleColor(6);
+			if (pointY2.second)
+				changeScaleColor(5);
+		}
+	} else {
+		if (y2 > y1) {
+			if (pointX1.second)
+				changeScaleColor(1);
+			if (pointX2.second)
+				changeScaleColor(2);
+			if (pointY1.second)
+				changeScaleColor(5);
+			if (pointY2.second)
+				changeScaleColor(6);
+		} else {
+			if (pointX1.second)
+				changeScaleColor(3);
+			if (pointX2.second)
+				changeScaleColor(0);
+			if (pointY1.second)
+				changeScaleColor(7);
+			if (pointY2.second)
+				changeScaleColor(4);
+		}
+	}
+	return QPair<QPointF, QPointF>(QPointF(x1, y1), QPointF(x2, y2));
 }
 
 QPointF XmlLoader::readXandY(QDomElement const &docItem)
 {
-	qreal x = (docItem.attribute("x", "0")).toDouble() + mDrift.x();
-	qreal y= (docItem.attribute("y", "0")).toDouble() + mDrift.y();
+	initListScalePoint();
+	QPair<QString, bool> pointX = readScaleCoord("x", docItem);
+	QPair<QString, bool> pointY = readScaleCoord("y", docItem);
+
+	qreal x = pointX.first.toDouble() + mDrift.x();
+	qreal y = pointY.first.toDouble() + mDrift.y();
+
+	checkScale(pointX, QPair<QString, bool>("", false), pointY, QPair<QString, bool>("", false));
 	return QPointF(x, y);
 }
 
 void XmlLoader::readLine(QDomElement const &line)
 {
-	QRectF rect = readRectOfXandY(line);
-	Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QPair<QPointF, QPointF> rect = readLineOfXandY(line);
+	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->readPenBrush(line);
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }
 
@@ -132,6 +248,7 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 	QRectF rect = readRectOfXandY(ellipse);
 	Ellipse* item = new Ellipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(ellipse);
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }
 
@@ -149,6 +266,7 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 	QRectF rect = readRectOfXandY(rectangle);
 	Rectangle* item = new Rectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(rectangle);
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }
 
@@ -376,6 +494,7 @@ void XmlLoader::readLabel(QDomElement const &label)
 	}
 	else
 		qDebug() << "Incorrect label tag";
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }
 
@@ -400,6 +519,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 
 	}
 	LinePort* item = new LinePort(x1, y1, x2, y2, NULL);
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }
 
@@ -407,5 +527,6 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 {
 	QPointF point = readXandY(pointPort);
 	PointPort* item = new PointPort(point.x(), point.y(), NULL);
+	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
 }

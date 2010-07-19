@@ -15,6 +15,7 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	mSpanAngle = spanAngle;
 	mStartAngle = startAngle;
 	mRect = rect;
+	mBoundingRect = boundingRect();
 }
 
 int Arch::startAngle() const
@@ -63,10 +64,16 @@ void Arch::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 
 void Arch::drawExtractionForItem(QPainter* painter)
 {
-	painter->drawPoint(boundingRect().topLeft());
-	painter->drawPoint(boundingRect().topRight());
-	painter->drawPoint(boundingRect().bottomLeft());
-	painter->drawPoint(boundingRect().bottomRight());
+	mBoundingRect = boundingRect();
+	painter->drawPoint(mBoundingRect.topLeft());
+	painter->drawPoint(mBoundingRect.topRight());
+	painter->drawPoint(mBoundingRect.bottomLeft());
+	painter->drawPoint(mBoundingRect.bottomRight());
+}
+
+void Arch::drawScalingRects(QPainter* painter)
+{
+	Q_UNUSED(painter);
 }
 
 void Arch::resizeItem(QGraphicsSceneMouseEvent *event)
