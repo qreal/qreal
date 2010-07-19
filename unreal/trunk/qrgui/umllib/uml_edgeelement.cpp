@@ -309,7 +309,19 @@ bool EdgeElement::initPossibleEdges()
 	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (!itemModel)
 		return false;
-	possibleEdges = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(uuid().element());
+	QString editor = uuid().editor();
+	//TODO:: сделать генерацию кода для диаграм
+	QString diagram = uuid().diagram();
+	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
+	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
+	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
+	{
+		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
+										  Id(editor, diagram, pEdge.first.second));
+		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
+		PossibleEdge possibleEdge(nodes, edge);
+		possibleEdges.push_back(possibleEdge);
+	}
 
 	return (!possibleEdges.isEmpty());
 }

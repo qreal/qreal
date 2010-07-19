@@ -35,9 +35,9 @@ namespace UML {
 		virtual void setColor(QColor color);
 
 		virtual void setDirected(bool directed);
-		virtual void setEdgeType(QString edgeType);
+		virtual void setEdgeType(qReal::Id const & edgeType);
 		virtual bool isDirected();
-		virtual QString getEdgeType();
+		virtual qReal::Id getEdgeType();
 
 		virtual void takePosition(int index, int maxIndex);
 
@@ -61,7 +61,7 @@ namespace UML {
 
 		QColor color;
 		bool directed;
-		QString edgeType;
+		qReal::Id edgeType;
 		UML::EdgeElement* edge;
 	signals:
 		void coveredChanged();

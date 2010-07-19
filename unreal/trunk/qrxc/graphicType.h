@@ -32,7 +32,7 @@ public:
 
 protected:
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
-	
+
 	struct ContainerProperties {
 		ContainerProperties();
 
@@ -44,7 +44,7 @@ protected:
 		bool isClass;
 		bool isMaximizingChildren;
 	};
-	
+
 	QDomElement mLogic;
 	QDomElement mGraphics;
 	QStringList mParents;

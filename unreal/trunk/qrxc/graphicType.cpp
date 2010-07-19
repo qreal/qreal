@@ -215,14 +215,14 @@ bool GraphicType::initPossibleEdges()
 		if (containerElement.isNull())
 				return true;
 
-        for (QDomElement childElement = containerElement.firstChildElement(listElementName);
-                !childElement.isNull();
-                childElement = childElement.nextSiblingElement(listElementName))
-        {
-                QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
-                QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
-                QString temp = childElement.attribute("directed");
-                bool directed = false;
+		for (QDomElement childElement = containerElement.firstChildElement(listElementName);
+				!childElement.isNull();
+				childElement = childElement.nextSiblingElement(listElementName))
+		{
+				QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
+				QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
+				QString temp = childElement.attribute("directed");
+				bool directed = false;
 
 				if ((beginName == "") || (endName == "") || ((temp != "true") && (temp != "false"))) {
 
@@ -354,13 +354,13 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 	if (mVisible) {
 		QString pathStr = path();
 		QString output = "";
-		if (pathStr.isEmpty()) 
+		if (pathStr.isEmpty())
 			return;
-		
-		output =  "\telementMouseGesturesMap[\"" + NameNormalizer::normalize(mDiagram->name()) + "\"][\"" + 
+
+		output =  "\telementMouseGesturesMap[\"" + NameNormalizer::normalize(mDiagram->name()) + "\"][\"" +
 											NameNormalizer::normalize(qualifiedName()) + "\"] = ";
 		out() << output;
-	
+
 		if (pathStr.length() > maxLineLength - output.length()) {
 			out() << "\"" << pathStr.left(maxLineLength - output.length());
 			pathStr.remove(0, maxLineLength - output.length());
@@ -369,11 +369,11 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 				out() << "\"\n" << prefix << pathStr.left(maxLineLength);
 				pathStr.remove(0, maxLineLength);
 			} while (pathStr.length() > maxLineLength);
-			
+
 			if (pathStr.length() > 0)
 				out() << "\"\n" << prefix << pathStr;
-				
-		} else 
+
+		} else
 			out() << "\"" << pathStr;
 		out() << "\";\n";
 	}
@@ -450,9 +450,9 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 {
 	if (!mVisible)
 		return;
-	
+
 	QString name = NameNormalizer::normalize(qualifiedName());
-	foreach (Property *property, mProperties) 
+	foreach (Property *property, mProperties)
 		if (!property->defaultValue().isEmpty())
 			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name()
 									<< "\"] = \"" << property->defaultValue() << "\";\n";
@@ -497,7 +497,6 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 
 	out() << "\t\tresult";
 	//suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
-	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
 	foreach (PossibleEdge element, mPossibleEdges) {
 		QString directed = "false";
 		if (element.second.first)

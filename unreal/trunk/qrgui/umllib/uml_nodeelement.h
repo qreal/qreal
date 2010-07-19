@@ -98,6 +98,7 @@ namespace UML {
 		qreal recountY2(qreal myY1);
 		void makeGridMovingX(qreal myX, int koef, int indexGrid);
 		void makeGridMovingY(qreal myY, int koef, int indexGrid);
+		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		static int const objectMinSize = 10;
 		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
@@ -157,9 +158,9 @@ namespace UML {
 		DragState mDragState;
 
 		QList<EmbeddedLinker*> embeddedLinkers;
-		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+
 		QSet<PossibleEdge> possibleEdges;
-		QSet<QPair<bool,QString> > possibleEdgeTypes;
+		QSet<PossibleEdgeType> possibleEdgeTypes;
 
 		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();

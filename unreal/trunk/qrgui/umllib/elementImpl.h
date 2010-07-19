@@ -8,8 +8,13 @@
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
+#include "../kernel/ids.h"
 
 namespace UML{
+
+	typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
+	typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
+	typedef QPair<bool, qReal::Id> PossibleEdgeType;
 
 /** @brief line port description */
 	struct StatLine

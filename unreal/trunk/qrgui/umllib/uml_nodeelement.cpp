@@ -736,16 +736,17 @@ bool NodeElement::initPossibleEdges()
 		return false;
 
 	foreach(QString elementName,
-	itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
+			itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
 		int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
-			QList<PossibleEdge> list
-			= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
-			foreach(PossibleEdge pEdge, list) {
+			QList<StringPossibleEdge> list
+					= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
+			foreach(StringPossibleEdge pEdge, list) {
 				if ((pEdge.first.first == this->uuid().element())
-				|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
-					possibleEdges.insert(pEdge);
-					possibleEdgeTypes.insert(pEdge.second);
+					|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
+					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
+					possibleEdges.insert(possibleEdge);
+					possibleEdgeTypes.insert(possibleEdge.second);
 				}
 			}
 		}
@@ -757,9 +758,8 @@ bool NodeElement::initPossibleEdges()
 bool NodeElement::initEmbeddedLinkers()
 {
 	int counter = 0;
-	typedef QPair<bool,QString> Pair;
-	QSet<QString> usedEdges;
-	foreach(Pair type, possibleEdgeTypes) {
+	QSet<qReal::Id> usedEdges;
+	foreach(PossibleEdgeType type, possibleEdgeTypes) {
 		if (usedEdges.contains(type.second))
 			continue;
 		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
@@ -1190,7 +1190,7 @@ void NodeElement::sortChildren()
 {
 	qreal curChildY = mElementImpl->sizeOfForestalling() + 25; //25 - for container name
 	qreal maxChildrenWidth = 0;
-	
+
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
@@ -1203,12 +1203,12 @@ void NodeElement::sortChildren()
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
 			if (mElementImpl->isMaximizingChildren())
-				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY, 
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
 							maxChildrenWidth, curItem->mContents.height()));
 			else
-				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY, 
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
 							curItem->mContents.width(), curItem->mContents.height()));
-			
+
 			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
 			curItem->storeGeometry();
 		}
@@ -1357,4 +1357,15 @@ bool NodeElement::isClass()
 QList<double> NodeElement::getBordersValues()
 {
 		return mElementImpl->getBorders();
+}
+
+PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
+{
+	QString editor = uuid().editor();
+	QString diagram = uuid().diagram();
+	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
+									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
+	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
+			   qReal::Id(editor, diagram, strPossibleEdge.second.second));
+	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
 }

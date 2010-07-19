@@ -176,20 +176,20 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	toDelete.append(menuSignalMapper);
 
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
+	foreach(UML::PossibleEdge pEdge, edge->getPossibleEdges())
 	{
-		QString target;
-		if (pEdge.first.first == node->uuid().element())
+		qReal::Id target;
+		if (pEdge.first.first == node->uuid())
 			target = pEdge.first.second;
-		else if ((pEdge.first.second == node->uuid().element()) && (!pEdge.second.first))
+		else if ((pEdge.first.second == node->uuid()) && (!pEdge.second.first))
 			target = pEdge.first.first;
 		else continue;
 
-		QAction* element = new QAction(target,createElemMenu);
+		QAction* element = new QAction(target.element(), createElemMenu);
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target);
+		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target.element());
 	}
 
 	mCreatePoint = scenePos;

@@ -52,7 +52,7 @@ void EmbeddedLinker::setCovered(bool arg)
 void EmbeddedLinker::generateColor()
 {
 	int result = 0;
-	QChar *data = edgeType.data();
+	QChar *data = edgeType.element().data();
 	while (!data->isNull()) {
 		result += data->unicode();
 		++data;
@@ -93,7 +93,7 @@ void EmbeddedLinker::setDirected(bool arg)
 void EmbeddedLinker::initTitle()
 {
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
-	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType));
+	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = master->boundingRect().right() - master->boundingRect().left();
@@ -116,7 +116,7 @@ void EmbeddedLinker::initTitle()
 	title->setParentItem(this);
 }
 
-void EmbeddedLinker::setEdgeType(QString arg)
+void EmbeddedLinker::setEdgeType(const qReal::Id &arg)
 {
 	edgeType = arg;
 	generateColor();
@@ -127,7 +127,7 @@ bool EmbeddedLinker::isDirected()
 	return directed;
 }
 
-QString EmbeddedLinker::getEdgeType()
+qReal::Id EmbeddedLinker::getEdgeType()
 {
 	return edgeType;
 }
@@ -209,7 +209,8 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (scene != NULL)
 	{
-		const QString type = "qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType;
+		const QString type = "qrm:/" + master->uuid().editor() + "/" +
+							 master->uuid().diagram() + "/" + edgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
 		{
 			Id *edgeId = scene->createElement(type, event->scenePos());
