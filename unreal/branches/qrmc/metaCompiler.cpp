@@ -31,8 +31,11 @@ bool MetaCompiler::init()
 bool MetaCompiler::initPlugins()
 {
 	QString pluginName = "";
+	qDebug() << mApi.children(ROOT_ID).size();
+	if (mApi.children(ROOT_ID).isEmpty())
+		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, mApi.children(ROOT_ID)) {
-		if (editorId.editor() == "Meta_editor") {
+		if (editorId.element() == "MetamodelDiagram") {
 			pluginName = NameNormalizer::normalize(mApi.property(editorId, "name of the directory").toString().section("/", -1));
 			Plugin *plugin = new Plugin(editorId, pluginName);
 			plugin->init(mApi);

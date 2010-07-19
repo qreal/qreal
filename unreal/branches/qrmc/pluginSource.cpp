@@ -68,6 +68,7 @@ bool PluginSource::generate(QString const &sourceTemplate, QMap<QString, QString
 	generateElementsMap();
 	generateMouseGesturesMap();
 	generatePropertyTypesMap();
+	generateGetGraphicalObject();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag, mName);
@@ -101,7 +102,7 @@ void PluginSource::generateElementsMap()
 		foreach(Element el, diagram.elements) {
 			// here we need only edges and nodes that have graphical representation
 
-			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge") && (el.id.element() != "Importation")))
+			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge") /*&& (el.id.element() != "Importation")*/))
 				// we acutally do need some of these "Importation"s
 				// TODO: request needed diagrams and resolve all imports as qrxc does
 				continue;
@@ -128,7 +129,25 @@ void PluginSource::generateElementsMap()
 
 void PluginSource::generateMouseGesturesMap()
 {
-	// waiting for an appropriate property in metaeditor
+	// preparing template for elementMouseGesturesMap map inits
+	QString initMouseGesturesMapBody = "";
+	QString const line = mUtilsTemplate[initMouseGesturesMapLineTag];
+	foreach(Diagram diagram, mDiagrams)	{
+		foreach(Element el, diagram.elements) {
+			if (!mApi->hasProperty(el.id, "Path")) // skipping elements with no such property (links and others)
+				continue;
+			QString path = mApi->stringProperty(el.id, "Path");
+			if (path.isEmpty()) // empty paths are not needed
+				continue;
+			QString newline = line;
+			initMouseGesturesMapBody += newline.replace(elementNameTag, el.name)
+								.replace(gesturePathTag, path)
+								.replace(diagramNameTag, diagram.name)
+								 + "\n";
+		}
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initMouseGesturesMapLineTag, initMouseGesturesMapBody);
 }
 
 void PluginSource::generatePropertyTypesMap()
@@ -142,4 +161,27 @@ void PluginSource::generatePropertyTypesMap()
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initPropertyTypesMapLineTag, initPropTypesMapBody);
+}
+
+void PluginSource::generateGetGraphicalObject()
+{
+	// preparing template for getGraphicalObject factory
+	QString getGraphicalObjectBody = "";
+	QString line = mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",0,0) + "\n" + mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",1,1);
+	bool isFirstLine = true;
+	foreach(Diagram diagram, mDiagrams)	{
+		foreach(Element el, diagram.elements) {
+
+			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge") /*&& (el.id.element() != "Importation")*/))
+				continue;
+
+			QString newline = line;
+			if (isFirstLine)
+				line.replace("if", "else if");
+			getGraphicalObjectBody += newline.replace(elementNameTag, el.name) + "\n";
+			isFirstLine = false;
+		}
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(getGraphicalObjectLineTag, getGraphicalObjectBody);
 }

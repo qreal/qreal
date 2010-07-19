@@ -9,10 +9,14 @@ QString const metamodelNameTag = "@@MetamodelName@@";
 QString const initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 QString const initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 QString const initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
+QString const initMouseGesturesMapLineTag = "@@InitMouseGesturesMapLine@@";
+QString const getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
+
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramDisplayedNameTag = "@@DiagramDisplayedName@@";
 QString const elementNameTag = "@@ElementName@@";
 QString const elementDisplayedNameTag = "@@ElementDisplayedName@@";
+QString const gesturePathTag = "@@GesturePath@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";

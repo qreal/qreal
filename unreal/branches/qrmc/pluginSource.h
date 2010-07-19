@@ -15,6 +15,7 @@ public:
 	void generateElementsMap();
 	void generateMouseGesturesMap();
 	void generatePropertyTypesMap();
+	void generateGetGraphicalObject();
 
 private:
 
