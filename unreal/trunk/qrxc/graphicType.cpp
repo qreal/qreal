@@ -10,7 +10,7 @@
 using namespace utils;
 
 GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
-	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false)
+	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false), isMaximizingChildren(false)
 {}
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -197,7 +197,10 @@ bool GraphicType::initContainerProperties()
 			mContainerProperties.isChildrenMovable = false;
 		} else if (childElement.tagName() == "itIsClass") {
 			mContainerProperties.isClass = true;
+		} else if (childElement.tagName() == "maximizeChildren") {
+			mContainerProperties.isMaximizingChildren = true;
 		}
+
 	}
 
 	return true;

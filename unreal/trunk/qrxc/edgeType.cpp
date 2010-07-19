@@ -131,6 +131,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tbool isChildrenMovable() { return false; }\n"
 		<< "\t\tbool isMinimizingToChildren() { return false; }\n"
 		<< "\t\tbool isClass() { return false; }\n"
+		<< "\t\tbool isMaximizingChildren() { return false; }\n"
 		<< "\t\tbool isPort() { return false; }\n"
 		<< "\t\tbool isHavePin() { return false; }\n"
 		<< "\t\tQList<double> getBorders()\n\t\t{\n"

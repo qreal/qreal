@@ -42,6 +42,7 @@ protected:
 		bool isChildrenMovable;
 		bool isMinimizingToChildren;
 		bool isClass;
+		bool isMaximizingChildren;
 	};
 	
 	QDomElement mLogic;

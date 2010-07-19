@@ -1190,25 +1190,29 @@ void NodeElement::sortChildren()
 {
 	qreal curChildY = mElementImpl->sizeOfForestalling() + 25; //25 - for container name
 	qreal maxChildrenWidth = 0;
-
+	
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
-			QRectF curChildContents = curItem->mContents;
-			curChildContents.moveTo(mElementImpl->sizeOfForestalling(), curChildY);
-			curItem->setGeometry(curChildContents);
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
-			curItem->storeGeometry();
-
 			if (curItem->mContents.width() > maxChildrenWidth)
 				maxChildrenWidth = curItem->mContents.width();
 		}
 	}
 
-	/*
-	QRectF newContents(pos(), maxChildrenWidth + 2 * mElementImpl->sizeOfForestalling(), curChildPosition.y() + mElementImpl->sizeOfForestalling());
-	setGeometry(newContents);
-	*/
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem) {
+			if (mElementImpl->isMaximizingChildren())
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY, 
+							maxChildrenWidth, curItem->mContents.height()));
+			else
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY, 
+							curItem->mContents.width(), curItem->mContents.height()));
+			
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
+			curItem->storeGeometry();
+		}
+	}
 }
 
 bool NodeElement::getPortStatus()

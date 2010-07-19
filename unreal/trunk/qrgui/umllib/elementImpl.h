@@ -66,6 +66,7 @@ namespace UML{
 			virtual bool isChildrenMovable() = 0;
 			virtual bool isMinimizingToChildren() = 0;
 			virtual bool isClass() = 0;
+			virtual bool isMaximizingChildren() = 0;
 
 			virtual bool isPort() = 0;
 			virtual bool isHavePin() = 0;

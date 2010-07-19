@@ -124,6 +124,7 @@
                 <minimizeToChildren/>
                 <banChildrenMove/>
                 <itIsClass/>
+                <maximizeChildren/>
               </properties>
             </container>
           </logic>
@@ -148,6 +149,7 @@
                 <sortContainer/>
                 <minimizeToChildren/>
                 <banChildrenMove/>
+                <maximizeChildren/>
               </properties>
             </container>
           </logic>
@@ -186,6 +188,7 @@
               <properties>
                 <sortContainer/>
                 <minimizeToChildren/>
+                <maximizeChildren/>
                 <banChildrenMove/>
               </properties>
             </container>
