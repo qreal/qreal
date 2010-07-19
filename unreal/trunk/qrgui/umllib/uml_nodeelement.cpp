@@ -1225,26 +1225,6 @@ bool NodeElement::getHavePortStatus()
 	return mElementImpl->isHavePin();
 }
 
-/*double NodeElement::getXHor()
-{
-	return mElementImpl->getXHorBord();
-}
-
-double NodeElement::getYHor()
-{
-	return mElementImpl->getYHorBord();
-}
-
-double NodeElement::getXVert()
-{
-	return mElementImpl->getXVertBord();
-}
-
-double NodeElement::getYVert()
-{
-	return mElementImpl->getYVertBord();
-}*/
-
 bool NodeElement::isLowSide(QPointF& point, double x, double y) const
 {
 	double m_x = point.rx();

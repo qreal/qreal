@@ -36,7 +36,9 @@ public:
 	QString getTypeName(const QModelIndex &index) const;
 	qrRepo::RepoApi const &getApi() const;
 
-	QModelIndex getModelIndex() const;
+	const QModelIndex& getModelIndex() const;
+
+	QAbstractItemModel* getTargetModel() const;
 
 public slots:
 	void setIndex(const QModelIndex &sourceIndex);

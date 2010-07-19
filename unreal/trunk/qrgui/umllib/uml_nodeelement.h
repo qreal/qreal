@@ -61,10 +61,6 @@ namespace UML {
 
 		bool getHavePortStatus();
 
-		/*double getXHor();
-		double getYHor();
-		double getXVert();
-		double getYVert();*/
 		QList<double> getBordersValues();
 
 		bool isLowSide(QPointF& point, double x, double y) const;
