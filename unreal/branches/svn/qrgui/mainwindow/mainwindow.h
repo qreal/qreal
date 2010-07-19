@@ -13,6 +13,7 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
+#include "../dialogs/checkoutdialog.h"
 
 namespace qReal {
 
@@ -68,6 +69,7 @@ namespace qReal {
 		void sceneSelectionChanged();
 
 		void doCommit();
+		void doCheckout();
 		void exportToXmi();
 		void generateToJava();
 		void parseJavaLibraries();

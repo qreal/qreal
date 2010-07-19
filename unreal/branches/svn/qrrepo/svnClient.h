@@ -14,7 +14,7 @@ public:
 	Client client;
 
 	SvnClient(char *workDir, char *username, char *pass);
-	int commit(QString &message);
-	void checkout();
+	long commit(QString &message);
+	QString checkout(char *pathFrom, svn::Path pathTo);
 //private:
 };

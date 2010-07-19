@@ -88,6 +88,7 @@ MainWindow::MainWindow()
 	connect(ui.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
+	connect(ui.actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(ui.actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
@@ -448,6 +449,17 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("Splashscreen", show);
 }
 
+void MainWindow::doCheckout()
+{
+	QString path;
+	CheckoutDialog *dialog = new CheckoutDialog(this);
+	dialog->show();
+	if (dialog->Accepted)
+	{
+		path = dialog->directoryComboBox->currentText();
+	}
+}
+
 void MainWindow::doCommit()
 {
 	QString select = tr("Select working directory for commit");
@@ -455,7 +467,7 @@ void MainWindow::doCommit()
 
 	if (path.isEmpty())
 		return;
-	QMessageBox::information(this, tr("Selected path is"), path);
+//	QMessageBox::information(this, tr("Selected path is"), path);
 	char* p = path.toAscii().data();
 	SvnClient client(p, "test", "test");
 	//	client.commit(path, )
@@ -963,7 +975,7 @@ void MainWindow::saveIds()
 		mModel->api().save(toSave);
 		mModel->resetChangedDiagrams(toSave);
 	}
-	
+
 }
 
 void MainWindow::saveAs()

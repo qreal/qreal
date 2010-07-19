@@ -41,7 +41,7 @@ SvnClient::SvnClient(char *workingDir, char *username, char *pass)
 	Targets tar(workingDir);
 	targets = new Targets(workingDir);
 }
-int SvnClient::commit(QString &message)
+long SvnClient::commit(QString &message)
 {
 	svn_revnum_t revnum;
 	try
@@ -55,6 +55,14 @@ int SvnClient::commit(QString &message)
 	}
 	return revnum;
 }
-void SvnClient::checkout()
+QString SvnClient::checkout(char *pathFrom, svn::Path pathTo)
 {
+	long rev;
+	try {
+			rev = this->client.checkout(pathFrom, pathTo, svn::Revision::HEAD, true);
+		}
+	catch (svn::ClientException e) {
+		return QString(e.message());
+	}
+	return QString("Successfully checkouted to revision").append(QString::number(rev));
 }
