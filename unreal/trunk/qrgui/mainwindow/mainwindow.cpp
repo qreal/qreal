@@ -874,13 +874,12 @@ void MainWindow::suggestToCreateDiagram()
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
-			//hack
-			if (diagram.diagram() != "Kernel")
-				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagram.diagram()+"Node");
-			else
-				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/Diagram");
-			//
-			diagramsListWidget.addItem(diagram.diagram());
+			const QString diagramName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramName(diagram.diagram());
+			const QString diagramNodeName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			if (diagramNodeName == " ")
+				continue;
+			diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagramNodeName);
+			diagramsListWidget.addItem(diagramName);
 			i++;
 		}
 	}
@@ -966,7 +965,7 @@ void MainWindow::saveIds()
 		mModel->api().save(toSave);
 		mModel->resetChangedDiagrams(toSave);
 	}
-	
+
 }
 
 void MainWindow::saveAs()

@@ -1,6 +1,6 @@
 <metamodel xmlns="http://schema.real.com/schema/">
     <namespace>UML 2.1</namespace>
-    <diagram name="Kernel">
+    <diagram name="Kernel" nodeName="Diagram">
       <nonGraphicTypes>
         <enum name="bool">
           <value>false</value>

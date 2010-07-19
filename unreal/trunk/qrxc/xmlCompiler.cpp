@@ -175,6 +175,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
+		<< "\tvirtual QString diagramNodeName(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
@@ -183,6 +184,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
+		<< "\tQMap<QString, QString> diagramNodeNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > propertyTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > propertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
@@ -238,7 +240,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitPropertyMap();\n"
 		<< "\tinitPropertyDefaultsMap();\n"
 		<< "}\n\n";
-	
+
 	generateNameMappings(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
@@ -252,6 +254,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
 		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->displayedName() << " \"" << ";\n";
+		out() << "\tdiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
 	}
 
@@ -316,7 +319,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "QStringList " << mPluginName << "Plugin::elements(QString const &diagram) const\n{\n"
 		<< "\treturn elementsNameMap[diagram].keys();\n"
 		<< "}\n\n"
-		
+
 		<< "QStringList " << mPluginName << "Plugin::getPropertiesWithDefaultValues(QString const &element) const\n{\n"
 		<< "\treturn propertyDefault[element].keys();\n"
 		<< "}\n\n"
@@ -331,6 +334,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::diagramName(QString const &diagram) const\n{\n"
 		<< "\treturn diagramNameMap[diagram];\n"
+		<< "}\n\n"
+
+		<< "QString " << mPluginName << "Plugin::diagramNodeName(QString const &diagram) const\n{\n"
+		<< "\treturn diagramNodeNameMap[diagram];\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"

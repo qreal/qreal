@@ -9,8 +9,8 @@
 
 #include <QDebug>
 
-Diagram::Diagram(QString const &name, QString const &displayedName, Editor *editor)
-	: mDiagramName(name), mDiagramDisplayedName(displayedName), mEditor(editor)
+Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
+	: mDiagramName(name), mDiagramNodeName(nodeName), mDiagramDisplayedName(displayedName), mEditor(editor)
 {}
 
 Diagram::~Diagram()
@@ -22,7 +22,7 @@ Diagram::~Diagram()
 
 bool Diagram::init(QDomElement const &diagramElement)
 {
-	for (QDomElement element = diagramElement.firstChildElement(); 
+	for (QDomElement element = diagramElement.firstChildElement();
 		!element.isNull();
 		element = element.nextSiblingElement())
 	{
@@ -40,7 +40,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 
 bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 {
-	for (QDomElement element = graphicTypesElement.firstChildElement(); 
+	for (QDomElement element = graphicTypesElement.firstChildElement();
 		!element.isNull();
 		element = element.nextSiblingElement())
 	{
@@ -79,7 +79,7 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 
 bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 {
-	for (QDomElement element = nonGraphicTypesElement.firstChildElement(); 
+	for (QDomElement element = nonGraphicTypesElement.firstChildElement();
 		!element.isNull();
 		element = element.nextSiblingElement())
 	{
@@ -169,6 +169,11 @@ QMap<QString, Type*> Diagram::types() const
 QString Diagram::name() const
 {
 	return mDiagramName;
+}
+
+QString Diagram::nodeName() const
+{
+	return mDiagramNodeName;
 }
 
 QString Diagram::displayedName() const

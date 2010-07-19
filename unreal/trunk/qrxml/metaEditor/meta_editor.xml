@@ -1,7 +1,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="MetaEditor" displayedName="Meta Editor">
+	<diagram name="MetaEditor" nodeName="MetaEditorDiagramNode" displayedName="Meta Editor">
 	  <nonGraphicTypes>
 		<enum name="assotiationTypes" displayedName="assotiationTypes">
 		  <value>no_arrow</value>
