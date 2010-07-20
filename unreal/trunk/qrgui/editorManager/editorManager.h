@@ -29,8 +29,8 @@ namespace qReal {
 		IdList diagrams(Id const &editor) const;
 		IdList elements(Id const &diagram) const;
 		IdList elementsOnDiagram(Id const &diagramNode) const;
-		void loadPlugin(QString const &pluginName);
-		void unloadPlugin(QString const &pluginName);
+		bool loadPlugin(QString const &pluginName);
+		bool unloadPlugin(QString const &pluginName);
 
 		QString mouseGesture(Id const &id) const;
 		QString friendlyName(Id const &id) const;

@@ -1,7 +1,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="MetaEditor" nodeName="MetaEditorDiagramNode" displayedName="Meta Editor">
+	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 	  <nonGraphicTypes>
 		<enum name="assotiationTypes" displayedName="assotiationTypes">
 		  <value>no_arrow</value>
@@ -152,7 +152,7 @@
 			  <property type="bool" name="is Pin">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="set Shape"/>
+			  <property type="string" name="Shape"/>
 			  <property type="bool" name="is Action">
 				<default>false</default>
 			  </property>
@@ -530,8 +530,8 @@
 		<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
 		  <graphics>
 			<picture sizex="25" sizey="25">
-			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#0000ff" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
-			  <ellipse fill="#0000ff" stroke-style="solid" stroke="#0000ff" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
+			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#bbbbbb" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+			  <ellipse fill="#bbbbbb" stroke-style="solid" stroke="#bbbbbb" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
 			</picture>
 			<labels/>
 			<ports/>
@@ -547,10 +547,19 @@
 		  </logic>
 		</node>
 		<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container">
-		  <graphics>
-			<picture sizex="40" sizey="40">
+			<!--<picture sizex="40" sizey="40">
 			  <rectangle fill="#ffffff" stroke-style="solid" stroke="#00ff00" y1="0" x1="0" y2="40" stroke-width="1" x2="40" fill-style="solid"/>
 			  <rectangle fill="#00ff00" stroke-style="solid" stroke="#00ff00" y1="5" x1="5" y2="35" stroke-width="1" x2="35" fill-style="solid"/>			</picture>
+			<labels/>
+			<ports/>-->
+			<graphics>
+			<picture sizex="50" sizey="50">
+			<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>
+			<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="50" stroke-width="1" x1="0" y2="20" fill-style="none" x2="30"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="5" stroke-width="1" x1="35" y2="25" fill-style="none" x2="35"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="15" stroke-width="1" x1="25" y2="15" fill-style="none" x2="45"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="35" stroke-width="1" x1="5" y2="35" fill-style="none" x2="25"/>
+			</picture>
 			<labels/>
 			<ports/>
 		  </graphics>
@@ -567,8 +576,24 @@
 			  <property type="bool" name="banChildrenMove">
 				<default>false</default>
 			  </property>
+			  <property type="bool" name="maximizeChildren">
+				<default>false</default>
+			  </property>
 			</properties>
 		  </logic>
+		</node>
+		<node name="MetaEntityContextMenuField" displayedName="Context Menu Field">
+		  <graphics>
+			<picture sizex="100" sizey="30">
+				<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
+				<text i="0" font-fill="#00007f" y1="10" b="0" x1="5" font-name="Helvetica" u="0" font-size="10a">Context Menu Field</text>
+			</picture>
+ 			<labels/>
+			<ports/>
+		  </graphics>
+		  <logic>
+			<properties/>
+		 </logic>
 		</node>
 	  </graphicTypes>
 	</diagram>

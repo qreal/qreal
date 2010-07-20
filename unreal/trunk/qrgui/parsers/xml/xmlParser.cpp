@@ -19,7 +19,7 @@ using namespace parsers;
 
 XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
-	mCurrentMoveWidth(0), mMoveWidth(0), mMoveHigh(0), mCurrentWidth(0), mCurrentHigh(0)
+	mMoveWidth(10), mMoveHeight(10), mCurrentWidth(0), mCurrentHeight(0)
 {
 }
 
@@ -32,10 +32,7 @@ void XmlParser::parseFile(const QString &fileName)
 
 	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
 
-	int diagramElements = 0;
-	for (unsigned i = 0; i < diagrams.length(); ++i)
-		diagramElements += diagrams.at(i).toElement().childNodes().length();
-	mElementsColumn = ceil(sqrt(static_cast<qreal>(diagramElements)));
+	mElementsColumn =  ceil(sqrt(static_cast<qreal>(diagrams.length())));
 
 	for (unsigned i = 0; i < diagrams.length(); ++i) {
 		QDomElement diagram = diagrams.at(i).toElement();
@@ -61,6 +58,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 {
 	QFileInfo fileName(directoryName);
 	QString fileBaseName = fileName.baseName();
+	//QDir dir(directoryName);
 
 	Id metamodelId = Id("Meta_editor", "MetaEditor", "MetamodelDiagram",
 			QUuid::createUuid().toString());
@@ -71,6 +69,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	for (unsigned i = 0; i < includeList.length(); ++i) {
 		QDomElement include = includeList.at(i).toElement();
 		includeListString += include.text() + ", ";
+
 	}
 	setStandartConfigurations(metamodelId, id, "Empty_" + fileBaseName, "");
 	mApi.setProperty(metamodelId, "include", includeListString);
@@ -217,7 +216,7 @@ void XmlParser::setNodeAttributes(const QDomElement &node, const Id &nodeId)
 			QDomNode nodeCopy = nodeList.at(i).cloneNode();
 			document.importNode(nodeList.at(i), true);
 			document.appendChild(nodeCopy);
-			mApi.setProperty(nodeId, "set Shape", document.toString());
+			mApi.setProperty(nodeId, "Shape", document.toString());
 		}
 	}
 }
@@ -257,6 +256,8 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setPin(nodeId);
 		if (attribute.tagName() == "action")
 			setAction(nodeId);
+		if (attribute.tagName() == "bonusContextMenuFields")
+			setFields(attribute, nodeId);
 	}
 }
 
@@ -307,6 +308,20 @@ void XmlParser::setProperties(const QDomElement &element, const Id &elementId)
 	}
 }
 
+void XmlParser::setFields(const QDomElement &element, const Id &elementId)
+{
+	QDomNodeList fields = element.childNodes();
+
+	for (unsigned i = 0; i < fields.length(); ++i) {
+		QDomElement field = fields.at(i).toElement();
+		if (field.tagName() == "field") {
+			Id fieldId("Meta_editor", "MetaEditor", "MetaEntityContextMenuField", QUuid::createUuid().toString());
+			setStandartConfigurations(fieldId, elementId, field.attribute("name", ""),
+									  field.attribute("displayedName", ""));
+		}
+	}
+}
+
 void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList containsElements = element.childNodes();
@@ -332,21 +347,29 @@ void XmlParser::setContainerProperties(const QDomElement &element, const Id &ele
 								  "properties", "");
 		for (unsigned i = 0; i < properties.length(); ++i) {
 			QDomElement property = properties.at(i).toElement();
-			if (property.tagName() == "sortContainer")
-				mApi.setProperty(containerProperties, "sortContainer", "true");
-			if (property.tagName() == "forestalling")
-				mApi.setProperty(containerProperties, "forestalling size",
-								 property.attribute("size", ""));
-			if (property.tagName() == "childrenForestalling")
-				mApi.setProperty(containerProperties, "childrenForestalling size",
-								 property.attribute("size", ""));
-			if (property.tagName() == "minimizeToChildren")
-				mApi.setProperty(containerProperties, "minimizeToChildren", "true");
-			if (property.tagName() == "banChildrenMove")
-				mApi.setProperty(containerProperties, "banChildrenMove", "true");
+			setBoolValuesForContainer("sortContainer", property, containerProperties);
+			setBoolValuesForContainer("minimizeToChildren", property, containerProperties);
+			setBoolValuesForContainer("maximizeChildren", property, containerProperties);
+			setBoolValuesForContainer("banChildrenMove", property, containerProperties);
+
+			setSizesForContainer("forestalling", property, containerProperties);
+			setSizesForContainer("childrenForestalling", property, containerProperties);
 		}
 	}
 }
+
+void XmlParser::setBoolValuesForContainer(const QString &tagName, const QDomElement &property, const Id &id)
+{
+	if (property.tagName() == tagName)
+		mApi.setProperty(id, tagName, "true");
+}
+
+void XmlParser::setSizesForContainer(const QString &tagName, const QDomElement &property, const Id &id)
+{
+	if (property.tagName() == tagName)
+		mApi.setProperty(id, tagName + " size", property.attribute("size", "0"));
+}
+
 
 void XmlParser::setConnections(const QDomElement &element, const Id &elementId)
 {
@@ -512,28 +535,26 @@ void XmlParser::setChildrenPositions(const Id &id, unsigned cellWidth, unsigned 
 	int rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(id).count())));
 	int currentRow = 0;
 	int currentColumn = 0;
-	int countChildren = 0;
-	int sizeyElement = 0;
+	int sizeyElement = 100;
+	int sizeyElements = 0;
 
 	foreach(Id element, mApi.children(id)) {
-		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth, sizeyElement));
+		mApi.setProperty(element, "position", QPointF(currentColumn * (cellWidth + 40) + 50, sizeyElement));
 		if (mApi.children(element).isEmpty())
-			sizeyElement += 130;
+			sizeyElement += 180;
 		else
-			sizeyElement += cellHeight * mApi.children(element).length() + 30;
+			sizeyElement += cellHeight * mApi.children(element).length() + 80;
 		++currentRow;
 		if (currentRow >= rowWidth) {
 			currentRow = 0;
 			++currentColumn;
-			countChildren = 0;
-			sizeyElement = 0;
+			if (sizeyElement > sizeyElements)
+				sizeyElements = sizeyElement;
+			sizeyElement = 100;
 		}
-		countChildren += mApi.children(element).length();
 	}
-	mCurrentWidth = rowWidth * cellWidth;
-	mCurrentHigh = cellHeight * countChildren * currentRow;
-	if (mCurrentWidth > mCurrentMoveWidth)
-		mCurrentMoveWidth = mCurrentWidth;
+	mCurrentWidth = rowWidth * cellWidth + 30;
+	mCurrentHeight = sizeyElements;
 }
 
 void XmlParser::checkIndex()
@@ -541,18 +562,17 @@ void XmlParser::checkIndex()
 	++mElementCurrentColumn;
 	if (mElementCurrentColumn >= mElementsColumn) {
 		mElementCurrentColumn = 0;
-		mMoveHigh = 0;
-		mMoveWidth += mCurrentMoveWidth;
-		mCurrentMoveWidth = 0;
+		mMoveHeight = 0;
+		mMoveWidth += mCurrentWidth;
 	}
 }
 
 void XmlParser::setElementPosition(const Id &id)
 {
-	mMoveHigh += mCurrentHigh;
-	mApi.setProperty(id, "position", QPointF(mMoveWidth, mMoveHigh));
+	mMoveHeight += mCurrentHeight;
+	mApi.setProperty(id, "position", QPointF(mMoveWidth, mMoveHeight));
 	setChildrenPositions(id, 160, 50);
-	QRect const value = QRect(mMoveWidth, mMoveHigh, mCurrentWidth, mCurrentHigh);
+	QRect const value = QRect(mMoveWidth, mMoveHeight, mCurrentWidth, mCurrentHeight);
 	mApi.setProperty(id, "configuration", QVariant(QPolygon(value, false)));
 	checkIndex();
 }

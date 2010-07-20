@@ -607,16 +607,17 @@ void MainWindow::newGenerateEditor()
 
 					progress->setValue(80);
 
-					mEditorManager.loadPlugin(metamodelList[key] + ".dll");
+					if (mEditorManager.loadPlugin(metamodelList[key] + ".dll")) {
 
-					foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
-						ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+						foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
+							ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
-						foreach (Id const element, mEditorManager.elements(diagram))
-							ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+							foreach (Id const element, mEditorManager.elements(diagram))
+								ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+						}
+						ui.paletteToolbox->initDone();
+						progress->setValue(100);
 					}
-					ui.paletteToolbox->initDone();
-					progress->setValue(100);
 				}
 			}
 			if (progress->value() != 100)
