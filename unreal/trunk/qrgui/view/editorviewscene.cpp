@@ -22,7 +22,6 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
-
 }
 
 void EditorViewScene::drawIdealGesture()
@@ -302,6 +301,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
 									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+
+	emit elementCreated(id);
+
 	delete newMimeData;
 }
 
@@ -634,6 +636,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const

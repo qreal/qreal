@@ -26,7 +26,6 @@ public:
 
 	void clearScene();
 
-
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
@@ -46,6 +45,10 @@ public:
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
 	UML::Element* getLastCreated();
+
+signals:
+	void elementCreated(qReal::Id const &id);
+
 protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
