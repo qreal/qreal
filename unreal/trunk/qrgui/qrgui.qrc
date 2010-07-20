@@ -5,6 +5,7 @@
         <file>icons/zoomout.png</file>
         <file>icons/qreal.png</file>
         <file>icons/kroki2.PNG</file>
+        <file>icons/kroki3.PNG</file>
         <file>icons/clear.png</file>
     </qresource>
     <qresource prefix="/images">
