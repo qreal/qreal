@@ -17,7 +17,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
-
+#include <QtGui/QListWidgetItem>
 
 #include "../dialogs/plugindialog.h"
 #include "editorInterface.h"
@@ -894,9 +894,10 @@ void MainWindow::suggestToCreateDiagram()
 	okButton.setText("Done");
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));\
 	diagramsListWidget.setCurrentRow(0);
 
 	vLayout.addWidget(&label);
