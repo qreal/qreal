@@ -353,6 +353,12 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
+
 	if (embeddedLinkers.isEmpty())
 		initEmbeddedLinkers();
 	moveEmbeddedLinkers();
@@ -377,8 +383,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	else
 		Element::mousePressEvent(event);
 
-	if (event->button() == Qt::RightButton)
-		event->accept();
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -386,6 +390,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
+
 	scene()->invalidate();
 	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
 		embeddedLinker->setCovered(false);
@@ -610,6 +620,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
 	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();

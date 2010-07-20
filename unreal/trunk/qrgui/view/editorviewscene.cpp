@@ -496,7 +496,10 @@ void EditorViewScene::getObjectByGesture()
 		}
 		if (!allLinks.empty())
 		{
-			createElement(allLinks.at(0).toString(), end);
+			Id * edgeId = createElement(allLinks.at(0).toString(), end);
+//			UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeId);
+//			edge->placeStartTo(start);
+//			edge->placeEndTo(end);
 		}
 	}
 	else
