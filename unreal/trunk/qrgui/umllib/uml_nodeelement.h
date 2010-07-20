@@ -80,6 +80,8 @@ namespace UML {
 
 		bool isClass();
 
+		virtual void setColorRect(bool bl);
+
 	private slots:
 		void switchGrid(bool isChecked);
 
@@ -184,6 +186,7 @@ namespace UML {
 
 		QPointF mPos;
 		bool inHor;
+		bool isColorRect;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
 	};

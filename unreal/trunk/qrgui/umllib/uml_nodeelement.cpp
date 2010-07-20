@@ -19,7 +19,8 @@ using namespace qReal;
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on grid", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true)
+		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true),
+		isColorRect(false)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -59,7 +60,7 @@ NodeElement::~NodeElement()
 	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
-	
+
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
 		delete action;
 	}
@@ -1107,6 +1108,18 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 		paint(painter, style, widget, mPortRenderer);
 	else
 		paint(painter, style, widget, 0);
+	if (isColorRect)
+	{
+		painter->save();
+		painter->setPen(QPen(Qt::blue));
+		QRectF rect = boundingRect();
+		double x1 = rect.x() + 9;
+		double y1 = rect.y() + 9;
+		double x2 = rect.x() + rect.width() - 9;
+		double y2 = rect.y() + rect.height() - 9;
+		painter->drawRect(QRectF(QPointF(x1, y1), QPointF(x2, y2)));
+		painter->restore();
+	}
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -1399,4 +1412,9 @@ PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEd
 QList<PossibleEdge> NodeElement::getPossibleEdges()
 {
 	return QList<PossibleEdge>::fromSet(possibleEdges);
+}
+
+void NodeElement::setColorRect(bool bl)
+{
+	isColorRect = bl;
 }

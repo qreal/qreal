@@ -49,8 +49,9 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 			QAbstractItemModel* targModel = model->getTargetModel();
 			int role = model->roleByIndex(index.row());
 			const QModelIndex &ind = model->getModelIndex();
+			qReal::MainWindow *mainWindow = mMainWindow;
 			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
-														  targModel, role, ind);
+														  targModel, role, ind, mainWindow);
 			return button;
 		}
 	}

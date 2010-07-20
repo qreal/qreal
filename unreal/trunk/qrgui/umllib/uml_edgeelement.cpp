@@ -583,3 +583,5 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 	if (mElementImpl)
 		mElementImpl->drawEndArrow(painter);
 }
+
+void EdgeElement::setColorRect(bool bl){}

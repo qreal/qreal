@@ -249,7 +249,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
-void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
+void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl)
 {
 	QModelIndex parent = idx.parent();
 
@@ -263,15 +263,15 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 			getCurrentTab()->scene()->clearSelection();
 			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElemByModelIndex(idx);
 			if (e)
-				e->setSelected(true);
+				e->setColorRect(bl);
 			else
 				qDebug() << "shit happened!!!\n";
 		}
 	}
 }
 
-void MainWindow::activateItemOrDiagram(Id const &id) {
-	activateItemOrDiagram(mModel->indexById(id));
+void MainWindow::activateItemOrDiagram(Id const &id, bool bl) {
+	activateItemOrDiagram(mModel->indexById(id), bl);
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
