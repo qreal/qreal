@@ -112,6 +112,7 @@ MainWindow::MainWindow()
 	connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
+
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
 	progress->setValue(40);
@@ -128,12 +129,7 @@ MainWindow::MainWindow()
 	ui.propertyEditor->setItemDelegate(&mDelegate);
 	mDelegate.setMainWindow(this);
 
-	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-			&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
-
-	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-			this, SLOT(openNewTab(QModelIndex const &)));
-
+	connect(ui.diagramExplorer,SIGNAL(clicked(QModelIndex const &)),this,SLOT(diagramExplorerClicked(QModelIndex)));
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	progress->setValue(60);
@@ -206,6 +202,10 @@ MainWindow::~MainWindow()
 {
 	delete mModel;
 	delete mListenerManager;
+}
+
+EditorManager* MainWindow::manager() {
+	return &mEditorManager;
 }
 
 void MainWindow::finalClose()
@@ -727,10 +727,46 @@ void MainWindow::openNewEmptyTab()
 	ui.tabs->setCurrentWidget(shapeEdit);
 }
 
-void MainWindow::openNewTab(const QModelIndex &index)
+void MainWindow::centerOn(const QModelIndex &index)
 {
-	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
+	this->setMouseTracking(true);
+
+	Id itemId = mModel->idByIndex(index);
+	if (itemId.element() == mModel->assistApi().editorManager().getEditorInterface(itemId.editor())->diagramNodeName(itemId.diagram()))
 		return;
+	EditorView* view = getCurrentTab();
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* element = scene->getElem(itemId);
+
+	scene->clearSelection();
+	element->setSelected(true);
+
+	float x = element->mapToScene(element->boundingRect().topLeft()).x();
+	float y = element->mapToScene(element->boundingRect().topLeft()).y();
+	float widthTab = ui.tabs->size().width();
+	float heightTab = ui.tabs->size().height();
+	float widthEl = element->boundingRect().width();
+	float heightEl = element->boundingRect().height();
+	QRectF centerRect = QRectF(x - (widthTab - widthEl)/2, y - (heightTab - heightEl)/2, widthTab, heightTab);
+	scene->addRect(centerRect, QPen(QColor(0,0,0,0)), QBrush());//TODO: remove it
+	view->ensureVisible(centerRect);
+}
+
+void MainWindow::diagramExplorerClicked(const QModelIndex &index)
+{
+	mPropertyModel.setIndex(index);
+	openNewTab(index);
+	centerOn(index);
+}
+
+void MainWindow::openNewTab(const QModelIndex &arg)
+{
+//	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
+//		return;
+
+	QModelIndex index = arg;
+	while (index.parent() != QModelIndex())
+		index = index.parent();
 
 	mModel->setRootIndex(index);
 	int tabNumber = -1;
@@ -898,7 +934,7 @@ void MainWindow::suggestToCreateDiagram()
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));\
+	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	diagramsListWidget.setCurrentRow(0);
 
 	vLayout.addWidget(&label);

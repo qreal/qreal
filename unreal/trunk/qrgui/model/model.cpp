@@ -568,6 +568,12 @@ QModelIndex Model::indexById(Id const &id) const
 	return QModelIndex();
 }
 
+Id Model::idByIndex(QModelIndex const &index) const
+{
+	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+	return mTreeItems.key(item);
+}
+
 ModelAssistApi &Model::assistApi()
 {
 	return mAssistApi;

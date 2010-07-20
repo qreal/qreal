@@ -21,6 +21,6 @@ private:
 	void initPreferences();
 private slots:
 	void on_cancelButton_clicked();
- void on_applyButton_clicked();
+	void on_applyButton_clicked();
 	void on_okButton_clicked();
 };

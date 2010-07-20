@@ -48,6 +48,7 @@ namespace qReal {
 			qrRepo::RepoApi &mutableApi();
 
 			QModelIndex indexById(Id const &id) const;
+			Id idByIndex(QModelIndex const &index) const;
 
 			Id getRootDiagram();
 			void setRootIndex(QModelIndex const & index);

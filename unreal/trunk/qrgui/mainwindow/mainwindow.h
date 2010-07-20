@@ -31,14 +31,10 @@ namespace qReal {
 		MainWindow();
 		~MainWindow();
 
-		EditorManager *manager() {
-			return &mEditorManager;
-		}
-
+		EditorManager* manager();
+		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
-
-				IGesturesPainter *gesturesPainter();
-
+		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
 
 	public slots:
@@ -77,10 +73,8 @@ namespace qReal {
 		void deleteFromScene(QGraphicsItem *target);
 
 		void activateSubdiagram(QModelIndex const &idx);
-
 		void activateItemOrDiagram(Id const &id);
 
-		EditorView *getCurrentTab();
 	private slots:
 		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();
@@ -95,6 +89,8 @@ namespace qReal {
 		void parseHascol();
 		void showPreferencesDialog();
 		void initCurrentTab(const QModelIndex &rootIndex);
+		void centerOn(const QModelIndex &rootIndex);
+		void diagramExplorerClicked(const QModelIndex &rootIndex);
 		void openNewTab(const QModelIndex &index);
 		void openNewEmptyTab();
 		void switchGrid(bool isChecked);
