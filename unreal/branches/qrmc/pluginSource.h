@@ -16,6 +16,31 @@ public:
 
 	void init(qrRepo::RepoApi &repo, qReal::Id metamodelId);
 	bool generate(QString const &sourceTemplate, QMap<QString, QString> const &utils);
+
+private:
+
+	struct Property { // smells like bullshit. replace with classes?
+		QString name;
+		QString type;
+		QString defaultValue;
+	};
+
+	struct Element {
+		QString name;
+		QString displayedName;
+		qReal::Id id;
+		bool isGraphicalObject;
+		QList<Property> properties;
+		QList<qReal::Id> parents;
+	};
+
+	struct Diagram : public Element {
+		QList< Element > elements;
+	};
+	void initDiagram(qReal::Id &diagramId);
+	void initProperties(qReal::Id &id);
+	void initElement(Element &el, qReal::Id &id);
+
 	void generateDiagramsMap();
 	void generateElementsMap();
 	void generateMouseGesturesMap();
@@ -23,24 +48,11 @@ public:
 	void generateGetGraphicalObject();
 
 	void resolveImports();
+	void resolveElements();
+	void resolveElementProperties();
 	void updateIsGraphicalProperty();
 
 	qReal::Id findElement(QString diagram, QString name);
-
-private:
-
-	struct Element { // this is bullshit. replace with classes?
-		QString name;
-		QString displayedName;
-		qReal::Id id;
-		bool isGraphicalObject;
-	};
-
-	struct Diagram : public Element {
-		QList< Element > elements;
-	};
-
-	void initDiagram(qReal::Id diagramId);
 
 	qrRepo::RepoApi *mApi;
 	QString mName;

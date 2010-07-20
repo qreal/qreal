@@ -17,6 +17,8 @@ QString const diagramDisplayedNameTag = "@@DiagramDisplayedName@@";
 QString const elementNameTag = "@@ElementName@@";
 QString const elementDisplayedNameTag = "@@ElementDisplayedName@@";
 QString const gesturePathTag = "@@GesturePath@@";
+QString const propertyNameTag = "@@PropertyName@@";
+QString const propertyTypeTag = "@@PropertyType@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";
