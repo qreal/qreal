@@ -36,7 +36,6 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 	loadSubtreeFromClient(mRootItem);
-	mApi.resetChangedDiagrams();
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
 }
@@ -368,8 +367,6 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	Q_UNUSED(action)
 
 	if (isDiagram(id)) {
-			mApi.addOpenedDiagram(id);
-			qDebug() << id.toString();
 		if (!isDiagram(parentItem->id()) && parentItem != mRootItem) {
 			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
@@ -500,7 +497,7 @@ void Model::saveTo(QString const &workingDirectory)
 
 void Model::save()
 {
-	mApi.save();
+	mApi.saveAll();
 	mApi.resetChangedDiagrams();
 }
 
@@ -518,6 +515,11 @@ void Model::exterminate()
 {
 	mApi.exterminate();
 	reinit();
+}
+
+void Model::addDiagram(Id const &id)
+{
+	mApi.addChild(ROOT_ID, id);
 }
 
 void Model::resetChangedDiagrams()

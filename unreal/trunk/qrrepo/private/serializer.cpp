@@ -23,10 +23,11 @@ void Serializer::clearWorkingDir() const
 	clearDir(mWorkingDir);
 }
 
-void Serializer::clearDiagramDir(Id id) const
+void Serializer::removeFromDisk(Id id) const
 {
-	QString filePath = pathToElement(id);
-	clearDir(filePath);
+	qDebug() << "deleteDiagramDir " << pathToElement(id);
+	QDir dir;
+	dir.remove(pathToElement(id));
 }
 
 void Serializer::setWorkingDir(QString const &workingDir)
@@ -37,6 +38,7 @@ void Serializer::setWorkingDir(QString const &workingDir)
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 {
 	foreach (LogicObject *object, objects) {
+		qDebug() << "SAVED: " << object->id().toString();
 		QString filePath = createDirectory(object->id());
 
 		QDomDocument doc;
@@ -52,17 +54,6 @@ void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 		doc.save(out(), 2);
 	}
 }
-
-void Serializer::removeFromDisk(QList<LogicObject*> const &objects) const
-{
-	foreach (LogicObject *object, objects) {
-		QString filePath = pathToElement(object->id());
-		QDir dir;
-		dir.remove(filePath);
-	}
-}
-
-
 
 void Serializer::loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash)
 {

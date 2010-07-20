@@ -184,8 +184,13 @@ MainWindow::MainWindow()
 		splash->close();
 	delete splash;
 
+	//choosing diagrams to save isn't implemented yet
+	settings.setValue("ChooseDiagramsToSave", false);
+	//so it is turned off
+
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+	mModel->resetChangedDiagrams();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -955,12 +960,18 @@ void MainWindow::save()
 
 void MainWindow::saveAll()
 {
-	mModel->api().save();
+	mModel->api().saveAll();
 	mModel->resetChangedDiagrams();
 }
 
 void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
 {
+	//not implemented
+	//TODO:
+	//create structure to save deleted objects
+	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
+	//add choosing of just created diagrams
+
 	mModel->api().save(toSave);
 	mModel->api().remove(toRemove);
 	mModel->resetChangedDiagrams(toSave);
@@ -1018,8 +1029,14 @@ void MainWindow::saveListClosed()
 
 	int i = 0;
 	foreach(Id id, opened) {
-		if (saveListChecked[i])
-			continue;
+		qDebug() << "Was opened: " << id.diagram() << " / " << id.element();
+
+		if (!saveListChecked[i]) {
+			if (!current.contains(id))
+				mModel->addDiagram(id);
+			else
+				continue;
+		}
 		if (current.contains(id))
 			toSave.append(id);
 		else
@@ -1027,6 +1044,7 @@ void MainWindow::saveListClosed()
 		i++;
 	}
 
+	toSave.append(ROOT_ID);
 	saveIds(toSave, toRemove);
 }
 

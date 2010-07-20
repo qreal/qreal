@@ -14,11 +14,11 @@ namespace qrRepo {
 		public:
 			Serializer(QString const& saveDirName, bool failSafeMode);
 			void clearWorkingDir() const;
-			void clearDiagramDir(qReal::Id id) const;
 			void setWorkingDir(QString const& workingDir);
-			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
+
+			void removeFromDisk(qReal::Id id) const;
 			void saveToDisk(QList<LogicObject*> const &objects) const;
-			void removeFromDisk(QList<LogicObject*> const &objects) const;
+			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
 
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash);

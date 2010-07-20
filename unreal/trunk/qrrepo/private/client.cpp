@@ -169,6 +169,17 @@ void Client::addChildrenToRootObject()
 	}
 }
 
+IdList Client::idsOfAllChildrenOf(Id id) const
+{
+	qDebug() << "ID: " << mObjects[id];
+
+	IdList result;
+	result.append(id);
+	foreach(Id childId,mObjects[id]->children())
+		result.append(idsOfAllChildrenOf(childId));
+	return result;
+}
+
 QList<LogicObject*> Client::allChildrenOf(Id id) const
 {
 	QList<LogicObject*> result;
@@ -176,6 +187,11 @@ QList<LogicObject*> Client::allChildrenOf(Id id) const
 	foreach(Id childId,mObjects[id]->children())
 		result.append(allChildrenOf(childId));
 	return result;
+}
+
+bool Client::exist(const Id &id) const
+{
+	return (mObjects[id] != NULL);
 }
 
 void Client::saveAll() const
@@ -187,21 +203,19 @@ void Client::saveAll() const
 void Client::save(IdList list) const
 {
 	QList<LogicObject*> toSave;
-	foreach(Id id, list) {
-		toSave.append(mObjects[id]);
-		serializer.clearDiagramDir(id);
-	}
+	foreach(Id id, list)
+		toSave.append(allChildrenOf(id));
+
 	serializer.saveToDisk(toSave);
 }
 
 void Client::remove(IdList list) const
 {
-	QList<LogicObject*> toRemove;
+	qDebug() << "Client::remove(IdList), list.size() > 0 == " << (list.size()>0);
 	foreach(Id id, list) {
-		toRemove.append(mObjects[id]);
-		serializer.clearDiagramDir(id);
+		qDebug() << id.toString();
+		serializer.removeFromDisk(id);
 	}
-	serializer.removeFromDisk(toRemove);
 }
 
 void Client::setWorkingDir(QString const &workingDir)
