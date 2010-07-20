@@ -23,6 +23,7 @@ namespace qReal {
 			explicit XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
 
 			void parseFile(QString const &fileName);
+			void loadIncludeList(QString const &fileName);
 
 		private:
 			qrRepo::RepoApi &mApi;
@@ -37,7 +38,9 @@ namespace qReal {
 			int mMoveHeight;
 			int mCurrentWidth;
 			int mCurrentHeight;
+			QStringList mIncludeList;
 
+			QStringList getIncludeList(QString const &fileName);
 			Id getPackageId();
 			void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &id);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);

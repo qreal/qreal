@@ -638,8 +638,12 @@ void MainWindow::parseEditorXml()
 	if (fileName == "")
 		return;
 
+
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+
 	parser.parseFile(fileName);
+	if (QMessageBox::question(this, tr("loading.."),"Do you want to load including metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+		parser.loadIncludeList(fileName);
 
 	mModel->reinit();
 }
