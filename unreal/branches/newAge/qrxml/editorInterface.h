@@ -30,7 +30,7 @@ namespace qReal {
 			virtual QStringList getTypesContainedBy(QString const &element) const = 0;
 			virtual QStringList getConnectedTypes(QString const &element) const = 0;
 			virtual QStringList getUsedTypes(QString const &element) const = 0;
-			virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const = 0;
+			virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &element) const = 0;
 
 			virtual int isNodeOrEdge(QString const &element) const = 0;
 
@@ -43,6 +43,7 @@ namespace qReal {
 
 			virtual QString editorName() const = 0;
 			virtual QString diagramName(QString const &diagram) const = 0;
+			virtual QString diagramNodeName(QString const &diagram) const = 0;
 			virtual QString elementName(QString const &diagram, QString const &element) const = 0;
 			virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
 

@@ -1,7 +1,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
     <include>../commonXml/kernel_metamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="Test Diagram" name="TestDiagram">
+    <diagram displayedName="Test Diagram" nodeName="TestDiagramNode" name="TestDiagram">
       <graphicTypes>
 
         <node displayedName="Test Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="TestDiagramNode">

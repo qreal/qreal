@@ -4,6 +4,8 @@
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
 
+#include <QSet>
+
 namespace qrRepo {
 
 	class QRREPO_EXPORT RepoApi {
@@ -62,9 +64,13 @@ namespace qrRepo {
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
 		void exterminate();
-		void open(QString const &workingDir);
-		void save() const;
+
+		void saveAll() const;
+		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);
+		void remove(qReal::IdList list) const;
+
+		void open(QString const &workingDir);
 
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
@@ -75,7 +81,14 @@ namespace qrRepo {
 		qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
-		bool mIsChange;
+		bool exist(qReal::Id const &id) const;
+
+		qReal::IdList getOpenedDiagrams() const;
+		qReal::IdList getChangedDiagrams() const;
+		void resetChangedDiagrams();
+		void addOpenedDiagram(const qReal::Id &id);
+		void addChangedDiagram(const qReal::Id &id);
+		void resetChangedDiagrams(const qReal::IdList &list);
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
@@ -86,6 +99,12 @@ namespace qrRepo {
 
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
+
+		QSet<qReal::Id> mDiagramsOpened;
+		QSet<qReal::Id> mDiagramsChanged;
+
+		typedef QPair<qReal::Id, qReal::IdList> ChildsOfDiagram;
+		QList<ChildsOfDiagram> mDiagramsDeleted;
 
 		details::Client mClient;
 	};

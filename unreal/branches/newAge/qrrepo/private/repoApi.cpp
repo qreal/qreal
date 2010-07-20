@@ -1,11 +1,13 @@
 #include "../repoApi.h"
 
+#include <QDebug>
+
 using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
 RepoApi::RepoApi(QString const &workingDirectory)
-	: mIsChange(false), mClient(workingDirectory)
+	: mClient(workingDirectory)
 {
 }
 
@@ -18,7 +20,8 @@ QString RepoApi::name(Id const &id) const
 void RepoApi::setName(Id const &id, QString const &name)
 {
 	mClient.setProperty(id, "name", name);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
+
 }
 
 IdList RepoApi::children(Id const &id) const
@@ -29,20 +32,20 @@ IdList RepoApi::children(Id const &id) const
 void RepoApi::addChild(Id const &id, Id const &child)
 {
 	mClient.addChild(id, child);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
 {
 	mClient.removeChild(id, child);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
-void RepoApi::removeChildren(qReal::Id const &id)
+void RepoApi::removeChildren(Id const &id)
 {
 	foreach (Id const child, children(id))
 		removeChild(id, child);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 void RepoApi::removeElement(Id const &id)
@@ -98,7 +101,7 @@ void RepoApi::removeElement(Id const &id)
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
 
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
@@ -108,7 +111,7 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 			removeFromList(target, "links", id);
 		}
 	}
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 IdList RepoApi::parents(Id const &id) const
@@ -119,13 +122,13 @@ IdList RepoApi::parents(Id const &id) const
 void RepoApi::addParent(Id const &id, Id const &parent)
 {
 	mClient.addParent(id, parent);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
-void RepoApi::removeParent(qReal::Id const &id, qReal::Id const &parent)
+void RepoApi::removeParent(Id const &id, qReal::Id const &parent)
 {
 	mClient.removeParent(id, parent);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 IdList RepoApi::links(Id const &id, QString const &direction) const
@@ -169,14 +172,14 @@ void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingConnections", destination);
 	addToIdList(destination, "incomingConnections", source);
-	mIsChange = true;
+	addChangedDiagram(source.diagramId());
 }
 
 void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingConnections", destination);
 	removeFromList(destination, "incomingConnections", source);
-	mIsChange = true;
+	addChangedDiagram(source.diagramId());
 }
 
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
@@ -193,14 +196,14 @@ void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	addToIdList(source, "outgoingUsages", destination);
 	addToIdList(destination, "incomingUsages", source);
-	mIsChange = true;
+	addChangedDiagram(source.diagramId());
 }
 
 void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingUsages", destination);
 	removeFromList(destination, "incomingUsages", source);
-	mIsChange = true;
+	addChangedDiagram(source.diagramId());
 }
 
 QString RepoApi::typeName(Id const &id) const
@@ -223,14 +226,14 @@ void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant co
 {
 	if (mClient.hasProperty(id, propertyName) &&
 		(mClient.property(id, propertyName) != value))
-		mIsChange = true;
+		addChangedDiagram(id.diagramId());
 	mClient.setProperty(id, propertyName, value);
 }
 
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
 	mClient.removeProperty(id, propertyName);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
@@ -250,7 +253,7 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 	removeFromList(prev, "links", id);
 	mClient.setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 Id RepoApi::to(Id const &id) const
@@ -265,7 +268,7 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	removeFromList(prev, "links", id);
 	mClient.setProperty(id, "to", to.toVariant());
 	addToIdList(to, "links", id);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 double RepoApi::fromPort(Id const &id) const
@@ -277,7 +280,7 @@ double RepoApi::fromPort(Id const &id) const
 void RepoApi::setFromPort(Id const &id, double fromPort)
 {
 	mClient.setProperty(id, "fromPort", fromPort);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 double RepoApi::toPort(Id const &id) const
@@ -289,30 +292,50 @@ double RepoApi::toPort(Id const &id) const
 void RepoApi::setToPort(Id const &id, double toPort)
 {
 	mClient.setProperty(id, "toPort", toPort);
-	mIsChange = true;
+	addChangedDiagram(id.diagramId());
 }
 
 void RepoApi::exterminate()
 {
 	mClient.exterminate();
-	mIsChange = true;
 }
 
 void RepoApi::open(QString const &workingDir)
 {
 	mClient.open(workingDir);
-	mIsChange = true;
 }
 
-void RepoApi::save() const
+
+
+void RepoApi::saveAll() const
 {
-	mClient.save();
+	mClient.saveAll();
 }
 
 void RepoApi::saveTo(QString const &workingDir)
 {
-	mClient.saveTo(workingDir);
+	mClient.setWorkingDir(workingDir);
+	mClient.saveAll();
 }
+
+void RepoApi::save(qReal::IdList list) const
+{
+	qDebug() << "RepoApi::save(IdList), list.size() > 0 == " << (list.size()>0);
+	mClient.save(list);
+}
+
+void RepoApi::remove(qReal::IdList list) const
+{
+	qDebug() << "RepoApi::remove(IdList), list.size() > 0 == " << (list.size()>0);
+
+	foreach(ChildsOfDiagram pair, mDiagramsDeleted)
+		foreach(Id diagram, list) {
+			if (pair.first == diagram)
+				mClient.remove(pair.second);
+		}
+}
+
+
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {
@@ -327,7 +350,8 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	list.append(data);
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
-	mIsChange = true;
+
+	addChangedDiagram(target.diagramId());
 }
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data)
@@ -339,7 +363,7 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 	list.removeAll(data);
 
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
-	mIsChange = true;
+	addChangedDiagram(target.diagramId());
 }
 
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
@@ -379,4 +403,45 @@ IdList RepoApi::elementsByType(QString const &type) const
 int RepoApi::elementsCount() const
 {
 	return mClient.elements().size();
+}
+
+bool RepoApi::exist(Id const &id) const
+{
+	return mClient.exist(id);
+}
+
+IdList RepoApi::getOpenedDiagrams() const
+{
+	return mDiagramsOpened.values();
+}
+
+IdList RepoApi::getChangedDiagrams() const
+{
+	return mDiagramsChanged.values();
+}
+
+void RepoApi::resetChangedDiagrams()
+{
+	mDiagramsChanged.clear();
+}
+
+void RepoApi::addOpenedDiagram(const Id &id)
+{
+	mDiagramsOpened.insert(id);
+}
+
+void RepoApi::addChangedDiagram(const Id &id)
+{
+	mDiagramsChanged.insert(id);
+/**	if (!exist(id)) {
+		QPair<Id,IdList> pair = qMakePair(id,mClient.idsOfAllChildrenOf(id));
+		if (!mDiagramsDeleted.contains(pair))
+			this->mDiagramsDeleted.append(pair);
+	}**/
+}
+
+void RepoApi::resetChangedDiagrams(const IdList &list)
+{
+	foreach(Id id, list)
+		mDiagramsChanged.remove(id);
 }

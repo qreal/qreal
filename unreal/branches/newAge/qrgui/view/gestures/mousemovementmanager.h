@@ -15,29 +15,32 @@
 class MouseMovementManager
 {
 public:
-    MouseMovementManager(QList<qReal::Id> elements,
-                         qReal::EditorManager * editorManager,
-                         IGesturesPainter * gesturesPaintManager);
-    void setElements(QList<qReal::Id> const & elements);
-    void addPoint(QPointF const & point);
-    void clear();
-    void setGesturesPainter(IGesturesPainter * gesturesPainter);
-    qReal::Id getObject();
-    static QList<QPoint> stringToPath(QString const &str);
-    QPointF pos();
-    QLineF newLine();
-    void printElements();
-    void drawIdealPath();
+	MouseMovementManager(QList<qReal::Id> elements,
+						 qReal::EditorManager * editorManager,
+						 IGesturesPainter * gesturesPaintManager);
+	void setElements(QList<qReal::Id> const & elements);
+	void addPoint(QPointF const & point);
+	void clear();
+	void setGesturesPainter(IGesturesPainter * gesturesPainter);
+	qReal::Id getObject();
+	static QList<QPoint> stringToPath(QString const &str);
+	QPointF pos();
+	QPointF firstPoint();
+	QPointF lastPoint();
+	QLineF newLine();
+	void printElements();
+	void drawIdealPath();
+	bool wasMoving();
 
 private:
-    static QPoint parsePoint(QString const &str);
-    void createMap();
-    QList<QPoint> mPath;
-    IKeyManager * mKeyManager;
-    KeyManager mKeyStringManager;
-    qReal::EditorManager * mEditorManager;
-    QList<qReal::Id> mElements;
-    QMap<QString, qReal::Id> mGestures;
-    QPointF mCentre;
-    IGesturesPainter * mGesturesPaintMan;
+	static QPoint parsePoint(QString const &str);
+	void createMap();
+	QList<QPoint> mPath;
+	IKeyManager * mKeyManager;
+	KeyManager mKeyStringManager;
+	qReal::EditorManager * mEditorManager;
+	QList<qReal::Id> mElements;
+	QMap<QString, qReal::Id> mGestures;
+	QPointF mCentre;
+	IGesturesPainter * mGesturesPaintMan;
 };

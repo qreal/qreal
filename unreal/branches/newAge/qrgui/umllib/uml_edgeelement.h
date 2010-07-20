@@ -7,7 +7,6 @@
 #include "elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
-typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
 
 namespace UML {
 	enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };

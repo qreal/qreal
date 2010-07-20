@@ -205,8 +205,19 @@ void NodeType::generateCode(OutFile &out)
 	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
-		<< "\tpublic:\n"
-		<< "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
+		<< "\tpublic:\n";
+	
+	if (!mBonusContextMenuFields.empty()) {
+		out() << "\t\t" << className << "()\n\t\t{\n";
+		out() << "\t\t\tmBonusContextMenuFields";
+			foreach (QString elem, mBonusContextMenuFields) {
+				out() << " << " << "\"" << elem << "\"";
+			}
+		out() << ";\n";
+		out() << "\t\t}\n\n";
+	}
+
+	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
@@ -271,12 +282,12 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\tbool isNode()\n\t\t{\n"
 		<< "\t\t\treturn true;\n"
 		<< "\t\t}\n\n"
-		
+
 		<< "\t\tbool isContainer()\n\t\t{\n"
 		<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
-		
-		<< "\t\tbool isSortContainer()\n\t\t{\n" 
+
+		<< "\t\tbool isSortContainer()\n\t\t{\n"
 		<< (mContainerProperties.isSortContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
@@ -295,48 +306,43 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\tbool isMinimizingToChildren()\n\t\t{\n"
 		<< (mContainerProperties.isMinimizingToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
-	
+
 		<< "\t\tbool isClass()\n\t\t{\n"
 		<< (mContainerProperties.isClass ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+		
+		<< "\t\tbool isMaximizingChildren()\n\t\t{\n"
+		<< (mContainerProperties.isMaximizingChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
 		<< "\t\tbool isPort()\n\t\t{\n"
 		<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
-		
+
 		<< "\t\tbool isHavePin()\n\t\t{\n"
 		<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t\treturn false;\n"
 		<< "\t\t}\n\n";
 
+	out() << "\t\tQList<double> getBorders()\n\t\t{\n"
+		<< "\t\t\tQList<double> list;\n";
 	if (mIsHavePin)
-		out() << "\t\tdouble getXHorBord()\n\t\t{\n"
-			<< "\t\t\treturn 30;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getYHorBord()\n\t\t{\n"
-			<< "\t\t\treturn 15;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getXVertBord()\n\t\t{\n"
-			<< "\t\t\treturn 15;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getYVertBord()\n\t\t{\n"
-			<< "\t\t\treturn 25;\n"
-			<< "\t\t}\n\n";
+		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
 	else
-		out() << "\t\tdouble getXHorBord()\n\t\t{\n"
-			<< "\t\t\treturn 0;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getYHorBord()\n\t\t{\n"
-			<< "\t\t\treturn 0;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getXVertBord()\n\t\t{\n"
-			<< "\t\t\treturn 0;\n"
-			<< "\t\t}\n\n"
-			<< "\t\tdouble getYVertBord()\n\t\t{\n"
-			<< "\t\t\treturn 0;\n"
-			<< "\t\t}\n\n";
-	
+		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
+	out() << "\t\t\treturn list;\n"
+		<< "\t\t}\n\n";
+
+	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
+	if (!mBonusContextMenuFields.empty())
+		out() << "mBonusContextMenuFields;";
+	else
+		out() << "QStringList();";
+	out() << "\n\t\t}\n\n";
+
 	out() << "\tprivate:\n";
+	if (!mBonusContextMenuFields.empty())
+		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 	if (hasSdf)
 		out() << "\t\tSdfRendererInterface *mRenderer;\n";
 	foreach (Label *label, mLabels)

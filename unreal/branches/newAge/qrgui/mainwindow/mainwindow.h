@@ -41,7 +41,6 @@ namespace qReal {
 
 		Ui::MainWindowUi ui;
 
-		void suggestToSave();
 	public slots:
 		//		void connectRepo();
 		//		void closeRepo();
@@ -59,6 +58,9 @@ namespace qReal {
 		void open();
 		void save();
 		void saveAs();
+		void saveAll();
+		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
+
 		void print();
 		void makeSvg();
 		void showGrid();
@@ -99,22 +101,28 @@ namespace qReal {
 		void showGestures();
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
-		void diagramInListDeselect();
-		void diagramInListSelected(int num);
+		void diagramInCreateListDeselect();
+		void diagramInCreateListSelected(int num);
+
+		void saveListClosed();
+		void diagramInSaveListChanged(QListWidgetItem* diagram);
 	private:
 		QCloseEvent* clEvent;
 		model::Model *mModel;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
-
 		PropertyEditorModel mPropertyModel;
-
 		PropertyEditorDelegate mDelegate;
-
 		GesturesWidget * mGesturesWidget;
 
 		void loadPlugins();
-		void chooseDiagram();
+
+		bool* saveListChecked;
+		QListWidget* createSaveListWidget();
+
+		void suggestToSave();
+		void suggestToCreateDiagram();
+
 		QStringList diagramsList;
 		void createDiagram(const QString &idString);
 

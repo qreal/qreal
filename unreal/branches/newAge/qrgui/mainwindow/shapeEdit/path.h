@@ -11,6 +11,7 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
+	virtual void drawScalingRects(QPainter* painter);
 
 private:
 	QPainterPath mPath;

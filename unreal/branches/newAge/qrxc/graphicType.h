@@ -32,7 +32,7 @@ public:
 
 protected:
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
-	
+
 	struct ContainerProperties {
 		ContainerProperties();
 
@@ -42,8 +42,9 @@ protected:
 		bool isChildrenMovable;
 		bool isMinimizingToChildren;
 		bool isClass;
+		bool isMaximizingChildren;
 	};
-	
+
 	QDomElement mLogic;
 	QDomElement mGraphics;
 	QStringList mParents;
@@ -57,6 +58,7 @@ protected:
 	QStringList mConnections;
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
+	QStringList mBonusContextMenuFields;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -76,6 +78,7 @@ private:
 	bool initLabels();
 	bool initUsages();
 	bool initParents();
+	bool initBonusContextMenuFields();
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();
@@ -83,6 +86,9 @@ private:
 	bool initPossibleEdges();
 	bool initTypeList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList) const;
+	
+	bool initFieldList(QString const &listName, QString const &listElementName
+		, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
 	virtual bool initAssociations() = 0;

@@ -20,5 +20,11 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
+	virtual void drawScalingRects(QPainter* painter);
+	virtual void setPenStyle(const QString& text);
+	virtual void setPenWidth(int width);
+	virtual void setPenColor(const QString& text);
+	virtual void setBrushStyle(const QString& text);
+	virtual void setBrushColor(const QString& text);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 };

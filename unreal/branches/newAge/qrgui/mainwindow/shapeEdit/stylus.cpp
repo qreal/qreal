@@ -8,6 +8,7 @@ Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 	mDomElementType = pictureType;
+	mBoundingRect = boundingRect();
 }
 
 void Stylus::addLine(qreal x2, qreal y2)
@@ -25,15 +26,15 @@ void Stylus::addLine(qreal x2, qreal y2)
 QRectF Stylus::searchMaxMinCoord() const
 {
 	if(!mListLine.isEmpty()) {
-		qreal maxX = (mListLine.at(0))->boundingRect().right();
-		qreal minX = (mListLine.at(0))->boundingRect().left();
-		qreal maxY = (mListLine.at(0))->boundingRect().bottom();
-		qreal minY = (mListLine.at(0))->boundingRect().top();
+		qreal maxX = (mListLine.at(0))->getBoundingRect().right();
+		qreal minX = (mListLine.at(0))->getBoundingRect().left();
+		qreal maxY = (mListLine.at(0))->getBoundingRect().bottom();
+		qreal minY = (mListLine.at(0))->getBoundingRect().top();
 		foreach (Line *line, mListLine) {
-			minX = qMin(line->boundingRect().left(), minX);
-			minY = qMin(line->boundingRect().top(), minY);
-			maxX = qMax(line->boundingRect().right(), maxX);
-			maxY = qMax(line->boundingRect().bottom(), maxY);
+			minX = qMin(line->getBoundingRect().left(), minX);
+			minY = qMin(line->getBoundingRect().top(), minY);
+			maxX = qMax(line->getBoundingRect().right(), maxX);
+			maxY = qMax(line->getBoundingRect().bottom(), maxY);
 		}
 		return QRectF(minX, minY, maxX - minX, maxY - minY);
 	}
@@ -67,7 +68,8 @@ void Stylus::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void Stylus::drawExtractionForItem(QPainter* painter)
 {
-	mRect = boundingRect();
+	mBoundingRect = boundingRect();
+	mRect = mBoundingRect;
 	painter->drawPoint(mRect.left(), mRect.top());
 	painter->drawPoint(mRect.left(), mRect.bottom());
 	painter->drawPoint(mRect.right(), mRect.top());
@@ -81,6 +83,41 @@ void Stylus::drawExtractionForItem(QPainter* painter)
 void Stylus::drawFieldForResizeItem(QPainter* painter)
 {
 	Q_UNUSED(painter);
+}
+
+void Stylus::drawScalingRects(QPainter* painter)
+{
+	Q_UNUSED(painter);
+}
+
+void Stylus::setPenStyle(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setPenStyle(text);
+}
+
+void Stylus::setPenWidth(int width)
+{
+	foreach (Line *line, mListLine)
+		line->setPenWidth(width);
+}
+
+void Stylus::setPenColor(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setPenColor(text);
+}
+
+void Stylus::setBrushStyle(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setBrushStyle(text);
+}
+
+void Stylus::setBrushColor(const QString& text)
+{
+	foreach (Line *line, mListLine)
+		line->setBrushColor(text);
 }
 
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)

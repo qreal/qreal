@@ -3,27 +3,28 @@
 #include <QtGui/QPainter>
 
 #include "item.h"
-#include "ellipse.h"
+#include "path.h"
 
-class Arch : public Item
+class Curve : public Path
 {
 public:
-	Arch(QRectF rect, int startAngle, int spanAngle, Item* parent);
-	int startAngle() const;
-	int spanAngle() const;
-	void setStartAngle(int start);
-	void setSpanAngle(int span);
-
+	Curve(QPointF const &start, QPointF const &end, QPointF const &c1);
+	void  setCXandCY(qreal x, qreal y);
+	QRectF searchMaxMinCoord() const;
 	virtual QRectF boundingRect() const;
-	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
+	QPainterPath shape() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
-	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+	virtual void drawFieldForResizeItem(QPainter* painter);
+
+	virtual void changeDragState(qreal x, qreal y);
+	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
 
 private:
-	int mStartAngle;
-	int mSpanAngle;
+	QPointF mC1;
+	QPointF mC2;
+	QPainterPath* mCurvePath;
 };

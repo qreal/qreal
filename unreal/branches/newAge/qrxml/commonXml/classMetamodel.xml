@@ -2,7 +2,7 @@
     <include>kernel_metamodel.xml</include>
     <include>../activityEditor/activity_metamodel.xml</include>
     <namespace>UML 2.1</namespace>
-    <diagram displayedName="Class Diagram" name="ClassDiagram">
+    <diagram displayedName="Class Diagram" nodeName="ClassDiagramNode" name="ClassDiagram">
       <graphicTypes>
         <import as="Comment" displayedName="Comment" name="Kernel::Comment"/>
         <import as="CommentLink" displayedName="Comment Link" name="Kernel::Comment Link"/>

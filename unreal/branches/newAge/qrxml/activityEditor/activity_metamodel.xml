@@ -3,7 +3,7 @@
     <include>../commonXml/basicbehaviors_metamodel.xml</include>
     <include>../commonXml/basicactions_metamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="Activity Diagram" name="ActivityDiagram">
+    <diagram displayedName="Activity Diagram" nodeName="ActivityDiagramNode" name="ActivityDiagram">
       <nonGraphicTypes>
         <enum displayedName="Type" name="Type">
           <value>localPrecondition</value>
@@ -277,7 +277,7 @@
             <labels>
               <label x="40" y="10" textBinded="name"/>
               <label x="40" y="20" textBinded="guard"/>
-              <!-- guard должен быть в квадратных скобках -->
+              <!-- guard пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ -->
             </labels>
           </graphics>
           <logic>

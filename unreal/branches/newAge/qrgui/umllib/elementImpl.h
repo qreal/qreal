@@ -8,8 +8,13 @@
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
+#include "../kernel/ids.h"
 
 namespace UML{
+
+	typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
+	typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
+	typedef QPair<bool, qReal::Id> PossibleEdgeType;
 
 /** @brief line port description */
 	struct StatLine
@@ -66,12 +71,13 @@ namespace UML{
 			virtual bool isChildrenMovable() = 0;
 			virtual bool isMinimizingToChildren() = 0;
 			virtual bool isClass() = 0;
+			virtual bool isMaximizingChildren() = 0;
 
 			virtual bool isPort() = 0;
 			virtual bool isHavePin() = 0;
-			virtual double getXHorBord() = 0;
-			virtual double getYHorBord() = 0;
-			virtual double getXVertBord() = 0;
-			virtual double getYVertBord() = 0;
+
+			virtual QList<double> getBorders() = 0;
+
+			virtual QStringList bonusContextMenuFields() = 0;
 	};
 }

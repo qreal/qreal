@@ -26,7 +26,6 @@ public:
 
 	void clearScene();
 
-
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
 	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
@@ -46,6 +45,10 @@ public:
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
 	UML::Element* getLastCreated();
+
+signals:
+	void elementCreated(qReal::Id const &id);
+
 protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent( QGraphicsSceneDragDropEvent *event);
@@ -68,9 +71,9 @@ private:
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
-
-        void drawGesture();
-        void deleteGesture();
+	void getObjectByGesture();
+	void drawGesture();
+	void deleteGesture();
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
@@ -88,6 +91,7 @@ private:
 							  , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 							  , const char *slot) const;
 
+	void initContextMenu(UML::Element *e, QPointF const & pos);
 	qReal::model::Model *model() const;
 
 	QPointF newElementsPosition;
@@ -118,7 +122,7 @@ private slots:
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
-        void printElementsOfRootDiagram();
-        void drawIdealGesture();
-        void initMouseMoveMan();
-    };
+	void printElementsOfRootDiagram();
+	void drawIdealGesture();
+	void initMouseMoveMan();
+};

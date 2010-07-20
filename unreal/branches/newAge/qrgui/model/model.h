@@ -49,14 +49,17 @@ namespace qReal {
 
 			QModelIndex indexById(Id const &id) const;
 
+			Id getRootDiagram();
+			void setRootIndex(QModelIndex const & index);
+
 			void open(QString const &workingDirectory);
 			void reinit();
 			void saveTo(QString const &workingDirectory);
-						Id getRootDiagram();
-						void setRootIndex(QModelIndex const & index);
 
 			bool isChanged();
-			void setIsChanged(bool bl);
+			void resetChangedDiagrams();
+			void addDiagram(Id const &id);
+			void resetChangedDiagrams(const IdList &list);
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;

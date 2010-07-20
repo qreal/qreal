@@ -6,9 +6,12 @@
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
+#include <QtCore/QList>
 
 const int drift = 15;
 const int resizeDrift = 10;
+const int scalingDrift = 10;
+const int scalingRect = 6;
 
 class Item : public QGraphicsItem
 {
@@ -18,7 +21,8 @@ public:
 		TopLeft,
 		TopRight,
 		BottomLeft,
-		BottomRight
+		BottomRight,
+		Ctrl
 	};
 	enum DomElementTypes {
 		noneType,
@@ -27,6 +31,19 @@ public:
 		portType
 	};
 
+	enum ScalingPointState {
+		noneScale,
+		topLeftX,
+		topRightX,
+		bottomLeftX,
+		bottomRightX,
+		topLeftY,
+		topRightY,
+		bottomLeftY,
+		bottomRightY
+	};
+
+	QRectF mBoundingRect;
 	Item(QGraphicsItem* parent = 0);
 	static int sign(int x);
 	static qreal length(QPointF const &point1, QPointF const &point2);
@@ -35,6 +52,7 @@ public:
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
+	virtual void drawScalingRects(QPainter* painter);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	void setPenBrushDriftRect(QPainter* painter);
 
@@ -45,11 +63,11 @@ public:
 	QBrush brush() const;
 	void setBrush(const QBrush& brush);
 	void setPen(const QPen& pen);
-	void setPenStyle(const QString& text);
-	void setPenWidth(int width);
-	void setPenColor(const QString& text);
-	void setBrushStyle(const QString& text);
-	void setBrushColor(const QString& text);
+	virtual void setPenStyle(const QString& text);
+	virtual void setPenWidth(int width);
+	virtual void setPenColor(const QString& text);
+	virtual void setBrushStyle(const QString& text);
+	virtual void setBrushColor(const QString& text);
 	void setPenBrush(const QString& penStyle, int width, const QString& penColor, const QString& brushStyle, const QString& brushColor);
 
 	void setX1andY1(qreal x, qreal y);
@@ -60,10 +78,21 @@ public:
 	void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
 	DragState getDragState() const;
+	void setListScalePoint(QList<QPair<ScalingPointState, QColor> > list);
+
+	void initListScalePoint();
+	void calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int const &correction);
+	virtual void changeScalingPointState(qreal x, qreal y);
+	ScalingPointState getScalingPointState() const;
+	QColor changeScaleColor(QPair<Item::ScalingPointState, QColor> point);
+	void setScalingPointColor();
+
 	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
 	//for save to xml
+	QString setScaleForDoc(int i, QRectF const &rect);
+	QString setSingleScaleForDoc(int i, qreal x, qreal y);
 	void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
 	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
@@ -72,8 +101,11 @@ public:
 	void readPenBrush(QDomElement const &docItem);
 
 protected:
+	QList<QPair<ScalingPointState, QColor> > mListScalePoint;
+	bool mNeedScalingRect;
 	DomElementTypes mDomElementType;
 	DragState mDragState;
+	ScalingPointState mScalingState;
 	QPen mPen;
 	QBrush mBrush;
 	QRectF mRect;

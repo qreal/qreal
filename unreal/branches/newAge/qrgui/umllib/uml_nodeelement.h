@@ -61,10 +61,9 @@ namespace UML {
 
 		bool getHavePortStatus();
 
-		double getXHor();
-		double getYHor();
-		double getXVert();
-		double getYVert();
+		QList<double> getBordersValues();
+
+		QList<PossibleEdge> getPossibleEdges();
 
 		bool isLowSide(QPointF& point, double x, double y) const;
 		bool isHighSide(QPointF& point, double x, double y) const;
@@ -101,6 +100,7 @@ namespace UML {
 		qreal recountY2(qreal myY1);
 		void makeGridMovingX(qreal myX, int koef, int indexGrid);
 		void makeGridMovingY(qreal myY, int koef, int indexGrid);
+		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		static int const objectMinSize = 10;
 		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
@@ -160,9 +160,9 @@ namespace UML {
 		DragState mDragState;
 
 		QList<EmbeddedLinker*> embeddedLinkers;
-		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+
 		QSet<PossibleEdge> possibleEdges;
-		QSet<QPair<bool,QString> > possibleEdgeTypes;
+		QSet<PossibleEdgeType> possibleEdgeTypes;
 
 		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
@@ -184,5 +184,7 @@ namespace UML {
 
 		QPointF mPos;
 		bool inHor;
+
+		QList<ContextMenuAction*> mBonusContextMenuActions;
 	};
 }

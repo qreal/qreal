@@ -16,6 +16,7 @@
 #include "linePort.h"
 #include "stylus.h"
 #include "path.h"
+#include "curve.h"
 #include "../umllib/elementTitle.h"
 
 using namespace UML;
@@ -79,34 +80,43 @@ private:
 	PointPort *mPointPort;
 	LinePort *mLinePort;
 	Stylus *mStylus;
+	Curve* mCurve;
 	Item *mGraphicsItem;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;
 	qreal mY2;
+	QPointF mC1;
 	QString mPenStyleItems;
 	int mPenWidthItems;
 	QString mPenColorItems;
 	QString mBrushStyleItems;
 	QString mBrushColorItems;
 	QList<QGraphicsItem *> mListSelectedItems;
+	QPair<bool, Item *> mNeedResize;
 
+	QList<Item *> selectedSceneItems();
 	QString convertPenToString(QPen const &pen);
 	QString convertBrushToString(QBrush const &brush);
 	void setPenBrushItems(QPen const &pen, QBrush const &brush);
 	void setEmptyPenBrushItems();
 	void setX1andY1(QGraphicsSceneMouseEvent *event);
 	void setX2andY2(QGraphicsSceneMouseEvent *event);
+	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
 	void reshapeLinePort(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
+	void reshapeCurveFirst(QGraphicsSceneMouseEvent *event);
+	void reshapeCurveSecond(QGraphicsSceneMouseEvent *event);
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
+	void reshapeItem(QGraphicsSceneMouseEvent *event, Item *item);
 
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);
 	void setZValueItems(int index);
+	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

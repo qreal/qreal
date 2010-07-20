@@ -42,6 +42,10 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
+	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
+		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
+	}
+
 	//resize(mContents);
 }
 
@@ -55,6 +59,10 @@ NodeElement::~NodeElement()
 	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
+	
+	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
+		delete action;
+	}
 }
 
 void NodeElement::setName(QString value)
@@ -185,6 +193,9 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
+	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
+		result.push_back(action);
+	}
 	return result;
 }
 
@@ -353,6 +364,12 @@ void NodeElement::makeGridMovingY(qreal myY, int koef, int indexGrid)
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
+
 	if (embeddedLinkers.isEmpty())
 		initEmbeddedLinkers();
 	moveEmbeddedLinkers();
@@ -377,8 +394,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	else
 		Element::mousePressEvent(event);
 
-	if (event->button() == Qt::RightButton)
-		event->accept();
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -386,6 +401,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
+
 	scene()->invalidate();
 	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
 		embeddedLinker->setCovered(false);
@@ -518,13 +539,14 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			{
 				if (actionItem->getHavePortStatus())
 				{
-					double xHor = actionItem->getXHor();
-					double xVert = actionItem->getXVert();
-					double yHor = actionItem->getYHor();
-					double yVert = actionItem->getYVert();
+					QList<double> list = actionItem->getBordersValues();
+					double xHor = list[0];
+					double yHor = list[1];
+					double xVert = list[2];
+					double yVert = list[3];
 					posInItem = actionItem->mapFromScene(position);
 					if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
-							|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
+						|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
 					{
 						this->setParentItem(actionItem);
 						mParentNodeElement = actionItem;
@@ -571,10 +593,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 					if (mParentNodeElement)
 					{
 						posInItem = mParentNodeElement->mapFromScene(position);
-						double xHor = mParentNodeElement->getXHor();
-						double xVert = mParentNodeElement->getXVert();
-						double yHor = mParentNodeElement->getYHor();
-						double yVert = mParentNodeElement->getYVert();
+						QList<double> list = mParentNodeElement->getBordersValues();
+						double xHor = list[0];
+						double yHor = list[1];
+						double xVert = list[2];
+						double yVert = list[3];
 						if (inHor)
 						{
 							if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
@@ -608,6 +631,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		event->accept();
+		return;
+	}
 	delUnusedLines();
 	mContents = mContents.normalized();
 	storeGeometry();
@@ -734,16 +762,17 @@ bool NodeElement::initPossibleEdges()
 		return false;
 
 	foreach(QString elementName,
-	itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
+			itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
 		int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
-			QList<PossibleEdge> list
-			= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
-			foreach(PossibleEdge pEdge, list) {
+			QList<StringPossibleEdge> list
+					= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
+			foreach(StringPossibleEdge pEdge, list) {
 				if ((pEdge.first.first == this->uuid().element())
-				|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
-					possibleEdges.insert(pEdge);
-					possibleEdgeTypes.insert(pEdge.second);
+					|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
+					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
+					possibleEdges.insert(possibleEdge);
+					possibleEdgeTypes.insert(possibleEdge.second);
 				}
 			}
 		}
@@ -755,9 +784,8 @@ bool NodeElement::initPossibleEdges()
 bool NodeElement::initEmbeddedLinkers()
 {
 	int counter = 0;
-	typedef QPair<bool,QString> Pair;
-	QSet<QString> usedEdges;
-	foreach(Pair type, possibleEdgeTypes) {
+	QSet<qReal::Id> usedEdges;
+	foreach(PossibleEdgeType type, possibleEdgeTypes) {
 		if (usedEdges.contains(type.second))
 			continue;
 		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
@@ -1192,21 +1220,25 @@ void NodeElement::sortChildren()
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
-			QRectF curChildContents = curItem->mContents;
-			curChildContents.moveTo(mElementImpl->sizeOfForestalling(), curChildY);
-			curItem->setGeometry(curChildContents);
-			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
-			curItem->storeGeometry();
-
 			if (curItem->mContents.width() > maxChildrenWidth)
 				maxChildrenWidth = curItem->mContents.width();
 		}
 	}
 
-	/*
-	QRectF newContents(pos(), maxChildrenWidth + 2 * mElementImpl->sizeOfForestalling(), curChildPosition.y() + mElementImpl->sizeOfForestalling());
-	setGeometry(newContents);
-	*/
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem) {
+			if (mElementImpl->isMaximizingChildren())
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
+							maxChildrenWidth, curItem->mContents.height()));
+			else
+				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
+							curItem->mContents.width(), curItem->mContents.height()));
+
+			curChildY += curItem->mContents.height() + mElementImpl->sizeOfChildrenForestalling();
+			curItem->storeGeometry();
+		}
+	}
 }
 
 bool NodeElement::getPortStatus()
@@ -1217,26 +1249,6 @@ bool NodeElement::getPortStatus()
 bool NodeElement::getHavePortStatus()
 {
 	return mElementImpl->isHavePin();
-}
-
-double NodeElement::getXHor()
-{
-	return mElementImpl->getXHorBord();
-}
-
-double NodeElement::getYHor()
-{
-	return mElementImpl->getYHorBord();
-}
-
-double NodeElement::getXVert()
-{
-	return mElementImpl->getXVertBord();
-}
-
-double NodeElement::getYVert()
-{
-	return mElementImpl->getYVertBord();
 }
 
 bool NodeElement::isLowSide(QPointF& point, double x, double y) const
@@ -1300,10 +1312,11 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	}
 	if (mPos == QPointF(0,0))
 		mPos = this->pos();
-	double xHor = mParentNodeElement->getXHor();
-	double xVert = mParentNodeElement->getXVert();
-	double yHor = mParentNodeElement->getYHor();
-	double yVert = mParentNodeElement->getYVert();
+	QList<double> list = mParentNodeElement->getBordersValues();
+	double xHor = list[0];
+	double yHor = list[1];
+	double xVert = list[2];
+	double yVert = list[3];
 	QPointF posi = pos();
 	if (mParentNodeElement->isLowSide(posi, xHor, yHor+5))
 	{
@@ -1365,4 +1378,25 @@ void NodeElement::updateByNewParent()
 bool NodeElement::isClass()
 {
 	return mElementImpl->isClass();
+}
+
+QList<double> NodeElement::getBordersValues()
+{
+		return mElementImpl->getBorders();
+}
+
+PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
+{
+	QString editor = uuid().editor();
+	QString diagram = uuid().diagram();
+	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
+									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
+	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
+			   qReal::Id(editor, diagram, strPossibleEdge.second.second));
+	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
+}
+
+QList<PossibleEdge> NodeElement::getPossibleEdges()
+{
+	return QList<PossibleEdge>::fromSet(possibleEdges);
 }

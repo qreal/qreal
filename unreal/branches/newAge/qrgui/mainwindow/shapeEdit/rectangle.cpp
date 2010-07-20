@@ -3,6 +3,7 @@
 Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent)
 {
+	mNeedScalingRect = true;
 	mPen.setColor(Qt::black);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
@@ -10,11 +11,12 @@ Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY1 = y1;
 	mX2 = x2;
 	mY2 = y2;
+	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 }
 
 QRectF Rectangle::boundingRect() const
 {
-	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1));
+	return QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1)).adjusted(-scalingDrift, -scalingDrift, scalingDrift, scalingDrift);
 }
 
 void Rectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

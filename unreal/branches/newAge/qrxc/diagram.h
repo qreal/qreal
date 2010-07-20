@@ -11,7 +11,7 @@ class Editor;
 class Diagram
 {
 public:
-	Diagram(QString const &name, QString const &displayedName, Editor *editor);
+	Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor);
 	~Diagram();
 	bool init(QDomElement const &diagramElement);
 	bool resolve();
@@ -19,6 +19,7 @@ public:
 	Type *findType(QString name);
 	QMap<QString, Type*> types() const;
 	QString name() const;
+	QString nodeName() const;
 	QString displayedName() const;
 
 private:
@@ -30,6 +31,7 @@ private:
 
 	QMap<QString, Type*> mTypes;
 	QString mDiagramName;
+	QString mDiagramNodeName;
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
 	QList<ImportSpecification> mImports;

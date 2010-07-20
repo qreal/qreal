@@ -131,12 +131,10 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			e->initPossibleEdges();
 
 			UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
-		
-			qDebug() << "Uuid ___" << uuid.toString();
 
 			if (nodeE && uuid.element() == "Class") {
 				needToProcessChildren = false;
-				
+
 				for (int i = 0; i < 2; i++) {
 					QString curChildElementType;
 					if (i == 0)
@@ -144,7 +142,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 					else
 						curChildElementType = "FieldsContainer";
 
-					Id newUuid = Id("Kernel_metamodel", "Kernel", 
+					Id newUuid = Id("Kernel_metamodel", "Kernel",
 							curChildElementType, QUuid::createUuid().toString());
 
 					QByteArray data;

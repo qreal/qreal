@@ -46,7 +46,11 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		QString typeName = model->getTypeName(index);
 		if ((typeName != "int") && (typeName != "string") && (typeName != ""))
 		{
-			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()));
+			QAbstractItemModel* targModel = model->getTargetModel();
+			int role = model->roleByIndex(index.row());
+			const QModelIndex &ind = model->getModelIndex();
+			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
+														  targModel, role, ind);
 			return button;
 		}
 	}

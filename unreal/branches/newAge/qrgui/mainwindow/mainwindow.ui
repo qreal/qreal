@@ -99,9 +99,17 @@
     </property>
     <addaction name="actionShow"/>
    </widget>
+   <widget class="QMenu" name="menuSvn">
+    <property name="title">
+     <string>Svn</string>
+    </property>
+    <addaction name="actionCommit"/>
+    <addaction name="actionCheckout"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
+   <addaction name="menuSvn"/>
    <addaction name="menuSettings"/>
    <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
@@ -156,7 +164,6 @@
    </attribute>
    <addaction name="actionPrint"/>
    <addaction name="actionSave"/>
-   <addaction name="actionCommit"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
    <property name="windowTitle">
@@ -544,6 +551,11 @@
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionCheckout">
+   <property name="text">
+    <string>Checkout</string>
    </property>
   </action>
  </widget>

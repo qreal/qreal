@@ -22,7 +22,6 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
-
 }
 
 void EditorViewScene::drawIdealGesture()
@@ -38,14 +37,14 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveMan()
 {
-		qReal::Id diagram = model()->getRootDiagram();
+	qReal::Id diagram = model()->getRootDiagram();
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
-		mouseMovementManager = new MouseMovementManager(elements,
-														mWindow->manager(),
-														mWindow->gesturesPainter());
-		connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
-		connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
-	}
+	mouseMovementManager = new MouseMovementManager(elements,
+													mWindow->manager(),
+													mWindow->gesturesPainter());
+	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
+	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
+}
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
@@ -176,20 +175,20 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	toDelete.append(menuSignalMapper);
 
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges())
+	foreach(UML::PossibleEdge pEdge, edge->getPossibleEdges())
 	{
-		QString target;
-		if (pEdge.first.first == node->uuid().element())
+		qReal::Id target;
+		if (pEdge.first.first == node->uuid())
 			target = pEdge.first.second;
-		else if ((pEdge.first.second == node->uuid().element()) && (!pEdge.second.first))
+		else if ((pEdge.first.second == node->uuid()) && (!pEdge.second.first))
 			target = pEdge.first.first;
 		else continue;
 
-		QAction* element = new QAction(target,createElemMenu);
+		QAction* element = new QAction(target.element(), createElemMenu);
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target);
+		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target.element());
 	}
 
 	mCreatePoint = scenePos;
@@ -302,6 +301,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
 									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+
+	emit elementCreated(id);
+
 	delete newMimeData;
 }
 
@@ -426,7 +428,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if( event->button() == Qt::LeftButton ){
 		QGraphicsItem *item = itemAt(event->scenePos());
-		qDebug() << "item: " << item;
 		UML::ElementTitle *title = dynamic_cast < UML::ElementTitle * >(item);
 
 		if (title) // check whether we accidently clicked on a title or not
@@ -441,35 +442,76 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	} else if (event->button() == Qt::RightButton) {
 		UML::Element *e = getElemAt(event->scenePos());
-		if (!e) {
-						mouseMovementManager->addPoint(event->scenePos());
-			mRightButtonPressed = true;
-			return;
-		}
-		if (!e->isSelected()) {
+		//	if (!e) {
+		mouseMovementManager->addPoint(event->scenePos());
+		mRightButtonPressed = true;
+		//		return;
+		//	}
+		if (e && !e->isSelected()) {
 			clearSelection();
 			e->setSelected(true);
 		}
 
 		// Menu belongs to scene handler because it can delete elements.
 		// We cannot allow elements to commit suicide.
-
-		QMenu menu;
-		menu.addAction(mWindow->ui.actionDeleteFromDiagram);
-		QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
-
-		if (!elementActions.isEmpty())
-			menu.addSeparator();
-
-		foreach (UML::ContextMenuAction* action, elementActions) {
-			action->setEventPos(e->mapFromScene(event->scenePos()));
-			menu.addAction(action);
-		}
-
-		createConnectionSubmenus(menu, e);
-
-		menu.exec(QCursor::pos());
+		//if (e)
+		//	initContextMenu(e, event->scenePos());
 	}
+}
+
+void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
+{
+	QMenu menu;
+	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
+	QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
+
+	if (!elementActions.isEmpty())
+		menu.addSeparator();
+
+	foreach (UML::ContextMenuAction* action, elementActions) {
+		action->setEventPos(e->mapFromScene(pos));
+		menu.addAction(action);
+	}
+	menu.addSeparator();
+
+	createConnectionSubmenus(menu, e);
+
+	menu.exec(QCursor::pos());
+
+}
+
+void EditorViewScene::getObjectByGesture()
+{
+	QPointF start = mouseMovementManager->firstPoint();
+	QPointF end = mouseMovementManager->lastPoint();
+	UML::NodeElement * parent = dynamic_cast <UML::NodeElement * > (getElemAt(start));
+	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
+	if (parent && child)
+	{
+		QList<UML::PossibleEdge> edges = parent->getPossibleEdges();
+		QList<qReal::Id> allLinks;
+		foreach (UML::PossibleEdge possibleEdge, edges)
+		{
+			if (possibleEdge.first.second.editor() == child->uuid().editor()
+				&& possibleEdge.first.second.diagram() == child->uuid().diagram()
+				&& possibleEdge.first.second.element() == child->uuid().element())
+				allLinks.push_back(possibleEdge.second.second);
+		}
+		if (!allLinks.empty())
+		{
+			Id * edgeId = createElement(allLinks.at(0).toString(), end);
+//			UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeId);
+//			edge->placeStartTo(start);
+//			edge->placeEndTo(end);
+		}
+	}
+	else
+	{
+		qReal::Id id = mouseMovementManager->getObject();
+		if (id.element() != "")
+			createElement(id.toString(), mouseMovementManager->pos());
+	}
+	deleteGesture();
 }
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
@@ -477,18 +519,20 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
-	if (event->button() == Qt::RightButton)
-	{
-				mouseMovementManager->addPoint(event->scenePos());
-		qReal::Id id = mouseMovementManager->getObject();
-		if (id.element() != "")
-						createElement(id.toString(), mouseMovementManager->pos());
-			mRightButtonPressed = false;
-			mouseMovementManager->clear();
-						deleteGesture();
-	}
 
 	UML::Element *element = getElemAt(event->scenePos());
+
+	if (event->button() == Qt::RightButton)
+	{
+		mouseMovementManager->addPoint(event->scenePos());
+		if (mouseMovementManager->wasMoving())
+			getObjectByGesture();
+		else if (element)
+			initContextMenu(element, event->scenePos());
+		mRightButtonPressed = false;
+		mouseMovementManager->clear();
+	}
+
 	if (!element)
 		return;
 
@@ -526,14 +570,14 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-		// button isn't recognized while mouse moves
-		if (mRightButtonPressed)
-				{
-						mouseMovementManager->addPoint(event->scenePos());
-						drawGesture();
-				}
-		else
-			QGraphicsScene::mouseMoveEvent(event);
+	// button isn't recognized while mouse moves
+	if (mRightButtonPressed)
+	{
+		mouseMovementManager->addPoint(event->scenePos());
+		drawGesture();
+	}
+	else
+		QGraphicsScene::mouseMoveEvent(event);
 }
 
 
@@ -591,7 +635,8 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-		connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+	connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
@@ -685,4 +730,5 @@ void EditorViewScene::deleteGesture()
 	{
 		this->removeItem(item);;
 	}
+	mGesture.clear();
 }

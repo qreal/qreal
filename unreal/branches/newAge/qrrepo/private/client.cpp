@@ -3,9 +3,9 @@
 
 #include <QtCore/QDebug>
 
+using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
-using namespace qReal;
 
 bool const failSafe = true;
 
@@ -169,15 +169,58 @@ void Client::addChildrenToRootObject()
 	}
 }
 
-void Client::save() const
+IdList Client::idsOfAllChildrenOf(Id id) const
 {
+	qDebug() << "ID: " << mObjects[id];
+
+	IdList result;
+	result.append(id);
+	foreach(Id childId,mObjects[id]->children())
+		result.append(idsOfAllChildrenOf(childId));
+	return result;
+}
+
+QList<LogicObject*> Client::allChildrenOf(Id id) const
+{
+	QList<LogicObject*> result;
+	result.append(mObjects[id]);
+	foreach(Id childId,mObjects[id]->children())
+		result.append(allChildrenOf(childId));
+	return result;
+}
+
+bool Client::exist(const Id &id) const
+{
+	return (mObjects[id] != NULL);
+}
+
+void Client::saveAll() const
+{
+	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 }
 
-void Client::saveTo(QString const &workingDir)
+void Client::save(IdList list) const
+{
+	QList<LogicObject*> toSave;
+	foreach(Id id, list)
+		toSave.append(allChildrenOf(id));
+
+	serializer.saveToDisk(toSave);
+}
+
+void Client::remove(IdList list) const
+{
+	qDebug() << "Client::remove(IdList), list.size() > 0 == " << (list.size()>0);
+	foreach(Id id, list) {
+		qDebug() << id.toString();
+		serializer.removeFromDisk(id);
+	}
+}
+
+void Client::setWorkingDir(QString const &workingDir)
 {
 	serializer.setWorkingDir(workingDir);
-	serializer.saveToDisk(mObjects.values());
 }
 
 void Client::printDebug() const

@@ -16,13 +16,17 @@ namespace qReal {
 		explicit Id(QString const &editor = "", QString  const &diagram = "",
 			QString  const &element = "", QString  const &id = "");
 		Id(Id const &base, QString const &additional);
+
+		Id editorId() const;
+		Id diagramId() const;
+
+		QUrl toUrl() const;
+		QString id() const;
 		QString editor() const;
 		QString diagram() const;
 		QString element() const;
-		QString id() const;
-		unsigned idSize() const;
-		QUrl toUrl() const;
 		QString toString() const;
+		unsigned idSize() const;
 
 		// applicable only to element's IDs. returnes type's ID
 		Id type() const;
