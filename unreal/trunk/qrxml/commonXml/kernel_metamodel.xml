@@ -123,10 +123,10 @@
                 <maximizeChildren/>
               </properties>
             </container>
-            <bonusContexMenuFields>
+            <bonusContextMenuFields>
               <field name="Add method"/>
               <field name="Add field"/>
-            </bonusContexMenuFields>
+            </bonusContextMenuFields>
           </logic>
         </node>
 
@@ -152,9 +152,9 @@
                 <maximizeChildren/>
               </properties>
             </container>
-            <bonusContexMenuFields>
+            <bonusContextMenuFields>
               <field name="Add method"/>
-            </bonusContexMenuFields>
+            </bonusContextMenuFields>
           </logic>
         </node>
 
@@ -170,9 +170,9 @@
             <generalizations>
               <parent parentName="Kernel::KernelElement"/>
             </generalizations>
-            <bonusContexMenuFields>
+            <bonusContextMenuFields>
               <field name="Add method"/>
-            </bonusContexMenuFields>
+            </bonusContextMenuFields>
           </logic>
         </node>
 
@@ -198,9 +198,9 @@
                 <banChildrenMove/>
               </properties>
             </container>
-            <bonusContexMenuFields>
+            <bonusContextMenuFields>
               <field name="Add field"/>
-            </bonusContexMenuFields>
+            </bonusContextMenuFields>
           </logic>
         </node>
 

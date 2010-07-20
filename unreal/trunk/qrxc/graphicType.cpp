@@ -175,7 +175,7 @@ bool GraphicType::initUsages()
 
 bool GraphicType::initBonusContextMenuFields()
 {
-	return initFieldList("bonusContexMenuFields", "field", mBonusContextMenuFields, "name", false);
+	return initFieldList("bonusContextMenuFields", "field", mBonusContextMenuFields, "name", false);
 }
 
 bool GraphicType::initContainerProperties()
