@@ -63,6 +63,8 @@ namespace UML {
 
 		QList<double> getBordersValues();
 
+		QList<PossibleEdge> getPossibleEdges();
+
 		bool isLowSide(QPointF& point, double x, double y) const;
 		bool isHighSide(QPointF& point, double x, double y) const;
 		bool isLeftSide(QPointF& point, double x, double y) const;

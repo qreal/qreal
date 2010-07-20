@@ -1369,3 +1369,8 @@ PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEd
 			   qReal::Id(editor, diagram, strPossibleEdge.second.second));
 	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
 }
+
+QList<PossibleEdge> NodeElement::getPossibleEdges()
+{
+	return QList<PossibleEdge>::fromSet(possibleEdges);
+}

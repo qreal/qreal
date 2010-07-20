@@ -481,11 +481,23 @@ void EditorViewScene::getObjectByGesture()
 {
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
-	UML::Element * startElement = getElemAt(start);
-	UML::Element * endElement = getElemAt(end);
-	if (startElement && endElement)
+	UML::NodeElement * parent = dynamic_cast <UML::NodeElement * > (getElemAt(start));
+	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
+	if (parent && child)
 	{
-		//TODO:: links
+		QList<UML::PossibleEdge> edges = parent->getPossibleEdges();
+		QList<qReal::Id> allLinks;
+		foreach (UML::PossibleEdge possibleEdge, edges)
+		{
+			if (possibleEdge.first.second.editor() == child->uuid().editor()
+				&& possibleEdge.first.second.diagram() == child->uuid().diagram()
+				&& possibleEdge.first.second.element() == child->uuid().element())
+				allLinks.push_back(possibleEdge.second.second);
+		}
+		if (!allLinks.empty())
+		{
+			createElement(allLinks.at(0).toString(), end);
+		}
 	}
 	else
 	{
@@ -493,7 +505,6 @@ void EditorViewScene::getObjectByGesture()
 		if (id.element() != "")
 			createElement(id.toString(), mouseMovementManager->pos());
 	}
-
 	deleteGesture();
 }
 
