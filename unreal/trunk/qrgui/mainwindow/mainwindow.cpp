@@ -407,6 +407,7 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
+	
 	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
 	{
 		qDebug() << "Deleting object, uuid: " << elem->uuid().toString();
