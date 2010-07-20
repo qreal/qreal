@@ -902,8 +902,10 @@ void MainWindow::suggestToCreateDiagram()
 
 	vLayout.addWidget(&label);
 	vLayout.addWidget(&diagramsListWidget);
-	hLayout.addWidget(&cancelButton);
+
 	hLayout.addWidget(&okButton);
+	hLayout.addWidget(&cancelButton);
+
 	vLayout.addLayout(&hLayout);
 
 	dialog.exec();

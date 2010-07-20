@@ -75,3 +75,8 @@ void PreferencesDialog::on_applyButton_clicked()
 {
 	applyChanges();
 }
+
+void PreferencesDialog::on_cancelButton_clicked()
+{
+	close();
+}
