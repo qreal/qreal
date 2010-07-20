@@ -48,7 +48,7 @@ MainWindow::MainWindow()
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
-			new QSplashScreen(QPixmap(":/icons/kroki2.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
+			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
 	progress->move(20,270);
@@ -407,7 +407,7 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
-	
+
 	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
 	{
 		qDebug() << "Deleting object, uuid: " << elem->uuid().toString();
