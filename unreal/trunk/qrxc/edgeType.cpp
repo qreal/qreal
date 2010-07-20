@@ -108,8 +108,19 @@ void EdgeType::generateCode(OutFile &out)
 	QString const className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
-		<< "\tpublic:\n"
-		<< "\t\tvoid init(QRectF &, QList<QPointF> &, QList<StatLine> &,\n"
+		<< "\tpublic:\n";
+		
+	if (!mBonusContextMenuFields.empty()) {
+		out() << "\t\t" << className << "() {\n";
+		out() << "\t\t\tmBonusContextMenuFields";
+		foreach (QString elem, mBonusContextMenuFields) {
+			out() << " << " << "\"" << elem << "\"";
+		}
+		out() << ";\n";
+		out() << "\t\t}\n\n";
+	}
+
+	out() << "\t\tvoid init(QRectF &, QList<QPointF> &, QList<StatLine> &,\n"
 		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
 		<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *) {}\n\n"
 		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
@@ -145,6 +156,14 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
+	
+	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
+	if (!mBonusContextMenuFields.empty())
+		out() << "mBonusContextMenuFields;";
+	else
+		out() << "QStringList();";
+	out() << "\n\t\t}\n\n";
+
 	out() << "\tprotected:\n"
 		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
@@ -163,6 +182,8 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 	out() << "\tprivate:\n";
+	if (!mBonusContextMenuFields.empty())
+		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForFields(out);

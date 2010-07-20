@@ -205,8 +205,19 @@ void NodeType::generateCode(OutFile &out)
 	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
-		<< "\tpublic:\n"
-		<< "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
+		<< "\tpublic:\n";
+	
+	if (!mBonusContextMenuFields.empty()) {
+		out() << "\t\t" << className << "()\n\t\t{\n";
+		out() << "\t\t\tmBonusContextMenuFields";
+			foreach (QString elem, mBonusContextMenuFields) {
+				out() << " << " << "\"" << elem << "\"";
+			}
+		out() << ";\n";
+		out() << "\t\t}\n\n";
+	}
+
+	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
 		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
@@ -322,7 +333,16 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t\treturn list;\n"
 		<< "\t\t}\n\n";
 
+	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
+	if (!mBonusContextMenuFields.empty())
+		out() << "mBonusContextMenuFields;";
+	else
+		out() << "QStringList();";
+	out() << "\n\t\t}\n\n";
+
 	out() << "\tprivate:\n";
+	if (!mBonusContextMenuFields.empty())
+		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 	if (hasSdf)
 		out() << "\t\tSdfRendererInterface *mRenderer;\n";
 	foreach (Label *label, mLabels)

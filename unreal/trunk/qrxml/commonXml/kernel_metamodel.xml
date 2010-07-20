@@ -117,16 +117,16 @@
               <contains type="FieldsContainer"/>
               <properties>
                 <sortContainer/>
-<!--
-                <forestalling size="25"/>
-                <childrenForestalling size="5"/>
--->
                 <minimizeToChildren/>
                 <banChildrenMove/>
                 <itIsClass/>
                 <maximizeChildren/>
               </properties>
             </container>
+            <bonusContexMenuFields>
+              <field name="Add method"/>
+              <field name="Add field"/>
+            </bonusContexMenuFields>
           </logic>
         </node>
 
@@ -152,6 +152,9 @@
                 <maximizeChildren/>
               </properties>
             </container>
+            <bonusContexMenuFields>
+              <field name="Add method"/>
+            </bonusContexMenuFields>
           </logic>
         </node>
 
@@ -167,6 +170,9 @@
             <generalizations>
               <parent parentName="Kernel::KernelElement"/>
             </generalizations>
+            <bonusContexMenuFields>
+              <field name="Add method"/>
+            </bonusContexMenuFields>
           </logic>
         </node>
 
@@ -192,6 +198,9 @@
                 <banChildrenMove/>
               </properties>
             </container>
+            <bonusContexMenuFields>
+              <field name="Add field"/>
+            </bonusContexMenuFields>
           </logic>
         </node>
 
@@ -207,6 +216,9 @@
             <generalizations>
               <parent parentName="Kernel::KernelElement"/>
             </generalizations>
+            <bonusContextMenuFields>
+              <field name="Add field"/>
+            </bonusContextMenuFields>
           </logic>
         </node>
 

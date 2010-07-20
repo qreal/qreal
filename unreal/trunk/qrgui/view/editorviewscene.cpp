@@ -470,6 +470,7 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 		action->setEventPos(e->mapFromScene(pos));
 		menu.addAction(action);
 	}
+	menu.addSeparator();
 
 	createConnectionSubmenus(menu, e);
 

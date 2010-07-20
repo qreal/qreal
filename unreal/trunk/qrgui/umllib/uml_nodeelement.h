@@ -184,5 +184,7 @@ namespace UML {
 
 		QPointF mPos;
 		bool inHor;
+
+		QList<ContextMenuAction*> mBonusContextMenuActions;
 	};
 }

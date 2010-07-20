@@ -58,6 +58,7 @@ protected:
 	QStringList mConnections;
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
+	QStringList mBonusContextMenuFields;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -77,6 +78,7 @@ private:
 	bool initLabels();
 	bool initUsages();
 	bool initParents();
+	bool initBonusContextMenuFields();
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();
@@ -84,6 +86,9 @@ private:
 	bool initPossibleEdges();
 	bool initTypeList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList) const;
+	
+	bool initFieldList(QString const &listName, QString const &listElementName
+		, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
 	virtual bool initAssociations() = 0;

@@ -77,5 +77,7 @@ namespace UML{
 			virtual bool isHavePin() = 0;
 
 			virtual QList<double> getBorders() = 0;
+
+			virtual QStringList bonusContextMenuFields() = 0;
 	};
 }

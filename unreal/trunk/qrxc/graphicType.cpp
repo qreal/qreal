@@ -64,7 +64,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initContainers() && initAssociations()
 			&& initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
-			&& initContainerProperties();
+			&& initContainerProperties() && initBonusContextMenuFields();
 	}
 	else
 		return false;
@@ -120,8 +120,8 @@ bool GraphicType::initProperties()
 	return true;
 }
 
-bool GraphicType::initTypeList(QString const &listName, QString const &listElementName
-	, QStringList &resultingList) const
+bool GraphicType::initFieldList(QString const &listName, QString const &listElementName
+	, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const
 {
 	QDomElement containerElement = mLogic.firstChildElement(listName);
 	if (containerElement.isNull())
@@ -131,21 +131,31 @@ bool GraphicType::initTypeList(QString const &listName, QString const &listEleme
 		!childElement.isNull();
 		childElement = childElement.nextSiblingElement(listElementName))
 	{
-		QString typeName = NameNormalizer::normalize(childElement.attribute("type"));
+		QString typeName;
+		if (isNeedToNormalizeAtt)
+			typeName = NameNormalizer::normalize(childElement.attribute(fieldName));
+		else
+			typeName = childElement.attribute(fieldName);
 
 		if (typeName == "") {
-			qDebug() << "Error: anonymous type in the " << listName << " list, in " << qualifiedName();
+			qDebug() << "Error: anonymous " << fieldName << " in the " << listName << " list, in " << qualifiedName();
 			return false;
 		}
 
 		if (!resultingList.contains(typeName))
 			resultingList.append(typeName);
 		else {
-			qDebug() << "ERROR: type in the " << listName << " list in " << qualifiedName() << "duplicated";
+			qDebug() << "ERROR: " << fieldName << " in the " << listName << " list in " << qualifiedName() << "duplicated";
 			return false;
 		}
 	}
 	return true;
+}
+
+bool GraphicType::initTypeList(QString const &listName, QString const &listElementName
+	, QStringList &resultingList) const
+{
+	return initFieldList(listName, listElementName, resultingList, "type", true);
 }
 
 bool GraphicType::initContainers()
@@ -161,6 +171,11 @@ bool GraphicType::initConnections()
 bool GraphicType::initUsages()
 {
 	return initTypeList("usages", "usage", mUsages);
+}
+
+bool GraphicType::initBonusContextMenuFields()
+{
+	return initFieldList("bonusContexMenuFields", "field", mBonusContextMenuFields, "name", false);
 }
 
 bool GraphicType::initContainerProperties()

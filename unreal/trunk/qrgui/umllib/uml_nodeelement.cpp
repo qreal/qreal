@@ -42,6 +42,10 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
+	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
+		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
+	}
+
 	//resize(mContents);
 }
 
@@ -55,6 +59,10 @@ NodeElement::~NodeElement()
 	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
+	
+	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
+		delete action;
+	}
 }
 
 void NodeElement::setName(QString value)
@@ -185,6 +193,9 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 {
 	QList<ContextMenuAction*> result;
 	result.push_back(&mSwitchGridAction);
+	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
+		result.push_back(action);
+	}
 	return result;
 }
 
