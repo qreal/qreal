@@ -8,6 +8,9 @@ DEPENDPATH += . \
 INCLUDEPATH += . \
     ../qrgui/kernel
 
+CONFIG += rpath_libdirs
+QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
+
 # Input
 HEADERS += metaCompiler.h \
     ../../trunk/qrgui/kernel/definitions.h \
