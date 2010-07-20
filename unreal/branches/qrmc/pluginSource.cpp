@@ -4,6 +4,8 @@
 #include "pluginSource.h"
 #include "defs.h"
 
+using namespace qReal;
+
 PluginSource::PluginSource(QString const &name) : mName(name)
 {
 }
@@ -16,32 +18,88 @@ void PluginSource::init(qrRepo::RepoApi &repo, qReal::Id metamodelId)
 {
 	mApi = &repo; // will need it on generation stage
 	qDebug() << "init id" << metamodelId.toString();
-	foreach(qReal::Id diagramId, repo.children(metamodelId)) {
-		initDiagram(repo, diagramId);
+	foreach(qReal::Id diagramId, mApi->children(metamodelId)) {
+		initDiagram(diagramId);
 	}
-	qDebug() << "diagrams: " << mDiagrams.size();
+	qDebug() << "  diagrams: " << mDiagrams.size();
+	resolveImports();
+	updateIsGraphicalProperty();
 }
 
-void PluginSource::initDiagram(qrRepo::RepoApi &repo, qReal::Id diagramId)
+void PluginSource::initDiagram(qReal::Id diagramId)
 {
 	Diagram diagram;
-	diagram.name = repo.name(diagramId);
-	diagram.displayedName = repo.property(diagramId, "displayedName").toString();
+	diagram.name = mApi->name(diagramId);
+	diagram.displayedName = mApi->property(diagramId, "displayedName").toString();
 	diagram.id = diagramId;
 
-	foreach(qReal::Id elementId, repo.children(diagramId)) {
+	foreach(qReal::Id elementId, mApi->children(diagramId)) {
 		Element element;
-		element.name = repo.name(elementId);
-		element.displayedName = repo.stringProperty(elementId, "displayedName");
+		if (elementId.element() == importType)
+			element.name = mApi->stringProperty(elementId, "as");
+		else
+			element.name = mApi->name(elementId);
+		element.displayedName = mApi->stringProperty(elementId, "displayedName");
 		element.id = elementId;
+		element.isGraphicalObject = false;
 		if (element.displayedName.isEmpty()) // in case of incorrect metamodels
 			element.displayedName = element.name;
-		qDebug() << element.name << elementId.toString() << elementId.element();
+//		qDebug() << element.name << elementId.toString() << elementId.element();
 		diagram.elements << element;
 	}
 
 	mDiagrams << diagram;
 
+}
+
+void PluginSource::resolveImports()
+{
+	for (int i = 0; i < mDiagrams.size(); ++i)	{
+		for (int j = 0; j < mDiagrams[i].elements.size(); ++j) {
+			Element el = mDiagrams[i].elements[j];
+			if (el.id.element() != importType)
+				continue;
+
+			Id sourceElement = findElement(mApi->stringProperty(el.id, "Imported from"), mApi->name(el.id));
+//			qDebug() << "found source element" << mApi->name(sourceElement) << sourceElement.toString();
+//			qDebug() << "++ name " << el.name << " old id: " << el.id.toString();
+			mDiagrams[i].elements[j].id = sourceElement;
+			el.id = sourceElement;
+//			qDebug() << "++ new id: " << el.id.toString();
+		}
+	}
+
+}
+
+qReal::Id PluginSource::findElement(QString diagram, QString name)
+{
+//	qDebug() << "searching for " << diagram << "::" << name;
+	IdList diagramNodes = mApi->elementsByType("MetaEditorDiagramNode");
+	foreach(Id id, diagramNodes) {
+		if (mApi->name(id) == diagram) {// found source diagram
+			IdList children = mApi->children(id);
+			foreach(Id child, children) {
+//				qDebug() << name << mApi->name(child);
+				if (mApi->name(child) == name)
+					return child;
+			}
+		}
+	}
+
+	qDebug() << "could not resolve imported element" << name << "from " << diagram;
+	return ROOT_ID;
+}
+
+void PluginSource::updateIsGraphicalProperty()
+{
+	for (int i = 0; i < mDiagrams.size(); ++i)	{
+		for (int j = 0; j < mDiagrams[i].elements.size(); ++j) {
+			Element el = mDiagrams[i].elements[j];
+			mDiagrams[i].elements[j].isGraphicalObject = ((el.id.element() == "MetaEntityEdge")
+						 || (mApi->hasProperty(el.id, setShapeProperty) && !(mApi->stringProperty(el.id, setShapeProperty).isEmpty())));
+
+		}
+	}
 }
 
 bool PluginSource::generate(QString const &sourceTemplate, QMap<QString, QString> const &utils)
@@ -99,22 +157,14 @@ void PluginSource::generateElementsMap()
 	QString initElementsMapBody = "";
 	QString const line = mUtilsTemplate[initElementNameMapLineTag];
 	foreach(Diagram diagram, mDiagrams)	{
-		foreach(Element el, diagram.elements) {
-			// here we need only edges and nodes that have graphical representation
+		foreach(Element el, diagram.elements) {		// here we need only edges and nodes that have graphical representation
 
-			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge") /*&& (el.id.element() != "Importation")*/))
-				// we acutally do need some of these "Importation"s
-				// TODO: request needed diagrams and resolve all imports as qrxc does
+			// imports have already been resolved into nodes and edges
+			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge")))
 				continue;
 
-//			qDebug() << el.id.element() << "has set shape prop: " << mApi->hasProperty(el.id, "set Shape");
-
-//			if (el.id.element() == "MetaEntityNode") {
-//				if (mApi->stringProperty(el.id, "set Shape").isEmpty())
-//					continue;
-//				else
-//					qDebug() << el.displayedName << el.name << !mApi->stringProperty(el.id, "set Shape").isEmpty();
-//			}
+			if (!el.isGraphicalObject)
+				continue;
 
 			QString newline = line;
 			initElementsMapBody += newline.replace(elementNameTag, el.name)
@@ -172,8 +222,12 @@ void PluginSource::generateGetGraphicalObject()
 	foreach(Diagram diagram, mDiagrams)	{
 		foreach(Element el, diagram.elements) {
 
-			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge") /*&& (el.id.element() != "Importation")*/))
+			// imports have already been resolved into nodes and edges
+			if (((el.id.element() != "MetaEntityNode") && (el.id.element() != "MetaEntityEdge")))
 				continue;
+
+			if (!el.isGraphicalObject)
+					continue;
 
 			QString newline = line;
 			if (isFirstLine)

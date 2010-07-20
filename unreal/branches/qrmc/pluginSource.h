@@ -3,6 +3,11 @@
 #include <QtCore/QString>
 #include "../../trunk/qrrepo/repoApi.h"
 
+QString const importType = "MetaEntityImport";
+QString const metamodelDiagramName = "MetamodelDiagram";
+
+QString const setShapeProperty = "set Shape";
+
 class PluginSource
 {
 public:
@@ -17,19 +22,25 @@ public:
 	void generatePropertyTypesMap();
 	void generateGetGraphicalObject();
 
+	void resolveImports();
+	void updateIsGraphicalProperty();
+
+	qReal::Id findElement(QString diagram, QString name);
+
 private:
 
 	struct Element { // this is bullshit. replace with classes?
 		QString name;
 		QString displayedName;
 		qReal::Id id;
+		bool isGraphicalObject;
 	};
 
 	struct Diagram : public Element {
 		QList< Element > elements;
 	};
 
-	void initDiagram(qrRepo::RepoApi &repo, qReal::Id diagramId);
+	void initDiagram(qReal::Id diagramId);
 
 	qrRepo::RepoApi *mApi;
 	QString mName;

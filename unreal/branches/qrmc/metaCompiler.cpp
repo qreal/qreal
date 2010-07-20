@@ -16,6 +16,7 @@ MetaCompiler::~MetaCompiler()
 {
 	foreach(Plugin* plugin, mPlugins)
 		delete plugin;
+
 }
 
 bool MetaCompiler::compile()
