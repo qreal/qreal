@@ -801,7 +801,6 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		EditorView *view = new EditorView();
 		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
 		ui.tabs->setCurrentWidget(view);
-
 		//		if (!index.isValid())
 		//			index = mModel->rootIndex();
 		initCurrentTab(index);
@@ -812,11 +811,20 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (settings.value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
+		bool diagram = false;
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
-			//this condition is not good because of strings comparing
-			if ((index.model()->itemData(index).value(0).value<QString>()).contains(name.trimmed())) {
+			//this conditions are not good because of strings comparing
+			QString tabName = name.trimmed().remove(" ");
+			QString diagramName = mModel->idByIndex(index).diagram().remove("_");
+			if (diagramName.contains(tabName)) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
+				diagram = true;
 			}
+			if (diagram)
+				continue;
+			QString editorName = mModel->idByIndex(index).diagram().remove("_");
+			if (editorName.contains(tabName))
+				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
 		}
 	}
