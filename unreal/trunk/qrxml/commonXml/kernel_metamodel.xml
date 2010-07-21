@@ -1,4 +1,5 @@
 <metamodel xmlns="http://schema.real.com/schema/">
+    <listener class="kernelEditor::ContextMenuActionTrigger" file="contextMenuActionTrigger"/>
     <namespace>UML 2.1</namespace>
     <diagram name="Kernel" nodeName="Diagram">
       <nonGraphicTypes>

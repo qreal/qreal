@@ -13,6 +13,7 @@ namespace qReal {
 		ListenerManager(QList<Listener *> const &listeners, model::ModelAssistApi *api);
 	signals:
 		void objectCreated(qReal::Id const &id);
+		void contextMenuActionTriggered(QString const &name);
 	private:
 		ListenerManager(ListenerManager const &); // Nachahmung ist verboten!
 		ListenerManager &operator =(ListenerManager const &); // Assignment is also forbidden

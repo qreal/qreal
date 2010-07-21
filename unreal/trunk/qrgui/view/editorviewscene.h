@@ -2,6 +2,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
+#include <QSignalMapper>
 #include "../kernel/roles.h"
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
@@ -23,6 +24,7 @@ class EditorViewScene : public QGraphicsScene
 
 public:
 	explicit EditorViewScene(QObject *parent = 0);
+	~EditorViewScene();
 
 	void clearScene();
 
@@ -110,6 +112,8 @@ private:
 	QPointF mCreatePoint;
 
 		MouseMovementManager * mouseMovementManager;
+
+	QSignalMapper *mActionSignalMapper;
 
 	friend class qReal::EditorViewMViface;
 

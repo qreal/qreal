@@ -46,8 +46,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
 	}
-
-	//resize(mContents);
 }
 
 NodeElement::~NodeElement()
@@ -155,8 +153,8 @@ void NodeElement::resize(QRectF newContents)
 	}
 	setPos(pos() + childrenMoving);
 	moveChildren(-childrenMoving);
-	newContents.setTopLeft(childrenMoving);
-	newContents.moveTo(0, 0);
+	//newContents.setTopLeft(childrenMoving);
+	//newContents.moveTo(0, 0);
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
@@ -164,7 +162,7 @@ void NodeElement::resize(QRectF newContents)
 			continue;
 
 		QRectF curChildItemBoundingRect = curItem->mContents;
-		curChildItemBoundingRect.translate(curItem->pos());
+		curChildItemBoundingRect.translate(curItem->scenePos() - scenePos());
 
 		if (curChildItemBoundingRect.left() < newContents.left() + mElementImpl->sizeOfForestalling())
 			newContents.setLeft(curChildItemBoundingRect.left() - mElementImpl->sizeOfForestalling());
@@ -1376,6 +1374,16 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 	if (mIsFolded && isItemAddedOrDeleted && (item != 0)) {
 		changeFoldState();
 	}
+
+	/*
+	QRectF newContents = mContents;
+	//newContents.moveTo(pos());
+	QRectF itemContents = item->mContents;
+	itemContents.moveTo(item->pos() - pos());
+
+	newContents = newContents.united(itemContents);
+	resize(mContents.unite(newContents));
+	*/
 	resize(mContents);
 }
 

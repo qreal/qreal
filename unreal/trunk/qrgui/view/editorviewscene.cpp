@@ -22,6 +22,13 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
+
+	mActionSignalMapper = new QSignalMapper(this);
+}
+
+EditorViewScene::~EditorViewScene()
+{
+	delete mActionSignalMapper;
 }
 
 void EditorViewScene::drawIdealGesture()
@@ -471,13 +478,15 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 	foreach (UML::ContextMenuAction* action, elementActions) {
 		action->setEventPos(e->mapFromScene(pos));
 		menu.addAction(action);
+
+		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()));
+		mActionSignalMapper->setMapping(action, action->text());
 	}
 	menu.addSeparator();
 
 	createConnectionSubmenus(menu, e);
 
 	menu.exec(QCursor::pos());
-
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -658,6 +667,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
 	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
+	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
