@@ -550,11 +550,9 @@ void EditorViewScene::createEdge(const QString & idStr)
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
-
-	UML::Element *element = getElemAt(event->scenePos());
+	UML::Element* element = getElemAt(event->scenePos());
 
 	if (event->button() == Qt::RightButton)
 	{
@@ -565,18 +563,14 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			initContextMenu(element, event->scenePos());
 		mRightButtonPressed = false;
 		mouseMovementManager->clear();
+		return;
 	}
 
 	if (!element)
 		return;
-
-	qDebug() << "element" << element->uuid().toString();
-	UML::Element *parent = getElemByModelIndex(element->index().parent());
-
-
-	if (parent){
-		qDebug() << "parent: " << parent->uuid().toString();
-
+	UML::Element *parent;
+	parent = getElemByModelIndex(element->index().parent());
+	if (parent) {
 		if (!canBeContainedBy(parent->uuid(), element->uuid())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// fail, reparenting the element as it was before
@@ -585,17 +579,10 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 				if (elem && elem->uuid() == element->uuid()) {
 					QModelIndex ind = mv_iface->rootIndex();
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
-					qDebug() << "prev parent:  " << mPrevParent;
-
 					if (prevParent)
 						ind = prevParent->index();
-
 					if (model())
 						model()->changeParent(element->index(), ind, mPrevPosition);
-
-					//					elem->setParentItem(mPrevParent);
-					//					elem->setPos(mPrevPosition);
-					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
 				}
 			}
 		}
@@ -654,7 +641,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 UML::Element* EditorViewScene::getElemAt(QPointF const &position)
 {
 	foreach (QGraphicsItem *item, items(position)) {
-		UML::Element *e = dynamic_cast<UML::Element *>(item);
+		UML::Element* e = dynamic_cast<UML::Element*>(item);
 		if (e)
 			return e;
 	}

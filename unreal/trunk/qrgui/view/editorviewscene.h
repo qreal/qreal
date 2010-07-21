@@ -94,7 +94,7 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::model::Model *model() const;
+	qReal::model::Model* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsLineItem*> mGesture;
