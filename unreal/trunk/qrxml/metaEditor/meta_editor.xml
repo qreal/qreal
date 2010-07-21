@@ -149,14 +149,14 @@
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
-			  <property type="bool" name="is Pin">
+			  <property type="bool" name="is pin">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="Shape"/>
-			  <property type="bool" name="is Action">
+			  <property type="string" name="shape"/>
+			  <property type="bool" name="is action">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="Path"/>
+			  <property type="string" name="path"/>
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
@@ -275,11 +275,11 @@
 		</node>
 		<node name="MetaEntity Attribute" displayedName="Property">
 		  <graphics>
-			<picture sizex="140" sizey="40">
-			  <line x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="140" sizey="30">
+			  <line x1="0" y1="0" x2="0" y2="30"/>
 			  <line x1="0" y1="0" x2="140" y2="0"/>
-			  <line x1="0" y1="40" x2="140" y2="40"/>
-			  <line x1="140" y1="0" x2="140" y2="40"/>
+			  <line x1="0" y1="30" x2="140" y2="30"/>
+			  <line x1="140" y1="0" x2="140" y2="30"/>
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Property</text>
 			</picture>
 			<labels>
@@ -341,11 +341,11 @@
 		</node>
 				<node name="MetaEntityParent" displayedName="Parent">
 		  <graphics>
-			<picture sizex="100" sizey="40">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="100" sizey="50">
+			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="50"/>
 			  <line stroke-style="dot" x1="0" y1="0" x2="100" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="40" x2="100" y2="40"/>
-			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="40"/>
+			  <line stroke-style="dot" x1="0" y1="50" x2="100" y2="50"/>
+			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="50"/>
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Parent</text>
 			</picture>
 			<labels>
@@ -372,15 +372,15 @@
 		</node>
 		<node name="MetaEntityValue" displayedName="Value">
 		  <graphics>
-			<picture sizex="140" sizey="40">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="140" sizey="30">
+			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="30"/>
 			  <line stroke-style="dot" x1="0" y1="0" x2="140" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="40" x2="140" y2="40"/>
-			  <line stroke-style="dot" x1="140" y1="0" x2="140" y2="40"/>
-			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>
+			  <line stroke-style="dot" x1="0" y1="30" x2="140" y2="30"/>
+			  <line stroke-style="dot" x1="140" y1="0" x2="140" y2="30"/>
+			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>-->
 			</picture>
 			<labels>
-			  <label x="10" y="15" textBinded="valueName" center="true"/>
+			  <label x="10" y="10" textBinded="valueName" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -496,7 +496,7 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="string" name="Type"/>
+			  <property type="string" name="type"/>
 			</properties>
 			<containers/>
 		  </logic>
@@ -547,11 +547,6 @@
 		  </logic>
 		</node>
 		<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container">
-			<!--<picture sizex="40" sizey="40">
-			  <rectangle fill="#ffffff" stroke-style="solid" stroke="#00ff00" y1="0" x1="0" y2="40" stroke-width="1" x2="40" fill-style="solid"/>
-			  <rectangle fill="#00ff00" stroke-style="solid" stroke="#00ff00" y1="5" x1="5" y2="35" stroke-width="1" x2="35" fill-style="solid"/>			</picture>
-			<labels/>
-			<ports/>-->
 			<graphics>
 			<picture sizex="50" sizey="50">
 			<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>

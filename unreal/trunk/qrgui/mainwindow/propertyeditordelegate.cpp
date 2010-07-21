@@ -25,7 +25,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 {
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
 	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
-	if (propertyName == "Shape") {
+	if (propertyName == "shape") {
 		QString propertyValue = model->data(index.sibling(index.row(), index.column()), Qt::DisplayRole).toString();
 		QPersistentModelIndex const myIndex = model->getModelIndex();
 		int role = model->roleByIndex(index.row());

@@ -95,6 +95,7 @@ void MetaGenerator::createDiagrams(QDomElement &parent, const Id &id)
 			parent.appendChild(diagram);
 
 			serializeObjects(diagram, typeDiagram);
+			mElements.clear();
 		}
 	}
 }
@@ -138,7 +139,7 @@ void MetaGenerator::createImport(QDomElement &parent, const Id &id)
 	if ((mApi.stringProperty(id, "Imported from") != "") && (mApi.name(id) != ""))
 		ensureCorrectness(id, import, "name", mApi.stringProperty(id, "Imported from") + "::" + mApi.name(id));
 	else {
-		mErrorReporter.addWarning(QString ("not filled %1\n").arg("name/imported from"), id);
+		mErrorReporter.addWarning(QString ("not filled name/imported from"), id);
 		import.setAttribute("name", "");
 	}
 	ensureCorrectness(id, import, "displayedName", mApi.stringProperty(id, "displayedName"));
@@ -152,12 +153,12 @@ void MetaGenerator::createNode(QDomElement &parent, Id const &id)
 	ensureCorrectness(id, node, "name", mApi.name(id));
 	QString name = mApi.name(id);
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
-	if (mApi.stringProperty(id, "Path") != "")
-		node.setAttribute("path", mApi.stringProperty(id, "Path"));
+	if (mApi.stringProperty(id, "path") != "")
+		node.setAttribute("path", mApi.stringProperty(id, "path"));
 	parent.appendChild(node);
 
 	QDomDocument graphics;
-	graphics.setContent(mApi.stringProperty(id, "Shape"));
+	graphics.setContent(mApi.stringProperty(id, "shape"));
 	node.appendChild(graphics);
 
 	QDomElement logic = mDocument.createElement("logic");
@@ -361,12 +362,12 @@ void MetaGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 
 void MetaGenerator::setPin(QDomElement &parent, const Id &id)
 {
-	setStatusElement(parent, id, "pin", "is Pin");
+	setStatusElement(parent, id, "pin", "is pin");
 }
 
 void MetaGenerator::setAction(QDomElement &parent, const Id &id)
 {
-	setStatusElement(parent, id, "action", "is Action");
+	setStatusElement(parent, id, "action", "is action");
 }
 
 void MetaGenerator::setStatusElement(QDomElement &parent, const Id &id, const QString &tagName, const QString &propertyName)
@@ -383,7 +384,7 @@ void MetaGenerator::setContainer(QDomElement &parent, QString name, const Id &id
 	parent.appendChild(container);
 
 	foreach (Id const idChild, mElements) {
-		if ((mApi.stringProperty(idChild, "container")) == name) {
+		if (mApi.hasProperty(idChild, "container") && mApi.stringProperty(idChild, "container") == name) {
 			QDomElement contains = mDocument.createElement("contains");
 			ensureCorrectness(idChild, contains, "type", mDiagramName + "::" + mApi.name(idChild));
 			container.appendChild(contains);
@@ -441,7 +442,7 @@ void MetaGenerator::ensureCorrectness(const Id &id, QDomElement element, const Q
 	else
 		if (tag == "name") {
 		QRegExp patten;
-		patten.setPattern("[A-Za-z_]+([A-Za-z_0-9 ]*)");
+		patten.setPattern("[A-Za-z_]+([A-Za-z_0-9 :]*)");
 		if ((patten.exactMatch(value)))
 			element.setAttribute(tagName, value);
 		else {

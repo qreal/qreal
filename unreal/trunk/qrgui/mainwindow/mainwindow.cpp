@@ -597,59 +597,76 @@ void MainWindow::newGenerateEditor()
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-		QString normalizeDirName = (metamodelList[key]).at(0).toUpper() + (metamodelList[key]).mid(1);
-
 		if (errors.showErrors("Generation finished successfully")) {
-
-			QProgressBar *progress = new QProgressBar(this);
-			progress->show();
-
-			QApplication::processEvents();
-
-			progress->move(530,335);
-			progress->setFixedWidth(240);
-			progress->setFixedHeight(20);
-			progress->setRange(0, 100);
-			progress->setValue(5);
-
-			if (mEditorManager.editors().contains(Id(normalizeDirName))) {
-				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
-					ui.paletteToolbox->deleteDiagramType(diagram);
-
-				mEditorManager.unloadPlugin(metamodelList[key] + ".dll");
-			}
-
-			progress->setValue(20);
-
-			QProcess builder;
-			builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelList[key]);
-			builder.start("qmake");
-			if (builder.waitForFinished()) {
-				progress->setValue(60);
-				builder.start("mingw32-make");
-				if (builder.waitForFinished()) {
-
-					progress->setValue(80);
-
-					if (mEditorManager.loadPlugin(metamodelList[key] + ".dll")) {
-
-						foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
-							ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-							foreach (Id const element, mEditorManager.elements(diagram))
-								ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
-						}
-						ui.paletteToolbox->initDone();
-						progress->setValue(100);
-					}
-				}
-			}
-			if (progress->value() != 100)
-				QMessageBox::warning(this, tr("error"), "cannot load new editor");
-			progress->close();
-			delete progress;
+			QSettings settings("SPbSU", "QReal");
+			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "qmake").toString(),
+					settings.value("pathToMake", "mingw32-make").toString(), settings.value("pluginExtension", "dll").toString());
 		}
 	}
+}
+
+void MainWindow::loadingNewEditor(const QString &directoryName, const QString &metamodelName,
+		QString const &commandFirst, QString const &commandSecond, QString const &file)
+{
+	if ((commandFirst == "") || (commandSecond == "") || (file == "")) {
+		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
+		return;
+	}
+
+	QString normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
+
+	QProgressBar *progress = new QProgressBar(this);
+	progress->show();
+
+	QApplication::processEvents();
+
+	progress->move(530, 335);
+	progress->setFixedWidth(240);
+	progress->setFixedHeight(20);
+	progress->setRange(0, 100);
+	progress->setValue(5);
+
+	if (mEditorManager.editors().contains(Id(normalizeDirName))) {
+		foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
+			ui.paletteToolbox->deleteDiagramType(diagram);
+
+		if (!mEditorManager.unloadPlugin(metamodelName + "." + file)) {
+			QMessageBox::warning(this, "error", "cannot unload plugin");
+			progress->close();
+			delete progress;
+			return;
+		}
+	}
+
+	progress->setValue(20);
+
+	QProcess builder;
+	builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelName);
+	builder.start(commandFirst);
+	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+		progress->setValue(60);
+		builder.start(commandSecond);
+		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+			progress->setValue(80);
+
+			if (mEditorManager.loadPlugin(metamodelName + "." + file)) {
+
+				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
+					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+
+					foreach (Id const element, mEditorManager.elements(diagram))
+						ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+				}
+				ui.paletteToolbox->initDone();
+				progress->setValue(100);
+			}
+		}
+	}
+	if (progress->value() != 100)
+		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+	progress->close();
+	delete progress;
+
 }
 
 void MainWindow::parseEditorXml()
@@ -658,7 +675,17 @@ void MainWindow::parseEditorXml()
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
-	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"));
+	QDir dir(".");
+	QString directoryName = ".";
+	while (dir.cdUp()) {
+		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				directoryName = directory.absolutePath() + "/qrxml";
+			}
+		}
+	}
+	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"), directoryName, "XML files (*.xml)");
 	if (fileName == "")
 		return;
 
@@ -666,7 +693,7 @@ void MainWindow::parseEditorXml()
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
 
 	parser.parseFile(fileName);
-	if (QMessageBox::question(this, tr("loading.."),"Do you want to load including metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 		parser.loadIncludeList(fileName);
 
 	mModel->reinit();
