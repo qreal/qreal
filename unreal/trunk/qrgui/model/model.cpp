@@ -91,6 +91,7 @@ QVariant Model::data(QModelIndex const &index, int role) const
 bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 {
 	if (index.isValid()) {
+		qDebug() << value << role;
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		switch (role) {
 		case Qt::DisplayRole:

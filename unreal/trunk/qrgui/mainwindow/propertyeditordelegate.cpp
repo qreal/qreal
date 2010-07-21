@@ -52,6 +52,8 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 			qReal::MainWindow *mainWindow = mMainWindow;
 			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
 														  targModel, role, ind, mainWindow);
+			QVariant data = targModel->data(ind, role);
+			qDebug() << data;
 			return button;
 		}
 	}
@@ -80,7 +82,14 @@ void PropertyEditorDelegate::setModelData(QWidget *editor,
 {
 	QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(editor);
 	QComboBox *comboEdit = dynamic_cast<QComboBox*>(editor);
-	QString value = lineEdit ? lineEdit->text() : (comboEdit ? comboEdit->currentText() : "");
+
+	QString value;
+	if (lineEdit)
+		value = lineEdit->text();
+	else if (comboEdit)
+		value = comboEdit->currentText();
+	else
+		return;
 
 	model->setData(index, value, Qt::EditRole);
 }
