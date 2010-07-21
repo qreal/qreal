@@ -724,12 +724,18 @@ void MainWindow::changeMiniMapSource( int index )
 		ui.tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
 		if (editorView != NULL)
+		{
 			ui.minimapView->setScene(editorView->scene());
+			getCurrentTab()->mvIface()->setModel(mModel);
+			QModelIndex modelIndex = editorView->mvIface()->rootIndex();
+			mModel->setRootIndex(modelIndex);
+		}
 	} else
 	{
 		ui.tabs->setEnabled(false);
 		ui.minimapView->setScene(0);;
 	}
+	emit this->rootDiagramChanged();
 }
 
 void qReal::MainWindow::closeTab( int index )
@@ -892,12 +898,11 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setModel(mModel);
 	getCurrentTab()->mvIface()->setRootIndex(index);
+
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
-
-	emit tabOpened();
 }
 
 void MainWindow::updateTab(QModelIndex const &index)

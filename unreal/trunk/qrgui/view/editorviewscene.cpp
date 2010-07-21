@@ -44,6 +44,8 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveMan()
 {
+	if (model() == NULL)
+		return;
 	qReal::Id diagram = model()->getRootDiagram();
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
 	mouseMovementManager = new MouseMovementManager(elements,
@@ -665,7 +667,7 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-	connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveMan()));
 	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }

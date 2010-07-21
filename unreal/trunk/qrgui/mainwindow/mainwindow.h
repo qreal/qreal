@@ -136,7 +136,7 @@ namespace qReal {
 			signals:
 				void gesturesShowed();
 				void currentIdealGestureChanged();
-				void tabOpened();
+				void rootDiagramChanged();
 			};
 
 }
