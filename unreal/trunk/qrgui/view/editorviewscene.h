@@ -75,6 +75,7 @@ private:
 	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);
 	void drawGesture();
 	void deleteGesture();
+	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
@@ -126,4 +127,5 @@ private slots:
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveMan();
+	void createEdge(QString const &);
 };

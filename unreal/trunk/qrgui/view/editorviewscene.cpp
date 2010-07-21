@@ -502,23 +502,50 @@ void EditorViewScene::getObjectByGesture()
 void EditorViewScene::getLinkByGesture(UML::NodeElement * parent, const UML::NodeElement &child)
 {
 	QList<UML::PossibleEdge> edges = parent->getPossibleEdges();
-	QList<qReal::Id> allLinks;
+	QList<QString> allLinks;
 	foreach (UML::PossibleEdge possibleEdge, edges)
 	{
 		if (possibleEdge.first.second.editor() == child.uuid().editor()
 			&& possibleEdge.first.second.diagram() == child.uuid().diagram()
 			&& possibleEdge.first.second.element() == child.uuid().element())
-			allLinks.push_back(possibleEdge.second.second);
+			allLinks.push_back(possibleEdge.second.second.toString());
 	}
 	if (!allLinks.empty())
 	{
-		Id * id = createElement(allLinks.at(0).toString(), parent->pos());
-		UML::Element * edgeElement = this->getElem(*id);
-		UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
-		QPointF endPos = edge->mapFromItem(&child, child.getNearestPort(child.pos()));
-		edge->placeEndTo(endPos);
-		edge->connectToPort();
+		if (allLinks.count() == 1)
+			createEdge(allLinks.at(0));
+		else
+			createEdgeMenu(allLinks);
 	}
+}
+
+void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
+{
+	QMenu * edgeMenu = new QMenu();
+	QSignalMapper * menuSignalMapper = new QSignalMapper(this);
+	foreach (QString id, ids)
+	{
+		QAction * element = new QAction(id, edgeMenu);
+		edgeMenu->addAction(element);
+		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
+		menuSignalMapper->setMapping(element, id);
+	}
+	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this,
+					 SLOT(createEdge(QString)));
+	edgeMenu->exec(QCursor::pos());
+}
+
+void EditorViewScene::createEdge(const QString & idStr)
+{
+	QPointF start = mouseMovementManager->firstPoint();
+	QPointF end = mouseMovementManager->lastPoint();
+	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
+	Id * id = createElement(idStr, start);
+	UML::Element * edgeElement = this->getElem(*id);
+	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
+	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
+	edge->placeEndTo(endPos);
+	edge->connectToPort();
 }
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
