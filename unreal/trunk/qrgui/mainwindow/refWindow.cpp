@@ -18,23 +18,19 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	ui->setupUi(this);
 	qReal::IdList idList = api->elementsByType(typeName);
 	int size = idList.size();
-	QString elementName;
 	for (int i = 0; i < size; ++i)
 	{
-		elementName = api->name(idList[i]);
 		qReal::IdList parentsIdList = api->parents(idList[i]);
 		int parentsListSize = parentsIdList.size();
-		QString parentName;
 		for (int j = 0; j < parentsListSize; ++j)
 		{
-			parentName = api->name(parentsIdList[j]);
+			QString parentName = api->name(parentsIdList[j]);
 			if (parentName.contains("Diagram"))
 			{
-				QListWidgetItem *item = new QListWidgetItem;
-				QString text = parentName + ":" + elementName;
+				QListWidgetItem *item = new QListWidgetItem();
+				QString text = parentName + "::" + api->name(idList[i]);
 				item->setText(text);
-				qReal::Id id = idList[i];
-				QVariant val = id.toString();
+				QVariant val = idList[i].toString();
 				item->setData(Qt::ToolTipRole, val);
 				ui->listWidget->addItem(item);
 				if (val == model->data(index, role))
@@ -44,10 +40,10 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	}
 	ui->mButtonOk->setEnabled(false);
 	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
-			SLOT(getId(QListWidgetItem*)));
-	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(noSelectClose()));
+			SLOT(highlightElement(QListWidgetItem*)));
+	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(cancel()));
 	connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this,
-			SLOT(setEnabledButton()));
+			SLOT(enableOkButton()));
 	connect(ui->mButtonOk, SIGNAL(clicked()), this, SLOT(setElementId()));
 }
 
@@ -61,40 +57,40 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 	if ((event->key()) == (Qt::Key_Escape))
 	{
 		if (mItem)
-			getId(mItem, false);
+			highlightElement(mItem, false);
 		close();
 	}
 	if (((event->key()) == (Qt::Key_Return)) && (ui->mButtonOk->isEnabled()))
 	{
-		setName();
+		setPropertyValue();
 		setElementId();
 	}
 }
 
-void RefWindow::setName()
+void RefWindow::setPropertyValue()
 {
 	QListWidgetItem* item = ui->listWidget->currentItem();
 	if (item)
 		model->setData(index, item->data(Qt::ToolTipRole), role);
-	getId(mItem, false);
+	highlightElement(mItem, false);
 	close();
 }
 
-void RefWindow::getId(QListWidgetItem *item, bool bl)
+void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	mainWindow->activateItemOrDiagram(id, bl, false);
 }
 
-void RefWindow::noSelectClose()
+void RefWindow::cancel()
 {
 	if (mItem)
-		getId(mItem, false);
+		highlightElement(mItem, false);
 	close();
 }
 
-void RefWindow::setEnabledButton()
+void RefWindow::enableOkButton()
 {
 	ui->mButtonOk->setEnabled(true);
 }

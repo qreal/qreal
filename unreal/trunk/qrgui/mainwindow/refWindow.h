@@ -1,5 +1,4 @@
-#ifndef REFWINDOW_H
-#define REFWINDOW_H
+#pragma once
 
 #include <QtGui>
 #include <QWidget>
@@ -21,9 +20,9 @@ public:
 	~RefWindow();
 
 public slots:
-	void setName();
-	void getId(QListWidgetItem * item, bool bl = true);
-	void noSelectClose();
+	void setPropertyValue();
+	void highlightElement(QListWidgetItem * item, bool bl = true);
+	void cancel();
 
 private:
 	void keyPressEvent(QKeyEvent *event);
@@ -38,8 +37,6 @@ private:
 	QListWidgetItem *mItem;
 
 private slots:
-	void setEnabledButton();
+	void enableOkButton();
 	void setElementId();
 };
-
-#endif // REFWINDOW_H
