@@ -48,6 +48,7 @@ public:
 	static int sign(int x);
 	static qreal length(QPointF const &point1, QPointF const &point2);
 	virtual QRectF boundingRect() const = 0;
+	virtual QRectF realBoundingRect() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -95,8 +96,8 @@ public:
 	QString setSingleScaleForDoc(int i, qreal x, qreal y);
 	void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
-	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture) = 0;
+	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture) = 0;
 
 	void readPenBrush(QDomElement const &docItem);
 

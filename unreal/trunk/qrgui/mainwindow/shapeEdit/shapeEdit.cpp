@@ -10,6 +10,7 @@
 #include <QtCore/QList>
 #include <QtGui/QComboBox>
 #include <QtGui/QSpinBox>
+#include <QtGui/QImage>
 
 using namespace utils;
 
@@ -45,29 +46,48 @@ void ShapeEdit::init()
 	mUi->brushStyleComboBox->addItems(brushStyleList);
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
+	mUi->textPixelSizeSpinBox->setRange(5, 72);
+	initFontPalette();
+
 	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), mScene, SLOT(drawLine(bool)));
 	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), mScene, SLOT(drawEllipse(bool)));
 	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), mScene, SLOT(drawCurve(bool)));
 	connect(mUi->drawRectButton, SIGNAL(clicked(bool)), mScene, SLOT(drawRectangle(bool)));
 	connect(mUi->addTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addText(bool)));
 	connect(mUi->addDynamicTextButton, SIGNAL(clicked(bool)), mScene, SLOT(addDynamicText(bool)));
+	connect(mUi->addTextPictureButton, SIGNAL(clicked(bool)), mScene, SLOT(addTextPicture(bool)));
 	connect(mUi->addPointPortButton, SIGNAL(clicked(bool)), mScene, SLOT(addPointPort(bool)));
 	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), mScene, SLOT(addLinePort(bool)));
 	connect(mUi->stylusButton, SIGNAL(clicked(bool)), mScene, SLOT(addStylus(bool)));
 	connect(mUi->noneButton, SIGNAL(clicked(bool)), mScene, SLOT(addNone(bool)));
+
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
 	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushStyle(const QString &)));
 	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushColor(const QString &)));
+
+	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
+	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
+	connect(mUi->textColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeFontColor(const QString &)));
+	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
+	connect(mUi->italicCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontItalic(bool)));
+	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
+	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
+
+
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
+	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
 	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
+
+	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
 }
 
 void ShapeEdit::initPalette()
@@ -78,6 +98,18 @@ void ShapeEdit::initPalette()
 
 	mUi->brushStyleComboBox->setCurrentIndex(0);
 	mUi->brushColorComboBox->setColor(QColor("white"));
+}
+
+void ShapeEdit::initFontPalette()
+{
+	mUi->textFamilyFontComboBox->setCurrentFont(QFont("MS Shell Dlg 2"));
+	mUi->textPixelSizeSpinBox->setValue(15);
+	mUi->textColorComboBox->setColor(QColor("black"));
+
+	mUi->textEditField->setPlainText("text");
+	mUi->italicCheckBox->setChecked(false);
+	mUi->boldCheckBox->setChecked(false);
+	mUi->underlineCheckBox->setChecked(false);
 }
 
 ShapeEdit::~ShapeEdit()
@@ -103,8 +135,8 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	QDomElement label = mDocument.createElement("labels");
 	QDomElement ports = mDocument.createElement("ports");
 
-	mScene->removeItem(mScene->mEmptyRect);
-	mTopLeftPicture = mScene->itemsBoundingRect().topLeft();
+	QRect sceneBoundingRect = mScene->realItemsBoundingRect();
+	mTopLeftPicture = sceneBoundingRect.topLeft();
 
 	QList<QGraphicsItem *> list = mScene->items();
 	foreach (QGraphicsItem *graphicsItem, list) {
@@ -129,14 +161,13 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 			}
 		}
 	}
-	picture.setAttribute("sizex", static_cast<int>(mScene->itemsBoundingRect().width()));
-	picture.setAttribute("sizey", static_cast<int>(mScene->itemsBoundingRect().height()));
+	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width()));
+	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height()));
 
 	QList<QDomElement> domList;
 	domList.push_back(picture);
 	domList.push_back(label);
 	domList.push_back(ports);
-	mScene->mEmptyRect = mScene->addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
 
 	return domList;
 }
@@ -175,6 +206,17 @@ void ShapeEdit::save()
 	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 }
 
+void ShapeEdit::savePicture()
+{
+	QString fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
+	QImage image(mScene->itemsBoundingRect().size().toSize(), QImage::Format_RGB32);
+	QPainter painter(&image);
+	mScene->render(&painter);
+	image.save(fileName);
+}
+
 void ShapeEdit::open()
 {
 	mDocument.clear();
@@ -191,11 +233,6 @@ void ShapeEdit::load(const QString &text)
 		return;
 	XmlLoader loader(mScene);
 	loader.readString(text);
-}
-
-void ShapeEdit::setNoPalette()
-{
-	initPalette();
 }
 
 void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
@@ -245,4 +282,68 @@ void ShapeEdit::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 
 	setValueBrushStyleComboBox(brushItem.style());
 	setValueBrushColorComboBox(brushItem.color());
+}
+
+void ShapeEdit::setNoPalette()
+{
+	initPalette();
+}
+
+void ShapeEdit::setValueTextFamilyFontComboBox(QFont const &fontItem)
+{
+	mUi->textFamilyFontComboBox->setCurrentFont(fontItem);
+}
+
+void ShapeEdit::setValueTextPixelSizeSpinBox(int size)
+{
+	mUi->textPixelSizeSpinBox->setValue(size);
+}
+
+void ShapeEdit::setValueTextColorComboBox(QColor penColor)
+{
+	mUi->textColorComboBox->setColor(penColor);
+}
+
+void ShapeEdit::setValueItalicCheckBox(bool check)
+{
+	mUi->italicCheckBox->setChecked(check);
+}
+
+void ShapeEdit::setValueBoldCheckBox(bool check)
+{
+	mUi->boldCheckBox->setChecked(check);
+}
+
+void ShapeEdit::setValueUnderlineCheckBox(bool check)
+{
+	mUi->underlineCheckBox->setChecked(check);
+}
+
+void ShapeEdit::setValueTextNameLineEdit(QString const& name)
+{
+	mUi->textEditField->setPlainText(name);
+}
+
+void ShapeEdit::setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name)
+{
+	mUi->fontToolBox->setEnabled(true);
+	setValueTextFamilyFontComboBox(fontItem);
+	setValueTextPixelSizeSpinBox(fontItem.pixelSize());
+	setValueTextColorComboBox(penItem.color());
+	setValueItalicCheckBox(fontItem.italic());
+	setValueBoldCheckBox(fontItem.bold());
+	setValueUnderlineCheckBox(fontItem.underline());
+	setValueTextNameLineEdit(name);
+}
+
+void ShapeEdit::setNoFontPalette()
+{
+	initFontPalette();
+	mUi->fontToolBox->setEnabled(false);
+}
+
+void ShapeEdit::changeTextName()
+{
+	QString newName = mUi->textEditField->toPlainText();
+	mScene->changeTextName(newName);
 }

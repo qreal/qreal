@@ -4,6 +4,7 @@
 Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	:Path(QPainterPath(start))
 {
+	mNeedScalingRect = false;
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
@@ -54,6 +55,11 @@ QRectF Curve::searchMaxMinCoord() const
 QRectF Curve::boundingRect() const
 {
 	return searchMaxMinCoord().adjusted(-drift, -drift, drift, drift);
+}
+
+QRectF Curve::realBoundingRect() const
+{
+	return mapToScene(boundingRect().adjusted(drift, drift, -drift, -drift)).boundingRect();
 }
 
 void Curve::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -116,7 +122,7 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 		setCXandCY(x, y);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement curve = setPenBrushToDoc(document, "curve");
 

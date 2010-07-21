@@ -23,8 +23,8 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/preferencesDialog.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/buttonRefWindow.h \
-	mainwindow/refWindow.h
-
+	mainwindow/refWindow.h \
+	mainwindow/shapeEdit/textPicture.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -49,8 +49,8 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/gesturesShow/gestureswidget.cpp \
 	mainwindow/preferencesDialog.cpp \
 	mainwindow/buttonRefWindow.cpp \
-	mainwindow/refWindow.cpp
-
+	mainwindow/refWindow.cpp \
+	mainwindow/shapeEdit/textPicture.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \

@@ -12,6 +12,7 @@
 #include "ellipse.h"
 #include "rectangle.h"
 #include "text.h"
+#include "textPicture.h"
 #include "pointPort.h"
 #include "linePort.h"
 #include "stylus.h"
@@ -30,11 +31,15 @@ class Scene : public QGraphicsScene
 public:
 	Scene(QGraphicsView *view, QObject *parent = 0);
 	QGraphicsRectItem *mEmptyRect;
-	QPointF centerEmpty();
+	QPoint centerEmpty();
+	QRect realItemsBoundingRect() const;
+	void changeTextName(const QString &name);
 
 signals:
 	void noSelectedItems();
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
+	void noSelectedTextPictureItems();
+	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
 
 private slots:
 	void drawLine(bool checked);
@@ -43,18 +48,29 @@ private slots:
 	void drawRectangle(bool checked);
 	void addText(bool checked);
 	void addDynamicText(bool checked);
-	void clearScene();
+	void addTextPicture(bool checked);
 	void addPointPort(bool checked);
 	void addLinePort(bool checked);
 	void addStylus(bool checked);
 	void addNone(bool checked);
-	void deleteItem();
+
 	void changePenStyle(const QString &text);
 	void changePenWidth(int width);
 	void changePenColor(const QString &text);
 	void changeBrushStyle(const QString &text);
 	void changeBrushColor(const QString &text);
 	void changePalette();
+	void changeFontPalette();
+
+	void changeFontFamily(const QFont& font);
+	void changeFontPixelSize(int size);
+	void changeFontColor(const QString & text);
+	void changeFontItalic(bool isChecked);
+	void changeFontBold(bool isChecked);
+	void changeFontUnderline(bool isChecked);
+
+	void deleteItem();
+	void clearScene();
 
 private:
 	enum ItemTypes {
@@ -64,6 +80,7 @@ private:
 		rectangle,
 		text,
 		dynamicText,
+		textPicture,
 		pointPort,
 		linePort,
 		stylus,
@@ -77,6 +94,7 @@ private:
 	Ellipse *mEllipse;
 	Rectangle *mRectangle;
 	Text *mText;
+	TextPicture *mTextPicture;
 	PointPort *mPointPort;
 	LinePort *mLinePort;
 	Stylus *mStylus;
@@ -87,15 +105,19 @@ private:
 	qreal mY1;
 	qreal mY2;
 	QPointF mC1;
+	QList<QGraphicsItem *> mListSelectedItems;
+	QList<TextPicture *> mListSelectedTextPictureItems;
+	TextPicture *mSelectedTextPicture;
+	QPair<bool, Item *> mNeedResize;
+
 	QString mPenStyleItems;
 	int mPenWidthItems;
 	QString mPenColorItems;
 	QString mBrushStyleItems;
 	QString mBrushColorItems;
-	QList<QGraphicsItem *> mListSelectedItems;
-	QPair<bool, Item *> mNeedResize;
 
 	QList<Item *> selectedSceneItems();
+	QList<TextPicture *> selectedTextPictureItems();
 	QString convertPenToString(QPen const &pen);
 	QString convertBrushToString(QBrush const &brush);
 	void setPenBrushItems(QPen const &pen, QBrush const &brush);

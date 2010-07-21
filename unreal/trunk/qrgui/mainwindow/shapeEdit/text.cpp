@@ -4,16 +4,29 @@
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QPainter>
 
-Text::Text(qreal x, qreal y, QString const &text, bool isDynamic)
+Text::Text(bool isDynamic)
 	: Item(NULL), mIsDynamicText(isDynamic)
 {
-	mNeedScalingRect = false;
 	mDomElementType = labelType;
+}
+
+Text::Text(int x, int y, QString const &text, bool isDynamic)
+	: Item(NULL), mIsDynamicText(isDynamic)
+{
+	mDomElementType = labelType;
+	init(x, y, text);
+}
+
+void Text::init(int x, int y, QString const &text)
+{
+	mNeedScalingRect = false;
 	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
 	setPos(x, y);
-	mText.setHtml(text);
+	mText.setPlainText(text);
 	mText.setParentItem(this);
 	mBoundingRect = boundingRect();
+	mX1 = x;
+	mY1 = y;
 }
 
 void Text::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -63,7 +76,12 @@ void Text::drawScalingRects(QPainter* painter)
 
 QRectF Text::boundingRect() const
 {
-	return (mText.boundingRect().adjusted(-drift, -drift, drift, drift));
+	return mText.boundingRect().adjusted(-drift, -drift, drift, drift);
+}
+
+QRectF Text::realBoundingRect() const
+{
+	return mapToScene(mText.boundingRect()).boundingRect();
 }
 
 void Text::drawForDynamicText(QPainter* painter)
@@ -94,11 +112,11 @@ void Text::changeScalingPointState(qreal x, qreal y)
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement text = document.createElement("label");
-	qreal const x1 = mText.boundingRect().x() + scenePos().x() - topLeftPicture.x();
-	qreal const y1 = mText.boundingRect().y() + scenePos().y() - topLeftPicture.y();
+	int const x1 = static_cast<int>(realBoundingRect().left() - topLeftPicture.x());
+	int const y1 = static_cast<int>(realBoundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x", setSingleScaleForDoc(0, x1, y1));
 	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());

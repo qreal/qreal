@@ -13,7 +13,7 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 }
 
-QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement linePort = document.createElement("linePort");
 
@@ -22,7 +22,7 @@ QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &d
 	qreal const x2 = scenePos().x() + line().x2() - topLeftPicture.x();
 	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
-	QPair<QPair<QString, QString>, QPair<QString, QString> > res = setXandYBefore(QRectF(x1, y1, x2 - x1, y2 - y1));
+	QPair<QPair<QString, QString>, QPair<QString, QString> > res = setXandYBefore(QRectF(x1, y1, x2 - x1, y2 - y1).normalized());
 	QDomElement start  = document.createElement("start");
 	linePort.appendChild(start);
 	start.setAttribute("starty", res.first.second);

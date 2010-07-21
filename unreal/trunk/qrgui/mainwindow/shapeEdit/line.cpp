@@ -23,10 +23,9 @@ QRectF Line::boundingRect() const
 	return (QRectF(qMin(mX1, mX2) - mPen.width(), qMin(mY1, mY2) - mPen.width(), abs(mX2 - mX1) + mPen.width(), abs(mY2 - mY1) + mPen.width()).adjusted(-drift, -drift, drift, drift));
 }
 
-QRectF Line::getBoundingRect()
+QRectF Line::realBoundingRect() const
 {
-	mBoundingRect = boundingRect();
-	return mBoundingRect;
+	return mapToScene(boundingRect().adjusted(drift + mPen.width(), drift + mPen.width(), -drift, -drift)).boundingRect();
 }
 
 void Line::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -213,7 +212,7 @@ void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QStri
 	dom.setAttribute("x2", pair.second.first);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
 	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();

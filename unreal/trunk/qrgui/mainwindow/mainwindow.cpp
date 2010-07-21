@@ -783,7 +783,7 @@ void MainWindow::openNewEmptyTab()
 {
 	QObject *object = sender();
 	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
-	QString text = "Shape Edit";
+	QString text = "Shape Editor";
 	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
 		QPersistentModelIndex index = button->getIndex();

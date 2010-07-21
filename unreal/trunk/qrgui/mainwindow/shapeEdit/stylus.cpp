@@ -2,6 +2,7 @@
 
 Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
 {
+	mNeedScalingRect = false;
 	mPen.setColor(Qt::black);
 	mX1 = x1;
 	mY1 = y1;
@@ -26,15 +27,15 @@ void Stylus::addLine(qreal x2, qreal y2)
 QRectF Stylus::searchMaxMinCoord() const
 {
 	if(!mListLine.isEmpty()) {
-		qreal maxX = (mListLine.at(0))->getBoundingRect().right();
-		qreal minX = (mListLine.at(0))->getBoundingRect().left();
-		qreal maxY = (mListLine.at(0))->getBoundingRect().bottom();
-		qreal minY = (mListLine.at(0))->getBoundingRect().top();
+		qreal maxX = (mListLine.at(0))->realBoundingRect().right();
+		qreal minX = (mListLine.at(0))->realBoundingRect().left();
+		qreal maxY = (mListLine.at(0))->realBoundingRect().bottom();
+		qreal minY = (mListLine.at(0))->realBoundingRect().top();
 		foreach (Line *line, mListLine) {
-			minX = qMin(line->getBoundingRect().left(), minX);
-			minY = qMin(line->getBoundingRect().top(), minY);
-			maxX = qMax(line->getBoundingRect().right(), maxX);
-			maxY = qMax(line->getBoundingRect().bottom(), maxY);
+			minX = qMin(line->realBoundingRect().left(), minX);
+			minY = qMin(line->realBoundingRect().top(), minY);
+			maxX = qMax(line->realBoundingRect().right(), maxX);
+			maxY = qMax(line->realBoundingRect().bottom(), maxY);
 		}
 		return QRectF(minX, minY, maxX - minX, maxY - minY);
 	}
@@ -92,35 +93,40 @@ void Stylus::drawScalingRects(QPainter* painter)
 
 void Stylus::setPenStyle(const QString& text)
 {
+	Item::setPenStyle(text);
 	foreach (Line *line, mListLine)
 		line->setPenStyle(text);
 }
 
 void Stylus::setPenWidth(int width)
 {
+	Item::setPenWidth(width);
 	foreach (Line *line, mListLine)
 		line->setPenWidth(width);
 }
 
 void Stylus::setPenColor(const QString& text)
 {
+	Item::setPenColor(text);
 	foreach (Line *line, mListLine)
 		line->setPenColor(text);
 }
 
 void Stylus::setBrushStyle(const QString& text)
 {
+	Item::setBrushStyle(text);
 	foreach (Line *line, mListLine)
 		line->setBrushStyle(text);
 }
 
 void Stylus::setBrushColor(const QString& text)
 {
+	Item::setBrushColor(text);
 	foreach (Line *line, mListLine)
 		line->setBrushColor(text);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");
 	foreach (Line *line, mListLine) {

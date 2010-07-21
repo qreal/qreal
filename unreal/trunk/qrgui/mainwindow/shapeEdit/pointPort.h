@@ -16,7 +16,7 @@ public:
 	virtual void changeScalingPointState(qreal x, qreal y);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 
 private:
 	qreal mRadius;

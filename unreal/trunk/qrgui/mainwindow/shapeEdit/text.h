@@ -10,10 +10,13 @@
 class Text : public Item
 {
 public:
-	Text(qreal x, qreal y, QString const &text = "text", bool isDynamic = false);
+	Text(bool isDynamic = false);
+	Text(int x, int y, QString const &text = "text", bool isDynamic = false);
+	void init(int x, int y, QString const &text);
 	bool isDynamicText();
-	void setIsDynamicText(bool isDynamic);
+	virtual void setIsDynamicText(bool isDynamic);
 	virtual QRectF boundingRect() const;
+	virtual QRectF realBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
@@ -22,12 +25,13 @@ public:
 	QGraphicsTextItem const& getText();
 	void setZValueAll(int const &index);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 
-private:
+protected:
+	int mX1;
+	int mY1;
 	QGraphicsTextItem mText;
 	bool mIsDynamicText;
 	QRectF mRect;
-	QFont mFont;
 	void drawForDynamicText(QPainter* painter);
 };
