@@ -37,14 +37,17 @@ QString MethodEditorDialog::generateMethodString()
 {
 	QString resultStr = ui->accessModifierComboBox->currentText() + " ";
 	resultStr += ui->nameEdit->text() + "(";
+
+	int i = 0;
 	foreach (ParameterEditor curPrmEd, parameterList) {
-		resultStr += curPrmEd.typeEdit->text() + " " + curPrmEd.nameEdit->text() + ", ";
+		resultStr += curPrmEd.typeEdit->text() + " " + curPrmEd.nameEdit->text();
+		i++;
+		if (i != parameterList.size()) {
+			resultStr += ", ";
+		}
 	}
 
-	resultStr[resultStr.size() - 2] = ')';
-	resultStr[resultStr.size() - 1] = ':';
-
-	resultStr += " " + ui->returnTypeEdit->text();
+	resultStr += "): " + ui->returnTypeEdit->text();
 
 	qDebug() << "AAA___________" << resultStr;
 	return resultStr;
