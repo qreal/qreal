@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QList>
 #include "../../trunk/qrrepo/repoApi.h"
 
 QString const importType = "MetaEntityImport";
@@ -37,14 +38,17 @@ private:
 	struct Diagram : public Element {
 		QList< Element > elements;
 	};
+
 	void initDiagram(qReal::Id &diagramId);
 	void initProperties(qReal::Id &id);
 	void initElement(Element &el, qReal::Id &id);
+	QList<Property> getParentProperties(qReal::Id &id);
 
 	void generateDiagramsMap();
 	void generateElementsMap();
 	void generateMouseGesturesMap();
 	void generatePropertyTypesMap();
+	void generatePropertyDefaultMap();
 	void generateGetGraphicalObject();
 
 	void resolveImports();
@@ -52,7 +56,8 @@ private:
 	void resolveElementProperties();
 	void updateIsGraphicalProperty();
 
-	qReal::Id findElement(QString diagram, QString name);
+	qReal::Id findElement(QString const &name, QString const &diagram);
+	qReal::Id findElement(QString const &name);
 
 	qrRepo::RepoApi *mApi;
 	QString mName;

@@ -11,6 +11,7 @@ QString const initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 QString const initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
 QString const initMouseGesturesMapLineTag = "@@InitMouseGesturesMapLine@@";
 QString const getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
+QString const initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramDisplayedNameTag = "@@DiagramDisplayedName@@";
@@ -19,6 +20,7 @@ QString const elementDisplayedNameTag = "@@ElementDisplayedName@@";
 QString const gesturePathTag = "@@GesturePath@@";
 QString const propertyNameTag = "@@PropertyName@@";
 QString const propertyTypeTag = "@@PropertyType@@";
+QString const propertyDefaultTag = "@@PropertyDefaultValue@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";

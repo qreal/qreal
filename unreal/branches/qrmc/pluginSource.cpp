@@ -80,7 +80,7 @@ void PluginSource::resolveImports()
 			if (el.id.element() != importType)
 				continue;
 
-			Id sourceElement = findElement(mApi->stringProperty(el.id, "Imported from"), mApi->name(el.id));
+			Id sourceElement = findElement(mApi->name(el.id), mApi->stringProperty(el.id, "Imported from")	);
 			mDiagrams[i].elements[j].id = sourceElement;
 			el.id = sourceElement;
 		}
@@ -93,16 +93,44 @@ void PluginSource::resolveElements()
 	for (int i = 0; i < mDiagrams.size(); ++i)	{
 		for (int j = 0; j < mDiagrams[i].elements.size(); ++j) {
 			Element el = mDiagrams[i].elements[j];
-			qDebug() << el.name;
-			IdList props = mApi->children(el.id);
-			foreach(Id propId, props) {
-
+			IdList children = mApi->children(el.id);
+//			qDebug() << "element" << el.name << "children" << children.size();
+			QList<Property> list;
+			foreach(Id child, children) {
+				if (child.element() == "MetaEntityParent") {
+//					qDebug() << "processing parent" << mApi->name(child);
+					Id parentId = findElement(mApi->name(child));
+					list += getParentProperties(parentId);
+				}
 			}
+//			qDebug() << el.name << list.size() << "\n";
+			mDiagrams[i].elements[j].properties += list;
 		}
 	}
 }
 
-qReal::Id PluginSource::findElement(QString diagram, QString name)
+QList<PluginSource::Property> PluginSource::getParentProperties(qReal::Id &id)
+{
+	QList<PluginSource::Property> list;
+	IdList children = mApi->children(id);
+//	qDebug() << "parent" << mApi->name(id) << "children: " << children.size() << id.toString();
+	foreach(Id child, children) {
+		if (child.element() == "MetaEntityParent") {
+			Id parentId = findElement(mApi->name(child));
+			list += getParentProperties(parentId);
+		}
+		else if (child.element() == "MetaEntity_Attribute") {
+			Property prop;
+			prop.name = mApi->stringProperty(child, "name");
+			prop.type = mApi->stringProperty(child, "attributeType");
+			prop.defaultValue = mApi->stringProperty(child, "defaultValue");
+			list << prop;
+		}
+	}
+	return list;
+}
+
+qReal::Id PluginSource::findElement(QString const &name, QString const &diagram)
 {
 	IdList diagramNodes = mApi->elementsByType("MetaEditorDiagramNode");
 	foreach(Id id, diagramNodes) {
@@ -116,6 +144,22 @@ qReal::Id PluginSource::findElement(QString diagram, QString name)
 	}
 
 	qDebug() << "could not resolve imported element" << name << "from " << diagram;
+	return ROOT_ID;
+}
+
+qReal::Id PluginSource::findElement(QString const &name)
+{
+	IdList diagramNodes = mApi->elementsByType("MetaEditorDiagramNode");
+	foreach(Id id, diagramNodes) {
+		IdList children = mApi->children(id);
+		foreach(Id child, children) {
+			if (mApi->name(child) == name) {
+				return child;
+			}
+		}
+	}
+
+	qDebug() << "could not resolve imported element" << name;
 	return ROOT_ID;
 }
 
@@ -156,6 +200,7 @@ bool PluginSource::generate(QString const &sourceTemplate, QMap<QString, QString
 	generateElementsMap();
 	generateMouseGesturesMap();
 	generatePropertyTypesMap();
+	generatePropertyDefaultMap();
 	generateGetGraphicalObject();
 
 	// inserting plugin name all over the template
@@ -246,7 +291,11 @@ void PluginSource::generatePropertyTypesMap()
 			if (!element.isGraphicalObject)
 					continue;
 
+			QSet<QString> set;
 			foreach(Property property, element.properties) {
+				if (set.contains(property.name))
+					continue;
+				set << property.name;
 				QString newline = line;
 				initPropTypesMapBody += newline.replace(elementNameTag, NameNormalizer::normalize(element.name))
 								.replace(propertyNameTag, property.name)
@@ -258,6 +307,37 @@ void PluginSource::generatePropertyTypesMap()
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initPropertyTypesMapLineTag, initPropTypesMapBody);
+}
+
+void PluginSource::generatePropertyDefaultMap()
+{
+	// preparing template for propertyDefault map inits
+	QString initPropDefaultMapBody = "";
+	QString const line = mUtilsTemplate[initPropertyDefaultMapLineTag];
+	foreach(Diagram diagram, mDiagrams)	{
+		foreach(Element element, diagram.elements) {
+			if (((element.id.element() != "MetaEntityNode") && (element.id.element() != "MetaEntityEdge")))
+				continue;
+
+			if (!element.isGraphicalObject)
+					continue;
+
+			QSet<QString> set;
+			foreach(Property property, element.properties) {
+				if (set.contains(property.name) || property.defaultValue.isEmpty())
+					continue;
+				set << property.name;
+				QString newline = line;
+				initPropDefaultMapBody += newline.replace(elementNameTag, NameNormalizer::normalize(element.name))
+								.replace(propertyNameTag, property.name)
+								.replace(propertyDefaultTag, property.defaultValue)
+								 + "\n";
+			}
+		}
+
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initPropertyDefaultMapLineTag, initPropDefaultMapBody);
 }
 
 void PluginSource::generateGetGraphicalObject()
