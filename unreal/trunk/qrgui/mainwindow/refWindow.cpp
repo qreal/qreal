@@ -40,9 +40,12 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 			}
 		}
 	}
+	ui->mButtonOk->setEnabled(false);
 	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(getId(QListWidgetItem*)));
 	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(noSelectClose()));
+	connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this,
+			SLOT(setEnabledButton()));
 }
 
 RefWindow::~RefWindow()
@@ -54,10 +57,11 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 {
 	if ((event->key()) == (Qt::Key_Escape))
 	{
+		if (mItem)
+			getId(mItem, false);
 		close();
-		getId(mItem, false);
 	}
-	if ((event->key()) == (Qt::Key_Return))
+	if (((event->key()) == (Qt::Key_Return)) && (ui->mButtonOk->isEnabled()))
 		setName();
 }
 
@@ -79,6 +83,12 @@ void RefWindow::getId(QListWidgetItem *item, bool bl)
 
 void RefWindow::noSelectClose()
 {
-	getId(mItem, false);
+	if (mItem)
+		getId(mItem, false);
 	close();
+}
+
+void RefWindow::setEnabledButton()
+{
+	ui->mButtonOk->setEnabled(true);
 }

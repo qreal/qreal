@@ -36,6 +36,9 @@ private:
 	const QModelIndex &index;
 	qReal::MainWindow *mainWindow;
 	QListWidgetItem *mItem;
+
+private slots:
+	void setEnabledButton();
 };
 
 #endif // REFWINDOW_H
