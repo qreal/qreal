@@ -51,8 +51,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>mButtonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>RefWindow</receiver>
+   <slot>setName()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>166</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>exit()</slot>
+  <slot>setName()</slot>
  </slots>
 </ui>

@@ -23,22 +23,26 @@ namespace qReal {
 			explicit XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
 
 			void parseFile(QString const &fileName);
+			void loadIncludeList(QString const &fileName);
 
 		private:
 			qrRepo::RepoApi &mApi;
 			EditorManager const &mEditorManager;
 			Id mMetamodel;
+			Id mDiagram;
 			QHash<Id, QString> mElements;
 			QHash<QString, QString> mContainerList;
 			int mElementsColumn;
 			int mElementCurrentColumn;
-			int mCurrentMoveWidth;
 			int mMoveWidth;
-			int mMoveHigh;
+			int mMoveHeight;
 			int mCurrentWidth;
-			int mCurrentHigh;
+			int mCurrentHeight;
+			QStringList mIncludeList;
 
-			void initMetamodel(QDomDocument const &document, QString const &directoryName);
+			QStringList getIncludeList(QString const &fileName);
+			Id getPackageId();
+			void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &id);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
 			void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
 			void createGraphicElements(QDomElement const &type, Id const &diagramId);
@@ -56,11 +60,14 @@ namespace qReal {
 			void setGeneralization(QDomElement const &element, Id const &elementId);
 			void setContainers(QDomElement const &element, Id const &elementId);
 			void setContainerProperties(QDomElement const &element, Id const &elementId);
+			void setBoolValuesForContainer(QString const &tagName, QDomElement const &property, Id const &id);
+			void setSizesForContainer(QString const &tagName, QDomElement const &property, Id const &id);
 			void setProperties(QDomElement const &element, Id const &elementId);
 			void setConnections(QDomElement const &element, Id const &elementId);
 			void setAssotiations(QDomElement const &element, Id const &elementId);
 			void setUsages(QDomElement const &element, Id const &elementId);
 			void setPossibleEdges(QDomElement const &element, Id const &elementId);
+			void setFields(QDomElement const &element, Id const &elementId);
 			void setPin(Id const &elementId);
 			void setAction(Id const &elementId);
 			void setLineType(QDomElement const &tag, Id const &edgeId);

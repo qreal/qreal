@@ -48,7 +48,7 @@ EditorManager::EditorManager(QObject *parent)
 	}
 }
 
-void EditorManager::loadPlugin(const QString &pluginName)
+bool EditorManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
 	mLoaders.insert(pluginName, loader);
@@ -59,16 +59,18 @@ void EditorManager::loadPlugin(const QString &pluginName)
 		if (iEditor) {
 			mPluginsLoaded += iEditor->id();
 			mPluginIface[iEditor->id()] = iEditor;
+			return true;
 		}
-	} else {
-		QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
 	}
+	QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
+	return false;
+
 }
 
-void EditorManager::unloadPlugin(const QString &pluginName)
+bool EditorManager::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
-	loader->unload();
+	return loader->unload();
 }
 
 IdList EditorManager::editors() const

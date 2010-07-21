@@ -22,9 +22,16 @@ CheckoutDialog::CheckoutDialog(QWidget *parent) : QDialog(parent)
 	directoryLabel = new QLabel(tr("Checkout to directory:"));
 	directoryComboBox = createComboBox(QDir::currentPath());
 	urlComboBox = createComboBox();
+	QPushButton *ok = new QPushButton(tr("Ok"), this);
+	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
-//	QHBoxLayout *buttonsLayout = new QHBoxLayout;
-//	buttonsLayout->addStretch();
+	QHBoxLayout *buttonsLayout = new QHBoxLayout;
+	buttonsLayout->addStretch();
+	buttonsLayout->addWidget(ok);
+	buttonsLayout->addWidget(cancel);
+
+	QObject::connect(ok, SIGNAL(clicked()), this, SLOT(accept()));
+	QObject::connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(urlLabel,0,0);
@@ -32,23 +39,27 @@ CheckoutDialog::CheckoutDialog(QWidget *parent) : QDialog(parent)
 	mainLayout->addWidget(directoryLabel, 1, 0);
 	mainLayout->addWidget(directoryComboBox, 1, 1);
 	mainLayout->addWidget(browseButton, 1, 2);
-//	mainLayout->addLayout(buttonsLayout);
+	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Checkout options"));
-	resize(200,200);
+	setFixedSize(500,100);
 }
 void CheckoutDialog::browse()
 {
 	QString directory = QFileDialog::getExistingDirectory(this,
-							   tr("Select directory"), QDir::currentPath());
-
-	//if (directory.isEmpty()) {
-	//	if (directoryComboBox->findText(directory) == -1)
+						tr("Select directory"), QDir::currentPath());
 	if (!directory.isNull()) {
-			directoryComboBox->addItem(directory);
-			directoryComboBox->setEditText(directory);
-	//	directoryComboBox->setCurrentIndex(directoryComboBox->findText(directory));
-	//}
-		}
+		directoryComboBox->addItem(directory);
+		directoryComboBox->setCurrentIndex(directoryComboBox->findText(directory));
+	}
 }
+QString CheckoutDialog::getDir()
+{
+	return directoryComboBox->currentText();
+}
+QString CheckoutDialog::getUrl()
+{
+	return urlComboBox->currentText();
+}
+

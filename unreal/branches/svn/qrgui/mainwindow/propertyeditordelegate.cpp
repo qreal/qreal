@@ -25,12 +25,12 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 {
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
 	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
-	if (propertyName == "set Shape") {
+	if (propertyName == "shape") {
 		QString propertyValue = model->data(index.sibling(index.row(), index.column()), Qt::DisplayRole).toString();
 		QPersistentModelIndex const myIndex = model->getModelIndex();
 		int role = model->roleByIndex(index.row());
 		OpenShapeEditorButton *button = new OpenShapeEditorButton(parent, myIndex, role, propertyValue);
-		button->setText("open Shape Edit");
+		button->setText("open Shape Editor");
 		QObject::connect(button, SIGNAL(clicked()), mMainWindow, SLOT(openNewEmptyTab()));
 		return button;
 	}
@@ -46,7 +46,12 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		QString typeName = model->getTypeName(index);
 		if ((typeName != "int") && (typeName != "string") && (typeName != ""))
 		{
-			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()));
+			QAbstractItemModel* targModel = model->getTargetModel();
+			int role = model->roleByIndex(index.row());
+			const QModelIndex &ind = model->getModelIndex();
+			qReal::MainWindow *mainWindow = mMainWindow;
+			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
+														  targModel, role, ind, mainWindow);
 			return button;
 		}
 	}

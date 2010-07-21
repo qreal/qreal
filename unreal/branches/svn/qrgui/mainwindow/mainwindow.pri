@@ -25,7 +25,6 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h
 
-
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \

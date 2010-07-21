@@ -33,6 +33,10 @@ void PreferencesDialog::initPreferences()
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
+
+	ui->pathToQmake->setText(settings.value("pathToQmake", "qmake").toString());
+	ui->pathToMake->setText(settings.value("pathToMake", "mingw32-make").toString());
+	ui->pluginExtension->setText(settings.value("pluginExtension", "dll").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -51,6 +55,10 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
+
+	settings.setValue("pathToQmake", ui->pathToQmake->text());
+	settings.setValue("pathToMake", ui->pathToMake->text());
+	settings.setValue("pluginExtension", ui->pluginExtension->text());
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)
@@ -74,4 +82,9 @@ void PreferencesDialog::on_okButton_clicked()
 void PreferencesDialog::on_applyButton_clicked()
 {
 	applyChanges();
+}
+
+void PreferencesDialog::on_cancelButton_clicked()
+{
+	close();
 }

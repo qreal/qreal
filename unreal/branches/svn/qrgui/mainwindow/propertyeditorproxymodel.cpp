@@ -183,8 +183,13 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 	reset();
 }
 
-QModelIndex PropertyEditorModel::getModelIndex() const
+const QModelIndex& PropertyEditorModel::getModelIndex() const
 {
 	return targetObject;
+}
+
+QAbstractItemModel* PropertyEditorModel::getTargetModel() const
+{
+	return targetModel;
 }
 

@@ -13,7 +13,6 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
-#include "../dialogs/checkoutdialog.h"
 
 namespace qReal {
 
@@ -32,14 +31,10 @@ namespace qReal {
 		MainWindow();
 		~MainWindow();
 
-		EditorManager *manager() {
-			return &mEditorManager;
-		}
-
+		EditorManager* manager();
+		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
-
-				IGesturesPainter *gesturesPainter();
-
+		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
 
 	public slots:
@@ -56,10 +51,14 @@ namespace qReal {
 		void showAbout();
 		void showHelp();
 
+		void checkoutDialogOk();
+		void checkoutDialogCancel();
 		void open();
 		void save();
 		void saveAs();
-		void saveIds();
+		void saveAll();
+		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
+
 		void print();
 		void makeSvg();
 		void showGrid();
@@ -68,8 +67,8 @@ namespace qReal {
 
 		void sceneSelectionChanged();
 
-		void doCommit();
 		void doCheckout();
+		void doCommit();
 		void exportToXmi();
 		void generateToJava();
 		void parseJavaLibraries();
@@ -77,12 +76,11 @@ namespace qReal {
 		void deleteFromScene(QGraphicsItem *target);
 
 		void activateSubdiagram(QModelIndex const &idx);
+		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 
-		void activateItemOrDiagram(Id const &id);
-
-		EditorView *getCurrentTab();
 	private slots:
-		void activateItemOrDiagram(QModelIndex const &idx);
+
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
@@ -95,6 +93,8 @@ namespace qReal {
 		void parseHascol();
 		void showPreferencesDialog();
 		void initCurrentTab(const QModelIndex &rootIndex);
+		void centerOn(const QModelIndex &rootIndex);
+		void diagramExplorerClicked(const QModelIndex &rootIndex);
 		void openNewTab(const QModelIndex &index);
 		void openNewEmptyTab();
 		void switchGrid(bool isChecked);
@@ -115,17 +115,18 @@ namespace qReal {
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget * mGesturesWidget;
 
-		IdList toSave;
-		bool* checked;
-
 		void loadPlugins();
 
+		bool* saveListChecked;
 		QListWidget* createSaveListWidget();
 
 		void suggestToSave();
 		void suggestToCreateDiagram();
+
 		QStringList diagramsList;
 		void createDiagram(const QString &idString);
+		void loadingNewEditor(QString const &directoryName, QString const &metamodelName,
+				QString const &commandFirst, QString const &commandSecond, QString const &file);
 
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();

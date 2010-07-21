@@ -17,7 +17,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
-
+#include <QtGui/QListWidgetItem>
 
 #include "../dialogs/plugindialog.h"
 #include "editorInterface.h"
@@ -29,6 +29,7 @@
 #include "../generators/java/javaHandler.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
+#include "../dialogs/checkoutdialog.h"
 #include "../parsers/hascol/hascolParser.h"
 #include "../parsers/xml/xmlParser.h"
 #include "errorReporter.h"
@@ -113,6 +114,7 @@ MainWindow::MainWindow()
 	connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
+
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
 	progress->setValue(40);
@@ -129,12 +131,7 @@ MainWindow::MainWindow()
 	ui.propertyEditor->setItemDelegate(&mDelegate);
 	mDelegate.setMainWindow(this);
 
-	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-			&mPropertyModel, SLOT(setIndex(QModelIndex const &)));
-
-	connect(ui.diagramExplorer, SIGNAL(clicked(QModelIndex const &)),
-			this, SLOT(openNewTab(QModelIndex const &)));
-
+	connect(ui.diagramExplorer,SIGNAL(clicked(QModelIndex const &)),this,SLOT(diagramExplorerClicked(QModelIndex)));
 	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	progress->setValue(60);
@@ -185,8 +182,13 @@ MainWindow::MainWindow()
 		splash->close();
 	delete splash;
 
+	//choosing diagrams to save isn't implemented yet
+	settings.setValue("ChooseDiagramsToSave", false);
+	//so it is turned off
+
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+	mModel->resetChangedDiagrams();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -204,6 +206,10 @@ MainWindow::~MainWindow()
 	delete mListenerManager;
 }
 
+EditorManager* MainWindow::manager() {
+	return &mEditorManager;
+}
+
 void MainWindow::finalClose()
 {
 	clEvent->accept();
@@ -213,7 +219,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	clEvent = event;
 	QSettings settings("SPbSU", "QReal");
-	qDebug() << "closeEvent()";
 	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
 		event->ignore();
 		suggestToSave();
@@ -246,7 +251,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
-void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
+void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
 {
 	QModelIndex parent = idx.parent();
 
@@ -260,15 +265,19 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx)
 			getCurrentTab()->scene()->clearSelection();
 			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElemByModelIndex(idx);
 			if (e)
-				e->setSelected(true);
+			{
+				e->setColorRect(bl);
+				if (isSetSel)
+					e->setSelected(true);
+			}
 			else
 				qDebug() << "shit happened!!!\n";
 		}
 	}
 }
 
-void MainWindow::activateItemOrDiagram(Id const &id) {
-	activateItemOrDiagram(mModel->indexById(id));
+void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel) {
+	activateItemOrDiagram(mModel->indexById(id), bl, isSetSel);
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
@@ -409,6 +418,7 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
+
 	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
 	{
 		qDebug() << "Deleting object, uuid: " << elem->uuid().toString();
@@ -449,37 +459,51 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("Splashscreen", show);
 }
 
+void MainWindow::checkoutDialogOk()
+{
+	//qDebug() << sender();
+	CheckoutDialog *dialog = (CheckoutDialog*)sender();
+	QString dir = dialog->getDir();
+	QString url = dialog->getUrl();
+	if (dir.isEmpty() || url.isEmpty())
+	{
+		QMessageBox::warning(this, "Error", "Url and directory should be valid non-empty paths");
+		return;
+	}
+	SvnClient *client = new SvnClient(dir.toAscii().data());
+	QString res = client->checkout(url.toAscii().data(), svn::Path(dir.toAscii().data()));
+	QMessageBox::information(this, "Result", res);
+}
+void MainWindow::checkoutDialogCancel()
+{
+}
+
 void MainWindow::doCheckout()
 {
 	QString path;
+	QString url;
 	CheckoutDialog *dialog = new CheckoutDialog(this);
+	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
+	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
 	dialog->show();
-	if (dialog->Accepted)
-	{
-		path = dialog->directoryComboBox->currentText();
-	}
 }
 
 void MainWindow::doCommit()
 {
-	QString select = tr("Select working directory for commit");
-	QString path = QFileDialog::getExistingDirectory(this, select);
-
+	QString path = QFileDialog::getExistingDirectory(this, tr("Select directory to commit"));
 	if (path.isEmpty())
 		return;
-//	QMessageBox::information(this, tr("Selected path is"), path);
-	char* p = path.toAscii().data();
-	SvnClient client(p, "test", "test");
-	//	client.commit(path, )
-	QString *messag = new QString;
-	long revision = client.commit(*messag);
+
+	SvnClient client(path.toAscii().data());
+	QString *message = new QString;
+	int revision = client.commit(*message);
 	if (revision > 0)
-	{
-		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString::number(revision)));
-	}
+		QMessageBox::information(this, tr("Success"), tr("Committed successfully to revision ")+
+								QString::number(revision));
+	else if (!message->isNull())
+		QMessageBox::warning(this, tr("Error"), *message);
 	else
-		QMessageBox::information(this, tr("Error"), *messag);
+		QMessageBox::information(this, tr("Info"), tr("Nothing to commit"));
 }
 
 void MainWindow::exportToXmi()
@@ -577,58 +601,76 @@ void MainWindow::newGenerateEditor()
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-		QString normalizeDirName = (metamodelList[key]).at(0).toUpper() + (metamodelList[key]).mid(1);
-
 		if (errors.showErrors("Generation finished successfully")) {
-
-			QProgressBar *progress = new QProgressBar(this);
-			progress->show();
-
-			QApplication::processEvents();
-
-			progress->move(530,335);
-			progress->setFixedWidth(240);
-			progress->setFixedHeight(20);
-			progress->setRange(0, 100);
-			progress->setValue(5);
-
-			if (mEditorManager.editors().contains(Id(normalizeDirName))) {
-				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
-					ui.paletteToolbox->deleteDiagramType(diagram);
-
-				mEditorManager.unloadPlugin(metamodelList[key] + ".dll");
-			}
-
-			progress->setValue(20);
-
-			QProcess builder;
-			builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelList[key]);
-			builder.start("qmake");
-			if (builder.waitForFinished()) {
-				progress->setValue(60);
-				builder.start("mingw32-make");
-				if (builder.waitForFinished()) {
-
-					progress->setValue(80);
-
-					mEditorManager.loadPlugin(metamodelList[key] + ".dll");
-
-					foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
-						ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
-						foreach (Id const element, mEditorManager.elements(diagram))
-							ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
-					}
-					ui.paletteToolbox->initDone();
-					progress->setValue(100);
-				}
-			}
-			if (progress->value() != 100)
-				QMessageBox::warning(this, tr("error"), "cannot load new editor");
-			progress->close();
-			delete progress;
+			QSettings settings("SPbSU", "QReal");
+			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "qmake").toString(),
+					settings.value("pathToMake", "mingw32-make").toString(), settings.value("pluginExtension", "dll").toString());
 		}
 	}
+}
+
+void MainWindow::loadingNewEditor(const QString &directoryName, const QString &metamodelName,
+		QString const &commandFirst, QString const &commandSecond, QString const &file)
+{
+	if ((commandFirst == "") || (commandSecond == "") || (file == "")) {
+		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
+		return;
+	}
+
+	QString normalizeDirName = metamodelName.at(0).toUpper() + metamodelName.mid(1);
+
+	QProgressBar *progress = new QProgressBar(this);
+	progress->show();
+
+	QApplication::processEvents();
+
+	progress->move(530, 335);
+	progress->setFixedWidth(240);
+	progress->setFixedHeight(20);
+	progress->setRange(0, 100);
+	progress->setValue(5);
+
+	if (mEditorManager.editors().contains(Id(normalizeDirName))) {
+		foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
+			ui.paletteToolbox->deleteDiagramType(diagram);
+
+		if (!mEditorManager.unloadPlugin(metamodelName + "." + file)) {
+			QMessageBox::warning(this, "error", "cannot unload plugin");
+			progress->close();
+			delete progress;
+			return;
+		}
+	}
+
+	progress->setValue(20);
+
+	QProcess builder;
+	builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelName);
+	builder.start(commandFirst);
+	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+		progress->setValue(60);
+		builder.start(commandSecond);
+		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+			progress->setValue(80);
+
+			if (mEditorManager.loadPlugin(metamodelName + "." + file)) {
+
+				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
+					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+
+					foreach (Id const element, mEditorManager.elements(diagram))
+						ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+				}
+				ui.paletteToolbox->initDone();
+				progress->setValue(100);
+			}
+		}
+	}
+	if (progress->value() != 100)
+		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+	progress->close();
+	delete progress;
+
 }
 
 void MainWindow::parseEditorXml()
@@ -637,12 +679,26 @@ void MainWindow::parseEditorXml()
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
-	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"));
+	QDir dir(".");
+	QString directoryName = ".";
+	while (dir.cdUp()) {
+		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				directoryName = directory.absolutePath() + "/qrxml";
+			}
+		}
+	}
+	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"), directoryName, "XML files (*.xml)");
 	if (fileName == "")
 		return;
 
+
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+
 	parser.parseFile(fileName);
+	if (QMessageBox::question(this, tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+		parser.loadIncludeList(fileName);
 
 	mModel->reinit();
 }
@@ -730,10 +786,40 @@ void MainWindow::openNewEmptyTab()
 	ui.tabs->setCurrentWidget(shapeEdit);
 }
 
-void MainWindow::openNewTab(const QModelIndex &index)
+void MainWindow::centerOn(const QModelIndex &index)
 {
-	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
+	Id itemId = mModel->idByIndex(index);
+	if (itemId.element() == mModel->assistApi().editorManager().getEditorInterface(itemId.editor())->diagramNodeName(itemId.diagram()))
 		return;
+	EditorView* view = getCurrentTab();
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* element = scene->getElem(itemId);
+
+	scene->clearSelection();
+	element->setSelected(true);
+
+	float widthTab = ui.tabs->size().width();
+	float heightTab = ui.tabs->size().height();
+	float widthEl = element->boundingRect().width();
+	float heightEl = element->boundingRect().height();
+	view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
+}
+
+void MainWindow::diagramExplorerClicked(const QModelIndex &index)
+{
+	mPropertyModel.setIndex(index);
+	openNewTab(index);
+	centerOn(index);
+}
+
+void MainWindow::openNewTab(const QModelIndex &arg)
+{
+//	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
+//		return;
+
+	QModelIndex index = arg;
+	while (index.parent() != QModelIndex())
+		index = index.parent();
 
 	mModel->setRootIndex(index);
 	int tabNumber = -1;
@@ -750,7 +836,6 @@ void MainWindow::openNewTab(const QModelIndex &index)
 		EditorView *view = new EditorView();
 		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
 		ui.tabs->setCurrentWidget(view);
-
 		//		if (!index.isValid())
 		//			index = mModel->rootIndex();
 		initCurrentTab(index);
@@ -761,11 +846,20 @@ void MainWindow::openNewTab(const QModelIndex &index)
 	if (settings.value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
+		bool diagram = false;
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
-			//this condition is not good because of strings comparing
-			if ((index.model()->itemData(index).value(0).value<QString>()).contains(name.trimmed())) {
+			//this conditions are not good because of strings comparing
+			QString tabName = name.trimmed().remove(" ");
+			QString diagramName = mModel->idByIndex(index).diagram().remove("_");
+			if (diagramName.contains(tabName)) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
+				diagram = true;
 			}
+			if (diagram)
+				continue;
+			QString editorName = mModel->idByIndex(index).diagram().remove("_");
+			if (editorName.contains(tabName))
+				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
 		}
 	}
@@ -810,7 +904,6 @@ void MainWindow::closeTab(QModelIndex const &index)
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
 		if (tab->mvIface()->rootIndex() == index) {
-			qDebug() << " closing tab" << i;
 			closeTab(i);
 			return;
 		}
@@ -883,13 +976,12 @@ void MainWindow::suggestToCreateDiagram()
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
-			//hack
-			if (diagram.diagram() != "Kernel")
-				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagram.diagram()+"Node");
-			else
-				diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/Diagram");
-			//
-			diagramsListWidget.addItem(diagram.diagram());
+			const QString diagramName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramName(diagram.diagram());
+			const QString diagramNodeName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			if (diagramNodeName == " ")
+				continue;
+			diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagramNodeName);
+			diagramsListWidget.addItem(diagramName);
 			i++;
 		}
 	}
@@ -900,6 +992,7 @@ void MainWindow::suggestToCreateDiagram()
 	okButton.setText("Done");
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInCreateListDeselect()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
@@ -907,8 +1000,10 @@ void MainWindow::suggestToCreateDiagram()
 
 	vLayout.addWidget(&label);
 	vLayout.addWidget(&diagramsListWidget);
-	hLayout.addWidget(&cancelButton);
+
 	hLayout.addWidget(&okButton);
+	hLayout.addWidget(&cancelButton);
+
 	vLayout.addLayout(&hLayout);
 
 	dialog.exec();
@@ -937,8 +1032,7 @@ void MainWindow::save()
 {
 	QSettings settings("SPbSU", "QReal");
 	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		toSave = mModel->api().children(ROOT_ID);
-		saveIds();
+		saveAll();
 		return;
 	}
 
@@ -965,20 +1059,27 @@ void MainWindow::save()
 	dialog.exec();
 }
 
-void MainWindow::saveIds()
+void MainWindow::saveAll()
 {
-	if (toSave == mModel->api().children(ROOT_ID)) {
-		mModel->api().save();
-		mModel->resetChangedDiagrams();
-	}
-	else {
-		mModel->api().save(toSave);
-		mModel->resetChangedDiagrams(toSave);
-	}
-
+	mModel->api().saveAll();
+	mModel->resetChangedDiagrams();
 }
 
-void MainWindow::saveAs()
+void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
+{
+	//not implemented
+	//TODO:
+	//create structure to save deleted objects
+	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
+	//add choosing of just created diagrams
+
+	mModel->api().save(toSave);
+	mModel->api().remove(toRemove);
+	mModel->resetChangedDiagrams(toSave);
+	mModel->resetChangedDiagrams(toRemove);
+}
+
+void MainWindow::saveAs()	//TODO: change
 {
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
@@ -989,29 +1090,25 @@ void MainWindow::saveAs()
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-	//TODO: add deleted diagrams to list
-	checked = new bool[toSave.size()];
-	toSave = mModel->api().children(ROOT_ID);
-
+	saveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
-	foreach(Id id, toSave) {
+	foreach(Id id, mModel->api().getOpenedDiagrams()) {
 		listWidget->addItem(id.diagram());
 		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
-			checked[i] = true;
+			saveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 			qDebug() << "checked: " << id.toString() << " at row: " << i;
 		} else {
 			listWidget->item(i)->setCheckState(Qt::Unchecked);
-			checked[i] = false;
+			saveListChecked[i] = false;
 		}
 		i++;
 	}
 
 	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
 					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
-
 	return listWidget;
 }
 
@@ -1019,21 +1116,37 @@ void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
 {
 	QListWidget* listWidget = diagram->listWidget();
 	if (diagram->checkState() == Qt::Unchecked)
-		checked[listWidget->row(diagram)] = false;
+		saveListChecked[listWidget->row(diagram)] = false;
 	else if (diagram->checkState() == Qt::Checked)
-		checked[listWidget->row(diagram)] = true;
+		saveListChecked[listWidget->row(diagram)] = true;
 }
 
 void MainWindow::saveListClosed()
 {
+	IdList toSave;
 	IdList toRemove;
-	for(int i = 0; i < toSave.size(); i++)
-		if (!checked[i])
-			toRemove.append(toSave.at(i));
-	foreach(Id id, toRemove)
-		toSave.removeOne(id);
+	IdList current = mModel->api().children(ROOT_ID);
+	IdList opened = mModel->api().getOpenedDiagrams();
 
-	saveIds();
+	int i = 0;
+	foreach(Id id, opened) {
+		qDebug() << "Was opened: " << id.diagram() << " / " << id.element();
+
+		if (!saveListChecked[i]) {
+			if (!current.contains(id))
+				mModel->addDiagram(id);
+			else
+				continue;
+		}
+		if (current.contains(id))
+			toSave.append(id);
+		else
+			toRemove.append(id);
+		i++;
+	}
+
+	toSave.append(ROOT_ID);
+	saveIds(toSave, toRemove);
 }
 
 void MainWindow::suggestToSave()
@@ -1061,7 +1174,9 @@ void MainWindow::suggestToSave()
 	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
 		saveListWidget->hide();
 		vLayout.removeWidget(saveListWidget);
-	}
+		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveAll()));
+	} else
+		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
 
 	vLayout.addLayout(&hLayout);
 	dialog.setLayout(&vLayout);
@@ -1070,7 +1185,6 @@ void MainWindow::suggestToSave()
 
 	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
 	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
 	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));

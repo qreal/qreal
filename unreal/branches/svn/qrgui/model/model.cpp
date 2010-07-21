@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return (id.element().split("_").back().contains("Diagram", Qt::CaseInsensitive));
+	return ((id != ROOT_ID) && (id.element() == assistApi().editorManager().getEditorInterface(id.editor())->diagramNodeName(id.diagram())));
 }
 
 void Model::init()
@@ -36,7 +36,6 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 	loadSubtreeFromClient(mRootItem);
-	mApi.resetChangedDiagrams();
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
 }
@@ -200,7 +199,6 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 	else {
 		for (int i = row; i < row + count; ++i) {
 			ModelTreeItem *child = parentItem->children().at(i);
-
 			mApi.removeElement(child->id());
 			removeModelItems(child);
 
@@ -452,6 +450,11 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 
 ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
+	if (isDiagram(id)) {
+			mApi.addOpenedDiagram(id);
+			qDebug() << id.toString();
+		}
+
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
@@ -494,7 +497,7 @@ void Model::saveTo(QString const &workingDirectory)
 
 void Model::save()
 {
-	mApi.save();
+	mApi.saveAll();
 	mApi.resetChangedDiagrams();
 }
 
@@ -512,6 +515,11 @@ void Model::exterminate()
 {
 	mApi.exterminate();
 	reinit();
+}
+
+void Model::addDiagram(Id const &id)
+{
+	mApi.addChild(ROOT_ID, id);
 }
 
 void Model::resetChangedDiagrams()
@@ -558,6 +566,12 @@ QModelIndex Model::indexById(Id const &id) const
 		return index(mTreeItems.find(id).value());
 	}
 	return QModelIndex();
+}
+
+Id Model::idByIndex(QModelIndex const &index) const
+{
+	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+	return mTreeItems.key(item);
 }
 
 ModelAssistApi &Model::assistApi()
