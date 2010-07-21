@@ -70,7 +70,9 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 bool EditorManager::unloadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
-	return loader->unload();
+	if (loader != NULL)
+		return loader->unload();
+	return false;
 }
 
 IdList EditorManager::editors() const

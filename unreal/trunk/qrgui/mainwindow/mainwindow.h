@@ -126,7 +126,7 @@ namespace qReal {
 		QStringList diagramsList;
 		void createDiagram(const QString &idString);
 		void loadingNewEditor(QString const &directoryName, QString const &metamodelName,
-				QString const &commandFirst, QString const &commandSecond, QString const &file);
+				QString const &commandFirst, QString const &commandSecond, QString const &extension);
 
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();

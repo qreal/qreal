@@ -606,9 +606,9 @@ void MainWindow::newGenerateEditor()
 }
 
 void MainWindow::loadingNewEditor(const QString &directoryName, const QString &metamodelName,
-		QString const &commandFirst, QString const &commandSecond, QString const &file)
+		QString const &commandFirst, QString const &commandSecond, QString const &extension)
 {
-	if ((commandFirst == "") || (commandSecond == "") || (file == "")) {
+	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
 		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
 		return;
 	}
@@ -630,7 +630,7 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 		foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
 			ui.paletteToolbox->deleteDiagramType(diagram);
 
-		if (!mEditorManager.unloadPlugin(metamodelName + "." + file)) {
+		if (!mEditorManager.unloadPlugin(metamodelName + "." + extension)) {
 			QMessageBox::warning(this, "error", "cannot unload plugin");
 			progress->close();
 			delete progress;
@@ -649,7 +649,7 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mEditorManager.loadPlugin(metamodelName + "." + file)) {
+			if (mEditorManager.loadPlugin(metamodelName + "." + extension)) {
 
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
@@ -792,13 +792,15 @@ void MainWindow::centerOn(const QModelIndex &index)
 	UML::Element* element = scene->getElem(itemId);
 
 	scene->clearSelection();
-	element->setSelected(true);
+	if (element != NULL) {
+		element->setSelected(true);
 
-	float widthTab = ui.tabs->size().width();
-	float heightTab = ui.tabs->size().height();
-	float widthEl = element->boundingRect().width();
-	float heightEl = element->boundingRect().height();
-	view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
+		float widthTab = ui.tabs->size().width();
+		float heightTab = ui.tabs->size().height();
+		float widthEl = element->boundingRect().width();
+		float heightEl = element->boundingRect().height();
+		view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
+	}
 }
 
 void MainWindow::diagramExplorerClicked(const QModelIndex &index)
