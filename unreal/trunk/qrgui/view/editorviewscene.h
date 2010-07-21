@@ -72,6 +72,7 @@ private:
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	void getObjectByGesture();
+	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);
 	void drawGesture();
 	void deleteGesture();
 
