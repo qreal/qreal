@@ -723,7 +723,7 @@ void MainWindow::changeMiniMapSource( int index )
 	if (index != -1) {
 		ui.tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
-		if (editorView != NULL)
+		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
 		{
 			ui.minimapView->setScene(editorView->scene());
 			getCurrentTab()->mvIface()->setModel(mModel);
