@@ -29,6 +29,7 @@
 #include "../generators/java/javaHandler.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../dialogs/editorGeneratorDialog.h"
+#include "../dialogs/checkoutdialog.h"
 #include "../parsers/hascol/hascolParser.h"
 #include "../parsers/xml/xmlParser.h"
 #include "errorReporter.h"
@@ -88,6 +89,7 @@ MainWindow::MainWindow()
 	connect(ui.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(ui.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
+	connect(ui.actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
 	connect(ui.actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
@@ -453,10 +455,28 @@ void MainWindow::toggleShowSplash(bool show)
 	settings.setValue("Splashscreen", show);
 }
 
+void MainWindow::checkoutDialogOk()
+{}
+void MainWindow::checkoutDialogCancel()
+{}
+
+void MainWindow::doCheckout()
+{
+	QString path;
+	QString url;
+	CheckoutDialog *dialog = new CheckoutDialog(this);
+	connect(dialog, SIGNAL(accepted()), this, SLOT(checkoutDialogOk()));
+	connect(dialog, SIGNAL(rejected()), this, SLOT(checkoutDialogCancel()));
+	dialog->show();
+	if (dialog->Accepted)
+	{
+		path = dialog->getDir();
+		url = dialog->getUrl();
+	}
+}
+
 void MainWindow::doCommit()
 {
-	//	QString const Path = getWorkingDir(tr("Select directory with working copy"));
-	//	QString const path = QFileDialog::getExistingDirectory(this, dialogWindowTitle,".", QFileDialog::ShowDirsOnly);
 	QString select = tr("Select directory to commit");
 	QString path = QFileDialog::getExistingDirectory(this, select);
 

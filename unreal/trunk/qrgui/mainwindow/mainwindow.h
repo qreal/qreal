@@ -51,6 +51,8 @@ namespace qReal {
 		void showAbout();
 		void showHelp();
 
+		void checkoutDialogOk();
+		void checkoutDialogCancel();
 		void open();
 		void save();
 		void saveAs();
@@ -65,6 +67,7 @@ namespace qReal {
 
 		void sceneSelectionChanged();
 
+		void doCheckout();
 		void doCommit();
 		void exportToXmi();
 		void generateToJava();
