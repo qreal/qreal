@@ -733,8 +733,6 @@ void MainWindow::openNewEmptyTab()
 
 void MainWindow::centerOn(const QModelIndex &index)
 {
-	this->setMouseTracking(true);
-
 	Id itemId = mModel->idByIndex(index);
 	if (itemId.element() == mModel->assistApi().editorManager().getEditorInterface(itemId.editor())->diagramNodeName(itemId.diagram()))
 		return;
@@ -745,15 +743,11 @@ void MainWindow::centerOn(const QModelIndex &index)
 	scene->clearSelection();
 	element->setSelected(true);
 
-	float x = element->mapToScene(element->boundingRect().topLeft()).x();
-	float y = element->mapToScene(element->boundingRect().topLeft()).y();
 	float widthTab = ui.tabs->size().width();
 	float heightTab = ui.tabs->size().height();
 	float widthEl = element->boundingRect().width();
 	float heightEl = element->boundingRect().height();
-	QRectF centerRect = QRectF(x - (widthTab - widthEl)/2, y - (heightTab - heightEl)/2, widthTab, heightTab);
-	scene->addRect(centerRect, QPen(QColor(0,0,0,0)), QBrush());//TODO: remove it
-	view->ensureVisible(centerRect);
+	view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
 }
 
 void MainWindow::diagramExplorerClicked(const QModelIndex &index)
