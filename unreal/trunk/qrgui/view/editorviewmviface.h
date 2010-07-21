@@ -23,10 +23,10 @@ namespace qReal {
 
 		~EditorViewMViface();
 
+		QModelIndex indexAt(const QPoint &point) const;
 		QRect visualRect(const QModelIndex &index) const;
 		void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
-		
-		QModelIndex indexAt(const QPoint &point) const;
+		bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 
 		EditorViewScene *scene() const;
 
@@ -58,7 +58,7 @@ namespace qReal {
 
 		EditorViewScene *mScene;
 		qReal::EditorView *mView;
-		
+
 
 		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 		QSet<IndexElementPair> mItems;

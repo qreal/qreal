@@ -39,6 +39,19 @@ QModelIndex EditorViewMViface::indexAt(const QPoint &) const
 	return QModelIndex();
 }
 
+bool EditorViewMViface::isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor)
+{
+	QModelIndex prev;
+	QModelIndex curr = descendent;
+	do {
+		if (curr.parent() == ancestor)
+			return true;
+		prev = curr;
+		curr = curr.parent();
+	} while (curr != prev);
+	return false;
+}
+
 QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
 		Qt::KeyboardModifiers)
 {
@@ -95,18 +108,22 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
+		mScene->setEnabled(true);
+
 		QPersistentModelIndex current = model()->index(row, 0, parent);
+		if (!isDescendentOf(current, rootIndex()))
+			continue;
 		Id currentUuid = current.data(roles::idRole).value<Id>();
+		if (currentUuid == ROOT_ID)
+			continue;
 		Id parentUuid;
 		if (parent != rootIndex())
 			parentUuid = parent.data(roles::idRole).value<Id>();
-		mScene->setEnabled(true);
-		if (currentUuid == ROOT_ID)
-			continue;
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
+
 		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
