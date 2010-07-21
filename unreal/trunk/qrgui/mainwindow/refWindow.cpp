@@ -37,6 +37,8 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 				QVariant val = id.toString();
 				item->setData(Qt::ToolTipRole, val);
 				ui->listWidget->addItem(item);
+				if (val == model->data(index, role))
+					item->setSelected(true);
 			}
 		}
 	}
