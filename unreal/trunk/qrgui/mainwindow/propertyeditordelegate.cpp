@@ -53,7 +53,6 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
 														  targModel, role, ind, mainWindow);
 			QVariant data = targModel->data(ind, role);
-			qDebug() << data;
 			return button;
 		}
 	}

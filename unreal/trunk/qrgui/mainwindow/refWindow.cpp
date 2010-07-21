@@ -91,8 +91,6 @@ void RefWindow::noSelectClose()
 {
 	if (mItem)
 		getId(mItem, false);
-	QVariant data = model->data(index, role);
-	model->setData(index, data, role);
 	close();
 }
 
