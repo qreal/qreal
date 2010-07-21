@@ -584,4 +584,7 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 		mElementImpl->drawEndArrow(painter);
 }
 
-void EdgeElement::setColorRect(bool bl){}
+void EdgeElement::setColorRect(bool bl)
+{
+	Q_UNUSED(bl);
+}

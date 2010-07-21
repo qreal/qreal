@@ -76,10 +76,11 @@ namespace qReal {
 		void deleteFromScene(QGraphicsItem *target);
 
 		void activateSubdiagram(QModelIndex const &idx);
-		void activateItemOrDiagram(Id const &id, bool bl = true);
+		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 
 	private slots:
-		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true);
+
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);

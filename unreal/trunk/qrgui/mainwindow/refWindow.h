@@ -39,6 +39,7 @@ private:
 
 private slots:
 	void setEnabledButton();
+	void setElementId();
 };
 
 #endif // REFWINDOW_H

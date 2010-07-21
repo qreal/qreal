@@ -46,6 +46,7 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(noSelectClose()));
 	connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this,
 			SLOT(setEnabledButton()));
+	connect(ui->mButtonOk, SIGNAL(clicked()), this, SLOT(setElementId()));
 }
 
 RefWindow::~RefWindow()
@@ -62,7 +63,10 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 		close();
 	}
 	if (((event->key()) == (Qt::Key_Return)) && (ui->mButtonOk->isEnabled()))
+	{
 		setName();
+		setElementId();
+	}
 }
 
 void RefWindow::setName()
@@ -78,7 +82,7 @@ void RefWindow::getId(QListWidgetItem *item, bool bl)
 {
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
-	mainWindow->activateItemOrDiagram(id, bl);
+	mainWindow->activateItemOrDiagram(id, bl, false);
 }
 
 void RefWindow::noSelectClose()
@@ -91,4 +95,9 @@ void RefWindow::noSelectClose()
 void RefWindow::setEnabledButton()
 {
 	ui->mButtonOk->setEnabled(true);
+}
+
+void RefWindow::setElementId()
+{
+	mainWindow->activateItemOrDiagram(index, false);
 }
