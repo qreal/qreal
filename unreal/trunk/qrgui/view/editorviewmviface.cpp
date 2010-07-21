@@ -94,68 +94,67 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
-	if (parent == rootIndex()) {
-		for (int row = start; row <= end; ++row) {
-			QPersistentModelIndex current = model()->index(row, 0, parent);
-			Id parentUuid = parent.data(roles::idRole).value<Id>();
-			Id uuid = current.data(roles::idRole).value<Id>();
-			mScene->setEnabled(true);
-			if (uuid == ROOT_ID)
-				continue;
-			if (!parent.isValid()) {
-				setRootIndex(current);
-				continue;
-			}
-
-			UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(uuid);
-			QPointF ePos = model()->data(current, roles::positionRole).toPointF();
-			bool needToProcessChildren = true;
-			if (e) {
-				e->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
-				e->setIndex(current);
-				if (item(parent) != NULL)
-					e->setParentItem(item(parent));
-				else {
-					mScene->addItem(e);
-				}
-				setItem(current, e);
-				e->updateData();
-				e->connectToPort();
-				e->initPossibleEdges();
-
-				UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
-				if (nodeE && uuid.element() == "Class") {
-					needToProcessChildren = false;
-					for (int i = 0; i < 2; i++) {
-						QString curChildElementType;
-						if (i == 0)
-							curChildElementType = "MethodsContainer";
-						else
-							curChildElementType = "FieldsContainer";
-						Id newUuid = Id("Kernel_metamodel", "Kernel",
-								curChildElementType, QUuid::createUuid().toString());
-						QByteArray data;
-						QMimeData *mimeData = new QMimeData();
-						QDataStream stream(&data, QIODevice::WriteOnly);
-						QString mimeType = QString("application/x-real-uml-data");
-						QString newElemUuid = newUuid.toString(); //TODO: normal string
-						QString pathToItem = ROOT_ID.toString();
-						QString name = "(anonymous something)";
-						QPointF pos = QPointF(0, 0);
-						stream << newElemUuid;
-						stream << pathToItem;
-						stream << name;
-						stream << pos;
-
-						mimeData->setData(mimeType, data);
-						model()->dropMimeData(mimeData, Qt::CopyAction, model()->rowCount(current), 0, current);
-						delete mimeData;
-					}
-				}
-			}
-			if (needToProcessChildren && model()->hasChildren(current))
-				rowsInserted(current, 0, model()->rowCount(current) - 1);
+	for (int row = start; row <= end; ++row) {
+		QPersistentModelIndex current = model()->index(row, 0, parent);
+		Id currentUuid = current.data(roles::idRole).value<Id>();
+		Id parentUuid;
+		if (parent != rootIndex())
+			parentUuid = parent.data(roles::idRole).value<Id>();
+		mScene->setEnabled(true);
+		if (currentUuid == ROOT_ID)
+			continue;
+		if (!parent.isValid()) {
+			setRootIndex(current);
+			continue;
 		}
+		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+		bool needToProcessChildren = true;
+		if (e) {
+			e->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
+			e->setIndex(current);
+			if (item(parent) != NULL)
+				e->setParentItem(item(parent));
+			else {
+				mScene->addItem(e);
+			}
+			setItem(current, e);
+			e->updateData();
+			e->connectToPort();
+			e->initPossibleEdges();
+
+			UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
+			if (nodeE && currentUuid.element() == "Class") {
+				needToProcessChildren = false;
+				for (int i = 0; i < 2; i++) {
+					QString curChildElementType;
+					if (i == 0)
+						curChildElementType = "MethodsContainer";
+					else
+						curChildElementType = "FieldsContainer";
+					Id newUuid = Id("Kernel_metamodel", "Kernel",
+							curChildElementType, QUuid::createUuid().toString());
+					QByteArray data;
+					QMimeData *mimeData = new QMimeData();
+					QDataStream stream(&data, QIODevice::WriteOnly);
+					QString mimeType = QString("application/x-real-uml-data");
+					QString newElemUuid = newUuid.toString(); //TODO: normal string
+					QString pathToItem = ROOT_ID.toString();
+					QString name = "(anonymous something)";
+					QPointF pos = QPointF(0, 0);
+					stream << newElemUuid;
+					stream << pathToItem;
+					stream << name;
+					stream << pos;
+
+					mimeData->setData(mimeType, data);
+					model()->dropMimeData(mimeData, Qt::CopyAction, model()->rowCount(current), 0, current);
+					delete mimeData;
+				}
+			}
+		}
+		if (needToProcessChildren && model()->hasChildren(current))
+			rowsInserted(current, 0, model()->rowCount(current) - 1);
 	}
 
 	QAbstractItemView::rowsInserted(parent, start, end);

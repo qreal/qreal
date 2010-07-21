@@ -1,43 +1,49 @@
 #include "mainwindow.h"
 
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QtSvg/QSvgGenerator>
-#include <QtCore/QPluginLoader>
-#include <QtGui/QProgressBar>
-#include <QtCore/QSettings>
-#include <QtGui/QPrinter>
-#include <QtGui/QPrintDialog>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtCore/QDebug>
-
 #include <QtGui/QDialog>
+#include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
+#include <QtGui/QPrintDialog>
+#include <QtGui/QProgressBar>
 #include <QtGui/QListWidgetItem>
 
-#include "../dialogs/plugindialog.h"
+#include <QtSvg/QSvgGenerator>
+
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlDatabase>
+
+#include <QtCore/QDebug>
+#include <QtCore/QSettings>
+#include <QtCore/QPluginLoader>
+
+#include "errorReporter.h"
 #include "editorInterface.h"
+#include "preferencesDialog.h"
+#include "shapeEdit/shapeEdit.h"
+#include "openShapeEditorButton.h"
+#include "propertyeditorproxymodel.h"
+#include "gesturesShow/gestureswidget.h"
+
+
 #include "../model/model.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
-#include "../generators/xmi/xmiHandler.h"
-#include "../generators/metaGenerator/metaGenerator.h"
-#include "../generators/java/javaHandler.h"
-#include "../generators/hascol/hascolGenerator.h"
-#include "../dialogs/editorGeneratorDialog.h"
-#include "../dialogs/checkoutdialog.h"
-#include "../parsers/hascol/hascolParser.h"
+#include "../dialogs/plugindialog.h"
 #include "../parsers/xml/xmlParser.h"
-#include "errorReporter.h"
+#include "../dialogs/checkoutdialog.h"
+#include "../generators/xmi/xmiHandler.h"
+#include "../generators/java/javaHandler.h"
+#include "../parsers/hascol/hascolParser.h"
+#include "../dialogs/editorGeneratorDialog.h"
 #include "../editorManager/listenerManager.h"
-#include "shapeEdit/shapeEdit.h"
-#include "gesturesShow/gestureswidget.h"
-#include "preferencesDialog.h"
-#include "openShapeEditorButton.h"
+#include "../generators/hascol/hascolGenerator.h"
+#include "../generators/metaGenerator/metaGenerator.h"
+
 //#include "../qrrepo/svnClient.h"
 
 
@@ -404,10 +410,14 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer()
 {
-	QModelIndex idx = ui.diagramExplorer->currentIndex();
-	closeTab(idx);
-	if (idx.isValid())
-		mModel->removeRow(idx.row(), idx.parent());
+	QModelIndex index = ui.diagramExplorer->currentIndex();
+	closeTab(index);
+	if (index.isValid()) {
+		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
+		if (pModel->getModelIndex() == index)
+			pModel->setIndex(QModelIndex());
+		mModel->removeRow(index.row(), index.parent());
+	}
 }
 
 void MainWindow::deleteFromScene()
@@ -418,12 +428,16 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
-
 	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
 	{
-		qDebug() << "Deleting object, uuid: " << elem->uuid().toString();
-		if (elem->index().isValid())
-			mModel->removeRow(elem->index().row(), elem->index().parent());
+		if (elem->index().isValid()) {
+			QPersistentModelIndex index = elem->index();
+			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
+			if (pModel->getModelIndex() == index)
+				pModel->setIndex(QModelIndex());
+			ui.propertyEditor->setRootIndex(QModelIndex());
+			mModel->removeRow(index.row(), index.parent());
+		}
 	}
 }
 
