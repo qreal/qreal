@@ -346,8 +346,11 @@ bool GraphicType::resolve()
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent)
-			foreach (PossibleEdge pEdge,gParent->mPossibleEdges)
-				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,mDiagram->name()+"_"+name())));
+			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
+			qDebug() << "\n\n\t\t" << pEdge.second.second;
+			qDebug() << "\t\t" << mDiagram->name()+"_"+name();
+				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));//mDiagram->name()+"_"+name())));
+			}
 	}
 
 	mResolvingFinished = true;
