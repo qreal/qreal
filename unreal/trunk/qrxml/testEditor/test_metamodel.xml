@@ -1,10 +1,14 @@
 <metamodel xmlns="http://schema.real.com/schema/">
     <include>../commonXml/kernel_metamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="Test Diagram" nodeName="TestDiagramNode" name="TestDiagram">
+    <diagram displayedName="Test Diagram" nodeName="TestDiagramNode1" name="TestDiagram">
+<!--      <diagramNodes>	-->
+<!--        <diagramNode name="TestDiagramNode1">	-->
+<!--	    <diagramNode name="TestDiagramNode2">	-->
+<!--      </diagramNodes>	-->
       <graphicTypes>
 
-        <node displayedName="Test Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="TestDiagramNode">
+        <node displayedName="Test Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="TestDiagramNode1">
           <graphics>
             <picture sizex="200" sizey="200">
               <line y1="0" x1="20" y2="0" x2="180"/>
@@ -36,6 +40,40 @@
               <contains type="Node03"/>
             </container>
           </logic>
+        </node>
+	
+	<node displayedName="Test Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="TestDiagramNode2">
+	 <graphics>
+	  <picture sizex="200" sizey="200">
+	   <line y1="0" x1="20" y2="0" x2="180"/>
+	   <line y1="200" x1="20" y2="200" x2="180"/>
+	   <line y1="20" x1="0" y2="180" x2="0"/>
+	   <line y1="20" x1="200" y2="180" x2="200"/>
+	   <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+	   <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+	   <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+	   <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+	  </picture>
+	  <labels>
+	   <label x="40" y="10" textBinded="name"/>
+   	  </labels>
+   	  <ports>
+	   <pointPort x="0" y="100"/>
+	   <pointPort x="100" y="0"/>
+	   <pointPort x="200" y="100"/>
+	   <pointPort x="100" y="200"/>
+   	  </ports>
+	 </graphics>
+	 <logic>
+	 <generalizations>
+	  <parent parentName="Kernel::Diagram"/>
+	 </generalizations>
+	  <container>
+	   <contains type="Node01"/>
+	   <contains type="Node02"/>
+	   <contains type="Node03"/>
+	  </container>
+	 </logic>
         </node>
 
         <node displayedName="Node01" name="Node01">
