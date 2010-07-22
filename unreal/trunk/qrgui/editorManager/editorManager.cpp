@@ -38,6 +38,7 @@ EditorManager::EditorManager(QObject *parent)
 			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 			if (iEditor) {
 				mPluginsLoaded += iEditor->id();
+				mPluginFileName.insert(iEditor->id(), fileName);
 				mPluginIface[iEditor->id()] = iEditor;
 			}
 		} else {
@@ -58,6 +59,7 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 		if (iEditor) {
 			mPluginsLoaded += iEditor->id();
+			mPluginFileName.insert(iEditor->id(), pluginName);
 			mPluginIface[iEditor->id()] = iEditor;
 			return true;
 		}
@@ -69,7 +71,7 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 
 bool EditorManager::unloadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = mLoaders[pluginName];
+	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL)
 		return loader->unload();
 	return false;

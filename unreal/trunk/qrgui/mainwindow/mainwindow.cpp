@@ -645,7 +645,7 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 		foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName)))
 			ui.paletteToolbox->deleteDiagramType(diagram);
 
-		if (!mEditorManager.unloadPlugin(metamodelName + "." + extension)) {
+		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
 			QMessageBox::warning(this, "error", "cannot unload plugin");
 			progress->close();
 			delete progress;

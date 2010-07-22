@@ -118,6 +118,7 @@ void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
 	mDiagram = diagramId;
 
 	setStandartConfigurations(diagramId, parent, name, displayedName);
+	mApi.setProperty(diagramId, "nodeName", diagram.attribute("nodeName", ""));
 
 	createDiagramAttributes(diagram, diagramId);
 
@@ -495,7 +496,7 @@ void XmlParser::initConnection(const QDomElement &connection, const Id &elementI
 	setStandartConfigurations(connectionId, elementId, connection.attribute("name", ""),
 			connection.attribute("displayedName", ""));
 
-	mApi.setProperty(connectionId, "Type", connection.attribute("type", ""));
+	mApi.setProperty(connectionId, "type", connection.attribute("type", ""));
 }
 
 void XmlParser::initUsage(const QDomElement &usage, const Id &elementId)

@@ -90,8 +90,9 @@ void MetaGenerator::createDiagrams(QDomElement &parent, const Id &id)
 		QString const objectType = mApi.typeName(typeDiagram);
 		if (objectType == "MetaEditorDiagramNode") {
 			QDomElement diagram = mDocument.createElement("diagram");
-			ensureCorrectness (typeDiagram, diagram, "name", mApi.name(typeDiagram));
-			ensureCorrectness (typeDiagram, diagram, "displayedName", mApi.stringProperty(typeDiagram, "displayedName"));
+			ensureCorrectness(typeDiagram, diagram, "name", mApi.name(typeDiagram));
+			ensureCorrectness(typeDiagram, diagram, "displayedName", mApi.stringProperty(typeDiagram, "displayedName"));
+			ensureCorrectness(typeDiagram, diagram, "nodeName", mApi.stringProperty(typeDiagram, "nodeName"));
 			parent.appendChild(diagram);
 
 			serializeObjects(diagram, typeDiagram);
@@ -335,7 +336,7 @@ void MetaGenerator::newSetConnections(QDomElement &parent, const Id &id,
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == typeName) {
 			QDomElement connection = mDocument.createElement(internalTagName);
-			ensureCorrectness(idChild, connection,"type", mApi.stringProperty(idChild, "Type"));
+			ensureCorrectness(idChild, connection,"type", mApi.stringProperty(idChild, "type"));
 			connectionsTag.appendChild(connection);
 		}
 	}

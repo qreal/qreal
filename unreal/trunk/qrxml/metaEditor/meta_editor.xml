@@ -107,6 +107,7 @@
 			</generalizations>
 			<properties>
 			  <property type="string" name="displayedName"/>
+  			  <property type="string" name="nodeName"/>
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntityNode"/>
@@ -428,7 +429,7 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="string" name="Type"/>
+			  <property type="string" name="type"/>
 			</properties>
 			<containers/>
 		  </logic>
@@ -501,7 +502,7 @@
 			<containers/>
 		  </logic>
 		</node>
-		<!--<edge name="Inheritance" displayedName="Inheritance">
+		<edge name="Inheritance" displayedName="Inheritance">
 		  <graphics>
 			<lineType type="solidLine"/>
 		  </graphics>
@@ -526,7 +527,7 @@
 			  <parent parentName="Kernel::Relationship"/>
 			</generalizations>
 		  </logic>
-		</edge>-->
+		</edge>
 		<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
 		  <graphics>
 			<picture sizex="25" sizey="25">
