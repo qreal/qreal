@@ -137,6 +137,8 @@ namespace qReal {
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
+		int getTabIndex(const QModelIndex &index);
+
 			signals:
 				void gesturesShowed();
 				void currentIdealGestureChanged();

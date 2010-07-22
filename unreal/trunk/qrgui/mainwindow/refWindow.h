@@ -35,6 +35,7 @@ private:
 	const QModelIndex &index;
 	qReal::MainWindow *mainWindow;
 	QListWidgetItem *mItem;
+	QList<QListWidgetItem *> elementList;
 
 private slots:
 	void enableOkButton(QListWidgetItem* item);

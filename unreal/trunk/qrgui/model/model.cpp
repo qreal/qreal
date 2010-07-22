@@ -90,6 +90,7 @@ QVariant Model::data(QModelIndex const &index, int role) const
 
 bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 {
+	qDebug() << value;
 	if (index.isValid()) {
 		qDebug() << value << role;
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());

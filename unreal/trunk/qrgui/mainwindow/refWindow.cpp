@@ -18,6 +18,9 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	ui->setupUi(this);
 	qReal::IdList idList = api->elementsByType(typeName);
 	int size = idList.size();
+	ui->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
+	QString str = model->data(index, role).toString();
+	int sizeStr = str.count("$$");
 	for (int i = 0; i < size; ++i)
 	{
 		qReal::IdList parentsIdList = api->parents(idList[i]);
@@ -33,8 +36,11 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 				QVariant val = idList[i].toString();
 				item->setData(Qt::ToolTipRole, val);
 				ui->listWidget->addItem(item);
-				if (val == model->data(index, role))
-					item->setSelected(true);
+				for (int k = 0; k < sizeStr; ++k)
+				{
+					if (val == str.section("$$", k, k))
+						item->setSelected(true);
+				}
 			}
 		}
 	}
@@ -69,32 +75,37 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 
 void RefWindow::setPropertyValue()
 {
-	QListWidgetItem* item = ui->listWidget->currentItem();
-	if (item)
-		model->setData(index, item->data(Qt::ToolTipRole), role);
-	highlightElement(mItem, false);
+	QList<QListWidgetItem *> itemList = ui->listWidget->selectedItems();
+	if (!itemList.isEmpty())
+	{
+		QString idStr(NULL);
+		for (int i = 0; i < itemList.size(); ++i)
+			idStr.append(itemList[i]->data(Qt::ToolTipRole).toString() + "$$");
+		model->setData(index, idStr, role);
+	}
 	close();
 }
 
 void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
-	if (mItem)
-	{
-		qReal::Id const id = qReal::Id::loadFromString(mItem->data(Qt::ToolTipRole).toString());
-		mainWindow->activateItemOrDiagram(id, false, false);
-	}
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
-	mainWindow->activateItemOrDiagram(id, bl, false);
+	if (item->isSelected())
+	{
+		mainWindow->activateItemOrDiagram(id, true, false);
+		elementList << item;
+	}
+	else
+	{
+		mainWindow->activateItemOrDiagram(id, false, false);
+	}
 }
 
 void RefWindow::cancel()
 {
-	if (mItem)
-		highlightElement(mItem, false);
 	QVariant data = model->data(index, role);
 	model->setData(index, data, role);
-	mainWindow->activateItemOrDiagram(index, false);
+	setElementId();
 	close();
 }
 
@@ -106,5 +117,10 @@ void RefWindow::enableOkButton(QListWidgetItem* item)
 
 void RefWindow::setElementId()
 {
+	for (int i = 0; i < elementList.size(); ++i)
+	{
+		qReal::Id const id = qReal::Id::loadFromString(elementList[i]->data(Qt::ToolTipRole).toString());
+		mainWindow->activateItemOrDiagram(id, false, false);
+	}
 	mainWindow->activateItemOrDiagram(index, false);
 }

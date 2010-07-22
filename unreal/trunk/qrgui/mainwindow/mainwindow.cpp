@@ -262,6 +262,9 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 {
 	QModelIndex parent = idx.parent();
 
+	int numTab = getTabIndex(idx);
+	if (numTab != -1)
+		ui.tabs->setCurrentIndex(numTab);
 	if (ui.tabs->isEnabled())
 	{
 		if (parent == mModel->rootIndex()) {
@@ -1219,4 +1222,17 @@ void MainWindow::suggestToSave()
 
 	dialog.setWindowTitle(QString("Saving"));
 	dialog.exec();
+}
+
+int MainWindow::getTabIndex(const QModelIndex &index)
+{
+	for (int i = 0; i < ui.tabs->count(); ++i)
+	{
+		EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(i));
+		if (!editor)
+			continue;
+		if (index.parent() == editor->mvIface()->rootIndex())
+			return i;
+	}
+	return -1;
 }
