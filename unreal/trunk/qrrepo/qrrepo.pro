@@ -25,12 +25,14 @@ HEADERS += \
 	private/client.h \
 	private/classes/logicObject.h \
 	private/qrRepoGlobal.h \
-	private/serializer.h 
+	private/serializer.h \
+	svnClient.h
 
 SOURCES += \
 	private/client.cpp \
 	private/classes/logicObject.cpp \
-	private/serializer.cpp 
+	private/serializer.cpp \
+	svnClient.cpp
 
 # API репозитория
 HEADERS += repoApi.h \
@@ -39,6 +41,10 @@ SOURCES += private/repoApi.cpp \
 
 #svn support
 INCLUDEPATH += include
+unix::LIBS += -L. \
+		 -lsvncpp \
+		 -lapr-1 \
+		 -lsvn_client-1
 
 # Код из qrgui/kernel, который тоже неплохо бы куда-нибудь вынести
 include(qrguiCode.pri)

@@ -7,7 +7,6 @@ using namespace svn;
 
 class SvnClient
 {
-
 public:
 	Context *ctx;
 	Targets *targets;
