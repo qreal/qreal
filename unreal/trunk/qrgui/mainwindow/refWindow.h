@@ -37,6 +37,6 @@ private:
 	QListWidgetItem *mItem;
 
 private slots:
-	void enableOkButton();
+	void enableOkButton(QListWidgetItem* item);
 	void setElementId();
 };

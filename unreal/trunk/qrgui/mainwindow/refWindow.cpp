@@ -42,8 +42,8 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(highlightElement(QListWidgetItem*)));
 	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(cancel()));
-	connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this,
-			SLOT(enableOkButton()));
+	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
+			SLOT(enableOkButton(QListWidgetItem*)));
 	connect(ui->mButtonOk, SIGNAL(clicked()), this, SLOT(setElementId()));
 }
 
@@ -78,6 +78,11 @@ void RefWindow::setPropertyValue()
 
 void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
+	if (mItem)
+	{
+		qReal::Id const id = qReal::Id::loadFromString(mItem->data(Qt::ToolTipRole).toString());
+		mainWindow->activateItemOrDiagram(id, false, false);
+	}
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	mainWindow->activateItemOrDiagram(id, bl, false);
@@ -87,11 +92,15 @@ void RefWindow::cancel()
 {
 	if (mItem)
 		highlightElement(mItem, false);
+	QVariant data = model->data(index, role);
+	model->setData(index, data, role);
+	mainWindow->activateItemOrDiagram(index, false);
 	close();
 }
 
-void RefWindow::enableOkButton()
+void RefWindow::enableOkButton(QListWidgetItem* item)
 {
+	Q_UNUSED(item);
 	ui->mButtonOk->setEnabled(true);
 }
 

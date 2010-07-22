@@ -101,6 +101,8 @@ void EditorViewMViface::reset()
 
 void EditorViewMViface::setRootIndex(const QModelIndex &index)
 {
+	if (index == rootIndex())
+		return;
 	QAbstractItemView::setRootIndex(index);
 	reset();
 }
