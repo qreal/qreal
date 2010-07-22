@@ -1,4 +1,5 @@
 #include "editorviewscene.h"
+#include "math.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -753,13 +754,24 @@ void EditorViewScene::drawGesture()
 {
 	QLineF line = mouseMovementManager->newLine();
 	QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
+	double size = mGesture.size() * 0.1;
+	double color_ratio = pow(fabs(sin(size)), 1.5);
+	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
+	item->setPen(penColor);
 	this->addItem(item);
 	mGesture.push_back(item);
+	int ellipseSize = 2;
+	QPointF bound(ellipseSize, ellipseSize);
+	QRectF rect(line.p2() + bound, line.p2() - bound);
+	QGraphicsEllipseItem * ellipseItem = new QGraphicsEllipseItem(rect, NULL, this);
+	ellipseItem->setPen(penColor);
+	this->addItem(ellipseItem);
+	mGesture.push_back(ellipseItem);
 }
 
 void EditorViewScene::deleteGesture()
 {
-	foreach (QGraphicsLineItem * item, mGesture)
+	foreach (QGraphicsItem * item, mGesture)
 	{
 		this->removeItem(item);;
 	}

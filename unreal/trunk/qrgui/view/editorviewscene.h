@@ -99,7 +99,7 @@ private:
 	qReal::model::Model* model() const;
 
 	QPointF newElementsPosition;
-	QList<QGraphicsLineItem*> mGesture;
+	QList<QGraphicsItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;
