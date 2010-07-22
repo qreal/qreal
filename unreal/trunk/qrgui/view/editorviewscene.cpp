@@ -483,7 +483,7 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 		menu.addAction(action);
 
 		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()));
-		mActionSignalMapper->setMapping(action, action->text());
+		mActionSignalMapper->setMapping(action, action->text() + "###" + e->uuid().toString());
 	}
 	menu.addSeparator();
 

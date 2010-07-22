@@ -10,10 +10,13 @@ MethodEditorDialog::MethodEditorDialog(QWidget *parent) :
 	ui->nameEdit->setText("method_name");
 	ui->returnTypeEdit->setText("int");
 
-	connect(ui->buttonBox, SIGNAL(accepted()),
-		this, SLOT(generateMethodString()));
 	connect(ui->addParameterBtn, SIGNAL(clicked()),
 		this, SLOT(createParameter()));
+	
+	connect(ui->buttonBox, SIGNAL(accepted()),
+		this, SLOT(accept()));
+	connect(ui->buttonBox, SIGNAL(rejected()),
+		this, SLOT(reject()));
 }
 
 MethodEditorDialog::~MethodEditorDialog()
@@ -49,7 +52,6 @@ QString MethodEditorDialog::generateMethodString()
 
 	resultStr += "): " + ui->returnTypeEdit->text();
 
-	qDebug() << "AAA___________" << resultStr;
 	return resultStr;
 }
 

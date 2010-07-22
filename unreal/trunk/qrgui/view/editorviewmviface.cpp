@@ -161,7 +161,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 					QMimeData *mimeData = new QMimeData();
 					QDataStream stream(&data, QIODevice::WriteOnly);
 					QString mimeType = QString("application/x-real-uml-data");
-					QString newElemUuid = newUuid.toString(); //TODO: normal string
+					QString newElemUuid = newUuid.toString();
 					QString pathToItem = ROOT_ID.toString();
 					QString name = "(anonymous something)";
 					QPointF pos = QPointF(0, 0);
