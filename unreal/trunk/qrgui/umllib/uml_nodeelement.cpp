@@ -752,6 +752,16 @@ void NodeElement::hideEmbeddedLinkers()
 		embeddedLinker->setCovered(false);
 }
 
+bool NodeElement::getConnectingState()
+{
+	return connecting;
+}
+
+void NodeElement::setConnectingState(bool arg)
+{
+	connecting = arg;
+}
+
 bool NodeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())

@@ -82,6 +82,9 @@ namespace UML {
 
 		virtual void setColorRect(bool bl);
 
+		bool getConnectingState();
+		void setConnectingState(bool arg);
+
 	private slots:
 		void switchGrid(bool isChecked);
 
@@ -187,6 +190,8 @@ namespace UML {
 		QPointF mPos;
 		bool inHor;
 		bool isColorRect;
+
+		bool connecting;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
 	};

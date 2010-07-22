@@ -338,6 +338,7 @@ void MainWindow::sceneSelectionChanged()
 					graphicsItems.removeOne(edge);
 				}
 			}
+			//TODO: remove it? length < 2
 			if (length > 1) {
 				foreach(QGraphicsItem* item, graphicsItems) {
 					UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);

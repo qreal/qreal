@@ -143,7 +143,15 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->connectToPort();
 			elem->initPossibleEdges();
 
-			mScene->clearSelection();
+			bool isEdgeFromEmbeddedLinker = false;
+			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
+			if (selectedItems.size() == 1) {
+				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
+				if ((master) && (master->getConnectingState()))
+					isEdgeFromEmbeddedLinker = true;
+			}
+			if (!isEdgeFromEmbeddedLinker)
+				mScene->clearSelection();
 			elem->setSelected(true);
 
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);

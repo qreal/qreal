@@ -1,12 +1,13 @@
 #include "embeddedLinker.h"
 #include "uml_nodeelement.h"
+#include "uml_edgeelement.h"
 
+#include <math.h>
 #include <QtGui/QStyle>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtCore/QDebug>
 #include <QSettings>
-#include <math.h>
 
 #include "../view/editorviewscene.h"
 #include "../mainwindow/mainwindow.h"
@@ -34,6 +35,11 @@ EmbeddedLinker::EmbeddedLinker()
 EmbeddedLinker::~EmbeddedLinker()
 {
 
+}
+
+NodeElement* EmbeddedLinker::getMaster()
+{
+	return master;
 }
 
 void EmbeddedLinker::setMaster(NodeElement *element)
@@ -207,32 +213,20 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene*>(master->scene());
 
-	if (scene != NULL)
+	if (scene)
 	{
 		const QString type = "qrm:/" + master->uuid().editor() + "/" +
 							 master->uuid().diagram() + "/" + edgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
 		{
+			master->setConnectingState(true);
 			Id *edgeId = scene->createElement(type, event->scenePos());
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeId));
 		}
-		if (mEdge != NULL)
+		if (mEdge)
 		{
-			mEdge->setSelected(true);
 			master->setSelected(false);
-
 			QPointF point = mapToItem(master,event->pos());
-			/**
-			if (point.x() > master->boundingRect().right())
-				point.setX(master->boundingRect().right());
-			if (point.x() < master->boundingRect().left())
-				point.setX(master->boundingRect().left());
-			if (point.y() > master->boundingRect().bottom())
-				point.setY(master->boundingRect().bottom());
-			if (point.y() < master->boundingRect().top())
-				point.setY(master->boundingRect().top());
-			**/
-
 			mEdge->placeStartTo(mEdge->mapFromItem(master,master->getNearestPort(point)));
 			mEdge->placeEndTo(mapToItem(mEdge,event->pos()));
 		}
