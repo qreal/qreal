@@ -135,6 +135,7 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&mDelegate);
+
 	mDelegate.setMainWindow(this);
 
 	connect(ui.diagramExplorer,SIGNAL(clicked(QModelIndex const &)),this,SLOT(diagramExplorerClicked(QModelIndex)));
@@ -821,6 +822,11 @@ void MainWindow::centerOn(const QModelIndex &index)
 		float heightEl = element->boundingRect().height();
 		view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
 	}
+}
+
+void MainWindow::propertyEditorScrollTo(const QModelIndex &index)
+{
+	ui.propertyEditor->scrollTo(index);
 }
 
 void MainWindow::diagramExplorerClicked(const QModelIndex &index)

@@ -57,6 +57,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		}
 	}
 	QLineEdit *editor = new QLineEdit(parent);
+
 	return editor;
 }
 
@@ -91,6 +92,7 @@ void PropertyEditorDelegate::setModelData(QWidget *editor,
 		return;
 
 	model->setData(index, value, Qt::EditRole);
+	mMainWindow->propertyEditorScrollTo(index);
 }
 
 void PropertyEditorDelegate::updateEditorGeometry(QWidget *editor,

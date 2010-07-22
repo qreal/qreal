@@ -78,6 +78,7 @@ namespace qReal {
 		void activateSubdiagram(QModelIndex const &idx);
 		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+		void propertyEditorScrollTo(QModelIndex const &index);
 
 	private slots:
 
@@ -92,19 +93,22 @@ namespace qReal {
 		void generateToHascol();
 		void parseHascol();
 		void showPreferencesDialog();
-		void initCurrentTab(const QModelIndex &rootIndex);
+
 		void centerOn(const QModelIndex &rootIndex);
 		void diagramExplorerClicked(const QModelIndex &rootIndex);
-		void openNewTab(const QModelIndex &index);
+
 		void openNewEmptyTab();
-		void switchGrid(bool isChecked);
+		void openNewTab(const QModelIndex &index);
+		void initCurrentTab(const QModelIndex &rootIndex);
+
 		void showGestures();
+		void switchGrid(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
+
+		void saveListClosed();
 
 		void diagramInCreateListDeselect();
 		void diagramInCreateListSelected(int num);
-
-		void saveListClosed();
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 	private:
 		QCloseEvent* clEvent;
