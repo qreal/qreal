@@ -3,6 +3,7 @@
 
 #include <QtCore/QDebug>
 #include <QUuid>
+#include <QVariant>
 #include "../../qrgui/kernel/ids.h"
 
 using namespace kernelEditor;
@@ -24,7 +25,7 @@ void ContextMenuActionTrigger::contextMenuActionTriggered(QString const &name)
 			if (id.element() == "MethodsContainer") {
 				Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
 							"Method"));
-				
+				mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateMethodString()));	
 			} else if (id.element() == "Class") {
 			}
 		}

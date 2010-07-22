@@ -64,6 +64,7 @@ namespace qReal {
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
+
 		public slots:
 			void save();
 			void exterminate();

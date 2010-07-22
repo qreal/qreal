@@ -13,12 +13,12 @@ class MethodEditorDialog : public QDialog {
 	public:
 		MethodEditorDialog(QWidget *parent = 0);
 		~MethodEditorDialog();
+		QString generateMethodString();
 
 	protected:
 		void changeEvent(QEvent *e);
 
 	private slots:
-		QString generateMethodString();
 		void createParameter();
 
 	private:

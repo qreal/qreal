@@ -94,3 +94,15 @@ IdList ModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
 	return diagramsFromList(editorManager().getUsedTypes(element.type()));
 }
+
+void ModelAssistApi::setProperty(qReal::Id const &elem, int const role, QVariant const &newValue)
+{
+
+	mModel.setData(mModel.indexById(elem), newValue, role);
+}
+
+QVariant ModelAssistApi::getProperty(qReal::Id const &elem, int const role) const
+{
+	return mModel.data(mModel.indexById(elem), role);
+}
+
