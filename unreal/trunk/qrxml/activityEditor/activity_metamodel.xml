@@ -1,4 +1,4 @@
-<metamodel xmlns="http://schema.real.com/schema/">
+  <metamodel xmlns="http://schema.real.com/schema/">
     <include>../commonXml/kernel_metamodel.xml</include>
     <include>../commonXml/basicbehaviors_metamodel.xml</include>
     <include>../commonXml/basicactions_metamodel.xml</include>
@@ -183,10 +183,10 @@
               <usage type="ClassDiagram::ClassMethod"/>
               <usage type="ClassDiagram::ClassField"/>
             </usages>
-			<action/>
+            <action/>
           </logic>
         </node>
-        <node displayedName="Action Input Pin" name="ActionInputPin">
+        <node displayedName="Action Input Pin" path="0, 0 : 40, 0 : 40, 40 : 0, 40 : 0, 0 : " name="ActionInputPin">
           <graphics>
             <picture sizex="20" sizey="20">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
@@ -214,7 +214,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Action Input Pin"/>
             </generalizations>
-			<pin/>
+            <pin/>
           </logic>
         </node>
         <node displayedName="Activity" name="Activity">
@@ -265,7 +265,7 @@
             <container>
               <contains type="ActivityDiagram::Action"/>
               <contains type="ActivityDiagram::Accept Event Action"/>
-	      <properties>
+              <properties>
                 <forestalling size="25"/>
               </properties>
             </container>
@@ -277,7 +277,7 @@
             <labels>
               <label x="40" y="10" textBinded="name"/>
               <label x="40" y="20" textBinded="guard"/>
-              <!-- guard ������ ���� � ���������� ������� -->
+              <!-- guard ?????? ???? ? ?????????? ??????? -->
             </labels>
           </graphics>
           <logic>
@@ -342,7 +342,7 @@
             </properties>
           </logic>
         </node>
-        <node displayedName="Activity Parameter Node" name="ActivityParameterNode">
+        <node displayedName="Activity Parameter Node" path="0, 0 : 80, 0 : 80, 60 : 0, 60 : 0, 0 : " name="ActivityParameterNode">
           <graphics>
             <picture sizex="80" sizey="60">
               <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="60" stroke-width="1" x2="80" fill-style="solid"/>
@@ -703,7 +703,7 @@
             </generalizations>
           </logic>
         </node>
-        <node displayedName="Input Pin" name="InputPin">
+        <node displayedName="Input Pin" path="0, 0 : 0, 40 : 40, 40 : 40, 0 : 0, 0 : " name="InputPin">
           <graphics>
             <picture sizex="20" sizey="20">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
@@ -731,7 +731,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Input Pin"/>
             </generalizations>
-			<pin/>
+            <pin/>
           </logic>
         </node>
         <node displayedName="Interruptible Activity Region" name="InterruptibleActivityRegion">
@@ -856,7 +856,7 @@
             </properties>
           </logic>
         </edge>
-        <node displayedName="Object Node" name="ObjectNode">
+        <node displayedName="Object Node" path="1, 1 : 79, 1 : 79, 59 : 1, 59 : 1, 1 : " name="ObjectNode">
           <graphics>
             <picture sizex="80" sizey="60">
               <rectangle fill="#f8f8f8" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="59" stroke-width="1" x2="79" fill-style="solid"/>
@@ -883,7 +883,7 @@
             </properties>
           </logic>
         </node>
-        <node displayedName="Output Pin" name="OutputPin">
+        <node displayedName="Output Pin" path="0, 0 : 40, 0 : 40, 40 : 0, 40 : 0, 0 : " name="OutputPin">
           <graphics>
             <picture sizex="20" sizey="20">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
@@ -911,7 +911,7 @@
             <generalizations>
               <parent parentName="Basic Actions::Output Pin"/>
             </generalizations>
-			<pin/>
+            <pin/>
           </logic>
         </node>
         <node displayedName="Parameter" name="Parameter">
@@ -920,8 +920,7 @@
               <parent parentName="Kernel::Parameter"/>
             </generalizations>
             <properties>
-              <property type="ParameterEffectKind" name="effect">
-              </property>
+              <property type="ParameterEffectKind" name="effect"/>
               <property type="bool" name="isException">
                 <default>false</default>
               </property>

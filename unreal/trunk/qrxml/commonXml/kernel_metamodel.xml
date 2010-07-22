@@ -1,7 +1,7 @@
-<metamodel xmlns="http://schema.real.com/schema/">
+  <metamodel xmlns="http://schema.real.com/schema/">
     <listener class="kernelEditor::ContextMenuActionTrigger" file="contextMenuActionTrigger"/>
     <namespace>UML 2.1</namespace>
-    <diagram name="Kernel" nodeName="Diagram">
+    <diagram nodeName="Diagram" name="Kernel">
       <nonGraphicTypes>
         <enum name="bool">
           <value>false</value>
@@ -26,7 +26,6 @@
         </enum>
       </nonGraphicTypes>
       <graphicTypes>
-
         <edge name="Association">
           <graphics>
             <lineType type="solidLine"/>
@@ -48,7 +47,6 @@
             </properties>
           </logic>
         </edge>
-	
         <edge name="Directed Association">
           <!-- it doesn't exist. The problem is that Association has 2 different pictures and we can do it just entering a Directed Relation -->
           <graphics>
@@ -63,7 +61,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Behavioral Feature">
           <logic>
             <generalizations>
@@ -76,7 +73,6 @@
             </properties>
           </logic>
         </node>
-
         <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="Class">
           <graphics>
             <picture sizex="150" sizey="25">
@@ -130,8 +126,7 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
-        <node name="MethodsContainer">
+        <node path="0, 0 : 150, 0 : 150, 25 : 0, 25 : 0, 0 : " name="MethodsContainer">
           <graphics>
             <picture sizex="150" sizey="25">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
@@ -158,11 +153,9 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Method">
           <graphics>
-            <picture sizex="150" sizey="25">
-            </picture>
+            <picture sizex="150" sizey="25"/>
             <labels>
               <label x="0" y="0" textBinded="name"/>
             </labels>
@@ -176,8 +169,7 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
-        <node name="FieldsContainer">
+        <node path="0, 0 : 0, 25 : 150, 25 : 150, 0 : 0, 0 : " name="FieldsContainer">
           <graphics>
             <picture sizex="150" sizey="25">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
@@ -204,11 +196,9 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Field">
           <graphics>
-            <picture sizex="150" sizey="25">
-            </picture>
+            <picture sizex="150" sizey="25"/>
             <labels>
               <label x="0" y="0" textBinded="name"/>
             </labels>
@@ -222,7 +212,6 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Classifier">
           <logic>
             <generalizations>
@@ -338,7 +327,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Directed Relationship">
           <graphics>
             <lineType type="solidLine"/>
@@ -352,7 +340,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="KernelElement">
           <logic>
             <properties>
@@ -360,7 +347,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Element Import">
           <graphics>
             <lineType type="dashLine"/>
@@ -380,7 +366,6 @@
             </properties>
           </logic>
         </edge>
-	
         <node name="Enumeration">
           <logic>
             <generalizations>
@@ -424,7 +409,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Generalization">
           <graphics>
             <lineType type="solidLine"/>
@@ -444,7 +428,6 @@
             </properties>
           </logic>
         </edge>
-	
         <node path="0, 50 : 75, 50 : 75, 0 : 0, 0 : " name="Instance Specification">
           <graphics>
             <picture sizex="150" sizey="210">
@@ -576,9 +559,9 @@
               <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
-              <!-- � ����� ��� �������� ����� ���, ��� ����� ���� �� ��� ����������� � ������� ����������.
-							������� �������� name ����������� ������������� ����, ���� ���� �� �����.
-							��������� ��� � xml-�� �� ���� - ����� ����� ������� ����������� -->
+              <!-- ? ????? ??? ???????? ????? ???, ??? ????? ???? ?? ??? ??????????? ? ??????? ??????????.
+							??????? ???????? name ??????????? ????????????? ????, ???? ???? ?? ?????.
+							????????? ??? ? xml-?? ?? ???? - ????? ????? ??????? ??????????? -->
               <!-- <property type="string" name="name" /> -->
               <property type="Visibility Kind" name="visibility">
                 <default>private</default>
@@ -680,7 +663,6 @@
             <properties/>
           </logic>
         </node>
-	
         <edge name="Package Import">
           <graphics>
             <lineType type="dashLine"/>
@@ -702,7 +684,6 @@
             </properties>
           </logic>
         </edge>
-	
         <edge name="Package Merge">
           <graphics>
             <lineType type="dashLine"/>
@@ -719,7 +700,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Parameter">
           <logic>
             <generalizations>
@@ -780,7 +760,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Relationship">
           <logic>
             <generalizations>
@@ -788,7 +767,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Slot">
           <logic>
             <generalizations>
@@ -869,7 +847,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Comment Link">
           <graphics>
             <lineType type="dashLine"/>
@@ -880,7 +857,6 @@
             </associations>
           </logic>
         </edge>
-	
         <edge name="Substitution">
           <!-- from Dependencies -->
           <graphics>
@@ -895,7 +871,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <edge name="Realization">
           <!-- from Dependencies -->
           <graphics>
@@ -911,7 +886,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <edge name="Abstraction">
           <!-- from Dependencies -->
           <logic>
@@ -923,7 +897,6 @@
             </properties>
           </logic>
         </edge>
-	
         <edge name="Dependency">
           <!-- from Dependencies -->
           <graphics>
@@ -939,7 +912,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Generalization Set">
           <!-- from PowerTypes -->
           <logic>
@@ -995,6 +967,16 @@
             </generalizations>
             <properties>
               <property type="Property" name="ownedAttribute"/>
+              <property type="Operation" name="ownedOperation"/>
+              <property type="Classifier" name="nestedClassifier"/>
+              <property type="Interface" name="redefinedInterface"/>
+            </properties>
+          </logic>
+        </node>
+      </graphicTypes>
+    </diagram>
+  </metamodel>
+erty" name="ownedAttribute"/>
               <property type="Operation" name="ownedOperation"/>
               <property type="Classifier" name="nestedClassifier"/>
               <property type="Interface" name="redefinedInterface"/>
