@@ -976,13 +976,3 @@
       </graphicTypes>
     </diagram>
   </metamodel>
-erty" name="ownedAttribute"/>
-              <property type="Operation" name="ownedOperation"/>
-              <property type="Classifier" name="nestedClassifier"/>
-              <property type="Interface" name="redefinedInterface"/>
-            </properties>
-          </logic>
-        </node>
-      </graphicTypes>
-    </diagram>
-  </metamodel>

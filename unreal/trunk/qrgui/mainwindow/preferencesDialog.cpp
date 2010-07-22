@@ -9,6 +9,10 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	initPreferences();
+
+	connect(ui->linuxButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
+	connect(ui->windowsButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
+	connect(ui->otherButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -34,9 +38,14 @@ void PreferencesDialog::initPreferences()
 	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 
-	ui->pathToQmake->setText(settings.value("pathToQmake", "qmake").toString());
-	ui->pathToMake->setText(settings.value("pathToMake", "mingw32-make").toString());
-	ui->pluginExtension->setText(settings.value("pluginExtension", "dll").toString());
+	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
+	ui->linuxButton->setChecked(settings.value("linuxButton", false).toBool());
+	ui->otherButton->setChecked(settings.value("otherButton", false).toBool());
+
+	ui->pathToQmake->setText(settings.value("pathToQmake", "").toString());
+	ui->pathToMake->setText(settings.value("pathToMake", "").toString());
+	ui->pluginExtension->setText(settings.value("pluginExtension", "").toString());
+	ui->prefix->setText(settings.value("prefix", "").toString());
 }
 
 void PreferencesDialog::applyChanges()
@@ -56,9 +65,14 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
 
+	settings.setValue("windowsButton", ui->windowsButton->isChecked());
+	settings.setValue("linuxButton", ui->linuxButton->isChecked());
+	settings.setValue("otherButton", ui->otherButton->isChecked());
+
 	settings.setValue("pathToQmake", ui->pathToQmake->text());
 	settings.setValue("pathToMake", ui->pathToMake->text());
 	settings.setValue("pluginExtension", ui->pluginExtension->text());
+	settings.setValue("prefix", ui->prefix->text());
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)
@@ -87,4 +101,24 @@ void PreferencesDialog::on_applyButton_clicked()
 void PreferencesDialog::on_cancelButton_clicked()
 {
 	close();
+}
+
+void PreferencesDialog::systemChoosingButtonClicked()
+{
+	if(ui->linuxButton->isChecked())
+		initCompilersSettings("qmake", "make", "so", "lib");
+	if(ui->windowsButton->isChecked())
+		initCompilersSettings("qmake", "mingw32-make", "dll", "");
+	if(ui->otherButton->isChecked())
+		ui->compilerSettingsWidget->setEnabled(true);
+}
+
+void PreferencesDialog::initCompilersSettings(const QString &pathToQmake,
+		const QString &pathToMake, const QString &pluginExtension, const QString &prefix)
+{
+	ui->pathToQmake->setText(pathToQmake);
+	ui->pathToMake->setText(pathToMake);
+	ui->pluginExtension->setText(pluginExtension);
+	ui->prefix->setText(prefix);
+	ui->compilerSettingsWidget->setEnabled(false);
 }

@@ -616,14 +616,17 @@ void MainWindow::newGenerateEditor()
 		if (errors.showErrors("Generation finished successfully")) {
 			QSettings settings("SPbSU", "QReal");
 			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "qmake").toString(),
-					settings.value("pathToMake", "mingw32-make").toString(), settings.value("pluginExtension", "dll").toString());
+					settings.value("pathToMake", "mingw32-make").toString(), settings.value("pluginExtension", "dll").toString(), settings.value("prefix", "").toString());
 		}
 	}
 }
 
 void MainWindow::loadingNewEditor(const QString &directoryName, const QString &metamodelName,
-		QString const &commandFirst, QString const &commandSecond, QString const &extension)
+		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
+	int const progressBarWidth = 240;
+	int const progressBarHeight = 20;
+
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
 		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
 		return;
@@ -636,9 +639,10 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 
 	QApplication::processEvents();
 
-	progress->move(530, 335);
-	progress->setFixedWidth(240);
-	progress->setFixedHeight(20);
+	QRect screenRect = qApp->desktop()->availableGeometry();
+	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
+	progress->setFixedWidth(progressBarWidth);
+	progress->setFixedHeight(progressBarHeight);
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
@@ -653,7 +657,6 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 			return;
 		}
 	}
-
 	progress->setValue(20);
 
 	QProcess builder;
@@ -665,7 +668,7 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mEditorManager.loadPlugin(metamodelName + "." + extension)) {
+			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
 
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
@@ -680,6 +683,7 @@ void MainWindow::loadingNewEditor(const QString &directoryName, const QString &m
 	}
 	if (progress->value() != 100)
 		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+	progress->setValue(100);
 	progress->close();
 	delete progress;
 

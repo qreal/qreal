@@ -26,10 +26,34 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="okButton">
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="applyButton">
+     <property name="text">
+      <string>Apply</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="3">
     <widget class="QTabWidget" name="preferenciesTabWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="editorTab">
       <attribute name="title">
@@ -421,73 +445,82 @@
       <attribute name="title">
        <string>Compiler</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="pathToQmake"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="pathToMake"/>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="pluginExtension"/>
-       </item>
+      <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
+        <widget class="QRadioButton" name="windowsButton">
          <property name="text">
-          <string>path to qmake</string>
+          <string>Windows</string>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_10">
+        <widget class="QRadioButton" name="linuxButton">
          <property name="text">
-          <string>path to make</string>
+          <string>Linux</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_11">
+        <widget class="QRadioButton" name="otherButton">
          <property name="text">
-          <string>plugin file extension</string>
+          <string>Other</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="3" column="0">
+        <widget class="QWidget" name="compilerSettingsWidget" native="true">
+         <property name="enabled">
+          <bool>false</bool>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>path to qmake</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="pathToQmake"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>path to make</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="pathToMake"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>plugin file extension</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="pluginExtension"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="prefix"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>prefix</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="okButton">
-     <property name="text">
-      <string>OK</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="applyButton">
-     <property name="text">
-      <string>Apply</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="cancelButton">
-     <property name="text">
-      <string>Cancel</string>
-     </property>
     </widget>
    </item>
   </layout>
