@@ -124,26 +124,28 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
-		mScene->clearSelection();
-		e->setSelected(true);
+		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
-		if (e) {
-			e->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
-			e->setIndex(current);
+		if (elem) {
+			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
+			elem->setIndex(current);
 			if (item(parent) != NULL)
-				e->setParentItem(item(parent));
+				elem->setParentItem(item(parent));
 			else {
-				mScene->addItem(e);
+				mScene->addItem(elem);
 			}
-			setItem(current, e);
-			e->updateData();
-			e->connectToPort();
-			e->initPossibleEdges();
+			setItem(current, elem);
+			elem->updateData();
+			elem->connectToPort();
+			elem->initPossibleEdges();
 
-			UML::NodeElement* nodeE = dynamic_cast<UML::NodeElement*>(e);
-			if (nodeE && currentUuid.element() == "Class") {
+			mScene->clearSelection();
+			elem->setSelected(true);
+
+			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
+			if (nodeElem && currentUuid.element() == "Class") {
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
 					QString curChildElementType;
