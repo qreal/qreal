@@ -125,6 +125,8 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		UML::Element* e = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		mScene->clearSelection();
+		e->setSelected(true);
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (e) {
