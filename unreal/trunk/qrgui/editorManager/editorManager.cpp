@@ -64,7 +64,7 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 			return true;
 		}
 	}
-	QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
+	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
 	return false;
 
 }
@@ -74,6 +74,7 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
 	if (loader != NULL) {
 		mPluginsLoaded.removeAll(pluginName);
+		mPluginFileName.remove(pluginName);
 		return loader->unload();
 	}
 	return false;

@@ -4,6 +4,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomDocument>
 #include <QtCore/QProcess>
+#include <QMessageBox>
 #include <QPointF>
 #include <QPolygonF>
 
@@ -65,8 +66,12 @@ QStringList XmlParser::getIncludeList(const QString &fileName)
 void XmlParser::loadIncludeList(const QString &fileName)
 {
 	QStringList includeList = getIncludeList(fileName);
-	foreach (QString const &include, includeList)
-		parseFile(include);
+	if (includeList.isEmpty())
+		return;
+	if (QMessageBox::question(NULL, QObject::tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+		foreach (QString const &include, includeList)
+			parseFile(include);
+	}
 }
 
 Id XmlParser::getPackageId()

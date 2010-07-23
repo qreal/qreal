@@ -617,9 +617,12 @@ void MainWindow::newGenerateEditor()
 		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors("Generation finished successfully")) {
+			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
+					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+				return;
 			QSettings settings("SPbSU", "QReal");
-			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "qmake").toString(),
-					settings.value("pathToMake", "mingw32-make").toString(), settings.value("pluginExtension", "dll").toString(), settings.value("prefix", "").toString());
+			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "").toString(),
+					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
 }
@@ -712,12 +715,11 @@ void MainWindow::parseEditorXml()
 	if (fileName == "")
 		return;
 
-
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
 
 	parser.parseFile(fileName);
-	if (QMessageBox::question(this, tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
-		parser.loadIncludeList(fileName);
+
+	parser.loadIncludeList(fileName);
 
 	mModel->reinit();
 }
