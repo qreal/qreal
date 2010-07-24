@@ -5,14 +5,14 @@
     <diagram displayedName="Class Diagram" nodeName="ClassDiagramNode" name="ClassDiagram">
       <graphicTypes>
         <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
-        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::Comment Link"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
         <import as="Class" displayedName="Class" name="KernelDiagram::Class"/>
         <import as="Interface" displayedName="Interface" name="KernelDiagram::Interface"/>
         <import as="Generalization" displayedName="Generalization" name="KernelDiagram::Generalization"/>
         <import as="Realization" displayedName="Realization" name="KernelDiagram::Realization"/>
         <import as="Dependency" displayedName="Dependency" name="KernelDiagram::Dependency"/>
         <import as="Association" displayedName="Association" name="KernelDiagram::Association"/>
-        <import as="DirectedAssociation" displayedName="Directed Association" name="KernelDiagram::Directed Association"/>
+        <import as="DirectedAssociation" displayedName="Directed Association" name="KernelDiagram::DirectedAssociation"/>
         <node displayedName="Class Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ClassDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">

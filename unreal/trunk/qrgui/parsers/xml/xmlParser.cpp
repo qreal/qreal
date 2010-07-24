@@ -214,7 +214,7 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 	setStandartConfigurations(importId, diagramId, nameList.at(1),
 			import.attribute("displayedName", ""));
 	mApi.setProperty(importId, "as", import.attribute("as", ""));
-	mApi.setProperty(importId, "Imported from", nameList.at(0));
+	mApi.setProperty(importId, "importedFrom", nameList.at(0));
 }
 
 void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)

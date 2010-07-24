@@ -137,10 +137,10 @@ void MetaGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 void MetaGenerator::createImport(QDomElement &parent, const Id &id)
 {
 	QDomElement import = mDocument.createElement("import");
-	if ((mApi.stringProperty(id, "Imported from") != "") && (mApi.name(id) != ""))
-		ensureCorrectness(id, import, "name", mApi.stringProperty(id, "Imported from") + "::" + mApi.name(id));
+	if ((mApi.stringProperty(id, "importedFrom") != "") && (mApi.name(id) != ""))
+		ensureCorrectness(id, import, "name", mApi.stringProperty(id, "importedFrom") + "::" + mApi.name(id));
 	else {
-		mErrorReporter.addWarning(QString ("not filled name/imported from"), id);
+		mErrorReporter.addWarning(QString ("not filled name/importedFrom"), id);
 		import.setAttribute("name", "");
 	}
 	ensureCorrectness(id, import, "displayedName", mApi.stringProperty(id, "displayedName"));

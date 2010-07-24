@@ -334,7 +334,7 @@
 			<generalizations/>
 			<properties>
 			  <property type="string" name="displayedName"/>
-			  <property type="string" name="Imported from"/>
+			  <property type="string" name="importedFrom"/>
 			  <property type="string" name="as"/>
 			</properties>
 			<containers/>

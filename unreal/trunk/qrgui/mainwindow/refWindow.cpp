@@ -88,6 +88,7 @@ void RefWindow::setPropertyValue()
 
 void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
+	Q_UNUSED(bl)
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	if (item->isSelected())

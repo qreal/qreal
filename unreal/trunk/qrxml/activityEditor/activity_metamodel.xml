@@ -29,9 +29,9 @@
       </nonGraphicTypes>
       <graphicTypes>
         <import as="Constraint" displayedName="Constraint" name="KernelDiagram::Constraint"/>
-        <import as="ValueSpecification" displayedName="Value Specification" name="KernelDiagram::Value Specification"/>
+        <import as="ValueSpecification" displayedName="Value Specification" name="KernelDiagram::ValueSpecification"/>
         <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
-        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::Comment Link"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
         <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ActivityDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
