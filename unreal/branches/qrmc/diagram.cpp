@@ -34,7 +34,7 @@ bool Diagram::init()
 				qDebug() << "can't load node";
 				return false;
 			}
-			mTypes[nodeType->qualifiedName()] = nodeType;
+			mTypes[nodeType->name()] = nodeType;
 		} else if (id.element() == "MetaEntityEdge") {
 			Type *edgeType = new EdgeType(this, mApi, id);
 			if (!edgeType->init(mDiagramName)) {
@@ -42,10 +42,10 @@ bool Diagram::init()
 				qDebug() << "can't load edge";
 				return false;
 			}
-			mTypes[edgeType->qualifiedName()] = edgeType;
+			mTypes[edgeType->name()] = edgeType;
 		} else if (id.element() == "MetaEntityImport") {
 			ImportSpecification import = {
-				mApi->name(id),
+				mApi->stringProperty(id, "importedFrom") + "::" + mApi->stringProperty(id, "as"),
 				mApi->stringProperty(id, "as"),
 				mApi->stringProperty(id, "displayedName"),
 			};
@@ -92,11 +92,10 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(QString name)
 {
-	qDebug() << "searching for " << name;
 	if (mTypes.contains(name))
 		return mTypes[name];
-	else
-		return mEditor->findType(name);
+
+	return mEditor->findType(name);
 }
 
 QMap<QString, Type*> Diagram::types() const

@@ -38,7 +38,7 @@ QString Type::path() const
 
 QString Type::qualifiedName() const
 {
-	return mContext + "::" + mName;
+	return NameNormalizer::normalize(mContext) + "::" + mName;
 }
 
 QString Type::nativeContext() const

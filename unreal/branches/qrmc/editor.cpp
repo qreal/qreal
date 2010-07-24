@@ -34,7 +34,7 @@ bool Editor::load()
 	QStringList includes = mApi->stringProperty(mId, "include").split(",");
 	foreach(QString includedMetamodel, includes)
 	{
-		QString metamodelName = includedMetamodel.section("/", -1).section(".", 0, 0);
+		QString metamodelName = includedMetamodel.section("/", -1).section(".", 0, 0).trimmed();
 		if (metamodelName.isEmpty())
 			continue;
 
@@ -85,9 +85,9 @@ bool Editor::load()
 	}
 
 	// resolve everything
-//	foreach (Diagram *diagram, mDiagrams.values())
-//		if (!diagram->resolve())
-//			return false;
+	foreach (Diagram *diagram, mDiagrams.values())
+		if (!diagram->resolve())
+			return false;
 
 	mLoadingComplete = true;
 	return true;
@@ -108,7 +108,10 @@ Type* Editor::findType(QString const &name)
 	}
 
 	foreach (Editor *editor, mIncludes) {
+//		qDebug() << "searching diagram" << editor->name() << name << "includes size" << mIncludes.size();
 		Type *type = editor->findType(name);
+//		if (type)
+//			qDebug() << "from includes: " << type->qualifiedName() << name;
 		if (type != NULL && type->qualifiedName() == name)
 			return type;
 	}
@@ -150,8 +153,7 @@ QMap<QString, Diagram*> Editor::diagrams()
 void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QMap<QString, QString> &utils)
 {
 	qDebug() << "generating plugin " << mName;
-	foreach(Diagram *d, mDiagrams)
-		qDebug() << d->name();
+
 	mUtilsTemplate = utils;
 	mSourceTemplate = sourceTemplate;
 
@@ -258,4 +260,9 @@ void Editor::generateNamesMap()
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initElementNameMapLineTag, initNameMapBody);
+}
+
+QString Editor::name()
+{
+	return mApi->name(mId);
 }

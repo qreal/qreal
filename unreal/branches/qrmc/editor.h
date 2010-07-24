@@ -33,6 +33,8 @@ public:
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 
+	QString name();
+
 private:
 	bool generatePluginHeader(QString const &headerTemplate);
 	bool generatePluginSource();

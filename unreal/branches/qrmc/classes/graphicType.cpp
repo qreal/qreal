@@ -86,12 +86,12 @@ bool GraphicType::resolve()
 	mParents.removeDuplicates();
 	foreach (QString parentName, mParents) {
 		// searching for parents in native context. if it was imported, references will remain valid
-		QString qualifiedParentName = nativeContext() + "::" + parentName;
+		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {
 			// didn't find in local context, try global
-			parent = mDiagram->findType(qualifiedParentName);
+			parent = mDiagram->findType(parentName);
 			if (parent == NULL) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;

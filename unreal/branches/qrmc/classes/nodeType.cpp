@@ -25,11 +25,6 @@ Type* NodeType::clone() const
 	return result;
 }
 
-bool NodeType::resolve()
-{
-	return true;
-}
-
 bool NodeType::init(QString const &context)
 {
 	GraphicType::init(context);
