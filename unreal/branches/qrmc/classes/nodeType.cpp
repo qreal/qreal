@@ -1,0 +1,40 @@
+#include "nodeType.h"
+#include "diagram.h"
+#include "metaCompiler.h"
+#include "../utils/outFile.h"
+#include "editor.h"
+#include "utils/nameNormalizer.h"
+
+#include <QDebug>
+
+using namespace utils;
+
+NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
+mIsHavePin(false)
+{}
+
+NodeType::~NodeType()
+{
+}
+
+Type* NodeType::clone() const
+{
+	NodeType *result = new NodeType(mDiagram, mApi, mId);
+	GraphicType::copyFields(result);
+	return result;
+}
+
+bool NodeType::resolve()
+{
+	return true;
+}
+
+bool NodeType::init()
+{
+	return true;
+}
+
+void NodeType::print()
+{
+	qDebug() << "node " << mName;
+}
