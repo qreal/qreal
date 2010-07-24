@@ -32,7 +32,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Diagram"/>
+              <parent parentName="KernelDiagram::Diagram"/>
             </generalizations>
             <container>
               <contains type="Node01"/>
@@ -66,7 +66,7 @@
 	 </graphics>
 	 <logic>
 	 <generalizations>
-	  <parent parentName="Kernel::Diagram"/>
+	  <parent parentName="KernelDiagram::Diagram"/>
 	 </generalizations>
 	  <container>
 	   <contains type="Node01"/>
@@ -93,7 +93,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
           </logic>
         </node>
@@ -112,7 +112,7 @@
 		</graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
           </logic>
         </node>
@@ -132,7 +132,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
           </logic>
         </node>
@@ -150,7 +150,7 @@
 	</graphics>
 		<logic>
 			<generalizations>
-				<parent parentName="Kernel::KernelElement"/>
+				<parent parentName="KernelDiagram::KernelElement"/>
 			</generalizations>
 		</logic>
         </node>	
@@ -178,7 +178,7 @@
         	</graphics>
 		<logic>
 			<generalizations>
-				<parent parentName="Kernel::KernelElement"/>
+				<parent parentName="KernelDiagram::KernelElement"/>
 			</generalizations>
 		</logic>
 	</node>
@@ -192,7 +192,7 @@
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Relationship"/>
+              <parent parentName="KernelDiagram::Relationship"/>
             </generalizations>
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="false"/>
@@ -211,7 +211,7 @@
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Relationship"/>
+              <parent parentName="KernelDiagram::Relationship"/>
             </generalizations>
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="true"/>
@@ -230,7 +230,7 @@
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Relationship"/>
+              <parent parentName="KernelDiagram::Relationship"/>
             </generalizations>
 		<possibleEdges>
 			<possibleEdge beginName="Node01" endName="Node02" directed="false"/>
@@ -248,7 +248,7 @@
 				<association beginName="Constraint" endName="Activity"/>
 			</associations>
 			<generalizations>
-				<parent parentName="Kernel::Relationship"/>
+				<parent parentName="KernelDiagram::Relationship"/>
 			</generalizations>
 			<possibleEdges>
 				<possibleEdge beginName="Node04" endName="Node01" directed="true"/>

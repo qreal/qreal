@@ -4,15 +4,15 @@
     <namespace>UML 2.1</namespace>
     <diagram displayedName="Class Diagram" nodeName="ClassDiagramNode" name="ClassDiagram">
       <graphicTypes>
-        <import as="Comment" displayedName="Comment" name="Kernel::Comment"/>
-        <import as="CommentLink" displayedName="Comment Link" name="Kernel::Comment Link"/>
-        <import as="Class" displayedName="Class" name="Kernel::Class"/>
-        <import as="Interface" displayedName="Interface" name="Kernel::Interface"/>
-        <import as="Generalization" displayedName="Generalization" name="Kernel::Generalization"/>
-        <import as="Realization" displayedName="Realization" name="Kernel::Realization"/>
-        <import as="Dependency" displayedName="Dependency" name="Kernel::Dependency"/>
-        <import as="Association" displayedName="Association" name="Kernel::Association"/>
-        <import as="DirectedAssociation" displayedName="Directed Association" name="Kernel::Directed Association"/>
+        <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::Comment Link"/>
+        <import as="Class" displayedName="Class" name="KernelDiagram::Class"/>
+        <import as="Interface" displayedName="Interface" name="KernelDiagram::Interface"/>
+        <import as="Generalization" displayedName="Generalization" name="KernelDiagram::Generalization"/>
+        <import as="Realization" displayedName="Realization" name="KernelDiagram::Realization"/>
+        <import as="Dependency" displayedName="Dependency" name="KernelDiagram::Dependency"/>
+        <import as="Association" displayedName="Association" name="KernelDiagram::Association"/>
+        <import as="DirectedAssociation" displayedName="Directed Association" name="KernelDiagram::Directed Association"/>
         <node displayedName="Class Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ClassDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
@@ -37,7 +37,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Diagram"/>
+              <parent parentName="KernelDiagram::Diagram"/>
             </generalizations>
             <container>
               <contains type="ClassDiagram::Aggregation"/>
@@ -91,7 +91,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Classifier"/>
+              <parent parentName="KernelDiagram::Classifier"/>
             </generalizations>
             <properties>
               <property type="string" name="logicalName"/>
@@ -125,8 +125,8 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Operation"/>
-              <parent parentName="Kernel::Redefinable Element"/>
+              <parent parentName="KernelDiagram::Operation"/>
+              <parent parentName="KernelDiagram::RedefinableElement"/>
             </generalizations>
             <properties>
               <property type="string" name="type"/>
@@ -173,8 +173,8 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Property"/>
-              <parent parentName="Kernel::Named Element"/>
+              <parent parentName="KernelDiagram::Property"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
             </generalizations>
             <properties>
 <!--              <property type="string" name="type"/>
@@ -198,7 +198,7 @@
               <association beginName="Property" endName="Property"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Association"/>
+              <parent parentName="KernelDiagram::Association"/>
             </generalizations>
             <connections>
               <connection type="ActivityDiagram::ActivityDiagramNode"/>
@@ -214,7 +214,7 @@
               <association beginName="Element" endName="Element"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Association"/>
+              <parent parentName="KernelDiagram::Association"/>
             </generalizations>
             <connections>
               <connection type="ActivityDiagram::ActivityDiagramNode"/>
@@ -227,10 +227,10 @@
           </graphics>
           <logic>
             <associations endType="empty_arrow" beginType="no_arrow">
-              <association beginName="Interface" endName="Basic Behaviors::Behaviored Classifier"/>
+              <association beginName="Interface" endName="Basic Behaviors::BehavioredClassifier"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Realization"/>
+              <parent parentName="KernelDiagram::Realization"/>
             </generalizations>
           </logic>
         </edge>

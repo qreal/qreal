@@ -43,7 +43,7 @@
 		  </graphics>
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties/>
 		  </logic>
@@ -103,7 +103,7 @@
 		  </graphics> 
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties>
 			  <property type="string" name="displayedName"/>
@@ -145,7 +145,7 @@
 		  </graphics>
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties>
 			  <property type="string" name="container"/>
@@ -511,7 +511,7 @@
 			  <association beginName="Inheritance1" endName="Inheritance2"/>
 			</associations>
 			<generalizations>
-			  <parent parentName="Kernel::Relationship"/>
+			  <parent parentName="KernelDiagram::Relationship"/>
 			</generalizations>
 		  </logic>
 		</edge>
@@ -524,7 +524,7 @@
 			  <association beginName="Container1" endName="Container2"/>
 			</associations>
 			<generalizations>
-			  <parent parentName="Kernel::Relationship"/>
+			  <parent parentName="KernelDiagram::Relationship"/>
 			</generalizations>
 		  </logic>
 		</edge>

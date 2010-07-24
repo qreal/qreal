@@ -28,10 +28,10 @@
         </enum>
       </nonGraphicTypes>
       <graphicTypes>
-        <import as="Constraint" displayedName="Constraint" name="Kernel::Constraint"/>
-        <import as="ValueSpecification" displayedName="Value Specification" name="Kernel::Value Specification"/>
-        <import as="Comment" displayedName="Comment" name="Kernel::Comment"/>
-        <import as="CommentLink" displayedName="Comment Link" name="Kernel::Comment Link"/>
+        <import as="Constraint" displayedName="Constraint" name="KernelDiagram::Constraint"/>
+        <import as="ValueSpecification" displayedName="Value Specification" name="KernelDiagram::Value Specification"/>
+        <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::Comment Link"/>
         <node displayedName="Activity Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ActivityDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
@@ -56,7 +56,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Diagram"/>
+              <parent parentName="KernelDiagram::Diagram"/>
             </generalizations>
             <container>
               <contains type="ActivityDiagram::AcceptEventAction"/>
@@ -117,7 +117,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Accept Event Action"/>
+              <parent parentName="BasicActionsDiagram::AcceptEventAction"/>
             </generalizations>
             <properties>
               <!--<property type="string" name="trigger"/>-->
@@ -139,7 +139,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Accept Event Action"/>
+              <parent parentName="BasicActionsDiagram::AcceptEventAction"/>
             </generalizations>
           </logic>
         </node>
@@ -174,7 +174,7 @@
             <generalizations>
               <parent parentName="ActivityNode"/>
               <parent parentName="ExecutableNode"/>
-              <parent parentName="Basic Actions::Action"/>
+              <parent parentName="BasicActionsDiagram::Action"/>
             </generalizations>
             <connections>
               <connection type="ActivityDiagram::ActivityDiagramNode"/>
@@ -212,7 +212,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Action Input Pin"/>
+              <parent parentName="BasicActionsDiagram::ActionInputPin"/>
             </generalizations>
             <pin/>
           </logic>
@@ -246,7 +246,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Behaviors::Behavior"/>
+              <parent parentName="BasicBehaviorsDiagram::Behavior"/>
             </generalizations>
             <properties>
               <property type="ExpansionKind" name="node"/>
@@ -282,7 +282,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Redefinable Element"/>
+              <parent parentName="KernelDiagram::RedefinableElement"/>
             </generalizations>
             <properties>
               <property type="Activity" name="activity"/>
@@ -319,7 +319,7 @@
         <node displayedName="Activity Group" name="ActivityGroup">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <properties>
               <property type="Activity" name="activity"/>
@@ -329,8 +329,8 @@
         <node displayedName="Activity Node" name="ActivityNode">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Named Element"/>
-              <parent parentName="Kernel::Redefinable Element"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
+              <parent parentName="KernelDiagram::RedefinableElement"/>
             </generalizations>
             <properties>
               <property type="Activity" name="activity"/>
@@ -395,7 +395,7 @@
           <logic>
             <generalizations>
               <parent parentName="ActivityGroup"/>
-              <parent parentName="Kernel::Named Element"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isDimension">
@@ -408,7 +408,7 @@
               <property type="ActivityEdge" name="edge"/>
               <property type="ActivityPartition" name="superPartition"/>
               <property type="ActivityPartition" name="subPartition"/>
-              <property type="Kernel::KernelElement" name="represents"/>
+              <property type="KernelDiagram::KernelElement" name="represents"/>
               <property type="ActivityPartition" name="superPartition"/>
               <property type="ActivityPartition" name="subPartition"/>
             </properties>
@@ -417,14 +417,14 @@
         <node displayedName="Add Variable Value Action" name="AddVariableValueAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Add Variable Value Action"/>
+              <parent parentName="BasicActionsDiagram::AddVariableValueAction"/>
             </generalizations>
           </logic>
         </node>
         <node displayedName="Behavior" name="Behavior">
           <logic>
             <generalizations>
-              <parent parentName="Basic Behaviors::Behavior"/>
+              <parent parentName="BasicBehaviorsDiagram::Behavior"/>
             </generalizations>
             <properties>
               <property type="ParameterSet" name="ownedParameterSet"/>
@@ -434,7 +434,7 @@
         <node displayedName="Behavioral Feature" name="BehavioralFeature">
           <logic>
             <generalizations>
-              <parent parentName="Basic Behaviors::Behavioral Feature"/>
+              <parent parentName="BasicBehaviorsDiagram::BehavioralFeature"/>
             </generalizations>
             <properties>
               <property type="ParameterSet" name="ownedParameterSet"/>
@@ -444,14 +444,14 @@
         <node displayedName="Call Behavior Action" name="CallBehaviorAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Call Behavior Action"/>
+              <parent parentName="BasicActionsDiagram::CallBehaviorAction"/>
             </generalizations>
           </logic>
         </node>
         <node displayedName="Call Operation Action" name="CallOperationAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Call Operation Action"/>
+              <parent parentName="BasicActionsDiagram::CallOperationAction"/>
             </generalizations>
           </logic>
         </node>
@@ -465,7 +465,7 @@
         <node displayedName="Clause" name="Clause">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <properties>
               <property type="ExecutableNode" name="test"/>
@@ -577,10 +577,10 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <properties>
-              <property type="Kernel::Classifier" name="exceptionType"/>
+              <property type="KernelDiagram::Classifier" name="exceptionType"/>
               <property type="ObjectNode" name="exceptionInput"/>
             </properties>
           </logic>
@@ -729,7 +729,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Input Pin"/>
+              <parent parentName="BasicActionsDiagram::InputPin"/>
             </generalizations>
             <pin/>
           </logic>
@@ -867,7 +867,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Typed Element"/>
+              <parent parentName="KernelDiagram::TypedElement"/>
               <parent parentName="ActivityNode"/>
             </generalizations>
             <properties>
@@ -909,7 +909,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Output Pin"/>
+              <parent parentName="BasicActionsDiagram::OutputPin"/>
             </generalizations>
             <pin/>
           </logic>
@@ -917,7 +917,7 @@
         <node displayedName="Parameter" name="Parameter">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Parameter"/>
+              <parent parentName="KernelDiagram::Parameter"/>
             </generalizations>
             <properties>
               <property type="ParameterEffectKind" name="effect"/>
@@ -936,10 +936,10 @@
         <node displayedName="Parameter Set" name="ParameterSet">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Named Element"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
             </generalizations>
             <properties>
-              <property type="Kernel::Constraint" name="condition"/>
+              <property type="KernelDiagram::Constraint" name="condition"/>
               <property type="Parameter" name="parameter"/>
             </properties>
           </logic>
@@ -948,7 +948,7 @@
           <logic>
             <generalizations>
               <parent parentName="ObjectNode"/>
-              <parent parentName="Basic Actions::Pin"/>
+              <parent parentName="BasicActionsDiagram::Pin"/>
             </generalizations>
             <properties>
               <property type="bool" name="isControl">
@@ -960,7 +960,7 @@
         <node displayedName="Send Object Action" name="SendObjectAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Send Object Action"/>
+              <parent parentName="BasicActionsDiagram::SendObjectAction"/>
             </generalizations>
           </logic>
         </node>
@@ -985,7 +985,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::SendSignal Action"/>
+              <parent parentName="BasicActionsDiagram::SendSignalAction"/>
             </generalizations>
           </logic>
         </node>
@@ -1013,7 +1013,7 @@
               <parent parentName="Action"/>
               <parent parentName="ActivityGroup"/>
               <parent parentName="ExpansionNode"/>
-              <parent parentName="Kernel::Namespace"/>
+              <parent parentName="KernelDiagram::Namespace"/>
             </generalizations>
             <properties>
               <property type="bool" name="mustIsolate">
@@ -1029,28 +1029,28 @@
         <node displayedName="Unmarshall Action" name="UnmarshallAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Unmarshall Action"/>
+              <parent parentName="BasicActionsDiagram::UnmarshallAction"/>
             </generalizations>
           </logic>
         </node>
         <node displayedName="Value Pin" name="ValuePin">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Value Pin"/>
+              <parent parentName="BasicActionsDiagram::ValuePin"/>
             </generalizations>
           </logic>
         </node>
         <node displayedName="Value Specification Action" name="ValueSpecificationAction">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Value Specification Action"/>
+              <parent parentName="BasicActionsDiagram::ValueSpecificationAction"/>
             </generalizations>
           </logic>
         </node>
         <node displayedName="Variable" name="Variable">
           <logic>
             <generalizations>
-              <parent parentName="Basic Actions::Variable"/>
+              <parent parentName="BasicActionsDiagram::Variable"/>
             </generalizations>
             <properties>
               <property type="StructuredActivityNode" name="scope"/>
@@ -1067,7 +1067,7 @@
               <association beginName="Constraint" endName="Activity"/>
             </associations>
             <generalizations>
-              <parent parentName="Kernel::Relationship"/>
+              <parent parentName="KernelDiagram::Relationship"/>
             </generalizations>
           </logic>
         </edge>
