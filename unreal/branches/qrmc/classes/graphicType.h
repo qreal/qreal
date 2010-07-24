@@ -16,8 +16,11 @@ class GraphicType : public Type
 public:
 	GraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 	virtual ~GraphicType();
-	virtual bool init();
+	virtual bool init(QString const &context);
 	virtual bool resolve();
+
+	virtual bool isGraphicalType() const;
+
 	bool isResolving() const;
 
 protected:
@@ -36,7 +39,7 @@ protected:
 	};
 
 	QStringList mParents;
-	bool mVisible;
+	bool mIsVisible;
 	int mWidth;
 	int mHeight;
 	QList<Label*> mLabels;

@@ -14,7 +14,14 @@ bool NonGraphicType::resolve()
 	return true;
 }
 
+bool NonGraphicType::isGraphicalType() const
+{
+	return false;
+}
+
 void NonGraphicType::print()
 {
 	qDebug() << "non graphic type";
 }
+
+

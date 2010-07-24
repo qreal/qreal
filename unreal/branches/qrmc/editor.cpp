@@ -4,6 +4,7 @@
 #include "classes/type.h"
 #include "classes/enumType.h"
 #include "utils/outFile.h"
+#include "utils/nameNormalizer.h"
 
 #include <QDebug>
 
@@ -11,7 +12,9 @@ using namespace qReal;
 
 Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
-{}
+{
+	mName = NameNormalizer::normalize(mApi->property(mId, "name of the directory").toString().section("/", -1));
+}
 
 Editor::~Editor()
 {
@@ -64,16 +67,13 @@ bool Editor::load()
 	{
 		qDebug() << "children:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);
-		// TODO: nodeName property
-		QString diagramDisplayedName = mApi->stringProperty(mId, "displayedName");
-
 		Diagram const *existingDiagram = mMetaCompiler->getDiagram(diagramName);
 		if (existingDiagram) {
 			qDebug() << "ERROR: diagram" << diagramName << "has been already loaded";
 			return false;
 		}
 		qDebug() << "loading diagram" << diagramName;
-		Diagram *diagram = new Diagram(diagramId, mApi, diagramName, diagramDisplayedName, this);
+		Diagram *diagram = new Diagram(diagramId, mApi, this);
 		if (!diagram->init())
 		{
 			qDebug() << "ERROR: error loading diagram" << diagramName;
@@ -85,9 +85,9 @@ bool Editor::load()
 	}
 
 	// resolve everything
-	foreach (Diagram *diagram, mDiagrams.values())
-		if (!diagram->resolve())
-			return false;
+//	foreach (Diagram *diagram, mDiagrams.values())
+//		if (!diagram->resolve())
+//			return false;
 
 	mLoadingComplete = true;
 	return true;
@@ -147,3 +147,115 @@ QMap<QString, Diagram*> Editor::diagrams()
 	return mDiagrams;
 }
 
+void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QMap<QString, QString> &utils)
+{
+	qDebug() << "generating plugin " << mName;
+	foreach(Diagram *d, mDiagrams)
+		qDebug() << d->name();
+	mUtilsTemplate = utils;
+	mSourceTemplate = sourceTemplate;
+
+	generatePluginHeader(headerTemplate);
+	generatePluginSource();
+}
+
+bool Editor::generatePluginHeader(QString const &hdrTemplate)
+{
+	QString headerTemplate = hdrTemplate;
+	qDebug() << "generating plugin header for " << mName;
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	if (!dir.exists(mName))
+		dir.mkdir(mName);
+	dir.cd(mName);
+
+	QString fileName = dir.absoluteFilePath(pluginHeaderName);
+	QFile pluginHeaderFile(fileName);
+	if (!pluginHeaderFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return false;
+	}
+
+	headerTemplate.replace(metamodelNameTag, mName); // header requires just plugin name customization
+	QTextStream out(&pluginHeaderFile);
+	out << headerTemplate;
+	pluginHeaderFile.close();
+
+	return true;
+}
+
+bool Editor::generatePluginSource()
+{
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	if (!dir.exists(mName))
+		dir.mkdir(mName);
+	dir.cd(mName);
+
+	QString fileName = dir.absoluteFilePath(pluginSourceName);
+	QFile pluginSourceFile(fileName);
+	if (!pluginSourceFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return false;
+	}
+
+	generateDiagramsMap();
+	generateDiagramNodeNamesMap();
+	generateNamesMap();
+
+
+
+	// inserting plugin name all over the template
+	mSourceTemplate.replace(metamodelNameTag, mName);
+
+	// template is ready, writing it into a file
+	QTextStream out(&pluginSourceFile);
+	out << mSourceTemplate;
+	pluginSourceFile.close();
+	return true;
+
+}
+
+void Editor::generateDiagramsMap()
+{
+	// preparing template for diagramNameMap inits
+	QString initNameMapBody = "";
+	QString const line = mUtilsTemplate[initDiagramNameMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		QString newline = line;
+		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
+								.replace(diagramNameTag, diagram->name()) + "\n";
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initDiagramNameMapLineTag, initNameMapBody);
+}
+
+void Editor::generateDiagramNodeNamesMap()
+{
+	// preparing template for diagramNodeNameMap inits
+	QString initNodeNameMapBody = "";
+	QString const line = mUtilsTemplate[initDiagramNodeNameMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		QString newline = line;
+		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
+								.replace(diagramNameTag, diagram->name()) + "\n";
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initDiagramNodeNameMapLineTag, initNodeNameMapBody);
+}
+
+void Editor::generateNamesMap()
+{
+	// preparing template for diagramNodeNameMap inits
+	QString initNameMapBody = "";
+	QString const line = mUtilsTemplate[initElementNameMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		initNameMapBody += diagram->generateNamesMap(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initElementNameMapLineTag, initNameMapBody);
+}

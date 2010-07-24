@@ -12,7 +12,7 @@ namespace utils {
 class EnumType : public NonGraphicType
 {
 public:
-	virtual bool init();
+	virtual bool init(QString const &context);
 	virtual Type* clone() const;
 
 	void print();

@@ -13,7 +13,7 @@ class Editor;
 class Diagram
 {
 public:
-	Diagram(qReal::Id const &id, qrRepo::RepoApi *api, QString const &name, QString const &displayedName, Editor *editor);
+	Diagram(qReal::Id const &id, qrRepo::RepoApi *api, Editor *editor);
 	~Diagram();
 	bool init();
 	bool resolve();
@@ -23,6 +23,8 @@ public:
 	QString name() const;
 	QString nodeName() const;
 	QString displayedName() const;
+
+	QString generateNamesMap(QString const &namesTemplate);
 
 	void print();
 
@@ -36,9 +38,8 @@ private:
 	qrRepo::RepoApi *mApi;
 	QMap<QString, Type*> mTypes;
 	QString mDiagramName;
-	QString mDiagramNodeName;
+	QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
 	QList<ImportSpecification> mImports;
-
 };

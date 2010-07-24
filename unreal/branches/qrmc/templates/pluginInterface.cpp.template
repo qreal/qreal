@@ -21,7 +21,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 void @@MetamodelName@@Plugin::initNameMap()
 {
 @@InitDiagramNameMapLine@@
-
+@@InitDiagramNodeNameMapLine@@
 @@InitElementNameMapLine@@
 }
 

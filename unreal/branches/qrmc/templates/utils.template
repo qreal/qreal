@@ -1,4 +1,5 @@
 @@InitDiagramNameMapLine@@=	diagramNameMap["@@DiagramName@@"] = "@@DiagramDisplayedName@@";
+@@InitDiagramNodeNameMapLine@@=	diagramNodeNameMap["@@DiagramName@@"] = "@@DiagramNodeName@@";
 @@InitElementNameMapLine@@=	elementsNameMap["@@DiagramName@@"]["@@ElementName@@"] = "@@ElementDisplayedName@@";
 @@InitMouseGesturesMapLine@@=	elementMouseGesturesMap["@@DiagramName@@"]["@@ElementName@@"] = "@@GesturePath@@";
 @@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";

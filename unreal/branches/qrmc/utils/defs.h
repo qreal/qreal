@@ -7,6 +7,7 @@ QString const utilsTemplate = "utils.template";
 
 QString const metamodelNameTag = "@@MetamodelName@@";
 QString const initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
+QString const initDiagramNodeNameMapLineTag = "@@InitDiagramNodeNameMapLine@@";
 QString const initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 QString const initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
 QString const initMouseGesturesMapLineTag = "@@InitMouseGesturesMapLine@@";
@@ -14,6 +15,7 @@ QString const getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 QString const initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
+QString const diagramNodeNameTag = "@@DiagramNodeName@@";
 QString const diagramDisplayedNameTag = "@@DiagramDisplayedName@@";
 QString const elementNameTag = "@@ElementName@@";
 QString const elementDisplayedNameTag = "@@ElementDisplayedName@@";

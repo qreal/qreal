@@ -3,7 +3,10 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 #include <QtCore/QDir>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
 
+#include "utils/defs.h"
 #include "../../trunk/qrrepo/repoApi.h"
 
 class Editor;
@@ -28,6 +31,17 @@ private:
 	QString mPluginName;
 	QString mResources;
 	QString mCurrentEditor;
+
+	QString mPluginHeaderTemplate;
+	QString mPluginSourceTemplate;
+	QMap<QString, QString> mTemplateUtils;
+
+	QDir mDirectory;
+
+	bool changeDir(const QString &path);
+	bool loadPluginHeaderTemplate();
+	bool loadPluginSourceTemplate();
+	bool loadTemplateUtils();
 
 	void generateCode();
 	void generateElementClasses();

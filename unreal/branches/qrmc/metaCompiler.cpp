@@ -20,6 +20,9 @@ using namespace qReal;
 MetaCompiler::MetaCompiler(QString const &workingCopyDir) : mApi(workingCopyDir)
 {
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
+	loadPluginHeaderTemplate();
+	loadPluginSourceTemplate();
+	loadTemplateUtils();
 }
 
 MetaCompiler::~MetaCompiler()
@@ -46,6 +49,83 @@ bool MetaCompiler::compile()
 	}
 	return true;
 }
+
+bool MetaCompiler::changeDir(const QString &path)
+{
+	if (!mDirectory.exists(path)) {
+		qDebug() << "cannot find directory \"" << path << "\"";
+		return false;
+	}
+	mDirectory.cd(path);
+	return true;
+}
+
+bool MetaCompiler::loadPluginHeaderTemplate()
+{
+	if (!changeDir(templatesDir))
+		return false;
+
+	QString fileName = mDirectory.absoluteFilePath(pluginHeaderTemplate);
+	QFile pluginHeaderFile(fileName);
+	if (!pluginHeaderFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "cannot load file \"" << fileName << "\"";
+		return false;
+	}
+	QTextStream in(&pluginHeaderFile);
+	mPluginHeaderTemplate = in.readAll();
+
+	pluginHeaderFile.close();
+	mDirectory.cdUp();
+
+	return true;
+}
+
+bool MetaCompiler::loadPluginSourceTemplate()
+{
+	if (!changeDir(templatesDir))
+		return false;
+
+	QString fileName = mDirectory.absoluteFilePath(pluginSourceTemplate);
+	QFile pluginSourceFile(fileName);
+	if (!pluginSourceFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "cannot load file \"" << fileName << "\"";
+		return false;
+	}
+	QTextStream in(&pluginSourceFile);
+	mPluginSourceTemplate = in.readAll();
+
+	pluginSourceFile.close();
+	mDirectory.cdUp();
+
+	return true;
+}
+
+bool MetaCompiler::loadTemplateUtils()
+{
+	if (!changeDir(templatesDir))
+		return false;
+
+	QString fileName = mDirectory.absoluteFilePath(utilsTemplate);
+	QFile utilsFile(fileName);
+	if (!utilsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "cannot load file \"" << fileName << "\"";
+		return false;
+	}
+	QTextStream in(&utilsFile);
+	QString line = in.readLine();
+	while (!line.isNull()) {
+		QString name = line.section("=", 0, 0);
+		QString definition = line.section("=", 1);
+		mTemplateUtils[name] = definition;
+		line = in.readLine();
+	}
+
+	utilsFile.close();
+	mDirectory.cdUp();
+
+	return true;
+}
+
 
 Editor* MetaCompiler::loadMetaModel(Id const &metamodelId)
 {
@@ -91,6 +171,7 @@ void MetaCompiler::generateCode()
 		foreach (Diagram *diagram, editor->diagrams().values()) {
 			diagram->print();
 		}
+		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate, mTemplateUtils);
 	}
 
 	return;

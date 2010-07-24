@@ -15,6 +15,8 @@ public:
 	virtual Type* clone() const;
 	virtual ~EdgeType();
 
+	virtual bool isGraphicalType() const;
+
 	void print();
 
 private:

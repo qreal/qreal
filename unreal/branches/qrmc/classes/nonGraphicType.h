@@ -13,6 +13,8 @@ public:
 
 	virtual void print();
 
+	virtual bool isGraphicalType() const;
+
 protected:
 	NonGraphicType();
 };

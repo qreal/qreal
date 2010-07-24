@@ -26,16 +26,30 @@ public:
 	MetaCompiler *metaCompiler();
 	bool isLoaded();
 	bool load();
+	void generate(QString const &headerTemplate, QString const &sourceTemplate, QMap<QString, QString> const &utils);
+
 	Type *findType(QString const &name);
 	QSet<EnumType*> getAllEnumTypes();
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 
 private:
+	bool generatePluginHeader(QString const &headerTemplate);
+	bool generatePluginSource();
+
+	void generateDiagramsMap();
+	void generateDiagramNodeNamesMap();
+	void generateNamesMap();
+
 	MetaCompiler *mMetaCompiler;
 	qrRepo::RepoApi *mApi;
 	qReal::Id mId;
+	QString mName;
 	bool mLoadingComplete;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;
+
+	QMap<QString, QString> mUtilsTemplate;
+	QString mSourceTemplate;
+
 };

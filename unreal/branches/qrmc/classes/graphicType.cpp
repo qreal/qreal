@@ -19,8 +19,23 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-bool GraphicType::init()
+GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
+	: Type(false, diagram, api, id), mWidth(-1), mHeight(-1), mResolving(false)
 {
+}
+
+GraphicType::~GraphicType()
+{
+}
+
+bool GraphicType::init(QString const &context)
+{
+	Type::init(context);
+
+	mIsVisible = false;
+	if (mApi->hasProperty(mId, "shape"))
+		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
+
 	foreach(Id id, mApi->children(mId)) {
 		if (id.element() == "MetaEntityParent") {
 			QString parentName = mApi->name(id);
@@ -48,14 +63,6 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 	mResolvingFlag = false;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
-	: Type(false, diagram, api, id), mVisible(false), mWidth(-1), mHeight(-1), mResolving(false)
-{}
-
-GraphicType::~GraphicType()
-{
-}
-
 void GraphicType::copyFields(GraphicType *type) const
 {
 	Type::copyFields(type);
@@ -64,7 +71,7 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mHeight = mHeight;
 //r	type->mLogic = mLogic;
 	type->mParents = mParents;
-	type->mVisible = mVisible;
+	type->mIsVisible = mIsVisible;
 	type->mWidth = mWidth;
 	type->mContainerProperties = mContainerProperties;
 	type->mContains = mContains;
@@ -84,7 +91,7 @@ bool GraphicType::resolve()
 		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {
 			// didn't find in local context, try global
-			parent = mDiagram->findType(parentName);
+			parent = mDiagram->findType(qualifiedParentName);
 			if (parent == NULL) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
@@ -136,4 +143,9 @@ bool GraphicType::addProperty(Property *property)
 	else
 		mProperties[propertyName] = property;
 	return true;
+}
+
+bool GraphicType::isGraphicalType() const
+{
+	return mIsVisible;
 }

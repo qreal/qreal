@@ -9,9 +9,13 @@
 
 using namespace qReal;
 
-Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, QString const &name, QString const &displayedName, Editor *editor)
-	: mId(id), mApi(api), mDiagramName(name), mDiagramDisplayedName(displayedName), mEditor(editor)
-{}
+Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, Editor *editor)
+	: mId(id), mApi(api), mEditor(editor)
+{
+	mDiagramName = mApi->name(id);
+	mDiagramDisplayedName = mApi->stringProperty(id, "displayedName");
+	mDiagramNodeName  = mApi->stringProperty(id, "nodeName");
+}
 
 Diagram::~Diagram()
 {
@@ -88,6 +92,7 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(QString name)
 {
+	qDebug() << "searching for " << name;
 	if (mTypes.contains(name))
 		return mTypes[name];
 	else
@@ -119,4 +124,15 @@ void Diagram::print()
 	qDebug() << "elements:" << mTypes.size();
 //	foreach(Type *type, mTypes)
 //		type->print();
+}
+
+QString Diagram::generateNamesMap(QString const& namesTemplate)
+{
+	QString result;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateNamesMap(namesTemplate);
+		if (!line.isEmpty())
+				result += line + "\n";
+	}
+	return result;
 }

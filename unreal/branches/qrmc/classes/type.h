@@ -3,6 +3,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
+#include "utils/defs.h"
 #include "../../../trunk/qrrepo/repoApi.h"
 
 class Property;
@@ -21,6 +22,7 @@ public:
 	virtual bool resolve() = 0;
 	virtual bool init(QString const &context);
 	virtual bool isResolving() const;
+	virtual bool isGraphicalType() const = 0;
 	bool isResolved() const;
 
 	virtual void print() = 0;
@@ -36,6 +38,8 @@ public:
 	void setDiagram(Diagram *diagram);
 	void setContext(QString const &newContext);
 	void setDisplayedName(QString const &displayedName);
+
+	QString generateNamesMap(QString const &namesTemplate);
 
 protected:
 	void copyFields(Type *type) const;

@@ -15,7 +15,7 @@ public:
 	virtual Type* clone() const;
 	virtual ~NodeType();
 
-	virtual bool init();
+	virtual bool init(QString const &context);
 	virtual bool resolve();
 
 	virtual void print();

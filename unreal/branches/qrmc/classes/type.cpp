@@ -1,11 +1,13 @@
 #include "type.h"
 #include "property.h"
+#include "utils/nameNormalizer.h"
 
 #include <QDebug>
 
 Type::Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
 	: mResolvingFinished(isResolved), mDiagram(diagram), mId(id), mApi(api)
-{}
+{
+}
 
 Type::~Type()
 {
@@ -89,14 +91,26 @@ void Type::copyFields(Type *type) const
 bool Type::init(QString const &context)
 {
 	mName = mApi->name(mId);
+	mDisplayedName = mApi->stringProperty(mId, "displayedName");
+	if (mDisplayedName.isEmpty())
+		mDisplayedName = mName;
+	mName = NameNormalizer::normalize(mName);
 	mContext = context;
 	mNativeContext = context;
 	if (mName == "") {
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
-	mDisplayedName = mApi->stringProperty(mId, "displayedName");
 	if (mApi->hasProperty(mId, "path"))
 		mPath = mApi->stringProperty(mId, "path");
 	return true;
+}
+
+QString Type::generateNamesMap(QString const &namesTemplate)
+{
+	if (displayedName().isEmpty() || !isGraphicalType())
+		return "";
+	QString result = namesTemplate;
+	result.replace(elementNameTag, name()).replace(elementDisplayedNameTag, displayedName()).replace(diagramNameTag, mContext);
+	return result;
 }

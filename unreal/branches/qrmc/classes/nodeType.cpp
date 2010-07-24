@@ -11,7 +11,8 @@ using namespace utils;
 
 NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
 mIsHavePin(false)
-{}
+{
+}
 
 NodeType::~NodeType()
 {
@@ -29,8 +30,9 @@ bool NodeType::resolve()
 	return true;
 }
 
-bool NodeType::init()
+bool NodeType::init(QString const &context)
 {
+	GraphicType::init(context);
 	return true;
 }
 
@@ -38,3 +40,4 @@ void NodeType::print()
 {
 	qDebug() << "node " << mName;
 }
+

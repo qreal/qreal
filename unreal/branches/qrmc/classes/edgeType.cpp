@@ -10,7 +10,9 @@
 using namespace utils;
 
 EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
-{}
+{
+	mLineType = mApi->stringProperty(id, "lineType");
+}
 
 EdgeType::~EdgeType()
 {
@@ -29,4 +31,9 @@ Type* EdgeType::clone() const
 void EdgeType::print()
 {
 	qDebug() << "edge" << mName;
+}
+
+bool EdgeType::isGraphicalType() const
+{
+	return !mLineType.isEmpty();
 }

@@ -2,8 +2,9 @@
 #include "utils/nameNormalizer.h"
 #include "utils/outFile.h"
 
-bool EnumType::init()
+bool EnumType::init(QString const &context)
 {
+	Type::init(context);
 	return true;
 }
 
