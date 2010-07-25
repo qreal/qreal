@@ -31,7 +31,7 @@ namespace qReal {
 			Id mMetamodel;
 			Id mDiagram;
 			QHash<Id, QString> mElements;
-			QHash<QString, QString> mContainerList;
+			QHash<QString, QStringList> mContainerList;
 			int mElementsColumn;
 			int mElementCurrentColumn;
 			int mMoveWidth;
