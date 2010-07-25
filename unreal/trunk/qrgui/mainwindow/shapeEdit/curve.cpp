@@ -18,6 +18,30 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mBoundingRect = boundingRect();
 }
 
+Curve::Curve(Curve const &other)
+	:Path(other)
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mC1 = other.mC1;
+	mCurvePath = other.mCurvePath;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Curve::clone()
+{
+	Curve* item = new Curve(*this);
+	return item;
+}
+
 QPainterPath Curve::shape() const
 {
 	QPainterPath path;

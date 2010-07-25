@@ -257,6 +257,7 @@ void XmlLoader::readLine(QDomElement const &line)
 	item->readPenBrush(line);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readEllipse(QDomElement const &ellipse)
@@ -266,6 +267,7 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readArch(QDomElement const &arch)
@@ -275,6 +277,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 	int startAngle = arch.attribute("startAngle", "0").toInt();
 	Arch* item = new Arch(rect, startAngle, spanAngle, NULL);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readRectangle(QDomElement const &rectangle)
@@ -284,6 +287,7 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readStylus(QDomElement const &stylus)
@@ -305,12 +309,13 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			qDebug() << "Incorrect stylus tag";
 	}
 	mScene->addItem(stylusItem);
+	mScene->setZValue(stylusItem);
 }
 
 bool XmlLoader::isNotLCMZ(QString str, int i)
 {
-	return (str[i] != 'L') && (str[i] != 'C') && (str[i] != 'M')
-		&& (str[i] != 'Z') && (i != str.length());
+	return (i != str.length()) && (str[i] != 'L') && (str[i] != 'C') && (str[i] != 'M')
+		&& (str[i] != 'Z');
 }
 
 void XmlLoader::readPath(QDomElement const &element)
@@ -467,6 +472,7 @@ void XmlLoader::readPath(QDomElement const &element)
 	item->translate(mDrift.x(), mDrift.y());
 	item->readPenBrush(elem);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readCurve(QDomElement const &curve)
@@ -497,6 +503,7 @@ void XmlLoader::readCurve(QDomElement const &curve)
 	Curve* item = new Curve(QPointF(x1, y1), QPointF(x2, y2), QPointF(x3, y3));
 	item->readPenBrush(curve);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readText(QDomElement const &text)
@@ -509,6 +516,7 @@ void XmlLoader::readText(QDomElement const &text)
 	item->readFont(text);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readLabel(QDomElement const &label)
@@ -526,6 +534,7 @@ void XmlLoader::readLabel(QDomElement const &label)
 		qDebug() << "Incorrect label tag";
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readLinePort(QDomElement const &linePort)
@@ -546,6 +555,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }
 
 void XmlLoader::readPointPort(QDomElement const &pointPort)
@@ -554,4 +564,5 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 	PointPort* item = new PointPort(point.x(), point.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
+	mScene->setZValue(item);
 }

@@ -45,6 +45,9 @@ public:
 
 	QRectF mBoundingRect;
 	Item(QGraphicsItem* parent = 0);
+	virtual Item* clone() = 0;
+	virtual void setItemZValue(int zValue);
+	int itemZValue();
 	static int sign(int x);
 	static qreal length(QPointF const &point1, QPointF const &point2);
 	virtual QRectF boundingRect() const = 0;
@@ -114,4 +117,5 @@ protected:
 	qreal mY1;
 	qreal mX2;
 	qreal mY2;
+	int mZValue;
 };

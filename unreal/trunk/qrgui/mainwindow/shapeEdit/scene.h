@@ -34,6 +34,7 @@ public:
 	QPoint centerEmpty();
 	QRect realItemsBoundingRect() const;
 	void changeTextName(const QString &name);
+	void setZValue(Item* item);
 
 signals:
 	void noSelectedItems();
@@ -86,6 +87,13 @@ private:
 		stylus,
 		curve
 	};
+	enum CopyPasteType {
+		nonePaste,
+		copy,
+		cut
+	};
+
+	int mZValue;
 	QGraphicsView *mView;
 	ItemTypes mItemType;
 	bool mWaitMove;
@@ -105,6 +113,8 @@ private:
 	qreal mY1;
 	qreal mY2;
 	QPointF mC1;
+	CopyPasteType mCopyPaste;
+	QList<Item *> mListSelectedItemsForPaste;
 	QList<QGraphicsItem *> mListSelectedItems;
 	QList<TextPicture *> mListSelectedTextPictureItems;
 	TextPicture *mSelectedTextPicture;
@@ -116,6 +126,10 @@ private:
 	QString mBrushStyleItems;
 	QString mBrushColorItems;
 
+	static bool compareItems(Item* first, Item* second);
+
+	void initListSelectedItemsForPaste();
+	QRectF selectedItemsBoundingRect() const;
 	QList<Item *> selectedSceneItems();
 	QList<TextPicture *> selectedTextPictureItems();
 	QString convertPenToString(QPen const &pen);
@@ -137,10 +151,13 @@ private:
 
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);
-	void setZValueItems(int index);
+	void setZValueSelectedItems();
+	void setNullZValueItems();
 	QPair<bool, Item *> checkOnResize(qreal x, qreal y);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+	virtual void keyPressEvent(QKeyEvent *keyEvent);
 };

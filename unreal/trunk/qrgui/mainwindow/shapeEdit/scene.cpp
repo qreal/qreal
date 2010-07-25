@@ -1,6 +1,7 @@
 #include "scene.h"
 
 #include <QtCore/QPointF>
+#include <QtGui/QKeyEvent>
 
 Scene::Scene(QGraphicsView *view, QObject * parent)
 	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL), mSelectedTextPicture(NULL)
@@ -9,11 +10,13 @@ Scene::Scene(QGraphicsView *view, QObject * parent)
 	setItemIndexMethod(NoIndex);
 	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
 	setEmptyPenBrushItems();
+	mCopyPaste = nonePaste;
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
+	mZValue = 0;
 }
 
-QRect	Scene::realItemsBoundingRect() const
+QRect Scene::realItemsBoundingRect() const
 {
 	QRectF rect = itemsBoundingRect();
 	int maxX = static_cast<int>(rect.left());
@@ -25,13 +28,32 @@ QRect	Scene::realItemsBoundingRect() const
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
-			maxX = qMax(static_cast<int>(item->realBoundingRect().right()), maxX);
-			maxY = qMax(static_cast<int>(item->realBoundingRect().bottom()), maxY);
-			minX = qMin(static_cast<int>(item->realBoundingRect().left()), minX);
-			minY = qMin(static_cast<int>(item->realBoundingRect().top()), minY);
+			Text* textItem = dynamic_cast<Text*>(item);
+			if (textItem != NULL) {
+				QRectF textRect = textItem->mapToScene(textItem->realBoundingRect()).boundingRect();
+				maxX = qMax(static_cast<int>(textRect.right()), maxX);
+				maxY = qMax(static_cast<int>(textRect.bottom()), maxY);
+				minX = qMin(static_cast<int>(textRect.left()), minX);
+				minY = qMin(static_cast<int>(textRect.top()), minY);
+			} else {
+				QRectF itemRect = item->realBoundingRect();
+				maxX = qMax(static_cast<int>(itemRect.right()), maxX);
+				maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
+				minX = qMin(static_cast<int>(itemRect.left()), minX);
+				minY = qMin(static_cast<int>(itemRect.top()), minY);
+			}
 		}
 	}
 	return QRect(minX, minY, maxX - minX, maxY - minY);
+}
+
+QRectF Scene::selectedItemsBoundingRect() const
+{
+	QRectF resBoundRect;
+	QList<Item *> list = mListSelectedItemsForPaste;
+	foreach (Item *graphicsItem, list)
+		resBoundRect |= graphicsItem->sceneBoundingRect();
+	return resBoundRect;
 }
 
 void Scene::setEmptyPenBrushItems()
@@ -155,16 +177,29 @@ void Scene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void Scene::setZValueItems(int index)
+void Scene::setZValue(Item* item)
+{
+	item->setItemZValue(mZValue);
+	mZValue++;
+}
+
+void Scene::setZValueSelectedItems()
 {
 	mListSelectedItems = selectedItems();
 	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
-		Text* item = dynamic_cast<Text*>(graphicsItem);
-		if (item != NULL)
-			item->setZValueAll(index);
-		else
-			graphicsItem->setZValue(index);
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		item->setZValue(mZValue);
+		mZValue++;
 	}
+}
+
+void Scene::setNullZValueItems()
+{
+	foreach (QGraphicsItem *graphicsItem, mListSelectedItems) {
+		Item* item = dynamic_cast<Item*>(graphicsItem);
+		item->setZValue(item->itemZValue());
+	}
+	mListSelectedItems.clear();
 }
 
 QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
@@ -186,6 +221,8 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsScene::mousePressEvent(event);
 	if (mItemType != none)
 		mView->setDragMode(QGraphicsView::NoDrag);
+	else
+		mView->setDragMode(QGraphicsView::RubberBandDrag);
 	switch (mItemType) {
 	case curve:
 		if (mCount == 1)
@@ -202,6 +239,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mStylus = new Stylus(mX1, mY1, NULL);
 		mStylus->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mStylus);
+		setZValue(mStylus);
 		removeMoveFlag(event, mStylus);
 		mWaitMove = true;
 		break;
@@ -210,6 +248,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLine = new Line(mX1, mY1, mX1, mY1, NULL);
 		mLine->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mLine);
+		setZValue(mLine);
 		removeMoveFlag(event, mLine);
 		mWaitMove = true;
 		break;
@@ -218,6 +257,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
 		mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mEllipse);
+		setZValue(mEllipse);
 		removeMoveFlag(event, mEllipse);
 		mWaitMove = true;
 		break;
@@ -226,6 +266,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
 		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mRectangle);
+		setZValue(mRectangle);
 		removeMoveFlag(event, mRectangle);
 		mWaitMove = true;
 		break;
@@ -233,26 +274,31 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mText = new Text(mX1, mY1, "text", false);
 		addItem(mText);
+		setZValue(mText);
 		break;
 	case dynamicText :
 		setX1andY1(event);
 		mText = new Text(mX1, mY1, "name", true);
 		addItem(mText);
+		setZValue(mText);
 		break;
 	case textPicture:
 		setX1andY1(event);
 		mTextPicture = new TextPicture(mX1, mY1, "text");
 		addItem(mTextPicture);
+		setZValue(mTextPicture);
 		break;
 	case pointPort :
 		setX1andY1(event);
 		mPointPort = new PointPort(mX1, mY1, NULL);
 		addItem(mPointPort);
+		setZValue(mPointPort);
 		break;
 	case linePort :
 		setX1andY1(event);
 		mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
 		addItem(mLinePort);
+		setZValue(mLinePort);
 		removeMoveFlag(event, mLinePort);
 		mWaitMove = true;
 		break;
@@ -271,6 +317,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 		break;
 	}
+	setZValueSelectedItems();
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
@@ -325,6 +372,7 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			mCurve = new Curve(QPointF(mX1, mY1), QPointF(mX2, mY2), QPointF(mX1, mY1));
 			mCurve->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 			addItem(mCurve);
+			setZValue(mCurve);
 		} else if (mCount == 3)
 			reshapeCurveSecond(event);
 		else if (mCount == 4) {
@@ -354,7 +402,50 @@ void Scene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	mWaitMove = false;
 	mGraphicsItem = NULL;
 	setMoveFlag(event);
+	setNullZValueItems();
 	mView->setDragMode(QGraphicsView::RubberBandDrag);
+}
+
+void Scene::initListSelectedItemsForPaste()
+{
+	mListSelectedItemsForPaste.clear();
+	mListSelectedItemsForPaste = selectedSceneItems();
+}
+
+void Scene::keyPressEvent(QKeyEvent *keyEvent)
+{
+	QGraphicsScene::keyPressEvent(keyEvent);
+	if (keyEvent->matches(QKeySequence::Cut)) {
+		initListSelectedItemsForPaste();
+		mCopyPaste = cut;
+	} else if (keyEvent->matches(QKeySequence::Copy)) {
+		initListSelectedItemsForPaste();
+		mCopyPaste = copy;
+	}
+	else if (keyEvent->matches(QKeySequence::Paste)) {
+		QPointF posCursor(mView->mapFromGlobal(QCursor::pos()));
+		posCursor = mView->mapToScene(posCursor.toPoint());
+		QPointF topLeftSelection(selectedItemsBoundingRect().topLeft());
+		switch (mCopyPaste) {
+		case copy:
+			foreach(Item *item, mListSelectedItemsForPaste) {
+				Item* newItem = item->clone();
+				newItem->setPos(posCursor - topLeftSelection + item->scenePos());
+				addItem(newItem);
+				setZValue(newItem);
+			}
+			break;
+		case cut:
+			foreach(Item *item, mListSelectedItemsForPaste) {
+				item->setPos(posCursor - topLeftSelection + item->scenePos());
+				setZValue(item);
+				mListSelectedItemsForPaste.clear();
+			}
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void Scene::drawLine(bool checked)
@@ -440,6 +531,12 @@ void Scene::clearScene()
 {
 	clear();
 	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	mZValue = 0;
+}
+
+bool Scene::compareItems(Item* first, Item* second)
+{
+	return first->zValue() < second->zValue();
 }
 
 QList<Item *> Scene::selectedSceneItems()
@@ -451,6 +548,7 @@ QList<Item *> Scene::selectedSceneItems()
 		if (item != NULL)
 			resList.push_back(item);
 	}
+	qSort(resList.begin(), resList.end(), compareItems);
 	return resList;
 }
 
@@ -575,17 +673,15 @@ void Scene::changePalette()
 
 void Scene::changeFontPalette()
 {
-	if(mItemType == none) {
-		mListSelectedTextPictureItems = selectedTextPictureItems();
-		if (mListSelectedTextPictureItems.isEmpty())
-			emit noSelectedTextPictureItems();
-		else {
-			TextPicture* item = dynamic_cast<TextPicture*>(mListSelectedTextPictureItems.back());
-			if (item != NULL) {
-				QPen penItem = item->pen();
-				QFont fontItem = item->font();
-				emit existSelectedTextPictureItems(penItem, fontItem, item->name());
-			}
+	mListSelectedTextPictureItems = selectedTextPictureItems();
+	if (mListSelectedTextPictureItems.isEmpty())
+		emit noSelectedTextPictureItems();
+	else {
+		TextPicture* item = dynamic_cast<TextPicture*>(mListSelectedTextPictureItems.back());
+		if (item != NULL) {
+			QPen penItem = item->pen();
+			QFont fontItem = item->font();
+			emit existSelectedTextPictureItems(penItem, fontItem, item->name());
 		}
 	}
 }

@@ -12,6 +12,34 @@ Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
 	mBoundingRect = boundingRect();
 }
 
+Stylus::Stylus(Stylus const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mTmpX1 = other.mTmpX1;
+	mTmpY1 = other.mTmpY1;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	foreach (Line *line, other.mListLine) {
+		Line *newLine = new Line(*line);
+		mListLine.append(newLine);
+	}
+	setPos(other.x(), other.y());
+}
+
+Item* Stylus::clone()
+{
+	Stylus* item = new Stylus(*this);
+	return item;
+}
+
 void Stylus::addLine(qreal x2, qreal y2)
 {
 	mX2 = x2;
@@ -130,7 +158,7 @@ QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &doc
 {
 	QDomElement stylus = document.createElement("stylus");
 	foreach (Line *line, mListLine) {
-		QDomElement item = (line->generateItem(document, topLeftPicture)).first;
+		QDomElement item = (line->generateItem(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;
 		stylus.appendChild(item);
 	}
 	return QPair<QDomElement, Item::DomElementTypes>(stylus, mDomElementType);

@@ -18,6 +18,28 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mBoundingRect = boundingRect();
 }
 
+Line::Line(Line const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Line::clone()
+{
+	Line* item = new Line(*this);
+	return item;
+}
+
 QRectF Line::boundingRect() const
 {
 	return (QRectF(qMin(mX1, mX2) - mPen.width(), qMin(mY1, mY2) - mPen.width(), abs(mX2 - mX1) + mPen.width(), abs(mY2 - mY1) + mPen.width()).adjusted(-drift, -drift, drift, drift));

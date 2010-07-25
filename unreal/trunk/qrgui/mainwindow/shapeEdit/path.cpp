@@ -9,6 +9,29 @@ Path::Path(QPainterPath const &path) : Item(NULL)
 	mBoundingRect = boundingRect();
 }
 
+Path::Path(Path const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = Item::pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mPath = other.mPath;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Path::clone()
+{
+	Path* item = new Path(*this);
+	return item;
+}
+
 QRectF Path::boundingRect() const
 {
 	return mPath.boundingRect();

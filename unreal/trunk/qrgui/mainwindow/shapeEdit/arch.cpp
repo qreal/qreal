@@ -19,6 +19,31 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	mBoundingRect = boundingRect();
 }
 
+Arch::Arch(Arch const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mSpanAngle = other.mSpanAngle;
+	mStartAngle = other.mStartAngle;
+	mRect = other.mRect;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Arch::clone()
+{
+	Arch* item = new Arch(*this);
+	return item;
+}
+
 int Arch::startAngle() const
 {
 	return mStartAngle;

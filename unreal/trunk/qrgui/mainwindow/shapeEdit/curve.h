@@ -9,6 +9,8 @@ class Curve : public Path
 {
 public:
 	Curve(QPointF const &start, QPointF const &end, QPointF const &c1);
+	Curve(Curve const &other);
+	virtual Item* clone();
 	void  setCXandCY(qreal x, qreal y);
 	QRectF searchMaxMinCoord() const;
 	virtual QRectF boundingRect() const;
@@ -26,6 +28,5 @@ public:
 
 private:
 	QPointF mC1;
-	QPointF mC2;
 	QPainterPath* mCurvePath;
 };

@@ -211,8 +211,16 @@ void ShapeEdit::savePicture()
 	QString fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty())
 		return;
-	QImage image(mScene->itemsBoundingRect().size().toSize(), QImage::Format_RGB32);
+	QRectF sceneRect = mScene->itemsBoundingRect();
+	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
+
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::black));
+	painter.drawRect(sceneRect);
+
 	mScene->render(&painter);
 	image.save(fileName);
 }

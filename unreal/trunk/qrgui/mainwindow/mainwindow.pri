@@ -24,7 +24,8 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h \
-	mainwindow/shapeEdit/textPicture.h
+	mainwindow/shapeEdit/textPicture.h \
+	mainwindow/shapeEdit/path.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \

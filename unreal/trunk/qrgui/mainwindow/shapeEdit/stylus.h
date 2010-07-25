@@ -13,6 +13,8 @@ private:
 public:
 	QList<Line *> mListLine;
 	Stylus(qreal x1, qreal y1, Item* parent);
+	Stylus(Stylus const &other);
+	virtual Item* clone();
 	void addLine(qreal x2, qreal y2);
 
 	virtual QRectF boundingRect() const;

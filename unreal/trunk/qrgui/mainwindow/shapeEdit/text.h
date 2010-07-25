@@ -12,6 +12,8 @@ class Text : public Item
 public:
 	Text(bool isDynamic = false);
 	Text(int x, int y, QString const &text = "text", bool isDynamic = false);
+	Text(Text const &other);
+	virtual Item* clone();
 	void init(int x, int y, QString const &text);
 	bool isDynamicText();
 	virtual void setIsDynamicText(bool isDynamic);
@@ -23,7 +25,7 @@ public:
 	virtual void drawScalingRects(QPainter* painter);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	QGraphicsTextItem const& getText();
-	void setZValueAll(int const &index);
+	virtual void setItemZValue(int zValue);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 

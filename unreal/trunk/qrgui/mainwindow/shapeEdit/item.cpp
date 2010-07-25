@@ -14,7 +14,19 @@ Item::Item(QGraphicsItem* parent)
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
 	setFlag(QGraphicsItem::ItemIsMovable, true);
 	mBrush.setColor(mPen.color());
+	mZValue = 0;
 	initListScalePoint();
+}
+
+void Item::setItemZValue(int zValue)
+{
+	mZValue = zValue;
+	setZValue(zValue);
+}
+
+int Item::itemZValue()
+{
+	return mZValue;
 }
 
 void Item::initListScalePoint()

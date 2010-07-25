@@ -7,6 +7,8 @@ class PointPort : public Item
 {
 public:
 	PointPort(qreal x, qreal y, Item *parent = 0);
+	PointPort(PointPort const &other);
+	virtual Item* clone();
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);

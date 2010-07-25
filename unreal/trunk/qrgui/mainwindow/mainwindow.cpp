@@ -451,7 +451,7 @@ void MainWindow::deleteFromDiagram()
 	if (mModel) {
 		if (ui.diagramExplorer->hasFocus()) {
 			deleteFromExplorer();
-		} else if (getCurrentTab()->hasFocus()) {
+		} else if (getCurrentTab() != NULL && getCurrentTab()->hasFocus()) {
 			deleteFromScene();
 		}
 	}

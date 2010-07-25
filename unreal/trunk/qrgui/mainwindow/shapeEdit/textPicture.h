@@ -6,6 +6,8 @@ class TextPicture : public Text
 public:
 	TextPicture();
 	TextPicture(int x, int y, QString const &text = "text");
+	TextPicture(TextPicture const &other);
+	virtual Item* clone();
 	void setTextName(const QString &name);
 	void setFontFamily(const QFont& font);
 	void setFontPixelSize(int size);

@@ -6,6 +6,8 @@ class Line : public Item
 {
 public:
 	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+	Line(Line const &other);
+	virtual Item* clone();
 	QLineF line() const;
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;

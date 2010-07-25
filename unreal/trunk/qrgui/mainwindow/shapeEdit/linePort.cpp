@@ -13,6 +13,28 @@ LinePort::LinePort(qreal x1, qreal y1, qreal x2, qreal y2, Line* parent)
 	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 }
 
+LinePort::LinePort(LinePort const &other)
+	:Line(other)
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = portType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* LinePort::clone()
+{
+	LinePort* item = new LinePort(*this);
+	return item;
+}
+
 QPair<QDomElement, Item::DomElementTypes> LinePort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement linePort = document.createElement("linePort");

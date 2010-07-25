@@ -5,15 +5,44 @@ TextPicture::TextPicture()
 {
 	mDomElementType = pictureType;
 	mFont.setPixelSize(15);
-	mBoundingRect = QRectF();
+	mBoundingRect = QRectF(mX1, mY1, 0, 0);
+	mIsDynamicText = false;
 }
 
 TextPicture::TextPicture(int x, int y, QString const &text)
-	: Text(x, y, text, false)
+	: Text()
 {
 	mDomElementType = pictureType;
 	mFont.setPixelSize(15);
-	mBoundingRect = QRectF();
+	mBoundingRect = QRectF(x, y, 0, 0);
+	mIsDynamicText = false;
+	init(x, y, text);
+}
+
+TextPicture::TextPicture(TextPicture const &other)
+	:Text()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mY1 = other.mY1;
+	mText.setPos(other.mText.x(), other.mText.y());
+	mText.setFlags(other.mText.flags());
+	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
+	mText.setPlainText(other.mText.toPlainText());
+	mText.setParentItem(other.parentItem());
+	mFont = other.mFont;
+	mBoundingRect = other.mBoundingRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* TextPicture::clone()
+{
+	TextPicture* item = new TextPicture(*this);
+	return item;
 }
 
 void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -23,8 +52,8 @@ void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	painter->setFont(mFont);
 	painter->setPen(mPen);
 	mText.setVisible(false);
-	qreal x = mText.boundingRect().left();
-	qreal y = mText.boundingRect().top();
+	qreal x = mX1;
+	qreal y = mY1;
 	mBoundingRect = QRectF();
 	QString str = mText.toPlainText();
 	str += "\n";
@@ -76,7 +105,7 @@ QRectF TextPicture::boundingRect() const
 
 QRectF TextPicture::realBoundingRect() const
 {
-	return mapToScene(mBoundingRect).boundingRect();
+	return mBoundingRect;
 }
 
 void TextPicture::setIsDynamicText(bool isDynamic)
@@ -201,8 +230,8 @@ QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &dom
 QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement text = setFontToDoc(document, "text");
-	int const x1 = static_cast<int>(mText.boundingRect().left() + scenePos().x() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mText.boundingRect().top() + scenePos().y() - topLeftPicture.y());
+	int const x1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().left() - topLeftPicture.x());
+	int const y1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y1", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x1", setSingleScaleForDoc(0, x1, y1));
 
