@@ -219,6 +219,7 @@ bool Editor::generatePluginSource()
 	generateUsages();
 	generateIsNodeOrEdge();
 	generateEnums();
+	generatePossibleEdges();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag, mName);
@@ -328,6 +329,13 @@ public:
 	}
 };
 
+class Editor::PossibleEdgesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generatePossibleEdges(lineTemplate);
+	}
+};
+
 void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator, bool isSingleLineMethod)
 {
 	QString body = "";
@@ -385,6 +393,11 @@ void Editor::generateElementsFactory()
 void Editor::generateIsNodeOrEdge()
 {
 	generatePluginMethod(getIsNodeOrEdgeLineTag, IsNodeOrEdgeGenerator(), false);
+}
+
+void Editor::generatePossibleEdges()
+{
+	generatePluginMethod(getPossibleEdgesLineTag, PossibleEdgesGenerator(), false);
 }
 
 void Editor::generateEnums()

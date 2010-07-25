@@ -34,6 +34,7 @@ public:
 	QString generateFactory(QString const &lineTemplate) const;
 	QString generateIsNodeOrEdge(QString const &lineTemplate) const;
 	QString generateEnums(QString const &lineTemplate) const;
+	QString generatePossibleEdges(QString const &lineTemplate) const;
 
 	void print();
 
@@ -59,6 +60,7 @@ private:
 	class FactoryGenerator;
 	class IsNodeOrEdgeGenerator;
 	class EnumsGenerator;
+	class PossibleEdgesGenerator;
 	QString generateListMethod(QString const &lineTemplate, ListMethodGenerator const &generator) const;
 
 	class MapMethodGenerator;

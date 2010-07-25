@@ -18,6 +18,7 @@ QString const getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 QString const getUsagesLineTag = "@@GetUsedTypesLine@@";
 QString const getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
 QString const getEnumsLineTag = "@@GetEnumValuesLine@@";
+QString const getPossibleEdgesLineTag = "@@GetPossibleEdgesLine@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";
@@ -33,6 +34,7 @@ QString const connectionsListTag = "@@ConnectedToList@@";
 QString const usagesListTag = "@@UsedTypesList@@";
 QString const isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
 QString const enumsListTag = "@@EnumValuesList@@";
+QString const possibleEdgesListTag = "@@PossibleEdgesList@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";
@@ -45,6 +47,7 @@ QString const metaEntityEdge ="MetaEntityEdge";
 QString const metaEntityImport = "MetaEntityImport";
 QString const metaEntityEnum = "MetaEntityEnum";
 QString const metaEntityValue = "MetaEntityValue";
+QString const metaEntityPossibleEdge = "MetaEntityPossibleEdge";
 
 QString const nameOfTheDirectory = "name of the directory";
 

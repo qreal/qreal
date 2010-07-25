@@ -11,3 +11,4 @@
 @@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
 @@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;
+@@GetPossibleEdgesLine@@=	if (element == "@@ElementName@@")\n		result @@PossibleEdgesList@@;

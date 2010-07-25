@@ -51,6 +51,7 @@ private:
 	void generateUsages();
 	void generateIsNodeOrEdge();
 	void generateEnums();
+	void generatePossibleEdges();
 
 	MetaCompiler *mMetaCompiler;
 	qrRepo::RepoApi *mApi;
@@ -73,6 +74,7 @@ private:
 	class MouseGesturesGenerator;
 	class PropertiesGenerator;
 	class PropertyDefaultsGenerator;
+	class PossibleEdgesGenerator;
 	void generatePluginMethod(QString const &tag, MethodGenerator const &generator, bool isSingleLineMethod);
 };
 

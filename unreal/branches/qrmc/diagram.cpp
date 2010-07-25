@@ -243,6 +243,13 @@ public:
 	}
 };
 
+class Diagram::PossibleEdgesGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generatePossibleEdges(lineTemplate);
+	}
+};
+
 QString Diagram::generateUsages(const QString &lineTemplate) const
 {
 	return generateListMethod(lineTemplate, UsagesGenerator());
@@ -268,6 +275,11 @@ QString Diagram::generateIsNodeOrEdge(const QString &lineTemplate) const
 	return generateListMethod(lineTemplate, IsNodeOrEdgeGenerator());
 }
 
+QString Diagram::generatePossibleEdges(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, PossibleEdgesGenerator());
+}
+
 QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGenerator const &generator) const
 {
 	QString result;
@@ -281,6 +293,8 @@ QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGener
 		isFirstLine = false;
 		result += line + "\n";
 	}
+	if (result.isEmpty())
+		return "	Q_UNUSED(element);\n";
 	return result;
 }
 

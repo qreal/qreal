@@ -60,3 +60,9 @@ QString NonGraphicType::generateIsNodeOrEdge(QString const &lineTemplate) const
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "0");
 	return line;
 }
+
+QString NonGraphicType::generatePossibleEdges(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}

@@ -66,8 +66,34 @@ bool GraphicType::init(QString const &context)
 
 bool GraphicType::initPossibleEdges()
 {
-	IdList list = mApi->elementsByType("MetaEntityPossibleEdge");
-	qDebug() << "++ possible edges: " << list.size();
+	IdList children = mApi->children(mId);
+	foreach(Id id, children) {
+		if (id.element() != metaEntityPossibleEdge)
+			continue;
+		QString beginName = mApi->stringProperty(id, "beginName");
+		QString endName = mApi->stringProperty(id, "endName");
+		QString directedField = mApi->stringProperty(id, "directed");
+		bool directed = false;
+
+		if (beginName.isEmpty() || endName.isEmpty() || ((directedField != "true") && (directedField != "false"))) {
+
+				qDebug() << "Error: one of attributes is incorrect " <<
+					"(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
+					"\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
+				return false;
+		}
+		directed = (directedField == "true");
+		QString edgeName = NameNormalizer::normalize(qualifiedName());
+		QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
+
+		if (!mPossibleEdges.contains(possibleEdge))
+				mPossibleEdges.append(possibleEdge);
+		else {
+			// FIXME: ignoring for now
+				//qDebug() << "ERROR: this edge is already in list " << qualifiedName();
+//				return false;
+		}
+	}
 	return true;
 }
 
@@ -240,4 +266,22 @@ QString GraphicType::generateEnums(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
+}
+
+QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
+{
+	if (mPossibleEdges.isEmpty())
+		return "";
+	QString edgesList;
+	QString line = lineTemplate;
+	QString const templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
+	QString directed = "false";
+	foreach(PossibleEdge edge, mPossibleEdges) {
+		if (edge.second.first)
+			directed = "true";
+		QString current = templ.arg(edge.first.first).arg(edge.first.second).arg(directed).arg(edge.second.second);
+		edgesList += "<< " + current  + " ";
+	}
+	line.replace(possibleEdgesListTag, edgesList).replace(elementNameTag, name());
+	return line;
 }

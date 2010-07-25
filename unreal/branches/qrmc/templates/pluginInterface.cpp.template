@@ -117,7 +117,7 @@ QStringList @@MetamodelName@@Plugin::getUsedTypes(QString const &element) const
 QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plugin::getPossibleEdges(QString const &element) const
 {
 	QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;
-	Q_UNUSED(element);
+@@GetPossibleEdgesLine@@
 	return result;
 }
 

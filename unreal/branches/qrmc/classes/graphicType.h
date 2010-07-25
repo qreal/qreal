@@ -26,6 +26,7 @@ public:
 	virtual QString generateConnections(QString const &lineTemplate) const;
 	virtual QString generateUsages(QString const &lineTemplate) const;
 	virtual QString generateEnums(QString const &lineTemplate) const;
+	virtual QString generatePossibleEdges(QString const &lineTemplate) const;
 
 	bool isResolving() const;
 

@@ -49,6 +49,7 @@ public:
 	virtual QString generateFactory(QString const &lineTemplate) const;
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const = 0;
 	virtual QString generateEnums(QString const &lineTemplate) const = 0;
+	virtual QString generatePossibleEdges(QString const &lineTemplate) const = 0;
 
 protected:
 	virtual void copyFields(Type *type) const;
