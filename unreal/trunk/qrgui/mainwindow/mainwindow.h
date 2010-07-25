@@ -107,8 +107,10 @@ namespace qReal {
 
 		void saveListClosed();
 
+		void setDiagramCreateFlag();
 		void diagramInCreateListDeselect();
 		void diagramInCreateListSelected(int num);
+
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 	private:
 		QCloseEvent* clEvent;
@@ -139,10 +141,11 @@ namespace qReal {
 
 		int getTabIndex(const QModelIndex &index);
 
-			signals:
-				void gesturesShowed();
-				void currentIdealGestureChanged();
-				void rootDiagramChanged();
-			};
+		bool mDiagramCreateFlag;
 
+	signals:
+		void gesturesShowed();
+		void currentIdealGestureChanged();
+		void rootDiagramChanged();
+	};
 }

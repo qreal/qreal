@@ -1026,10 +1026,15 @@ void MainWindow::suggestToCreateDiagram()
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),this,SLOT(diagramInCreateListDeselect()));
+	QObject::connect(&dialog,SIGNAL(destroyed()),this,SLOT(diagramInCreateListDeselect()));
+
 	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+
+	QObject::connect(&okButton,SIGNAL(clicked()),this,SLOT(setDiagramCreateFlag()));
 	QObject::connect(&okButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+
 	diagramsListWidget.setCurrentRow(0);
+	mDiagramCreateFlag = false;
 
 	vLayout.addWidget(&label);
 	vLayout.addWidget(&diagramsListWidget);
@@ -1042,9 +1047,15 @@ void MainWindow::suggestToCreateDiagram()
 	dialog.exec();
 }
 
+void MainWindow::setDiagramCreateFlag()
+{
+	mDiagramCreateFlag = true;
+}
+
 void MainWindow::diagramInCreateListDeselect()
 {
-	deleteFromExplorer();
+	if (!mDiagramCreateFlag)
+		deleteFromExplorer();
 }
 
 void MainWindow::diagramInCreateListSelected(int num)
