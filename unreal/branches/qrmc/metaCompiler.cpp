@@ -39,7 +39,7 @@ bool MetaCompiler::compile()
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, rootItems) {
-		if (editorId.element() == "MetamodelDiagram") {
+		if (editorId.element() == metamodelDiagram) {
 			mPluginName = NameNormalizer::normalize(mApi.property(editorId, "name of the directory")
 											.toString().section("/", -1));
 			if (!loadMetaModel(editorId))

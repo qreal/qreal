@@ -20,7 +20,8 @@ public:
 	virtual QString generateContainers(QString const &lineTemplate) const;
 	virtual QString generateConnections(QString const &lineTemplate) const;
 	virtual QString generateUsages(QString const &lineTemplate) const;
+	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
 
 protected:
-	NonGraphicType();
+	NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 };

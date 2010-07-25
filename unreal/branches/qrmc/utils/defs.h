@@ -16,6 +16,8 @@ QString const initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 QString const getContainersLineTag = "@@GetContainedByLine@@";
 QString const getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 QString const getUsagesLineTag = "@@GetUsedTypesLine@@";
+QString const getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
+QString const getEnumsLineTag = "@@GetEnumValuesLine@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";
@@ -29,7 +31,20 @@ QString const propertyDefaultTag = "@@PropertyDefaultValue@@";
 QString const containersListTag = "@@ContainedByList@@";
 QString const connectionsListTag = "@@ConnectedToList@@";
 QString const usagesListTag = "@@UsedTypesList@@";
+QString const isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
+QString const enumsListTag = "@@EnumValuesList@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";
 QString const pluginSourceName = "pluginInterface.cpp";
+
+QString const metamodelDiagram = "MetamodelDiagram";
+QString const metaEditorDiagramNode = "MetaEditorDiagramNode";
+QString const metaEntityNode = "MetaEntityNode";
+QString const metaEntityEdge ="MetaEntityEdge";
+QString const metaEntityImport = "MetaEntityImport";
+QString const metaEntityEnum = "MetaEntityEnum";
+QString const metaEntityValue = "MetaEntityValue";
+
+QString const nameOfTheDirectory = "name of the directory";
+

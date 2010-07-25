@@ -5,8 +5,8 @@
 
 using namespace utils;
 
-NonGraphicType::NonGraphicType()
-	: Type(true, NULL, NULL, qReal::ROOT_ID)  // Неграфическим типам тоже неплохо бы знать, из какой они диаграммы
+NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id)
+	: Type(true, diagram, api, id)
 {}
 
 bool NonGraphicType::resolve()
@@ -52,4 +52,11 @@ QString NonGraphicType::generateUsages(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate)
 	return "";
+}
+
+QString NonGraphicType::generateIsNodeOrEdge(QString const &lineTemplate) const
+{
+	QString line = lineTemplate;
+	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "0");
+	return line;
 }

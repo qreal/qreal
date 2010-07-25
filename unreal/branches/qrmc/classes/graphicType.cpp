@@ -60,6 +60,14 @@ bool GraphicType::init(QString const &context)
 			mUsages << mApi->stringProperty(id, "type").section("::", -1);
 		}
 	}
+	initPossibleEdges();
+	return true;
+}
+
+bool GraphicType::initPossibleEdges()
+{
+	IdList list = mApi->elementsByType("MetaEntityPossibleEdge");
+	qDebug() << "++ possible edges: " << list.size();
 	return true;
 }
 
@@ -115,11 +123,11 @@ bool GraphicType::resolve()
 			if (!addProperty(property->clone()))
 				return false;
 
-//		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
-//		if (gParent)
-//			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
-//				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
-//			}
+		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
+		if (gParent)
+			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
+				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
+			}
 	}
 
 	mResolvingFinished = true;
@@ -226,4 +234,10 @@ QString GraphicType::generateUsages(const QString &lineTemplate) const
 	}
 	line.replace(usagesListTag, usagesList).replace(elementNameTag, name());
 	return line;
+}
+
+QString GraphicType::generateEnums(const QString &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate);
+	return "";
 }

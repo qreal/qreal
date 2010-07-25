@@ -19,6 +19,8 @@ public:
 
 	virtual void print();
 
+	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+
 private:
 	bool mIsPin;
 	bool mIsHavePin;

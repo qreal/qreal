@@ -25,6 +25,7 @@ public:
 	virtual QString generateContainers(QString const &lineTemplate) const;
 	virtual QString generateConnections(QString const &lineTemplate) const;
 	virtual QString generateUsages(QString const &lineTemplate) const;
+	virtual QString generateEnums(QString const &lineTemplate) const;
 
 	bool isResolving() const;
 
@@ -68,6 +69,7 @@ private:
 	};
 
 	bool addProperty(Property *property);
+	bool initPossibleEdges();
 
 	bool mResolving;
 };

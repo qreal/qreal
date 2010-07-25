@@ -37,3 +37,10 @@ bool EdgeType::isGraphicalType() const
 {
 	return !mLineType.isEmpty();
 }
+
+QString EdgeType::generateIsNodeOrEdge(QString const &lineTemplate) const
+{
+	QString line = lineTemplate;
+	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "-1");
+	return line;
+}

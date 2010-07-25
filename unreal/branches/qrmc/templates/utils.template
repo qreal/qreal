@@ -10,4 +10,4 @@
 @@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
 @@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
-@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result << @@EnumValuesList;
+@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;

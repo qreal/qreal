@@ -43,10 +43,12 @@ public:
 	virtual QString generateMouseGestures(QString const &lineTemplate) const;
 	virtual QString generateProperties(QString const &lineTemplate) const = 0;
 	virtual QString generatePropertyDefaults(QString const &lineTemplate) const = 0;
-	virtual QString generateFactory(QString const &lineTemplate) const;
 	virtual QString generateContainers(QString const &lineTemplate) const = 0;
 	virtual QString generateConnections(QString const &lineTemplate) const = 0;
 	virtual QString generateUsages(QString const &lineTemplate) const = 0;
+	virtual QString generateFactory(QString const &lineTemplate) const;
+	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const = 0;
+	virtual QString generateEnums(QString const &lineTemplate) const = 0;
 
 protected:
 	virtual void copyFields(Type *type) const;

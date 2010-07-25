@@ -27,7 +27,7 @@ Diagram::~Diagram()
 bool Diagram::init()
 {
 	foreach(Id id, mApi->children(mId)) {
-		if (id.element() == "MetaEntityNode") {
+		if (id.element() == metaEntityNode) {
 			Type *nodeType = new NodeType(this, mApi, id);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
@@ -35,7 +35,7 @@ bool Diagram::init()
 				return false;
 			}
 			mTypes[nodeType->name()] = nodeType;
-		} else if (id.element() == "MetaEntityEdge") {
+		} else if (id.element() == metaEntityEdge) {
 			Type *edgeType = new EdgeType(this, mApi, id);
 			if (!edgeType->init(mDiagramName)) {
 				delete edgeType;
@@ -43,15 +43,22 @@ bool Diagram::init()
 				return false;
 			}
 			mTypes[edgeType->name()] = edgeType;
-		} else if (id.element() == "MetaEntityImport") {
+		} else if (id.element() == metaEntityImport) {
 			ImportSpecification import = {
 				mApi->stringProperty(id, "importedFrom") + "::" + mApi->stringProperty(id, "as"),
 				mApi->stringProperty(id, "as"),
 				mApi->stringProperty(id, "displayedName"),
 			};
 			mImports.append(import);
-		} else if (id.element() == "MetaEntityEnum") {
-			// TODO: load enums
+		} else if (id.element() == metaEntityEnum) {
+			Type *enumType = new EnumType(this, mApi, id);
+			if (!enumType->init(mDiagramName))
+			{
+				delete enumType;
+				qDebug() << "can't load enum";
+				return false;
+			}
+			mTypes[enumType->name()] = enumType;
 		} else {
 			qDebug() << "ERROR: unknown type" << id.element();
 			return false;
@@ -125,87 +132,148 @@ void Diagram::print()
 //		type->print();
 }
 
-QString Diagram::generateNamesMap(QString const& lineTemplate) const
+class Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
+};
+
+class Diagram::NamesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateNames(lineTemplate);
+	}
+};
+
+class Diagram::MouseGesturesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateMouseGestures(lineTemplate);
+	}
+};
+
+class Diagram::PropertyNamesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateProperties(lineTemplate);
+	}
+};
+
+class Diagram::PropertyDefaultsGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generatePropertyDefaults(lineTemplate);
+	}
+};
+
+QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const
 {
 	QString result;
 	foreach(Type* type, mTypes) {
-		QString line = type->generateNames(lineTemplate);
+		QString line = generator.generate(type, lineTemplate);
 		if (!line.isEmpty())
 			result += line + "\n";
 	}
 	return result;
+}
+
+QString Diagram::generateNamesMap(QString const& lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, NamesGenerator());
 }
 
 QString Diagram::generateMouseGesturesMap(const QString &lineTemplate) const
 {
-	QString result;
-	foreach(Type* type, mTypes) {
-		QString line = type->generateMouseGestures(lineTemplate);
-		if (!line.isEmpty())
-			result += line + "\n";
-	}
-	return result;
+	return generateMapMethod(lineTemplate, MouseGesturesGenerator());
 }
 
 QString Diagram::generatePropertiesMap(const QString &lineTemplate) const
 {
-	QString result;
-	foreach(Type* type, mTypes) {
-		QString line = type->generateProperties(lineTemplate);
-		if (!line.isEmpty())
-			result += line + "\n";
-	}
-	return result;
+	return generateMapMethod(lineTemplate, PropertyNamesGenerator());
 }
 
 QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const
 {
-	QString result;
-	foreach(Type* type, mTypes) {
-		QString line = type->generatePropertyDefaults(lineTemplate);
-		if (!line.isEmpty())
-			result += line + "\n";
-	}
-	return result;
+	return generateMapMethod(lineTemplate, PropertyDefaultsGenerator());
 }
 
-QString Diagram::generateFactory(const QString &lineTemplate) const
-{
-	QString result;
-	bool isFirstLine = true;
-	foreach(Type* type, mTypes) {
-		QString line = type->generateFactory(lineTemplate);
-		if (!isFirstLine)
-			line.replace("if", "else if");
-		isFirstLine = false;
-		if (!line.isEmpty())
-			result += line + "\n";
-	}
-	return result;
-}
+class Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
+};
 
-QString Diagram::generateContainers(const QString &lineTemplate) const
-{
-	QString result;
-	bool isFirstLine = true;
-	foreach(Type* type, mTypes) {
-		QString line = type->generateContainers(lineTemplate);
-		if (line.isEmpty())
-			continue;
-		if (!isFirstLine)
-			line.replace("if", "else if");
-		isFirstLine = false;
-		result += line + "\n";
+class Diagram::UsagesGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateUsages(lineTemplate);
 	}
-	return result;
+};
+
+class Diagram::ContainersGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateContainers(lineTemplate);
+	}
+};
+
+class Diagram::ConnectionsGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateConnections(lineTemplate);
+	}
+};
+
+class Diagram::FactoryGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateFactory(lineTemplate);
+	}
+};
+
+class Diagram::IsNodeOrEdgeGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateIsNodeOrEdge(lineTemplate);
+	}
+};
+
+class Diagram::EnumsGenerator: public Diagram::ListMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateEnums(lineTemplate);
+	}
+};
+
+QString Diagram::generateUsages(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, UsagesGenerator());
 }
 
 QString Diagram::generateConnections(const QString &lineTemplate) const
 {
+	return generateListMethod(lineTemplate, ConnectionsGenerator());
+}
+
+QString Diagram::generateContainers(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, ContainersGenerator());
+}
+
+QString Diagram::generateFactory(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, FactoryGenerator());
+}
+
+QString Diagram::generateIsNodeOrEdge(const QString &lineTemplate) const
+{
+	return generateListMethod(lineTemplate, IsNodeOrEdgeGenerator());
+}
+
+QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGenerator const &generator) const
+{
 	QString result;
 	bool isFirstLine = true;
 	foreach(Type* type, mTypes) {
-		QString line = type->generateConnections(lineTemplate);
+		QString line = generator.generate(type, lineTemplate);
 		if (line.isEmpty())
 			continue;
 		if (!isFirstLine)
@@ -216,12 +284,14 @@ QString Diagram::generateConnections(const QString &lineTemplate) const
 	return result;
 }
 
-QString Diagram::generateUsages(const QString &lineTemplate) const
+QString Diagram::generateEnums(const QString &lineTemplate) const
 {
+	EnumsGenerator generator;
 	QString result;
 	bool isFirstLine = true;
-	foreach(Type* type, mTypes) {
-		QString line = type->generateUsages(lineTemplate);
+
+	foreach (EnumType *type, mEditor->getAllEnumTypes()) {
+		QString line = generator.generate(type, lineTemplate);
 		if (line.isEmpty())
 			continue;
 		if (!isFirstLine)

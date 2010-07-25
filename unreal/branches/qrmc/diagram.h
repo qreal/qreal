@@ -28,10 +28,12 @@ public:
 	QString generateMouseGesturesMap(QString const &lineTemplate) const;
 	QString generatePropertiesMap(QString const &lineTemplate) const;
 	QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
-	QString generateFactory(QString const &lineTemplate) const;
 	QString generateContainers(QString const &lineTemplate) const;
 	QString generateConnections(QString const &lineTemplate) const;
 	QString generateUsages(QString const &lineTemplate) const;
+	QString generateFactory(QString const &lineTemplate) const;
+	QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+	QString generateEnums(QString const &lineTemplate) const;
 
 	void print();
 
@@ -49,4 +51,20 @@ private:
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
 	QList<ImportSpecification> mImports;
+
+	class ListMethodGenerator;
+	class UsagesGenerator;
+	class ConnectionsGenerator;
+	class ContainersGenerator;
+	class FactoryGenerator;
+	class IsNodeOrEdgeGenerator;
+	class EnumsGenerator;
+	QString generateListMethod(QString const &lineTemplate, ListMethodGenerator const &generator) const;
+
+	class MapMethodGenerator;
+	class NamesGenerator;
+	class MouseGesturesGenerator;
+	class PropertyNamesGenerator;
+	class PropertyDefaultsGenerator;
+	QString generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const;
 };

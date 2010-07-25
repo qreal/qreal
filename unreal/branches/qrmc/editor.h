@@ -46,9 +46,11 @@ private:
 	void generatePropertiesMap();
 	void generatePropertyDefaultsMap();
 	void generateElementsFactory();
-	void generateContaners();
+	void generateContainers();
 	void generateConnections();
 	void generateUsages();
+	void generateIsNodeOrEdge();
+	void generateEnums();
 
 	MetaCompiler *mMetaCompiler;
 	qrRepo::RepoApi *mApi;
@@ -61,4 +63,16 @@ private:
 	QMap<QString, QString> mUtilsTemplate;
 	QString mSourceTemplate;
 
+	class MethodGenerator;
+	class ContainersGenerator;
+	class ConnectionsGenerator;
+	class UsagesGenerator;
+	class FactoryGenerator;
+	class IsNodeOrEdgeGenerator;
+	class NamesGenerator;
+	class MouseGesturesGenerator;
+	class PropertiesGenerator;
+	class PropertyDefaultsGenerator;
+	void generatePluginMethod(QString const &tag, MethodGenerator const &generator, bool isSingleLineMethod);
 };
+

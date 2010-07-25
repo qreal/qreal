@@ -13,7 +13,7 @@ using namespace qReal;
 Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
-	mName = NameNormalizer::normalize(mApi->property(mId, "name of the directory").toString().section("/", -1));
+	mName = NameNormalizer::normalize(mApi->property(mId, nameOfTheDirectory).toString().section("/", -1));
 }
 
 Editor::~Editor()
@@ -39,7 +39,7 @@ bool Editor::load()
 			continue;
 
 		Editor *includedEditor = NULL;
-		IdList metamodels = mApi->elementsByType("MetamodelDiagram");
+		IdList metamodels = mApi->elementsByType(metamodelDiagram);
 		foreach(Id metamodel, metamodels) {
 			if (mApi->name(metamodel) == metamodelName) {
 				includedEditor = mMetaCompiler->loadMetaModel(metamodel);
@@ -60,7 +60,7 @@ bool Editor::load()
 	IdList children = mApi->children(mId);
 	IdList diagrams;
 	foreach(Id child, children)
-		if (child.element() == "MetaEditorDiagramNode")
+		if (child.element() == metaEditorDiagramNode)
 			diagrams << child;
 
 	foreach(Id diagramId, diagrams)
@@ -108,10 +108,7 @@ Type* Editor::findType(QString const &name)
 	}
 
 	foreach (Editor *editor, mIncludes) {
-//		qDebug() << "searching diagram" << editor->name() << name << "includes size" << mIncludes.size();
 		Type *type = editor->findType(name);
-//		if (type)
-//			qDebug() << "from includes: " << type->qualifiedName() << name;
 		if (type != NULL && type->qualifiedName() == name)
 			return type;
 	}
@@ -217,9 +214,11 @@ bool Editor::generatePluginSource()
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
-	generateContaners();
+	generateContainers();
 	generateConnections();
 	generateUsages();
+	generateIsNodeOrEdge();
+	generateEnums();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag, mName);
@@ -260,101 +259,144 @@ void Editor::generateDiagramNodeNamesMap()
 	mSourceTemplate.replace(initDiagramNodeNameMapLineTag, initNodeNameMapBody);
 }
 
-void Editor::generateNamesMap()
+
+class Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const = 0;
+};
+
+class Editor::NamesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateNamesMap(lineTemplate);
+	}
+};
+
+class Editor::MouseGesturesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateMouseGesturesMap(lineTemplate);
+	}
+};
+
+class Editor::PropertiesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generatePropertiesMap(lineTemplate);
+	}
+};
+
+class Editor::PropertyDefaultsGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generatePropertyDefaultsMap(lineTemplate);
+	}
+};
+
+class Editor::ContainersGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateContainers(lineTemplate);
+	}
+};
+
+class Editor::ConnectionsGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateConnections(lineTemplate);
+	}
+};
+
+class Editor::UsagesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateUsages(lineTemplate);
+	}
+};
+
+class Editor::FactoryGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateFactory(lineTemplate);
+	}
+};
+
+class Editor::IsNodeOrEdgeGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateIsNodeOrEdge(lineTemplate);
+	}
+};
+
+void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator, bool isSingleLineMethod)
 {
-	QString initNameMapBody = "";
-	QString const line = mUtilsTemplate[initElementNameMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
-		initNameMapBody += diagram->generateNamesMap(line);
+	QString body = "";
+	QString const line = isSingleLineMethod
+						? mUtilsTemplate[tag]
+						: mUtilsTemplate[tag].section("\\n",0,0) + "\n" + mUtilsTemplate[tag].section("\\n",1,1);
+	foreach(Diagram *diagram, mDiagrams) {
+		body += generator.generate(diagram, line);
 	}
 	// inserting generated lines into main template
-	mSourceTemplate.replace(initElementNameMapLineTag, initNameMapBody);
+	mSourceTemplate.replace(tag, body);
+
+}
+
+void Editor::generateNamesMap()
+{
+	generatePluginMethod(initElementNameMapLineTag, NamesGenerator(), true);
 }
 
 void Editor::generateMouseGesturesMap()
 {
-	QString initMouseGesturesMapBody = "";
-	QString const line = mUtilsTemplate[initMouseGesturesMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
-		initMouseGesturesMapBody += diagram->generateMouseGesturesMap(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(initMouseGesturesMapLineTag, initMouseGesturesMapBody);
+	generatePluginMethod(initMouseGesturesMapLineTag, MouseGesturesGenerator(), true);
 }
 
 void Editor::generatePropertiesMap()
 {
-	QString initPropertiesMapBody = "";
-	QString const line = mUtilsTemplate[initPropertyTypesMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
-		initPropertiesMapBody += diagram->generatePropertiesMap(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(initPropertyTypesMapLineTag, initPropertiesMapBody);
+	generatePluginMethod(initPropertyTypesMapLineTag, PropertiesGenerator(), true);
 }
 
 void Editor::generatePropertyDefaultsMap()
 {
-	QString initPropertyDefaultMapBody = "";
-	QString const line = mUtilsTemplate[initPropertyDefaultMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
-		initPropertyDefaultMapBody += diagram->generatePropertyDefaultsMap(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(initPropertyDefaultMapLineTag, initPropertyDefaultMapBody);
+	generatePluginMethod(initPropertyDefaultMapLineTag, PropertyDefaultsGenerator(), true);
 }
 
-void Editor::generateElementsFactory()
+void Editor::generateContainers()
 {
-	QString factoryBody = "";
-	QString line = mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",0,0)
-					+ "\n" + mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",1,1);
-
-	foreach(Diagram *diagram, mDiagrams)	{
-		factoryBody += diagram->generateFactory(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(getGraphicalObjectLineTag, factoryBody);
-}
-
-void Editor::generateContaners()
-{
-	QString containersBody = "";
-	QString line = mUtilsTemplate[getContainersLineTag].section("\\n",0,0)
-					+ "\n" + mUtilsTemplate[getContainersLineTag].section("\\n",1,1);
-
-	foreach(Diagram *diagram, mDiagrams)	{
-		containersBody += diagram->generateContainers(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(getContainersLineTag, containersBody);
-
+	generatePluginMethod(getContainersLineTag, ContainersGenerator(), false);
 }
 
 void Editor::generateConnections()
 {
-	QString connectionsBody = "";
-	QString line = mUtilsTemplate[getConnectionsLineTag].section("\\n",0,0)
-					+ "\n" + mUtilsTemplate[getConnectionsLineTag].section("\\n",1,1);
-
-	foreach(Diagram *diagram, mDiagrams)	{
-		connectionsBody += diagram->generateConnections(line);
-	}
-	// inserting generated lines into main template
-	mSourceTemplate.replace(getConnectionsLineTag, connectionsBody);
-
+	generatePluginMethod(getConnectionsLineTag, ConnectionsGenerator(), false);
 }
 
 void Editor::generateUsages()
 {
-	QString usagesBody = "";
-	QString line = mUtilsTemplate[getUsagesLineTag].section("\\n",0,0)
-					+ "\n" + mUtilsTemplate[getUsagesLineTag].section("\\n",1,1);
+	generatePluginMethod(getUsagesLineTag, UsagesGenerator(), false);
+}
 
-	foreach(Diagram *diagram, mDiagrams)	{
-		usagesBody += diagram->generateUsages(line);
+void Editor::generateElementsFactory()
+{
+	generatePluginMethod(getGraphicalObjectLineTag, FactoryGenerator(), false);
+}
+
+void Editor::generateIsNodeOrEdge()
+{
+	generatePluginMethod(getIsNodeOrEdgeLineTag, IsNodeOrEdgeGenerator(), false);
+}
+
+void Editor::generateEnums()
+{
+	QString body = "";
+	QString line = mUtilsTemplate[getEnumsLineTag].section("\\n",0,0)
+					+ "\n" + mUtilsTemplate[getEnumsLineTag].section("\\n",1,1);
+
+	foreach(Diagram *diagram, mDiagrams) {
+		body += diagram->generateEnums(line);
 	}
 	// inserting generated lines into main template
-	mSourceTemplate.replace(getUsagesLineTag, usagesBody);
-
+	mSourceTemplate.replace(getEnumsLineTag, body);
 }
+

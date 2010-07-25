@@ -36,3 +36,9 @@ void NodeType::print()
 	qDebug() << "node " << mName;
 }
 
+QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
+{
+	QString line = lineTemplate;
+	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "1");
+	return line;
+}
