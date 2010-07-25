@@ -274,21 +274,19 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 		QDomElement attribute = nodeAttributes.at(i).toElement();
 		if (attribute.tagName() == "generalizations")
 			setGeneralization(attribute, nodeId);
-		if (attribute.tagName() == "properties")
+		else if (attribute.tagName() == "properties")
 			setProperties(attribute, nodeId);
-		if (attribute.tagName() == "container")
+		else if (attribute.tagName() == "container")
 			setContainers(attribute, nodeId);
-		if (attribute.tagName() == "connections")
+		else if (attribute.tagName() == "connections")
 			setConnections(attribute, nodeId);
-		if (attribute.tagName() == "usages")
+		else if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
-		if (attribute.tagName() == "possibleEdges")
-			setPossibleEdges(attribute, nodeId);
-		if (attribute.tagName() == "pin")
+		else if (attribute.tagName() == "pin")
 			setPin(nodeId);
-		if (attribute.tagName() == "action")
+		else if (attribute.tagName() == "action")
 			setAction(nodeId);
-		if (attribute.tagName() == "bonusContextMenuFields")
+		else if (attribute.tagName() == "bonusContextMenuFields")
 			setFields(attribute, nodeId);
 	}
 }
@@ -311,10 +309,12 @@ void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)
 		QDomElement attribute = edgeAttributes.at(i).toElement();
 		if (attribute.tagName() == "generalizations")
 			setGeneralization(attribute, edgeId);
-		if (attribute.tagName() == "properties")
+		else if (attribute.tagName() == "properties")
 			setProperties(attribute, edgeId);
-		if (attribute.tagName() == "assotiations")
-			setAssotiations(attribute, edgeId);
+		else if (attribute.tagName() == "associations")
+			setAssociations(attribute, edgeId);
+		else if (attribute.tagName() == "possibleEdges")
+			setPossibleEdges(attribute, edgeId);
 	}
 }
 
@@ -426,21 +426,21 @@ void XmlParser::setUsages(const QDomElement &element, const Id &elementId)
 	}
 }
 
-void XmlParser::setAssotiations(const QDomElement &element, const Id &elementId)
+void XmlParser::setAssociations(const QDomElement &element, const Id &elementId)
 {
-	Id assotiationId("Meta_editor", "MetaEditor", "MetaEntityAssotiation",
+	Id associationId("Meta_editor", "MetaEditor", "MetaEntityAssociation",
 			QUuid::createUuid().toString());
-	QDomNodeList assotiations = element.childNodes();
+	QDomNodeList associations = element.childNodes();
 
-	QDomElement assotiation = assotiations.at(0).toElement();
+	QDomElement association = associations.at(0).toElement();
 
-	setStandartConfigurations(assotiationId, elementId, assotiation.attribute("name", ""),
-			assotiation.attribute("displayedName", ""));
+	setStandartConfigurations(associationId, elementId, association.attribute("name", ""),
+			association.attribute("displayedName", ""));
 
-	mApi.setProperty(assotiationId, "beginType", element.attribute("beginType", ""));
-	mApi.setProperty(assotiationId, "endType", element.attribute("endType", ""));
-	mApi.setProperty(assotiationId, "beginName", assotiation.attribute("beginName", ""));
-	mApi.setProperty(assotiationId, "endName", assotiation.attribute("endName", ""));
+	mApi.setProperty(associationId, "beginType", element.attribute("beginType", ""));
+	mApi.setProperty(associationId, "endType", element.attribute("endType", ""));
+	mApi.setProperty(associationId, "beginName", association.attribute("beginName", ""));
+	mApi.setProperty(associationId, "endName", association.attribute("endName", ""));
 }
 
 void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId)

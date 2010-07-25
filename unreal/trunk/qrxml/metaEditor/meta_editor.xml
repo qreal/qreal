@@ -3,7 +3,7 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 	  <nonGraphicTypes>
-		<enum name="assotiationTypes" displayedName="assotiationTypes">
+		<enum name="associationTypes" displayedName="associationTypes">
 		  <value>no_arrow</value>
 		  <value>open_arrow</value>
 		  <value>empty_arrow</value>
@@ -218,7 +218,7 @@
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
-			  <contains type="MetaEditor::MetaEntityAssotiation"/>
+			  <contains type="MetaEditor::MetaEntityAssociation"/>
 			  <contains type="MetaEditor::Inheritance"/>
 			  <contains type="MetaEditor::Importation"/>
 			  <properties>
@@ -434,7 +434,7 @@
 			<containers/>
 		  </logic>
 		</node>
-		<node name="MetaEntityAssotiation" displayedName="Assotiation">
+		<node name="MetaEntityAssociation" displayedName="Association">
 		  <graphics>
 			<picture sizex="120" sizey="40">
 			  <line x1="10" y1="0" x2="110" y2="0"/>
@@ -443,7 +443,7 @@
 			  <line x1="10" y1="40" x2="0" y2="20"/>
 			  <line x1="110" y1="0" x2="120" y2="20"/>
 			  <line x1="110" y1="40" x2="120" y2="20"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Assotiation</text>
+			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Association</text>
 			</picture>
 			<labels>
 			  <label x="10" y="10" textBinded="name" center="true"/>
@@ -462,8 +462,8 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="assotiationTypes" name="beginType"/>
-			  <property type="assotiationTypes" name="endType"/>
+			  <property type="associationTypes" name="beginType"/>
+			  <property type="associationTypes" name="endType"/>
 			  <property type="string" name="beginName"/>
 			  <property type="string" name="endName"/>
 			</properties>

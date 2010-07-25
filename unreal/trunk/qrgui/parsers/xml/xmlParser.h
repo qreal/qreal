@@ -64,7 +64,7 @@ namespace qReal {
 			void setSizesForContainer(QString const &tagName, QDomElement const &property, Id const &id);
 			void setProperties(QDomElement const &element, Id const &elementId);
 			void setConnections(QDomElement const &element, Id const &elementId);
-			void setAssotiations(QDomElement const &element, Id const &elementId);
+			void setAssociations(QDomElement const &element, Id const &elementId);
 			void setUsages(QDomElement const &element, Id const &elementId);
 			void setPossibleEdges(QDomElement const &element, Id const &elementId);
 			void setFields(QDomElement const &element, Id const &elementId);
