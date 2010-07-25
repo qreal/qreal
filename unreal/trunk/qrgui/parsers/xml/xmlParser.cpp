@@ -360,9 +360,10 @@ void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 	for (unsigned i = 0; i < containsElements.length(); ++i) {
 		QDomElement contains = containsElements.at(i).toElement();
 		if (contains.tagName() == "contains") {
-			QStringList types = contains.attribute("type", "").split("::", QString::SkipEmptyParts);
-			foreach(QString type, types) 
-				mContainerList[mApi.name(elementId)] << type;
+			QString type = contains.attribute("type", "").section("::", -1);
+			QString name = mApi.name(elementId);
+			if (!mContainerList[name].contains(type) )
+				mContainerList[name] << type;
 		}
 		if (contains.tagName() == "properties")
 			setContainerProperties(contains, elementId);
