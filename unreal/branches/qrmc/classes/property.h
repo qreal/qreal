@@ -18,6 +18,9 @@ public:
 	bool operator != (Property const &other) const;
 	void print() const;
 
+	QString generatePropertyLine(QString const &lineTemplate) const;
+	QString generateDefaultsLine(QString const &lineTemplate) const;
+
 private:
 	qrRepo::RepoApi *mApi;
 	qReal::Id mId;

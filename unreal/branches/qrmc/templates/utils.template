@@ -6,8 +6,8 @@
 @@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
 @@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new UML::@@ElementName@@();
 @@GetPropertyNamesLine@@=	if (element == "@@ElementName@@")\n		result  << @@PropertiesList@@;
-@@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result << @@ContainedByList@@;
-@@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result << @@ConnectedToList@@ ;
-@@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result << @@UsedTypesList@@ ;
+@@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;
+@@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
+@@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
 @@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result << @@EnumValuesList;

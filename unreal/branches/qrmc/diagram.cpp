@@ -125,13 +125,109 @@ void Diagram::print()
 //		type->print();
 }
 
-QString Diagram::generateNamesMap(QString const& namesTemplate)
+QString Diagram::generateNamesMap(QString const& lineTemplate) const
 {
 	QString result;
 	foreach(Type* type, mTypes) {
-		QString line = type->generateNamesMap(namesTemplate);
+		QString line = type->generateNames(lineTemplate);
 		if (!line.isEmpty())
-				result += line + "\n";
+			result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generateMouseGesturesMap(const QString &lineTemplate) const
+{
+	QString result;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateMouseGestures(lineTemplate);
+		if (!line.isEmpty())
+			result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generatePropertiesMap(const QString &lineTemplate) const
+{
+	QString result;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateProperties(lineTemplate);
+		if (!line.isEmpty())
+			result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generatePropertyDefaultsMap(const QString &lineTemplate) const
+{
+	QString result;
+	foreach(Type* type, mTypes) {
+		QString line = type->generatePropertyDefaults(lineTemplate);
+		if (!line.isEmpty())
+			result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generateFactory(const QString &lineTemplate) const
+{
+	QString result;
+	bool isFirstLine = true;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateFactory(lineTemplate);
+		if (!isFirstLine)
+			line.replace("if", "else if");
+		isFirstLine = false;
+		if (!line.isEmpty())
+			result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generateContainers(const QString &lineTemplate) const
+{
+	QString result;
+	bool isFirstLine = true;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateContainers(lineTemplate);
+		if (line.isEmpty())
+			continue;
+		if (!isFirstLine)
+			line.replace("if", "else if");
+		isFirstLine = false;
+		result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generateConnections(const QString &lineTemplate) const
+{
+	QString result;
+	bool isFirstLine = true;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateConnections(lineTemplate);
+		if (line.isEmpty())
+			continue;
+		if (!isFirstLine)
+			line.replace("if", "else if");
+		isFirstLine = false;
+		result += line + "\n";
+	}
+	return result;
+}
+
+QString Diagram::generateUsages(const QString &lineTemplate) const
+{
+	QString result;
+	bool isFirstLine = true;
+	foreach(Type* type, mTypes) {
+		QString line = type->generateUsages(lineTemplate);
+		if (line.isEmpty())
+			continue;
+		if (!isFirstLine)
+			line.replace("if", "else if");
+		isFirstLine = false;
+		result += line + "\n";
 	}
 	return result;
 }

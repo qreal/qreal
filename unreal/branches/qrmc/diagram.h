@@ -24,7 +24,14 @@ public:
 	QString nodeName() const;
 	QString displayedName() const;
 
-	QString generateNamesMap(QString const &namesTemplate);
+	QString generateNamesMap(QString const &lineTemplate) const;
+	QString generateMouseGesturesMap(QString const &lineTemplate) const;
+	QString generatePropertiesMap(QString const &lineTemplate) const;
+	QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
+	QString generateFactory(QString const &lineTemplate) const;
+	QString generateContainers(QString const &lineTemplate) const;
+	QString generateConnections(QString const &lineTemplate) const;
+	QString generateUsages(QString const &lineTemplate) const;
 
 	void print();
 

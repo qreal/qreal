@@ -23,36 +23,43 @@ public:
 	virtual bool init(QString const &context);
 	virtual bool isResolving() const;
 	virtual bool isGraphicalType() const = 0;
-	bool isResolved() const;
+	virtual bool isResolved() const;
 
 	virtual void print() = 0;
 
-	QString name() const;
-	QString path() const;
-	QString qualifiedName() const;
-	QString displayedName() const;
+	virtual QString name() const;
+	virtual QString path() const;
+	virtual QString qualifiedName() const;
+	virtual QString displayedName() const;
 
-	QMap<QString, Property*> properties() const;
+	virtual QMap<QString, Property*> properties() const;
 
-	void setName(QString const &name);
-	void setDiagram(Diagram *diagram);
-	void setContext(QString const &newContext);
-	void setDisplayedName(QString const &displayedName);
+	virtual void setName(QString const &name);
+	virtual void setDiagram(Diagram *diagram);
+	virtual void setContext(QString const &newContext);
+	virtual void setDisplayedName(QString const &displayedName);
 
-	QString generateNamesMap(QString const &namesTemplate);
+	virtual QString generateNames(QString const &lineTemplate) const;
+	virtual QString generateMouseGestures(QString const &lineTemplate) const;
+	virtual QString generateProperties(QString const &lineTemplate) const = 0;
+	virtual QString generatePropertyDefaults(QString const &lineTemplate) const = 0;
+	virtual QString generateFactory(QString const &lineTemplate) const;
+	virtual QString generateContainers(QString const &lineTemplate) const = 0;
+	virtual QString generateConnections(QString const &lineTemplate) const = 0;
+	virtual QString generateUsages(QString const &lineTemplate) const = 0;
 
 protected:
-	void copyFields(Type *type) const;
-	QString nativeContext() const;
+	virtual void copyFields(Type *type) const;
+	virtual QString nativeContext() const;
 
 	QMap<QString, Property*> mProperties;
 	bool mResolvingFinished;
 	Diagram *mDiagram;
 	qReal::Id mId;
 	qrRepo::RepoApi *mApi;
-	QString mName;  // Неквалифицированное имя метатипа
-	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
-	QString mNativeContext;  // "� одной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
+	QString mName;  // metatype name
+	QString mContext;  // context if metatype. e.g. Kernel::Node: Node - name, Kernel - context.
+	QString mNativeContext;  // native context, doesn't change on import and is used for element resolving
 	QString mDisplayedName;
 	QString mPath;
 };

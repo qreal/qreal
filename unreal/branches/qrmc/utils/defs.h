@@ -13,6 +13,9 @@ QString const initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
 QString const initMouseGesturesMapLineTag = "@@InitMouseGesturesMapLine@@";
 QString const getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 QString const initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
+QString const getContainersLineTag = "@@GetContainedByLine@@";
+QString const getConnectionsLineTag = "@@GetConnectedTypesLine@@";
+QString const getUsagesLineTag = "@@GetUsedTypesLine@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";
@@ -23,6 +26,9 @@ QString const gesturePathTag = "@@GesturePath@@";
 QString const propertyNameTag = "@@PropertyName@@";
 QString const propertyTypeTag = "@@PropertyType@@";
 QString const propertyDefaultTag = "@@PropertyDefaultValue@@";
+QString const containersListTag = "@@ContainedByList@@";
+QString const connectionsListTag = "@@ConnectedToList@@";
+QString const usagesListTag = "@@UsedTypesList@@";
 
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";

@@ -106,11 +106,29 @@ bool Type::init(QString const &context)
 	return true;
 }
 
-QString Type::generateNamesMap(QString const &namesTemplate)
+QString Type::generateNames(QString const &lineTemplate) const
 {
 	if (displayedName().isEmpty() || !isGraphicalType())
 		return "";
-	QString result = namesTemplate;
+	QString result = lineTemplate;
 	result.replace(elementNameTag, name()).replace(elementDisplayedNameTag, displayedName()).replace(diagramNameTag, mContext);
+	return result;
+}
+
+QString Type::generateMouseGestures(QString const &lineTemplate) const
+{
+	if (mPath.isEmpty())
+		return "";
+	QString result = lineTemplate;
+	result.replace(elementNameTag, name()).replace(gesturePathTag, mPath).replace(diagramNameTag, mContext);
+	return result;
+}
+
+QString Type::generateFactory(const QString &lineTemplate) const
+{
+	if (!isGraphicalType())
+		return "";
+	QString result = lineTemplate;
+	result.replace(elementNameTag, mName);
 	return result;
 }

@@ -24,4 +24,32 @@ void NonGraphicType::print()
 	qDebug() << "non graphic type";
 }
 
+QString NonGraphicType::generateProperties(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
 
+QString NonGraphicType::generatePropertyDefaults(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateContainers(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateConnections(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateUsages(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}

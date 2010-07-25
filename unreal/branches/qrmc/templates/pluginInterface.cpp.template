@@ -90,9 +90,7 @@ UML::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*d
 
 QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const
 {
-	QStringList result;
-@@GetPropertyNamesLine@@
-	return result;
+	return propertyTypes[element].keys();
 }
 
 QStringList @@MetamodelName@@Plugin::getTypesContainedBy(QString const &element) const

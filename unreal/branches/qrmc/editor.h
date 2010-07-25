@@ -42,6 +42,13 @@ private:
 	void generateDiagramsMap();
 	void generateDiagramNodeNamesMap();
 	void generateNamesMap();
+	void generateMouseGesturesMap();
+	void generatePropertiesMap();
+	void generatePropertyDefaultsMap();
+	void generateElementsFactory();
+	void generateContaners();
+	void generateConnections();
+	void generateUsages();
 
 	MetaCompiler *mMetaCompiler;
 	qrRepo::RepoApi *mApi;

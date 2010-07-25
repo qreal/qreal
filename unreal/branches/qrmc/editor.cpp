@@ -150,6 +150,11 @@ QMap<QString, Diagram*> Editor::diagrams()
 	return mDiagrams;
 }
 
+QString Editor::name()
+{
+	return mApi->name(mId);
+}
+
 void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QMap<QString, QString> &utils)
 {
 	qDebug() << "generating plugin " << mName;
@@ -208,8 +213,13 @@ bool Editor::generatePluginSource()
 	generateDiagramsMap();
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
-
-
+	generateMouseGesturesMap();
+	generatePropertiesMap();
+	generatePropertyDefaultsMap();
+	generateElementsFactory();
+	generateContaners();
+	generateConnections();
+	generateUsages();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag, mName);
@@ -252,7 +262,6 @@ void Editor::generateDiagramNodeNamesMap()
 
 void Editor::generateNamesMap()
 {
-	// preparing template for diagramNodeNameMap inits
 	QString initNameMapBody = "";
 	QString const line = mUtilsTemplate[initElementNameMapLineTag];
 	foreach(Diagram *diagram, mDiagrams)	{
@@ -262,7 +271,90 @@ void Editor::generateNamesMap()
 	mSourceTemplate.replace(initElementNameMapLineTag, initNameMapBody);
 }
 
-QString Editor::name()
+void Editor::generateMouseGesturesMap()
 {
-	return mApi->name(mId);
+	QString initMouseGesturesMapBody = "";
+	QString const line = mUtilsTemplate[initMouseGesturesMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		initMouseGesturesMapBody += diagram->generateMouseGesturesMap(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initMouseGesturesMapLineTag, initMouseGesturesMapBody);
+}
+
+void Editor::generatePropertiesMap()
+{
+	QString initPropertiesMapBody = "";
+	QString const line = mUtilsTemplate[initPropertyTypesMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		initPropertiesMapBody += diagram->generatePropertiesMap(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initPropertyTypesMapLineTag, initPropertiesMapBody);
+}
+
+void Editor::generatePropertyDefaultsMap()
+{
+	QString initPropertyDefaultMapBody = "";
+	QString const line = mUtilsTemplate[initPropertyDefaultMapLineTag];
+	foreach(Diagram *diagram, mDiagrams)	{
+		initPropertyDefaultMapBody += diagram->generatePropertyDefaultsMap(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(initPropertyDefaultMapLineTag, initPropertyDefaultMapBody);
+}
+
+void Editor::generateElementsFactory()
+{
+	QString factoryBody = "";
+	QString line = mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",0,0)
+					+ "\n" + mUtilsTemplate[getGraphicalObjectLineTag].section("\\n",1,1);
+
+	foreach(Diagram *diagram, mDiagrams)	{
+		factoryBody += diagram->generateFactory(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(getGraphicalObjectLineTag, factoryBody);
+}
+
+void Editor::generateContaners()
+{
+	QString containersBody = "";
+	QString line = mUtilsTemplate[getContainersLineTag].section("\\n",0,0)
+					+ "\n" + mUtilsTemplate[getContainersLineTag].section("\\n",1,1);
+
+	foreach(Diagram *diagram, mDiagrams)	{
+		containersBody += diagram->generateContainers(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(getContainersLineTag, containersBody);
+
+}
+
+void Editor::generateConnections()
+{
+	QString connectionsBody = "";
+	QString line = mUtilsTemplate[getConnectionsLineTag].section("\\n",0,0)
+					+ "\n" + mUtilsTemplate[getConnectionsLineTag].section("\\n",1,1);
+
+	foreach(Diagram *diagram, mDiagrams)	{
+		connectionsBody += diagram->generateConnections(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(getConnectionsLineTag, connectionsBody);
+
+}
+
+void Editor::generateUsages()
+{
+	QString usagesBody = "";
+	QString line = mUtilsTemplate[getUsagesLineTag].section("\\n",0,0)
+					+ "\n" + mUtilsTemplate[getUsagesLineTag].section("\\n",1,1);
+
+	foreach(Diagram *diagram, mDiagrams)	{
+		usagesBody += diagram->generateUsages(line);
+	}
+	// inserting generated lines into main template
+	mSourceTemplate.replace(getUsagesLineTag, usagesBody);
+
 }

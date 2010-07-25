@@ -35,6 +35,7 @@ bool GraphicType::init(QString const &context)
 	mIsVisible = false;
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
+	mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
 
 	foreach(Id id, mApi->children(mId)) {
 		if (id.element() == "MetaEntityParent") {
@@ -53,6 +54,10 @@ bool GraphicType::init(QString const &context)
 			}
 			if (!addProperty(property))
 				return false;
+		} else if (id.element() == "MetaEntityConnection") {
+			mConnections << mApi->stringProperty(id, "type").section("::", -1);
+		} else if (id.element() == "MetaEntityUsage") {
+			mUsages << mApi->stringProperty(id, "type").section("::", -1);
 		}
 	}
 	return true;
@@ -148,4 +153,77 @@ bool GraphicType::addProperty(Property *property)
 bool GraphicType::isGraphicalType() const
 {
 	return mIsVisible;
+}
+
+QString GraphicType::generateProperties(const QString &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString propertiesString;
+	foreach (Property *property, mProperties) {
+		// hack: don't generate pre-defined properties
+		if (property->name() == "fromPort" || property->name() == "toPort"
+			|| property->name() == "from" || property->name() == "to"
+			|| property->name() == "name")
+		{
+			qDebug() << "ERROR: predefined property" << property->name()
+				<< "shall not appear in metamodels, ignored";
+			continue;
+		}
+		QString tmp = property->generatePropertyLine(lineTemplate) + "\n";
+		propertiesString += tmp.replace(elementNameTag, name());
+	}
+	return propertiesString;
+}
+
+QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString defaultsString;
+	foreach (Property *property, mProperties) {
+		QString tmp = property->generateDefaultsLine(lineTemplate);
+		if (!tmp.isEmpty())
+			defaultsString += tmp.replace(elementNameTag, name()) + "\n";
+	}
+	return defaultsString;
+}
+
+QString GraphicType::generateContainers(const QString &lineTemplate) const
+{
+	if (!isGraphicalType() || mContains.isEmpty())
+		return "";
+	QString containersList;
+	QString line = lineTemplate;
+	foreach(QString contains, mContains) {
+		containersList += "<< \"" + contains + "\" ";
+	}
+	line.replace(containersListTag, containersList).replace(elementNameTag, name());
+	return line;
+}
+
+QString GraphicType::generateConnections(const QString &lineTemplate) const
+{
+	if (!isGraphicalType() || mConnections.isEmpty())
+		return "";
+	QString connectionsList;
+	QString line = lineTemplate;
+	foreach(QString connection, mConnections) {
+		connectionsList += "<< \"" + connection + "\" ";
+	}
+	line.replace(connectionsListTag, connectionsList).replace(elementNameTag, name());
+	return line;
+}
+
+QString GraphicType::generateUsages(const QString &lineTemplate) const
+{
+	if (!isGraphicalType() || mUsages.isEmpty())
+		return "";
+	QString usagesList;
+	QString line = lineTemplate;
+	foreach(QString usage, mUsages) {
+		usagesList += "<< \"" + usage + "\" ";
+	}
+	line.replace(usagesListTag, usagesList).replace(elementNameTag, name());
+	return line;
 }

@@ -15,6 +15,12 @@ public:
 
 	virtual bool isGraphicalType() const;
 
+	virtual QString generateProperties(QString const &namesTemplate) const;
+	virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
+	virtual QString generateContainers(QString const &lineTemplate) const;
+	virtual QString generateConnections(QString const &lineTemplate) const;
+	virtual QString generateUsages(QString const &lineTemplate) const;
+
 protected:
 	NonGraphicType();
 };

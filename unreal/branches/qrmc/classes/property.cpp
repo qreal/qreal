@@ -1,4 +1,5 @@
 #include "property.h"
+#include "utils/defs.h"
 
 #include <QDebug>
 
@@ -79,4 +80,20 @@ void Property::print() const
 			<< "\t" << mIsReference
 			<< "\t" << mDescription
 			<< "\t" << mDefaultValue;
+}
+
+QString Property::generatePropertyLine(const QString &lineTemplate) const
+{
+	QString result = lineTemplate;
+	result.replace(propertyNameTag, mName).replace(propertyTypeTag, mType);
+	return result;
+}
+
+QString Property::generateDefaultsLine(const QString &lineTemplate) const
+{
+	if (mDefaultValue.isEmpty())
+		return "";
+	QString result = lineTemplate;
+	result.replace(propertyNameTag, mName).replace(propertyDefaultTag, mDefaultValue);
+	return result;
 }
