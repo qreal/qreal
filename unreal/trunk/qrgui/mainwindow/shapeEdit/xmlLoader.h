@@ -5,6 +5,8 @@
 #include "scene.h"
 #include "item.h"
 
+const int distanceFigure = 50;
+
 class XmlLoader
 {
 public:
@@ -17,6 +19,10 @@ private:
 	Scene *mScene;
 	QPoint mDrift;
 	QList<QPair<Item::ScalingPointState, QColor> > mListScalePoint;
+	int mStrY;
+	int mStrX;
+	int mFloorY;
+	bool mReadFile;
 
 	void initListScalePoint();
 	void readDocument();

@@ -7,6 +7,10 @@ XmlLoader::XmlLoader(Scene *scene)
 {
 	mScene = scene;
 	initListScalePoint();
+	mStrX = 0;
+	mStrY = 0;
+	mFloorY = 0;
+	mReadFile = true;
 }
 
 void XmlLoader::initListScalePoint()
@@ -25,12 +29,14 @@ void XmlLoader::initListScalePoint()
 
 void XmlLoader::readString(const QString &text)
 {
+	mReadFile = false;
 	mDocument.setContent(text);
 	readDocument();
 }
 
 void XmlLoader::readFile(const QString &fileName)
 {
+	mReadFile = true;
 	mDocument = utils::xmlUtils::loadDocument(fileName);
 	readDocument();
 }
@@ -48,10 +54,24 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 {
 	QDomNodeList graphicAttributes = graphic.childNodes();
 
+	int sizePictureX = 0;
+	int sizePictureY = 0;
+
 	for (unsigned i = 0; i < graphicAttributes.length(); ++i) {
 		QDomElement type = graphicAttributes.at(i).toElement();
-		if (type.tagName() == "picture")
+		if (type.tagName() == "picture") {
+			sizePictureX = (type.attribute("sizex", "")).toInt();
+			sizePictureY = (type.attribute("sizey", "")).toInt();
+			if (mReadFile) {
+				if (mStrX + distanceFigure + sizePictureX >= sizeEmrtyRectX) {
+					mStrY = mFloorY;
+					mStrX = 0;
+				}
+				mDrift = QPoint(mStrX + distanceFigure, mStrY + distanceFigure);
+			} else
+				mDrift = QPoint(mScene->centerEmpty().x() - sizePictureX / 2, mScene->centerEmpty().y() - sizePictureY / 2);
 			readPicture(type);
+		}
 		else if (type.tagName() == "labels")
 			readLabels(type);
 		else if (type.tagName() == "ports")
@@ -59,15 +79,16 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 		else
 			qDebug() << "Incorrect graphics tag";
 	}
+
+	if (mReadFile) {
+		mFloorY = qMax(mFloorY, mDrift.y() + sizePictureY);
+		mStrX = mDrift.x() + sizePictureX;
+	}
 }
 
 void XmlLoader::readPicture(QDomElement const &picture)
 {
 	QDomNodeList pictureAttributes = picture.childNodes();
-
-	int sizePictureX = (picture.attribute("sizex", "")).toInt();
-	int sizePictureY = (picture.attribute("sizey", "")).toInt();
-	mDrift = QPoint(mScene->centerEmpty().x() - sizePictureX / 2, mScene->centerEmpty().y() - sizePictureY / 2);
 
 	for (unsigned i = 0; i < pictureAttributes.length(); ++i) {
 		QDomElement type = pictureAttributes.at(i).toElement();
