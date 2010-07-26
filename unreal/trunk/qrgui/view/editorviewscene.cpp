@@ -71,7 +71,6 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 		QLineF line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
-	this->invalidate();
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -467,6 +466,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		//if (e)
 		//	initContextMenu(e, event->scenePos());
 	}
+	invalidate();
 }
 
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
@@ -599,6 +599,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
+	invalidate();
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -611,6 +612,7 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
+	invalidate();
 }
 
 
@@ -738,7 +740,7 @@ qReal::model::Model *EditorViewScene::model() const
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		painter->setPen(QPen(Qt::black, 0.05));
+		painter->setPen(QPen(Qt::black, 0.1));
 		drawGrid(painter, rect);
 	}
 }

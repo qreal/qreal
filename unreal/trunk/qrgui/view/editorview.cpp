@@ -20,6 +20,8 @@ EditorView::EditorView(QWidget *parent)
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
 	setEnabled(false);
+
+	setMouseTracking(true);
 }
 
 EditorView::~EditorView()
