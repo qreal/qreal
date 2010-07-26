@@ -19,7 +19,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
 {
 	QSettings settings("SPbSU", "QReal");
-	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
+	mNeedDrawGrid = settings.value("Don't show grid", true).toBool();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -466,7 +466,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		//if (e)
 		//	initContextMenu(e, event->scenePos());
 	}
-	invalidate();
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
@@ -599,7 +600,8 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
-	invalidate();
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -612,7 +614,8 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
-	invalidate();
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 
