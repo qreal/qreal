@@ -107,14 +107,14 @@ void EmbeddedLinker::initTitle()
 
 	int x = 0;
 	int y = 0;
-	if (this->scenePos().y() < master->scenePos().y() + rectHeight/3)
+	if (scenePos().y() < master->scenePos().y() + rectHeight/3)
 		y = -boundingRect().height() - 10;
-	else if (this->scenePos().y() > master->scenePos().y() + 2*rectHeight/3)
+	else if (scenePos().y() > master->scenePos().y() + 2*rectHeight/3)
 		y = +boundingRect().height() - 10;
 
-	if (this->scenePos().x() < master->scenePos().x() + rectWidth/3)
+	if (scenePos().x() < master->scenePos().x() + rectWidth/3)
 		x = -boundingRect().width() - textWidth + 20;
-	else if (this->scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
+	else if (scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
 	title = new ElementTitle(x,y,edgeTypeFriendly);
@@ -197,7 +197,7 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 			fx = left - indent;
 	}
 
-	this->setPos(fx,fy);
+	setPos(fx,fy);
 
 	//useful for debug:
 	//scene()->addPolygon(master->mapToScene(master->boundingRect().left(),master->boundingRect().top(),

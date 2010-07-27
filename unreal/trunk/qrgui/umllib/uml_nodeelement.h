@@ -59,9 +59,9 @@ namespace UML {
 
 		bool getPortStatus();
 
-		bool getHavePortStatus();
+		bool canHavePorts();
 
-		QList<double> getBordersValues();
+		QList<double> borderValues();
 
 		QList<PossibleEdge> getPossibleEdges();
 

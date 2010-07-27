@@ -128,10 +128,10 @@ void NodeElement::resize(QRectF newContents)
 {
 	newContents.moveTo(0, 0);
 
-	if (this->mElementImpl->isSortContainer())
+	if (mElementImpl->isSortingContainer())
 		sortChildren();
 
-	if (this->mElementImpl->isMinimizingToChildren())
+	if (mElementImpl->minimizesToChildren())
 		newContents = QRectF(0, 0, 0, 0);
 
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
@@ -385,7 +385,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
 			mDragState = BottomLeft;
 		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
-				&& this->mElementImpl->isContainer())
+				&& mElementImpl->isContainer())
 			changeFoldState();
 		else
 			Element::mousePressEvent(event);
@@ -527,18 +527,18 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mLeftPressed)
 		{
 			if (mPos == QPointF(0,0))
-				mPos = this->pos();
+				mPos = pos();
 			QGraphicsItem* item = NULL;
 			QPointF position = event->scenePos();
-			QGraphicsScene* sc = this->scene();
+			QGraphicsScene* sc = scene();
 			item = sc->items(position).value(1);
 			NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
 			QPointF posInItem = QPointF(0,0);
 			if (actionItem && ((actionItem == mParentNodeElement) || (!mParentNodeElement)))
 			{
-				if (actionItem->getHavePortStatus())
+				if (actionItem->canHavePorts())
 				{
-					QList<double> list = actionItem->getBordersValues();
+					QList<double> list = actionItem->borderValues();
 					double xHor = list[0];
 					double yHor = list[1];
 					double xVert = list[2];
@@ -547,9 +547,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 					if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
 						|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
 					{
-						this->setParentItem(actionItem);
+						setParentItem(actionItem);
 						mParentNodeElement = actionItem;
-						mPos = this->pos();
+						mPos = pos();
 						if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor))
 							inHor = true;
 						else
@@ -586,13 +586,13 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 			else
 			{
-				if ((mParentNodeElement) && (mParentNodeElement->getHavePortStatus()))
+				if ((mParentNodeElement) && (mParentNodeElement->canHavePorts()))
 				{
 					setPos(mPos);
 					if (mParentNodeElement)
 					{
 						posInItem = mParentNodeElement->mapFromScene(position);
-						QList<double> list = mParentNodeElement->getBordersValues();
+						QList<double> list = mParentNodeElement->borderValues();
 						double xHor = list[0];
 						double yHor = list[1];
 						double xVert = list[2];
@@ -771,14 +771,14 @@ bool NodeElement::initPossibleEdges()
 		return false;
 
 	foreach(QString elementName,
-			itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->elements(this->uuid().diagram())) {
-		int ne = itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->isNodeOrEdge(elementName);
+			itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
+		int ne = itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= itemModel->assistApi().editorManager().getEditorInterface(this->uuid().editor())->getPossibleEdges(elementName);
+					= itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if ((pEdge.first.first == this->uuid().element())
-					|| ((pEdge.first.second == this->uuid().element()) && (!pEdge.second.first))) {
+				if ((pEdge.first.first == uuid().element())
+					|| ((pEdge.first.second == uuid().element()) && (!pEdge.second.first))) {
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					possibleEdges.insert(possibleEdge);
 					possibleEdgeTypes.insert(possibleEdge.second);
@@ -1249,7 +1249,7 @@ void NodeElement::sortChildren()
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
 		if (curItem) {
-			if (mElementImpl->isMaximizingChildren())
+			if (mElementImpl->maximizesChildren())
 				curItem->setGeometry(QRectF(mElementImpl->sizeOfForestalling(), curChildY,
 							maxChildrenWidth, curItem->mContents.height()));
 			else
@@ -1267,9 +1267,9 @@ bool NodeElement::getPortStatus()
 	return mElementImpl->isPort();
 }
 
-bool NodeElement::getHavePortStatus()
+bool NodeElement::canHavePorts()
 {
-	return mElementImpl->isHavePin();
+	return mElementImpl->hasPin();
 }
 
 bool NodeElement::isLowSide(QPointF& point, double x, double y) const
@@ -1332,8 +1332,8 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mParentNodeElement = dynamic_cast<NodeElement*>(item);
 	}
 	if (mPos == QPointF(0,0))
-		mPos = this->pos();
-	QList<double> list = mParentNodeElement->getBordersValues();
+		mPos = pos();
+	QList<double> list = mParentNodeElement->borderValues();
 	double xHor = list[0];
 	double yHor = list[1];
 	double xVert = list[2];
@@ -1400,7 +1400,7 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 void NodeElement::updateByNewParent()
 {
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
-	if (!parent || parent->mElementImpl->isChildrenMovable())
+	if (!parent || parent->mElementImpl->hasMovableChildren())
 		setFlag(ItemIsMovable, true);
 	else
 		setFlag(ItemIsMovable, false);
@@ -1411,9 +1411,9 @@ bool NodeElement::isClass()
 	return mElementImpl->isClass();
 }
 
-QList<double> NodeElement::getBordersValues()
+QList<double> NodeElement::borderValues()
 {
-		return mElementImpl->getBorders();
+		return mElementImpl->border();
 }
 
 PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)

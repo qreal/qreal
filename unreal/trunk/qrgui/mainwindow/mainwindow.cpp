@@ -169,7 +169,7 @@ MainWindow::MainWindow()
 	}
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
-	this->mGesturesWidget = new GesturesWidget();
+	mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -746,7 +746,7 @@ void MainWindow::changeMiniMapSource( int index )
 		ui.tabs->setEnabled(false);
 		ui.minimapView->setScene(0);;
 	}
-	emit this->rootDiagramChanged();
+	emit rootDiagramChanged();
 }
 
 void qReal::MainWindow::closeTab( int index )
@@ -978,13 +978,13 @@ void MainWindow::showGestures()
 	mGesturesWidget = new GesturesWidget();
 	ui.tabs->addTab(mGesturesWidget, text);
 	ui.tabs->setCurrentWidget(mGesturesWidget);
-	connect(this->mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
+	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
 	emit gesturesShowed();
 }
 
 IGesturesPainter * MainWindow::gesturesPainter()
 {
-	return this->mGesturesWidget;
+	return mGesturesWidget;
 }
 
 

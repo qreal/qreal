@@ -323,7 +323,7 @@ UML::Element* EditorViewScene::getLastCreated()
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
+	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
@@ -554,7 +554,7 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
 	Id * id = createElement(idStr, start);
-	UML::Element * edgeElement = this->getElem(*id);
+	UML::Element * edgeElement = getElem(*id);
 	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
@@ -763,14 +763,14 @@ void EditorViewScene::drawGesture()
 	double color_ratio = pow(fabs(sin(size)), 1.5);
 	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
 	item->setPen(penColor);
-	this->addItem(item);
+	addItem(item);
 	mGesture.push_back(item);
 	int ellipseSize = 2;
 	QPointF bound(ellipseSize, ellipseSize);
 	QRectF rect(line.p2() + bound, line.p2() - bound);
 	QGraphicsEllipseItem * ellipseItem = new QGraphicsEllipseItem(rect, NULL, this);
 	ellipseItem->setPen(penColor);
-	this->addItem(ellipseItem);
+	addItem(ellipseItem);
 	mGesture.push_back(ellipseItem);
 }
 
@@ -778,7 +778,7 @@ void EditorViewScene::deleteGesture()
 {
 	foreach (QGraphicsItem * item, mGesture)
 	{
-		this->removeItem(item);;
+		removeItem(item);
 	}
 	mGesture.clear();
 }

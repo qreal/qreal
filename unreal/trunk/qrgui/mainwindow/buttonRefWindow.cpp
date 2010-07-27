@@ -7,9 +7,9 @@ ButtonRefWindow::ButtonRefWindow(QWidget *parent, QString typeName,
 		name(typeName), mApi(api), targetModel(tModel), role(r), index(ind),
 		mainWindow(mWindow)
 {
-	this->setText("Reference button");
+	setText("Reference button");
 	connect(this, SIGNAL(clicked()), this, SLOT(makeWindow()));
-	this->show();
+	show();
 }
 
 void ButtonRefWindow::makeWindow()

@@ -206,7 +206,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
 		<< "\tpublic:\n";
-	
+
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "()\n\t\t{\n";
 		out() << "\t\t\tmBonusContextMenuFields";
@@ -287,8 +287,8 @@ void NodeType::generateCode(OutFile &out)
 		<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isSortContainer()\n\t\t{\n"
-		<< (mContainerProperties.isSortContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\tbool isSortingContainer()\n\t\t{\n"
+		<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
 		<< "\t\tint sizeOfForestalling()\n\t\t{\n"
@@ -299,32 +299,31 @@ void NodeType::generateCode(OutFile &out)
 		<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isChildrenMovable()\n\t\t{\n"
-		<< (mContainerProperties.isChildrenMovable ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\tbool hasMovableChildren()\n\t\t{\n"
+		<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isMinimizingToChildren()\n\t\t{\n"
-		<< (mContainerProperties.isMinimizingToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\tbool minimizesToChildren()\n\t\t{\n"
+		<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
 		<< "\t\tbool isClass()\n\t\t{\n"
 		<< (mContainerProperties.isClass ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
-		
-		<< "\t\tbool isMaximizingChildren()\n\t\t{\n"
-		<< (mContainerProperties.isMaximizingChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+
+		<< "\t\tbool maximizesChildren()\n\t\t{\n"
+		<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
 		<< "\t\tbool isPort()\n\t\t{\n"
 		<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isHavePin()\n\t\t{\n"
+		<< "\t\tbool hasPin()\n\t\t{\n"
 		<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t\treturn false;\n"
 		<< "\t\t}\n\n";
 
-	out() << "\t\tQList<double> getBorders()\n\t\t{\n"
+	out() << "\t\tQList<double> border()\n\t\t{\n"
 		<< "\t\t\tQList<double> list;\n";
 	if (mIsHavePin)
 		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";

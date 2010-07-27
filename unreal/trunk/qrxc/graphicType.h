@@ -36,13 +36,13 @@ protected:
 	struct ContainerProperties {
 		ContainerProperties();
 
-		bool isSortContainer;
+		bool isSortingContainer;
 		int sizeOfForestalling;
 		int sizeOfChildrenForestalling;
-		bool isChildrenMovable;
-		bool isMinimizingToChildren;
+		bool hasMovableChildren;
+		bool minimizesToChildren;
 		bool isClass;
-		bool isMaximizingChildren;
+		bool maximizesChildren;
 	};
 
 	QDomElement mLogic;
@@ -86,7 +86,7 @@ private:
 	bool initPossibleEdges();
 	bool initTypeList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList) const;
-	
+
 	bool initFieldList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList, QString const &fieldName, bool const isNeedToNormalizeAtt) const;
 

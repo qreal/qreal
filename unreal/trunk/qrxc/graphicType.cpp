@@ -9,8 +9,8 @@
 
 using namespace utils;
 
-GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
-	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false), isMaximizingChildren(false)
+GraphicType::ContainerProperties::ContainerProperties() : isSortingContainer(false), sizeOfForestalling(0),
+	sizeOfChildrenForestalling(0), hasMovableChildren(true), minimizesToChildren(false), isClass(false), maximizesChildren(false)
 {}
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -193,7 +193,7 @@ bool GraphicType::initContainerProperties()
 		childElement = childElement.nextSiblingElement())
 	{
 		if (childElement.tagName() == "sortContainer") {
-			mContainerProperties.isSortContainer = true;
+			mContainerProperties.isSortingContainer = true;
 		} else if (childElement.tagName() == "forestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
@@ -207,13 +207,13 @@ bool GraphicType::initContainerProperties()
 			if (!isSizeOk)
 				return false;
 		} else if (childElement.tagName() == "minimizeToChildren") {
-			mContainerProperties.isMinimizingToChildren = true;
+			mContainerProperties.minimizesToChildren = true;
 		} else if (childElement.tagName() == "banChildrenMove") {
-			mContainerProperties.isChildrenMovable = false;
+			mContainerProperties.hasMovableChildren = false;
 		} else if (childElement.tagName() == "itIsClass") {
 			mContainerProperties.isClass = true;
 		} else if (childElement.tagName() == "maximizeChildren") {
-			mContainerProperties.isMaximizingChildren = true;
+			mContainerProperties.maximizesChildren = true;
 		}
 
 	}
@@ -239,7 +239,7 @@ bool GraphicType::initPossibleEdges()
 				QString temp = childElement.attribute("directed");
 				bool directed = false;
 
-				if ((beginName == "") || (endName == "") || ((temp != "true") && (temp != "false"))) {
+				if (beginName.isEmpty() || endName.isEmpty() || ((temp != "true") && (temp != "false"))) {
 
 						qDebug() << beginName;
 						qDebug() << endName;
