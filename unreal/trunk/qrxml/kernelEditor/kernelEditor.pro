@@ -11,6 +11,7 @@ HEADERS += \
 	methodeditordialog.h \
 
 SOURCES += \
+	../../qrgui/kernel/ids.cpp \
 	contextMenuActionTrigger.cpp \
 	methodeditordialog.cpp \
 
