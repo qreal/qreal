@@ -15,7 +15,6 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mC1 = c1;
 	mCurvePath = new QPainterPath(QPointF(mX1, mY1));
 	mCurvePath->quadTo(mC1, QPointF(mX2, mY2));
-	mBoundingRect = boundingRect();
 }
 
 Curve::Curve(Curve const &other)
@@ -31,7 +30,6 @@ Curve::Curve(Curve const &other)
 	mY2 = other.mY2;
 	mC1 = other.mC1;
 	mCurvePath = other.mCurvePath;
-	mBoundingRect = other.mBoundingRect;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
 }

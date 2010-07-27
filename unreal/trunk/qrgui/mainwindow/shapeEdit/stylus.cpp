@@ -9,7 +9,6 @@ Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 	mDomElementType = pictureType;
-	mBoundingRect = boundingRect();
 }
 
 Stylus::Stylus(Stylus const &other)
@@ -25,7 +24,6 @@ Stylus::Stylus(Stylus const &other)
 	mY2 = other.mY2;
 	mTmpX1 = other.mTmpX1;
 	mTmpY1 = other.mTmpY1;
-	mBoundingRect = other.mBoundingRect;
 	mListScalePoint = other.mListScalePoint;
 	foreach (Line *line, other.mListLine) {
 		Line *newLine = new Line(*line);
@@ -97,12 +95,11 @@ void Stylus::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void Stylus::drawExtractionForItem(QPainter* painter)
 {
-	mBoundingRect = boundingRect();
-	mRect = mBoundingRect;
-	painter->drawPoint(mRect.left(), mRect.top());
-	painter->drawPoint(mRect.left(), mRect.bottom());
-	painter->drawPoint(mRect.right(), mRect.top());
-	painter->drawPoint(mRect.right(), mRect.bottom());
+	QRectF rect = boundingRect();
+	painter->drawPoint(rect.left(), rect.top());
+	painter->drawPoint(rect.left(), rect.bottom());
+	painter->drawPoint(rect.right(), rect.top());
+	painter->drawPoint(rect.right(), rect.bottom());
 
 	/*setPenBrushDriftRect(painter);
 	painter->drawPath(shape());

@@ -28,20 +28,11 @@ QRect Scene::realItemsBoundingRect() const
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
-			Text* textItem = dynamic_cast<Text*>(item);
-			if (textItem != NULL) {
-				QRectF textRect = textItem->mapToScene(textItem->realBoundingRect()).boundingRect();
-				maxX = qMax(static_cast<int>(textRect.right()), maxX);
-				maxY = qMax(static_cast<int>(textRect.bottom()), maxY);
-				minX = qMin(static_cast<int>(textRect.left()), minX);
-				minY = qMin(static_cast<int>(textRect.top()), minY);
-			} else {
-				QRectF itemRect = item->realBoundingRect();
-				maxX = qMax(static_cast<int>(itemRect.right()), maxX);
-				maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
-				minX = qMin(static_cast<int>(itemRect.left()), minX);
-				minY = qMin(static_cast<int>(itemRect.top()), minY);
-			}
+			QRectF itemRect = item->realBoundingRect();
+			maxX = qMax(static_cast<int>(itemRect.right()), maxX);
+			maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
+			minX = qMin(static_cast<int>(itemRect.left()), minX);
+			minY = qMin(static_cast<int>(itemRect.top()), minY);
 		}
 	}
 	return QRect(minX, minY, maxX - minX, maxY - minY);

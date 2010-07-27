@@ -23,7 +23,7 @@ void Text::init(int x, int y, QString const &text)
 	mText.setPlainText(text);
 	mText.setParentItem(this);
 	mText.setPos(x, y);
-	mBoundingRect = boundingRect();
+	mBoundingRect = QRectF(x, y, 0, 0);
 	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
 	mX1 = x;
 	mY1 = y;
@@ -42,9 +42,6 @@ Text::Text(Text const &other)
 	mText.setPos(other.mText.x(), other.mText.y());
 	mText.setFlags(other.mText.flags());
 	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
-	mText.setTextInteractionFlags(Qt::TextEditable);
-	mText.setTextInteractionFlags(Qt::TextSelectableByKeyboard);
-	mText.setTextInteractionFlags(Qt::TextBrowserInteraction);
 	mText.setPlainText(other.mText.toPlainText());
 	mText.setParentItem(this);
 	mBoundingRect = other.mBoundingRect;
@@ -62,21 +59,21 @@ void Text::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
+	mBoundingRect = mText.boundingRect().adjusted(mX1, mY1, mX1, mY1);
 	if (mIsDynamicText)
 		drawForDynamicText(painter);
 }
 
 void Text::drawExtractionForItem(QPainter* painter)
 {
-	mBoundingRect = boundingRect();
-	mRect = realBoundingRect();
-	painter->drawPoint(mRect.left(), mRect.top());
-	painter->drawPoint(mRect.left(), mRect.bottom());
-	painter->drawPoint(mRect.right(), mRect.top());
-	painter->drawPoint(mRect.right(), mRect.bottom());
+	QRectF rect = mBoundingRect;
+	painter->drawPoint(rect.left(), rect.top());
+	painter->drawPoint(rect.left(), rect.bottom());
+	painter->drawPoint(rect.right(), rect.top());
+	painter->drawPoint(rect.right(), rect.bottom());
 
 	setPenBrushDriftRect(painter);
-	painter->drawRect(mBoundingRect);
+	painter->drawRect(boundingRect());
 	drawFieldForResizeItem(painter);
 
 	painter->setPen(QPen(Qt::red));
@@ -92,7 +89,7 @@ void Text::drawFieldForResizeItem(QPainter* painter)
 void Text::drawScalingRects(QPainter* painter)
 {
 	QBrush brush(Qt::SolidPattern);
-	QRectF rect = realBoundingRect();
+	QRectF rect = mBoundingRect;
 	qreal x1= rect.left();
 	qreal y1 = rect.top();
 
@@ -107,12 +104,12 @@ void Text::drawScalingRects(QPainter* painter)
 
 QRectF Text::boundingRect() const
 {
-	return mText.boundingRect().adjusted(mX1, mY1, mX1, mY1).adjusted(-drift, -drift, drift, drift);
+	return mBoundingRect.adjusted(-drift, -drift, drift, drift);
 }
 
 QRectF Text::realBoundingRect() const
 {
-	return mText.boundingRect().adjusted(mX1, mY1, mX1, mY1);
+	return mapToScene(mBoundingRect).boundingRect();
 }
 
 void Text::drawForDynamicText(QPainter* painter)
@@ -120,7 +117,7 @@ void Text::drawForDynamicText(QPainter* painter)
 	QPen pen(Qt::green);
 	pen.setWidth(2);
 	painter->setPen(pen);
-	painter->drawRect(realBoundingRect());
+	painter->drawRect(mBoundingRect);
 }
 
 bool Text::isDynamicText()
@@ -135,7 +132,7 @@ QGraphicsTextItem const& Text::getText()
 
 void Text::changeScalingPointState(qreal x, qreal y)
 {
-	QRectF rect = realBoundingRect();
+	QRectF rect = mBoundingRect;
 	qreal x1= rect.left();
 	qreal x2 = rect.right();
 	qreal y1 = rect.top();
@@ -147,8 +144,8 @@ void Text::changeScalingPointState(qreal x, qreal y)
 QPair<QDomElement, Item::DomElementTypes> Text::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement text = document.createElement("label");
-	int const x1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().top() - topLeftPicture.y());
+	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x", setSingleScaleForDoc(0, x1, y1));
 	text.setAttribute(mIsDynamicText ? "textBinded" : "text", mText.toPlainText());

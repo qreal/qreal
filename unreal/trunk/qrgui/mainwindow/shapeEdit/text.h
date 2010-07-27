@@ -32,6 +32,7 @@ public:
 protected:
 	int mX1;
 	int mY1;
+	QRectF mBoundingRect;
 	QGraphicsTextItem mText;
 	bool mIsDynamicText;
 	QRectF mRect;

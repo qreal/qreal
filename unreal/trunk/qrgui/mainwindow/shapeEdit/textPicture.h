@@ -20,9 +20,6 @@ public:
 	QString name() const;
 	virtual void setIsDynamicText(bool isDynamic);
 	void drawForPictureText(QPainter* painter, QRectF rect);
-	virtual QRectF boundingRect() const;
-	virtual QRectF realBoundingRect() const;
-	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 
 	QDomElement setFontToDoc(QDomDocument &document, QString const &domName);

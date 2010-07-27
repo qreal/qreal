@@ -81,33 +81,6 @@ void TextPicture::drawForPictureText(QPainter* painter, QRectF rect)
 	painter->drawRect(rect);
 }
 
-void TextPicture::drawExtractionForItem(QPainter* painter)
-{
-	mRect = mBoundingRect;
-	painter->drawPoint(mRect.left(), mRect.top());
-	painter->drawPoint(mRect.left(), mRect.bottom());
-	painter->drawPoint(mRect.right(), mRect.top());
-	painter->drawPoint(mRect.right(), mRect.bottom());
-
-	setPenBrushDriftRect(painter);
-	painter->drawRect(boundingRect());
-	drawFieldForResizeItem(painter);
-
-	painter->setPen(QPen(Qt::red));
-	painter->setBrush(QBrush(Qt::SolidPattern));
-	drawScalingRects(painter);
-}
-
-QRectF TextPicture::boundingRect() const
-{
-	return mBoundingRect.adjusted(-drift, -drift, drift, drift);
-}
-
-QRectF TextPicture::realBoundingRect() const
-{
-	return mBoundingRect;
-}
-
 void TextPicture::setIsDynamicText(bool isDynamic)
 {
 	Q_UNUSED(isDynamic);
@@ -230,8 +203,8 @@ QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &dom
 QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement text = setFontToDoc(document, "text");
-	int const x1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().left() - topLeftPicture.x());
-	int const y1 = static_cast<int>(mapToScene(realBoundingRect()).boundingRect().top() - topLeftPicture.y());
+	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());
+	int const y1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().top() - topLeftPicture.y());
 	text.setAttribute("y1", setSingleScaleForDoc(4, x1, y1));
 	text.setAttribute("x1", setSingleScaleForDoc(0, x1, y1));
 

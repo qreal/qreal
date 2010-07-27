@@ -52,12 +52,17 @@ qreal Item::length(QPointF const &point1, QPointF const &point2)
 	return sqrt(pow((point1.x() - point2.x()), 2) + pow((point1.y() - point2.y()), 2));
 }
 
-QRectF Item::realBoundingRect() const
+QRectF Item::calcNecessaryBoundingRect() const
 {
 	if (mNeedScalingRect)
-		return mapToScene(boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift)).boundingRect();
+		return boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	else
-		return mapToScene(boundingRect()).boundingRect();
+		return boundingRect();
+}
+
+QRectF Item::realBoundingRect() const
+{
+	return mapToScene(calcNecessaryBoundingRect()).boundingRect();
 }
 
 void Item::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -91,14 +96,12 @@ void Item::drawExtractionForItem(QPainter* painter)
 
 void Item::drawFieldForResizeItem(QPainter* painter)
 {
-	if (mNeedScalingRect)
-		mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	else
-		mBoundingRect = boundingRect();
-	qreal x1= mBoundingRect.left();
-	qreal x2 = mBoundingRect.right();
-	qreal y1 = mBoundingRect.top();
-	qreal y2 = mBoundingRect.bottom();
+	QRectF itemBoundingRect = calcNecessaryBoundingRect();
+	qreal x1= itemBoundingRect.left();
+	qreal x2 = itemBoundingRect.right();
+	qreal y1 = itemBoundingRect.top();
+	qreal y2 = itemBoundingRect.bottom();
+
 	setPenBrushDriftRect(painter);
 	painter->drawRect(x1, y1, resizeDrift, resizeDrift);
 	painter->drawRect(x2 - resizeDrift, y2 - resizeDrift, resizeDrift, resizeDrift);
@@ -108,14 +111,11 @@ void Item::drawFieldForResizeItem(QPainter* painter)
 
 void Item::drawScalingRects(QPainter* painter)
 {
-	if (mNeedScalingRect)
-		mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	else
-		mBoundingRect = boundingRect();
-	qreal x1= mBoundingRect.left();
-	qreal x2 = mBoundingRect.right();
-	qreal y1 = mBoundingRect.top();
-	qreal y2 = mBoundingRect.bottom();
+	QRectF itemBoundingRect = calcNecessaryBoundingRect();
+	qreal x1= itemBoundingRect.left();
+	qreal x2 = itemBoundingRect.right();
+	qreal y1 = itemBoundingRect.top();
+	qreal y2 = itemBoundingRect.bottom();
 
 	for (int i = 0; i < mListScalePoint.size(); ++i) {
 		QPair<Item::ScalingPointState, QColor> point = mListScalePoint.at(i);
@@ -278,14 +278,11 @@ void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, Q
 
 void Item::changeScalingPointState(qreal x, qreal y)
 {
-	if (mNeedScalingRect)
-		mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	else
-		mBoundingRect = boundingRect();
-	qreal x1= mBoundingRect.left();
-	qreal x2 = mBoundingRect.right();
-	qreal y1 = mBoundingRect.top();
-	qreal y2 = mBoundingRect.bottom();
+	QRectF itemBoundingRect = calcNecessaryBoundingRect();
+	qreal x1= itemBoundingRect.left();
+	qreal x2 = itemBoundingRect.right();
+	qreal y1 = itemBoundingRect.top();
+	qreal y2 = itemBoundingRect.bottom();
 	int correction = 0;
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
 }
@@ -432,13 +429,10 @@ QDomElement Item::setPenBrushToDoc(QDomDocument &document, QString const &domNam
 
 QRectF Item::sceneBoundingRectCoord(QPoint const &topLeftPicture)
 {
-	if (mNeedScalingRect)
-		mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	else
-		mBoundingRect = boundingRect();
-	qreal const x1 = scenePos().x() + mBoundingRect.x() - topLeftPicture.x();
-	qreal const y1 = scenePos().y() + mBoundingRect.y() - topLeftPicture.y();
-	return QRectF(x1, y1, mBoundingRect.width(), mBoundingRect.height());
+	QRectF itemBoundingRect = calcNecessaryBoundingRect();
+	qreal const x1 = scenePos().x() + itemBoundingRect.x() - topLeftPicture.x();
+	qreal const y1 = scenePos().y() + itemBoundingRect.y() - topLeftPicture.y();
+	return QRectF(x1, y1, itemBoundingRect.width(), itemBoundingRect.height());
 }
 
 void Item::readPenBrush(QDomElement const &docItem)

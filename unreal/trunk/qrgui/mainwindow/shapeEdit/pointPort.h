@@ -22,4 +22,5 @@ public:
 
 private:
 	qreal mRadius;
+	QRectF mRect;
 };

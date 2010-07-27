@@ -16,7 +16,6 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	mSpanAngle = spanAngle;
 	mStartAngle = startAngle;
 	mRect = rect;
-	mBoundingRect = boundingRect();
 }
 
 Arch::Arch(Arch const &other)
@@ -33,7 +32,6 @@ Arch::Arch(Arch const &other)
 	mSpanAngle = other.mSpanAngle;
 	mStartAngle = other.mStartAngle;
 	mRect = other.mRect;
-	mBoundingRect = other.mBoundingRect;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
 }
@@ -90,11 +88,11 @@ void Arch::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 
 void Arch::drawExtractionForItem(QPainter* painter)
 {
-	mBoundingRect = boundingRect();
-	painter->drawPoint(mBoundingRect.topLeft());
-	painter->drawPoint(mBoundingRect.topRight());
-	painter->drawPoint(mBoundingRect.bottomLeft());
-	painter->drawPoint(mBoundingRect.bottomRight());
+	QRectF itemBoundingRect = boundingRect();
+	painter->drawPoint(itemBoundingRect.topLeft());
+	painter->drawPoint(itemBoundingRect.topRight());
+	painter->drawPoint(itemBoundingRect.bottomLeft());
+	painter->drawPoint(itemBoundingRect.bottomRight());
 }
 
 void Arch::drawScalingRects(QPainter* painter)

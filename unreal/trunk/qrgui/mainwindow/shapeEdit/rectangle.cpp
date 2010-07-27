@@ -11,7 +11,6 @@ Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY1 = y1;
 	mX2 = x2;
 	mY2 = y2;
-	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 }
 
 Rectangle::Rectangle(Rectangle const &other)
@@ -25,7 +24,6 @@ Rectangle::Rectangle(Rectangle const &other)
 	mX2 = other.mX2;
 	mY1 = other.mY1;
 	mY2 = other.mY2;
-	mBoundingRect = other.mBoundingRect;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
 }

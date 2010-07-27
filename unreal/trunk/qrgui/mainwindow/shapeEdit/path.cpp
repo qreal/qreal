@@ -6,7 +6,6 @@ Path::Path(QPainterPath const &path) : Item(NULL)
 	mNeedScalingRect = false;
 	mPath = path;
 	mDomElementType = Item::pictureType;
-	mBoundingRect = boundingRect();
 }
 
 Path::Path(Path const &other)
@@ -21,7 +20,6 @@ Path::Path(Path const &other)
 	mY1 = other.mY1;
 	mY2 = other.mY2;
 	mPath = other.mPath;
-	mBoundingRect = other.mBoundingRect;
 	mListScalePoint = other.mListScalePoint;
 	setPos(other.x(), other.y());
 }

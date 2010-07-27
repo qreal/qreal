@@ -28,4 +28,5 @@ public:
 private:
 	int mStartAngle;
 	int mSpanAngle;
+	QRectF mRect;
 };

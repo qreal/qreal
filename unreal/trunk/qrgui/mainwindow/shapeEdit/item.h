@@ -43,7 +43,6 @@ public:
 		bottomRightY
 	};
 
-	QRectF mBoundingRect;
 	Item(QGraphicsItem* parent = 0);
 	virtual Item* clone() = 0;
 	virtual void setItemZValue(int zValue);
@@ -51,6 +50,7 @@ public:
 	static int sign(int x);
 	static qreal length(QPointF const &point1, QPointF const &point2);
 	virtual QRectF boundingRect() const = 0;
+	QRectF calcNecessaryBoundingRect() const;
 	virtual QRectF realBoundingRect() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
@@ -112,7 +112,6 @@ protected:
 	ScalingPointState mScalingState;
 	QPen mPen;
 	QBrush mBrush;
-	QRectF mRect;
 	qreal mX1;
 	qreal mY1;
 	qreal mX2;
