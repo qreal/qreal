@@ -82,12 +82,12 @@
             <node displayedName="Circled Pentagram" path="120, 50 : 115, 76 : 99, 99 : 76, 115 : 50, 120 : 50, 100 : 20, 9 : 97, 65 : 2, 65 : 79, 9 : 50, 100 : 50, 120 : 24, 115 : 1, 99 : -15, 76 : -20, 50 : -15, 24 : 1, 1 : 24, -15 : 50, -20 : 76, -15 : 99, 1 : 115, 24 : 120, 50 : " name="orthCircledPentagram">
                 <graphics>
                     <picture sizex="100" sizey="100">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="50" y2="9" stroke-width="2" x2="20" fill-style="solid"/>
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="9" x1="20" y2="65" stroke-width="2" x2="97" fill-style="solid"/>
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="65" x1="97" y2="65" stroke-width="2" x2="2" fill-style="solid"/>
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="65" x1="2" y2="9" stroke-width="2" x2="79" fill-style="solid"/>
                         <line fill="#000000" stroke-style="solid" stroke="#000000" y1="9" x1="79" y2="100" stroke-width="2" x2="50" fill-style="solid"/>
-                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
                     </picture>
                     <labels>
                         <label x="0" y="0" textBinded="name"/>

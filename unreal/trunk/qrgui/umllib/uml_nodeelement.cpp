@@ -434,11 +434,11 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			qreal radius = 20;
 			qreal radiusJump = 10;
 
-			QList<QGraphicsItem *> list = scene()->items();
+			QList<QGraphicsItem *> list = scene()->items(scenePos().x() - widthLineX / 2, scenePos().y() - widthLineY / 2, widthLineX, widthLineY, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
 			delUnusedLines();
 			foreach (QGraphicsItem *graphicsItem, list) {
 				NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
-				if (item == NULL)
+				if (item == NULL || item->parentItem() != NULL)
 					continue;
 				QPointF point = item->scenePos();
 				qreal pointX1 = point.x() + item->boundingRect().x();

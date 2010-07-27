@@ -19,8 +19,8 @@
 
 /** @brief size of a point port */
 const int kvadratik = 5;
-const int widthLineX = 1400;
-const int widthLineY = 1000;
+const int widthLineX = 1500;
+const int widthLineY = 1100;
 
 namespace UML {
 	class NodeElement : public Element
