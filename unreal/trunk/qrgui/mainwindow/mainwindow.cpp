@@ -857,8 +857,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	mModel->setRootIndex(index);
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
-		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL && tab->mvIface()->rootIndex() == index) {
 			tabNumber = i;
 			break;
 		}

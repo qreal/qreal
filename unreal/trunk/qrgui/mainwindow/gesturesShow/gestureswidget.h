@@ -9,33 +9,33 @@
 #include "../igesturespainter.h"
 
 namespace Ui {
-    class GesturesWidget;
+	class GesturesWidget;
 }
 
 class GesturesWidget : public QWidget, public IGesturesPainter
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit GesturesWidget(QWidget *parent = 0);
-    ~GesturesWidget();
-    void draw(QList<QPoint> const & path);
-    QString currentElement();
-    void setElements(QList<QString> const & elements);
+	explicit GesturesWidget(QWidget *parent = 0);
+	~GesturesWidget();
+	void draw(QList<QPoint> const & path);
+	QString currentElement();
+	void setElements(QList<QString> const & elements);
 
 signals:
-    void currentElementChanged();
+	void currentElementChanged();
 
 private:
-    Ui::GesturesWidget *ui;
-    QGraphicsScene *mGestureScene;
-    QTimer *mTimer;
-    QList<QPoint> mPath;
-    static const int pointsAtSegment = 5;
-    int mCurrentPointNumber;
-    static int coord(int previous, int next, int part);
+	Ui::GesturesWidget *ui;
+	QGraphicsScene *mGestureScene;
+	QTimer *mTimer;
+	QList<QPoint> mPath;
+	static const int pointsAtSegment = 5;
+	int mCurrentPointNumber;
+	static int coord(int previous, int next, int part);
 
 private slots:
-    void drawGesture();
+	void drawGesture();
 
 };

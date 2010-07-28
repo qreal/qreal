@@ -12,7 +12,7 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 			this, SIGNAL(currentElementChanged()));
 	mTimer = new QTimer(this);
 	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
-	mTimer->start(50);
+	mTimer->start(5);
 }
 
 GesturesWidget::~GesturesWidget()
@@ -41,11 +41,19 @@ void GesturesWidget::drawGesture()
 		mCurrentPointNumber = 0;
 		return;
 	}
+
 	QPoint lastPaintedPoint = mPath.at(verticeIndex);
 	QPoint nextPoint = mPath.at(verticeIndex + 1);
 	QPoint currentPoint(coord(lastPaintedPoint.x(), nextPoint.x(), segmentNumber),
-						coord(lastPaintedPoint.y(), nextPoint.y(), segmentNumber));
-	mGestureScene->addLine(QLine(lastPaintedPoint, currentPoint), QPen(Qt::black));
+			coord(lastPaintedPoint.y(), nextPoint.y(), segmentNumber));
+
+	QPen pen(Qt::blue);
+	pen.setWidth(3);
+
+	if (mCurrentPointNumber == 0)
+		mGestureScene->addEllipse(QRect(currentPoint, currentPoint).adjusted(-3, -3, 2, 2), pen);
+
+	mGestureScene->addLine(QLine(lastPaintedPoint, currentPoint), pen);
 
 	mCurrentPointNumber++;
 }

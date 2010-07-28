@@ -111,7 +111,7 @@ private:
 
 	QPointF mCreatePoint;
 
-		MouseMovementManager * mouseMovementManager;
+	MouseMovementManager * mouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
