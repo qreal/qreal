@@ -514,8 +514,11 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Don't show grid</string>
+    <string>Show grid</string>
    </property>
   </action>
   <action name="actionShape_Edit">

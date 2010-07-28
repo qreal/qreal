@@ -61,7 +61,7 @@ namespace qReal {
 
 		void print();
 		void makeSvg();
-		void showGrid();
+		void showGrid(bool show);
 
 		void finalClose();
 
@@ -142,6 +142,8 @@ namespace qReal {
 		int getTabIndex(const QModelIndex &index);
 
 		bool mDiagramCreateFlag;
+
+		void initGridProperties();
 
 	signals:
 		void gesturesShowed();

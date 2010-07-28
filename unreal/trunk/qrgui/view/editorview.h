@@ -24,7 +24,7 @@ namespace qReal {
 		}
 
 		void setMainWindow(qReal::MainWindow *mainWindow);
-		void changeSceneGrid();
+		void setDrawSceneGrid(bool show);
 
 	public slots:
 		void toggleAntialiasing(bool);

@@ -23,7 +23,11 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Preferences</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../qrgui.qrc">
+    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="0">
@@ -53,7 +57,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="editorTab">
       <attribute name="title">
@@ -213,7 +217,7 @@
      </widget>
      <widget class="QWidget" name="miscTab">
       <attribute name="title">
-       <string>Miscelanious</string>
+       <string>Miscellanious</string>
       </attribute>
       <widget class="QFrame" name="frame_3">
        <property name="geometry">
@@ -525,6 +529,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../qrgui.qrc"/>
+ </resources>
  <connections/>
 </ui>

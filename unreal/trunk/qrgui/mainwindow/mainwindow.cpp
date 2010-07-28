@@ -110,7 +110,7 @@ MainWindow::MainWindow()
 	connect(ui.actionParse_Java_Libraries, SIGNAL(triggered()), this, SLOT(parseJavaLibraries()));
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
-	connect(ui.actionShow_grid, SIGNAL(triggered()), this, SLOT(showGrid()));
+	connect(ui.actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(ui.actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
 	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
@@ -196,6 +196,8 @@ MainWindow::MainWindow()
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
 	mModel->resetChangedDiagrams();
+
+	initGridProperties();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -786,7 +788,7 @@ void MainWindow::parseHascol()
 
 void MainWindow::showPreferencesDialog()
 {
-	PreferencesDialog preferencesDialog;
+	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionSwitch_on_grid);
 	preferencesDialog.exec();
 }
 
@@ -948,15 +950,21 @@ ListenerManager *MainWindow::listenerManager()
 	return mListenerManager;
 }
 
-void MainWindow::showGrid()
+void MainWindow::showGrid(bool show)
 {
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ShowGrid", show);
+
 	EditorView *tmpView = getCurrentTab();
 	if (tmpView != NULL)
-		tmpView->changeSceneGrid();
+		tmpView->setDrawSceneGrid(show);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ActivateGrid", isChecked);
+
 	EditorView *tmpView = getCurrentTab();
 	if (tmpView != NULL) {
 		QList<QGraphicsItem *> list = tmpView->scene()->items();
@@ -986,8 +994,6 @@ IGesturesPainter * MainWindow::gesturesPainter()
 {
 	return mGesturesWidget;
 }
-
-
 
 void MainWindow::suggestToCreateDiagram()
 {
@@ -1025,6 +1031,7 @@ void MainWindow::suggestToCreateDiagram()
 	okButton.setText("Done");
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
+	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),&dialog,SLOT(close()));
 	QObject::connect(&dialog,SIGNAL(destroyed()),this,SLOT(diagramInCreateListDeselect()));
 
@@ -1248,4 +1255,14 @@ int MainWindow::getTabIndex(const QModelIndex &index)
 			return i;
 	}
 	return -1;
+}
+
+void MainWindow::initGridProperties()
+{
+	QSettings settings("SPbSU", "QReal");
+	ui.actionSwitch_on_grid->blockSignals(false);
+	ui.actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+
+	ui.actionShow_grid->blockSignals(false);
+	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 }

@@ -19,7 +19,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
 {
 	QSettings settings("SPbSU", "QReal");
-	mNeedDrawGrid = settings.value("Don't show grid", true).toBool();
+	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -748,11 +748,9 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 }
 
-void EditorViewScene::changeNeedDrawGrid()
+void EditorViewScene::setNeedDrawGrid(bool show)
 {
-	mNeedDrawGrid = !mNeedDrawGrid;
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", mNeedDrawGrid);
+	mNeedDrawGrid = show;
 }
 
 void EditorViewScene::drawGesture()

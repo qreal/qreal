@@ -3,9 +3,10 @@
 
 #include <QSettings>
 
-PreferencesDialog::PreferencesDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::PreferencesDialog)
+PreferencesDialog::PreferencesDialog(QAction * const showGridAction,
+		QAction * const activateGridAction, QWidget *parent)
+	: QDialog(parent), ui(new Ui::PreferencesDialog), mShowGridAction(showGridAction)
+	, mActivateGridAction(activateGridAction)
 {
 	ui->setupUi(this);
 	initPreferences();
@@ -73,6 +74,9 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("pathToMake", ui->pathToMake->text());
 	settings.setValue("pluginExtension", ui->pluginExtension->text());
 	settings.setValue("prefix", ui->prefix->text());
+
+	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
+	mActivateGridAction->setChecked(ui->activateGridCheckBox->isChecked());
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)

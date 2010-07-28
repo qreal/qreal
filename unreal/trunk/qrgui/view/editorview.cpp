@@ -58,9 +58,9 @@ void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
 	mMVIface->scene()->setMainWindow(mainWindow);
 }
 
-void EditorView::changeSceneGrid()
+void EditorView::setDrawSceneGrid(bool show)
 {
-	mScene->changeNeedDrawGrid();
+	mScene->setNeedDrawGrid(show);
 	mScene->invalidate();
 }
 
