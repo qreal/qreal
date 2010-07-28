@@ -38,9 +38,6 @@ namespace qReal {
 		Ui::MainWindowUi ui;
 
 	public slots:
-		//		void connectRepo();
-		//		void closeRepo();
-
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
@@ -81,15 +78,13 @@ namespace qReal {
 		void propertyEditorScrollTo(QModelIndex const &index);
 
 	private slots:
-
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
 		void closeTab(QModelIndex const &index);
 		void exterminate();
-		void newGenerateEditor();
-		void parseEditorXml();
 		void generateEditor();
+		void parseEditorXml();
 		void generateToHascol();
 		void parseHascol();
 		void showPreferencesDialog();
@@ -112,6 +107,7 @@ namespace qReal {
 		void diagramInCreateListSelected(int num);
 
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
+
 	private:
 		QCloseEvent* clEvent;
 		model::Model *mModel;

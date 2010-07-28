@@ -75,6 +75,7 @@
     <property name="title">
      <string>&amp;Settings</string>
     </property>
+    <addaction name="actionPreferences"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionSwitch_on_grid"/>
@@ -86,12 +87,10 @@
     <addaction name="actionClear"/>
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
-    <addaction name="actionGenerate_editor"/>
     <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
-    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuMouse_gestures">
     <property name="title">
@@ -556,12 +555,12 @@
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences</string>
+    <string>Preferences...</string>
    </property>
   </action>
   <action name="actionCheckout">
    <property name="text">
-    <string>Checkout</string>
+    <string>Checkout...</string>
    </property>
   </action>
  </widget>

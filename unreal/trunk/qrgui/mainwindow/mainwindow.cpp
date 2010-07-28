@@ -39,7 +39,6 @@
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../parsers/hascol/hascolParser.h"
-#include "../dialogs/editorGeneratorDialog.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/metaGenerator/metaGenerator.h"
@@ -70,6 +69,11 @@ MainWindow::MainWindow()
 	}
 
 	ui.setupUi(this);
+
+#if defined(Q_WS_WIN)
+	ui.menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
+#endif
+
 	ui.tabs->setTabsClosable(true);
 	ui.tabs->setMovable(true);
 
@@ -99,10 +103,9 @@ MainWindow::MainWindow()
 	connect(ui.actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	connect(ui.actionGenerate_editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
-	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(newGenerateEditor()));
+	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -590,7 +593,7 @@ void MainWindow::generateToHascol()
 	qDebug() << "Done.";
 }
 
-void MainWindow::newGenerateEditor()
+void MainWindow::generateEditor()
 {
 	generators::MetaGenerator metaGenerator(mModel->api());
 
@@ -764,12 +767,6 @@ void MainWindow::exterminate()
 	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
 	mModel->exterminate();
-}
-
-void MainWindow::generateEditor()
-{
-	EditorGeneratorDialog editorGeneratorDialog(mModel->api());
-	editorGeneratorDialog.exec();
 }
 
 void MainWindow::parseHascol()
