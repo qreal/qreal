@@ -242,6 +242,7 @@ void Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
+	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();

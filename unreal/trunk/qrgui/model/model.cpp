@@ -516,7 +516,6 @@ void Model::reinit()
 void Model::exterminate()
 {
 	mApi.exterminate();
-	mApi.saveAll();
 	reinit();
 }
 
