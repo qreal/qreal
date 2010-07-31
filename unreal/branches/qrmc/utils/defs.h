@@ -3,6 +3,7 @@
 QString const templatesDir = "templates";
 QString const pluginHeaderTemplate = "pluginInterface.h.template";
 QString const pluginSourceTemplate = "pluginInterface.cpp.template";
+QString const nodeClassTemplate = "node.template";
 QString const utilsTemplate = "utils.template";
 
 QString const metamodelNameTag = "@@MetamodelName@@";
@@ -39,6 +40,7 @@ QString const possibleEdgesListTag = "@@PossibleEdgesList@@";
 QString const generatedDir = "generated";
 QString const pluginHeaderName = "pluginInterface.h";
 QString const pluginSourceName = "pluginInterface.cpp";
+QString const elementsFileName = "elements.h";
 
 QString const metamodelDiagram = "MetamodelDiagram";
 QString const metaEditorDiagramNode = "MetaEditorDiagramNode";

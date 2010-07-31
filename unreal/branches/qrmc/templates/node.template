@@ -1,4 +1,4 @@
-	class @@NodeName@@ : public ElementImpl
+	class @@ElementName@@ : public ElementImpl
 	{
 	public:
 		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
@@ -93,7 +93,7 @@
 		}
 
 		QList<double> getBorders()
-		{		
+		{
 			QList<double> list;
 @@NodeGetBorders@@
 			return list;

@@ -23,6 +23,8 @@ public:
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
 	virtual QString generatePossibleEdges(QString const &lineTemplate) const;
 
+	virtual QString generateNodeClass(QString const &classTemplate) const;
+
 protected:
 	NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 };

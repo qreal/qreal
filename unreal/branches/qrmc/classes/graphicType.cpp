@@ -61,6 +61,7 @@ bool GraphicType::init(QString const &context)
 		}
 	}
 	initPossibleEdges();
+	initShape();
 	return true;
 }
 
@@ -95,6 +96,18 @@ bool GraphicType::initPossibleEdges()
 		}
 	}
 	return true;
+}
+
+void GraphicType::initShape()
+{
+	if (mApi->hasProperty(mId, "shape")) {
+		QString shape = mApi->stringProperty(mId, "shape");
+		if (shape.isEmpty())
+			return;
+		mShape = new Shape(shape);
+		qDebug() << name() << mShape->mLabels.size() << mShape->mPorts.size();
+	}
+	return;
 }
 
 GraphicType::ResolvingHelper::~ResolvingHelper()
@@ -284,4 +297,15 @@ QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 	}
 	line.replace(possibleEdgesListTag, edgesList).replace(elementNameTag, name());
 	return line;
+}
+
+QString GraphicType::generateNodeClass(const QString &classTemplate) const
+{
+	QString nodeClass = classTemplate;
+
+
+
+	nodeClass.replace(elementNameTag, name());
+	nodeClass += "\n";
+	return nodeClass;
 }

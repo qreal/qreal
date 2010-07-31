@@ -34,14 +34,17 @@ private:
 
 	QString mPluginHeaderTemplate;
 	QString mPluginSourceTemplate;
+	QString mNodeTemplate;
 	QMap<QString, QString> mTemplateUtils;
 
 	QDir mDirectory;
 
 	bool changeDir(const QString &path);
+	bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 	bool loadPluginHeaderTemplate();
 	bool loadPluginSourceTemplate();
 	bool loadTemplateUtils();
+	bool loadNodeTemplate();
 
 	void generateCode();
 	void generateElementClasses();

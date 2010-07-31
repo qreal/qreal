@@ -66,3 +66,9 @@ QString NonGraphicType::generatePossibleEdges(QString const &lineTemplate) const
 	Q_UNUSED(lineTemplate)
 	return "";
 }
+
+QString NonGraphicType::generateNodeClass(const QString &classTemplate) const
+{
+	Q_UNUSED(classTemplate)
+	return "";
+}

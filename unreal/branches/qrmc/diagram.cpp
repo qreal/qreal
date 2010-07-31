@@ -165,6 +165,13 @@ public:
 	}
 };
 
+class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateNodeClass(lineTemplate);
+	}
+};
+
 QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const
 {
 	QString result;
@@ -314,4 +321,9 @@ QString Diagram::generateEnums(const QString &lineTemplate) const
 		result += line + "\n";
 	}
 	return result;
+}
+
+QString Diagram::generateNodeClasses(const QString &nodeTemplate) const
+{
+	return generateMapMethod(nodeTemplate, NodesGenerator());
 }

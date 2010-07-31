@@ -36,6 +36,8 @@ public:
 	QString generateEnums(QString const &lineTemplate) const;
 	QString generatePossibleEdges(QString const &lineTemplate) const;
 
+	QString generateNodeClasses(QString const &nodeTemplate) const;
+
 	void print();
 
 private:
@@ -68,5 +70,6 @@ private:
 	class MouseGesturesGenerator;
 	class PropertyNamesGenerator;
 	class PropertyDefaultsGenerator;
+	class NodesGenerator;
 	QString generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const;
 };

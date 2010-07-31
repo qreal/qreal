@@ -152,15 +152,17 @@ QString Editor::name()
 	return mApi->name(mId);
 }
 
-void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QMap<QString, QString> &utils)
+void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QString &nodeTemplate,const QMap<QString, QString> &utils)
 {
 	qDebug() << "generating plugin " << mName;
 
 	mUtilsTemplate = utils;
 	mSourceTemplate = sourceTemplate;
+	mNodeTemplate = nodeTemplate;
 
 	generatePluginHeader(headerTemplate);
 	generatePluginSource();
+	generateNodeClasses();
 }
 
 bool Editor::generatePluginHeader(QString const &hdrTemplate)
@@ -232,12 +234,43 @@ bool Editor::generatePluginSource()
 
 }
 
+bool Editor::generateNodeClasses()
+{
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	if (!dir.exists(mName))
+		dir.mkdir(mName);
+	dir.cd(mName);
+
+	QString fileName = dir.absoluteFilePath(elementsFileName);
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return false;
+	}
+
+	QString generatedSource = "";
+
+	foreach(Diagram *diagram, mDiagrams) {
+		generatedSource += diagram->generateNodeClasses(mNodeTemplate);
+	}
+
+	// template is ready, writing it into a file
+	QTextStream out(&file);
+	out << generatedSource;
+	file.close();
+	return true;
+
+}
+
 void Editor::generateDiagramsMap()
 {
 	// preparing template for diagramNameMap inits
 	QString initNameMapBody = "";
 	QString const line = mUtilsTemplate[initDiagramNameMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
+	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
 								.replace(diagramNameTag, diagram->name()) + "\n";

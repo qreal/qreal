@@ -5,6 +5,7 @@
 #include <QtCore/QPair>
 
 #include "type.h"
+#include "shape.h"
 
 class Label;
 class Diagram;
@@ -27,6 +28,8 @@ public:
 	virtual QString generateUsages(QString const &lineTemplate) const;
 	virtual QString generateEnums(QString const &lineTemplate) const;
 	virtual QString generatePossibleEdges(QString const &lineTemplate) const;
+
+	virtual QString generateNodeClass(QString const &classTemplate) const;
 
 	bool isResolving() const;
 
@@ -56,6 +59,7 @@ protected:
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
+	Shape* mShape;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -71,6 +75,7 @@ private:
 
 	bool addProperty(Property *property);
 	bool initPossibleEdges();
+	void initShape();
 
 	bool mResolving;
 };
