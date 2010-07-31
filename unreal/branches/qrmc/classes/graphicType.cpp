@@ -20,7 +20,7 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 }
 
 GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
-	: Type(false, diagram, api, id), mWidth(-1), mHeight(-1), mResolving(false)
+	: Type(false, diagram, api, id), mResolving(false)
 {
 }
 
@@ -104,8 +104,7 @@ void GraphicType::initShape()
 		QString shape = mApi->stringProperty(mId, "shape");
 		if (shape.isEmpty())
 			return;
-		mShape = new Shape(shape);
-		qDebug() << name() << mShape->mLabels.size() << mShape->mPorts.size();
+		mShape.init(shape, this);
 	}
 	return;
 }
@@ -118,15 +117,11 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 void GraphicType::copyFields(GraphicType *type) const
 {
 	Type::copyFields(type);
-//	type->mElement = mElement;
-//	type->mGraphics = mGraphics;
-	type->mHeight = mHeight;
-//r	type->mLogic = mLogic;
 	type->mParents = mParents;
 	type->mIsVisible = mIsVisible;
-	type->mWidth = mWidth;
 	type->mContainerProperties = mContainerProperties;
 	type->mContains = mContains;
+	type->mShape = mShape; // this is bad, mkay?
 }
 
 bool GraphicType::resolve()
@@ -303,7 +298,7 @@ QString GraphicType::generateNodeClass(const QString &classTemplate) const
 {
 	QString nodeClass = classTemplate;
 
-
+	mShape.generateSdf();
 
 	nodeClass.replace(elementNameTag, name());
 	nodeClass += "\n";

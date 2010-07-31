@@ -52,14 +52,13 @@ protected:
 	bool mIsVisible;
 	int mWidth;
 	int mHeight;
-	QList<Label*> mLabels;
 	QStringList mContains;
 	ContainerProperties mContainerProperties;
 	QStringList mConnections;
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
-	Shape* mShape;
+	Shape mShape;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;

@@ -66,6 +66,11 @@ void Type::setDisplayedName(QString const &displayedName)
 	mDisplayedName = displayedName;
 }
 
+Diagram *Type::diagram() const
+{
+	return mDiagram;
+}
+
 QMap<QString, Property*> Type::properties() const
 {
 	return mProperties;

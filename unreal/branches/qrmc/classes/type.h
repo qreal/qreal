@@ -32,6 +32,8 @@ public:
 	virtual QString qualifiedName() const;
 	virtual QString displayedName() const;
 
+	virtual Diagram *diagram() const;
+
 	virtual QMap<QString, Property*> properties() const;
 
 	virtual void setName(QString const &name);

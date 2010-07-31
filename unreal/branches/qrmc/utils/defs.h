@@ -38,6 +38,7 @@ QString const enumsListTag = "@@EnumValuesList@@";
 QString const possibleEdgesListTag = "@@PossibleEdgesList@@";
 
 QString const generatedDir = "generated";
+QString const shapesDir = "shapes";
 QString const pluginHeaderName = "pluginInterface.h";
 QString const pluginSourceName = "pluginInterface.cpp";
 QString const elementsFileName = "elements.h";
