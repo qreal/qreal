@@ -25,6 +25,8 @@ public:
 	Diagram *getDiagram(QString const &diagramName);
 	void addResource(QString const &resourceName);
 
+	QString getTemplateUtils(QString const &tmpl) const;
+
 private:
 	qrRepo::RepoApi mApi;
 	QMap<QString, Editor*> mEditors;

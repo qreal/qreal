@@ -168,7 +168,7 @@ public:
 class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
-		return type->generateNodeClass(lineTemplate);
+		return type->generateClass(lineTemplate);
 	}
 };
 
@@ -178,7 +178,7 @@ QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerat
 	foreach(Type* type, mTypes) {
 		QString line = generator.generate(type, lineTemplate);
 		if (!line.isEmpty())
-			result += line + "\n";
+			result += line + endline;
 	}
 	return result;
 }
@@ -298,10 +298,10 @@ QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGener
 		if (!isFirstLine)
 			line.replace("if", "else if");
 		isFirstLine = false;
-		result += line + "\n";
+		result += line + endline;
 	}
 	if (result.isEmpty())
-		return "	Q_UNUSED(element);\n";
+		return "	Q_UNUSED(element)" + endline;
 	return result;
 }
 
@@ -318,7 +318,7 @@ QString Diagram::generateEnums(const QString &lineTemplate) const
 		if (!isFirstLine)
 			line.replace("if", "else if");
 		isFirstLine = false;
-		result += line + "\n";
+		result += line + endline;
 	}
 	return result;
 }

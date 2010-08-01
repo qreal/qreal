@@ -16,11 +16,18 @@ public:
 
 	virtual Port* clone() const;
 
+	virtual QString generateSdf(MetaCompiler *compiler) const;
+	virtual QString generateInit(MetaCompiler *compiler) const;
+
 private:
 	ScalableCoordinate mStartX;
 	ScalableCoordinate mStartY;
 	ScalableCoordinate mEndX;
 	ScalableCoordinate mEndY;
 
+	int mWidth;
+	int mHeight;
+
 	void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
+	QString generate(QString const &lineTemplate, bool isScaled) const;
 };

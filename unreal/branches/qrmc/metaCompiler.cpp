@@ -157,3 +157,8 @@ void MetaCompiler::generateCode()
 
 	return;
 }
+
+QString MetaCompiler::getTemplateUtils(const QString &tmpl) const
+{
+	return mTemplateUtils[tmpl];
+}

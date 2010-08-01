@@ -15,11 +15,14 @@
 @@EdgeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::white)\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
 @@UpdateData@@=			title_@@Count@@->setHtml(QString("%1").arg(@@UpdateRole@@));
 @@LabelDefinition@@=		ElementTitleInterface *title_@@Count@@;
-@@NodeLoadShapeRenderer@@=			mRenderer = renderer;\n			mRenderer->load(QString(":/@@NodeName@@Class.sdf"));
-@@NodeLoadPortsRenderer@@=			portRenderer->load(QString(":/@@NodeName@@Ports.sdf"));
+@@NodeLoadShapeRenderer@@=			mRenderer = renderer;\n			mRenderer->load(QString(":/@@ElementName@@Class.sdf"));
+@@NodeLoadPortsRenderer@@=			portRenderer->load(QString(":/@@ElementName@@Ports.sdf"));
 @@NodeSetContents@@=			contents.setWidth(@@NodeWidth@@);\n			contents.setHeight(@@NodeHeight@@);
-@@NodeInitPointPort@@=			pointPorts << QPointF(@@NodePortX@@, @@NodePortY@@);
-@@NodeInitLinePort@@=		{\n			StatLine ln;\n			ln.line = QLineF(@@NodeLinePortStartX@@, @@NodeLinePortStartY@@, @@NodeLinePortEndX@@, @@NodeLinePortEndY@@);\n			ln.prop_x1 = @@NodeLinePortStartXScalable@@;\n			ln.prop_y1 = @@NodeLinePortStartYScalable@@;\n			ln.prop_x2 = @@NodeLinePortEndXScalable@@;\n			ln.prop_y2 = @@NodeLinePortEndYScalable@@;\n			linePorts << ln;\n		};
+@@NodeInitPointPort@@=			pointPorts << QPointF(@@PointX@@, @@PointY@@);
+@@NodeInitLinePort@@=		{\n			StatLine ln;\n			ln.line = QLineF(@@StartX@@, @@StartY@@, @@EndX@@, @@EndY@@);\n			ln.prop_x1 = @@NodeLinePortStartXScalable@@;\n			ln.prop_y1 = @@NodeLinePortStartYScalable@@;\n			ln.prop_x2 = @@NodeLinePortEndXScalable@@;\n			ln.prop_y2 = @@NodeLinePortEndYScalable@@;\n			linePorts << ln;\n		};
 @@NodeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::transparent);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
 @@NodeGetBordersValid@@=list << 30 << 15 << 15 << 25;
 @@NodeGetBordersInvalid@@=list << 0 << 0 << 0 << 0;
+@@PortsSdf@@=<picture sizex="@@NodeWidth@@" sizey="@@NodeHeight@@" >\n@@Ports@@\n</picture>
+@@LinePort@@=	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />\n	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="1" stroke-style="solid" stroke="#465945" />
+@@PointPort@@=	<point stroke-width="11" stroke-style="solid" stroke="#c3dcc4" x1="@@PointX@@" y1="@@PointY@@" />\n	<point stroke-width="3" stroke-style="solid" stroke="#465945" x1="@@PointX@@" y1="@@PointY@@" />

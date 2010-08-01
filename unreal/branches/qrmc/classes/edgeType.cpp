@@ -44,3 +44,9 @@ QString EdgeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "-1");
 	return line;
 }
+
+QString EdgeType::generateClass(const QString &classTemplate) const
+{
+	Q_UNUSED(classTemplate)
+	return "";
+}

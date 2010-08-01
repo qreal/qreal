@@ -6,6 +6,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QString>
+#include <QtCore/QDir>
 
 class GraphicType;
 
@@ -17,13 +18,24 @@ public:
 
 	void init(QString const &shape, GraphicType *node);
 
-	void generateSdf() const;
+	void generate(QString &classTemplate) const;
 
 private:
 	void initLabels(QDomElement const &graphics);
 	void initPorts(QDomElement const &graphics);
 	void initPointPorts(QDomElement const &portsElement);
 	void initLinePorts(QDomElement const &portsElement);
+
+	void changeDir(QDir &dir) const;
+
+	void generateSdf() const;
+	void generatePortsSdf() const;
+
+	bool hasLabels() const;
+	bool hasPointPorts() const;
+	bool hasLinePorts() const;
+	bool hasPicture() const;
+	bool hasPorts() const;
 
 	int mWidth;
 	int mHeight;

@@ -1,5 +1,8 @@
 #pragma once
 
+QString const endline = "\n";
+QString const nodeIndent = "\t\t\t";
+
 QString const templatesDir = "templates";
 QString const pluginHeaderTemplate = "pluginInterface.h.template";
 QString const pluginSourceTemplate = "pluginInterface.cpp.template";
@@ -20,6 +23,18 @@ QString const getUsagesLineTag = "@@GetUsedTypesLine@@";
 QString const getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
 QString const getEnumsLineTag = "@@GetEnumValuesLine@@";
 QString const getPossibleEdgesLineTag = "@@GetPossibleEdgesLine@@";
+QString const sdfPortsTag = "@@PortsSdf@@";
+QString const linePortTag = "@@LinePort@@";
+QString const pointPortTag = "@@PointPort@@";
+QString const portsTag = "@@Ports@@";
+QString const nodeUnusedTag = "@@NodeUnusedArgs@@";
+QString const nodeLoadShapeRendererTag = "@@NodeLoadShapeRenderer@@";
+QString const nodeLoadPortsRendererTag = "@@NodeLoadPortsRenderer@@";
+QString const nodeContentsTag = "@@NodeSetContents@@";
+QString const nodePointPortInitTag = "@@NodeInitPointPort@@";
+QString const nodeLinePortInitTag = "@@NodeInitLinePort@@";
+QString const nodeInitPortsTag = "@@NodeInitPorts@@";
+QString const nodeInitTag = "@@NodeInit@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";
@@ -36,6 +51,24 @@ QString const usagesListTag = "@@UsedTypesList@@";
 QString const isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
 QString const enumsListTag = "@@EnumValuesList@@";
 QString const possibleEdgesListTag = "@@PossibleEdgesList@@";
+QString const startXTag = "@@StartX@@";
+QString const startYTag = "@@StartY@@";
+QString const endXTag = "@@EndX@@";
+QString const endYTag = "@@EndY@@";
+QString const pointXTag = "@@PointX@@";
+QString const pointYTag = "@@PointY@@";
+QString const nodeWidthTag = "@@NodeWidth@@";
+QString const nodeHeightTag = "@@NodeHeight@@";
+QString const startXScalabilityTag = "@@NodeLinePortStartXScalable@@";
+QString const startYScalabilityTag = "@@NodeLinePortStartYScalable@@";
+QString const endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
+QString const endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
+QString const labelXTag = "@@LabelX@@";
+QString const labelYTag = "@@LabelY@@";
+QString const labelNameTag = "@@LabelName@@";
+QString const labelReadonlyTag = "@@LabelReadonly@@";
+QString const labelIndexTag = "@@Count@@";
+
 
 QString const generatedDir = "generated";
 QString const shapesDir = "shapes";

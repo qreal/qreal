@@ -1,5 +1,6 @@
 #include "label.h"
 #include "../utils/outFile.h"
+#include "metaCompiler.h"
 
 #include <QDebug>
 
@@ -22,7 +23,16 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 	return true;
 }
 
-QString Label::titleName() const
+QString Label::generateInit(MetaCompiler *compiler) const
 {
-	return "title_" + QString("%1").arg(mIndex);
+	QString result = compiler->getTemplateUtils(nodeInitTag);
+	QString name = mText.isEmpty() ? mTextBinded : mText;
+
+	result.replace(labelXTag, mX)
+			.replace(labelYTag, mY)
+			.replace(labelReadonlyTag, mReadOnly)
+			.replace(labelIndexTag, QString::number(mIndex))
+			.replace(labelNameTag, name);
+
+	return result;
 }

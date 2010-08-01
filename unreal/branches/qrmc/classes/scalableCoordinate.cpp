@@ -1,19 +1,36 @@
 #include "scalableCoordinate.h"
 
 ScalableCoordinate::ScalableCoordinate()
-	: mValue(0), mIsScalable(false)
+	: mValue(0), mWidth(0), mIsScalable(false)
 {}
 
-ScalableCoordinate::ScalableCoordinate(qreal value, bool isScalable)
-	: mValue(value), mIsScalable(isScalable)
+ScalableCoordinate::ScalableCoordinate(qreal value, int width, bool isScalable)
+	: mValue(value), mWidth(width), mIsScalable(isScalable)
 {}
 
-qreal ScalableCoordinate::value()
+qreal ScalableCoordinate::value() const
 {
 	return mValue;
 }
 
-bool ScalableCoordinate::isScalable()
+bool ScalableCoordinate::isScalable() const
 {
 	return mIsScalable;
+}
+
+QString ScalableCoordinate::toString(bool isScaled) const
+{
+	qreal value = isScaled ? mValue * mWidth : mValue;
+	QString result = QString::number(value);
+	// uncomment this when it's supported
+//	result += mIsScalable ? "a" : "%";
+	return result;
+}
+
+QString ScalableCoordinate::getScalability() const
+{
+	if (mIsScalable)
+		return "true";
+
+	return "false";
 }

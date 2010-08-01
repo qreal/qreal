@@ -6,12 +6,16 @@ namespace utils {
 	class OutFile;
 }
 
+class MetaCompiler;
+
 class Label
 {
 public:
 	// Default copy constructor is ok.
 
 	bool init(QDomElement const &element, int index, bool nodeLabel);
+
+	QString generateInit(MetaCompiler *compiler) const;
 
 private:
 	QString titleName() const;

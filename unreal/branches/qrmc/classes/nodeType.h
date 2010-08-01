@@ -20,6 +20,7 @@ public:
 	virtual void print();
 
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+	virtual QString generateClass(QString const &classTemplate) const;
 
 private:
 	bool mIsPin;

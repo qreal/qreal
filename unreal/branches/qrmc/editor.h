@@ -77,6 +77,6 @@ private:
 	class PropertiesGenerator;
 	class PropertyDefaultsGenerator;
 	class PossibleEdgesGenerator;
-	void generatePluginMethod(QString const &tag, MethodGenerator const &generator, bool isSingleLineMethod);
+	void generatePluginMethod(QString const &tag, MethodGenerator const &generator);
 };
 

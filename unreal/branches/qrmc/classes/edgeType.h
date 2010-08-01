@@ -18,6 +18,7 @@ public:
 	virtual bool isGraphicalType() const;
 
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
+	virtual QString generateClass(QString const &classTemplate) const;
 
 	void print();
 

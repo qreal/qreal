@@ -1,15 +1,16 @@
 #include "shape.h"
 #include "utils/defs.h"
 #include "diagram.h"
+#include "metaCompiler.h"
 #include "editor.h"
 #include "graphicType.h"
 #include "utils/nameNormalizer.h"
 
 #include <QtCore/QDebug>
-#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
-Shape::Shape(const QString &shape)
+Shape::Shape(const QString &shape) : mNode(NULL)
 {
 	init(shape, NULL);
 }
@@ -34,9 +35,9 @@ void Shape::init(const QString &shape, GraphicType *node)
 
 	QDomElement graphics = doc.firstChildElement("graphics");
 
-	int start = shape.indexOf("<picture");
-	int end = shape.indexOf("</picture>");
-	mPicture = shape.mid(start, end - start + QString("</picture>").size()); // zomg, WTF?!
+	QDomElement picture = graphics.firstChildElement("picture");
+	QTextStream out(&mPicture);
+	picture.save(out, 4);
 
 	mWidth = graphics.firstChildElement("picture").attribute("sizex", "88").toInt();
 	mHeight = graphics.firstChildElement("picture").attribute("sizey", "88").toInt();
@@ -108,12 +109,8 @@ void Shape::initLinePorts(QDomElement const &portsElement)
 	return;
 }
 
-void Shape::generateSdf() const
+void Shape::changeDir(QDir &dir) const
 {
-	if (mPicture.isEmpty())
-		return;
-
-	QDir dir;
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
 	dir.cd(generatedDir);
@@ -124,6 +121,58 @@ void Shape::generateSdf() const
 	if (!dir.exists(shapesDir))
 		dir.mkdir(shapesDir);
 	dir.cd(shapesDir);
+}
+
+void Shape::generate(QString &classTemplate) const
+{
+	if (!mNode)
+		return;
+
+	generateSdf();
+	generatePortsSdf();
+
+	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
+	QString unused;
+	if (!hasPointPorts())
+		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
+	if (!hasLinePorts())
+		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
+	if (!hasLabels())
+		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
+
+	QString shapeRendererLine = hasPicture()
+								? compiler->getTemplateUtils(nodeLoadShapeRendererTag)
+								: "";
+	QString portRendererLine = (hasLinePorts() || hasPointPorts())
+								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
+								: "";
+	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
+							.replace(nodeWidthTag, QString::number(mWidth))
+							.replace(nodeHeightTag, QString::number(mHeight));
+	QString portsInitLine;
+	foreach(Port *port, mPorts)
+		portsInitLine += port->generateInit(compiler) + endline;
+
+	QString labelsInitLine;
+	foreach(Label *label, mLabels)
+		labelsInitLine += label->generateInit(compiler) + endline;
+
+
+	classTemplate.replace(nodeUnusedTag, unused)
+			.replace(nodeLoadShapeRendererTag, shapeRendererLine)
+			.replace(nodeLoadPortsRendererTag, portRendererLine)
+			.replace(nodeContentsTag, nodeContentsLine)
+			.replace(nodeInitPortsTag, portsInitLine)
+			.replace(nodeInitTag, labelsInitLine);
+}
+
+void Shape::generateSdf() const
+{
+	if (!hasPicture())
+		return;
+
+	QDir dir;
+	changeDir(dir);
 
 	QString const fileName = dir.absoluteFilePath(mNode->name() + "Class.sdf");
 	QFile file(fileName);
@@ -137,3 +186,68 @@ void Shape::generateSdf() const
 	file.close();
 }
 
+void Shape::generatePortsSdf() const
+{
+	if (!hasPorts())
+		return;
+
+	QDir dir;
+	changeDir(dir);
+
+	QString const fileName = dir.absoluteFilePath(mNode->name() + "Ports.sdf");
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return;
+	}
+	QTextStream out(&file);
+	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
+	QString portsTemplate = compiler->getTemplateUtils(sdfPortsTag);
+
+	QString portsSdf;
+	foreach(Port *port, mPorts)
+		portsSdf += port->generateSdf(compiler) + endline;
+
+
+
+	portsTemplate.replace(portsTag, portsSdf)
+				.replace(nodeWidthTag, QString::number(mWidth))
+				.replace(nodeHeightTag, QString::number(mHeight))
+				.replace("\\n", "\n");
+
+	out << portsTemplate;
+	file.close();
+}
+
+bool Shape::hasLabels() const
+{
+	return !mLabels.isEmpty();
+}
+
+bool Shape::hasPointPorts() const
+{
+	foreach (Port *port, mPorts){
+		if (dynamic_cast<PointPort*>(port))
+			return true;
+	}
+	return false;
+}
+
+bool Shape::hasLinePorts() const
+{
+	foreach (Port *port, mPorts){
+		if (dynamic_cast<LinePort*>(port))
+			return true;
+	}
+	return false;
+}
+
+bool Shape::hasPicture() const
+{
+	return !mPicture.isEmpty();
+}
+
+bool Shape::hasPorts() const
+{
+	return !mPorts.isEmpty();
+}

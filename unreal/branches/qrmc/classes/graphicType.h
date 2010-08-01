@@ -29,8 +29,6 @@ public:
 	virtual QString generateEnums(QString const &lineTemplate) const;
 	virtual QString generatePossibleEdges(QString const &lineTemplate) const;
 
-	virtual QString generateNodeClass(QString const &classTemplate) const;
-
 	bool isResolving() const;
 
 protected:

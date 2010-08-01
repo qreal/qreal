@@ -212,7 +212,7 @@ QString GraphicType::generateProperties(const QString &lineTemplate) const
 				<< "shall not appear in metamodels, ignored";
 			continue;
 		}
-		QString tmp = property->generatePropertyLine(lineTemplate) + "\n";
+		QString tmp = property->generatePropertyLine(lineTemplate) + endline;
 		propertiesString += tmp.replace(elementNameTag, name());
 	}
 	return propertiesString;
@@ -226,7 +226,7 @@ QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 	foreach (Property *property, mProperties) {
 		QString tmp = property->generateDefaultsLine(lineTemplate);
 		if (!tmp.isEmpty())
-			defaultsString += tmp.replace(elementNameTag, name()) + "\n";
+			defaultsString += tmp.replace(elementNameTag, name()) + endline;
 	}
 	return defaultsString;
 }
@@ -294,13 +294,3 @@ QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateNodeClass(const QString &classTemplate) const
-{
-	QString nodeClass = classTemplate;
-
-	mShape.generateSdf();
-
-	nodeClass.replace(elementNameTag, name());
-	nodeClass += "\n";
-	return nodeClass;
-}

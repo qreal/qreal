@@ -36,9 +36,28 @@ void NodeType::print()
 	qDebug() << "node " << mName;
 }
 
+
+
 QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 {
 	QString line = lineTemplate;
 	line.replace(elementNameTag, name()).replace(isNodeOrEdgeTag, "1");
 	return line;
+}
+
+QString NodeType::generateClass(const QString &classTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString nodeClass = classTemplate;
+//	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+
+	mShape.generate(nodeClass);
+
+
+
+	nodeClass.replace(elementNameTag, name())
+			.replace("\\n", "\n");
+	nodeClass += endline;
+	return nodeClass;
 }

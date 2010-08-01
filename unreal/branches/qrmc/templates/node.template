@@ -8,12 +8,12 @@
 							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
 							SdfRendererInterface *portRenderer)
 		{
+@@NodeUnusedArgs@@		
 @@NodeLoadShapeRenderer@@
 @@NodeLoadPortsRenderer@@
 @@NodeSetContents@@
-@@NodeInitPointPort@@
-@@NodeInitLinePort@@
-@@NodeInitLabel@@
+@@NodeInitPorts@@
+@@NodeInit@@
 		}
 
 		~AcceptEventAction() {}

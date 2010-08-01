@@ -273,7 +273,7 @@ void Editor::generateDiagramsMap()
 	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
-								.replace(diagramNameTag, diagram->name()) + "\n";
+								.replace(diagramNameTag, diagram->name()) + endline;
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNameMapLineTag, initNameMapBody);
@@ -287,7 +287,7 @@ void Editor::generateDiagramNodeNamesMap()
 	foreach(Diagram *diagram, mDiagrams)	{
 		QString newline = line;
 		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
-								.replace(diagramNameTag, diagram->name()) + "\n";
+								.replace(diagramNameTag, diagram->name()) + endline;
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNodeNameMapLineTag, initNodeNameMapBody);
@@ -369,12 +369,10 @@ public:
 	}
 };
 
-void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator, bool isSingleLineMethod)
+void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator)
 {
 	QString body = "";
-	QString const line = isSingleLineMethod
-						? mUtilsTemplate[tag]
-						: mUtilsTemplate[tag].section("\\n",0,0) + "\n" + mUtilsTemplate[tag].section("\\n",1,1);
+	QString const line = mUtilsTemplate[tag].replace("\\n", "\n");
 	foreach(Diagram *diagram, mDiagrams) {
 		body += generator.generate(diagram, line);
 	}
@@ -385,59 +383,58 @@ void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &gen
 
 void Editor::generateNamesMap()
 {
-	generatePluginMethod(initElementNameMapLineTag, NamesGenerator(), true);
+	generatePluginMethod(initElementNameMapLineTag, NamesGenerator());
 }
 
 void Editor::generateMouseGesturesMap()
 {
-	generatePluginMethod(initMouseGesturesMapLineTag, MouseGesturesGenerator(), true);
+	generatePluginMethod(initMouseGesturesMapLineTag, MouseGesturesGenerator());
 }
 
 void Editor::generatePropertiesMap()
 {
-	generatePluginMethod(initPropertyTypesMapLineTag, PropertiesGenerator(), true);
+	generatePluginMethod(initPropertyTypesMapLineTag, PropertiesGenerator());
 }
 
 void Editor::generatePropertyDefaultsMap()
 {
-	generatePluginMethod(initPropertyDefaultMapLineTag, PropertyDefaultsGenerator(), true);
+	generatePluginMethod(initPropertyDefaultMapLineTag, PropertyDefaultsGenerator());
 }
 
 void Editor::generateContainers()
 {
-	generatePluginMethod(getContainersLineTag, ContainersGenerator(), false);
+	generatePluginMethod(getContainersLineTag, ContainersGenerator());
 }
 
 void Editor::generateConnections()
 {
-	generatePluginMethod(getConnectionsLineTag, ConnectionsGenerator(), false);
+	generatePluginMethod(getConnectionsLineTag, ConnectionsGenerator());
 }
 
 void Editor::generateUsages()
 {
-	generatePluginMethod(getUsagesLineTag, UsagesGenerator(), false);
+	generatePluginMethod(getUsagesLineTag, UsagesGenerator());
 }
 
 void Editor::generateElementsFactory()
 {
-	generatePluginMethod(getGraphicalObjectLineTag, FactoryGenerator(), false);
+	generatePluginMethod(getGraphicalObjectLineTag, FactoryGenerator());
 }
 
 void Editor::generateIsNodeOrEdge()
 {
-	generatePluginMethod(getIsNodeOrEdgeLineTag, IsNodeOrEdgeGenerator(), false);
+	generatePluginMethod(getIsNodeOrEdgeLineTag, IsNodeOrEdgeGenerator());
 }
 
 void Editor::generatePossibleEdges()
 {
-	generatePluginMethod(getPossibleEdgesLineTag, PossibleEdgesGenerator(), false);
+	generatePluginMethod(getPossibleEdgesLineTag, PossibleEdgesGenerator());
 }
 
 void Editor::generateEnums()
 {
 	QString body = "";
-	QString line = mUtilsTemplate[getEnumsLineTag].section("\\n",0,0)
-					+ "\n" + mUtilsTemplate[getEnumsLineTag].section("\\n",1,1);
+	QString line = mUtilsTemplate[getEnumsLineTag].replace("\\n", "\n");
 
 	foreach(Diagram *diagram, mDiagrams) {
 		body += diagram->generateEnums(line);
