@@ -38,7 +38,7 @@ bool GraphicType::init(QString const &context)
 	mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
 
 	foreach(Id id, mApi->children(mId)) {
-		if (id.element() == "MetaEntityParent") {
+		if (id.element() == metaEntityParent) {
 			QString parentName = mApi->name(id);
 			if (!mParents.contains(parentName))
 				mParents.append(parentName);
@@ -46,7 +46,7 @@ bool GraphicType::init(QString const &context)
 				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
 				return false;
 			}
-		} else if (id.element() == "MetaEntity_Attribute") {
+		} else if (id.element() == metaEntityAttribute) {
 			Property *property = new Property(mApi, id);
 			if (!property->init()) {
 				delete property;
@@ -54,10 +54,13 @@ bool GraphicType::init(QString const &context)
 			}
 			if (!addProperty(property))
 				return false;
-		} else if (id.element() == "MetaEntityConnection") {
+		} else if (id.element() == metaEntityConnection) {
 			mConnections << mApi->stringProperty(id, "type").section("::", -1);
-		} else if (id.element() == "MetaEntityUsage") {
+		} else if (id.element() == metaEntityUsage) {
 			mUsages << mApi->stringProperty(id, "type").section("::", -1);
+		} else if (id.element() == metaEntityContextMenuField)
+		{
+			mContextMenuItems << mApi->name(id);
 		}
 	}
 	initPossibleEdges();

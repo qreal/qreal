@@ -1406,11 +1406,6 @@ void NodeElement::updateByNewParent()
 		setFlag(ItemIsMovable, false);
 }
 
-bool NodeElement::isClass()
-{
-	return mElementImpl->isClass();
-}
-
 QList<double> NodeElement::borderValues()
 {
 		return mElementImpl->border();

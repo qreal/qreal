@@ -307,10 +307,6 @@ void NodeType::generateCode(OutFile &out)
 		<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isClass()\n\t\t{\n"
-		<< (mContainerProperties.isClass ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-		<< "\t\t}\n\n"
-
 		<< "\t\tbool maximizesChildren()\n\t\t{\n"
 		<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"

@@ -35,6 +35,16 @@ QString const nodePointPortInitTag = "@@NodeInitPointPort@@";
 QString const nodeLinePortInitTag = "@@NodeInitLinePort@@";
 QString const nodeInitPortsTag = "@@NodeInitPorts@@";
 QString const nodeInitTag = "@@NodeInit@@";
+QString const updateDataTag = "@@UpdateData@@";
+QString const nodeBorderTag = "@@NodeBorder@@";
+QString const nodeValidBorderTag = "@@NodeValidBorder@@";
+QString const nodeInvalidBorderTag = "@@NodeInvalidBorder@@";
+QString const labelDefinitionTag = "@@LabelDefinition@@";
+QString const nodeConstructorTag = "@@NodeConstructor@@";
+QString const contextMenuItems = "@@ContextMenuItems@@";
+QString const itemsList = "@@ItemsList@@";
+QString const itemsValidList = "@@ItemsValidList@@";
+QString const itemsInvalidList = "@@ItemsInvalidList@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";
@@ -68,6 +78,20 @@ QString const labelYTag = "@@LabelY@@";
 QString const labelNameTag = "@@LabelName@@";
 QString const labelReadonlyTag = "@@LabelReadonly@@";
 QString const labelIndexTag = "@@Count@@";
+QString const nameRoleTag ="@@NameRole@@";
+QString const customRoleTag ="@@CustomRole@@";
+QString const updateRoleTag ="@@UpdateRole@@";
+QString const hasPortsTag = "@@NodeHasPorts@@";
+QString const isNodeTag = "@@IsNode@@";
+QString const isContainerTag = "@@IsContainer@@";
+QString const sortingContainerTag = "@@IsSortContainer@@";
+QString const minimizeToChildrenTag = "@@MinimizesToChildren@@";
+QString const maximizeChildrenTag = "@@MaximizesChildren@@";
+QString const hasMovableChildrenTag = "@@HasMovableChildren@@";
+QString const forestallingSizeTag = "@@SizeOfForestalling@@";
+QString const childrenForestallingSizeTag = "@@SizeOfChildrenForestalling@@";
+QString const isPortTag = "@@IsPort@@";
+QString const hasPinTag = "@@HasPin@@";
 
 
 QString const generatedDir = "generated";
@@ -84,6 +108,13 @@ QString const metaEntityImport = "MetaEntityImport";
 QString const metaEntityEnum = "MetaEntityEnum";
 QString const metaEntityValue = "MetaEntityValue";
 QString const metaEntityPossibleEdge = "MetaEntityPossibleEdge";
+QString const metaEntityPropertiesAsContainer = "MetaEntityPropertiesAsContainer";
+QString const metaEntityParent = "MetaEntityParent";
+QString const metaEntityAttribute = "MetaEntity_Attribute";
+QString const metaEntityConnection = "MetaEntityConnection";
+QString const metaEntityUsage = "MetaEntityUsage";
+QString const metaEntityContextMenuField = "MetaEntityContextMenuField";
 
 QString const nameOfTheDirectory = "name of the directory";
+
 

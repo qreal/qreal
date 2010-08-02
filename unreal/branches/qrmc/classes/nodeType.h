@@ -8,6 +8,8 @@ namespace utils {
 	class OutFile;
 }
 
+class MetaCompiler;
+
 class NodeType : public GraphicType
 {
 public:
@@ -23,6 +25,11 @@ public:
 	virtual QString generateClass(QString const &classTemplate) const;
 
 private:
+	void generateContainerStuff(QString &classTemplate) const;
+	void generateContextMenuItems(QString &classTemplate, MetaCompiler *compiler) const;
+	QString loadBoolProperty(qReal::Id const &id, QString const &property) const;
+	QString loadIntProperty(qReal::Id const &id, QString const &property) const;
+
 	bool mIsPin;
 	bool mIsHavePin;
 };

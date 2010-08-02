@@ -36,3 +36,22 @@ QString Label::generateInit(MetaCompiler *compiler) const
 
 	return result;
 }
+
+QString Label::generateUpdate(MetaCompiler *compiler) const
+{
+	if (mTextBinded.isEmpty()) // static label
+		return (nodeIndent + "Q_UNUSED(repo)" + endline);
+
+	QString result = compiler->getTemplateUtils(updateDataTag);
+	QString name = (mTextBinded == "name") ? compiler->getTemplateUtils(nameRoleTag)
+						: compiler->getTemplateUtils(customRoleTag).replace(labelNameTag, mTextBinded);
+
+	return result.replace(updateRoleTag, name)
+			.replace(labelIndexTag, QString::number(mIndex));
+}
+
+QString Label::generateDefinition(MetaCompiler *compiler) const
+{
+	QString result = compiler->getTemplateUtils(labelDefinitionTag);
+	return result.replace(labelIndexTag, QString::number(mIndex));
+}

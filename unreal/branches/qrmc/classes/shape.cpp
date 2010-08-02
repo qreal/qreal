@@ -154,16 +154,28 @@ void Shape::generate(QString &classTemplate) const
 		portsInitLine += port->generateInit(compiler) + endline;
 
 	QString labelsInitLine;
-	foreach(Label *label, mLabels)
-		labelsInitLine += label->generateInit(compiler) + endline;
+	QString labelsUpdateLine;
+	QString labelsDefinitionLine;
 
+	foreach(Label *label, mLabels) {
+		labelsInitLine += label->generateInit(compiler) + endline;
+		labelsUpdateLine += label->generateUpdate(compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
+	}
+	if (mLabels.isEmpty()) // no labels
+		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
+
+	QString hasPorts = mPorts.isEmpty() ? "false" : "true";
 
 	classTemplate.replace(nodeUnusedTag, unused)
 			.replace(nodeLoadShapeRendererTag, shapeRendererLine)
 			.replace(nodeLoadPortsRendererTag, portRendererLine)
 			.replace(nodeContentsTag, nodeContentsLine)
 			.replace(nodeInitPortsTag, portsInitLine)
-			.replace(nodeInitTag, labelsInitLine);
+			.replace(nodeInitTag, labelsInitLine)
+			.replace(updateDataTag, labelsUpdateLine)
+			.replace(labelDefinitionTag, labelsDefinitionLine)
+			.replace(hasPortsTag, hasPorts);
 }
 
 void Shape::generateSdf() const

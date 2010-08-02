@@ -150,11 +150,11 @@
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
-			  <property type="bool" name="is pin">
+			  <property type="bool" name="isPin">
 				<default>false</default>
 			  </property>
 			  <property type="string" name="shape"/>
-			  <property type="bool" name="is action">
+			  <property type="bool" name="isAction">
 				<default>false</default>
 			  </property>
 			  <property type="string" name="path"/>
@@ -564,8 +564,8 @@
 			  <property type="bool" name="sortContainer">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="forestalling size"/>
-			  <property type="string" name="childrenForestalling size"/>
+			  <property type="string" name="forestallingSize"/>
+			  <property type="string" name="childrenForestallingSize"/>
 			  <property type="bool" name="minimizeToChildren">
 				<default>false</default>
 			  </property>

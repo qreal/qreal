@@ -41,7 +41,6 @@ protected:
 		int sizeOfChildrenForestalling;
 		bool hasMovableChildren;
 		bool minimizesToChildren;
-		bool isClass;
 		bool maximizesChildren;
 	};
 

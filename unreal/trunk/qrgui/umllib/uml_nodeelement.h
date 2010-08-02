@@ -78,8 +78,6 @@ namespace UML {
 		void switchOnGrid();
 		void switchOffGrid();
 
-		bool isClass();
-
 		virtual void setColorRect(bool bl);
 
 		bool getConnectingState();

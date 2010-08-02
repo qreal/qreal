@@ -141,7 +141,6 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tint sizeOfChildrenForestalling() { return 0; }\n"
 		<< "\t\tbool hasMovableChildren() { return false; }\n"
 		<< "\t\tbool minimizesToChildren() { return false; }\n"
-		<< "\t\tbool isClass() { return false; }\n"
 		<< "\t\tbool maximizesChildren() { return false; }\n"
 		<< "\t\tbool isPort() { return false; }\n"
 		<< "\t\tbool hasPin() { return false; }\n"

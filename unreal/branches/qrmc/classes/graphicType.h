@@ -54,6 +54,7 @@ protected:
 	ContainerProperties mContainerProperties;
 	QStringList mConnections;
 	QStringList mUsages;
+	QStringList mContextMenuItems;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
 	Shape mShape;

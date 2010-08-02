@@ -1,6 +1,7 @@
 	class @@ElementName@@ : public ElementImpl
 	{
 	public:
+@@NodeConstructor@@
 		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
 
 		void init(QRectF &contents, QList<QPointF> &pointPorts,
@@ -47,7 +48,7 @@
 			return @@IsContainer@@;
 		}
 
-		bool isSortContainer()
+		bool isSortingContainer()
 		{
 			return @@IsSortContainer@@;
 		}
@@ -62,24 +63,19 @@
 			return @@SizeOfChildrenForestalling@@;
 		}
 
-		bool isChildrenMovable()
+		bool minimizesToChildren()
 		{
-			return @@IsChildrenMovable@@;
+			return @@MinimizesToChildren@@;
 		}
 
-		bool isMinimizingToChildren()
+		bool hasMovableChildren()
 		{
-			return @@IsMinimizingToChildren@@;
+			return @@HasMovableChildren@@;
 		}
 
-		bool isClass()
+		bool maximizesChildren()
 		{
-			return @@IsClass@@;
-		}
-
-		bool isMaximizingChildren()
-		{
-			return @@IsMaximizingChildren@@;
+			return @@MaximizesChildren@@;
 		}
 
 		bool isPort()
@@ -87,21 +83,21 @@
 			return @@IsPort@@;
 		}
 
-		bool isHavePin()
+		bool hasPin()
 		{
 			return @@HasPin@@;
 		}
 
-		QList<double> getBorders()
+		QList<double> border()
 		{
 			QList<double> list;
-@@NodeGetBorders@@
+@@NodeBorder@@
 			return list;
 		}
 
-		QStringList bonusContextMenuFields() // not supported yet
+		QStringList bonusContextMenuFields()
 		{
-			return QStringList();
+			return @@ItemsList@@;
 		}
 
 	private:

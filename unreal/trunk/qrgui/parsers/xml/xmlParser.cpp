@@ -400,7 +400,7 @@ void XmlParser::setBoolValuesForContainer(const QString &tagName, const QDomElem
 void XmlParser::setSizesForContainer(const QString &tagName, const QDomElement &property, const Id &id)
 {
 	if (property.tagName() == tagName)
-		mApi.setProperty(id, tagName + " size", property.attribute("size", "0"));
+		mApi.setProperty(id, tagName + "Size", property.attribute("size", "0"));
 }
 
 
@@ -456,12 +456,12 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 
 void XmlParser::setPin(const Id &elementId)
 {
-	mApi.setProperty(elementId, "is pin", "true");
+	mApi.setProperty(elementId, "isPin", "true");
 }
 
 void XmlParser::setAction(const Id &elementId)
 {
-	mApi.setProperty(elementId, "is action", "true");
+	mApi.setProperty(elementId, "isAction", "true");
 }
 
 void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)

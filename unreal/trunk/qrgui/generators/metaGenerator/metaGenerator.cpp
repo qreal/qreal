@@ -363,12 +363,12 @@ void MetaGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 
 void MetaGenerator::setPin(QDomElement &parent, const Id &id)
 {
-	setStatusElement(parent, id, "pin", "is pin");
+	setStatusElement(parent, id, "pin", "isPin");
 }
 
 void MetaGenerator::setAction(QDomElement &parent, const Id &id)
 {
-	setStatusElement(parent, id, "action", "is action");
+	setStatusElement(parent, id, "action", "isAction");
 }
 
 void MetaGenerator::setStatusElement(QDomElement &parent, const Id &id, const QString &tagName, const QString &propertyName)

@@ -70,7 +70,6 @@ namespace UML{
 			virtual int sizeOfChildrenForestalling() = 0;
 			virtual bool hasMovableChildren() = 0;
 			virtual bool minimizesToChildren() = 0;
-			virtual bool isClass() = 0;
 			virtual bool maximizesChildren() = 0;
 
 			virtual bool isPort() = 0;
