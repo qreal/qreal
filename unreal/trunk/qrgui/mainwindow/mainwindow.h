@@ -109,26 +109,27 @@ namespace qReal {
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 
 	private:
-		QCloseEvent* clEvent;
+		QCloseEvent *mCloseEvent;
 		model::Model *mModel;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
-		GesturesWidget * mGesturesWidget;
+		GesturesWidget *mGesturesWidget;
+
+		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
+		bool mDiagramCreateFlag;
+
+		QStringList mDiagramsList;
+		void createDiagram(const QString &idString);
+		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
+				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 		void loadPlugins();
 
-		bool* saveListChecked;
 		QListWidget* createSaveListWidget();
-
 		void suggestToSave();
 		void suggestToCreateDiagram();
-
-		QStringList diagramsList;
-		void createDiagram(const QString &idString);
-		void loadingNewEditor(QString const &directoryName, QString const &metamodelName,
-				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
@@ -136,8 +137,6 @@ namespace qReal {
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
 		int getTabIndex(const QModelIndex &index);
-
-		bool mDiagramCreateFlag;
 
 		void initGridProperties();
 

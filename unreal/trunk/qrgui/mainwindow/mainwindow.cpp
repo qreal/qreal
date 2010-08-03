@@ -224,12 +224,12 @@ EditorManager* MainWindow::manager() {
 
 void MainWindow::finalClose()
 {
-	clEvent->accept();
+	mCloseEvent->accept();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	clEvent = event;
+	mCloseEvent = event;
 	QSettings settings("SPbSU", "QReal");
 	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
 		event->ignore();
@@ -626,13 +626,13 @@ void MainWindow::generateEditor()
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
-			loadingNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "").toString(),
+			loadNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "").toString(),
 					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
 }
 
-void MainWindow::loadingNewEditor(const QString &directoryName, const QString &metamodelName,
+void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
 		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
 	int const progressBarWidth = 240;
@@ -1000,23 +1000,22 @@ void MainWindow::suggestToCreateDiagram()
 	QVBoxLayout vLayout;
 	QHBoxLayout hLayout;
 	dialog.setLayout(&vLayout);
-	dialog.setMinimumSize(320,240);
-	dialog.setMaximumSize(320,240);
+	dialog.setMinimumSize(320, 240);
+	dialog.setMaximumSize(320, 240);
 	dialog.setWindowTitle("Choose new diagram");
 
-	QLabel label;
-	label.setText(QString("There is no existing diagram,\n choose diagram you want work with:"));
+	QLabel label("There is no existing diagram,\n choose diagram you want work with:");
 	QListWidget diagramsListWidget;
 	diagramsListWidget.setParent(&dialog);
 
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
-		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/"+editor.editor()))) {
+		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
 			const QString diagramName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramName(diagram.diagram());
 			const QString diagramNodeName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramNodeName(diagram.diagram());
-			if (diagramNodeName == " ")
+			if (diagramNodeName.isEmpty())
 				continue;
-			diagramsList.append("qrm:/"+editor.editor()+"/"+diagram.diagram()+"/"+diagramNodeName);
+			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 			diagramsListWidget.addItem(diagramName);
 			i++;
 		}
@@ -1065,7 +1064,7 @@ void MainWindow::diagramInCreateListDeselect()
 void MainWindow::diagramInCreateListSelected(int num)
 {
 	deleteFromExplorer();
-	createDiagram(diagramsList.at(num));
+	createDiagram(mDiagramsList.at(num));
 }
 
 void MainWindow::createDiagram(const QString &idString)
@@ -1138,19 +1137,19 @@ void MainWindow::saveAs()	//TODO: change
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-	saveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
+	mSaveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
 	foreach(Id id, mModel->api().getOpenedDiagrams()) {
 		listWidget->addItem(id.diagram());
 		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
-			saveListChecked[i] = true;
+			mSaveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 			qDebug() << "checked: " << id.toString() << " at row: " << i;
 		} else {
 			listWidget->item(i)->setCheckState(Qt::Unchecked);
-			saveListChecked[i] = false;
+			mSaveListChecked[i] = false;
 		}
 		i++;
 	}
@@ -1164,9 +1163,9 @@ void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
 {
 	QListWidget* listWidget = diagram->listWidget();
 	if (diagram->checkState() == Qt::Unchecked)
-		saveListChecked[listWidget->row(diagram)] = false;
+		mSaveListChecked[listWidget->row(diagram)] = false;
 	else if (diagram->checkState() == Qt::Checked)
-		saveListChecked[listWidget->row(diagram)] = true;
+		mSaveListChecked[listWidget->row(diagram)] = true;
 }
 
 void MainWindow::saveListClosed()
@@ -1180,7 +1179,7 @@ void MainWindow::saveListClosed()
 	foreach(Id id, opened) {
 		qDebug() << "Was opened: " << id.diagram() << " / " << id.element();
 
-		if (!saveListChecked[i]) {
+		if (!mSaveListChecked[i]) {
 			if (!current.contains(id))
 				mModel->addDiagram(id);
 			else
