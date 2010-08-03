@@ -18,9 +18,6 @@ using namespace qReal;
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent), mRoot()
 {
-	//    foreach (QObject *plugin, QPluginLoader::staticInstances())
-	//        populateMenus(plugin);
-
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
@@ -113,12 +110,13 @@ IdList EditorManager::elements(const Id &diagram) const
 
 IdList EditorManager::elementsOnDiagram(const Id &diagram) const
 {
-	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+	IdList elements;
+
+	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
-	}
+
 	return elements;
 }
 bool EditorManager::isEditor(const Id &id) const

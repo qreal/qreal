@@ -130,6 +130,6 @@ private slots:
 	void deleteUsageActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
-	void initMouseMoveMan();
+	void initMouseMoveManager();
 	void createEdge(QString const &);
 };

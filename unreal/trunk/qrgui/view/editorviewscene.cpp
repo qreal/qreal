@@ -43,15 +43,18 @@ void EditorViewScene::printElementsOfRootDiagram()
 	mouseMovementManager->printElements();
 }
 
-void EditorViewScene::initMouseMoveMan()
+void EditorViewScene::initMouseMoveManager()
 {
-	if (model() == NULL)
+	if (!model())
 		return;
 	qReal::Id diagram = model()->getRootDiagram();
+	if (diagram == Id())
+		// Root diagram is not set, for example, current tab is disabled. No need
+		// to do anything with mouse manager.
+		return;
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
 	mouseMovementManager = new MouseMovementManager(elements,
-													mWindow->manager(),
-													mWindow->gesturesPainter());
+			mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -673,7 +676,7 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveMan()));
+	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
