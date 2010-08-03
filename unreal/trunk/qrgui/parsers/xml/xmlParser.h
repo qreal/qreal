@@ -31,7 +31,7 @@ namespace qReal {
 			Id mMetamodel;
 			Id mDiagram;
 			QHash<Id, QString> mElements;
-			QHash<QString, QStringList> mContainerList;
+			QHash<Id, QStringList> mContainerList;
 			int mElementsColumn;
 			int mElementCurrentColumn;
 			int mMoveWidth;
@@ -79,6 +79,7 @@ namespace qReal {
 			void initUsage(QDomElement const &usage, Id const &elementId);
 			void initGeneralization(QDomElement const &generalization, Id const &elementId);
 			void initContainer();
+			Id findIdByType(QString const &type) const;
 
 			void setChildrenPositions(Id const &id, unsigned cellWidth, unsigned cellHeight);
 			void setElementPosition(Id const &id);

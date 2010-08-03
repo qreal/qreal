@@ -215,6 +215,7 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 			import.attribute("displayedName", ""));
 	mApi.setProperty(importId, "as", import.attribute("as", ""));
 	mApi.setProperty(importId, "importedFrom", nameList.at(0));
+	mElements.insert(importId, import.attribute("as", ""));
 }
 
 void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)
@@ -309,7 +310,7 @@ void XmlParser::setLineType(const QDomElement &tag, const Id &edgeId)
 			element.save(out, 4);
 			mApi.setProperty(edgeId, "labels", labels);
 		}
-	}	
+	}
 }
 
 void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)
@@ -371,10 +372,9 @@ void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 	for (unsigned i = 0; i < containsElements.length(); ++i) {
 		QDomElement contains = containsElements.at(i).toElement();
 		if (contains.tagName() == "contains") {
-			QString type = contains.attribute("type", "").section("::", -1);
-			QString name = mApi.name(elementId);
-			if (!mContainerList[name].contains(type) )
-				mContainerList[name] << type;
+			QString type = contains.attribute("type", "");
+			if (!mContainerList[elementId].contains(type))
+				mContainerList[elementId] << type;
 		}
 		if (contains.tagName() == "properties")
 			setContainerProperties(contains, elementId);
@@ -542,11 +542,47 @@ void XmlParser::initGeneralization(const QDomElement &generalization, const Id &
 			generalization.attribute("displayedName", ""));*/
 }
 
+Id XmlParser::findIdByType(QString const &type) const
+{
+	QString const name = type.section("::", -1);
+	QString const diagramName = type.section("::", -2, -2);
+	foreach (Id element, mElements.keys()) {
+		QString const containerName = element.element() == "MetaEntityImport"
+				? mApi.stringProperty(element, "as") : mApi.name(element);
+		Id parent = mApi.parents(element)[0];
+		if (containerName == name && (diagramName.isEmpty() || mApi.name(parent) == diagramName))
+			return element;
+	}
+	return Id();
+}
+
 void XmlParser::initContainer()
 {
-	foreach (Id key, mElements.keys()) {
-		QString name = mElements[key];
-		mApi.setProperty(key, "container", mContainerList[name].join(","));
+	foreach (Id key, mContainerList.keys()) {
+		foreach (QString type, mContainerList[key]) {
+			Id containedElement = findIdByType(type);
+			if (containedElement == Id())
+				continue;
+
+			QString existingContainers;
+			if (mApi.hasProperty(containedElement, "container"))
+				existingContainers = mApi.stringProperty(containedElement, "container");
+			if (!existingContainers.isEmpty())
+				existingContainers += ",";
+
+			QString newContainer = mApi.name(key);
+			if (!mApi.parents(key).isEmpty()) {
+				Id parent = mApi.parents(key)[0];
+				newContainer = mApi.name(parent) + "::" + newContainer;
+			}
+
+			if (existingContainers.split(',').contains(newContainer))
+				continue;
+
+			existingContainers += newContainer;
+			mApi.setProperty(containedElement, "container", existingContainers);
+
+		}
 	}
 }
 

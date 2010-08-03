@@ -337,6 +337,7 @@
 			  <property type="string" name="displayedName"/>
 			  <property type="string" name="importedFrom"/>
 			  <property type="string" name="as"/>
+			  <property type="string" name="container"/>
 			</properties>
 			<containers/>
 		  </logic>

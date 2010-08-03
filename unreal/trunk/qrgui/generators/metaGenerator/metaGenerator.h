@@ -41,13 +41,14 @@ namespace qReal {
 			void setStatusElement(QDomElement &parent, Id const &id, QString const &tagName, QString const &propertyName);
 			void setAction(QDomElement &parent, Id const &id);
 			void createDiagrams(QDomElement &parent, Id const &id);
-			void setContainer(QDomElement &parent, QString name, Id const &id);
+			void setContainer(QDomElement &parent, Id const &id);
 			void setContainerProperties(QDomElement &parent, Id const &id);
 			void newSetConnections(QDomElement &parent, const Id &id,
 					QString const &commonTagName, QString const &internalTagName, QString const &typeName);
 			void ensureCorrectness (Id const &id, QDomElement element, QString const &tagName, QString const &value);
 			void setBoolValuesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
 			void setSizesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
+			QString actualName(Id const &id) const;
 
 			qrRepo::RepoApi const &mApi;
 			QDomDocument mDocument;
