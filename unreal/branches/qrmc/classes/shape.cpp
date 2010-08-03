@@ -158,7 +158,7 @@ void Shape::generate(QString &classTemplate) const
 	QString labelsDefinitionLine;
 
 	foreach(Label *label, mLabels) {
-		labelsInitLine += label->generateInit(compiler) + endline;
+		labelsInitLine += label->generateInit(compiler, true) + endline;
 		labelsUpdateLine += label->generateUpdate(compiler) + endline;
 		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}

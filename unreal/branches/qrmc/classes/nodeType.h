@@ -22,7 +22,8 @@ public:
 	virtual void print();
 
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
-	virtual QString generateClass(QString const &classTemplate) const;
+	virtual QString generateNodeClass(QString const &classTemplate) const;
+	virtual QString generateEdgeClass(QString const &classTemplate) const;
 
 private:
 	void generateContainerStuff(QString &classTemplate) const;

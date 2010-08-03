@@ -15,7 +15,7 @@ public:
 
 	bool init(QDomElement const &element, int index, bool nodeLabel);
 
-	QString generateInit(MetaCompiler *compiler) const;
+	QString generateInit(MetaCompiler *compiler, bool isNode) const;
 	QString generateUpdate(MetaCompiler *compiler) const;
 	QString generateDefinition(MetaCompiler *compiler) const;
 

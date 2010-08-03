@@ -47,9 +47,15 @@ QString NodeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 	return line;
 }
 
-QString NodeType::generateClass(const QString &classTemplate) const
+QString NodeType::generateEdgeClass(const QString &classTemplate) const
 {
-	if (!mIsVisible)
+	Q_UNUSED(classTemplate)
+	return "";
+}
+
+QString NodeType::generateNodeClass(const QString &classTemplate) const
+{
+	//if (!mIsVisible)
 		return "";
 	QString nodeClass = classTemplate;
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();

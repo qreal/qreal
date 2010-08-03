@@ -212,6 +212,7 @@
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
+			  <property type="string" name="labels"/>
 			  <property type="lineTypes" name="lineType">
 				<default>solidLine</default>
 			  </property>	

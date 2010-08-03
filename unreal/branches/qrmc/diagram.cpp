@@ -168,7 +168,14 @@ public:
 class Diagram::NodesGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
-		return type->generateClass(lineTemplate);
+		return type->generateNodeClass(lineTemplate);
+	}
+};
+
+class Diagram::EdgesGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateEdgeClass(lineTemplate);
 	}
 };
 
@@ -327,3 +334,9 @@ QString Diagram::generateNodeClasses(const QString &nodeTemplate) const
 {
 	return generateMapMethod(nodeTemplate, NodesGenerator());
 }
+
+QString Diagram::generateEdgeClasses(const QString &edgeTemplate) const
+{
+	return generateMapMethod(edgeTemplate, EdgesGenerator());
+}
+

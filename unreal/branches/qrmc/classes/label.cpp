@@ -23,16 +23,16 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 	return true;
 }
 
-QString Label::generateInit(MetaCompiler *compiler) const
+QString Label::generateInit(MetaCompiler *compiler, bool isNode) const
 {
-	QString result = compiler->getTemplateUtils(nodeInitTag);
+	QString result = isNode ? compiler->getTemplateUtils(nodeInitTag) : compiler->getTemplateUtils(edgeInitTag);
 	QString name = mText.isEmpty() ? mTextBinded : mText;
 
 	result.replace(labelXTag, mX)
 			.replace(labelYTag, mY)
 			.replace(labelReadonlyTag, mReadOnly)
 			.replace(labelIndexTag, QString::number(mIndex))
-			.replace(labelNameTag, name);
+			.replace(labelNameTag, "\"" + name + "\"");
 
 	return result;
 }

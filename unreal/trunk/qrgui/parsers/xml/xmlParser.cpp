@@ -293,12 +293,23 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 
 void XmlParser::setLineType(const QDomElement &tag, const Id &edgeId)
 {
-	QDomNodeList lineTypes = tag.childNodes();
+	QDomNodeList graphics = tag.childNodes();
 
-	if (lineTypes.length() > 0) {
-		QDomElement lineType = lineTypes.at(0).toElement();
+	if (graphics.length() > 0) {
+		QDomElement lineType = graphics.at(0).toElement();
 		mApi.setProperty(edgeId, "lineType", lineType.attribute("type", ""));
 	}
+	// quick workaround for #349, just saving a part of XML into `labels' property
+	// TODO: make it somehow more elegant
+	for(unsigned i = 0; i < graphics.length(); ++i){
+		QDomElement element = graphics.at(i).toElement();
+		if (element.tagName() == "labels"){
+			QString labels;
+			QTextStream out(&labels);
+			element.save(out, 4);
+			mApi.setProperty(edgeId, "labels", labels);
+		}
+	}	
 }
 
 void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)

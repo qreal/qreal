@@ -26,7 +26,9 @@ public:
 	MetaCompiler *metaCompiler();
 	bool isLoaded();
 	bool load();
-	void generate(QString const &headerTemplate, QString const &sourceTemplate, const QString &nodeTemplate, QMap<QString, QString> const &utils);
+	void generate(QString const &headerTemplate, QString const &sourceTemplate,
+				const QString &nodeTemplate, const QString &edgeTemplate,
+				QMap<QString, QString> const &utils);
 
 	Type *findType(QString const &name);
 	QSet<EnumType*> getAllEnumTypes();
@@ -38,7 +40,7 @@ public:
 private:
 	bool generatePluginHeader(QString const &headerTemplate);
 	bool generatePluginSource();
-	bool generateNodeClasses();
+	bool generateElementsClasses();
 
 	void generateDiagramsMap();
 	void generateDiagramNodeNamesMap();
@@ -65,6 +67,7 @@ private:
 	QMap<QString, QString> mUtilsTemplate;
 	QString mSourceTemplate;
 	QString mNodeTemplate;
+	QString mEdgeTemplate;
 
 	class MethodGenerator;
 	class ContainersGenerator;

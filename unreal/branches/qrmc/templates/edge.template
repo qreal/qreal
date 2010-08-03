@@ -1,4 +1,4 @@
-	class @@EdgeName@@ : public ElementImpl {
+	class @@ElementName@@ : public ElementImpl {
 	public:
 		void init(QRectF &, QList<QPointF> &, QList<StatLine> &,
 											ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,
@@ -75,5 +75,5 @@
 		}
 
 	private:
-@@EdgePrivate@@	
+@@LabelDefinition@@	
 	};

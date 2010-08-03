@@ -152,17 +152,20 @@ QString Editor::name()
 	return mApi->name(mId);
 }
 
-void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate, const QString &nodeTemplate,const QMap<QString, QString> &utils)
+void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate,
+					const QString &nodeTemplate, const QString &edgeTemplate,
+					const QMap<QString, QString> &utils)
 {
 	qDebug() << "generating plugin " << mName;
 
 	mUtilsTemplate = utils;
 	mSourceTemplate = sourceTemplate;
 	mNodeTemplate = nodeTemplate;
+	mEdgeTemplate = edgeTemplate;
 
 	generatePluginHeader(headerTemplate);
 	generatePluginSource();
-	generateNodeClasses();
+	generateElementsClasses();
 }
 
 bool Editor::generatePluginHeader(QString const &hdrTemplate)
@@ -234,7 +237,7 @@ bool Editor::generatePluginSource()
 
 }
 
-bool Editor::generateNodeClasses()
+bool Editor::generateElementsClasses()
 {
 	QDir dir;
 	if (!dir.exists(generatedDir))
@@ -255,6 +258,7 @@ bool Editor::generateNodeClasses()
 
 	foreach(Diagram *diagram, mDiagrams) {
 		generatedSource += diagram->generateNodeClasses(mNodeTemplate);
+		generatedSource += diagram->generateEdgeClasses(mEdgeTemplate);
 	}
 
 	// template is ready, writing it into a file

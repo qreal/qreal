@@ -37,6 +37,7 @@ public:
 	QString generatePossibleEdges(QString const &lineTemplate) const;
 
 	QString generateNodeClasses(QString const &nodeTemplate) const;
+	QString generateEdgeClasses(QString const &edgeTemplate) const;
 
 	void print();
 
@@ -71,5 +72,6 @@ private:
 	class PropertyNamesGenerator;
 	class PropertyDefaultsGenerator;
 	class NodesGenerator;
+	class EdgesGenerator;
 	QString generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const;
 };

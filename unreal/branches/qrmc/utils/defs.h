@@ -7,6 +7,7 @@ QString const templatesDir = "templates";
 QString const pluginHeaderTemplate = "pluginInterface.h.template";
 QString const pluginSourceTemplate = "pluginInterface.cpp.template";
 QString const nodeClassTemplate = "node.template";
+QString const edgeClassTemplate = "edge.template";
 QString const utilsTemplate = "utils.template";
 
 QString const metamodelNameTag = "@@MetamodelName@@";
@@ -35,6 +36,7 @@ QString const nodePointPortInitTag = "@@NodeInitPointPort@@";
 QString const nodeLinePortInitTag = "@@NodeInitLinePort@@";
 QString const nodeInitPortsTag = "@@NodeInitPorts@@";
 QString const nodeInitTag = "@@NodeInit@@";
+QString const edgeInitTag = "@@EdgeInit@@";
 QString const updateDataTag = "@@UpdateData@@";
 QString const nodeBorderTag = "@@NodeBorder@@";
 QString const nodeValidBorderTag = "@@NodeValidBorder@@";

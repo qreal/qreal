@@ -23,6 +23,7 @@ MetaCompiler::MetaCompiler(QString const &workingCopyDir) : mApi(workingCopyDir)
 	loadTemplateFromFile(pluginHeaderTemplate, mPluginHeaderTemplate);
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
 	loadTemplateFromFile(nodeClassTemplate, mNodeTemplate);
+	loadTemplateFromFile(edgeClassTemplate, mEdgeTemplate);
 	loadTemplateUtils();
 }
 
@@ -41,7 +42,7 @@ bool MetaCompiler::compile()
 		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, rootItems) {
 		if (editorId.element() == metamodelDiagram) {
-			mPluginName = NameNormalizer::normalize(mApi.property(editorId, "name of the directory")
+			mPluginName = NameNormalizer::normalize(mApi.property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
 			if (!loadMetaModel(editorId))
 				return false;
@@ -152,7 +153,7 @@ void MetaCompiler::generateCode()
 		foreach (Diagram *diagram, editor->diagrams().values()) {
 			diagram->print();
 		}
-		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate, mNodeTemplate, mTemplateUtils);
+		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate, mNodeTemplate, mEdgeTemplate, mTemplateUtils);
 	}
 
 	return;
