@@ -70,8 +70,11 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 		labelsUpdateLine += label->generateUpdate(compiler) + endline;
 		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
-	if (mLabels.isEmpty()) // no labels
+	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
+		labelsInitLine = nodeIndent + "Q_UNUSED(factory)" + endline +
+						 nodeIndent + "Q_UNUSED(titles)" + endline;
+	}
 
 	QString lineType = "Qt::" + NameNormalizer::normalize(mApi->stringProperty(mId, "lineType"));
 
