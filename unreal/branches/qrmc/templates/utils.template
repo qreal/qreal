@@ -33,3 +33,9 @@
 @@ItemsInvalidList@@=QStringList()
 @@SdfFile@@=	<file>@@Filename@@</file>
 @@LineSdf@@=<picture sizex="100" sizey="60" >\n	<line fill="#000000" stroke-style="@@LineType@@" stroke="#000000" y1="0" x1="0" y2="60" stroke-width="2" x2="100" fill-style="solid" />\n</picture>
+@@Arrow@@=			static const QPointF points[] = {\n				QPointF(0,0),\n				QPointF(-5,10),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 3);
+@@Rhomb@@=			static const QPointF points[] = {\n				QPointF(0,0),\n				QPointF(-5,10),\n				QPointF(0,20),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 4);
+@@OpenArrow@@=			static const QPointF points[] = {\n				QPointF(-5,10),\n				QPointF(0,0),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 3);
+@@ComplexArrow@@=			static const QPointF points[] = {\n				QPointF(-15,30),\n				QPointF(-10,10),\n				QPointF(0,0),\n				QPointF(10,10),\n				QPointF(15,30),\n				QPointF(0,23),\n				QPointF(-15,30)\n			};\n			painter->drawPolyline(points, 7);
+@@FilledArrowColor@@=			brush.setColor(Qt::black);
+@@EmptyArrowColor@@=			brush.setColor(Qt::white);

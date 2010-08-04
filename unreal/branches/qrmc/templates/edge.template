@@ -30,26 +30,21 @@
 			return list;
 		}
 		bool hasPorts() { return false; }
-		Qt::PenStyle getPenStyle() { return @@EdgeStyle@@ }
+		Qt::PenStyle getPenStyle() { return @@LineType@@; }
 		QStringList bonusContextMenuFields()
 		{
 			return QStringList();
 		}
 
-	protected: 
-		virtual void drawStartArrow(QPainter * painter) const // not suported yet
+	protected:
+		virtual void drawStartArrow(QPainter * painter) const 
 		{
 			QBrush old = painter->brush();
 			QBrush brush;
 			brush.setStyle(Qt::SolidPattern);
-			brush.setColor(Qt::black);
+@@BeginArrowBrushColor@@			
 			painter->setBrush(brush);
-			static const QPointF points[] = {
-				QPointF(0,0),
-				QPointF(-5,10),
-				QPointF(5,10)
-			};
-			painter->drawPolygon(points, 3);
+@@BeginArrowCustomization@@
 			painter->setBrush(old);
 		}
 
@@ -58,22 +53,17 @@
 			QBrush old = painter->brush();
 			QBrush brush;
 			brush.setStyle(Qt::SolidPattern);
-			brush.setColor(Qt::black);
+@@EndArrowBrushColor@@			
 			painter->setBrush(brush);
-			static const QPointF points[] = {
-				QPointF(0,0),
-				QPointF(-5,10),
-				QPointF(5,10)
-			};
-			painter->drawPolygon(points, 3);
+@@EndArrowCustomization@@
 			painter->setBrush(old);
 		}
 
 		void updateData(ElementRepoInterface *repo) const
 		{
-@@UpdateData@@		
+@@UpdateData@@
 		}
 
 	private:
-@@LabelDefinition@@	
+@@LabelDefinition@@
 	};

@@ -104,6 +104,17 @@ QString const edgesListTag = "@@EdgesList@@";
 QString const sdfFileTag = "@@SdfFile@@";
 QString const fileNameTag = "@@Filename@@";
 
+QString const arrowTemplateTag = "@@Arrow@@";
+QString const openArrowTemplateTag = "@@OpenArrow@@";
+QString const rhombTemplateTag = "@@Rhomb@@";
+QString const complexArrowTemplateTag = "@@ComplexArrow@@";
+QString const filledArrowColorTag = "@@FilledArrowColor@@";
+QString const emptyArrowColorTag = "@@EmptyArrowColor@@";
+QString const beginArrowBrushColorTag = "@@BeginArrowBrushColor@@";
+QString const endArrowBrushColorTag = "@@EndArrowBrushColor@@";
+QString const beginArrowCustomizationTag = "@@BeginArrowCustomization@@";
+QString const endArrowCustomizationTag = "@@EndArrowCustomization@@";
+
 QString const generatedDir = "generated";
 QString const shapesDir = "shapes";
 QString const pluginHeaderName = "pluginInterface.h";
@@ -125,6 +136,7 @@ QString const metaEntityAttribute = "MetaEntity_Attribute";
 QString const metaEntityConnection = "MetaEntityConnection";
 QString const metaEntityUsage = "MetaEntityUsage";
 QString const metaEntityContextMenuField = "MetaEntityContextMenuField";
+QString const metaEntityAssociation = "MetaEntityAssociation";
 
 QString const nameOfTheDirectory = "name of the directory";
 

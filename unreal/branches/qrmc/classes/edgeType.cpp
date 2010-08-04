@@ -8,6 +8,7 @@
 #include <QDebug>
 
 using namespace utils;
+using namespace qReal;
 
 EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
 {
@@ -62,6 +63,7 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	QString labelsDefinitionLine;
 
 	generateSdf();
+	generateArrows(edgeClass);
 
 	foreach(Label *label, mLabels) {
 		labelsInitLine += label->generateInit(compiler, false) + endline;
@@ -71,12 +73,60 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	if (mLabels.isEmpty()) // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
 
+	QString lineType = "Qt::" + NameNormalizer::normalize(mApi->stringProperty(mId, "lineType"));
+
 	edgeClass.replace(edgeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
 			.replace(labelDefinitionTag, labelsDefinitionLine)
+			.replace(lineTypeTag, lineType)
 			.replace(elementNameTag, name())
 			.replace("\\n", "\n");
 	return edgeClass + endline;
+}
+
+void EdgeType::generateArrows(QString &edgeClass) const
+{
+	QString beginType;
+	QString endType;
+	IdList children = mApi->children(mId);
+
+	foreach (Id child, children){
+		if (child.element() == metaEntityAssociation) {
+			beginType = mApi->stringProperty(child, "beginType");
+			endType = mApi->stringProperty(child, "endType");
+		}
+	}
+	generateArrowEnd(edgeClass, beginType, beginArrowCustomizationTag, beginArrowBrushColorTag);
+	generateArrowEnd(edgeClass, endType, endArrowCustomizationTag, endArrowBrushColorTag);
+
+}
+
+void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
+								QString const &customTag, QString const &brushTag) const
+{
+	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	if (arrowEnd.isEmpty() || arrowEnd == "no_arrow") {
+		edgeClass.replace(customTag, "").replace(brushTag, "");
+		return;
+	}
+	if (arrowEnd == "empty_arrow")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	else if (arrowEnd == "filled_arrow")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
+	else if (arrowEnd == "open_arrow")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(openArrowTemplateTag))
+				.replace(brushTag, "");
+	else if (arrowEnd == "complex_arrow")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(complexArrowTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	else if (arrowEnd == "empty_rhomb")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	else if (arrowEnd == "filled_rhomb")
+		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
 }
 
 void EdgeType::generateSdf() const
@@ -134,7 +184,6 @@ void EdgeType::initLabels()
 			++count;
 		}
 	}
-	qDebug() << mApi->name(mId) << mLabels.size();
 	return;
 
 }
