@@ -167,7 +167,6 @@ void XmlParser::createGraphicElements(const QDomElement &type, const Id &diagram
 		if (graphicElement.tagName() == "import")
 			initImport(graphicElement, diagramId);
 	}
-	initContainer();
 }
 
 void XmlParser::initEnum(const QDomElement &enumElement, const Id &diagramId)
@@ -235,6 +234,7 @@ void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enum
 		}
 	}
 }
+
 void XmlParser::setNodeAttributes(const QDomElement &node, const Id &nodeId)
 {
 	QDomNodeList nodeList = node.childNodes();
@@ -373,8 +373,15 @@ void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 		QDomElement contains = containsElements.at(i).toElement();
 		if (contains.tagName() == "contains") {
 			QString type = contains.attribute("type", "");
-			if (!mContainerList[elementId].contains(type))
-				mContainerList[elementId] << type;
+
+			QString existingContainers;
+			if (mApi.hasProperty(elementId, "container"))
+				existingContainers = mApi.stringProperty(elementId, "container");
+			if (!existingContainers.isEmpty())
+				existingContainers += ",";
+			existingContainers += type;
+
+			mApi.setProperty(elementId, "container", existingContainers);
 		}
 		if (contains.tagName() == "properties")
 			setContainerProperties(contains, elementId);
@@ -413,7 +420,6 @@ void XmlParser::setSizesForContainer(const QString &tagName, const QDomElement &
 	if (property.tagName() == tagName)
 		mApi.setProperty(id, tagName + "Size", property.attribute("size", "0"));
 }
-
 
 void XmlParser::setConnections(const QDomElement &element, const Id &elementId)
 {
@@ -542,50 +548,6 @@ void XmlParser::initGeneralization(const QDomElement &generalization, const Id &
 			generalization.attribute("displayedName", ""));*/
 }
 
-Id XmlParser::findIdByType(QString const &type) const
-{
-	QString const name = type.section("::", -1);
-	QString const diagramName = type.section("::", -2, -2);
-	foreach (Id element, mElements.keys()) {
-		QString const containerName = element.element() == "MetaEntityImport"
-				? mApi.stringProperty(element, "as") : mApi.name(element);
-		Id parent = mApi.parents(element)[0];
-		if (containerName == name && (diagramName.isEmpty() || mApi.name(parent) == diagramName))
-			return element;
-	}
-	return Id();
-}
-
-void XmlParser::initContainer()
-{
-	foreach (Id key, mContainerList.keys()) {
-		foreach (QString type, mContainerList[key]) {
-			Id containedElement = findIdByType(type);
-			if (containedElement == Id())
-				continue;
-
-			QString existingContainers;
-			if (mApi.hasProperty(containedElement, "container"))
-				existingContainers = mApi.stringProperty(containedElement, "container");
-			if (!existingContainers.isEmpty())
-				existingContainers += ",";
-
-			QString newContainer = mApi.name(key);
-			if (!mApi.parents(key).isEmpty()) {
-				Id parent = mApi.parents(key)[0];
-				newContainer = mApi.name(parent) + "::" + newContainer;
-			}
-
-			if (existingContainers.split(',').contains(newContainer))
-				continue;
-
-			existingContainers += newContainer;
-			mApi.setProperty(containedElement, "container", existingContainers);
-
-		}
-	}
-}
-
 void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 		const QString &name, const QString &displayedName)
 {
@@ -607,7 +569,6 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 
 	mApi.setProperty(id, "position", QPointF(0,0));
 	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
-
 }
 
 void XmlParser::setChildrenPositions(const Id &id, unsigned cellWidth, unsigned cellHeight)

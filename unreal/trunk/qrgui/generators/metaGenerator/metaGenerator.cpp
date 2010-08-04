@@ -393,38 +393,20 @@ void MetaGenerator::setStatusElement(QDomElement &parent, const Id &id, const QS
 
 void MetaGenerator::setContainer(QDomElement &parent, const Id &id)
 {
-	QDomElement container = parent.elementsByTagName("container").isEmpty()
-			? mDocument.createElement("container")
-			: parent.elementsByTagName("container").at(0).toElement();
+	if (!mApi.hasProperty(id, "container") || mApi.stringProperty(id, "container").isEmpty())
+		return;
 
-	QString const elementParentName = !mApi.parents(id).isEmpty()
-			? mApi.name(mApi.parents(id).at(0)) : "";
+	QDomElement container = mDocument.createElement("container");
+	parent.appendChild(container);
 
-	QString const fullContainedName = elementParentName.isEmpty()
-			? actualName(id) : elementParentName + "::" + actualName(id);
-
-	foreach (Id const idChild, mElements) {
-		if (mApi.hasProperty(idChild, "container")
-				&& mApi.stringProperty(idChild, "container").split(',').contains(fullContainedName))
-		{
-			QDomElement contains = mDocument.createElement("contains");
-			ensureCorrectness(idChild, contains, "type", mDiagramName + "::" + actualName(idChild));
-			container.appendChild(contains);
-		}
+	QStringList const types = mApi.stringProperty(id, "container").split(',');
+	foreach (QString type, types) {
+		QDomElement contains = mDocument.createElement("contains");
+		ensureCorrectness(id, contains, "type", type);
+		container.appendChild(contains);
 	}
 
-	if (!container.childNodes().isEmpty())
-		parent.appendChild(container);
-
-	setContainerProperties(container, id);
-}
-
-QString MetaGenerator::actualName(Id const &id) const
-{
-	// Imported elements can participate in some relations within a metamodel,
-	// for example, be contained in other elements. In such case we care only about
-	// their new name, "as" attribute.
-	return id.element() == "MetaEntityImport" ? mApi.stringProperty(id, "as") : mApi.name(id);
+	setContainerProperties(parent, id);
 }
 
 void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
@@ -449,10 +431,10 @@ void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
 
 void MetaGenerator::setSizesForContainer(const QString &propertyName,QDomElement &properties, const Id &id)
 {
-	if (mApi.stringProperty(id, propertyName + " size") != "") {
+	if (mApi.stringProperty(id, propertyName + "Size") != "") {
 		QDomElement property = mDocument.createElement(propertyName);
 		properties.appendChild(property);
-		property.setAttribute("size", mApi.stringProperty(id, propertyName + " size"));
+		property.setAttribute("size", mApi.stringProperty(id, propertyName + "Size"));
 	}
 }
 
