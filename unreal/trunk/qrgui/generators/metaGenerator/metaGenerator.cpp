@@ -406,7 +406,7 @@ void MetaGenerator::setContainer(QDomElement &parent, const Id &id)
 		container.appendChild(contains);
 	}
 
-	setContainerProperties(parent, id);
+	setContainerProperties(container, id);
 }
 
 void MetaGenerator::setContainerProperties(QDomElement &parent, const Id &id)
