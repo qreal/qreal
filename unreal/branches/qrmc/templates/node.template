@@ -5,9 +5,9 @@
 		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
 
 		void init(QRectF &contents, QList<QPointF> &pointPorts,
-							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
-							SdfRendererInterface *portRenderer)
+				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+				SdfRendererInterface *portRenderer)
 		{
 @@NodeUnusedArgs@@		
 @@NodeLoadShapeRenderer@@

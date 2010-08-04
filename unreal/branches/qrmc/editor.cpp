@@ -152,9 +152,10 @@ QString Editor::name()
 	return mApi->name(mId);
 }
 
-void Editor::generate(const QString &headerTemplate, const QString &sourceTemplate,
-					const QString &nodeTemplate, const QString &edgeTemplate,
-					const QMap<QString, QString> &utils)
+void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
+					QString const &nodeTemplate, QString const &edgeTemplate,
+					QString const & elementsHeaderTemplate, QString const &resourceTemplate,
+					QMap<QString, QString> const &utils)
 {
 	qDebug() << "generating plugin " << mName;
 
@@ -162,10 +163,12 @@ void Editor::generate(const QString &headerTemplate, const QString &sourceTempla
 	mSourceTemplate = sourceTemplate;
 	mNodeTemplate = nodeTemplate;
 	mEdgeTemplate = edgeTemplate;
+	mElementsHeaderTemplate = elementsHeaderTemplate;
 
 	generatePluginHeader(headerTemplate);
 	generatePluginSource();
 	generateElementsClasses();
+	generateResourceFile(resourceTemplate);
 }
 
 bool Editor::generatePluginHeader(QString const &hdrTemplate)
@@ -254,16 +257,56 @@ bool Editor::generateElementsClasses()
 		return false;
 	}
 
-	QString generatedSource = "";
+	QString generatedNodes;
+	QString generatedEdges;
 
 	foreach(Diagram *diagram, mDiagrams) {
-		generatedSource += diagram->generateNodeClasses(mNodeTemplate);
-		generatedSource += diagram->generateEdgeClasses(mEdgeTemplate);
+		generatedNodes += diagram->generateNodeClasses(mNodeTemplate);
+		generatedEdges += diagram->generateEdgeClasses(mEdgeTemplate);
 	}
+
+	mElementsHeaderTemplate.replace(nodesListTag, generatedNodes)
+						.replace(edgesListTag, generatedEdges);
+	// template is ready, writing it into a file
+	QTextStream out(&file);
+	out << mElementsHeaderTemplate;
+	file.close();
+	return true;
+
+}
+
+bool Editor::generateResourceFile(QString const &resourceTemplate)
+{
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	if (!dir.exists(mName))
+		dir.mkdir(mName);
+	dir.cd(mName);
+	if (!dir.exists(shapesDir))
+		dir.mkdir(shapesDir);
+	dir.cd(shapesDir);
+
+	QString fileName = dir.absoluteFilePath(resourceFileName);
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return false;
+	}
+
+	QString resourceBody = "";
+	QString const line = mUtilsTemplate[sdfFileTag];
+	foreach(Diagram *diagram, mDiagrams) {
+		resourceBody += diagram->generateResourceFile(line);
+	}
+
+	QString resourceGenerated = resourceTemplate;
+	resourceGenerated.replace(sdfFileTag, resourceBody);
 
 	// template is ready, writing it into a file
 	QTextStream out(&file);
-	out << generatedSource;
+	out << resourceGenerated;
 	file.close();
 	return true;
 

@@ -78,3 +78,9 @@ QString NonGraphicType::generateEdgeClass(const QString &classTemplate) const
 	Q_UNUSED(classTemplate)
 	return "";
 }
+
+QString NonGraphicType::generateResourceLine(const QString &resourceTemplate) const
+{
+	Q_UNUSED(resourceTemplate)
+	return "";
+}

@@ -38,6 +38,8 @@ private:
 	QString mPluginSourceTemplate;
 	QString mNodeTemplate;
 	QString mEdgeTemplate;
+	QString mElementsHeaderTemplate;
+	QString mResourceTemplate;
 	QMap<QString, QString> mTemplateUtils;
 
 	QDir mDirectory;

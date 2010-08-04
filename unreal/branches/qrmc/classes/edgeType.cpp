@@ -61,6 +61,8 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	QString labelsUpdateLine;
 	QString labelsDefinitionLine;
 
+	generateSdf();
+
 	foreach(Label *label, mLabels) {
 		labelsInitLine += label->generateInit(compiler, false) + endline;
 		labelsUpdateLine += label->generateUpdate(compiler) + endline;
@@ -75,6 +77,37 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 			.replace(elementNameTag, name())
 			.replace("\\n", "\n");
 	return edgeClass + endline;
+}
+
+void EdgeType::generateSdf() const
+{
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	QString editorName = NameNormalizer::normalize(diagram()->editor()->name());
+	if (!dir.exists(editorName))
+		dir.mkdir(editorName);
+	dir.cd(editorName);
+	if (!dir.exists(shapesDir))
+		dir.mkdir(shapesDir);
+	dir.cd(shapesDir);
+
+	QString const fileName = dir.absoluteFilePath(name() + "Class.sdf");
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return;
+	}
+	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+
+	QString result = compiler->getTemplateUtils(lineSdfTag);
+	result.replace(lineTypeTag, mApi->stringProperty(mId, "lineType"))
+			.replace("\\n", "\n");
+
+	QTextStream out(&file);
+	out << result;
+	file.close();
 }
 
 // copy-pasted from Shape, quick workaround for #349
@@ -104,4 +137,10 @@ void EdgeType::initLabels()
 	qDebug() << mApi->name(mId) << mLabels.size();
 	return;
 
+}
+
+QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
+{
+	QString line = resourceTemplate;
+	return line.replace(fileNameTag, name() + "Class.sdf") + endline;
 }

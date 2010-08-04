@@ -6,9 +6,11 @@ QString const nodeIndent = "\t\t\t";
 QString const templatesDir = "templates";
 QString const pluginHeaderTemplate = "pluginInterface.h.template";
 QString const pluginSourceTemplate = "pluginInterface.cpp.template";
+QString const elementsHeaderTemplate = "elements.h.template";
 QString const nodeClassTemplate = "node.template";
 QString const edgeClassTemplate = "edge.template";
 QString const utilsTemplate = "utils.template";
+QString const resourceTemplate = "plugin.qrc.template";
 
 QString const metamodelNameTag = "@@MetamodelName@@";
 QString const initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
@@ -94,13 +96,20 @@ QString const forestallingSizeTag = "@@SizeOfForestalling@@";
 QString const childrenForestallingSizeTag = "@@SizeOfChildrenForestalling@@";
 QString const isPortTag = "@@IsPort@@";
 QString const hasPinTag = "@@HasPin@@";
+QString const lineSdfTag = "@@LineSdf@@";
+QString const lineTypeTag = "@@LineType@@";
 
+QString const nodesListTag = "@@NodesList@@";
+QString const edgesListTag = "@@EdgesList@@";
+QString const sdfFileTag = "@@SdfFile@@";
+QString const fileNameTag = "@@Filename@@";
 
 QString const generatedDir = "generated";
 QString const shapesDir = "shapes";
 QString const pluginHeaderName = "pluginInterface.h";
 QString const pluginSourceName = "pluginInterface.cpp";
 QString const elementsFileName = "elements.h";
+QString const resourceFileName = "plugin.qrc";
 
 QString const metamodelDiagram = "MetamodelDiagram";
 QString const metaEditorDiagramNode = "MetaEditorDiagramNode";

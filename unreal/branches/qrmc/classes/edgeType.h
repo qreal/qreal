@@ -21,11 +21,14 @@ public:
 	virtual QString generateIsNodeOrEdge(QString const &lineTemplate) const;
 	virtual QString generateNodeClass(QString const &classTemplate) const;
 	virtual QString generateEdgeClass(QString const &classTemplate) const;
+	virtual QString generateResourceLine(QString const &resourceTemplate) const;
 
 	void print();
 
 	void initLabels();
 private:
+
+	void generateSdf() const;
 
 	QString mBeginType;
 	QString mEndType;

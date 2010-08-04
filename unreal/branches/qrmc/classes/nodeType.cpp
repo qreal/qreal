@@ -55,7 +55,7 @@ QString NodeType::generateEdgeClass(const QString &classTemplate) const
 
 QString NodeType::generateNodeClass(const QString &classTemplate) const
 {
-	//if (!mIsVisible)
+	if (!mIsVisible)
 		return "";
 	QString nodeClass = classTemplate;
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
@@ -139,4 +139,9 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 	constructor.replace(contextMenuItems, items);
 	classTemplate.replace(nodeConstructorTag, constructor)
 			.replace(itemsList, compiler->getTemplateUtils(itemsValidList));
+}
+
+QString NodeType::generateResourceLine(const QString &resourceTemplate) const
+{
+	return mShape.generateResourceLine(resourceTemplate);
 }

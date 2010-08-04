@@ -55,6 +55,7 @@ public:
 
 	virtual QString generateNodeClass(QString const &classTemplate) const = 0;
 	virtual QString generateEdgeClass(QString const &classTemplate) const = 0;
+	virtual QString generateResourceLine(QString const &classTemplate) const = 0;
 
 protected:
 	virtual void copyFields(Type *type) const;

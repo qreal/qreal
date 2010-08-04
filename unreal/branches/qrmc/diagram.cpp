@@ -179,6 +179,13 @@ public:
 	}
 };
 
+class Diagram::ResourceGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateResourceLine(lineTemplate);
+	}
+};
+
 QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const
 {
 	QString result;
@@ -340,3 +347,7 @@ QString Diagram::generateEdgeClasses(const QString &edgeTemplate) const
 	return generateMapMethod(edgeTemplate, EdgesGenerator());
 }
 
+QString Diagram::generateResourceFile(const QString &resourceTemplate) const
+{
+	return generateMapMethod(resourceTemplate, ResourceGenerator());
+}

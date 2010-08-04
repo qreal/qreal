@@ -27,7 +27,8 @@ public:
 	bool isLoaded();
 	bool load();
 	void generate(QString const &headerTemplate, QString const &sourceTemplate,
-				const QString &nodeTemplate, const QString &edgeTemplate,
+				QString const &nodeTemplate, QString const &edgeTemplate,
+				QString const & elementsHeaderTemplate, QString const &mResourceTemplate,
 				QMap<QString, QString> const &utils);
 
 	Type *findType(QString const &name);
@@ -41,6 +42,7 @@ private:
 	bool generatePluginHeader(QString const &headerTemplate);
 	bool generatePluginSource();
 	bool generateElementsClasses();
+	bool generateResourceFile(QString const &resourceTemplate);
 
 	void generateDiagramsMap();
 	void generateDiagramNodeNamesMap();
@@ -68,6 +70,7 @@ private:
 	QString mSourceTemplate;
 	QString mNodeTemplate;
 	QString mEdgeTemplate;
+	QString mElementsHeaderTemplate;
 
 	class MethodGenerator;
 	class ContainersGenerator;

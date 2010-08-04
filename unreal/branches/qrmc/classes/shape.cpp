@@ -263,3 +263,20 @@ bool Shape::hasPorts() const
 {
 	return !mPorts.isEmpty();
 }
+
+QString Shape::generateResourceLine(const QString &resourceTemplate) const
+{
+	QString result;
+
+	if (!hasPicture())
+		return result;
+
+	QString line = resourceTemplate;
+	result += line.replace(fileNameTag, mNode->name() + "Class.sdf") + endline;
+
+	if (hasPorts()) {
+		QString line = resourceTemplate;
+		result += line.replace(fileNameTag, mNode->name() + "Ports.sdf") + endline;
+	}
+	return result;
+}

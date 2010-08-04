@@ -20,6 +20,8 @@ public:
 
 	void generate(QString &classTemplate) const;
 
+	QString generateResourceLine(QString const &resourceTemplate) const;
+
 private:
 	void initLabels(QDomElement const &graphics);
 	void initPorts(QDomElement const &graphics);

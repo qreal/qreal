@@ -24,6 +24,8 @@ MetaCompiler::MetaCompiler(QString const &workingCopyDir) : mApi(workingCopyDir)
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
 	loadTemplateFromFile(nodeClassTemplate, mNodeTemplate);
 	loadTemplateFromFile(edgeClassTemplate, mEdgeTemplate);
+	loadTemplateFromFile(elementsHeaderTemplate, mElementsHeaderTemplate);
+	loadTemplateFromFile(resourceTemplate, mResourceTemplate);
 	loadTemplateUtils();
 }
 
@@ -153,7 +155,9 @@ void MetaCompiler::generateCode()
 		foreach (Diagram *diagram, editor->diagrams().values()) {
 			diagram->print();
 		}
-		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate, mNodeTemplate, mEdgeTemplate, mTemplateUtils);
+		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate,
+					mNodeTemplate, mEdgeTemplate, mElementsHeaderTemplate,
+					mResourceTemplate, mTemplateUtils);
 	}
 
 	return;
