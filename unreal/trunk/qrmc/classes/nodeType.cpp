@@ -1,10 +1,10 @@
 #include "nodeType.h"
 #include "diagram.h"
 #include "metaCompiler.h"
-#include "../utils/outFile.h"
+#include "utils/outFile.h"
 #include "editor.h"
 #include "utils/nameNormalizer.h"
-#include "../../trunk/qrrepo/repoApi.h"
+#include "../qrrepo/repoApi.h"
 
 #include <QDebug>
 

@@ -14,8 +14,8 @@ QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
 
 # Input
 HEADERS += metaCompiler.h \
-	../../trunk/qrgui/kernel/definitions.h \
-	../../trunk/qrrepo/repoApi.h \
+	../qrgui/kernel/definitions.h \
+	../qrrepo/repoApi.h \
 	diagram.h \
 	editor.h
 

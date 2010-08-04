@@ -2,7 +2,7 @@
 #include "property.h"
 #include "diagram.h"
 #include "utils/nameNormalizer.h"
-#include "../utils/outFile.h"
+#include "utils/outFile.h"
 
 #include <QDebug>
 

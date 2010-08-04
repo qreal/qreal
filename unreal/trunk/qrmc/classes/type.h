@@ -4,7 +4,7 @@
 #include <QtCore/QString>
 
 #include "utils/defs.h"
-#include "../../../trunk/qrrepo/repoApi.h"
+#include "../qrrepo/repoApi.h"
 
 class Property;
 class Diagram;

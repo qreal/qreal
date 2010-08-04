@@ -1,5 +1,5 @@
 #include "pointPort.h"
-#include "../utils/outFile.h"
+#include "utils/outFile.h"
 #include "utils/defs.h"
 #include "metaCompiler.h"
 

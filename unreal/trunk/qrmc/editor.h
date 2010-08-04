@@ -6,7 +6,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QSet>
 
-#include "../../trunk/qrrepo/repoApi.h"
+#include "../qrrepo/repoApi.h"
 
 
 class MetaCompiler;

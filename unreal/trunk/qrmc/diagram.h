@@ -5,7 +5,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QPair>
 
-#include "../../trunk/qrrepo/repoApi.h"
+#include "../qrrepo/repoApi.h"
 
 class Type;
 class Editor;

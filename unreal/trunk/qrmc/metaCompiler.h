@@ -7,7 +7,7 @@
 #include <QtCore/QList>
 
 #include "utils/defs.h"
-#include "../../trunk/qrrepo/repoApi.h"
+#include "../qrrepo/repoApi.h"
 
 class Editor;
 class Diagram;
