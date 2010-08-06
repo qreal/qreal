@@ -1,5 +1,4 @@
 #include "edgeType.h"
-#include "utils/outFile.h"
 #include "metaCompiler.h"
 #include "diagram.h"
 #include "editor.h"

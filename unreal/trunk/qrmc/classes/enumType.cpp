@@ -1,6 +1,5 @@
 #include "enumType.h"
 #include "utils/nameNormalizer.h"
-#include "utils/outFile.h"
 
 using namespace qReal;
 using namespace qrmc;

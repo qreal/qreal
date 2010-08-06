@@ -1,7 +1,6 @@
 #include "metaCompiler.h"
 #include "editor.h"
 #include "utils/nameNormalizer.h"
-#include "utils/outFile.h"
 #include "diagram.h"
 
 #include "classes/type.h"

@@ -3,7 +3,6 @@
 #include "diagram.h"
 #include "classes/type.h"
 #include "classes/enumType.h"
-#include "utils/outFile.h"
 #include "utils/nameNormalizer.h"
 
 #include <QDebug>

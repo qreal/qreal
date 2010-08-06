@@ -1,5 +1,4 @@
 #include "nonGraphicType.h"
-#include "utils/outFile.h"
 
 #include <QtCore/QDebug>
 
