@@ -4,7 +4,7 @@
 
 #include <QDebug>
 
-using namespace utils;
+using namespace qrmc;
 
 bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 {

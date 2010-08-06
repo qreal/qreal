@@ -12,7 +12,7 @@
 @@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
 @@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;
 @@GetPossibleEdgesLine@@=	if (element == "@@ElementName@@")\n		result @@PossibleEdgesList@@;
-@@EdgeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::white)\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
+@@EdgeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::white);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
 @@UpdateData@@=			title_@@Count@@->setHtml(QString("%1").arg(@@UpdateRole@@));
 @@NameRole@@=repo->index().data(Qt::DisplayRole).toString()
 @@CustomRole@@=repo->roleValueByName("@@LabelName@@")

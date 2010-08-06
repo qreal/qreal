@@ -5,7 +5,7 @@
 
 #include <QtCore/QDebug>
 
-using namespace utils;
+using namespace qrmc;
 
 bool LinePort::init(QDomElement const &element, int width, int height)
 {

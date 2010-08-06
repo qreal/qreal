@@ -1,5 +1,7 @@
 #include "scalableCoordinate.h"
 
+using namespace qrmc;
+
 ScalableCoordinate::ScalableCoordinate()
 	: mValue(0), mWidth(0), mIsScalable(false)
 {}

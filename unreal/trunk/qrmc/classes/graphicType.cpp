@@ -6,7 +6,7 @@
 
 #include <QDebug>
 
-using namespace utils;
+using namespace qrmc;
 using namespace qReal;
 
 GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
@@ -107,7 +107,7 @@ void GraphicType::initShape()
 		QString shape = mApi->stringProperty(mId, "shape");
 		if (shape.isEmpty())
 			return;
-		mShape.init(shape, this);
+		mShape.init(shape);
 	}
 	return;
 }

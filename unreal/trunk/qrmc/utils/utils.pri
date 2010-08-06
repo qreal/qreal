@@ -1,5 +1,5 @@
-HEADERS += utils/outFile.h \
+HEADERS += \
 	utils/nameNormalizer.h \
 	utils/defs.h
-SOURCES += utils/outFile.cpp \
+SOURCES += \
 	utils/nameNormalizer.cpp

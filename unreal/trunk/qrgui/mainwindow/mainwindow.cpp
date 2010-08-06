@@ -22,7 +22,7 @@
 #include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
-#include "editorInterface.h"
+#include "pluginInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
@@ -45,6 +45,7 @@
 
 //#include "../qrrepo/svnClient.h"
 
+#include "metaCompiler.h"
 
 using namespace qReal;
 
@@ -105,7 +106,8 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
-	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+//	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -629,6 +631,15 @@ void MainWindow::generateEditor()
 			loadNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "").toString(),
 					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
+	}
+}
+
+void MainWindow::generateEditorWithQRMC()
+{
+	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
+	if (!metaCompiler.compile()) {
+		qDebug() << "compilation failed";
+		return;
 	}
 }
 

@@ -9,21 +9,21 @@
 @@EdgeInit@@
 		}
 
-		virtual ~ActivityEdge() {}
+		virtual ~@@ElementName@@() {}
 
 		void paint(QPainter *, QRectF &){}
 		bool isNode() { return false; }
 		bool isContainer() { return false; }
-		bool isSortContainer() { return false; }
+		bool isSortingContainer() { return false; }
 		int sizeOfForestalling() { return 0; }
 		int sizeOfChildrenForestalling() { return 0; }
-		bool isChildrenMovable() { return false; }
-		bool isMinimizingToChildren() { return false; }
+		bool hasMovableChildren() { return false; }
+		bool minimizesToChildren() { return false; }
 		bool isClass() { return false; }
-		bool isMaximizingChildren() { return false; }
+		bool maximizesChildren() { return false; }
 		bool isPort() { return false; }
-		bool isHavePin() { return false; }
-		QList<double> getBorders()
+		bool hasPin() { return false; }
+		QList<double> border()
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;

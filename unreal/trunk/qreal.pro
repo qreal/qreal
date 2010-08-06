@@ -16,8 +16,9 @@ contains(QT_VERSION, ^4\.[0-5]\..*){
 }
 
 TEMPLATE	= subdirs
-SUBDIRS		= qrxc qrgui qrxml qrrepo typelib
+SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo typelib
 
 qrxc.depends = typelib
+qrmc.depends = qrrepo
 qrgui.depends = qrxc qrxml qrrepo
 qrxml.depends = qrxc

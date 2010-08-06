@@ -9,11 +9,13 @@
 #include <QDebug>
 
 using namespace qReal;
+using namespace qrmc;
 
 Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
-	mName = NameNormalizer::normalize(mApi->property(mId, nameOfTheDirectory).toString().section("/", -1));
+	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mName = mName.section("_", 0, 0) + "Plugin";
 }
 
 Editor::~Editor()
@@ -26,6 +28,11 @@ Editor::~Editor()
 bool Editor::isLoaded()
 {
 	return mLoadingComplete;
+}
+
+qReal::Id Editor::id()
+{
+	return mId;
 }
 
 bool Editor::load()
@@ -65,14 +72,14 @@ bool Editor::load()
 
 	foreach(Id diagramId, diagrams)
 	{
-		qDebug() << "children:" << mApi->children(diagramId).size();
+		qDebug() << "\tchildren:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);
 		Diagram const *existingDiagram = mMetaCompiler->getDiagram(diagramName);
 		if (existingDiagram) {
 			qDebug() << "ERROR: diagram" << diagramName << "has been already loaded";
 			return false;
 		}
-		qDebug() << "loading diagram" << diagramName;
+		qDebug() << "\tloading diagram" << diagramName;
 		Diagram *diagram = new Diagram(diagramId, mApi, this);
 		if (!diagram->init())
 		{
@@ -80,7 +87,7 @@ bool Editor::load()
 			delete diagram;
 			return false;
 		}
-		qDebug() << "diagram" << diagramName << "loaded";
+		qDebug() << "\tdiagram" << diagramName << "loaded";
 		mDiagrams[diagramName] = diagram;
 	}
 
@@ -149,13 +156,13 @@ QMap<QString, Diagram*> Editor::diagrams()
 
 QString Editor::name()
 {
-	return mApi->name(mId);
+	return mName;
 }
 
 void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
 					QString const &nodeTemplate, QString const &edgeTemplate,
 					QString const & elementsHeaderTemplate, QString const &resourceTemplate,
-					QMap<QString, QString> const &utils)
+					QString const &projectTemplate, QMap<QString, QString> const &utils)
 {
 	qDebug() << "generating plugin " << mName;
 
@@ -169,6 +176,7 @@ void Editor::generate(QString const &headerTemplate, QString const &sourceTempla
 	generatePluginSource();
 	generateElementsClasses();
 	generateResourceFile(resourceTemplate);
+	generateProjectFile(projectTemplate);
 }
 
 bool Editor::generatePluginHeader(QString const &hdrTemplate)
@@ -200,6 +208,7 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 
 bool Editor::generatePluginSource()
 {
+	qDebug() << "generating plugin source for " << mName;
 	QDir dir;
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
@@ -242,6 +251,7 @@ bool Editor::generatePluginSource()
 
 bool Editor::generateElementsClasses()
 {
+	qDebug() << "generating elements classes for " << mName;
 	QDir dir;
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
@@ -277,6 +287,7 @@ bool Editor::generateElementsClasses()
 
 bool Editor::generateResourceFile(QString const &resourceTemplate)
 {
+	qDebug() << "generating resource file for " << mName;
 	QDir dir;
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
@@ -310,6 +321,33 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 	file.close();
 	return true;
 
+}
+
+bool Editor::generateProjectFile(const QString &proTemplate)
+{
+	QString projectTemplate = proTemplate;
+	qDebug() << "generating project file for " << mName;
+	QDir dir;
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+	if (!dir.exists(mName))
+		dir.mkdir(mName);
+	dir.cd(mName);
+
+	QString fileName = dir.absoluteFilePath(mName + ".pro");
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return false;
+	}
+
+	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
+	QTextStream out(&file);
+	out << projectTemplate;
+	file.close();
+
+	return true;
 }
 
 void Editor::generateDiagramsMap()

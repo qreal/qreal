@@ -3,7 +3,7 @@
 #include "utils/defs.h"
 #include "metaCompiler.h"
 
-using namespace utils;
+using namespace qrmc;
 
 bool PointPort::init(QDomElement const &element, int width, int height)
 {

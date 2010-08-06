@@ -7,7 +7,7 @@
 
 #include <QDebug>
 
-using namespace utils;
+using namespace qrmc;
 using namespace qReal;
 
 EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
@@ -47,7 +47,7 @@ QString EdgeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 	return line;
 }
 
-QString EdgeType::generateNodeClass(const QString &classTemplate) const
+QString EdgeType::generateNodeClass(const QString &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";
@@ -76,7 +76,10 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 						 nodeIndent + "Q_UNUSED(titles)" + endline;
 	}
 
-	QString lineType = "Qt::" + NameNormalizer::normalize(mApi->stringProperty(mId, "lineType"));
+	QString lineType = mApi->stringProperty(mId, "lineType");
+	if (lineType.isEmpty())
+		lineType = "solidLine";
+	lineType = "Qt::" + NameNormalizer::normalize(lineType);
 
 	edgeClass.replace(edgeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
@@ -138,7 +141,7 @@ void EdgeType::generateSdf() const
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
 	dir.cd(generatedDir);
-	QString editorName = NameNormalizer::normalize(diagram()->editor()->name());
+	QString editorName = diagram()->editor()->name();
 	if (!dir.exists(editorName))
 		dir.mkdir(editorName);
 	dir.cd(editorName);

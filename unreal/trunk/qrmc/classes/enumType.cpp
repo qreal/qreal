@@ -3,6 +3,7 @@
 #include "utils/outFile.h"
 
 using namespace qReal;
+using namespace qrmc;
 
 EnumType::EnumType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
 {

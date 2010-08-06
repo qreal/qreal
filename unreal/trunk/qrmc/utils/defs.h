@@ -3,6 +3,14 @@
 QString const endline = "\n";
 QString const nodeIndent = "\t\t\t";
 
+QString const generatedDir = "plugins";
+QString const shapesDir = "shapes";
+QString const pluginHeaderName = "pluginInterface.h";
+QString const pluginSourceName = "pluginInterface.cpp";
+QString const elementsFileName = "elements.h";
+QString const resourceFileName = "plugin.qrc";
+QString const pluginsProjectFileName = "plugin.pro";
+
 QString const templatesDir = "templates";
 QString const pluginHeaderTemplate = "pluginInterface.h.template";
 QString const pluginSourceTemplate = "pluginInterface.cpp.template";
@@ -11,7 +19,10 @@ QString const nodeClassTemplate = "node.template";
 QString const edgeClassTemplate = "edge.template";
 QString const utilsTemplate = "utils.template";
 QString const resourceTemplate = "plugin.qrc.template";
+QString const projectTemplate = "pro.template";
+QString const pluginsProjectTemplate = "plugins.pro.template";
 
+QString const subdirsTag = "@@Subdirs@@";
 QString const metamodelNameTag = "@@MetamodelName@@";
 QString const initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 QString const initDiagramNodeNameMapLineTag = "@@InitDiagramNodeNameMapLine@@";
@@ -114,13 +125,6 @@ QString const beginArrowBrushColorTag = "@@BeginArrowBrushColor@@";
 QString const endArrowBrushColorTag = "@@EndArrowBrushColor@@";
 QString const beginArrowCustomizationTag = "@@BeginArrowCustomization@@";
 QString const endArrowCustomizationTag = "@@EndArrowCustomization@@";
-
-QString const generatedDir = "generated";
-QString const shapesDir = "shapes";
-QString const pluginHeaderName = "pluginInterface.h";
-QString const pluginSourceName = "pluginInterface.cpp";
-QString const elementsFileName = "elements.h";
-QString const resourceFileName = "plugin.qrc";
 
 QString const metamodelDiagram = "MetamodelDiagram";
 QString const metaEditorDiagramNode = "MetaEditorDiagramNode";

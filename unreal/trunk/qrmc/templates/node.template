@@ -9,7 +9,7 @@
 				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
 				SdfRendererInterface *portRenderer)
 		{
-@@NodeUnusedArgs@@		
+@@NodeUnusedArgs@@
 @@NodeLoadShapeRenderer@@
 @@NodeLoadPortsRenderer@@
 @@NodeSetContents@@
@@ -17,7 +17,7 @@
 @@NodeInit@@
 		}
 
-		~AcceptEventAction() {}
+		~@@ElementName@@() {}
 
 		void paint(QPainter *painter, QRectF &contents)
 		{
@@ -102,6 +102,7 @@
 
 	private:
 		SdfRendererInterface *mRenderer;
+		QStringList mBonusContextMenuFields;
 @@LabelDefinition@@
 	};
 

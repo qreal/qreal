@@ -14,11 +14,12 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
 
-using namespace utils;
 using namespace qReal;
+using namespace qrmc;
 
-MetaCompiler::MetaCompiler(QString const &workingCopyDir) : mApi(workingCopyDir)
+MetaCompiler::MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir) : mApi(workingCopyDir)
 {
+	mLocalDir = qrmcDir;
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
 	loadTemplateFromFile(pluginHeaderTemplate, mPluginHeaderTemplate);
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
@@ -26,6 +27,8 @@ MetaCompiler::MetaCompiler(QString const &workingCopyDir) : mApi(workingCopyDir)
 	loadTemplateFromFile(edgeClassTemplate, mEdgeTemplate);
 	loadTemplateFromFile(elementsHeaderTemplate, mElementsHeaderTemplate);
 	loadTemplateFromFile(resourceTemplate, mResourceTemplate);
+	loadTemplateFromFile(projectTemplate, mProjectTemplate);
+	loadTemplateFromFile(pluginsProjectTemplate, mPluginsProjectTemplate);
 	loadTemplateUtils();
 }
 
@@ -36,28 +39,31 @@ MetaCompiler::~MetaCompiler()
 			delete editor;
 }
 
-bool MetaCompiler::compile()
+bool MetaCompiler::compile(QString const &targetMetamodel)
 {
+	mTargetMetamodel = targetMetamodel;
 	IdList rootItems = mApi.children(ROOT_ID);
 	qDebug() << "root diagrams:" << rootItems.size();
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";
 	foreach(qReal::Id editorId, rootItems) {
 		if (editorId.element() == metamodelDiagram) {
+			if (!mTargetMetamodel.isEmpty() && mApi.name(editorId) != mTargetMetamodel )
+				continue;
 			mPluginName = NameNormalizer::normalize(mApi.property(editorId, nameOfTheDirectory)
 											.toString().section("/", -1));
 			if (!loadMetaModel(editorId))
 				return false;
-			generateCode();
 		}
 	}
+	generateCode();
 	return true;
 }
 
 bool MetaCompiler::changeDir(const QString &path)
 {
 	if (!mDirectory.exists(path)) {
-		qDebug() << "cannot find directory \"" << path << "\"";
+		qDebug() << "cannot find directory " << path;
 		return false;
 	}
 	mDirectory.cd(path);
@@ -66,7 +72,7 @@ bool MetaCompiler::changeDir(const QString &path)
 
 bool MetaCompiler::loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate)
 {
-	if (!changeDir(templatesDir))
+	if (!changeDir(mLocalDir + "/" + templatesDir))
 		return false;
 
 	QString fileName = mDirectory.absoluteFilePath(templateFileName);
@@ -149,16 +155,38 @@ Diagram *MetaCompiler::getDiagram(QString const &diagramName)
 
 void MetaCompiler::generateCode()
 {
-	qDebug() << "editors: " << mEditors.keys() << mCurrentEditor;
+	qDebug() << "loaded metamodels: " << mEditors.keys();
+	qDebug() << "===";
 
+	QString pluginNames;
 	foreach (Editor *editor, mEditors) {
-		foreach (Diagram *diagram, editor->diagrams().values()) {
-			diagram->print();
-		}
+//		foreach (Diagram *diagram, editor->diagrams().values()) {
+//			diagram->print();
+//		}
+		if (!mTargetMetamodel.isEmpty() && mApi.name(editor->id()) != mTargetMetamodel )
+			continue;
+		pluginNames += nodeIndent + editor->name() + "\\" + endline;
 		editor->generate(mPluginHeaderTemplate, mPluginSourceTemplate,
 					mNodeTemplate, mEdgeTemplate, mElementsHeaderTemplate,
-					mResourceTemplate, mTemplateUtils);
+					mResourceTemplate, mProjectTemplate, mTemplateUtils);
 	}
+
+	QDir dir;
+
+	if (!dir.exists(generatedDir))
+		dir.mkdir(generatedDir);
+	dir.cd(generatedDir);
+
+	QString const fileName = dir.absoluteFilePath(pluginsProjectFileName);
+	QFile file(fileName);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		qDebug() << "cannot open \"" << fileName << "\"";
+		return;
+	}
+
+	QTextStream out(&file);
+	out << mPluginsProjectTemplate.replace(subdirsTag, pluginNames);
+	file.close();
 
 	return;
 }
