@@ -28,16 +28,29 @@ QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../qrgui"
 HEADERS += metaCompiler.h \
 	../qrgui/kernel/definitions.h \
 	../qrrepo/repoApi.h \
+	../qrgui/kernel/ids.h \
 	diagram.h \
 	editor.h
 
 SOURCES += \
+	../qrgui/kernel/ids.cpp \
 	metaCompiler.cpp \
 	diagram.cpp \
 	editor.cpp
 
-LIBS += -L../qrgui \
-	-lqrrepo # FIXME
+win32 {
+	CONFIG(debug, debug|release) {
+		LIBS += -L../qrgui/debug \
+				-lqrrepo
+	} else:CONFIG(release, debug|release){
+		LIBS += -L../qrgui/release \
+				-lqrrepo
+	}
+} else {
+	LIBS += -L../qrgui \
+		-lqrrepo # FIXME
+}
+
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
