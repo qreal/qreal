@@ -7,6 +7,15 @@
         <file>icons/kroki2.PNG</file>
         <file>icons/kroki3.PNG</file>
         <file>icons/clear.png</file>
+        <file>icons/line.png</file>
+        <file>icons/curve.png</file>
+        <file>icons/ellipse.png</file>
+        <file>icons/linePort.png</file>
+        <file>icons/rect.png</file>
+        <file>icons/staticText.png</file>
+        <file>icons/dynamicText.png</file>
+        <file>icons/textPicture.png</file>
+        <file>icons/pencil.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

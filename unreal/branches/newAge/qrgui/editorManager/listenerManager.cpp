@@ -7,8 +7,9 @@
 
 using namespace qReal;
 
-ListenerManager::ListenerManager(QList<Listener *> const &listeners, model::ModelAssistApi *)
+ListenerManager::ListenerManager(QList<Listener *> const &listeners, model::ModelAssistApi *api)
 {
+	initListeners(listeners, api);
 	bindListenerSlotsByName(listeners);
 }
 

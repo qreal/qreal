@@ -37,6 +37,9 @@ HEADERS += repoApi.h \
 
 SOURCES += private/repoApi.cpp \
 
+#svn support
+INCLUDEPATH += include
+
 # Код из qrgui/kernel, который тоже неплохо бы куда-нибудь вынести
 include(qrguiCode.pri)
 

@@ -23,6 +23,11 @@ namespace qReal {
 		class Model;
 	}
 
+	namespace models {
+		class GraphicalModel;
+		class LogicalModel;
+	}
+
 	class MainWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -31,20 +36,13 @@ namespace qReal {
 		MainWindow();
 		~MainWindow();
 
-		EditorManager *manager() {
-			return &mEditorManager;
-		}
-
+		EditorManager* manager();
+		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
-
-				IGesturesPainter *gesturesPainter();
-
+		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
 
 	public slots:
-		//		void connectRepo();
-		//		void closeRepo();
-
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
@@ -55,6 +53,8 @@ namespace qReal {
 		void showAbout();
 		void showHelp();
 
+		void checkoutDialogOk();
+		void checkoutDialogCancel();
 		void open();
 		void save();
 		void saveAs();
@@ -63,12 +63,13 @@ namespace qReal {
 
 		void print();
 		void makeSvg();
-		void showGrid();
+		void showGrid(bool show);
 
 		void finalClose();
 
 		void sceneSelectionChanged();
 
+		void doCheckout();
 		void doCommit();
 		void exportToXmi();
 		void generateToJava();
@@ -77,64 +78,79 @@ namespace qReal {
 		void deleteFromScene(QGraphicsItem *target);
 
 		void activateSubdiagram(QModelIndex const &idx);
+		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+		void propertyEditorScrollTo(QModelIndex const &index);
 
-		void activateItemOrDiagram(Id const &id);
-
-		EditorView *getCurrentTab();
 	private slots:
-		void activateItemOrDiagram(QModelIndex const &idx);
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
 		void closeTab(QModelIndex const &index);
 		void exterminate();
-		void newGenerateEditor();
-		void parseEditorXml();
 		void generateEditor();
+		void parseEditorXml();
 		void generateToHascol();
 		void parseHascol();
 		void showPreferencesDialog();
-		void initCurrentTab(const QModelIndex &rootIndex);
-		void openNewTab(const QModelIndex &index);
+
+		void centerOn(const QModelIndex &rootIndex);
+		void diagramExplorerClicked(const QModelIndex &rootIndex);
+
 		void openNewEmptyTab();
-		void switchGrid(bool isChecked);
+		void openNewTab(const QModelIndex &index);
+		void initCurrentTab(const QModelIndex &rootIndex);
+
 		void showGestures();
+		void switchGrid(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
+		void saveListClosed();
+
+		void setDiagramCreateFlag();
 		void diagramInCreateListDeselect();
 		void diagramInCreateListSelected(int num);
 
-		void saveListClosed();
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
+
 	private:
-		QCloseEvent* clEvent;
+		QCloseEvent *mCloseEvent;
 		model::Model *mModel;
+		models::GraphicalModel *mGraphicalModel;
+		models::LogicalModel *mLogicalModel;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
-		GesturesWidget * mGesturesWidget;
+		GesturesWidget *mGesturesWidget;
+		qrRepo::RepoApi mRepoApi;
+
+		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
+		bool mDiagramCreateFlag;
+
+		QStringList mDiagramsList;
+		void createDiagram(const QString &idString);
+		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
+				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 		void loadPlugins();
 
-		bool* saveListChecked;
 		QListWidget* createSaveListWidget();
-
 		void suggestToSave();
 		void suggestToCreateDiagram();
-
-		QStringList diagramsList;
-		void createDiagram(const QString &idString);
 
 		virtual void closeEvent(QCloseEvent *event);
 		void deleteFromExplorer();
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
-			signals:
-				void gesturesShowed();
-				void currentIdealGestureChanged();
-				void tabOpened();
-			};
+		int getTabIndex(const QModelIndex &index);
 
+		void initGridProperties();
+
+	signals:
+		void gesturesShowed();
+		void currentIdealGestureChanged();
+		void rootDiagramChanged();
+	};
 }

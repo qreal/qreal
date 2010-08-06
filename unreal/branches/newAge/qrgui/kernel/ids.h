@@ -11,7 +11,8 @@ namespace qReal {
 	class Id {
 	public:
 		static Id loadFromString(QString const &string);
-		static Id getRootId();
+		static Id createElementId(QString const &editor, QString const &diagram, QString const &element);
+		static Id rootId();
 
 		explicit Id(QString const &editor = "", QString  const &diagram = "",
 			QString  const &element = "", QString  const &id = "");

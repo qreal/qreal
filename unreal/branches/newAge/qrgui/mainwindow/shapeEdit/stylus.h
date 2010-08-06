@@ -13,6 +13,8 @@ private:
 public:
 	QList<Line *> mListLine;
 	Stylus(qreal x1, qreal y1, Item* parent);
+	Stylus(Stylus const &other);
+	virtual Item* clone();
 	void addLine(qreal x2, qreal y2);
 
 	virtual QRectF boundingRect() const;
@@ -26,5 +28,5 @@ public:
 	virtual void setPenColor(const QString& text);
 	virtual void setBrushStyle(const QString& text);
 	virtual void setBrushColor(const QString& text);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 };

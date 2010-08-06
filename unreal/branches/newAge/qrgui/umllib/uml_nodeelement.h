@@ -19,8 +19,8 @@
 
 /** @brief size of a point port */
 const int kvadratik = 5;
-const int widthLineX = 1400;
-const int widthLineY = 1000;
+const int widthLineX = 1500;
+const int widthLineY = 1100;
 
 namespace UML {
 	class NodeElement : public Element
@@ -59,9 +59,9 @@ namespace UML {
 
 		bool getPortStatus();
 
-		bool getHavePortStatus();
+		bool canHavePorts();
 
-		QList<double> getBordersValues();
+		QList<double> borderValues();
 
 		QList<PossibleEdge> getPossibleEdges();
 
@@ -78,7 +78,10 @@ namespace UML {
 		void switchOnGrid();
 		void switchOffGrid();
 
-		bool isClass();
+		virtual void setColorRect(bool bl);
+
+		bool getConnectingState();
+		void setConnectingState(bool arg);
 
 	private slots:
 		void switchGrid(bool isChecked);
@@ -184,6 +187,9 @@ namespace UML {
 
 		QPointF mPos;
 		bool inHor;
+		bool isColorRect;
+
+		bool connecting;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
 	};

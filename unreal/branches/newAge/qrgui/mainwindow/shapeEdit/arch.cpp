@@ -5,6 +5,7 @@
 Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	:Item(parent)
 {
+	mNeedScalingRect = false;
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
@@ -15,7 +16,30 @@ Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
 	mSpanAngle = spanAngle;
 	mStartAngle = startAngle;
 	mRect = rect;
-	mBoundingRect = boundingRect();
+}
+
+Arch::Arch(Arch const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mSpanAngle = other.mSpanAngle;
+	mStartAngle = other.mStartAngle;
+	mRect = other.mRect;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Arch::clone()
+{
+	Arch* item = new Arch(*this);
+	return item;
 }
 
 int Arch::startAngle() const
@@ -64,11 +88,11 @@ void Arch::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, Q
 
 void Arch::drawExtractionForItem(QPainter* painter)
 {
-	mBoundingRect = boundingRect();
-	painter->drawPoint(mBoundingRect.topLeft());
-	painter->drawPoint(mBoundingRect.topRight());
-	painter->drawPoint(mBoundingRect.bottomLeft());
-	painter->drawPoint(mBoundingRect.bottomRight());
+	QRectF itemBoundingRect = boundingRect();
+	painter->drawPoint(itemBoundingRect.topLeft());
+	painter->drawPoint(itemBoundingRect.topRight());
+	painter->drawPoint(itemBoundingRect.bottomLeft());
+	painter->drawPoint(itemBoundingRect.bottomRight());
 }
 
 void Arch::drawScalingRects(QPainter* painter)
@@ -81,14 +105,14 @@ void Arch::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-QRectF Arch::sceneBoundingRectCoord(QPointF const &topLeftPicture)
+QRectF Arch::sceneBoundingRectCoord(QPoint const &topLeftPicture)
 {
 	qreal const x1 = scenePos().x() + mRect.x() - topLeftPicture.x();
 	qreal const y1 = scenePos().y() + mRect.y() - topLeftPicture.y();
 	return QRectF(x1, y1, mRect.width(), mRect.height());
 }
 
-QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Arch::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement arch = document.createElement("arc");
 	arch.setAttribute("startAngle", mStartAngle);

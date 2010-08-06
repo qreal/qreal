@@ -31,10 +31,10 @@ namespace qReal {
 
 		class ErrorReporter {
 		public:
-			void addInformation(QString const &message, Id const &position = ROOT_ID);
-			void addWarning(QString const &message, Id const &position = ROOT_ID);
-			void addError(QString const &message, Id const &position = ROOT_ID);
-			void addCritical(QString const &message, Id const &position = ROOT_ID);
+			void addInformation(QString const &message, Id const &position = Id::rootId());
+			void addWarning(QString const &message, Id const &position = Id::rootId());
+			void addError(QString const &message, Id const &position = Id::rootId());
+			void addCritical(QString const &message, Id const &position = Id::rootId());
 
 			// TODO: remove it and add nice window with errors list
 			bool showErrors(QString const &successMessage) const;

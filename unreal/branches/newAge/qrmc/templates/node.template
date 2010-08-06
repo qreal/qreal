@@ -1,0 +1,107 @@
+	class @@ElementName@@ : public ElementImpl
+	{
+	public:
+@@NodeConstructor@@
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<QPointF> &pointPorts,
+				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+				SdfRendererInterface *portRenderer)
+		{
+@@NodeUnusedArgs@@		
+@@NodeLoadShapeRenderer@@
+@@NodeLoadPortsRenderer@@
+@@NodeSetContents@@
+@@NodeInitPorts@@
+@@NodeInit@@
+		}
+
+		~AcceptEventAction() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts()
+		{
+			return @@NodeHasPorts@@;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+@@UpdateData@@
+		}
+
+		bool isNode()
+		{
+			return @@IsNode@@;
+		}
+
+		bool isContainer()
+		{
+			return @@IsContainer@@;
+		}
+
+		bool isSortingContainer()
+		{
+			return @@IsSortContainer@@;
+		}
+
+		int sizeOfForestalling()
+		{
+			return @@SizeOfForestalling@@;
+		}
+
+		int sizeOfChildrenForestalling()
+		{
+			return @@SizeOfChildrenForestalling@@;
+		}
+
+		bool minimizesToChildren()
+		{
+			return @@MinimizesToChildren@@;
+		}
+
+		bool hasMovableChildren()
+		{
+			return @@HasMovableChildren@@;
+		}
+
+		bool maximizesChildren()
+		{
+			return @@MaximizesChildren@@;
+		}
+
+		bool isPort()
+		{
+			return @@IsPort@@;
+		}
+
+		bool hasPin()
+		{
+			return @@HasPin@@;
+		}
+
+		QList<double> border()
+		{
+			QList<double> list;
+@@NodeBorder@@
+			return list;
+		}
+
+		QStringList bonusContextMenuFields()
+		{
+			return @@ItemsList@@;
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+@@LabelDefinition@@
+	};
+

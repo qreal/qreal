@@ -273,7 +273,7 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mSrc ? mSrc->uuid() : ROOT_ID).toVariant(), roles::fromRole);
+	model->setData(mDataIndex, (mSrc ? mSrc->uuid() : Id::rootId()).toVariant(), roles::fromRole);
 	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
@@ -289,7 +289,7 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mDst ? mDst->uuid() : ROOT_ID).toVariant(), roles::toRole);
+	model->setData(mDataIndex, (mDst ? mDst->uuid() : Id::rootId()).toVariant(), roles::toRole);
 	model->setData(mDataIndex, mPortTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
@@ -310,7 +310,7 @@ bool EdgeElement::initPossibleEdges()
 	if (!itemModel)
 		return false;
 	QString editor = uuid().editor();
-	//TODO:: сделать генерацию кода для диаграм
+	//TODO: do a code generation for diagrams
 	QString diagram = uuid().diagram();
 	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
@@ -582,4 +582,9 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 {
 	if (mElementImpl)
 		mElementImpl->drawEndArrow(painter);
+}
+
+void EdgeElement::setColorRect(bool bl)
+{
+	Q_UNUSED(bl);
 }

@@ -48,6 +48,7 @@ namespace qReal {
 			qrRepo::RepoApi &mutableApi();
 
 			QModelIndex indexById(Id const &id) const;
+			Id idByIndex(QModelIndex const &index) const;
 
 			Id getRootDiagram();
 			void setRootIndex(QModelIndex const & index);
@@ -63,6 +64,7 @@ namespace qReal {
 
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
+
 		public slots:
 			void save();
 			void exterminate();
@@ -85,7 +87,7 @@ namespace qReal {
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
-						QModelIndex mRootIndex;
+			QModelIndex mRootIndex;
 
 			Model(Model const &);  // copying is forbidden
 			Model& operator =(Model const &); // assigment is also forbidden

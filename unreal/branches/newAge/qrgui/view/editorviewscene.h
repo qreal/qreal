@@ -2,6 +2,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
+#include <QSignalMapper>
 #include "../kernel/roles.h"
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
@@ -23,6 +24,7 @@ class EditorViewScene : public QGraphicsScene
 
 public:
 	explicit EditorViewScene(QObject *parent = 0);
+	~EditorViewScene();
 
 	void clearScene();
 
@@ -40,7 +42,7 @@ public:
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
 
-	void changeNeedDrawGrid();
+	void setNeedDrawGrid(bool show);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 
@@ -72,8 +74,10 @@ private:
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	void getObjectByGesture();
+	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);
 	void drawGesture();
 	void deleteGesture();
+	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 
@@ -92,10 +96,10 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::model::Model *model() const;
+	qReal::model::Model* model() const;
 
 	QPointF newElementsPosition;
-	QList<QGraphicsLineItem*> mGesture;
+	QList<QGraphicsItem*> mGesture;
 
 	qReal::EditorViewMViface *mv_iface;
 	qReal::EditorView *view;
@@ -107,7 +111,9 @@ private:
 
 	QPointF mCreatePoint;
 
-		MouseMovementManager * mouseMovementManager;
+	MouseMovementManager * mouseMovementManager;
+
+	QSignalMapper *mActionSignalMapper;
 
 	friend class qReal::EditorViewMViface;
 
@@ -124,5 +130,6 @@ private slots:
 	void deleteUsageActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
-	void initMouseMoveMan();
+	void initMouseMoveManager();
+	void createEdge(QString const &);
 };

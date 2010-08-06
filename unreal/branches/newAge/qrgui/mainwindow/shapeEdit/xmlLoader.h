@@ -5,6 +5,8 @@
 #include "scene.h"
 #include "item.h"
 
+const int distanceFigure = 50;
+
 class XmlLoader
 {
 public:
@@ -15,8 +17,12 @@ public:
 private:
 	QDomDocument mDocument;
 	Scene *mScene;
-	QPointF mDrift;
+	QPoint mDrift;
 	QList<QPair<Item::ScalingPointState, QColor> > mListScalePoint;
+	int mStrY;
+	int mStrX;
+	int mFloorY;
+	bool mReadFile;
 
 	void initListScalePoint();
 	void readDocument();
@@ -27,7 +33,9 @@ private:
 	void changeScaleColor(int i);
 	void checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
 	QPair<QString, bool> readScaleCoord(QString point, QDomElement const &docItem);
+	QPair<QPointF, QPointF> calcLineOfXandY(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
 	QPair<QPointF, QPointF> readLineOfXandY(QDomElement const &docItem);
+	QPair<QPointF, QPointF> readLinePortOfXandY(QDomElement const &start, QDomElement const &end);
 	QRectF readRectOfXandY(QDomElement const &docItem);
 	QPointF readXandY(QDomElement const &docItem);
 	void readLine(QDomElement const &line);
@@ -37,6 +45,7 @@ private:
 	void readStylus(QDomElement const &stylus);
 	void readPath(QDomElement const &element);
 	void readCurve(QDomElement const &element);
+	void readText(QDomElement const &element);
 	void readLabel(QDomElement const &label);
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);

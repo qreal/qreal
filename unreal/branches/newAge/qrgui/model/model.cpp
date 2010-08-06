@@ -11,7 +11,7 @@ using namespace details;
 Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
 	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager)
 {
-	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
+	mRootItem = new ModelTreeItem(Id::rootId(), NULL);
 	init();
 }
 
@@ -23,13 +23,13 @@ Model::~Model()
 
 bool Model::isDiagram(Id const &id) const
 {
-	return ((id != ROOT_ID) && (id.element() == assistApi().editorManager().getEditorInterface(id.editor())->diagramNodeName(id.diagram())));
+	return ((id != Id::rootId()) && (id.element() == assistApi().editorManager().getEditorInterface(id.editor())->diagramNodeName(id.diagram())));
 }
 
 void Model::init()
 {
-	mTreeItems.insert(ROOT_ID, mRootItem);
-	mApi.setName(ROOT_ID, ROOT_ID.toString());
+	mTreeItems.insert(Id::rootId(), mRootItem);
+	mApi.setName(Id::rootId(), Id::rootId().toString());
 
 	// Turn off view notification while loading. Model can be inconsistent during a process,
 	// so views shall not update themselves before time. It is important for
@@ -90,7 +90,9 @@ QVariant Model::data(QModelIndex const &index, int role) const
 
 bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 {
+	qDebug() << value;
 	if (index.isValid()) {
+		qDebug() << value << role;
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		switch (role) {
 		case Qt::DisplayRole:
@@ -227,7 +229,7 @@ QString Model::pathToItem(ModelTreeItem const *item) const
 		return path;
 	}
 	else
-		return ROOT_ID.toString();
+		return Id::rootId().toString();
 }
 
 void Model::removeConfigurationInClient(ModelTreeItem const * const item)
@@ -319,9 +321,9 @@ QMimeData* Model::mimeData(QModelIndexList const &indexes) const
 			stream << mApi.property(item->id(), "name");
 			stream << mApi.property(item->id(), "position").toPointF();
 		} else {
-			stream << ROOT_ID.toString();
+			stream << Id::rootId().toString();
 			stream << QString();
-			stream << ROOT_ID.toString();
+			stream << Id::rootId().toString();
 			stream << QPointF();
 		}
 	}
@@ -386,8 +388,8 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		mTreeItems.insert(id, item);
 		mApi.addChild(parentItem->id(), id);
 		mApi.setProperty(id, "name", name);
-		mApi.setProperty(id, "from", ROOT_ID.toVariant());
-		mApi.setProperty(id, "to", ROOT_ID.toVariant());
+		mApi.setProperty(id, "from", Id::rootId().toVariant());
+		mApi.setProperty(id, "to", Id::rootId().toVariant());
 		mApi.setProperty(id, "fromPort", 0.0);
 		mApi.setProperty(id, "toPort", 0.0);
 		mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
@@ -409,7 +411,7 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 
 bool Model::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
 {
-	ModelTreeItem *parentItem = parent == ROOT_ID ? mRootItem
+	ModelTreeItem *parentItem = parent == Id::rootId() ? mRootItem
 		: static_cast<ModelTreeItem*>(indexById(parent).internalPointer());
 	Q_ASSERT(parentItem != NULL);
 	return addElementToModel(parentItem, id, "", name, position, Qt::CopyAction) != NULL;
@@ -506,7 +508,7 @@ void Model::reinit()
 	cleanupTree(mRootItem);
 	mTreeItems.clear();
 	delete mRootItem;
-	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
+	mRootItem = new ModelTreeItem(Id::rootId(), NULL);
 	reset();
 	init();
 }
@@ -519,7 +521,7 @@ void Model::exterminate()
 
 void Model::addDiagram(Id const &id)
 {
-	mApi.addChild(ROOT_ID, id);
+	mApi.addChild(Id::rootId(), id);
 }
 
 void Model::resetChangedDiagrams()
@@ -566,6 +568,12 @@ QModelIndex Model::indexById(Id const &id) const
 		return index(mTreeItems.find(id).value());
 	}
 	return QModelIndex();
+}
+
+Id Model::idByIndex(QModelIndex const &index) const
+{
+	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+	return mTreeItems.key(item);
 }
 
 ModelAssistApi &Model::assistApi()

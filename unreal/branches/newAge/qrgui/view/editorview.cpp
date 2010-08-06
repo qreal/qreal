@@ -20,6 +20,8 @@ EditorView::EditorView(QWidget *parent)
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
 	setEnabled(false);
+
+	setMouseTracking(true);
 }
 
 EditorView::~EditorView()
@@ -56,9 +58,9 @@ void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
 	mMVIface->scene()->setMainWindow(mainWindow);
 }
 
-void EditorView::changeSceneGrid()
+void EditorView::setDrawSceneGrid(bool show)
 {
-	mScene->changeNeedDrawGrid();
+	mScene->setNeedDrawGrid(show);
 	mScene->invalidate();
 }
 
@@ -69,5 +71,11 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	else
 		setDragMode(RubberBandDrag);
 	QGraphicsView::mouseMoveEvent(event);
+}
+
+void EditorView::scrollContentsBy(int dx, int dy)
+{
+	QGraphicsView::scrollContentsBy(dx, dy);
+	mScene->invalidate();
 }
 

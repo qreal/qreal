@@ -65,18 +65,17 @@ namespace UML{
 
 			/*Container properties*/
 			virtual bool isContainer() = 0;
-			virtual bool isSortContainer() = 0;
+			virtual bool isSortingContainer() = 0;
 			virtual int sizeOfForestalling() = 0;
 			virtual int sizeOfChildrenForestalling() = 0;
-			virtual bool isChildrenMovable() = 0;
-			virtual bool isMinimizingToChildren() = 0;
-			virtual bool isClass() = 0;
-			virtual bool isMaximizingChildren() = 0;
+			virtual bool hasMovableChildren() = 0;
+			virtual bool minimizesToChildren() = 0;
+			virtual bool maximizesChildren() = 0;
 
 			virtual bool isPort() = 0;
-			virtual bool isHavePin() = 0;
+			virtual bool hasPin() = 0;
 
-			virtual QList<double> getBorders() = 0;
+			virtual QList<double> border() = 0;
 
 			virtual QStringList bonusContextMenuFields() = 0;
 	};

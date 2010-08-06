@@ -41,6 +41,8 @@ namespace UML {
 			virtual QList<ContextMenuAction*> contextMenuActions();
 
 			QList<PossibleEdge> getPossibleEdges();
+
+			virtual void setColorRect(bool bl);
 		protected:
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

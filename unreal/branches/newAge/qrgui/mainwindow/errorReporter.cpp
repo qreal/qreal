@@ -65,7 +65,7 @@ bool ErrorReporter::showErrors(QString const &successMessage) const
 	foreach (Error error, mErrors) {
 		message += severityMessage(error) + " ";
 		message += error.message() + "\n";
-		if (error.position() != ROOT_ID)
+		if (error.position() != Id::rootId())
 			message += "    at " + error.position().toString() + "\n\n";
 	}
 

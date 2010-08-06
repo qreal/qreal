@@ -23,8 +23,9 @@ namespace UML {
 
 		QRectF boundingRect() const;
 
-		/** @brief set element that handles the object */
-		void setMaster(NodeElement *element);
+		NodeElement* getMaster();
+		void setMaster(NodeElement* const element);
+
 		/** @brief notify that mouse cursor is over the NodeElement */
 		void setCovered(bool arg);
 
@@ -37,6 +38,7 @@ namespace UML {
 		virtual void setDirected(bool directed);
 		virtual void setEdgeType(qReal::Id const & edgeType);
 		virtual bool isDirected();
+
 		virtual qReal::Id getEdgeType();
 
 		virtual void takePosition(int index, int maxIndex);
@@ -49,9 +51,9 @@ namespace UML {
 
 		bool covered;
 		/** @brief element that handles this object */
-		NodeElement *master;
+		NodeElement* master;
 		/** @brief current edge */
-		EdgeElement *mEdge;
+		EdgeElement* mEdge;
 		/** @brief bounding rect */
 		QRectF mRectangle;
 		QRectF mInnerRectangle;
@@ -62,7 +64,6 @@ namespace UML {
 		QColor color;
 		bool directed;
 		qReal::Id edgeType;
-		UML::EdgeElement* edge;
 	signals:
 		void coveredChanged();
 	public slots:

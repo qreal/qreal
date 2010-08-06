@@ -32,6 +32,9 @@ namespace qReal {
 
 			virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
 
+			virtual void setProperty(qReal::Id const &elem, int const role, QVariant const &newValue);
+			virtual QVariant getProperty(qReal::Id const &elem, int const role) const;
+
 			void createConnected(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			qReal::IdList diagramsAbleToBeConnectedTo(qReal::Id const &element) const;

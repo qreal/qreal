@@ -52,7 +52,7 @@ Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
 
 Id ModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
 {
-	Id element = createElement(ROOT_ID, elementType);
+	Id element = createElement(Id::rootId(), elementType);
 	QString sourceName = mModel.data(mModel.indexById(source), Qt::DisplayRole).toString();
 	QString typeName = editorManager().friendlyName(elementType);
 	mModel.setData(mModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
@@ -94,3 +94,15 @@ IdList ModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
 	return diagramsFromList(editorManager().getUsedTypes(element.type()));
 }
+
+void ModelAssistApi::setProperty(qReal::Id const &elem, int const role, QVariant const &newValue)
+{
+
+	mModel.setData(mModel.indexById(elem), newValue, role);
+}
+
+QVariant ModelAssistApi::getProperty(qReal::Id const &elem, int const role) const
+{
+	return mModel.data(mModel.indexById(elem), role);
+}
+

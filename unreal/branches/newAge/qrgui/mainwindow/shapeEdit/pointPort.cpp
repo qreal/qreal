@@ -14,7 +14,29 @@ PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent)
 	mBrush = QBrush(Qt::SolidPattern);
 	mBrush.setColor(Qt::blue);
 	mDomElementType = portType;
-	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
+}
+
+PointPort::PointPort(PointPort const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = portType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mRect = other.mRect;
+	mRadius = other.mRadius;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* PointPort::clone()
+{
+	PointPort* item = new PointPort(*this);
+	return item;
 }
 
 QRectF PointPort::boundingRect() const
@@ -52,9 +74,9 @@ void PointPort::drawFieldForResizeItem(QPainter* painter)
 void PointPort::drawScalingRects(QPainter* painter)
 {
 	QBrush brush(Qt::SolidPattern);
-	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	qreal x1= mBoundingRect.left();
-	qreal y1 = mBoundingRect.top();
+	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
+	qreal x1= itemBoundingRect.left();
+	qreal y1 = itemBoundingRect.top();
 	int scalingPoint = scalingRect;
 
 	brush.setColor(mListScalePoint.at(4).second);
@@ -74,11 +96,11 @@ void PointPort::changeDragState(qreal x, qreal y)
 
 void PointPort::changeScalingPointState(qreal x, qreal y)
 {
-	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
-	qreal x1= mBoundingRect.left();
-	qreal x2 = mBoundingRect.right();
-	qreal y1 = mBoundingRect.top();
-	qreal y2 = mBoundingRect.bottom();
+	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
+	qreal x1= itemBoundingRect.left();
+	qreal x2 = itemBoundingRect.right();
+	qreal y1 = itemBoundingRect.top();
+	qreal y2 = itemBoundingRect.bottom();
 	int correction = step;
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
 }
@@ -88,12 +110,12 @@ void PointPort::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
-	mBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
+	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	QDomElement pointPort = document.createElement("pointPort");
-	qreal const x = scenePos().x() + mBoundingRect.x() + mRadius / 2 - topLeftPicture.x();
-	qreal const y = scenePos().y() + mBoundingRect.y() + mRadius / 2 - topLeftPicture.y();
+	qreal const x = scenePos().x() + itemBoundingRect.x() + mRadius / 2 - topLeftPicture.x();
+	qreal const y = scenePos().y() + itemBoundingRect.y() + mRadius / 2 - topLeftPicture.y();
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
 

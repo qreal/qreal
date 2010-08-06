@@ -1,23 +1,24 @@
-<metamodel xmlns="http://schema.real.com/schema/">
+  <metamodel xmlns="http://schema.real.com/schema/">
+    <listener class="kernelEditor::ContextMenuActionTrigger" file="contextMenuActionTrigger"/>
     <namespace>UML 2.1</namespace>
-    <diagram name="Kernel" nodeName="Diagram">
+    <diagram nodeName="Diagram" name="KernelDiagram" displayedName="Kernel Diagram">
       <nonGraphicTypes>
-        <enum name="bool">
+        <enum name="bool" displayedName="bool">
           <value>false</value>
           <value>true</value>
         </enum>
-        <enum name="Aggregation Kind">
+        <enum name="AggregationKind" displayedName="Aggregation Kind">
           <value>none</value>
           <value>shared</value>
           <value>composite</value>
         </enum>
-        <enum name="Visibility Kind">
+        <enum name="VisibilityKind" displayedName="Visibility Kind">
           <value>private</value>
           <value>protected</value>
           <value>public</value>
           <value>package</value>
         </enum>
-        <enum name="Parameter Direction Kind">
+        <enum name="ParameterDirectionKind" displayedName="Parameter Direction Kind">
           <value>in</value>
           <value>inout</value>
           <value>out</value>
@@ -25,7 +26,6 @@
         </enum>
       </nonGraphicTypes>
       <graphicTypes>
-
         <edge name="Association">
           <graphics>
             <lineType type="solidLine"/>
@@ -47,8 +47,7 @@
             </properties>
           </logic>
         </edge>
-	
-        <edge name="Directed Association">
+        <edge name="DirectedAssociation" displayedName="Directed Association">
           <!-- it doesn't exist. The problem is that Association has 2 different pictures and we can do it just entering a Directed Relation -->
           <graphics>
             <lineType type="solidLine"/>
@@ -62,8 +61,7 @@
             </generalizations>
           </logic>
         </edge>
-	
-        <node name="Behavioral Feature">
+        <node name="BehavioralFeature" displayedName="Behavioral Feature">
           <logic>
             <generalizations>
               <parent parentName="Feature"/>
@@ -75,8 +73,7 @@
             </properties>
           </logic>
         </node>
-
-        <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="Class">
+        <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : " name="Class" displayedName="Class">
           <graphics>
             <picture sizex="150" sizey="25">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
@@ -119,7 +116,6 @@
                 <sortContainer/>
                 <minimizeToChildren/>
                 <banChildrenMove/>
-                <itIsClass/>
                 <maximizeChildren/>
               </properties>
             </container>
@@ -129,8 +125,7 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
-        <node name="MethodsContainer">
+        <node path="0, 0 : 150, 0 : 150, 25 : 0, 25 : 0, 0 : " name="MethodsContainer" displayedName="Methods Container">
           <graphics>
             <picture sizex="150" sizey="25">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
@@ -141,7 +136,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <container>
               <contains type="Method"/>
@@ -157,26 +152,23 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Method">
           <graphics>
-            <picture sizex="150" sizey="25">
-            </picture>
+            <picture sizex="150" sizey="25"/>
             <labels>
               <label x="0" y="0" textBinded="name"/>
             </labels>
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <bonusContextMenuFields>
               <field name="Add method"/>
             </bonusContextMenuFields>
           </logic>
         </node>
-
-        <node name="FieldsContainer">
+        <node path="0, 0 : 0, 25 : 150, 25 : 150, 0 : 0, 0 : " name="FieldsContainer" displayedName="Fields Container">
           <graphics>
             <picture sizex="150" sizey="25">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="25" stroke-width="1" x2="150" fill-style="solid"/>
@@ -187,7 +179,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <container>
               <contains type="Field"/>
@@ -203,30 +195,27 @@
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Field">
           <graphics>
-            <picture sizex="150" sizey="25">
-            </picture>
+            <picture sizex="150" sizey="25"/>
             <labels>
               <label x="0" y="0" textBinded="name"/>
             </labels>
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::KernelElement"/>
+              <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
             <bonusContextMenuFields>
               <field name="Add field"/>
             </bonusContextMenuFields>
           </logic>
         </node>
-
         <node name="Classifier">
           <logic>
             <generalizations>
               <parent parentName="Namespace"/>
-              <parent parentName="Redefinable Element"/>
+              <parent parentName="RedefinableElement"/>
               <parent parentName="Type"/>
             </generalizations>
             <properties>
@@ -318,7 +307,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
             <properties>
               <property type="KernelElement" name="constrainedElement"/>
@@ -326,7 +315,7 @@
             </properties>
           </logic>
         </node>
-        <node name="Data Type">
+        <node name="DataType" displayedName="Data Type">
           <logic>
             <generalizations>
               <parent parentName="Classifier"/>
@@ -337,8 +326,7 @@
             </properties>
           </logic>
         </node>
-	
-        <edge name="Directed Relationship">
+        <edge name="DirectedRelationship" displayedName="Directed Relationship">
           <graphics>
             <lineType type="solidLine"/>
           </graphics>
@@ -351,16 +339,14 @@
             </generalizations>
           </logic>
         </edge>
-	
-        <node name="KernelElement">
+        <node name="KernelElement" displayedName="Kernel Element">
           <logic>
             <properties>
               <property type="Comment" name="ownedComment"/>
             </properties>
           </logic>
         </node>
-	
-        <edge name="Element Import">
+        <edge name="ElementImport" displayedName="Element Import">
           <graphics>
             <lineType type="dashLine"/>
           </graphics>
@@ -369,31 +355,30 @@
               <association beginName="Namespace" endName="Packageable Element"/>
             </associations>
             <generalizations>
-              <parent parentName="Directed Relationship"/>
+              <parent parentName="DirectedRelationship"/>
             </generalizations>
             <properties>
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>public</default>
               </property>
               <property type="string" name="alias"/>
             </properties>
           </logic>
         </edge>
-	
         <node name="Enumeration">
           <logic>
             <generalizations>
-              <parent parentName="Data Type"/>
+              <parent parentName="DataType"/>
             </generalizations>
             <properties>
               <property type="EnumerationLiteral" name="ownedLiteral"/>
             </properties>
           </logic>
         </node>
-        <node name="Enumeration Literal">
+        <node name="EnumerationLiteral" displayedName="Enumeration Literal">
           <logic>
             <generalizations>
-              <parent parentName="Instance Specification"/>
+              <parent parentName="InstanceSpecification"/>
             </generalizations>
             <properties>
               <property type="Enumeration" name="enumeration"/>
@@ -403,7 +388,7 @@
         <node name="Expression">
           <logic>
             <generalizations>
-              <parent parentName="Value Specification"/>
+              <parent parentName="ValueSpecification"/>
             </generalizations>
             <properties>
               <property type="string" name="symbol"/>
@@ -414,7 +399,7 @@
         <node name="Feature">
           <logic>
             <generalizations>
-              <parent parentName="Redefinable Element"/>
+              <parent parentName="RedefinableElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isStatic">
@@ -423,7 +408,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Generalization">
           <graphics>
             <lineType type="solidLine"/>
@@ -433,7 +417,7 @@
               <association beginName="Classifier" endName="Classifier"/>
             </associations>
             <generalizations>
-              <parent parentName="Directed Relationship"/>
+              <parent parentName="DirectedRelationship"/>
             </generalizations>
             <properties>
               <property type="bool" name="isSubstitutable">
@@ -443,8 +427,7 @@
             </properties>
           </logic>
         </edge>
-	
-        <node path="0, 50 : 75, 50 : 75, 0 : 0, 0 : " name="Instance Specification">
+        <node path="0, 50 : 75, 50 : 75, 0 : 0, 0 : " name="InstanceSpecification" displayedName="Instance Specification">
           <graphics>
             <picture sizex="150" sizey="210">
               <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="210" stroke-width="1" x2="150" fill-style="solid"/>
@@ -475,7 +458,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
             <properties>
               <property type="Classifier" name="classifier"/>
@@ -484,30 +467,30 @@
             </properties>
           </logic>
         </node>
-        <node name="Instance Value">
+        <node name="InstanceValue" displayedName="Instance Value">
           <logic>
             <generalizations>
-              <parent parentName="Value Specification"/>
+              <parent parentName="ValueSpecification"/>
             </generalizations>
             <properties>
               <property type="InstanceSpecification" name="instance"/>
             </properties>
           </logic>
         </node>
-        <node name="Literal Boolean">
+        <node name="LiteralBoolean" displayedName="Literal Boolean">
           <logic>
             <generalizations>
-              <parent parentName="Literal Specification"/>
+              <parent parentName="LiteralSpecification"/>
             </generalizations>
             <properties>
               <property type="bool" name="value"/>
             </properties>
           </logic>
         </node>
-        <node name="Literal Integer">
+        <node name="LiteralInteger" displayedName="Literal Integer">
           <logic>
             <generalizations>
-              <parent parentName="Literal Specification"/>
+              <parent parentName="LiteralSpecification"/>
             </generalizations>
             <properties>
               <property type="int" name="value">
@@ -516,34 +499,34 @@
             </properties>
           </logic>
         </node>
-        <node name="Literal Null">
+        <node name="LiteralNull" displayedName="Literal Null">
           <logic>
             <generalizations>
-              <parent parentName="Literal Specification"/>
+              <parent parentName="LiteralSpecification"/>
             </generalizations>
           </logic>
         </node>
-        <node name="Literal Specification">
+        <node name="LiteralSpecification" displayedName="Literal Specification">
           <logic>
             <generalizations>
-              <parent parentName="Value Specification"/>
+              <parent parentName="ValueSpecification"/>
             </generalizations>
           </logic>
         </node>
-        <node name="Literal String">
+        <node name="LiteralString" displayedName="Literal String">
           <logic>
             <generalizations>
-              <parent parentName="Literal Specification"/>
+              <parent parentName="LiteralSpecification"/>
             </generalizations>
             <properties>
               <property type="string" name="value"/>
             </properties>
           </logic>
         </node>
-        <node name="Literal Unlimited Natural">
+        <node name="LiteralUnlimitedNatural" displayedName="Literal Unlimited Natural">
           <logic>
             <generalizations>
-              <parent parentName="Literal Specification"/>
+              <parent parentName="LiteralSpecification"/>
             </generalizations>
             <properties>
               <property type="unlimitedNatural" name="value">
@@ -552,7 +535,7 @@
             </properties>
           </logic>
         </node>
-        <node name="Multiplicity Element">
+        <node name="MultiplicityElement" displayedName="Multiplicity Element">
           <logic>
             <generalizations>
               <parent parentName="KernelElement"/>
@@ -569,17 +552,17 @@
             </properties>
           </logic>
         </node>
-        <node name="Named Element">
+        <node name="NamedElement" displayedName="Named Element">
           <logic>
             <generalizations>
               <parent parentName="KernelElement"/>
             </generalizations>
             <properties>
-              <!-- � ����� ��� �������� ����� ���, ��� ����� ���� �� ��� ����������� � ������� ����������.
-							������� �������� name ����������� ������������� ����, ���� ���� �� �����.
-							��������� ��� � xml-�� �� ���� - ����� ����� ������� ����������� -->
+              <!-- ? ????? ??? ???????? ????? ???, ??? ????? ???? ?? ??? ??????????? ? ??????? ??????????.
+							??????? ???????? name ??????????? ????????????? ????, ???? ???? ?? ?????.
+							????????? ??? ? xml-?? ?? ???? - ????? ????? ??????? ??????????? -->
               <!-- <property type="string" name="name" /> -->
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>private</default>
               </property>
               <property type="Dependency" name="clientDependency"/>
@@ -589,7 +572,7 @@
         <node name="Namespace">
           <logic>
             <generalizations>
-              <parent parentName="Named Element"/>
+              <parent parentName="NamedElement"/>
             </generalizations>
             <properties>
               <property type="ElementImport" name="elementImport"/>
@@ -601,7 +584,7 @@
         <node name="Opaque Expression">
           <logic>
             <generalizations>
-              <parent parentName="Value Specification"/>
+              <parent parentName="ValueSpecification"/>
             </generalizations>
             <properties>
               <property type="string" name="body"/>
@@ -612,7 +595,7 @@
         <node name="Operation">
           <logic>
             <generalizations>
-              <parent parentName="Behavioral Feature"/>
+              <parent parentName="BehavioralFeature"/>
             </generalizations>
             <properties>
               <property type="bool" name="isQuery">
@@ -663,7 +646,7 @@
           <logic>
             <generalizations>
               <parent parentName="Namespace"/>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
             <properties>
               <property type="Package" name="packageMerge"/>
@@ -671,16 +654,15 @@
             </properties>
           </logic>
         </node>
-        <node name="Packageable Element">
+        <node name="PackageableElement" displayedName="Packageable Element">
           <logic>
             <generalizations>
-              <parent parentName="Named Element"/>
+              <parent parentName="NamedElement"/>
             </generalizations>
             <properties/>
           </logic>
         </node>
-	
-        <edge name="Package Import">
+        <edge name="PackageImport" displayedName="Package Import">
           <graphics>
             <lineType type="dashLine"/>
             <labels>
@@ -692,17 +674,16 @@
               <association beginName="Namespace" endName="Package"/>
             </associations>
             <generalizations>
-              <parent parentName="Directed Relationship"/>
+              <parent parentName="DirectedRelationship"/>
             </generalizations>
             <properties>
-              <property type="Visibility Kind" name="visibility">
+              <property type="VisibilityKind" name="visibility">
                 <default>public</default>
               </property>
             </properties>
           </logic>
         </edge>
-	
-        <edge name="Package Merge">
+        <edge name="PackageMerge" displayedName="PackageMerge">
           <graphics>
             <lineType type="dashLine"/>
             <labels>
@@ -714,16 +695,15 @@
               <association beginName="Package" endName="Package"/>
             </associations>
             <generalizations>
-              <parent parentName="Directed Relationship"/>
+              <parent parentName="DirectedRelationship"/>
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Parameter">
           <logic>
             <generalizations>
-              <parent parentName="Multiplicity Element"/>
-              <parent parentName="Typed Element"/>
+              <parent parentName="MultiplicityElement"/>
+              <parent parentName="TypedElement"/>
             </generalizations>
             <properties>
               <property type="ParameterDirectionKind" name="direction">
@@ -733,17 +713,17 @@
             </properties>
           </logic>
         </node>
-        <node name="Primitive Type">
+        <node name="PrimitiveType" displayedName="Primitive Type">
           <logic>
             <generalizations>
-              <parent parentName="Data Type"/>
+              <parent parentName="DataType"/>
             </generalizations>
           </logic>
         </node>
         <node name="Property">
           <logic>
             <generalizations>
-              <parent parentName="Structural Feature"/>
+              <parent parentName="StructuralFeature"/>
             </generalizations>
             <properties>
               <property type="AggregationKind" name="aggregation">
@@ -767,10 +747,10 @@
             </properties>
           </logic>
         </node>
-        <node name="Redefinable Element">
+        <node name="RedefinableElement" displayedName="Redefinable Element">
           <logic>
             <generalizations>
-              <parent parentName="Named Element"/>
+              <parent parentName="NamedElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isLeaf">
@@ -779,7 +759,6 @@
             </properties>
           </logic>
         </node>
-	
         <edge name="Relationship">
           <logic>
             <generalizations>
@@ -787,7 +766,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <node name="Slot">
           <logic>
             <generalizations>
@@ -800,12 +778,12 @@
             </properties>
           </logic>
         </node>
-        <node name="Structural Feature">
+        <node name="StructuralFeature" displayedName="Structural Feature">
           <logic>
             <generalizations>
               <parent parentName="Feature"/>
-              <parent parentName="Multiplicity Element"/>
-              <parent parentName="Typed Element"/>
+              <parent parentName="MultiplicityElement"/>
+              <parent parentName="TypedElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isReadOnly">
@@ -817,25 +795,25 @@
         <node name="Type">
           <logic>
             <generalizations>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
           </logic>
         </node>
-        <node name="Typed Element">
+        <node name="TypedElement" displayedName="Typed Element">
           <logic>
             <generalizations>
-              <parent parentName="Named Element"/>
+              <parent parentName="NamedElement"/>
             </generalizations>
             <properties>
               <property type="Type" name="type"/>
             </properties>
           </logic>
         </node>
-        <node name="Value Specification">
+        <node name="ValueSpecification" displayedName="Value Specification">
           <logic>
             <generalizations>
-              <parent parentName="Packageable Element"/>
-              <parent parentName="Typed Element"/>
+              <parent parentName="PackageableElement"/>
+              <parent parentName="TypedElement"/>
             </generalizations>
           </logic>
         </node>
@@ -868,8 +846,7 @@
             </properties>
           </logic>
         </node>
-	
-        <edge name="Comment Link">
+        <edge name="CommentLink" displayedName="Comment Link">
           <graphics>
             <lineType type="dashLine"/>
           </graphics>
@@ -879,7 +856,6 @@
             </associations>
           </logic>
         </edge>
-	
         <edge name="Substitution">
           <!-- from Dependencies -->
           <graphics>
@@ -894,7 +870,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <edge name="Realization">
           <!-- from Dependencies -->
           <graphics>
@@ -910,7 +885,6 @@
             </generalizations>
           </logic>
         </edge>
-	
         <edge name="Abstraction">
           <!-- from Dependencies -->
           <logic>
@@ -922,7 +896,6 @@
             </properties>
           </logic>
         </edge>
-	
         <edge name="Dependency">
           <!-- from Dependencies -->
           <graphics>
@@ -933,17 +906,16 @@
               <association beginName="Named Element" endName="Named Element"/>
             </associations>
             <generalizations>
-              <parent parentName="Directed Relationship"/>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="DirectedRelationship"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
           </logic>
         </edge>
-	
-        <node name="Generalization Set">
+        <node name="GeneralizationSet" displayedName="Generalization Set">
           <!-- from PowerTypes -->
           <logic>
             <generalizations>
-              <parent parentName="Packageable Element"/>
+              <parent parentName="PackageableElement"/>
             </generalizations>
             <properties>
               <property type="bool" name="isCovering">

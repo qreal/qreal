@@ -34,7 +34,7 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 	mDocument.appendChild(documentation);
 
 	//  --------------  content --------------- //
-	Id repoId = ROOT_ID;
+	Id repoId = Id::rootId();
 	IdList rootDiagrams = mApi.children(repoId);
 
 	foreach (Id const typeDiagram, rootDiagrams) {
@@ -73,7 +73,7 @@ void XmiHandler::serializeChildren(QDomElement &parent, Id const &idParent)
 	foreach (Id const id, childElems)
 		serializeObject(parent, id, idParent);
 
-	if (idParent != ROOT_ID) {
+	if (idParent != Id::rootId()) {
 		serializeLinks(parent, true, idParent);
 		serializeLinks(parent, false, idParent);
 	}

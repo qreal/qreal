@@ -1,9 +1,9 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../commonXml/kernel_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="MetaEditor" nodeName="MetaEditorDiagramNode" displayedName="Meta Editor">
+	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 	  <nonGraphicTypes>
-		<enum name="assotiationTypes" displayedName="assotiationTypes">
+		<enum name="associationTypes" displayedName="associationTypes">
 		  <value>no_arrow</value>
 		  <value>open_arrow</value>
 		  <value>empty_arrow</value>
@@ -43,7 +43,7 @@
 		  </graphics>
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties/>
 		  </logic>
@@ -103,10 +103,11 @@
 		  </graphics> 
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties>
 			  <property type="string" name="displayedName"/>
+  			  <property type="string" name="nodeName"/>
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntityNode"/>
@@ -144,19 +145,19 @@
 		  </graphics>
 		  <logic>
 			<generalizations>
-			  <parent parentName="Kernel::Diagram"/>
+			  <parent parentName="KernelDiagram::Diagram"/>
 			</generalizations>
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
-			  <property type="bool" name="is Pin">
+			  <property type="bool" name="isPin">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="set Shape"/>
-			  <property type="bool" name="is Action">
+			  <property type="string" name="shape"/>
+			  <property type="bool" name="isAction">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="Path"/>
+			  <property type="string" name="path"/>
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
@@ -211,13 +212,14 @@
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
+			  <property type="string" name="labels"/>
 			  <property type="lineTypes" name="lineType">
 				<default>solidLine</default>
 			  </property>	
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
-			  <contains type="MetaEditor::MetaEntityAssotiation"/>
+			  <contains type="MetaEditor::MetaEntityAssociation"/>
 			  <contains type="MetaEditor::Inheritance"/>
 			  <contains type="MetaEditor::Importation"/>
 			  <properties>
@@ -275,11 +277,11 @@
 		</node>
 		<node name="MetaEntity Attribute" displayedName="Property">
 		  <graphics>
-			<picture sizex="140" sizey="40">
-			  <line x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="140" sizey="30">
+			  <line x1="0" y1="0" x2="0" y2="30"/>
 			  <line x1="0" y1="0" x2="140" y2="0"/>
-			  <line x1="0" y1="40" x2="140" y2="40"/>
-			  <line x1="140" y1="0" x2="140" y2="40"/>
+			  <line x1="0" y1="30" x2="140" y2="30"/>
+			  <line x1="140" y1="0" x2="140" y2="30"/>
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Property</text>
 			</picture>
 			<labels>
@@ -333,19 +335,20 @@
 			<generalizations/>
 			<properties>
 			  <property type="string" name="displayedName"/>
-			  <property type="string" name="Imported from"/>
+			  <property type="string" name="importedFrom"/>
 			  <property type="string" name="as"/>
+			  <property type="string" name="container"/>
 			</properties>
 			<containers/>
 		  </logic>
 		</node>
 				<node name="MetaEntityParent" displayedName="Parent">
 		  <graphics>
-			<picture sizex="100" sizey="40">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="100" sizey="50">
+			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="50"/>
 			  <line stroke-style="dot" x1="0" y1="0" x2="100" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="40" x2="100" y2="40"/>
-			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="40"/>
+			  <line stroke-style="dot" x1="0" y1="50" x2="100" y2="50"/>
+			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="50"/>
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Parent</text>
 			</picture>
 			<labels>
@@ -372,15 +375,15 @@
 		</node>
 		<node name="MetaEntityValue" displayedName="Value">
 		  <graphics>
-			<picture sizex="140" sizey="40">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
+			<picture sizex="140" sizey="30">
+			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="30"/>
 			  <line stroke-style="dot" x1="0" y1="0" x2="140" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="40" x2="140" y2="40"/>
-			  <line stroke-style="dot" x1="140" y1="0" x2="140" y2="40"/>
-			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>
+			  <line stroke-style="dot" x1="0" y1="30" x2="140" y2="30"/>
+			  <line stroke-style="dot" x1="140" y1="0" x2="140" y2="30"/>
+			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>-->
 			</picture>
 			<labels>
-			  <label x="10" y="15" textBinded="valueName" center="true"/>
+			  <label x="10" y="10" textBinded="valueName" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -428,12 +431,12 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="string" name="Type"/>
+			  <property type="string" name="type"/>
 			</properties>
 			<containers/>
 		  </logic>
 		</node>
-		<node name="MetaEntityAssotiation" displayedName="Assotiation">
+		<node name="MetaEntityAssociation" displayedName="Association">
 		  <graphics>
 			<picture sizex="120" sizey="40">
 			  <line x1="10" y1="0" x2="110" y2="0"/>
@@ -442,7 +445,7 @@
 			  <line x1="10" y1="40" x2="0" y2="20"/>
 			  <line x1="110" y1="0" x2="120" y2="20"/>
 			  <line x1="110" y1="40" x2="120" y2="20"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Assotiation</text>
+			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Association</text>
 			</picture>
 			<labels>
 			  <label x="10" y="10" textBinded="name" center="true"/>
@@ -461,8 +464,8 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="assotiationTypes" name="beginType"/>
-			  <property type="assotiationTypes" name="endType"/>
+			  <property type="associationTypes" name="beginType"/>
+			  <property type="associationTypes" name="endType"/>
 			  <property type="string" name="beginName"/>
 			  <property type="string" name="endName"/>
 			</properties>
@@ -496,12 +499,12 @@
 		  <logic>
 			<generalizations/>
 			<properties>
-			  <property type="string" name="Type"/>
+			  <property type="string" name="type"/>
 			</properties>
 			<containers/>
 		  </logic>
 		</node>
-		<!--<edge name="Inheritance" displayedName="Inheritance">
+		<edge name="Inheritance" displayedName="Inheritance">
 		  <graphics>
 			<lineType type="solidLine"/>
 		  </graphics>
@@ -510,7 +513,7 @@
 			  <association beginName="Inheritance1" endName="Inheritance2"/>
 			</associations>
 			<generalizations>
-			  <parent parentName="Kernel::Relationship"/>
+			  <parent parentName="KernelDiagram::Relationship"/>
 			</generalizations>
 		  </logic>
 		</edge>
@@ -523,15 +526,15 @@
 			  <association beginName="Container1" endName="Container2"/>
 			</associations>
 			<generalizations>
-			  <parent parentName="Kernel::Relationship"/>
+			  <parent parentName="KernelDiagram::Relationship"/>
 			</generalizations>
 		  </logic>
-		</edge>-->
+		</edge>
 		<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
 		  <graphics>
 			<picture sizex="25" sizey="25">
-			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#0000ff" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
-			  <ellipse fill="#0000ff" stroke-style="solid" stroke="#0000ff" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
+			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#bbbbbb" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+			  <ellipse fill="#bbbbbb" stroke-style="solid" stroke="#bbbbbb" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
 			</picture>
 			<labels/>
 			<ports/>
@@ -547,10 +550,14 @@
 		  </logic>
 		</node>
 		<node name="MetaEntityPropertiesAsContainer" displayedName="Properties as Container">
-		  <graphics>
-			<picture sizex="40" sizey="40">
-			  <rectangle fill="#ffffff" stroke-style="solid" stroke="#00ff00" y1="0" x1="0" y2="40" stroke-width="1" x2="40" fill-style="solid"/>
-			  <rectangle fill="#00ff00" stroke-style="solid" stroke="#00ff00" y1="5" x1="5" y2="35" stroke-width="1" x2="35" fill-style="solid"/>			</picture>
+			<graphics>
+			<picture sizex="50" sizey="50">
+			<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="20" y2="30" fill-style="none" x2="50"/>
+			<rectangle fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="50" stroke-width="1" x1="0" y2="20" fill-style="none" x2="30"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="5" stroke-width="1" x1="35" y2="25" fill-style="none" x2="35"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="15" stroke-width="1" x1="25" y2="15" fill-style="none" x2="45"/>
+			<line fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="35" stroke-width="1" x1="5" y2="35" fill-style="none" x2="25"/>
+			</picture>
 			<labels/>
 			<ports/>
 		  </graphics>
@@ -559,16 +566,32 @@
 			  <property type="bool" name="sortContainer">
 				<default>false</default>
 			  </property>
-			  <property type="string" name="forestalling size"/>
-			  <property type="string" name="childrenForestalling size"/>
+			  <property type="string" name="forestallingSize"/>
+			  <property type="string" name="childrenForestallingSize"/>
 			  <property type="bool" name="minimizeToChildren">
 				<default>false</default>
 			  </property>
 			  <property type="bool" name="banChildrenMove">
 				<default>false</default>
 			  </property>
+			  <property type="bool" name="maximizeChildren">
+				<default>false</default>
+			  </property>
 			</properties>
 		  </logic>
+		</node>
+		<node name="MetaEntityContextMenuField" displayedName="Context Menu Field">
+		  <graphics>
+			<picture sizex="100" sizey="30">
+				<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
+				<text i="0" font-fill="#00007f" y1="10" b="0" x1="5" font-name="Helvetica" u="0" font-size="10a">Context Menu Field</text>
+			</picture>
+ 			<labels/>
+			<ports/>
+		  </graphics>
+		  <logic>
+			<properties/>
+		 </logic>
 		</node>
 	  </graphicTypes>
 	</diagram>

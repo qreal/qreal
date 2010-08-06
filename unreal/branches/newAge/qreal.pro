@@ -15,7 +15,6 @@ contains(QT_VERSION, ^4\.[0-5]\..*){
   error("Use at least Qt 4.6")
 }
 
-
 TEMPLATE	= subdirs
 SUBDIRS		= qrxc qrgui qrxml qrrepo typelib
 

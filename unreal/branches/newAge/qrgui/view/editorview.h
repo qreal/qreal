@@ -24,7 +24,7 @@ namespace qReal {
 		}
 
 		void setMainWindow(qReal::MainWindow *mainWindow);
-		void changeSceneGrid();
+		void setDrawSceneGrid(bool show);
 
 	public slots:
 		void toggleAntialiasing(bool);
@@ -34,6 +34,7 @@ namespace qReal {
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
+		virtual void scrollContentsBy(int dx, int dy);
 
 	private:
 		EditorViewMViface *mMVIface;

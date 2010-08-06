@@ -15,7 +15,27 @@ Line::Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY1 = y1;
 	mX2 = x2;
 	mY2 = y2;
-	mBoundingRect = boundingRect();
+}
+
+Line::Line(Line const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Line::clone()
+{
+	Line* item = new Line(*this);
+	return item;
 }
 
 QRectF Line::boundingRect() const
@@ -23,10 +43,9 @@ QRectF Line::boundingRect() const
 	return (QRectF(qMin(mX1, mX2) - mPen.width(), qMin(mY1, mY2) - mPen.width(), abs(mX2 - mX1) + mPen.width(), abs(mY2 - mY1) + mPen.width()).adjusted(-drift, -drift, drift, drift));
 }
 
-QRectF Line::getBoundingRect()
+QRectF Line::realBoundingRect() const
 {
-	mBoundingRect = boundingRect();
-	return mBoundingRect;
+	return mapToScene(boundingRect().adjusted(drift + mPen.width(), drift + mPen.width(), -drift, -drift)).boundingRect();
 }
 
 void Line::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -59,7 +78,6 @@ void Line::drawFieldForResizeItem(QPainter* painter)
 void Line::drawScalingRects(QPainter* painter)
 {
 	QBrush brush(Qt::SolidPattern);
-	mBoundingRect = boundingRect();
 	if(mX2 > mX1) {
 		if (mY2 > mY1) {
 			brush.setColor(mListScalePoint.at(4).second);
@@ -213,7 +231,7 @@ void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QStri
 	dom.setAttribute("x2", pair.second.first);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	qreal const x1 = scenePos().x() + line().x1() - topLeftPicture.x();
 	qreal const y1 = scenePos().y() + line().y1() - topLeftPicture.y();

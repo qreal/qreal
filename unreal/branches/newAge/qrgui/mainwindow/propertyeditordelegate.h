@@ -26,8 +26,7 @@ public:
 	void updateEditorGeometry(QWidget *editor,
 							  const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	void setMainWindow(qReal::MainWindow *mainwindow);
-
 private:
+	QModelIndex mIndex;
 	qReal::MainWindow *mMainWindow;
-
 };

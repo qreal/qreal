@@ -70,17 +70,17 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	Id result;
 	Id const diagramTypeId = Id("HascolMetamodel", "HascolPortMapping", diagramType);
 
-	foreach(Id element, mApi.children(ROOT_ID)) {
+	foreach(Id element, mApi.children(Id::rootId())) {
 		if (element.type() == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
 			// full exterminatus
 			// should track changed elements, but it's tricky
-			mApi.removeChildren(result);  
+			mApi.removeChildren(result);
 		}
 	}
 
 	if (result == Id())
-		result = addElement(ROOT_ID, diagramTypeId, diagramName);
+		result = addElement(Id::rootId(), diagramTypeId, diagramName);
 	return result;
 }
 
@@ -90,8 +90,8 @@ Id HascolParser::addElement(Id const &parent, Id const &elementType, QString con
 
 	mApi.addChild(parent, element);
 	mApi.setProperty(element, "name", name);
-	mApi.setProperty(element, "from", ROOT_ID.toVariant());
-	mApi.setProperty(element, "to", ROOT_ID.toVariant());
+	mApi.setProperty(element, "from", Id::rootId().toVariant());
+	mApi.setProperty(element, "to", Id::rootId().toVariant());
 	mApi.setProperty(element, "fromPort", 0.0);
 	mApi.setProperty(element, "toPort", 0.0);
 	mApi.setProperty(element, "links", IdListHelper::toVariant(IdList()));
@@ -183,7 +183,7 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 			QDomAttr param = attrs.item(i).toAttr();
 			QString paramValue = param.value();
 			// removing explicit qualification for bincompl since it's included automatically
-			paramValue = paramValue.remove("bincompl::");  
+			paramValue = paramValue.remove("bincompl::");
 			parameters += paramValue + ", ";
 		}
 		parameters.chop(2);

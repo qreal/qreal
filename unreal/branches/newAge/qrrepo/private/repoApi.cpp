@@ -50,7 +50,7 @@ void RepoApi::removeChildren(Id const &id)
 
 void RepoApi::removeElement(Id const &id)
 {
-	Q_ASSERT(id != ROOT_ID);
+	Q_ASSERT(id != Id::rootId());
 
 	foreach (Id const child, children(id))
 		removeElement(child);
@@ -65,9 +65,9 @@ void RepoApi::removeElement(Id const &id)
 		IdList links = property(id, "links").value<IdList>();
 		foreach (Id const link, links) {
 			if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
-				setProperty(link, "from", ROOT_ID.toVariant());
+				setProperty(link, "from", Id::rootId().toVariant());
 			if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
-				setProperty(link, "to", ROOT_ID.toVariant());
+				setProperty(link, "to", Id::rootId().toVariant());
 		}
 	}
 
@@ -339,7 +339,7 @@ void RepoApi::remove(qReal::IdList list) const
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {
-	if (target == ROOT_ID)
+	if (target == Id::rootId())
 		return;
 
 	IdList list = mClient.property(target, listName).value<IdList>();
@@ -356,7 +356,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data)
 {
-	if (target == ROOT_ID)
+	if (target == Id::rootId())
 		return;
 
 	IdList list = mClient.property(target, listName).value<IdList>();

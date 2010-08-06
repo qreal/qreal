@@ -43,11 +43,15 @@ public:
 		bottomRightY
 	};
 
-	QRectF mBoundingRect;
 	Item(QGraphicsItem* parent = 0);
+	virtual Item* clone() = 0;
+	virtual void setItemZValue(int zValue);
+	int itemZValue();
 	static int sign(int x);
 	static qreal length(QPointF const &point1, QPointF const &point2);
 	virtual QRectF boundingRect() const = 0;
+	QRectF calcNecessaryBoundingRect() const;
+	virtual QRectF realBoundingRect() const;
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -95,8 +99,8 @@ public:
 	QString setSingleScaleForDoc(int i, qreal x, qreal y);
 	void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
-	virtual QRectF sceneBoundingRectCoord(QPointF const &topLeftPicture);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture) = 0;
+	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture) = 0;
 
 	void readPenBrush(QDomElement const &docItem);
 
@@ -108,9 +112,9 @@ protected:
 	ScalingPointState mScalingState;
 	QPen mPen;
 	QBrush mBrush;
-	QRectF mRect;
 	qreal mX1;
 	qreal mY1;
 	qreal mX2;
 	qreal mY2;
+	int mZValue;
 };

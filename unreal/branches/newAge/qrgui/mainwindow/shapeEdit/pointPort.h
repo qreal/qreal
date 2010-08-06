@@ -7,6 +7,8 @@ class PointPort : public Item
 {
 public:
 	PointPort(qreal x, qreal y, Item *parent = 0);
+	PointPort(PointPort const &other);
+	virtual Item* clone();
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -16,8 +18,9 @@ public:
 	virtual void changeScalingPointState(qreal x, qreal y);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPointF const &topLeftPicture);
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 
 private:
 	qreal mRadius;
+	QRectF mRect;
 };

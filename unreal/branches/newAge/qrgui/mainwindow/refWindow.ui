@@ -55,7 +55,7 @@
    <sender>mButtonOk</sender>
    <signal>clicked()</signal>
    <receiver>RefWindow</receiver>
-   <slot>setName()</slot>
+   <slot>setPropertyValue()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>166</x>
@@ -70,6 +70,6 @@
  </connections>
  <slots>
   <slot>exit()</slot>
-  <slot>setName()</slot>
+  <slot>setPropertyValue()</slot>
  </slots>
 </ui>

@@ -18,14 +18,14 @@ Client::Client(QString const &workingDirectory)
 
 void Client::init()
 {
-	mObjects.insert(ROOT_ID, new LogicObject(ROOT_ID));
-	mObjects[ROOT_ID]->setProperty("name", ROOT_ID.toString());
+	mObjects.insert(Id::rootId(), new LogicObject(Id::rootId()));
+	mObjects[Id::rootId()]->setProperty("name", Id::rootId().toString());
 }
 
 Client::~Client()
 {
-	delete mObjects[ROOT_ID];
-	mObjects.remove(ROOT_ID);
+	delete mObjects[Id::rootId()];
+	mObjects.remove(Id::rootId());
 	//serializer.saveToDisk(mObjects.values());
 }
 
@@ -162,9 +162,9 @@ void Client::loadFromDisk()
 void Client::addChildrenToRootObject()
 {
 	foreach (LogicObject *object, mObjects.values()) {
-		if (object->parents().contains(ROOT_ID)) {
-			if (!failSafe || !mObjects[ROOT_ID]->children().contains(object->id()))
-				mObjects[ROOT_ID]->addChild(object->id());
+		if (object->parents().contains(Id::rootId())) {
+			if (!failSafe || !mObjects[Id::rootId()]->children().contains(object->id()))
+				mObjects[Id::rootId()]->addChild(object->id());
 		}
 	}
 }
@@ -242,6 +242,7 @@ void Client::exterminate()
 {
 	printDebug();
 	mObjects.clear();
+	serializer.clearWorkingDir();
 	serializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();

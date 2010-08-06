@@ -18,9 +18,6 @@ using namespace qReal;
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent), mRoot()
 {
-	//    foreach (QObject *plugin, QPluginLoader::staticInstances())
-	//        populateMenus(plugin);
-
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
@@ -38,6 +35,7 @@ EditorManager::EditorManager(QObject *parent)
 			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 			if (iEditor) {
 				mPluginsLoaded += iEditor->id();
+				mPluginFileName.insert(iEditor->id(), fileName);
 				mPluginIface[iEditor->id()] = iEditor;
 			}
 		} else {
@@ -48,7 +46,7 @@ EditorManager::EditorManager(QObject *parent)
 	}
 }
 
-void EditorManager::loadPlugin(const QString &pluginName)
+bool EditorManager::loadPlugin(const QString &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
 	mLoaders.insert(pluginName, loader);
@@ -58,17 +56,25 @@ void EditorManager::loadPlugin(const QString &pluginName)
 		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
 		if (iEditor) {
 			mPluginsLoaded += iEditor->id();
+			mPluginFileName.insert(iEditor->id(), pluginName);
 			mPluginIface[iEditor->id()] = iEditor;
+			return true;
 		}
-	} else {
-		QMessageBox::warning(0, "QReal Plugin", loader->errorString() );
 	}
+	QMessageBox::warning(0, "QReal Plugin", loader->errorString());
+	return false;
+
 }
 
-void EditorManager::unloadPlugin(const QString &pluginName)
+bool EditorManager::unloadPlugin(const QString &pluginName)
 {
-	QPluginLoader *loader = mLoaders[pluginName];
-	loader->unload();
+	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
+	if (loader != NULL) {
+		mPluginsLoaded.removeAll(pluginName);
+		mPluginFileName.remove(pluginName);
+		return loader->unload();
+	}
+	return false;
 }
 
 IdList EditorManager::editors() const
@@ -104,12 +110,13 @@ IdList EditorManager::elements(const Id &diagram) const
 
 IdList EditorManager::elementsOnDiagram(const Id &diagram) const
 {
-	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+	IdList elements;
+
+	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
-	}
+
 	return elements;
 }
 bool EditorManager::isEditor(const Id &id) const
@@ -251,13 +258,13 @@ QStringList EditorManager::getPropertiesWithDefaultValues(Id const &id) const
 IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
 	IdList result;
-	checkNeededPluginsRecursive(api, ROOT_ID, result);
+	checkNeededPluginsRecursive(api, Id::rootId(), result);
 	return result;
 }
 
 void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const
 {
-	if (id != ROOT_ID && !mPluginsLoaded.contains(id.editor())) {
+	if (id != Id::rootId() && !mPluginsLoaded.contains(id.editor())) {
 		Id missingEditor = Id(id.editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);

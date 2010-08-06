@@ -2,13 +2,40 @@
 
 Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent)
 {
+	mNeedScalingRect = false;
 	mPen.setColor(Qt::black);
 	mX1 = x1;
 	mY1 = y1;
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 	mDomElementType = pictureType;
-	mBoundingRect = boundingRect();
+}
+
+Stylus::Stylus(Stylus const &other)
+	:Item()
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mTmpX1 = other.mTmpX1;
+	mTmpY1 = other.mTmpY1;
+	mListScalePoint = other.mListScalePoint;
+	foreach (Line *line, other.mListLine) {
+		Line *newLine = new Line(*line);
+		mListLine.append(newLine);
+	}
+	setPos(other.x(), other.y());
+}
+
+Item* Stylus::clone()
+{
+	Stylus* item = new Stylus(*this);
+	return item;
 }
 
 void Stylus::addLine(qreal x2, qreal y2)
@@ -26,15 +53,15 @@ void Stylus::addLine(qreal x2, qreal y2)
 QRectF Stylus::searchMaxMinCoord() const
 {
 	if(!mListLine.isEmpty()) {
-		qreal maxX = (mListLine.at(0))->getBoundingRect().right();
-		qreal minX = (mListLine.at(0))->getBoundingRect().left();
-		qreal maxY = (mListLine.at(0))->getBoundingRect().bottom();
-		qreal minY = (mListLine.at(0))->getBoundingRect().top();
+		qreal maxX = (mListLine.at(0))->realBoundingRect().right();
+		qreal minX = (mListLine.at(0))->realBoundingRect().left();
+		qreal maxY = (mListLine.at(0))->realBoundingRect().bottom();
+		qreal minY = (mListLine.at(0))->realBoundingRect().top();
 		foreach (Line *line, mListLine) {
-			minX = qMin(line->getBoundingRect().left(), minX);
-			minY = qMin(line->getBoundingRect().top(), minY);
-			maxX = qMax(line->getBoundingRect().right(), maxX);
-			maxY = qMax(line->getBoundingRect().bottom(), maxY);
+			minX = qMin(line->realBoundingRect().left(), minX);
+			minY = qMin(line->realBoundingRect().top(), minY);
+			maxX = qMax(line->realBoundingRect().right(), maxX);
+			maxY = qMax(line->realBoundingRect().bottom(), maxY);
 		}
 		return QRectF(minX, minY, maxX - minX, maxY - minY);
 	}
@@ -68,12 +95,11 @@ void Stylus::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void Stylus::drawExtractionForItem(QPainter* painter)
 {
-	mBoundingRect = boundingRect();
-	mRect = mBoundingRect;
-	painter->drawPoint(mRect.left(), mRect.top());
-	painter->drawPoint(mRect.left(), mRect.bottom());
-	painter->drawPoint(mRect.right(), mRect.top());
-	painter->drawPoint(mRect.right(), mRect.bottom());
+	QRectF rect = boundingRect();
+	painter->drawPoint(rect.left(), rect.top());
+	painter->drawPoint(rect.left(), rect.bottom());
+	painter->drawPoint(rect.right(), rect.top());
+	painter->drawPoint(rect.right(), rect.bottom());
 
 	/*setPenBrushDriftRect(painter);
 	painter->drawPath(shape());
@@ -92,39 +118,44 @@ void Stylus::drawScalingRects(QPainter* painter)
 
 void Stylus::setPenStyle(const QString& text)
 {
+	Item::setPenStyle(text);
 	foreach (Line *line, mListLine)
 		line->setPenStyle(text);
 }
 
 void Stylus::setPenWidth(int width)
 {
+	Item::setPenWidth(width);
 	foreach (Line *line, mListLine)
 		line->setPenWidth(width);
 }
 
 void Stylus::setPenColor(const QString& text)
 {
+	Item::setPenColor(text);
 	foreach (Line *line, mListLine)
 		line->setPenColor(text);
 }
 
 void Stylus::setBrushStyle(const QString& text)
 {
+	Item::setBrushStyle(text);
 	foreach (Line *line, mListLine)
 		line->setBrushStyle(text);
 }
 
 void Stylus::setBrushColor(const QString& text)
 {
+	Item::setBrushColor(text);
 	foreach (Line *line, mListLine)
 		line->setBrushColor(text);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");
 	foreach (Line *line, mListLine) {
-		QDomElement item = (line->generateItem(document, topLeftPicture)).first;
+		QDomElement item = (line->generateItem(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;
 		stylus.appendChild(item);
 	}
 	return QPair<QDomElement, Item::DomElementTypes>(stylus, mDomElementType);

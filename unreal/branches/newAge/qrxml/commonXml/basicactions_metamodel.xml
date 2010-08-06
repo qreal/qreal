@@ -3,9 +3,9 @@
 	<include>kernel_metamodel.xml</include>
 	<include>basicbehaviors_metamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram name="Basic Actions">
+	<diagram name="BasicActionsDiagram" displayedName="Basic Actons Diagram">
 		<graphicTypes>
-			<node name="Accept Event Action">
+			<node name="AcceptEventAction" displayedName="Accept Event Action">
 				<logic>
 					<generalizations>
 						<parent parentName="Action"/>
@@ -17,10 +17,10 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Action">
+			<node name="Action" displayedName="Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Named Element"/>
+						<parent parentName="KernelDiagram::NamedElement"/>
 					</generalizations>
 					<properties>
 					  <property type="InputPin" name="input"/>
@@ -28,11 +28,11 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Trigger">
+			<node name="Trigger" displayedName="Trigger">
 				<!-- "from Communications" -->
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Named Element"/>
+						<parent parentName="KernelDiagram::NamedElement"/>
 					</generalizations>
 					<properties>
 						<property type="Event" name="event" />
@@ -40,7 +40,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Output Pin">
+			<node name="OutputPin" displayedName="Output Pin">
 				<logic>
 					<generalizations>
 						<parent parentName="Pin"/>
@@ -51,7 +51,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Input Pin">
+			<node name="InputPin" displayedName="Input Pin">
 				<logic>
 					<generalizations>
 						<parent parentName="Pin"/>
@@ -61,36 +61,36 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Event">
+			<node name="Event" displayedName="Event">
 				<!-- "from Communications" -->
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Packageable Element"/>
+						<parent parentName="KernelDiagram::PackageableElement"/>
 					</generalizations>
 					<properties>
 						<property type="Trigger" name="event" />
 					</properties>
 				</logic>
 			</node>
-			<node name="Pin">
+			<node name="Pin" displayedName="Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Typed Element"/>
-						<parent parentName="Kernel::Multiplicity Element"/>
+						<parent parentName="KernelDiagram::TypedElement"/>
+						<parent parentName="KernelDiagram::MultiplicityElement"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="Action Input Pin">
+			<node name="ActionInputPin" displayedName="Action Input Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="Input Pin"/>
+						<parent parentName="InputPin"/>
 					</generalizations>
 					<properties>
 						<property type="Action" name="fromAction" />
 					</properties>
 				</logic>
 			</node>
-			<node name="Value Specification Action">
+			<node name="ValueSpecificationAction" displayedName="Value Specification Action">
 				<logic>
 					<generalizations>
 						<parent parentName="Action"/>
@@ -101,10 +101,10 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Add Variable Value Action">
+			<node name="AddVariableValueAction" displayedName="Add Variable Value Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Write Variable Action"/>
+						<parent parentName="WriteVariableAction"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isReplaceAll">
@@ -114,17 +114,17 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Write Variable Action">
+			<node name="WriteVariableAction" displayedName="Write Variable Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Variable Action"/>
+						<parent parentName="VariableAction"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="value" />
 					</properties>
 				</logic>
 			</node>
-			<node name="Variable Action">
+			<node name="VariableAction" displayedName="Variable Action">
 				<logic>
 					<generalizations>
 						<parent parentName="Action"/>
@@ -134,18 +134,18 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Variable">
+			<node name="Variable" displayedName="Variable">
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Multiplicity Element"/>
-						<parent parentName="Kernel::Typed Element"/>
+						<parent parentName="KernelDiagram::MultiplicityElement"/>
+						<parent parentName="KernelDiagram::TypedElement"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="Call Action">
+			<node name="CallAction" displayedName="Call Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Invocation Action"/>
+						<parent parentName="InvocationAction"/>
 					</generalizations>
 					<properties>
 						<property type="bool" name="isSynchronous">
@@ -155,20 +155,20 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Call Behavior Action">
+			<node name="CallBehaviorAction" displayedName="Call Behavior Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Call Action"/>
+						<parent parentName="CallAction"/>
 					</generalizations>
 					<properties>
 						<property type="Behavior" name="behavior"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Call Operation Action">
+			<node name="CallOperationAction" displayedName="Call Operation Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Call Action" />
+						<parent parentName="CallAction" />
 					</generalizations>
 						<properties>
 							<property type="InputPin" name="target"/>
@@ -176,10 +176,10 @@
 						</properties>
 				</logic>
 			</node>
-			<node name="Send Object Action">
+			<node name="SendObjectAction" displayedName="Send Object Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Invocation Action"/>
+						<parent parentName="InvocationAction"/>
 					</generalizations>
 					<properties>
 						<property type="InputPin" name="request"/>
@@ -187,7 +187,7 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Invocation Action">
+			<node name="InvocationAction" displayedName="Invocation Action">
 				<logic>
 					<generalizations>
 						<parent parentName="Action"/>
@@ -197,10 +197,10 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="SendSignal Action">
+			<node name="SendSignalAction" displayedName="Send Signal Action">
 				<logic>
 					<generalizations>
-						<parent parentName="Invocation Action"/>
+						<parent parentName="InvocationAction"/>
 					</generalizations>
 					<properties>
 						<property type="Signal" name="signal"/>
@@ -208,18 +208,18 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Signal">
+			<node name="Signal" displayedName="Signal">
 				<!-- "from Communication" -->
 				<logic>
 					<generalizations>
-						<parent parentName="Kernel::Classifier"/>
+						<parent parentName="KernelDiagram::Classifier"/>
 					</generalizations>
 					<properties>
 						<property type="Property" name="ownedAttribute"/>
 					</properties>
 				</logic>
 			</node>
-			<node name="Unmarshall Action">
+			<node name="UnmarshallAction" displayedName="Unmarshall Action">
 				<logic>
 					<generalizations>
 						<parent parentName="Action"/>
@@ -231,10 +231,10 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="Value Pin">
+			<node name="ValuePin" displayedName="Value Pin">
 				<logic>
 					<generalizations>
-						<parent parentName="Input Pin"/>
+						<parent parentName="InputPin"/>
 					</generalizations>
 					<properties>
 						<property type="ValueSpecification" name="value"/>

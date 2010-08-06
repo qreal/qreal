@@ -6,464 +6,531 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
+    <width>350</width>
     <height>280</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>280</width>
+    <width>350</width>
     <height>280</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>280</width>
+    <width>350</width>
     <height>280</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Preferences</string>
   </property>
-  <widget class="QPushButton" name="applyButton">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>250</y>
-     <width>79</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Apply</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="okButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>250</y>
-     <width>79</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>OK</string>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="preferenciesTabWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>261</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="editorTab">
-    <attribute name="title">
-     <string>Editor</string>
-    </attribute>
-    <widget class="QFrame" name="frame">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>221</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QCheckBox" name="showGridCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>191</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Show grid</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="activateGridCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>191</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Activate grid</string>
-      </property>
-      <property name="tristate">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>31</width>
-       <height>16</height>
-      </rect>
-     </property>
+  <property name="windowIcon">
+   <iconset resource="../qrgui.qrc">
+    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="okButton">
      <property name="text">
-      <string>Grid</string>
+      <string>OK</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>121</width>
-       <height>16</height>
-      </rect>
-     </property>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="applyButton">
      <property name="text">
-      <string>Embedded Linkers</string>
+      <string>Apply</string>
      </property>
     </widget>
-    <widget class="QFrame" name="frame_2">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>221</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QSlider" name="embeddedLinkerSizeSlider">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>4</number>
-      </property>
-      <property name="maximum">
-       <number>20</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>10</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Size</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="embeddedLinkerIndentSlider">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>5</number>
-      </property>
-      <property name="maximum">
-       <number>20</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>30</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Indent</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="miscTab">
-    <attribute name="title">
-     <string>Miscelanious</string>
-    </attribute>
-    <widget class="QFrame" name="frame_3">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>221</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QCheckBox" name="antialiasingCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>201</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Antialiasing</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="openGLCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>201</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>OpenGL rendering</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
-     </property>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="cancelButton">
      <property name="text">
-      <string>Graphics</string>
+      <string>Cancel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>100</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QTabWidget" name="preferenciesTabWidget">
+     <property name="enabled">
+      <bool>true</bool>
      </property>
-     <property name="text">
-      <string>Other</string>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-    </widget>
-    <widget class="QFrame" name="frame_4">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>120</y>
-       <width>221</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QCheckBox" name="splashScreenCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>201</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Show splashscreen</string>
-      </property>
+     <widget class="QWidget" name="editorTab">
+      <attribute name="title">
+       <string>Editor</string>
+      </attribute>
+      <widget class="QFrame" name="frame">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>311</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QCheckBox" name="showGridCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>191</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show grid</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="activateGridCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>191</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Activate grid</string>
+        </property>
+        <property name="tristate">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>31</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Grid</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Embedded Linkers</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>311</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QSlider" name="embeddedLinkerSizeSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>251</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>10</y>
+          <width>51</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Size</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="embeddedLinkerIndentSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>251</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>30</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Indent</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
-     <widget class="QCheckBox" name="chaoticEditionCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>201</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Chaotic Edition</string>
-      </property>
+     <widget class="QWidget" name="miscTab">
+      <attribute name="title">
+       <string>Miscellanious</string>
+      </attribute>
+      <widget class="QFrame" name="frame_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>311</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QCheckBox" name="antialiasingCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Antialiasing</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="openGLCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>OpenGL rendering</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Graphics</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Other</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>120</y>
+         <width>311</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QCheckBox" name="splashScreenCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Show splashscreen</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="chaoticEditionCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Chaotic Edition</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Behaviour</string>
+      </attribute>
+      <widget class="QFrame" name="frame_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QCheckBox" name="paletteTabCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Palette tab switching</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>61</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Automatics</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>311</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QCheckBox" name="diagramCreateCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>New diagram creating</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="saveExitCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Save on exit</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="chooseDiagramsToSaveCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>291</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Choose diagrams to save</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Suggestions</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Compiler</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="windowsButton">
+         <property name="text">
+          <string>Windows</string>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QRadioButton" name="linuxButton">
+         <property name="text">
+          <string>Linux</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QRadioButton" name="otherButton">
+         <property name="text">
+          <string>Other</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QWidget" name="compilerSettingsWidget" native="true">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>path to qmake</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="pathToQmake"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>path to make</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="pathToMake"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>plugin file extension</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="pluginExtension"/>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="prefix"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>prefix</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab">
-    <attribute name="title">
-     <string>Behavior</string>
-    </attribute>
-    <widget class="QFrame" name="frame_5">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>221</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QCheckBox" name="paletteTabCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Palette tab switching</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Automatics</string>
-     </property>
-    </widget>
-    <widget class="QFrame" name="frame_6">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>110</y>
-       <width>221</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <widget class="QCheckBox" name="diagramCreateCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>New diagram creating</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="saveExitCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Save on exit</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="chooseDiagramsToSaveCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>211</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Choose diagrams to save</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>90</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Suggestions</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="cancelButton">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>250</y>
-     <width>79</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
-   </property>
-  </widget>
+   </item>
+  </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../qrgui.qrc"/>
+ </resources>
  <connections/>
 </ui>

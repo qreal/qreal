@@ -1,4 +1,5 @@
 #include "editorviewscene.h"
+#include "math.h"
 
 #include <QGraphicsTextItem>
 #include <QtGui>
@@ -22,6 +23,13 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
+
+	mActionSignalMapper = new QSignalMapper(this);
+}
+
+EditorViewScene::~EditorViewScene()
+{
+	delete mActionSignalMapper;
 }
 
 void EditorViewScene::drawIdealGesture()
@@ -35,13 +43,18 @@ void EditorViewScene::printElementsOfRootDiagram()
 	mouseMovementManager->printElements();
 }
 
-void EditorViewScene::initMouseMoveMan()
+void EditorViewScene::initMouseMoveManager()
 {
+	if (!model())
+		return;
 	qReal::Id diagram = model()->getRootDiagram();
+	if (diagram == Id())
+		// Root diagram is not set, for example, current tab is disabled. No need
+		// to do anything with mouse manager.
+		return;
 	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
 	mouseMovementManager = new MouseMovementManager(elements,
-													mWindow->manager(),
-													mWindow->gesturesPainter());
+			mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -61,7 +74,6 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 		QLineF line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
-	this->invalidate();
 }
 
 void EditorViewScene::setEnabled(bool enabled)
@@ -80,7 +92,7 @@ void EditorViewScene::clearScene()
 
 UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
 {
-	if (uuid == ROOT_ID)
+	if (uuid == Id::rootId())
 		return NULL;
 
 	// FIXME: SLOW!
@@ -177,18 +189,18 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 
 	foreach(UML::PossibleEdge pEdge, edge->getPossibleEdges())
 	{
-		qReal::Id target;
-		if (pEdge.first.first == node->uuid())
-			target = pEdge.first.second;
-		else if ((pEdge.first.second == node->uuid()) && (!pEdge.second.first))
-			target = pEdge.first.first;
+		QString target;
+		if (pEdge.first.first.element() == node->uuid().element())
+			target = pEdge.first.second.element();
+		else if ((pEdge.first.second.element() == node->uuid().element()) && (!pEdge.second.first))
+			target = pEdge.first.first.element();
 		else continue;
 
-		QAction* element = new QAction(target.element(), createElemMenu);
+		QAction* element = new QAction(target, createElemMenu);
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target.element());
+		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target);
 	}
 
 	mCreatePoint = scenePos;
@@ -230,7 +242,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId->toString();
-	QString pathToItem = ROOT_ID.toString();
+	QString pathToItem = Id::rootId().toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
 	stream << uuid;
@@ -314,7 +326,7 @@ UML::Element* EditorViewScene::getLastCreated()
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(this->focusItem())) {
+	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
@@ -457,6 +469,8 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		//if (e)
 		//	initContextMenu(e, event->scenePos());
 	}
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
@@ -471,39 +485,27 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 	foreach (UML::ContextMenuAction* action, elementActions) {
 		action->setEventPos(e->mapFromScene(pos));
 		menu.addAction(action);
+
+		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()));
+		mActionSignalMapper->setMapping(action, action->text() + "###" + e->uuid().toString());
 	}
 	menu.addSeparator();
 
 	createConnectionSubmenus(menu, e);
 
 	menu.exec(QCursor::pos());
-
 }
 
 void EditorViewScene::getObjectByGesture()
 {
+	deleteGesture();
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * parent = dynamic_cast <UML::NodeElement * > (getElemAt(start));
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
 	if (parent && child)
 	{
-		QList<UML::PossibleEdge> edges = parent->getPossibleEdges();
-		QList<qReal::Id> allLinks;
-		foreach (UML::PossibleEdge possibleEdge, edges)
-		{
-			if (possibleEdge.first.second.editor() == child->uuid().editor()
-				&& possibleEdge.first.second.diagram() == child->uuid().diagram()
-				&& possibleEdge.first.second.element() == child->uuid().element())
-				allLinks.push_back(possibleEdge.second.second);
-		}
-		if (!allLinks.empty())
-		{
-			Id * edgeId = createElement(allLinks.at(0).toString(), end);
-//			UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeId);
-//			edge->placeStartTo(start);
-//			edge->placeEndTo(end);
-		}
+		getLinkByGesture(parent, *child);
 	}
 	else
 	{
@@ -511,16 +513,62 @@ void EditorViewScene::getObjectByGesture()
 		if (id.element() != "")
 			createElement(id.toString(), mouseMovementManager->pos());
 	}
-	deleteGesture();
+}
+
+void EditorViewScene::getLinkByGesture(UML::NodeElement * parent, const UML::NodeElement &child)
+{
+	QList<UML::PossibleEdge> edges = parent->getPossibleEdges();
+	QList<QString> allLinks;
+	foreach (UML::PossibleEdge possibleEdge, edges)
+	{
+		if (possibleEdge.first.second.editor() == child.uuid().editor()
+			&& possibleEdge.first.second.diagram() == child.uuid().diagram()
+			&& possibleEdge.first.second.element() == child.uuid().element())
+			allLinks.push_back(possibleEdge.second.second.toString());
+	}
+	if (!allLinks.empty())
+	{
+		if (allLinks.count() == 1)
+			createEdge(allLinks.at(0));
+		else
+			createEdgeMenu(allLinks);
+	}
+}
+
+void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
+{
+	QMenu * edgeMenu = new QMenu();
+	QSignalMapper * menuSignalMapper = new QSignalMapper(this);
+	foreach (QString id, ids)
+	{
+		QAction * element = new QAction(id, edgeMenu);
+		edgeMenu->addAction(element);
+		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
+		menuSignalMapper->setMapping(element, id);
+	}
+	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this,
+					 SLOT(createEdge(QString)));
+	edgeMenu->exec(QCursor::pos());
+}
+
+void EditorViewScene::createEdge(const QString & idStr)
+{
+	QPointF start = mouseMovementManager->firstPoint();
+	QPointF end = mouseMovementManager->lastPoint();
+	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
+	Id * id = createElement(idStr, start);
+	UML::Element * edgeElement = getElem(*id);
+	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
+	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
+	edge->placeEndTo(endPos);
+	edge->connectToPort();
 }
 
 void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 {
-	// Let scene update selection and perform other operations
 	QGraphicsScene::mouseReleaseEvent(event);
 
-
-	UML::Element *element = getElemAt(event->scenePos());
+	UML::Element* element = getElemAt(event->scenePos());
 
 	if (event->button() == Qt::RightButton)
 	{
@@ -531,18 +579,14 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			initContextMenu(element, event->scenePos());
 		mRightButtonPressed = false;
 		mouseMovementManager->clear();
+		return;
 	}
 
 	if (!element)
 		return;
-
-	qDebug() << "element" << element->uuid().toString();
-	UML::Element *parent = getElemByModelIndex(element->index().parent());
-
-
-	if (parent){
-		qDebug() << "parent: " << parent->uuid().toString();
-
+	UML::Element *parent;
+	parent = getElemByModelIndex(element->index().parent());
+	if (parent) {
 		if (!canBeContainedBy(parent->uuid(), element->uuid())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// fail, reparenting the element as it was before
@@ -551,21 +595,16 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 				if (elem && elem->uuid() == element->uuid()) {
 					QModelIndex ind = mv_iface->rootIndex();
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
-					qDebug() << "prev parent:  " << mPrevParent;
-
 					if (prevParent)
 						ind = prevParent->index();
-
 					if (model())
 						model()->changeParent(element->index(), ind, mPrevPosition);
-
-					//					elem->setParentItem(mPrevParent);
-					//					elem->setPos(mPrevPosition);
-					qDebug() << "new pos: " << elem->scenePos() << elem->pos();
 				}
 			}
 		}
 	}
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -578,6 +617,8 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
+	if (mNeedDrawGrid)
+		invalidate();
 }
 
 
@@ -620,7 +661,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 UML::Element* EditorViewScene::getElemAt(QPointF const &position)
 {
 	foreach (QGraphicsItem *item, items(position)) {
-		UML::Element *e = dynamic_cast<UML::Element *>(item);
+		UML::Element* e = dynamic_cast<UML::Element*>(item);
 		if (e)
 			return e;
 	}
@@ -635,8 +676,9 @@ QPersistentModelIndex EditorViewScene::rootItem()
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
-	connect(mWindow, SIGNAL(tabOpened()), this, SLOT(initMouseMoveMan()));
+	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
+	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
@@ -704,31 +746,40 @@ qReal::model::Model *EditorViewScene::model() const
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		painter->setPen(QPen(Qt::black, 0.05));
+		painter->setPen(QPen(Qt::black, 0.1));
 		drawGrid(painter, rect);
 	}
 }
 
-void EditorViewScene::changeNeedDrawGrid()
+void EditorViewScene::setNeedDrawGrid(bool show)
 {
-	mNeedDrawGrid = !mNeedDrawGrid;
-	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", mNeedDrawGrid);
+	mNeedDrawGrid = show;
 }
 
 void EditorViewScene::drawGesture()
 {
 	QLineF line = mouseMovementManager->newLine();
 	QGraphicsLineItem * item = new QGraphicsLineItem(line, NULL, this);
-	this->addItem(item);
+	double size = mGesture.size() * 0.1;
+	double color_ratio = pow(fabs(sin(size)), 1.5);
+	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
+	item->setPen(penColor);
+	addItem(item);
 	mGesture.push_back(item);
+	int ellipseSize = 2;
+	QPointF bound(ellipseSize, ellipseSize);
+	QRectF rect(line.p2() + bound, line.p2() - bound);
+	QGraphicsEllipseItem * ellipseItem = new QGraphicsEllipseItem(rect, NULL, this);
+	ellipseItem->setPen(penColor);
+	addItem(ellipseItem);
+	mGesture.push_back(ellipseItem);
 }
 
 void EditorViewScene::deleteGesture()
 {
-	foreach (QGraphicsLineItem * item, mGesture)
+	foreach (QGraphicsItem * item, mGesture)
 	{
-		this->removeItem(item);;
+		removeItem(item);
 	}
 	mGesture.clear();
 }

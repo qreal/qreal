@@ -1,9 +1,9 @@
-#ifndef REFWINDOW_H
-#define REFWINDOW_H
+#pragma once
 
 #include <QtGui>
 #include <QWidget>
 #include "../../qrrepo/repoApi.h"
+#include "mainwindow.h"
 
 namespace Ui {
 	class RefWindow;
@@ -16,11 +16,13 @@ class RefWindow : public QWidget
 public:
 	explicit RefWindow(const qrRepo::RepoApi *mApi, QString name,
 					   QAbstractItemModel* tModel, int r, const QModelIndex &ind,
-					   QWidget *parent = 0);
+					   qReal::MainWindow *mWindow, QWidget *parent = 0);
 	~RefWindow();
 
 public slots:
-	void setName();
+	void setPropertyValue();
+	void highlightElement(QListWidgetItem * item, bool bl = true);
+	void cancel();
 
 private:
 	void keyPressEvent(QKeyEvent *event);
@@ -31,6 +33,11 @@ private:
 	QAbstractItemModel* model;
 	int role;
 	const QModelIndex &index;
-};
+	qReal::MainWindow *mainWindow;
+	QListWidgetItem *mItem;
+	QList<QListWidgetItem *> elementList;
 
-#endif // REFWINDOW_H
+private slots:
+	void enableOkButton(QListWidgetItem* item);
+	void setElementId();
+};
