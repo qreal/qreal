@@ -70,6 +70,11 @@ QString @@MetamodelName@@Plugin::diagramName(QString const &diagram) const
 	return diagramNameMap[diagram];
 }
 
+QString @@MetamodelName@@Plugin::diagramNodeName(QString const &diagram) const
+{
+	return diagramNodeNameMap[diagram];
+}
+
 QString @@MetamodelName@@Plugin::elementName(QString const &diagram, QString const &element) const
 {
 	return elementsNameMap[diagram][element];

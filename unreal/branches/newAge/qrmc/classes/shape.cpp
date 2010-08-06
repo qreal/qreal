@@ -10,21 +10,26 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
+using namespace qrmc;
+
 Shape::Shape(const QString &shape) : mNode(NULL)
 {
-	init(shape, NULL);
+	init(shape)	;
 }
 
 Shape::~Shape()
 {
 }
 
-void Shape::init(const QString &shape, GraphicType *node)
+void Shape::setNode(GraphicType *node)
+{
+	mNode = node;
+}
+
+void Shape::init(const QString &shape)
 {
 	if (shape.isEmpty())
 		return;
-
-	mNode = node;
 
 	QString error = "";
 	int errorLine = 0;
@@ -114,7 +119,7 @@ void Shape::changeDir(QDir &dir) const
 	if (!dir.exists(generatedDir))
 		dir.mkdir(generatedDir);
 	dir.cd(generatedDir);
-	QString editorName = NameNormalizer::normalize(mNode->diagram()->editor()->name());
+	QString editorName = mNode->diagram()->editor()->name()	;
 	if (!dir.exists(editorName))
 		dir.mkdir(editorName);
 	dir.cd(editorName);
@@ -145,7 +150,7 @@ void Shape::generate(QString &classTemplate) const
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
 								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-								: "";
+								: nodeIndent + "Q_UNUSED(portRenderer)";
 	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));

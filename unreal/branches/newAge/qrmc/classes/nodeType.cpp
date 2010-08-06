@@ -1,14 +1,13 @@
 #include "nodeType.h"
 #include "diagram.h"
 #include "metaCompiler.h"
-#include "utils/outFile.h"
 #include "editor.h"
 #include "utils/nameNormalizer.h"
 #include "../qrrepo/repoApi.h"
 
 #include <QDebug>
 
-using namespace utils;
+using namespace qrmc;
 using namespace qReal;
 
 NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
@@ -53,13 +52,15 @@ QString NodeType::generateEdgeClass(const QString &classTemplate) const
 	return "";
 }
 
-QString NodeType::generateNodeClass(const QString &classTemplate) const
+QString NodeType::generateNodeClass(const QString &classTemplate)
 {
 	if (!mIsVisible)
 		return "";
+
 	QString nodeClass = classTemplate;
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
 
+	mShape.setNode(this);
 	mShape.generate(nodeClass);
 	generateContainerStuff(nodeClass);
 	generateContextMenuItems(nodeClass, compiler);

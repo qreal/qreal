@@ -1,8 +1,8 @@
 QT		+=	svg xml
 CONFIG += rpath_libdirs
 
-INCLUDEPATH	+=	../qrxml/editors \
-			../qrxml \
+INCLUDEPATH	+=	../qrmc\
+			../qrmc/plugins\
 			mainwindow \
 			mainwindow/shapeEdit
 
@@ -23,7 +23,7 @@ if (equals(QMAKE_CXX, "g++")) {
 }
 
 # Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
-LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo
+LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
 
 # Graphical elements
 include (umllib/umllib.pri)
@@ -49,7 +49,7 @@ include (generators/generators.pri)
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
 
-HEADERS += ../qrxml/editorinterface.h
+HEADERS += ../qrmc/plugins/pluginInterface.h
 
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.

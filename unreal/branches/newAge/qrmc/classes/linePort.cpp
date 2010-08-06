@@ -1,11 +1,10 @@
 #include "linePort.h"
-#include "utils/outFile.h"
 #include "utils/defs.h"
 #include "metaCompiler.h"
 
 #include <QtCore/QDebug>
 
-using namespace utils;
+using namespace qrmc;
 
 bool LinePort::init(QDomElement const &element, int width, int height)
 {

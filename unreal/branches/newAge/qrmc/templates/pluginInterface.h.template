@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
 #include <QPair>
-#include "../../editorInterface.h"
+#include "../../../qrmc/plugins/pluginInterface.h"
 
 class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {
@@ -43,6 +43,7 @@ public:
 
 	virtual QString editorName() const;
 	virtual QString diagramName(QString const &diagram) const;
+	virtual QString diagramNodeName(QString const &diagram) const;
 	virtual QString elementName(QString const &diagram, QString const &element) const;
 	virtual QString elementMouseGesture(QString const &digram, QString const &element) const;
 
@@ -51,6 +52,7 @@ public:
 private:
 	QMap<QString, QIcon> iconMap;
 	QMap<QString, QString> diagramNameMap;
+	QMap<QString, QString> diagramNodeNameMap;
 	QMap<QString, QMap<QString, QString> > propertyTypes;
 	QMap<QString, QMap<QString, QString> > propertyDefault;
 	QMap<QString, QMap<QString, QString> > elementsNameMap;

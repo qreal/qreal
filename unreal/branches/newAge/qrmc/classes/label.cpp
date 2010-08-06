@@ -1,10 +1,9 @@
 #include "label.h"
-#include "utils/outFile.h"
 #include "metaCompiler.h"
 
 #include <QDebug>
 
-using namespace utils;
+using namespace qrmc;
 
 bool Label::init(QDomElement const &element, int index, bool nodeLabel)
 {

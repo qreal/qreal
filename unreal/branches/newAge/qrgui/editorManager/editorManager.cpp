@@ -6,7 +6,6 @@
 
 #include <QtCore/QtDebug>
 
-#include "editorInterface.h"
 #include "../kernel/ids.h"
 #include "../kernel/exception/exception.h"
 #include "../../qrrepo/repoApi.h"

@@ -1,9 +1,8 @@
 #include "nonGraphicType.h"
-#include "utils/outFile.h"
 
 #include <QtCore/QDebug>
 
-using namespace utils;
+using namespace qrmc;
 
 NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id)
 	: Type(true, diagram, api, id)
@@ -67,7 +66,7 @@ QString NonGraphicType::generatePossibleEdges(QString const &lineTemplate) const
 	return "";
 }
 
-QString NonGraphicType::generateNodeClass(const QString &classTemplate) const
+QString NonGraphicType::generateNodeClass(const QString &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";

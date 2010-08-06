@@ -8,6 +8,7 @@
 #include <QDebug>
 
 using namespace qReal;
+using namespace qrmc;
 
 Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, Editor *editor)
 	: mId(id), mApi(api), mEditor(editor)
@@ -310,7 +311,7 @@ QString Diagram::generateListMethod(const QString &lineTemplate, ListMethodGener
 		if (line.isEmpty())
 			continue;
 		if (!isFirstLine)
-			line.replace("if", "else if");
+			line.replace("if ", "else if ");
 		isFirstLine = false;
 		result += line + endline;
 	}
@@ -330,7 +331,7 @@ QString Diagram::generateEnums(const QString &lineTemplate) const
 		if (line.isEmpty())
 			continue;
 		if (!isFirstLine)
-			line.replace("if", "else if");
+			line.replace("if ", "else if ");
 		isFirstLine = false;
 		result += line + endline;
 	}

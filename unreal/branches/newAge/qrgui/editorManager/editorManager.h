@@ -11,7 +11,7 @@ class QIcon;
 #include "listenerManager.h"
 #include "../umllib/uml_element.h"
 #include "../kernel/ids.h"
-#include "../../qrxml/editorInterface.h"
+#include "../../qrmc/plugins/pluginInterface.h"
 
 namespace qrRepo {
 	class RepoApi;
