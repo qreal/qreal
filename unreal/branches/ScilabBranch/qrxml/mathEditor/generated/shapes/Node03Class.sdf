@@ -1,0 +1,4 @@
+ <picture sizex="30" sizey="30">
+  <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+  <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+ </picture>
