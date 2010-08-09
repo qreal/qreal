@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel.xml</include>
+	<include>basicbehaviors_metamodel.xml</include>
+	<namespace>UML 2.0</namespace>
+	<diagram name="Basic Actions">
+		<graphicTypes>
+			<node name="Accept Event Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Action"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="isUnmarshall" />
+						<property type="Trigger" name="trigger" />
+						<property type="Output Pin" name="result" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Named Element"/>
+					</generalizations>
+					<properties>
+					  <property type="Input Pin" name="input"/>
+					  <property type="Output Pin" name="output"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Trigger">
+				<!-- "from Communications" -->
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Named Element"/>
+					</generalizations>
+					<properties>
+						<property type="Event" name="event" />
+						<property type="Accept Event Action" name="trigger" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Output Pin">
+				<logic>
+					<generalizations>
+						<parent parentName="Pin"/>
+					</generalizations>
+					<properties>
+						<property type="Accept Event Action" name="result" />
+						<property type="Action" name="output" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Input Pin">
+				<logic>
+					<generalizations>
+						<parent parentName="Pin"/>
+					</generalizations>
+					<properties>
+						<property type="Action" name="input" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Event">
+				<!-- "from Communications" -->
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Packageable Element"/>
+					</generalizations>
+					<properties>
+						<property type="Trigger" name="event" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Pin">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Typed Element"/>
+						<parent parentName="Kernel::Multiplicity Element"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Action Input Pin">
+				<logic>
+					<generalizations>
+						<parent parentName="Input Pin"/>
+					</generalizations>
+					<properties>
+						<property type="Action" name="fromAction" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Value Specification Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Action"/>
+					</generalizations>
+					<properties>
+						<property type="Value Specification" name="value" />
+						<property type="Output Pin" name="result" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Add Variable Value Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Write Variable Action"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="isReplaceAll">
+							<default>false</default>
+						</property>
+						<property type="Input Pin" name="insertAt"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Write Variable Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Variable Action"/>
+					</generalizations>
+					<properties>
+						<property type="Input Pin" name="value" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Variable Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Action"/>
+					</generalizations>
+					<properties>
+						<property type="Variable" name="variable" />
+					</properties>
+				</logic>
+			</node>
+			<node name="Variable">
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Multiplicity Element"/>
+						<parent parentName="Kernel::Typed Element"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="Call Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Invocation Action"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="isSynchronous">
+							<default>true</default>
+						</property>
+						<property type="Output Pin" name="result"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Call Behavior Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Call Action"/>
+					</generalizations>
+					<properties>
+						<property type="Behavior" name="behavior"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Call Operation Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Call Action" />
+					</generalizations>
+						<properties>
+							<property type="Input Pin" name="target"/>
+							<property type="Operation" name="operation"/>
+						</properties>
+				</logic>
+			</node>
+			<node name="Send Object Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Invocation Action"/>
+					</generalizations>
+					<properties>
+						<property type="Input Pin" name="request"/>
+						<property type="Input Pin" name="target"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Invocation Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Action"/>
+					</generalizations>
+					<properties>
+						<property type="Input Pin" name="argument"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="SendSignal Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Invocation Action"/>
+					</generalizations>
+					<properties>
+						<property type="Signal" name="signal"/>
+						<property type="Input Pin" name="target"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Signal">
+				<!-- "from Communication" -->
+				<logic>
+					<generalizations>
+						<parent parentName="Kernel::Classifier"/>
+					</generalizations>
+					<properties>
+						<property type="Property" name="ownedAttribute"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Unmarshall Action">
+				<logic>
+					<generalizations>
+						<parent parentName="Action"/>
+					</generalizations>
+					<properties>
+						<property type="Input Pin" name="object"/>
+						<property type="Classifier" name="unmarshallType"/>
+						<property type="Output Pin" name="result"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Value Pin">
+				<logic>
+					<generalizations>
+						<parent parentName="Input Pin"/>
+					</generalizations>
+					<properties>
+						<property type="Value Specification" name="value"/>
+					</properties>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
+</metamodel>

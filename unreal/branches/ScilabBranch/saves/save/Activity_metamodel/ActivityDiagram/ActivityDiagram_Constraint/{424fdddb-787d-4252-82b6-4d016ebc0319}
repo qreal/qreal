@@ -1,0 +1,25 @@
+<LogicObject id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_Constraint/{424fdddb-787d-4252-82b6-4d016ebc0319}">
+  <parents>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="clientDependency" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 324, 0 : 324, 72 : 0, 72 : "/>
+    <QString key="constrainedElement" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ConstraintEdge/{0e88f091-2bd3-40aa-98de-2698a7bc89ba}"/>
+    </links>
+    <QString key="name" value="(anonymous Constraint)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="-637, 1578"/>
+    <QString key="specification" value="format.applyPattern(&quot;a&quot;); //am, pm&lt;br/>am+pm = format.format(calender.getTime()).toLowerCase();&lt;br/>format.applyPattern(&quot;hh&quot;); // hour (current)&lt;br/>hour = format.format(calendar.getTime());"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="visibility" value=""/>
+  </properties>
+</LogicObject>

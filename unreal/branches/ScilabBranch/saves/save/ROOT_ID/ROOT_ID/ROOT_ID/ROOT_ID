@@ -1,0 +1,14 @@
+<LogicObject id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <parents/>
+  <children>
+    <object id="qrm:/ClassMetamodel/ClassDiagram/ClassDiagram_ClassDiagramNode/{d0165da9-143c-4305-a9fd-25bfcfd07074}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{fb46b3ac-39c1-4abb-984e-a73158bed0b2}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{4921bf8a-1d23-487b-88cd-4ddf14178909}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{e2ad8391-ae88-4378-abbe-f2b13174939f}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{15caaea7-a43a-4990-b0ac-53b8dc14ae2d}"/>
+    <object id="qrm:/Activity_metamodel/ActivityDiagram/ActivityDiagram_ActivityDiagramNode/{bc6e8257-76a7-44f0-92d5-8ca37d4c4c07}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</LogicObject>

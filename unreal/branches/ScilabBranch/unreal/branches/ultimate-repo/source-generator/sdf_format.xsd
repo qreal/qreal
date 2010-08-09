@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<xs:schema targetNamespace="http://schema.real.com/schema/" xmlns="http://schema.real.com/schema/" xmlns:xs="http://www.w3c.org/2001/XMLSchema">
+  <xs:element name="picture">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="line" minOccurs="0" maxOccurs="ubounded">
+          <xs:complexType>
+            <xs:attribute name="x1" type="coord" />
+            <xs:attribute name="y1" type="coord" />
+            <xs:attribute name="x2" type="coord" />
+            <xs:attribute name="y2" type="coord" />
+            <xs:attribute name="fill" type="color" />
+            <xs:attribute name="fill-style" type="fill-style" />
+            <xs:attribute name="stroke" type="color" />
+            <xs:attribute name="stroke-style" type="stroke-style" />
+            <xs:attribute name="stroke-width" type="xs:integer" />
+            <!-- FIXME: optional attributes??? -->
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ellpise" minOccurs="0" maxOccurs="ubounded">
+          <xs:complexType>
+            <xs:attribute name="x1" type="coord" />
+            <xs:attribute name="y1" type="coord" />
+            <xs:attribute name="x2" type="coord" />
+            <xs:attribute name="y2" type="coord" />
+            <xs:attribute name="fill" type="color" />
+            <xs:attribute name="fill-style" type="fill-style" />
+            <xs:attribute name="stroke" type="color" />
+            <xs:attribute name="stroke-style" type="stroke-style" />
+            <xs:attribute name="stroke-width" type="xs:integer" />
+            <!-- opacity??? -->
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="point" minOccurs="0" maxOccurs="ubounded">
+          <xs:complexType>
+            <!-- WTF x1 and y2??? -->
+            <xs:attribute name="x1" type="coord" />
+            <xs:attribute name="y2" type="coord" />
+            <!-- WTF are the following??? -->
+            <xs:attribute name="fill" type="color" />
+            <xs:attribute name="fill-style" type="fill-style" />
+            <xs:attribute name="stroke" type="color" />
+            <xs:attribute name="stroke-style" type="stroke-style" />
+            <xs:attribute name="stroke-width" type="xs:integer" />
+            <!-- opacity??? -->
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="rectangle" minOccurs="0" maxOccurs="ubounded">
+          <xs:complexType>
+            <xs:attribute name="x1" type="coord" />
+            <xs:attribute name="y1" type="coord" />
+            <xs:attribute name="x2" type="coord" />
+            <xs:attribute name="y2" type="coord" />
+            <xs:attribute name="fill" type="color" />
+            <xs:attribute name="fill-style" type="fill-style" />
+            <xs:attribute name="stroke" type="color" />
+            <xs:attribute name="stroke-style" type="stroke-style" />
+            <xs:attribute name="stroke-width" type="xs:integer" />
+            <!-- opacity??? -->
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="coord">
+    <xs:restrictions base="xs:string">
+      <!-- FIXME <int>[a|%] -->
+    </xs:restrictions>
+  </xs:simpleType>
+  <xs:simpleType name="color">
+    <xs:restrictions base="xs:string">
+      <!-- FIXME #XXXXXX maybe already defined as xs:color -->
+    </xs:restrictions>
+  </xs:simpleType>
+  <xs:simpleType name="fill-style">
+    <xs:restrictions base="xs:string">
+      <!-- FIXME Qt::BrushStyle -->
+    </xs:restrictions>
+  </xs:simpleType>
+  <xs:simpleType name="stroke-style">
+    <xs:restrictions base="xs:string">
+      <!-- FIXME Qt::PenStyle -->
+    </xs:restrictions>
+  </xs:simpleType>
+</xs:schema>

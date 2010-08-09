@@ -1,0 +1,35 @@
+#!/bin/bash
+
+WD=source-generator
+GEN=$WD/generated
+
+pushd $WD
+qmake
+make -j2
+if [ "$?" != "0" ]; then
+    popd
+    echo Building code generator failed, stopping.
+    exit 1
+fi
+./code
+err=$?
+popd
+
+if [ "$err" != "0" ]; then
+    echo Code generator failed, we have to follow him.
+    exit 1
+fi
+
+mkdir -p umllib/generated
+cp -rf $GEN/umllib/generated/* umllib/generated
+
+cp -rf $GEN/umllib/uml_guiobjectfactory.cpp umllib/
+
+cp -rf $GEN/repo/* repo/
+
+mkdir -p reposerver/generated
+cp -rf $GEN/reposerver/* reposerver
+
+cp -rf $GEN/shapes .
+
+cp -rf $GEN/real_dynamic.qrc .
