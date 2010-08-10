@@ -148,9 +148,9 @@ bool NodeType::generatePortNames(utils::OutFile &out, bool isNotFirst)
     foreach (Port *port, mPorts)
     {
         PointPort *pointPort = dynamic_cast<PointPort *>(port);
-        if (pointPort != NULL &&  pointPort->mName != "")
+        if (pointPort != NULL &&  pointPort->getPortName() != "")
         {
-            out() << "result << \"" << pointPort->mName << "\";\n";
+            out() << "result << \"" << pointPort->getPortName() << "\";\n";
         }
     }
     return false;
