@@ -32,7 +32,7 @@ namespace qReal {
 			virtual QStringList getUsedTypes(QString const &element) const = 0;
 			virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &element) const = 0;
 
-                        virtual QString getPortNames(Id const &id, double portNumber) const = 0;
+                        virtual QStringList getPortNames(QString const &element) const = 0;
 			virtual int isNodeOrEdge(QString const &element) const = 0;
 
 			virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const = 0;

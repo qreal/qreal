@@ -64,11 +64,9 @@ bool NonGraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generatePortNames(OutFile &out, bool isNotFirst)
+bool NonGraphicType::generatePortNames(utils::OutFile &out, bool isNotFirst)
 {
     Q_UNUSED(out)
-    Q_UNUSED(isNotFirst)
-    return false;
 }
 
 void NonGraphicType::generateMouseGesturesMap(utils::OutFile &out)

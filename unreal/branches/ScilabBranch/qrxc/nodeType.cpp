@@ -143,6 +143,19 @@ void NodeType::generatePorts() const
 	out() << "</picture>\n";
 }
 
+bool NodeType::generatePortNames(utils::OutFile &out, bool isNotFirst)
+{
+    foreach (Port *port, mPorts)
+    {
+        PointPort *pointPort = dynamic_cast<PointPort *>(port);
+        if (pointPort != NULL &&  pointPort->mName != "")
+        {
+            out() << "result << \"" << pointPort->mName << "\";\n";
+        }
+    }
+    return false;
+}
+
 void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
 {
 	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
@@ -156,6 +169,7 @@ void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out)
 		out() << "/>\n";
 	}
 }
+
 
 void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
 {

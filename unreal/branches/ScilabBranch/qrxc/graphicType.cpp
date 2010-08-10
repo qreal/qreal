@@ -522,9 +522,9 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 	return true;
 }
 
-bool GraphicType::generatePortNames(OutFile &out, bool isNotFirst)
+bool GraphicType::generatePortNames(utils::OutFile &out, bool isNotFirst)
 {
-    return true;
+    return false;
 }
 
 bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const

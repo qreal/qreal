@@ -163,7 +163,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
 		<< "\tvirtual QStringList getUsedTypes(QString const &element) const;\n"
 		<< "\tvirtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;\n"
-                << "\tvirtual QString getPortNames(qReal::Id const &id, double portNumber) const;\n"
+                << "\tvirtual QStringList getPortNames(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
@@ -414,6 +414,13 @@ public:
 	}
 };
 
+class XmlCompiler::PortNamesGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+    virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+            return type->generatePortNames(out, isNotFirst);
+    }
+};
+
 class XmlCompiler::UsagesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -428,12 +435,6 @@ public:
 	}
 };
 
-class XmlCompiler::PortNamesGenerator: public XmlCompiler::ListMethodGenerator {
-public:
-    virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-            return type->generatePortNames(out, isNotFirst);
-    }
-};
 
 class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
@@ -478,23 +479,6 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 		<< "}\n\n";
 }
 
-void XmlCompiler::generatePortNames(utils::OutFile &out)
-{
-    PortNamesGenerator generator;
-    out() << "QString " << mPluginName << "Plugin::getPortNames(qReal::Id const &id, double portNumber) const\n"
-            <<"{\n"
-            <<"\tQString result;\n";
-    bool isNotFirst = false;
-    foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-            foreach (Type *type, diagram->types().values())
-                    isNotFirst |= generator.generate(type, out, isNotFirst);
-
-    if (!isNotFirst)
-            out() << "\tQ_UNUSED(element);\n";
-            out() << "\treturn result;\n"
-            << "}\n\n";
-}
-
 void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 {
 	out() << "//(-1) means \"edge\", (+1) means \"node\"\n";
@@ -528,6 +512,11 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 void XmlCompiler::generateProperties(OutFile &out)
 {
 	generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
+}
+
+void XmlCompiler::generatePortNames(OutFile &out)
+{
+    generateListMethod(out, "getPortNames(QString const &element)", PortNamesGenerator());
 }
 
 void XmlCompiler::generateContainedTypes(OutFile &out)

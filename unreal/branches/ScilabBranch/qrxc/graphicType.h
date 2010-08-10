@@ -26,8 +26,8 @@ public:
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
-        virtual bool generatePortNames(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyTypes(utils::OutFile &out);
+        virtual bool generatePortNames(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
 
