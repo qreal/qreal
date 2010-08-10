@@ -91,7 +91,7 @@ bool MetaCompiler::loadTemplateFromFile(QString const &templateFileName, QString
 
 bool MetaCompiler::loadTemplateUtils()
 {
-	if (!changeDir(templatesDir))
+	if (!changeDir(mLocalDir + "/" + templatesDir))
 		return false;
 
 	QString fileName = mDirectory.absoluteFilePath(utilsTemplate);

@@ -106,8 +106,8 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
-//	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
+	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
+	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -628,7 +628,7 @@ void MainWindow::generateEditor()
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
-			loadNewEditor(directoryName, metamodelList[key], settings.value("pathToQmake", "").toString(),
+			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
 					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
@@ -637,10 +637,87 @@ void MainWindow::generateEditor()
 void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
-	if (!metaCompiler.compile()) {
+
+	if (!metaCompiler.compile()) { // generating source code for all metamodels
 		qDebug() << "compilation failed";
 		return;
 	}
+
+	IdList const metamodels = mModel->api().children(ROOT_ID);
+
+	QSettings settings("SPbSU", "QReal");
+
+	QProgressBar *progress = new QProgressBar(this);
+	progress->show();
+	int const progressBarWidth = 240;
+	int const progressBarHeight = 20;
+
+	QApplication::processEvents();
+	QRect screenRect = qApp->desktop()->availableGeometry();
+	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
+	progress->setFixedWidth(progressBarWidth);
+	progress->setFixedHeight(progressBarHeight);
+	progress->setRange(0, 100);
+	progress->setValue(5);
+
+	QProcess builder;
+	builder.setWorkingDirectory("../qrmc/plugins");
+	builder.start(settings.value("pathToQmake", "").toString());
+	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+		progress->setValue(20);
+
+		builder.start(settings.value("pathToMake", "").toString());
+		int forEditor = 30 / metamodels.size();
+
+		bool finished = builder.waitForFinished(100000);
+		if (finished && (builder.exitCode() == 0)) {
+			progress->setValue(70);
+
+			foreach (Id const key, metamodels) {
+				QString const objectType = mModel->api().typeName(key);
+				if (objectType == "MetamodelDiagram") {
+					QString name = mModel->api().stringProperty(key, "name of the directory");
+					if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load compiled editor %1?").arg(name),
+											  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+					{
+						progress->setValue(progress->value() + forEditor);
+						continue;
+					}
+
+					QString normalizedName = name.at(0).toUpper() + name.mid(1);
+					if (!name.isEmpty()) {
+						if (mEditorManager.editors().contains(Id(normalizedName))) {
+							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName)))
+								ui.paletteToolbox->deleteDiagramType(diagram);
+
+							if (!mEditorManager.unloadPlugin(normalizedName)) {
+								QMessageBox::warning(this, "error", "cannot unload plugin " + normalizedName);
+								progress->close();
+								delete progress;
+								return;
+							}
+						}
+						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
+							foreach (Id const diagram, mEditorManager.diagrams(Id(normalizedName))) {
+								ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
+
+								foreach (Id const element, mEditorManager.elements(diagram))
+									ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+							}
+						}
+					}
+					progress->setValue(progress->value() + forEditor);
+				}
+			}
+			ui.paletteToolbox->initDone();
+			progress->setValue(100);
+		}
+	}
+	if (progress->value() != 100)
+		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+	progress->setValue(100);
+	progress->close();
+	delete progress;
 }
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
@@ -682,16 +759,14 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	progress->setValue(20);
 
 	QProcess builder;
-	builder.setWorkingDirectory(directoryName + "/qrxml/" + metamodelName);
+	builder.setWorkingDirectory(directoryName + "/" + metamodelName);
 	builder.start(commandFirst);
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(commandSecond);
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
-
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
-
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
@@ -1157,7 +1232,6 @@ QListWidget* MainWindow::createSaveListWidget()
 		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
 			mSaveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
-			qDebug() << "checked: " << id.toString() << " at row: " << i;
 		} else {
 			listWidget->item(i)->setCheckState(Qt::Unchecked);
 			mSaveListChecked[i] = false;

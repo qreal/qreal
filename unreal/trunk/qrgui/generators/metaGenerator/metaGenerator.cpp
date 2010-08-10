@@ -31,8 +31,9 @@ QHash<Id, QString> MetaGenerator::getMetamodelList()
 	foreach (Id const key, metamodels) {
 		QString const objectType = mApi.typeName(key);
 		if (objectType == "MetamodelDiagram") {
-			if (mApi.stringProperty(key, "name of the directory") != "")
-				metamodelList.insert(key, mApi.stringProperty(key, "name of the directory"));
+			QString name = mApi.stringProperty(key, "name of the directory");
+			if (!name.isEmpty())
+				metamodelList.insert(key, name);
 			else
 				mErrorReporter.addWarning("no the name of the directory", key);
 		}

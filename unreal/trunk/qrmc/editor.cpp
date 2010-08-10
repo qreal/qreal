@@ -14,7 +14,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
-	mName = mName.section("_", 0, 0) + "Plugin";
+	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
 Editor::~Editor()
@@ -197,7 +197,7 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, mName); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
 	QTextStream out(&pluginHeaderFile);
 	out << headerTemplate;
 	pluginHeaderFile.close();
@@ -238,7 +238,7 @@ bool Editor::generatePluginSource()
 	generatePossibleEdges();
 
 	// inserting plugin name all over the template
-	mSourceTemplate.replace(metamodelNameTag, mName);
+	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
