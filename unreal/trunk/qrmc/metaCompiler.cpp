@@ -159,9 +159,6 @@ void MetaCompiler::generateCode()
 
 	QString pluginNames;
 	foreach (Editor *editor, mEditors) {
-//		foreach (Diagram *diagram, editor->diagrams().values()) {
-//			diagram->print();
-//		}
 		if (!mTargetMetamodel.isEmpty() && mApi.name(editor->id()) != mTargetMetamodel )
 			continue;
 		pluginNames += nodeIndent + editor->name() + "\\" + endline;
@@ -184,7 +181,8 @@ void MetaCompiler::generateCode()
 	}
 
 	QTextStream out(&file);
-	out << mPluginsProjectTemplate.replace(subdirsTag, pluginNames);
+	QString projectTemplate = mPluginsProjectTemplate;
+	out << projectTemplate.replace(subdirsTag, pluginNames);
 	file.close();
 
 	return;

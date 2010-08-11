@@ -638,11 +638,6 @@ void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
-	if (!metaCompiler.compile()) { // generating source code for all metamodels
-		qDebug() << "compilation failed";
-		return;
-	}
-
 	IdList const metamodels = mModel->api().children(ROOT_ID);
 
 	QSettings settings("SPbSU", "QReal");
@@ -658,31 +653,43 @@ void MainWindow::generateEditorWithQRMC()
 	progress->setFixedWidth(progressBarWidth);
 	progress->setFixedHeight(progressBarHeight);
 	progress->setRange(0, 100);
-	progress->setValue(5);
 
-	QProcess builder;
-	builder.setWorkingDirectory("../qrmc/plugins");
-	builder.start(settings.value("pathToQmake", "").toString());
-	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-		progress->setValue(20);
+	int forEditor = 60 / metamodels.size();
 
-		builder.start(settings.value("pathToMake", "").toString());
-		int forEditor = 30 / metamodels.size();
+	foreach (Id const key, metamodels) {
+		QString const objectType = mModel->api().typeName(key);
+		if (objectType == "MetamodelDiagram") {
+			QString name = mModel->api().stringProperty(key, "name of the directory");
+			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
+									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+			{
+				continue;
+			}
 
-		bool finished = builder.waitForFinished(100000);
-		if (finished && (builder.exitCode() == 0)) {
-			progress->setValue(70);
+			progress->setValue(5);
 
-			foreach (Id const key, metamodels) {
-				QString const objectType = mModel->api().typeName(key);
-				if (objectType == "MetamodelDiagram") {
-					QString name = mModel->api().stringProperty(key, "name of the directory");
-					if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load compiled editor %1?").arg(name),
-											  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-					{
-						progress->setValue(progress->value() + forEditor);
-						continue;
-					}
+			if (!metaCompiler.compile(name)) { // generating source code for all metamodels
+				QMessageBox::warning(this, "error", "cannot generate source code for editor " + name);
+				qDebug() << "compilation failed";
+				continue;
+			}
+			progress->setValue(20);
+
+			QProcess builder;
+			builder.setWorkingDirectory("../qrmc/plugins");
+			builder.start(settings.value("pathToQmake", "").toString());
+			qDebug()  << "qmake";
+			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
+				progress->setValue(40);
+
+				builder.start(settings.value("pathToMake", "").toString());
+
+				bool finished = builder.waitForFinished(100000);
+				qDebug()  << "make";
+				if (finished && (builder.exitCode() == 0)) {
+					qDebug()  << "make ok";
+
+					progress->setValue(progress->value() + forEditor/2);
 
 					QString normalizedName = name.at(0).toUpper() + name.mid(1);
 					if (!name.isEmpty()) {
@@ -694,7 +701,7 @@ void MainWindow::generateEditorWithQRMC()
 								QMessageBox::warning(this, "error", "cannot unload plugin " + normalizedName);
 								progress->close();
 								delete progress;
-								return;
+								continue;
 							}
 						}
 						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
@@ -706,11 +713,12 @@ void MainWindow::generateEditorWithQRMC()
 							}
 						}
 					}
-					progress->setValue(progress->value() + forEditor);
+					progress->setValue(progress->value() + forEditor/2);
 				}
 			}
 			ui.paletteToolbox->initDone();
 			progress->setValue(100);
+
 		}
 	}
 	if (progress->value() != 100)
