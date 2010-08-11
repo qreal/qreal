@@ -219,7 +219,6 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 
 QStringList EditorManager::getPortNames(const Id &id) const
 {
-    Q_ASSERT(id.idSize() == 3);
     Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
     QStringList result;

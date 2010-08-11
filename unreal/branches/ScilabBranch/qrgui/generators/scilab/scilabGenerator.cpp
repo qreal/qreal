@@ -73,13 +73,15 @@ void ScilabGenerator::VisitIntegralNode(const Id &id, utils::OutFile &out)
     link = getLinkByPortName(id, "variables");
     variable_string = getLinkOtherEntityValue(link, id, "x");
 
-    out() << "a = " << low_limit_string << ":" << up_limit_string << ";\n";
-    out() << "b = " << function_string << ";\n";
-    out() << "ans = inttrap(a,b)";
+    out() << "x = " << low_limit_string << ":" << up_limit_string << ";\n";
+    out() << "y = " << function_string << ";\n";
+    out() << "ans = inttrap(x,y)";
+    out().flush();
 }
 
 Id ScilabGenerator::getLinkByPortName(Id const &id, QString const portName)
 {
+    QStringList list = mEditorManager.getPortNames(id);
     int index = mEditorManager.getPortNames(id).indexOf(portName);
     return mApi.linksByPort(id, index);
 }
