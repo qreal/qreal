@@ -29,6 +29,7 @@ namespace qReal {
 			virtual QStringList getPropertiesWithDefaultValues(QString const &element) const = 0;
 			virtual QStringList getTypesContainedBy(QString const &element) const = 0;
 			virtual QStringList getConnectedTypes(QString const &element) const = 0;
+                        virtual QStringList getPortNames(QString const &element) = 0;
 			virtual QStringList getUsedTypes(QString const &element) const = 0;
 			virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &element) const = 0;
 

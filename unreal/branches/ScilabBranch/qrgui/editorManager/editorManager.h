@@ -39,6 +39,7 @@ namespace qReal {
 
 		IdList getContainedTypes(const Id &id) const;
 		IdList getConnectedTypes(const Id &id) const;
+                QStringList getPortNames(const Id &id) const;
 		IdList getUsedTypes(const Id &id) const;
 		QStringList getEnumValues(Id const &id, const QString &name) const;
 		QString getTypeName(Id const &id, const QString &name) const;

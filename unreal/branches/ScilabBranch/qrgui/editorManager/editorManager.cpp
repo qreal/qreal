@@ -217,6 +217,17 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	return result;
 }
 
+QStringList EditorManager::getPortNames(const Id &id) const
+{
+    Q_ASSERT(id.idSize() == 3);
+    Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+    QStringList result;
+    foreach(QString name, mPluginIface[id.editor()]->getPortNames(id.element()))
+        result.append(name);
+    return result;
+}
+
 IdList EditorManager::getUsedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types

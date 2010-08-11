@@ -13,8 +13,8 @@ using namespace qReal;
 using namespace generators;
 using utils::OutFile;
 
-ScilabGenerator::ScilabGenerator(qrRepo::RepoApi const &api)
-    : mApi(api)
+ScilabGenerator::ScilabGenerator(qrRepo::RepoApi const &api, qReal::EditorManager const &editor)
+    : mApi(api), mEditorManager(editor)
 {
 }
 
@@ -50,23 +50,54 @@ gui::ErrorReporter ScilabGenerator::generate()
            Visit(child);
         }
     }
+
+    return mErrorReporter;
 }
 
 void ScilabGenerator::VisitIntegralNode(const Id &id, utils::OutFile &out)
 {
-    QString up_limit_string = "";
-    //double d = mApi.portOrderNumberByName(id, "up_limit");
-    double d = 0.0;
-    Id link = mApi.linksByPort(id, d);
+    QString up_limit_string;
+    QString low_limit_string = "";
+    QString variable_string = "";
+    QString function_string = "";
 
-    Id constvalue = mApi.otherEntityFromLink(link, id);
-    if (constvalue.element() == "ConstantValueNode")
-        up_limit_string = mApi.property(constvalue, "value").toString();
+    Id link = getLinkByPortName(id, "up_limit");
+    up_limit_string = getLinkOtherEntityValue(link, id, "1");
 
-    if (up_limit_string == "")
-        up_limit_string = "1";
+    link  = getLinkByPortName(id, "low_limit");
+    low_limit_string = getLinkOtherEntityValue(link, id, "0");
 
-    out() << "x=a:b;\n";
-    out() << "y=sqrt(2*x-1)\n";
-    out() << "ans = inttrap(x,y)";
+    link  = getLinkByPortName(id, "function");
+    function_string = getLinkOtherEntityValue(link, id, "x");
+
+    link = getLinkByPortName(id, "variables");
+    variable_string = getLinkOtherEntityValue(link, id, "x");
+
+    out() << "a = " << low_limit_string << ":" << up_limit_string << ";\n";
+    out() << "b = " << function_string << ";\n";
+    out() << "ans = inttrap(a,b)";
+}
+
+Id ScilabGenerator::getLinkByPortName(Id const &id, QString const portName)
+{
+    int index = mEditorManager.getPortNames(id).indexOf(portName);
+    return mApi.linksByPort(id, index);
+}
+
+QString ScilabGenerator::getLinkOtherEntityValue(Id const &link, Id const &id,  QString const defaultValue)
+{
+    QString result;
+    if (link.element() != "")
+    {
+        Id otherEntity = mApi.otherEntityFromLink(link, id);
+        if (otherEntity.element() == "ConstantValueNode" && mApi.hasProperty(otherEntity, "value"))
+            result =  mApi.property(otherEntity, "value").toString();
+        if (otherEntity.element() == "FunctionNode" &&  mApi.hasProperty(otherEntity, "function"))
+            result =  mApi.property(otherEntity, "function").toString();
+
+    }
+    if (result == "")
+        return defaultValue;
+
+    return result;
 }

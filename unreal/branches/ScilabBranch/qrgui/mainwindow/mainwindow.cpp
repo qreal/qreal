@@ -599,7 +599,7 @@ void MainWindow::generateToHascol()
 
 void MainWindow::generateToScilab()
 {
-    generators::ScilabGenerator scilabGenerator(mModel->api());
+    generators::ScilabGenerator scilabGenerator(mModel->api(), mEditorManager);
 
     gui::ErrorReporter const errors = scilabGenerator.generate();
     errors.showErrors("Generation finished successfully");
