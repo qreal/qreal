@@ -99,10 +99,16 @@
 
 Одной из важных особенностей архитектуры QReal является возможность расширения набора графических редакторов. Эта CASE-система состоит 
 из ядра, реализующего общую для всех редакторов и элементов диаграмм функциональность, и подключаемых модулей, реализующих специфику 
-конкретных редакторов. Эти подключаемые модули генерируются по метамоделям языков, которые редакторы реализуют (см. рис. 1). 
+конкретных редакторов. Эти подключаемые модули генерируются по метамоделям языков, которые редакторы реализуют (см. рис.~\ref{architecture}). 
 Более подробно об архитектуре QReal и предлагаемом подходе к  созданию новых визуальных редакторов можно прочитать в ~\cite{qrealBasic}. 
 
-[Рис. 1. красивая картинка с архитектурой]
+\begin{figure} [ht]
+  \begin{center}
+    \includegraphics[width=1\textwidth, bb=0 0 798 531]{01-architecture.png}
+    \caption{Архитектура CASE-пакета QReal}
+    \label{architecture}
+  \end{center}
+\end{figure}
 
 Для данного исследования потенциальная расширяемость QReal означает в первую очередь то, что и предлагаемое решение по встраиванию в среду 
 распознавания и выполнения команд, соответствующих тем или иным жестам, также не должно зависеть от текущего набора графических редакторов. 
@@ -150,7 +156,7 @@
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=0.5\textwidth, bb=0 0 544 390]{02-chaos.png}
+    \includegraphics[width=0.7\textwidth, bb=0 0 544 390]{02-chaos.png}
     \caption{Построение ключа по принадлежности направлению}
     \label{chaos}
   \end{center}
@@ -167,7 +173,7 @@
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=0.5\textwidth, bb=0 0 544 390]{03-squares.png}
+    \includegraphics[width=0.8\textwidth, bb=0 0 544 390]{03-squares.png}
     \caption{Построение ключа по принадлежности прямоугольнику}
     \label{squares}
   \end{center}
@@ -263,8 +269,8 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 
 \begin{figure} [ht]
   \begin{center}
-    \includegraphics[width=0.5\textwidth, bb=0 0 544 390]{04-qt.png}
-    \caption{Построение ключа по принадлежности прямоугольнику}
+    \includegraphics[width=0.8\textwidth, bb=0 0 500 200]{04-qt.png}
+    \caption{Объединение участков пути}
     \label{qt}
   \end{center}
 \end{figure}
