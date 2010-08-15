@@ -6,6 +6,8 @@
 #include "QMouseEvent"
 
 static const QString xmlDir = "../../unreal/trunk/qrxml";
+const QString comma = ", ";
+const QString pointDelimeter = " : ";
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -15,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadFile()));
 	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
 			this, SLOT(drawIdealGesture()));
+	connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
 	mPaintManager = new PaintManager(ui->graphicsView);
 	mGesturesManager = new GesturesManager();
 }
@@ -49,6 +52,25 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 	ui->tbQtAlg->setText(mGesturesManager->qtRecognize(mPath));
 	ui->tbRectAlg->setText(mGesturesManager->rectRecognize(mPath));
 	this->update();
+	QString currentItem = ui->listWidget->currentItem()->text();
+	if (currentItem.isEmpty())
+		return;
+	mGesturesMap[currentItem].second.push_back(pathToString(mPath));
+}
+
+QString MainWindow::pointToString(QPoint const &p)
+{
+	return QString("%1").arg(p.x()) + comma + QString("%1").arg(p.y());
+}
+
+QString MainWindow::pathToString(QList<QPoint> const &path)
+{
+	QString result = "";
+	foreach (QPoint point, path)
+	{
+		result += pointToString(point) + pointDelimeter;
+	}
+	return result;
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -59,13 +81,24 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 void MainWindow::loadFile()
 {
-	QString fileName = QFileDialog::getOpenFileName(this,
-											 tr("Open Xml"), xmlDir,
-											 tr("Xml files (*.xml)"));
-	QList<GestureObject> gestures = XmlParser::parseXml(fileName);
-	mGesturesManager->setIdealGestres(gestures);
-	foreach (GestureObject gesture, gestures)
+	this->mGesturesMap = XmlParser::parseXml();
+	QList<GestureObject> gestures;
+	foreach (QString name, mGesturesMap.keys())
 	{
-		ui->listWidget->addItem(gesture.first);
+		gestures.push_back(GestureObject(name, mGesturesMap[name].first));
+		ui->listWidget->addItem(name);
 	}
+	mGesturesManager->setIdealGestres(gestures);
+}
+
+void MainWindow::save()
+{
+	QMap<QString, QPair<QString, QList<QString> > > gesturesMap;
+	foreach (QString name, mGesturesMap.keys())
+	{
+		QPair<QString, QList<QString> > pair(
+				pathToString(mGesturesMap[name].first), mGesturesMap[name].second);
+		gesturesMap.insert(name, pair);
+	}
+	XmlParser::save(gesturesMap);
 }

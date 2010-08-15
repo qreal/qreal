@@ -4,6 +4,8 @@
 #include "gesturesmanager.h"
 
 #include <QMainWindow>
+#include <QPair>
+#include <QMap>
 
 namespace Ui {
 	class MainWindow;
@@ -23,6 +25,9 @@ private:
 	QList<QPoint> mPath;
 	void paintEvent(QPaintEvent *);
 	GesturesManager * mGesturesManager;
+	QMap<QString, QPair<QList<QPoint>, QList<QString> > > mGesturesMap;
+	QString pathToString(const QList<QPoint> & path);
+	QString pointToString(const QPoint & point);
 
 protected:
 	void mouseMoveEvent(QMouseEvent * event);
@@ -32,5 +37,6 @@ protected:
 private slots:
 	void loadFile();
 	void drawIdealGesture();
+	void save();
 };
 

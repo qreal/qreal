@@ -81,13 +81,6 @@
            <item>
             <widget class="QTextBrowser" name="tbRectAlg"/>
            </item>
-           <item>
-            <widget class="QPushButton" name="buttonRectAlg">
-             <property name="text">
-              <string>OK</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -121,13 +114,6 @@
            </item>
            <item>
             <widget class="QTextBrowser" name="tbQtAlg"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="buttonQtAlg">
-             <property name="text">
-              <string>OK</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
@@ -165,6 +151,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -184,6 +171,11 @@
   <action name="actionShow_gestures">
    <property name="text">
     <string>Show gestures</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>
