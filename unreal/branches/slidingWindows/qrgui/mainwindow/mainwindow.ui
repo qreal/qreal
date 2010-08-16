@@ -279,6 +279,7 @@
    <addaction name="actionGenerate_to_Hascol"/>
    <addaction name="actionGenerate_to_Java"/>
    <addaction name="actionExport_to_XMI"/>
+   <addaction name="actionFull_screen"/>
    <addaction name="actionShape_Edit"/>
   </widget>
   <widget class="QToolBar" name="parsersToolbar">
@@ -571,6 +572,17 @@
   <action name="actionGenerate_Editor_qrmc">
    <property name="text">
     <string>Generate Editor (qrmc)</string>
+   </property>
+  </action>
+  <action name="actionFull_screen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>full-screen</string>
+   </property>
+   <property name="toolTip">
+    <string>transition to full-screen</string>
    </property>
   </action>
  </widget>

@@ -70,6 +70,12 @@ MainWindow::MainWindow()
 	}
 
 	ui.setupUi(this);
+	m_timeLine = new QTimeLine(1000, ui.diagramDock);
+	connect(m_timeLine, SIGNAL(frameChanged(int)), SLOT(setSlidePosition(int)));
+	connect(m_timeLine, SIGNAL(stateChanged(QTimeLine::State)), SLOT(changeState()));
+	connect(m_timeLine, SIGNAL(finished()), m_timeLine, SLOT(toggleDirection()));
+	connect(ui.actionFull_screen, SIGNAL(triggered(bool)), m_timeLine, SLOT(start()));
+	connect(ui.actionFull_screen, SIGNAL(triggered(bool)), this, SLOT(buttonPressed()));
 
 #if defined(Q_WS_WIN)
 	ui.menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
@@ -1354,4 +1360,64 @@ void MainWindow::initGridProperties()
 
 	ui.actionShow_grid->blockSignals(false);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+}
+
+void MainWindow::resizeEvent(QResizeEvent*)
+{
+	ui.diagramDock->resize(ui.diagramDock->width(), height()-PANEL_MARGIN);
+	ui.propertyDock->resize(ui.propertyDock->width(), height()-PANEL_MARGIN);
+	ui.minimapDock->resize(ui.minimapDock->width(), height()-PANEL_MARGIN);
+	ui.paletteToolbox->resize(ui.paletteDock->width(), height()-PANEL_MARGIN);
+}
+
+void MainWindow::changeState()
+{
+	ui.diagramDock->show();
+	ui.diagramDock->raise();
+	ui.propertyDock->show();
+	ui.propertyDock->raise();
+	ui.minimapDock->show();
+	ui.minimapDock->raise();
+	ui.paletteDock->show();
+	ui.paletteDock->raise();
+}
+
+void MainWindow::setSlidePosition(int pos)
+{
+	ui.diagramDock->move(- pos , ui.diagramDock->pos().y());
+	ui.propertyDock->move(- pos , ui.propertyDock->pos().y());
+
+	ui.minimapDock->move(startX + pos , ui.minimapDock->pos().y());
+	ui.paletteDock->move(startX + pos , ui.paletteDock->pos().y());
+}
+
+void MainWindow::buttonPressed()
+{
+	m_timeLine->setFrameRange(0, ui.diagramDock->width());
+	m_timeLine->setFrameRange(0, ui.propertyDock->width());
+	m_timeLine->setFrameRange(0, ui.minimapDock->width());
+	m_timeLine->setFrameRange(0, ui.paletteDock->width());
+
+	m_timeLine->setFrameRange(0, ui.diagramDock->frameGeometry().width());
+	m_timeLine->setFrameRange(0, ui.propertyDock->frameGeometry().width());
+	m_timeLine->setFrameRange(0, ui.minimapDock->frameGeometry().width());
+	m_timeLine->setFrameRange(0, ui.paletteDock->frameGeometry().width());
+
+	if(m_timeLine->direction() == 0){
+		startX = ui.diagramDock->pos().x();
+		startY = ui.diagramDock->pos().y();
+	}
+	m_timeLine->start();
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+	QMainWindow::changeEvent(e);
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		ui.retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }

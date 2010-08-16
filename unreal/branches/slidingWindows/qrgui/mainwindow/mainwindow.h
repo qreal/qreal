@@ -14,6 +14,9 @@
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
 
+#define PANEL_WIDTH 142
+#define PANEL_MARGIN 12
+
 namespace qReal {
 
 	class EditorView;
@@ -77,6 +80,13 @@ namespace qReal {
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
 
+		void changeState();
+
+	protected:
+		void changeEvent(QEvent *e);
+
+		void resizeEvent(QResizeEvent*);
+
 	private slots:
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
@@ -109,6 +119,9 @@ namespace qReal {
 
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 
+		void setSlidePosition(int pos);
+		void buttonPressed();
+
 	private:
 		QCloseEvent *mCloseEvent;
 		model::Model *mModel;
@@ -117,7 +130,10 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
+		QTimeLine *m_timeLine;
 
+		int startX;
+		int startY;
 		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
 		bool mDiagramCreateFlag;
 
@@ -140,6 +156,7 @@ namespace qReal {
 		int getTabIndex(const QModelIndex &index);
 
 		void initGridProperties();
+
 
 	signals:
 		void gesturesShowed();
