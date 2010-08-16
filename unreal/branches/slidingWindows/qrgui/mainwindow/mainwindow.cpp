@@ -1387,8 +1387,8 @@ void MainWindow::setSlidePosition(int pos)
 	ui.diagramDock->move(- pos , ui.diagramDock->pos().y());
 	ui.propertyDock->move(- pos , ui.propertyDock->pos().y());
 
-	ui.minimapDock->move(startX + pos , ui.minimapDock->pos().y());
-	ui.paletteDock->move(startX + pos , ui.paletteDock->pos().y());
+	ui.minimapDock->move(startXr + pos , ui.minimapDock->pos().y());
+	ui.paletteDock->move(startXr + pos , ui.paletteDock->pos().y());
 }
 
 void MainWindow::buttonPressed()
@@ -1406,6 +1406,8 @@ void MainWindow::buttonPressed()
 	if(m_timeLine->direction() == 0){
 		startX = ui.diagramDock->pos().x();
 		startY = ui.diagramDock->pos().y();
+		startXr = ui.paletteDock->pos().x();
+		startYr = ui.paletteDock->pos().y();
 	}
 	m_timeLine->start();
 }

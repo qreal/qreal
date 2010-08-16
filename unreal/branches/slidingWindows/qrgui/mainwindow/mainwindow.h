@@ -134,6 +134,8 @@ namespace qReal {
 
 		int startX;
 		int startY;
+		int startXr;
+		int startYr;
 		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
 		bool mDiagramCreateFlag;
 

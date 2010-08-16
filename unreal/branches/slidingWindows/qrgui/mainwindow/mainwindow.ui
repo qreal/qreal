@@ -579,7 +579,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>full-screen</string>
+    <string>Full-screen</string>
    </property>
    <property name="toolTip">
     <string>transition to full-screen</string>
