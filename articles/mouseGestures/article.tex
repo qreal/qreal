@@ -22,7 +22,7 @@
 \pagestyle{plain}
 %\pagestyle{empty}
 
-\title{Мышиные жесты, ПЫЩЬ}
+\title{Применение жестов мышью в CASE-системах}
 
 \author{http://www.phdcomics.com/comics/archive.php?comicid=562}
 \date{}
@@ -31,12 +31,11 @@
 \maketitle
 \thispagestyle{empty}
 
-\epigraph{Цивилизация движется вперед путем увеличения числа операций, которые мы можем осуществлять, не раздумывая над ними}%
-         {Альфред Норт Уайтхед}
-
 \begin{quote}
 \small\noindent
-Аннотация, чо
+В данной работе рассматриваются подходы к распознаванию жестов мышью и применение их в CASE-системах. Приводится численное сравнение
+алгоритмов распознавания, не использующих предварительное обучение. Делаются выводы о применимости данного класса алгоритмов
+для повышения эффективности и удобства работы проектировщика.
 \end{quote}
 
 \section*{Введение}
@@ -262,8 +261,8 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 
 Недостаток этого алгоритма состоит в том, что изменение оставшихся отрезков после удаления самого короткого довольно нетривиально. 
 Чтобы путь не потерял связность, удалить отрезок, не изменив концы соседних с ним, невозможно. Чтобы отрезки сохранили свое направление, 
-придется менять не только соседние. Например, на рис.~\ref{qt}a показана часть пути мыши. После удаления самого короткого отрезка с номером 2, 
-переносим отрезок номер 3, тем самым меняя координаты начала отрезка номер 4. Путь преобразуется в траекторию, приведенную на рис.~\ref{qt}b.
+придется менять не только соседние. Например, на рис.~\ref{qt} слева показана часть пути мыши. После удаления самого короткого отрезка с номером 2, 
+переносим отрезок номер 3, тем самым меняя координаты начала отрезка номер 4. Путь преобразуется в траекторию, приведенную на рис.~\ref{qt} справа.
 Стоит заметить, что при увеличении числа направлений перестраивать путь будет все сложнее. 
 
 \begin{figure} [ht]
@@ -278,7 +277,7 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 
 \subsection{Предлагаемый подход}
 
-Исходя из рассмотренных алгоритмов распознавания, а также в соответствии со спецификой задачи был выбран следующий подход к ее решению:
+Исходя из рассмотренных алгоритмов распознавания, а также в соответствии со спецификой задачи был выбран следующий подход к её решению:
 
 \begin{itemize}
   \item CASE-система получает сигналы о том, что пользователь зажал правую кнопку мыши и перемещает курсор, и сохраняет координаты положения курсора
@@ -286,7 +285,7 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
   \item Осуществляется сглаживание полученной траектории. Этот шаг необходим, так как различное оборудование дает разную точность при получении 
 позиции курсора. Кроме того, если учитывать все дрожания руки, придется усложнять следующий шаг -- сопоставление объекта: каждому объекту
 будет соответствовать слишком много разных вариантов пути мыши.
-  \item Списку точек сопоставляется строка в соответствии с алгоритмом, отраженным на рис.~\ref{squares}. [может его как-то поименовать?]
+  \item Списку точек сопоставляется строка в соответствии с алгоритмом, отраженным на рис.~\ref{squares}.
   \item С помощью модифицированного алгоритма Левенштейна находится идеальный ключ, расстояние $d_{normalized}$~(\ref{levenshtein}) между которым и 
 сгенерированным по нарисованному жесту наименьшее. Если ключ достаточно близок к идеальному, на диаграмме создается объект, соответствующий этому ключу.
 \end{itemize}
@@ -295,8 +294,6 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 \section{Реализация}
 
 В предложенной реализации список ``идеальных жестов'' создается на основе графических представлений элементов на этапе генерации плагина.
-
-[Где-то тут про демонстрацию возможных жестов?]
 
 Чтобы создать определенный элемент, пользователь CASE-системы зажимает правую кнопку мыши и делает соответствующий жест мышью. 
 Для того, чтобы пользователь мог контролировать процесс рисования, система показывает получающийся путь (см. рис.~\ref{drawing}, 
@@ -338,38 +335,54 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 элементов. После выбора одно из пунктов меню между данными объектами создается соответствующая связь 
 (отметим, что если в данном списке связей находится всего одна ассоциация, она создается сразу же после завершения жеста).
 
-\section{Направления дальнейшего исследования}
+\section{Выводы}
 
-1. модификация функции левенштейна для весов
-2. жестоэдитор
-3. крутые классификаторы
+Был проведен анализ и сравнение существующих алгоритмов распознавания мышиных жестов применительно к использованию в CASE-системах. 
+На основе полученных результатов был выбран алгоритм, обладающий, на наш взгляд, оптимальным соотношением эффективность/трудоемкость реализации.
+Разработано тестовое окружение для сравнения алгоритмов распознавания, получены численные результаты их эффективности.
+Выбранный алгоритм был реализован в рамках CASE-системы QReal. Пробная эксплуатация этого алгоритма в системе показала, что 
+данный подход в предложенном варианте ограниченно применим на практике. Так, создание ассоциаций с помощью жестов действительно
+показало себя удобным и реально повышающем производительность труда проектировщика. Однако, для достаточно большого набора фигур 
+в палитре точность распознавания реализованного алгоритма (и рассматриваемых аналогов) оказывается недостаточной. 
+
+Связано это, по нашему мнению, с тем, что для CASE-систем существует некий порог приемлемой точности распознавания жестов. Если
+алгоритм обеспечивает точность распознавания выше данного порога, то использование жестов мышью оказывается более удобным и эффективным,
+чем перетаскивание элементов с палитры, если нет, то пользователю придется потратить больше усилий на рисование фигуры.
+Данная проблема усугубляется тем, что в CASE-системах требуется распознавать достаточно много (порядка десятков) достаточно 
+похожих жестов, и если для простых приложений, где требуется распознавать единицы жестов, данные алгоритмы могут обеспечить
+достаточное качество распознавания, в CASE-системах этого добиться не удаётся.
+
+Однако, в случае использования CASE-средств на компьютерах с сенсорными экранами данный подход кажется нам имеющим право на 
+практическое применение, потому что пером на экране рисовать проще, чем мышью, а перетаскивать элементы сложнее. Если набор элементов,
+для которых будут задаваться жесты, ограничить и не пытаться распространять подход на все присутствующие в палитре элементы, 
+точность распознавания можно повысить до приемлемой.
 
 \pagebreak
 
 \begin{thebibliography}{9000}
+  \bibitem{levenshtein} В.И. Левенштейн. Двоичные коды с исправлением выпадений, вставок и замещений символов // Доклады Академий Наук СССР, 1965. 163.4:845-848
   \bibitem{qrealBasic} А.Н. Терехов, Т.А. Брыксин, Ю.В. Литвинов и др., Архитектура среды визуального моделирования QReal. // Системное 
 программирование. Вып. 4: Сб. статей / Под ред. А.Н.Терехова, Д.Ю.Булычева. --- СПб.: 2009, с. 171-196
-  \bibitem{levenshtein} В.И. Левенштейн. Двоичные коды с исправлением выпадений, вставок и замещений символов. Доклады Академий Наук СССР, 1965. 163.4:845-848.
-  \bibitem{strokeIt} StrokeIt, URL: http://www.tcbmi.com/strokeit/  
-  \bibitem{gMote} gMote, URL: http://www.handform.net/gmote.php
-  \bibitem{xstroke} xstroke, URL: http://freshmeat.net/projects/xstroke/
-  \bibitem{flyGesture} FlyGesture, URL: http://flyingmeat.com/flygesture/
-  \bibitem{neuronet1} Bishop, C.M., Neural Networks for Pattern Recognition, Oxford: Oxford University Press, 1995
-  \bibitem{neuronet2} Ripley, B.D., Pattern Recognition and Neural Networks, Cambridge University Press, 1996
-  \bibitem{neuronet3} Faaborg, A.J., Using Neural Networks to Create an Adaptive Character Recognition System, Cornell University, Ithaca, NY, 2002
-  \bibitem{hmm1} Rabiner, Lawrence R., A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE, 1989, pp. 257-286
-  \bibitem{hmm2} Starner, T., Pentland, A., Visual Recognition of American Sign Language Using Hidden Markov Models, MIT, 1995
-  \bibitem{hmm3} Vlontzos, J.A., Kung, S.Y., Hidden Markov models for character recognition, IEEE Transactions on Image Processing, 1992
-  \bibitem{svm1} Aizerman, M., Braverman, E., Rozonoer, L., Theoretical foundations of the potential function method in pattern recognition learning., 
+  \bibitem{svm1} Aizerman, M., Braverman, E., Rozonoer, L., Theoretical foundations of the potential function method in pattern recognition learning, 
 Automation and Remote Control 25, 1964, pp. 821–837
+  \bibitem{neuronet1} Bishop, C.M., Neural Networks for Pattern Recognition, Oxford: Oxford University Press, 1995  
   \bibitem{svm2} Catanzaro, B., Sundaram N., Keutzer K., Fast Support Vector Machine Training and Classification on Graphics Processors, International 
 Conference on Machine Learning, 2008
+  \bibitem{neuronet3} Faaborg, A.J., Using Neural Networks to Create an Adaptive Character Recognition System, Cornell University, Ithaca, NY, 2002
+  \bibitem{flyGesture} FlyGesture, URL: http://flyingmeat.com/flygesture/
   \bibitem{boosting1} Freund, Y., Schapire, R.E., A Short Introduction to Boosting, AT\&T Labs Research, 1999
+  \bibitem{gMote} gMote, URL: http://www.handform.net/gmote.php
   \bibitem{boosting2} Li, S.Z., Zhang, Z., FloatBoost Learning and Statistical Face Detection, IEEE Transactions on Pattern Analysis and Machine Intelligence, 2004
   \bibitem{nns1} Potamias, M., Athitsos, V. , Nearest Neighbor Search Methods for Handshape Recognition, PETRA, 2008
-  \bibitem{nns2} Shakhnarovish, Darrell, and Indyk, Nearest-Neighbor Methods in Learning and Vision, MIT Press, 2005
   \bibitem{qt} Qt, URL: http://qt.nokia.com/
+  \bibitem{hmm1} Rabiner, Lawrence R., A tutorial on hidden Markov models and selected applications in speech recognition, Proceedings of the IEEE, 1989, pp. 257-286
+  \bibitem{neuronet2} Ripley, B.D., Pattern Recognition and Neural Networks, Cambridge University Press, 1996
+  \bibitem{hmm2} Starner, T., Pentland, A., Visual Recognition of American Sign Language Using Hidden Markov Models, MIT, 1995
+  \bibitem{strokeIt} StrokeIt, URL: http://www.tcbmi.com/strokeit/  
+  \bibitem{nns2} Shakhnarovish, Darrell, and Indyk, Nearest-Neighbor Methods in Learning and Vision, MIT Press, 2005
   \bibitem{qtGestures} Thelin, J., Recognizing mouse gestures, Qt online reference documentation, URL: http://doc.trolltech.com/qq/qq18-mousegestures.html 
+  \bibitem{hmm3} Vlontzos, J.A., Kung, S.Y., Hidden Markov models for character recognition, IEEE Transactions on Image Processing, 1992
+  \bibitem{xstroke} xstroke, URL: http://freshmeat.net/projects/xstroke/
 \end{thebibliography}
   
 
