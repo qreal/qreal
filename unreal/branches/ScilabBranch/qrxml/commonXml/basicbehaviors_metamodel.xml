@@ -62,9 +62,7 @@
 						<parent parentName="KernelDiagram::BehavioralFeature"/>
 					</generalizations>
 					<properties>
-						<property type="CallConcurrencyKind" name="concurrency">
-							<default>sequential</default>
-						</property>
+						<property type="CallConcurrencyKind" name="concurrency" default = "sequential"/>
 						<property type="Behavior" name="methods"/>
 <!--						<property type="Classifier" name="raisedException"/>-->
 					</properties>

@@ -253,9 +253,7 @@
               <property type="ActivityEdge" name="edge"/>
               <property type="ActivityGroup" name="group"/>
               <property type="ExpansionRegion" name="expansionRegion"/>
-              <property type="bool" name="isSingleExecution">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isSingleExecution" defaut = "false"/>
               <property type="ActivityNode" name="coordinatedNodes"/>
               <property type="ActivityEdge" name="edges"/>
               <property type="Variable" name="topLevelVariables"/>
@@ -398,12 +396,8 @@
               <parent parentName="KernelDiagram::NamedElement"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isDimension">
-                <default>false</default>
-              </property>
-              <property type="bool" name="isExternal">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isDimension" default = "false"/>
+              <property type="bool" name="isExternal" default = "false"/>
               <property type="ActivityNode" name="node"/>
               <property type="ActivityEdge" name="edge"/>
               <property type="ActivityPartition" name="superPartition"/>
@@ -483,12 +477,8 @@
               <parent parentName="StructuredActivityNode"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isAssured">
-                <default>false</default>
-              </property>
-              <property type="bool" name="isDeterminate">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isAssured" defaut = "false"/>
+              <property type="bool" name="isDeterminate" defaut = "false"/>
               <property type="Clause" name="clause"/>
               <property type="OutputPin" name="result"/>
             </properties>
@@ -767,9 +757,7 @@
               <parent parentName="ControlNode"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isCombineDuplicate">
-                <default>true</default>
-              </property>
+              <property type="bool" name="isCombineDuplicate" default = "true"/>
               <property type="ValueSpecification" name="joinSpec"/>
             </properties>
             <connections>
@@ -783,9 +771,7 @@
               <parent parentName="StructuredActivityNode"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isTestedFirst">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isTestedFirst" defaut = "false"/>
               <property type="ExecutableNode" name="setupPart"/>
               <property type="ExecutableNode" name="bodyPart"/>
               <property type="ExecutableNode" name="test"/>
@@ -845,12 +831,8 @@
               <parent parentName="ActivityEdge"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isMulticast">
-                <default>false</default>
-              </property>
-              <property type="bool" name="isMultireceive">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isMulticast" defaut = "false"/>
+              <property type="bool" name="isMultireceive" defaut = "false"/>
               <property type="Behavior" name="selection"/>
               <property type="Behavior" name="transformation"/>
             </properties>
@@ -871,12 +853,8 @@
               <parent parentName="ActivityNode"/>
             </generalizations>
             <properties>
-              <property type="ObjectNodeOrderingKind" name="ordering">
-                <default>FIFO</default>
-              </property>
-              <property type="bool" name="isControlType">
-                <default>false</default>
-              </property>
+              <property type="ObjectNodeOrderingKind" name="ordering" default = "FIFO"/>
+              <property type="bool" name="isControlType" defaut = "false"/>
               <property type="State Machines::State" name="inState"/>
               <property type="Behavior" name="selection"/>
               <property type="ValueSpecification" name="upperBound"/>
@@ -921,12 +899,8 @@
             </generalizations>
             <properties>
               <property type="ParameterEffectKind" name="effect"/>
-              <property type="bool" name="isException">
-                <default>false</default>
-              </property>
-              <property type="bool" name="isStream">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isException" defaut = "false"/>
+              <property type="bool" name="isStream" defaut = "false"/>
             </properties>
             <properties>
               <property type="ParameterSet" name="parameterSet"/>
@@ -951,9 +925,7 @@
               <parent parentName="BasicActionsDiagram::Pin"/>
             </generalizations>
             <properties>
-              <property type="bool" name="isControl">
-                <default>false</default>
-              </property>
+              <property type="bool" name="isControl" defaut = "false"/>
             </properties>
           </logic>
         </node>
@@ -1016,9 +988,7 @@
               <parent parentName="KernelDiagram::Namespace"/>
             </generalizations>
             <properties>
-              <property type="bool" name="mustIsolate">
-                <default>false</default>
-              </property>
+              <property type="bool" name="mustIsolate" defaut = "false"/>
               <property type="Variable" name="variable"/>
               <property type="ActivityNode" name="node"/>
               <property type="ActivityEdge" name="edge"/>

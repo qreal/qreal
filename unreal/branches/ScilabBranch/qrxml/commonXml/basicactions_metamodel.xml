@@ -107,9 +107,7 @@
 						<parent parentName="WriteVariableAction"/>
 					</generalizations>
 					<properties>
-						<property type="bool" name="isReplaceAll">
-							<default>false</default>
-						</property>
+						<property type="bool" name="isReplaceAll" default = "false"/>
 						<property type="InputPin" name="insertAt"/>
 					</properties>
 				</logic>
@@ -148,9 +146,7 @@
 						<parent parentName="InvocationAction"/>
 					</generalizations>
 					<properties>
-						<property type="bool" name="isSynchronous">
-							<default>true</default>
-						</property>
+						<property type="bool" name="isSynchronous" default = "true"/>
 						<property type="OutputPin" name="result"/>
 					</properties>
 				</logic>

@@ -26,8 +26,8 @@ namespace qReal {
                 void VisitIntegralNode(Id const &id, utils::OutFile &out);
                 void Visit(Id const &id);
                 Id getLinkByPortName(Id const &id, QString const portName);
-                QString getLinkOtherEntityValue(Id const &link, Id const &id, QString const defaultValue);
-
+                QString getLinkOtherEntityValue(Id const &link, Id const &id);
+                QString getPropertyString(Id const &id, QString const &propertyName);
                 qrRepo::RepoApi const &mApi;
                 qReal::EditorManager const &mEditorManager;
                 gui::ErrorReporter mErrorReporter;

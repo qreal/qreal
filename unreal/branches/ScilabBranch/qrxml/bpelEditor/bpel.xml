@@ -23,9 +23,7 @@
                                         <node id="bplAbstract" name="bplAbstract">
                                                   <logic>
                                                             <properties>
-                                                                      <property type="bool" name="isAbstract">
-                                                                                <default>false</default>
-                                                                      </property>
+                                                                      <property type="bool" name="isAbstract" default = "false"/>
                                                                       <property type="string" name="suppressJoinFailure"/>
                                                                       <property type="string" name="comment"/>
                                                                       <property type="string" name="joinCondition"/>

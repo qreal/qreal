@@ -150,13 +150,9 @@
 			<properties>
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
-			  <property type="bool" name="isPin">
-				<default>false</default>
-			  </property>
+			  <property type="bool" name="isPin" default = "false"/>
 			  <property type="string" name="shape"/>
-			  <property type="bool" name="isAction">
-				<default>false</default>
-			  </property>
+			  <property type="bool" name="isAction" default = "false"/>
 			  <property type="string" name="path"/>
 			</properties>
 			<container>
@@ -213,9 +209,7 @@
 			  <property type="string" name="container"/>
 			  <property type="string" name="displayedName"/>
 			  <property type="string" name="labels"/>
-			  <property type="lineTypes" name="lineType">
-				<default>solidLine</default>
-			  </property>	
+			  <property type="lineTypes" name="lineType" default = "solidLine"/>	
 			</properties>
 			<container>
 			  <contains type="MetaEditor::MetaEntity Attribute"/>
@@ -543,9 +537,7 @@
 			<properties>
 			  <property type="string" name="beginName"/>
 			  <property type="string" name="endName"/>
-			  <property type="bool" name="directed">
-				<default>false</default>
-			  </property>
+			  <property type="bool" name="directed" default = "false"/>
 			</properties>
 		  </logic>
 		</node>
@@ -563,20 +555,12 @@
 		  </graphics>
 		  <logic>
 			<properties>
-			  <property type="bool" name="sortContainer">
-				<default>false</default>
-			  </property>
+			  <property type="bool" name="sortContainer" default = "false"/>
 			  <property type="string" name="forestallingSize"/>
 			  <property type="string" name="childrenForestallingSize"/>
-			  <property type="bool" name="minimizeToChildren">
-				<default>false</default>
-			  </property>
-			  <property type="bool" name="banChildrenMove">
-				<default>false</default>
-			  </property>
-			  <property type="bool" name="maximizeChildren">
-				<default>false</default>
-			  </property>
+			  <property type="bool" name="minimizeToChildren" default = "false"/>
+			  <property type="bool" name="banChildrenMove" default = "false"/>
+			  <property type="bool" name="maximizeChildren" default = "false"/>
 			</properties>
 		  </logic>
 		</node>

@@ -45,8 +45,8 @@
 			  <line y1="66" x1="0" y2="0" x2="100"/>
             </picture>
             <ports>
-              <pointPort x="100" y="0" orderNumber = "0" name= "up_limit"/>
-              <pointPort x="200" y="66" orderNumber = "1" name = "low_limit"/>
+              <pointPort x="100" y="0" orderNumber = "0" name= "up limit"/>
+              <pointPort x="200" y="66" orderNumber = "1" name = "low limit"/>
               <pointPort x="200" y="132" orderNumber = "2" name = "function"/>
               <pointPort x="100" y="200" orderNumber = "3" name = "variable"/>
 			  <pointPort x="0" y="132"  orderNumber = "4" name = "out"/>
@@ -58,10 +58,10 @@
               <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
 			<properties>
-				<property type="string" name="integral function" />
-				<property type="string" name="up limit" />
-				<property type="string" name="low limit" />
-				<property type="string" name="integral variable" />
+				<property type="string" name="function" default = "x" />
+				<property type="string" name="up limit" default = "1" />
+				<property type="string" name="low limit" default = "0"/>
+				<property type="string" name="variable" default = "x" />
 			</properties>
           </logic>
         </node>

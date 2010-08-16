@@ -42,7 +42,7 @@ bool Property::init(QDomElement const &element)
 			return false;
 	}
 	mDescription = element.firstChildElement("description").text();
-	mDefaultValue = element.firstChildElement("default").text();
+        mDefaultValue = element.attribute("default");//element.firstChildElement("default").text();
 	return true;
 }
 

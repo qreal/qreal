@@ -61,17 +61,22 @@ void ScilabGenerator::VisitIntegralNode(const Id &id, utils::OutFile &out)
     QString variable_string = "";
     QString function_string = "";
 
-    Id link = getLinkByPortName(id, "up_limit");
-    up_limit_string = getLinkOtherEntityValue(link, id, "1");
+//    Id link = getLinkByPortName(id, "up_limit");
+//    up_limit_string = getLinkOtherEntityValue(link, id, "1");
+//
+//    link  = getLinkByPortName(id, "low_limit");
+//    low_limit_string = getLinkOtherEntityValue(link, id, "0");
+//
+//    link  = getLinkByPortName(id, "function");
+//    function_string = getLinkOtherEntityValue(link, id, "x");
+//
+//    link = getLinkByPortName(id, "variables");
+//    variable_string = getLinkOtherEntityValue(link, id, "x");
 
-    link  = getLinkByPortName(id, "low_limit");
-    low_limit_string = getLinkOtherEntityValue(link, id, "0");
-
-    link  = getLinkByPortName(id, "function");
-    function_string = getLinkOtherEntityValue(link, id, "x");
-
-    link = getLinkByPortName(id, "variables");
-    variable_string = getLinkOtherEntityValue(link, id, "x");
+    up_limit_string = getPropertyString(id, "up limit");
+    low_limit_string = getPropertyString(id, "low limit");
+    function_string = getPropertyString(id, "function");
+    variable_string = getPropertyString(id, "variable");
 
     out() << "x = " << low_limit_string << ":" << up_limit_string << ";\n";
     out() << "y = " << function_string << ";\n";
@@ -86,7 +91,7 @@ Id ScilabGenerator::getLinkByPortName(Id const &id, QString const portName)
     return mApi.linksByPort(id, index);
 }
 
-QString ScilabGenerator::getLinkOtherEntityValue(Id const &link, Id const &id,  QString const defaultValue)
+QString ScilabGenerator::getLinkOtherEntityValue(Id const &link, Id const &id)
 {
     QString result;
     if (link.element() != "")
@@ -98,8 +103,25 @@ QString ScilabGenerator::getLinkOtherEntityValue(Id const &link, Id const &id,  
             result =  mApi.property(otherEntity, "function").toString();
 
     }
-    if (result == "")
-        return defaultValue;
 
+    return result;
+}
+
+QString ScilabGenerator::getPropertyString(Id const &id, QString const &propertyName)
+{
+    QString result = "";
+    if (mApi.hasProperty(id, propertyName))
+    {
+        result = mApi.property(id, propertyName).toString();
+        if (result == "")
+        {
+            Id link = getLinkByPortName(id, propertyName);
+            result = getLinkOtherEntityValue(link, id);
+            if (result == "")
+            {
+                result = mEditorManager.getDefaultPropertyValue(id, propertyName);
+            }
+        }
+    }
     return result;
 }
