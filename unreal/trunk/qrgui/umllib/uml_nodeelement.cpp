@@ -20,7 +20,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGrid(false), mSwitchGridAction("Switch on grid", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true),
-		isColorRect(false)
+		isColorRect(false), connecting(false)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);

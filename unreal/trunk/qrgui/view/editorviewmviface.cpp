@@ -150,9 +150,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				if ((master) && (master->getConnectingState()))
 					isEdgeFromEmbeddedLinker = true;
 			}
+
 			if (!isEdgeFromEmbeddedLinker)
 				mScene->clearSelection();
 			elem->setSelected(true);
+
 
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
 			if (nodeElem && currentUuid.element() == "Class") {
