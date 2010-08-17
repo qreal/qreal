@@ -16,6 +16,6 @@ private:
 	int mUpperBound;
 	int mLowerBound;
 	static const int inMovement = 20;
-	static const int iSize = 6;
+	static const int iSize = 7;
 	static const int unidimensionalLimit = 4;
 };

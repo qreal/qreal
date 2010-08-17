@@ -1,11 +1,10 @@
 #include "xmlparser.h"
+#include "adopter.h"
 #include <QFile>
 #include <QDomElement>
 #include <QStringList>
 #include <QTextStream>
 
-const QString comma = ", ";
-const QString pointDelimeter = " : ";
 const QString pathToFile = "usersGestures.xml";
 
 //TODO:: вынести в константы
@@ -27,7 +26,7 @@ QMap<QString, QPair<QList<QPoint>, QList<QString> > > XmlParser::parseXml()
 		QDomNodeList paths = element.elementsByTagName("userPath");
 		if (!path.isEmpty())
 		{
-			QList<QPoint> points = stringToPath(path);
+			QList<QPoint> points = Adopter::stringToPath(path);
 			QPair<QList<QPoint>, QList<QString> > usersGestures(points,
 														getUsersGestures(paths));
 			gestures.insert(name, usersGestures);
@@ -44,26 +43,6 @@ QList<QString> XmlParser::getUsersGestures(const QDomNodeList &list)
 		gestures.push_back(list.at(i).toElement().attribute("path", ""));
 	}
 	return gestures;
-}
-
-QList<QPoint> XmlParser::stringToPath(QString const &valueStr)
-{
-	QStringList points = valueStr.split(pointDelimeter, QString::SkipEmptyParts);
-	QList<QPoint> result;
-	foreach (QString str, points)
-	{
-		QPoint point = stringToPoint(str);
-		result.push_back(point);
-	}
-	return result;
-}
-
-QPoint XmlParser::stringToPoint(QString const &str)
-{
-	bool isInt;
-	int x = str.section(comma, 0, 0).toInt(&isInt, 0);
-	int y = str.section(comma, 1, 1).toInt(&isInt, 0);
-	return QPoint(x, y);
 }
 
 //map: name -> gestures

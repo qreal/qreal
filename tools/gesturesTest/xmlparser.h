@@ -15,8 +15,6 @@ public:
 	static void save(const QMap<QString, QPair<QString, QList<QString> > > & map);
 
 private:
-	static QList<QPoint> stringToPath(QString const & str);
-	static QPoint stringToPoint(QString const & str);
 	static QList<QString> getUsersGestures(const QDomNodeList & list);
 };
 

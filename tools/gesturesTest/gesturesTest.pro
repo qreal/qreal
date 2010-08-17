@@ -28,6 +28,7 @@ HEADERS  += mainwindow.h \
 	xmlparser.h \
     paintmanager.h \
     rectangleAlgorithm/pathcorrector.h \
-    gesturesmanager.h
+    gesturesmanager.h \
+    adopter.h
 
 FORMS    += mainwindow.ui

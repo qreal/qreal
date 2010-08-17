@@ -1,13 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "paintmanager.h"
+#include "adopter.h"
 #include "QDebug"
 #include "QFileDialog"
 #include "QMouseEvent"
 
 static const QString xmlDir = "../../unreal/trunk/qrxml";
-const QString comma = ", ";
-const QString pointDelimeter = " : ";
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -18,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
 			this, SLOT(drawIdealGesture()));
 	connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
+	connect(ui->actionCheck_gestures, SIGNAL(triggered()), this, SLOT(checkGestures()));
 	mPaintManager = new PaintManager(ui->graphicsView);
 	mGesturesManager = new GesturesManager();
 }
@@ -52,25 +52,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 	ui->tbQtAlg->setText(mGesturesManager->qtRecognize(mPath));
 	ui->tbRectAlg->setText(mGesturesManager->rectRecognize(mPath));
 	this->update();
+	if (ui->listWidget->currentItem() == NULL)
+		return;
 	QString currentItem = ui->listWidget->currentItem()->text();
 	if (currentItem.isEmpty())
 		return;
-	mGesturesMap[currentItem].second.push_back(pathToString(mPath));
-}
-
-QString MainWindow::pointToString(QPoint const &p)
-{
-	return QString("%1").arg(p.x()) + comma + QString("%1").arg(p.y());
-}
-
-QString MainWindow::pathToString(QList<QPoint> const &path)
-{
-	QString result = "";
-	foreach (QPoint point, path)
-	{
-		result += pointToString(point) + pointDelimeter;
-	}
-	return result;
+	mGesturesMap[currentItem].second.push_back(Adopter::pathToString(mPath));
 }
 
 void MainWindow::paintEvent(QPaintEvent *)
@@ -97,8 +84,31 @@ void MainWindow::save()
 	foreach (QString name, mGesturesMap.keys())
 	{
 		QPair<QString, QList<QString> > pair(
-				pathToString(mGesturesMap[name].first), mGesturesMap[name].second);
+				Adopter::pathToString(mGesturesMap[name].first),
+				mGesturesMap[name].second);
 		gesturesMap.insert(name, pair);
 	}
 	XmlParser::save(gesturesMap);
+}
+
+void MainWindow::checkGestures()
+{
+	int allGestures = 0;
+	int rectGestures = 0;
+	int qtGestures = 0;
+	foreach (QString object, this->mGesturesMap.keys())
+	{
+		foreach (QString pathStr, mGesturesMap[object].second)
+		{
+			allGestures++;
+			QList<QPoint> path = Adopter::stringToPath(pathStr);
+			if (object == mGesturesManager->qtRecognize(path))
+				qtGestures++;
+			if (object == mGesturesManager->rectRecognize(path))
+				rectGestures++;
+		}
+	}
+	ui->tbGesturesNum->setText(QString("%1").arg(allGestures));
+	ui->teQtNum->setText(QString("%1").arg(qtGestures));
+	ui->teRectNum->setText(QString("%1").arg(rectGestures));
 }
