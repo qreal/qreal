@@ -26,6 +26,7 @@ private:
 	void paintEvent(QPaintEvent *);
 	GesturesManager * mGesturesManager;
 	QMap<QString, QPair<QList<QPoint>, QList<QString> > > mGesturesMap;
+	QMap<QString, QPair<double, double> > mRightGestures;
 
 protected:
 	void mouseMoveEvent(QMouseEvent * event);

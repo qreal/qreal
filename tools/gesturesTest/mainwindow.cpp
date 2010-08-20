@@ -98,16 +98,33 @@ void MainWindow::checkGestures()
 	int qtGestures = 0;
 	foreach (QString object, this->mGesturesMap.keys())
 	{
+		int qtRightNum = 0;
+		int rectRightNum = 0;
+		int gesturesNum = 0;
 		foreach (QString pathStr, mGesturesMap[object].second)
 		{
 			allGestures++;
+			gesturesNum++;
 			QList<QPoint> path = Adopter::stringToPath(pathStr);
 			if (object == mGesturesManager->qtRecognize(path))
+			{
 				qtGestures++;
+				qtRightNum++;
+			}
 			if (object == mGesturesManager->rectRecognize(path))
+			{
 				rectGestures++;
+				rectRightNum++;
+			}
+		}
+		if (gesturesNum != 0)
+		{
+			double rectPercent = (double) rectRightNum / gesturesNum;
+			double qtPercent = (double) qtRightNum / gesturesNum;
+			mRightGestures.insert(object, QPair<double, double>(rectPercent, qtPercent));
 		}
 	}
+	XmlParser::saveResults(mRightGestures);
 	ui->tbGesturesNum->setText(QString("%1").arg(allGestures));
 	ui->teQtNum->setText(QString("%1").arg(qtGestures));
 	ui->teRectNum->setText(QString("%1").arg(rectGestures));

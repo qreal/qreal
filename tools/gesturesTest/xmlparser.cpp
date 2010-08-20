@@ -6,6 +6,7 @@
 #include <QTextStream>
 
 const QString pathToFile = "usersGestures.xml";
+const QString matchingAlgorithmsFile = "matchingAlgorithms.txt";
 
 //TODO:: вынести в константы
 QMap<QString, QPair<QList<QPoint>, QList<QString> > > XmlParser::parseXml()
@@ -69,5 +70,21 @@ void XmlParser::save(const QMap<QString, QPair<QString, QList<QString> > > &map)
 		root.appendChild(element);
 	}
 	doc.save(textStream, 2);
+	file.close();
+}
+
+void XmlParser::saveResults(const QMap<QString, QPair<double, double> > & results)
+{
+	QFile file(matchingAlgorithmsFile);
+	if (!file.open(QFile::ReadWrite))
+		return;
+	QTextStream textStream(&file);
+	foreach (QString object, results.keys())
+	{
+		textStream << object << " \n"
+				<< QString("%1").arg(results[object].first) << " % recognized by rectangle algorithm gestures; \n"
+				<< QString("%1").arg(results[object].second) << " % recognized by qt algorithm gestures; \n"
+				<< " \n";
+	}
 	file.close();
 }
