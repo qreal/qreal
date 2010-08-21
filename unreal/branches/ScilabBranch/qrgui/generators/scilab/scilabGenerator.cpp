@@ -18,22 +18,25 @@ ScilabGenerator::ScilabGenerator(qrRepo::RepoApi const &api, qReal::EditorManage
 {
 }
 
-void ScilabGenerator::Visit(Id const &id)
+void ScilabGenerator::Visit(Id const &id, QTextStream &out)
 {
-    utils::OutFile out("test.sci");
-
     if (id.element() == "IntegralNode")
         VisitIntegralNode(id, out);
 }
 
-gui::ErrorReporter ScilabGenerator::generate()
+gui::ErrorReporter ScilabGenerator::generate(QString const &dirName)
 {
-        Id repoId = ROOT_ID;
-       // QString outputDirectory = "";//mApi.stringProperty(repoId, "output directory");
-//    if (outputDirectory == "")
-            //outputDirectory = ".";
-   // utils::OutFile out("test.sci");
 
+    Id repoId = ROOT_ID;
+    QString const scilab2cDir = QProcessEnvironment::systemEnvironment().value("SCI2C", ".");
+    QString const pathToFile = dirName + "\\test_gen.sci";
+
+    QFile file(pathToFile);
+    file.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate);
+
+    QTextStream out(&file);
+
+    out << "function test_gen()\n";
     IdList allDiagramms = mApi.children(repoId);
     IdList mathDiagramms;
 
@@ -47,41 +50,33 @@ gui::ErrorReporter ScilabGenerator::generate()
     {
         foreach(Id const child, mApi.children(mathDiagramm))
         {
-           Visit(child);
+           Visit(child, out);
         }
     }
-
+    out << "endfunction";
+    file.close();
+    generateNativeCode(dirName);
     return mErrorReporter;
 }
 
-void ScilabGenerator::VisitIntegralNode(const Id &id, utils::OutFile &out)
+void ScilabGenerator::VisitIntegralNode(const Id &id, QTextStream &out)
 {
     QString up_limit_string;
     QString low_limit_string = "";
     QString variable_string = "";
     QString function_string = "";
 
-//    Id link = getLinkByPortName(id, "up_limit");
-//    up_limit_string = getLinkOtherEntityValue(link, id, "1");
-//
-//    link  = getLinkByPortName(id, "low_limit");
-//    low_limit_string = getLinkOtherEntityValue(link, id, "0");
-//
-//    link  = getLinkByPortName(id, "function");
-//    function_string = getLinkOtherEntityValue(link, id, "x");
-//
-//    link = getLinkByPortName(id, "variables");
-//    variable_string = getLinkOtherEntityValue(link, id, "x");
-
     up_limit_string = getPropertyString(id, "up limit");
     low_limit_string = getPropertyString(id, "low limit");
     function_string = getPropertyString(id, "function");
     variable_string = getPropertyString(id, "variable");
 
-    out() << "x = " << low_limit_string << ":" << up_limit_string << ";\n";
-    out() << "y = " << function_string << ";\n";
-    out() << "ans = inttrap(x,y)";
-    out().flush();
+    out << "x = " << low_limit_string << ":" << up_limit_string << ";\n";
+    out << "y = " << function_string << ";\n";
+    out << "ans = inttrap(x,y);\n";
+    out << "disp(ans)\n";
+
+    out.flush();
 }
 
 Id ScilabGenerator::getLinkByPortName(Id const &id, QString const portName)
@@ -124,4 +119,21 @@ QString ScilabGenerator::getPropertyString(Id const &id, QString const &property
         }
     }
     return result;
+}
+
+void ScilabGenerator::generateNativeCode(QString const &dirName)
+{
+    QString const scilab2cDir = QProcessEnvironment::systemEnvironment().value("SCI2C", ".");
+    QString job1 = "cd " + scilab2cDir;
+    QString job2 = "scilab2c('" +  dirName + "\\test_gen.sci', '" + "D:\\QT\\GeneratedFromReal"  +"')";
+
+    #ifdef _MSC_VER
+    StartScilab(NULL,NULL,NULL) == FALSE;
+    #else
+    StartScilab(getenv("SCI") ,NULL,NULL) == FALSE;
+    #endif
+
+    SendScilabJob(job1.toAscii().data());
+    SendScilabJob("exec loader.sce");
+    SendScilabJob(job2.toAscii().data());
 }

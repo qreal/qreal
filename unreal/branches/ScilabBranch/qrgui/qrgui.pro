@@ -18,6 +18,13 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+INCLUDEPATH += $(SCI)\..\modules\api_scilab\includes
+INCLUDEPATH += $(SCI)\..\modules\core\includes
+INCLUDEPATH += $(SCI)\..\modules\call_scilab\includes
+LIBS += $(SCI)\..\bin\api_scilab.dll
+LIBS += $(SCI)\..\bin\call_scilab.dll
+LIBS += $(SCI)\..\bin\LibScilab.dll
+
 if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
 }

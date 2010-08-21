@@ -598,10 +598,14 @@ void MainWindow::generateToHascol()
 }
 
 void MainWindow::generateToScilab()
-{
+{    
     generators::ScilabGenerator scilabGenerator(mModel->api(), mEditorManager);
 
-    gui::ErrorReporter const errors = scilabGenerator.generate();
+    QString const dirName = QFileDialog::getExistingDirectory(this);
+    if (dirName.isEmpty())
+            return;
+
+    gui::ErrorReporter const errors = scilabGenerator.generate(dirName);
     errors.showErrors("Generation finished successfully");
 
     qDebug() << "Done.";
