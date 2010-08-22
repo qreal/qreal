@@ -131,12 +131,16 @@ void MainWindow::checkGestures()
 		}
 		if (gesturesNum != 0)
 		{
-			double rectPercent = (double) rectRightNum / gesturesNum;
-			double qtPercent = (double) qtRightNum / gesturesNum;
-			double rectFalsePositivePercent = (double) rectFalsePositive / gesturesNum;
-			double qtFalsePositivePercent = (double) qtFalsePositive / gesturesNum;
+			double rectPercent = (double) rectRightNum / gesturesNum * 100;
+			double rectFalsePositivePercent = (double) rectFalsePositive / gesturesNum * 100;
+			double rectNotRecognized = 100 - rectPercent - rectFalsePositivePercent;
+			double qtPercent = (double) qtRightNum / gesturesNum * 100;
+			double qtFalsePositivePercent = (double) qtFalsePositive / gesturesNum * 100;
+			double qtNotRecognized = 100 - qtPercent - qtFalsePositivePercent;
+
 			QList<double> list;
-			list << gesturesNum << rectPercent << rectFalsePositivePercent << qtPercent << qtFalsePositivePercent;
+			list << gesturesNum << rectPercent << rectFalsePositivePercent << rectNotRecognized
+					<< qtPercent << qtFalsePositivePercent << qtNotRecognized;
 			mRightGestures.insert(object, list);
 		}
 	}

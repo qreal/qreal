@@ -84,11 +84,13 @@ void XmlParser::saveResults(const QMap<QString, QList<double> > & results)
 		textStream << object << " \n"
 				<< "gestures: " << results[object].at(0) << " \n"
 				<< "rect: " << " \n"
-				<< QString("	recoznized: %1%").arg(results[object].at(1) * 100) << " \n"
-				<< QString("	false positives: %1%").arg(results[object].at(2) * 100) << " \n"
+				<< QString("	recoznized: %1%").arg(results[object].at(1)) << " \n"
+				<< QString("	false positives: %1%").arg(results[object].at(2)) << " \n"
+				<< QString("	not recognized: %1%").arg(results[object].at(3)) << " \n"
 				<< "qt: " << " \n"
-				<< QString("	recognized: %1%").arg(results[object].at(3) * 100) << " \n"
-				<< QString("	false positives %1%").arg(results[object].at(4) * 100) << " \n"
+				<< QString("	recognized: %1%").arg(results[object].at(4)) << " \n"
+				<< QString("	false positives %1%").arg(results[object].at(5)) << " \n"
+				<< QString("	not recognized: %1%").arg(results[object].at(6)) << " \n"
 				 << "============================\n";
 	}
 	file.close();
