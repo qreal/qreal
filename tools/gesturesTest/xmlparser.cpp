@@ -73,7 +73,7 @@ void XmlParser::save(const QMap<QString, QPair<QString, QList<QString> > > &map)
 	file.close();
 }
 
-void XmlParser::saveResults(const QMap<QString, QPair<double, double> > & results)
+void XmlParser::saveResults(const QMap<QString, QList<double> > & results)
 {
 	QFile file(matchingAlgorithmsFile);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -82,9 +82,14 @@ void XmlParser::saveResults(const QMap<QString, QPair<double, double> > & result
 	foreach (QString object, results.keys())
 	{
 		textStream << object << " \n"
-				<< QString("%1").arg(results[object].first * 100) << " % recognized by rectangle algorithm gestures; \n"
-				<< QString("%1").arg(results[object].second * 100) << " % recognized by qt algorithm gestures; \n"
-				<< " \n";
+				<< "gestures: " << results[object].at(0) << " \n"
+				<< "rect: " << " \n"
+				<< QString("	recoznized: %1%").arg(results[object].at(1) * 100) << " \n"
+				<< QString("	false positives: %1%").arg(results[object].at(2) * 100) << " \n"
+				<< "qt: " << " \n"
+				<< QString("	recognized: %1%").arg(results[object].at(3) * 100) << " \n"
+				<< QString("	false positives %1%").arg(results[object].at(4) * 100) << " \n"
+				 << "============================\n";
 	}
 	file.close();
 }

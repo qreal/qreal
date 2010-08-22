@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionCheck_gestures, SIGNAL(triggered()), this, SLOT(checkGestures()));
 	mPaintManager = new PaintManager(ui->graphicsView);
 	mGesturesManager = new GesturesManager();
+	loadFile();
 }
 
 void MainWindow::drawIdealGesture()
@@ -101,29 +102,42 @@ void MainWindow::checkGestures()
 	foreach (QString object, this->mGesturesMap.keys())
 	{
 		int qtRightNum = 0;
+		int qtFalsePositive = 0;
 		int rectRightNum = 0;
+		int rectFalsePositive = 0;
 		int gesturesNum = 0;
 		foreach (QString pathStr, mGesturesMap[object].second)
 		{
 			allGestures++;
 			gesturesNum++;
 			QList<QPoint> path = Adopter::stringToPath(pathStr);
-			if (object == mGesturesManager->qtRecognize(path))
+			QString recognizedByQt = mGesturesManager->qtRecognize(path);
+			if (object == recognizedByQt)
 			{
 				qtGestures++;
 				qtRightNum++;
+			} else if (!recognizedByQt.isEmpty()) {
+				qtFalsePositive++;
 			}
-			if (object == mGesturesManager->rectRecognize(path))
+
+			QString recognizedByRect = mGesturesManager->rectRecognize(path);
+			if (object == recognizedByRect)
 			{
 				rectGestures++;
 				rectRightNum++;
+			} else if (!recognizedByRect.isEmpty()) {
+				rectFalsePositive++;
 			}
 		}
 		if (gesturesNum != 0)
 		{
 			double rectPercent = (double) rectRightNum / gesturesNum;
 			double qtPercent = (double) qtRightNum / gesturesNum;
-			mRightGestures.insert(object, QPair<double, double>(rectPercent, qtPercent));
+			double rectFalsePositivePercent = (double) rectFalsePositive / gesturesNum;
+			double qtFalsePositivePercent = (double) qtFalsePositive / gesturesNum;
+			QList<double> list;
+			list << gesturesNum << rectPercent << rectFalsePositivePercent << qtPercent << qtFalsePositivePercent;
+			mRightGestures.insert(object, list);
 		}
 	}
 	XmlParser::saveResults(mRightGestures);
