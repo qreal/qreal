@@ -42,6 +42,8 @@ void MainWindow::mouseMoveEvent(QMouseEvent * event)
 void MainWindow::mousePressEvent(QMouseEvent * event)
 {
 	mPath.clear();
+	ui->tbQtAlg->clear();
+	ui->tbRectAlg->clear();
 	mPath.push_back(event->pos());
 	this->update();
 }

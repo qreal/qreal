@@ -76,14 +76,14 @@ void XmlParser::save(const QMap<QString, QPair<QString, QList<QString> > > &map)
 void XmlParser::saveResults(const QMap<QString, QPair<double, double> > & results)
 {
 	QFile file(matchingAlgorithmsFile);
-	if (!file.open(QFile::ReadWrite))
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream textStream(&file);
 	foreach (QString object, results.keys())
 	{
 		textStream << object << " \n"
-				<< QString("%1").arg(results[object].first) << " % recognized by rectangle algorithm gestures; \n"
-				<< QString("%1").arg(results[object].second) << " % recognized by qt algorithm gestures; \n"
+				<< QString("%1").arg(results[object].first * 100) << " % recognized by rectangle algorithm gestures; \n"
+				<< QString("%1").arg(results[object].second * 100) << " % recognized by qt algorithm gestures; \n"
 				<< " \n";
 	}
 	file.close();
