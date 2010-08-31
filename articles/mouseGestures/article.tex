@@ -322,28 +322,30 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
 
 Результаты тестирования приведены в~\ref{experimentsTable}
 
-\begin{table}[ht]
+\begin{center}
+\begin{table} [ht]
   \label{experimentsTable}
-  \fontsize{6}{8}
+  \fontsize{8}{11}
   \selectfont
-  \begin{tabular} {| c | c | c | c | c | c | c | c | c |}
+  \begin{tabular} {| c | c | c | c | c | c | c | c |}
     \hline
-    \multirow{2}{*}{Жест} & \multirow{2}{*}{Картинка} & \multirow{2}{*}{N} & \multicolumn{2}{c}{C} & \multicolumn{2}{|c}{FP} & \multicolumn{2}{|c|}{FN} \\
-    \cline{4-9}
-                          &                           &                    & rect    & qt          & rect & qt               & rect & qt \\ \hline     
-    1&   \includegraphics[scale=0.5]{gesture1.png}    & 30                 & 20\%    & 3.33\%         & 80\% & 0\%              & 0\%  & 96.67\% \\ \hline
-    2&   \includegraphics[scale=0.5]{gesture2.png}    & 32                 & 90.62\% & 9.38\%         & 0\% & 0\%              & 9.38\%  & 90.62\% \\ \hline
-    3&   \includegraphics[scale=0.5]{gesture3.png}    & 37                 & 81.08\% & 100\%          & 0\% & 0\%              & 18.92\%  & 0\% \\ \hline
-    4&   \includegraphics[scale=0.5]{gesture4.png}    & 34                 & 47.06\% & 50\%           & 52.94\% & 11.76\%              & 0\%  & 38.24\% \\ \hline
-    5&   \includegraphics[scale=0.5]{gesture5.png}    & 37                 & 100\%   & 89.19\%        & 0\% & 0\%              & 0\%  & 10.81\% \\ \hline
-    6&   \includegraphics[scale=0.5]{gesture6.png}    & 30                 & 93.33\% & 0\%            & 0\% & 6.67\%              & 6.67\%  & 93.33\% \\ \hline
-    7&   \includegraphics[scale=0.35]{gesture7.png}    & 30                 & 83.33\% & 100\%          & 16.67\% & 0\%              & 0\%  & 0\% \\ \hline
-    8&   \includegraphics[scale=0.5]{gesture8.png}    & 30                 & 100\%   & 83.33\%        & 0\% & 6.67\%              & 0\%  & 10\% \\ \hline
-    9&   \includegraphics[scale=0.5]{gesture9.png}    & 34                 & 55.88\% & 100\%          & 0\% & 0\%              & 44.12\%  & 0\% \\ \hline
-    10&  \includegraphics[scale=0.5]{gesture10.png}   & 42                 & 92.86\% & 0\%            & 4.76\% & 66.67\%              & 2.38\%  & 33.33\% \\ \hline
+    \multirow{2}{*}{Жест} & \multirow{2}{*}{Идеальный жест} & \multicolumn{2}{c}{Распознано} & \multicolumn{2}{|c}{Ложно-позитивных} & \multicolumn{2}{|c|}{Не распознано} \\
+    \cline{3-8}
+                          &                          & rect    & qt         & rect   & qt        & rect   & qt \\ \hline     
+    1&   \includegraphics[scale=0.5]{gesture1.png}   & 26\%    & 11\%       & 74\%   & 1\%       & 0\%    & 88\% \\ \hline
+    2&   \includegraphics[scale=0.5]{gesture2.png}   & 94\%    & 3\%        & 1\%    & 0\%       & 5\%    & 97\% \\ \hline
+    3&   \includegraphics[scale=0.5]{gesture3.png}   & 92\%    & 100\%      & 1\%    & 0\%       & 7\%    & 0\% \\ \hline
+    4&   \includegraphics[scale=0.5]{gesture4.png}   & 61\%    & 19\%       & 38\%   & 15\%      & 1\%    & 66\% \\ \hline
+    5&   \includegraphics[scale=0.5]{gesture5.png}   & 98\%    & 57\%       & 2\%    & 0\%       & 0\%    & 43\% \\ \hline
+    6&   \includegraphics[scale=0.5]{gesture6.png}   & 96\%    & 0\%        & 1\%    & 15\%      & 3\%    & 85\% \\ \hline
+    7&   \includegraphics[scale=0.35]{gesture7.png}  & 69\%    & 95\%       & 30\%   & 0\%       & 1\%    & 5\% \\ \hline
+    8&   \includegraphics[scale=0.5]{gesture8.png}   & 98\%    & 25\%       & 2\%    & 3\%       & 0\%    & 72\% \\ \hline
+    9&   \includegraphics[scale=0.5]{gesture9.png}   & 84\%    & 92\%       & 0\%    & 0\%       & 16\%   & 8\% \\ \hline
+    10&  \includegraphics[scale=0.5]{gesture10.png}  & 93\%    & 0\%        & 5\%    & 63\%      & 2\%    & 37\% \\ \hline
   \end{tabular}
   \caption{Результаты экспериментов}
 \end{table}
+\end{center}
 
 \fontsize{10}{12}
 \selectfont
@@ -369,6 +371,8 @@ d_{normalized}(s1,s2) = \frac{d(s1,s2)}{min(s1,s2)},
   \item Использование хорошо зарекомендовавших себя в других областях подходов к классификации объектов, основанных на обучении, оказалось затруднительно в системах, где набор распознаваемых объектов может меняться динамически, а используемый нами классификатор показал недостаточную для практического использования точность распознавания.
   \item Однако, при определённых ограничениях рассматриваемые в статье методы обеспечивают приемлемое качество распознавания: во-первых, можно сократить количество классов  распознаваемых объектов, во-вторых, можно использовать более удобные, чем мышь, механизмы рисования жеста, например, сенсорные экраны. При подобных ограничениях использование мышиных жестов в качестве инструмента для создания новых элементов показало себя достаточно удобным.
 \end{itemize}
+
+\pagebreak
 
 \begin{thebibliography}{9001}
   \bibitem{levenshtein} В.И. Левенштейн. Двоичные коды с исправлением выпадений, вставок и замещений символов // Доклады Академий Наук СССР, 1965. 163.4:845-848
