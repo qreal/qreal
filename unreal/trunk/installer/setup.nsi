@@ -69,7 +69,7 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
     File ..\qrgui\release\qrgui.exe
-    File ..\qrgui\release\qrrepo.dll
+    File ..\qrgui\release\*.dll
 	SetOutPath "$INSTDIR\plugins"
     File /r ..\qrgui\plugins\*
 	SetOutPath $INSTDIR
@@ -130,7 +130,7 @@ Section /o -un.Main UNSEC0000
     Delete /REBOOTOK $INSTDIR\QtCore4.dll
 	RmDir /r /REBOOTOK $INSTDIR\plugins
     RmDir /r /REBOOTOK $INSTDIR
-    Delete /REBOOTOK $INSTDIR\qrrepo.dll
+    Delete /REBOOTOK $INSTDIR\*.dll
     Delete /REBOOTOK $INSTDIR\qrgui.exe
     DeleteRegValue HKLM "${REGKEY}\Components" Main
 SectionEnd
