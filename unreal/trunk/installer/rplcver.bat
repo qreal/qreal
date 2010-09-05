@@ -13,3 +13,5 @@ for /F "tokens=1* delims=]" %%j in ('type "%1" ^| find /V /N ""') do (
 )
 
 move %1.tmp %1
+
+@echo on
