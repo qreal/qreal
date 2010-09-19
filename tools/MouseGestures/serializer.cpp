@@ -4,6 +4,7 @@
 #include "serializer.h"
 #include "GeometricForms.h"
 #include "math.h"
+#include "figures.h"
 
 static const QString lineKey = "line";
 static const QString ellipseKey = "ellipse";
@@ -11,12 +12,7 @@ static const QString rectangleKey = "rectangle";
 static const QString nodeKey = "node";
 static const QString nodeNameKey = "name";
 static const QString pathKey = "path";
-static const QString x1Key = "x1";
-static const QString x2Key = "x2";
-static const QString y1Key = "y1";
-static const QString y2Key = "y2";
-static const double pi = 3.141592;
-static const int pointsOnEllipse = 16;
+
 
 Serializer::Serializer(QString const & pathToFile)
 {
@@ -65,21 +61,22 @@ Entity Serializer::parseNode(QDomElement const & domElement)
 		for (int i = 0; i < geometricElements.size(); i++)
 		{
 			QDomElement geometricElement = geometricElements.at(i).toElement();
-			components.push_back(getPoints(geometricElement));
+			Line line(geometricElement);
+			components.push_back(line.getCurve());
 		}
 		geometricElements = domElement.elementsByTagName(ellipseKey);
 		for (int i = 0; i < geometricElements.size(); i++)
 		{
 			QDomElement geometricElement = geometricElements.at(i).toElement();
-			QList<QPoint> diam = getPoints(geometricElement);
-			if (diam.size() > 1)
-				components.push_back(getEllipsePath(diam[0], diam[1]));
+			Ellipse ellipse(geometricElement);
+			components.push_back(ellipse.getCurve());
 		}
 		geometricElements = domElement.elementsByTagName(rectangleKey);
 		for (int i = 0; i < geometricElements.size(); i++)
 		{
 			QDomElement geometricElement = geometricElements.at(i).toElement();
-			components.push_back(getRectanglePath(geometricElement));
+			Rectangle rectangle(geometricElement);
+			components.push_back(rectangle.getCurve());
 		}
 	}
 	Entity entity;
@@ -88,48 +85,6 @@ Entity Serializer::parseNode(QDomElement const & domElement)
 	return entity;
 }
 
-QList<QPoint> Serializer::getPoints(const QDomElement &geometricElement)
-{
-	bool isValid;
-	QPoint point1(geometricElement.attribute(x1Key, "").toInt(&isValid, 10),
-				  geometricElement.attribute(y1Key, "").toInt(&isValid, 10));
-	QPoint point2(geometricElement.attribute(x2Key, "").toInt(&isValid, 10),
-				  geometricElement.attribute(y2Key, "").toInt(&isValid, 10));
-	QList<QPoint> component;
-	component.push_back(point1);
-	component.push_back(point2);
-	return component;
-}
-
-QList<QPoint> Serializer::getRectanglePath(const QDomElement &domElement)
-{
-	int x1 = domElement.attribute(x1Key, "").toInt();
-	int y1 = domElement.attribute(y1Key, "").toInt();
-	int x2 = domElement.attribute(x2Key, "").toInt();
-	int y2 = domElement.attribute(y2Key, "").toInt();
-	QList<QPoint> component;
-	component.push_back(QPoint(x1, y1));
-	component.push_back(QPoint(x2, y1));
-	component.push_back(QPoint(x2, y2));
-	component.push_back(QPoint(x1, y2));
-	component.push_back(QPoint(x1, y1));
-	return component;
-}
-
-QList<QPoint> Serializer::getEllipsePath(const QPoint &point1, const QPoint &point2)
-{
-	QList<QPoint> ellipse;
-	QPoint centre = (point1 + point2) / 2;
-	int diam = static_cast<int>(sqrt(pow((point1 - point2).x(), 2) + pow((point1 - point2).y(), 2)));
-	for (int i = 0; i < pointsOnEllipse; i++)
-	{
-		int x = static_cast<int>(diam * cos(2 * pi * i / pointsOnEllipse) / 2);
-		int y = static_cast<int>(diam * sin(2 * pi * i / pointsOnEllipse) / 2);
-		ellipse.push_back(centre + QPoint(x, y));
-	}
-	ellipse.push_back(QPoint(centre.x() + diam / 2, centre.y()));
-	return ellipse;
-}
 
 void Serializer::serialize(const Objects &objects)
 {

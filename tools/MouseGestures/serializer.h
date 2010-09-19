@@ -18,9 +18,6 @@ public:
 private:
 	QDomElement getFirstDomElement();
 	Entity parseNode(QDomElement const & domElement);
-	QList<QPoint> getEllipsePath(QPoint const &point1, QPoint const &point2);
 	QString mPathToFile;
 	QDomElement mDomElement;
-	QList<QPoint> getPoints(QDomElement const & domElement);
-	QList<QPoint> getRectanglePath(QDomElement const & domElement);
 };

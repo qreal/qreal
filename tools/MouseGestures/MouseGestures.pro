@@ -26,5 +26,6 @@ HEADERS += mousegestures.h \
     IKeyManager.h \
     adopter.h \
     levenshteindistance.h \
-    paintmanager.h
+    paintmanager.h \
+    figures.h
 FORMS += mousegestures.ui
