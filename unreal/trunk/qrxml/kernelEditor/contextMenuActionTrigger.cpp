@@ -1,5 +1,6 @@
 #include "contextMenuActionTrigger.h"
 #include "methodeditordialog.h"
+#include "fieldeditordialog.h"
 
 #include <QtCore/QDebug>
 #include <QUuid>
@@ -27,10 +28,26 @@ void ContextMenuActionTrigger::contextMenuActionTriggered(QString const &name)
 							"Method"));
 				mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateMethodString()));	
 			} else if (id.element() == "Class") {
+				//Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
+				//			"Method"));
 			}
 		}
-		else {
-			qDebug() << "not accepted...";
+	} else if (actionName == "Add field") {
+		FieldEditorDialog dialog;
+		int dialogResult = dialog.exec();	
+		
+		if (dialogResult) {
+			qDebug() << "ACCEPTED!!!";
+
+			Id id = Id::loadFromString(uuid);
+			if (id.element() == "FieldsContainer") {
+				Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
+							"Field"));
+				mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateFieldString()));	
+			} else if (id.element() == "Class") {
+				//Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
+				//			"Method"));
+			}
 		}
 	}
 }

@@ -486,7 +486,8 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 		action->setEventPos(e->mapFromScene(pos));
 		menu.addAction(action);
 
-		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()));
+		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
+				Qt::UniqueConnection);
 		mActionSignalMapper->setMapping(action, action->text() + "###" + e->uuid().toString());
 	}
 	menu.addSeparator();
