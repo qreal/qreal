@@ -6,5 +6,6 @@
 class IKeyManager
 {
 public:
-    virtual QString getKey(QList<QPoint> const & path) = 0;
+	virtual QString getKey(QList<QPoint> const & path) = 0;
+	virtual double getDistance(QString const & key1, QString const & key2) = 0;
 };

@@ -7,17 +7,14 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mousegestures.cpp \
     mousemovementmanager.cpp \
-    key8manager.cpp \
     pathcorrector.cpp \
     serializer.cpp \
     validpathcreator.cpp \
     keyobjecttable.cpp \
     adopter.cpp \
-    levenshteindistance.cpp \
     paintmanager.cpp
 HEADERS += mousegestures.h \
     mousemovementmanager.h \
-    key8manager.h \
     pathcorrector.h \
     serializer.h \
     GeometricForms.h \
@@ -25,7 +22,6 @@ HEADERS += mousegestures.h \
     keyobjecttable.h \
     IKeyManager.h \
     adopter.h \
-    levenshteindistance.h \
     paintmanager.h \
     figures.h
 FORMS += mousegestures.ui
