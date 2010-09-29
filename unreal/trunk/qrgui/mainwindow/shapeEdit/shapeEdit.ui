@@ -100,7 +100,7 @@
     </widget>
    </item>
    <item row="0" column="2" rowspan="17">
-    <widget class="QGraphicsView" name="graphicsView">
+    <widget class="View" name="graphicsView">
      <property name="minimumSize">
       <size>
        <width>150</width>
@@ -1064,6 +1064,11 @@
    <class>ColorListEditor</class>
    <extends>QComboBox</extends>
    <header>colorlisteditor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>View</class>
+   <extends>QGraphicsView</extends>
+   <header>view.h</header>
   </customwidget>
  </customwidgets>
  <resources>

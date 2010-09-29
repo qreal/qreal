@@ -189,6 +189,24 @@ void Line::resizeItem(QGraphicsSceneMouseEvent *event)
 		Item::resizeItem(event);
 }
 
+void Line::reshapeRectWithShift()
+{
+	qreal differenceX = abs(mX2 - mX1);
+	qreal differenceY = abs(mY2 - mY1);
+	qreal size = qMax(differenceX, differenceY);
+	if (differenceX > differenceY) {
+		if(mX2 > mX1)
+			setX2andY2(mX1 + size, mY1);
+		else
+			setX2andY2(mX1 - size, mY1);
+	} else {
+		if(mY2 > mY1)
+			setX2andY2(mX1, mY1 + size);
+		else
+			setX2andY2(mX1, mY1 - size);
+	}
+}
+
 QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QRectF const &rect)
 {
 	QString x1 = "";

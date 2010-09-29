@@ -18,6 +18,7 @@ public:
 	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+	virtual void reshapeRectWithShift();
 
 	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(QRectF const &rect);
 	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);

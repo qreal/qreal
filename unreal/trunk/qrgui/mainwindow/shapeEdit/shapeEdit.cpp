@@ -19,6 +19,7 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 
 {
 	init();
+	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
 ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
@@ -26,6 +27,7 @@ ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
+	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
 }
 
 void ShapeEdit::init()
@@ -77,11 +79,14 @@ void ShapeEdit::init()
 
 
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
+	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
 	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
 	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
+	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
 	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
+	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
 	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
@@ -117,6 +122,11 @@ ShapeEdit::~ShapeEdit()
 	delete mUi;
 }
 
+View* ShapeEdit::getView()
+{
+	return mUi->graphicsView;
+}
+
 void ShapeEdit::changeEvent(QEvent *e)
 {
 	QWidget::changeEvent(e);
@@ -127,6 +137,17 @@ void ShapeEdit::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+void ShapeEdit::keyPressEvent(QKeyEvent *event)
+{
+	QWidget::keyPressEvent(event);
+	if (event->matches(QKeySequence::Save))
+		emit saveToXmlSignal();
+	else if (event->key() == Qt::Key_S)
+		emit saveSignal();
+	if (event->matches(QKeySequence::Open))
+		emit openSignal();
 }
 
 QList<QDomElement> ShapeEdit::generateGraphics()

@@ -140,6 +140,11 @@ namespace qReal {
 		int getTabIndex(const QModelIndex &index);
 
 		void initGridProperties();
+		void disconnectZoom(QGraphicsView* view);
+		void connectZoom(QGraphicsView* view);
+		void disconnectActionZoomTo(QWidget* widget);
+		void connectActionZoomTo(QWidget* widget);
+		void setConnectActionZoomTo(QWidget* widget);
 
 	signals:
 		void gesturesShowed();

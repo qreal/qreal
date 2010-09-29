@@ -6,6 +6,7 @@
 #include <QtGui/QGraphicsView>
 #include <QtCore/QList>
 
+#include "view.h"
 #include "item.h"
 #include "arch.h"
 #include "line.h"
@@ -29,7 +30,7 @@ class Scene : public QGraphicsScene
 {
 	Q_OBJECT
 public:
-	Scene(QGraphicsView *view, QObject *parent = 0);
+	Scene(View *view, QObject *parent = 0);
 	QGraphicsRectItem *mEmptyRect;
 	QPoint centerEmpty();
 	QRect realItemsBoundingRect() const;
@@ -94,7 +95,7 @@ private:
 	};
 
 	int mZValue;
-	QGraphicsView *mView;
+	View *mView;
 	ItemTypes mItemType;
 	bool mWaitMove;
 	int mCount;

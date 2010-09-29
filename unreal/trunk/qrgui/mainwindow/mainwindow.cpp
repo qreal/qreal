@@ -833,6 +833,8 @@ void MainWindow::changeMiniMapSource( int index )
 	if (index != -1) {
 		ui.tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
+		setConnectActionZoomTo(ui.tabs->currentWidget());
+
 		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
 		{
 			ui.minimapView->setScene(editorView->scene());
@@ -902,8 +904,54 @@ void MainWindow::openNewEmptyTab()
 	else {
 		shapeEdit = new ShapeEdit();
 	}
+
 	ui.tabs->addTab(shapeEdit, text);
 	ui.tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::disconnectZoom(QGraphicsView* view)
+{
+	disconnect(ui.actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
+	disconnect(ui.actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
+}
+
+void MainWindow::connectZoom(QGraphicsView* view)
+{
+	connect(ui.actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
+	connect(ui.actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
+}
+
+void MainWindow::disconnectActionZoomTo(QWidget* widget)
+{
+	EditorView *tab = dynamic_cast<EditorView *>(widget);
+	if (tab != NULL)
+		disconnectZoom(tab);
+	else {
+		ShapeEdit *shapeTab = dynamic_cast<ShapeEdit *>(widget);
+		if (shapeTab != NULL)
+			disconnectZoom(shapeTab->getView());
+	}
+}
+
+void MainWindow::connectActionZoomTo(QWidget* widget)
+{
+	EditorView *view = (dynamic_cast<EditorView *>(widget));
+	if (view != NULL)
+		connectZoom(view);
+	else {
+		ShapeEdit *shapeWidget = (dynamic_cast<ShapeEdit *>(widget));
+		if (shapeWidget != NULL)
+			connectZoom(shapeWidget->getView());
+	}
+}
+
+void MainWindow::setConnectActionZoomTo(QWidget* widget)
+{
+	for (int i = 0; i < ui.tabs->count(); i++)
+		disconnectActionZoomTo(ui.tabs->widget(i));
+
+	connectActionZoomTo(widget);
 }
 
 void MainWindow::centerOn(const QModelIndex &index)
@@ -943,7 +991,6 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 {
 //	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
 //		return;
-
 	QModelIndex index = arg;
 	while (index.parent() != QModelIndex())
 		index = index.parent();
@@ -1000,8 +1047,6 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	changeMiniMapSource(ui.tabs->currentIndex());
 
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
-	connect(ui.actionZoom_In, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomIn()));
-	connect(ui.actionZoom_Out, SIGNAL(triggered()), getCurrentTab(), SLOT(zoomOut()));
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
