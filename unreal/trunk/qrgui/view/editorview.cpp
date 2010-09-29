@@ -70,12 +70,15 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 		setDragMode(NoDrag);
 	else
 		setDragMode(RubberBandDrag);
+	if (mScene->getNeedDrawGrid())
+		mScene->invalidate();
 	QGraphicsView::mouseMoveEvent(event);
 }
 
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	mScene->invalidate();
+	if (mScene->getNeedDrawGrid())
+		mScene->invalidate();
 }
 

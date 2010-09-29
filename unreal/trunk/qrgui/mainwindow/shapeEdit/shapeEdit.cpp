@@ -11,6 +11,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QSpinBox>
 #include <QtGui/QImage>
+#include <QtGui/QMessageBox>
 
 using namespace utils;
 
@@ -144,7 +145,7 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 	QWidget::keyPressEvent(event);
 	if (event->matches(QKeySequence::Save))
 		emit saveToXmlSignal();
-	else if (event->key() == Qt::Key_S)
+	else if (event->key() == Qt::Key_F2)
 		emit saveSignal();
 	if (event->matches(QKeySequence::Open))
 		emit openSignal();
@@ -224,6 +225,7 @@ void ShapeEdit::saveToXml()
 void ShapeEdit::save()
 {
 	generateDom();
+	QMessageBox::information(this, tr("Saving"), "Saved successfully");
 	emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 }
 

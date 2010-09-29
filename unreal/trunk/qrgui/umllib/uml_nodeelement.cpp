@@ -17,7 +17,7 @@ using namespace UML;
 using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
-	: mSwitchGrid(false), mSwitchGridAction("Switch on grid", this),
+	: mSwitchGrid(false), mSwitchAlignment(true), mSwitchGridAction("Switch on grid", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true),
 		isColorRect(false), connecting(false)
@@ -198,14 +198,14 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 	return result;
 }
 
-void NodeElement::switchOnGrid()
+void NodeElement::switchOnOffGrid(bool isSwitchedOn)
 {
-	mSwitchGrid = true;
+	mSwitchGrid = isSwitchedOn;
 }
 
-void NodeElement::switchOffGrid()
+void NodeElement::switchAlignment(bool isSwitchedOn)
 {
-	mSwitchGrid = false;
+	mSwitchAlignment = isSwitchedOn;
 }
 
 void NodeElement::delUnusedLines()
@@ -264,7 +264,7 @@ void NodeElement::drawLineX(qreal pointX, qreal myY)
 // checking whether we should align with the vertical line or not
 bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 {
-	if (deltaX <= radiusJump) {
+	if (mSwitchAlignment && deltaX <= radiusJump) {
 		setX(pointX - boundingRect().x());
 		adjustLinks();
 		return true;
@@ -275,7 +275,7 @@ bool NodeElement::makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX)
 // checking whether we should align with the horizontal line or not
 bool NodeElement::makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY)
 {
-	if (deltaY <= radiusJump) {
+	if (mSwitchAlignment && deltaY <= radiusJump) {
 		setY(pointY - boundingRect().y());
 		adjustLinks();
 		return true;

@@ -90,13 +90,16 @@
         <property name="text">
          <string>Show grid</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QCheckBox" name="activateGridCheckBox">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>191</width>
+          <x>90</x>
+          <y>10</y>
+          <width>91</width>
           <height>20</height>
          </rect>
         </property>
@@ -105,6 +108,60 @@
         </property>
         <property name="tristate">
          <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QSlider" name="gridWidthSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>251</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="pageStep">
+         <number>10</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_13">
+        <property name="geometry">
+         <rect>
+          <x>270</x>
+          <y>40</y>
+          <width>46</width>
+          <height>13</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Width</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="activateAlignmentCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>190</x>
+          <y>10</y>
+          <width>111</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Activate alignment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </widget>

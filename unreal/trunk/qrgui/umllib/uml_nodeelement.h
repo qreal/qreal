@@ -75,8 +75,8 @@ namespace UML {
 		void resizeChild(QRectF newContents, QRectF oldContents);
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
-		void switchOnGrid();
-		void switchOffGrid();
+		void switchOnOffGrid(bool isSwitchedOn);
+		void switchAlignment(bool isSwitchedOn);
 
 		virtual void setColorRect(bool bl);
 
@@ -89,6 +89,7 @@ namespace UML {
 	private:
 		QList<QGraphicsLineItem*> mLines;
 		bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
+		bool mSwitchAlignment;
 		ContextMenuAction mSwitchGridAction;
 		void delUnusedLines();
 		void drawLineX(qreal pointX, qreal myY);

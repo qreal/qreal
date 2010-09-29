@@ -20,6 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
+	widthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -618,8 +619,6 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
-	if (mNeedDrawGrid)
-		invalidate();
 }
 
 
@@ -747,7 +746,9 @@ qReal::model::Model *EditorViewScene::model() const
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		painter->setPen(QPen(Qt::black, 0.1));
+		QSettings settings("SPbSU", "QReal");
+		widthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
+		painter->setPen(QPen(Qt::black, widthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
@@ -755,6 +756,11 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 void EditorViewScene::setNeedDrawGrid(bool show)
 {
 	mNeedDrawGrid = show;
+}
+
+bool EditorViewScene::getNeedDrawGrid()
+{
+	return mNeedDrawGrid;
 }
 
 void EditorViewScene::drawGesture()

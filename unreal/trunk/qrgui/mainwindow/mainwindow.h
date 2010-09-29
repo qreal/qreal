@@ -99,6 +99,7 @@ namespace qReal {
 
 		void showGestures();
 		void switchGrid(bool isChecked);
+		void switchAlignment(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
 		void saveListClosed();

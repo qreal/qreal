@@ -117,6 +117,7 @@ MainWindow::MainWindow()
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(ui.actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(ui.actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
+	connect(ui.actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
 
 	connect(ui.actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(ui.actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
@@ -881,7 +882,7 @@ void MainWindow::parseHascol()
 
 void MainWindow::showPreferencesDialog()
 {
-	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionSwitch_on_grid);
+	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
 	preferencesDialog.exec();
 }
 
@@ -1106,12 +1107,24 @@ void MainWindow::switchGrid(bool isChecked)
 		QList<QGraphicsItem *> list = tmpView->scene()->items();
 		foreach (QGraphicsItem *item, list) {
 			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-			if (nodeItem != NULL) {
-				if (isChecked)
-					nodeItem->switchOnGrid();
-				else
-					nodeItem->switchOffGrid();
-			}
+			if (nodeItem != NULL)
+				nodeItem->switchOnOffGrid(isChecked);
+		}
+	}
+}
+
+void MainWindow::switchAlignment(bool isChecked)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ActivateAlignment", isChecked);
+
+	EditorView *tmpView = getCurrentTab();
+	if (tmpView != NULL) {
+		QList<QGraphicsItem *> list = tmpView->scene()->items();
+		foreach (QGraphicsItem *item, list) {
+			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+			if (nodeItem != NULL)
+				nodeItem->switchAlignment(isChecked);
 		}
 	}
 }
