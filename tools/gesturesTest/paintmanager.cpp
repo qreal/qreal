@@ -1,5 +1,4 @@
 #include "paintmanager.h"
-#include <QDebug>
 
 PaintManager::PaintManager(QGraphicsView *gestureView) : QObject(gestureView)
 {

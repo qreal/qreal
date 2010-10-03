@@ -1,7 +1,8 @@
 #include "gesturesmanager.h"
-#include "rectangleAlgorithm/levenshteindistance.h"
+#include "common/levenshteindistance.h"
 #include "rectangleAlgorithm/pathcorrector.h"
 #include "rectangleAlgorithm/keyBuilder.h"
+#include "chaosStarAlgorithm/key8manager.h"
 
 GesturesManager::GesturesManager()
 {
@@ -30,7 +31,12 @@ void GesturesManager::setIdealGestres(const QList<GestureObject> &gestures)
 		MouseMovementManager mouseMovementManager;
 		QPair<QString, QString> objKey(
 				gesture.first, mouseMovementManager.getKey(mousePath));
-		this->mIdealKeys.push_back(objKey);
+		this->mRectIdealKeys.push_back(objKey);
+
+		Key8Manager key8Manager;
+		objKey = qMakePair(gesture.first, key8Manager.getKey(mousePath));
+		this->mChaosIdealKeys.push_back(objKey);
+
 		mouseGestureRecognizer->addGestureDefinition(gesture.first, path);
 	}
 }
@@ -43,23 +49,34 @@ QString GesturesManager::qtRecognize(const QList<QPoint> &path)
 //todo::перенести распознавание в другой класс
 QString GesturesManager::rectRecognize(const QList<QPoint> &path)
 {
-	const float e = 100;
-	const float maxKeyDistance = 100;
-	float min = e;
-	float distance;
 	MouseMovementManager mouseMovementManager;
-	QString key = mouseMovementManager.getKey(path);
+	QString const key = mouseMovementManager.getKey(path);
+
+	return findNearestIdealObject(key, mRectIdealKeys);
+}
+
+QString GesturesManager::chaosRecognize(const QList<QPoint> &path)
+{
+	Key8Manager manager;
+	QString const key = manager.getKey(path);
+
+	return findNearestIdealObject(key, mChaosIdealKeys);
+}
+
+QString GesturesManager::findNearestIdealObject(QString const &key, QList<ObjectKey> const &idealKeys)
+{
 	QString object = "";
 	if (key.isEmpty())
 		return object;
-	foreach (ObjectKey item, this->mIdealKeys)
-	{
-		if (!item.second.isEmpty())
-		{
-			distance = (float)(LevenshteinDistance::getLevenshteinDistance(item.second, key)
-							   * e / std::min(key.size(), item.second.size()));
-			if (distance < min && distance < maxKeyDistance)
-			{
+
+	float const e = 100;
+	float const maxKeyDistance = 100;
+	float min = e;
+	foreach (ObjectKey item, idealKeys) {
+		if (!item.second.isEmpty()) {
+			float const distance = static_cast<float>(LevenshteinDistance::getLevenshteinDistance(item.second, key)
+					* e / qMin(key.size(), item.second.size()));
+			if (distance < min && distance < maxKeyDistance) {
 				min = distance;
 				object = item.first;
 			}

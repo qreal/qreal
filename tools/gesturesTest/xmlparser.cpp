@@ -13,6 +13,10 @@ QMap<QString, QPair<QList<QPoint>, QList<QString> > > XmlParser::parseXml()
 {
 	QMap<QString, QPair<QList<QPoint>, QList<QString> > > gestures;
 	QFile file(pathToFile);
+
+	if (!file.exists())
+		file.setFileName("../" + pathToFile);
+
 	QDomDocument doc("document");
 	if (!file.open(QIODevice::ReadWrite))
 		return gestures;
@@ -73,25 +77,42 @@ void XmlParser::save(const QMap<QString, QPair<QString, QList<QString> > > &map)
 	file.close();
 }
 
-void XmlParser::saveResults(const QMap<QString, QList<double> > & results)
+void XmlParser::saveResults(const QMap<QString, QList<double> > & results
+		, int allGestures, int qtGestures, int rectGestures, int chaosGestures)
 {
 	QFile file(matchingAlgorithmsFile);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 		return;
 	QTextStream textStream(&file);
+
+	QString const recognized = "	recognized: %1%";
+	QString const falsePositives = "	false positives: %1%";
+	QString const notRecognized = "	not recognized: %1%";
+
 	foreach (QString object, results.keys())
 	{
 		textStream << object << " \n"
 				<< "gestures: " << results[object].at(0) << " \n"
 				<< "rect: " << " \n"
-				<< QString("	recoznized: %1%").arg(results[object].at(1)) << " \n"
-				<< QString("	false positives: %1%").arg(results[object].at(2)) << " \n"
-				<< QString("	not recognized: %1%").arg(results[object].at(3)) << " \n"
+				<< recognized.arg(results[object].at(1)) << " \n"
+				<< falsePositives.arg(results[object].at(2)) << " \n"
+				<< notRecognized.arg(results[object].at(3)) << " \n"
 				<< "qt: " << " \n"
-				<< QString("	recognized: %1%").arg(results[object].at(4)) << " \n"
-				<< QString("	false positives %1%").arg(results[object].at(5)) << " \n"
-				<< QString("	not recognized: %1%").arg(results[object].at(6)) << " \n"
-				 << "============================\n";
+				<< recognized.arg(results[object].at(4)) << " \n"
+				<< falsePositives.arg(results[object].at(5)) << " \n"
+				<< notRecognized.arg(results[object].at(6)) << " \n"
+				<< "chaos: " << " \n"
+				<< recognized.arg(results[object].at(7)) << " \n"
+				<< falsePositives.arg(results[object].at(8)) << " \n"
+				<< notRecognized.arg(results[object].at(9)) << " \n"
+				<< "============================\n";
 	}
+
+	textStream << "Total: " << QString::number(allGestures) << " gestures \n"
+			<< "rect recognized: " << QString::number(rectGestures) << " \n"
+			<< "qt recognized: " << QString::number(qtGestures) << " \n"
+			<< "chaos recognized: " << QString::number(chaosGestures) << " \n"
+			;
+
 	file.close();
 }

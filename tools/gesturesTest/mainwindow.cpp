@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "paintmanager.h"
 #include "adopter.h"
-#include "QDebug"
 #include "QFileDialog"
 #include "QMouseEvent"
 
@@ -45,6 +44,7 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
 	mPath.clear();
 	ui->tbQtAlg->clear();
 	ui->tbRectAlg->clear();
+	ui->tbChaosAlg->clear();
 	mPath.push_back(event->pos());
 	this->update();
 }
@@ -54,6 +54,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * event)
 	mPath.push_back(event->pos());
 	ui->tbQtAlg->setText(mGesturesManager->qtRecognize(mPath));
 	ui->tbRectAlg->setText(mGesturesManager->rectRecognize(mPath));
+	ui->tbChaosAlg->setText(mGesturesManager->chaosRecognize(mPath));
 	this->update();
 	if (ui->listWidget->currentItem() == NULL)
 		return;
@@ -99,12 +100,15 @@ void MainWindow::checkGestures()
 	int allGestures = 0;
 	int rectGestures = 0;
 	int qtGestures = 0;
+	int chaosGestures = 0;
 	foreach (QString object, this->mGesturesMap.keys())
 	{
 		int qtRightNum = 0;
 		int qtFalsePositive = 0;
 		int rectRightNum = 0;
 		int rectFalsePositive = 0;
+		int chaosRightNum = 0;
+		int chaosFalsePositive = 0;
 		int gesturesNum = 0;
 		foreach (QString pathStr, mGesturesMap[object].second)
 		{
@@ -128,24 +132,39 @@ void MainWindow::checkGestures()
 			} else if (!recognizedByRect.isEmpty()) {
 				rectFalsePositive++;
 			}
+
+			QString recognizedByChaos = mGesturesManager->chaosRecognize(path);
+			if (object == recognizedByChaos)
+			{
+				chaosGestures++;
+				chaosRightNum++;
+			} else if (!recognizedByChaos.isEmpty()) {
+				chaosFalsePositive++;
+			}
 		}
 		if (gesturesNum != 0)
 		{
-			double rectPercent = (double) rectRightNum / gesturesNum * 100;
-			double rectFalsePositivePercent = (double) rectFalsePositive / gesturesNum * 100;
-			double rectNotRecognized = 100 - rectPercent - rectFalsePositivePercent;
-			double qtPercent = (double) qtRightNum / gesturesNum * 100;
-			double qtFalsePositivePercent = (double) qtFalsePositive / gesturesNum * 100;
-			double qtNotRecognized = 100 - qtPercent - qtFalsePositivePercent;
+			double const rectPercent = (double) rectRightNum / gesturesNum * 100;
+			double const rectFalsePositivePercent = (double) rectFalsePositive / gesturesNum * 100;
+			double const rectNotRecognized = 100 - rectPercent - rectFalsePositivePercent;
+			double const qtPercent = (double) qtRightNum / gesturesNum * 100;
+			double const qtFalsePositivePercent = (double) qtFalsePositive / gesturesNum * 100;
+			double const qtNotRecognized = 100 - qtPercent - qtFalsePositivePercent;
+			double const chaosPercent = (double) chaosRightNum / gesturesNum * 100;
+			double const chaosFalsePositivePercent = (double) chaosFalsePositive / gesturesNum * 100;
+			double const chaosNotRecognized = 100 - chaosPercent - chaosFalsePositivePercent;
 
 			QList<double> list;
 			list << gesturesNum << rectPercent << rectFalsePositivePercent << rectNotRecognized
-					<< qtPercent << qtFalsePositivePercent << qtNotRecognized;
+					<< qtPercent << qtFalsePositivePercent << qtNotRecognized
+					<< chaosPercent << chaosFalsePositivePercent << chaosNotRecognized
+					;
 			mRightGestures.insert(object, list);
 		}
 	}
-	XmlParser::saveResults(mRightGestures);
-	ui->tbGesturesNum->setText(QString("%1").arg(allGestures));
-	ui->teQtNum->setText(QString("%1").arg(qtGestures));
-	ui->teRectNum->setText(QString("%1").arg(rectGestures));
+	XmlParser::saveResults(mRightGestures, allGestures, qtGestures, rectGestures, chaosGestures);
+	ui->tbGesturesNum->setText(QString::number(allGestures));
+	ui->teQtNum->setText(QString::number(qtGestures));
+	ui->teRectNum->setText(QString::number(rectGestures));
+	ui->teChaosNum->setText(QString::number(chaosGestures));
 }

@@ -13,10 +13,14 @@ public:
 	void setIdealGestres(QList<GestureObject> const & gestures);
 	QString rectRecognize(QList<QPoint> const & path);
 	QString qtRecognize(QList<QPoint> const & path);
+	QString chaosRecognize(const QList<QPoint> &path);
 	QList<QPoint> getPath(const QString & name);
 
 private:
-	QList<ObjectKey> mIdealKeys;
+	QList<ObjectKey> mRectIdealKeys;
+	QList<ObjectKey> mChaosIdealKeys;
 	QList<GestureObject> mGestures;
-	MouseGestureRecognizer * mouseGestureRecognizer;
+	MouseGestureRecognizer *mouseGestureRecognizer;
+
+	static QString findNearestIdealObject(QString const &key, QList<ObjectKey> const &idealKeys);
 };
