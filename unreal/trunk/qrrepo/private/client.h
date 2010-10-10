@@ -40,10 +40,12 @@ namespace qrRepo {
 
 			bool exist(qReal::Id const &id) const;
 
+
 			void saveAll() const;
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
 			void setWorkingDir(QString const &workingDir);
+			void log(QString const message, const qReal::Id diagram);
 
 			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
 			QList<LogicObject*> allChildrenOf(qReal::Id id) const;

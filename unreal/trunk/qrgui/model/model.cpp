@@ -9,7 +9,7 @@ using namespace model;
 using namespace details;
 
 Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
-	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager)
+	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogging(false)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -26,11 +26,17 @@ bool Model::isDiagram(Id const &id) const
 	return ((id != ROOT_ID) && (id.element() == assistApi().editorManager().getEditorInterface(id.editor())->diagramNodeName(id.diagram())));
 }
 
+details::ModelTreeItem* Model::isSituatedOn(details::ModelTreeItem *element) const
+{
+	while(element->parent() != mRootItem)
+		element = element->parent();
+	return element;
+}
+
 void Model::init()
 {
 	mTreeItems.insert(ROOT_ID, mRootItem);
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
-
 	// Turn off view notification while loading. Model can be inconsistent during a process,
 	// so views shall not update themselves before time. It is important for
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
@@ -38,6 +44,7 @@ void Model::init()
 	loadSubtreeFromClient(mRootItem);
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
+	mLogging = true;
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -90,43 +97,58 @@ QVariant Model::data(QModelIndex const &index, int role) const
 
 bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 {
-	qDebug() << value;
 	if (index.isValid()) {
-		qDebug() << value << role;
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
+		Id id = item->id();
+		QString message = QString("Data changed:\n"+id.toString()+"\n");
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-			mApi.setName(item->id(), value.toString());
+			mApi.setName(id, value.toString());
+			message += "Set Name:\n";
 			emit nameChanged(index);
 			break;
 		case roles::positionRole:
-			mApi.setProperty(item->id(), "position", value);
+			mApi.setProperty(id, "position", value);
+			message += "Set Position:\n";
 			break;
 		case roles::configurationRole:
-			mApi.setProperty(item->id(), "configuration", value);
+			mApi.setProperty(id, "configuration", value);
+			message += "Set Configuration:\n";
 			break;
 		case roles::fromRole:
-			mApi.setFrom(item->id(), value.value<Id>());
+			mApi.setFrom(id, value.value<Id>());
+			message += "Set From:\n";
 			break;
 		case roles::toRole:
-			mApi.setTo(item->id(), value.value<Id>());
+			mApi.setTo(id, value.value<Id>());
+			message += "Set To:\n";
 			break;
 		case roles::fromPortRole:
-			mApi.setFromPort(item->id(), value.toDouble());
+			mApi.setFromPort(id, value.toDouble());
+			message += "Set FromPort:\n";
 			break;
 		case roles::toPortRole:
-			mApi.setToPort(item->id(), value.toDouble());
+			mApi.setToPort(id, value.toDouble());
+			message += "Set ToPort:\n";
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
-				QString selectedProperty = findPropertyName(item->id(), role);
-				mApi.setProperty(item->id(), selectedProperty, value);
+				QString selectedProperty = findPropertyName(id, role);
+				mApi.setProperty(id, selectedProperty, value);
+				message += "Set " + selectedProperty + "\n";
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
+
+		QString output;
+		QDebug qD = QDebug(&output);
+		qD << value;
+		message += output + "\n";
+		log(message, isSituatedOn(item)->id());
+
 		emit dataChanged(index, index);
 		return true;
 	}
@@ -373,12 +395,17 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
 		}
+		if (parentItem == mRootItem)
+			log("Creating diagram:\n" + id.toString() + "\n", id);
+		else
+			log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
+		log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
 	}
 
 	int newRow = parentItem->children().size();
@@ -599,4 +626,11 @@ void Model::setRootIndex(const QModelIndex &index)
 bool Model::isChanged()
 {
 	return (mApi.getChangedDiagrams().size() > 0);
+}
+
+void Model::log(QString const message, Id const diagram)
+{
+	if (!mLogging)
+		return;
+	mApi.log(message, diagram);
 }

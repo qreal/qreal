@@ -62,6 +62,8 @@ namespace qReal {
 			void addDiagram(Id const &id);
 			void resetChangedDiagrams(const IdList &list);
 
+			void setLogging(bool arg);
+
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 
@@ -101,12 +103,16 @@ namespace qReal {
 
 			QString findPropertyName(Id const &id, int const role) const;
 			bool isDiagram(Id const &id) const;
+			details::ModelTreeItem* isSituatedOn(details::ModelTreeItem *element) const;
 
 			void init();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 
 			bool useFlagOfChange;
+
+			bool mLogging;
+			void log(QString const message, Id const diagram);
 		};
 
 	}
