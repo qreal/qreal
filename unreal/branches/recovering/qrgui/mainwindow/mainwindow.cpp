@@ -429,7 +429,7 @@ void MainWindow::deleteFromExplorer()
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
 		if (pModel->getModelIndex() == index)
 			pModel->setIndex(QModelIndex());
-		mModel->removeRow(index.row(), index.parent());
+		mModel->removeByIndex(index);
 	}
 }
 
@@ -449,7 +449,7 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 			if (pModel->getModelIndex() == index)
 				pModel->setIndex(QModelIndex());
 			ui.propertyEditor->setRootIndex(QModelIndex());
-			mModel->removeRow(index.row(), index.parent());
+			mModel->removeByIndex(index);
 		}
 	}
 }

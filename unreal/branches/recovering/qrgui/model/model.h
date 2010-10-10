@@ -57,6 +57,10 @@ namespace qReal {
 			void reinit();
 			void saveTo(QString const &workingDirectory);
 
+			void setLogging(bool arg);
+
+			void removeByIndex(QModelIndex const &index);
+
 			bool isChanged();
 			void resetChangedDiagrams();
 			void addDiagram(Id const &id);

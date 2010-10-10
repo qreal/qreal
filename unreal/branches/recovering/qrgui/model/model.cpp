@@ -530,6 +530,18 @@ void Model::save()
 	mApi.resetChangedDiagrams();
 }
 
+void Model::setLogging(bool arg)
+{
+	mLogging = arg;
+}
+
+void Model::removeByIndex(QModelIndex const &index)
+{
+	Id id = idByIndex(index);
+	log("Removing element:\n"+id.toString()+"\n", isSituatedOn(mTreeItems.value(id))->id());
+	removeRow(index.row(), index.parent());
+}
+
 void Model::reinit()
 {
 	cleanupTree(mRootItem);
