@@ -61,9 +61,6 @@ namespace qReal {
 			void resetChangedDiagrams();
 			void addDiagram(Id const &id);
 			void resetChangedDiagrams(const IdList &list);
-
-			void setLogging(bool arg);
-
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 
