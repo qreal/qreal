@@ -100,54 +100,50 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		Id id = item->id();
-		QString message = QString("Data changed:\n"+id.toString()+"\n");
+		QString message;
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			mApi.setName(id, value.toString());
-			message += "Set Name:\n";
+			message = "name";
 			emit nameChanged(index);
 			break;
 		case roles::positionRole:
 			mApi.setProperty(id, "position", value);
-			message += "Set Position:\n";
+			message = "position";
 			break;
 		case roles::configurationRole:
 			mApi.setProperty(id, "configuration", value);
-			message += "Set Configuration:\n";
+			message = "configuration";
 			break;
 		case roles::fromRole:
 			mApi.setFrom(id, value.value<Id>());
-			message += "Set From:\n";
+			message = "from";
 			break;
 		case roles::toRole:
 			mApi.setTo(id, value.value<Id>());
-			message += "Set To:\n";
+			message = "to";
 			break;
 		case roles::fromPortRole:
 			mApi.setFromPort(id, value.toDouble());
-			message += "Set FromPort:\n";
+			message = "fromPort";
 			break;
 		case roles::toPortRole:
 			mApi.setToPort(id, value.toDouble());
-			message += "Set ToPort:\n";
+			message = "toPort";
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(id, role);
 				mApi.setProperty(id, selectedProperty, value);
-				message += "Set " + selectedProperty + "\n";
+				message = selectedProperty;
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
 
-		QString output;
-		QDebug qD = QDebug(&output);
-		qD << value;
-		message += output + "\n";
-		mLogger.log(message, isSituatedOn(item)->id());
+		mLogger.log(Logger::setData, isSituatedOn(item)->id(), id, value, message);
 
 		emit dataChanged(index, index);
 		return true;
@@ -396,16 +392,16 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-			mLogger.log("Creating diagram:\n" + id.toString() + "\n", id);
+			mLogger.log(Logger::createDiagram, id);
 		else
-			mLogger.log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
+			mLogger.log(Logger::addElement, isSituatedOn(parentItem)->id(), id);
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-		mLogger.log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
+		mLogger.log(Logger::addElement, isSituatedOn(parentItem)->id(), id);
 	}
 
 	int newRow = parentItem->children().size();
@@ -534,12 +530,11 @@ void Model::removeByIndex(QModelIndex const &index)
 {
 	Id id = idByIndex(index);
 	ModelTreeItem *treeItem = mTreeItems.value(id);
-	QString message;
 	if (treeItem->parent() == mRootItem)
-		message = QString("Removing diagram:\n");
+		mLogger.log(Logger::destroyDiagram, isSituatedOn(treeItem)->id());
 	else
-		message = QString("Removing element:\n");
-	mLogger.log(message+id.toString()+"\n", isSituatedOn(treeItem)->id());
+		mLogger.log(Logger::removeElement, isSituatedOn(treeItem)->id(), id);
+
 	removeRow(index.row(), index.parent());
 }
 
