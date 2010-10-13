@@ -13,9 +13,9 @@
 #include "classes/modelTreeItem.h"
 #include "../editorManager/editorManager.h"
 #include "modelAssistApi.h"
+#include "logger.h"
 
 namespace qReal {
-
 	namespace model {
 
 		class Model : public QAbstractItemModel
@@ -56,8 +56,6 @@ namespace qReal {
 			void open(QString const &workingDirectory);
 			void reinit();
 			void saveTo(QString const &workingDirectory);
-
-			void setLogging(bool arg);
 
 			void removeByIndex(QModelIndex const &index);
 
@@ -112,10 +110,8 @@ namespace qReal {
 
 			bool useFlagOfChange;
 
-			bool mLogging;
-			void log(QString const message, Id const diagram);
+			Logger mLogger;
 		};
 
 	}
-
 }

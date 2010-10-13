@@ -9,7 +9,7 @@ using namespace model;
 using namespace details;
 
 Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
-	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogging(false)
+	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogger(this)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -44,7 +44,7 @@ void Model::init()
 	loadSubtreeFromClient(mRootItem);
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
-	mLogging = true;
+	mLogger.enable();
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -147,7 +147,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 		QDebug qD = QDebug(&output);
 		qD << value;
 		message += output + "\n";
-		log(message, isSituatedOn(item)->id());
+		mLogger.log(message, isSituatedOn(item)->id());
 
 		emit dataChanged(index, index);
 		return true;
@@ -396,16 +396,16 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-			log("Creating diagram:\n" + id.toString() + "\n", id);
+			mLogger.log("Creating diagram:\n" + id.toString() + "\n", id);
 		else
-			log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
+			mLogger.log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-		log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
+		mLogger.log("Adding element:\n" + id.toString() + "\n", isSituatedOn(parentItem)->id());
 	}
 
 	int newRow = parentItem->children().size();
@@ -530,15 +530,16 @@ void Model::save()
 	mApi.resetChangedDiagrams();
 }
 
-void Model::setLogging(bool arg)
-{
-	mLogging = arg;
-}
-
 void Model::removeByIndex(QModelIndex const &index)
 {
 	Id id = idByIndex(index);
-	log("Removing element:\n"+id.toString()+"\n", isSituatedOn(mTreeItems.value(id))->id());
+	ModelTreeItem *treeItem = mTreeItems.value(id);
+	QString message;
+	if (treeItem->parent() == mRootItem)
+		message = QString("Removing diagram:\n");
+	else
+		message = QString("Removing element:\n");
+	mLogger.log(message+id.toString()+"\n", isSituatedOn(treeItem)->id());
 	removeRow(index.row(), index.parent());
 }
 
@@ -638,11 +639,4 @@ void Model::setRootIndex(const QModelIndex &index)
 bool Model::isChanged()
 {
 	return (mApi.getChangedDiagrams().size() > 0);
-}
-
-void Model::log(QString const message, Id const diagram)
-{
-	if (!mLogging)
-		return;
-	mApi.log(message, diagram);
 }

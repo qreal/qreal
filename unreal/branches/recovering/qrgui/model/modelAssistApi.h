@@ -3,19 +3,16 @@
 #include "../kernel/ids.h"
 
 namespace qReal {
-
 	class EditorManager;
-
 	namespace model {
-
 		class Model;
 
 		/** @class ModelAssistApi
 		 *	@brief class used for syncronization of logical model and repo/model.
-		 *	if GUI wants to change model in a way different from setData(), 
+		 *	if GUI wants to change model in a way different from setData(),
 		 *	it should call this class' methods. ModelAssistApi modifies the repo
 		 *	and notifies the model. it's in fact yet another interface to the model
-		 *	and even may become a proxy model for repo one day. 
+		 *	and even may become a proxy model for repo one day.
 		 *	ModelAssistApi used to somehow control GUI's actions towards the repo,
 		 *	model's mutableApi() should be used only in parsers and here
 		 * */
@@ -52,5 +49,4 @@ namespace qReal {
 		};
 
 	}
-
 }
