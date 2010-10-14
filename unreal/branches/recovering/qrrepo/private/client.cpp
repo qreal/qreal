@@ -223,6 +223,11 @@ void Client::setWorkingDir(QString const &workingDir)
 	serializer.setWorkingDir(workingDir);
 }
 
+void Client::logRemove(const qReal::Id diagram)
+{
+	serializer.logRemove(diagram);
+}
+
 void Client::log(QString const message, const qReal::Id diagram)
 {
 	serializer.log(message, diagram);

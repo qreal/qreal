@@ -79,6 +79,22 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Logic
 	}
 }
 
+void Serializer::logRemove(qReal::Id const diagram)
+{
+	QString name = diagram.id();
+	QFile *file;
+	if (files.contains(name))
+		file = files.value(name);
+	else {
+		qDebug() << "Serializer::logRemove() error: no such file.";
+		return;
+	}
+	QDir dir;
+	file->remove();
+	files.remove(name);
+	dir.rmdir(mWorkingDir+"/logs/"+diagram.diagram());
+}
+
 void  Serializer::log(QString const message, qReal::Id const diagram)
 {
 	QString path = mWorkingDir+"/logs/"+diagram.diagram();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QString>
+#include <QSet>
 
 #include "model.h"
 
@@ -12,6 +13,7 @@ namespace qReal {
 		{
 			public:
 				Logger(Model *model);
+				~Logger();
 				void enable();
 				void disable();
 
@@ -47,11 +49,14 @@ namespace qReal {
 
 				bool enabled;
 				bool flagsEnabled[4];
+				QSet<Id> cleanDiagrams;
+
 
 				bool pass(Id const scene);
+				void remove(Id const scene);
+				void write(QString const message, Id const scene);
 
 				QString getDataString(QVariant const data) const;
-				void write(QString const message, Id const scene);
 		};
 	}
 }

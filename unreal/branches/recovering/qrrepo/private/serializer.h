@@ -22,6 +22,7 @@ namespace qrRepo {
 			void saveToDisk(QList<LogicObject*> const &objects) const;
 			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
 
+			void logRemove(qReal::Id const diagram);
 			void log(QString const message, qReal::Id const diagram);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash);

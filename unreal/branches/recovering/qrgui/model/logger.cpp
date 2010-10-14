@@ -15,6 +15,12 @@ Logger::Logger(Model *model)
 	flagsEnabled[invalidMessages] = false;
 }
 
+Logger::~Logger()
+{
+	foreach(Id diagram, cleanDiagrams)
+		remove(diagram);
+}
+
 void Logger::enable()
 {
 	enabled = true;
@@ -62,23 +68,33 @@ void Logger::log(action performed,
 	QString message;
 	switch (performed) {
 		case setData:
-			message += QString("SetData");
 			if ((!flagsEnabled[uselessMessages]) &&
 			//may be, "name" messages are useless too
 				((additional == QString("position")) ||
 				 (additional == QString("configuration"))))
 				return;
+			cleanDiagrams.remove(scene);
+			message += QString("SetData");
 			break;
 		case addElement:
+			cleanDiagrams.remove(scene);
 			message += QString("AddElement");
 			break;
 		case removeElement:
+			cleanDiagrams.remove(scene);
 			message += QString("RemoveElement");
 			break;
 		case createDiagram:
+			cleanDiagrams.insert(scene);
 			message += QString("CreateDiagram");
 			break;
 		case destroyDiagram:
+			if (cleanDiagrams.contains(scene)) {
+				cleanDiagrams.remove(scene);
+				remove(scene);
+				return;
+			}
+			cleanDiagrams.remove(scene);
 			message += QString("DestroyDiagram");
 			break;
 	}
@@ -94,19 +110,24 @@ void Logger::log(action performed,
 	write(message, scene);
 }
 
-void Logger::write(const QString message, const Id scene)
-{
-	if (!enabled)
-		return;
-	mModel->mutableApi().log(message, scene);
-}
-
 bool Logger::pass(const Id scene)
 {
 	const bool editor = scene.editor() == QString("Meta_editor");
 	return
 		((!editor && flagsEnabled[diagrams])
 			|| (editor && flagsEnabled[editors]));
+}
+
+void Logger::remove(const Id scene)
+{
+	mModel->mutableApi().logRemove(scene);
+}
+
+void Logger::write(const QString message, const Id scene)
+{
+	if (!enabled)
+		return;
+	mModel->mutableApi().log(message, scene);
 }
 
 QString Logger::getDataString(const QVariant data) const

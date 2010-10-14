@@ -72,6 +72,7 @@ namespace qrRepo {
 
 		void open(QString const &workingDir);
 
+		void logRemove(qReal::Id const diagram);
 		void log(QString const message, qReal::Id const diagram);
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
