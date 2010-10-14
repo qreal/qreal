@@ -518,11 +518,13 @@ void Model::open(QString const &workingDirectory)
 void Model::saveTo(QString const &workingDirectory)
 {
 	mApi.saveTo(workingDirectory);
+	mLogger.output();
 }
 
 void Model::save()
 {
 	mApi.saveAll();
+	mLogger.output();
 	mApi.resetChangedDiagrams();
 }
 

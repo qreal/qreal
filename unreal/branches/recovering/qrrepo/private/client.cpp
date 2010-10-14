@@ -205,7 +205,6 @@ void Client::save(IdList list) const
 	QList<LogicObject*> toSave;
 	foreach(Id id, list)
 		toSave.append(allChildrenOf(id));
-
 	serializer.saveToDisk(toSave);
 }
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QString>
-#include <QSet>
-
 #include "model.h"
 
 namespace qReal {
@@ -44,19 +41,28 @@ namespace qReal {
 						Id const scene, Id const target,
 							QVariant const data, QString const additional);
 
+				void output();
 			private:
-				Model *mModel;
-
-				bool enabled;
-				bool flagsEnabled[4];
-				QSet<Id> cleanDiagrams;
-
-
 				bool pass(Id const scene);
 				void remove(Id const scene);
 				void write(QString const message, Id const scene);
 
 				QString getDataString(QVariant const data) const;
+
+
+				Model *mModel;
+
+				bool enabled;
+				bool flagsEnabled[4];
+				QSet<Id> cleanDiagrams;
+				QMultiHash<Id, QString*> buffer;
+
+				const QString msgInvalid;
+				const QString msgSetData;
+				const QString msgAddElement;
+				const QString msgRemoveElement;
+				const QString msgCreateDiagram;
+				const QString msgDestroyDiagram;
 		};
 	}
 }

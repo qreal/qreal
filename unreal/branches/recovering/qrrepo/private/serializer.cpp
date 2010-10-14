@@ -38,7 +38,6 @@ void Serializer::setWorkingDir(QString const &workingDir)
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 {
 	foreach (LogicObject *object, objects) {
-		qDebug() << "SAVED: " << object->id().toString();
 		QString filePath = createDirectory(object->id());
 
 		QDomDocument doc;

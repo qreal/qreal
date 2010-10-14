@@ -1260,7 +1260,7 @@ void MainWindow::save()
 
 void MainWindow::saveAll()
 {
-	mModel->api().saveAll();
+	mModel->save();
 	mModel->resetChangedDiagrams();
 }
 

@@ -7,7 +7,13 @@ using namespace qReal;
 using namespace model;
 
 Logger::Logger(Model *model)
-	: mModel(model), enabled(false)
+	: mModel(model), enabled(false),
+	msgInvalid("Invalid"),
+	msgSetData("SetData"),
+	msgAddElement("AddElement"),
+	msgRemoveElement("RemoveElement"),
+	msgCreateDiagram("CreateDiagram"),
+	msgDestroyDiagram("DestroyDiagram")
 {
 	flagsEnabled[editors] = true;
 	flagsEnabled[diagrams] = true;
@@ -40,7 +46,7 @@ void Logger::log(action performed,
 							const Id scene)
 {
 	if ((performed != createDiagram) && (performed != destroyDiagram)) {
-		write("#InvalidMessage\n",scene);
+		write(msgInvalid +"\n",scene);
 		if (flagsEnabled[invalidMessages])
 			log(performed, scene, Id(), QVariant(), QString());
 	} else
@@ -74,19 +80,18 @@ void Logger::log(action performed,
 				 (additional == QString("configuration"))))
 				return;
 			cleanDiagrams.remove(scene);
-			message += QString("SetData");
+			message += msgSetData;
 			break;
 		case addElement:
 			cleanDiagrams.remove(scene);
-			message += QString("AddElement");
+			message += msgAddElement;
 			break;
 		case removeElement:
 			cleanDiagrams.remove(scene);
-			message += QString("RemoveElement");
+			message += msgRemoveElement;
 			break;
 		case createDiagram:
-			cleanDiagrams.insert(scene);
-			message += QString("CreateDiagram");
+			message += msgCreateDiagram;
 			break;
 		case destroyDiagram:
 			if (cleanDiagrams.contains(scene)) {
@@ -94,8 +99,8 @@ void Logger::log(action performed,
 				remove(scene);
 				return;
 			}
-			cleanDiagrams.remove(scene);
-			message += QString("DestroyDiagram");
+			cleanDiagrams.insert(scene);
+			message += msgDestroyDiagram;	//unused?
 			break;
 	}
 
@@ -107,7 +112,19 @@ void Logger::log(action performed,
 	if (!data.isNull())
 		message += getDataString(data) + "\n";
 
-	write(message, scene);
+	if (!buffer.contains(scene))
+		buffer.insert(scene, new QString(message));
+	else
+		buffer.value(scene)->append("\n"+message);
+}
+
+void Logger::output()
+{
+	foreach(Id scene, cleanDiagrams)
+		remove(scene);
+	foreach(Id scene, buffer.keys())
+		write(*buffer.value(scene), scene);
+	buffer.clear();
 }
 
 bool Logger::pass(const Id scene)
@@ -120,6 +137,7 @@ bool Logger::pass(const Id scene)
 
 void Logger::remove(const Id scene)
 {
+	buffer.remove(scene);
 	mModel->mutableApi().logRemove(scene);
 }
 
