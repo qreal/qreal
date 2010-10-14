@@ -48,34 +48,34 @@ void Logger::log(action performed,
 	if ((performed != createDiagram) && (performed != destroyDiagram)) {
 		write(msgInvalid +"\n",scene);
 		if (flagsEnabled[invalidMessages])
-			log(performed, scene, Id(), QVariant(), QString());
+			log(performed, scene, Id(), QVariant(), QVariant(), QString());
 	} else
-		log(performed, scene, Id(), QVariant(), QString());
+		log(performed, scene, Id(), QVariant(), QVariant(), QString());
 }
 
 void Logger::log(action performed,
 					const Id scene, const Id target)
 {
 	if ((performed != addElement) && (performed != removeElement)) {
-		write("#InvalidMessage\n",scene);
+		write(msgInvalid + "\n",scene);
 		if (flagsEnabled[invalidMessages])
-			log(performed, scene, target, QVariant(), QString());
+			log(performed, scene, target, QVariant(), QVariant(), QString());
 	} else
-		log(performed, scene, target, QVariant(), QString());
+		log(performed, scene, target, QVariant(), QVariant(), QString());
 }
 
 void Logger::log(action performed,
 				 const Id scene, const Id target,
-				 const QVariant data, const QString additional)
+				 const QVariant prevData, const QVariant newData,
+				 const QString additional)
 {
 	if (!pass(scene))
 		return;
 
-	QString message;
+	QString message = "Operation: ";
 	switch (performed) {
 		case setData:
 			if ((!flagsEnabled[uselessMessages]) &&
-			//may be, "name" messages are useless too
 				((additional == QString("position")) ||
 				 (additional == QString("configuration"))))
 				return;
@@ -106,11 +106,13 @@ void Logger::log(action performed,
 
 	message += "\n";
 	if (target.idSize() > 1)
-		message += target.toString() + "\n";
+		message += "Target: " + target.toString() + "\n";
 	if (!additional.isNull())
-		message += additional + "\n";
-	if (!data.isNull())
-		message += getDataString(data) + "\n";
+		message += "Details: " + additional + "\n";
+	if (!prevData.isNull())
+		message += "PrevValue: " + getDataString(prevData) + "\n";
+	if (!newData.isNull())
+		message += "NewValue: " + getDataString(newData) + "\n";
 
 	if (!buffer.contains(scene))
 		buffer.insert(scene, new QString(message));

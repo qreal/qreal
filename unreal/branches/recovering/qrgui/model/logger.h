@@ -39,7 +39,8 @@ namespace qReal {
 						Id const scene, Id const target);
 				void log(action performed,
 						Id const scene, Id const target,
-							QVariant const data, QString const additional);
+							QVariant const prevData, QVariant const newData,
+								QString const additional);
 
 				void output();
 			private:

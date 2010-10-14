@@ -95,47 +95,56 @@ QVariant Model::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
+bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role)
 {
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		Id id = item->id();
 		QString message;
+		QVariant prevValue;
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-			mApi.setName(id, value.toString());
+			prevValue = mApi.name(id);
+			mApi.setName(id, newValue.toString());
 			message = "name";
 			emit nameChanged(index);
 			break;
 		case roles::positionRole:
-			mApi.setProperty(id, "position", value);
+			prevValue = mApi.property(id, "position");
+			mApi.setProperty(id, "position", newValue);
 			message = "position";
 			break;
 		case roles::configurationRole:
-			mApi.setProperty(id, "configuration", value);
+			prevValue = mApi.property(id, "configuration");
+			mApi.setProperty(id, "configuration", newValue);
 			message = "configuration";
 			break;
 		case roles::fromRole:
-			mApi.setFrom(id, value.value<Id>());
+			prevValue = mApi.property(id, "from");
+			mApi.setFrom(id, newValue.value<Id>());
 			message = "from";
 			break;
 		case roles::toRole:
-			mApi.setTo(id, value.value<Id>());
+			prevValue = mApi.property(id, "to");
+			mApi.setTo(id, newValue.value<Id>());
 			message = "to";
 			break;
 		case roles::fromPortRole:
-			mApi.setFromPort(id, value.toDouble());
+			prevValue = mApi.property(id, "fromPort");
+			mApi.setFromPort(id, newValue.toDouble());
 			message = "fromPort";
 			break;
 		case roles::toPortRole:
-			mApi.setToPort(id, value.toDouble());
+			prevValue = mApi.property(id, "toPort");
+			mApi.setToPort(id, newValue.toDouble());
 			message = "toPort";
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(id, role);
-				mApi.setProperty(id, selectedProperty, value);
+				prevValue = mApi.property(id, selectedProperty);
+				mApi.setProperty(id, selectedProperty, newValue);
 				message = selectedProperty;
 				break;
 			}
@@ -143,7 +152,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 			return false;
 		}
 
-		mLogger.log(Logger::setData, isSituatedOn(item)->id(), id, value, message);
+		mLogger.log(Logger::setData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
 
 		emit dataChanged(index, index);
 		return true;
@@ -475,17 +484,15 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 
 ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
-	if (isDiagram(id)) {
+	if (isDiagram(id))
 			mApi.addOpenedDiagram(id);
-			qDebug() << id.toString();
-		}
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
-		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
-		checkProperties(id);
-		parentItem->addChild(item);
-		mTreeItems.insert(id, item);
+	ModelTreeItem *item = new ModelTreeItem(id, parentItem);
+	checkProperties(id);
+	parentItem->addChild(item);
+	mTreeItems.insert(id, item);
 	endInsertRows();
 	return item;
 }

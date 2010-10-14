@@ -178,7 +178,6 @@ MainWindow::MainWindow()
 	mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
-
 	progress->setValue(80);
 
 	mPropertyModel.setSourceModel(mModel);
@@ -848,6 +847,7 @@ void MainWindow::changeMiniMapSource( int index )
 		ui.tabs->setEnabled(false);
 		ui.minimapView->setScene(0);;
 	}
+
 	emit rootDiagramChanged();
 }
 
@@ -1053,6 +1053,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setModel(mModel);
 	getCurrentTab()->mvIface()->setRootIndex(index);
+
 
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
