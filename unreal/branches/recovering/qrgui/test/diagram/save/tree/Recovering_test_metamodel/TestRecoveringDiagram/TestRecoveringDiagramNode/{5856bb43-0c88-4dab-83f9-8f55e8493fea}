@@ -1,0 +1,29 @@
+<LogicObject id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/TestRecoveringDiagramNode/{5856bb43-0c88-4dab-83f9-8f55e8493fea}">
+  <parents>
+    <object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </parents>
+  <children>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{6c6fbeae-e0e2-453f-8a6e-c1c79f5bfecc}"/>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node2/{3b3932b4-71e1-4251-9c07-510d29463c63}"/>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}"/>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}"/>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{bddc4565-f346-4bea-852a-5ba4d61dddaf}"/>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{04f2881e-7d05-48d4-91cc-e4bbaad32e3c}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Test Recovering Diagram)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="0, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

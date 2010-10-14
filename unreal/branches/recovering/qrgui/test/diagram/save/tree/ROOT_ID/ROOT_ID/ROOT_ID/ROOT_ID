@@ -1,0 +1,9 @@
+<LogicObject id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <parents/>
+  <children>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/TestRecoveringDiagramNode/{5856bb43-0c88-4dab-83f9-8f55e8493fea}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</LogicObject>

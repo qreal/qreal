@@ -1,0 +1,21 @@
+<LogicObject id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}">
+  <parents>
+    <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/TestRecoveringDiagramNode/{5856bb43-0c88-4dab-83f9-8f55e8493fea}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 82, 19 : "/>
+    <qReal::Id key="from" value="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{bddc4565-f346-4bea-852a-5ba4d61dddaf}"/>
+    <double key="fromPort" value="4"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Edge2)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="372, 300"/>
+    <qReal::Id key="to" value="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{04f2881e-7d05-48d4-91cc-e4bbaad32e3c}"/>
+    <double key="toPort" value="4"/>
+  </properties>
+</LogicObject>

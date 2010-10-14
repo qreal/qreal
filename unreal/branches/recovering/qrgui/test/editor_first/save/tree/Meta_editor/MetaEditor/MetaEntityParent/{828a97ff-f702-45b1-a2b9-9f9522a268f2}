@@ -1,0 +1,21 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityParent/{828a97ff-f702-45b1-a2b9-9f9522a268f2}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{b3121c63-8611-44b2-a21f-671f1048cf7e}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="KernelDiagram::Diagram"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="0, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

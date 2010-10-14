@@ -1,0 +1,30 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d2be259d-633a-4670-9525-c4cf8f5ac048}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{56a3ba6a-9573-47d5-adec-5141913bd99a}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityParent/{c60a3bbc-9d63-4dc2-99d4-9ce2782ffd7a}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Node1"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value=""/>
+    <QString key="isPin" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Node1"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="50, 230"/>
+    <QString key="shape" value="&lt;graphics>&#xa; &lt;picture sizex=&quot;30&quot; sizey=&quot;30&quot;>&#xa;  &lt;ellipse fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;0&quot; x1=&quot;0&quot; y2=&quot;30&quot; stroke-width=&quot;1&quot; x2=&quot;30&quot; fill-style=&quot;solid&quot;/>&#xa;  &lt;line fill=&quot;#000000&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;4.4&quot; x1=&quot;25.6&quot; y2=&quot;25.6&quot; stroke-width=&quot;1&quot; x2=&quot;4.4&quot; fill-style=&quot;solid&quot;/>&#xa;  &lt;line fill=&quot;#000000&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;4.5&quot; x1=&quot;4.5&quot; y2=&quot;25.6&quot; stroke-width=&quot;1&quot; x2=&quot;25.6&quot; fill-style=&quot;solid&quot;/>&#xa; &lt;/picture>&#xa; &lt;ports>&#xa;  &lt;pointPort x=&quot;0&quot; y=&quot;15&quot;/>&#xa;  &lt;pointPort x=&quot;15&quot; y=&quot;0&quot;/>&#xa;  &lt;pointPort x=&quot;15&quot; y=&quot;30&quot;/>&#xa;  &lt;pointPort x=&quot;30&quot; y=&quot;15&quot;/>&#xa;  &lt;pointPort x=&quot;15&quot; y=&quot;15&quot;/>&#xa; &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

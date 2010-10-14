@@ -1,0 +1,220 @@
+CreateDiagram
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{6c6fbeae-e0e2-453f-8a6e-c1c79f5bfecc}
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node2/{3b3932b4-71e1-4251-9c07-510d29463c63}
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+toPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+toPort
+QVariant(double, -1) 
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+toPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+toPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+toPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+fromPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+toPort
+QVariant(double, 4) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+fromPort
+QVariant(double, 4) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge1/{e367e6b3-1c3c-46b9-bdfa-502da31681d3}
+toPort
+QVariant(double, 4) 
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{bddc4565-f346-4bea-852a-5ba4d61dddaf}
+
+AddElement
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Node1/{04f2881e-7d05-48d4-91cc-e4bbaad32e3c}
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+fromPort
+QVariant(double, 4) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+toPort
+QVariant(double, -1) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+fromPort
+QVariant(double, 4) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+toPort
+QVariant(double, 0) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+from
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+fromPort
+QVariant(double, 4) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+to
+QVariant(qReal::Id, ) 
+
+SetData
+qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}
+toPort
+QVariant(double, 4) 
+
