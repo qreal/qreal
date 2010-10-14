@@ -310,7 +310,7 @@ bool EdgeElement::initPossibleEdges()
 	if (!itemModel)
 		return false;
 	QString editor = uuid().editor();
-	//TODO:: сделать генерацию кода для диаграм
+        //TODO:: make code generation for diagrams
 	QString diagram = uuid().diagram();
 	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
