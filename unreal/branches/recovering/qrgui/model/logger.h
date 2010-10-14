@@ -8,6 +8,8 @@ namespace qReal {
 
 		class Logger
 		{
+			Q_OBJECT
+
 			public:
 				Logger(Model *model);
 				~Logger();
@@ -43,6 +45,7 @@ namespace qReal {
 								QString const additional);
 
 				void output();
+
 			private:
 				bool pass(Id const scene);
 				void remove(Id const scene);
@@ -50,8 +53,8 @@ namespace qReal {
 
 				QString getDataString(QVariant const data) const;
 
-
 				Model *mModel;
+				QString mWorkingDir;
 
 				bool enabled;
 				bool flagsEnabled[4];
@@ -64,6 +67,9 @@ namespace qReal {
 				const QString msgRemoveElement;
 				const QString msgCreateDiagram;
 				const QString msgDestroyDiagram;
+
+			private slots:
+				void setWorkingDir(QString workingDir);
 		};
 	}
 }

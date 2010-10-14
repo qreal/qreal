@@ -13,8 +13,12 @@ namespace qrRepo {
 	namespace details {
 
 		class Serializer {
+		Q_OBJECT
+
 		public:
 			Serializer(QString const& saveDirName, bool failSafeMode);
+
+			QString getWorkingDir() const;
 			void clearWorkingDir() const;
 			void setWorkingDir(QString const& workingDir);
 
@@ -47,6 +51,9 @@ namespace qrRepo {
 			bool const mFailSafe;
 
 			QMap<QString, QFile*> files;
+
+		signals:
+			void workingDirChanged(QString workingDir);
 		};
 
 	}

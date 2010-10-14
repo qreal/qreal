@@ -92,6 +92,7 @@ namespace qrRepo {
 		void addChangedDiagram(const qReal::Id &id);
 		void resetChangedDiagrams(const qReal::IdList &list);
 
+		QString getWorkingDir() const;
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.

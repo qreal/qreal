@@ -8,6 +8,8 @@ using namespace model;
 
 Logger::Logger(Model *model)
 	: mModel(model), enabled(false),
+	mWorkingDir(mModel->mutableApi().getWorkingDir()),
+
 	msgInvalid("Invalid"),
 	msgSetData("SetData"),
 	msgAddElement("AddElement"),
@@ -156,4 +158,9 @@ QString Logger::getDataString(const QVariant data) const
 	QDebug qD = QDebug(&output);
 	qD << data;
 	return output;
+}
+
+void Logger::setWorkingDir(QString workingDir)
+{
+	mWorkingDir = workingDir;
 }

@@ -217,6 +217,11 @@ void Client::remove(IdList list) const
 	}
 }
 
+QString Client::getWorkingDir() const
+{
+	return serializer.getWorkingDir();
+}
+
 void Client::setWorkingDir(QString const &workingDir)
 {
 	serializer.setWorkingDir(workingDir);

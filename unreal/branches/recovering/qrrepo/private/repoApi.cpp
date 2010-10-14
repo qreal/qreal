@@ -453,3 +453,8 @@ void RepoApi::resetChangedDiagrams(const IdList &list)
 	foreach(Id id, list)
 		mDiagramsChanged.remove(id);
 }
+
+QString RepoApi::getWorkingDir() const
+{
+	return mClient.getWorkingDir();
+}

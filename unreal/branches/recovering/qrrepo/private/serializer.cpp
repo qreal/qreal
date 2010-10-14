@@ -18,16 +18,21 @@ Serializer::Serializer(QString const& saveDirName, bool failSafeMode)
 {
 }
 
-void Serializer::clearWorkingDir() const
-{
-	clearDir(mWorkingDir+"/tree");
-}
-
 void Serializer::removeFromDisk(Id id) const
 {
 	qDebug() << "deleteDiagramDir " << pathToElement(id);
 	QDir dir;
 	dir.remove(pathToElement(id));
+}
+
+QString Serializer::getWorkingDir() const
+{
+	return mWorkingDir;
+}
+
+void Serializer::clearWorkingDir() const
+{
+	clearDir(mWorkingDir+"/tree");
 }
 
 void Serializer::setWorkingDir(QString const &workingDir)
