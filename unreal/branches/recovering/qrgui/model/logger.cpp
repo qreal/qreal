@@ -9,6 +9,10 @@ using namespace model;
 Logger::Logger(Model *model)
 	: mModel(model), enabled(false)
 {
+	flagsEnabled[editors] = true;
+	flagsEnabled[diagrams] = true;
+	flagsEnabled[uselessMessages] = false;
+	flagsEnabled[invalidMessages] = false;
 }
 
 void Logger::enable()
@@ -21,25 +25,30 @@ void Logger::disable()
 	enabled = false;
 }
 
-void Logger::log(const action performed,
+void Logger::setFlag(flag name, bool arg)
+{
+	flagsEnabled[name] = arg;
+}
+
+void Logger::log(action performed,
 							const Id scene)
 {
-	log(performed, scene, Id(), QVariant(), QString());
+	if ((performed != createDiagram) && (performed != destroyDiagram))
+		write("#InvalidMessage\n",scene);
+	else if (flagsEnabled[invalidMessages])
+		log(performed, scene, Id(), QVariant(), QString());
 }
 
-void Logger::log(const action performed,
+void Logger::log(action performed,
 					const Id scene, const Id target)
 {
-	log(performed, scene, target, QVariant(), QString());
+	if ((performed != addElement) && (performed != removeElement))
+		write("#InvalidMessage\n",scene);
+	else if (flagsEnabled[invalidMessages])
+		log(performed, scene, target, QVariant(), QString());
 }
 
-void Logger::log(const action performed, const Id scene,
-						const Id target, const QVariant data)
-{
-	log(performed, scene, target, data, QString());
-}
-
-void Logger::log(const action performed,
+void Logger::log(action performed,
 				 const Id scene, const Id target,
 				 const QVariant data, const QString additional)
 {
@@ -47,6 +56,11 @@ void Logger::log(const action performed,
 	switch (performed) {
 		case setData:
 			message += QString("SetData");
+			if ((!flagsEnabled[uselessMessages]) &&
+			//may be, "name" messages are useless too
+				((additional == QString("position")) ||
+				 (additional == QString("configuration"))))
+				return;
 			break;
 		case addElement:
 			message += QString("AddElement");
