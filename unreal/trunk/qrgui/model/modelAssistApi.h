@@ -40,6 +40,8 @@ namespace qReal {
 			qReal::IdList diagramsAbleToBeConnectedTo(qReal::Id const &element) const;
 			qReal::IdList diagramsAbleToBeUsedIn(qReal::Id const &element) const;
 
+			qReal::IdList children(qReal::Id const &element) const;
+
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Copying is forbidden
 			ModelAssistApi& operator =(ModelAssistApi const &); // Assignment is forbidden also

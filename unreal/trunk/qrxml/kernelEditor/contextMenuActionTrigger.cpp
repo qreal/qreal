@@ -28,8 +28,14 @@ void ContextMenuActionTrigger::contextMenuActionTriggered(QString const &name)
 							"Method"));
 				mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateMethodString()));	
 			} else if (id.element() == "Class") {
-				//Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
-				//			"Method"));
+				foreach(Id curChildId, mApi->children(id)) {
+					if (curChildId.element() == "MethodsContainer") {
+						Id newMethodId = mApi->createElement(curChildId, Id("Kernel_metamodel", "Kernel",
+							"Method"));
+						mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateMethodString()));	
+						break;
+					}
+				}
 			}
 		}
 	} else if (actionName == "Add field") {
@@ -41,12 +47,18 @@ void ContextMenuActionTrigger::contextMenuActionTriggered(QString const &name)
 
 			Id id = Id::loadFromString(uuid);
 			if (id.element() == "FieldsContainer") {
-				Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
+				Id newFieldId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
 							"Field"));
-				mApi->setProperty(newMethodId, Qt::DisplayRole, QVariant(dialog.generateFieldString()));	
+				mApi->setProperty(newFieldId, Qt::DisplayRole, QVariant(dialog.generateFieldString()));	
 			} else if (id.element() == "Class") {
-				//Id newMethodId = mApi->createElement(id, Id("Kernel_metamodel", "Kernel",
-				//			"Method"));
+				foreach(Id curChildId, mApi->children(id)) {
+					if (curChildId.element() == "FieldsContainer") {
+						Id newFieldId = mApi->createElement(curChildId, Id("Kernel_metamodel", "Kernel",
+							"Field"));
+						mApi->setProperty(newFieldId, Qt::DisplayRole, QVariant(dialog.generateFieldString()));	
+						break;
+					}
+				}
 			}
 		}
 	}
