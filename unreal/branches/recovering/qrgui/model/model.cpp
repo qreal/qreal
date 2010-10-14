@@ -8,8 +8,8 @@ using namespace qReal;
 using namespace model;
 using namespace details;
 
-Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
-	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogger(this)
+Model::Model(EditorManager const &editorManager, QString const &workingDir)
+	:  mApi(workingDir), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogger(this)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -516,15 +516,17 @@ QPersistentModelIndex Model::rootIndex() const
 	return index(mRootItem);
 }
 
-void Model::open(QString const &workingDirectory)
+void Model::open(QString const &workingDir)
 {
-	mApi.open(workingDirectory);
+	mApi.open(workingDir);
+	mLogger.setWorkingDir(workingDir);
 	reinit();
 }
 
-void Model::saveTo(QString const &workingDirectory)
+void Model::saveTo(QString const &workingDir)
 {
-	mApi.saveTo(workingDirectory);
+	mApi.saveTo(workingDir);
+	mLogger.setWorkingDir(workingDir);
 	mLogger.output();
 }
 

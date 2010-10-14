@@ -83,45 +83,6 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Logic
 	}
 }
 
-void Serializer::logRemove(qReal::Id const diagram)
-{
-	QString name = diagram.id();
-	QFile *file;
-	if (files.contains(name))
-		file = files.value(name);
-	else {
-		qDebug() << "Serializer::logRemove() error: no such file.";
-		return;
-	}
-	QDir dir;
-	file->remove();
-	files.remove(name);
-	dir.rmdir(mWorkingDir+"/logs/"+diagram.diagram());
-}
-
-void  Serializer::log(QString const message, qReal::Id const diagram)
-{
-	QString path = mWorkingDir+"/logs/"+diagram.diagram();
-	QString name = diagram.id();
-	QDir dir;
-	dir.mkpath(path);
-
-	QFile *file;
-	if (!files.contains(name)) {
-		file = new QFile(path+"/"+name+".log");
-		files.insert(name, file);
-	} else {
-		file = files.value(name);
-	}
-
-	if (!file->isOpen())
-		file->open(QIODevice::Append | QIODevice::Text);
-	QTextStream out(file);
-	out << message << "\n";
-
-	//may be, file must be closed or smthng else
-}
-
 LogicObject *Serializer::parseLogicObject(QDomElement const &elem)
 {
 	QString id = elem.attribute("id", "");

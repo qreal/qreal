@@ -6,10 +6,8 @@ namespace qReal {
 	namespace model {
 		class Model;
 
-		class Logger : QObject
+		class Logger
 		{
-			Q_OBJECT
-
 			public:
 				Logger(Model *model);
 				~Logger();
@@ -34,6 +32,7 @@ namespace qReal {
 				};
 
 				void setFlag(flag name, bool arg);
+				void setWorkingDir(QString workingDir);
 
 				void log(action performed,
 						Id const scene);
@@ -43,7 +42,6 @@ namespace qReal {
 						Id const scene, Id const target,
 							QVariant const prevData, QVariant const newData,
 								QString const additional);
-
 				void output();
 
 			private:
@@ -59,6 +57,7 @@ namespace qReal {
 				bool enabled;
 				bool flagsEnabled[4];
 				QSet<Id> cleanDiagrams;
+				QMap<QString, QFile*> files;
 				QMultiHash<Id, QString*> buffer;
 
 				const QString msgInvalid;
@@ -67,9 +66,6 @@ namespace qReal {
 				const QString msgRemoveElement;
 				const QString msgCreateDiagram;
 				const QString msgDestroyDiagram;
-
-			private slots:
-				void setWorkingDir(QString workingDir);
 		};
 	}
 }

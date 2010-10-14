@@ -305,16 +305,6 @@ void RepoApi::open(QString const &workingDir)
 	mClient.open(workingDir);
 }
 
-void RepoApi::logRemove(const qReal::Id diagram)
-{
-	mClient.logRemove(diagram);
-}
-
-void RepoApi::log(QString message, const qReal::Id diagram)
-{
-	mClient.log(message, diagram);
-}
-
 void RepoApi::saveAll() const
 {
 	mClient.saveAll();

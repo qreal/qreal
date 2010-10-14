@@ -141,14 +141,45 @@ bool Logger::pass(const Id scene)
 void Logger::remove(const Id scene)
 {
 	buffer.remove(scene);
-	mModel->mutableApi().logRemove(scene);
+
+	QString name = scene.id();
+	QFile *file;
+	if (files.contains(name))
+		file = files.value(name);
+	else {
+		qDebug() << "Serializer::logRemove() error: no such file.";
+		return;
+	}
+	QDir dir;
+	file->remove();
+	files.remove(name);
+	dir.rmdir(mWorkingDir+"/logs/"+scene.diagram());
 }
 
 void Logger::write(const QString message, const Id scene)
 {
 	if (!enabled)
 		return;
-	mModel->mutableApi().log(message, scene);
+
+	QString path = mWorkingDir+"/logs/"+scene.diagram();
+	QString name = scene.id();
+	QDir dir;
+	dir.mkpath(path);
+
+	QFile *file;
+	if (!files.contains(name)) {
+		file = new QFile(path+"/"+name+".log");
+		files.insert(name, file);
+	} else {
+		file = files.value(name);
+	}
+
+	if (!file->isOpen())
+		file->open(QIODevice::Append | QIODevice::Text);
+	QTextStream out(file);
+	out << message << "\n";
+
+	//may be, file must be closed or smthng else
 }
 
 QString Logger::getDataString(const QVariant data) const
