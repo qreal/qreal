@@ -6,7 +6,9 @@ namespace qReal {
 	namespace model {
 		class Model;
 
-		class Repairer {
+		class Repairer : QObject {
+			Q_OBJECT
+
 			public:
 				Repairer(Model *model);
 			private:

@@ -12,7 +12,7 @@ namespace qrRepo {
 
 	namespace details {
 
-		class Serializer {
+		class Serializer : QObject {
 		Q_OBJECT
 
 		public:

@@ -7,9 +7,8 @@ using namespace qReal;
 using namespace model;
 
 Logger::Logger(Model *model)
-	: mModel(model), enabled(false),
-	mWorkingDir(mModel->mutableApi().getWorkingDir()),
-
+	: mModel(model), mWorkingDir(mModel->mutableApi().getWorkingDir()),
+	enabled(false),
 	msgInvalid("Invalid"),
 	msgSetData("SetData"),
 	msgAddElement("AddElement"),

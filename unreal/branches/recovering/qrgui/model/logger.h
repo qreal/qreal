@@ -6,7 +6,7 @@ namespace qReal {
 	namespace model {
 		class Model;
 
-		class Logger
+		class Logger : QObject
 		{
 			Q_OBJECT
 
