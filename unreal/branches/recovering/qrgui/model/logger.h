@@ -48,6 +48,8 @@ namespace qReal {
 				bool enabled;
 				bool flagsEnabled[4];
 
+				bool pass(Id const scene);
+
 				QString getDataString(QVariant const data) const;
 				void write(QString const message, Id const scene);
 		};
