@@ -1,0 +1,333 @@
+<metamodel xmlns="http://schema.real.com/schema/">
+    <include>../commonXml/kernel_metamodel.xml</include>
+    <include>../commonXml/basicbehaviors_metamodel.xml</include>
+    <namespace>UML 2.1</namespace>
+    <diagram displayedName="State Machines Diagram" name="StateMachinesDiagram">
+      <nonGraphicTypes>
+        <enum name="TransitionKind" displayedName="Transition Kind">
+          <value>internal</value>
+          <value>local</value>
+          <value>external</value>
+        </enum>
+      </nonGraphicTypes>
+      <graphicTypes>
+        <node displayedName="State Machine" name="StateMachine">
+          <graphics>
+              <picture sizex="100" sizey="100">
+                <path fill="#ffffff" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 17.61 22 C 12.8548 22 9 26.0115 9 30.96 L 9 69.04 C 9 73.9885 12.8548 78 17.61 78 L 82.39 78 C 87.1452 78 91 73.9885 91 69.04 L 91 30.96 C 91 26.0115 87.1452 22 82.39 22 L 17.61 22" fill-style="solid"/>
+              </picture>
+			  <labels>
+			  	<label x="10" y="10" textBinded="name"/>
+			  </labels>
+              <ports>
+                <point_port x="9" y="50"/>
+                <line_port>
+                  <start startx="15" starty="22"/>
+                  <end endx="86" endy="22"/>
+                </line_port>
+                <line_port>
+                  <start startx="15" starty="78"/>
+                  <end endx="86" endy="78"/>
+                </line_port>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="Basic Behaviors::Behavior"/>
+            </generalizations>
+            <containers>
+              <container>
+                <contains type="Region"/>
+              </container>
+            </containers>
+          </logic>
+        </node>
+        <node displayedName="Vertex" name="Vertex">
+          <logic>
+            <generalizations>
+                <parent parentName="Kernel::Named Element"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="State" name="State">
+          <graphics>
+              <description>simple state</description>
+              <picture sizex="100" sizey="100">
+                <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid"/>
+                <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid"/>
+                <path fill="#ffffff" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 17.61 22 C 12.8548 22 9 26.0115 9 30.96 L 9 69.04 C 9 73.9885 12.8548 78 17.61 78 L 82.39 78 C 87.1452 78 91 73.9885 91 69.04 L 91 30.96 C 91 26.0115 87.1452 22 82.39 22 L 17.61 22" fill-style="solid"/>
+              </picture>
+              <labels>
+			  	<label x="10" y="10" textBinded="name"/>
+			  </labels>
+              <ports>
+                <point_port x="9" y="50"/>
+                <point_port x="91" y="50"/>
+                <line_port>
+                  <start startx="15" starty="22"/>
+                  <end endx="86" endy="22"/>
+                </line_port>
+                <line_port>
+                  <start startx="15" starty="78"/>
+                  <end endx="86" endy="78"/>
+                </line_port>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="Kernel::Namespace"/>
+                <parent parentName="Vertex"/>
+                <parent parentName="Kernel::Redefinable Element"/>
+            </generalizations>
+            <containers>
+              <container>
+                <contains type="Region"/>
+              </container>
+            </containers>
+          </logic>
+        </node>
+        <edge displayedName="Transition" name="Transition">
+          <graphics>
+              <picture sizex="30" sizey="30">
+                <line fill="#000000" stroke-style="solid" stroke="#636363" y1="0" x1="0" y2="300" stroke-width="2" x2="300" fill-style="solid"/>
+              </picture>
+              <labels>
+			  	<label x="10" y="10" textBinded="name"/>
+			  	<label x="10" y="20" textBinded="state"/>
+			  </labels>
+          </graphics>
+          <logic>
+            <properties>
+              <property type="TransitionKind" name="kind"/>
+            </properties>
+            <generalizations>
+                <parent parentName="Kernel::Namespace"/>
+            </generalizations>
+<!--            <associations>
+              <association role="source" end_type="no_arrow" id="smaTransitionSource">
+                <begin idref="smVertex"/>
+              </association>
+              <association role="target" end_type="open_arrow" id="smaTransitionTarget">
+                <begin idref="smVertex"/>
+              </association>
+            </associations>-->
+          </logic>
+        </edge>
+        <node displayedname="Region" name="Region">
+          <graphics>
+              <picture sizex="200" sizey="200">
+                <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid"/>
+                <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 285.62 234 C 281.412 234 278 237.553 278 241.935 L 278 295.065 C 278 299.447 281.412 303 285.62 303 L 397.38 303 C 401.588 303 405 299.447 405 295.065 L 405 241.935 C 405 237.553 401.588 234 397.38 234 L 285.62 234" fill-style="solid"/>
+                <polygon x4="96" fill="#000000" stroke-style="solid" n="4" stroke="#000000" y1="65" x1="59" y2="45" stroke-width="1" x2="59" y3="45" fill-style="none" x3="96" y4="66"/>
+                <text i="0" font-fill="#000000" y1="54" b="0" x1="67" font-name="Helvetica" u="0" font-size="12a">S</text>
+              </picture>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="Kernel::Namespace"/>
+            </generalizations>
+            <container>
+                <contains  type="Transition"/>
+            </container>
+          </logic>
+        </node>
+        <node path="88, 60 : 84, 68 : 76, 76 : 68, 84 : 60, 84 : 52, 84 : 44, 76 : 36, 68 : 36, 60 : 36, 52 : 44, 44 : 52, 36 : 60, 36 : 68, 36 : 76, 44 : 84, 52 : 88, 60 : 116, 60 : 108, 80 : 96, 96 : 80, 108 : 60, 112 : 40, 108 : 24, 96 : 12, 80 : 8, 60 : 12, 40 : 24, 24 : 40, 12 : 60, 8 : 80, 12 : 96, 24 : 108, 40 : 116, 60 : " displayedName="Final State" name="FinalState">
+          <graphics>
+              <picture sizex="30" sizey="30">
+                <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid"/>
+                <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="20" stroke-width="2" x2="20" fill-style="solid"/>
+              </picture>
+              <labels>
+			  	<label x="10" y="10" textBinded="name"/>
+			  </labels>
+              <ports>
+                <point_port x="5" y="15"/>
+                <point_port x="15" y="5"/>
+                <point_port x="25" y="15"/>
+                <point_port x="15" y="25"/>
+                <point_port x="15" y="15"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="State"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedname="Pseudo State" name="PseudoState">
+          <logic>
+            <generalizations>
+                <parent parentName="Vertex"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node path="58, 30 : 54, 40 : 48, 48 : 40, 54 : 30, 56 : 20, 54 : 12, 48 : 6, 40 : 4, 30 : 6, 20 : 12, 12 : 20, 6 : 30, 4 : 40, 6 : 48, 12 : 54, 20 : 58, 30 : " displayedName="Initial Pseudo State" name="InitialPseudoState">
+          <graphics>
+              <picture sizex="30" sizey="30">
+                <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid"/>
+              </picture>
+              <ports>
+                <point_port x="5" y="15"/>
+                <point_port x="15" y="5"/>
+                <point_port x="25" y="15"/>
+                <point_port x="15" y="25"/>
+                <point_port x="15" y="15"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Deep History Pseudo State" name="DeepHistoryPseudoState">
+          <graphics>
+              <picture sizex="100" sizey="100">
+                <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12a">H*</text>
+              </picture>
+              <ports>
+                <point_port x="49" y="48"/>
+                <point_port x="49" y="23"/>
+                <point_port x="49" y="70"/>
+                <point_port x="25" y="48"/>
+                <point_port x="73" y="48"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Shallow History Pseudo State" name="ShallowHistoryPseudoState">
+          <graphics>
+              <picture sizex="100" sizey="100">
+                <text i="0" font-fill="#000000" y1="48" b="0" x1="40" font-name="Helvetica" u="0" font-size="12a">H</text>
+              </picture>
+              <ports>
+                <point_port x="49" y="48"/>
+                <point_port x="49" y="23"/>
+                <point_port x="49" y="70"/>
+                <point_port x="25" y="48"/>
+                <point_port x="73" y="48"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node path="1, 3 : 50, 3 : " displayedName="Join Pseudo State" name="JoinPseudoState">
+          <graphics>
+              <picture sizex="50" sizey="8">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="1" y2="3" stroke-width="3" x2="50" fill-style="solid"/>
+              </picture>
+              <ports>
+                <line_port>
+                  <start startx="1" starty="3"/>
+                  <end endx="50" endy="3"/>
+                </line_port>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node path="50, 3 : 1, 3 : " displayedName="Fork Pseudo State" name="ForkPseudoState">
+          <graphics>
+              <picture sizex="50" sizey="8">
+                <line fill="#000000" stroke-style="solid" stroke="#000000" y1="3" x1="1" y2="3" stroke-width="3" x2="50" fill-style="solid"/>
+              </picture>
+              <ports>
+                <line_port>
+                  <start startx="1" starty="3"/>
+                  <end endx="50" endy="3"/>
+                </line_port>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node diaplsyedName="Junction Pseudo State" name="JunctionPseudoState">
+          <graphics>
+              <picture sizex="100" sizey="100"/>
+              <ports>
+                <point_port x="47" y="51"/>
+                <point_port x="47" y="36"/>
+                <point_port x="47" y="66"/>
+                <point_port x="32" y="51"/>
+                <point_port x="62" y="51"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Choice Pseudo State" name="ChoicePseudoState">
+          <graphics>
+              <picture sizex="100" sizey="100"/>
+              <ports>
+                <point_port x="50" y="35"/>
+                <point_port x="50" y="65"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Entry Point" name="EntryPoint">
+          <graphics>
+              <picture sizex="100" sizey="100">
+                <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12a">again</text>
+              </picture>
+              <ports>
+                <point_port x="70" y="35"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Exit Point" name="ExitPoint">
+          <graphics>
+              <picture sizex="100" sizey="100">
+                <text i="0" font-fill="#000000" y1="52" b="0" x1="6" font-name="Helvetica" u="0" font-size="12a">aborted</text>
+              </picture>
+              <ports>
+                <point_port x="25" y="60"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+        <node displayedName="Terminate Node" name="TerminateNode">
+          <graphics>
+              <picture sizex="100" sizey="100"/>
+              <ports>
+                <point_port x="50" y="55"/>
+              </ports>
+          </graphics>
+          <logic>
+            <generalizations>
+                <parent parentName="PseudoState"/>
+            </generalizations>
+          </logic>
+        </node>
+      </graphicTypes>
+    </diagram>
+  </metamodel>
