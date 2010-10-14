@@ -511,6 +511,33 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 }
 
+void EdgeElement::reconnectToNearestPorts()
+{
+        model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
+        if (mSrc) {
+                QPointF first = mapToParent(mLine.first());
+                QPointF second = mapToParent(mLine[1]);
+                qDebug() << "first:" << (QVariant)first << " at " << mPortFrom << "; second: " << (QVariant)second;
+                QPointF newFirst = mSrc->mapToParent(mSrc->getNearestPort(second));
+                qreal newFrom = mSrc->getPortId(newFirst);
+                qDebug() << "now first: " << (QVariant)newFirst << " at " << newFrom;
+                mPortFrom = newFrom;
+                model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+                adjustLink();
+        }
+        if (mDst) {
+                QPointF last = mapToParent(mLine.last());
+                QPointF preLast = mapToParent(mLine[mLine.count() - 2]);
+                qDebug() << "last:" << (QVariant)last << " at " << mPortTo << "; preLast: " << (QVariant)preLast;
+                QPointF newLast = mDst->mapToParent(mDst->getNearestPort(preLast));
+                qreal newTo = mSrc->getPortId(newLast);
+                qDebug() << "now last: " << (QVariant)newLast << " at " << newTo;
+                mPortTo = newTo;
+                model->setData(mDataIndex, mPortTo, roles::toPortRole);
+                adjustLink();
+        }
+}
+
 void EdgeElement::updateData()
 {
 	if (mMoving)

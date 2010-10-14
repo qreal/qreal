@@ -626,6 +626,13 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			}
 		}
 	}
+
+        qDebug() << "Homsa: moving" << uuid().toString();
+        qDebug() << "+ edges reconnecting:";
+        foreach(EdgeElement* edge, mEdgeList) {
+            qDebug() << "- " << edge->uuid().toString();
+            edge->reconnectToNearestPorts();
+        }
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
