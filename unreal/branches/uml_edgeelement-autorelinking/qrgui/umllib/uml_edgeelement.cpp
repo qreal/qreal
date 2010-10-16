@@ -530,7 +530,7 @@ void EdgeElement::reconnectToNearestPorts()
                 QPointF preLast = mapToParent(mLine[mLine.count() - 2]);
                 qDebug() << "last:" << (QVariant)last << " at " << mPortTo << "; preLast: " << (QVariant)preLast;
                 QPointF newLast = mDst->mapToParent(mDst->getNearestPort(preLast));
-                qreal newTo = mSrc->getPortId(newLast);
+                qreal newTo = mDst->getPortId(newLast);
                 qDebug() << "now last: " << (QVariant)newLast << " at " << newTo;
                 mPortTo = newTo;
                 model->setData(mDataIndex, mPortTo, roles::toPortRole);
