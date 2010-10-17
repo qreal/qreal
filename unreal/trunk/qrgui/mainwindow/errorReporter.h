@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QList>
-
+#include"mainwindow.h"
 #include "../kernel/ids.h"
 #include "../kernel/definitions.h"
 
@@ -37,7 +37,7 @@ namespace qReal {
 			void addCritical(QString const &message, Id const &position = ROOT_ID);
 
 			// TODO: remove it and add nice window with errors list
-			bool showErrors(QString const &successMessage) const;
+			bool showErrors(QString const &successMessage, QListWidget* const errorListWidget) const;
 		private:
 			static QString severityMessage(Error const &error);
 

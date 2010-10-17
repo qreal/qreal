@@ -1,5 +1,4 @@
 #include "errorReporter.h"
-
 #include <QtGui/QMessageBox>
 
 #include "../kernel/exception/exception.h"
@@ -52,39 +51,40 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	mErrors.append(error);
 }
 
-bool ErrorReporter::showErrors(QString const &successMessage) const
+bool ErrorReporter::showErrors(QString const &successMessage, QListWidget* const errorListWidget) const
 {
 	QString const windowTitle = "Results";
 
 	if (mErrors.isEmpty()) {
-		QMessageBox::information(NULL, windowTitle, successMessage);
+		QString labelText = windowTitle + ": " + successMessage;
+		errorListWidget->addItem(labelText);
 		return true;
 	}
 
 	QString message;
-	foreach (Error error, mErrors) {
-		message += severityMessage(error) + " ";
-		message += error.message() + "\n";
-		if (error.position() != ROOT_ID)
-			message += "    at " + error.position().toString() + "\n\n";
-	}
 
 	Error::Severity const totalSeverity = maxSeverity();
-	switch (totalSeverity) {
-	case Error::information:
-		QMessageBox::information(NULL, windowTitle, message);
-		break;
-	case Error::warning:
-		QMessageBox::warning(NULL, windowTitle, message);
-		break;
-	case Error::error:
-		QMessageBox::warning(NULL, windowTitle, message);
-		break;
-	case Error::critical:
-		QMessageBox::critical(NULL, windowTitle, message);
-		break;
-	default:
-		throw new Exception("Incorrect total severity");
+	foreach (Error error, mErrors) {
+		message = severityMessage(error) + " ";
+		message += error.message() + "\n";
+		if (error.position() != ROOT_ID)
+			message += "    at " + error.position().toString();
+		switch (totalSeverity) {
+		case Error::information:
+			errorListWidget->addItem(" " + message);
+			break;
+		case Error::warning:
+			errorListWidget->addItem(" " + message);
+			break;
+		case Error::error:
+			errorListWidget->addItem(" " + message);
+			break;
+		case Error::critical:
+			errorListWidget->addItem(" " + message);
+			break;
+		default:
+			throw new Exception("Incorrect total severity");
+		}
 	}
 	return false;
 }

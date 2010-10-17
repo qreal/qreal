@@ -133,9 +133,8 @@ MainWindow::MainWindow()
 
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
-
 	ui.paletteDock->setWidget(ui.paletteToolbox);
-
+	ui.ErrorDock->setWidget(ui.ErrorListWidget);
 	ui.propertyEditor->setModel(&mPropertyModel);
 	ui.propertyEditor->verticalHeader()->hide();
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
@@ -591,7 +590,7 @@ void MainWindow::generateToHascol()
 	generators::HascolGenerator hascolGenerator(mModel->api());
 
 	gui::ErrorReporter const errors = hascolGenerator.generate();
-	errors.showErrors("Generation finished successfully");
+	errors.showErrors("Generation finished successfully", ui.ErrorListWidget);
 
 	qDebug() << "Done.";
 }
@@ -602,7 +601,6 @@ void MainWindow::generateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
-	gui::ErrorReporter errors;
 	const QHash<Id, QString> metamodelList = metaGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
@@ -622,9 +620,9 @@ void MainWindow::generateEditor()
 	}
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		gui::ErrorReporter errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-		if (errors.showErrors("Generation finished successfully")) {
+		if (errors.showErrors("Generation finished successfully", ui.ErrorListWidget)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
@@ -875,7 +873,7 @@ void MainWindow::parseHascol()
 	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
 	gui::ErrorReporter errors = parser.parse(fileNames);
 
-	errors.showErrors("Parsing is finished");
+	errors.showErrors("Parsing is finished", ui.ErrorListWidget);
 
 	mModel->reinit();
 }

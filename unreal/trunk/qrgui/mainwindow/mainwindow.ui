@@ -14,7 +14,7 @@
    <string>QReal</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../qrgui.qrc">
+   <iconset>
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -295,7 +295,36 @@
    <addaction name="actionParse_Hascol_sources"/>
    <addaction name="actionParse_Java_Libraries"/>
   </widget>
+  <widget class="QDockWidget" name="ErrorDock">
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Error List</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_6">
+    <widget class="QListWidget" name="ErrorListWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>191</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
   <action name="actionQuit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -311,7 +340,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
    <property name="text">
@@ -320,7 +349,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
    <property name="text">
@@ -348,7 +377,7 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -457,7 +486,7 @@
   </action>
   <action name="actionClear">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset>
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
@@ -595,8 +624,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../qrgui.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
