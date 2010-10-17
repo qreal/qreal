@@ -1,0 +1,11 @@
+QREAL_EDITOR_NAME = "@@MetamodelName@@"
+
+SOURCES += pluginInterface.cpp
+
+HEADERS += pluginInterface.h \
+	elements.h
+
+RESOURCES += shapes/plugin.qrc
+
+include (../../../qrmc/plugins/pluginsCommon.pri)
+
