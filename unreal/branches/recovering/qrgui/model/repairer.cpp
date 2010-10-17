@@ -1,4 +1,3 @@
-#include "model.h"
 #include "repairer.h"
 
 #include <QDebug>

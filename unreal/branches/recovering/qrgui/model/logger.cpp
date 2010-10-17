@@ -7,19 +7,26 @@ using namespace qReal;
 using namespace model;
 
 Logger::Logger(Model *model)
-	: mModel(model), mWorkingDir(mModel->mutableApi().getWorkingDir()),
-	enabled(false),
+	:
 	msgInvalid("Invalid"),
 	msgSetData("SetData"),
 	msgAddElement("AddElement"),
 	msgRemoveElement("RemoveElement"),
 	msgCreateDiagram("CreateDiagram"),
-	msgDestroyDiagram("DestroyDiagram")
+	msgDestroyDiagram("DestroyDiagram"),
+	msgOperation("Operation: "),
+	msgTarget("Target: "),
+	msgDetails("Details: "),
+	msgPrevValue("PrevValue: "),
+	msgNewValue("NewValue:"),
+
+	mModel(model), mWorkingDir(mModel->mutableApi().getWorkingDir()),
+	enabled(false)
 {
-	flagsEnabled[editors] = true;
-	flagsEnabled[diagrams] = true;
-	flagsEnabled[uselessMessages] = false;
-	flagsEnabled[invalidMessages] = false;
+	flagsEnabled[flgEditors] = true;
+	flagsEnabled[flgDiagrams] = true;
+	flagsEnabled[flgUselessMessages] = false;
+	flagsEnabled[flgInvalidMessages] = false;
 }
 
 Logger::~Logger()
@@ -38,17 +45,17 @@ void Logger::disable()
 	enabled = false;
 }
 
-void Logger::setFlag(flag name, bool arg)
+void Logger::setFlag(flag flg, bool arg)
 {
-	flagsEnabled[name] = arg;
+	flagsEnabled[flg] = arg;
 }
 
 void Logger::log(action performed,
 							const Id scene)
 {
-	if ((performed != createDiagram) && (performed != destroyDiagram)) {
+	if ((performed != actCreateDiagram) && (performed != actDestroyDiagram)) {
 		write(msgInvalid +"\n",scene);
-		if (flagsEnabled[invalidMessages])
+		if (flagsEnabled[flgInvalidMessages])
 			log(performed, scene, Id(), QVariant(), QVariant(), QString());
 	} else
 		log(performed, scene, Id(), QVariant(), QVariant(), QString());
@@ -57,9 +64,9 @@ void Logger::log(action performed,
 void Logger::log(action performed,
 					const Id scene, const Id target)
 {
-	if ((performed != addElement) && (performed != removeElement)) {
+	if ((performed != actAddElement) && (performed != actRemoveElement)) {
 		write(msgInvalid + "\n",scene);
-		if (flagsEnabled[invalidMessages])
+		if (flagsEnabled[flgInvalidMessages])
 			log(performed, scene, target, QVariant(), QVariant(), QString());
 	} else
 		log(performed, scene, target, QVariant(), QVariant(), QString());
@@ -73,28 +80,28 @@ void Logger::log(action performed,
 	if (!pass(scene))
 		return;
 
-	QString message = "Operation: ";
+	QString message = msgOperation;
 	switch (performed) {
-		case setData:
-			if ((!flagsEnabled[uselessMessages]) &&
+		case actSetData:
+			if ((!flagsEnabled[flgUselessMessages]) &&
 				((additional == QString("position")) ||
 				 (additional == QString("configuration"))))
 				return;
 			cleanDiagrams.remove(scene);
 			message += msgSetData;
 			break;
-		case addElement:
+		case actAddElement:
 			cleanDiagrams.remove(scene);
 			message += msgAddElement;
 			break;
-		case removeElement:
+		case actRemoveElement:
 			cleanDiagrams.remove(scene);
 			message += msgRemoveElement;
 			break;
-		case createDiagram:
+		case actCreateDiagram:
 			message += msgCreateDiagram;
 			break;
-		case destroyDiagram:
+		case actDestroyDiagram:
 			if (cleanDiagrams.contains(scene)) {
 				cleanDiagrams.remove(scene);
 				remove(scene);
@@ -107,13 +114,13 @@ void Logger::log(action performed,
 
 	message += "\n";
 	if (target.idSize() > 1)
-		message += "Target: " + target.toString() + "\n";
+		message += msgTarget + target.toString() + "\n";
 	if (!additional.isNull())
-		message += "Details: " + additional + "\n";
+		message += msgDetails + additional + "\n";
 	if (!prevData.isNull())
-		message += "PrevValue: " + getDataString(prevData) + "\n";
+		message += msgPrevValue + getDataString(prevData) + "\n";
 	if (!newData.isNull())
-		message += "NewValue: " + getDataString(newData) + "\n";
+		message += msgNewValue + getDataString(newData) + "\n";
 
 	if (!buffer.contains(scene))
 		buffer.insert(scene, new QString(message));
@@ -134,8 +141,8 @@ bool Logger::pass(const Id scene)
 {
 	const bool editor = scene.editor() == QString("Meta_editor");
 	return
-		((!editor && flagsEnabled[diagrams])
-			|| (editor && flagsEnabled[editors]));
+		((!editor && flagsEnabled[flgDiagrams])
+			|| (editor && flagsEnabled[flgEditors]));
 }
 
 void Logger::remove(const Id scene)

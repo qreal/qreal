@@ -152,7 +152,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 			return false;
 		}
 
-		mLogger.log(Logger::setData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
+		mLogger.log(Logger::actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
 
 		emit dataChanged(index, index);
 		return true;
@@ -401,16 +401,16 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-			mLogger.log(Logger::createDiagram, id);
+			mLogger.log(Logger::actCreateDiagram, id);
 		else
-			mLogger.log(Logger::addElement, isSituatedOn(parentItem)->id(), id);
+			mLogger.log(Logger::actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-		mLogger.log(Logger::addElement, isSituatedOn(parentItem)->id(), id);
+		mLogger.log(Logger::actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 
 	int newRow = parentItem->children().size();
@@ -542,9 +542,9 @@ void Model::removeByIndex(QModelIndex const &index)
 	Id id = idByIndex(index);
 	ModelTreeItem *treeItem = mTreeItems.value(id);
 	if (treeItem->parent() == mRootItem)
-		mLogger.log(Logger::destroyDiagram, isSituatedOn(treeItem)->id());
+		mLogger.log(Logger::actDestroyDiagram, isSituatedOn(treeItem)->id());
 	else
-		mLogger.log(Logger::removeElement, isSituatedOn(treeItem)->id(), id);
+		mLogger.log(Logger::actRemoveElement, isSituatedOn(treeItem)->id(), id);
 
 	removeRow(index.row(), index.parent());
 }

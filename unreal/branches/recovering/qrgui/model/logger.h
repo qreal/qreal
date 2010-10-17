@@ -11,25 +11,26 @@ namespace qReal {
 			public:
 				Logger(Model *model);
 				~Logger();
-				void enable();
-				void disable();
 
 				enum action
 				{
-					setData,
-					addElement,
-					removeElement,
-					createDiagram,
-					destroyDiagram
+					actSetData,
+					actAddElement,
+					actRemoveElement,
+					actCreateDiagram,
+					actDestroyDiagram
 				};
 
 				enum flag
 				{
-					editors,
-					diagrams,
-					uselessMessages,
-					invalidMessages,
+					flgEditors,
+					flgDiagrams,
+					flgUselessMessages,
+					flgInvalidMessages,
 				};
+
+				void enable();
+				void disable();
 
 				void setFlag(flag name, bool arg);
 				void setWorkingDir(QString workingDir);
@@ -43,6 +44,19 @@ namespace qReal {
 							QVariant const prevData, QVariant const newData,
 								QString const additional);
 				void output();
+
+				const QString msgInvalid;
+				const QString msgSetData;
+				const QString msgAddElement;
+				const QString msgRemoveElement;
+				const QString msgCreateDiagram;
+				const QString msgDestroyDiagram;
+
+				const QString msgOperation;
+				const QString msgTarget;
+				const QString msgDetails;
+				const QString msgPrevValue;
+				const QString msgNewValue;
 
 			private:
 				bool pass(Id const scene);
@@ -59,13 +73,6 @@ namespace qReal {
 				QSet<Id> cleanDiagrams;
 				QMap<QString, QFile*> files;
 				QMultiHash<Id, QString*> buffer;
-
-				const QString msgInvalid;
-				const QString msgSetData;
-				const QString msgAddElement;
-				const QString msgRemoveElement;
-				const QString msgCreateDiagram;
-				const QString msgDestroyDiagram;
 		};
 	}
 }
