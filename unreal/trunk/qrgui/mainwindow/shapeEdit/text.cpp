@@ -3,6 +3,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QPainter>
+#include <QtGui/QTextCursor>
 
 Text::Text(bool isDynamic)
 	: Item(NULL), mIsDynamicText(isDynamic)
@@ -163,4 +164,21 @@ void Text::setItemZValue(int zValue)
 	mZValue = zValue;
 	mText.setZValue(zValue);
 	setZValue(zValue);
+}
+
+void Text::focusInEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event);
+	mText.setCursor(cursor());
+	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
+}
+
+void Text::focusOutEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event);
+	mText.setTextInteractionFlags(Qt::NoTextInteraction);
+	QTextCursor cursor = mText.textCursor();
+	cursor.clearSelection();
+	mText.setTextCursor(cursor);
+	mText.unsetCursor();
 }

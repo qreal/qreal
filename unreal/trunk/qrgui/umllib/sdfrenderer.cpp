@@ -6,10 +6,13 @@
 #include <QLineF>
 #include <QTime>
 #include <QDebug>
+#include <QtCore/QSettings>
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
+	QSettings settings("SPbSU", "QReal");
+	mWorkingDirName = settings.value("workingDir", "./save").toString();
 }
 
 SdfRenderer::SdfRenderer(const QString path)
@@ -19,6 +22,8 @@ SdfRenderer::SdfRenderer(const QString path)
 	{
 		qDebug() << "File " + path + " - loading failed!";
 	}
+	QSettings settings("SPbSU", "QReal");
+	mWorkingDirName = settings.value("workingDir", "./save").toString();
 }
 
 SdfRenderer::~SdfRenderer()
@@ -101,6 +106,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 			else if(elem.tagName()=="curve")
 			{
 				curve_draw(elem);
+			}
+			else if(elem.tagName()=="image")
+			{
+				image_draw(elem);
 			}
 		}
 		node = node.nextSibling();
@@ -214,6 +223,25 @@ void SdfRenderer::polygon(QDomElement &element)
 		delete[] points;
 	}
 	defaultstyle();
+}
+
+void SdfRenderer::image_draw(QDomElement &element)
+{
+	float x1 = x1_def(element);
+	float y1 = y1_def(element);
+	float x2 = x2_def(element);
+	float y2 = y2_def(element);
+	QString fileName = element.attribute("name", "error");
+	QPixmap pixmap;
+	if(mMapFileImage.contains(fileName)) {
+		pixmap = mMapFileImage.value(fileName);
+	} else {
+		QString fullFileName = mWorkingDirName + "/images/" + fileName.section('/', -1);
+		pixmap = QPixmap(fullFileName);
+		mMapFileImage.insert(fileName, pixmap);
+	}
+	QRect rect(x1, y1, x2-x1, y2-y1);
+	painter->drawPixmap(rect, pixmap);
 }
 
 void SdfRenderer::point(QDomElement &element)

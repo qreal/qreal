@@ -73,7 +73,7 @@ private:
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
-	qreal widthOfGrid;
+	qreal mWidthOfGrid;
 
 	void getObjectByGesture();
 	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);

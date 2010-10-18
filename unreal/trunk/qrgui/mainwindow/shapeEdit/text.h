@@ -37,4 +37,6 @@ protected:
 	bool mIsDynamicText;
 	QRectF mRect;
 	void drawForDynamicText(QPainter* painter);
+	virtual void focusInEvent(QFocusEvent *event);
+	virtual void focusOutEvent(QFocusEvent *event);
 };

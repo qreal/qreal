@@ -20,7 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
-	widthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
+	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -747,8 +747,8 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
 		QSettings settings("SPbSU", "QReal");
-		widthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
-		painter->setPen(QPen(Qt::black, widthOfGrid));
+		mWidthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
