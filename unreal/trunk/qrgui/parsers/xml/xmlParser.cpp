@@ -20,7 +20,7 @@ using namespace parsers;
 
 XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
-	mMoveWidth(10), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(0)
+	mMoveWidth(180), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(280)
 {
 }
 
@@ -37,9 +37,12 @@ void XmlParser::parseFile(const QString &fileName)
 	initMetamodel(doc, fileName, packageId);
 
 	QDomNodeList const listeners = doc.elementsByTagName("listener");
+	int listenerPositionY = 100;
 	for (unsigned i = 0; i < listeners.length(); ++i) {
 		QDomElement listener = listeners.at(i).toElement();
-		initListener("(Listener)", listener.attribute("class", ""), listener.attribute("file", ""));
+		Id id = initListener("(Listener)", listener.attribute("class", ""), listener.attribute("file", ""));
+		mApi.setProperty(id, "position", QPointF(0,listenerPositionY));
+		listenerPositionY += 90;
 	}
 
 	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
@@ -58,11 +61,11 @@ void XmlParser::clear()
 {
 	mElementsColumn = 0;
 	mElementCurrentColumn = 0;
-	mMoveWidth = 10;
+	mMoveWidth = 180;
 	mMoveHeight = 100;
 	mCurrentWidth = 0;
 	mCurrentHeight = 0;
-	mParentPositionX = 0;
+	mParentPositionX = 280;
 	mElements.clear();
 	mParents.clear();
 	mContainers.clear();
@@ -149,13 +152,14 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	mApi.connect(metamodelId, mMetamodel);
 }
 
-void XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)
+Id XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)
 {
 	Id listenerId("Meta_editor", "MetaEditor", "Listener",
 				  QUuid::createUuid().toString());
 	setStandartConfigurations(listenerId, mMetamodel, name, name);
 	mApi.setProperty(listenerId, "class", className);
 	mApi.setProperty(listenerId, "file", fileName);
+	return listenerId;
 }
 
 void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,

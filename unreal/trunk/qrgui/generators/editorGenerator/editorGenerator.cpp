@@ -161,7 +161,6 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 {
 	QDomElement node = mDocument.createElement("node");
 	ensureCorrectness(id, node, "name", mApi.name(id));
-	QString name = mApi.name(id);
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
 	if (mApi.stringProperty(id, "path") != "")
 		node.setAttribute("path", mApi.stringProperty(id, "path"));
@@ -177,7 +176,6 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setContainer(logic, id);
 	setUsages(logic, id);
 	setConnections(logic, id);
-	setPossibleEdges(logic, id);
 	setProperties(logic, id);
 	setPin(logic, id);
 	setAction(logic, id);
@@ -203,9 +201,10 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	QDomElement logic = mDocument.createElement("logic");
 	edge.appendChild(logic);
 
-	setAssotiations(logic, id);
-	setGeneralization(logic, id);
+	setAssociations(logic, id);
+	setPossibleEdges(logic, id);
 	setProperties(logic, id);
+	setGeneralization(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent,Id const &id)
@@ -227,7 +226,7 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 	foreach (Id const inLink, inLinks) {
 		if (mApi.typeName(inLink) == "Inheritance") {
 			Id const parentId = mApi.from(inLink);
-			if ((mApi.typeName(parentId) == "MetaEntityImport") || (mApi.typeName(parentId) == "MetaEntityNode")) {
+			if ((mApi.typeName(parentId) == "MetaEntityImport") || (mApi.typeName(parentId) == "MetaEntityNode") || (mApi.typeName(parentId) == "MetaEntityEdge")) {
 				QDomElement generalization = mDocument.createElement("parent");
 				ensureCorrectness(parentId, generalization, "parentName", mApi.stringProperty(parentId, "name"));
 				generalizations.appendChild(generalization);
@@ -310,22 +309,22 @@ void EditorGenerator::setValues(QDomElement &parent, const Id &id)
 	}
 }
 
-void EditorGenerator::setAssotiations(QDomElement &parent, const Id &id)
+void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 {
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems) {
 		QString const objectType = mApi.typeName(idChild);
-		if (objectType == "MetaEntityAssotiation") {
-			QDomElement assotiationTag = mDocument.createElement("assotiations");
-			ensureCorrectness(idChild, assotiationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
-			ensureCorrectness(idChild, assotiationTag, "endType", mApi.stringProperty(idChild, "endType"));
-			parent.appendChild(assotiationTag);
+		if (objectType == "MetaEntityAssociation") {
+			QDomElement associationTag = mDocument.createElement("associations");
+			ensureCorrectness(idChild, associationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
+			ensureCorrectness(idChild, associationTag, "endType", mApi.stringProperty(idChild, "endType"));
+			parent.appendChild(associationTag);
 
-			QDomElement assotiation = mDocument.createElement("assotiation");
-			ensureCorrectness(idChild, assotiation, "beginName", mApi.stringProperty(idChild, "beginName"));
-			ensureCorrectness(idChild, assotiation, "endName", mApi.stringProperty(idChild, "endName"));
-			assotiationTag.appendChild(assotiation);
+			QDomElement association = mDocument.createElement("association");
+			ensureCorrectness(idChild, association, "beginName", mApi.stringProperty(idChild, "beginName"));
+			ensureCorrectness(idChild, association, "endName", mApi.stringProperty(idChild, "endName"));
+			associationTag.appendChild(association);
 		}
 	}
 }

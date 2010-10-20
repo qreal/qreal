@@ -43,7 +43,7 @@ namespace qReal {
 			QStringList getIncludeList(QString const &fileName);
 			Id getPackageId();
 			void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &id);
-			void initListener(QString const &name, QString const &className, QString const &fileName);
+			Id initListener(QString const &name, QString const &className, QString const &fileName);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
 			void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
 			void createGraphicElements(QDomElement const &type, Id const &diagramId);

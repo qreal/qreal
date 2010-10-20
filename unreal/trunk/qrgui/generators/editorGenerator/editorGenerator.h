@@ -32,7 +32,7 @@ namespace qReal {
 			void setProperties(QDomElement &parent, Id const &id);
 			void setContextMenuFields(QDomElement &parent, Id const &id);
 			void setValues(QDomElement &parent, Id const &id);
-			void setAssotiations(QDomElement &parent, Id const &id);
+			void setAssociations(QDomElement &parent, Id const &id);
 			void setUsages(QDomElement &parent, Id const &id);
 			void setConnections(QDomElement &parent, Id const &id);
 			void setGeneralization(QDomElement &parent, Id const &id);
