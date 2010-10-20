@@ -20,24 +20,26 @@
 	  <graphicTypes>
 		<node name="PackageDiagram" displayedName="Package Diagram">
 		  <graphics>
-			<picture sizex="100" sizey="100">
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="100" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Package</text>
+			<picture sizex="150" sizey="130">
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" x1="0a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="0a" stroke-width="1" x2="0a" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="100a" y2="0a" stroke-width="1" x2="100a" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="30a" stroke-width="1" x2="150" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="0a" y2="130" stroke-width="1" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30a" x1="150" y2="130" stroke-width="1" x2="150" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="130" x1="0" y2="130" stroke-width="1" x2="150" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="2" y="2" textBinded="name"/>
 			</labels>
 			<ports>
 			  <linePort>
-				<start startx="0" starty="10"/>
-				<end endx="0" endy="90"/>
+				<start startx="0" starty="35"/>
+				<end endx="0" endy="115"/>
 			  </linePort>
 			  <linePort>
-				<start startx="100" starty="10"/>
-				<end endx="100" endy="90"/>
+				<start startx="150" starty="35"/>
+				<end endx="150" endy="115"/>
 			  </linePort>
 			</ports>
 		  </graphics>
@@ -85,7 +87,6 @@
 			  <arc x1="120" y1="0" x2="200" y2="80" startAngle="0" spanAngle="1440"/>
 			  <arc x1="0" y1="120" x2="80" y2="200" startAngle="2880" spanAngle="1440"/>
 			  <arc x1="120" y1="120" x2="200" y2="200" startAngle="0" spanAngle="-1440"/>
-			  <text i="0" font-fill="#00007f" y1="17" b="0" x1="25" font-name="Helvetica" u="0" font-size="18a">Editor</text>
 			</picture>
 			<labels>
 			  <label x="30" y="15" textBinded="name" center="true"/>
@@ -120,17 +121,15 @@
 		</node>
 		<node name="MetaEntityNode" displayedName="Node">
 		  <graphics>
-			<picture sizex="100" sizey="100">
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="30" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="30" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="70" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="70" fill-style="solid"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Node</text>
+			<picture sizex="150" sizey="100">
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="150" y2="100" stroke-width="2" x2="150" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="0" stroke-width="2" x2="150" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="100" x1="0" y2="100" stroke-width="2" x2="150" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="25a" x1="0a" y2="25a" stroke-width="2" x2="150" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="5" y="3" textBinded="name" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -138,8 +137,8 @@
 				<end endx="0" endy="90"/>
 			  </linePort>
 			  <linePort>
-				<start startx="100" starty="10"/>
-				<end endx="100" endy="90"/>
+				<start startx="150" starty="10"/>
+				<end endx="150" endy="90"/>
 			  </linePort>
 			</ports>
 		  </graphics>
@@ -179,14 +178,14 @@
 		<node name="MetaEntityEdge" displayedName="Edge">
 		  <graphics>
 			<picture sizex="100" sizey="100">
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="solid" stroke="#000000" y1="100" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Edge</text>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="100" x1="10" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="100" x1="90" y2="50" stroke-width="2" x2="100" fill-style="solid"/>
+  			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="24a" x1="85" y2="24a" stroke-width="2" x2="15" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="5" y="5" textBinded="name" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -233,18 +232,16 @@
 		  </logic>
 		</node>
 		<node name="MetaEntityEnum" displayedName="Enum">
-		  <graphics>
+		  <graphics>	
 			<picture sizex="100" sizey="100">
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="0" x1="0" y2="0" stroke-width="2" x2="30" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="100" x1="0" y2="100" stroke-width="2" x2="30" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="0" x1="100" y2="0" stroke-width="2" x2="70" fill-style="solid"/>
-			  <line fill="#000000" stroke-style="dot" stroke="#000000" y1="100" x1="100" y2="100" stroke-width="2" x2="70" fill-style="solid"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Enum</text>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="2" x2="0" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="0" x1="100" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="0" x1="0" y2="0" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="100" x1="0" y2="100" stroke-width="2" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="25a" x1="0a" y2="25a" stroke-width="2" x2="100" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="5" y="3" textBinded="name" center="true"/>
 			</labels>
 			<ports>
 			  <linePort>
@@ -277,26 +274,12 @@
 		</node>
 		<node name="MetaEntity Attribute" displayedName="Property">
 		  <graphics>
-			<picture sizex="140" sizey="30">
-			  <line x1="0" y1="0" x2="0" y2="30"/>
-			  <line x1="0" y1="0" x2="140" y2="0"/>
-			  <line x1="0" y1="30" x2="140" y2="30"/>
-			  <line x1="140" y1="0" x2="140" y2="30"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Property</text>
+			<picture sizex="140" sizey="16">
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="10" y="0" textBinded="name"/>
 			</labels>
-			<ports>
-			  <linePort>
-				<start startx="20" starty="0"/>
-				<end endx="120" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="20" starty="40"/>
-				<end endx="120" endy="40"/>
-			  </linePort>
-			</ports>
+			<ports/>
 		  </graphics>
 		  <logic>
 			<generalizations/>
@@ -311,10 +294,7 @@
 		<node name="MetaEntityImport" displayedName="Import">
 		  <graphics>
 			<picture sizex="100" sizey="100">
-			  <line stroke-style="dash" x1="0" y1="0" x2="0" y2="100"/>
-			  <line stroke-style="dash" x1="0" y1="0" x2="100" y2="0"/>
-			  <line stroke-style="dash" x1="0" y1="100" x2="100" y2="100"/>
-			  <line stroke-style="dash" x1="100" y1="0" x2="100" y2="100"/>
+				<rectangle fill="#bbbbbb" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="100" stroke-width="1" x2="100" fill-style="solid"/>
 			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Import</text>
 			</picture>
 			<labels>
@@ -342,59 +322,14 @@
 			<containers/>
 		  </logic>
 		</node>
-				<node name="MetaEntityParent" displayedName="Parent">
-		  <graphics>
-			<picture sizex="100" sizey="50">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="50"/>
-			  <line stroke-style="dot" x1="0" y1="0" x2="100" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="50" x2="100" y2="50"/>
-			  <line stroke-style="dot" x1="100" y1="0" x2="100" y2="50"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Parent</text>
-			</picture>
-			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
-			</labels>
-			<ports>
-			  <linePort>
-				<start startx="20" starty="0"/>
-				<end endx="80" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="20" starty="100"/>
-				<end endx="80" endy="100"/>
-			  </linePort>
-			</ports>
-		  </graphics>
-		  <logic>
-			<generalizations/>
-			<properties>
-			  <property type="string" name="displayedName"/>
-			</properties>
-			<containers/>
-		  </logic>
-		</node>
 		<node name="MetaEntityValue" displayedName="Value">
 		  <graphics>
-			<picture sizex="140" sizey="30">
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="30"/>
-			  <line stroke-style="dot" x1="0" y1="0" x2="140" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="30" x2="140" y2="30"/>
-			  <line stroke-style="dot" x1="140" y1="0" x2="140" y2="30"/>
-			  <text i="0" font-fill="#00007f" y1="7" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Value</text>-->
+			<picture sizex="140" sizey="12">
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="valueName" center="true"/>
+			  <label x="10" y="0" textBinded="valueName"/>
 			</labels>
-			<ports>
-			  <linePort>
-				<start startx="20" starty="0"/>
-				<end endx="120" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="20" starty="40"/>
-				<end endx="120" endy="40"/>
-			  </linePort>
-			</ports>
+			<ports/>
 		  </graphics>
 		  <logic>
 			<generalizations/>
@@ -407,59 +342,36 @@
 		<node name="MetaEntityConnection" displayedName="Connection">
 		  <graphics>
 			<picture sizex="120" sizey="40">
-			  <line x1="0" y1="0" x2="110" y2="0"/>
-			  <line x1="0" y1="40" x2="110" y2="40"/>
-			  <line x1="0" y1="0" x2="0" y2="40"/>
-			  <line x1="110" y1="0" x2="120" y2="20"/>
-			  <line x1="110" y1="40" x2="120" y2="20"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Connection</text>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="10" stroke-width="1" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="10" y="5" textBinded="name" center="true"/>
 			</labels>
-			<ports>
-			  <linePort>
-				<start startx="10" starty="0"/>
-				<end endx="110" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="10" starty="40"/>
-				<end endx="110" endy="40"/>
-			  </linePort>
-			</ports>
+			<ports/>
 		  </graphics>
 		  <logic>
 			<generalizations/>
 			<properties>
 			  <property type="string" name="type"/>
-			</properties>
+			</properties>                        
 			<containers/>
 		  </logic>
 		</node>
 		<node name="MetaEntityAssociation" displayedName="Association">
 		  <graphics>
 			<picture sizex="120" sizey="40">
-			  <line x1="10" y1="0" x2="110" y2="0"/>
-			  <line x1="10" y1="40" x2="110" y2="40"/>
-			  <line x1="10" y1="0" x2="0" y2="20"/>
-			  <line x1="10" y1="40" x2="0" y2="20"/>
-			  <line x1="110" y1="0" x2="120" y2="20"/>
-			  <line x1="110" y1="40" x2="120" y2="20"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="10a">Association</text>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="10" stroke-width="1" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="120" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="10" stroke-width="1" x2="20" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="20" x1="0" y2="30" stroke-width="1" x2="20" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="10" y="10" textBinded="name" center="true"/>
+			  <label x="10" y="5" textBinded="name" center="true"/>
 			</labels>
-			<ports>
-			  <linePort>
-				<start startx="10" starty="0"/>
-				<end endx="110" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="10" starty="40"/>
-				<end endx="110" endy="40"/>
-			  </linePort>
-			</ports>
+			<ports/>
 		  </graphics>
 		  <logic>
 			<generalizations/>
@@ -475,26 +387,14 @@
 		<node name="MetaEntityUsage" displayedName="Usage">
 		  <graphics>
 			<picture sizex="120" sizey="40">
-			  <line stroke-style="dot" x1="0" y1="0" x2="110" y2="0"/>
-			  <line stroke-style="dot" x1="0" y1="40" x2="110" y2="40"/>
-			  <line stroke-style="dot" x1="0" y1="0" x2="0" y2="40"/>
-			  <line stroke-style="dot" x1="110" y1="0" x2="120" y2="20"/>
-			  <line stroke-style="dot" x1="110" y1="40" x2="120" y2="20"/>
-			  <text i="0" font-fill="#00007f" y1="10" b="0" x1="10" font-name="Helvetica" u="0" font-size="15a">Usage</text>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="20" x1="0" y2="20" stroke-width="1" x2="120" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="20" x1="120" y2="10" stroke-width="1" x2="100" fill-style="solid"/>
+			  <line fill="#000000" stroke-style="dot" stroke="#2f4f4f" y1="20" x1="120" y2="30" stroke-width="1" x2="100" fill-style="solid"/>
 			</picture>
 			<labels>
-			  <label x="20" y="10" textBinded="name" center="true"/>
+			  <label x="10" y="5" textBinded="name" center="true"/>
 			</labels>
-			<ports>
-			  <linePort>
-				<start startx="10" starty="0"/>
-				<end endx="110" endy="0"/>
-			  </linePort>
-			  <linePort>
-				<start startx="10" starty="40"/>
-				<end endx="110" endy="40"/>
-			  </linePort>
-			</ports>
+			<ports/>
 		  </graphics>
 		  <logic>
 			<generalizations/>
@@ -509,7 +409,7 @@
 			<lineType type="solidLine"/>
 		  </graphics>
 		  <logic>
-			<associations endType="filled_arrow" beginType="no_arrow">
+			<associations endType="no_arrow" beginType="empty_arrow">
 			  <association beginName="Inheritance1" endName="Inheritance2"/>
 			</associations>
 			<generalizations>
@@ -533,8 +433,8 @@
 		<node name="MetaEntityPossibleEdge" displayedName="Possible Edge">
 		  <graphics>
 			<picture sizex="25" sizey="25">
-			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#bbbbbb" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
-			  <ellipse fill="#bbbbbb" stroke-style="solid" stroke="#bbbbbb" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
+			  <ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+			  <ellipse fill="#2f4f4f" stroke-style="solid" stroke="#2f4f4f" y1="5" x1="5" y2="20" stroke-width="1" x2="20" fill-style="solid"/>
 			</picture>
 			<labels/>
 			<ports/>
@@ -591,6 +491,21 @@
 		  </graphics>
 		  <logic>
 			<properties/>
+		 </logic>
+		</node>
+		<node name="Listener" displayedName="Listener">
+		  <graphics>
+			<picture sizex="30" sizey="30">
+				<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+			</picture>
+ 			<labels/>
+			<ports/>
+		  </graphics>
+		  <logic>
+			<properties>
+			  <property type="string" name="class"/>
+			  <property type="string" name="file"/>
+			</properties>
 		 </logic>
 		</node>
 	  </graphicTypes>

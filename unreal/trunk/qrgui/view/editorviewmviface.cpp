@@ -161,7 +161,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
 			model::Model* realModel = dynamic_cast<model::Model*>(model());
 			if (nodeElem && currentUuid.element() == "Class" && realModel &&
-			    realModel->api().children(currentUuid).empty()) {
+				realModel->api().children(currentUuid).empty()) {
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
 					QString curChildElementType;

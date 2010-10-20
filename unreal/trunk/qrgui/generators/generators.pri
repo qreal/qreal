@@ -14,9 +14,9 @@ HEADERS += generators/hascol/hascolGenerator.h \
 SOURCES += generators/hascol/hascolGenerator.cpp \
 
 
-HEADERS += generators/metaGenerator/metaGenerator.h \
+HEADERS += generators/editorGenerator/editorGenerator.h \
 
-SOURCES += generators/metaGenerator/metaGenerator.cpp \
+SOURCES += generators/editorGenerator/editorGenerator.cpp \
 
 
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов

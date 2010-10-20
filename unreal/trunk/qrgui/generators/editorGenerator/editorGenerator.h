@@ -16,10 +16,10 @@ namespace qReal {
 
 	namespace generators {
 
-		class MetaGenerator
+		class EditorGenerator
 		{
 		public:
-			explicit MetaGenerator(qrRepo::RepoApi const &api);
+			explicit EditorGenerator(qrRepo::RepoApi const &api);
 
 			QHash<Id, QString> getMetamodelList();
 			gui::ErrorReporter generateEditor(Id const metamodelId, QString const &pathToFile);

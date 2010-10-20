@@ -41,7 +41,7 @@
 #include "../parsers/hascol/hascolParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
-#include "../generators/metaGenerator/metaGenerator.h"
+#include "../generators/editorGenerator/editorGenerator.h"
 
 //#include "../qrrepo/svnClient.h"
 
@@ -597,11 +597,11 @@ void MainWindow::generateToHascol()
 
 void MainWindow::generateEditor()
 {
-	generators::MetaGenerator metaGenerator(mModel->api());
+	generators::EditorGenerator editorGenerator(mModel->api());
 
 	QString directoryName;
 	QFileInfo directoryXml;
-	const QHash<Id, QString> metamodelList = metaGenerator.getMetamodelList();
+	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -620,7 +620,7 @@ void MainWindow::generateEditor()
 	}
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		gui::ErrorReporter errors = metaGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		gui::ErrorReporter errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors("Generation finished successfully", ui.ErrorListWidget)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
