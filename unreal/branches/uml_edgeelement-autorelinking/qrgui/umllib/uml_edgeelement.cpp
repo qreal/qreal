@@ -515,22 +515,24 @@ void EdgeElement::reconnectToNearestPorts()
 {
         model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
         if (mSrc) {
-                QPointF first = mapToParent(mLine.first());
-                QPointF second = mapToParent(mLine[1]);
+                QPointF first = mapToScene(mLine.first());
+                QPointF second = mapToScene(mLine[1]);
                 qDebug() << "first:" << (QVariant)first << " at " << mPortFrom << "; second: " << (QVariant)second;
-                QPointF newFirst = mSrc->mapToParent(mSrc->getNearestPort(second));
-                qreal newFrom = mSrc->getPortId(newFirst);
+                QPointF newFirst = mSrc->mapToScene(mSrc->getNearestPort(mSrc->mapFromScene(second)));
+                qreal newFrom = mSrc->getPortId(mSrc->mapFromScene(newFirst));
+                //qreal newFrom = mSrc->getPortId(second);
                 qDebug() << "now first: " << (QVariant)newFirst << " at " << newFrom;
                 mPortFrom = newFrom;
                 model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
                 adjustLink();
         }
         if (mDst) {
-                QPointF last = mapToParent(mLine.last());
-                QPointF preLast = mapToParent(mLine[mLine.count() - 2]);
+                QPointF last = mapToScene(mLine.last());
+                QPointF preLast = mapToScene(mLine[mLine.count() - 2]);
                 qDebug() << "last:" << (QVariant)last << " at " << mPortTo << "; preLast: " << (QVariant)preLast;
-                QPointF newLast = mDst->mapToParent(mDst->getNearestPort(preLast));
-                qreal newTo = mDst->getPortId(newLast);
+                QPointF newLast = mDst->mapToScene(mDst->getNearestPort(mDst->mapFromScene(preLast)));
+                qreal newTo = mDst->getPortId(mDst->mapFromScene(newLast));
+                //qreal newTo = mDst->getPortId(preLast);
                 qDebug() << "now last: " << (QVariant)newLast << " at " << newTo;
                 mPortTo = newTo;
                 model->setData(mDataIndex, mPortTo, roles::toPortRole);
