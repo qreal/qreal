@@ -130,15 +130,25 @@ void Logger::output()
 	buffer.clear();
 }
 
+bool Logger::editor(const Id scene)
+{
+	return (scene.editor() == QString("Meta_editor"));
+}
+
 bool Logger::pass(const Id scene)
 {
-	const bool editor = scene.editor() == QString("Meta_editor");
-	return
-		((!editor && flagsEnabled[flgDiagrams])
-			|| (editor && flagsEnabled[flgEditors]));
+	return	((!editor(scene) && flagsEnabled[flgDiagrams])
+			|| (editor(scene) && flagsEnabled[flgEditors]));
 }
 
 void Logger::remove(const Id scene)
+{
+	if (editor(scene))
+		remove(scene, "../");
+	remove(scene, mWorkingDir);
+}
+
+void Logger::remove(const Id scene, QString const workingDir)
 {
 	buffer.remove(scene);
 
@@ -153,15 +163,22 @@ void Logger::remove(const Id scene)
 	QDir dir;
 	file->remove();
 	files.remove(name);
-	dir.rmdir(mWorkingDir+"/logs/"+scene.diagram());
+	dir.rmdir(workingDir+"/logs/"+scene.diagram());
 }
 
 void Logger::write(const QString message, const Id scene)
 {
+	if (editor(scene))
+		write(message, scene, "../");
+	write(message, scene, mWorkingDir);
+}
+
+void Logger::write(const QString message, const Id scene, const QString workingDir)
+{
 	if (!enabled)
 		return;
 
-	QString path = mWorkingDir+"/logs/"+scene.diagram();
+	QString path = workingDir+"/logs/"+scene.diagram();
 	QString name = scene.id();
 	QDir dir;
 	dir.mkpath(path);

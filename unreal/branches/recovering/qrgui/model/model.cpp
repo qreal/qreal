@@ -477,6 +477,10 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
 	foreach (Id childId, mApi.children(parent->id())) {
+		if (!checkId(childId)) {
+			qDebug() << "CAN'T FIND: " << childId.toString();
+			continue;
+		}
 		ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}
@@ -484,10 +488,6 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 
 ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
-	//
-	checkId(id);
-	//
-
 	if (isDiagram(id))
 			mApi.addOpenedDiagram(id);
 
@@ -628,12 +628,7 @@ Id Model::idByIndex(QModelIndex const &index) const
 
 bool Model::checkId(Id const target) const
 {
-	qDebug() << target.type().element();
-
-//	qDebug() << "[:||||";
-//	foreach(Id el, mApi.elements(target.type()))
-//		qDebug() << el.toString();
-//	qDebug() << "||||:]";
+	return (mEditorManager.elements(target.diagramId()).contains(target.type()));
 }
 
 ModelAssistApi &Model::assistApi()

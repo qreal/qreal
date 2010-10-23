@@ -33,8 +33,13 @@ namespace qReal {
 
 			private:
 				bool pass(Id const scene);
+				bool editor(Id const scene);
+
 				void remove(Id const scene);
+				void remove(Id const scene, QString const workingDir);
+
 				void write(QString const message, Id const scene);
+				void write(QString const message, Id const scene, QString const workingDir);
 
 				Model *mModel;
 				QString mWorkingDir;
