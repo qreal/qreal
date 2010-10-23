@@ -13,6 +13,7 @@
 #include "classes/modelTreeItem.h"
 #include "../editorManager/editorManager.h"
 #include "modelAssistApi.h"
+#include "constants.h"
 #include "logger.h"
 
 namespace qReal {
@@ -107,6 +108,8 @@ namespace qReal {
 			void init();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
+
+			bool checkId(Id const target) const;
 
 			bool useFlagOfChange;
 

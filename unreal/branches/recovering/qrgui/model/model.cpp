@@ -152,7 +152,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 			return false;
 		}
 
-		mLogger.log(Logger::actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
+		mLogger.log(actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
 
 		emit dataChanged(index, index);
 		return true;
@@ -401,16 +401,16 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-			mLogger.log(Logger::actCreateDiagram, id);
+			mLogger.log(actCreateDiagram, id);
 		else
-			mLogger.log(Logger::actAddElement, isSituatedOn(parentItem)->id(), id);
+			mLogger.log(actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-		mLogger.log(Logger::actAddElement, isSituatedOn(parentItem)->id(), id);
+		mLogger.log(actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 
 	int newRow = parentItem->children().size();
@@ -484,6 +484,10 @@ void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 
 ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
+	//
+	checkId(id);
+	//
+
 	if (isDiagram(id))
 			mApi.addOpenedDiagram(id);
 
@@ -542,9 +546,9 @@ void Model::removeByIndex(QModelIndex const &index)
 	Id id = idByIndex(index);
 	ModelTreeItem *treeItem = mTreeItems.value(id);
 	if (treeItem->parent() == mRootItem)
-		mLogger.log(Logger::actDestroyDiagram, isSituatedOn(treeItem)->id());
+		mLogger.log(actDestroyDiagram, isSituatedOn(treeItem)->id());
 	else
-		mLogger.log(Logger::actRemoveElement, isSituatedOn(treeItem)->id(), id);
+		mLogger.log(actRemoveElement, isSituatedOn(treeItem)->id(), id);
 
 	removeRow(index.row(), index.parent());
 }
@@ -620,6 +624,16 @@ Id Model::idByIndex(QModelIndex const &index) const
 {
 	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 	return mTreeItems.key(item);
+}
+
+bool Model::checkId(Id const target) const
+{
+	qDebug() << target.type().element();
+
+//	qDebug() << "[:||||";
+//	foreach(Id el, mApi.elements(target.type()))
+//		qDebug() << el.toString();
+//	qDebug() << "||||:]";
 }
 
 ModelAssistApi &Model::assistApi()

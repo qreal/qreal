@@ -1,6 +1,7 @@
 #pragma once
 
 #include "model.h"
+#include "message.h"
 
 namespace qReal {
 	namespace model {

@@ -8,18 +8,6 @@ using namespace model;
 
 Logger::Logger(Model *model)
 	:
-	msgInvalid("Invalid"),
-	msgSetData("SetData"),
-	msgAddElement("AddElement"),
-	msgRemoveElement("RemoveElement"),
-	msgCreateDiagram("CreateDiagram"),
-	msgDestroyDiagram("DestroyDiagram"),
-	msgOperation("Operation: "),
-	msgTarget("Target: "),
-	msgDetails("Details: "),
-	msgPrevValue("PrevValue: "),
-	msgNewValue("NewValue:"),
-
 	mModel(model), mWorkingDir(mModel->mutableApi().getWorkingDir()),
 	enabled(false)
 {
@@ -80,12 +68,17 @@ void Logger::log(action performed,
 	if (!pass(scene))
 		return;
 
+	log(scene, Message(target, performed, additional, prevData, newData));
+}
+
+void Logger::log(const Id scene, const Message data)
+{
 	QString message = msgOperation;
-	switch (performed) {
+	switch (data.performed()) {
 		case actSetData:
 			if ((!flagsEnabled[flgUselessMessages]) &&
-				((additional == QString("position")) ||
-				 (additional == QString("configuration"))))
+				((data.details() == QString("position")) ||
+				 (data.details() == QString("configuration"))))
 				return;
 			cleanDiagrams.remove(scene);
 			message += msgSetData;
@@ -113,14 +106,14 @@ void Logger::log(action performed,
 	}
 
 	message += "\n";
-	if (target.idSize() > 1)
-		message += msgTarget + target.toString() + "\n";
-	if (!additional.isNull())
-		message += msgDetails + additional + "\n";
-	if (!prevData.isNull())
-		message += msgPrevValue + getDataString(prevData) + "\n";
-	if (!newData.isNull())
-		message += msgNewValue + getDataString(newData) + "\n";
+	if (data.target().idSize() > 1)
+		message += msgTarget + data.target().toString() + "\n";
+	if (!data.details().isNull())
+		message += msgDetails + data.details() + "\n";
+	if (!data.prevValue().isNull())
+		message += msgPrevValue + Message::getDataString(data.prevValue()) + "\n";
+	if (!data.newValue().isNull())
+		message += msgNewValue + Message::getDataString(data.newValue()) + "\n";
 
 	if (!buffer.contains(scene))
 		buffer.insert(scene, new QString(message));
@@ -187,14 +180,6 @@ void Logger::write(const QString message, const Id scene)
 	out << message << "\n";
 
 	//may be, file must be closed or smthng else
-}
-
-QString Logger::getDataString(const QVariant data) const
-{
-	QString output;
-	QDebug qD = QDebug(&output);
-	qD << data;
-	return output;
 }
 
 void Logger::setWorkingDir(QString workingDir)
