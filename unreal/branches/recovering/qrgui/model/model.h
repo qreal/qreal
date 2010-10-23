@@ -13,8 +13,10 @@
 #include "classes/modelTreeItem.h"
 #include "../editorManager/editorManager.h"
 #include "modelAssistApi.h"
+
 #include "constants.h"
 #include "logger.h"
+#include "repairer.h"
 
 namespace qReal {
 	namespace model {
@@ -106,14 +108,19 @@ namespace qReal {
 			details::ModelTreeItem* isSituatedOn(details::ModelTreeItem *element) const;
 
 			void init();
+			void clean();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 
-			bool checkId(Id const target) const;
+			void repairElements();
+			void repairElements(Id const target);
+
+			bool checkElements(Id const target) const;
 
 			bool useFlagOfChange;
 
 			Logger mLogger;
+			Repairer mRepairer;
 		};
 
 	}

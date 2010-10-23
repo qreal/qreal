@@ -9,7 +9,10 @@ using namespace model;
 using namespace details;
 
 Model::Model(EditorManager const &editorManager, QString const &workingDir)
-	:  mApi(workingDir), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogger(this)
+	:
+	mApi(workingDir), mEditorManager(editorManager),
+	mAssistApi(*this, editorManager),
+	mLogger(mutableApi().getWorkingDir()), mRepairer(mEditorManager)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -41,6 +44,12 @@ void Model::init()
 	// so views shall not update themselves before time. It is important for
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
+
+	if (!checkElements(mRootItem->id())) {
+		repairElements();
+		return;
+	}
+
 	loadSubtreeFromClient(mRootItem);
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
@@ -477,10 +486,6 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
 	foreach (Id childId, mApi.children(parent->id())) {
-		if (!checkId(childId)) {
-			qDebug() << "CAN'T FIND: " << childId.toString();
-			continue;
-		}
 		ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}
@@ -553,13 +558,18 @@ void Model::removeByIndex(QModelIndex const &index)
 	removeRow(index.row(), index.parent());
 }
 
-void Model::reinit()
+void Model::clean()
 {
 	cleanupTree(mRootItem);
 	mTreeItems.clear();
 	delete mRootItem;
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	reset();
+}
+
+void Model::reinit()
+{
+	clean();
 	init();
 }
 
@@ -626,9 +636,33 @@ Id Model::idByIndex(QModelIndex const &index) const
 	return mTreeItems.key(item);
 }
 
-bool Model::checkId(Id const target) const
+void Model::repairElements()
 {
-	return (mEditorManager.elements(target.diagramId()).contains(target.type()));
+	//тут надо повесить какое-то окошко, сообщающее пользователю о том, что восстанавливается диаграмма и предлагающее отменить и т.п.
+	repairElements(mRootItem->id());
+//	reinit();	//пока что выключил, иначе риал зацикливается на починке элементов, т.к. на самом деле ничего не чинится
+}
+
+void Model::repairElements(const Id target)
+{
+	foreach(Id child, mApi.children(target)) {
+		//лучше это оптимизировать со временем, чтобы не проверять по 2 раза элементы
+		if (!mEditorManager.elements(child.diagramId()).contains(child.type()))
+			mRepairer.getCorrectId(child);	//тут надо что-то с этим сделать будет
+		repairElements(child);
+	}
+}
+
+bool Model::checkElements(Id const target) const
+{
+	//критерии проверки надо будет изменить и вынести в отдельные методы
+	if ((target != mRootItem->id()) && (!mEditorManager.elements(target.diagramId()).contains(target.type())))
+		return false;
+	foreach(Id child, mApi.children(target)) {
+		if (!checkElements(child))
+			return false;
+	}
+	return true;
 }
 
 ModelAssistApi &Model::assistApi()

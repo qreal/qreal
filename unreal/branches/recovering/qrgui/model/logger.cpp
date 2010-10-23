@@ -1,14 +1,10 @@
-#include "model.h"
 #include "logger.h"
 
-#include <QDebug>
-
 using namespace qReal;
-using namespace model;
 
-Logger::Logger(Model *model)
+Logger::Logger(QString const workingDir)
 	:
-	mModel(model), mWorkingDir(mModel->mutableApi().getWorkingDir()),
+	mWorkingDir(workingDir),
 	enabled(false)
 {
 	flagsEnabled[flgEditors] = true;
@@ -156,10 +152,9 @@ void Logger::remove(const Id scene, QString const workingDir)
 	QFile *file;
 	if (files.contains(name))
 		file = files.value(name);
-	else {
-		qDebug() << "Serializer::logRemove() error: no such file.";
+	else
 		return;
-	}
+
 	QDir dir;
 	file->remove();
 	files.remove(name);

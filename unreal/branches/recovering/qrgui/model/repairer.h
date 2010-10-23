@@ -1,19 +1,18 @@
 #pragma once
 
-#include "model.h"
 #include "message.h"
+#include "../editorManager/editorManager.h"
 
 namespace qReal {
-	namespace model {
-		class Model;
-
 		class Repairer {
-
 			public:
-				Repairer(Model *model);
+				Repairer(const EditorManager &editorManager);
+
+				Id getCorrectId(Id const target);
 			private:
-				Model *mModel;
-				bool enabled;
+				const EditorManager &mEditorManager;
+				QMultiHash<Id, QList<Message>* > mLogs;
+
+				void readLog(Id const editor);
 		};
-	}
 }
