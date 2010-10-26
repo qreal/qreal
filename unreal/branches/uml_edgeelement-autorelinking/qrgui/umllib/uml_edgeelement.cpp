@@ -515,28 +515,14 @@ void EdgeElement::reconnectToNearestPorts()
 {
         model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
         if (mSrc) {
-                QPointF first = mapToScene(mLine.first());
-                QPointF second = mapToScene(mLine[1]);
-                qDebug() << "first:" << (QVariant)first << " at " << mPortFrom << "; second: " << (QVariant)second;
-                //QPointF newFirst = mSrc->mapToScene(mSrc->getNearestPort(mSrc->mapFromScene(second)));
-                //qreal newFrom = mSrc->getPortId(mSrc->mapFromScene(newFirst));
-                qreal newFrom = mSrc->getPortId(mSrc->mapFromScene(second));
-                //qDebug() << "now first: " << (QVariant)newFirst << " at " << newFrom;
+                qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
                 mPortFrom = newFrom;
                 model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
-                adjustLink();
         }
         if (mDst) {
-                QPointF last = mapToScene(mLine.last());
-                QPointF preLast = mapToScene(mLine[mLine.count() - 2]);
-                qDebug() << "last:" << (QVariant)last << " at " << mPortTo << "; preLast: " << (QVariant)preLast;
-                //QPointF newLast = mDst->mapToScene(mDst->getNearestPort(mDst->mapFromScene(preLast)));
-                //qreal newTo = mDst->getPortId(mDst->mapFromScene(newLast));
-                qreal newTo = mDst->getPortId(mDst->mapFromScene(preLast));
-                //qDebug() << "now last: " << (QVariant)newLast << " at " << newTo;
+                qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
                 mPortTo = newTo;
                 model->setData(mDataIndex, mPortTo, roles::toPortRole);
-                adjustLink();
         }
 }
 
