@@ -8,4 +8,5 @@ using namespace kernelEditor;
 
 void ContextMenuActionTrigger::contextMenuActionTriggered(QString const &name)
 {
+	Q_UNUSED(name);
 }

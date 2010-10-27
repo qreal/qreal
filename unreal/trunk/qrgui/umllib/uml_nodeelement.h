@@ -16,6 +16,7 @@
 #include "uml_element.h"
 #include "uml_edgeelement.h"
 #include "elementImpl.h"
+#include "sceneGridHandler.h"
 
 /** @brief size of a point port */
 const int kvadratik = 5;
@@ -75,7 +76,6 @@ namespace UML {
 		void resizeChild(QRectF newContents, QRectF oldContents);
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
-		void switchOnOffGrid(bool isSwitchedOn);
 		void switchAlignment(bool isSwitchedOn);
 
 		virtual void setColorRect(bool bl);
@@ -83,27 +83,14 @@ namespace UML {
 		bool getConnectingState();
 		void setConnectingState(bool arg);
 
-	private slots:
+		void adjustLinks();
+
+	public slots:
 		void switchGrid(bool isChecked);
 
 	private:
-		QList<QGraphicsLineItem*> mLines;
-		bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
-		bool mSwitchAlignment;
 		ContextMenuAction mSwitchGridAction;
 		void delUnusedLines();
-		void drawLineX(qreal pointX, qreal myY);
-		void drawLineY(qreal pointY, qreal myX);
-		bool makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX);
-		bool makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY);
-		void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY);
-		void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX);
-		qreal recountX1();
-		qreal recountX2(qreal myX1);
-		qreal recountY1();
-		qreal recountY2(qreal myY1);
-		void makeGridMovingX(qreal myX, int koef, int indexGrid);
-		void makeGridMovingY(qreal myY, int koef, int indexGrid);
 		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		static int const objectMinSize = 10;
@@ -141,8 +128,6 @@ namespace UML {
 		};
 
 		NodeElement *getNodeAt(const QPointF &position);
-
-		void adjustLinks();
 
 		QLineF newTransform(const StatLine& port) const;
 
@@ -193,5 +178,8 @@ namespace UML {
 		bool connecting;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
+
+		SceneGridHandler *mGrid;
+
 	};
 }

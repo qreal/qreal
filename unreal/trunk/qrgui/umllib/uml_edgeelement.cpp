@@ -310,7 +310,7 @@ bool EdgeElement::initPossibleEdges()
 	if (!itemModel)
 		return false;
 	QString editor = uuid().editor();
-        //TODO:: make code generation for diagrams
+		//TODO:: make code generation for diagrams
 	QString diagram = uuid().diagram();
 	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
@@ -513,17 +513,17 @@ void EdgeElement::adjustLink()
 
 void EdgeElement::reconnectToNearestPorts()
 {
-        model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
-        if (mSrc) {
-                qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-                mPortFrom = newFrom;
-                model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
-        }
-        if (mDst) {
-                qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-                mPortTo = newTo;
-                model->setData(mDataIndex, mPortTo, roles::toPortRole);
-        }
+	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
+	if (mSrc) {
+		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		mPortFrom = newFrom;
+		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+	}
+	if (mDst) {
+		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		mPortTo = newTo;
+		model->setData(mDataIndex, mPortTo, roles::toPortRole);
+	}
 }
 
 void EdgeElement::updateData()

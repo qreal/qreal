@@ -1106,7 +1106,7 @@ void MainWindow::switchGrid(bool isChecked)
 		foreach (QGraphicsItem *item, list) {
 			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
 			if (nodeItem != NULL)
-				nodeItem->switchOnOffGrid(isChecked);
+				nodeItem->switchGrid(isChecked);
 		}
 	}
 }
