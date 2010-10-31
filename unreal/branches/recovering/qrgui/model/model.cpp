@@ -47,7 +47,6 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 
-	qDebug() << "";
 	if (!checkElements(mRootItem->id())) {
 		repairElements();
 		return;
@@ -647,7 +646,6 @@ bool Model::isCorrect(Id target) const
 
 void Model::repairElements()
 {
-	qDebug() << "\nModel::repairElements()\n";
 	//тут надо повесить какое-то окошко, сообщающее пользователю о том, что восстанавливается диаграмма и предлагающее отменить и т.п.
 	repairElements(mRootItem->id());
 //	reinit();	//пока что выключил, иначе риал зацикливается на починке элементов, т.к. на самом деле ничего не чинится
@@ -665,12 +663,9 @@ void Model::repairElements(const Id target)
 
 bool Model::checkElements(Id const target) const
 {
-	qDebug() << "Model::checkElements(" << target.toString() << ")";
 	//критерии проверки надо будет изменить и вынести в отдельные методы
-	if ((target != mRootItem->id()) && (!isCorrect(target))) {
-		qDebug() << "---incorrect";
+	if ((target != mRootItem->id()) && (!isCorrect(target)))
 		return false;
-	}
 	foreach(Id child, mApi.children(target)) {
 		if (!checkElements(child))
 			return false;

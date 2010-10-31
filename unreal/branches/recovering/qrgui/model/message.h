@@ -22,7 +22,10 @@ namespace qReal {
 				QVariant newValue() const;
 
 				static QLinkedList<Message> parseLog(QString path);
+
 				static QString getDataString(QVariant const data);
+				static QVariant parseQVariant(QString const data);
+
 			private:
 				const Id mTarget;
 				const action mPerformed;

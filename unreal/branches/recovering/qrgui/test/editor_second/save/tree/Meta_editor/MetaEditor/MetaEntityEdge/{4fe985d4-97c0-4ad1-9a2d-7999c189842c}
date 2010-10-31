@@ -21,7 +21,7 @@
     <QString key="name" value="EdgeSecond"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QPointF key="position" value="250, 330"/>
+    <QPointF key="position" value="251, 330"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
