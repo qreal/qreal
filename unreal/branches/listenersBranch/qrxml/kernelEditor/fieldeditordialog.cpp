@@ -37,12 +37,25 @@ void FieldEditorDialog::changeEvent(QEvent *e)
     }
 }
 
-QString FieldEditorDialog::getFieldName()
+QString FieldEditorDialog::fieldName()
 {
 	return ui->nameEdit->text();
 }
 
-QString FieldEditorDialog::getFieldType()
+QString FieldEditorDialog::fieldType()
 {
 	return ui->typeEdit->text();
+}
+
+QString FieldEditorDialog::fieldVisibility()
+{
+	switch (ui->accessModifierComboBox->currentText().at(0).toAscii()) {
+	case '+':
+		return "public";
+	case '-':
+		return "private";
+	case '#':
+		return "protected";
+	}
+	return "public";
 }

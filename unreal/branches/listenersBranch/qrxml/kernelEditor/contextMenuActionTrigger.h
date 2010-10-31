@@ -10,9 +10,9 @@ namespace kernelEditor {
 		void contextMenuActionTriggered(QString const &nam);
 	private:
 		void writeMethodPropertiesToModel(qReal::Id methodElemId, QString name, QString returnType, 
-				QString parameters, QString displayName);
+				QString parameters, QString visibility, QString displayName);
 		void writeFieldPropertiesToModel(qReal::Id fieldElemId, QString name, QString type,
-				QString displayName);
+				QString visibility, QString displayName);
 	};
 
 }

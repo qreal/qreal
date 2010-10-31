@@ -89,6 +89,19 @@ QString MethodEditorDialog::methodParameteresInString()
 	return returnStr;
 }
 
+QString MethodEditorDialog::methodVisibility()
+{
+	switch (ui->accessModifierComboBox->currentText().at(0).toAscii()) {
+	case '+':
+		return "public";
+	case '-':
+		return "private";
+	case '#':
+		return "protected";
+	}
+	return "public";
+}
+
 void MethodEditorDialog::createParameter()
 {
 	QHBoxLayout* hLayout = new QHBoxLayout();
