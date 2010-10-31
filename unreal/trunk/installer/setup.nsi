@@ -73,12 +73,12 @@ Section -Main SEC0000
 	SetOutPath "$INSTDIR\plugins"
     File /r ..\qrgui\plugins\*
 	SetOutPath $INSTDIR
-    File C:\Qt\2010.02.1\qt\bin\QtCore4.dll
-    File C:\Qt\2010.02.1\qt\bin\QtGui4.dll
-    File C:\Qt\2010.02.1\qt\bin\QtSvg4.dll
-    File C:\Qt\2010.02.1\qt\bin\QtXml4.dll
-    File C:\Qt\2010.02.1\mingw\bin\mingwm10.dll
-    File C:\Qt\2010.02.1\mingw\bin\libgcc_s_dw2-1.dll
+    File C:\Qt\2010.05\qt\bin\QtCore4.dll
+    File C:\Qt\2010.05\qt\bin\QtGui4.dll
+    File C:\Qt\2010.05\qt\bin\QtSvg4.dll
+    File C:\Qt\2010.05\qt\bin\QtXml4.dll
+    File C:\Qt\2010.05\mingw\bin\mingwm10.dll
+    File C:\Qt\2010.05\mingw\bin\libgcc_s_dw2-1.dll
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Start QReal.lnk" $INSTDIR\qrgui.exe
     SetOutPath $DESKTOP
