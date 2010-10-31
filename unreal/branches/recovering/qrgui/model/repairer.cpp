@@ -15,22 +15,18 @@ Id Repairer::getCorrectId(const Id target)
 
 	readLog(target.editorId());
 
-
-
-
-
 	return target;
 }
 
 void Repairer::readLog(const Id editor)
 {
+	qDebug() << "readLog()";
+	qDebug() << editor.toString();
+
 	if (!mLogs.keys().contains(editor)) {
 		QList<Message> *log;
 		mLogs.insert(editor, log);
-		//тут надо добавить логирование редакторов в папку, называющуюся так же как и редактор
 		QString path = "../logs/MetaEditor/";	//not sure
-		qDebug() << path;
 //		log->append();
-
 	}
 }

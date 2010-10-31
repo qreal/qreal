@@ -22,6 +22,8 @@ namespace qReal {
 			void setFlag(flag name, bool arg);
 			void setWorkingDir(QString workingDir);
 
+			void rememberNameOfScene(Id const scene, QString name);
+
 			void log(action performed,
 					Id const scene);
 			void log(action performed,
@@ -50,6 +52,7 @@ namespace qReal {
 			bool flagsEnabled[4];
 			QSet<Id> cleanDiagrams;
 			QMap<QString, QFile*> files;
+			QMultiHash<Id, QString*> names;
 			QMultiHash<Id, QString*> buffer;
 	};
 }

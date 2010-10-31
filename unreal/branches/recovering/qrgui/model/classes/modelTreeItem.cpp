@@ -1,6 +1,8 @@
 #include "modelTreeItem.h"
 #include "../kernel/exception/exception.h"
 
+#include "QDebug"
+
 using namespace qReal;
 using namespace model;
 using namespace details;

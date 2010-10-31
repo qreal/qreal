@@ -15,8 +15,10 @@ Logger::Logger(QString const workingDir)
 
 Logger::~Logger()
 {
-	foreach(Id diagram, cleanDiagrams)
-		remove(diagram);
+	foreach(QFile* file, files.values())
+		delete file;
+	foreach(QString* string, names.values() + buffer.values())
+		delete string;
 }
 
 void Logger::enable()
@@ -32,6 +34,14 @@ void Logger::disable()
 void Logger::setFlag(flag flg, bool arg)
 {
 	flagsEnabled[flg] = arg;
+}
+
+void Logger::rememberNameOfScene(Id scene, QString name)
+{
+	if (!names.contains(scene))
+		names.insert(scene, new QString(name));
+	else
+		names.replace(scene, new QString(name));
 }
 
 void Logger::log(action performed,
@@ -173,7 +183,9 @@ void Logger::write(const QString message, const Id scene, const QString workingD
 	if (!enabled)
 		return;
 
-	QString path = workingDir+"/logs/"+scene.diagram();
+	QString path = workingDir + "/logs/" + scene.diagram() + "/";
+	if (editor(scene))
+		path += *names.value(scene, new QString("UnknownDiagram")) + "/";
 	QString name = scene.id();
 	QDir dir;
 	dir.mkpath(path);

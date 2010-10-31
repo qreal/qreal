@@ -31,8 +31,10 @@ bool Model::isDiagram(Id const &id) const
 
 details::ModelTreeItem* Model::isSituatedOn(details::ModelTreeItem *element) const
 {
-	while(element->parent() != mRootItem)
+	while ((element->parent() != mRootItem)
+			&& (element->parent()->id().element() != "MetamodelDiagram"))
 		element = element->parent();
+
 	return element;
 }
 
@@ -45,6 +47,7 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 
+	qDebug() << "";
 	if (!checkElements(mRootItem->id())) {
 		repairElements();
 		return;
@@ -161,6 +164,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 			return false;
 		}
 
+		mLogger.rememberNameOfScene(isSituatedOn(item)->id(), mApi.name(isSituatedOn(item)->id()));
 		mLogger.log(actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
 
 		emit dataChanged(index, index);
@@ -636,8 +640,14 @@ Id Model::idByIndex(QModelIndex const &index) const
 	return mTreeItems.key(item);
 }
 
+bool Model::isCorrect(Id target) const
+{
+	return (mEditorManager.elements(target.diagramId()).contains(target.type()));
+}
+
 void Model::repairElements()
 {
+	qDebug() << "\nModel::repairElements()\n";
 	//тут надо повесить какое-то окошко, сообщающее пользователю о том, что восстанавливается диаграмма и предлагающее отменить и т.п.
 	repairElements(mRootItem->id());
 //	reinit();	//пока что выключил, иначе риал зацикливается на починке элементов, т.к. на самом деле ничего не чинится
@@ -647,7 +657,7 @@ void Model::repairElements(const Id target)
 {
 	foreach(Id child, mApi.children(target)) {
 		//лучше это оптимизировать со временем, чтобы не проверять по 2 раза элементы
-		if (!mEditorManager.elements(child.diagramId()).contains(child.type()))
+		if (!isCorrect(child))
 			mRepairer.getCorrectId(child);	//тут надо что-то с этим сделать будет
 		repairElements(child);
 	}
@@ -655,9 +665,12 @@ void Model::repairElements(const Id target)
 
 bool Model::checkElements(Id const target) const
 {
+	qDebug() << "Model::checkElements(" << target.toString() << ")";
 	//критерии проверки надо будет изменить и вынести в отдельные методы
-	if ((target != mRootItem->id()) && (!mEditorManager.elements(target.diagramId()).contains(target.type())))
+	if ((target != mRootItem->id()) && (!isCorrect(target))) {
+		qDebug() << "---incorrect";
 		return false;
+	}
 	foreach(Id child, mApi.children(target)) {
 		if (!checkElements(child))
 			return false;

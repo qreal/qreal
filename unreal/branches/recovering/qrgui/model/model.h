@@ -105,12 +105,15 @@ namespace qReal {
 
 			QString findPropertyName(Id const &id, int const role) const;
 			bool isDiagram(Id const &id) const;
+
 			details::ModelTreeItem* isSituatedOn(details::ModelTreeItem *element) const;
 
 			void init();
 			void clean();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
+
+			bool isCorrect(Id const target) const;
 
 			void repairElements();
 			void repairElements(Id const target);

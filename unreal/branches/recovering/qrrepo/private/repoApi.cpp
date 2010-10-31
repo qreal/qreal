@@ -21,7 +21,6 @@ void RepoApi::setName(Id const &id, QString const &name)
 {
 	mClient.setProperty(id, "name", name);
 	addChangedDiagram(id.diagramId());
-
 }
 
 IdList RepoApi::children(Id const &id) const

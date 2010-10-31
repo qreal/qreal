@@ -6,7 +6,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityParent/{c60a3bbc-9d63-4dc2-99d4-9ce2782ffd7a}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 110, 0 : 110, 85 : 0, 85 : "/>
     <QString key="container" value=""/>
     <QString key="displayedName" value="Node1"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

@@ -8,7 +8,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{28618042-0583-4639-8f9c-1ee23b58d3f6}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 130, 0 : 130, 160 : 0, 160 : "/>
     <QString key="container" value=""/>
     <QString key="displayedName" value="Edge2"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
