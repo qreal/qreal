@@ -36,3 +36,13 @@ void FieldEditorDialog::changeEvent(QEvent *e)
         break;
     }
 }
+
+QString FieldEditorDialog::getFieldName()
+{
+	return ui->nameEdit->text();
+}
+
+QString FieldEditorDialog::getFieldType()
+{
+	return ui->typeEdit->text();
+}

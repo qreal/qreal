@@ -163,6 +163,14 @@
             <generalizations>
               <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
+	    <properties>
+	      <property type="string" name="methodReturnType"/>
+	      <property type="string" name="methodName"/>
+	      <property type="string" name="methodParameters"/>
+              <property type="VisibilityKind" name="methodVisibility">
+                <default>public</default>
+              </property>
+	    </properties>
             <bonusContextMenuFields>
               <field name="Add method"/>
             </bonusContextMenuFields>
@@ -206,6 +214,13 @@
             <generalizations>
               <parent parentName="KernelDiagram::KernelElement"/>
             </generalizations>
+	    <properties>
+	      <property type="string" name="fieldType"/>
+	      <property type="string" name="fieldName"/>
+              <property type="VisibilityKind" name="fieldVisibility">
+                <default>private</default>
+              </property>
+	    </properties>
             <bonusContextMenuFields>
               <field name="Add field"/>
             </bonusContextMenuFields>

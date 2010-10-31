@@ -55,6 +55,40 @@ QString MethodEditorDialog::generateMethodString()
 	return resultStr;
 }
 
+QString MethodEditorDialog::methodName()
+{
+	return ui->nameEdit->text();
+}
+
+QString MethodEditorDialog::methodReturnType()
+{
+	return ui->returnTypeEdit->text();
+}
+
+QMap<QString, QString> MethodEditorDialog::methodParameters()
+{
+	QMap<QString, QString> methodParams;
+	foreach (ParameterEditor curPrmEd, parameterList) {
+		methodParams.insert(curPrmEd.nameEdit->text(), curPrmEd.typeEdit->text());
+	}
+
+	return methodParams;
+}
+
+QString MethodEditorDialog::methodParameteresInString()
+{
+	QString returnStr;
+	foreach (ParameterEditor curPrmEd, parameterList) {
+		returnStr += curPrmEd.nameEdit->text() + "%%" + curPrmEd.typeEdit->text() + "##";
+	}
+
+	if (returnStr.size() != 0) {
+		returnStr.resize(returnStr.size() - 2); //убираем лишний разделитель ##
+	}
+
+	return returnStr;
+}
+
 void MethodEditorDialog::createParameter()
 {
 	QHBoxLayout* hLayout = new QHBoxLayout();

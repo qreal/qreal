@@ -15,6 +15,11 @@ class MethodEditorDialog : public QDialog {
 		~MethodEditorDialog();
 		QString generateMethodString();
 
+		QString methodName();
+		QString methodReturnType();
+		QMap<QString, QString> methodParameters(); //<param, paramType>
+		QString methodParameteresInString();// param1%%param1Type##param2%%param2Type##...
+
 	protected:
 		void changeEvent(QEvent *e);
 

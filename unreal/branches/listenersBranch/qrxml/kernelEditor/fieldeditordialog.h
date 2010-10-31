@@ -14,6 +14,8 @@ public:
     ~FieldEditorDialog();
 
     QString generateFieldString();
+    QString getFieldName();
+    QString getFieldType();
 
 protected:
     void changeEvent(QEvent *e);
