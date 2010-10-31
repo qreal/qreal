@@ -5,12 +5,6 @@ PrevValue: QVariant(QString, "Edge1")
 NewValue:QVariant(QString, "EdgeFirst") 
 
 Operation: SetData
-Target: qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f314016b-285d-4066-96aa-7aeedb4ddf9b}
-Details: displayedName
-PrevValue: QVariant(QString, "Edge1") 
-NewValue:QVariant(QString, "Edge1") 
-
-Operation: SetData
 Target: qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{4fe985d4-97c0-4ad1-9a2d-7999c189842c}
 Details: name
 PrevValue: QVariant(QString, "Edge2") 
@@ -21,12 +15,6 @@ Target: qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f314016b-285d-4066-96aa-7aee
 Details: name
 PrevValue: QVariant(QString, "Edge1") 
 NewValue:QVariant(QString, "EdgeFirst") 
-
-Operation: SetData
-Target: qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f314016b-285d-4066-96aa-7aeedb4ddf9b}
-Details: displayedName
-PrevValue: QVariant(QString, "Edge1") 
-NewValue:QVariant(QString, "Edge1") 
 
 Operation: SetData
 Target: qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{4fe985d4-97c0-4ad1-9a2d-7999c189842c}
