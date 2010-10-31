@@ -321,7 +321,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		resize(newContents);
 	}
 	if (isPort())
-		mUmlPortHandler->moveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
+		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
 	foreach(EdgeElement* edge, mEdgeList) {
 		edge->reconnectToNearestPorts();
