@@ -9,6 +9,8 @@
 
 #include "message.h"
 
+//TODO: replace QString objects with Message ones
+
 namespace qReal {
 	class Logger
 		{

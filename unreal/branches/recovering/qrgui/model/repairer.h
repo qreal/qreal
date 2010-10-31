@@ -11,8 +11,8 @@ namespace qReal {
 				Id getCorrectId(Id const target);
 			private:
 				const EditorManager &mEditorManager;
-				QMultiHash<Id, QList<Message>* > mLogs;
+				QMultiHash<QString, QList<Message> > mLogs;
 
-				void readLog(Id const editor);
+				void readLog(QString const diagram);
 		};
 }

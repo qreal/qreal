@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QList>
 #include <QDebug>
 #include <QString>
 #include <QVariant>
@@ -19,8 +20,8 @@ namespace qReal {
 				QVariant prevValue() const;
 				QVariant newValue() const;
 
+				static QList<Message> parseLog(QString path);
 				static QString getDataString(QVariant const data);
-
 			private:
 				const Id mTarget;
 				const action mPerformed;
