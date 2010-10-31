@@ -39,7 +39,7 @@ QVariant Message::newValue() const
 	return mNewValue;
 }
 
-QList<Message> Message::parseLog(QString path)
+QLinkedList<Message> Message::parseLog(QString path)
 {
 	QDir dir(path);
 	QStringList files = dir.entryList(QStringList(QString("*.log")));
@@ -48,11 +48,67 @@ QList<Message> Message::parseLog(QString path)
 			qDebug() << "Message::parseLog() error | No files in log directory.";
 		else
 			qDebug() << "Message::parseLog() error | Too many files in log directory.";
-		return QList<Message>();
+		return QLinkedList<Message>();
 	}
-	QFile file(files.first());
 
-	return QList<Message>();
+	QFile file(path + files.first());
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		qDebug() << "Message::parseLog() error | Cannot open the file.";
+	QTextStream stream(&file);
+
+	QLinkedList<Message> log;
+	while (!stream.atEnd()) {
+		QString string = stream.readLine();
+		if (string.isEmpty())
+			continue;
+		QString operation;
+		if (string.contains(msgOperation))
+			operation = string.remove(msgOperation);
+		else
+			qDebug() << "Message::parseLog() error | There is no operation string.";
+		if ((operation == msgCreateDiagram) || (operation == msgDestroyDiagram)) {
+			log.append(Message(Id(),
+							(operation == msgCreateDiagram) ? actCreateDiagram : actDestroyDiagram,
+								QString(), QVariant() ,QVariant()));
+			continue;
+		}
+
+		QString target = stream.readLine();
+		if (target.contains(msgTarget))
+			target = target.remove(msgTarget);
+		else
+			qDebug() << "Message::parseLog() error | There is no target string.";
+		if ((operation == msgAddElement) || (operation == msgRemoveElement)) {
+			log.append(Message(Id::loadFromString(target),
+							(operation == msgAddElement) ? actAddElement : actRemoveElement,
+								QString(), QVariant() ,QVariant()));
+			continue;
+		}
+
+		QString details;
+		QString prevValue;
+		QString newValue;
+
+		details = stream.readLine();
+		if (details.contains(msgDetails))
+			details = details.remove(msgDetails);
+		else
+			qDebug() << "Message::parseLog() error | There is no details string.";
+
+		prevValue = stream.readLine();
+		if (prevValue.contains(msgPrevValue))
+			prevValue = prevValue.remove(msgPrevValue);
+		else
+			qDebug() << "Message::parseLog() error | There is no previous value string.";
+
+		newValue = stream.readLine();
+		if (newValue.contains(msgNewValue))
+			newValue = newValue.remove(msgNewValue);
+		else
+			qDebug() << "Message::parseLog() error | There is no new value string.";
+	}
+
+	return log;
 }
 
 QString Message::getDataString(const QVariant data)

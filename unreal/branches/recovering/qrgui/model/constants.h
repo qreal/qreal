@@ -32,6 +32,5 @@ namespace qReal {
 	const QString msgTarget = "Target: ";
 	const QString msgDetails = "Details: ";
 	const QString msgPrevValue = "PrevValue: ";
-	const QString msgNewValue = "NewValue:";
-
+	const QString msgNewValue = "NewValue: ";
 }

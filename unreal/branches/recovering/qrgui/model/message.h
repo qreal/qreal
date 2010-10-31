@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QString>
 #include <QVariant>
+#include <QLinkedList>
 
 #include "constants.h"
 #include "../kernel/ids.h"
@@ -20,7 +21,7 @@ namespace qReal {
 				QVariant prevValue() const;
 				QVariant newValue() const;
 
-				static QList<Message> parseLog(QString path);
+				static QLinkedList<Message> parseLog(QString path);
 				static QString getDataString(QVariant const data);
 			private:
 				const Id mTarget;
