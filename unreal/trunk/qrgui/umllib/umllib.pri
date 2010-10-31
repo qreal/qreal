@@ -9,7 +9,8 @@ HEADERS += umllib/uml_edgeelement.h \
 	umllib/embeddedLinker.h \
 	umllib/elementTitleHelpers.h \
 	umllib/sdfRendererInterface.h \
-	umllib/sceneGridHandler.h
+	umllib/sceneGridHandler.h \
+	umllib/umlPortHandler.h
 
 SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/uml_element.cpp \
@@ -18,4 +19,5 @@ SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/embeddedLinker.cpp \
-	umllib/sceneGridHandler.cpp
+	umllib/sceneGridHandler.cpp \
+	umllib/umlPortHandler.cpp

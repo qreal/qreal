@@ -19,8 +19,8 @@ using namespace qReal;
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction("Switch on grid", this),
 		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
-		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)), inHor(true),
-		isColorRect(false), connecting(false)
+		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
+		mSelectionNeeded(false), mConnectionInProgress(false)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -48,6 +48,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	}
 
 	mGrid = new SceneGridHandler(this);
+	mUmlPortHandler = new UmlPortHandler(this);
 }
 
 NodeElement::~NodeElement()
@@ -66,6 +67,7 @@ NodeElement::~NodeElement()
 	}
 
 	delete mGrid;
+	delete mUmlPortHandler;
 }
 
 void NodeElement::setName(QString value)
@@ -112,7 +114,7 @@ void NodeElement::moveChildren(qreal dx, qreal dy)
 {
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && !curItem->getPortStatus()) {
+		if (curItem && !curItem->isPort()) {
 			curItem->moveBy(dx, dy);
 			///returns object to the parent area
 			if (curItem->pos().x() < mElementImpl->sizeOfForestalling())
@@ -143,9 +145,9 @@ void NodeElement::resize(QRectF newContents)
 	QPointF childrenMoving = QPointF(0, 0);
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && (curItem->getPortStatus() && (newContents != mContents)))
+		if (curItem && (curItem->isPort() && (newContents != mContents)))
 			curItem->resizeChild(newContents, mContents);
-		if (!curItem || curItem->getPortStatus())
+		if (!curItem || curItem->isPort())
 			continue;
 
 		QPointF curItemPos = curItem->scenePos() - scenePos();
@@ -162,7 +164,7 @@ void NodeElement::resize(QRectF newContents)
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (!curItem || curItem->getPortStatus())
+		if (!curItem || curItem->isPort())
 			continue;
 
 		QRectF curChildItemBoundingRect = curItem->mContents;
@@ -318,110 +320,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		resize(newContents);
 	}
-	if (getPortStatus())
-	{
-		if (mLeftPressed)
-		{
-			if (mPos == QPointF(0,0))
-				mPos = pos();
-			QGraphicsItem* item = NULL;
-			QPointF position = event->scenePos();
-			QGraphicsScene* sc = scene();
-			item = sc->items(position).value(1);
-			NodeElement* actionItem = dynamic_cast<NodeElement*>(item);
-			QPointF posInItem = QPointF(0,0);
-			if (actionItem && ((actionItem == mParentNodeElement) || (!mParentNodeElement)))
-			{
-				if (actionItem->canHavePorts())
-				{
-					QList<double> list = actionItem->borderValues();
-					double xHor = list[0];
-					double yHor = list[1];
-					double xVert = list[2];
-					double yVert = list[3];
-					posInItem = actionItem->mapFromScene(position);
-					if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor)
-						|| actionItem->isRightSide(posInItem, xVert, yVert) || actionItem->isLeftSide(posInItem, xVert, yVert))
-					{
-						setParentItem(actionItem);
-						mParentNodeElement = actionItem;
-						mPos = pos();
-						if (actionItem->isLowSide(posInItem, xHor, yHor) || actionItem->isHighSide(posInItem, xHor, yHor))
-							inHor = true;
-						else
-							inHor = false;
-					}
-					else
-					{
-						if (inHor)
-						{
-							if (actionItem->isNoBorderY(posInItem, xHor, yHor))
-							{
-								double x = posInItem.x();
-								double y = mPos.y();
-								mPos = QPointF(x,y);
-								setPos(mPos);
-							}
-							else
-								setPos(mPos);
-						}
-						else
-						{
-							if (actionItem->isNoBorderX(posInItem, xVert, yVert))
-							{
-								double x = mPos.x();
-								double y = posInItem.y();
-								mPos = QPointF(x,y);
-								setPos(mPos);
-							}
-							else
-								setPos(mPos);
-						}
-					}
-				}
-			}
-			else
-			{
-				if ((mParentNodeElement) && (mParentNodeElement->canHavePorts()))
-				{
-					setPos(mPos);
-					if (mParentNodeElement)
-					{
-						posInItem = mParentNodeElement->mapFromScene(position);
-						QList<double> list = mParentNodeElement->borderValues();
-						double xHor = list[0];
-						double yHor = list[1];
-						double xVert = list[2];
-						double yVert = list[3];
-						if (inHor)
-						{
-							if (mParentNodeElement->isNoBorderY(posInItem, xHor, yHor))
-							{
-								double x = posInItem.x();
-								double y = mPos.y();
-								mPos = QPointF(x,y);
-								setPos(mPos);
-							}
-							else
-								setPos(mPos);
-						}
-						else
-						{
-							if (mParentNodeElement->isNoBorderX(posInItem, xVert, yVert))
-							{
-								double x = mPos.x();
-								double y = posInItem.y();
-								mPos = QPointF(x,y);
-								setPos(mPos);
-							}
-							else
-								setPos(mPos);
-						}
-					}
-				}
-			}
-		}
-	}
+	if (isPort())
+		mUmlPortHandler->moveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
 	foreach(EdgeElement* edge, mEdgeList) {
 		edge->reconnectToNearestPorts();
@@ -446,7 +346,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
-	if (!getPortStatus() && (flags() & ItemIsMovable))
+	if (!isPort() && (flags() & ItemIsMovable))
 	{
 		QPointF newParentInnerPoint = event->scenePos();
 		//switch нужен для случая, когда мы не можем растягивать объект.
@@ -552,14 +452,14 @@ void NodeElement::hideEmbeddedLinkers()
 		embeddedLinker->setCovered(false);
 }
 
-bool NodeElement::getConnectingState()
+bool NodeElement::connectionInProgress()
 {
-	return connecting;
+	return mConnectionInProgress;
 }
 
 void NodeElement::setConnectingState(bool arg)
 {
-	connecting = arg;
+	mConnectionInProgress = arg;
 }
 
 bool NodeElement::initPossibleEdges()
@@ -916,7 +816,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 		paint(painter, style, widget, mPortRenderer);
 	else
 		paint(painter, style, widget, 0);
-	if (isColorRect)
+	if (mSelectionNeeded)
 	{
 		painter->save();
 		painter->setPen(QPen(Qt::blue));
@@ -1057,7 +957,7 @@ void NodeElement::sortChildren()
 	}
 }
 
-bool NodeElement::getPortStatus()
+bool NodeElement::isPort()
 {
 	return mElementImpl->isPort();
 }
@@ -1067,56 +967,56 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-bool NodeElement::isLowSide(QPointF& point, double x, double y) const
+bool NodeElement::checkLowerBorder(QPointF& point, double x, double y) const
 {
-	double m_x = point.rx();
-	double m_y = point.ry();
+	double currentX = point.x();
+	double currentY = point.y();
 	QRectF rc = boundingRect();
-	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x) && (m_y >= rc.y() + rc.height() - y)
-			&& (m_y <= rc.y() + rc.height() + y);
+	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() + rc.height() - y)
+			&& (currentY <= rc.y() + rc.height() + y);
 }
 
-bool NodeElement::isHighSide(QPointF& point, double x, double y) const
+bool NodeElement::checkUpperBorder(QPointF& point, double x, double y) const
 {
-	double m_x = point.rx();
-	double m_y = point.ry();
+	double currentX = point.x();
+	double currentY = point.y();
 	QRectF rc = boundingRect();
-	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x) && (m_y >= rc.y() - y)
-			&& (m_y <= rc.y() + y);
+	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x) && (currentY >= rc.y() - y)
+			&& (currentY <= rc.y() + y);
 }
 
-bool NodeElement::isLeftSide(QPointF& point, double x, double y) const
+bool NodeElement::checkLeftBorder(QPointF& point, double x, double y) const
 {
-	double m_x = point.rx();
-	double m_y = point.ry();
+	double currentX = point.x();
+	double currentY = point.y();
 	QRectF rc = boundingRect();
-	return (m_x >= rc.x() - x) && (m_x <= rc.x() + x) && (m_y >= rc.y() + y)
-			&& (m_y <= rc.y() + rc.height() - y);
+	return (currentX >= rc.x() - x) && (currentX <= rc.x() + x) && (currentY >= rc.y() + y)
+			&& (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::isRightSide(QPointF& point, double x, double y) const
+bool NodeElement::checkRightBorder(QPointF& point, double x, double y) const
 {
-	double m_x = point.rx();
-	double m_y = point.ry();
+	double currentX = point.x();
+	double currentY = point.y();
 	QRectF rc = boundingRect();
-	return (m_x >= rc.x() + rc.width() - x) && (m_x <= rc.x() + rc.width() + x) && (m_y >= rc.y() + y)
-			&& (m_y <= rc.y() + rc.height() - y);
+	return (currentX >= rc.x() + rc.width() - x) && (currentX <= rc.x() + rc.width() + x) && (currentY >= rc.y() + y)
+			&& (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::isNoBorderX(QPointF& point, double x, double y) const
+bool NodeElement::checkNoBorderX(QPointF& point, double x, double y) const
 {
 	Q_UNUSED(x);
-	double m_y = point.ry();
+	double currentY = point.ry();
 	QRectF rc = boundingRect();
-	return (m_y >= rc.y() + y) && (m_y <= rc.y() + rc.height() - y);
+	return (currentY >= rc.y() + y) && (currentY <= rc.y() + rc.height() - y);
 }
 
-bool NodeElement::isNoBorderY(QPointF& point, double x, double y) const
+bool NodeElement::checkNoBorderY(QPointF& point, double x, double y) const
 {
 	Q_UNUSED(y);
-	double m_x = point.rx();
+	double currentX = point.rx();
 	QRectF rc = boundingRect();
-	return (m_x >= rc.x() + x) && (m_x <= rc.x() + rc.width() - x);
+	return (currentX >= rc.x() + x) && (currentX <= rc.x() + rc.width() - x);
 }
 
 void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
@@ -1134,7 +1034,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 	double xVert = list[2];
 	double yVert = list[3];
 	QPointF posi = pos();
-	if (mParentNodeElement->isLowSide(posi, xHor, yHor+5))
+	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5))
 	{
 		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
@@ -1143,7 +1043,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isHighSide(posi, xHor, yHor))
+	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor))
 	{
 		double x = mPos.x() - oldContents.x();
 		double a = oldContents.x() + oldContents.width();
@@ -1152,7 +1052,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isRightSide(posi, xVert+5, yVert))
+	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert))
 	{
 		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
@@ -1161,7 +1061,7 @@ void NodeElement::resizeChild(QRectF newContents, QRectF oldContents)
 		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
 		setPos(mPos);
 	}
-	if (mParentNodeElement->isLeftSide(posi, xVert, yVert))
+	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
 	{
 		double y = mPos.y() - oldContents.y();
 		double a = oldContents.y() + oldContents.height();
@@ -1222,7 +1122,7 @@ QList<PossibleEdge> NodeElement::getPossibleEdges()
 	return QList<PossibleEdge>::fromSet(possibleEdges);
 }
 
-void NodeElement::setColorRect(bool bl)
+void NodeElement::setColorRect(bool value)
 {
-	isColorRect = bl;
+	mSelectionNeeded = value;
 }

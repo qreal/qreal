@@ -149,7 +149,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
 				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
-				if ((master) && (master->getConnectingState()))
+				if ((master) && (master->connectionInProgress()))
 					isEdgeFromEmbeddedLinker = true;
 			}
 
