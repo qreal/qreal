@@ -1,0 +1,4 @@
+
+@@MethodResultType@@ @@ClassName@@::@@MethodName@@() {
+
+}
