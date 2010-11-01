@@ -77,6 +77,8 @@ namespace qReal {
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
 
+		void debug();
+
 	private slots:
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);

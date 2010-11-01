@@ -102,6 +102,7 @@
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_to_Hascol"/>
+    <addaction name="actionDebug" />
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
@@ -612,6 +613,11 @@
    </property>
    <property name="text">
     <string>Switch on alignment</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string> 
    </property>
   </action>
  </widget>
