@@ -2,17 +2,13 @@
 #include <QList>
 #include <QString>
 #include <QPoint>
+#include <QPair>
 
 typedef QList<QPoint> PointVector;
 
 typedef QList<PointVector> PathVector;
 
-struct Entity
-{
-public:
-	QString name;
-	PathVector components;
-};
+typedef QPair<QString, PathVector> Entity;
 
 typedef QList<Entity> EntityVector;
 

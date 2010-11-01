@@ -1,5 +1,4 @@
 #include "mousemovementmanager.h"
-//#include <cmath>
 #include <QPoint>
 #include <QString>
 #include <stdlib.h>

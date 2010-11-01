@@ -80,8 +80,8 @@ Entity Serializer::parseNode(QDomElement const & domElement)
 		}
 	}
 	Entity entity;
-	entity.name = name;
-	entity.components = components;
+	entity.first = name;
+	entity.second = components;
 	return entity;
 }
 

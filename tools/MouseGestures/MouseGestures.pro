@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     validpathcreator.cpp \
     keyobjecttable.cpp \
     adopter.cpp \
-    paintmanager.cpp
+    paintmanager.cpp \
+    multistrokekeybulder.cpp
 HEADERS += mousegestures.h \
     mousemovementmanager.h \
     pathcorrector.h \
@@ -23,5 +24,6 @@ HEADERS += mousegestures.h \
     IKeyManager.h \
     adopter.h \
     paintmanager.h \
-    figures.h
+    figures.h \
+    multistrokekeybulder.h
 FORMS += mousegestures.ui
