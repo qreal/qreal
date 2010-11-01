@@ -16,3 +16,5 @@ SOURCES += main.cpp #\
 	#../qrgui/kernel/ids.cpp
 
 LIBS += -L../qrgui -lqrrepo
+
+QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)/../qrgui"
