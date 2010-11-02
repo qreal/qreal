@@ -1,5 +1,5 @@
 class @@ClassName@@ {
-	@@MethodsPlace@@
+	@@MethodPlace@@
 
-	@@FieldsPlace@@
+	@@FieldPlace@@
 }
