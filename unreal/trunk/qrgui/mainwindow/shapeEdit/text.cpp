@@ -165,20 +165,3 @@ void Text::setItemZValue(int zValue)
 	mText.setZValue(zValue);
 	setZValue(zValue);
 }
-
-void Text::focusInEvent(QFocusEvent *event)
-{
-	Q_UNUSED(event);
-	mText.setCursor(cursor());
-	mText.setTextInteractionFlags(Qt::TextEditorInteraction);
-}
-
-void Text::focusOutEvent(QFocusEvent *event)
-{
-	Q_UNUSED(event);
-	mText.setTextInteractionFlags(Qt::NoTextInteraction);
-	QTextCursor cursor = mText.textCursor();
-	cursor.clearSelection();
-	mText.setTextCursor(cursor);
-	mText.unsetCursor();
-}
