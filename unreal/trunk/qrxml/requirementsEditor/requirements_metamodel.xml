@@ -1,7 +1,8 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<metamodel xmlns="http://schema.real.com/schema/" >
- <include>kernel_metamodel</include>
+﻿<metamodel xmlns="http://schema.real.com/schema/" >
+
+ <include>../commonXml/kernel_metamodel.xml</include>
  <namespace>Requirements</namespace>
+ <namespace>UML 2.0</namespace>
  <editor name="REQUIREMENTS DIAGRAM" >
    <graph_types>
   <node id="reqnFeatured" name="Featured Element" >
