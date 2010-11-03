@@ -110,6 +110,7 @@ protected:
 	DomElementTypes mDomElementType;
 	DragState mDragState;
 	ScalingPointState mScalingState;
+	QRectF mBoundingRect;
 	QPen mPen;
 	QBrush mBrush;
 	qreal mX1;

@@ -1,6 +1,7 @@
 #include "graphicalModelView.h"
 
 #include <QtCore/QUuid>
+#include <QtCore/QDebug>
 
 #include "logicalModel.h"
 
@@ -32,3 +33,14 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 		mModel->addElementToModel(Id::rootId(), logicalId, name, QPoint(0, 0));
 	}
 }
+
+void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
+{
+	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+		QModelIndex current = topLeft.sibling(row, 0);
+
+		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
+		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
+	}
+}
+

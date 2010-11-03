@@ -19,6 +19,9 @@ namespace qReal {
 			LogicalModel(qrRepo::RepoApi &repoApi, EditorManager const &editorManager);
 
 			void connectToGraphicalModel(GraphicalModel * const graphicalModel);
+			void updateElements(Id const &logicalId, QString const &name);
+			QModelIndex indexById(Id const &id) const;
+
 		private:
 			GraphicalModelView mGraphicalModelView;
 

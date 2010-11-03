@@ -17,6 +17,8 @@ namespace qReal {
 			GraphicalModelView(LogicalModel * const model);
 		protected slots:
 			virtual void rowsInserted(QModelIndex const &parent, int start, int end);
+			virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
+
 		};
 
 	}

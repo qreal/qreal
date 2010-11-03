@@ -1,11 +1,13 @@
 #include "abstractModel.h"
 
+#include <QDebug>
+
 using namespace qReal;
 using namespace models;
 using namespace details;
 
-AbstractModel::AbstractModel(qrRepo::RepoApi &repoApi, EditorManager const &editorManager)
-		: mApi(repoApi), mEditorManager(editorManager)
+AbstractModel::AbstractModel(qrRepo::RepoApi &repoApi, const EditorManager &editorManager)
+	: mApi(repoApi), mEditorManager(editorManager), mNotNeedUpdate(true)
 {
 }
 
@@ -94,6 +96,7 @@ bool AbstractModel::setData(const QModelIndex &index, const QVariant &value, int
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
+		mNotNeedUpdate = false;
 		emit dataChanged(index, index);
 		return true;
 	}
