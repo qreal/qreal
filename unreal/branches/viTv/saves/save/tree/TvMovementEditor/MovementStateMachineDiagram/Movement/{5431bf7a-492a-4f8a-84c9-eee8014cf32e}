@@ -1,0 +1,24 @@
+<LogicObject id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{5431bf7a-492a-4f8a-84c9-eee8014cf32e}">
+  <parents>
+    <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/StateMachineDiagram/{a43e8641-b633-4f46-8aa3-8d96d0dce00c}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="BeginEvent" value=""/>
+    <QString key="EndEvent" value=""/>
+    <QString key="beginEvent" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 38, -35 : 136, -35 : 173, 3 : "/>
+    <QString key="endEvent" value=""/>
+    <qReal::Id key="from" value="qrm:/TvMovementEditor/MovementStateMachineDiagram/State/{fc08e8ae-3a94-4c04-908a-30f4a3aedd91}"/>
+    <double key="fromPort" value="2"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(anonymous something)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="-523.419, -381.7"/>
+    <qReal::Id key="to" value="qrm:/TvMovementEditor/MovementStateMachineDiagram/State/{982060ca-f649-409e-8ac4-fa42bac34cee}"/>
+    <double key="toPort" value="1"/>
+  </properties>
+</LogicObject>

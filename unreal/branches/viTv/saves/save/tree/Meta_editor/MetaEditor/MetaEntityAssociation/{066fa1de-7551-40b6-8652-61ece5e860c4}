@@ -1,0 +1,24 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{066fa1de-7551-40b6-8652-61ece5e860c4}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{a16115e5-5d65-4e32-9111-4bb139628325}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="beginName" value="begin"/>
+    <QString key="beginType" value="no_arrow"/>
+    <QPolygon key="configuration" value="0, 0 : 120, 0 : 120, 40 : 0, 40 : "/>
+    <QString key="endName" value="end"/>
+    <QString key="endType" value="open_arrow"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Assotiation)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="25, 50"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

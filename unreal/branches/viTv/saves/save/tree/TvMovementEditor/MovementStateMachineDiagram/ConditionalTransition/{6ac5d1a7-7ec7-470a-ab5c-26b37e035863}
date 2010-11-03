@@ -1,0 +1,26 @@
+<LogicObject id="qrm:/TvMovementEditor/MovementStateMachineDiagram/ConditionalTransition/{6ac5d1a7-7ec7-470a-ab5c-26b37e035863}">
+  <parents>
+    <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/StateMachineDiagram/{a43e8641-b633-4f46-8aa3-8d96d0dce00c}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="Condition" value="noMovementForMs(400)"/>
+    <QString key="Event" value=""/>
+    <QString key="IsAccepted" value=""/>
+    <QString key="condition" value="true"/>
+    <QPolygon key="configuration" value="0, 0 : 79, -97 : "/>
+    <QString key="event" value=""/>
+    <qReal::Id key="from" value="qrm:/TvMovementEditor/MovementStateMachineDiagram/Initial/{d69daf74-0eed-47b0-bfc5-1c3896168fc5}"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAccepted" value=""/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(ConditionalTransition)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="-588, -170"/>
+    <qReal::Id key="to" value="qrm:/TvMovementEditor/MovementStateMachineDiagram/State/{ac046584-5603-4b8d-b2ae-cbd3394405eb}"/>
+    <double key="toPort" value="1"/>
+  </properties>
+</LogicObject>

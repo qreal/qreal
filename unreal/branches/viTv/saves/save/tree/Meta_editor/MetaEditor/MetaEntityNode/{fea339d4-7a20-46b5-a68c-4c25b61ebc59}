@@ -1,0 +1,30 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fea339d4-7a20-46b5-a68c-4c25b61ebc59}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{f1153a79-7103-4f46-9ab7-daceb11b78f3}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 100 : 0, 100 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{bc904237-4ead-4a25-8a73-7cd414e849d4}"/>
+    </links>
+    <QString key="name" value="State"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="257, 345"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;43&quot; sizey=&quot;70&quot;>&#xa;        &lt;ellipse fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;2&quot; stroke-width=&quot;0&quot; x1=&quot;2&quot; y2=&quot;41&quot; fill-style=&quot;none&quot; x2=&quot;41&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;7&quot; y=&quot;49&quot; textBinded=&quot;name&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;21&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;22&quot;/>&#xa;        &lt;pointPort x=&quot;41&quot; y=&quot;23&quot;/>&#xa;        &lt;pointPort x=&quot;21&quot; y=&quot;41&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

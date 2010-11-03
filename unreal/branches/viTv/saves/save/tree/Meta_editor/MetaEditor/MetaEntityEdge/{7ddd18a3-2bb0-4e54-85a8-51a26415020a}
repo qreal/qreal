@@ -1,0 +1,29 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{7ddd18a3-2bb0-4e54-85a8-51a26415020a}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{f1153a79-7103-4f46-9ab7-daceb11b78f3}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{15578186-962e-48a5-9da2-6fce89f3824f}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{d338821c-4573-4704-804b-c5b420870b13}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{2cfb6f2a-6239-40e8-b5ed-74f9c4f5fec2}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{b74b8dc1-447c-4844-9c33-e9e0e5dd82fa}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 187 : 0, 187 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="labels" value=""/>
+    <QString key="lineType" value="solidLine"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Movement"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="480, 345"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>
