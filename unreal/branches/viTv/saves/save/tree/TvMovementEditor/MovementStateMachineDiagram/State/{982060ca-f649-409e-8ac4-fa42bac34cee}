@@ -11,14 +11,14 @@
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{eddf0337-bf74-411d-a703-690a84d140ad}"/>
+      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{b3706c73-c1d7-4892-ac68-146a6daa3b46}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{292a3f7d-ba94-4820-b626-9e561d902178}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{11abe6bc-fbf8-4fc9-8134-f1f591743037}"/>
+      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{5431bf7a-492a-4f8a-84c9-eee8014cf32e}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{1e4f50ad-1558-4115-8c52-3f31c736c56b}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{d3521dfd-d24d-4cbc-9ad1-6178e9af2443}"/>
-      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{1c95fed5-601b-443d-b486-c8b7bd134050}"/>
-      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{b3706c73-c1d7-4892-ac68-146a6daa3b46}"/>
-      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{5431bf7a-492a-4f8a-84c9-eee8014cf32e}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/ForwardBackwardMovement/{b77c3325-bd78-463d-b032-1a45bb1a62a9}"/>
+      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{1c95fed5-601b-443d-b486-c8b7bd134050}"/>
     </links>
     <QString key="name" value="Neutral"/>
     <outgoingConnections type="qReal::IdList"/>

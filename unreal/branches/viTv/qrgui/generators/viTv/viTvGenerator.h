@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QPoint>
 
 #include "../../kernel/ids.h"
 #include "../../mainwindow/errorReporter.h"
@@ -29,7 +30,9 @@ namespace qReal {
 				QString stateId;
 				QString direction;
 				QString endEvent;
+				QString sourceState;
 				QString targetState;
+				QString minDistance;
 			};
 
 			void generateDiagram(Id const &id);
@@ -40,6 +43,8 @@ namespace qReal {
 
 			void collectStates(Id const &id);
 			QString movementDirection(Id const &movement) const;
+			QString forwardBackwardMovementDirection(Id const &movement) const;
+			QPoint linkVector(Id const &link) const;
 
 			QStringList mStates;
 			int mCurrentSupportStateIndex;

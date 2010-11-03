@@ -238,7 +238,39 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 			supportState.stateId = supportStateId;
 			supportState.direction = movementDirection(link);
 			supportState.endEvent = mApi.stringProperty(link, "endEvent");
+			supportState.sourceState = mApi.name(id);
 			supportState.targetState = mApi.name(mApi.otherEntityFromLink(link, id));
+
+			supportStates.append(supportState);
+		} else if (link.element() == "ForwardBackwardMovement") {
+			out.incIndent();
+
+			out() << "if (movementDirection == " << forwardBackwardMovementDirection(link) << ")\n";
+			out() << "{\n";
+
+			out.incIndent();
+
+			QString const beginEvent = mApi.stringProperty(link, "beginEvent");
+			if (!beginEvent.isEmpty())
+				out() << "emit gestureDetected(" << beginEvent << ")\n";
+
+			QString const supportStateId = "movementState" + QString::number(++mCurrentSupportStateIndex);
+			out() << "setState(" << supportStateId << ");\n";
+			out() << "processingFinished = true;\n";
+
+			out.decIndent();
+
+			out() << "}\n";
+
+			out.decIndent();
+
+			SupportState supportState;
+			supportState.stateId = supportStateId;
+			supportState.direction = forwardBackwardMovementDirection(link);
+			supportState.endEvent = mApi.stringProperty(link, "endEvent");
+			supportState.sourceState = mApi.name(id);
+			supportState.targetState = mApi.name(mApi.otherEntityFromLink(link, id));
+			supportState.minDistance = mApi.stringProperty(link, "minDistance");
 
 			supportStates.append(supportState);
 		}
@@ -261,11 +293,29 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 		out() << "{\n";
 		out.incIndent();
 
+		if (!state.minDistance.isEmpty()) {
+			out() << "if (distance < " << state.minDistance << ")\n";
+			out() << "{\n";
+			out.incIndent();
+		}
+
 		if (!state.endEvent.isEmpty())
 			out() << "emit gestureDetected(" << state.endEvent << ");\n";
 
 		out() << "setState(" << state.targetState << ");\n";
 		out() << "processingFinished = false;\n";
+
+		if (!state.minDistance.isEmpty()) {
+			out.decIndent();
+			out() << "}\n";
+			out() << "else\n";
+			out() << "{\n";
+			out.incIndent();
+			out() << "setState(" << state.sourceState << ");\n";
+			out() << "processingFinished = true;\n";
+			out.decIndent();
+			out() << "}\n";
+		}
 
 		out.decIndent();
 		out() << "}\n";
@@ -288,30 +338,37 @@ void ViTvGenerator::collectStates(Id const &id)
 
 	int generatedStatesCount = 1;
 	foreach (Id const element, elements) {
-		if (element.element() == "Movement") {
+		if (element.element() == "Movement" || element.element() == "BackwardForwardMovement") {
 			mStates.append("movementState" + QString::number(generatedStatesCount));
 			++generatedStatesCount;
 		}
 	}
 }
 
-QString ViTvGenerator::movementDirection(Id const &movement) const
+QPoint ViTvGenerator::linkVector(Id const &link) const
 {
-	Id const source = mApi.from(movement);
-	Id const destination = mApi.to(movement);
+	Id const source = mApi.from(link);
+	Id const destination = mApi.to(link);
 
 	QPoint sourceCoords = mApi.property(source, "position").toPoint();
 	sourceCoords += mApi.property(source, "configuration").value<QPolygon>().boundingRect().center();
 	QPoint destinationCoords = mApi.property(destination, "position").toPoint();
 	destinationCoords += mApi.property(destination, "configuration").value<QPolygon>().boundingRect().center();
-	QPoint const vector = destinationCoords - sourceCoords;
-	if (qAbs(vector.x()) > qAbs(vector.y()) && vector.x() < 0)
-		return "left";
-	if (qAbs(vector.x()) > qAbs(vector.y()) && vector.x() > 0)
-		return "right";
-	if (qAbs(vector.x()) < qAbs(vector.y()) && vector.y() < 0)
-		return "up";
-	if (qAbs(vector.x()) < qAbs(vector.y()) && vector.y() > 0)
-		return "down";
+	return destinationCoords - sourceCoords;
+}
+
+QString ViTvGenerator::movementDirection(Id const &movement) const
+{
+	QPoint const vector = linkVector(movement);
+	if (qAbs(vector.x()) > qAbs(vector.y()))
+		return vector.x() < 0 ? "left" : "right";
+	if (qAbs(vector.x()) < qAbs(vector.y()))
+		return vector.y() < 0 ? "up" : "down";
 	return "none";
+}
+
+QString ViTvGenerator::forwardBackwardMovementDirection(Id const &movement) const
+{
+	QPoint const vector = linkVector(movement);
+	return vector.y() < 0 ? "forward" : "backward";
 }

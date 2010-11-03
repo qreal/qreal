@@ -9,7 +9,7 @@ SUBDIRS	= \
 #	deploymentEditor/deploymentEditor.pro \
 #	kernelEditor/kernelEditor.pro \
 #	hascolEditor/hascolEditor.pro \
-#	metaEditor/metaEditor.pro \
+	metaEditor/metaEditor.pro \
 #	networkEditor/networkEditor.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	packageEditor/packageEditor.pro \
@@ -22,3 +22,4 @@ SUBDIRS	= \
 #	usecaseEditor/usecaseEditor.pro \
 #	handmadeEditor/handmadeEditor.pro \
 #	testEditor/testEditor.pro \
+	tvMovementEditor/tvMovementEditor.pro \
