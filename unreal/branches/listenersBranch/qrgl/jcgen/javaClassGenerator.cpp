@@ -1,5 +1,7 @@
 #include "javaClassGenerator.h"
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 JavaClassGenerator::JavaClassGenerator(const QString& repoDirectory): rApi(repoDirectory) {	
 }
@@ -43,8 +45,13 @@ bool JavaClassGenerator::generateClass(const qReal::Id& classElemId) {
 		}
 	}
 
-	//TODO: заменить записью в соотвествующий файл
-	qDebug() << classTemplate;
+	QFile outJavaFile(rApi.name(classElemId) + ".java");
+	if (!outJavaFile.open(QIODevice::WriteOnly | QIODevice::Text))
+		return false;
+
+	QTextStream outJava(&outJavaFile);
+	outJava << classTemplate;
+	outJavaFile.close();
 
 	return true;
 }
@@ -113,14 +120,22 @@ bool JavaClassGenerator::generateMethodString(const qReal::Id& methodElemId, con
 	QString methodVisibility = rApi.property(methodElemId, "methodVisibility").toString();
 	insertStrToTemplate(methodVisibility, "@@MethodVisibility@@", resultMethodString);
 	
-	//TODO: добавить обработку параметров
+	QString methodParameters = rApi.property(methodElemId, "methodParameters").toString();
+
+	QString resultParamString;
+	foreach (QString curParamWithType, methodParameters.split("##")) {
+		QStringList paramWithTypeList = curParamWithType.split("%%");
+		if (paramWithTypeList.size() > 1)
+			resultParamString += paramWithTypeList.at(1) + " " + paramWithTypeList.at(0) + ", ";
+	}
+	resultParamString.resize(resultParamString.size() -2);//убираем лишнюю запятую и пробел
+	insertStrToTemplate(resultParamString, "@@MethodParameters@@", resultMethodString);
 
 	return true;
 }
 
-bool appendAfterTemplatePlace(const QString& newStr, const QString& placeIndentificator, QString& templateString) {
+bool JavaClassGenerator::appendAfterTemplatePlace(const QString& newStr, const QString& placeIndentificator, QString& templateString) {
 	int newStrPlace = templateString.indexOf(placeIndentificator);
-	
 	if (newStrPlace > -1)
 		templateString.insert(newStrPlace + placeIndentificator.size(), newStr);
 
