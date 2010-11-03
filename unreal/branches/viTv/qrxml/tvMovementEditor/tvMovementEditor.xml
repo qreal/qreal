@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="Movement State Machine Diagram" nodeName="StateMachineDiagram" name="MovementStateMachineDiagram">
+        <graphicTypes>
+            <node name="Initial">
+                <graphics>
+                    <picture sizex="10" sizey="10">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="10" x1="0" y2="10" fill-style="none" x2="10"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="5" y="5"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="StateMachineDiagram"/>
+                    </container>
+                </logic>
+            </node>
+            <node name="State">
+                <graphics>
+                    <picture sizex="43" sizey="70">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="2" y2="41" fill-style="none" x2="41"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="49" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="21" y="2"/>
+                        <pointPort x="2" y="22"/>
+                        <pointPort x="41" y="23"/>
+                        <pointPort x="21" y="41"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="StateMachineDiagram"/>
+                    </container>
+                </logic>
+            </node>
+            <node name="TimerEvent">
+                <graphics>
+                    <picture sizex="42" sizey="42">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="1" y2="0" fill-style="none" x2="42"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="42" y2="42" fill-style="none" x2="0"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="42" stroke-width="0" x1="0" y2="42" fill-style="none" x2="42"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41" stroke-width="0" x1="42" y2="1" fill-style="none" x2="2"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="22" y="21"/>
+                        <linePort>
+                            <start startx="9.55556" starty="42"/>
+                            <end endx="33.5556" endy="42"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="7.77778" starty="0.222222"/>
+                            <end endx="32.7778" endy="0.222222"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="StateMachineDiagram"/>
+                    </container>
+                </logic>
+            </node>
+            <edge name="ConditionalTransition">
+                <graphics>
+                    <lineType type="dashLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="TimerEvent" directed="false" endName="State"/>
+                        <possibleEdge beginName="Initial" directed="true" endName="State"/>
+                    </possibleEdges>
+                    <properties>
+                        <property type="string" name="condition"/>
+                        <property type="string" name="isAccepted">
+                            <default>true</default>
+                        </property>
+                        <property type="string" name="event"/>
+                    </properties>
+                </logic>
+            </edge>
+            <edge name="Movement">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="State" directed="false" endName="State"/>
+                    </possibleEdges>
+                    <properties>
+                        <property type="string" name="beginEvent"/>
+                        <property type="string" name="endEvent"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node displayedName="State Machine Diagram" name="StateMachineDiagram">
+                <graphics>
+                    <picture sizex="284" sizey="248">
+                        <rectangle fill="#ffffff" stroke-style="dash" stroke="#000000" y1="0" stroke-width="1" x1="0" y2="248" fill-style="none" x2="284"/>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="string" name="outputDirectory"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="Forward/Backward 3d Movement" name="ForwardBackwardMovement">
+                <graphics>
+                    <lineType type="dotLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                    <possibleEdges>
+                        <possibleEdge beginName="State" directed="true" endName="State"/>
+                    </possibleEdges>
+                    <properties>
+                        <property type="string" name="beginEvent"/>
+                        <property type="string" name="endEvent"/>
+                        <property type="string" name="minDistance"/>
+                    </properties>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>
