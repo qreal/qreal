@@ -40,7 +40,6 @@ void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 		return;
 	}
 	mApi.setName(logicalId, name);
-	mNotNeedUpdate = !mNotNeedUpdate;
 	emit dataChanged(indexById(logicalId), indexById(logicalId));
 }
 
