@@ -7,13 +7,7 @@
 #include "../view/editorview.h"
 #include "../mainwindow/errorReporter.h"
 
-//class qReal::gui::ErrorReporter;
-
 namespace qReal {
-//	namespace gui {
-//		class ErrorReporter;
-//	}
-	
 	class VisualDebugger : QObject
 	{
 		Q_OBJECT
