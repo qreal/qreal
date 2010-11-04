@@ -29,16 +29,28 @@ void VisualDebugger::error(ErrorType e) {
 	deinitialize();
 	switch (e) {
 	case missingBeginNode:
-		QMessageBox::critical(0, tr("Error"), tr("The diagram doesn't have Initial Node.\nCorrect this and redebug your program."), QMessageBox::Yes);
+		QMessageBox::critical(0,
+			tr("Error"),
+			tr("The diagram doesn't have Initial Node.\nCorrect this and redebug your program."),
+			QMessageBox::Yes);
 		break;
 	case missingEndOfLinkNode:
-		QMessageBox::critical(0, tr("Error"), tr("Diagram cann't end with edge.\nCorrect this and redebug your program."), QMessageBox::Yes);
+		QMessageBox::critical(0,
+			tr("Error"),
+			tr("Diagram cann't end with edge.\nCorrect this and redebug your program."),
+			QMessageBox::Yes);
 		break;
 	case endWithNotEndNode:
-		QMessageBox::warning(0, tr("Warning"), tr("There are no links from this node and it mismatches Activity Test Final Node."), QMessageBox::Yes);
+		QMessageBox::warning(0,
+			tr("Warning"),
+			tr("There are no links from this node and it mismatches Activity Test Final Node."),
+			QMessageBox::Yes);
 		break;
 	case missingValidLink:
-		QMessageBox::critical(0, tr("Error"), tr("The condition doesn't have valid link.\nCorrect this and redebug your program."), QMessageBox::Yes);
+		QMessageBox::critical(0,
+			tr("Error"),
+			tr("The condition doesn't have valid link.\nCorrect this and redebug your program."),
+			QMessageBox::Yes);
 		break;
 	case noErrors:
 		break;

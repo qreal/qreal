@@ -1420,10 +1420,10 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-    mVisualDebugger->debug();
+	mVisualDebugger->debug();
 }
 
 void MainWindow::debugSingleStep()
 {
-    mVisualDebugger->debugSingleStep();
+	mVisualDebugger->debugSingleStep();
 }
