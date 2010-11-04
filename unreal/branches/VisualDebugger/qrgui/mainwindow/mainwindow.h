@@ -13,6 +13,7 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
+#include "../visualDebugger/visualDebugger.h"
 
 namespace qReal {
 
@@ -78,6 +79,7 @@ namespace qReal {
 		void propertyEditorScrollTo(QModelIndex const &index);
 
 		void debug();
+		void debugSingleStep();
 
 	private slots:
 		void deleteFromDiagram();
@@ -120,6 +122,7 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
+		VisualDebugger *mVisualDebugger;
 
 		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
 		bool mDiagramCreateFlag;

@@ -128,6 +128,7 @@ MainWindow::MainWindow()
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 
 	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
+	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -205,6 +206,9 @@ MainWindow::MainWindow()
 	mModel->resetChangedDiagrams();
 
 	initGridProperties();
+
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger = new VisualDebugger(editor, mModel);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -1416,45 +1420,10 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-    EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+    mVisualDebugger->debug();
+}
 
-    UML::Element *beginElem = NULL;
-    int i = 0, j = editor->mvIface()->scene()->items().count();
-    while (i < j) {
-	beginElem = dynamic_cast<UML::Element *>(editor->mvIface()->scene()->items().at(i));
-	if (beginElem && beginElem->uuid().element().compare("InitialNode") == 0) {
-		break;
-	}
-	i++;
-    }
-
-    QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect(this);
-    effect->setColor(Qt::red);
-    dynamic_cast<QGraphicsItem *>(beginElem)->setGraphicsEffect(effect);
-
-    Id beginId = mModel->idByIndex(beginElem->index());
-    Id toId;
-    UML::Element *elem = NULL;
-    QEventLoop loop;
-    IdList outLinks = mModel->api().outgoingLinks(beginId);
-
-    while (outLinks.count() > 0) {
-	QTimer::singleShot(750, &loop, SLOT(quit()));
-	loop.exec();
-
-	elem = editor->mvIface()->scene()->getElem(outLinks.at(0));
-	dynamic_cast<QGraphicsItem *>(elem)->setGraphicsEffect(effect);
-
-	QTimer::singleShot(750, &loop, SLOT(quit()));
-	loop.exec();
-
-	toId = mModel->api().to(outLinks.at(0));
-	elem = editor->mvIface()->scene()->getElem(toId);
-	dynamic_cast<QGraphicsItem *>(elem)->setGraphicsEffect(effect);
-
-	outLinks = mModel->api().outgoingLinks(toId);
-    }
-    QTimer::singleShot(750, &loop, SLOT(quit()));
-    loop.exec();
-    effect->setEnabled(false);
+void MainWindow::debugSingleStep()
+{
+    mVisualDebugger->debugSingleStep();
 }

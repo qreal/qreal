@@ -50,6 +50,13 @@ void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 	painter->drawPixmap(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1), mPixmapItem->pixmap());
 }
 
+void Image::setItemZValue(int zValue)
+{
+	mZValue = zValue;
+	mPixmapItem->setZValue(zValue);
+	setZValue(zValue);
+}
+
 QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement image = document.createElement("image");
