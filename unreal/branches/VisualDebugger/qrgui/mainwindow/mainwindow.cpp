@@ -42,6 +42,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../visualDebugger/visualDebugger.h"
 
 //#include "../qrrepo/svnClient.h"
 
@@ -1420,10 +1421,16 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-	mVisualDebugger->debug();
+	ui.ErrorListWidget->clear();
+	gui::ErrorReporter const errorReporter = mVisualDebugger->debug();
+	errorReporter.showErrors("Debug finished successfully", ui.ErrorListWidget);
+	mVisualDebugger->clearErrorReporter();
 }
 
 void MainWindow::debugSingleStep()
 {
-	mVisualDebugger->debugSingleStep();
+	ui.ErrorListWidget->clear();
+	gui::ErrorReporter const errorReporter = mVisualDebugger->debugSingleStep();
+	errorReporter.showErrors("Debug (single step) finished successfully", ui.ErrorListWidget);
+	mVisualDebugger->clearErrorReporter();
 }

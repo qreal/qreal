@@ -5,8 +5,15 @@
 #include "propertyeditorproxymodel.h"
 
 #include "../view/editorview.h"
+#include "../mainwindow/errorReporter.h"
+
+//class qReal::gui::ErrorReporter;
 
 namespace qReal {
+//	namespace gui {
+//		class ErrorReporter;
+//	}
+	
 	class VisualDebugger : QObject
 	{
 		Q_OBJECT
@@ -14,9 +21,10 @@ namespace qReal {
 	public:
 		VisualDebugger(EditorView *editor, model::Model *model);
 		~VisualDebugger();
+		void clearErrorReporter();
 	public slots:
-		void debug();
-		void debugSingleStep();
+		gui::ErrorReporter debug();
+		gui::ErrorReporter debugSingleStep();
 	private:
 		enum ErrorType {
 			missingBeginNode,
@@ -31,6 +39,7 @@ namespace qReal {
 		UML::Element *mCurrentElem;
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
+		gui::ErrorReporter mErrorReporter;
 		
 		void error(ErrorType e);
 		UML::Element* findBeginNode(QString name);

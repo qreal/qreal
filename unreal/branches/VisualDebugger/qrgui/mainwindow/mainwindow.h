@@ -13,12 +13,12 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
-#include "../visualDebugger/visualDebugger.h"
 
 namespace qReal {
 
 	class EditorView;
 	class ListenerManager;
+	class VisualDebugger;
 
 	namespace model {
 		class Model;
