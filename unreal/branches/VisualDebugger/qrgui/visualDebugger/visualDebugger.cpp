@@ -35,7 +35,7 @@ void VisualDebugger::error(ErrorType e) {
 		mErrorReporter.addCritical("The diagram cann't end with edge", mCurrentId);
 		break;
 	case endWithNotEndNode:
-		mErrorReporter.addWarning("There are no links from this node and it mismatches Activity Test Final Node",
+		mErrorReporter.addWarning("There are no links from this node and it mismatches Block Final Node",
 			mCurrentId);
 		break;
 	case missingValidLink:
@@ -85,7 +85,7 @@ void VisualDebugger::pause(int time) {
 
 bool VisualDebugger::isFinalNode(Id id) {
 	IdList outLinks = mModel->api().outgoingLinks(id);
-	return (outLinks.count() == 0 && id.element().compare("ActivityTestFinalNode") == 0);
+	return (outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0);
 }
 
 bool VisualDebugger::hasEndOfLinkNode(Id id) {

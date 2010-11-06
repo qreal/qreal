@@ -3,9 +3,9 @@
     <include>../commonXml/basicbehaviors_metamodel.xml</include>
     <include>../commonXml/basicactions_metamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="ActivityTest Diagram" nodeName="ActivityTestDiagramNode" name="ActivityTestDiagram">
+    <diagram displayedName="Block Diagram" nodeName="BlockDiagramNode" name="BlockDiagram">
       <graphicTypes>
-        <node displayedName="ActivityTest Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ActivityTestDiagramNode">
+        <node displayedName="Block Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="BlockDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
               <line y1="0" x1="20" y2="0" x2="180"/>
@@ -32,11 +32,11 @@
               <parent parentName="KernelDiagram::Diagram"/>
             </generalizations>
             <container>
-              <contains type="ActivityTestDiagram::Action"/>
-              <contains type="ActivityTestDiagram::ActivityTestFinalNode"/>
-              <contains type="ActivityTestDiagram::ControlFlow"/>
-              <contains type="ActivityTestDiagram::InitialNode"/>
-	      <contains type="ActivityTestDiagram::DecisionNode"/>
+              <contains type="BlockDiagram::Action"/>
+              <contains type="BlockDiagram::FinalNode"/>
+              <contains type="BlockDiagram::ControlFlow"/>
+              <contains type="BlockDiagram::InitialNode"/>
+	      <contains type="BlockDiagram::DecisionNode"/>
             </container>
             <connections>
               <connection type="ClassDiagram::ClassMethod"/>
@@ -76,7 +76,7 @@
               <parent parentName="BasicActionsDiagram::Action"/>
             </generalizations>
             <connections>
-              <connection type="ActivityTestDiagram::ActivityTestDiagramNode"/>
+              <connection type="BlockDiagram::BlockDiagramNode"/>
             </connections>
             <usages>
               <usage type="ClassDiagram::ClassMethod"/>
@@ -85,7 +85,7 @@
             <action/>
           </logic>
         </node>
-        <node displayedName="ActivityTest Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : " name="ActivityTestFinalNode">
+        <node displayedName="Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : " name="FinalNode">
           <graphics>
             <picture sizex="30" sizey="30">
               <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
