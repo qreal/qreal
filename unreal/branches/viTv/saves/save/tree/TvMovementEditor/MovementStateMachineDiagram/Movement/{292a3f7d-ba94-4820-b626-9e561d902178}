@@ -7,7 +7,7 @@
     <QString key="BeginEvent" value=""/>
     <QString key="EndEvent" value=""/>
     <QString key="beginEvent" value=""/>
-    <QPolygon key="configuration" value="0, 0 : 3, -181 : "/>
+    <QPolygon key="configuration" value="0, 0 : 3, -182 : "/>
     <QString key="endEvent" value=""/>
     <qReal::Id key="from" value="qrm:/TvMovementEditor/MovementStateMachineDiagram/State/{982060ca-f649-409e-8ac4-fa42bac34cee}"/>
     <double key="fromPort" value="0"/>

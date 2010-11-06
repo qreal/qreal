@@ -61,7 +61,7 @@ void ViTvGenerator::generateHeader(QString const &outputDirectory, Id const &id)
 
 	out.incIndent();
 	out() << "TrackingStateMachine();\n\n";
-	out() << "void addMeasure(QPoint const &point);\n";
+	out() << "void addMeasure(Point3d const &point);\n";
 	out() << "void moveTimersToCorrectThread();\n\n";
 	out.decIndent();
 
@@ -111,12 +111,12 @@ void ViTvGenerator::generateCpp(QString const &outputDirectory, Id const &id)
 
 	out() << "}\n\n";
 
-	out() << "void TrackingStateMachine::addMeasure(QPoint const &point)\n";
+	out() << "void TrackingStateMachine::addMeasure(Point3d const &point)\n";
 	out() << "{\n";
 
 	out.incIndent();
 	out() << "qDebug() << \"==========================================================\";\n";
-	out() << "qDebug() << \"added measure: \" << point;\n";
+	out() << "qDebug() << \"added measure: \" << point.toString();\n";
 	out() << "qDebug() << \"Current state:\" << stateToString(mState);\n\n";
 	out() << "Direction movementDirection = direction(point);\n";
 
@@ -124,6 +124,7 @@ void ViTvGenerator::generateCpp(QString const &outputDirectory, Id const &id)
 	out() << "while (!processingFinished)\n";
 	out() << "{\n";
 	out.incIndent();
+	out() << "processingFinished = true;\n";
 	out() << "switch (mState)\n";
 	out() << "{\n";
 
@@ -205,8 +206,8 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 			out() << "setState(" << nextState << ");\n";
 
 			QString const isAccepted = mApi.stringProperty(link, "isAccepted");
-			if (isAccepted == "true" || isAccepted.isEmpty())
-				out() << "processingFinished = true;\n";
+			if (isAccepted == "false")
+				out() << "processingFinished = false;\n";
 
 			out.decIndent();
 
@@ -220,13 +221,14 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 
 			out.incIndent();
 
+			out() << "startMovement();\n";
+
 			QString const beginEvent = mApi.stringProperty(link, "beginEvent");
 			if (!beginEvent.isEmpty())
 				out() << "emit gestureDetected(" << beginEvent << ")\n";
 
 			QString const supportStateId = "movementState" + QString::number(++mCurrentSupportStateIndex);
 			out() << "setState(" << supportStateId << ");\n";
-			out() << "processingFinished = true;\n";
 
 			out.decIndent();
 
@@ -250,13 +252,14 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 
 			out.incIndent();
 
+			out() << "startMovement();\n";
+
 			QString const beginEvent = mApi.stringProperty(link, "beginEvent");
 			if (!beginEvent.isEmpty())
 				out() << "emit gestureDetected(" << beginEvent << ")\n";
 
 			QString const supportStateId = "movementState" + QString::number(++mCurrentSupportStateIndex);
 			out() << "setState(" << supportStateId << ");\n";
-			out() << "processingFinished = true;\n";
 
 			out.decIndent();
 
@@ -277,10 +280,6 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 	}
 
 	out.incIndent();
-	if (outgoingLinks.isEmpty()) {
-		out() << "processingFinished = true;\n";
-	}
-
 	out() << "break;\n";
 	out.decIndent();
 	out() << "}\n";
@@ -294,7 +293,7 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 		out.incIndent();
 
 		if (!state.minDistance.isEmpty()) {
-			out() << "if (distance < " << state.minDistance << ")\n";
+			out() << "if (movementDistance() < " << state.minDistance << ")\n";
 			out() << "{\n";
 			out.incIndent();
 		}
@@ -312,7 +311,6 @@ void ViTvGenerator::generateStateTransitions(OutFile &out, Id const &id)
 			out() << "{\n";
 			out.incIndent();
 			out() << "setState(" << state.sourceState << ");\n";
-			out() << "processingFinished = true;\n";
 			out.decIndent();
 			out() << "}\n";
 		}
@@ -338,7 +336,7 @@ void ViTvGenerator::collectStates(Id const &id)
 
 	int generatedStatesCount = 1;
 	foreach (Id const element, elements) {
-		if (element.element() == "Movement" || element.element() == "BackwardForwardMovement") {
+		if (element.element() == "Movement" || element.element() == "ForwardBackwardMovement") {
 			mStates.append("movementState" + QString::number(generatedStatesCount));
 			++generatedStatesCount;
 		}

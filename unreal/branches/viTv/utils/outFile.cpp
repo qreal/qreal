@@ -3,7 +3,7 @@
 using namespace utils;
 
 OutFile::OutFile(QString const &fileName)
-	: mIndent(0)
+	: mIndent(0), mIndentSymbol('\t'), mIndentSymbolCount(1)
 {
 	mFile.setFileName(fileName);
 	mFile.open(QIODevice::WriteOnly | QIODevice::Text);
