@@ -7,6 +7,8 @@
 #include "../view/editorview.h"
 #include "../mainwindow/errorReporter.h"
 
+#include "blockParser.h"
+
 namespace qReal {
 	class VisualDebugger : QObject
 	{
@@ -34,6 +36,7 @@ namespace qReal {
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
 		gui::ErrorReporter mErrorReporter;
+		blockParser *mBlockParser;
 		
 		void error(ErrorType e);
 		UML::Element* findBeginNode(QString name);
@@ -44,5 +47,10 @@ namespace qReal {
 		ErrorType doFirstStep(UML::Element* elem);
 		void doStep(Id id);
 		void deinitialize();
+		void processAction();
+		
+		//ex
+		Id findValidLink_ex();
+		void doStep_ex(Id id);
 	};
 }

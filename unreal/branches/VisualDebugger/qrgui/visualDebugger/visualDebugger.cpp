@@ -19,6 +19,7 @@ VisualDebugger::VisualDebugger(EditorView *editor, model::Model *model) {
 	mEffect->setColor(Qt::red);
 	mCurrentElem = NULL;
 	mCurrentId = mCurrentId.getRootId();
+	mBlockParser = new blockParser();
 }
 
 VisualDebugger::~VisualDebugger() {
@@ -35,7 +36,7 @@ void VisualDebugger::error(ErrorType e) {
 		mErrorReporter.addCritical("The diagram cann't end with edge", mCurrentId);
 		break;
 	case endWithNotEndNode:
-		mErrorReporter.addWarning("There are no links from this node and it mismatches Block Final Node",
+		mErrorReporter.addWarning("There are no links from this node and it mismatches Final Node",
 			mCurrentId);
 		break;
 	case missingValidLink:
@@ -67,9 +68,11 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 Id VisualDebugger::findValidLink() {
 	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
 	for (int i=0; i<outLinks.count(); i++) {
-		QString condition = mModel->api().property(mCurrentId, "condition").toString();
-		QString type = mModel->api().property(outLinks.at(i), "type").toString();
-		if (type.compare(condition) == 0) {
+		QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
+		int pos=0;
+		bool condition = mBlockParser->parseCondition(conditionStr, &pos);
+		bool type = mModel->api().property(outLinks.at(i), "type").toBool();
+		if (type == condition) {
 			return outLinks.at(i);
 		}
 	}
@@ -109,12 +112,28 @@ void VisualDebugger::doStep(Id id) {
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
+	
+	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
+	if (elem) {
+		if (elem->uuid().element().compare("Action") == 0) {
+			processAction();
+		}
+	}
 }
 
 void VisualDebugger::deinitialize() {
 	mEffect->setEnabled(false);
 	mCurrentId = mCurrentId.getRootId();
 	mCurrentElem = NULL;
+}
+
+void VisualDebugger::clearErrorReporter() {
+	mErrorReporter = *(new gui::ErrorReporter());
+}
+
+void VisualDebugger::processAction() {
+	int pos = 0;
+	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), &pos);
 }
 
 gui::ErrorReporter VisualDebugger::debug() {
@@ -130,12 +149,12 @@ gui::ErrorReporter VisualDebugger::debug() {
 		if (mCurrentElem->uuid().element().compare("DecisionNode") == 0) {
 			Id validLinkId = findValidLink();
 			if (validLinkId != validLinkId.getRootId()) {
-				doStep(validLinkId);
+				doStep_ex(validLinkId);
 			} else {
 				return mErrorReporter;
 			}
 		} else {
-			doStep(outLinks.at(0));
+			doStep_ex(outLinks.at(0));
 		}
 		
 		pause(750);
@@ -145,7 +164,7 @@ gui::ErrorReporter VisualDebugger::debug() {
 			return mErrorReporter;
 		}
 		
-		doStep(mModel->api().to(mCurrentId));
+		doStep_ex(mModel->api().to(mCurrentId));
 		
 		outLinks = mModel->api().outgoingLinks(mCurrentId);
 	}
@@ -181,12 +200,12 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 			if (mCurrentElem->uuid().element().compare("DecisionNode") == 0) {
 				Id validLinkId = findValidLink();
 				if (validLinkId != validLinkId.getRootId()) {
-					doStep(validLinkId);
+					doStep_ex(validLinkId);
 				} else {
 					return mErrorReporter;
 				}
 			} else {
-				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
+				doStep_ex(mModel->api().outgoingLinks(mCurrentId).at(0));
 			}
 			return mErrorReporter;
 		} else {
@@ -194,12 +213,34 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 				error(VisualDebugger::missingEndOfLinkNode);
 				return mErrorReporter;
 			}
-			doStep(mModel->api().to(mCurrentId));
+			doStep_ex(mModel->api().to(mCurrentId));
 		}
 	}
 	return mErrorReporter;
 }
 
-void VisualDebugger::clearErrorReporter() {
-	mErrorReporter = *(new gui::ErrorReporter());
+
+
+
+
+
+
+Id VisualDebugger::findValidLink_ex() {
+	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
+	for (int i=0; i<outLinks.count(); i++) {
+		QString condition = mModel->api().property(mCurrentId, "decision").toString();
+		QString type = mModel->api().property(outLinks.at(i), "type_number").toString();
+		if (type.compare(condition) == 0) {
+			return outLinks.at(i);
+		}
+	}
+	error(VisualDebugger::missingValidLink);
+	return outLinks.at(0).getRootId();
+}
+
+void VisualDebugger::doStep_ex(Id id) {
+	mEffect->setEnabled(true);
+	mCurrentId = id;
+	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
+	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
 }
