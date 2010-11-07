@@ -68,7 +68,8 @@ namespace qReal {
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 
-			Logger getLogger() const;
+			Logger* logger() const;
+			Repairer* repairer() const;
 
 		public slots:
 			void save();
@@ -116,8 +117,8 @@ namespace qReal {
 
 			bool useFlagOfChange;
 
-			Logger mLogger;
-			Repairer mRepairer;
+			Logger *mLogger;
+			Repairer *mRepairer;
 		};
 
 	}

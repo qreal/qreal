@@ -12,10 +12,10 @@ Model::Model(EditorManager const &editorManager, QString const &workingDir)
 	:
 	mApi(workingDir),
 	mEditorManager(editorManager),
-	mAssistApi(*this, editorManager),
-	mLogger(mutableApi().getWorkingDir()),
-	mRepairer(mApi, editorManager)
+	mAssistApi(*this, editorManager)
 {
+	mLogger = new Logger(mutableApi().getWorkingDir());
+	mRepairer = new Repairer(mApi, editorManager);
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
 }
@@ -24,6 +24,10 @@ Model::~Model()
 {
 	cleanupTree(mRootItem);
 	mTreeItems.clear();
+
+	delete mLogger;
+	delete mRepairer;
+	delete mRootItem;
 }
 
 bool Model::isDiagram(Id const &id) const
@@ -49,7 +53,7 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 
-	if (!mRepairer.process(mRootItem->id())) {
+	if (!mRepairer->process(mRootItem->id())) {
 		reinit();
 		return;
 	}
@@ -57,7 +61,7 @@ void Model::init()
 	loadSubtreeFromClient(mRootItem);
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
-	mLogger.enable();
+	mLogger->enable();
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -165,8 +169,8 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 			return false;
 		}
 
-		mLogger.rememberNameOfScene(isSituatedOn(item)->id(), mApi.name(isSituatedOn(item)->id()));
-		mLogger.log(actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
+		mLogger->rememberNameOfScene(isSituatedOn(item)->id(), mApi.name(isSituatedOn(item)->id()));
+		mLogger->log(actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
 
 		emit dataChanged(index, index);
 		return true;
@@ -214,9 +218,14 @@ QString Model::getTypeName(QModelIndex const &index, int const role) const
 	return QString();
 }
 
-Logger Model::getLogger() const
+Logger* Model::logger() const
 {
 	return mLogger;
+}
+
+Repairer* Model::repairer() const
+{
+	return mRepairer;
 }
 
 QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
@@ -420,16 +429,16 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-			mLogger.log(actCreateDiagram, id);
+			mLogger->log(actCreateDiagram, id);
 		else
-			mLogger.log(actAddElement, isSituatedOn(parentItem)->id(), id);
+			mLogger->log(actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-		mLogger.log(actAddElement, isSituatedOn(parentItem)->id(), id);
+		mLogger->log(actAddElement, isSituatedOn(parentItem)->id(), id);
 	}
 
 	int newRow = parentItem->children().size();
@@ -538,21 +547,21 @@ QPersistentModelIndex Model::rootIndex() const
 void Model::open(QString const &workingDir)
 {
 	mApi.open(workingDir);
-	mLogger.setWorkingDir(workingDir);
+	mLogger->setWorkingDir(workingDir);
 	reinit();
 }
 
 void Model::saveTo(QString const &workingDir)
 {
 	mApi.saveTo(workingDir);
-	mLogger.setWorkingDir(workingDir);
-	mLogger.output();
+	mLogger->setWorkingDir(workingDir);
+	mLogger->output();
 }
 
 void Model::save()
 {
 	mApi.saveAll();
-	mLogger.output();
+	mLogger->output();
 	mApi.resetChangedDiagrams();
 }
 
@@ -561,9 +570,9 @@ void Model::removeByIndex(QModelIndex const &index)
 	Id id = idByIndex(index);
 	ModelTreeItem *treeItem = mTreeItems.value(id);
 	if (treeItem->parent() == mRootItem)
-		mLogger.log(actDestroyDiagram, isSituatedOn(treeItem)->id());
+		mLogger->log(actDestroyDiagram, isSituatedOn(treeItem)->id());
 	else
-		mLogger.log(actRemoveElement, isSituatedOn(treeItem)->id(), id);
+		mLogger->log(actRemoveElement, isSituatedOn(treeItem)->id(), id);
 
 	removeRow(index.row(), index.parent());
 }

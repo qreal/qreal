@@ -106,6 +106,7 @@ MainWindow::MainWindow()
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
 	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
+
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
@@ -163,6 +164,9 @@ MainWindow::MainWindow()
 	QString workingDir = settings.value("workingDir", "./save").toString();
 
 	mModel = new model::Model(mEditorManager, workingDir);
+	connect(ui.actionPatch_Save, SIGNAL(triggered()), mModel->repairer(), SLOT(patchSave()));
+	connect(ui.actionPatch_Editor, SIGNAL(triggered()), mModel->repairer(), SLOT(patchEditor()));
+
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
 	if (!missingPlugins.isEmpty()) {
 		QString text = "These plugins are not present, but needed to load the save:\n";
@@ -597,7 +601,7 @@ void MainWindow::generateToHascol()
 
 void MainWindow::generateEditor()
 {
-	mModel->getLogger().output();
+	mModel->logger()->output();
 
 	generators::MetaGenerator metaGenerator(mModel->api());
 
@@ -638,7 +642,7 @@ void MainWindow::generateEditor()
 
 void MainWindow::generateEditorWithQRMC()
 {
-	mModel->getLogger().output();
+	mModel->logger()->output();
 
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 

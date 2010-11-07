@@ -6,16 +6,16 @@
 #include "../editorManager/editorManager.h"
 
 namespace qReal {
-	class Repairer : QObject {
+	class Repairer : public QObject {
 		Q_OBJECT
 		public:
 			Repairer(qrRepo::RepoApi &api, EditorManager const &editorManager);
 			bool process(Id const target);
 
 		public slots:
+			void repair();
 			void patchSave();
 			void patchEditor();
-			void repairElements();
 
 		private:
 			qrRepo::RepoApi &mApi;

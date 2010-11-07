@@ -26,11 +26,10 @@ void Repairer::patchEditor()
 	//следует избегать ситуаций с двумя разными ветками
 }
 
-void Repairer::repairElements()
+void Repairer::repair()
 {
 	qDebug() << "Repairing...";
 	//предложить Автопочинку/ПропатчитьСейв/ПропатчитьРедактор
-	//вообще, методов для починки становится много, надо уже их скрыть в Repairer
 	repairElements(Id::getRootId());
 	qDebug() << "Finished.";
 }
