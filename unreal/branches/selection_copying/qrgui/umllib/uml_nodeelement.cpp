@@ -51,6 +51,11 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mUmlPortHandler = new UmlPortHandler(this);
 }
 
+NodeElement& copyWithContents(const QList<Element> selection)
+{
+	return new NodeElement();
+}
+
 NodeElement::~NodeElement()
 {
 	foreach(EdgeElement *edge, mEdgeList)
