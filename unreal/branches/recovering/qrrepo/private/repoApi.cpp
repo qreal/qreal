@@ -23,6 +23,11 @@ void RepoApi::setName(Id const &id, QString const &name)
 	addChangedDiagram(id.diagramId());
 }
 
+void RepoApi::replace(const qReal::Id oldId, const qReal::Id newId)
+{
+	mClient.replace(oldId, newId);
+}
+
 IdList RepoApi::children(Id const &id) const
 {
 	return mClient.children(id);
@@ -325,7 +330,7 @@ void RepoApi::remove(qReal::IdList list) const
 {
 	qDebug() << "RepoApi::remove(IdList), list.size() > 0 == " << (list.size()>0);
 
-	foreach(ChildsOfDiagram pair, mDiagramsDeleted)
+	foreach(ChildrenOfDiagram pair, mDiagramsDeleted)
 		foreach(Id diagram, list) {
 			if (pair.first == diagram)
 				mClient.remove(pair.second);

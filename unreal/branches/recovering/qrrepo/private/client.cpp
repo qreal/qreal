@@ -153,6 +153,23 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	}
 }
 
+void Client::replace(const qReal::Id oldId, const qReal::Id newId)
+{
+	LogicObject *object = mObjects[oldId];
+	mObjects.remove(oldId);
+	mObjects.insert(newId, object);
+	object->setId(newId);
+
+	foreach(Id child, object->children()) {
+		mObjects[child]->removeParent(oldId);
+		mObjects[child]->addParent(newId);
+	}
+	foreach(Id parent, object->parents()) {
+		mObjects[parent]->removeChild(oldId);
+		mObjects[parent]->addChild(newId);
+	}
+}
+
 void Client::loadFromDisk()
 {
 	serializer.loadFromDisk(mObjects);

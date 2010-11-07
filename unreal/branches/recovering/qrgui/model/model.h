@@ -91,7 +91,7 @@ namespace qReal {
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
-						QModelIndex mRootIndex;
+			QModelIndex mRootIndex;
 
 			Model(Model const &);  // copying is forbidden
 			Model& operator =(Model const &); // assigment is also forbidden

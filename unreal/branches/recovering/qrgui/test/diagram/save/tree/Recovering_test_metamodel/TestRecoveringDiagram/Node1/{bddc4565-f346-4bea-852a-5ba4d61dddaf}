@@ -11,6 +11,7 @@
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
       <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/Edge2/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}"/>
+      <object id="qrm:/Recovering_test_metamodel/TestRecoveringDiagram/EdgeSecond/{de2a29f9-48a3-4de8-b0fc-4ff04153e491}"/>
     </links>
     <QString key="name" value="(Node1)"/>
     <outgoingConnections type="qReal::IdList"/>

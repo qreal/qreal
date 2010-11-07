@@ -98,6 +98,11 @@ void LogicObject::removeProperty(const QString &name)
 	}
 }
 
+void LogicObject::setId(const qReal::Id id)
+{
+	mId = id;
+}
+
 Id LogicObject::id() const
 {
 	return mId;

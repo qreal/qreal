@@ -112,12 +112,6 @@ QLinkedList<Message> Message::parseLog(QString path)
 							details, parseQVariant(prevValue) , parseQVariant(newValue)));
 	}
 
-	qDebug() << (int)log.first().performed();
-	qDebug() << log.first().target().toString();
-	qDebug() << log.first().details();
-	qDebug() << log.first().prevValue();
-	qDebug() << log.first().newValue();
-
 	return log;
 }
 

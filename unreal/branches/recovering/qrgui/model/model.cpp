@@ -646,17 +646,22 @@ bool Model::isCorrect(Id target) const
 
 void Model::repairElements()
 {
-	//тут надо повесить какое-то окошко, сообщающее пользователю о том, что восстанавливается диаграмма и предлагающее отменить и т.п.
+	qDebug() << "Repairing...";
 	repairElements(mRootItem->id());
-//	reinit();	//пока что выключил, иначе риал зацикливается на починке элементов, т.к. на самом деле ничего не чинится
+	reinit();
+	qDebug() << "Finished.";
 }
 
 void Model::repairElements(const Id target)
 {
 	foreach(Id child, mApi.children(target)) {
-		//лучше это оптимизировать со временем, чтобы не проверять по 2 раза элементы
-		if (!isCorrect(child))
-			mRepairer.getCorrectId(child);	//тут надо что-то с этим сделать будет
+		//надо это оптимизировать, чтобы не проверять по 2 раза элементы
+		if (!isCorrect(child)) {
+			Id newId = mRepairer.getCorrectId(child);
+			mApi.replace(child, newId);
+			repairElements(newId);
+			continue;
+		}
 		repairElements(child);
 	}
 }
