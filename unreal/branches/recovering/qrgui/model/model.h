@@ -20,7 +20,6 @@
 
 namespace qReal {
 	namespace model {
-
 		class Model : public QAbstractItemModel
 		{
 			Q_OBJECT
@@ -69,6 +68,8 @@ namespace qReal {
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 
+			Logger getLogger() const;
+
 		public slots:
 			void save();
 			void exterminate();
@@ -112,13 +113,6 @@ namespace qReal {
 			void clean();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
-
-			bool isCorrect(Id const target) const;
-
-			void repairElements();
-			void repairElements(Id const target);
-
-			bool checkElements(Id const target) const;
 
 			bool useFlagOfChange;
 

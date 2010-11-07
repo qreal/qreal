@@ -10,9 +10,11 @@ using namespace details;
 
 Model::Model(EditorManager const &editorManager, QString const &workingDir)
 	:
-	mApi(workingDir), mEditorManager(editorManager),
+	mApi(workingDir),
+	mEditorManager(editorManager),
 	mAssistApi(*this, editorManager),
-	mLogger(mutableApi().getWorkingDir()), mRepairer(mEditorManager)
+	mLogger(mutableApi().getWorkingDir()),
+	mRepairer(mApi, editorManager)
 {
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
@@ -47,8 +49,8 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 
-	if (!checkElements(mRootItem->id())) {
-		repairElements();
+	if (!mRepairer.process(mRootItem->id())) {
+		reinit();
 		return;
 	}
 
@@ -210,6 +212,11 @@ QString Model::getTypeName(QModelIndex const &index, int const role) const
 	} while (false);
 
 	return QString();
+}
+
+Logger Model::getLogger() const
+{
+	return mLogger;
 }
 
 QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
@@ -637,45 +644,6 @@ Id Model::idByIndex(QModelIndex const &index) const
 {
 	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 	return mTreeItems.key(item);
-}
-
-bool Model::isCorrect(Id target) const
-{
-	return (mEditorManager.elements(target.diagramId()).contains(target.type()));
-}
-
-void Model::repairElements()
-{
-	qDebug() << "Repairing...";
-	repairElements(mRootItem->id());
-	reinit();
-	qDebug() << "Finished.";
-}
-
-void Model::repairElements(const Id target)
-{
-	foreach(Id child, mApi.children(target)) {
-		//надо это оптимизировать, чтобы не проверять по 2 раза элементы
-		if (!isCorrect(child)) {
-			Id newId = mRepairer.getCorrectId(child);
-			mApi.replace(child, newId);
-			repairElements(newId);
-			continue;
-		}
-		repairElements(child);
-	}
-}
-
-bool Model::checkElements(Id const target) const
-{
-	//критерии проверки надо будет изменить и вынести в отдельные методы
-	if ((target != mRootItem->id()) && (!isCorrect(target)))
-		return false;
-	foreach(Id child, mApi.children(target)) {
-		if (!checkElements(child))
-			return false;
-	}
-	return true;
 }
 
 ModelAssistApi &Model::assistApi()

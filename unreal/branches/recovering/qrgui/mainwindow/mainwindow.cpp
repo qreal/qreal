@@ -597,6 +597,8 @@ void MainWindow::generateToHascol()
 
 void MainWindow::generateEditor()
 {
+	mModel->getLogger().output();
+
 	generators::MetaGenerator metaGenerator(mModel->api());
 
 	QString directoryName;
@@ -636,6 +638,8 @@ void MainWindow::generateEditor()
 
 void MainWindow::generateEditorWithQRMC()
 {
+	mModel->getLogger().output();
+
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
 	IdList const metamodels = mModel->api().children(ROOT_ID);

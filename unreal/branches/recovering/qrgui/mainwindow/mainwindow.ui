@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -103,10 +103,12 @@
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionShape_Edit"/>
-    <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionParse_Editor_xml"/>
     <addaction name="separator"/>
+    <addaction name="actionPatch_Save"/>
+    <addaction name="actionPatch_Editor"/>
+    <addaction name="actionGenerate_Editor"/>
     <addaction name="actionGenerate_Editor_qrmc"/>
+    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -583,6 +585,16 @@
    </property>
    <property name="text">
     <string>Switch on alignment</string>
+   </property>
+  </action>
+  <action name="actionPatch_Save">
+   <property name="text">
+    <string>Patch Save</string>
+   </property>
+  </action>
+  <action name="actionPatch_Editor">
+   <property name="text">
+    <string>Patch Editor</string>
    </property>
   </action>
  </widget>
