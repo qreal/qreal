@@ -1,0 +1,41 @@
+@@InitDiagramNameMapLine@@=	diagramNameMap["@@DiagramName@@"] = "@@DiagramDisplayedName@@";
+@@InitDiagramNodeNameMapLine@@=	diagramNodeNameMap["@@DiagramName@@"] = "@@DiagramNodeName@@";
+@@InitElementNameMapLine@@=	elementsNameMap["@@DiagramName@@"]["@@ElementName@@"] = "@@ElementDisplayedName@@";
+@@InitMouseGesturesMapLine@@=	elementMouseGesturesMap["@@DiagramName@@"]["@@ElementName@@"] = "@@GesturePath@@";
+@@InitPropertyTypesMapLine@@=	propertyTypes["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyType@@";
+@@InitPropertyDefaultMapLine@@=	propertyDefault["@@ElementName@@"]["@@PropertyName@@"] = "@@PropertyDefaultValue@@";
+@@GetGraphicalObjectLine@@=	if (element == "@@ElementName@@")\n		return new UML::@@ElementName@@();
+@@GetPropertyNamesLine@@=	if (element == "@@ElementName@@")\n		result  << @@PropertiesList@@;
+@@GetContainedByLine@@=	if (element == "@@ElementName@@")\n		result @@ContainedByList@@;
+@@GetConnectedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@ConnectedToList@@;
+@@GetUsedTypesLine@@=	if (element == "@@ElementName@@")\n		result @@UsedTypesList@@ ;
+@@IsNodeOrEdgeLine@@=	if (element == "@@ElementName@@")\n		return @@IsNodeOrEdgeValue@@;
+@@GetEnumValuesLine@@=	if (name == "@@ElementName@@")\n		result @@EnumValuesList@@;
+@@GetPossibleEdgesLine@@=	if (element == "@@ElementName@@")\n		result @@PossibleEdgesList@@;
+@@EdgeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::white);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
+@@UpdateData@@=			title_@@Count@@->setHtml(QString("%1").arg(@@UpdateRole@@));
+@@NameRole@@=repo->index().data(Qt::DisplayRole).toString()
+@@CustomRole@@=repo->roleValueByName("@@LabelName@@")
+@@LabelDefinition@@=		ElementTitleInterface *title_@@Count@@;
+@@NodeLoadShapeRenderer@@=			mRenderer = renderer;\n			mRenderer->load(QString(":/@@ElementName@@Class.sdf"));
+@@NodeLoadPortsRenderer@@=			portRenderer->load(QString(":/@@ElementName@@Ports.sdf"));
+@@NodeSetContents@@=			contents.setWidth(@@NodeWidth@@);\n			contents.setHeight(@@NodeHeight@@);
+@@NodeInitPointPort@@=			pointPorts << QPointF(@@PointX@@, @@PointY@@);
+@@NodeInitLinePort@@=		{\n			StatLine ln;\n			ln.line = QLineF(@@StartX@@, @@StartY@@, @@EndX@@, @@EndY@@);\n			ln.prop_x1 = @@NodeLinePortStartXScalable@@;\n			ln.prop_y1 = @@NodeLinePortStartYScalable@@;\n			ln.prop_x2 = @@NodeLinePortEndXScalable@@;\n			ln.prop_y2 = @@NodeLinePortEndYScalable@@;\n			linePorts << ln;\n		};
+@@NodeInit@@=			title_@@Count@@ = factory.createTitle(@@LabelX@@, @@LabelY@@, @@LabelName@@, @@LabelReadonly@@);\n			title_@@Count@@->setBackground(Qt::transparent);\n			title_@@Count@@->setFlags(0);\n			title_@@Count@@->setTextInteractionFlags(Qt::NoTextInteraction);\n			titles.append(title_@@Count@@);
+@@NodeValidBorder@@=			list << 30 << 15 << 15 << 25;
+@@NodeInvalidBorder@@=			list << 0 << 0 << 0 << 0;
+@@PortsSdf@@=<picture sizex="@@NodeWidth@@" sizey="@@NodeHeight@@" >\n@@Ports@@\n</picture>
+@@LinePort@@=	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />\n	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="1" stroke-style="solid" stroke="#465945" />
+@@PointPort@@=	<point stroke-width="11" stroke-style="solid" stroke="#c3dcc4" x1="@@PointX@@" y1="@@PointY@@" />\n	<point stroke-width="3" stroke-style="solid" stroke="#465945" x1="@@PointX@@" y1="@@PointY@@" />
+@@NodeConstructor@@=		@@ElementName@@()\n		{\n			mBonusContextMenuFields @@ContextMenuItems@@;\n		}
+@@ItemsValidList@@=mBonusContextMenuFields
+@@ItemsInvalidList@@=QStringList()
+@@SdfFile@@=	<file>@@Filename@@</file>
+@@LineSdf@@=<picture sizex="100" sizey="60" >\n	<line fill="#000000" stroke-style="@@LineType@@" stroke="#000000" y1="0" x1="0" y2="60" stroke-width="2" x2="100" fill-style="solid" />\n</picture>
+@@Arrow@@=			static const QPointF points[] = {\n				QPointF(0,0),\n				QPointF(-5,10),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 3);
+@@Rhomb@@=			static const QPointF points[] = {\n				QPointF(0,0),\n				QPointF(-5,10),\n				QPointF(0,20),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 4);
+@@OpenArrow@@=			static const QPointF points[] = {\n				QPointF(-5,10),\n				QPointF(0,0),\n				QPointF(5,10)\n			};\n			painter->drawPolygon(points, 3);
+@@ComplexArrow@@=			static const QPointF points[] = {\n				QPointF(-15,30),\n				QPointF(-10,10),\n				QPointF(0,0),\n				QPointF(10,10),\n				QPointF(15,30),\n				QPointF(0,23),\n				QPointF(-15,30)\n			};\n			painter->drawPolyline(points, 7);
+@@FilledArrowColor@@=			brush.setColor(Qt::black);
+@@EmptyArrowColor@@=			brush.setColor(Qt::white);
