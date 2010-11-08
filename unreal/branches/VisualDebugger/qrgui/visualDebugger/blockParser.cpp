@@ -173,7 +173,7 @@ void blockParser::skip(QString stream, int* pos) {
 	while (*pos <= stream.length() && 
 		(isUseless(stream.at(*pos)) || stream.at(*pos).toAscii() == '<'))
 	{
-		if (isHtmlBpTag(stream, pos)) {
+		if (isHtmlBrTag(stream, pos)) {
 			(*pos)+=4;
 			return;
 		}
@@ -181,7 +181,7 @@ void blockParser::skip(QString stream, int* pos) {
 	}
 }
 
-bool blockParser::isHtmlBpTag(QString stream, int *pos) {
+bool blockParser::isHtmlBrTag(QString stream, int *pos) {
 	return stream.at(*pos).toAscii() == '<' &&
 		stream.at(*pos + 1).toAscii() == 'b' &&
 		stream.at(*pos + 2).toAscii() == 'p' &&
@@ -381,6 +381,11 @@ bool blockParser::parseDisjunction(QString stream, int* pos) {
 				*pos = backupPos;
 				res = parseSingleComprasion(stream, pos);
 			}
+			break;
+		case '!':
+			(*pos)+=2;
+			res = !(parseCondition(stream, pos));
+			(*pos)++;
 			break;
 		default:
 			if (isDigit(stream.at(*pos)) || isLetter(stream.at(*pos))) {

@@ -38,10 +38,6 @@
               <contains type="BlockDiagram::InitialNode"/>
 	      <contains type="BlockDiagram::DecisionNode"/>
             </container>
-            <connections>
-              <connection type="ClassDiagram::ClassMethod"/>
-              <connection type="UseCaseDiagram::UseCase"/>
-            </connections>
           </logic>
         </node>
         <node displayedName="Action" name="Action">
@@ -73,17 +69,6 @@
           </graphics>
           <logic>
 	    <property type="string" name="process" />
-	    <generalizations>
-	      <parent parentName="BasicActionsDiagram::Action"/>
-	    </generalizations>
-	    <connections>
-	      <connection type="ActivityDiagram::ActivityDiagramNode"/>
-	    </connections>
-	    <usages>
-	      <usage type="ClassDiagram::ClassMethod"/>
-	      <usage type="ClassDiagram::ClassField"/>
-	    </usages>
-	    <action/>
           </logic>
         </node>
         <node displayedName="Final Node" path="29, 15 : 27, 20 : 24, 24 : 20, 27 : 15, 28 : 10, 27 : 6, 24 : 3, 20 : 2, 15 : 3, 10 : 6, 6 : 10, 3 : 15, 2 : 20, 3 : 24, 6 : 27, 10 : 29, 15 : 36, 15 : 34, 23 : 29, 29 : 23, 34 : 15, 35 : 7, 34 : 1, 29 : -4, 23 : -5, 15 : -4, 7 : 1, 1 : 7, -4 : 15, -5 : 23, -4 : 29, 1 : 34, 7 : 36, 15 : " name="BlockFinalNode">
@@ -112,12 +97,8 @@
           </graphics>
           <logic>
 	    <properties>
-	      <property type="string" name="type_number">
-                <default>1</default>
-              </property>
-	      <property type="bool" name="type">
-                <default>false</default>
-              </property>
+	      <property type="string" name="type_number" />
+	      <property type="bool" name="type" />
 	    </properties>
             <associations endType="open_arrow" beginType="no_arrow">
             </associations>
@@ -141,29 +122,17 @@
         </node>
 	<node displayedName="Decision Node" path="30, 2 : 58, 30 : 30, 58 : 2, 30 : 30, 2 :" name="DecisionNode">
 	  <graphics>
-	    <picture sizex="30" sizey="30">
-	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="15" y2="15" stroke-width="1" x2="1" fill-style="solid" />
-	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="1" y2="29" stroke-width="1" x2="15" fill-style="solid" />
-	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="29" x1="15" y2="15" stroke-width="1" x2="29" fill-style="solid" />
-	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="15" x1="29" y2="1" stroke-width="1" x2="15" fill-style="solid" />
+	    <picture sizex="60" sizey="60">
+	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="1" x1="30" y2="30" stroke-width="1" x2="1" fill-style="solid" />
+	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="1" y2="59" stroke-width="1" x2="30" fill-style="solid" />
+	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="59" x1="30" y2="30" stroke-width="1" x2="59" fill-style="solid" />
+	      <line fill="#000000" stroke-style="solid" stroke="#000000" y1="30" x1="59" y2="1" stroke-width="1" x2="30" fill-style="solid" />
 	    </picture>
 	    <ports>
-	      <linePort>
-		<start startx="15" starty="1" />
-		<end endx="1" endy="15" />
-	      </linePort>
-	      <linePort>
-		<start startx="1" starty="15" />
-		<end endx="15" endy="29" />
-	      </linePort>
-	      <linePort>
-		<start startx="15" starty="29" />
-		<end endx="29" endy="15" />
-	      </linePort>
-	      <linePort>
-		<start startx="29" starty="15" />
-		<end endx="15" endy="1" />
-	      </linePort>
+              <pointPort x="1" y="30"/>
+              <pointPort x="30" y="59"/>
+              <pointPort x="59" y="30"/>
+              <pointPort x="30" y="1"/>
 	    </ports>
             <labels>
               <label x="7" y="3" textBinded="condition"/>
@@ -176,10 +145,6 @@
               </property>
 	      <property type="string" name="condition" />
 	    </properties>
-	    <usages>
-	      <usage type="ClassDiagram::ClassMethod" />
-	      <usage type="ClassDiagram::ClassField" />
-	    </usages>
 	  </logic>
 	</node>
       </graphicTypes>

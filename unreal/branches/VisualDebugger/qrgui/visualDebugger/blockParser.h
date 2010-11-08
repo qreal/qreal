@@ -36,7 +36,7 @@ namespace qReal {
 		bool isUseless(QChar c);
 		bool isAssignment(QChar c);
 		
-		bool isHtmlBpTag(QString stream, int* pos);
+		bool isHtmlBrTag(QString stream, int* pos);
 		
 		QString parseIdentifier(QString stream, int* pos);
 		number parseNumber(QString stream, int* pos);
