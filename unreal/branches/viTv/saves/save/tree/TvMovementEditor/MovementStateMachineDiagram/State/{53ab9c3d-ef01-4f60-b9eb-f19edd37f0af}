@@ -10,8 +10,8 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
-      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{eddf0337-bf74-411d-a703-690a84d140ad}"/>
       <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{d3521dfd-d24d-4cbc-9ad1-6178e9af2443}"/>
+      <object id="qrm:/TvMovementEditor/MovementStateMachineDiagram/Movement/{eddf0337-bf74-411d-a703-690a84d140ad}"/>
     </links>
     <QString key="name" value="Down"/>
     <outgoingConnections type="qReal::IdList"/>

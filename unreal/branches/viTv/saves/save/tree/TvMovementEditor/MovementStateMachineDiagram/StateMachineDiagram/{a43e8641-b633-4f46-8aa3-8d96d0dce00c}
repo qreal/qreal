@@ -31,7 +31,7 @@
     <QString key="name" value="(State Machine Diagram)"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QString key="outputDirectory" value="C:\Projects\3vi\3vi-qReal\trunk\src\qt4\viTv\meanShiftDetector"/>
+    <QString key="outputDirectory" value="C:\Projects\3vi\3vi-qReal\trunk\src\qt4\viTv\point3dRecognizer\recognizer"/>
     <QPointF key="position" value="0, 0"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>

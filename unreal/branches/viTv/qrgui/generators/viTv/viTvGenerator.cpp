@@ -45,12 +45,12 @@ void ViTvGenerator::generateDiagram(Id const &id)
 
 void ViTvGenerator::generateHeader(QString const &outputDirectory, Id const &id) const
 {
-	OutFile out(outputDirectory + "/" + "trackingStateMachine.h");
+	OutFile out(outputDirectory + "/" + "point3dStateMachine.h");
 	out.setIndentOptions(OutFile::space, 4);
 
 	out() << "#pragma once\n\n";
-	out() << "#include \"abstractTrackingStateMachine.h\"\n\n";
-	out() << "class TrackingStateMachine: public AbstractTrackingStateMachine\n";
+	out() << "#include \"abstractPoint3dStateMachine.h\"\n\n";
+	out() << "class Point3dStateMachine: public AbstractPoint3dStateMachine\n";
 	out() << "{\n";
 
 	out.incIndent();
@@ -60,7 +60,7 @@ void ViTvGenerator::generateHeader(QString const &outputDirectory, Id const &id)
 	out() << "public:\n";
 
 	out.incIndent();
-	out() << "TrackingStateMachine();\n\n";
+	out() << "Point3dStateMachine();\n\n";
 	out() << "void addMeasure(Point3d const &point);\n";
 	out() << "void moveTimersToCorrectThread();\n\n";
 	out.decIndent();
@@ -88,30 +88,30 @@ void ViTvGenerator::generateHeader(QString const &outputDirectory, Id const &id)
 
 void ViTvGenerator::generateCpp(QString const &outputDirectory, Id const &id)
 {
-	OutFile out(outputDirectory + "/" + "trackingStateMachine.cpp");
+	OutFile out(outputDirectory + "/" + "point3dStateMachine.cpp");
 	out.setIndentOptions(OutFile::space, 4);
 
-	out() << "#include \"trackingStateMachine.h\"\n\n";
+	out() << "#include \"point3dStateMachine.h\"\n\n";
 	out() << "#include <QtCore/QDebug>\n\n";
 
-	out() << "TrackingStateMachine::TrackingStateMachine()\n";
+	out() << "Point3dStateMachine::Point3dStateMachine()\n";
 
 	out.incIndent();
-	out() << ": AbstractTrackingStateMachine(), mState(init)\n";
+	out() << ": AbstractPoint3dStateMachine(), mState(init)\n";
 	out.decIndent();
 
 	out() << "{\n";
 	out() << "}\n\n";
 
-	out() << "void TrackingStateMachine::moveTimersToCorrectThread()\n";
+	out() << "void Point3dStateMachine::moveTimersToCorrectThread()\n";
 	out() << "{\n";
 	out.incIndent();
-	out() << "AbstractTrackingStateMachine::moveTimersToCorrectThread();\n";
+	out() << "AbstractPoint3dStateMachine::moveTimersToCorrectThread();\n";
 	out.decIndent();
 
 	out() << "}\n\n";
 
-	out() << "void TrackingStateMachine::addMeasure(Point3d const &point)\n";
+	out() << "void Point3dStateMachine::addMeasure(Point3d const &point)\n";
 	out() << "{\n";
 
 	out.incIndent();
@@ -138,7 +138,7 @@ void ViTvGenerator::generateCpp(QString const &outputDirectory, Id const &id)
 	out.decIndent();
 	out() << "}\n\n";
 
-	out() << "QString TrackingStateMachine::stateToString(State state) const\n";
+	out() << "QString Point3dStateMachine::stateToString(State state) const\n";
 	out() << "{\n";
 	out.incIndent();
 
@@ -162,7 +162,7 @@ void ViTvGenerator::generateCpp(QString const &outputDirectory, Id const &id)
 	out.decIndent();
 	out() << "}\n\n";
 
-	out() << "void TrackingStateMachine::setState(State state)\n";
+	out() << "void Point3dStateMachine::setState(State state)\n";
 	out() << "{\n";
 	out.incIndent();
 
