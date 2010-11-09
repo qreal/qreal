@@ -18,7 +18,7 @@
 using namespace UML;
 using namespace qReal;
 
-const int pi = 3.14159265358979323846264338327950288419717;
+const double pi = 3.14159265358979;
 
 /** @brief indicator of edges' movement */
 // static bool moving = false;
