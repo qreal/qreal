@@ -109,6 +109,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
+	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorFromXML()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -165,7 +166,6 @@ MainWindow::MainWindow()
 
 	mModel = new model::Model(mEditorManager, workingDir);
 	connect(ui.actionPatch_Save, SIGNAL(triggered()), mModel->repairer(), SLOT(patchSave()));
-	connect(ui.actionPatch_Editor, SIGNAL(triggered()), mModel->repairer(), SLOT(patchEditor()));
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
 	if (!missingPlugins.isEmpty()) {
@@ -638,6 +638,11 @@ void MainWindow::generateEditor()
 					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
+}
+
+void MainWindow::generateEditorFromXML()
+{
+
 }
 
 void MainWindow::generateEditorWithQRMC()

@@ -18,14 +18,6 @@ void Repairer::patchSave()
 	//следует избегать ситуаций с двумя разными ветками
 }
 
-void Repairer::patchEditor()
-{
-	qDebug() << "patchEditor()";
-	//пропатчить редактор с помощью специального лога
-	//просто выполнить последовательно всё, что в логе
-	//следует избегать ситуаций с двумя разными ветками
-}
-
 void Repairer::repair()
 {
 	qDebug() << "Repairing...";
@@ -64,12 +56,12 @@ bool Repairer::process(Id const target)
 {
 	//критерии проверки надо будет изменить и вынести в отдельные методы
 	if ((target != Id::getRootId()) && (!isCorrect(target))) {
-		repairElements();
+		repair();
 		return false;
 	}
 	foreach(Id child, mApi.children(target)) {
 		if (!process(child)) {
-			repairElements();
+			repair();
 			return false;
 		}
 	}

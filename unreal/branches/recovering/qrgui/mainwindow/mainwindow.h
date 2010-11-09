@@ -84,7 +84,9 @@ namespace qReal {
 		void closeTab(QModelIndex const &index);
 		void exterminate();
 		void generateEditor();
+		void generateEditorFromXML();
 		void generateEditorWithQRMC();
+
 		void parseEditorXml();
 		void generateToHascol();
 		void parseHascol();

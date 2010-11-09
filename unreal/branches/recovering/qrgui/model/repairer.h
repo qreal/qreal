@@ -15,7 +15,6 @@ namespace qReal {
 		public slots:
 			void repair();
 			void patchSave();
-			void patchEditor();
 
 		private:
 			qrRepo::RepoApi &mApi;

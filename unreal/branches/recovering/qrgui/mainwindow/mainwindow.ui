@@ -105,10 +105,10 @@
     <addaction name="actionShape_Edit"/>
     <addaction name="separator"/>
     <addaction name="actionPatch_Save"/>
-    <addaction name="actionPatch_Editor"/>
+    <addaction name="actionParse_Editor_xml"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionGenerate_Editor_qrmc"/>
-    <addaction name="actionParse_Editor_xml"/>
+    <addaction name="actionGenerate_Editor_from_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -592,9 +592,9 @@
     <string>Patch Save</string>
    </property>
   </action>
-  <action name="actionPatch_Editor">
+  <action name="actionGenerate_Editor_from_xml">
    <property name="text">
-    <string>Patch Editor</string>
+    <string>Generate Editor (from xml)</string>
    </property>
   </action>
  </widget>
