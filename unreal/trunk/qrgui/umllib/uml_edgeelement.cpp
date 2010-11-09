@@ -18,10 +18,7 @@
 using namespace UML;
 using namespace qReal;
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846264338327950288419717
-#define M_1_PI 1/M_PI;
-#endif //M_PI
+const int pi = 3.14159265358979323846264338327950288419717;
 
 /** @brief indicator of edges' movement */
 // static bool moving = false;
@@ -82,9 +79,9 @@ static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
 	if (line.dy() >= 0)
-		angle = 2 * M_PI - angle;
+		angle = 2 * pi - angle;
 
-	return angle * 180 * M_1_PI;
+	return angle * 180 / pi;
 }
 
 static void drawChaosStar(QPainter *painter)

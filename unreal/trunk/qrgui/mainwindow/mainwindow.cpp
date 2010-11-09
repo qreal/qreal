@@ -1287,7 +1287,8 @@ void MainWindow::saveAs()	//TODO: change
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-	mSaveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
+	mSaveListChecked.clear();
+	mSaveListChecked.resize(mModel->api().getOpenedDiagrams().size());
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;

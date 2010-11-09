@@ -37,6 +37,11 @@ namespace qReal {
 		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
 
+	signals:
+		void gesturesShowed();
+		void currentIdealGestureChanged();
+		void rootDiagramChanged();
+
 	public slots:
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
@@ -111,18 +116,6 @@ namespace qReal {
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 
 	private:
-		QCloseEvent *mCloseEvent;
-		model::Model *mModel;
-		EditorManager mEditorManager;
-		ListenerManager *mListenerManager;
-		PropertyEditorModel mPropertyModel;
-		PropertyEditorDelegate mDelegate;
-		GesturesWidget *mGesturesWidget;
-
-		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
-		bool mDiagramCreateFlag;
-
-		QStringList mDiagramsList;
 		void createDiagram(const QString &idString);
 		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -147,9 +140,18 @@ namespace qReal {
 		void connectActionZoomTo(QWidget* widget);
 		void setConnectActionZoomTo(QWidget* widget);
 
-	signals:
-		void gesturesShowed();
-		void currentIdealGestureChanged();
-		void rootDiagramChanged();
+		QCloseEvent *mCloseEvent;
+		model::Model *mModel;
+		EditorManager mEditorManager;
+		ListenerManager *mListenerManager;
+		PropertyEditorModel mPropertyModel;
+		PropertyEditorDelegate mDelegate;
+		GesturesWidget *mGesturesWidget;
+
+		QVector<bool> mSaveListChecked;
+		bool mDiagramCreateFlag;
+
+		QStringList mDiagramsList;
+
 	};
 }
