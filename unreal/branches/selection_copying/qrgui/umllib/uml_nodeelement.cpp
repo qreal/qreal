@@ -53,7 +53,21 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 NodeElement& copyWithContents(const QList<Element> selection)
 {
-	return new NodeElement();
+	NodeElement& copy = new NodeElement(/*new ElementImpl(mElementImpl)*/); //how to clone mElementImpl?
+
+	//children
+	foreach (QGraphicsItem* childItem, childItems()) {
+		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
+		if (curItem && selection.contains(curItem)) {
+			NodeElement& childrenCopy = curItem.copyWithContents(selection);
+			//add it
+		}
+	}
+
+	//copy all the members
+
+
+	return copy;
 }
 
 NodeElement::~NodeElement()
