@@ -51,15 +51,15 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mUmlPortHandler = new UmlPortHandler(this);
 }
 
-NodeElement NodeElement::copyWithContents(const QList<Element> selection)
+NodeElement *NodeElement::copyWithContents(const QList<Element*> selection)
 {
         NodeElement *copy = new NodeElement(mElementImpl); //TODO clone, not share
 
 	//children
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-                if (curItem && selection.contains(*curItem)) {
-                        NodeElement childCopy = curItem->copyWithContents(selection);
+                if (curItem && selection.contains(curItem)) {
+                        NodeElement *childCopy = curItem->copyWithContents(selection);
 			//add it
 		}
 	}
@@ -67,7 +67,7 @@ NodeElement NodeElement::copyWithContents(const QList<Element> selection)
 	//copy all the members
 
 
-        return *copy;
+        return copy;
 }
 
 NodeElement::~NodeElement()
