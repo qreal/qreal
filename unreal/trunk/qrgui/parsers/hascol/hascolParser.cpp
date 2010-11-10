@@ -21,7 +21,7 @@ HascolParser::HascolParser(qrRepo::RepoApi &api, EditorManager const &editorMana
 {
 }
 
-ErrorReporter HascolParser::parse(QStringList const &files)
+ErrorReporter &HascolParser::parse(QStringList const &files)
 {
 	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMapping_HascolPortMappingDiagram");
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");
@@ -75,7 +75,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 			result = element;
 			// full exterminatus
 			// should track changed elements, but it's tricky
-			mApi.removeChildren(result);  
+			mApi.removeChildren(result);
 		}
 	}
 
@@ -183,7 +183,7 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 			QDomAttr param = attrs.item(i).toAttr();
 			QString paramValue = param.value();
 			// removing explicit qualification for bincompl since it's included automatically
-			paramValue = paramValue.remove("bincompl::");  
+			paramValue = paramValue.remove("bincompl::");
 			parameters += paramValue + ", ";
 		}
 		parameters.chop(2);

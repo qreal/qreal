@@ -81,6 +81,7 @@ namespace qReal {
 		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
+		void selectItemWithError(Id const &id);
 
 	private slots:
 		void deleteFromDiagram();
@@ -139,7 +140,7 @@ namespace qReal {
 		void disconnectActionZoomTo(QWidget* widget);
 		void connectActionZoomTo(QWidget* widget);
 		void setConnectActionZoomTo(QWidget* widget);
-
+		void clickErrorListWidget();
 		QCloseEvent *mCloseEvent;
 		model::Model *mModel;
 		EditorManager mEditorManager;

@@ -1,31 +1,10 @@
 #include "errorReporter.h"
 #include <QtGui/QMessageBox>
-
+#include "errorlistwidget.h"
 #include "../kernel/exception/exception.h"
 
 using namespace qReal;
 using namespace gui;
-
-Error::Error(QString const &message, Severity const &severity, Id const &position)
-	: mMessage(message), mSeverity(severity), mPosition(position)
-{
-}
-
-Error::Severity Error::severity() const
-{
-	return mSeverity;
-}
-
-QString Error::message() const
-{
-	return mMessage;
-}
-
-Id Error::position() const
-{
-	return mPosition;
-}
-
 
 void ErrorReporter::addInformation(QString const &message, Id const &position)
 {
@@ -51,51 +30,43 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	mErrors.append(error);
 }
 
-bool ErrorReporter::showErrors(QString const &successMessage, QListWidget* const errorListWidget) const
+bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const
 {
-	QString const windowTitle = "Results";
+	errorListWidget->clear();
 
 	if (mErrors.isEmpty()) {
-		QString labelText = windowTitle + ": " + successMessage;
-		errorListWidget->addItem(labelText);
+		errorList->setVisible(false);
 		return true;
 	}
 
 	QString message;
-
-	Error::Severity const totalSeverity = maxSeverity();
+	errorList->setVisible(true);
 	foreach (Error error, mErrors) {
+		QListWidgetItem* item = new QListWidgetItem(errorListWidget);
 		message = severityMessage(error) + " ";
-		message += error.message() + "\n";
-		if (error.position() != ROOT_ID)
-			message += "    at " + error.position().toString();
-		switch (totalSeverity) {
+		message += error.message();
+		switch (error.severity()) {
 		case Error::information:
-			errorListWidget->addItem(" " + message);
+			item->setIcon(QIcon(":/icons/information.png"));
 			break;
 		case Error::warning:
-			errorListWidget->addItem(" " + message);
+			item->setIcon(QIcon(":/icons/warning.png"));
 			break;
 		case Error::error:
-			errorListWidget->addItem(" " + message);
+			item->setIcon(QIcon(":/icons/error.png"));
 			break;
 		case Error::critical:
-			errorListWidget->addItem(" " + message);
+			item->setIcon(QIcon(":/icons/critical.png"));
 			break;
 		default:
 			throw new Exception("Incorrect total severity");
 		}
+		item->setText(" " + message.trimmed());
+		item->setTextAlignment(Qt::AlignVCenter);
+		item->setToolTip(error.position().toString());
+		errorListWidget->addItem(item);
 	}
 	return false;
-}
-
-Error::Severity ErrorReporter::maxSeverity() const
-{
-	Error::Severity currentSeverity = Error::information;
-	foreach (Error error, mErrors)
-		if (error.severity() > currentSeverity)
-			currentSeverity = error.severity();
-	return currentSeverity;
 }
 
 QString ErrorReporter::severityMessage(Error const &error)
@@ -113,3 +84,5 @@ QString ErrorReporter::severityMessage(Error const &error)
 		throw new Exception("Incorrect severity of an error");
 	}
 }
+
+

@@ -68,7 +68,6 @@ MainWindow::MainWindow()
 		splash->show();
 		QApplication::processEvents();
 	}
-
 	ui.setupUi(this);
 
 #if defined(Q_WS_WIN)
@@ -134,7 +133,9 @@ MainWindow::MainWindow()
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.paletteDock->setWidget(ui.paletteToolbox);
-	ui.ErrorDock->setWidget(ui.ErrorListWidget);
+	ui.errorDock->setWidget(ui.errorListWidget);
+	ui.errorListWidget->init(this);
+	ui.errorDock->setVisible(false);
 	ui.propertyEditor->setModel(&mPropertyModel);
 	ui.propertyEditor->verticalHeader()->hide();
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
@@ -263,6 +264,12 @@ void MainWindow::adjustMinimapZoom(int zoom)
 {
 	ui.minimapView->resetMatrix();
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
+}
+
+void MainWindow::selectItemWithError(Id const &id)
+{
+	mPropertyModel.setIndex(mModel->indexById(id));
+	centerOn(mModel->indexById(id));
 }
 
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
@@ -589,8 +596,8 @@ void MainWindow::generateToHascol()
 {
 	generators::HascolGenerator hascolGenerator(mModel->api());
 
-	gui::ErrorReporter const errors = hascolGenerator.generate();
-	errors.showErrors("Generation finished successfully", ui.ErrorListWidget);
+	gui::ErrorReporter& errors = hascolGenerator.generate();
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
 	qDebug() << "Done.";
 }
@@ -620,9 +627,9 @@ void MainWindow::generateEditor()
 	}
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		gui::ErrorReporter errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-		if (errors.showErrors("Generation finished successfully", ui.ErrorListWidget)) {
+		if (errors.showErrors(ui.errorListWidget, ui.errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
@@ -871,9 +878,9 @@ void MainWindow::parseHascol()
 		return;
 
 	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
-	gui::ErrorReporter errors = parser.parse(fileNames);
+	gui::ErrorReporter& errors = parser.parse(fileNames);
 
-	errors.showErrors("Parsing is finished", ui.ErrorListWidget);
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
 	mModel->reinit();
 }
@@ -1412,3 +1419,4 @@ void MainWindow::initGridProperties()
 	ui.actionShow_grid->blockSignals(false);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 }
+
