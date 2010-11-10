@@ -1,0 +1,11 @@
+Task 'JavaClass'
+/@ Produce Java class from repo @/
+
+class @@name@@ {
+#$foreach Method in children of MethodContainer
+	@@MethodVisibility@@ @@MethodReturnType@@ @@MethodName@@( #! task "MethodParameters" !# ) {
+	}
+
+#$foreach Field in children of FieldContainer
+	@@FieldVisibility@@ @@FieldType@@ @@FieldName@@;
+}
