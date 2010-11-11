@@ -88,6 +88,7 @@ namespace qReal {
 		void generateEditor();
 		void generateEditorFromXML();
 		void generateEditorWithQRMC();
+		void generateEditorFromXML(QString fileName);
 
 		void generateToHascol();
 		void parseHascol();

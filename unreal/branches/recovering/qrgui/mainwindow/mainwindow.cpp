@@ -642,7 +642,19 @@ void MainWindow::generateEditor()
 
 void MainWindow::generateEditorFromXML()
 {
-	parseEditorXML();
+	this->generateEditorFromXML(QFileDialog::getOpenFileName(this,
+			tr("Select xml file to parse"), "../qrxml", "XML files (*.xml)"));
+}
+
+void MainWindow::generateEditorFromXML(QString fileName)
+{
+	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
+		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
+		return;
+	}
+	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+	parser.parseFile(fileName);
+	mModel->reinit();
 	generateEditor();
 	mModel->clean();
 }
@@ -830,9 +842,7 @@ void MainWindow::parseEditorXML()
 		return;
 
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
-
 	parser.parseFile(fileName);
-
 	parser.loadIncludeList(fileName);
 
 	mModel->reinit();
