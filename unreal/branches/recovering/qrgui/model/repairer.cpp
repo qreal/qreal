@@ -1,5 +1,7 @@
 #include "repairer.h"
 
+#include <QProgressDialog>
+
 using namespace qReal;
 
 Repairer::Repairer(qrRepo::RepoApi &api, const EditorManager &editorManager)
@@ -12,10 +14,17 @@ Repairer::Repairer(qrRepo::RepoApi &api, const EditorManager &editorManager)
 
 void Repairer::patchSave()
 {
-	qDebug() << "patchSave()";
+	PatchSaveDialog* dialog = new PatchSaveDialog("","",this);
+	dialog->show();
 	//пропатчить редактор с помощью специального лога
 	//просто выполнить последовательно всё, что в логе
 	//следует избегать ситуаций с двумя разными ветками
+}
+
+void Repairer::patchSave(QString savePath, QString patchPath)
+{
+	qDebug() << savePath;
+	qDebug() << patchPath;
 }
 
 void Repairer::repair()
@@ -24,6 +33,16 @@ void Repairer::repair()
 	//предложить Автопочинку/ПропатчитьСейв/ПропатчитьРедактор
 	repairElements(Id::getRootId());
 	qDebug() << "Finished.";
+}
+
+QDialog* Repairer::repairDialog()
+{
+	QDialog* result = new QDialog();
+	result->setFixedSize(360,480);
+	QGridLayout layout;
+	result->setLayout(&layout);
+
+	return result;
 }
 
 void Repairer::repairElements(const Id target)
@@ -85,4 +104,92 @@ Id Repairer::correctId(const Id target)
 		qDebug() << "Repairer::getCorrectId() error | There is no final element in editor (incorrect log?).";
 		return Id();
 	}
+}
+
+
+/**		PatchSaveDialog		**/
+
+
+PatchSaveDialog::PatchSaveDialog(QString savePathStr, QString patchPathStr, qReal::Repairer *repairer)
+{
+	mRepairer = repairer;
+
+	layout = new QGridLayout();
+	savePath = new QLineEdit(savePathStr);
+	patchPath = new QLineEdit(patchPathStr);
+	saveBrowse = new QPushButton("Browse");
+	patchBrowse = new QPushButton("Browse");
+	saveCaption = new QLabel("Path to save: ");
+	patchCaption = new QLabel("Path to patch: ");
+	commonLabel = new QLabel("Choose paths of save and patch.");
+	runButton = new QPushButton("Patch");
+
+	connect(runButton, SIGNAL(clicked()), this, SLOT(run()));
+	connect(this, SIGNAL(finished(int)), this, SLOT(releaseMemory()));
+	connect(patchBrowse, SIGNAL(clicked()), this, SLOT(openPatchFile()));
+	connect(saveBrowse, SIGNAL(clicked()), this, SLOT(openSaveDirectory()));
+
+	layout->addWidget(commonLabel,0,0,1,-1,Qt::AlignLeft);
+	layout->addWidget(saveCaption,1,0);
+	layout->addWidget(savePath,1,1);
+	layout->addWidget(saveBrowse,1,2);
+	layout->addWidget(patchCaption,2,0);
+	layout->addWidget(patchPath,2,1);
+	layout->addWidget(patchBrowse,2,2);
+	layout->addWidget(runButton,3,0,1,-1,Qt::AlignRight);
+
+	setLayout(layout);
+
+	int width = width();
+	setFixedSize(width,heightForWidth(width));
+}
+
+PatchSaveDialog::~PatchSaveDialog()
+{
+	releaseMemory();
+}
+
+bool PatchSaveDialog::checkPaths()
+{
+	return true;
+}
+
+void PatchSaveDialog::run()
+{
+	if (checkPaths()) {
+		mRepairer->patchSave(savePath->text(), patchPath->text());
+		close();
+	}
+}
+
+void PatchSaveDialog::releaseMemory()
+{
+	delete layout;
+	delete commonLabel;
+	delete runButton;
+
+	delete saveCaption;
+	delete savePath;
+	delete saveBrowse;
+
+	delete patchCaption;
+	delete patchPath;
+	delete patchBrowse;
+}
+
+void PatchSaveDialog::openPatchFile() {
+	patchPath->setText(
+		QFileDialog::getOpenFileName(
+			this, tr("Choose patch file"), patchPath->text(), tr("QReal patch files (*.patch)")));
+}
+
+void PatchSaveDialog::openSaveDirectory() {
+	//todo: improve it with QDir, current solution is incorrect
+	QString startPath = savePath->text();
+	if (startPath.length() > 1) {
+		if (!startPath.endsWith("/"))
+			startPath += '/';
+		startPath += '.' + '.';
+	}
+	savePath->setText(QFileDialog::getExistingDirectory(this, tr("Choose save directory"), startPath));
 }
