@@ -19,7 +19,7 @@ QVariant number::property(QString name) {
 	} else if (name.compare("Type") == 0) {
 		return mType;
 	}
-	return NULL;
+	return QVariant();
 }
 
 void number::setProperty(QString name, QVariant value) {

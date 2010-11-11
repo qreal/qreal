@@ -67,10 +67,10 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 
 Id VisualDebugger::findValidLink() {
 	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
+	QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
+	int pos=0;
+	bool condition = mBlockParser->parseCondition(conditionStr, pos);
 	for (int i=0; i<outLinks.count(); i++) {
-		QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
-		int pos=0;
-		bool condition = mBlockParser->parseCondition(conditionStr, &pos);
 		bool type = mModel->api().property(outLinks.at(i), "type").toBool();
 		if (type == condition) {
 			return outLinks.at(i);
@@ -101,7 +101,10 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
 	}
 	mCurrentElem = elem;
 	
+	mEffect = new QGraphicsColorizeEffect();
+	mEffect->setColor(Qt::red);
 	mEffect->setEnabled(true);
+	
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
 	mCurrentId = mModel->idByIndex(mCurrentElem->index());
 	return VisualDebugger::noErrors;
@@ -133,7 +136,7 @@ void VisualDebugger::clearErrorReporter() {
 
 void VisualDebugger::processAction() {
 	int pos = 0;
-	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), &pos);
+	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), pos);
 }
 
 gui::ErrorReporter VisualDebugger::debug() {
@@ -146,15 +149,15 @@ gui::ErrorReporter VisualDebugger::debug() {
 	while (outLinks.count() > 0) {
 		pause(750);
 		
-		if (mCurrentElem->uuid().element().compare("DecisionNode") == 0) {
+		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
 			Id validLinkId = findValidLink();
 			if (validLinkId != validLinkId.getRootId()) {
-				doStep_ex(validLinkId);
+				doStep(validLinkId);
 			} else {
 				return mErrorReporter;
 			}
 		} else {
-			doStep_ex(outLinks.at(0));
+			doStep(outLinks.at(0));
 		}
 		
 		pause(750);
@@ -164,7 +167,7 @@ gui::ErrorReporter VisualDebugger::debug() {
 			return mErrorReporter;
 		}
 		
-		doStep_ex(mModel->api().to(mCurrentId));
+		doStep(mModel->api().to(mCurrentId));
 		
 		outLinks = mModel->api().outgoingLinks(mCurrentId);
 	}
@@ -197,15 +200,15 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 				return mErrorReporter;
 			}
 			
-			if (mCurrentElem->uuid().element().compare("DecisionNode") == 0) {
+			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
 				Id validLinkId = findValidLink();
 				if (validLinkId != validLinkId.getRootId()) {
-					doStep_ex(validLinkId);
+					doStep(validLinkId);
 				} else {
 					return mErrorReporter;
 				}
 			} else {
-				doStep_ex(mModel->api().outgoingLinks(mCurrentId).at(0));
+				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
 			}
 			return mErrorReporter;
 		} else {
@@ -213,7 +216,7 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 				error(VisualDebugger::missingEndOfLinkNode);
 				return mErrorReporter;
 			}
-			doStep_ex(mModel->api().to(mCurrentId));
+			doStep(mModel->api().to(mCurrentId));
 		}
 	}
 	return mErrorReporter;

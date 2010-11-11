@@ -11,9 +11,9 @@ namespace qReal {
 	public:
 		blockParser();
 		~blockParser();
-		number parseExpression(QString stream, int* pos);
-		void parseProcess(QString stream, int* pos);
-		bool parseCondition(QString stream, int* pos);
+		number parseExpression(QString stream, int& pos);
+		void parseProcess(QString stream, int& pos);
+		bool parseCondition(QString stream, int& pos);
 		
 		QMap<QString, number>* getVariables(); //only for test using
 		
@@ -36,20 +36,20 @@ namespace qReal {
 		bool isUseless(QChar c);
 		bool isAssignment(QChar c);
 		
-		bool isHtmlBrTag(QString stream, int* pos);
+		bool isHtmlBrTag(QString stream, int& pos);
 		
-		QString parseIdentifier(QString stream, int* pos);
-		number parseNumber(QString stream, int* pos);
-		void skip(QString stream, int* pos);
+		QString parseIdentifier(QString stream, int& pos);
+		number parseNumber(QString stream, int& pos);
+		void skip(QString stream, int& pos);
 		
-		number parseTerm(QString stream, int* pos);
-		number parseMult(QString stream, int* pos);
+		number parseTerm(QString stream, int& pos);
+		number parseMult(QString stream, int& pos);
 		
-		void parseVarPart(QString stream, int* pos);
-		void parseCommand(QString stream, int* pos);
+		void parseVarPart(QString stream, int& pos);
+		void parseCommand(QString stream, int& pos);
 		
-		bool parseSingleComprasion(QString stream, int* pos);
-		bool parseConjunction(QString stream, int* pos);
-		bool parseDisjunction(QString stream, int* pos);
+		bool parseSingleComprasion(QString stream, int& pos);
+		bool parseConjunction(QString stream, int& pos);
+		bool parseDisjunction(QString stream, int& pos);
 	};
 }
