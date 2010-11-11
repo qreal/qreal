@@ -83,11 +83,12 @@ namespace qReal {
 		void closeTab(int index);
 		void closeTab(QModelIndex const &index);
 		void exterminate();
+
+		void parseEditorXML();
 		void generateEditor();
 		void generateEditorFromXML();
 		void generateEditorWithQRMC();
 
-		void parseEditorXml();
 		void generateToHascol();
 		void parseHascol();
 		void showPreferencesDialog();

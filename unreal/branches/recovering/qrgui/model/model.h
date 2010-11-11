@@ -55,8 +55,9 @@ namespace qReal {
 			Id getRootDiagram();
 			void setRootIndex(QModelIndex const & index);
 
-			void open(QString const &workingDirectory);
+			void clean();
 			void reinit();
+			void open(QString const &workingDirectory);
 			void saveTo(QString const &workingDirectory);
 
 			void removeByIndex(QModelIndex const &index);
@@ -111,7 +112,6 @@ namespace qReal {
 			details::ModelTreeItem* isSituatedOn(details::ModelTreeItem *element) const;
 
 			void init();
-			void clean();
 			void cleanupTree(details::ModelTreeItem *root);
 			void checkProperties(Id const &id);
 

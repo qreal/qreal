@@ -109,8 +109,8 @@ MainWindow::MainWindow()
 
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
-	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorFromXML()));
-	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
+	connect(ui.actionGenerate_Editor_from_xml, SIGNAL(triggered()), this, SLOT(generateEditorFromXML()));
+	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXML()));
 	connect(ui.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
 	connect(ui.actionParse_Hascol_sources, SIGNAL(triggered()), this, SLOT(parseHascol()));
@@ -642,7 +642,9 @@ void MainWindow::generateEditor()
 
 void MainWindow::generateEditorFromXML()
 {
-
+	parseEditorXML();
+	generateEditor();
+	mModel->clean();
 }
 
 void MainWindow::generateEditorWithQRMC()
@@ -807,7 +809,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 
 }
 
-void MainWindow::parseEditorXml()
+void MainWindow::parseEditorXML()
 {
 	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
