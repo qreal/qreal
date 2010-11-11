@@ -9,7 +9,6 @@ Repairer::Repairer(qrRepo::RepoApi &api, const EditorManager &editorManager)
 	mApi(api),
 	mEditorManager(editorManager)
 {
-
 }
 
 void Repairer::patchSave()
@@ -23,8 +22,7 @@ void Repairer::patchSave()
 
 void Repairer::patchSave(QString savePath, QString patchPath)
 {
-	qDebug() << savePath;
-	qDebug() << patchPath;
+	//todo:
 }
 
 void Repairer::repair()
@@ -117,12 +115,17 @@ PatchSaveDialog::PatchSaveDialog(QString savePathStr, QString patchPathStr, qRea
 	layout = new QGridLayout();
 	savePath = new QLineEdit(savePathStr);
 	patchPath = new QLineEdit(patchPathStr);
+	saveError = new QLabel();
+	patchError = new QLabel();
 	saveBrowse = new QPushButton("Browse");
 	patchBrowse = new QPushButton("Browse");
 	saveCaption = new QLabel("Path to save: ");
 	patchCaption = new QLabel("Path to patch: ");
 	commonLabel = new QLabel("Choose paths of save and patch.");
 	runButton = new QPushButton("Patch");
+
+	saveError->setStyleSheet("QLabel {color : red; }");
+	patchError->setStyleSheet("QLabel {color : red; }");
 
 	connect(runButton, SIGNAL(clicked()), this, SLOT(run()));
 	connect(this, SIGNAL(finished(int)), this, SLOT(releaseMemory()));
@@ -133,14 +136,14 @@ PatchSaveDialog::PatchSaveDialog(QString savePathStr, QString patchPathStr, qRea
 	layout->addWidget(saveCaption,1,0);
 	layout->addWidget(savePath,1,1);
 	layout->addWidget(saveBrowse,1,2);
-	layout->addWidget(patchCaption,2,0);
-	layout->addWidget(patchPath,2,1);
-	layout->addWidget(patchBrowse,2,2);
-	layout->addWidget(runButton,3,0,1,-1,Qt::AlignRight);
+	layout->addWidget(patchCaption,3,0);
+	layout->addWidget(patchPath,3,1);
+	layout->addWidget(patchBrowse,3,2);
+	layout->addWidget(runButton,5,0,1,-1,Qt::AlignRight);
 
 	setLayout(layout);
 
-	int width = width();
+	int width = this->width();
 	setFixedSize(width,heightForWidth(width));
 }
 
@@ -151,7 +154,20 @@ PatchSaveDialog::~PatchSaveDialog()
 
 bool PatchSaveDialog::checkPaths()
 {
-	return true;
+	//todo:
+	layout->removeWidget(saveError);
+	layout->removeWidget(patchError);
+	if (false)
+		return true;
+	if (true) {
+		saveError->setText(tr("Path is incorrect."));
+		layout->addWidget(saveError,2,1,1,-1,Qt::AlignLeft);
+	}
+	if (true) {
+		patchError->setText(tr("Path is incorrect."));
+		layout->addWidget(patchError,4,1,1,-1,Qt::AlignLeft);
+	}
+	return false;
 }
 
 void PatchSaveDialog::run()

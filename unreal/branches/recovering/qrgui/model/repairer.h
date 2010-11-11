@@ -55,10 +55,12 @@ class PatchSaveDialog : public QDialog {
 		QLabel* commonLabel;
 		QPushButton* runButton;
 
+		QLabel* saveError;
 		QLabel* saveCaption;
 		QLineEdit* savePath;
 		QPushButton* saveBrowse;
 
+		QLabel* patchError;
 		QLabel* patchCaption;
 		QLineEdit* patchPath;
 		QPushButton* patchBrowse;
