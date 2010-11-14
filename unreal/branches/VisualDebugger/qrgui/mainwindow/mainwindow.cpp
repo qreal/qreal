@@ -208,8 +208,7 @@ MainWindow::MainWindow()
 
 	initGridProperties();
 
-	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
-	mVisualDebugger = new VisualDebugger(editor, mModel);
+	mVisualDebugger = new VisualDebugger(mModel);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -1422,6 +1421,8 @@ void MainWindow::initGridProperties()
 void MainWindow::debug()
 {
 	ui.ErrorListWidget->clear();
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
 	gui::ErrorReporter const errorReporter = mVisualDebugger->debug();
 	errorReporter.showErrors("Debug finished successfully", ui.ErrorListWidget);
 	mVisualDebugger->clearErrorReporter();
@@ -1430,6 +1431,8 @@ void MainWindow::debug()
 void MainWindow::debugSingleStep()
 {
 	ui.ErrorListWidget->clear();
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
 	gui::ErrorReporter const errorReporter = mVisualDebugger->debugSingleStep();
 	errorReporter.showErrors("Debug (single step) finished successfully", ui.ErrorListWidget);
 	mVisualDebugger->clearErrorReporter();

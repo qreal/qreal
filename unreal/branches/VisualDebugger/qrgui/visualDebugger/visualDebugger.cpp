@@ -12,18 +12,39 @@
 
 using namespace qReal;
 
-VisualDebugger::VisualDebugger(EditorView *editor, model::Model *model) {
-	mEditor = editor;
+VisualDebugger::VisualDebugger(model::Model *model) {
 	mModel = model;
 	mEffect = new QGraphicsColorizeEffect();
 	mEffect->setColor(Qt::red);
 	mCurrentElem = NULL;
 	mCurrentId = mCurrentId.getRootId();
 	mBlockParser = new blockParser();
+	mError = VisualDebugger::noErrors;
 }
 
 VisualDebugger::~VisualDebugger() {
 	
+}
+
+void VisualDebugger::setEditor(EditorView *editor) {
+	if (NULL == mEditor || mCurrentId == mCurrentId.getRootId() || mEditor == editor) {
+		mEditor = editor;
+	} else {
+		mError = VisualDebugger::someDiagramIsRunning;
+	}
+}
+
+VisualDebugger::ErrorType VisualDebugger::checkEditor() {
+	if (mError != VisualDebugger::noErrors) {
+		error(VisualDebugger::someDiagramIsRunning);
+		return VisualDebugger::someDiagramIsRunning;
+	}
+	QString editorName = mEditor->mvIface()->scene()->rootItem().data().toString();
+	if (editorName.compare("(Block Diagram)") != 0) {
+		error(VisualDebugger::wrongEditor);
+		return VisualDebugger::wrongEditor;
+	}
+	return VisualDebugger::noErrors;
 }
 
 void VisualDebugger::error(ErrorType e) {
@@ -41,6 +62,14 @@ void VisualDebugger::error(ErrorType e) {
 		break;
 	case missingValidLink:
 		mErrorReporter.addCritical("The condition doesn't have valid link", mCurrentId);
+		break;
+	case someDiagramIsRunning:
+		mErrorReporter.addCritical("Some diagram is already under debug");
+		mError = VisualDebugger::noErrors;
+		return;
+		break;
+	case wrongEditor:
+		mErrorReporter.addCritical("This is not Block Diagram editor");
 		break;
 	case noErrors:
 		break;
@@ -128,6 +157,8 @@ void VisualDebugger::deinitialize() {
 	mEffect->setEnabled(false);
 	mCurrentId = mCurrentId.getRootId();
 	mCurrentElem = NULL;
+	mEditor = NULL;
+	mError = VisualDebugger::noErrors;
 }
 
 void VisualDebugger::clearErrorReporter() {
@@ -140,6 +171,10 @@ void VisualDebugger::processAction() {
 }
 
 gui::ErrorReporter VisualDebugger::debug() {
+	if (VisualDebugger::noErrors != checkEditor()) {
+		return mErrorReporter;
+	}
+
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return mErrorReporter;
 	}
@@ -184,6 +219,10 @@ gui::ErrorReporter VisualDebugger::debug() {
 }
 
 gui::ErrorReporter VisualDebugger::debugSingleStep() {
+	if (VisualDebugger::noErrors != checkEditor()) {
+		return mErrorReporter;
+	}
+
 	if (mCurrentElem == NULL && mCurrentId == mCurrentId.getRootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 			return mErrorReporter;

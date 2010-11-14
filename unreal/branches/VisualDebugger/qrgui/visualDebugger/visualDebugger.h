@@ -15,9 +15,10 @@ namespace qReal {
 		Q_OBJECT
 		
 	public:
-		VisualDebugger(EditorView *editor, model::Model *model);
+		VisualDebugger(model::Model *model);
 		~VisualDebugger();
 		void clearErrorReporter();
+		void setEditor(EditorView *editor);
 	public slots:
 		gui::ErrorReporter debug();
 		gui::ErrorReporter debugSingleStep();
@@ -27,18 +28,22 @@ namespace qReal {
 			missingEndOfLinkNode,
 			endWithNotEndNode,
 			missingValidLink,
+			wrongEditor,
+			someDiagramIsRunning,
 			noErrors
 		};
 	private:
 		EditorView *mEditor;
 		model::Model *mModel;
 		UML::Element *mCurrentElem;
+		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
 		gui::ErrorReporter mErrorReporter;
 		blockParser *mBlockParser;
 		
 		void error(ErrorType e);
+		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);
 		Id findValidLink();
 		void pause(int time);
