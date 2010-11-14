@@ -6,7 +6,7 @@
 class JavaClassGenerator {
 	public:
 		JavaClassGenerator(const QString& repoDirectory);
-		bool generateClass(const qReal::Id& classElemId /*QString pathWhereMustBeCreatedFile*/);
+		bool generateClass(const qReal::Id& classElemId /*, QString pathWhereMustBeCreatedFile*/);
 		bool generateAllRepoClasses();
 
 	private:
