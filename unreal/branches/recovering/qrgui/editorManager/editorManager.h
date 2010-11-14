@@ -18,6 +18,9 @@ namespace qrRepo {
 }
 
 namespace qReal {
+
+	class MainWindow;
+
 	class EditorManager : public QObject
 	{
 		Q_OBJECT
@@ -57,9 +60,14 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<Listener *> listeners() const;
 
-				EditorInterface* getEditorInterface(QString editor) const;
+		MainWindow* getMainWindow() const;
+		void setMainWindow(MainWindow* mainWindow);
+
+		EditorInterface* getEditorInterface(QString editor) const;
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
+
+		MainWindow* mMainWindow;
 
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

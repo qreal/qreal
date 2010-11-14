@@ -92,6 +92,7 @@ namespace qReal {
 		private:
 			qrRepo::RepoApi mApi;
 			details::ModelTreeItem *mRootItem;
+			MainWindow* mMainWindow;
 			EditorManager const &mEditorManager;
 			ModelAssistApi mAssistApi;
 			QModelIndex mRootIndex;

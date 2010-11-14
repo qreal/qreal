@@ -314,3 +314,13 @@ EditorInterface* EditorManager::getEditorInterface(QString editor) const
 {
 	return mPluginIface[editor];
 }
+
+MainWindow* EditorManager::getMainWindow() const
+{
+	return mMainWindow;
+}
+
+void EditorManager::setMainWindow(MainWindow *mainWindow)
+{
+	mMainWindow = mainWindow;
+}

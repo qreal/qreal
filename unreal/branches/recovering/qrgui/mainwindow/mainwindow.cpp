@@ -52,6 +52,7 @@ using namespace qReal;
 MainWindow::MainWindow()
 	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
+	mEditorManager.setMainWindow(this);
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
@@ -642,7 +643,7 @@ void MainWindow::generateEditor()
 
 void MainWindow::generateEditorFromXML()
 {
-	this->generateEditorFromXML(QFileDialog::getOpenFileName(this,
+	generateEditorFromXML(QFileDialog::getOpenFileName(this,
 			tr("Select xml file to parse"), "../qrxml", "XML files (*.xml)"));
 }
 

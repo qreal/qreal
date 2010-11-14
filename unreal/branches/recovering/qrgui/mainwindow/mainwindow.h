@@ -77,6 +77,8 @@ namespace qReal {
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
 
+		void generateEditorFromXML(QString fileName);
+
 	private slots:
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
@@ -88,7 +90,6 @@ namespace qReal {
 		void generateEditor();
 		void generateEditorFromXML();
 		void generateEditorWithQRMC();
-		void generateEditorFromXML(QString fileName);
 
 		void generateToHascol();
 		void parseHascol();
