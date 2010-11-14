@@ -204,6 +204,11 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 	return result;
 }
 
+void NodeElement::showAlignment(bool isChecked)
+{
+	mGrid->setShowAlignmentMode(isChecked);
+}
+
 void NodeElement::switchAlignment(bool isSwitchedOn)
 {
 	mGrid->setAlignmentMode(isSwitchedOn);
@@ -212,6 +217,7 @@ void NodeElement::switchAlignment(bool isSwitchedOn)
 void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
+	mSwitchGridAction.setChecked(isChecked);
 }
 
 void NodeElement::delUnusedLines()

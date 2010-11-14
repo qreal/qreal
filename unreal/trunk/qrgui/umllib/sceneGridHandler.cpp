@@ -2,11 +2,17 @@
 #include "uml_nodeelement.h"
 #include "../view/editorviewscene.h"
 
+#include <QtCore/QSettings>
+
 using namespace UML;
 
-SceneGridHandler::SceneGridHandler(NodeElement *node) : mNode(node), mSwitchGrid(false), mSwitchAlignment(true)
+SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
-//	mNode->scene() = mNode->scene();
+	QSettings settings("SPbSU", "QReal");
+	mNode = node;
+	mShowAlignment = settings.value("ShowAlignment", true).toBool();
+	mSwitchGrid = settings.value("ActivateGrid", false).toBool();
+	mSwitchAlignment = settings.value("ActivateAlignment", true).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()
@@ -89,7 +95,8 @@ void SceneGridHandler::buildLineX(qreal deltaX, qreal radius, bool doAlways,
 	qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY)
 {
 	if (deltaX <= radius || doAlways) {
-		drawLineX(pointX, myY);
+		if (mShowAlignment)
+			drawLineX(pointX, myY);
 		if (makeJumpX(deltaX, radiusJump, pointX - correctionX)) {
 			myX1 = recalculateX1();
 			myX2 = recalculateX2(myX1);
@@ -102,7 +109,8 @@ void SceneGridHandler::buildLineY(qreal deltaY, qreal radius, bool doAlways,
 	qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX)
 {
 	if (deltaY <= radius || doAlways) {
-		drawLineY(pointY, myX);
+		if (mShowAlignment)
+			drawLineY(pointY, myX);
 		if (makeJumpY(deltaY, radiusJump, pointY - correctionY)) {
 			myY1 = recalculateY1();
 			myY2 = recalculateY2(myY1);
@@ -162,6 +170,11 @@ void SceneGridHandler::makeGridMovingY(qreal myY, int koef, int indexGrid)
 	}
 }
 
+void SceneGridHandler::setShowAlignmentMode(bool mode)
+{
+	mShowAlignment = mode;
+}
+
 void SceneGridHandler::setGridMode(bool mode)
 {
 	mSwitchGrid = mode;
@@ -197,8 +210,8 @@ void SceneGridHandler::mouseMoveEvent()
 		qreal radiusJump = 10;
 
 		QList<QGraphicsItem *> list = mNode->scene()->items(mNode->scenePos().x() - widthLineX / 2
-				, mNode->scenePos().y() - widthLineY / 2, widthLineX, widthLineY
-				, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
+								, mNode->scenePos().y() - widthLineY / 2, widthLineX, widthLineY
+								, Qt::IntersectsItemBoundingRect, Qt::AscendingOrder);
 		delUnusedLines();
 		foreach (QGraphicsItem *graphicsItem, list) {
 			NodeElement* item = dynamic_cast<NodeElement*>(graphicsItem);
@@ -218,21 +231,21 @@ void SceneGridHandler::mouseMoveEvent()
 				if (deltaY1 <= radius || deltaY2 <= radius) {
 					buildLineY(deltaY1, radius, true, radiusJump, pointY1, 0, myY1, myY2, myX1);
 					buildLineY(deltaY2, radius, true, radiusJump, pointY2,
-							mNode->boundingRect().height(), myY1, myY2, myX1);
+						mNode->boundingRect().height(), myY1, myY2, myX1);
 				}
 				if (deltaX1 <= radius || deltaX2 <= radius) {
 					buildLineX(deltaX1, radius, true, radiusJump, pointX1, 0, myX1, myX2, myY1);
 					buildLineX(deltaX2, radius, true, radiusJump, pointX2,
-							mNode->boundingRect().width(), myX1, myX2, myY1);
+						mNode->boundingRect().width(), myX1, myX2, myY1);
 				}
 				buildLineY(qAbs(pointY1 - myY2), radius, false, radiusJump, pointY1,
-						mNode->boundingRect().height(), myY1, myY2, myX1);
+					mNode->boundingRect().height(), myY1, myY2, myX1);
 				buildLineX(qAbs(pointX1 - myX2), radius, false, radiusJump, pointX1,
-						mNode->boundingRect().width(), myX1, myX2, myY1);
+					mNode->boundingRect().width(), myX1, myX2, myY1);
 				buildLineY(qAbs(pointY2 - myY1), radius, false, radiusJump, pointY2,
-						0, myY1, myY2, myX1);
+					0, myY1, myY2, myX1);
 				buildLineX(qAbs(pointX2 - myX1), radius, false, radiusJump, pointX2,
-						0, myX1, myX2, myY1);
+					0, myX1, myX2, myY1);
 			}
 		}
 	}

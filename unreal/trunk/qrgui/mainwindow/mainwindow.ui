@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -78,6 +78,7 @@
     <addaction name="actionPreferences"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
+    <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
    </widget>
@@ -636,6 +637,17 @@
    </property>
    <property name="text">
     <string>Switch on alignment</string>
+   </property>
+  </action>
+  <action name="actionShow_alignment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show alignment</string>
    </property>
   </action>
  </widget>

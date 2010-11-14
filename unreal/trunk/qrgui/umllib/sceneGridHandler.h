@@ -15,6 +15,7 @@ namespace UML {
 
 		void setGridMode(bool mode);
 		void setAlignmentMode(bool mode);
+		void setShowAlignmentMode(bool mode);
 
 		void mouseMoveEvent();
 
@@ -42,9 +43,9 @@ namespace UML {
 		NodeElement *mNode;
 		QGraphicsScene *mScene;
 
+		bool mShowAlignment;
 		bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
 		bool mSwitchAlignment;
-
 	};
 }
 

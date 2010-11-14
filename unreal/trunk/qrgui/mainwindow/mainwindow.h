@@ -63,7 +63,7 @@ namespace qReal {
 
 		void print();
 		void makeSvg();
-		void showGrid(bool show);
+		void showGrid(bool isChecked);
 
 		void finalClose();
 
@@ -104,6 +104,7 @@ namespace qReal {
 		void initCurrentTab(const QModelIndex &rootIndex);
 
 		void showGestures();
+		void showAlignment(bool isChecked);
 		void switchGrid(bool isChecked);
 		void switchAlignment(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
@@ -149,10 +150,14 @@ namespace qReal {
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
 
+		void setShowGrid(bool isChecked);
+		void setShowAlignment(bool isChecked);
+		void setSwitchGrid(bool isChecked);
+		void setSwitchAlignment(bool isChecked);
+
 		QVector<bool> mSaveListChecked;
 		bool mDiagramCreateFlag;
 
 		QStringList mDiagramsList;
-
 	};
 }

@@ -83,6 +83,10 @@ MainWindow::MainWindow()
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
 	progress->setValue(20);
+	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
+	ui.actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	ui.actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
 
 	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -115,6 +119,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(ui.actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
+	connect(ui.actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	connect(ui.actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 	connect(ui.actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
 
@@ -887,7 +892,7 @@ void MainWindow::parseHascol()
 
 void MainWindow::showPreferencesDialog()
 {
-	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
+	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionShow_alignment, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
 	preferencesDialog.exec();
 }
 
@@ -1092,44 +1097,84 @@ ListenerManager *MainWindow::listenerManager()
 	return mListenerManager;
 }
 
-void MainWindow::showGrid(bool show)
+void MainWindow::showGrid(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", show);
+	settings.setValue("ShowGrid", isChecked);
+	setShowGrid(isChecked);
+}
 
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL)
-		tmpView->setDrawSceneGrid(show);
+void MainWindow::showAlignment(bool isChecked)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ShowAlignment", isChecked);
+	setShowAlignment(isChecked);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ActivateGrid", isChecked);
-
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL) {
-		QList<QGraphicsItem *> list = tmpView->scene()->items();
-		foreach (QGraphicsItem *item, list) {
-			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-			if (nodeItem != NULL)
-				nodeItem->switchGrid(isChecked);
-		}
-	}
+	setSwitchGrid(isChecked);
 }
 
 void MainWindow::switchAlignment(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ActivateAlignment", isChecked);
+	setSwitchAlignment(isChecked);
+}
 
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL) {
-		QList<QGraphicsItem *> list = tmpView->scene()->items();
-		foreach (QGraphicsItem *item, list) {
-			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-			if (nodeItem != NULL)
-				nodeItem->switchAlignment(isChecked);
+void MainWindow::setShowGrid(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL)
+			tab->setDrawSceneGrid(isChecked);
+	}
+}
+
+void MainWindow::setShowAlignment(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->showAlignment(isChecked);
+			}
+		}
+	}
+}
+
+void MainWindow::setSwitchGrid(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->switchGrid(isChecked);
+			}
+		}
+	}
+}
+
+void MainWindow::setSwitchAlignment(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->switchAlignment(isChecked);
+			}
 		}
 	}
 }

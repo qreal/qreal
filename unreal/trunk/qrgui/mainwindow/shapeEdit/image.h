@@ -14,5 +14,6 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 private:
 	QGraphicsPixmapItem* mPixmapItem;
+	QImage mImage;
 	QString mFileName;
 };
