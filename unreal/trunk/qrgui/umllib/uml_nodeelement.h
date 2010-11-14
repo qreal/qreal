@@ -87,6 +87,7 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
+		void arrangeLinks();
 
 	public slots:
 		void switchGrid(bool isChecked);

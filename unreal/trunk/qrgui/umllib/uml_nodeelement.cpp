@@ -102,6 +102,18 @@ void NodeElement::adjustLinks()
 	}
 }
 
+void NodeElement::arrangeLinks()
+{
+	int N = mEdgeList.size();
+	int i = 0;
+	const qreal ampl = 0.5;
+
+	foreach(EdgeElement* edge, mEdgeList) {
+		qreal delta = ampl * (i++ - N / 2.0) / N;
+		edge->reconnectToNearestPorts(delta);
+	}
+}
+
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
@@ -329,9 +341,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (isPort())
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
-	foreach(EdgeElement* edge, mEdgeList) {
-		edge->reconnectToNearestPorts();
-	}
+	arrangeLinks();
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

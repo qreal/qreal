@@ -508,17 +508,25 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 }
 
-void EdgeElement::reconnectToNearestPorts()
+void EdgeElement::reconnectToNearestPorts(qreal delta)
 {
+	qDebug() << "Delta: " << delta;
+	const qreal factor = 2.0;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		mPortFrom = newFrom;
+		while (floor(mPortFrom + delta) != floor(mPortFrom))
+			delta /= factor;
+		mPortFrom += delta;
 		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
 	if (mDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		mPortTo = newTo;
+		while (floor(mPortTo + delta) != floor(mPortTo))
+			delta /= factor;
+		mPortTo += delta;
 		model->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
 }
