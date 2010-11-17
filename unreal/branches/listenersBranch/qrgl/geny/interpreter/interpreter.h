@@ -14,6 +14,9 @@ namespace Geny {
 			//Является ли строка управляющей в языке Geny
 			//т.е. начинается ли на #!
 			bool isControlString(QString);
+
+			QString nonControlStringParse(QString);
+			QString controlStringParse(QString);
 	
 			QFile taskFile;
 			QTextStream* inStream;
