@@ -1173,8 +1173,9 @@ IGesturesPainter * MainWindow::gesturesPainter()
 
 void MainWindow::suggestToCreateDiagram()
 {
-	if (getCurrentTab())
+	if (!mModel->isEmpty())
 		return;
+
 	QDialog dialog;
 	QVBoxLayout vLayout;
 	QHBoxLayout hLayout;

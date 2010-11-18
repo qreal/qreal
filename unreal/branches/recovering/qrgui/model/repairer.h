@@ -23,18 +23,20 @@ namespace qReal {
 		Q_OBJECT
 		public:
 			Repairer(qrRepo::RepoApi &api, EditorManager const &editorManager);
-			bool process(Id const target);
+
+			bool isBusy();
+			bool checkIds(Id const target);
 			void repairElements(Id const target);
 
 			MainWindow* getMainWindow() const;
+
 		public slots:
 			void repair();
 			void patchSave();
 			void patchSave(QString savePath, QString patchPath);
 
 		private:
-
-			/** Working **/
+			bool inProgress;
 
 			qrRepo::RepoApi &mApi;
 			const EditorManager &mEditorManager;
@@ -45,15 +47,15 @@ namespace qReal {
 
 			void readLog(QString const diagram);
 
-			/** Graphics **/
-
 			RepairerDialog* mRepairerDialog;
 			PatchSaveDialog* mPatchSaveDialog;
 
 		private slots:
-
 			void releaseRepairerDialog();
 			void releasePatchSaveDialog();
+
+		signals:
+			void workFinished();
 	};
 }
 

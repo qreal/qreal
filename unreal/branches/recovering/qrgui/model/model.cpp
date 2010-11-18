@@ -1,8 +1,10 @@
 #include "model.h"
+
 #include <QtGui/QIcon>
 #include <QtGui/QPolygon>
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
+#include <QMessageBox>
 
 using namespace qReal;
 using namespace model;
@@ -53,8 +55,9 @@ void Model::init()
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
 	blockSignals(true);
 
-	if (!mRepairer->process(mRootItem->id())) {
-		reinit();
+	if (!mRepairer->checkIds(mRootItem->id())) {
+		connect(mRepairer, SIGNAL(workFinished()), this, SLOT(repairerFinished()));
+		mRepairer->repair();
 		return;
 	}
 
@@ -62,6 +65,16 @@ void Model::init()
 	blockSignals(false);
 	mApi.resetChangedDiagrams();
 	mLogger->enable();
+}
+
+void Model::repairerFinished()
+{
+	if (!mRepairer->checkIds(mRootItem->id())) {
+		QMessageBox::warning(0,
+			tr("Autorepairing."),tr("Autorepairing failed."));
+		return;
+	}
+	reinit();
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const
@@ -673,6 +686,11 @@ Id Model::getRootDiagram()
 void Model::setRootIndex(const QModelIndex &index)
 {
 	mRootIndex = index;
+}
+
+bool Model::isEmpty()
+{
+	return ((mRootItem->children().isEmpty()) && (!mRepairer->isBusy()));
 }
 
 bool Model::isChanged()
