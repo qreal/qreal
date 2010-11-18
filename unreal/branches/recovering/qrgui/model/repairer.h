@@ -1,19 +1,11 @@
 #pragma once
 
-#include <QLabel>
-#include <QDialog>
-#include <QCheckBox>
-#include <QLineEdit>
-#include <QGridLayout>
-#include <QFileDialog>
-#include <QPushButton>
-
-//todo: вынести в отдельные файлы графические классы
-
 #include "message.h"
-#include "../../qrrepo/repoApi.h"
+#include "repairerDialogs.h"
+
 #include "classes/modelTreeItem.h"
 #include "../editorManager/editorManager.h"
+#include "../../qrrepo/repoApi.h"
 
 class RepairerDialog;
 class PatchSaveDialog;
@@ -58,82 +50,3 @@ namespace qReal {
 			void workFinished();
 	};
 }
-
-class RepairerDialog : public QDialog {
-	Q_OBJECT
-	public:
-		RepairerDialog(qReal::Repairer* repairer);
-		~RepairerDialog();
-
-	private:
-		qReal::Repairer* mRepairer;
-
-		QGridLayout *layout;
-		QLabel* mCommonText;
-		QPushButton* mRunButton;
-
-		QLabel* mAutorepairText;
-
-		QLabel* mPatchSaveCaption;
-		QLabel* mAutorepairCaption;
-		QLabel* mGenerateEditorCaption;
-
-		QWidget* mAutorepairDialog;
-		QWidget* mGenerateEditorDialog;
-		PatchSaveDialog* mPatchSaveDialog;
-
-		QCheckBox* mPatchSaveSwitcher;
-		QCheckBox* mAutorepairSwitcher;
-		QCheckBox* mGenerateEditorSwitcher;
-
-		QLabel* mGenerateEditorText;
-		QLineEdit* mGenerateEditorPath;
-		QLabel* mGenerateEditorPathCaption;
-		QLabel* mGenerateEditorPathError;
-		QPushButton* mGenerateEditorPathBrowse;
-
-		QGridLayout* mAutorepairLayout;
-		QGridLayout* mGenerateEditorLayout;
-
-	private slots:
-		void run();
-		void openEditorXML();
-		bool checkEditorPath();
-};
-
-class PatchSaveDialog : public QWidget {
-	Q_OBJECT
-	public:
-		PatchSaveDialog(QString savePath, QString patchPath, qReal::Repairer* repairer);
-		~PatchSaveDialog();
-
-		QPushButton* getRunButton() const;
-
-	public slots:
-		void run();
-
-	private:
-		qReal::Repairer* mRepairer;
-
-		QGridLayout *layout;
-		QLabel* commonLabel;
-		QPushButton* runButton;
-
-		QLabel* saveError;
-		QLabel* saveCaption;
-		QLineEdit* savePath;
-		QPushButton* saveBrowse;
-
-		QLabel* patchError;
-		QLabel* patchCaption;
-		QLineEdit* patchPath;
-		QPushButton* patchBrowse;
-
-	private slots:
-		bool checkSavePath();
-		bool checkPatchPath();
-
-		void releaseMemory();
-		void openPatchFile();
-		void openSaveDirectory();
-};
