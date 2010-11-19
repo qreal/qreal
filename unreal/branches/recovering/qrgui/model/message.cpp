@@ -41,20 +41,28 @@ QVariant Message::newValue() const
 
 QLinkedList<Message> Message::parseLog(QString path)
 {
-	QDir dir(path);
-	QStringList files = dir.entryList(QStringList(QString("*.log")));
-	if (files.length() != 1) {
-		if (files.length() < 1)
-			qDebug() << "Message::parseLog() error | No files in log directory.";
-		else
-			qDebug() << "Message::parseLog() error | Too many files in log directory.";
-		return QLinkedList<Message>();
-	}
+	QFileInfo fi(path);
+	QFile* file;
+	if (fi.isDir()) {
+		QDir dir(path);
+		QStringList files = dir.entryList(QStringList(QString("*.log")));
+		if (files.length() != 1) {
+			if (files.length() < 1)
+				qDebug() << "Message::parseLog() error | No files in log directory.";
+			else
+				qDebug() << "Message::parseLog() error | Too many files in log directory.";
+			return QLinkedList<Message>();
+		}
+		file = new QFile(path + files.first());
 
-	QFile file(path + files.first());
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	} else if (fi.isFile())
+		file = new QFile(path);
+	else
+		return QLinkedList<Message>();
+
+	if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
 		qDebug() << "Message::parseLog() error | Cannot open the file.";
-	QTextStream stream(&file);
+	QTextStream stream(file);
 
 	QLinkedList<Message> log;
 	while (!stream.atEnd()) {
@@ -112,6 +120,7 @@ QLinkedList<Message> Message::parseLog(QString path)
 							details, parseQVariant(prevValue) , parseQVariant(newValue)));
 	}
 
+	delete file;
 	return log;
 }
 

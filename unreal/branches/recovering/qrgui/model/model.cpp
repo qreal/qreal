@@ -19,6 +19,7 @@ Model::Model(EditorManager const &editorManager, QString const &workingDir)
 	mLogger = new Logger(mutableApi().getWorkingDir());
 	mRepairer = new Repairer(mApi, editorManager);
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
+	connect(mRepairer, SIGNAL(workFinished()), this, SLOT(repairerFinished()));
 	init();
 }
 
@@ -56,7 +57,6 @@ void Model::init()
 	blockSignals(true);
 
 	if (!mRepairer->checkIds(mRootItem->id())) {
-		connect(mRepairer, SIGNAL(workFinished()), this, SLOT(repairerFinished()));
 		mRepairer->repair();
 		return;
 	}
@@ -71,10 +71,18 @@ void Model::repairerFinished()
 {
 	if (!mRepairer->checkIds(mRootItem->id())) {
 		QMessageBox::warning(0,
-			tr("Autorepairing."),tr("Autorepairing failed."));
+			tr("Repairing."), tr("Repairing failed."));
 		return;
 	}
-	reinit();
+	int res = QMessageBox::question(0, tr("Repairing."), tr("Open repaired diagram or save?"),
+					QMessageBox::Save, QMessageBox::Open, QMessageBox::Cancel);
+	if (res == QMessageBox::Open)
+		reinit();
+	else if (res == QMessageBox::Save) {
+		reinit();
+		save();
+		clean();	//improve it
+	}
 }
 
 Qt::ItemFlags Model::flags(QModelIndex const &index) const

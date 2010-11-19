@@ -381,7 +381,6 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 void MainWindow::open()
 {
 	QString const dirName = getWorkingDir(tr("Select directory with a save to open"));
-
 	if (dirName.isEmpty())
 		return;
 

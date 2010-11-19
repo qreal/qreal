@@ -51,6 +51,7 @@ namespace qReal {
 		void checkoutDialogOk();
 		void checkoutDialogCancel();
 		void open();
+
 		void save();
 		void saveAs();
 		void saveAll();

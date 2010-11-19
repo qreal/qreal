@@ -32,10 +32,9 @@ namespace qReal {
 
 			qrRepo::RepoApi &mApi;
 			const EditorManager &mEditorManager;
-			QMultiHash<QString, QLinkedList<Message> > mLogs;
 
 			Id correctId(Id const target);
-			bool isCorrect(Id const target) const;
+			bool checkId(Id const target) const;
 
 			void readLog(QString const diagram);
 
