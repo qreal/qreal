@@ -157,7 +157,7 @@ QModelIndex AbstractModel::parent(const QModelIndex &index) const
 		return QModelIndex();
 }
 
-void AbstractModel::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
+/*void AbstractModel::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -181,7 +181,7 @@ void AbstractModel::addElementToModel(Id const &parent, Id const &id, QString co
 	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 	mModelItems.insert(id, newItem);
 	endInsertRows();
-}
+}*/
 
 QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
 {
@@ -233,7 +233,7 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		stream >> name;
 		stream >> position;
 
-		Id logicalId = Id();
+		Id logicalId = Id::rootId();
 		Id id = Id::loadFromString(idString);
 		if (mApi.exist(id)) {
 			logicalId = id;
@@ -246,7 +246,7 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 			// одной и той же сущности, бросать существующие элементы нельзя.
 			return false;
 
-		addElementToModel(parentItem->id(), id, name, position);
+		addElementToModel(parentItem->id(), id, logicalId, name, position);
 		return true;
 	}
 }

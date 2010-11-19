@@ -31,7 +31,7 @@ namespace qReal {
 				virtual Qt::DropActions supportedDropActions() const;
 				virtual QStringList mimeTypes() const;
 
-				void addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position);
+				virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
 				QPersistentModelIndex rootIndex() const;
 
 			protected:

@@ -220,7 +220,7 @@ MainWindow::MainWindow()
 
 	initGridProperties();
 
-	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo")
+	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo"), Id::rootId()
 			, "ololo", QPointF(0, 0));
 }
 

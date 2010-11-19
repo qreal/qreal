@@ -22,6 +22,7 @@ namespace qReal {
 
 			void connectToLogicalModel(LogicalModel * const logicalModel);
 			void updateElements(Id const &logicalId, QString const &name);
+			void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
 
 		private:
 			LogicalModelView mLogicalModelView;

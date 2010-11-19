@@ -19,6 +19,7 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		Id logicalId = current.data(roles::logicalIdRole).value<Id>();
+		qDebug() << logicalId.toString();
 		QString const name = current.data(Qt::DisplayRole).toString();
 		if (logicalId == Id())
 			// No logical Id for this item, so logical model shouldn't care
@@ -30,9 +31,10 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 		// and graphical model hierarchy. It is not always easy since
 		// some elements have no corrspondences in another model, and tree
 		// structures may be very different by themselves.
-		mModel->addElementToModel(Id::rootId(), logicalId, name, QPoint(0, 0));
+		LogicalModel *mLogicalModel = static_cast<LogicalModel *>(mModel);
+		mLogicalModel->addElementToModel(Id::rootId(), logicalId, logicalId, name, QPoint(0, 0));
+		}
 	}
-}
 
 void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
 {
