@@ -10,11 +10,17 @@ Repairer::Repairer(qrRepo::RepoApi &api, const EditorManager &editorManager)
 	mEditorManager(editorManager)
 {
 	inProgress = false;
+	lastOpenedSave = "";
 }
 
 MainWindow* Repairer::getMainWindow() const
 {
 	return mEditorManager.getMainWindow();
+}
+
+void Repairer::rememberSave(QString savePath)
+{
+	lastOpenedSave = savePath;
 }
 
 bool Repairer::checkId(Id target) const
@@ -38,12 +44,15 @@ bool Repairer::checkIds(Id const target)
 void Repairer::repair()
 {
 	inProgress = true;
-	mRepairerDialog = new RepairerDialog(this);
+	mRepairerDialog = new RepairerDialog(this, lastOpenedSave);
 	mRepairerDialog->show();
 }
 
 void Repairer::repairElements(const Id target)
 {
+	static int counter = 0;
+	counter++;
+
 	foreach(Id child, mApi.children(target)) {
 		if (child.idSize() == 0)
 			continue;
@@ -56,7 +65,9 @@ void Repairer::repairElements(const Id target)
 		repairElements(child);
 	}
 
-	emit workFinished();
+	counter--;
+	if (counter == 0)
+		emit workFinished();
 	inProgress = false;
 }
 
@@ -79,7 +90,7 @@ Id Repairer::correctId(const Id target)
 
 void Repairer::patchSave()
 {
-	mPatchSaveDialog = new PatchSaveDialog("","",this);
+	mPatchSaveDialog = new PatchSaveDialog(lastOpenedSave,"",this);
 	mPatchSaveDialog->show();
 //	remember: release memory
 }
@@ -133,6 +144,7 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 		}
 	}
 
+	qDebug() << "!";
 	emit workFinished();
 	inProgress = false;
 }

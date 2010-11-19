@@ -17,9 +17,12 @@ Model::Model(EditorManager const &editorManager, QString const &workingDir)
 	mAssistApi(*this, editorManager)
 {
 	mLogger = new Logger(mutableApi().getWorkingDir());
-	mRepairer = new Repairer(mApi, editorManager);
 	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
+
+	mRepairer = new Repairer(mApi, editorManager);
+	mRepairer->rememberSave(workingDir);
 	connect(mRepairer, SIGNAL(workFinished()), this, SLOT(repairerFinished()));
+
 	init();
 }
 
@@ -567,8 +570,10 @@ QPersistentModelIndex Model::rootIndex() const
 
 void Model::open(QString const &workingDir)
 {
+	qDebug() << "open " << workingDir;
 	mApi.open(workingDir);
 	mLogger->setWorkingDir(workingDir);
+	mRepairer->rememberSave(workingDir);
 	reinit();
 }
 

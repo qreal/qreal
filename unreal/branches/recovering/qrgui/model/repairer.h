@@ -19,6 +19,7 @@ namespace qReal {
 			bool isBusy();
 			bool checkIds(Id const target);
 			void repairElements(Id const target);
+			void rememberSave(QString const savePath);
 
 			MainWindow* getMainWindow() const;
 
@@ -29,6 +30,8 @@ namespace qReal {
 
 		private:
 			bool inProgress;
+
+			QString lastOpenedSave;
 
 			qrRepo::RepoApi &mApi;
 			const EditorManager &mEditorManager;
