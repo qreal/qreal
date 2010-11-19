@@ -1,3 +1,5 @@
+#include <QtCore/QUuid>
+
 #include "abstractModel.h"
 
 using namespace qReal;
@@ -229,7 +231,13 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
+		Id logicalId = Id();
 		Id id = Id::loadFromString(idString);
+		if (mApi.exist(id)) {
+			logicalId = id;
+			Id idNew = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+			id = idNew;
+		}
 		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
 		if (mModelItems.contains(id))  // Пока на диаграмме не может быть больше одного экземпляра

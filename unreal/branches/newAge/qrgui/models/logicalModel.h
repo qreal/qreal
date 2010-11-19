@@ -24,6 +24,7 @@ namespace qReal {
 			void updateElements(Id const &logicalId, QString const &name);
 			QModelIndex indexById(Id const &id) const;
 			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+			QString pathToItem(details::AbstractModelItem const * const item) const;
 
 		private:
 			GraphicalModelView mGraphicalModelView;

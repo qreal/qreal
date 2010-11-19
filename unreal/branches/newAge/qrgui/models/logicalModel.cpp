@@ -50,6 +50,7 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+			stream << pathToItem(item);
 			stream << item->id().toString();
 			stream << mApi.property(item->id(), "name");
 			stream << mApi.property(item->id(), "position").toPointF();
@@ -64,5 +65,20 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 	mimeData->setData(DEFAULT_MIME_TYPE, data);
 	return mimeData;
 }
+
+QString LogicalModel::pathToItem(AbstractModelItem const *item) const
+{
+	if (item != mRootItem) {
+		QString path;
+		do {
+			item = item->parent();
+			path = item->id().toString() + ID_PATH_DIVIDER + path;
+		} while (item != mRootItem);
+		return path;
+	}
+	else
+		return Id::rootId().toString();
+}
+
 
 
