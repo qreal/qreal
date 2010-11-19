@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QMimeData>
+
 #include "../../qrrepo/repoApi.h"
 #include "../editorManager/editorManager.h"
 #include "details/logicalModelItem.h"
@@ -21,6 +23,7 @@ namespace qReal {
 			void connectToGraphicalModel(GraphicalModel * const graphicalModel);
 			void updateElements(Id const &logicalId, QString const &name);
 			QModelIndex indexById(Id const &id) const;
+			virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 
 		private:
 			GraphicalModelView mGraphicalModelView;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
+#include <QMimeData>
+#include <QModelIndexList>
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../editorManager/editorManager.h"
@@ -25,6 +27,9 @@ namespace qReal {
 				virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 				virtual QModelIndex parent(const QModelIndex &index) const;
 				virtual Qt::ItemFlags flags(QModelIndex const &index) const;
+				virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+				virtual Qt::DropActions supportedDropActions() const;
+				virtual QStringList mimeTypes() const;
 
 				void addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position);
 				QPersistentModelIndex rootIndex() const;

@@ -1,7 +1,5 @@
 #include "abstractModel.h"
 
-#include <QDebug>
-
 using namespace qReal;
 using namespace models;
 using namespace details;
@@ -211,3 +209,49 @@ QString AbstractModel::findPropertyName(Id const &id, int const role) const
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
 	return properties[role - roles::customPropertiesBeginRole];
 }
+
+bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
+{
+	Q_UNUSED(row)
+	Q_UNUSED(column)
+	if (action == Qt::IgnoreAction)
+		return true;
+	else {
+		AbstractModelItem *parentItem = parentTreeItem(parent);
+
+		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+		QDataStream stream(&dragData, QIODevice::ReadOnly);
+		QString idString;
+		QString pathToItem;
+		QString name;
+		QPointF position;
+		stream >> idString;
+		stream >> pathToItem;
+		stream >> name;
+		stream >> position;
+		Id id = Id::loadFromString(idString);
+		Q_ASSERT(id.idSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
+
+		if (mModelItems.contains(id))  // Пока на диаграмме не может быть больше одного экземпляра
+			// одной и той же сущности, бросать существующие элементы нельзя.
+			return false;
+
+		addElementToModel(parentItem->id(), id, name, position);
+		return true;
+	}
+}
+
+Qt::DropActions AbstractModel::supportedDropActions() const
+{
+	return Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
+}
+
+QStringList AbstractModel::mimeTypes() const
+{
+	QStringList types;
+	types.append(DEFAULT_MIME_TYPE);
+	return types;
+}
+
+
+

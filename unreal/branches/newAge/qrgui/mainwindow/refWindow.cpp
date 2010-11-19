@@ -78,7 +78,7 @@ void RefWindow::setPropertyValue()
 	QList<QListWidgetItem *> itemList = ui->listWidget->selectedItems();
 	if (!itemList.isEmpty())
 	{
-		QString idStr(NULL);
+		QString idStr = "";
 		for (int i = 0; i < itemList.size(); ++i)
 			idStr.append(itemList[i]->data(Qt::ToolTipRole).toString() + "$$");
 		model->setData(index, idStr, role);

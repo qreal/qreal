@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -302,7 +302,11 @@
    <widget class="QWidget" name="dockWidgetContents_6">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTreeView" name="graphicalModelExplorer"/>
+      <widget class="QTreeView" name="graphicalModelExplorer">
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -320,7 +324,23 @@
    <widget class="QWidget" name="dockWidgetContents_3">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTreeView" name="logicalModelExplorer"/>
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

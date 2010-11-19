@@ -43,3 +43,26 @@ void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 	emit dataChanged(indexById(logicalId), indexById(logicalId));
 }
 
+QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
+{
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	foreach (QModelIndex index, indexes) {
+		if (index.isValid()) {
+			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+			stream << item->id().toString();
+			stream << mApi.property(item->id(), "name");
+			stream << mApi.property(item->id(), "position").toPointF();
+		} else {
+			stream << Id::rootId().toString();
+			stream << QString();
+			stream << Id::rootId().toString();
+			stream << QPointF();
+		}
+	}
+	QMimeData *mimeData = new QMimeData();
+	mimeData->setData(DEFAULT_MIME_TYPE, data);
+	return mimeData;
+}
+
+
