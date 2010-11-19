@@ -222,15 +222,17 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		AbstractModelItem *parentItem = parentTreeItem(parent);
 
 		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+
 		QDataStream stream(&dragData, QIODevice::ReadOnly);
 		QString idString;
 		QString pathToItem;
 		QString name;
 		QPointF position;
-		stream >> idString;
 		stream >> pathToItem;
+		stream >> idString;
 		stream >> name;
 		stream >> position;
+
 		Id logicalId = Id();
 		Id id = Id::loadFromString(idString);
 		if (mApi.exist(id)) {

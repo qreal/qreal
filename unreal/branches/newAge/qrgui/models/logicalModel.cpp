@@ -2,8 +2,6 @@
 
 #include "graphicalModel.h"
 
-#include<QtCore/QDebug>
-
 using namespace qReal;
 using namespace models;
 using namespace details;
@@ -52,15 +50,16 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 			stream << pathToItem(item);
 			stream << item->id().toString();
-			stream << mApi.property(item->id(), "name");
+			stream << mApi.property(item->id(), "name").toString();
 			stream << mApi.property(item->id(), "position").toPointF();
 		} else {
-			stream << Id::rootId().toString();
 			stream << QString();
 			stream << Id::rootId().toString();
+			stream << QString();
 			stream << QPointF();
 		}
 	}
+
 	QMimeData *mimeData = new QMimeData();
 	mimeData->setData(DEFAULT_MIME_TYPE, data);
 	return mimeData;
