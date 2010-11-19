@@ -77,15 +77,23 @@ RepairerDialog::~RepairerDialog()
 
 void RepairerDialog::run()
 {
+	bool executed = false;
 	mGenerateEditorPathError->hide();
-	if (mPatchSaveSwitcher->checkState() == Qt::Checked)
+	if (mPatchSaveSwitcher->checkState() == Qt::Checked) {
+		executed = true;
 		mPatchSaveDialog->run();
-	if (mAutorepairSwitcher->checkState() == Qt::Checked)
+	}
+	if (mAutorepairSwitcher->checkState() == Qt::Checked) {
+		executed = true;
 		mRepairer->repairElements(qReal::Id::getRootId());
+	}
 	QString editorPath = mGenerateEditorPath->text();
-	if ((mGenerateEditorSwitcher->checkState() == Qt::Checked) && (checkEditorPath()))
+	if ((mGenerateEditorSwitcher->checkState() == Qt::Checked) && (checkEditorPath())) {
+		executed = true;
 		mRepairer->getMainWindow()->generateEditorFromXML(editorPath);
-	close();
+	}
+	if (executed)
+		close();
 }
 
 void RepairerDialog::openEditorXML()
@@ -181,7 +189,7 @@ bool PatchSaveDialog::checkPatchPath()
 {
 	patchError->hide();
 	QFileInfo fi(patchPath->text());
-	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),".patch",Qt::CaseInsensitive))) {
+	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),"patch",Qt::CaseInsensitive))) {
 		patchError->show();
 		return false;
 	}

@@ -117,11 +117,18 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 					QString name = target.element();
 					name += " " + QString::number(count);
 					mApi.setProperty(target, "name", name);
-					mApi.setProperty(target, "position", QPointF(0,0));
+					mApi.setProperty(target, "position", QPointF());
 					mApi.setProperty(target, "configuration", QPolygon());
+					if (mEditorManager.getEditorInterface(
+							target.editor())->isNodeOrEdge(target.element()) == -1) {
+						mApi.setProperty(target, "to", ROOT_ID.toVariant());
+						mApi.setProperty(target, "from", ROOT_ID.toVariant());
+						mApi.setProperty(target, "toPort", 0.0);
+						mApi.setProperty(target, "fromPort", 0.0);
+					}
 				}
 				else
-					qDebug() << parent.toString() << " -> " << target.toString() << "\n" <<
+					qDebug() <<
 					"Repairer::patchSave() error | It isn't obvious where element must be placed.";
 				break;
 			}
@@ -136,7 +143,7 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 				break;
 			}
 			case qReal::actSetData: {
-
+				mApi.setProperty(target, msg.details(), msg.newValue());
 				break;
 			}
 			default:
@@ -144,7 +151,6 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 		}
 	}
 
-	qDebug() << "!";
 	emit workFinished();
 	inProgress = false;
 }

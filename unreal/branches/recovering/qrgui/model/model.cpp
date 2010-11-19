@@ -57,17 +57,18 @@ void Model::init()
 	// Turn off view notification while loading. Model can be inconsistent during a process,
 	// so views shall not update themselves before time. It is important for
 	// scene, where adding edge before adding nodes may lead to disconnected edge.
-	blockSignals(true);
 
 	if (!mRepairer->checkIds(mRootItem->id())) {
 		mRepairer->repair();
 		return;
 	}
 
-	loadSubtreeFromClient(mRootItem);
-	blockSignals(false);
 	mApi.resetChangedDiagrams();
 	mLogger->enable();
+
+	blockSignals(true);
+	loadSubtreeFromClient(mRootItem);
+	blockSignals(false);
 }
 
 void Model::repairerFinished()
@@ -79,8 +80,10 @@ void Model::repairerFinished()
 	}
 	int res = QMessageBox::question(0, tr("Repairing."), tr("Open repaired diagram or save?"),
 					QMessageBox::Save, QMessageBox::Open, QMessageBox::Cancel);
-	if (res == QMessageBox::Open)
+	if (res == QMessageBox::Open) {
 		reinit();
+		blockSignals(false);
+	}
 	else if (res == QMessageBox::Save) {
 		reinit();
 		save();
