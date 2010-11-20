@@ -31,7 +31,7 @@ namespace UML {
 			virtual bool initPossibleEdges();
 
 			void adjustLink();
-                        void reconnectToNearestPorts();
+			void reconnectToNearestPorts(qreal delta = 0); /* delta - small shift to fix EdgeElement's conglutination */
 			void removeLink(UML::NodeElement const *from);
 
 			void placeStartTo(QPointF const &place);

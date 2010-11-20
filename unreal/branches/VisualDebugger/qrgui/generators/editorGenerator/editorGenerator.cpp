@@ -41,7 +41,7 @@ QHash<Id, QString> EditorGenerator::getMetamodelList()
 	return metamodelList;
 }
 
-gui::ErrorReporter EditorGenerator::generateEditor(Id const metamodelId, const QString &pathToFile)
+gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const QString &pathToFile)
 {
 	QString includeProList;
 	QFileInfo fileName(pathToFile);

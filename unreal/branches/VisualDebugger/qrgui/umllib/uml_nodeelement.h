@@ -79,6 +79,7 @@ namespace UML {
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
 		void switchAlignment(bool isSwitchedOn);
+		void showAlignment(bool isChecked);
 
 		virtual void setColorRect(bool bl);
 
@@ -86,6 +87,7 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
+		void arrangeLinks();
 
 	public slots:
 		void switchGrid(bool isChecked);

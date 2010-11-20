@@ -51,25 +51,25 @@ void VisualDebugger::error(ErrorType e) {
 	
 	switch (e) {
 	case missingBeginNode:
-		mErrorReporter.addCritical("The diagram doesn't have Initial Node");
+		mErrorReporter->addCritical("The diagram doesn't have Initial Node");
 		break;
 	case missingEndOfLinkNode:
-		mErrorReporter.addCritical("The diagram cann't end with edge", mCurrentId);
+		mErrorReporter->addCritical("The diagram cann't end with edge", mCurrentId);
 		break;
 	case endWithNotEndNode:
-		mErrorReporter.addWarning("There are no links from this node and it mismatches Final Node",
+		mErrorReporter->addWarning("There are no links from this node and it mismatches Final Node",
 			mCurrentId);
 		break;
 	case missingValidLink:
-		mErrorReporter.addCritical("The condition doesn't have valid link", mCurrentId);
+		mErrorReporter->addCritical("The condition doesn't have valid link", mCurrentId);
 		break;
 	case someDiagramIsRunning:
-		mErrorReporter.addCritical("Some diagram is already under debug");
+		mErrorReporter->addCritical("Some diagram is already under debug");
 		mError = VisualDebugger::noErrors;
 		return;
 		break;
 	case wrongEditor:
-		mErrorReporter.addCritical("This is not Block Diagram editor");
+		mErrorReporter->addCritical("This is not Block Diagram editor");
 		break;
 	case noErrors:
 		break;
@@ -162,7 +162,7 @@ void VisualDebugger::deinitialize() {
 }
 
 void VisualDebugger::clearErrorReporter() {
-	mErrorReporter = *(new gui::ErrorReporter());
+	mErrorReporter = new gui::ErrorReporter();
 }
 
 void VisualDebugger::processAction() {
@@ -170,13 +170,13 @@ void VisualDebugger::processAction() {
 	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), pos);
 }
 
-gui::ErrorReporter VisualDebugger::debug() {
+gui::ErrorReporter& VisualDebugger::debug() {
 	if (VisualDebugger::noErrors != checkEditor()) {
-		return mErrorReporter;
+		return *mErrorReporter;
 	}
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
-		return mErrorReporter;
+		return *mErrorReporter;
 	}
 	
 	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
@@ -189,7 +189,7 @@ gui::ErrorReporter VisualDebugger::debug() {
 			if (validLinkId != validLinkId.getRootId()) {
 				doStep(validLinkId);
 			} else {
-				return mErrorReporter;
+				return *mErrorReporter;
 			}
 		} else {
 			doStep(outLinks.at(0));
@@ -199,7 +199,7 @@ gui::ErrorReporter VisualDebugger::debug() {
 		
 		if (!hasEndOfLinkNode(mCurrentId)) {
 			error(VisualDebugger::missingEndOfLinkNode);
-			return mErrorReporter;
+			return *mErrorReporter;
 		}
 		
 		doStep(mModel->api().to(mCurrentId));
@@ -211,21 +211,21 @@ gui::ErrorReporter VisualDebugger::debug() {
 	
 	if (!isFinalNode(mCurrentId)) {
 		error(VisualDebugger::endWithNotEndNode);
-		return mErrorReporter;
+		return *mErrorReporter;
 	}
 	
 	deinitialize();
-	return mErrorReporter;
+	return *mErrorReporter;
 }
 
-gui::ErrorReporter VisualDebugger::debugSingleStep() {
+gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	if (VisualDebugger::noErrors != checkEditor()) {
-		return mErrorReporter;
+		return *mErrorReporter;
 	}
 
 	if (mCurrentElem == NULL && mCurrentId == mCurrentId.getRootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
-			return mErrorReporter;
+			return *mErrorReporter;
 		}
 	} else {
 		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
@@ -233,10 +233,10 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 			if (mModel->api().outgoingLinks(mCurrentId).count() == 0) {
 				if (!isFinalNode(mCurrentId)) {
 					error(VisualDebugger::endWithNotEndNode);
-					return mErrorReporter;
+					return *mErrorReporter;
 				}
 				deinitialize();
-				return mErrorReporter;
+				return *mErrorReporter;
 			}
 			
 			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
@@ -244,21 +244,21 @@ gui::ErrorReporter VisualDebugger::debugSingleStep() {
 				if (validLinkId != validLinkId.getRootId()) {
 					doStep(validLinkId);
 				} else {
-					return mErrorReporter;
+					return *mErrorReporter;
 				}
 			} else {
 				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
 			}
-			return mErrorReporter;
+			return *mErrorReporter;
 		} else {
 			if (!hasEndOfLinkNode(mCurrentId)) {
 				error(VisualDebugger::missingEndOfLinkNode);
-				return mErrorReporter;
+				return *mErrorReporter;
 			}
 			doStep(mModel->api().to(mCurrentId));
 		}
 	}
-	return mErrorReporter;
+	return *mErrorReporter;
 }
 
 

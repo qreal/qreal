@@ -22,7 +22,7 @@ namespace qReal {
 		public:
 			explicit HascolGenerator(qrRepo::RepoApi const &api);
 
-			gui::ErrorReporter generate();
+			gui::ErrorReporter &generate();
 		private:
 			void generateDiagram(Id const &id);
 			void generateProcess(Id const &id, utils::OutFile &out);

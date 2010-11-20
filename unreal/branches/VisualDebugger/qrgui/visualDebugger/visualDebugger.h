@@ -20,8 +20,8 @@ namespace qReal {
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
 	public slots:
-		gui::ErrorReporter debug();
-		gui::ErrorReporter debugSingleStep();
+		gui::ErrorReporter& debug();
+		gui::ErrorReporter& debugSingleStep();
 	private:
 		enum ErrorType {
 			missingBeginNode,
@@ -39,7 +39,7 @@ namespace qReal {
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
-		gui::ErrorReporter mErrorReporter;
+		gui::ErrorReporter *mErrorReporter;
 		blockParser *mBlockParser;
 		
 		void error(ErrorType e);

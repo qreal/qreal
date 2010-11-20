@@ -38,6 +38,11 @@ namespace qReal {
 		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
 
+	signals:
+		void gesturesShowed();
+		void currentIdealGestureChanged();
+		void rootDiagramChanged();
+
 	public slots:
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
@@ -59,7 +64,7 @@ namespace qReal {
 
 		void print();
 		void makeSvg();
-		void showGrid(bool show);
+		void showGrid(bool isChecked);
 
 		void finalClose();
 
@@ -77,6 +82,7 @@ namespace qReal {
 		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
+		void selectItemWithError(Id const &id);
 
 		void debug();
 		void debugSingleStep();
@@ -102,6 +108,7 @@ namespace qReal {
 		void initCurrentTab(const QModelIndex &rootIndex);
 
 		void showGestures();
+		void showAlignment(bool isChecked);
 		void switchGrid(bool isChecked);
 		void switchAlignment(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
@@ -115,19 +122,6 @@ namespace qReal {
 		void diagramInSaveListChanged(QListWidgetItem* diagram);
 
 	private:
-		QCloseEvent *mCloseEvent;
-		model::Model *mModel;
-		EditorManager mEditorManager;
-		ListenerManager *mListenerManager;
-		PropertyEditorModel mPropertyModel;
-		PropertyEditorDelegate mDelegate;
-		GesturesWidget *mGesturesWidget;
-		VisualDebugger *mVisualDebugger;
-
-		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
-		bool mDiagramCreateFlag;
-
-		QStringList mDiagramsList;
 		void createDiagram(const QString &idString);
 		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -151,10 +145,24 @@ namespace qReal {
 		void disconnectActionZoomTo(QWidget* widget);
 		void connectActionZoomTo(QWidget* widget);
 		void setConnectActionZoomTo(QWidget* widget);
+		void clickErrorListWidget();
+		QCloseEvent *mCloseEvent;
+		model::Model *mModel;
+		EditorManager mEditorManager;
+		ListenerManager *mListenerManager;
+		PropertyEditorModel mPropertyModel;
+		PropertyEditorDelegate mDelegate;
+		GesturesWidget *mGesturesWidget;
+		VisualDebugger *mVisualDebugger;
 
-	signals:
-		void gesturesShowed();
-		void currentIdealGestureChanged();
-		void rootDiagramChanged();
+		void setShowGrid(bool isChecked);
+		void setShowAlignment(bool isChecked);
+		void setSwitchGrid(bool isChecked);
+		void setSwitchAlignment(bool isChecked);
+
+		QVector<bool> mSaveListChecked;
+		bool mDiagramCreateFlag;
+
+		QStringList mDiagramsList;
 	};
 }

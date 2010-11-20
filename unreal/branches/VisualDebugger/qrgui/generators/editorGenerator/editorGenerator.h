@@ -22,7 +22,7 @@ namespace qReal {
 			explicit EditorGenerator(qrRepo::RepoApi const &api);
 
 			QHash<Id, QString> getMetamodelList();
-			gui::ErrorReporter generateEditor(Id const metamodelId, QString const &pathToFile);
+			gui::ErrorReporter& generateEditor(Id const metamodelId, QString const &pathToFile);
 		private:
 			void serializeObjects(QDomElement &parent, Id const &idParent);
 			void createImport(QDomElement &parent, Id const &id);

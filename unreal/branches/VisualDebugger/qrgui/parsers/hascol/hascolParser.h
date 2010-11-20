@@ -21,7 +21,7 @@ namespace qReal {
 		public:
 			explicit HascolParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
 
-			gui::ErrorReporter parse(QStringList const &files);
+			gui::ErrorReporter &parse(QStringList const &files);
 		private:
 			Id mImportedPortMappingDiagramId;
 			Id mImportedStructureDiagramId;

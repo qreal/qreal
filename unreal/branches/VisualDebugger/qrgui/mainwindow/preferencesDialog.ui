@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>280</height>
+    <height>317</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>350</width>
-    <height>280</height>
+    <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>350</width>
-    <height>280</height>
+    <height>331</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -69,7 +69,7 @@
          <x>10</x>
          <y>30</y>
          <width>311</width>
-         <height>61</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -83,7 +83,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>191</width>
+          <width>101</width>
           <height>20</height>
          </rect>
         </property>
@@ -97,9 +97,9 @@
        <widget class="QCheckBox" name="activateGridCheckBox">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>150</x>
           <y>10</y>
-          <width>91</width>
+          <width>151</width>
           <height>20</height>
          </rect>
         </property>
@@ -114,7 +114,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
+          <y>70</y>
           <width>251</width>
           <height>19</height>
          </rect>
@@ -139,7 +139,7 @@
         <property name="geometry">
          <rect>
           <x>270</x>
-          <y>40</y>
+          <y>70</y>
           <width>46</width>
           <height>13</height>
          </rect>
@@ -151,14 +151,42 @@
        <widget class="QCheckBox" name="activateAlignmentCheckBox">
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>10</y>
-          <width>111</width>
+          <x>150</x>
+          <y>40</y>
+          <width>151</width>
           <height>17</height>
          </rect>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="text">
          <string>Activate alignment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="showAlignmentCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Show alignment</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -182,7 +210,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
+         <y>140</y>
          <width>121</width>
          <height>16</height>
         </rect>
@@ -195,7 +223,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>160</y>
          <width>311</width>
          <height>61</height>
         </rect>

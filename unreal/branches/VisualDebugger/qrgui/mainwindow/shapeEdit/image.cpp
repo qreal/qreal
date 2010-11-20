@@ -2,7 +2,7 @@
 #include <QtGui/QBitmap>
 #include <QtGui/QImageWriter>
 
-Image::Image(QString fileName, qreal x, qreal y, Item* parent) : Item(parent)
+Image::Image(QString fileName, qreal x, qreal y, Item* parent) : Item(parent), mImage(fileName)
 {
 	mFileName = fileName;
 	QPixmap* pixmap = new QPixmap(fileName);
@@ -29,6 +29,7 @@ Image::Image(Image const &other)
 	mListScalePoint = other.mListScalePoint;
 	mPixmapItem = other.mPixmapItem;
 	mFileName = other.mFileName;
+	mImage = other.mImage;
 	setPos(other.x(), other.y());
 }
 
@@ -47,7 +48,18 @@ void Image::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	painter->drawPixmap(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1), mPixmapItem->pixmap());
+
+	QImage image(mImage);
+	if(mX2 > mX1) {
+		if (mY2 < mY1)
+			image = mImage.mirrored(false, true);
+	} else {
+		if (mY2 > mY1)
+			image = mImage.mirrored(true, false);
+		else
+			image = mImage.mirrored(true, true);
+	}
+	painter->drawImage(QRectF(qMin(mX1, mX2), qMin(mY1, mY2), abs(mX2 - mX1), abs(mY2 - mY1)), image);
 }
 
 void Image::setItemZValue(int zValue)

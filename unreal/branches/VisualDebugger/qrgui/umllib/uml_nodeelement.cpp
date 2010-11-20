@@ -102,6 +102,18 @@ void NodeElement::adjustLinks()
 	}
 }
 
+void NodeElement::arrangeLinks()
+{
+	int N = mEdgeList.size();
+	int i = 0;
+	const qreal ampl = 0.5;
+
+	foreach(EdgeElement* edge, mEdgeList) {
+		qreal delta = ampl * (i++ - N / 2.0) / N;
+		edge->reconnectToNearestPorts(delta);
+	}
+}
+
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
@@ -204,6 +216,11 @@ QList<ContextMenuAction*> NodeElement::contextMenuActions()
 	return result;
 }
 
+void NodeElement::showAlignment(bool isChecked)
+{
+	mGrid->setShowAlignmentMode(isChecked);
+}
+
 void NodeElement::switchAlignment(bool isSwitchedOn)
 {
 	mGrid->setAlignmentMode(isSwitchedOn);
@@ -212,6 +229,7 @@ void NodeElement::switchAlignment(bool isSwitchedOn)
 void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
+	mSwitchGridAction.setChecked(isChecked);
 }
 
 void NodeElement::delUnusedLines()
@@ -323,9 +341,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (isPort())
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
-	foreach(EdgeElement* edge, mEdgeList) {
-		edge->reconnectToNearestPorts();
-	}
+	arrangeLinks();
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

@@ -69,7 +69,6 @@ MainWindow::MainWindow()
 		splash->show();
 		QApplication::processEvents();
 	}
-
 	ui.setupUi(this);
 
 #if defined(Q_WS_WIN)
@@ -85,6 +84,10 @@ MainWindow::MainWindow()
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
 	progress->setValue(20);
+	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
+	ui.actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	ui.actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
 
 	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -117,6 +120,7 @@ MainWindow::MainWindow()
 
 	connect(ui.actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(ui.actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
+	connect(ui.actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	connect(ui.actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 	connect(ui.actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
 
@@ -138,7 +142,9 @@ MainWindow::MainWindow()
 	// XXX: kludge... don't know how to do it in designer
 	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.paletteDock->setWidget(ui.paletteToolbox);
-	ui.ErrorDock->setWidget(ui.ErrorListWidget);
+	ui.errorDock->setWidget(ui.errorListWidget);
+	ui.errorListWidget->init(this);
+	ui.errorDock->setVisible(false);
 	ui.propertyEditor->setModel(&mPropertyModel);
 	ui.propertyEditor->verticalHeader()->hide();
 	ui.propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
@@ -269,6 +275,12 @@ void MainWindow::adjustMinimapZoom(int zoom)
 {
 	ui.minimapView->resetMatrix();
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
+}
+
+void MainWindow::selectItemWithError(Id const &id)
+{
+	mPropertyModel.setIndex(mModel->indexById(id));
+	centerOn(mModel->indexById(id));
 }
 
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
@@ -595,8 +607,8 @@ void MainWindow::generateToHascol()
 {
 	generators::HascolGenerator hascolGenerator(mModel->api());
 
-	gui::ErrorReporter const errors = hascolGenerator.generate();
-	errors.showErrors("Generation finished successfully", ui.ErrorListWidget);
+	gui::ErrorReporter& errors = hascolGenerator.generate();
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
 	qDebug() << "Done.";
 }
@@ -626,9 +638,9 @@ void MainWindow::generateEditor()
 	}
 	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-		gui::ErrorReporter errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-		if (errors.showErrors("Generation finished successfully", ui.ErrorListWidget)) {
+		if (errors.showErrors(ui.errorListWidget, ui.errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
@@ -877,16 +889,16 @@ void MainWindow::parseHascol()
 		return;
 
 	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
-	gui::ErrorReporter errors = parser.parse(fileNames);
+	gui::ErrorReporter& errors = parser.parse(fileNames);
 
-	errors.showErrors("Parsing is finished", ui.ErrorListWidget);
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
 	mModel->reinit();
 }
 
 void MainWindow::showPreferencesDialog()
 {
-	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
+	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionShow_alignment, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
 	preferencesDialog.exec();
 }
 
@@ -1091,44 +1103,84 @@ ListenerManager *MainWindow::listenerManager()
 	return mListenerManager;
 }
 
-void MainWindow::showGrid(bool show)
+void MainWindow::showGrid(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
-	settings.setValue("ShowGrid", show);
+	settings.setValue("ShowGrid", isChecked);
+	setShowGrid(isChecked);
+}
 
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL)
-		tmpView->setDrawSceneGrid(show);
+void MainWindow::showAlignment(bool isChecked)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("ShowAlignment", isChecked);
+	setShowAlignment(isChecked);
 }
 
 void MainWindow::switchGrid(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ActivateGrid", isChecked);
-
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL) {
-		QList<QGraphicsItem *> list = tmpView->scene()->items();
-		foreach (QGraphicsItem *item, list) {
-			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-			if (nodeItem != NULL)
-				nodeItem->switchGrid(isChecked);
-		}
-	}
+	setSwitchGrid(isChecked);
 }
 
 void MainWindow::switchAlignment(bool isChecked)
 {
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("ActivateAlignment", isChecked);
+	setSwitchAlignment(isChecked);
+}
 
-	EditorView *tmpView = getCurrentTab();
-	if (tmpView != NULL) {
-		QList<QGraphicsItem *> list = tmpView->scene()->items();
-		foreach (QGraphicsItem *item, list) {
-			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-			if (nodeItem != NULL)
-				nodeItem->switchAlignment(isChecked);
+void MainWindow::setShowGrid(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL)
+			tab->setDrawSceneGrid(isChecked);
+	}
+}
+
+void MainWindow::setShowAlignment(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->showAlignment(isChecked);
+			}
+		}
+	}
+}
+
+void MainWindow::setSwitchGrid(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->switchGrid(isChecked);
+			}
+		}
+	}
+}
+
+void MainWindow::setSwitchAlignment(bool isChecked)
+{
+	for (int i = 0; i < ui.tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
+		if (tab != NULL) {
+			QList<QGraphicsItem *> list = tab->scene()->items();
+			foreach (QGraphicsItem *item, list) {
+				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+				if (nodeItem != NULL)
+					nodeItem->switchAlignment(isChecked);
+			}
 		}
 	}
 }
@@ -1293,7 +1345,8 @@ void MainWindow::saveAs()	//TODO: change
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-	mSaveListChecked = new bool[mModel->api().getOpenedDiagrams().size()];
+	mSaveListChecked.clear();
+	mSaveListChecked.resize(mModel->api().getOpenedDiagrams().size());
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
@@ -1420,20 +1473,20 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-	ui.ErrorListWidget->clear();
+	//ui.errorListWidget->clear();
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	gui::ErrorReporter const errorReporter = mVisualDebugger->debug();
-	errorReporter.showErrors("Debug finished successfully", ui.ErrorListWidget);
-	mVisualDebugger->clearErrorReporter();
+	gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
+	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);//"Debug finished successfully"
+	//mVisualDebugger->clearErrorReporter();
 }
 
 void MainWindow::debugSingleStep()
 {
-	ui.ErrorListWidget->clear();
+	//ui.errorListWidget->clear();
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	gui::ErrorReporter const errorReporter = mVisualDebugger->debugSingleStep();
-	errorReporter.showErrors("Debug (single step) finished successfully", ui.ErrorListWidget);
+	gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
+	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);//"Debug (single step) finished successfully"
 	mVisualDebugger->clearErrorReporter();
 }

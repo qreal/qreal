@@ -18,10 +18,7 @@
 using namespace UML;
 using namespace qReal;
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846264338327950288419717
-#define M_1_PI 1/M_PI;
-#endif //M_PI
+const double pi = 3.14159265358979;
 
 /** @brief indicator of edges' movement */
 // static bool moving = false;
@@ -82,9 +79,9 @@ static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
 	if (line.dy() >= 0)
-		angle = 2 * M_PI - angle;
+		angle = 2 * pi - angle;
 
-	return angle * 180 * M_1_PI;
+	return angle * 180 / pi;
 }
 
 static void drawChaosStar(QPainter *painter)
@@ -511,17 +508,25 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 }
 
-void EdgeElement::reconnectToNearestPorts()
+void EdgeElement::reconnectToNearestPorts(qreal delta)
 {
+	qDebug() << "Delta: " << delta;
+	const qreal factor = 2.0;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		mPortFrom = newFrom;
+		while (floor(mPortFrom + delta) != floor(mPortFrom))
+			delta /= factor;
+		mPortFrom += delta;
 		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
 	if (mDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		mPortTo = newTo;
+		while (floor(mPortTo + delta) != floor(mPortTo))
+			delta /= factor;
+		mPortTo += delta;
 		model->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
 }
