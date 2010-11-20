@@ -16,13 +16,13 @@ namespace qReal {
 
 	namespace generators {
 
-		class MetaGenerator
+		class EditorGenerator
 		{
 		public:
-			explicit MetaGenerator(qrRepo::RepoApi const &api);
+			explicit EditorGenerator(qrRepo::RepoApi const &api);
 
 			QHash<Id, QString> getMetamodelList();
-			gui::ErrorReporter generateEditor(Id const metamodelId, QString const &pathToFile);
+			gui::ErrorReporter& generateEditor(Id const metamodelId, QString const &pathToFile);
 		private:
 			void serializeObjects(QDomElement &parent, Id const &idParent);
 			void createImport(QDomElement &parent, Id const &id);
@@ -32,7 +32,7 @@ namespace qReal {
 			void setProperties(QDomElement &parent, Id const &id);
 			void setContextMenuFields(QDomElement &parent, Id const &id);
 			void setValues(QDomElement &parent, Id const &id);
-			void setAssotiations(QDomElement &parent, Id const &id);
+			void setAssociations(QDomElement &parent, Id const &id);
 			void setUsages(QDomElement &parent, Id const &id);
 			void setConnections(QDomElement &parent, Id const &id);
 			void setGeneralization(QDomElement &parent, Id const &id);

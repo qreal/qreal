@@ -106,3 +106,7 @@ QVariant ModelAssistApi::getProperty(qReal::Id const &elem, int const role) cons
 	return mModel.data(mModel.indexById(elem), role);
 }
 
+IdList ModelAssistApi::children(qReal::Id const &element) const
+{
+	return mModel.api().children(element);
+}

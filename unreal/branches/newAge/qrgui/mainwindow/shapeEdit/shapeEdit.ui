@@ -100,7 +100,7 @@
     </widget>
    </item>
    <item row="0" column="2" rowspan="17">
-    <widget class="QGraphicsView" name="graphicsView">
+    <widget class="View" name="graphicsView">
      <property name="minimumSize">
       <size>
        <width>150</width>
@@ -759,25 +759,6 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
-    <widget class="QPushButton" name="noneButton">
-     <property name="toolTip">
-      <string/>
-     </property>
-     <property name="text">
-      <string>None</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="8" column="0" rowspan="3" colspan="2">
     <widget class="QToolBox" name="penBrushToolBox">
      <property name="enabled">
@@ -1057,6 +1038,50 @@
      </widget>
     </widget>
    </item>
+   <item row="5" column="1">
+    <widget class="QPushButton" name="noneButton">
+     <property name="maximumSize">
+      <size>
+       <width>60</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="text">
+      <string>None</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="addImageButton">
+     <property name="maximumSize">
+      <size>
+       <width>60</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Image</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -1064,6 +1089,11 @@
    <class>ColorListEditor</class>
    <extends>QComboBox</extends>
    <header>colorlisteditor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>View</class>
+   <extends>QGraphicsView</extends>
+   <header>view.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -20,6 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
+	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -448,8 +449,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		if (item) {
 			mPrevParent = item->parentItem();
 			mPrevPosition = item->pos();
-			qDebug() << "NEW mPrevParent: " << mPrevParent;
-			qDebug() << "NEW pos: " << mPrevPosition;
 		}
 
 	} else if (event->button() == Qt::RightButton) {
@@ -486,7 +485,8 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 		action->setEventPos(e->mapFromScene(pos));
 		menu.addAction(action);
 
-		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()));
+		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
+				Qt::UniqueConnection);
 		mActionSignalMapper->setMapping(action, action->text() + "###" + e->uuid().toString());
 	}
 	menu.addSeparator();
@@ -617,8 +617,6 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		QGraphicsScene::mouseMoveEvent(event);
-	if (mNeedDrawGrid)
-		invalidate();
 }
 
 
@@ -746,7 +744,9 @@ qReal::model::Model *EditorViewScene::model() const
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		painter->setPen(QPen(Qt::black, 0.1));
+		QSettings settings("SPbSU", "QReal");
+		mWidthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}
 }
@@ -754,6 +754,11 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 void EditorViewScene::setNeedDrawGrid(bool show)
 {
 	mNeedDrawGrid = show;
+}
+
+bool EditorViewScene::getNeedDrawGrid()
+{
+	return mNeedDrawGrid;
 }
 
 void EditorViewScene::drawGesture()

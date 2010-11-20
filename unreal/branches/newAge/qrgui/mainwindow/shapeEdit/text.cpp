@@ -3,6 +3,7 @@
 #include <QtGui/QCursor>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QPainter>
+#include <QtGui/QTextCursor>
 
 Text::Text(bool isDynamic)
 	: Item(NULL), mIsDynamicText(isDynamic)

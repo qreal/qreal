@@ -18,7 +18,7 @@ HascolGenerator::HascolGenerator(qrRepo::RepoApi const &api)
 {
 }
 
-gui::ErrorReporter HascolGenerator::generate()
+gui::ErrorReporter& HascolGenerator::generate()
 {
 	Id repoId = Id::rootId();
 	IdList rootDiagrams = mApi.children(repoId);

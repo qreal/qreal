@@ -9,8 +9,8 @@ namespace Ui {
 class PreferencesDialog : public QDialog {
 	Q_OBJECT
 public:
-	PreferencesDialog(QAction * const showGridAction
-		,QAction * const activateGridAction, QWidget *parent = 0);
+	PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
+		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent = 0);
 	~PreferencesDialog();
 
 protected:
@@ -19,7 +19,9 @@ protected:
 private:
 	Ui::PreferencesDialog *ui;
 	QAction * const mShowGridAction;
+	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
+	QAction * const mActivateAlignmentAction;
 
 	void applyChanges();
 	void initPreferences();

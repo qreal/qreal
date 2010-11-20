@@ -29,6 +29,8 @@ public:
 	int pictureHeight() { return first_size_y; }
 
 private:
+	QString mWorkingDirName;
+	QMap<QString, QPixmap> mMapFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -67,6 +69,7 @@ private:
 	void path_draw(QDomElement &element);
 	void stylus_draw(QDomElement &element);
 	void curve_draw(QDomElement &element);
+	void image_draw(QDomElement &element);
 	float x1_def(QDomElement &element);
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);

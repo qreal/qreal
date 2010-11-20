@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QString>
-#include <QMap>
-#include <QList>
+#include <QtCore/QMap>
+#include <QtCore/QList>
 #include "type.h"
 #include "constraint.h"
 

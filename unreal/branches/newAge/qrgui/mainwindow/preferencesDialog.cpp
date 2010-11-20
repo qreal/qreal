@@ -3,10 +3,10 @@
 
 #include <QSettings>
 
-PreferencesDialog::PreferencesDialog(QAction * const showGridAction,
-		QAction * const activateGridAction, QWidget *parent)
-	: QDialog(parent), ui(new Ui::PreferencesDialog), mShowGridAction(showGridAction)
-	, mActivateGridAction(activateGridAction)
+PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * const showAlignmentAction
+		,QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
+	: QDialog(parent), ui(new Ui::PreferencesDialog), mShowGridAction(showGridAction), mShowAlignmentAction(showAlignmentAction)
+	, mActivateGridAction(activateGridAction), mActivateAlignmentAction(activateAlignmentAction)
 {
 	ui->setupUi(this);
 	initPreferences();
@@ -26,6 +26,7 @@ void PreferencesDialog::initPreferences()
 	QSettings settings("SPbSU", "QReal");
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
+	ui->gridWidthSlider->setValue(settings.value("GridWidth", 10).toInt());
 
 	ui->chooseDiagramsToSaveCheckBox->setChecked(
 		settings.value("ChooseDiagramsToSave", true).toBool());
@@ -33,10 +34,12 @@ void PreferencesDialog::initPreferences()
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
 	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
-	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", true).toBool());
+	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
+	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", true).toBool());
+	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", false).toBool());
+	ui->activateAlignmentCheckBox->setChecked(settings.value("ActivateAlignment", true).toBool());
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
-	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
 
 	ui->windowsButton->setChecked(settings.value("windowsButton", false).toBool());
@@ -54,6 +57,7 @@ void PreferencesDialog::applyChanges()
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
 	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
+	settings.setValue("GridWidth", ui->gridWidthSlider->value());
 
 	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
@@ -61,9 +65,11 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("ChaoticEdition", ui->chaoticEditionCheckBox->isChecked());
 	settings.setValue("SaveExitSuggestion", ui->saveExitCheckBox->isChecked());
 	settings.setValue("Splashscreen", ui->splashScreenCheckBox->isChecked());
-	settings.setValue("ActivateGrid", ui->activateGridCheckBox->isChecked());
-	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("ShowGrid", ui->showGridCheckBox->isChecked());
+	settings.setValue("ShowAlignment", ui->showAlignmentCheckBox->isChecked());
+	settings.setValue("ActivateGrid", ui->activateGridCheckBox->isChecked());
+	settings.setValue("ActivateAlignment", ui->activateAlignmentCheckBox->isChecked());
+	settings.setValue("Antialiasing", ui->antialiasingCheckBox->isChecked());
 	settings.setValue("OpenGL", ui->openGLCheckBox->isChecked());
 
 	settings.setValue("windowsButton", ui->windowsButton->isChecked());
@@ -76,7 +82,9 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("prefix", ui->prefix->text());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
+	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());
 	mActivateGridAction->setChecked(ui->activateGridCheckBox->isChecked());
+	mActivateAlignmentAction->setChecked(ui->activateAlignmentCheckBox->isChecked());
 }
 
 void PreferencesDialog::changeEvent(QEvent *e)

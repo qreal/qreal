@@ -16,7 +16,7 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
         QPoint previousPoint = path[i - 1];
         int length = currentPoint.x() - previousPoint.x();
         int width = currentPoint.y() - previousPoint.y();
-        int number = static_cast<int>((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
+        int number = static_cast<int>((sqrt(pow(static_cast<double>(length), 2) + pow(static_cast<double>(width), 2))) / mouseSpeed + 1);
         for (int j = 1; j <= number; j++)
         {
             QPoint point(int(previousPoint.x() + length * j / number),

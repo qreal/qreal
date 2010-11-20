@@ -20,7 +20,7 @@ Serializer::Serializer(QString const& saveDirName, bool failSafeMode)
 
 void Serializer::clearWorkingDir() const
 {
-	clearDir(mWorkingDir);
+	clearDir(mWorkingDir+"/tree");
 }
 
 void Serializer::removeFromDisk(Id id) const
@@ -57,7 +57,7 @@ void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 
 void Serializer::loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash)
 {
-	loadFromDisk(mWorkingDir, objectsHash);
+	loadFromDisk(mWorkingDir+"/tree", objectsHash);
 }
 
 void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash)
@@ -77,6 +77,29 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Logic
 			}
 		}
 	}
+}
+
+void  Serializer::log(QString const message, qReal::Id const diagram)
+{
+	QString path = mWorkingDir+"/logs/"+diagram.diagram();
+	QString name = diagram.id();
+	QDir dir;
+	dir.mkpath(path);
+
+	QFile *file;
+	if (!files.contains(name)) {
+		file = new QFile(path+"/"+name+".log");
+		files.insert(name, file);
+	} else {
+		file = files.value(name);
+	}
+
+	if (!file->isOpen())
+		file->open(QIODevice::Append | QIODevice::Text);
+	QTextStream out(file);
+	out << message << "\n";
+
+	//may be, file must be closed or smthng else
 }
 
 LogicObject *Serializer::parseLogicObject(QDomElement const &elem)
@@ -274,7 +297,7 @@ QString Serializer::pathToElement(Id const &id) const
 
 QString Serializer::createDirectory(Id const &id) const
 {
-	QString dirName = mWorkingDir;
+	QString dirName = mWorkingDir+"/tree";
 	QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {

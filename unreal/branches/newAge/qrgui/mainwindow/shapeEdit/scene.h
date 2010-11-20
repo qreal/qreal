@@ -6,6 +6,7 @@
 #include <QtGui/QGraphicsView>
 #include <QtCore/QList>
 
+#include "view.h"
 #include "item.h"
 #include "arch.h"
 #include "line.h"
@@ -18,6 +19,7 @@
 #include "stylus.h"
 #include "path.h"
 #include "curve.h"
+#include "image.h"
 #include "../umllib/elementTitle.h"
 
 using namespace UML;
@@ -29,12 +31,13 @@ class Scene : public QGraphicsScene
 {
 	Q_OBJECT
 public:
-	Scene(QGraphicsView *view, QObject *parent = 0);
+	Scene(View *view, QObject *parent = 0);
 	QGraphicsRectItem *mEmptyRect;
 	QPoint centerEmpty();
 	QRect realItemsBoundingRect() const;
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
+	void addImage(QString const &fileName);
 
 signals:
 	void noSelectedItems();
@@ -85,7 +88,8 @@ private:
 		pointPort,
 		linePort,
 		stylus,
-		curve
+		curve,
+		image
 	};
 	enum CopyPasteType {
 		nonePaste,
@@ -94,7 +98,7 @@ private:
 	};
 
 	int mZValue;
-	QGraphicsView *mView;
+	View *mView;
 	ItemTypes mItemType;
 	bool mWaitMove;
 	int mCount;
@@ -107,7 +111,9 @@ private:
 	LinePort *mLinePort;
 	Stylus *mStylus;
 	Curve* mCurve;
+	Image* mImage;
 	Item *mGraphicsItem;
+	QString mFileName;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;

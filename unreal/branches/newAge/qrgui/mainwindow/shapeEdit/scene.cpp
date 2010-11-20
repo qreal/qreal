@@ -2,8 +2,11 @@
 
 #include <QtCore/QPointF>
 #include <QtGui/QKeyEvent>
+#include <QtCore/QFile>
+#include <QtCore/QSettings>
+#include <QtCore/QDir>
 
-Scene::Scene(QGraphicsView *view, QObject * parent)
+Scene::Scene(View *view, QObject * parent)
 	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL), mSelectedTextPicture(NULL)
 {
 	mView = view;
@@ -84,12 +87,16 @@ void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mLine->setX2andY2(mX2, mY2);
+	if (event->modifiers() & Qt::ShiftModifier)
+		mLine->reshapeRectWithShift();
 }
 
 void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	mLinePort->setX2andY2(mX2, mY2);
+	if (event->modifiers() & Qt::ShiftModifier)
+		mLinePort->reshapeRectWithShift();
 }
 
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
@@ -292,6 +299,11 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setZValue(mLinePort);
 		removeMoveFlag(event, mLinePort);
 		mWaitMove = true;
+		break;
+	case image :
+		setX1andY1(event);
+		mImage = new Image(mFileName, mX1, mY1, NULL);
+		addItem(mImage);
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
@@ -507,6 +519,19 @@ void Scene::addNone(bool checked)
 		mItemType = none;
 		mCount = 0;
 	}
+}
+
+void Scene::addImage(QString const &fileName)
+{
+	mItemType = image;
+	mFileName = fileName;
+
+	QSettings settings("SPbSU", "QReal");
+	QString workingDirName = settings.value("workingDir", "./save").toString();
+	QDir dir(workingDirName);
+	dir.mkdir("images");
+	mFileName = workingDirName + "/images/" + fileName.section('/', -1);
+	QFile::copy(fileName, mFileName);
 }
 
 void Scene::deleteItem()

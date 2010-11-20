@@ -7,9 +7,11 @@ HEADERS += umllib/uml_edgeelement.h \
 	umllib/elementImpl.h \
 	umllib/elementRepoInterface.h \
 	umllib/embeddedLinker.h \
-    umllib/elementTitleHelpers.h \
-    umllib/sdfRendererInterface.h
-	
+	umllib/elementTitleHelpers.h \
+	umllib/sdfRendererInterface.h \
+	umllib/sceneGridHandler.h \
+	umllib/umlPortHandler.h
+
 SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/uml_element.cpp \
 	umllib/uml_nodeelement.cpp \
@@ -17,3 +19,5 @@ SOURCES += umllib/uml_edgeelement.cpp \
 	umllib/elementTitle.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/embeddedLinker.cpp \
+	umllib/sceneGridHandler.cpp \
+	umllib/umlPortHandler.cpp

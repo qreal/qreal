@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>738</width>
-    <height>559</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -78,19 +78,9 @@
     <addaction name="actionPreferences"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
+    <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
-   </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
-    <addaction name="actionClear"/>
-    <addaction name="actionExport_to_XMI"/>
-    <addaction name="actionGenerate_to_Java"/>
-    <addaction name="actionGenerate_to_Hascol"/>
-    <addaction name="actionShape_Edit"/>
-    <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionParse_Editor_xml"/>
+    <addaction name="actionSwitch_on_alignment"/>
    </widget>
    <widget class="QMenu" name="menuMouse_gestures">
     <property name="title">
@@ -104,6 +94,20 @@
     </property>
     <addaction name="actionCommit"/>
     <addaction name="actionCheckout"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionClear"/>
+    <addaction name="actionExport_to_XMI"/>
+    <addaction name="actionGenerate_to_Java"/>
+    <addaction name="actionGenerate_to_Hascol"/>
+    <addaction name="actionShape_Edit"/>
+    <addaction name="actionGenerate_Editor"/>
+    <addaction name="actionParse_Editor_xml"/>
+    <addaction name="separator"/>
+    <addaction name="actionGenerate_Editor_qrmc"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -253,6 +257,12 @@
      </property>
      <item>
       <widget class="QTableView" name="propertyEditor">
+       <property name="maximumSize">
+        <size>
+         <width>16777214</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -291,6 +301,50 @@
    </attribute>
    <addaction name="actionParse_Hascol_sources"/>
    <addaction name="actionParse_Java_Libraries"/>
+  </widget>
+  <widget class="QDockWidget" name="errorDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>80</width>
+     <height>38</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>524287</width>
+     <height>524287</height>
+    </size>
+   </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Error List</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_6">
+    <widget class="ErrorListWidget" name="errorListWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>738</width>
+       <height>191</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QDockWidget" name="graphicalModelDock">
    <property name="windowTitle">
@@ -346,6 +400,9 @@
    </widget>
   </widget>
   <action name="actionQuit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -488,7 +545,7 @@
   </action>
   <action name="actionPlugins">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Plugins...</string>
@@ -619,6 +676,33 @@
     <string>Checkout...</string>
    </property>
   </action>
+  <action name="actionGenerate_Editor_qrmc">
+   <property name="text">
+    <string>Generate Editor (qrmc)</string>
+   </property>
+  </action>
+  <action name="actionSwitch_on_alignment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Switch on alignment</string>
+   </property>
+  </action>
+  <action name="actionShow_alignment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show alignment</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
@@ -627,6 +711,11 @@
    <extends>QToolBox</extends>
    <header>paletteToolbox.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ErrorListWidget</class>
+   <extends>QListWidget</extends>
+   <header>errorlistwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

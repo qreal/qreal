@@ -9,12 +9,15 @@ HEADERS += \
 HEADERS += \
 	contextMenuActionTrigger.h \
 	methodeditordialog.h \
+	fieldeditordialog.h \
 
 SOURCES += \
 	../../qrgui/kernel/ids.cpp \
 	contextMenuActionTrigger.cpp \
 	methodeditordialog.cpp \
+	fieldeditordialog.cpp \
 
 FORMS += \
 	methodeditordialog.ui \
+	fieldeditordialog.ui \
 

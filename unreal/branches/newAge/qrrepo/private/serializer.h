@@ -6,6 +6,8 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
 
+#include <QFile>
+
 namespace qrRepo {
 
 	namespace details {
@@ -20,6 +22,7 @@ namespace qrRepo {
 			void saveToDisk(QList<LogicObject*> const &objects) const;
 			void loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash);
 
+			void log(QString const message, qReal::Id const diagram);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash);
 
@@ -41,6 +44,8 @@ namespace qrRepo {
 
 			QString mWorkingDir;
 			bool const mFailSafe;
+
+			QMap<QString, QFile*> files;
 		};
 
 	}

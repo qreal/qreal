@@ -18,6 +18,7 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/shapeEdit/stylus.h \
 	mainwindow/shapeEdit/colorlisteditor.h \
 	mainwindow/shapeEdit/curve.h \
+	mainwindow/shapeEdit/view.h \
 	mainwindow/gesturesShow/gestureswidget.h \
 	mainwindow/igesturespainter.h \
 	mainwindow/preferencesDialog.h \
@@ -25,7 +26,10 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/buttonRefWindow.h \
 	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
-	mainwindow/shapeEdit/path.h
+	mainwindow/shapeEdit/path.h \
+	mainwindow/shapeEdit/image.h \
+	mainwindow/error.h \
+	mainwindow/errorlistwidget.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -47,11 +51,15 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/shapeEdit/colorlisteditor.cpp \
 	mainwindow/shapeEdit/path.cpp \
 	mainwindow/shapeEdit/curve.cpp \
+	mainwindow/shapeEdit/view.cpp \
 	mainwindow/gesturesShow/gestureswidget.cpp \
 	mainwindow/preferencesDialog.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/refWindow.cpp \
-	mainwindow/shapeEdit/textPicture.cpp
+	mainwindow/shapeEdit/textPicture.cpp \
+	mainwindow/shapeEdit/image.cpp \
+	mainwindow/error.cpp \
+	mainwindow/errorlistwidget.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \

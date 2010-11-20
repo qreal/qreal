@@ -12,10 +12,10 @@ namespace qReal {
 
 		/** @class ModelAssistApi
 		 *	@brief class used for syncronization of logical model and repo/model.
-		 *	if GUI wants to change model in a way different from setData(), 
+		 *	if GUI wants to change model in a way different from setData(),
 		 *	it should call this class' methods. ModelAssistApi modifies the repo
 		 *	and notifies the model. it's in fact yet another interface to the model
-		 *	and even may become a proxy model for repo one day. 
+		 *	and even may become a proxy model for repo one day.
 		 *	ModelAssistApi used to somehow control GUI's actions towards the repo,
 		 *	model's mutableApi() should be used only in parsers and here
 		 * */
@@ -39,6 +39,8 @@ namespace qReal {
 			void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementType);
 			qReal::IdList diagramsAbleToBeConnectedTo(qReal::Id const &element) const;
 			qReal::IdList diagramsAbleToBeUsedIn(qReal::Id const &element) const;
+
+			qReal::IdList children(qReal::Id const &element) const;
 
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Copying is forbidden

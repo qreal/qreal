@@ -21,7 +21,7 @@ HascolParser::HascolParser(qrRepo::RepoApi &api, EditorManager const &editorMana
 {
 }
 
-ErrorReporter HascolParser::parse(QStringList const &files)
+ErrorReporter &HascolParser::parse(QStringList const &files)
 {
 	mImportedPortMappingDiagramId = initDiagram("Imported port mapping", "HascolPortMapping_HascolPortMappingDiagram");
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructure_HascolStructureDiagram");

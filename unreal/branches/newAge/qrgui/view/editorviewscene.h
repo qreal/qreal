@@ -45,6 +45,7 @@ public:
 	void setNeedDrawGrid(bool show);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
+	bool getNeedDrawGrid();
 
 	UML::Element* getLastCreated();
 
@@ -72,6 +73,7 @@ private:
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+	qreal mWidthOfGrid;
 
 	void getObjectByGesture();
 	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);

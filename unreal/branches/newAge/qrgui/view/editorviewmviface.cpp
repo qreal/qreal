@@ -8,6 +8,8 @@
 #include "../editorManager/editorManager.h"
 #include "../mainwindow/mainwindow.h"
 
+#include "../model/model.h"
+
 using namespace qReal;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
@@ -147,15 +149,19 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
 				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
-				if ((master) && (master->getConnectingState()))
+				if ((master) && (master->connectionInProgress()))
 					isEdgeFromEmbeddedLinker = true;
 			}
+
 			if (!isEdgeFromEmbeddedLinker)
 				mScene->clearSelection();
 			elem->setSelected(true);
 
+
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-			if (nodeElem && currentUuid.element() == "Class") {
+			model::Model* realModel = dynamic_cast<model::Model*>(model());
+			if (nodeElem && currentUuid.element() == "Class" && realModel &&
+				realModel->api().children(currentUuid).empty()) {
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
 					QString curChildElementType;

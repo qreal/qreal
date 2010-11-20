@@ -4,6 +4,7 @@
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
 
+#include "view.h"
 #include "scene.h"
 #include "item.h"
 
@@ -16,19 +17,25 @@ class ShapeEdit : public QWidget {
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index, int const &role);
+	View* getView();
 	void load(const QString &text);
 	~ShapeEdit();
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
+	void saveSignal();
+	void saveToXmlSignal();
+	void openSignal();
 
 protected:
 	void changeEvent(QEvent *e);
+	virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
 	void savePicture();
 	void saveToXml();
 	void save();
 	void open();
+	void addImage(bool checked);
 	void setNoPalette();
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoFontPalette();
