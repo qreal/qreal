@@ -1,15 +1,15 @@
 Task JavaClass
-#$/ Produce Java class from repo
+#!/ Produce Java class from repo
 
 class @@name@@ {
-#$foreach Method in children of MethodContainer
-#${
-	@@MethodVisibility@@ @@MethodReturnType@@ @@MethodName@@( #! task "MethodParameters" !# ) {
+#!foreach Method in children of MethodContainer
+#!{
+	@@methodVisibility@@ @@methodReturnType@@ @@methodName@@( @@!task "MethodParameters"@@ ) {
 	}
-#$}
+#!}
 
-#$foreach Field in children of FieldContainer
-#${
-	@@FieldVisibility@@ @@FieldType@@ @@FieldName@@;
-#$}
+#!foreach Field in children of FieldContainer
+#!{
+	@@fieldVisibility@@ @@fieldType@@ @@fieldName@@;
+#!}
 }

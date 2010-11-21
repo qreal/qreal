@@ -1,11 +1,12 @@
 #include <QDebug>
 #include <QStringList>
-#include <QListIterator>
 #include "interpreter.h"
 
 using namespace Geny;
 
-Interpreter::Interpreter(QString taskFilename) : taskFile(taskFilename), inStream(0) {
+Interpreter::Interpreter(const QString& taskFilename) : taskFile(taskFilename), inStream(0) {
+	//TODO: 1) задать rApi
+	//	2) задать текущий объект (curObjectId)
 }
 
 Interpreter::~Interpreter() {
@@ -13,33 +14,50 @@ Interpreter::~Interpreter() {
 		delete inStream;
 }
 
-bool Interpreter::isControlString(QString str) {
-	int i = 0;
-	while (i < str.length() && str[i].isSpace())
-		i++;
-	if (i < str.length() - 1 && (str[i] == '#') && (str[i + 1] == '$'))
-		return true;
-
-	return false;
+qReal::Id Interpreter::getCurObjectId() {
+	return curObjectId;
 }
 
-bool Interpreter::isCommentString(QString str) {
-	int i = 0;
-	while (i < str.length() && str[i].isSpace())
-		i++;
-	if (i < str.length() - 2 && (str[i] == '#') && (str[i + 1] == '$') && (str[i + 2] == '/'))
-		return true;
-
-	return false;
+QString controlExpressionParse(const QString& expression) {
+	if (expression.at(0) != '!')
+		return getCurrentObjectProperty(expression);
+	else
+		//TODO: обработка случая управляющего события, такого как ' task "__taskName__" '
+		return "";
 }
 
-QString Interpreter::nonControlStringParse(QString parsingStr) {
-	//TODO: сделать обработку @@_smth_@@ и #! !#
-	
+QString getCurrentObjectProperty(const QString& propertyName) {
+	return rApi.property(getCurObjectid(), propertyName).toString();
+}
+
+ControlStringType Interpreter::controlStringType(const QString& str) {
+	QString workStr = str.trimmed();
+	if (!workStr.startsWith("#!"))
+		return NOT_CONTROL;
+
+	workStr = workStr.right(workStr.length() - 2).trimmed();//убираем #!
+
+	if (workStr.startsWith("/"))
+		return COMMENT;
+	if (workStr.startsWith("foreach"))
+		return FOREACH;
+	if (workStr.startsWith("{"))
+		return LEFT_BRACE;
+	if (workStr.startsWith("}"))
+		return RIGHT_BRACE;
+
+	return NOT_CONTROL;
+}
+
+bool Interpreter::isControlString(const QString& str) {
+	return controlStringType != NOT_CONTROL ? true : false;
+}
+
+QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStream& stream) {
 	//Обработка @@_smth_@@
 	QStringList listOfSplitting = parsingStr.split();
 	if (listOfSplitting.length() % 2 == 0) {
-		qDebug() << "problem with number of @@ in task" << file.fileName();
+		qDebug() << "problem with number of @@ in task" << taskFile.fileName();
 		return "";
 	}
 
@@ -47,53 +65,121 @@ QString Interpreter::nonControlStringParse(QString parsingStr) {
 	int iterationNumber = 0;
 	foreach (QString curElem, listOfSplitting) {
 		if (iterationNumber % 2 == 1)
-			//TODO: реализовать getPropertyOfCurrentObject
-			listOfSplitting.replace(iterationNumber, getPropertyOfCurrentObject(curElem));
+			listOfSplitting.replace(iterationNumber, controlExpressionParse(curElem));
 		iterationNumber++;
 	}
 
-	return parsingStr;
+	QString resultStr;
+	foreach (QString curElem, listOfSplitting) {
+		resultStr = curElem + ' ';
+	}
+
+	//необходимо стереть лишний ' '
+	if (resultStr.length() > 0)
+		resultStr.resize(resultStr.length() - 1);
+
+	return resultStr + '\n';
 }
 
-QString Interpreter::controlStringParse(QString parsingStr) {
-	if (isCommentString(parsingStr))
-		return "";
+QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& stream) {
+	switch (controlStringType(parsingStr)) {
+		case COMMENT:
+			return "";
+		case FOREACH:
+			{
+				//TODO: сделать обработку foreach и его границ
+				
+				//TODO: парсинг parsingStr для получения атрибутов foreach
+				QTextStream foreachBlockStream;
 
-	//TODO: сделать обработку for и его границ
+				QString curLine = stream.readLine();
+				if (controlStringType(curLine) != LEFT_BRACE) {
+					qDebug() << "Error! After #!foreach not #!{ but \'" << curLine << "\' found!";
+					return "";
+				}
+
+				int braceBalance = 1;
+				curLine = "";
+
+				while ( (braceBalance != 0) && !stream.atEnd() ) {
+					foreachBlockStream << curLine << '\n';
+
+					curLine  = stream.readLine();
+					if (controlStringType(curLine) == LEFT_BRACE)
+						braceBalance++;
+					if (controlStringType(curLine) == RIGHT_BRACE)
+						braceBalance--;
+				}
+				if ( (braceBalance != 0) && (stream.atEnd()) ) {
+					qDebug() << "Error! There is no brace balance!";
+					return "";
+				}
+
+				QString resultStr;
+				/*
+				 * Здесь развертка foreach
+				foreach(__, __) {
+					//обновление curObjectId
+					resultStr += interpret(foreachBlockStream);
+					foreachBlockStream.reset();
+				}
+				 */
+
+				return resultStr;
+			}
+		case LEFT_BRACE:			
+			{
+				qDebug() << "Error! In" << taskFile.fileName() << ". #!{ but not control expression (ex #!foreach) found!";
+				return "";
+			}
+
+		case RIGHT_BRACE:
+			{
+				qDebug() << "Error! In" << taskFile.fileName() << ". #!} but not control expression (ex #!foreach) found!";
+				return "";
+			}
+		case NOT_CONTROL:
+			{
+				return "";
+			}
+	}
+
 	return "";
 }
 
+QString Interpreter::interpreter(QTextStream& stream) {
+	QString resultStr;
+
+	while (!stream->atEnd()) {
+		curStr = stream->readLine();
+
+		if (!isControlString(curStr)) {
+			resultStr += nonControlStringParse(curStr, stream);
+		}
+		else {
+			resultStr += controlStringParse(curStr, stream);//может сдвигать stream! Это нужно для for'а
+		}
+	}
+
+	return resultStr;
+}
+
 QString Interpreter::interpreter() {
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		inStream = new QTextStream(file);
+	if (taskFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		inStream = new QTextStream(taskFile);
 	}
 	else {
-		qDebug() << "cannot load file \"" << file.fileName() << "\"";
+		qDebug() << "cannot load file \"" << taskFile.fileName() << "\"";
 	}
 
 	QString curStr;
 	curStr = inStream->readLine();
 	if (!curStr.startsWith("Task ")) {
-		qDebug() << "Task file" << file.fileName() << "doesn't start with \"Task __name__\"";
+		qDebug() << "Task file" << taskFile.fileName() << "doesn't start with \"Task __name__\"";
 		return "";
 	}
 	
-	//QString taskName = curStr.end(curStr.length() - 5); //5 - "Task " length
+	QString taskName = curStr.end(curStr.length() - 5); //5 - "Task " length;
 
-	QString resultStr;
-
-	while (!inStream->atEnd()) {
-		curStr = inStream->readLine();
-
-		if (!isControlString(curStr)) {
-			resultStr += nonControlStringParse(curStr);
-		}
-		else {
-			resultStr += controlStringParse(curStr);//сдвигает inStream!
-		}
-	}
-
-	//выбор парсера по паттерну State в зависимости от isControlString
-
-	return resultStr;
+	return interpreter(*inStream);
 }
