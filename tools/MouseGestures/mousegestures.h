@@ -2,7 +2,7 @@
 #include "GeometricForms.h"
 #include "keyobjecttable.h"
 #include "paintmanager.h"
-#include "multistrokekeybulder.h"
+#include "multistrokekeybuilder.h"
 #include <QtGui/QMainWindow>
 #include <QPainter>
 #include <QMouseEvent>
@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QAction>
+#include <abstractRecognizer.h>
 
 namespace Ui
 {
@@ -31,7 +32,7 @@ protected:
 
 private:
 	Ui::MouseGestures *ui;
-	MultistrokeKeyBulder * mKeyBulder;
+	//MultistrokeKeyBuilder * mKeyBulder;
 	void mouseMoveEvent(QMouseEvent *);
 	void mouseReleaseEvent(QMouseEvent *);
 	void mousePressEvent(QMouseEvent *);
@@ -47,6 +48,8 @@ private:
 	static const int pathColumn = 1;
 	static const int objectColumn = 0;
 	void increasePath(double koef);
+	AbstractRecognizer * mRecognizer;
+	KeyBuilder * mKeyBuilder;
 
 private slots:
 	void rotatePath();

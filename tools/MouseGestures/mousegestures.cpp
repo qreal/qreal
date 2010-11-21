@@ -6,6 +6,7 @@
 #include "validpathcreator.h"
 #include "GeometricForms.h"
 #include "paintmanager.h"
+#include "multistrokekeybuilder.h"
 
 
 //todo:: что-то форма чересчур поумнела... надо бы ее тупой сделать
@@ -104,10 +105,12 @@ void MouseGestures::loadFile()
 	}
 	Serializer serializer(mFileName);
 	EntityVector entities = serializer.deserialize();
+	mKeyBuilder = new MultistrokeKeyBuilder();
+	mRecognizer = new AbstractRecognizer(mKeyBuilder, entities);
 	mKeyObjectTable.clear();
 	addEntities(entities);
 	showTable();
-	this->mKeyBulder = new MultistrokeKeyBulder(entities);
+//	this->mKeyBulder = new MultistrokeKeyBuilder(entities);
 }
 
 void MouseGestures::showTable()
@@ -145,6 +148,7 @@ void MouseGestures::addEntities(EntityVector const & entities)
 void MouseGestures::mouseMoveEvent(QMouseEvent * event)
 {
 	mMousePath.push_back(event->pos());
+	mRecognizer->mouseMove(event->pos());
 	this->update();
 }
 
@@ -154,6 +158,7 @@ void MouseGestures::mouseReleaseEvent(QMouseEvent *event)
 //    mCorrectPath = PathCorrector::correctPath(mMousePath);
 //    QString object = mKeyObjectTable.getObject(mCorrectPath);
 //    ui->teObject->setText(object);
+	mRecognizer->mouseRelease(event->pos());
 	this->update();
 }
 
@@ -162,8 +167,7 @@ void MouseGestures::keyPressEvent(QKeyEvent * event)
 	if (event->key() != 16777220)
 		return;
 	mCorrectPath = PathCorrector::correctPath(mMousePath);
-	QString object = this->mKeyBulder->getObject(mMousePath);
-	ui->teObject->setText(object);
+	ui->teObject->setText(mRecognizer->recognizeObject());
 	mMousePath.clear();
 	mCorrectPath.clear();
 	this->update();
@@ -172,6 +176,7 @@ void MouseGestures::keyPressEvent(QKeyEvent * event)
 void MouseGestures::mousePressEvent(QMouseEvent * event)
 {
 	mMousePath.push_back(event->pos());
+	mRecognizer->mousePress(event->pos());
 	this->update();
 }
 

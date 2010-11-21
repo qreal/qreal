@@ -5,25 +5,27 @@ QT += xml
 TARGET = MouseGestures
 TEMPLATE = app
 SOURCES += main.cpp \
-    mousegestures.cpp \
-    mousemovementmanager.cpp \
-    pathcorrector.cpp \
-    serializer.cpp \
-    validpathcreator.cpp \
-    keyobjecttable.cpp \
-    adopter.cpp \
-    paintmanager.cpp \
-    multistrokekeybulder.cpp
+	mousegestures.cpp \
+	mousemovementmanager.cpp \
+	pathcorrector.cpp \
+	serializer.cpp \
+	validpathcreator.cpp \
+	keyobjecttable.cpp \
+	adopter.cpp \
+	paintmanager.cpp \
+	multistrokekeybuilder.cpp \
+	mousegesturesrecognizer.cpp
 HEADERS += mousegestures.h \
-    mousemovementmanager.h \
-    pathcorrector.h \
-    serializer.h \
-    GeometricForms.h \
-    validpathcreator.h \
-    keyobjecttable.h \
-    IKeyManager.h \
-    adopter.h \
-    paintmanager.h \
-    figures.h \
-    multistrokekeybulder.h
+	mousemovementmanager.h \
+	pathcorrector.h \
+	serializer.h \
+	GeometricForms.h \
+	validpathcreator.h \
+	keyobjecttable.h \
+	adopter.h \
+	paintmanager.h \
+	figures.h \
+	multistrokekeybuilder.h \
+	gestureRecognizer.h \
+	abstractRecognizer.h
 FORMS += mousegestures.ui

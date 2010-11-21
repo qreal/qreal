@@ -12,6 +12,16 @@ typedef QPair<QString, PathVector> Entity;
 
 typedef QList<Entity> EntityVector;
 
+typedef QPair<int, int> SquarePos;
+
+typedef QList<SquarePos> Key;
+
+typedef QPair<QString, PointVector> PathObject;
+
+typedef QPair<QString, Key> IdealGesture;
+
+typedef QList<IdealGesture> IdealGestures;
+
 struct KeyObjectItem
 {
 public:

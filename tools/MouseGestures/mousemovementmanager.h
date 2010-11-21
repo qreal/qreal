@@ -1,11 +1,10 @@
 #pragma once
-#include "IKeyManager.h"
 #include <QPoint>
 #include <QList>
 #include <QMap>
 #include <QPair>
 
-class MouseMovementManager : public IKeyManager
+class MouseMovementManager
 {
 public:
 	MouseMovementManager();

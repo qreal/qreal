@@ -2,14 +2,8 @@
 #include "GeometricForms.h"
 #include "pathcorrector.h"
 
-KeyObjectTable::KeyObjectTable(IKeyManager * keyManager)
-{
-	mKeyManager = keyManager;
-}
-
 KeyObjectTable::KeyObjectTable()
 {
-	mKeyManager = &mMouseMovementManager;
 }
 
 KeyObjectItem KeyObjectTable::at(int pos)
@@ -34,7 +28,7 @@ Objects KeyObjectTable::getObjects()
 
 void KeyObjectTable::add(QString const & object, QList<QPoint> const & correctPath)
 {
-	QString key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
+	QString key = mMouseMovementManager.getKey(PathCorrector::getMousePath(correctPath));
 	KeyObjectItem keyObjectItem(object, correctPath, key);
 	mKeyObjectTable.push_back(keyObjectItem);
 }
@@ -52,16 +46,6 @@ void KeyObjectTable::clear()
 	mKeyObjectTable.clear();
 }
 
-void KeyObjectTable::setKeyManager(IKeyManager * keyManager)
-{
-	mKeyManager = keyManager;
-	for (int i = 0; i < mKeyObjectTable.size(); i++)
-	{
-		mKeyObjectTable[i].key = mKeyManager->getKey(
-				PathCorrector::getMousePath(mKeyObjectTable[i].correctPath));
-	}
-}
-
 void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & correctPath)
 {
 	for (int i = 0; i < mKeyObjectTable.size(); i++)
@@ -69,7 +53,7 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
 		if (mKeyObjectTable[i].object == object)
 		{
 			mKeyObjectTable[i].correctPath = correctPath;
-			QString key = mKeyManager->getKey(PathCorrector::getMousePath(correctPath));
+			QString key = mMouseMovementManager.getKey(PathCorrector::getMousePath(correctPath));
 			mKeyObjectTable[i].key = key;
 			return;
 		}
@@ -83,7 +67,7 @@ QString KeyObjectTable::getObject(QList<QPoint> const & path)
 	const float maxKeyDistance = 50;
 	float min = e;
 	float distance;
-	QString key = mKeyManager->getKey(path);
+	QString key = mMouseMovementManager.getKey(path);
 	QString object = "";
 	if (key.isEmpty())
 		return object;
@@ -91,7 +75,7 @@ QString KeyObjectTable::getObject(QList<QPoint> const & path)
 	{
 		if (!item.key.isEmpty())
 		{
-			distance = (float)(mKeyManager->getDistance(item.key, key) * e
+			distance = (float)(mMouseMovementManager.getDistance(item.key, key) * e
 								/ std::min(key.size(), item.key.size()));
 			if (distance < min && distance < maxKeyDistance)
 			{
