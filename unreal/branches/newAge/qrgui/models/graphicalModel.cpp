@@ -97,21 +97,6 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
-	parentItem->addChild(newGraphicalModelItem);
-	mApi.addChild(parentItem->id(), id);
-	mApi.setProperty(id, "name", name);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
-	mApi.setProperty(id, "fromPort", 0.0);
-	mApi.setProperty(id, "toPort", 0.0);
-	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "position", position);
-	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
-	mModelItems.insert(id, newGraphicalModelItem);
-	endInsertRows();
+	initializeElement(id, parentItem, newGraphicalModelItem, name, position);
 }
 

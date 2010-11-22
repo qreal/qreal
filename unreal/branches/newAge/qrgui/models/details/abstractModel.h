@@ -33,6 +33,8 @@ namespace qReal {
 
 				virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
 				QPersistentModelIndex rootIndex() const;
+				void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
+						details::AbstractModelItem *item, QString const &name, QPointF const &position);
 
 			protected:
 				qrRepo::RepoApi &mApi;
