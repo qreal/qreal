@@ -19,6 +19,7 @@ namespace qReal {
 		~VisualDebugger();
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
+		void setTimeout(int timeout);
 	public slots:
 		gui::ErrorReporter& debug();
 		gui::ErrorReporter& debugSingleStep();
@@ -40,7 +41,8 @@ namespace qReal {
 		Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
 		gui::ErrorReporter *mErrorReporter;
-		blockParser *mBlockParser;
+		BlockParser *mBlockParser;
+		int mTimeout;
 		
 		void error(ErrorType e);
 		ErrorType checkEditor();
@@ -53,9 +55,5 @@ namespace qReal {
 		void doStep(Id id);
 		void deinitialize();
 		void processAction();
-		
-		//ex
-		Id findValidLink_ex();
-		void doStep_ex(Id id);
 	};
 }

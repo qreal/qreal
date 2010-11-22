@@ -20,11 +20,18 @@ VisualDebugger::VisualDebugger(model::Model *model) {
 	mCurrentId = mCurrentId.getRootId();
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
-	mBlockParser = new blockParser(mErrorReporter);
+	mBlockParser = new BlockParser(mErrorReporter);
+	mTimeout = 750;
 }
 
 VisualDebugger::~VisualDebugger() {
-	
+		delete mEffect;
+		delete mErrorReporter;
+		delete mBlockParser;
+}
+
+void VisualDebugger::setTimeout(int timeout) {
+	mTimeout = timeout;
 }
 
 void VisualDebugger::setEditor(EditorView *editor) {
@@ -189,7 +196,7 @@ gui::ErrorReporter& VisualDebugger::debug() {
 	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
 	
 	while (outLinks.count() > 0) {
-		pause(750);
+		pause(mTimeout);
 		
 		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
 			Id validLinkId = findValidLink();
@@ -210,7 +217,7 @@ gui::ErrorReporter& VisualDebugger::debug() {
 			}
 		}
 		
-		pause(750);
+		pause(mTimeout);
 		
 		if (!hasEndOfLinkNode(mCurrentId)) {
 			error(VisualDebugger::missingEndOfLinkNode);
@@ -226,7 +233,7 @@ gui::ErrorReporter& VisualDebugger::debug() {
 		outLinks = mModel->api().outgoingLinks(mCurrentId);
 	}
 	
-	pause(750);
+	pause(mTimeout);
 	
 	if (!isFinalNode(mCurrentId)) {
 		error(VisualDebugger::endWithNotEndNode);
@@ -297,30 +304,4 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	
 	mErrorReporter->addInformation("Debug (single step) finished successfully");
 	return *mErrorReporter;
-}
-
-
-
-
-
-
-
-Id VisualDebugger::findValidLink_ex() {
-	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
-	for (int i=0; i<outLinks.count(); i++) {
-		QString condition = mModel->api().property(mCurrentId, "decision").toString();
-		QString type = mModel->api().property(outLinks.at(i), "type_number").toString();
-		if (type.compare(condition) == 0) {
-			return outLinks.at(i);
-		}
-	}
-	error(VisualDebugger::missingValidLink);
-	return outLinks.at(0).getRootId();
-}
-
-void VisualDebugger::doStep_ex(Id id) {
-	mEffect->setEnabled(true);
-	mCurrentId = id;
-	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
-	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
 }

@@ -3,32 +3,32 @@
 #include <QVariant>
 
 namespace qReal {
-	class number {
+	class Number {
 		public:
 			enum Type {
-				Double = 0,
-				Int
+				doubleType = 0,
+				intType
 			};
 	
 		public:
-			number(QVariant n, Type t);
-			number();
-			~number();
+			Number(QVariant n, Type t);
+			Number();
+			~Number();
 			
 			QVariant property(QString name);
 			void setProperty(QString name, QVariant value);
 			
-			void operator+=(number add);
-			void operator-=(number sub);
-			void operator*=(number mult);
-			void operator/=(number div);
-			number operator-();
-			bool operator<(number arg);
-			bool operator>(number arg);
-			bool operator==(number arg);
-			bool operator<=(number arg);
-			bool operator>=(number arg);
-			bool operator!=(number arg);
+			void operator+=(Number add);
+			void operator-=(Number sub);
+			void operator*=(Number mult);
+			void operator/=(Number div);
+			Number operator-();
+			bool operator<(Number arg);
+			bool operator>(Number arg);
+			bool operator==(Number arg);
+			bool operator<=(Number arg);
+			bool operator>=(Number arg);
+			bool operator!=(Number arg);
 		private:
 			QVariant mNumber;
 			Type mType;

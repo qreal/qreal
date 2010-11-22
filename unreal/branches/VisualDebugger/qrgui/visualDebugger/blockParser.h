@@ -7,13 +7,13 @@
 #include "propertyeditorproxymodel.h"
 
 namespace qReal {
-	class blockParser
+	class BlockParser
 	{
 		
 	public:
-		blockParser(gui::ErrorReporter* errorReporter);
-		~blockParser();
-		number parseExpression(QString stream, int& pos);
+		BlockParser(gui::ErrorReporter* errorReporter);
+		~BlockParser();
+		Number parseExpression(QString stream, int& pos);
 		void parseProcess(QString stream, int& pos, Id curId);
 		bool parseConditionPrivate(QString stream, int& pos);
 		bool parseCondition(QString stream, int& pos, Id curId);
@@ -22,7 +22,7 @@ namespace qReal {
 		void setErrorReporter(gui::ErrorReporter* errorReporter);
 		void clear();
 		
-		QMap<QString, number>* getVariables(); //only for test using
+		QMap<QString, Number>* getVariables(); //only for test using
 		
 	private:
 		enum ParseErrorType {
@@ -35,7 +35,7 @@ namespace qReal {
 		};
 
 	private:
-		QMap<QString, number> mVariables;
+		QMap<QString, Number> mVariables;
 		bool hasParseErrors;
 		gui::ErrorReporter* mErrorReporter;
 		Id mCurrentId;
@@ -58,11 +58,11 @@ namespace qReal {
 		bool isHtmlBrTag(QString stream, int& pos);
 		
 		QString parseIdentifier(QString stream, int& pos);
-		number parseNumber(QString stream, int& pos);
+		Number parseNumber(QString stream, int& pos);
 		void skip(QString stream, int& pos);
 		
-		number parseTerm(QString stream, int& pos);
-		number parseMult(QString stream, int& pos);
+		Number parseTerm(QString stream, int& pos);
+		Number parseMult(QString stream, int& pos);
 		
 		void parseVarPart(QString stream, int& pos);
 		void parseCommand(QString stream, int& pos);

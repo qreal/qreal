@@ -1476,9 +1476,6 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-	/*gui::ErrorReporter* e = new gui::ErrorReporter();
-	e->addCritical("asdasdsadas");
-	e->showErrors(ui.errorListWidget, ui.errorDock);*/
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
