@@ -279,6 +279,9 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
+	if (id == id.getRootId()) {
+		return;
+	}
 	mPropertyModel.setIndex(mModel->indexById(id));
 	centerOn(mModel->indexById(id));
 }
@@ -1473,20 +1476,21 @@ void MainWindow::initGridProperties()
 
 void MainWindow::debug()
 {
-	//ui.errorListWidget->clear();
+	/*gui::ErrorReporter* e = new gui::ErrorReporter();
+	e->addCritical("asdasdsadas");
+	e->showErrors(ui.errorListWidget, ui.errorDock);*/
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
-	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);//"Debug finished successfully"
-	//mVisualDebugger->clearErrorReporter();
+	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
+	mVisualDebugger->clearErrorReporter();
 }
 
 void MainWindow::debugSingleStep()
 {
-	//ui.errorListWidget->clear();
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
-	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);//"Debug (single step) finished successfully"
+	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
 	mVisualDebugger->clearErrorReporter();
 }

@@ -3,23 +3,42 @@
 #include <QMap>
 
 #include "number.h"
+#include "../mainwindow/errorReporter.h"
+#include "propertyeditorproxymodel.h"
 
 namespace qReal {
 	class blockParser
 	{
 		
 	public:
-		blockParser();
+		blockParser(gui::ErrorReporter* errorReporter);
 		~blockParser();
 		number parseExpression(QString stream, int& pos);
-		void parseProcess(QString stream, int& pos);
-		bool parseCondition(QString stream, int& pos);
+		void parseProcess(QString stream, int& pos, Id curId);
+		bool parseConditionPrivate(QString stream, int& pos);
+		bool parseCondition(QString stream, int& pos, Id curId);
+		gui::ErrorReporter& getErrors();
+		bool hasErrors();
+		void setErrorReporter(gui::ErrorReporter* errorReporter);
+		void clear();
 		
 		QMap<QString, number>* getVariables(); //only for test using
 		
 	private:
+		enum ParseErrorType {
+			unexpectedEndOfStream,
+			unexpectedSymbol,
+			typesMismatch,
+			unknownIdentifier,
+			emptyProcess, 
+			emptyCondition
+		};
+
+	private:
 		QMap<QString, number> mVariables;
-		bool hasWrongParsedBracket;
+		bool hasParseErrors;
+		gui::ErrorReporter* mErrorReporter;
+		Id mCurrentId;
 		
 		bool isDigit(QChar c);
 		bool isSign(QChar c);
@@ -51,5 +70,15 @@ namespace qReal {
 		bool parseSingleComprasion(QString stream, int& pos);
 		bool parseConjunction(QString stream, int& pos);
 		bool parseDisjunction(QString stream, int& pos);
+		
+		void error(ParseErrorType type, QString pos = "", QString expected = "", QString got = "");
+		bool checkForEndOfStream(QString stream, int& pos);
+		bool checkForLetter(QString stream, int& pos);
+		bool checkForDigit(QString stream, int& pos);
+		bool checkForBeginBracket(QString stream, int& pos);
+		bool checkForEndBracket(QString stream, int& pos);
+		bool checkForColon(QString stream, int& pos);
+		bool checkForEmptiness(QString stream, int& pos);
+		bool checkForEqual(QString stream, int pos);
 	};
 }
