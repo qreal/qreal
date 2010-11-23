@@ -44,7 +44,7 @@ namespace UML {
 
 		virtual void setColorRect(bool bl) = 0;
 	protected:
-		qReal::models::GraphicalModel* model();
+		qReal::models::GraphicalModel* model() const;
 
 		QPersistentModelIndex mDataIndex;
 

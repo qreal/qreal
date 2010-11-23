@@ -69,7 +69,7 @@ void Element::setRoleValueByName(QString const &roleName, QString const &value)
 	itemModel->setData(mDataIndex, value, roleIndex);
 }
 
-qReal::models::GraphicalModel *Element::model()
+qReal::models::GraphicalModel *Element::model() const
 {
 	return (const_cast<models::GraphicalModel*>(static_cast<models::GraphicalModel const *>(mDataIndex.model())));
 }
