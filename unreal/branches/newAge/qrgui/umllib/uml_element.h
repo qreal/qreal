@@ -11,6 +11,8 @@
 #include "contextMenuAction.h"
 #include "elementImpl.h"
 
+#include "../models/graphicalModel.h"
+
 namespace UML {
 	/** @class Element
 	* 	@brief base class for an element on a diagram
@@ -42,6 +44,8 @@ namespace UML {
 
 		virtual void setColorRect(bool bl) = 0;
 	protected:
+		qReal::models::GraphicalModel* model();
+
 		QPersistentModelIndex mDataIndex;
 
 		qReal::Id mUuid;

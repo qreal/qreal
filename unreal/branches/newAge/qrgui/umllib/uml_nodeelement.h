@@ -20,8 +20,6 @@
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
 
-#include "../models/graphicalModel.h"
-
 /** @brief size of a point port */
 const int kvadratik = 5;
 const int widthLineX = 1500;
@@ -142,8 +140,6 @@ namespace UML {
 
 		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
-
-		qReal::models::GraphicalModel* model();
 
 		ContextMenuAction mSwitchGridAction;
 		static int const objectMinSize = 10;

@@ -1146,10 +1146,4 @@ void NodeElement::setColorRect(bool value)
 	mSelectionNeeded = value;
 }
 
-qReal::models::GraphicalModel *NodeElement::model()
-{
-	return (const_cast<models::GraphicalModel*>(static_cast<models::GraphicalModel const *>(mDataIndex.model())));
-}
-
-
 

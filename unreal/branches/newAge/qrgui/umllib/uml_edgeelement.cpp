@@ -303,13 +303,13 @@ bool EdgeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+	models::GraphicalModel *itemModel = model();
 	if (!itemModel)
 		return false;
 	QString editor = uuid().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = uuid().diagram();
-	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
+	EditorInterface * editorInterface = itemModel->editorManager().getEditorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{

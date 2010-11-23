@@ -45,8 +45,8 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 
 int Element::roleIndexByName(QString const &roleName) const
 {
-	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
-	QStringList properties = itemModel->assistApi().editorManager().getPropertyNames(uuid().type());
+	models::GraphicalModel *itemModel = model();
+	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 
@@ -55,7 +55,7 @@ QString Element::roleValueByName(QString const &roleName) const
 	int roleIndex = roleIndexByName(roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
 	// we'd better check (in generators) that we're binding on an existing field here
-		return ""; 
+		return "";
 		// Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
 	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
 }
@@ -68,4 +68,10 @@ void Element::setRoleValueByName(QString const &roleName, QString const &value)
 	QAbstractItemModel *itemModel = const_cast<QAbstractItemModel*>(mDataIndex.model());
 	itemModel->setData(mDataIndex, value, roleIndex);
 }
+
+qReal::models::GraphicalModel *Element::model()
+{
+	return (const_cast<models::GraphicalModel*>(static_cast<models::GraphicalModel const *>(mDataIndex.model())));
+}
+
 
