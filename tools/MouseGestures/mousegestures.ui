@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>913</width>
-    <height>573</height>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
         <widget class="QTableWidget" name="twObjectPathTable">
          <property name="minimumSize">
           <size>
-           <width>311</width>
+           <width>100</width>
            <height>0</height>
           </size>
          </property>
@@ -62,36 +62,22 @@
            <string>object</string>
           </property>
          </column>
-         <column>
-          <property name="text">
-           <string>path</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>key</string>
-          </property>
-         </column>
         </widget>
        </item>
        <item>
         <widget class="QGraphicsView" name="gvGesture">
          <property name="minimumSize">
           <size>
-           <width>441</width>
+           <width>300</width>
            <height>101</height>
           </size>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QGraphicsView" name="gvEditGesture"/>
+       </item>
       </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="bSave">
-      <property name="text">
-       <string>Save</string>
-      </property>
      </widget>
     </item>
     <item>
@@ -99,7 +85,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>59</height>
+        <height>25</height>
        </size>
       </property>
       <property name="readOnly">
@@ -115,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>913</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -123,6 +109,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -149,6 +136,11 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
    </property>
   </action>
  </widget>

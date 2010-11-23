@@ -4,6 +4,7 @@
 
 KeyObjectTable::KeyObjectTable()
 {
+	mKeyBuilder = new MouseMovementManager();
 }
 
 KeyObjectItem KeyObjectTable::at(int pos)
@@ -28,7 +29,7 @@ Objects KeyObjectTable::getObjects()
 
 void KeyObjectTable::add(QString const & object, QList<QPoint> const & correctPath)
 {
-	QString key = mMouseMovementManager.getKey(PathCorrector::getMousePath(correctPath));
+	QString key = mKeyBuilder.getKey(PathCorrector::getMousePath(correctPath));
 	KeyObjectItem keyObjectItem(object, correctPath, key);
 	mKeyObjectTable.push_back(keyObjectItem);
 }
@@ -53,7 +54,7 @@ void KeyObjectTable::setPath(QString const & object, QList<QPoint> const & corre
 		if (mKeyObjectTable[i].object == object)
 		{
 			mKeyObjectTable[i].correctPath = correctPath;
-			QString key = mMouseMovementManager.getKey(PathCorrector::getMousePath(correctPath));
+			QString key = mKeyBuilder.getKey(PathCorrector::getMousePath(correctPath));
 			mKeyObjectTable[i].key = key;
 			return;
 		}
@@ -67,7 +68,7 @@ QString KeyObjectTable::getObject(QList<QPoint> const & path)
 	const float maxKeyDistance = 50;
 	float min = e;
 	float distance;
-	QString key = mMouseMovementManager.getKey(path);
+	QString key = mKeyBuilder.getKey(path);
 	QString object = "";
 	if (key.isEmpty())
 		return object;
@@ -75,7 +76,7 @@ QString KeyObjectTable::getObject(QList<QPoint> const & path)
 	{
 		if (!item.key.isEmpty())
 		{
-			distance = (float)(mMouseMovementManager.getDistance(item.key, key) * e
+			distance = (float)(mKeyBuilder.getDistance(item.object) * e
 								/ std::min(key.size(), item.key.size()));
 			if (distance < min && distance < maxKeyDistance)
 			{

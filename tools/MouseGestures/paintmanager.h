@@ -1,4 +1,5 @@
 #pragma once
+#include "GeometricForms.h"
 #include <QPainter>
 #include <QList>
 #include <QVector>
@@ -11,21 +12,22 @@
 
 class PaintManager : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    PaintManager(QGraphicsView *gestureView);
-    ~PaintManager();
-    static void drawPath(QPainter *painter, QList<QPoint> const & path);
-    void drawGesture(QString const & polygonString);
+	PaintManager(QGraphicsView *gestureView);
+	~PaintManager();
+	static void drawPath(QPainter *painter, PathVector const & paths);
+	void drawGesture(QList<QPoint> const & path);
+	void drawGesture(QList<QList<QPoint> > const & gesture);
 
 private:
-    QGraphicsScene *mGestureScene;
-    QTimer *mTimer;
-    QVector<QPoint> mPath;
-    static const int pointsAtSegment = 5;
-    int mCurrentPointNumber;
-    static int coord(int previous, int next, int part);
+	QGraphicsScene *mGestureScene;
+	QTimer *mTimer;
+	QVector<QPoint> mPath;
+	static const int pointsAtSegment = 5;
+	int mCurrentPointNumber;
+	static int coord(int previous, int next, int part);
 
 private slots:
-    void draw();
+	void draw();
 };

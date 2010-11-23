@@ -1,4 +1,6 @@
 #include "mousemovementmanager.h"
+#include "validpathcreator.h"
+#include "pathcorrector.h"
 #include <QPoint>
 #include <QString>
 #include <stdlib.h>
@@ -14,6 +16,18 @@ static const double adjacentWeight = 0.25;
 MouseMovementManager::MouseMovementManager()
 {
 	createWeights();
+}
+
+double MouseMovementManager::getMaxDistance()
+{
+	return 50;
+}
+
+QString MouseMovementManager::getKey(const PathVector &components)
+{
+	QList<QPoint> gesture = ValidPathCreator::createPath(components);
+	QList<QPoint> path = PathCorrector::correctPath(gesture);
+	return getKey(path);
 }
 
 //todo:: возможно оставить только создание весов в классе, а нахождение расстояния Левенштейна вынести
@@ -96,7 +110,7 @@ double MouseMovementManager::getDistance(const QString &key1, const QString &key
 									diagonalCell + mWeights[letters]);
 		}
 	}
-	return matrix[m][n];
+	return (float) matrix[m][n] * 100 / std::min(m, n);
 }
 
 QString MouseMovementManager::getKey(QList<QPoint> const & path)

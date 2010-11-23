@@ -1,9 +1,5 @@
 #include "validpathcreator.h"
 
-ValidPathCreator::ValidPathCreator()
-{
-}
-
 QList<QPoint> ValidPathCreator::createPath(PathVector const & components)
 {
 	if (components.size() == 0)

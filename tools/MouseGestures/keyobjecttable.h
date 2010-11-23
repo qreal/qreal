@@ -1,6 +1,7 @@
 #pragma once
 #include "GeometricForms.h"
 #include "mousemovementmanager.h"
+#include "abstractRecognizer.h"
 
 // эту таблицу надо будет сериализовать
 
@@ -22,5 +23,5 @@ public:
 private:
 	KeyObjectItem getItem(QString const &name);
 	KeyObjectItems mKeyObjectTable;
-	MouseMovementManager mMouseMovementManager;
+	KeyBuilder * mKeyBuilder;
 };

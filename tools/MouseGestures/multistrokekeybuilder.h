@@ -1,20 +1,22 @@
 #pragma once
 #include "GeometricForms.h"
-#include "mousegesturesrecognizer.h"
 #include "abstractRecognizer.h"
 #include <QPair>
 #include <QList>
 
-class MultistrokeKeyBuilder : public GesturesRecognizer<Key>
+class MultistrokeGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-	MultistrokeKeyBuilder() {}
+	MultistrokeGesturesManager() {}
 	double getMaxDistance();
+	bool isMultistroke()
+	{
+		return true;
+	}
 
 protected:
 	double getDistance(Key const & key1, Key const & key2);
-	Key getKey(QList<QPoint> const & path);
-	Key getKey(const PathVector &path);
+	Key getKey(PointVector const & path);
 
 private:
 	Key transferKey(const Key & key, int size);

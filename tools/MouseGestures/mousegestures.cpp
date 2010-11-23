@@ -18,9 +18,10 @@ MouseGestures::MouseGestures(QWidget *parent)
 	ui->setupUi(this);
 	connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadFile()));
 	connect(ui->twObjectPathTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(drawGesture()));
-	connect(ui->bSave, SIGNAL(clicked()), this, SLOT(save()));
+	connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
 	mPaintManager = new PaintManager(ui->gvGesture);
-	showTable();
+	mGesturesManager = new MultistrokeGesturesManager();
+	mRecognizer = new AbstractRecognizer(mGesturesManager);
 }
 
 void MouseGestures::contextMenuEvent(QContextMenuEvent *event)
@@ -66,30 +67,24 @@ void MouseGestures::decreasePath()
 
 void MouseGestures::save()
 {
-	Objects objects = mKeyObjectTable.getObjects();
+	//TODO:: save different gestures
+	Objects objects;
 	Serializer serializer(mFileName);
 	serializer.serialize(objects);
 }
 
 void MouseGestures::changePath()
 {
-	int currentRow = ui->twObjectPathTable->currentRow();
-	QString name = ui->twObjectPathTable->item(currentRow, objectColumn)->text();
-	QString pathStr = ui->twObjectPathTable->item(currentRow, pathColumn)->text();
-	QList<QPoint> path = Adopter::stringToPath(pathStr);
-	if (!path.isEmpty())
-		mKeyObjectTable.setPath(name, path);
-	else
-	{
-		QMessageBox msgBox;
-		msgBox.setText("Invalid string. Path cannot be modified.");
-		msgBox.exec();
-		path = mKeyObjectTable.getPath(name);
-		pathStr = Adopter::pathToString(path);
-		ui->twObjectPathTable->item(currentRow, pathColumn)->setText(pathStr);
-	}
-	QString key = mKeyObjectTable.getKey(name);
-	ui->twObjectPathTable->item(currentRow, keyColumn)->setText(key);
+//	int currentRow = ui->twObjectPathTable->currentRow();
+//	QString name = ui->twObjectPathTable->item(currentRow, objectColumn)->text();
+//	QString pathStr = ui->twObjectPathTable->item(currentRow, pathColumn)->text();
+//	QList<QPoint> path = Adopter::stringToPath(pathStr);
+//	if (path.isEmpty())
+//	{
+//		QMessageBox msgBox;
+//		msgBox.setText("Invalid string. Path cannot be modified.");
+//		msgBox.exec();
+//	}
 }
 
 void MouseGestures::loadFile()
@@ -105,56 +100,50 @@ void MouseGestures::loadFile()
 	}
 	Serializer serializer(mFileName);
 	EntityVector entities = serializer.deserialize();
-	mKeyBuilder = new MultistrokeKeyBuilder();
-	mRecognizer = new AbstractRecognizer(mKeyBuilder, entities);
-	mKeyObjectTable.clear();
-	addEntities(entities);
+	mGesturesManager = new MultistrokeGesturesManager();
+	mRecognizer = new AbstractRecognizer(mGesturesManager, entities);
+//	addEntities(entities);
 	showTable();
-//	this->mKeyBulder = new MultistrokeKeyBuilder(entities);
+//	this->mKeyBulder = new MultistrokeGesturesManager(entities);
 }
 
 void MouseGestures::showTable()
 {
 	this->disconnect(ui->twObjectPathTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(changePath()));
-	for (int i = 0; i < this->mKeyObjectTable.size(); i ++)
+//	for (int i = 0; i < this->mKeyObjectTable.size(); i ++)
+//	{
+//		KeyObjectItem object = this->mKeyObjectTable.at(i);
+//		int rowCount = ui->twObjectPathTable->rowCount();
+//		ui->twObjectPathTable->setRowCount(rowCount + 1);
+//		QTableWidgetItem *item = new QTableWidgetItem(object.object);
+//		item->setFlags(Qt::NoItemFlags);
+//		ui->twObjectPathTable->setItem(rowCount, objectColumn, item);
+//		QString text = Adopter::pathToString(object.correctPath);
+//		item = new QTableWidgetItem(text);
+//		ui->twObjectPathTable->setItem(rowCount, pathColumn, item);
+//		text = object.key;
+//		item = new QTableWidgetItem(text);
+//		item->setFlags(Qt::NoItemFlags);
+//		ui->twObjectPathTable->setItem(rowCount, keyColumn, item);
+//	}
+	foreach (QString object, mRecognizer->getObjects())
 	{
-		KeyObjectItem object = this->mKeyObjectTable.at(i);
 		int rowCount = ui->twObjectPathTable->rowCount();
 		ui->twObjectPathTable->setRowCount(rowCount + 1);
-		QTableWidgetItem *item = new QTableWidgetItem(object.object);
-		item->setFlags(Qt::NoItemFlags);
-		ui->twObjectPathTable->setItem(rowCount, objectColumn, item);
-		QString text = Adopter::pathToString(object.correctPath);
-		item = new QTableWidgetItem(text);
-		ui->twObjectPathTable->setItem(rowCount, pathColumn, item);
-		text = object.key;
-		item = new QTableWidgetItem(text);
-		item->setFlags(Qt::NoItemFlags);
-		ui->twObjectPathTable->setItem(rowCount, keyColumn, item);
+		QTableWidgetItem *item = new QTableWidgetItem(object);
+		ui->twObjectPathTable->setItem(rowCount, 0, item);
 	}
 	connect(ui->twObjectPathTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(changePath()));
 }
 
-void MouseGestures::addEntities(EntityVector const & entities)
-{
-	foreach (Entity entity, entities)
-	{
-		ValidPathCreator pathCreator;
-		QList<QPoint> path = pathCreator.createPath(entity.second);
-		mKeyObjectTable.add(entity.first, path);
-	}
-}
-
 void MouseGestures::mouseMoveEvent(QMouseEvent * event)
 {
-	mMousePath.push_back(event->pos());
 	mRecognizer->mouseMove(event->pos());
 	this->update();
 }
 
 void MouseGestures::mouseReleaseEvent(QMouseEvent *event)
 {
-	mMousePath.push_back(event->pos());
 //    mCorrectPath = PathCorrector::correctPath(mMousePath);
 //    QString object = mKeyObjectTable.getObject(mCorrectPath);
 //    ui->teObject->setText(object);
@@ -166,16 +155,14 @@ void MouseGestures::keyPressEvent(QKeyEvent * event)
 {
 	if (event->key() != 16777220)
 		return;
-	mCorrectPath = PathCorrector::correctPath(mMousePath);
+	//mCorrectPath = PathCorrector::correctPath(mMousePath);
 	ui->teObject->setText(mRecognizer->recognizeObject());
-	mMousePath.clear();
 	mCorrectPath.clear();
 	this->update();
 }
 
 void MouseGestures::mousePressEvent(QMouseEvent * event)
 {
-	mMousePath.push_back(event->pos());
 	mRecognizer->mousePress(event->pos());
 	this->update();
 }
@@ -183,16 +170,15 @@ void MouseGestures::mousePressEvent(QMouseEvent * event)
 void MouseGestures::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
-	PaintManager::drawPath(&painter, mMousePath);
+	PaintManager::drawPath(&painter, mRecognizer->getGesture());
 	painter.setPen(Qt::red);
-	PaintManager::drawPath(&painter, mCorrectPath);
+	//PaintManager::drawPath(&painter, mCorrectPath);
 }
 
 void MouseGestures::drawGesture()
 {
-	int row = ui->twObjectPathTable->currentRow();
-	QString pathStr = ui->twObjectPathTable->item(row, pathColumn)->text();
-	mPaintManager->drawGesture(pathStr);
+	QString name = ui->twObjectPathTable->currentItem()->text();
+	mRecognizer->drawGesture(name, mPaintManager);
 }
 
 MouseGestures::~MouseGestures()

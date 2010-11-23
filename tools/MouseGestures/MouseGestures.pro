@@ -10,22 +10,18 @@ SOURCES += main.cpp \
 	pathcorrector.cpp \
 	serializer.cpp \
 	validpathcreator.cpp \
-	keyobjecttable.cpp \
 	adopter.cpp \
 	paintmanager.cpp \
-	multistrokekeybuilder.cpp \
-	mousegesturesrecognizer.cpp
+	multistrokekeybuilder.cpp
 HEADERS += mousegestures.h \
 	mousemovementmanager.h \
 	pathcorrector.h \
 	serializer.h \
 	GeometricForms.h \
 	validpathcreator.h \
-	keyobjecttable.h \
 	adopter.h \
 	paintmanager.h \
 	figures.h \
 	multistrokekeybuilder.h \
-	gestureRecognizer.h \
 	abstractRecognizer.h
 FORMS += mousegestures.ui

@@ -1,6 +1,5 @@
 #pragma once
 #include "GeometricForms.h"
-#include "keyobjecttable.h"
 #include "paintmanager.h"
 #include "multistrokekeybuilder.h"
 #include <QtGui/QMainWindow>
@@ -32,24 +31,19 @@ protected:
 
 private:
 	Ui::MouseGestures *ui;
-	//MultistrokeKeyBuilder * mKeyBulder;
+	//MultistrokeGesturesManager * mKeyBulder;
 	void mouseMoveEvent(QMouseEvent *);
 	void mouseReleaseEvent(QMouseEvent *);
 	void mousePressEvent(QMouseEvent *);
 	void showTable();
 	void paintEvent(QPaintEvent *);
-	void addEntities(EntityVector const & entities);
-	QList<QPoint> mMousePath;
+//	void addEntities(EntityVector const & entities);
 	QList<QPoint> mCorrectPath;
 	QString mFileName;
-	KeyObjectTable mKeyObjectTable;
 	PaintManager * mPaintManager;
-	static const int keyColumn = 2;
-	static const int pathColumn = 1;
-	static const int objectColumn = 0;
 	void increasePath(double koef);
 	AbstractRecognizer * mRecognizer;
-	KeyBuilder * mKeyBuilder;
+	GesturesManager * mGesturesManager;
 
 private slots:
 	void rotatePath();

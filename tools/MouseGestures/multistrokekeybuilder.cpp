@@ -1,4 +1,4 @@
-#include "MultistrokeKeyBuilder.h"
+#include "multistrokekeybuilder.h"
 #include "pathcorrector.h"
 #include <stdlib.h>
 #include "cmath"
@@ -11,23 +11,12 @@ static const int unidimensionalLimit = 3;
 static const double adjacentWeight = 0.25;
 static const double keyDistance = 5;
 
-double MultistrokeKeyBuilder::getMaxDistance()
+double MultistrokeGesturesManager::getMaxDistance()
 {
 	return keyDistance;
 }
 
-Key MultistrokeKeyBuilder::getKey(const PathVector & gesture)
-{
-	PointVector path;
-	foreach (PointVector pntVector, gesture)
-	{
-		path.append(PathCorrector::getMousePath(pntVector));
-	}
-	return getKey(path);
-}
-
-
-Key MultistrokeKeyBuilder::sort(Key const & unsortedKey)
+Key MultistrokeGesturesManager::sort(Key const & unsortedKey)
 {
 	Key key = unsortedKey;
 	int size = key.size();
@@ -56,7 +45,7 @@ Key MultistrokeKeyBuilder::sort(Key const & unsortedKey)
 	return key;
 }
 
-//double MultistrokeKeyBuilder::getDistance(const Key &currentKey1, const Key &currentKey2)
+//double MultistrokeGesturesManager::getDistance(const Key &currentKey1, const Key &currentKey2)
 //{
 //	int m = currentKey1.size();
 //	int n = currentKey2.size();
@@ -74,7 +63,7 @@ Key MultistrokeKeyBuilder::sort(Key const & unsortedKey)
 //	return dist / (m * n);
 //}
 
-double MultistrokeKeyBuilder::getDistance(const Key &key1, const Key &key2)
+double MultistrokeGesturesManager::getDistance(const Key &key1, const Key &key2)
 {
 	int m = key1.size();
 	int n = key2.size();
@@ -107,7 +96,7 @@ double MultistrokeKeyBuilder::getDistance(const Key &key1, const Key &key2)
 	return (double) (matrix[m][n] * (abs(m - n) + 1)) / std::min(n, m);
 }
 
-Key MultistrokeKeyBuilder::transferKey(const Key &key, int size)
+Key MultistrokeGesturesManager::transferKey(const Key &key, int size)
 {
 	Key newKey;
 	foreach (SquarePos square, key)
@@ -118,12 +107,12 @@ Key MultistrokeKeyBuilder::transferKey(const Key &key, int size)
 	return newKey;
 }
 
-double MultistrokeKeyBuilder::norm(const SquarePos &pos1, const SquarePos &pos2)
+double MultistrokeGesturesManager::norm(const SquarePos &pos1, const SquarePos &pos2)
 {
 	return std::max(abs(pos1.first - pos2.first), abs(pos1.second - pos2.second));
 }
 
-Key MultistrokeKeyBuilder::getKey(const PointVector &path)
+Key MultistrokeGesturesManager::getKey(const PointVector &path)
 {
 	analysePoints(path);
 	Key key;
@@ -158,7 +147,7 @@ Key MultistrokeKeyBuilder::getKey(const PointVector &path)
 	return sort(key);
 }
 
-void MultistrokeKeyBuilder::analysePoints(QList<QPoint> const & path)
+void MultistrokeGesturesManager::analysePoints(QList<QPoint> const & path)
 {
 	if (path.size() > 0)
 	{
