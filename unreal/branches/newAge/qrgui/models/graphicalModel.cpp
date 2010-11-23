@@ -3,6 +3,7 @@
 #include "logicalModel.h"
 
 #include <QtCore/QUuid>
+#include <QtCore/QDebug>
 
 using namespace qReal;
 using namespace models;
@@ -85,9 +86,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
-	int const newRow = parentItem->children().size();
 
-	beginInsertRows(index(parentItem), newRow, newRow);
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	if (logicalId == Id::rootId()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);

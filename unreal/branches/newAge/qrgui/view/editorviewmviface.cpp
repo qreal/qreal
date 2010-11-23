@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QtCore/QDebug>
 
 #include "editorviewmviface.h"
 #include "editorview.h"

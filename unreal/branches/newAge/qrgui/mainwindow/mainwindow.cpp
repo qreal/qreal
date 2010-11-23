@@ -868,7 +868,7 @@ void MainWindow::changeMiniMapSource( int index )
 		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
 		{
 			ui.minimapView->setScene(editorView->scene());
-			getCurrentTab()->mvIface()->setModel(mModel);
+			getCurrentTab()->mvIface()->setModel(mGraphicalModel);
 			QModelIndex modelIndex = editorView->mvIface()->rootIndex();
 			mModel->setRootIndex(modelIndex);
 		}
@@ -1080,7 +1080,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
-	getCurrentTab()->mvIface()->setModel(mModel);
+	getCurrentTab()->mvIface()->setModel(mGraphicalModel);
 	getCurrentTab()->mvIface()->setRootIndex(index);
 
 	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))

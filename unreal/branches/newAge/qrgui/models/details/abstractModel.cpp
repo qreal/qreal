@@ -1,4 +1,5 @@
 #include <QtCore/QUuid>
+#include <QtCore/QDebug>
 
 #include "abstractModel.h"
 
@@ -113,7 +114,7 @@ QVariant AbstractModel::headerData(int section, Qt::Orientation orientation, int
 
 int AbstractModel::rowCount(const QModelIndex &parent) const
 {
-	return parentTreeItem(parent)->children().size();
+	return parentAbstractItem(parent)->children().size();
 }
 
 int AbstractModel::columnCount(const QModelIndex &parent) const
@@ -124,7 +125,7 @@ int AbstractModel::columnCount(const QModelIndex &parent) const
 
 QModelIndex AbstractModel::index(int row, int column, const QModelIndex &parent) const
 {
-	AbstractModelItem *parentItem = parentTreeItem(parent);
+	AbstractModelItem *parentItem = parentAbstractItem(parent);
 	if (parentItem->children().size() <= row)
 		return QModelIndex();
 	AbstractModelItem *item = parentItem->children().at(row);
@@ -136,7 +137,7 @@ QPersistentModelIndex AbstractModel::rootIndex() const
 	return index(mRootItem);
 }
 
-AbstractModelItem *AbstractModel::parentTreeItem(QModelIndex const &parent) const
+AbstractModelItem *AbstractModel::parentAbstractItem(QModelIndex const &parent) const
 {
 	return parent.isValid()
 		? static_cast<AbstractModelItem*>(parent.internalPointer())
@@ -193,7 +194,7 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 	if (action == Qt::IgnoreAction)
 		return true;
 	else {
-		AbstractModelItem *parentItem = parentTreeItem(parent);
+		AbstractModelItem *parentItem = parentAbstractItem(parent);
 
 		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 
@@ -202,8 +203,8 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		QString pathToItem;
 		QString name;
 		QPointF position;
-		stream >> pathToItem;
 		stream >> idString;
+		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
 
@@ -227,6 +228,9 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 void AbstractModel::initializeElement(const Id &id, details::AbstractModelItem *parentItem,
 		details::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
+	int const newRow = parentItem->children().size();
+
+	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
 	mApi.addChild(parentItem->id(), id);
 	mApi.setProperty(id, "name", name);
@@ -257,5 +261,33 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
+EditorManager const &AbstractModel::editorManager() const
+{
+	return mEditorManager;
+}
 
+void AbstractModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
+{
+	if (!parent.isValid() || element.parent() == parent)
+		return;
+
+	int destinationRow = parentAbstractItem(parent)->children().size();
+
+	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
+		AbstractModelItem *elementItem = static_cast<AbstractModelItem*>(element.internalPointer());
+		QVariant configuration = mApi.property(elementItem->id(), "configuration");
+		elementItem->parent()->removeChild(elementItem);
+		AbstractModelItem *parentItem = parentAbstractItem(parent);
+
+		mApi.addParent(elementItem->id(), parentItem->id());
+		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
+
+		elementItem->setParent(parentItem);
+		parentItem->addChild(elementItem);
+
+		mApi.setProperty(elementItem->id(), "position", position);
+		mApi.setProperty(elementItem->id(), "configuration", configuration);
+		endMoveRows();
+	}
+}
 

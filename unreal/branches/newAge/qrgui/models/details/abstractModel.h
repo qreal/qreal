@@ -30,11 +30,14 @@ namespace qReal {
 				virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 				virtual Qt::DropActions supportedDropActions() const;
 				virtual QStringList mimeTypes() const;
+				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+				AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
 
 				virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
 				QPersistentModelIndex rootIndex() const;
 				void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
 						details::AbstractModelItem *item, QString const &name, QPointF const &position);
+				EditorManager const &editorManager() const;
 
 			protected:
 				qrRepo::RepoApi &mApi;
@@ -48,8 +51,6 @@ namespace qReal {
 
 			private:
 				virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
-
-				details::AbstractModelItem *parentTreeItem(QModelIndex const &parent) const;
 			};
 
 		}

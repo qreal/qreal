@@ -481,7 +481,7 @@ ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
 	if (isDiagram(id)) {
 			mApi.addOpenedDiagram(id);
-			qDebug() << id.toString();
+			qDebug() << "Model::loadElement" << id.toString();
 		}
 
 	int newRow = parentItem->children().size();

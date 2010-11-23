@@ -48,13 +48,13 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
-			stream << pathToItem(item);
 			stream << item->id().toString();
+			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
 			stream << mApi.property(item->id(), "position").toPointF();
 		} else {
-			stream << QString();
 			stream << Id::rootId().toString();
+			stream << QString();
 			stream << QString();
 			stream << QPointF();
 		}
@@ -86,9 +86,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 		return;
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
-	int const newRow = parentItem->children().size();
 
-	beginInsertRows(index(parentItem), newRow, newRow);
 	AbstractModelItem *newItem = createModelItem(id, parentItem);
 	initializeElement(id, parentItem, newItem, name, position);
 }

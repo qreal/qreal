@@ -9,7 +9,6 @@ using namespace qReal;
 Id Id::loadFromString(QString const &string)
 {
 	QStringList path = string.split('/');
-	qDebug() << path.count() << string;
 	Q_ASSERT(path.count() > 0 && path.count() <= 5);
 	Q_ASSERT(path[0] == "qrm:");
 

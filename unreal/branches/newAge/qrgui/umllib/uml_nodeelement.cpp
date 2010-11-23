@@ -117,7 +117,8 @@ void NodeElement::arrangeLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
+	models::GraphicalModel *itemModel = model();
+	//model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
 	itemModel->setData(mDataIndex, pos(), roles::positionRole);
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
 }
@@ -399,7 +400,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *newParent = getNodeAt(newParentInnerPoint);
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+		models::GraphicalModel *itemModel = model();
+		//model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 		if (newParent) {
 			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
 					mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
@@ -482,16 +484,17 @@ bool NodeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+	models::GraphicalModel *itemModel = model();
+	//model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (!itemModel)
 		return false;
 
 	foreach(QString elementName,
-			itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
-		int ne = itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
+			itemModel->editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
+		int ne = itemModel->editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
+					= itemModel->editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if ((pEdge.first.first == uuid().element())
 					|| ((pEdge.first.second == uuid().element()) && (!pEdge.second.first))) {
@@ -1142,3 +1145,11 @@ void NodeElement::setColorRect(bool value)
 {
 	mSelectionNeeded = value;
 }
+
+qReal::models::GraphicalModel *NodeElement::model()
+{
+	return (const_cast<models::GraphicalModel*>(static_cast<models::GraphicalModel const *>(mDataIndex.model())));
+}
+
+
+

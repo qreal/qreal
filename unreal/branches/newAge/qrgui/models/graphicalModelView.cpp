@@ -19,7 +19,6 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		Id logicalId = current.data(roles::logicalIdRole).value<Id>();
-		qDebug() << logicalId.toString();
 		QString const name = current.data(Qt::DisplayRole).toString();
 		if (logicalId == Id())
 			// No logical Id for this item, so logical model shouldn't care
