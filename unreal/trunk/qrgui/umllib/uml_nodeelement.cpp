@@ -106,11 +106,25 @@ void NodeElement::arrangeLinks()
 {
 	int N = mEdgeList.size();
 	int i = 0;
-	const qreal ampl = 0.5;
+	const qreal ampl = 0.7;
 
-	foreach(EdgeElement* edge, mEdgeList) {
+	foreach (EdgeElement* edge, mEdgeList) {
 		qreal delta = ampl * (i++ - N / 2.0) / N;
 		edge->reconnectToNearestPorts(delta);
+	}
+	
+	//make equal space on all linear ports.
+	int lpId = 0;
+	foreach (StatLine line, mLinePorts) {
+		QList<EdgeElement* > edges;
+		foreach (EdgeElement* edge, mEdgeList) {
+			if (portId(edge->portIdOn(this)) == lpId) {
+				qDebug() << "+ line at " << lpId;
+				edges.append(edge);
+			}
+		}
+
+		lpId++;
 	}
 }
 
@@ -608,7 +622,7 @@ void NodeElement::updateData()
 	update();
 }
 
-static int portId(qreal id)
+int NodeElement::portId(qreal id)
 {
 	int iid = qRound(id);
 	if (id < 1.0 * iid)

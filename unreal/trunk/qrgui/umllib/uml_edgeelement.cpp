@@ -508,27 +508,56 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 }
 
-void EdgeElement::reconnectToNearestPorts(qreal delta)
+bool EdgeElement::shouldReconnect() const
 {
-	qDebug() << "Delta: " << delta;
-	const qreal factor = 2.0;
+	if (mSrc) {
+		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		if (floor(newFrom) != floor(mPortFrom))
+			return true;
+	}
+	if (mDst) {
+		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		if (floor(newTo) != floor(mPortTo))
+			return true;
+	}
+	return false;
+}
+
+qreal EdgeElement::portIdOn(UML::NodeElement const *node)
+{
+	if (node == mSrc)
+		return mPortFrom;
+	if (node == mDst)
+		return mPortTo;
+	return -1;
+}
+
+bool EdgeElement::reconnectToNearestPorts(qreal delta)
+{
+	//qDebug() << "Delta: " << delta;
+	bool reconnected = false;
+	const qreal factor = -1.5;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		while (floor(mPortFrom + delta) != floor(mPortFrom))
-			delta /= factor;
-		mPortFrom += delta;
+		//while (floor(mPortFrom + delta) != floor(mPortFrom))
+			//delta /= factor;
+		//mPortFrom += delta;
 		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
 	if (mDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		while (floor(mPortTo + delta) != floor(mPortTo))
-			delta /= factor;
-		mPortTo += delta;
+		//while (floor(mPortTo + delta) != floor(mPortTo))
+			//delta /= factor;
+		//mPortTo += delta;
 		model->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
+
+	return reconnected;
 }
 
 void EdgeElement::updateData()
