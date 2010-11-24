@@ -4,6 +4,10 @@
 
 using namespace Geny;
 
+Interpreter::Interpreter(const QString& repoDirectory, qReal::Id): rApi(repoDirectory) {
+}
+
+/*
 Interpreter::Interpreter(const QString& taskFilename) : taskFile(taskFilename), inStream(0) {
 	//TODO: 1) задать rApi
 	//	2) задать текущий объект (curObjectId)
@@ -13,6 +17,7 @@ Interpreter::~Interpreter() {
 	if (inStream)
 		delete inStream;
 }
+*/
 
 qReal::Id Interpreter::getCurObjectId() {
 	return curObjectId;
@@ -51,6 +56,64 @@ ControlStringType Interpreter::controlStringType(const QString& str) {
 
 bool Interpreter::isControlString(const QString& str) {
 	return controlStringType != NOT_CONTROL ? true : false;
+}
+
+QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
+	QStringList strElements = str.split(' ');
+	strElements.remove("");
+
+	if ( (strElements.length() != 4) || 
+			(strElements[0] != "foreach") || (strElements[2] != "in") ) {
+		qDebug()  << "Error! Bad \'foreach\' structure!";
+		return "";
+	}
+
+	return QPair<strElements[1], strElements[3]>;
+	/*
+	QString elementsType = strElements[1];
+	QString elementsListName = strElements[3];
+	*/
+}
+
+qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodName) {
+	if (methodName == "children")
+		return rApi.children(curObjectId());
+
+	if (methodName == "parents")
+		return rApi.parents(curObjectId());
+
+	if (methodName == "outgoingLinks")
+		return rApi.outgoingLinks(curObjectId());
+
+	if (methodName == "incomingLinks")
+		return rApi.incomingLinks(curObjectId());
+
+	if (methodName == "links")
+		return rApi.links(curObjectId());
+
+	if (methodName == "outgoingConnections")
+		return rApi.outgoingConnections(curObjectId());
+
+	if (methodName == "incomingConnections")
+		return rApi.incomingConnections(curObjectId());
+
+	if (methodName == "outgoingUsages")
+		return rApi.outgoingUsages(curObjectId());
+
+	if (methodName == "incomingUsages")
+		return rApi.incomingUsages(curObjectId());
+	
+	if (methodName == "elements")
+		return rApi.elements(curObjectId());
+
+	if (methodName == "elementsByType")
+		return rApi.elementsByType(curObjectId());
+
+	if (methodName == "getOpenedDiagrams")
+		return rApi.getOpenedDiagrams();
+
+	if (methodName == "getChangedDiagrams")
+		return rApi.getChangedDiagrams();
 }
 
 QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStream& stream) {
@@ -116,14 +179,19 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				}
 
 				QString resultStr;
-				/*
-				 * Здесь развертка foreach
-				foreach(__, __) {
+
+				QPair<QString, QString> elemAndListNames = foreachStringParse(parsingStr);
+				qReal::Id objectId = curObjectId();//TODO: change this method
+
+				// Здесь развертка foreach
+				foreach (qReal::Id element, getCurObjectMethodResultList(elemAndListNames.second())) {
 					//обновление curObjectId
+					curObjectId = element;
+
 					resultStr += interpret(foreachBlockStream);
 					foreachBlockStream.reset();
 				}
-				 */
+				curObjectId = objectId;//TODO: change this method
 
 				return resultStr;
 			}

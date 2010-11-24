@@ -1,3 +1,4 @@
+#include <QPair>
 #include <QString>
 #include <QFile>
 #include <QTextStream>
@@ -31,9 +32,13 @@ namespace Geny {
 			//Can move cursor position in stream!
 			QString controlStringParse(const QString&, QTextStream& stream);
 
+			QPair<QString, QString> foreachStringParse(const QString&);
+
 			//Control expression between @@ @@
 			QString controlExpressionParse(const QString& expression);
 			QString getCurrentObjectProperty(const QString& propertyName);
+
+			qReal::IdList getCurObjectMethodResultList(const QString&);
 
 			//нужно, так как возможно использование списка Id вместо одного
 			qReal::Id getCurObjectId();
