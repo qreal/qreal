@@ -4,7 +4,7 @@
 #include <QPair>
 
 #include "uml_element.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 

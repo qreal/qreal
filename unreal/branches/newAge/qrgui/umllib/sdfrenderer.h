@@ -10,7 +10,7 @@
 #include <QTextStream>
 #include <QtGui/QIconEngine>
 #include <QDebug>
-#include "sdfRendererInterface.h"
+#include "../pluginInterface/sdfRendererInterface.h"
 
 class SdfRenderer : public SdfRendererInterface
 {

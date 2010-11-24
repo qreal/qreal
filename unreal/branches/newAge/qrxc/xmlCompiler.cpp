@@ -112,10 +112,11 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/umllib/uml_element.h\"\n"
-		<< "#include \"../../../qrgui/umllib/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/umllib/elementTitleHelpers.h\"\n\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
+// TODO: wt* uml_element.h is doing here?
+//		<< "#include \"../../../qrgui/umllib/uml_element.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
@@ -138,7 +139,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../editorInterface.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"

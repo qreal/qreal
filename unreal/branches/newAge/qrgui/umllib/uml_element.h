@@ -5,11 +5,11 @@
 #include <QtCore/QModelIndex>
 
 #include "../kernel/roles.h"
-#include "elementRepoInterface.h"
+#include "../pluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
 
 #include "contextMenuAction.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
 
 #include "../models/graphicalModel.h"
 

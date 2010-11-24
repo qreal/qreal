@@ -22,7 +22,7 @@
 #include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
-#include "pluginInterface.h"
+#include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"

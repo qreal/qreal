@@ -49,8 +49,6 @@ include (generators/generators.pri)
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
 
-HEADERS += ../qrmc/plugins/pluginInterface.h
-
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.
 include (../utils/utils.pri)
@@ -63,3 +61,6 @@ include (editorManager/editorManager.pri)
 
 # Graphical and logical models
 include (models/models.pri)
+
+# Interfaces for plugins, used by qrxc and qrmc.
+include (pluginInterface/pluginInterface.pri)

@@ -10,7 +10,7 @@ class QIcon;
 
 #include "listenerManager.h"
 #include "../kernel/ids.h"
-#include "../../qrmc/plugins/pluginInterface.h"
+#include "../pluginInterface/editorInterface.h"
 
 namespace qrRepo {
 	class RepoApi;

@@ -13,7 +13,7 @@
 #include "uml_nodeelement.h"
 #include "../model/model.h"
 #include "../view/editorviewscene.h"
-#include "pluginInterface.h"
+#include "../pluginInterface/editorInterface.h"
 
 using namespace UML;
 using namespace qReal;

@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include "../model/modelAssistApi.h"
-#include "listenerInterface.h"
+#include "../pluginInterface/listenerInterface.h"
 
 namespace qReal {
 

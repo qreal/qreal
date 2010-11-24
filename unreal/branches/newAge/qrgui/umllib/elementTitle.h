@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QGraphicsTextItem>
-#include "elementTitleHelpers.h"
+#include "../pluginInterface/elementTitleHelpers.h"
 
 namespace UML {
 
@@ -10,8 +10,8 @@ namespace UML {
 	class ElementTitleFactory : public ElementTitleFactoryInterface
 	{
 	public:
-		ElementTitle *createTitle(int x, int y, QString const &text);
-		ElementTitle *createTitle(int x, int y, QString const &binding, bool readOnly);
+		ElementTitleInterface *createTitle(int x, int y, QString const &text);
+		ElementTitleInterface *createTitle(int x, int y, QString const &binding, bool readOnly);
 	};
 
 	class ElementTitle : public ElementTitleInterface

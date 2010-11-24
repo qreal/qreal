@@ -108,12 +108,12 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsTextItem::paint(painter, option, widget);
 }
 
-ElementTitle *ElementTitleFactory::createTitle(int x, int y, QString const &text)
+ElementTitleInterface *ElementTitleFactory::createTitle(int x, int y, QString const &text)
 {
 	return new ElementTitle(x, y, text);
 }
 
-ElementTitle *ElementTitleFactory::createTitle(int x, int y, QString const &binding, bool readOnly)
+ElementTitleInterface *ElementTitleFactory::createTitle(int x, int y, QString const &binding, bool readOnly)
 {
 	return new ElementTitle(x, y, binding, readOnly);
 }

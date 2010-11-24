@@ -15,7 +15,7 @@
 #include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
