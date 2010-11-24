@@ -18,29 +18,24 @@ namespace qReal {
 			{
 				Q_OBJECT
 			public:
-				AbstractModel(qrRepo::RepoApi &repoApi, EditorManager const &editorManager);
-				virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+				AbstractModel(EditorManager const &editorManager);
 				virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 				virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 				virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-				virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 				virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 				virtual QModelIndex parent(const QModelIndex &index) const;
 				virtual Qt::ItemFlags flags(QModelIndex const &index) const;
-				virtual bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 				virtual Qt::DropActions supportedDropActions() const;
 				virtual QStringList mimeTypes() const;
-				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 				AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
 
 				virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
 				QPersistentModelIndex rootIndex() const;
-				void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
-						details::AbstractModelItem *item, QString const &name, QPointF const &position);
+				//void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
+				//		details::AbstractModelItem *item, QString const &name, QPointF const &position);
 				EditorManager const &editorManager() const;
 
 			protected:
-				qrRepo::RepoApi &mApi;
 				EditorManager const &mEditorManager;
 				QHash<Id, details::AbstractModelItem *> mModelItems;
 				details::AbstractModelItem *mRootItem;

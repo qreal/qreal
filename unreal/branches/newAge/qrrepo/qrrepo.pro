@@ -33,9 +33,16 @@ SOURCES += \
 	private/serializer.cpp \
 
 # API репозитория
-HEADERS += repoApi.h \
+HEADERS += \
+	repoApi.h \
+	graphicalRepoApi.h \
+	logicalRepoApi.h \
+	repoControlInterface.h \
+	commonRepoApi.h \
 
-SOURCES += private/repoApi.cpp \
+
+SOURCES += \
+	private/repoApi.cpp \
 
 #svn support
 INCLUDEPATH += include

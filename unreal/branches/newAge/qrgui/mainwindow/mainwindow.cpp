@@ -22,6 +22,7 @@
 #include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
+
 #include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
@@ -51,7 +52,7 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager), mRepoApi(".")
+	: mListenerManager(NULL), mPropertyModel(mEditorManager), mRepoApi(new qrRepo::RepoApi("."))
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -198,9 +199,9 @@ MainWindow::MainWindow()
 
 	if (mModel->rowCount() > 0)
 		openNewTab(mModel->index(0, 0, QModelIndex()));
-
-	mGraphicalModel = new models::GraphicalModel(mRepoApi, mEditorManager);
-	mLogicalModel = new models::LogicalModel(mRepoApi, mEditorManager);
+	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(".");
+	mGraphicalModel = new models::GraphicalModel(repoApi, mEditorManager);
+	mLogicalModel = new models::LogicalModel(repoApi, mEditorManager);
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);

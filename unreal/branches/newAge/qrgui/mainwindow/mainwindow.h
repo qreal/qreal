@@ -132,7 +132,7 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
-		qrRepo::RepoApi mRepoApi;
+		qrRepo::RepoControlInterface *mRepoApi;
 
 		QVector<bool> mSaveListChecked;
 		bool mDiagramCreateFlag;

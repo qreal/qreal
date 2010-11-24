@@ -9,8 +9,8 @@ using namespace qReal;
 using namespace models;
 using namespace details;
 
-GraphicalModel::GraphicalModel(qrRepo::RepoApi &repoApi, const EditorManager &editorManager)
-	: AbstractModel(repoApi, editorManager), mLogicalModelView(this)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
+	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	mModelItems.insert(Id::rootId(), mRootItem);
@@ -21,45 +21,7 @@ void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 	mLogicalModelView.setModel(logicalModel);
 }
 
-QVariant GraphicalModel::data(const QModelIndex &index, int role) const
-{
-	if (index.isValid()) {
-		GraphicalModelItem *item = static_cast<GraphicalModelItem*>(index.internalPointer());
-		Q_ASSERT(item);
-		switch (role) {
-		case Qt::DisplayRole:
-		case Qt::EditRole:
-			return mApi.name(item->id());
-		case Qt::DecorationRole:
-			return QVariant();
-			// return mEditorManager.icon(item->id());
-		case roles::idRole:
-			return item->id().toVariant();
-		case roles::logicalIdRole:
-			return item->logicalId().toVariant();
-		case roles::positionRole:
-			return mApi.property(item->id(), "position");
-		case roles::fromRole:
-			return mApi.from(item->id()).toVariant();
-		case roles::toRole:
-			return mApi.to(item->id()).toVariant();
-		case roles::fromPortRole:
-			return mApi.fromPort(item->id());
-		case roles::toPortRole:
-			return mApi.toPort(item->id());
-		case roles::configurationRole:
-			return mApi.property(item->id(), "configuration");
-		}
-		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
-			return mApi.property(item->id(), selectedProperty);
-		}
-		Q_ASSERT(role < Qt::UserRole);
-		return QVariant();
-	} else {
-		return QVariant();
-	}
-}
+
 
 AbstractModelItem *GraphicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
 {
@@ -96,6 +58,169 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
-	initializeElement(id, parentItem, newGraphicalModelItem, name, position);
+	initializeElement(id, logicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, details::AbstractModelItem *parentItem,
+		details::AbstractModelItem *item, const QString &name, const QPointF &position)
+{
+	int const newRow = parentItem->children().size();
+
+	beginInsertRows(index(parentItem), newRow, newRow);
+	parentItem->addChild(item);
+	mApi.addChild(parentItem->id(), logicalId, id);
+	mApi.setName(id, name);
+	mApi.setFromPort(id, 0.0);
+	mApi.setToPort(id, 0.0);
+	//mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
+	mApi.setPosition(id, position);
+	mApi.setConfiguration(id, QVariant(QPolygon()));
+	mModelItems.insert(id, item);
+	endInsertRows();
+}
+
+QVariant GraphicalModel::data(const QModelIndex &index, int role) const
+{
+	if (index.isValid()) {
+		GraphicalModelItem *item = static_cast<GraphicalModelItem*>(index.internalPointer());
+		Q_ASSERT(item);
+		switch (role) {
+		case Qt::DisplayRole:
+		case Qt::EditRole:
+			return mApi.name(item->id());
+		case Qt::DecorationRole:
+			return QVariant();
+			// return mEditorManager.icon(item->id());
+		case roles::idRole:
+			return item->id().toVariant();
+		case roles::logicalIdRole:
+			return item->logicalId().toVariant();
+		case roles::positionRole:
+			return mApi.position(item->id());
+		case roles::fromRole:
+			return mApi.from(item->id()).toVariant();
+		case roles::toRole:
+			return mApi.to(item->id()).toVariant();
+		case roles::fromPortRole:
+			return mApi.fromPort(item->id());
+		case roles::toPortRole:
+			return mApi.toPort(item->id());
+		case roles::configurationRole:
+			return mApi.configuration(item->id());
+		}
+		/*if (role >= roles::customPropertiesBeginRole) {
+			QString selectedProperty = findPropertyName(item->id(), role);
+			return mApi.property(item->id(), selectedProperty);
+		}*/
+		Q_ASSERT(role < Qt::UserRole);
+		return QVariant();
+	} else {
+		return QVariant();
+	}
+}
+
+bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (index.isValid()) {
+		AbstractModelItem *item = static_cast<AbstractModelItem *>(index.internalPointer());
+		switch (role) {
+		case Qt::DisplayRole:
+		case Qt::EditRole:
+			mApi.setName(item->id(), value.toString());
+			break;
+		case roles::positionRole:
+			mApi.setPosition(item->id(), value);
+			break;
+		case roles::configurationRole:
+			mApi.setConfiguration(item->id(), value);
+			break;
+		case roles::fromRole:
+			mApi.setFrom(item->id(), value.value<Id>());
+			break;
+		case roles::toRole:
+			mApi.setTo(item->id(), value.value<Id>());
+			break;
+		case roles::fromPortRole:
+			mApi.setFromPort(item->id(), value.toDouble());
+			break;
+		case roles::toPortRole:
+			mApi.setToPort(item->id(), value.toDouble());
+			break;
+		default:
+			/*if (role >= roles::customPropertiesBeginRole) {
+				QString selectedProperty = findPropertyName(item->id(), role);
+				mApi.setProperty(item->id(), selectedProperty, value);
+				break;
+			}*/
+			Q_ASSERT(role < Qt::UserRole);
+			return false;
+		}
+		mNotNeedUpdate = false;
+		emit dataChanged(index, index);
+		return true;
+	}
+	return false;
+}
+
+void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
+{
+	if (!parent.isValid() || element.parent() == parent)
+		return;
+
+	int destinationRow = parentAbstractItem(parent)->children().size();
+
+	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
+		AbstractModelItem *elementItem = static_cast<AbstractModelItem*>(element.internalPointer());
+		QVariant configuration = mApi.configuration(elementItem->id());
+		elementItem->parent()->removeChild(elementItem);
+		AbstractModelItem *parentItem = parentAbstractItem(parent);
+
+		mApi.addParent(elementItem->id(), parentItem->id());
+		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
+
+		elementItem->setParent(parentItem);
+		parentItem->addChild(elementItem);
+
+		mApi.setPosition(elementItem->id(), position);
+		mApi.setConfiguration(elementItem->id(), configuration);
+		endMoveRows();
+	}
+}
+
+bool GraphicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
+{
+	Q_UNUSED(row)
+	Q_UNUSED(column)
+	if (action == Qt::IgnoreAction)
+		return true;
+	else {
+		AbstractModelItem *parentItem = parentAbstractItem(parent);
+
+		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+
+		QDataStream stream(&dragData, QIODevice::ReadOnly);
+		QString idString;
+		QString pathToItem;
+		QString name;
+		QPointF position;
+		stream >> idString;
+		stream >> pathToItem;
+		stream >> name;
+		stream >> position;
+
+		Id logicalId = Id::rootId();
+		Id id = Id::loadFromString(idString);
+		if (mApi.exist(id)) {
+			logicalId = id;
+			Id newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+			id = newId;
+		}
+		Q_ASSERT(id.idSize() == 4);
+
+		if (mModelItems.contains(id))
+			return false;
+
+		addElementToModel(parentItem->id(), id, logicalId, name, position);
+		return true;
+	}
+}

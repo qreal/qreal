@@ -7,8 +7,8 @@ using namespace qReal;
 using namespace models;
 using namespace details;
 
-AbstractModel::AbstractModel(qrRepo::RepoApi &repoApi, const EditorManager &editorManager)
-	: mApi(repoApi), mEditorManager(editorManager), mNotNeedUpdate(true)
+AbstractModel::AbstractModel(const EditorManager &editorManager)
+	: mEditorManager(editorManager), mNotNeedUpdate(true)
 {
 }
 
@@ -23,86 +23,7 @@ Qt::ItemFlags AbstractModel::flags(QModelIndex const &index) const
 	}
 }
 
-QVariant AbstractModel::data(const QModelIndex &index, int role) const
-{
-	if (index.isValid()) {
-		AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
-		Q_ASSERT(item);
-		switch (role) {
-			case Qt::DisplayRole:
-			case Qt::EditRole:
-				return mApi.name(item->id());
-			case Qt::DecorationRole:
-				return QVariant();
-				// return mEditorManager.icon(item->id());
-			case roles::idRole:
-				return item->id().toVariant();
-			case roles::positionRole:
-				return mApi.property(item->id(), "position");
-			case roles::fromRole:
-				return mApi.from(item->id()).toVariant();
-			case roles::toRole:
-				return mApi.to(item->id()).toVariant();
-			case roles::fromPortRole:
-				return mApi.fromPort(item->id());
-			case roles::toPortRole:
-				return mApi.toPort(item->id());
-			case roles::configurationRole:
-				return mApi.property(item->id(), "configuration");
-		}
-		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
-			return mApi.property(item->id(), selectedProperty);
-		}
-		Q_ASSERT(role < Qt::UserRole);
-		return QVariant();
-	} else {
-		return QVariant();
-	}
-}
 
-bool AbstractModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (index.isValid()) {
-		AbstractModelItem *item = static_cast<AbstractModelItem *>(index.internalPointer());
-		switch (role) {
-		case Qt::DisplayRole:
-		case Qt::EditRole:
-			mApi.setName(item->id(), value.toString());
-			break;
-		case roles::positionRole:
-			mApi.setProperty(item->id(), "position", value);
-			break;
-		case roles::configurationRole:
-			mApi.setProperty(item->id(), "configuration", value);
-			break;
-		case roles::fromRole:
-			mApi.setFrom(item->id(), value.value<Id>());
-			break;
-		case roles::toRole:
-			mApi.setTo(item->id(), value.value<Id>());
-			break;
-		case roles::fromPortRole:
-			mApi.setFromPort(item->id(), value.toDouble());
-			break;
-		case roles::toPortRole:
-			mApi.setToPort(item->id(), value.toDouble());
-			break;
-		default:
-			if (role >= roles::customPropertiesBeginRole) {
-				QString selectedProperty = findPropertyName(item->id(), role);
-				mApi.setProperty(item->id(), selectedProperty, value);
-				break;
-			}
-			Q_ASSERT(role < Qt::UserRole);
-			return false;
-		}
-		mNotNeedUpdate = false;
-		emit dataChanged(index, index);
-		return true;
-	}
-	return false;
-}
 
 QVariant AbstractModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
@@ -187,68 +108,6 @@ QString AbstractModel::findPropertyName(Id const &id, int const role) const
 	return properties[role - roles::customPropertiesBeginRole];
 }
 
-bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
-{
-	Q_UNUSED(row)
-	Q_UNUSED(column)
-	if (action == Qt::IgnoreAction)
-		return true;
-	else {
-		AbstractModelItem *parentItem = parentAbstractItem(parent);
-
-		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
-
-		QDataStream stream(&dragData, QIODevice::ReadOnly);
-		QString idString;
-		QString pathToItem;
-		QString name;
-		QPointF position;
-		stream >> idString;
-		stream >> pathToItem;
-		stream >> name;
-		stream >> position;
-
-		Id logicalId = Id::rootId();
-		Id id = Id::loadFromString(idString);
-		if (mApi.exist(id)) {
-			logicalId = id;
-			Id newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
-			id = newId;
-		}
-		Q_ASSERT(id.idSize() == 4);
-
-		if (mModelItems.contains(id))
-			return false;
-
-		addElementToModel(parentItem->id(), id, logicalId, name, position);
-		return true;
-	}
-}
-
-void AbstractModel::initializeElement(const Id &id, details::AbstractModelItem *parentItem,
-		details::AbstractModelItem *item, const QString &name, const QPointF &position)
-{
-	int const newRow = parentItem->children().size();
-
-	beginInsertRows(index(parentItem), newRow, newRow);
-	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id);
-	mApi.setProperty(id, "name", name);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
-	mApi.setProperty(id, "fromPort", 0.0);
-	mApi.setProperty(id, "toPort", 0.0);
-	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "position", position);
-	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
-	mModelItems.insert(id, item);
-	endInsertRows();
-}
-
 Qt::DropActions AbstractModel::supportedDropActions() const
 {
 	return Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
@@ -265,29 +124,3 @@ EditorManager const &AbstractModel::editorManager() const
 {
 	return mEditorManager;
 }
-
-void AbstractModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
-{
-	if (!parent.isValid() || element.parent() == parent)
-		return;
-
-	int destinationRow = parentAbstractItem(parent)->children().size();
-
-	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
-		AbstractModelItem *elementItem = static_cast<AbstractModelItem*>(element.internalPointer());
-		QVariant configuration = mApi.property(elementItem->id(), "configuration");
-		elementItem->parent()->removeChild(elementItem);
-		AbstractModelItem *parentItem = parentAbstractItem(parent);
-
-		mApi.addParent(elementItem->id(), parentItem->id());
-		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
-
-		elementItem->setParent(parentItem);
-		parentItem->addChild(elementItem);
-
-		mApi.setProperty(elementItem->id(), "position", position);
-		mApi.setProperty(elementItem->id(), "configuration", configuration);
-		endMoveRows();
-	}
-}
-

@@ -3,12 +3,17 @@
 #include "../qrgui/kernel/roles.h"
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
+#include "repoControlInterface.h"
+//#include "commonRepoApi.h"
+#include "graphicalRepoApi.h"
+#include "logicalRepoApi.h"
 
 #include <QSet>
 
 namespace qrRepo {
 
-	class QRREPO_EXPORT RepoApi {
+	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
+	{
 	public:
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
@@ -18,6 +23,7 @@ namespace qrRepo {
 
 		qReal::IdList children(qReal::Id const &id) const;
 		void addChild(qReal::Id const &id, qReal::Id const &child);
+		virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child);
 		void removeChild(qReal::Id const &id, qReal::Id const &child);
 		void removeChildren(qReal::Id const &id);
 
@@ -60,6 +66,12 @@ namespace qrRepo {
 
 		double toPort(qReal::Id const &id) const;
 		void setToPort(qReal::Id const &id, double toPort);
+
+		virtual QVariant position(qReal::Id const &id) const;
+		virtual QVariant configuration(qReal::Id const &id) const;
+
+		virtual void setPosition(qReal::Id const &id, QVariant const &position) const;
+		virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) const;
 
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
