@@ -8,7 +8,8 @@
 namespace Geny {
 	class Interpreter {
 		public:
-			Interpreter(const QString& taskFilename);
+			//Interpreter(const QString& taskFilename);
+			Interpreter(const QString& repoDirectory, const QString& taskFileName, qReal::Id curObject);
 			~Interpreter();
 
 			QString interpret();

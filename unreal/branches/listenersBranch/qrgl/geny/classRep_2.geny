@@ -1,15 +1,24 @@
 Task JavaClass
 #!/ Produce Java class from repo
 
+#!foreach Class in elementsByType
+#!{
 class @@name@@ {
-#!foreach Method in children of MethodContainer
+#!foreach MethodContainer in children
+#!{
+#!foreach Method in children
 #!{
 	@@methodVisibility@@ @@methodReturnType@@ @@methodName@@( @@!task "MethodParameters"@@ ) {
 	}
 #!}
+#!}
 
-#!foreach Field in children of FieldContainer
+#!foreach FieldContainer in children
+#!foreach Field in children
+#!{
 #!{
 	@@fieldVisibility@@ @@fieldType@@ @@fieldName@@;
 #!}
+#!}
 }
+#!}
