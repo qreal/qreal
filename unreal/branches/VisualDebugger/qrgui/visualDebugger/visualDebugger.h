@@ -15,11 +15,17 @@ namespace qReal {
 		Q_OBJECT
 		
 	public:
+		enum DebugType {
+			noDebug,
+			singleStepDebug,
+			fullDebug
+		};
+	public:
 		VisualDebugger(model::Model *model);
 		~VisualDebugger();
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
-		void setTimeout(int timeout);
+		bool canDebug(VisualDebugger::DebugType type);
 	public slots:
 		gui::ErrorReporter& debug();
 		gui::ErrorReporter& debugSingleStep();
@@ -43,6 +49,8 @@ namespace qReal {
 		gui::ErrorReporter *mErrorReporter;
 		BlockParser *mBlockParser;
 		int mTimeout;
+		DebugType mDebugType;
+		QColor mDebugColor;
 		
 		void error(ErrorType e);
 		ErrorType checkEditor();
@@ -55,5 +63,7 @@ namespace qReal {
 		void doStep(Id id);
 		void deinitialize();
 		void processAction();
+		void setTimeout(int timeout);
+		void setDebugColor(QString color);
 	};
 }

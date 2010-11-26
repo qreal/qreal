@@ -1478,16 +1478,21 @@ void MainWindow::debug()
 {
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
-	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
-	mVisualDebugger->clearErrorReporter();
+	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
+		gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
+		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
+		mVisualDebugger->clearErrorReporter();
+	}
 }
 
 void MainWindow::debugSingleStep()
 {
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
-	errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
-	mVisualDebugger->clearErrorReporter();
+	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
+		gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
+		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
+		mVisualDebugger->clearErrorReporter();
+	}
 }
+

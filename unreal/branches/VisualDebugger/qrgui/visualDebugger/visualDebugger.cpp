@@ -1,5 +1,7 @@
 #include "visualDebugger.h"
 
+#include <QtCore/QSettings>
+
 #include <QEventLoop>
 #include <QTimer>
 #include <QMessageBox>
@@ -15,13 +17,15 @@ using namespace qReal;
 VisualDebugger::VisualDebugger(model::Model *model) {
 	mModel = model;
 	mEffect = new QGraphicsColorizeEffect();
-	mEffect->setColor(Qt::red);
+	mDebugColor = Qt::red;
+	mEffect->setColor(mDebugColor);
 	mCurrentElem = NULL;
 	mCurrentId = mCurrentId.getRootId();
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
 	mBlockParser = new BlockParser(mErrorReporter);
 	mTimeout = 750;
+	mDebugType = VisualDebugger::noDebug;
 }
 
 VisualDebugger::~VisualDebugger() {
@@ -30,8 +34,26 @@ VisualDebugger::~VisualDebugger() {
 		delete mBlockParser;
 }
 
+bool VisualDebugger::canDebug(DebugType type) {
+	switch (type) {
+		case VisualDebugger::singleStepDebug:
+			return mDebugType != VisualDebugger::fullDebug;
+			break;
+		case VisualDebugger::fullDebug:
+			return mDebugType == VisualDebugger::noDebug;
+			break;
+		default:
+			return false;
+			break;
+	}
+}
+
 void VisualDebugger::setTimeout(int timeout) {
 	mTimeout = timeout;
+}
+
+void VisualDebugger::setDebugColor(QString color) {
+	mDebugColor = QColor(color);
 }
 
 void VisualDebugger::setEditor(EditorView *editor) {
@@ -141,7 +163,7 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
 	mCurrentElem = elem;
 	
 	mEffect = new QGraphicsColorizeEffect();
-	mEffect->setColor(Qt::red);
+	mEffect->setColor(mDebugColor);
 	mEffect->setEnabled(true);
 	
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
@@ -170,6 +192,7 @@ void VisualDebugger::deinitialize() {
 	mEditor = NULL;
 	mError = VisualDebugger::noErrors;
 	mBlockParser->clear();
+	mDebugType = VisualDebugger::noDebug;
 }
 
 void VisualDebugger::clearErrorReporter() {
@@ -182,10 +205,14 @@ void VisualDebugger::processAction() {
 }
 
 gui::ErrorReporter& VisualDebugger::debug() {
-
 	if (VisualDebugger::noErrors != checkEditor()) {
 		return *mErrorReporter;
 	}
+
+	mDebugType = VisualDebugger::fullDebug;
+	QSettings settings("SPbSU", "QReal");
+	setTimeout(settings.value("debuggerTimeout", 750).toInt());
+	setDebugColor(settings.value("debugColor").toString());
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;
@@ -249,6 +276,10 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	if (VisualDebugger::noErrors != checkEditor()) {
 		return *mErrorReporter;
 	}
+
+	mDebugType = VisualDebugger::singleStepDebug;
+	QSettings settings("SPbSU", "QReal");
+	setDebugColor(settings.value("debugColor").toString());
 
 	if (mCurrentElem == NULL && mCurrentId == mCurrentId.getRootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
