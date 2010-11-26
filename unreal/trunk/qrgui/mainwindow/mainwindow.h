@@ -18,6 +18,7 @@ namespace qReal {
 
 	class EditorView;
 	class ListenerManager;
+	class VisualDebugger;
 
 	namespace model {
 		class Model;
@@ -82,6 +83,9 @@ namespace qReal {
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
 		void selectItemWithError(Id const &id);
+
+		void debug();
+		void debugSingleStep();
 
 	private slots:
 		void deleteFromDiagram();
@@ -149,6 +153,7 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
+		VisualDebugger *mVisualDebugger;
 
 		void setShowGrid(bool isChecked);
 		void setShowAlignment(bool isChecked);

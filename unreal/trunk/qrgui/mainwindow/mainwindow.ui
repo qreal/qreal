@@ -103,6 +103,8 @@
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_to_Hascol"/>
+    <addaction name="actionDebug"/>
+    <addaction name="actionDebug_Single_step"/>
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
@@ -648,6 +650,22 @@
    </property>
    <property name="text">
     <string>Show alignment</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="actionDebug_Single_step">
+   <property name="text">
+    <string>Debug (Single step)</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
    </property>
   </action>
  </widget>

@@ -60,3 +60,6 @@ include (thirdparty/thirdparty.pri)
 
 # Управление плагинами. Plugin managment
 include (editorManager/editorManager.pri)
+
+# Visual debugger
+include (visualDebugger/visualDebugger.pri)
