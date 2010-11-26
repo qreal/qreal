@@ -532,6 +532,16 @@ qreal EdgeElement::portIdOn(UML::NodeElement const *node)
 	return -1;
 }
 
+QPointF EdgeElement::nextFrom(UML::NodeElement const *node)
+{
+	if (node == mSrc)
+		return mapToItem(mSrc, mLine[1]);
+	if (node == mDst)
+		return mapToItem(mDst, mLine[mLine.count() - 2]);
+	return QPointF();
+
+}
+
 bool EdgeElement::reconnectToNearestPorts(qreal delta)
 {
 	//qDebug() << "Delta: " << delta;
@@ -619,6 +629,22 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
 	adjustLink();
+}
+
+void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
+	qDebug() << "portId setting: " << portId;
+	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
+	if (node == mSrc) {
+		mPortFrom = portId;
+		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		qDebug() << "   ... to src";
+	}
+	if (node == mDst) {
+		mPortTo = portId;
+		model->setData(mDataIndex, mPortTo, roles::toPortRole);
+		qDebug() << "   ... to dst";
+	}
+
 }
 
 void EdgeElement::drawStartArrow(QPainter *painter) const
