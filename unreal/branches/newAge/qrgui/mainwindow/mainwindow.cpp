@@ -44,6 +44,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
+#include "../visualDebugger/visualDebugger.h"
 
 //#include "../qrrepo/svnClient.h"
 
@@ -132,6 +133,9 @@ MainWindow::MainWindow()
 	connect(ui.actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(ui.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
+
+	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
+	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -227,6 +231,8 @@ MainWindow::MainWindow()
 
 	initGridProperties();
 
+	mVisualDebugger = new VisualDebugger(mModel);
+
 	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo"), Id::rootId()
 			, "ololo", QPointF(0, 0));
 }
@@ -293,6 +299,9 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
+	if (id == Id::rootId()) {
+		return;
+	}
 	mPropertyModel.setIndex(mModel->indexById(id));
 	centerOn(mModel->indexById(id));
 }
@@ -1483,5 +1492,27 @@ void MainWindow::initGridProperties()
 
 	ui.actionShow_grid->blockSignals(false);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
+}
+
+void MainWindow::debug()
+{
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
+	if (mVisualDebugger->canDebug(VisualDebugger::fullDebug)) {
+		gui::ErrorReporter &errorReporter = mVisualDebugger->debug();
+		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
+		mVisualDebugger->clearErrorReporter();
+	}
+}
+
+void MainWindow::debugSingleStep()
+{
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
+	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
+		gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
+		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
+		mVisualDebugger->clearErrorReporter();
+	}
 }
 

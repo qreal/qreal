@@ -50,6 +50,13 @@ void PreferencesDialog::initPreferences()
 	ui->pathToMake->setText(settings.value("pathToMake", "").toString());
 	ui->pluginExtension->setText(settings.value("pluginExtension", "").toString());
 	ui->prefix->setText(settings.value("prefix", "").toString());
+	
+	ui->timeoutLineEdit->setText(settings.value("debuggerTimeout", 750).toString());
+	ui->colorComboBox->addItems(QColor::colorNames());
+	QString curColor = settings.value("debugColor", "red").toString();
+	int curColorIndex = ui->colorComboBox->findText(curColor);
+	ui->colorComboBox->setCurrentIndex(curColorIndex);
+	settings.value("debugColor", ui->colorComboBox->currentText());
 }
 
 void PreferencesDialog::applyChanges()
@@ -80,6 +87,9 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("pathToMake", ui->pathToMake->text());
 	settings.setValue("pluginExtension", ui->pluginExtension->text());
 	settings.setValue("prefix", ui->prefix->text());
+	
+	settings.setValue("debuggerTimeout", ui->timeoutLineEdit->text());
+	settings.setValue("debugColor", ui->colorComboBox->currentText());
 
 	mShowGridAction->setChecked(ui->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(ui->showAlignmentCheckBox->isChecked());

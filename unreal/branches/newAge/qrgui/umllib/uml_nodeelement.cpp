@@ -104,13 +104,47 @@ void NodeElement::adjustLinks()
 
 void NodeElement::arrangeLinks()
 {
-	int N = mEdgeList.size();
+	//int N = mEdgeList.size();
 	int i = 0;
-	const qreal ampl = 0.5;
+	const qreal indent = 0.1;
+	//const qreal ampl = 0.7;
 
-	foreach(EdgeElement* edge, mEdgeList) {
-		qreal delta = ampl * (i++ - N / 2.0) / N;
-		edge->reconnectToNearestPorts(delta);
+	foreach (EdgeElement* edge, mEdgeList) {
+		//qreal delta = ampl * (i++ - N / 2.0) / N;
+		edge->reconnectToNearestPorts(/*delta*/);
+	}
+	
+	//make equal space on all linear ports.
+	int lpId = 0;
+	foreach (StatLine line, mLinePorts) {
+		QMap<qreal, EdgeElement*> edges;
+		QLineF portLine = line;
+		qreal dx = portLine.dx();
+		qreal dy = portLine.dy();
+		qreal det = dx * dx + dy * dy;
+		qreal x1 = portLine.x1();
+		qreal y1 = portLine.y1();
+		foreach (EdgeElement* edge, mEdgeList) {
+			if (portId(edge->portIdOn(this)) == lpId) {
+				qDebug() << "+ line at " << lpId;
+				QPointF next = edge->nextFrom(this);
+				qreal x = next.x();
+				qreal y = next.y();
+				qreal detP = (x - x1) * dx + (y - y1) * dy;
+				//key=dp/d, ...
+				edges.insert(detP / det, edge);
+			}
+		}
+
+		//by now, edges of this port are sorted by their optimal port id.
+		int N = edges.size();
+		int i = 0;
+		foreach (EdgeElement* edge, edges) {
+			edge->moveConnection(this, lpId + indent + (1.0 - 2 * indent) * i++ / N); //N == 0 <=> 0 iterations 
+		}
+
+		lpId++; //next linear port.
+
 	}
 }
 
@@ -611,7 +645,7 @@ void NodeElement::updateData()
 	update();
 }
 
-static int portId(qreal id)
+int NodeElement::portId(qreal id)
 {
 	int iid = qRound(id);
 	if (id < 1.0 * iid)

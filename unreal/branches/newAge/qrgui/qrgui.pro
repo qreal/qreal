@@ -64,3 +64,6 @@ include (models/models.pri)
 
 # Interfaces for plugins, used by qrxc and qrmc.
 include (pluginInterface/pluginInterface.pri)
+
+# Visual debugger
+include (visualDebugger/visualDebugger.pri)
