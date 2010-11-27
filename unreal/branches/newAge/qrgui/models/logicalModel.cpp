@@ -52,7 +52,7 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 			stream << item->id().toString();
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
-			stream << mApi.property(item->id(), "position").toPointF();
+			stream << QPointF();
 		} else {
 			stream << Id::rootId().toString();
 			stream << QString();

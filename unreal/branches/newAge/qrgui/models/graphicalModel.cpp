@@ -108,10 +108,9 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case roles::configurationRole:
 			return mApi.configuration(item->id());
 		}
-		/*if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
-			return mApi.property(item->id(), selectedProperty);
-		}*/
+		if (role >= roles::customPropertiesBeginRole) {
+			return QVariant();  // Custom properties are invalid for graphical objects for now.
+		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {

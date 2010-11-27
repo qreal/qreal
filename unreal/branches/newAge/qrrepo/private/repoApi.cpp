@@ -35,10 +35,10 @@ void RepoApi::addChild(Id const &id, Id const &child)
 	addChangedDiagram(id.diagramId());
 }
 
-//TODO: реализовать
+//TODO: Р РµР°Р»РёР·РѕРІР°С‚СЊ
 void RepoApi::addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child)
 {
-
+	mClient.addChild(id, child);
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
@@ -301,7 +301,7 @@ void RepoApi::setToPort(Id const &id, double toPort)
 	addChangedDiagram(id.diagramId());
 }
 
-//TODO: реализовать
+//TODO: Р РµР°Р»РёР·РѕРІР°С‚СЊ
 QVariant RepoApi::position(qReal::Id const &id) const
 {
 	return 0;
