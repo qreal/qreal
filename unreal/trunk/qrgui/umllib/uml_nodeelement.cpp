@@ -104,14 +104,16 @@ void NodeElement::adjustLinks()
 
 void NodeElement::arrangeLinks()
 {
-	//int N = mEdgeList.size();
-	int i = 0;
+	qDebug() << "reconnecting " << uuid().toString();
 	const qreal indent = 0.1;
-	//const qreal ampl = 0.7;
+
+	//recursion
+	static QSet<NodeElement*> nodesToUpdate;
+	nodesToUpdate.remove(this);
 
 	foreach (EdgeElement* edge, mEdgeList) {
-		//qreal delta = ampl * (i++ - N / 2.0) / N;
-		edge->reconnectToNearestPorts(/*delta*/);
+		if (edge->reconnectToNearestPorts(false))
+			nodesToUpdate.insert(edge->otherSide(this));
 	}
 	
 	//make equal space on all linear ports.
@@ -145,6 +147,13 @@ void NodeElement::arrangeLinks()
 
 		lpId++; //next linear port.
 
+	}
+
+	//recursive calls
+	while (!nodesToUpdate.isEmpty()) {
+		NodeElement *next = *nodesToUpdate.begin();
+		qDebug() << "recursive call by " << next->uuid().toString();
+		next->arrangeLinks();
 	}
 }
 

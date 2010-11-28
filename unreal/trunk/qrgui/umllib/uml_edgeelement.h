@@ -31,10 +31,11 @@ namespace UML {
 			virtual bool initPossibleEdges();
 
 			void adjustLink();
-			bool reconnectToNearestPorts(qreal delta = 0); /* delta - small shift to fix EdgeElement's conglutination */
+			bool reconnectToNearestPorts(bool updateModel);
 			bool shouldReconnect() const;
-			qreal portIdOn(UML::NodeElement const *node);
-			QPointF nextFrom(UML::NodeElement const *node);
+			qreal portIdOn(UML::NodeElement const *node) const;
+			QPointF nextFrom(UML::NodeElement const *node) const;
+			UML::NodeElement* otherSide(UML::NodeElement const *node) const;
 			void removeLink(UML::NodeElement const *from);
 
 			void placeStartTo(QPointF const &place);
