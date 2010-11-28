@@ -20,7 +20,7 @@ VisualDebugger::VisualDebugger(model::Model *model) {
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
 	mCurrentElem = NULL;
-	mCurrentId = mCurrentId.getRootId();
+	mCurrentId = Id::rootId();
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
 	mBlockParser = new BlockParser(mErrorReporter);
@@ -57,7 +57,7 @@ void VisualDebugger::setDebugColor(QString color) {
 }
 
 void VisualDebugger::setEditor(EditorView *editor) {
-	if (NULL == mEditor || mCurrentId == mCurrentId.getRootId() || mEditor == editor) {
+	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor) {
 		mEditor = editor;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
@@ -78,7 +78,7 @@ VisualDebugger::ErrorType VisualDebugger::checkEditor() {
 }
 
 void VisualDebugger::error(ErrorType e) {
-	
+
 	switch (e) {
 	case missingBeginNode:
 		mErrorReporter->addCritical("The diagram doesn't have Initial Node");
@@ -138,7 +138,7 @@ Id VisualDebugger::findValidLink() {
 	if (!mBlockParser->hasErrors()) {
 		error(VisualDebugger::missingValidLink);
 	}
-	return outLinks.at(0).getRootId();
+	return Id::rootId();
 }
 
 void VisualDebugger::pause(int time) {
@@ -153,7 +153,7 @@ bool VisualDebugger::isFinalNode(Id id) {
 }
 
 bool VisualDebugger::hasEndOfLinkNode(Id id) {
-	return !(mModel->api().to(id) == id.getRootId());
+	return !(mModel->api().to(id) == Id::rootId());
 }
 
 VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
@@ -161,11 +161,11 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
 		return VisualDebugger::missingBeginNode;
 	}
 	mCurrentElem = elem;
-	
+
 	mEffect = new QGraphicsColorizeEffect();
 	mEffect->setColor(mDebugColor);
 	mEffect->setEnabled(true);
-	
+
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
 	mCurrentId = mModel->idByIndex(mCurrentElem->index());
 	return VisualDebugger::noErrors;
@@ -176,7 +176,7 @@ void VisualDebugger::doStep(Id id) {
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
-	
+
 	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 	if (elem) {
 		if (elem->uuid().element().compare("Action") == 0) {
@@ -187,7 +187,7 @@ void VisualDebugger::doStep(Id id) {
 
 void VisualDebugger::deinitialize() {
 	mEffect->setEnabled(false);
-	mCurrentId = mCurrentId.getRootId();
+	mCurrentId = Id::rootId();
 	mCurrentElem = NULL;
 	mEditor = NULL;
 	mError = VisualDebugger::noErrors;
@@ -217,21 +217,21 @@ gui::ErrorReporter& VisualDebugger::debug() {
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;
 	}
-	
+
 	mBlockParser->setErrorReporter(mErrorReporter);
-	
+
 	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
-	
+
 	while (outLinks.count() > 0) {
 		pause(mTimeout);
-		
+
 		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
 			Id validLinkId = findValidLink();
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return *mErrorReporter;
 			}
-			if (validLinkId != validLinkId.getRootId()) {
+			if (validLinkId != Id::rootId()) {
 				doStep(validLinkId);
 			} else {
 				return *mErrorReporter;
@@ -243,30 +243,30 @@ gui::ErrorReporter& VisualDebugger::debug() {
 				return *mErrorReporter;
 			}
 		}
-		
+
 		pause(mTimeout);
-		
+
 		if (!hasEndOfLinkNode(mCurrentId)) {
 			error(VisualDebugger::missingEndOfLinkNode);
 			return *mErrorReporter;
 		}
-		
+
 		doStep(mModel->api().to(mCurrentId));
 		if (mBlockParser->hasErrors()) {
 			deinitialize();
 			return *mErrorReporter;
 		}
-			
+
 		outLinks = mModel->api().outgoingLinks(mCurrentId);
 	}
-	
+
 	pause(mTimeout);
-	
+
 	if (!isFinalNode(mCurrentId)) {
 		error(VisualDebugger::endWithNotEndNode);
 		return *mErrorReporter;
 	}
-	
+
 	mErrorReporter->addInformation("Debug finished successfully");
 	deinitialize();
 	return *mErrorReporter;
@@ -281,13 +281,13 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	QSettings settings("SPbSU", "QReal");
 	setDebugColor(settings.value("debugColor").toString());
 
-	if (mCurrentElem == NULL && mCurrentId == mCurrentId.getRootId()) {
+	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 			return *mErrorReporter;
 		}
 	} else {
 		mBlockParser->setErrorReporter(mErrorReporter);
-		
+
 		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 		if (elem) {
 			if (mModel->api().outgoingLinks(mCurrentId).count() == 0) {
@@ -299,14 +299,14 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 				mErrorReporter->addInformation("Debug (single step) finished successfully");
 				return *mErrorReporter;
 			}
-			
+
 			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
 				Id validLinkId = findValidLink();
 				if (mBlockParser->hasErrors()) {
 					deinitialize();
 					return *mErrorReporter;
 				}
-				if (validLinkId != validLinkId.getRootId()) {
+				if (validLinkId != Id::rootId()) {
 					doStep(validLinkId);
 				} else {
 					return *mErrorReporter;
@@ -332,7 +332,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 			}
 		}
 	}
-	
+
 	mErrorReporter->addInformation("Debug (single step) finished successfully");
 	return *mErrorReporter;
 }

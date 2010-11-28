@@ -1,6 +1,7 @@
 #include "ids.h"
 
 #include <QtCore/QVariant>
+#include <QtCore/QUuid>
 
 using namespace qReal;
 
@@ -26,9 +27,14 @@ Id Id::loadFromString(QString const &string)
 	return result;
 }
 
-Id Id::getRootId()
+Id Id::createElementId(QString const &editor, QString const &diagram, QString const &element)
 {
-	return Id("ROOT_ID","ROOT_ID","ROOT_ID","ROOT_ID");
+	return Id(editor, diagram, element, QUuid::createUuid().toString());
+}
+
+Id Id::rootId()
+{
+	return Id("ROOT_ID", "ROOT_ID", "ROOT_ID", "ROOT_ID");
 }
 
 Id::Id(QString const &editor, QString  const &diagram, QString  const &element, QString  const &id)

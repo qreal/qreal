@@ -279,7 +279,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == id.getRootId()) {
+	if (id == Id::rootId()) {
 		return;
 	}
 	mPropertyModel.setIndex(mModel->indexById(id));
