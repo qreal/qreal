@@ -8,14 +8,13 @@
 
 #include "propertyeditorproxymodel.h"
 
-#include "../model/model.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 
 using namespace qReal;
 
-VisualDebugger::VisualDebugger(model::Model *model) {
-	mModel = model;
+VisualDebugger::VisualDebugger(/*model::Model *model*/) {
+//	mModel = model;
 	mEffect = new QGraphicsColorizeEffect();
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
@@ -125,19 +124,19 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 }
 
 Id VisualDebugger::findValidLink() {
-	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
-	QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
-	int pos=0;
-	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
-	for (int i=0; i<outLinks.count(); i++) {
-		bool type = mModel->api().property(outLinks.at(i), "type").toBool();
-		if (type == condition) {
-			return outLinks.at(i);
-		}
-	}
-	if (!mBlockParser->hasErrors()) {
-		error(VisualDebugger::missingValidLink);
-	}
+//	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
+//	QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
+//	int pos=0;
+//	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
+//	for (int i=0; i<outLinks.count(); i++) {
+//		bool type = mModel->api().property(outLinks.at(i), "type").toBool();
+//		if (type == condition) {
+//			return outLinks.at(i);
+//		}
+//	}
+//	if (!mBlockParser->hasErrors()) {
+//		error(VisualDebugger::missingValidLink);
+//	}
 	return Id::rootId();
 }
 
@@ -148,26 +147,28 @@ void VisualDebugger::pause(int time) {
 }
 
 bool VisualDebugger::isFinalNode(Id id) {
-	IdList outLinks = mModel->api().outgoingLinks(id);
-	return (outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0);
+//	IdList outLinks = mModel->api().outgoingLinks(id);
+//	return (outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0);
+	return true;
 }
 
 bool VisualDebugger::hasEndOfLinkNode(Id id) {
-	return !(mModel->api().to(id) == Id::rootId());
+//	return !(mModel->api().to(id) == Id::rootId());
+	return false;
 }
 
 VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
-	if (!elem) {
-		return VisualDebugger::missingBeginNode;
-	}
-	mCurrentElem = elem;
+//	if (!elem) {
+//		return VisualDebugger::missingBeginNode;
+//	}
+//	mCurrentElem = elem;
 
-	mEffect = new QGraphicsColorizeEffect();
-	mEffect->setColor(mDebugColor);
-	mEffect->setEnabled(true);
+//	mEffect = new QGraphicsColorizeEffect();
+//	mEffect->setColor(mDebugColor);
+//	mEffect->setEnabled(true);
 
-	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
-	mCurrentId = mModel->idByIndex(mCurrentElem->index());
+//	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
+//	mCurrentId = mModel->idByIndex(mCurrentElem->index());
 	return VisualDebugger::noErrors;
 }
 
@@ -200,139 +201,139 @@ void VisualDebugger::clearErrorReporter() {
 }
 
 void VisualDebugger::processAction() {
-	int pos = 0;
-	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), pos, mCurrentId);
+//	int pos = 0;
+//	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), pos, mCurrentId);
 }
 
 gui::ErrorReporter& VisualDebugger::debug() {
-	if (VisualDebugger::noErrors != checkEditor()) {
-		return *mErrorReporter;
-	}
+//	if (VisualDebugger::noErrors != checkEditor()) {
+//		return *mErrorReporter;
+//	}
 
-	mDebugType = VisualDebugger::fullDebug;
-	QSettings settings("SPbSU", "QReal");
-	setTimeout(settings.value("debuggerTimeout", 750).toInt());
-	setDebugColor(settings.value("debugColor").toString());
+//	mDebugType = VisualDebugger::fullDebug;
+//	QSettings settings("SPbSU", "QReal");
+//	setTimeout(settings.value("debuggerTimeout", 750).toInt());
+//	setDebugColor(settings.value("debugColor").toString());
 
-	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
-		return *mErrorReporter;
-	}
+//	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
+//		return *mErrorReporter;
+//	}
 
-	mBlockParser->setErrorReporter(mErrorReporter);
+//	mBlockParser->setErrorReporter(mErrorReporter);
 
-	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
+//	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
 
-	while (outLinks.count() > 0) {
-		pause(mTimeout);
+//	while (outLinks.count() > 0) {
+//		pause(mTimeout);
 
-		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
-			Id validLinkId = findValidLink();
-			if (mBlockParser->hasErrors()) {
-				deinitialize();
-				return *mErrorReporter;
-			}
-			if (validLinkId != Id::rootId()) {
-				doStep(validLinkId);
-			} else {
-				return *mErrorReporter;
-			}
-		} else {
-			doStep(outLinks.at(0));
-			if (mBlockParser->hasErrors()) {
-				deinitialize();
-				return *mErrorReporter;
-			}
-		}
+//		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
+//			Id validLinkId = findValidLink();
+//			if (mBlockParser->hasErrors()) {
+//				deinitialize();
+//				return *mErrorReporter;
+//			}
+//			if (validLinkId != Id::rootId()) {
+//				doStep(validLinkId);
+//			} else {
+//				return *mErrorReporter;
+//			}
+//		} else {
+//			doStep(outLinks.at(0));
+//			if (mBlockParser->hasErrors()) {
+//				deinitialize();
+//				return *mErrorReporter;
+//			}
+//		}
 
-		pause(mTimeout);
+//		pause(mTimeout);
 
-		if (!hasEndOfLinkNode(mCurrentId)) {
-			error(VisualDebugger::missingEndOfLinkNode);
-			return *mErrorReporter;
-		}
+//		if (!hasEndOfLinkNode(mCurrentId)) {
+//			error(VisualDebugger::missingEndOfLinkNode);
+//			return *mErrorReporter;
+//		}
 
-		doStep(mModel->api().to(mCurrentId));
-		if (mBlockParser->hasErrors()) {
-			deinitialize();
-			return *mErrorReporter;
-		}
+//		doStep(mModel->api().to(mCurrentId));
+//		if (mBlockParser->hasErrors()) {
+//			deinitialize();
+//			return *mErrorReporter;
+//		}
 
-		outLinks = mModel->api().outgoingLinks(mCurrentId);
-	}
+//		outLinks = mModel->api().outgoingLinks(mCurrentId);
+//	}
 
-	pause(mTimeout);
+//	pause(mTimeout);
 
-	if (!isFinalNode(mCurrentId)) {
-		error(VisualDebugger::endWithNotEndNode);
-		return *mErrorReporter;
-	}
+//	if (!isFinalNode(mCurrentId)) {
+//		error(VisualDebugger::endWithNotEndNode);
+//		return *mErrorReporter;
+//	}
 
-	mErrorReporter->addInformation("Debug finished successfully");
-	deinitialize();
+//	mErrorReporter->addInformation("Debug finished successfully");
+//	deinitialize();
 	return *mErrorReporter;
 }
 
 gui::ErrorReporter& VisualDebugger::debugSingleStep() {
-	if (VisualDebugger::noErrors != checkEditor()) {
-		return *mErrorReporter;
-	}
+//	if (VisualDebugger::noErrors != checkEditor()) {
+//		return *mErrorReporter;
+//	}
 
-	mDebugType = VisualDebugger::singleStepDebug;
-	QSettings settings("SPbSU", "QReal");
-	setDebugColor(settings.value("debugColor").toString());
+//	mDebugType = VisualDebugger::singleStepDebug;
+//	QSettings settings("SPbSU", "QReal");
+//	setDebugColor(settings.value("debugColor").toString());
 
-	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
-		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
-			return *mErrorReporter;
-		}
-	} else {
-		mBlockParser->setErrorReporter(mErrorReporter);
+//	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
+//		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
+//			return *mErrorReporter;
+//		}
+//	} else {
+//		mBlockParser->setErrorReporter(mErrorReporter);
 
-		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
-		if (elem) {
-			if (mModel->api().outgoingLinks(mCurrentId).count() == 0) {
-				if (!isFinalNode(mCurrentId)) {
-					error(VisualDebugger::endWithNotEndNode);
-					return *mErrorReporter;
-				}
-				deinitialize();
-				mErrorReporter->addInformation("Debug (single step) finished successfully");
-				return *mErrorReporter;
-			}
+//		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
+//		if (elem) {
+//			if (mModel->api().outgoingLinks(mCurrentId).count() == 0) {
+//				if (!isFinalNode(mCurrentId)) {
+//					error(VisualDebugger::endWithNotEndNode);
+//					return *mErrorReporter;
+//				}
+//				deinitialize();
+//				mErrorReporter->addInformation("Debug (single step) finished successfully");
+//				return *mErrorReporter;
+//			}
 
-			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
-				Id validLinkId = findValidLink();
-				if (mBlockParser->hasErrors()) {
-					deinitialize();
-					return *mErrorReporter;
-				}
-				if (validLinkId != Id::rootId()) {
-					doStep(validLinkId);
-				} else {
-					return *mErrorReporter;
-				}
-			} else {
-				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
-				if (mBlockParser->hasErrors()) {
-					deinitialize();
-					return *mErrorReporter;
-				}
-			}
-			mErrorReporter->addInformation("Debug (single step) finished successfully");
-			return *mErrorReporter;
-		} else {
-			if (!hasEndOfLinkNode(mCurrentId)) {
-				error(VisualDebugger::missingEndOfLinkNode);
-				return *mErrorReporter;
-			}
-			doStep(mModel->api().to(mCurrentId));
-			if (mBlockParser->hasErrors()) {
-				deinitialize();
-				return *mErrorReporter;
-			}
-		}
-	}
+//			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
+//				Id validLinkId = findValidLink();
+//				if (mBlockParser->hasErrors()) {
+//					deinitialize();
+//					return *mErrorReporter;
+//				}
+//				if (validLinkId != Id::rootId()) {
+//					doStep(validLinkId);
+//				} else {
+//					return *mErrorReporter;
+//				}
+//			} else {
+//				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
+//				if (mBlockParser->hasErrors()) {
+//					deinitialize();
+//					return *mErrorReporter;
+//				}
+//			}
+//			mErrorReporter->addInformation("Debug (single step) finished successfully");
+//			return *mErrorReporter;
+//		} else {
+//			if (!hasEndOfLinkNode(mCurrentId)) {
+//				error(VisualDebugger::missingEndOfLinkNode);
+//				return *mErrorReporter;
+//			}
+//			doStep(mModel->api().to(mCurrentId));
+//			if (mBlockParser->hasErrors()) {
+//				deinitialize();
+//				return *mErrorReporter;
+//			}
+//		}
+//	}
 
-	mErrorReporter->addInformation("Debug (single step) finished successfully");
+//	mErrorReporter->addInformation("Debug (single step) finished successfully");
 	return *mErrorReporter;
 }

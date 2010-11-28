@@ -1,3 +1,4 @@
+/*
 #include "model.h"
 #include "modelAssistApi.h"
 #include "../kernel/exception/exception.h"
@@ -110,3 +111,4 @@ IdList ModelAssistApi::children(qReal::Id const &element) const
 {
 	return mModel.api().children(element);
 }
+*/

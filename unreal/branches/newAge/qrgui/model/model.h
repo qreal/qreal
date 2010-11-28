@@ -1,5 +1,7 @@
 #pragma once
 
+/*
+
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QStringList>
@@ -115,3 +117,4 @@ namespace qReal {
 	}
 
 }
+*/

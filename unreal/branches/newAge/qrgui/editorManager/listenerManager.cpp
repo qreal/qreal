@@ -7,16 +7,16 @@
 
 using namespace qReal;
 
-ListenerManager::ListenerManager(QList<Listener *> const &listeners, model::ModelAssistApi *api)
+ListenerManager::ListenerManager(QList<Listener *> const &listeners /*, model::ModelAssistApi *api*/)
 {
-	initListeners(listeners, api);
+	initListeners(listeners/*, api*/);
 	bindListenerSlotsByName(listeners);
 }
 
-void ListenerManager::initListeners(QList<Listener *> const &listeners, model::ModelAssistApi *api)
+void ListenerManager::initListeners(QList<Listener *> const &listeners /*, model::ModelAssistApi *api*/)
 {
 	foreach (Listener *listener, listeners)
-		listener->init(api);
+		listener->init(/*api*/);
 }
 
 void ListenerManager::bindListenerSlotsByName(QList<Listener *> const &listeners)

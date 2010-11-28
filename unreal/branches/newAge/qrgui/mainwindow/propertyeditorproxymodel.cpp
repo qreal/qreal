@@ -4,7 +4,6 @@
 #include <QDebug>
 
 #include "propertyeditorproxymodel.h"
-#include "../model/model.h"
 
 using namespace qReal;
 
@@ -79,54 +78,56 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 QStringList PropertyEditorModel::getEnumValues(const QModelIndex &index) const
 {
-	if (index.row() <= 2) // metatype, id and name are definitely not enums
-		return QStringList();
-	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-	if (im){
-		return im->getEnumValues(targetObject, roleByIndex(index.row()));
-	}
+//	if (index.row() <= 2) // metatype, id and name are definitely not enums
+//		return QStringList();
+//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+//	if (im){
+//		return im->getEnumValues(targetObject, roleByIndex(index.row()));
+//	}
 	return QStringList();
 }
 
 QString PropertyEditorModel::getTypeName(const QModelIndex &index) const
 {
-	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-	if (im){
-		return im->getTypeName(targetObject, roleByIndex(index.row()));
-	}
+//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+//	if (im){
+//		return im->getTypeName(targetObject, roleByIndex(index.row()));
+//	}
 	return QString();
 }
 
 qrRepo::RepoApi const & PropertyEditorModel::getApi() const
 {
-	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-	return im->api();
+//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+//	return im->api();
+	return qrRepo::RepoApi("./dummy");  // TODO: This will not work.
 }
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	bool ret = false;
+//	bool ret = false;
 
-	if (!targetModel)
-		return false;
+//	if (!targetModel)
+//		return false;
 
-	if (!targetObject.isValid())
-		return false;
+//	if (!targetObject.isValid())
+//		return false;
 
-	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1) {
-		model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-		if (index.row() >= mPseudoAttributesCount)
-			 ret = im->setData(targetObject, value, roleByIndex(index.row()));
-		else if (index.row() == 2)
-			ret = im->setData(targetObject, value, Qt::DisplayRole);
-		else
-			ret = true;
-	}
-	else
-		ret = false;
-	if (ret)
-		dataChanged(index, index);
-	return ret;
+//	if ((role == Qt::DisplayRole || role == Qt::EditRole ) && index.column() == 1) {
+//		model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
+//		if (index.row() >= mPseudoAttributesCount)
+//			 ret = im->setData(targetObject, value, roleByIndex(index.row()));
+//		else if (index.row() == 2)
+//			ret = im->setData(targetObject, value, Qt::DisplayRole);
+//		else
+//			ret = true;
+//	}
+//	else
+//		ret = false;
+//	if (ret)
+//		dataChanged(index, index);
+//	return ret;
+	return false;
 }
 
 int PropertyEditorModel::roleByIndex(int const index) const

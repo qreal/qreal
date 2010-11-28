@@ -2,8 +2,6 @@
 
 #include <QtGui>
 
-#include "../model/model.h"
-
 using namespace qReal;
 using namespace UML;
 

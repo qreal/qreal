@@ -1,3 +1,4 @@
+/*
 #include "model.h"
 #include <QtGui/QIcon>
 #include <QtGui/QPolygon>
@@ -634,3 +635,4 @@ void Model::log(QString const message, Id const diagram)
 		return;
 	mApi.log(message, diagram);
 }
+*/

@@ -11,7 +11,6 @@
 #include "editorview.h"
 #include "mainwindow.h"
 #include "../mainwindow/mainwindow.h"
-#include "../model/model.h"
 
 using namespace qReal;
 
@@ -48,7 +47,7 @@ void EditorViewScene::initMouseMoveManager()
 {
 	if (!model())
 		return;
-	qReal::Id diagram = model()->getRootDiagram();
+	qReal::Id diagram; // = model()->getRootDiagram();
 	if (diagram == Id())
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
@@ -339,43 +338,43 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
-	QMenu *menu = goToMenu->addMenu(name);
-	foreach (Id element, ids) {
-		QAction *action = menu->addAction(model()->api().name(element));
-		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
-		action->setData(element.toVariant());
-	}
+//	QMenu *menu = goToMenu->addMenu(name);
+//	foreach (Id element, ids) {
+//		QAction *action = menu->addAction(model()->api().name(element));
+//		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
+//		action->setData(element.toVariant());
+//	}
 }
 
 void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
-											  , QMenu &contextMenu, QString const &menuName
-											  , IdList const &connectableTypes, IdList const &alreadyConnectedElements
-											  , IdList const &connectableDiagrams, const char *slot) const
+		, QMenu &contextMenu, QString const &menuName
+		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
+		, IdList const &connectableDiagrams, const char *slot) const
 {
-	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
+//	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
-	foreach (Id type, connectableTypes) {
-		foreach (Id elementId, model()->api().elements(type)) {
-			if (alreadyConnectedElements.contains(elementId))
-				continue;
-			QAction *action = addConnectionMenu->addAction(model()->api().name(elementId));
-			connect(action, SIGNAL(triggered()), slot);
-			QList<QVariant> tag;
-			tag << element->uuid().toVariant() << elementId.toVariant();
-			action->setData(tag);
-		}
-	}
+//	foreach (Id type, connectableTypes) {
+//		foreach (Id elementId, model()->api().elements(type)) {
+//			if (alreadyConnectedElements.contains(elementId))
+//				continue;
+//			QAction *action = addConnectionMenu->addAction(model()->api().name(elementId));
+//			connect(action, SIGNAL(triggered()), slot);
+//			QList<QVariant> tag;
+//			tag << element->uuid().toVariant() << elementId.toVariant();
+//			action->setData(tag);
+//		}
+//	}
 
-	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = model()->assistApi().editorManager().findElementByType(diagram.element());
-		QString name = model()->assistApi().editorManager().friendlyName(diagramType);
-		QString editorName = model()->assistApi().editorManager().friendlyName(Id(diagramType.editor()));
-		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
-		connect(action, SIGNAL(triggered()), slot);
-		QList<QVariant> tag;
-		tag << element->uuid().toVariant() << diagramType.toVariant();
-		action->setData(tag);
-	}
+//	foreach (Id diagram, connectableDiagrams) {
+//		Id diagramType = model()->assistApi().editorManager().findElementByType(diagram.element());
+//		QString name = model()->assistApi().editorManager().friendlyName(diagramType);
+//		QString editorName = model()->assistApi().editorManager().friendlyName(Id(diagramType.editor()));
+//		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
+//		connect(action, SIGNAL(triggered()), slot);
+//		QList<QVariant> tag;
+//		tag << element->uuid().toVariant() << diagramType.toVariant();
+//		action->setData(tag);
+//	}
 }
 
 void EditorViewScene::createDisconnectMenu(UML::Element const * const element
@@ -383,55 +382,55 @@ void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 										   , IdList const &outgoingConnections, IdList const &incomingConnections
 										   , const char *slot) const
 {
-	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
-	IdList list = outgoingConnections;
-	list.append(incomingConnections);
+//	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
+//	IdList list = outgoingConnections;
+//	list.append(incomingConnections);
 
-	foreach (Id elementId, list) {
-		QAction *action = disconnectMenu->addAction(model()->api().name(elementId));
-		connect(action, SIGNAL(triggered()), slot);
-		QList<QVariant> tag;
-		tag << element->uuid().toVariant() << elementId.toVariant();
-		action->setData(tag);
-	}
+//	foreach (Id elementId, list) {
+//		QAction *action = disconnectMenu->addAction(model()->api().name(elementId));
+//		connect(action, SIGNAL(triggered()), slot);
+//		QList<QVariant> tag;
+//		tag << element->uuid().toVariant() << elementId.toVariant();
+//		action->setData(tag);
+//	}
 }
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const
 {
-	// menu items "connect to"
-	// TODO: move to elements, they can call the model and API themselves
-	createAddConnectionMenu(element, contextMenu, tr("Add connection")
-							, mWindow->manager()->getConnectedTypes(element->uuid().type())
-							, model()->api().outgoingConnections(element->uuid())
-							, model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid())
-							, SLOT(connectActionTriggered())
-							);
+//	// menu items "connect to"
+//	// TODO: move to elements, they can call the model and API themselves
+//	createAddConnectionMenu(element, contextMenu, tr("Add connection")
+//							, mWindow->manager()->getConnectedTypes(element->uuid().type())
+//							, model()->api().outgoingConnections(element->uuid())
+//							, model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid())
+//							, SLOT(connectActionTriggered())
+//							);
 
-	createDisconnectMenu(element, contextMenu, tr("Disconnect")
-						 , model()->api().outgoingConnections(element->uuid())
-						 , model()->api().incomingConnections(element->uuid())
-						 , SLOT(disconnectActionTriggered())
-						 );
+//	createDisconnectMenu(element, contextMenu, tr("Disconnect")
+//						 , model()->api().outgoingConnections(element->uuid())
+//						 , model()->api().incomingConnections(element->uuid())
+//						 , SLOT(disconnectActionTriggered())
+//						 );
 
-	createAddConnectionMenu(element, contextMenu, tr("Add usage")
-							, mWindow->manager()->getUsedTypes(element->uuid().type())
-							, model()->api().outgoingUsages(element->uuid())
-							, model()->assistApi().diagramsAbleToBeUsedIn(element->uuid())
-							, SLOT(addUsageActionTriggered())
-							);
+//	createAddConnectionMenu(element, contextMenu, tr("Add usage")
+//							, mWindow->manager()->getUsedTypes(element->uuid().type())
+//							, model()->api().outgoingUsages(element->uuid())
+//							, model()->assistApi().diagramsAbleToBeUsedIn(element->uuid())
+//							, SLOT(addUsageActionTriggered())
+//							);
 
-	createDisconnectMenu(element, contextMenu, tr("Delete usage")
-						 , model()->api().outgoingUsages(element->uuid())
-						 , model()->api().incomingUsages(element->uuid())
-						 , SLOT(deleteUsageActionTriggered())
-						 );
+//	createDisconnectMenu(element, contextMenu, tr("Delete usage")
+//						 , model()->api().outgoingUsages(element->uuid())
+//						 , model()->api().incomingUsages(element->uuid())
+//						 , SLOT(deleteUsageActionTriggered())
+//						 );
 
-	QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
+//	QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
 
-	createGoToSubmenu(goToMenu, tr("Forward connection"), model()->api().outgoingConnections(element->uuid()));
-	createGoToSubmenu(goToMenu, tr("Backward connection"), model()->api().incomingConnections(element->uuid()));
-	createGoToSubmenu(goToMenu, tr("Uses"), model()->api().outgoingUsages(element->uuid()));
-	createGoToSubmenu(goToMenu, tr("Used in"), model()->api().incomingUsages(element->uuid()));
+//	createGoToSubmenu(goToMenu, tr("Forward connection"), model()->api().outgoingConnections(element->uuid()));
+//	createGoToSubmenu(goToMenu, tr("Backward connection"), model()->api().incomingConnections(element->uuid()));
+//	createGoToSubmenu(goToMenu, tr("Uses"), model()->api().outgoingUsages(element->uuid()));
+//	createGoToSubmenu(goToMenu, tr("Used in"), model()->api().incomingUsages(element->uuid()));
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -622,36 +621,36 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
-		// Double click on a title activates it
-		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()))) {
-			if (!title->hasFocus()) {  // Do not activate already activated item
-				event->accept();
-				title->startTextInteraction();
-				return;
-			}
-		}
-		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
-			event->accept();
+//	if (event->button() == Qt::LeftButton) {
+//		// Double click on a title activates it
+//		if (UML::ElementTitle *title = dynamic_cast<UML::ElementTitle*>(itemAt(event->scenePos()))) {
+//			if (!title->hasFocus()) {  // Do not activate already activated item
+//				event->accept();
+//				title->startTextInteraction();
+//				return;
+//			}
+//		}
+//		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
+//			event->accept();
 
-			IdList outgoingLinks = model()->api().outgoingConnections(element->uuid());
+//			IdList outgoingLinks = model()->api().outgoingConnections(element->uuid());
 
-			if (outgoingLinks.size() > 0)
-				mainWindow()->activateItemOrDiagram(outgoingLinks[0]);
-			else {
-				IdList diagrams = model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid());
-				if (!diagrams.isEmpty()) {
-					Id diagramType = model()->assistApi().editorManager().findElementByType(diagrams[0].element());
-					model()->assistApi().createConnected(element->uuid(), diagramType);
-				}
-			}
+//			if (outgoingLinks.size() > 0)
+//				mainWindow()->activateItemOrDiagram(outgoingLinks[0]);
+//			else {
+//				IdList diagrams = model()->assistApi().diagramsAbleToBeConnectedTo(element->uuid());
+//				if (!diagrams.isEmpty()) {
+//					Id diagramType = model()->assistApi().editorManager().findElementByType(diagrams[0].element());
+//					model()->assistApi().createConnected(element->uuid(), diagramType);
+//				}
+//			}
 
-			// Now scene is changed from outside. Being a mere mortal I do not
-			// know whether it is good or not, but what is the destiny of
-			// workflow after this return?
-			return;
-		}
-	}
+//			// Now scene is changed from outside. Being a mere mortal I do not
+//			// know whether it is good or not, but what is the destiny of
+//			// workflow after this return?
+//			return;
+//		}
+//	}
 
 	QGraphicsScene::mouseDoubleClickEvent(event);
 }
@@ -686,28 +685,28 @@ qReal::MainWindow *EditorViewScene::mainWindow() const
 
 void EditorViewScene::connectActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> connection = action->data().toList();
-	Id source = connection[0].value<Id>();
-	Id destination = connection[1].value<Id>();
-	if (!action->text().startsWith("New ")) {
-		model()->assistApi().connect(source, destination);
-	} else {
-		model()->assistApi().createConnected(source, destination);
-	}
+//	QAction *action = static_cast<QAction *>(sender());
+//	QList<QVariant> connection = action->data().toList();
+//	Id source = connection[0].value<Id>();
+//	Id destination = connection[1].value<Id>();
+//	if (!action->text().startsWith("New ")) {
+//		model()->assistApi().connect(source, destination);
+//	} else {
+//		model()->assistApi().createConnected(source, destination);
+//	}
 }
 
 void EditorViewScene::addUsageActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> connection = action->data().toList();
-	Id source = connection[0].value<Id>();
-	Id destination = connection[1].value<Id>();
-	if (!action->text().startsWith("New ")) {
-		model()->assistApi().addUsage(source, destination);
-	} else {
-		model()->assistApi().createUsed(source, destination);
-	}
+//	QAction *action = static_cast<QAction *>(sender());
+//	QList<QVariant> connection = action->data().toList();
+//	Id source = connection[0].value<Id>();
+//	Id destination = connection[1].value<Id>();
+//	if (!action->text().startsWith("New ")) {
+//		model()->assistApi().addUsage(source, destination);
+//	} else {
+//		model()->assistApi().createUsed(source, destination);
+//	}
 }
 
 void EditorViewScene::goToActionTriggered()
@@ -720,25 +719,25 @@ void EditorViewScene::goToActionTriggered()
 
 void EditorViewScene::disconnectActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> connection = action->data().toList();
-	Id source = connection[0].value<Id>();
-	Id destination = connection[1].value<Id>();
-	model()->assistApi().disconnect(source, destination);
+//	QAction *action = static_cast<QAction *>(sender());
+//	QList<QVariant> connection = action->data().toList();
+//	Id source = connection[0].value<Id>();
+//	Id destination = connection[1].value<Id>();
+//	model()->assistApi().disconnect(source, destination);
 }
 
 void EditorViewScene::deleteUsageActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> connection = action->data().toList();
-	Id source = connection[0].value<Id>();
-	Id destination = connection[1].value<Id>();
-	model()->assistApi().deleteUsage(source, destination);
+//	QAction *action = static_cast<QAction *>(sender());
+//	QList<QVariant> connection = action->data().toList();
+//	Id source = connection[0].value<Id>();
+//	Id destination = connection[1].value<Id>();
+//	model()->assistApi().deleteUsage(source, destination);
 }
 
-qReal::model::Model *EditorViewScene::model() const
+qReal::models::GraphicalModel *EditorViewScene::model() const
 {
-	return dynamic_cast<qReal::model::Model *>(mv_iface->model());
+	return dynamic_cast<qReal::models::GraphicalModel *>(mv_iface->model());
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include "../kernel/ids.h"
 
 namespace qReal {
@@ -19,7 +20,7 @@ namespace qReal {
 		 *	ModelAssistApi used to somehow control GUI's actions towards the repo,
 		 *	model's mutableApi() should be used only in parsers and here
 		 * */
-
+/*
 		class ModelAssistApi {
 		public:
 			ModelAssistApi(Model &model, EditorManager const &editorManager);
@@ -56,3 +57,4 @@ namespace qReal {
 	}
 
 }
+*/

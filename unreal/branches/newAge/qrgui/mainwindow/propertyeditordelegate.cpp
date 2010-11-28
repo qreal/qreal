@@ -5,7 +5,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QPushButton>
 
-#include "../model/model.h"
 #include "mainwindow.h"
 #include "openShapeEditorButton.h"
 

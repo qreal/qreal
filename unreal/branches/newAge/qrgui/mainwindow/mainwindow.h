@@ -20,9 +20,9 @@ namespace qReal {
 	class ListenerManager;
 	class VisualDebugger;
 
-	namespace model {
-		class Model;
-	}
+//	namespace model {
+//		class Model;
+//	}
 
 	namespace models {
 		class GraphicalModel;
@@ -52,7 +52,7 @@ namespace qReal {
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
-		void updateTab(QModelIndex const &index);
+//		void updateTab(QModelIndex const &index);
 
 		void settingsPlugins();
 
@@ -106,7 +106,7 @@ namespace qReal {
 		void showPreferencesDialog();
 
 		void centerOn(const QModelIndex &rootIndex);
-		void diagramExplorerClicked(const QModelIndex &rootIndex);
+		void graphicalModelExplorerClicked(const QModelIndex &rootIndex);
 
 		void openNewEmptyTab();
 		void openNewTab(const QModelIndex &index);
@@ -128,7 +128,7 @@ namespace qReal {
 
 	private:
 		QCloseEvent *mCloseEvent;
-		model::Model *mModel;
+//		model::Model *mModel;
 		models::GraphicalModel *mGraphicalModel;
 		models::LogicalModel *mLogicalModel;
 		EditorManager mEditorManager;

@@ -13,9 +13,9 @@ namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
 	class MainWindow;
-	namespace model {
-		class Model;
-	}
+//	namespace model {
+//		class Model;
+//	}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -98,7 +98,7 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::model::Model* model() const;
+	qReal::models::GraphicalModel* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;

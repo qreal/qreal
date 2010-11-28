@@ -2,7 +2,6 @@
 
 #include <QtCore/QObject>
 
-#include "../model/modelAssistApi.h"
 #include "../pluginInterface/listenerInterface.h"
 
 namespace qReal {
@@ -10,12 +9,14 @@ namespace qReal {
 	class Listener: public ListenerInterface {
 		Q_OBJECT
 	public:
-		Listener(): mApi(NULL) {}
-		void init(model::ModelAssistApi *api) {
-			mApi = api;
+		Listener()/*: mApi(NULL)*/ {}
+
+		// TODO: Rework listeners to use new models.
+		void init(/*model::ModelAssistApi *api*/) {
+			// mApi = NULL;
 		}
 	protected:
-		model::ModelAssistApi *mApi;
+		// model::ModelAssistApi *mApi;
 	};
 
 }

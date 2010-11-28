@@ -11,7 +11,6 @@
 
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
-#include "../model/model.h"
 #include "../view/editorviewscene.h"
 #include "../pluginInterface/editorInterface.h"
 
@@ -249,7 +248,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::connectToPort()
 {
-	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
+	models::GraphicalModel *graphicalModel = model();
 
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
@@ -270,8 +269,8 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mSrc ? mSrc->uuid() : Id::rootId()).toVariant(), roles::fromRole);
-	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+	graphicalModel->setData(mDataIndex, (mSrc ? mSrc->uuid() : Id::rootId()).toVariant(), roles::fromRole);
+	graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
 	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
@@ -286,13 +285,13 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mDst ? mDst->uuid() : Id::rootId()).toVariant(), roles::toRole);
-	model->setData(mDataIndex, mPortTo, roles::toPortRole);
+	graphicalModel->setData(mDataIndex, (mDst ? mDst->uuid() : Id::rootId()).toVariant(), roles::toRole);
+	graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	model->setData(mDataIndex, pos(), roles::positionRole);
-	model->setData(mDataIndex, mLine.toPolygon(), roles::configurationRole);
+	graphicalModel->setData(mDataIndex, pos(), roles::positionRole);
+	graphicalModel->setData(mDataIndex, mLine.toPolygon(), roles::configurationRole);
 
 	mMoving = false;
 
@@ -544,27 +543,20 @@ QPointF EdgeElement::nextFrom(UML::NodeElement const *node)
 
 bool EdgeElement::reconnectToNearestPorts(qreal delta)
 {
-	//qDebug() << "Delta: " << delta;
+	Q_UNUSED(delta);
 	bool reconnected = false;
-	const qreal factor = -1.5;
-	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
+	models::GraphicalModel *graphicalModel = model();
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		//while (floor(mPortFrom + delta) != floor(mPortFrom))
-			//delta /= factor;
-		//mPortFrom += delta;
-		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
 	if (mDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		//while (floor(mPortTo + delta) != floor(mPortTo))
-			//delta /= factor;
-		//mPortTo += delta;
-		model->setData(mDataIndex, mPortTo, roles::toPortRole);
+		graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
 
 	return reconnected;
@@ -633,15 +625,15 @@ void EdgeElement::placeEndTo(QPointF const &place)
 
 void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
 	qDebug() << "portId setting: " << portId;
-	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
+	models::GraphicalModel *graphicalModel = model();
 	if (node == mSrc) {
 		mPortFrom = portId;
-		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 		qDebug() << "   ... to src";
 	}
 	if (node == mDst) {
 		mPortTo = portId;
-		model->setData(mDataIndex, mPortTo, roles::toPortRole);
+		graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
 		qDebug() << "   ... to dst";
 	}
 

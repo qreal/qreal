@@ -1,5 +1,4 @@
 #include "uml_nodeelement.h"
-#include "../model/model.h"
 #include "../view/editorviewscene.h"
 #include "../pluginInterface/editorInterface.h"
 
@@ -104,16 +103,12 @@ void NodeElement::adjustLinks()
 
 void NodeElement::arrangeLinks()
 {
-	//int N = mEdgeList.size();
-	int i = 0;
 	const qreal indent = 0.1;
-	//const qreal ampl = 0.7;
 
 	foreach (EdgeElement* edge, mEdgeList) {
-		//qreal delta = ampl * (i++ - N / 2.0) / N;
-		edge->reconnectToNearestPorts(/*delta*/);
+		edge->reconnectToNearestPorts();
 	}
-	
+
 	//make equal space on all linear ports.
 	int lpId = 0;
 	foreach (StatLine line, mLinePorts) {
@@ -140,7 +135,7 @@ void NodeElement::arrangeLinks()
 		int N = edges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, edges) {
-			edge->moveConnection(this, lpId + indent + (1.0 - 2 * indent) * i++ / N); //N == 0 <=> 0 iterations 
+			edge->moveConnection(this, lpId + indent + (1.0 - 2 * indent) * i++ / N); //N == 0 <=> 0 iterations
 		}
 
 		lpId++; //next linear port.
