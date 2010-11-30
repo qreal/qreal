@@ -5,84 +5,84 @@
     <graphicTypes>
       <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
       <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
-        <node displayedName="Requirements Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="RequirementsDiagramNode">
-          <graphics>
-            <picture sizex="200" sizey="200">
-              <line y1="0" x1="20" y2="0" x2="180"/>
-              <line y1="200" x1="20" y2="200" x2="180"/>
-              <line y1="20" x1="0" y2="180" x2="0"/>
-              <line y1="20" x1="200" y2="180" x2="200"/>
-              <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
-              <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
-              <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
-              <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
-            </picture>
-            <labels>
-              <label x="40" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="0" y="100"/>
-              <pointPort x="100" y="0"/>
-              <pointPort x="200" y="100"/>
-              <pointPort x="100" y="200"/>
-            </ports>
-          </graphics>
-          <logic>
-            <generalizations>
-              <parent parentName="KernelDiagram::Diagram"/>
-            </generalizations>
-            <container>
-              <contains type="RequirementsDiagram::reqnFeatured"/>
-              <contains type="RequirementsDiagram::reqnConceptAlternative"/>
-              <contains type="RequirementsDiagram::reqnLeaf"/>
-              <contains type="RequirementsDiagram::reqnParent"/>
-              <contains type="RequirementsDiagram::reqnParentMandatory"/>
-              <contains type="RequirementsDiagram::reqnParentOr"/>
-              <contains type="RequirementsDiagram::reqnParentOptional"/>
-              <contains type="RequirementsDiagram::reqnParentAlternative"/>
-              <contains type="RequirementsDiagram::reqeP2N"/>
-            </container>
-          </logic>
-        </node>
+      <node displayedName="Requirements Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="RequirementsDiagramNode">
+        <graphics>
+          <picture sizex="200" sizey="200">
+            <line y1="0" x1="20" y2="0" x2="180"/>
+            <line y1="200" x1="20" y2="200" x2="180"/>
+            <line y1="20" x1="0" y2="180" x2="0"/>
+            <line y1="20" x1="200" y2="180" x2="200"/>
+            <arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+            <arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+            <arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+            <arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+          </picture>
+          <labels>
+            <label x="40" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="0" y="100"/>
+            <pointPort x="100" y="0"/>
+            <pointPort x="200" y="100"/>
+            <pointPort x="100" y="200"/>
+          </ports>
+        </graphics>
+        <logic>
+          <generalizations>
+            <parent parentName="KernelDiagram::Diagram"/>
+          </generalizations>
+          <container>
+            <contains type="RequirementsDiagram::reqnFeatured"/>
+            <contains type="RequirementsDiagram::reqnConceptAlternative"/>
+            <contains type="RequirementsDiagram::reqnLeaf"/>
+            <contains type="RequirementsDiagram::reqnParent"/>
+            <contains type="RequirementsDiagram::reqnParentMandatory"/>
+            <contains type="RequirementsDiagram::reqnParentOr"/>
+            <contains type="RequirementsDiagram::reqnParentOptional"/>
+            <contains type="RequirementsDiagram::reqnParentAlternative"/>
+            <contains type="RequirementsDiagram::reqeP2N"/>
+          </container>
+        </logic>
+      </node>
       <node name="reqnFeatured" displayedName="Featured Element" >
-       <graphics>
-        
+        <graphics>
+
           <description>as leaf - for the possibility of future node extension</description>
           <picture sizex="30" sizey="30" >
             <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
           </picture>
           <ports>
-            <point_port x="5" y="15" />
-            <point_port x="15" y="5" />
-            <point_port x="25" y="15" />
-            <point_port x="15" y="25" />
-            <point_port x="15" y="15" />
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
           </ports>
-    
-      </graphics>
-      <logic>
-        <properties>
-          <property type="text" name="description" />
-          <property type="int" name="priority" />
-          <property>
-            <name>source</name>
-            <type>string</type>
-            <description>requirement source value</description>
-          </property>
-          <property type="string" name="type" />
-        </properties>
-        <!---<associations>
+
+        </graphics>
+        <logic>
+          <properties>
+            <property type="text" name="description" />
+            <property type="int" name="priority" />
+            <property>
+              <name>source</name>
+              <type>string</type>
+              <description>requirement source value</description>
+            </property>
+            <property type="string" name="type" />
+          </properties>
+          <!---<associations>
           <assoc_ref idref="aP2N_Featured" />
         </associations>-->
-        <generalizations>
-          <generalization>
-            <parent parentName="KernelDiagram::KernelElement" />
-          </generalization>
-        </generalizations>
-        <connections>
-          <connection type="RequirementsDiagram::RequirementsDiagramNode"/>
-        </connections>
-      </logic>
+          <generalizations>
+         
+              <parent parentName="KernelDiagram::KernelElement" />
+         
+          </generalizations>
+          <connections>
+            <connection type="RequirementsDiagram::RequirementsDiagramNode"/>
+          </connections>
+        </logic>
       </node>
       <node name="reqnConceptAlternative" displayedName="Concept Alternative" >
         <graphics>
@@ -95,19 +95,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnFeatured" />
-            </generalization>
+          
+              <parent parentName="reqnFeatured" />
+           
           </generalizations>
           
         </logic>
@@ -122,19 +122,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnFeatured" />
-            </generalization>
+            
+              <parent parentName="reqnFeatured" />
+           
           </generalizations>
         </logic>
       </node>
@@ -149,18 +149,18 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
             <generalization>
-              <parent parent_id="reqnFeatured" />
+              <parent parentName="RequirementsDiagram::reqnFeatured" />
             </generalization>
           </generalizations>
           <!--<associations>
@@ -179,19 +179,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnParent" />
-            </generalization>
+           
+              <parent parentName="reqnParent" />
+          
           </generalizations>
         </logic>
       </node>
@@ -206,19 +206,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnParent" />
-            </generalization>
+          
+              <parent parentName="reqnParent" />
+          
           </generalizations>
         </logic>
       </node>
@@ -232,19 +232,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnParent" />
-            </generalization>
+       
+              <parent parentName="reqnParent" />
+           
           </generalizations>
         </logic>
       </node>
@@ -259,19 +259,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnParent" />
-            </generalization>
+        
+              <parent parentName="reqnParent" />
+         
           </generalizations>
         </logic>
       </node>
@@ -286,19 +286,19 @@
               <label x="5" y="10" textBinded="name"/>
             </labels>
             <ports>
-              <point_port x="5" y="15" />
-              <point_port x="15" y="5" />
-              <point_port x="25" y="15" />
-              <point_port x="15" y="25" />
-              <point_port x="15" y="15" />
+              <pointPort x="5" y="15" />
+              <pointPort x="15" y="5" />
+              <pointPort x="25" y="15" />
+              <pointPort x="15" y="25" />
+              <pointPort x="15" y="15" />
             </ports>
           </view>
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parent_id="reqnParent" />
-            </generalization>
+            
+              <parent parentName="reqnParent" />
+           
           </generalizations>
         </logic>
       </node>
