@@ -132,8 +132,6 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 		else
 			return qReal::IdList();
 
-		//qDebug() << elementsType;
-		
 		return rApi.elementsByType(elementsType);
 	}
 
@@ -157,8 +155,6 @@ QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStrea
 		qDebug() << "problem with number of @@ in task" << taskFile.fileName();
 		return "";
 	}
-
-	//qDebug() << listOfSplitting << '\n';
 
 	//теперь каждый нечетный элемент listOfSplitting - что-то между @@ @@
 	int iterationNumber = 0;
@@ -185,8 +181,6 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 			return "";
 		case FOREACH:
 			{
-				//qDebug() << "FOREACH";
-
 				QString *foreachBlockString = new QString(); //for foreachBlockStream only
 				QTextStream foreachBlockStream(foreachBlockString);
 
@@ -219,25 +213,14 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				QPair<QString, QString> elemAndListNames = foreachStringParse(parsingStr);
 				qReal::Id objectId = getCurObjectId();//TODO: change this method
 
-				//qDebug() << elemAndListNames.second;
-				//qDebug() << elemAndListNames.first;
-				//qDebug() << getCurObjectMethodResultList(elemAndListNames.second).size();
-
 				// Здесь развертка foreach
 				foreach (qReal::Id element, getCurObjectMethodResultList(elemAndListNames.second)) {
-					//qDebug() << element.toString();
-
-					//qDebug() << "\t" << element.element();
 					if (element.element() == elemAndListNames.first) {
-						//qDebug() << elemAndListNames.first;
-						//qDebug() << "\t" << elemAndListNames.first;
 						//обновление curObjectId
 						curObjectId = element;
-
 						resultStr += interpret(foreachBlockStream);
-						//qDebug() << resultStr;
-
-						foreachBlockStream.reset();
+						
+						foreachBlockStream.seek(0);
 					}
 				}
 				
@@ -273,8 +256,6 @@ QString Interpreter::interpret(QTextStream& stream) {
 	while (!stream.atEnd()) {
 		QString curStr = stream.readLine();
 
-		//qDebug() << curStr << isControlString(curStr) << controlStringType(curStr);
-
 		if (!isControlString(curStr)) {
 			resultStr += nonControlStringParse(curStr, stream);
 		}
@@ -305,7 +286,6 @@ QString Interpreter::interpret() {
 	}
 
 	QString taskName = curStr.right(curStr.length() - 5); //5 - "Task " length;
-	//qDebug() << taskName;
 
 	return interpret(*inStream);
 }

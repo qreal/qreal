@@ -1,10 +1,10 @@
 Task JavaClass
 #!/ Produce Java class from repo
 
-#!foreach Class in elementsByType
+#!foreach Class in elementsByType(Class)
 #!{
 class @@name@@ {
-#!foreach MethodContainer in children
+#!foreach MethodsContainer in children
 #!{
 #!foreach Method in children
 #!{
@@ -13,9 +13,9 @@ class @@name@@ {
 #!}
 #!}
 
-#!foreach FieldContainer in children
-#!foreach Field in children
+#!foreach FieldsContainer in children
 #!{
+#!foreach Field in children
 #!{
 	@@fieldVisibility@@ @@fieldType@@ @@fieldName@@;
 #!}
