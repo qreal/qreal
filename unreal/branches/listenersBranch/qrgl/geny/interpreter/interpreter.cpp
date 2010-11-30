@@ -5,7 +5,7 @@
 using namespace Geny;
 
 Interpreter::Interpreter(const QString& repoDirectory, const QString& taskFileName, qReal::Id curObjectId): 
-	taskFile(taskFileName), rApi(repoDirectory), curObjectId(curObjectId) {
+	taskFile(taskFileName), inStream(0), rApi(repoDirectory), curObjectId(curObjectId) {
 }
 
 /*
@@ -18,6 +18,7 @@ Interpreter::Interpreter(const QString& taskFilename) : taskFile(taskFilename), 
 Interpreter::~Interpreter() {
 	if (inStream)
 		delete inStream;
+	taskFile.close();
 }
 
 qReal::Id Interpreter::getCurObjectId() {
@@ -33,6 +34,13 @@ QString Interpreter::controlExpressionParse(const QString& expression) {
 }
 
 QString Interpreter::getCurrentObjectProperty(const QString& propertyName) {
+	//может падать, если у getCurObjectId() нет property propertyName
+	//TODO: не закрывать ошибку!!!!
+	if (!rApi.exist(getCurObjectId()) || !rApi.hasProperty(getCurObjectId(), propertyName))
+		return "";
+
+	qDebug() << rApi.property(getCurObjectId(), propertyName).toString();
+
 	return rApi.property(getCurObjectId(), propertyName).toString();
 }
 
@@ -63,8 +71,10 @@ QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
 	QStringList strElements = str.split(' ');
 	strElements.removeAll("");
 
+	qDebug() << "foreach structure:" << strElements;
+
 	if ( (strElements.length() != 4) || 
-			(strElements[0] != "foreach") || (strElements[2] != "in") ) {
+			(strElements[0] != "#!foreach") || (strElements[2] != "in") ) {
 		qDebug()  << "Error! Bad \'foreach\' structure!";
 		return QPair<QString, QString>("", "");
 	}
@@ -115,9 +125,14 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 		QString elementsType;
 		int leftParenthesisPos = methodName.indexOf('(');
 		int rightParenthesisPos = methodName.indexOf(')');
+
 		if ( (leftParenthesisPos > -1) && (rightParenthesisPos > leftParenthesisPos) )
-			elementsType = methodName.mid(leftParenthesisPos,
-					rightParenthesisPos - leftParenthesisPos);
+			elementsType = methodName.mid(leftParenthesisPos + 1,
+					rightParenthesisPos - leftParenthesisPos - 1);
+		else
+			return qReal::IdList();
+
+		//qDebug() << elementsType;
 		
 		return rApi.elementsByType(elementsType);
 	}
@@ -143,6 +158,8 @@ QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStrea
 		return "";
 	}
 
+	//qDebug() << listOfSplitting << '\n';
+
 	//теперь каждый нечетный элемент listOfSplitting - что-то между @@ @@
 	int iterationNumber = 0;
 	foreach (QString curElem, listOfSplitting) {
@@ -153,13 +170,12 @@ QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStrea
 
 	QString resultStr;
 	foreach (QString curElem, listOfSplitting) {
-		resultStr = curElem + ' ';
+		resultStr += curElem + ' ';
 	}
 
 	//необходимо стереть лишний ' '
 	if (resultStr.length() > 0)
 		resultStr.resize(resultStr.length() - 1);
-
 	return resultStr + '\n';
 }
 
@@ -169,7 +185,10 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 			return "";
 		case FOREACH:
 			{
-				QTextStream foreachBlockStream;
+				//qDebug() << "FOREACH";
+
+				QString *foreachBlockString = new QString(); //for foreachBlockStream only
+				QTextStream foreachBlockStream(foreachBlockString);
 
 				QString curLine = stream.readLine();
 				if (controlStringType(curLine) != LEFT_BRACE) {
@@ -189,6 +208,7 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 					if (controlStringType(curLine) == RIGHT_BRACE)
 						braceBalance--;
 				}
+				
 				if ( (braceBalance != 0) && (stream.atEnd()) ) {
 					qDebug() << "Error! There is no brace balance!";
 					return "";
@@ -199,17 +219,31 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				QPair<QString, QString> elemAndListNames = foreachStringParse(parsingStr);
 				qReal::Id objectId = getCurObjectId();//TODO: change this method
 
+				//qDebug() << elemAndListNames.second;
+				//qDebug() << elemAndListNames.first;
+				//qDebug() << getCurObjectMethodResultList(elemAndListNames.second).size();
+
 				// Здесь развертка foreach
 				foreach (qReal::Id element, getCurObjectMethodResultList(elemAndListNames.second)) {
+					//qDebug() << element.toString();
+
+					//qDebug() << "\t" << element.element();
 					if (element.element() == elemAndListNames.first) {
+						//qDebug() << elemAndListNames.first;
+						//qDebug() << "\t" << elemAndListNames.first;
 						//обновление curObjectId
 						curObjectId = element;
 
 						resultStr += interpret(foreachBlockStream);
+						//qDebug() << resultStr;
+
 						foreachBlockStream.reset();
 					}
 				}
+				
 				curObjectId = objectId;//TODO: change this method
+
+				delete foreachBlockString;
 
 				return resultStr;
 			}
@@ -239,10 +273,13 @@ QString Interpreter::interpret(QTextStream& stream) {
 	while (!stream.atEnd()) {
 		QString curStr = stream.readLine();
 
+		//qDebug() << curStr << isControlString(curStr) << controlStringType(curStr);
+
 		if (!isControlString(curStr)) {
 			resultStr += nonControlStringParse(curStr, stream);
 		}
 		else {
+			//TODO: ошибка в controlStringParse
 			resultStr += controlStringParse(curStr, stream);//может сдвигать stream! Это нужно для for'а
 		}
 	}
@@ -251,11 +288,13 @@ QString Interpreter::interpret(QTextStream& stream) {
 }
 
 QString Interpreter::interpret() {
+	//TODO: исправить ошибку, связанную со вторым запуском
 	if (taskFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&taskFile);
 	}
 	else {
 		qDebug() << "cannot load file \"" << taskFile.fileName() << "\"";
+		return "";
 	}
 
 	QString curStr;
@@ -264,8 +303,9 @@ QString Interpreter::interpret() {
 		qDebug() << "Task file" << taskFile.fileName() << "doesn't start with \"Task __name__\"";
 		return "";
 	}
-	
-	//QString taskName = curStr.end(curStr.length() - 5); //5 - "Task " length;
+
+	QString taskName = curStr.right(curStr.length() - 5); //5 - "Task " length;
+	//qDebug() << taskName;
 
 	return interpret(*inStream);
 }
