@@ -47,7 +47,7 @@
       <node name="reqnFeatured" displayedName="Featured Element" >
         <graphics>
 
-          <description>as leaf - for the possibility of future node extension</description>
+          <!--<description>as leaf - for the possibility of future node extension</description>-->
           <picture sizex="30" sizey="30" >
             <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
           </picture>
@@ -75,9 +75,9 @@
           <assoc_ref idref="aP2N_Featured" />
         </associations>-->
           <generalizations>
-         
-              <parent parentName="KernelDiagram::KernelElement" />
-         
+
+            <parent parentName="KernelDiagram::KernelElement" />
+
           </generalizations>
           <connections>
             <connection type="RequirementsDiagram::RequirementsDiagramNode"/>
@@ -86,76 +86,76 @@
       </node>
       <node name="reqnConceptAlternative" displayedName="Concept Alternative" >
         <graphics>
-          <view>
-            <description>concept/leaf/feature graphical representation</description>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <!--<description>concept/leaf/feature graphical representation</description>-->
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-          
-              <parent parentName="reqnFeatured" />
-           
+
+            <parent parentName="reqnFeatured" />
+
           </generalizations>
-          
+
         </logic>
       </node>
       <node name="reqnLeaf" displayedName="Leaf" >
         <graphics>
-          <view>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-            
-              <parent parentName="reqnFeatured" />
-           
+
+            <parent parentName="reqnFeatured" />
+
           </generalizations>
         </logic>
       </node>
       <node name="reqnParent" displayedName="Parent Node" >
         <graphics>
-          <view>
-            <description>as leaf - for the possibility of future node extension</description>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <!--<description>as leaf - for the possibility of future node extension</description>-->
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
@@ -170,135 +170,135 @@
       </node>
       <node name="reqnParentMandatory" displayedName="Parent of Mandatory Features" >
         <graphics>
-          <view>
-            <description>parent of mandatory features graphical representation</description>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <!--<description>parent of mandatory features graphical representation</description>-->
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-           
-              <parent parentName="reqnParent" />
-          
+
+            <parent parentName="reqnParent" />
+
           </generalizations>
         </logic>
       </node>
       <node name="reqnParentOr" displayedName="Parent of Or-Features" >
         <graphics>
-          <view>
-            <picture sizex="30" sizey="30" >
-              <path fill="#ffffff" stroke-style="solid" int="12" stroke="#000000" stroke-width="2" d=" M 15 15 L 5 15 C 5 20.5228 9.47715 25 15 25 C 20.5228 25 25 20.5228 25 15 C 25 9.47715 20.5228 5 15 5 L 15 15" fill-style="solid" />
-              <path fill="#000000" stroke-style="solid" int="6" stroke="#000000" stroke-width="2" d=" M 15 15 L 15 5 C 9.47715 5 5 9.47715 5 15 L 15 15" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <picture sizex="30" sizey="30" >
+            <path fill="#ffffff" stroke-style="solid" int="12" stroke="#000000" stroke-width="2" d=" M 15 15 L 5 15 C 5 20.5228 9.47715 25 15 25 C 20.5228 25 25 20.5228 25 15 C 25 9.47715 20.5228 5 15 5 L 15 15" fill-style="solid" />
+            <path fill="#000000" stroke-style="solid" int="6" stroke="#000000" stroke-width="2" d=" M 15 15 L 15 5 C 9.47715 5 5 9.47715 5 15 L 15 15" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-          
-              <parent parentName="reqnParent" />
-          
+
+            <parent parentName="reqnParent" />
+
           </generalizations>
         </logic>
       </node>
       <node name="reqnParentOptional" displayedName="Parent of Optional Features" >
         <graphics>
-          <view>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-       
-              <parent parentName="reqnParent" />
-           
+
+            <parent parentName="reqnParent" />
+
           </generalizations>
         </logic>
       </node>
       <node name="reqnParentAlternative" displayedName="Parent of Alternative Features" >
         <graphics>
-          <view>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="20" stroke-width="2" x2="20" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="20" stroke-width="2" x2="20" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-        
-              <parent parentName="reqnParent" />
-         
+
+            <parent parentName="reqnParent" />
+
           </generalizations>
         </logic>
       </node>
       <node name="reqnParentOpAlternative" displayedName="Parent of Optional-Alternative Features" >
         <graphics>
-          <view>
-            <picture sizex="30" sizey="30" >
-              <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
-              <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="20" stroke-width="2" x2="20" fill-style="solid" />
-            </picture>
-            <labels>
-              <label x="5" y="10" textBinded="name"/>
-            </labels>
-            <ports>
-              <pointPort x="5" y="15" />
-              <pointPort x="15" y="5" />
-              <pointPort x="25" y="15" />
-              <pointPort x="15" y="25" />
-              <pointPort x="15" y="15" />
-            </ports>
-          </view>
+
+          <picture sizex="30" sizey="30" >
+            <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="2" x2="25" fill-style="solid" />
+            <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="10" x1="10" y2="20" stroke-width="2" x2="20" fill-style="solid" />
+          </picture>
+          <labels>
+            <label x="5" y="10" textBinded="name"/>
+          </labels>
+          <ports>
+            <pointPort x="5" y="15" />
+            <pointPort x="15" y="5" />
+            <pointPort x="25" y="15" />
+            <pointPort x="15" y="25" />
+            <pointPort x="15" y="15" />
+          </ports>
+
         </graphics>
         <logic>
           <generalizations>
-            
-              <parent parentName="reqnParent" />
-           
+
+            <parent parentName="reqnParent" />
+
           </generalizations>
         </logic>
       </node>
@@ -311,16 +311,19 @@
           <generalizations>
             <parent parentName="KernelDiagram::Relationship"/>
           </generalizations>
-          <possibleEdges>
+          <!--<possibleEdges>
 
             <possibleEdge beginName="reqnFeatured" endName="reqnParent" directed="true"/>
+            
 
-          </possibleEdges>
+          </possibleEdges>-->
+          <associations endType="open_arrow" beginType="no_arrow">
+            <association beginName="reqnFeatured" endName="reqnFeatured"/>
+          </associations>
         </logic>
       </edge>
     </graphicTypes>
-    <nonGraphicTypes>
-    </nonGraphicTypes>
+
   </diagram>
 </metamodel>
 
