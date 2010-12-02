@@ -159,9 +159,9 @@
         </graphics>
         <logic>
           <generalizations>
-            <generalization>
-              <parent parentName="RequirementsDiagram::reqnFeatured" />
-            </generalization>
+            
+              <parent parentName="reqnFeatured" />
+          
           </generalizations>
           <!--<associations>
             <assoc_ref idref="aP2N_Parent" />
