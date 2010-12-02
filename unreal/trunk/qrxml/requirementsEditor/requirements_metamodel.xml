@@ -6,6 +6,20 @@
       <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
       <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
       <node displayedName="Requirements Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="RequirementsDiagramNode">
+        <nonGraphicTypes>
+          <enum displayedName="Type" name="reqnType">
+            <value>Feature</value>
+            <value>UseCase</value>
+            <value>Supplementary</value>
+            <value>Behaviour</value>
+          </enum>
+          <enum displayedName="Priority" name="reqnPriority">
+            <value>High</value>
+            <value>Medium</value>
+            <value>Low</value>
+            <value>NA</value>
+          </enum>
+        </nonGraphicTypes>
         <graphics>
           <picture sizex="200" sizey="200">
             <line y1="0" x1="20" y2="0" x2="180"/>
@@ -63,13 +77,14 @@
         <logic>
           <properties>
             <property type="text" name="description" />
-            <property type="int" name="priority" />
-            <property>
+            <property type="reqnPriority" name="priority" />
+            <!--<property>
               <name>source</name>
               <type>string</type>
               <description>requirement source value</description>
-            </property>
-            <property type="string" name="type" />
+            </property>-->
+            <property type="string" name="source" />
+            <property type="reqnType" name="type" />
           </properties>
           <!---<associations>
           <assoc_ref idref="aP2N_Featured" />
