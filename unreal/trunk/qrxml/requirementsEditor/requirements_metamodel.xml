@@ -2,24 +2,24 @@
   <include>../commonXml/kernel_metamodel.xml</include>
   <namespace>UML 2.0</namespace>
   <diagram displayedName="Requirements Diagram" nodeName="RequirementsDiagramNode" name="RequirementsDiagram">
+    <nonGraphicTypes>
+      <enum displayedName="Type" name="reqnType">
+        <value>Feature</value>
+        <value>UseCase</value>
+        <value>Supplementary</value>
+        <value>Behaviour</value>
+      </enum>
+      <enum displayedName="Priority" name="reqnPriority">
+        <value>High</value>
+        <value>Medium</value>
+        <value>Low</value>
+        <value>NA</value>
+      </enum>
+    </nonGraphicTypes>
     <graphicTypes>
       <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
       <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
       <node displayedName="Requirements Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="RequirementsDiagramNode">
-        <nonGraphicTypes>
-          <enum displayedName="Type" name="reqnType">
-            <value>Feature</value>
-            <value>UseCase</value>
-            <value>Supplementary</value>
-            <value>Behaviour</value>
-          </enum>
-          <enum displayedName="Priority" name="reqnPriority">
-            <value>High</value>
-            <value>Medium</value>
-            <value>Low</value>
-            <value>NA</value>
-          </enum>
-        </nonGraphicTypes>
         <graphics>
           <picture sizex="200" sizey="200">
             <line y1="0" x1="20" y2="0" x2="180"/>
