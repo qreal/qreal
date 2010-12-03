@@ -8,7 +8,7 @@ using namespace models;
 using namespace details;
 
 AbstractModel::AbstractModel(const EditorManager &editorManager)
-	: mEditorManager(editorManager), mNotNeedUpdate(true)
+	: mEditorManager(editorManager)
 {
 }
 

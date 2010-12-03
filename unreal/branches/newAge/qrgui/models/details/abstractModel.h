@@ -42,7 +42,6 @@ namespace qReal {
 
 				QString findPropertyName(Id const &id, int const role) const;
 				QModelIndex index(details::AbstractModelItem const * const item) const;
-				bool mNotNeedUpdate;
 
 			private:
 				virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;

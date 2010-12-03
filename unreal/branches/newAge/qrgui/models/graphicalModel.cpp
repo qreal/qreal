@@ -31,10 +31,6 @@ AbstractModelItem *GraphicalModel::createModelItem(Id const &id, AbstractModelIt
 
 void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if (!mNotNeedUpdate) {
-		mNotNeedUpdate = true;
-		return;
-	}
 	foreach (AbstractModelItem *item,  mModelItems.values()) {
 		GraphicalModelItem *graphicalItem = static_cast<GraphicalModelItem *>(item);
 		if (graphicalItem->logicalId() == logicalId) {
@@ -154,7 +150,6 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
-		mNotNeedUpdate = false;
 		emit dataChanged(index, index);
 		return true;
 	}
@@ -202,14 +197,16 @@ bool GraphicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, 
 		QString pathToItem;
 		QString name;
 		QPointF position;
+		bool isFromLogicalModel = false;
 		stream >> idString;
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
+		stream >> isFromLogicalModel;
 
 		Id logicalId = Id::rootId();
 		Id id = Id::loadFromString(idString);
-		if (mApi.exist(id)) {
+		if (isFromLogicalModel) {
 			logicalId = id;
 			Id newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 			id = newId;

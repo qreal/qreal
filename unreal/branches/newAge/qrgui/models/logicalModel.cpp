@@ -34,10 +34,8 @@ QModelIndex LogicalModel::indexById(Id const &id) const
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if (!mNotNeedUpdate) {
-		mNotNeedUpdate = true;
+	if (mApi.name(logicalId) == name)
 		return;
-	}
 	mApi.setName(logicalId, name);
 	emit dataChanged(indexById(logicalId), indexById(logicalId));
 }
@@ -45,6 +43,7 @@ void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 {
 	QByteArray data;
+	bool isFromLogicalModel = true;
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
@@ -53,11 +52,13 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
 			stream << QPointF();
+			stream << isFromLogicalModel;
 		} else {
 			stream << Id::rootId().toString();
 			stream << QString();
 			stream << QString();
 			stream << QPointF();
+			stream << isFromLogicalModel;
 		}
 	}
 
@@ -82,14 +83,21 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 
 void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
 {
-	Q_UNUSED(logicalId);
 	if (mModelItems.contains(id))
 		return;
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
-
-	AbstractModelItem *newItem = createModelItem(id, parentItem);
+	AbstractModelItem *newItem = NULL;
+	if ((logicalId != Id::rootId()) && (mModelItems.contains(logicalId))) {
+		 if (parent == logicalId)
+			 return;
+		else
+			changeParent(index(mModelItems[logicalId]), index(parentItem), QPointF());
+		}
+	else {
+	 newItem = createModelItem(id, parentItem);
 	initializeElement(id, parentItem, newItem, name, position);
+	}
 }
 
 void LogicalModel::initializeElement(const Id &id, details::AbstractModelItem *parentItem,
@@ -165,7 +173,6 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
-		mNotNeedUpdate = false;
 		emit dataChanged(index, index);
 		return true;
 	}
@@ -210,14 +217,16 @@ bool LogicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, in
 		QString pathToItem;
 		QString name;
 		QPointF position;
+		bool isFromLogicalModel = false;
 		stream >> idString;
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
+		stream >> isFromLogicalModel;
 
 		Id logicalId = Id::rootId();
 		Id id = Id::loadFromString(idString);
-		if (mApi.exist(id)) {
+		if (isFromLogicalModel) {
 			logicalId = id;
 			Id newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 			id = newId;
