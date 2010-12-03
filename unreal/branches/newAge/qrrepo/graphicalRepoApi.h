@@ -22,9 +22,8 @@ public:
 	virtual QVariant position(qReal::Id const &id) const = 0;
 	virtual QVariant configuration(qReal::Id const &id) const = 0;
 
-	virtual void setPosition(qReal::Id const &id, QVariant const &position) const = 0;
-	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) const = 0;
-	//TODO: убрать QVariant у position
+	virtual void setPosition(qReal::Id const &id, QVariant const &position) = 0;
+	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
 };
 
 }

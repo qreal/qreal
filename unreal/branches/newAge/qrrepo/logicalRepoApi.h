@@ -8,11 +8,6 @@ class LogicalRepoApi : public CommonRepoApi
 public:
 	virtual ~LogicalRepoApi(){}
 
-	virtual QVariant property(qReal::Id const &id, QString const &propertyName) const = 0;
-	virtual QString stringProperty(qReal::Id const &id, QString const &propertyName) const = 0;
-	virtual void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) = 0;
-	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
-	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 	virtual void addChild(qReal::Id const &id, qReal::Id const &child) = 0;
 	virtual qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const = 0;
 

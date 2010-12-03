@@ -36,7 +36,7 @@ void RepoApi::addChild(Id const &id, Id const &child)
 }
 
 //TODO: Реализовать
-void RepoApi::addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child)
+void RepoApi::addChild(Id const &id, Id const &logicalId, Id const &child)
 {
 	mClient.addChild(id, child);
 }
@@ -131,7 +131,7 @@ void RepoApi::addParent(Id const &id, Id const &parent)
 	addChangedDiagram(id.diagramId());
 }
 
-void RepoApi::removeParent(Id const &id, qReal::Id const &parent)
+void RepoApi::removeParent(Id const &id, Id const &parent)
 {
 	mClient.removeParent(id, parent);
 	addChangedDiagram(id.diagramId());
@@ -301,25 +301,24 @@ void RepoApi::setToPort(Id const &id, double toPort)
 	addChangedDiagram(id.diagramId());
 }
 
-//TODO: Реализовать
-QVariant RepoApi::position(qReal::Id const &id) const
+QVariant RepoApi::position(Id const &id) const
 {
-	return 0;
+	return mClient.property(id, "position");
 }
 
-QVariant RepoApi::configuration(qReal::Id const &id) const
+QVariant RepoApi::configuration(Id const &id) const
 {
-	return 0;
+	return mClient.property(id, "configuration");
 }
 
-void RepoApi::setPosition(qReal::Id const &id, QVariant const &position) const
+void RepoApi::setPosition(Id const &id, QVariant const &position)
 {
-
+	mClient.setProperty(id, "position", position);
 }
 
-void RepoApi::setConfiguration(qReal::Id const &id, QVariant const &configuration) const
+void RepoApi::setConfiguration(Id const &id, QVariant const &configuration)
 {
-
+	mClient.setProperty(id, "configuration", configuration);
 }
 
 void RepoApi::exterminate()

@@ -70,8 +70,8 @@ namespace qrRepo {
 		virtual QVariant position(qReal::Id const &id) const;
 		virtual QVariant configuration(qReal::Id const &id) const;
 
-		virtual void setPosition(qReal::Id const &id, QVariant const &position) const;
-		virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) const;
+		virtual void setPosition(qReal::Id const &id, QVariant const &position);
+		virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration);
 
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
