@@ -4,8 +4,8 @@
 #include <QtCore/QUuid>
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details;
+using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager)
 	: AbstractModel(editorManager), mGraphicalModelView(this), mApi(*repoApi)
@@ -100,8 +100,8 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	}
 }
 
-void LogicalModel::initializeElement(const Id &id, details::AbstractModelItem *parentItem,
-		details::AbstractModelItem *item, const QString &name, const QPointF &position)
+void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
+		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);

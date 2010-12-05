@@ -4,11 +4,7 @@ HEADERS += umllib/uml_edgeelement.h \
 	umllib/sdfrenderer.h \
 	umllib/elementTitle.h \
 	umllib/contextMenuAction.h \
-	umllib/elementImpl.h \
-	umllib/elementRepoInterface.h \
 	umllib/embeddedLinker.h \
-	umllib/elementTitleHelpers.h \
-	umllib/sdfRendererInterface.h \
 	umllib/sceneGridHandler.h \
 	umllib/umlPortHandler.h
 

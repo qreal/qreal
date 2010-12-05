@@ -146,7 +146,7 @@ void NodeElement::arrangeLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	models::GraphicalModel *itemModel = model();
+	QAbstractItemModel *itemModel = model();
 	//model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
 	itemModel->setData(mDataIndex, pos(), roles::positionRole);
 	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
@@ -429,8 +429,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *newParent = getNodeAt(newParentInnerPoint);
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		models::GraphicalModel *itemModel = model();
-		//model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
+		models::details::GraphicalModel *itemModel = model();
 		if (newParent) {
 			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
 					mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
@@ -513,7 +512,7 @@ bool NodeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	models::GraphicalModel *itemModel = model();
+	models::details::GraphicalModel *itemModel = model();
 	//model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (!itemModel)
 		return false;

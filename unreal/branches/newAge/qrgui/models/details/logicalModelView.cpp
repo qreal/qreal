@@ -3,8 +3,8 @@
 #include "graphicalModel.h"
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details;
+using namespace modelsImplementation;
 
 LogicalModelView::LogicalModelView(GraphicalModel * const model)
 	: AbstractView(model)

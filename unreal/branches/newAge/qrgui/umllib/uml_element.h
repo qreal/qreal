@@ -11,7 +11,8 @@
 #include "contextMenuAction.h"
 #include "../pluginInterface/elementImpl.h"
 
-#include "../models/graphicalModel.h"
+// TODO: Actually it shall use AssistApi
+#include "../models/details/graphicalModel.h"
 
 namespace UML {
 	/** @class Element
@@ -44,7 +45,8 @@ namespace UML {
 
 		virtual void setColorRect(bool bl) = 0;
 	protected:
-		qReal::models::GraphicalModel* model() const;
+		// TODO: Actually it shall use AssistApi for all methods of model
+		qReal::models::details::GraphicalModel* model() const;
 
 		QPersistentModelIndex mDataIndex;
 

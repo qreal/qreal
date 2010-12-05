@@ -1,10 +1,9 @@
 #include "abstractModelItem.h"
 
-#include "../kernel/exception/exception.h"
+#include "../../kernel/exception/exception.h"
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details::modelsImplementation;
 
 AbstractModelItem::AbstractModelItem(Id const &id, AbstractModelItem *parent)
 	: mId(id)

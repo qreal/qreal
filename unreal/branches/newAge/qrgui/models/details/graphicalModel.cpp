@@ -6,8 +6,8 @@
 #include <QtCore/QDebug>
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details;
+using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
 	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
@@ -57,8 +57,8 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 	initializeElement(id, logicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, details::AbstractModelItem *parentItem,
-		details::AbstractModelItem *item, const QString &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
+		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 

@@ -735,9 +735,9 @@ void EditorViewScene::deleteUsageActionTriggered()
 //	model()->assistApi().deleteUsage(source, destination);
 }
 
-qReal::models::GraphicalModel *EditorViewScene::model() const
+qReal::models::details::GraphicalModel *EditorViewScene::model() const
 {
-	return dynamic_cast<qReal::models::GraphicalModel *>(mv_iface->model());
+	return dynamic_cast<qReal::models::details::GraphicalModel *>(mv_iface->model());
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

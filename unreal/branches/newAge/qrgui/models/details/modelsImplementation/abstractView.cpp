@@ -1,11 +1,10 @@
 #include "abstractView.h"
 
 #include "abstractModel.h"
-#include "../kernel/definitions.h"
+#include "../../kernel/definitions.h"
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details::modelsImplementation;
 
 AbstractView::AbstractView(AbstractModel * const model)
 	: mModel(model)

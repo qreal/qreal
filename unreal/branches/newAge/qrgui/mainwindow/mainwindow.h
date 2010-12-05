@@ -25,8 +25,7 @@ namespace qReal {
 //	}
 
 	namespace models {
-		class GraphicalModel;
-		class LogicalModel;
+		class Models;
 	}
 
 	class MainWindow : public QMainWindow
@@ -129,14 +128,12 @@ namespace qReal {
 	private:
 		QCloseEvent *mCloseEvent;
 //		model::Model *mModel;
-		models::GraphicalModel *mGraphicalModel;
-		models::LogicalModel *mLogicalModel;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
-		qrRepo::RepoControlInterface *mRepoApi;
+		models::Models *mModels;
 
 		QVector<bool> mSaveListChecked;
 		bool mDiagramCreateFlag;

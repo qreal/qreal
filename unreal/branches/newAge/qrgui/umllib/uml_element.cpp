@@ -43,7 +43,7 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 
 int Element::roleIndexByName(QString const &roleName) const
 {
-	models::GraphicalModel *itemModel = model();
+	models::details::GraphicalModel *itemModel = model();
 	QStringList properties = itemModel->editorManager().getPropertyNames(uuid().type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
@@ -67,9 +67,9 @@ void Element::setRoleValueByName(QString const &roleName, QString const &value)
 	itemModel->setData(mDataIndex, value, roleIndex);
 }
 
-qReal::models::GraphicalModel *Element::model() const
+qReal::models::details::GraphicalModel *Element::model() const
 {
-	return (const_cast<models::GraphicalModel*>(static_cast<models::GraphicalModel const *>(mDataIndex.model())));
+	return (const_cast<models::details::GraphicalModel*>(static_cast<models::details::GraphicalModel const *>(mDataIndex.model())));  // TODO: zomg.
 }
 
 

@@ -4,8 +4,7 @@
 #include "abstractModel.h"
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details::modelsImplementation;
 
 AbstractModel::AbstractModel(const EditorManager &editorManager)
 	: mEditorManager(editorManager)
@@ -22,8 +21,6 @@ Qt::ItemFlags AbstractModel::flags(QModelIndex const &index) const
 		return Qt::ItemIsDropEnabled;
 	}
 }
-
-
 
 QVariant AbstractModel::headerData(int section, Qt::Orientation orientation, int role) const
 {

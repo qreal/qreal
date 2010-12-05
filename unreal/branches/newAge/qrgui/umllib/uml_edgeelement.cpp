@@ -248,7 +248,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::connectToPort()
 {
-	models::GraphicalModel *graphicalModel = model();
+	QAbstractItemModel *graphicalModel = model();
 
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
@@ -302,7 +302,7 @@ bool EdgeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	models::GraphicalModel *itemModel = model();
+	models::details::GraphicalModel *itemModel = model();
 	if (!itemModel)
 		return false;
 	QString editor = uuid().editor();
@@ -313,7 +313,7 @@ bool EdgeElement::initPossibleEdges()
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-										  Id(editor, diagram, pEdge.first.second));
+				Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -545,7 +545,7 @@ bool EdgeElement::reconnectToNearestPorts(qreal delta)
 {
 	Q_UNUSED(delta);
 	bool reconnected = false;
-	models::GraphicalModel *graphicalModel = model();
+	QAbstractItemModel *graphicalModel = model();
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
@@ -625,18 +625,15 @@ void EdgeElement::placeEndTo(QPointF const &place)
 
 void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
 	qDebug() << "portId setting: " << portId;
-	models::GraphicalModel *graphicalModel = model();
+	QAbstractItemModel *graphicalModel = model();
 	if (node == mSrc) {
 		mPortFrom = portId;
 		graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
-		qDebug() << "   ... to src";
 	}
 	if (node == mDst) {
 		mPortTo = portId;
 		graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
-		qDebug() << "   ... to dst";
 	}
-
 }
 
 void EdgeElement::drawStartArrow(QPainter *painter) const

@@ -13,9 +13,9 @@
 
 #include <QtSvg/QSvgGenerator>
 
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlDatabase>
+//#include <QtSql/QSqlQuery>
+//#include <QtSql/QSqlError>
+//#include <QtSql/QSqlDatabase>
 
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
@@ -30,8 +30,7 @@
 #include "propertyeditorproxymodel.h"
 #include "gesturesShow/gestureswidget.h"
 
-#include "../models/graphicalModel.h"
-#include "../models/logicalModel.h"
+#include "../models/models.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../dialogs/plugindialog.h"
@@ -52,7 +51,7 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager), mRepoApi(new qrRepo::RepoApi("."))
+	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -202,18 +201,17 @@ MainWindow::MainWindow()
 
 //	if (mModel->rowCount() > 0)
 //		openNewTab(mModel->index(0, 0, QModelIndex()));
-	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(".");
-	mGraphicalModel = new models::GraphicalModel(repoApi, mEditorManager);
-	mLogicalModel = new models::LogicalModel(repoApi, mEditorManager);
 
-	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
-	mGraphicalModel->connectToLogicalModel(mLogicalModel);
+	mModels = new models::Models(".", mEditorManager);
+//	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(".");
+//	mGraphicalModel = new models::GraphicalModel(repoApi, mEditorManager);
+//	mLogicalModel = new models::LogicalModel(repoApi, mEditorManager);
 
-	ui.graphicalModelExplorer->setModel(mGraphicalModel);
-	ui.graphicalModelExplorer->setRootIndex(mGraphicalModel->rootIndex());
+//	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
+//	mGraphicalModel->connectToLogicalModel(mLogicalModel);
 
-	ui.logicalModelExplorer->setModel(mLogicalModel);
-	ui.logicalModelExplorer->setRootIndex(mLogicalModel->rootIndex());
+	ui.graphicalModelExplorer->setModel(mModels->graphicalModel());
+	ui.logicalModelExplorer->setModel(mModels->logicalModel());
 
 	progress->setValue(100);
 	if (showSplash)
@@ -232,8 +230,8 @@ MainWindow::MainWindow()
 
 //	mVisualDebugger = new VisualDebugger(mModel);
 
-	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo"), Id::rootId()
-			, "ololo", QPointF(0, 0));
+//	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo"), Id::rootId()
+//			, "ololo", QPointF(0, 0));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -249,8 +247,6 @@ MainWindow::~MainWindow()
 {
 //	delete mModel;
 	delete mListenerManager;
-	delete mGraphicalModel;
-	delete mLogicalModel;
 }
 
 EditorManager* MainWindow::manager() {
@@ -1049,7 +1045,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		ui.tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView *view = new EditorView();
-		ui.tabs->addTab(view, mGraphicalModel->data(index, Qt::EditRole).toString());
+		ui.tabs->addTab(view, mModels->graphicalModel()->data(index, Qt::EditRole).toString());
 		ui.tabs->setCurrentWidget(view);
 		//		if (!index.isValid())
 		//			index = mModel->rootIndex();
@@ -1091,12 +1087,12 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
-	getCurrentTab()->mvIface()->setModel(mGraphicalModel);
+	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 
-	connect(mGraphicalModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
+	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-	connect(mGraphicalModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
+	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 

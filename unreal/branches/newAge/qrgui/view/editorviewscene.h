@@ -98,7 +98,9 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::models::GraphicalModel* model() const;
+
+	// TODO: Actually it shall use AssistApi
+	qReal::models::details::GraphicalModel* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;

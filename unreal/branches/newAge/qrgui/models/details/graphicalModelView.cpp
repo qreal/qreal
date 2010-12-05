@@ -6,8 +6,8 @@
 #include "logicalModel.h"
 
 using namespace qReal;
-using namespace models;
-using namespace details;
+using namespace models::details;
+using namespace modelsImplementation;
 
 GraphicalModelView::GraphicalModelView(LogicalModel * const model)
 	: AbstractView(model)
