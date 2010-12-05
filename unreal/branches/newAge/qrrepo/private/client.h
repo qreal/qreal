@@ -2,7 +2,7 @@
 
 #include "../../qrgui/kernel/definitions.h"
 #include "../../qrgui/kernel/ids.h"
-#include "classes/logicObject.h"
+#include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
 
@@ -48,14 +48,14 @@ namespace qrRepo {
 			void log(QString const message, const qReal::Id diagram);
 
 			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
-			QList<LogicObject*> allChildrenOf(qReal::Id id) const;
+			QList<Object*> allChildrenOf(qReal::Id id) const;
 		private:
 			void init();
 
 			void loadFromDisk();
 			void addChildrenToRootObject();
 
-			QHash<qReal::Id, LogicObject*> mObjects;
+			QHash<qReal::Id, Object*> mObjects;
 			Serializer serializer;
 		};
 

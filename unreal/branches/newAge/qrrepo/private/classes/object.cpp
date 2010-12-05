@@ -1,4 +1,4 @@
-#include "logicObject.h"
+#include "object.h"
 #include "../../../qrgui/kernel/exception/exception.h"
 
 #include <QDebug>
@@ -6,16 +6,16 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-LogicObject::LogicObject(const Id &id, const Id &parent) : mId(id)
+Object::Object(const Id &id, const Id &parent) : mId(id)
 {
 	addParent(parent);
 }
 
-LogicObject::LogicObject(const Id &id) : mId(id)
+Object::Object(const Id &id) : mId(id)
 {
 }
 
-void LogicObject::addParent(const Id &parent)
+void Object::addParent(const Id &parent)
 {
 	if (!mParents.contains(parent)) {
 		mParents.append(parent);
@@ -24,7 +24,7 @@ void LogicObject::addParent(const Id &parent)
 	}
 }
 
-void LogicObject::removeParent(const Id &parent)
+void Object::removeParent(const Id &parent)
 {
 	if (mParents.contains(parent)) {
 		if (mParents.size() != 1) {
@@ -37,7 +37,7 @@ void LogicObject::removeParent(const Id &parent)
 	}
 }
 
-void LogicObject::addChild(const Id &child)
+void Object::addChild(const Id &child)
 {
 	if (!mChildren.contains(child)) {
 		mChildren.append(child);
@@ -46,7 +46,7 @@ void LogicObject::addChild(const Id &child)
 	}
 }
 
-void LogicObject::removeChild(const Id &child)
+void Object::removeChild(const Id &child)
 {
 	if (mChildren.contains(child)) {
 		mChildren.removeAll(child);
@@ -55,17 +55,17 @@ void LogicObject::removeChild(const Id &child)
 	}
 }
 
-IdList LogicObject::children() const
+IdList Object::children() const
 {
 	return mChildren;
 }
 
-IdList LogicObject::parents() const
+IdList Object::parents() const
 {
 	return mParents;
 }
 
-void LogicObject::setProperty(const QString &name, const QVariant &value)
+void Object::setProperty(const QString &name, const QVariant &value)
 {
 	if (value == QVariant()) {
 		qDebug() << "Empty QVariant set as a property for " << id().toString();
@@ -75,7 +75,7 @@ void LogicObject::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
-QVariant LogicObject::property(const QString &name) const
+QVariant Object::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {
 		return mProperties[name];
@@ -84,12 +84,12 @@ QVariant LogicObject::property(const QString &name) const
 	}
 }
 
-bool LogicObject::hasProperty(const QString &name) const
+bool Object::hasProperty(const QString &name) const
 {
 	return mProperties.contains(name);
 }
 
-void LogicObject::removeProperty(const QString &name)
+void Object::removeProperty(const QString &name)
 {
 	if (mProperties.contains(name)) {
 		mProperties.remove(name);
@@ -98,12 +98,12 @@ void LogicObject::removeProperty(const QString &name)
 	}
 }
 
-Id LogicObject::id() const
+Id Object::id() const
 {
 	return mId;
 }
 
-QMapIterator<QString, QVariant> LogicObject::propertiesIterator()
+QMapIterator<QString, QVariant> Object::propertiesIterator()
 {
 	return QMapIterator<QString, QVariant>(mProperties);
 }

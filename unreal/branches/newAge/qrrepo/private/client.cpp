@@ -18,7 +18,7 @@ Client::Client(QString const &workingDirectory)
 
 void Client::init()
 {
-	mObjects.insert(Id::rootId(), new LogicObject(Id::rootId()));
+	mObjects.insert(Id::rootId(), new Object(Id::rootId()));
 	mObjects[Id::rootId()]->setProperty("name", Id::rootId().toString());
 }
 
@@ -70,7 +70,7 @@ void Client::addChild(const Id &id, const Id &child)
 		if (mObjects.contains(child)) {
 			mObjects[child]->addParent(id);
 		} else {
-			mObjects.insert(child,new LogicObject(child,id));
+			mObjects.insert(child,new Object(child,id));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
@@ -161,7 +161,7 @@ void Client::loadFromDisk()
 
 void Client::addChildrenToRootObject()
 {
-	foreach (LogicObject *object, mObjects.values()) {
+	foreach (Object *object, mObjects.values()) {
 		if (object->parents().contains(Id::rootId())) {
 			if (!failSafe || !mObjects[Id::rootId()]->children().contains(object->id()))
 				mObjects[Id::rootId()]->addChild(object->id());
@@ -180,9 +180,9 @@ IdList Client::idsOfAllChildrenOf(Id id) const
 	return result;
 }
 
-QList<LogicObject*> Client::allChildrenOf(Id id) const
+QList<Object*> Client::allChildrenOf(Id id) const
 {
-	QList<LogicObject*> result;
+	QList<Object*> result;
 	result.append(mObjects[id]);
 	foreach(Id childId,mObjects[id]->children())
 		result.append(allChildrenOf(childId));
@@ -202,7 +202,7 @@ void Client::saveAll() const
 
 void Client::save(IdList list) const
 {
-	QList<LogicObject*> toSave;
+	QList<Object*> toSave;
 	foreach(Id id, list)
 		toSave.append(allChildrenOf(id));
 
@@ -231,7 +231,7 @@ void Client::log(QString const message, const qReal::Id diagram)
 void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";
-	foreach (LogicObject *object, mObjects.values()) {
+	foreach (Object *object, mObjects.values()) {
 		qDebug() << object->id().toString();
 		qDebug() << "Children:";
 		foreach (Id id, object->children())

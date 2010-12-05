@@ -23,14 +23,14 @@ DEFINES += QRREPO_LIBRARY
 
 HEADERS += \
 	private/client.h \
-	private/classes/logicObject.h \
 	private/qrRepoGlobal.h \
 	private/serializer.h \
+    private/classes/object.h
 
 SOURCES += \
 	private/client.cpp \
-	private/classes/logicObject.cpp \
 	private/serializer.cpp \
+    private/classes/object.cpp
 
 # API репозитория
 HEADERS += \

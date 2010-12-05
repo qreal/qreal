@@ -9,11 +9,11 @@ namespace qrRepo {
 
 	namespace details {
 
-		class LogicObject
+		class Object
 		{
 		public:
-			explicit LogicObject(const qReal::Id &id);
-			LogicObject(const qReal::Id &id, const qReal::Id &parent);
+			explicit Object(const qReal::Id &id);
+			Object(const qReal::Id &id, const qReal::Id &parent);
 			void addParent(const qReal::Id &parent);
 			void removeParent(const qReal::Id &parent);
 			void addChild(const qReal::Id &child);
@@ -29,6 +29,7 @@ namespace qrRepo {
 
 		private:
 			const qReal::Id mId;
+			const qReal::Id mLogicalId;
 			qReal::IdList mParents;
 			qReal::IdList mChildren;
 			QMap<QString, QVariant> mProperties;
