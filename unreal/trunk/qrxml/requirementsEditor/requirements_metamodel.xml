@@ -76,7 +76,7 @@
         </graphics>
         <logic>
           <properties>
-            <property type="text" name="description" />
+            <property type="string" name="description" />
             <property type="reqnPriority" name="priority" />
             <!--<property>
               <name>source</name>
