@@ -9,5 +9,6 @@ int main() {
 	//Interpreter interpreter("../../..", "../classH_with_association.geny", qReal::Id());
 
 	qDebug() << interpreter.interpret(); 
+	qDebug() << interpreter.interpret(); 
 	return 0;
 }

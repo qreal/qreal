@@ -22,9 +22,9 @@ namespace Geny {
 			bool isControlString(const QString&);
 
 			enum ControlStringType {
-				COMMENT, FOREACH, 
-				LEFT_BRACE, RIGHT_BRACE,
-				NOT_CONTROL
+				commentType, foreachType, 
+				leftBraceType, rightBraceType,
+				notControlType
 			};
 			ControlStringType controlStringType(const QString&);
 			
@@ -37,6 +37,7 @@ namespace Geny {
 
 			//Control expression between @@ @@
 			QString controlExpressionParse(const QString& expression);
+
 			QString getCurrentObjectProperty(const QString& propertyName);
 
 			qReal::IdList getCurObjectMethodResultList(const QString&);

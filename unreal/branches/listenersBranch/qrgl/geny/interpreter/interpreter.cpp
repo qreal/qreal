@@ -4,6 +4,8 @@
 
 using namespace Geny;
 
+//TODO: добавить выброс исключений по error'ам
+
 Interpreter::Interpreter(const QString& repoDirectory, const QString& taskFileName, qReal::Id curObjectId): 
 	taskFile(taskFileName), inStream(0), rApi(repoDirectory), curObjectId(curObjectId) {
 }
@@ -27,10 +29,15 @@ QString Interpreter::controlExpressionParse(const QString& expression) {
 }
 
 QString Interpreter::getCurrentObjectProperty(const QString& propertyName) {
-	//может падать, если у getCurObjectId() нет property propertyName
-	//TODO: не закрывать ошибку!!!!
-	if (!rApi.exist(getCurObjectId()) || !rApi.hasProperty(getCurObjectId(), propertyName))
-		return "";
+	if (!rApi.exist(getCurObjectId())) {
+		qDebug() << "Error! Trying to work with not existed element Id in current repository!";
+		return ""; //TODO: возможно лучше бросать исключение!
+	}
+
+	if (!rApi.hasProperty(getCurObjectId(), propertyName)) {
+		qDebug() << "Error! Trying to get not existed property of current element!";
+		return ""; //TODO: возможно лучше бросать исключение!
+	}
 
 	qDebug() << rApi.property(getCurObjectId(), propertyName).toString();
 
@@ -40,24 +47,24 @@ QString Interpreter::getCurrentObjectProperty(const QString& propertyName) {
 Interpreter::ControlStringType Interpreter::controlStringType(const QString& str) {
 	QString workStr = str.trimmed();
 	if (!workStr.startsWith("#!"))
-		return NOT_CONTROL;
+		return notControlType;
 
 	workStr = workStr.right(workStr.length() - 2).trimmed();//убираем #!
 
 	if (workStr.startsWith("/"))
-		return COMMENT;
+		return commentType;
 	if (workStr.startsWith("foreach"))
-		return FOREACH;
+		return foreachType;
 	if (workStr.startsWith("{"))
-		return LEFT_BRACE;
+		return leftBraceType;
 	if (workStr.startsWith("}"))
-		return RIGHT_BRACE;
+		return rightBraceType;
 
-	return NOT_CONTROL;
+	return notControlType;
 }
 
 bool Interpreter::isControlString(const QString& str) {
-	return controlStringType(str) != NOT_CONTROL ? true : false;
+	return controlStringType(str) != notControlType ? true : false;
 }
 
 QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
@@ -67,7 +74,7 @@ QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
 	if ( (strElements.length() != 4) || 
 			(strElements[0] != "#!foreach") || (strElements[2] != "in") ) {
 		qDebug()  << "Error! Bad \'foreach\' structure!";
-		return QPair<QString, QString>("", "");
+		return QPair<QString, QString>("", ""); //TODO: возможно лучше бросать исключение!
 	}
 
 	/*
@@ -164,15 +171,15 @@ QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStrea
 
 QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& stream) {
 	switch (controlStringType(parsingStr)) {
-		case COMMENT:
+		case commentType:
 			return "";
-		case FOREACH:
+		case foreachType:
 			{
 				QString foreachBlockString; //for foreachBlockStream only
 				QTextStream foreachBlockStream(&foreachBlockString);
 
 				QString curLine = stream.readLine();
-				if (controlStringType(curLine) != LEFT_BRACE) {
+				if (controlStringType(curLine) != leftBraceType) {
 					qDebug() << "Error! After #!foreach not #!{ but \'" << curLine << "\' found!";
 					return "";
 				}
@@ -184,9 +191,9 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 					foreachBlockStream << curLine << '\n';
 
 					curLine  = stream.readLine();
-					if (controlStringType(curLine) == LEFT_BRACE)
+					if (controlStringType(curLine) == leftBraceType)
 						braceBalance++;
-					if (controlStringType(curLine) == RIGHT_BRACE)
+					if (controlStringType(curLine) == rightBraceType)
 						braceBalance--;
 				}
 				
@@ -215,18 +222,18 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 
 				return resultStr;
 			}
-		case LEFT_BRACE:			
+		case leftBraceType:			
 			{
-				qDebug() << "Error! In" << taskFile.fileName() << ". #!{ but not control expression (ex #!foreach) found!";
+				qDebug() << "Error! In" << taskFile.fileName() << ". #!{ but not control expression (e.g. #!foreach) found!";
 				return "";
 			}
 
-		case RIGHT_BRACE:
+		case rightBraceType:
 			{
-				qDebug() << "Error! In" << taskFile.fileName() << ". #!} but not control expression (ex #!foreach) found!";
+				qDebug() << "Error! In" << taskFile.fileName() << ". #!} but not control expression (e.g. #!foreach) found!";
 				return "";
 			}
-		case NOT_CONTROL:
+		case notControlType:
 			{
 				return "";
 			}
@@ -253,14 +260,15 @@ QString Interpreter::interpret(QTextStream& stream) {
 }
 
 QString Interpreter::interpret() {
-	//TODO: исправить ошибку, связанную со вторым запуском
-	if (taskFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+	if (!taskFile.isOpen() && taskFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&taskFile);
 	}
-	else {
+	
+	if (!taskFile.isOpen() || inStream == 0){
 		qDebug() << "cannot load file \"" << taskFile.fileName() << "\"";
 		return "";
 	}
+	inStream->seek(0); //for second execute of interpret
 
 	QString curStr;
 	curStr = inStream->readLine();
