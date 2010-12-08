@@ -14,6 +14,14 @@ Message::Message(Id const target, action const performed, QString const details,
 {
 }
 
+Message Message::patchMessage() const
+{
+	if ((mPerformed != qReal::actSetData) || (mDetails != "name"))
+		return Message(Id(), qReal::actInvalid, QString(), QVariant(), QVariant());
+
+	return Message(mTarget.diagramId(), qReal::ptchReplaceElement, qReal::msgAllElements, mPrevValue, mNewValue);
+}
+
 Id Message::target() const
 {
 	return mTarget;
@@ -43,6 +51,8 @@ QString Message::toString() const
 {
 	QString message = msgOperation;
 	switch (performed()) {
+		case actInvalid:
+			return qReal::msgInvalid;
 		case actSetData:
 			message += msgSetData;
 			break;
@@ -57,6 +67,9 @@ QString Message::toString() const
 			break;
 		case actDestroyDiagram:
 			message += msgDestroyDiagram;	//unused?
+			break;
+		case ptchReplaceElement:
+			message += cmdReplaceElement;
 			break;
 	}
 
@@ -79,7 +92,7 @@ QLinkedList<Message> Message::parseLog(QString path)
 	QFile* file;
 	if (fi.isDir()) {
 		QDir dir(path);
-		QStringList files = dir.entryList(QStringList(QString("*.log")));
+		QStringList files = dir.entryList(QStringList(QString("*."+qReal::extensionLog)));
 		if (files.length() != 1) {
 			if (files.length() < 1)
 				qDebug() << "Message::parseLog() error | No files in log directory.";
@@ -139,18 +152,30 @@ QLinkedList<Message> Message::parseLog(QString path)
 			details = details.remove(msgDetails);
 		else
 			qDebug() << "Message::parseLog() error | There is no details string.";
+
 		prevValue = stream.readLine();
 		if (prevValue.startsWith(msgPrevValue))
 			prevValue = prevValue.remove(msgPrevValue);
 		else
 			qDebug() << "Message::parseLog() error | There is no previous value string.";
+
 		newValue = stream.readLine();
 		if (newValue.startsWith(msgNewValue))
 			newValue = newValue.remove(msgNewValue);
 		else
 			qDebug() << "Message::parseLog() error | There is no new value string.";
+
+		action performed;
+		if (operation == msgSetData)
+			performed = actSetData;
+		else if (operation == cmdReplaceElement)
+			performed = ptchReplaceElement;
+		else {
+			qDebug() << "Message::parseLog() error | Invalid operation.";
+			continue;
+		}
 		log.append(Message(Id::loadFromString(target),
-						actSetData,
+						performed,
 							details, parseQVariant(prevValue) , parseQVariant(newValue)));
 	}
 

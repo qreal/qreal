@@ -189,7 +189,7 @@ bool PatchSaveDialog::checkPatchPath()
 {
 	patchError->hide();
 	QFileInfo fi(patchPath->text());
-	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),"patch",Qt::CaseInsensitive))) {
+	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),qReal::extensionPatch,Qt::CaseInsensitive))) {
 		patchError->show();
 		return false;
 	}
@@ -223,8 +223,8 @@ void PatchSaveDialog::releaseMemory()
 
 void PatchSaveDialog::openPatchFile() {
 	patchPath->setText(
-		QFileDialog::getOpenFileName(
-			this, tr("Choose patch file"), patchPath->text(), tr("QReal patch files (*.patch)")));
+		QFileDialog::getOpenFileName(this, tr("Choose patch file"), patchPath->text(),
+				tr("QReal patch files (*."+qReal::extensionPatch.toAscii()+')')));
 	checkPatchPath();
 }
 

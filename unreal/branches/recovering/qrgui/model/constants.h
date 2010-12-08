@@ -6,11 +6,15 @@ namespace qReal {
 
 	enum action
 	{
+		actInvalid,
+
 		actSetData,
 		actAddElement,
 		actRemoveElement,
 		actCreateDiagram,
-		actDestroyDiagram
+		actDestroyDiagram,
+
+		ptchReplaceElement
 	};
 
 	enum flag
@@ -28,9 +32,16 @@ namespace qReal {
 	const QString msgCreateDiagram = "CreateDiagram";
 	const QString msgDestroyDiagram = "DestroyDiagram";
 
+	const QString cmdReplaceElement = "ReplaceElement";
+
 	const QString msgOperation = "Operation: ";
 	const QString msgTarget = "Target: ";
 	const QString msgDetails = "Details: ";
 	const QString msgPrevValue = "PrevValue: ";
 	const QString msgNewValue = "NewValue: ";
+
+	const QString msgAllElements = "<AllElements>";
+
+	const QString extensionLog = "log";
+	const QString extensionPatch = "patch";
 }

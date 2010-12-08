@@ -53,7 +53,7 @@ void Logger::log(action performed,
 							const Id scene)
 {
 	if ((performed != actCreateDiagram) && (performed != actDestroyDiagram)) {
-		write(msgInvalid +"\n",scene);
+		write(msgInvalid +'\n',scene, false);
 		if (flagsEnabled[flgInvalidMessages])
 			log(performed, scene, Id(), QVariant(), QVariant(), QString());
 	} else
@@ -64,7 +64,7 @@ void Logger::log(action performed,
 					const Id scene, const Id target)
 {
 	if ((performed != actAddElement) && (performed != actRemoveElement)) {
-		write(msgInvalid + "\n",scene);
+		write(msgInvalid + '\n',scene, false);
 		if (flagsEnabled[flgInvalidMessages])
 			log(performed, scene, target, QVariant(), QVariant(), QString());
 	} else
@@ -72,9 +72,9 @@ void Logger::log(action performed,
 }
 
 void Logger::log(action performed,
-				 const Id scene, const Id target,
-				 const QVariant prevData, const QVariant newData,
-				 const QString additional)
+				const Id scene, const Id target,
+				const QVariant prevData, const QVariant newData,
+				const QString additional)
 {
 	if (!pass(scene))
 		return;
@@ -98,7 +98,10 @@ void Logger::output()
 	foreach(Id scene, cleanDiagrams)
 		remove(scene);
 	foreach(Id scene, buffer.keys()) {
-		QString output;
+		QString log;
+		QString patch;
+
+		bool editor = isEditor(scene);
 		foreach(Message* msg, *buffer.value(scene)) {
 			if ((msg->performed() != actDestroyDiagram) && (msg->performed() != actCreateDiagram))
 				cleanDiagrams.remove(scene);
@@ -110,9 +113,13 @@ void Logger::output()
 			}
 			if ((msg->performed() != actSetData) || (flagsEnabled[flgUselessMessages]) ||
 				((msg->details() != "position") && (msg->details() != "configuration")))
-					output += msg->toString() + '\n';
+					log += msg->toString() + '\n';
+					if (editor)
+						patch += msg->patchMessage().toString() + '\n';
 		}
-		write(output, scene);
+		write(log, scene, false);
+		if (editor)
+			write(patch, scene, true);
 	}
 
 	foreach(QList<Message*>* log, buffer.values()) {
@@ -123,20 +130,20 @@ void Logger::output()
 	buffer.clear();
 }
 
-bool Logger::editor(const Id scene)
+bool Logger::isEditor(const Id scene) const
 {
 	return (scene.editor() == QString("Meta_editor"));
 }
 
-bool Logger::pass(const Id scene)
+bool Logger::pass(const Id scene) const
 {
-	return	((!editor(scene) && flagsEnabled[flgDiagrams])
-			|| (editor(scene) && flagsEnabled[flgEditors]));
+	return	((!isEditor(scene) && flagsEnabled[flgDiagrams])
+			|| (isEditor(scene) && flagsEnabled[flgEditors]));
 }
 
 void Logger::remove(const Id scene)
 {
-	if (editor(scene))
+	if (isEditor(scene))
 		remove(scene, "../");
 	remove(scene, mWorkingDir);
 }
@@ -158,28 +165,33 @@ void Logger::remove(const Id scene, QString const workingDir)
 	dir.rmdir(workingDir+"/logs/"+scene.diagram());
 }
 
-void Logger::write(const QString message, const Id scene)
-{
-	if (editor(scene))
-		write(message, scene, "../");
-	write(message, scene, mWorkingDir);
-}
-
-void Logger::write(const QString message, const Id scene, const QString workingDir)
+void Logger::write(const QString message, const Id scene, const bool patch)
 {
 	if (!enabled)
 		return;
+	if (isEditor(scene))
+		write(message, scene, "../", patch);
+	write(message, scene, mWorkingDir, patch);
+}
 
-	QString path = workingDir + "/logs/" + scene.diagram() + "/";
-	if (editor(scene))
-		path += *names.value(scene, new QString("UnknownDiagram")) + "/";
-	QString name = scene.id();
+void Logger::write(const QString message, const Id scene, const QString workingDir, const bool patch)
+{
+	QString path = workingDir + "/logs/" + scene.diagram() + '/';
+	if (isEditor(scene))
+		path += *names.value(scene, new QString("UnknownDiagram")) + '/';
 	QDir dir;
 	dir.mkpath(path);
 
+	QString name = scene.id();
+
 	QFile *file;
 	if (!files.contains(name)) {
-		file = new QFile(path+"/"+name+".log");
+		path += '/'+name+'.';
+		if (patch)
+			path += qReal::extensionPatch;
+		else
+			path += qReal::extensionLog;
+		file = new QFile(path);
 		files.insert(name, file);
 	} else {
 		file = files.value(name);
@@ -188,7 +200,7 @@ void Logger::write(const QString message, const Id scene, const QString workingD
 	if (!file->isOpen())
 		file->open(QIODevice::Append | QIODevice::Text);
 	QTextStream out(file);
-	out << message << "\n";
+	out << message << '\n';
 
 	//may be, file must be closed or smthng else
 }

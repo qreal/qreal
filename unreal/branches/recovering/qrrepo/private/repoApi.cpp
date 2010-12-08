@@ -230,9 +230,10 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	if (mClient.hasProperty(id, propertyName) &&
-		(mClient.property(id, propertyName) != value))
-		addChangedDiagram(id.diagramId());
-	mClient.setProperty(id, propertyName, value);
+		(mClient.property(id, propertyName) != value)) {
+			addChangedDiagram(id.diagramId());
+			mClient.setProperty(id, propertyName, value);
+	}
 }
 
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)

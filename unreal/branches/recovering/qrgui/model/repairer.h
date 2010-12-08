@@ -37,6 +37,8 @@ namespace qReal {
 			const EditorManager &mEditorManager;
 
 			Id correctId(Id const target);
+			void replace(Id const from, Id const to) const;
+
 			bool checkId(Id const target) const;
 
 			void readLog(QString const diagram);

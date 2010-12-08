@@ -37,14 +37,14 @@ namespace qReal {
 			void output();
 
 		private:
-			bool pass(Id const scene);
-			bool editor(Id const scene);
+			bool pass(Id const scene) const;
+			bool isEditor(Id const scene) const;
 
 			void remove(Id const scene);
 			void remove(Id const scene, QString const workingDir);
 
-			void write(QString const message, Id const scene);
-			void write(QString const message, Id const scene, QString const workingDir);
+			void write(QString const message, Id const scene, bool const patch);
+			void write(QString const message, Id const scene, QString const workingDir, bool const patch);
 
 			QString mWorkingDir;
 

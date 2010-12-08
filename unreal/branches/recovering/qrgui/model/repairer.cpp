@@ -73,7 +73,7 @@ void Repairer::repairElements(const Id target)
 
 Id Repairer::correctId(const Id target)
 {
-	QLinkedList<Message> log = Message::parseLog("../logs/MetaEditor/" + target.diagram() + "/");
+	QLinkedList<Message> log = Message::parseLog("../logs/MetaEditor/" + target.diagram() + '/');
 	Id curr = Id::loadFromString(target.toString().remove('/' + target.id()));
 	foreach(Message msg, log)
 		if ((msg.prevValue().type() == QVariant::String) && (msg.newValue().type() == QVariant::String)
@@ -86,6 +86,26 @@ Id Repairer::correctId(const Id target)
 		qDebug() << "Repairer::correctId() error | There is no final element in editor (incorrect log?).";
 		return Id();
 	}
+}
+
+void Repairer::replace(const Id from, const Id to) const
+{
+	//trash for analysis
+/**
+	mApi.addChild(parent, target);
+	QString name = target.element();
+	name += ' ' + QString::number(count);
+	mApi.setProperty(target, "name", name);
+	mApi.setProperty(target, "position", QPointF());
+	mApi.setProperty(target, "configuration", QPolygon());
+	if (mEditorManager.getEditorInterface(
+			target.editor())->isNodeOrEdge(target.element()) == -1) {
+		mApi.setProperty(target, "to", ROOT_ID.toVariant());
+		mApi.setProperty(target, "from", ROOT_ID.toVariant());
+		mApi.setProperty(target, "toPort", 0.0);
+		mApi.setProperty(target, "fromPort", 0.0);
+	}
+**/
 }
 
 void Repairer::patchSave()
@@ -115,7 +135,7 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 					count++;
 					mApi.addChild(parent, target);
 					QString name = target.element();
-					name += " " + QString::number(count);
+					name += ' ' + QString::number(count);
 					mApi.setProperty(target, "name", name);
 					mApi.setProperty(target, "position", QPointF());
 					mApi.setProperty(target, "configuration", QPolygon());
@@ -144,6 +164,30 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 			}
 			case qReal::actSetData: {
 				mApi.setProperty(target, msg.details(), msg.newValue());
+				break;
+			}
+			case qReal::ptchReplaceElement: {
+				if (msg.details() == qReal::msgAllElements) {
+					Id parent;
+					Id diagram = msg.target();
+					if (diagram.diagramId() != diagram) {
+						qDebug() <<
+						"Repairer::patchSave() error | Not Implemented yet.";
+						break;	//I hope it is correct (it must quit from case).
+					}
+
+					foreach(Id child, mApi.children(rootId))
+						if (child.diagramId() == diagram)
+							parent = child;
+					foreach(Id element, mEditorManager.elementsOnDiagram(parent)) {
+						if (element.element() == msg.prevValue().toString())
+							replace(element, Id(element.editor(),element.diagram(),
+								msg.newValue().toString(),element.id()));
+					}
+				}
+				else
+					qDebug() <<
+					"Repairer::patchSave() error | Not Implemented yet.";
 				break;
 			}
 			default:
