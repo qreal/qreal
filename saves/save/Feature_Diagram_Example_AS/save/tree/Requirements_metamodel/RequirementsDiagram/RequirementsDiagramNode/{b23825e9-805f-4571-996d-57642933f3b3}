@@ -1,0 +1,34 @@
+<LogicObject id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{b23825e9-805f-4571-996d-57642933f3b3}">
+  <parents>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{a0c1e17b-0882-4e51-9438-931e8de51f8f}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentMandatory/{574f9989-da54-4742-af30-22e79aa19fb4}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentAlternative/{2b5a39d4-df1a-410a-84fb-57a8ca5e2650}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentOpAlternative/{7cc82d7b-bdfe-4c31-97ca-b53c7457bf48}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentOptional/{6c7f0fa9-8eee-4976-bb0a-3929f36182de}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentOr/{6d852c9f-1c53-4758-9595-bbf2df218993}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{0f85befc-f09f-4e41-8ded-825db8abf198}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnConceptAlternative/{a30e1643-bc09-48f0-b31e-4e2928edd350}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnFeatured/{7ff4f816-14c6-4013-8b6e-fb7be78a0878}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParent/{bd3fa5f0-8626-4d19-adc4-6ff89cb3389a}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 753, 0 : 753, 645 : 0, 645 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Requirements_metamodel/RequirementsDiagram/CommentLink/{b8a58309-36f5-4b54-92b9-0c20be8157a7}"/>
+    </links>
+    <QString key="name" value="(Requirements Diagram)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="-266, -214"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

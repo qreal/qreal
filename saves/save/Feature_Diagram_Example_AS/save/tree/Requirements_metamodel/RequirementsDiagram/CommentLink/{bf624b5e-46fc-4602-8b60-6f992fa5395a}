@@ -1,0 +1,20 @@
+<LogicObject id="qrm:/Requirements_metamodel/RequirementsDiagram/CommentLink/{bf624b5e-46fc-4602-8b60-6f992fa5395a}">
+  <parents>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{1bfd04c5-94d9-48aa-9455-b069bb09dd87}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 67, -59 : "/>
+    <qReal::Id key="from" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentOpAlternative/{2d840812-003c-4036-87b5-0c9ab5118636}"/>
+    <double key="fromPort" value="1"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Comment Link)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="-257, -87.8333"/>
+    <qReal::Id key="to" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParent/{2447d6bc-62bd-4bff-9ad7-917f764187a2}"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

@@ -1,0 +1,12 @@
+<LogicObject id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <parents/>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{3b758463-5c8b-4df9-b317-a86835144fae}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{1bfd04c5-94d9-48aa-9455-b069bb09dd87}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{85ccb1c8-7b60-4d43-b138-55d55dfc9915}"/>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{a0c1e17b-0882-4e51-9438-931e8de51f8f}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</LogicObject>

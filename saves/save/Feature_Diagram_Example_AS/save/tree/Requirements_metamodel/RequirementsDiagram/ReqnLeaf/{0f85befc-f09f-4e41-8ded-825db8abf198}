@@ -1,0 +1,25 @@
+<LogicObject id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{0f85befc-f09f-4e41-8ded-825db8abf198}">
+  <parents>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{b23825e9-805f-4571-996d-57642933f3b3}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 174, 0 : 174, 158 : 0, 158 : "/>
+    <QString key="description" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Leaf)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="478, 235"/>
+    <QString key="priority" value=""/>
+    <QString key="source" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="type" value=""/>
+  </properties>
+</LogicObject>

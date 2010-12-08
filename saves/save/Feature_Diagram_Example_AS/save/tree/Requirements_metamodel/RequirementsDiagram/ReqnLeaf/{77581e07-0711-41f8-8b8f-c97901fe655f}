@@ -1,0 +1,27 @@
+<LogicObject id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{77581e07-0711-41f8-8b8f-c97901fe655f}">
+  <parents>
+    <object id="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{46f767bc-801a-42b0-b70f-6e465f8aa9aa}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 49, 0 : 49, 20 : 0, 20 : "/>
+    <QString key="description" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqeP2N/{ce4c276e-42c4-4712-aa43-5d5cede48102}"/>
+    </links>
+    <QString key="name" value="Text"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="364, 331"/>
+    <QString key="priority" value=""/>
+    <QString key="source" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+    <QString key="type" value=""/>
+  </properties>
+</LogicObject>
