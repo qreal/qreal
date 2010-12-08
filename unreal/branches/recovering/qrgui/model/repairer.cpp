@@ -90,22 +90,7 @@ Id Repairer::correctId(const Id target)
 
 void Repairer::replace(const Id from, const Id to) const
 {
-	//trash for analysis
-/**
-	mApi.addChild(parent, target);
-	QString name = target.element();
-	name += ' ' + QString::number(count);
-	mApi.setProperty(target, "name", name);
-	mApi.setProperty(target, "position", QPointF());
-	mApi.setProperty(target, "configuration", QPolygon());
-	if (mEditorManager.getEditorInterface(
-			target.editor())->isNodeOrEdge(target.element()) == -1) {
-		mApi.setProperty(target, "to", ROOT_ID.toVariant());
-		mApi.setProperty(target, "from", ROOT_ID.toVariant());
-		mApi.setProperty(target, "toPort", 0.0);
-		mApi.setProperty(target, "fromPort", 0.0);
-	}
-**/
+	mApi.replace(from, to);
 }
 
 void Repairer::patchSave()

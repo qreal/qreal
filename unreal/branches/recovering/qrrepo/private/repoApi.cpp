@@ -23,9 +23,9 @@ void RepoApi::setName(Id const &id, QString const &name)
 	addChangedDiagram(id.diagramId());
 }
 
-void RepoApi::replace(const qReal::Id oldId, const qReal::Id newId)
+void RepoApi::replace(const qReal::Id from, const qReal::Id to)
 {
-	mClient.replace(oldId, newId);
+	mClient.replace(from, to);
 }
 
 IdList RepoApi::children(Id const &id) const

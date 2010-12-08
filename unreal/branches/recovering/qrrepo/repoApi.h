@@ -16,7 +16,7 @@ namespace qrRepo {
 		QString name(qReal::Id const &id) const;
 		void setName(qReal::Id const &id, QString const &name);
 
-		void replace(qReal::Id const oldId, qReal::Id const newId);
+		void replace(qReal::Id const from, qReal::Id const to);
 
 		qReal::IdList children(qReal::Id const &id) const;
 		void addChild(qReal::Id const &id, qReal::Id const &child);
