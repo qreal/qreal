@@ -107,7 +107,7 @@ bool RepairerDialog::checkEditorPath()
 {
 	mGenerateEditorPathError->hide();
 	QFileInfo fi(mGenerateEditorPath->text());
-	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),".xml",Qt::CaseInsensitive))) {
+	if ((!fi.exists()) || (!fi.isFile()) || (QString::compare(fi.suffix(),"xml",Qt::CaseInsensitive))) {
 		mGenerateEditorPathError->show();
 		return false;
 	}

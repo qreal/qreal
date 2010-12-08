@@ -9,8 +9,6 @@
 
 #include "message.h"
 
-//TODO: replace QString objects with Message ones
-
 namespace qReal {
 	class Logger
 		{
@@ -35,7 +33,7 @@ namespace qReal {
 						QVariant const prevData, QVariant const newData,
 							QString const additional);
 
-			void log(Id const scene, Message const message);
+			void log(Id const scene, Message* const message);
 			void output();
 
 		private:
@@ -55,6 +53,6 @@ namespace qReal {
 			QSet<Id> cleanDiagrams;
 			QMap<QString, QFile*> files;
 			QMultiHash<Id, QString*> names;
-			QMultiHash<Id, QString*> buffer;
+			QMultiHash<Id, QList<Message*>*> buffer;
 	};
 }

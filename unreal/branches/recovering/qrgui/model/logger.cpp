@@ -17,8 +17,13 @@ Logger::~Logger()
 {
 	foreach(QFile* file, files.values())
 		delete file;
-	foreach(QString* string, names.values() + buffer.values())
+	foreach(QString* string, names.values())
 		delete string;
+	foreach(QList<Message*>* log, buffer.values()) {
+		foreach(Message* msg, *log)
+			delete msg;
+		delete log;
+	}
 }
 
 void Logger::enable()
@@ -74,65 +79,47 @@ void Logger::log(action performed,
 	if (!pass(scene))
 		return;
 
-	log(scene, Message(target, performed, additional, prevData, newData));
+	log(scene, new Message(target, performed, additional, prevData, newData));
 }
 
-void Logger::log(const Id scene, const Message data)
+void Logger::log(const Id scene, Message* const data)
 {
-	QString message = msgOperation;
-	switch (data.performed()) {
-		case actSetData:
-			if ((!flagsEnabled[flgUselessMessages]) &&
-				((data.details() == QString("position")) ||
-				 (data.details() == QString("configuration"))))
-				return;
-			cleanDiagrams.remove(scene);
-			message += msgSetData;
-			break;
-		case actAddElement:
-			cleanDiagrams.remove(scene);
-			message += msgAddElement;
-			break;
-		case actRemoveElement:
-			cleanDiagrams.remove(scene);
-			message += msgRemoveElement;
-			break;
-		case actCreateDiagram:
-			message += msgCreateDiagram;
-			break;
-		case actDestroyDiagram:
-			if (cleanDiagrams.contains(scene)) {
-				cleanDiagrams.remove(scene);
-				remove(scene);
-				return;
-			}
-			cleanDiagrams.insert(scene);
-			message += msgDestroyDiagram;	//unused?
-			break;
+	if (!buffer.contains(scene)) {
+		QList<Message*>* log = new QList<Message*>();
+		log->append(data);
+		buffer.insert(scene, log);
 	}
-
-	message += "\n";
-	if (data.target().idSize() > 1)
-		message += msgTarget + data.target().toString() + "\n";
-	if (!data.details().isNull())
-		message += msgDetails + data.details() + "\n";
-	if (!data.prevValue().isNull())
-		message += msgPrevValue + Message::getDataString(data.prevValue()) + "\n";
-	if (!data.newValue().isNull())
-		message += msgNewValue + Message::getDataString(data.newValue()) + "\n";
-
-	if (!buffer.contains(scene))
-		buffer.insert(scene, new QString(message));
 	else
-		buffer.value(scene)->append("\n"+message);
+		buffer.value(scene)->append(data);
 }
 
 void Logger::output()
 {
 	foreach(Id scene, cleanDiagrams)
 		remove(scene);
-	foreach(Id scene, buffer.keys())
-		write(*buffer.value(scene), scene);
+	foreach(Id scene, buffer.keys()) {
+		QString output;
+		foreach(Message* msg, *buffer.value(scene)) {
+			if ((msg->performed() != actDestroyDiagram) && (msg->performed() != actCreateDiagram))
+				cleanDiagrams.remove(scene);
+			if ((msg->performed() == actDestroyDiagram) && (cleanDiagrams.contains(scene))) {
+				cleanDiagrams.remove(scene);
+				remove(scene);
+				break;
+				break;
+			}
+			if ((msg->performed() != actSetData) || (flagsEnabled[flgUselessMessages]) ||
+				((msg->details() != "position") && (msg->details() != "configuration")))
+					output += msg->toString() + '\n';
+		}
+		write(output, scene);
+	}
+
+	foreach(QList<Message*>* log, buffer.values()) {
+		foreach(Message* msg, *log)
+			delete msg;
+		delete log;
+	}
 	buffer.clear();
 }
 

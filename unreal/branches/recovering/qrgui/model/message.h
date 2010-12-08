@@ -20,6 +20,7 @@ namespace qReal {
 				QString details() const;
 				QVariant prevValue() const;
 				QVariant newValue() const;
+				QString toString() const;
 
 				static QLinkedList<Message> parseLog(QString path);
 

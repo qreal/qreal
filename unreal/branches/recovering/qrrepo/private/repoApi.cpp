@@ -105,6 +105,7 @@ void RepoApi::removeElement(Id const &id)
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
 
+
 	addChangedDiagram(id.diagramId());
 }
 

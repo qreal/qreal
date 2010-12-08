@@ -39,6 +39,40 @@ QVariant Message::newValue() const
 	return mNewValue;
 }
 
+QString Message::toString() const
+{
+	QString message = msgOperation;
+	switch (performed()) {
+		case actSetData:
+			message += msgSetData;
+			break;
+		case actAddElement:
+			message += msgAddElement;
+			break;
+		case actRemoveElement:
+			message += msgRemoveElement;
+			break;
+		case actCreateDiagram:
+			message += msgCreateDiagram;
+			break;
+		case actDestroyDiagram:
+			message += msgDestroyDiagram;	//unused?
+			break;
+	}
+
+	message += "\n";
+	if (target().idSize() > 1)
+		message += msgTarget + target().toString() + "\n";
+	if (!details().isNull())
+		message += msgDetails + details() + "\n";
+	if (!prevValue().isNull())
+		message += msgPrevValue + Message::getDataString(prevValue()) + "\n";
+	if (!newValue().isNull())
+		message += msgNewValue + Message::getDataString(newValue()) + "\n";
+
+	return message;
+}
+
 QLinkedList<Message> Message::parseLog(QString path)
 {
 	QFileInfo fi(path);

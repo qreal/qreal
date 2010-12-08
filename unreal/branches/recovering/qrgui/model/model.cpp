@@ -349,9 +349,8 @@ void Model::removeModelItems(ModelTreeItem *root)
 		removeConfigurationInClient(child);
 		child->parent()->removeChild(child);
 		mTreeItems.remove(child->id(),child);
-		if (mTreeItems.count(child->id())==0) {
+		if (mTreeItems.count(child->id())==0)
 			mApi.removeChild(root->id(),child->id());
-		}
 		delete child;
 		endRemoveRows();
 	}
