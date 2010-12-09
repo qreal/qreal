@@ -166,7 +166,9 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	if (mv_iface->model()->rowCount(QModelIndex()) == 0)
 		return;
 
+	qDebug() << "----0----";
 	createElement(event->mimeData(),event->scenePos());
+	qDebug() << "----3----";
 }
 
 int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos)
@@ -312,8 +314,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);
 	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
+	qDebug() << "----1----";
 	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
-									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+		mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
+	qDebug() << "----2----";
 
 	emit elementCreated(id);
 

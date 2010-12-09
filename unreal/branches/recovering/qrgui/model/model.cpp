@@ -439,7 +439,6 @@ bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, 
 		if (mTreeItems.contains(id))  // Пока на диаграмме не может быть больше одного экземпляра
 			// одной и той же сущности, бросать существующие элементы нельзя.
 			return false;
-
 		return addElementToModel(parentItem, id, pathToItem, name, position, action) != NULL;
 	}
 }
@@ -450,15 +449,10 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	Q_UNUSED(action)
 	Q_UNUSED(oldPathToItem)
 
-	if (((parentItem == mRootItem) && (!isDiagram(id))) ||
-		((!isDiagram(parentItem->id())) && (isDiagram(id))))
-			return NULL;
-
-	if ((!isDiagram(id)) || (parentItem != mRootItem)) {
-		Id scene = isSituatedOn(mTreeItems.value(id))->id();
-		mLogger->rememberNameOfScene(scene, mApi.name(scene));
-		mLogger->log(new Message(scene, id, actAddElement));
-	}
+	if (((parentItem == mRootItem) && (!isDiagram(id))))
+		return NULL;
+	if (((!isDiagram(parentItem->id())) && (isDiagram(id))) && ((parentItem != mRootItem)))
+		return NULL;
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
@@ -467,6 +461,12 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	parentItem->addChild(item);
 	mTreeItems.insert(id, item);
 	mApi.addChild(parentItem->id(), id);
+
+	if ((!isDiagram(id)) || (parentItem != mRootItem)) {
+		Id scene = isSituatedOn(item)->id();
+		mLogger->rememberNameOfScene(scene, mApi.name(scene));
+		mLogger->log(new Message(scene, id, actAddElement));
+	}
 
 	mApi.setProperty(id, "name", name);
 	mApi.setProperty(id, "from", ROOT_ID.toVariant());
