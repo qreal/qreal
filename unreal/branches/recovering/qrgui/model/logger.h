@@ -21,27 +21,13 @@ namespace qReal {
 
 			void setFlag(flag name, bool arg);
 			void setWorkingDir(QString workingDir);
-
 			void rememberNameOfScene(Id const scene, QString name);
-
-			void log(action performed,
-					Id const scene);
-			void log(action performed,
-					Id const scene, Id const target);
-			void log(action performed,
-					Id const scene, Id const target,
-						QVariant const prevData, QVariant const newData,
-							QString const additional);
-
-			void log(Id const scene, Message* const message);
+			void log(Message* const message);
 			void output();
 
 		private:
-			bool pass(Id const scene) const;
 			bool isEditor(Id const scene) const;
-
-			void remove(Id const scene);
-			void remove(Id const scene, QString const workingDir);
+			bool pass(Message const message) const;
 
 			void write(QString const message, Id const scene, bool const patch);
 			void write(QString const message, Id const scene, QString const workingDir, bool const patch);
@@ -50,7 +36,6 @@ namespace qReal {
 
 			bool enabled;
 			bool flagsEnabled[4];
-			QSet<Id> cleanDiagrams;
 			QMap<QString, QFile*> files;
 			QMultiHash<Id, QString*> names;
 			QMultiHash<Id, QList<Message*>*> buffer;

@@ -8,11 +8,9 @@ Logger::Logger(QString const workingDir)
 	enabled(false)
 {
 	flagsEnabled[flgEditors] = true;
-	flagsEnabled[flgDiagrams] = true;
+	flagsEnabled[flgDiagrams] = false;
 	flagsEnabled[flgUselessMessages] = false;
-	flagsEnabled[flgInvalidMessages] = false;
 }
-
 Logger::~Logger()
 {
 	foreach(QFile* file, files.values())
@@ -30,12 +28,10 @@ void Logger::enable()
 {
 	enabled = true;
 }
-
 void Logger::disable()
 {
 	enabled = false;
 }
-
 void Logger::setFlag(flag flg, bool arg)
 {
 	flagsEnabled[flg] = arg;
@@ -49,73 +45,33 @@ void Logger::rememberNameOfScene(Id scene, QString name)
 		names.replace(scene, new QString(name));
 }
 
-void Logger::log(action performed,
-							const Id scene)
+void Logger::log(Message* const message)
 {
-	if ((performed != actCreateDiagram) && (performed != actDestroyDiagram)) {
-		write(msgInvalid +'\n',scene, false);
-		if (flagsEnabled[flgInvalidMessages])
-			log(performed, scene, Id(), QVariant(), QVariant(), QString());
-	} else
-		log(performed, scene, Id(), QVariant(), QVariant(), QString());
-}
-
-void Logger::log(action performed,
-					const Id scene, const Id target)
-{
-	if ((performed != actAddElement) && (performed != actRemoveElement)) {
-		write(msgInvalid + '\n',scene, false);
-		if (flagsEnabled[flgInvalidMessages])
-			log(performed, scene, target, QVariant(), QVariant(), QString());
-	} else
-		log(performed, scene, target, QVariant(), QVariant(), QString());
-}
-
-void Logger::log(action performed,
-				const Id scene, const Id target,
-				const QVariant prevData, const QVariant newData,
-				const QString additional)
-{
-	if (!pass(scene))
+	Id scene = message->scene();
+	if (!pass(*message)) {
+		qDebug() << "Logger::log() error | Message filtered.";
 		return;
-
-	log(scene, new Message(target, performed, additional, prevData, newData));
-}
-
-void Logger::log(const Id scene, Message* const data)
-{
+	}
 	if (!buffer.contains(scene)) {
 		QList<Message*>* log = new QList<Message*>();
-		log->append(data);
+		log->append(message);
 		buffer.insert(scene, log);
 	}
 	else
-		buffer.value(scene)->append(data);
+		buffer.value(scene)->append(message);
 }
 
 void Logger::output()
 {
-	foreach(Id scene, cleanDiagrams)
-		remove(scene);
 	foreach(Id scene, buffer.keys()) {
 		QString log;
 		QString patch;
 
 		bool editor = isEditor(scene);
 		foreach(Message* msg, *buffer.value(scene)) {
-			if ((msg->performed() != actDestroyDiagram) && (msg->performed() != actCreateDiagram))
-				cleanDiagrams.remove(scene);
-			if ((msg->performed() == actDestroyDiagram) && (cleanDiagrams.contains(scene))) {
-				cleanDiagrams.remove(scene);
-				remove(scene);
-				break;
-				break;
-			}
-			if ((msg->performed() != actSetData) || (flagsEnabled[flgUselessMessages]) ||
-				((msg->details() != "position") && (msg->details() != "configuration")))
-					log += msg->toString() + '\n';
-					if (editor)
-						patch += msg->patchMessage().toString() + '\n';
+			log += msg->toString();
+			if (editor)
+				patch += msg->generatePatchMessage().toString();
 		}
 		write(log, scene, false);
 		if (editor)
@@ -135,34 +91,22 @@ bool Logger::isEditor(const Id scene) const
 	return (scene.editor() == QString("Meta_editor"));
 }
 
-bool Logger::pass(const Id scene) const
+bool Logger::pass(const Message message) const
 {
-	return	((!isEditor(scene) && flagsEnabled[flgDiagrams])
-			|| (isEditor(scene) && flagsEnabled[flgEditors]));
-}
+	bool editor = isEditor(message.scene());
 
-void Logger::remove(const Id scene)
-{
-	if (isEditor(scene))
-		remove(scene, "../");
-	remove(scene, mWorkingDir);
-}
+	if ((!flagsEnabled[flgDiagrams]) && (!editor))
+		return false;
+	if ((!flagsEnabled[flgEditors]) && (editor))
+		return false;
 
-void Logger::remove(const Id scene, QString const workingDir)
-{
-	buffer.remove(scene);
+	bool useless = (message.performed() == actSetData) &&
+		(((message.details() == "position") || (message.details() == "configuration")));
 
-	QString name = scene.id();
-	QFile *file;
-	if (files.contains(name))
-		file = files.value(name);
-	else
-		return;
+	if ((!flagsEnabled[flgUselessMessages]) && (useless))
+		return false;
 
-	QDir dir;
-	file->remove();
-	files.remove(name);
-	dir.rmdir(workingDir+"/logs/"+scene.diagram());
+	return true;
 }
 
 void Logger::write(const QString message, const Id scene, const bool patch)
@@ -182,19 +126,18 @@ void Logger::write(const QString message, const Id scene, const QString workingD
 	QDir dir;
 	dir.mkpath(path);
 
-	QString name = scene.id();
+	path += '/'+scene.id()+'.';
+	if (patch)
+		path += qReal::extensionPatch;
+	else
+		path += qReal::extensionLog;
 
 	QFile *file;
-	if (!files.contains(name)) {
-		path += '/'+name+'.';
-		if (patch)
-			path += qReal::extensionPatch;
-		else
-			path += qReal::extensionLog;
+	if (!files.contains(path)) {
 		file = new QFile(path);
-		files.insert(name, file);
+		files.insert(path, file);
 	} else {
-		file = files.value(name);
+		file = files.value(path);
 	}
 
 	if (!file->isOpen())

@@ -144,60 +144,61 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		Id id = item->id();
-		QString message;
+		QString details;
 		QVariant prevValue;
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			prevValue = mApi.name(id);
 			mApi.setName(id, newValue.toString());
-			message = "name";
+			details = "name";
 			emit nameChanged(index);
 			break;
 		case roles::positionRole:
 			prevValue = mApi.property(id, "position");
 			mApi.setProperty(id, "position", newValue);
-			message = "position";
+			details = "position";
 			break;
 		case roles::configurationRole:
 			prevValue = mApi.property(id, "configuration");
 			mApi.setProperty(id, "configuration", newValue);
-			message = "configuration";
+			details = "configuration";
 			break;
 		case roles::fromRole:
 			prevValue = mApi.property(id, "from");
 			mApi.setFrom(id, newValue.value<Id>());
-			message = "from";
+			details = "from";
 			break;
 		case roles::toRole:
 			prevValue = mApi.property(id, "to");
 			mApi.setTo(id, newValue.value<Id>());
-			message = "to";
+			details = "to";
 			break;
 		case roles::fromPortRole:
 			prevValue = mApi.property(id, "fromPort");
 			mApi.setFromPort(id, newValue.toDouble());
-			message = "fromPort";
+			details = "fromPort";
 			break;
 		case roles::toPortRole:
 			prevValue = mApi.property(id, "toPort");
 			mApi.setToPort(id, newValue.toDouble());
-			message = "toPort";
+			details = "toPort";
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(id, role);
 				prevValue = mApi.property(id, selectedProperty);
 				mApi.setProperty(id, selectedProperty, newValue);
-				message = selectedProperty;
+				details = selectedProperty;
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
 
-		mLogger->rememberNameOfScene(isSituatedOn(item)->id(), mApi.name(isSituatedOn(item)->id()));
-		mLogger->log(actSetData, isSituatedOn(item)->id(), id, prevValue, newValue, message);
+		Id scene = isSituatedOn(item)->id();
+		mLogger->rememberNameOfScene(scene, mApi.name(scene));
+		mLogger->log(new Message(scene, id, actSetData, details, prevValue, newValue));
 
 		emit dataChanged(index, index);
 		return true;
@@ -446,52 +447,47 @@ bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, 
 ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	QString const &oldPathToItem, QString const &name, QPointF const &position, Qt::DropAction action)
 {
-	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
+	Q_UNUSED(oldPathToItem)
 
-	if (isDiagram(id)) {
-		if (!isDiagram(parentItem->id()) && parentItem != mRootItem) {
-			qDebug() << "Diagram cannot be placed into element.";
+	if (((parentItem == mRootItem) && (!isDiagram(id))) ||
+		((!isDiagram(parentItem->id())) && (isDiagram(id))))
 			return NULL;
-		}
-		if (parentItem == mRootItem)
-			mLogger->log(actCreateDiagram, id);
-		else
-			mLogger->log(actAddElement, isSituatedOn(parentItem)->id(), id);
-	}
-	else {
-		if (parentItem == mRootItem) {
-			qDebug() << "Element can be placed only on diagram.";
-			return NULL;
-		}
-		mLogger->log(actAddElement, isSituatedOn(parentItem)->id(), id);
+
+	if ((!isDiagram(id)) || (parentItem != mRootItem)) {
+		Id scene = isSituatedOn(mTreeItems.value(id))->id();
+		mLogger->rememberNameOfScene(scene, mApi.name(scene));
+		mLogger->log(new Message(scene, id, actAddElement));
 	}
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
-		ModelTreeItem *item = new ModelTreeItem(id, parentItem);
-		parentItem->addChild(item);
-		mTreeItems.insert(id, item);
-		mApi.addChild(parentItem->id(), id);
-		mApi.setProperty(id, "name", name);
-		mApi.setProperty(id, "from", ROOT_ID.toVariant());
-		mApi.setProperty(id, "to", ROOT_ID.toVariant());
-		mApi.setProperty(id, "fromPort", 0.0);
-		mApi.setProperty(id, "toPort", 0.0);
-		mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
-		mApi.setProperty(id, "position", position);
-		mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
-		QStringList properties = mEditorManager.getPropertyNames(id.type());
-		foreach (QString property, properties)
-		// for those properties that doesn't have default values, plugin will return empty string
-			mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+	ModelTreeItem *item = new ModelTreeItem(id, parentItem);
+	parentItem->addChild(item);
+	mTreeItems.insert(id, item);
+	mApi.addChild(parentItem->id(), id);
 
-		endInsertRows();
+	mApi.setProperty(id, "name", name);
+	mApi.setProperty(id, "from", ROOT_ID.toVariant());
+	mApi.setProperty(id, "to", ROOT_ID.toVariant());
+	mApi.setProperty(id, "fromPort", 0.0);
+	mApi.setProperty(id, "toPort", 0.0);
+	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "position", position);
+	mApi.setProperty(id, "configuration", QVariant(QPolygon()));
+
+	QStringList properties = mEditorManager.getPropertyNames(id.type());
+	foreach (QString property, properties)
+	// for those properties that doesn't have default values, plugin will return empty string
+	mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+
+	endInsertRows();
+
 	return item;
 }
 
@@ -596,11 +592,12 @@ void Model::save()
 void Model::removeByIndex(QModelIndex const &index)
 {
 	Id id = idByIndex(index);
-	ModelTreeItem *treeItem = mTreeItems.value(id);
-	if (treeItem->parent() == mRootItem)
-		mLogger->log(actDestroyDiagram, isSituatedOn(treeItem)->id());
-	else
-		mLogger->log(actRemoveElement, isSituatedOn(treeItem)->id(), id);
+	ModelTreeItem *item = mTreeItems.value(id);
+	if (item->parent() != mRootItem) {
+		Id scene = isSituatedOn(item)->id();
+		mLogger->rememberNameOfScene(scene, mApi.name(scene));
+		mLogger->log(new Message(scene, id, actRemoveElement));
+	}
 
 	removeRow(index.row(), index.parent());
 }

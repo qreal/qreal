@@ -4,27 +4,52 @@
 
 using namespace qReal;
 
-Message::Message(Id const target, action const performed, QString const details,
-				 QVariant const prevValue, QVariant const newValue) :
+Message::Message() :
+	mValid(false),
+	mPerformed(actSetData)
+{
+}
+
+Message::Message(Id const scene, Id const target, const action performed) :
+	mScene(scene),
+	mTarget(target),
+	mPerformed(performed)
+{
+	if ((performed == actSetData) || (performed == actReplaceElement))
+		mValid = false;
+	else
+		mValid = true;
+}
+
+Message::Message(Id const scene, Id const target, action const performed,
+	QString const details, QVariant const prevValue, QVariant const newValue) :
+	mValid(true),
+	mScene(scene),
 	mTarget(target),
 	mPerformed(performed),
 	mDetails(details),
 	mPrevValue(prevValue),
 	mNewValue(newValue)
 {
+	if ((performed == actAddElement) || (performed == actRemoveElement))
+		mValid = false;
+	else
+		mValid = true;
 }
 
-Message Message::patchMessage() const
+Id Message::scene() const
 {
-	if ((mPerformed != qReal::actSetData) || (mDetails != "name"))
-		return Message(Id(), qReal::actInvalid, QString(), QVariant(), QVariant());
-
-	return Message(mTarget.diagramId(), qReal::ptchReplaceElement, qReal::msgAllElements, mPrevValue, mNewValue);
+	return mScene;
 }
 
 Id Message::target() const
 {
 	return mTarget;
+}
+
+bool Message::valid() const
+{
+	return mValid;
 }
 
 action Message::performed() const
@@ -49,44 +74,37 @@ QVariant Message::newValue() const
 
 QString Message::toString() const
 {
-	QString message = msgOperation;
+	QString message = msgScene + mScene.toString() + '\n';
+
+	message += msgOperation;
 	switch (performed()) {
-		case actInvalid:
-			return qReal::msgInvalid;
 		case actSetData:
-			message += msgSetData;
+			message += msgSetData + '\n';
 			break;
 		case actAddElement:
-			message += msgAddElement;
+			message += msgAddElement + '\n';
 			break;
 		case actRemoveElement:
-			message += msgRemoveElement;
+			message += msgRemoveElement + '\n';
 			break;
-		case actCreateDiagram:
-			message += msgCreateDiagram;
-			break;
-		case actDestroyDiagram:
-			message += msgDestroyDiagram;	//unused?
-			break;
-		case ptchReplaceElement:
-			message += cmdReplaceElement;
+		case actReplaceElement:
+			message += msgReplaceElement + '\n';
 			break;
 	}
 
-	message += "\n";
 	if (target().idSize() > 1)
-		message += msgTarget + target().toString() + "\n";
+		message += msgTarget + target().toString() + '\n';
 	if (!details().isNull())
-		message += msgDetails + details() + "\n";
+		message += msgDetails + details() + '\n';
 	if (!prevValue().isNull())
-		message += msgPrevValue + Message::getDataString(prevValue()) + "\n";
+		message += msgPrevValue + Message::getDataString(prevValue()) + '\n';
 	if (!newValue().isNull())
-		message += msgNewValue + Message::getDataString(newValue()) + "\n";
+		message += msgNewValue + Message::getDataString(newValue()) + '\n';
 
 	return message;
 }
 
-QLinkedList<Message> Message::parseLog(QString path)
+QLinkedList<Message> Message::parseLog(QString const path)
 {
 	QFileInfo fi(path);
 	QFile* file;
@@ -119,27 +137,30 @@ QLinkedList<Message> Message::parseLog(QString path)
 		if (stream.atEnd())
 			break;
 
+		Id scene;
+		if (string.startsWith(msgScene))
+			scene = Id::loadFromString(string.remove(msgScene));
+		else
+			qDebug() << "Message::parseLog() error | There is no scene string.";
+
 		QString operation;
+		string = stream.readLine();
 		if (string.startsWith(msgOperation))
 			operation = string.remove(msgOperation);
 		else
 			qDebug() << "Message::parseLog() error | There is no operation string.";
-		if ((operation == msgCreateDiagram) || (operation == msgDestroyDiagram)) {
-			log.append(Message(Id(),
-							(operation == msgCreateDiagram) ? actCreateDiagram : actDestroyDiagram,
-								QString(), QVariant(), QVariant()));
-			continue;
-		}
 
-		QString target = stream.readLine();
-		if (target.startsWith(msgTarget))
-			target = target.remove(msgTarget);
+		Id target;
+		string = stream.readLine();
+		if (string.startsWith(msgTarget))
+			target = Id::loadFromString(string.remove(msgTarget));
 		else
 			qDebug() << "Message::parseLog() error | There is no target string.";
+
+		action performed;
 		if ((operation == msgAddElement) || (operation == msgRemoveElement)) {
-			log.append(Message(Id::loadFromString(target),
-							(operation == msgAddElement) ? actAddElement : actRemoveElement,
-								QString(), QVariant(), QVariant()));
+			performed = (operation == msgAddElement) ? actAddElement : actRemoveElement;
+			log.append(Message(scene, target, performed));
 			continue;
 		}
 
@@ -165,18 +186,16 @@ QLinkedList<Message> Message::parseLog(QString path)
 		else
 			qDebug() << "Message::parseLog() error | There is no new value string.";
 
-		action performed;
 		if (operation == msgSetData)
 			performed = actSetData;
-		else if (operation == cmdReplaceElement)
-			performed = ptchReplaceElement;
+		else if (operation == msgReplaceElement)
+			performed = actReplaceElement;
 		else {
 			qDebug() << "Message::parseLog() error | Invalid operation.";
 			continue;
 		}
-		log.append(Message(Id::loadFromString(target),
-						performed,
-							details, parseQVariant(prevValue) , parseQVariant(newValue)));
+		log.append(Message(scene, target, performed,
+			details, parseQVariant(prevValue) , parseQVariant(newValue)));
 	}
 
 	delete file;
@@ -232,4 +251,12 @@ QVariant Message::parseQVariant(const QString data)
 				<< QVariant::typeToName(type) << ").";
 		return QVariant();
 	}
+}
+
+Message Message::generatePatchMessage() const
+{
+	if ((mPerformed != qReal::actSetData) || (mDetails != "name"))
+		return Message();
+
+	return Message(mScene, mTarget.diagramId(), qReal::actReplaceElement, qReal::msgAllElements, mPrevValue, mNewValue);
 }

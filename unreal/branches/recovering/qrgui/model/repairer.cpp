@@ -151,7 +151,7 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 				mApi.setProperty(target, msg.details(), msg.newValue());
 				break;
 			}
-			case qReal::ptchReplaceElement: {
+			case qReal::actReplaceElement: {
 				if (msg.details() == qReal::msgAllElements) {
 					Id parent;
 					Id diagram = msg.target();
