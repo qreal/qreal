@@ -245,10 +245,12 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QString pathToItem = Id::rootId().toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
+	bool isFromLogicalModel = false;
 	stream << uuid;
 	stream << pathToItem;
 	stream << name;
 	stream << pos;
+	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
 	createElement(mimeData, scenePos);
@@ -266,10 +268,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QString pathToItem = "";
 	QString name;
 	QPointF pos;
+	bool isFromLogicalModel;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
+	in_stream >> isFromLogicalModel;
 
 	QByteArray newItemData;
 	QDataStream stream(&newItemData, QIODevice::WriteOnly);
@@ -307,6 +311,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 		stream << scenePos;
 	else
 		stream << newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
+
+	stream << isFromLogicalModel;
 
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);

@@ -45,3 +45,11 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 	}
 }
 
+void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
+{
+	Q_UNUSED(parent);
+	Q_UNUSED(start);
+	Q_UNUSED(end);
+}
+
+

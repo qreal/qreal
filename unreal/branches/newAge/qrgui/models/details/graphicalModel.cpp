@@ -235,3 +235,58 @@ GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
 {
 	return *mGraphicalAssistApi;
 }
+
+bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
+{
+	AbstractModelItem *parentItem = parentAbstractItem(parent);
+	if (parentItem->children().size() < row + count)
+		return false;
+	else {
+		for (int i = row; i < row + count; ++i) {
+			AbstractModelItem *child = parentItem->children().at(i);
+			mApi.removeElement(child->id());
+			removeModelItems(child);
+
+			int childRow = child->row();
+			beginRemoveRows(parent, childRow, childRow);
+			child->parent()->removeChild(child);
+			mModelItems.remove(child->id());
+			if (mModelItems.count(child->id()) == 0)
+				mApi.removeChild(parentItem->id(), child->id());
+			delete child;
+			endRemoveRows();
+		}
+		return true;
+	}
+}
+
+void GraphicalModel::removeModelItems(details::modelsImplementation::AbstractModelItem *const root)
+{
+	foreach (AbstractModelItem *child, root->children()) {
+		mApi.removeElement(child->id());
+		removeModelItems(child);
+		int childRow = child->row();
+		beginRemoveRows(index(root),childRow,childRow);
+		mApi.removeProperty(child->id(), "position");
+		mApi.removeProperty(child->id(), "configuration");
+		child->parent()->removeChild(child);
+		mModelItems.remove(child->id());
+		if (mModelItems.count(child->id())==0) {
+			mApi.removeChild(root->id(),child->id());
+		}
+		delete child;
+		endRemoveRows();
+	}
+}
+
+QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logicalId) const
+{
+	QList<QPersistentModelIndex> indexes;
+	foreach (AbstractModelItem *item, mModelItems.values()) {
+		if (static_cast<GraphicalModelItem *>(item)->logicalId() == logicalId)
+			indexes.append(index(item));
+	}
+	return indexes;
+}
+
+

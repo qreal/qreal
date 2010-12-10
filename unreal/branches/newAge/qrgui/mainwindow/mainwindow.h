@@ -151,7 +151,7 @@ namespace qReal {
 		void suggestToCreateDiagram();
 
 		virtual void closeEvent(QCloseEvent *event);
-		void deleteFromExplorer();
+		void deleteFromExplorer(bool isLogicalModel);
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 

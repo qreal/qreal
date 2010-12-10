@@ -24,7 +24,7 @@ public slots:
 
 protected slots:
 	void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
-	void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
+	virtual void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
 	void rowsInserted(QModelIndex const &parent, int start, int end);
 
 protected:

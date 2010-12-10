@@ -325,6 +325,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
        <property name="acceptDrops">
         <bool>true</bool>
        </property>
@@ -347,6 +350,9 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
        <property name="acceptDrops">
         <bool>true</bool>
        </property>
@@ -481,6 +487,9 @@
    </property>
   </action>
   <action name="actionDeleteFromDiagram">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Delete</string>
    </property>

@@ -2,6 +2,8 @@
 
 #include "graphicalModel.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace models::details;
 using namespace modelsImplementation;
@@ -20,3 +22,19 @@ void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const
 		static_cast<GraphicalModel *>(mModel)->updateElements(logicalId, curr.data(Qt::DisplayRole).toString());
 	}
 }
+
+void LogicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)
+{
+	for (int row = start; row <= end; ++row) {
+		QModelIndex current = model()->index(row, 0, parent);
+		if (current.isValid()) {
+			Id const logicalId = current.data(roles::idRole).value<Id>();
+			QList<QPersistentModelIndex> indexes = static_cast<GraphicalModel *>(mModel)->indexesWithLogicalId(logicalId);
+			foreach (QPersistentModelIndex index, indexes) {
+				static_cast<GraphicalModel *>(mModel)->removeRows(index.row(), 1, index.parent());
+			}
+		}
+	}
+	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
+}
+

@@ -37,17 +37,18 @@ namespace qReal {
 				qrRepo::LogicalRepoApi const &api() const;
 				qrRepo::LogicalRepoApi &mutableApi() const;
 				LogicalModelAssistApi &logicalModelAssistApi() const;
+	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
-			private:
+		private:
 				GraphicalModelView mGraphicalModelView;
 				qrRepo::LogicalRepoApi &mApi;
 				LogicalModelAssistApi *mLogicalAssistApi;
 				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 				void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-									   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+						modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
 				QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
+				void removeModelItems(details::modelsImplementation::AbstractModelItem * const root);
 			};
-
 		}
 
 	}
