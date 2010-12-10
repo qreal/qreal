@@ -72,6 +72,8 @@ namespace qrRepo {
 		void saveTo(QString const &workingDir);
 		void remove(qReal::IdList list) const;
 
+		void setWorkingDir(QString const &workingDir);
+
 		void open(QString const &workingDir);
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.

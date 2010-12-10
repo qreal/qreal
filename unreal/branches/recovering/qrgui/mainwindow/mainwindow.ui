@@ -46,6 +46,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
     <addaction name="actionPrint"/>
     <addaction name="actionMakeSvg"/>
     <addaction name="separator"/>
@@ -493,12 +494,12 @@
   </action>
   <action name="actionSave_as">
    <property name="text">
-    <string>Save as...</string>
+    <string>Save as ...</string>
    </property>
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open...</string>
+    <string>Open</string>
    </property>
   </action>
   <action name="actionParse_Hascol_sources">
@@ -595,6 +596,11 @@
   <action name="actionGenerate_Editor_from_xml">
    <property name="text">
     <string>Generate Editor (from xml)</string>
+   </property>
+  </action>
+  <action name="actionClose_current">
+   <property name="text">
+    <string>Close current</string>
    </property>
   </action>
  </widget>

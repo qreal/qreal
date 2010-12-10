@@ -55,6 +55,7 @@ namespace qReal {
 		void save();
 		void saveAs();
 		void saveAll();
+
 		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
 
 		void print();

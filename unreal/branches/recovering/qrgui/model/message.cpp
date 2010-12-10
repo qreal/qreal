@@ -15,7 +15,7 @@ Message::Message(Id const scene, Id const target, const action performed) :
 	mTarget(target),
 	mPerformed(performed)
 {
-	if ((performed == actSetData) || (performed == actReplaceElement))
+	if (performed == actSetData)
 		mValid = false;
 	else
 		mValid = true;
@@ -81,14 +81,14 @@ QString Message::toString() const
 		case actSetData:
 			message += msgSetData + '\n';
 			break;
+		case actChangeType:
+			message += msgChangeType + '\n';
+			break;
 		case actAddElement:
 			message += msgAddElement + '\n';
 			break;
 		case actRemoveElement:
 			message += msgRemoveElement + '\n';
-			break;
-		case actReplaceElement:
-			message += msgReplaceElement + '\n';
 			break;
 	}
 
@@ -160,7 +160,9 @@ QLinkedList<Message> Message::parseLog(QString const path)
 		action performed;
 		if ((operation == msgAddElement) || (operation == msgRemoveElement)) {
 			performed = (operation == msgAddElement) ? actAddElement : actRemoveElement;
-			log.append(Message(scene, target, performed));
+			Message message = Message(scene, target, performed);
+			if (message.valid())
+				log.append(message);
 			continue;
 		}
 
@@ -188,14 +190,16 @@ QLinkedList<Message> Message::parseLog(QString const path)
 
 		if (operation == msgSetData)
 			performed = actSetData;
-		else if (operation == msgReplaceElement)
-			performed = actReplaceElement;
+		else if (operation == msgChangeType)
+			performed = actChangeType;
 		else {
 			qDebug() << "Message::parseLog() error | Invalid operation.";
 			continue;
 		}
-		log.append(Message(scene, target, performed,
-			details, parseQVariant(prevValue) , parseQVariant(newValue)));
+		Message message = Message(scene, target, performed,
+				details, parseQVariant(prevValue) , parseQVariant(newValue));
+		if (message.valid())
+			log.append(message);
 	}
 
 	delete file;
@@ -253,10 +257,10 @@ QVariant Message::parseQVariant(const QString data)
 	}
 }
 
-Message Message::generatePatchMessage() const
+Message Message::generatePatchMessage(QString const diagram) const
 {
 	if ((mPerformed != qReal::actSetData) || (mDetails != "name"))
 		return Message();
 
-	return Message(mScene, mTarget.diagramId(), qReal::actReplaceElement, qReal::msgAllElements, mPrevValue, mNewValue);
+	return Message(mScene, mTarget, qReal::actChangeType, diagram, mPrevValue, mNewValue);
 }

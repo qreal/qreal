@@ -38,6 +38,8 @@ namespace qReal {
 
 			Id correctId(Id const target);
 			void replace(Id const from, Id const to) const;
+			void changeType(Id const target, QString const &diagramName,
+				QString const from, QString const to) const;
 
 			bool checkId(Id const target) const;
 

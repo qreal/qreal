@@ -18,8 +18,8 @@ Logger::~Logger()
 	foreach(QString* string, names.values())
 		delete string;
 	foreach(QList<Message*>* log, buffer.values()) {
-		foreach(Message* msg, *log)
-			delete msg;
+		foreach(Message* message, *log)
+			delete message;
 		delete log;
 	}
 }
@@ -49,7 +49,7 @@ void Logger::log(Message* const message)
 {
 	Id scene = message->scene();
 	if (!pass(*message)) {
-		qDebug() << "Logger::log() error | Message filtered.";
+//		qDebug() << "Logger::log() error | Message filtered.";
 		return;
 	}
 	if (!buffer.contains(scene)) {
@@ -68,10 +68,13 @@ void Logger::output()
 		QString patch;
 
 		bool editor = isEditor(scene);
-		foreach(Message* msg, *buffer.value(scene)) {
-			log += msg->toString();
-			if (editor)
-				patch += msg->generatePatchMessage().toString();
+		foreach(Message* message, *buffer.value(scene)) {
+			log += message->toString();
+			if (editor) {
+				Message patchMessage = message->generatePatchMessage(*names.value(scene));
+				if (patchMessage.valid())
+					patch += patchMessage.toString();
+			}
 		}
 		write(log, scene, false);
 		if (editor)
@@ -79,8 +82,8 @@ void Logger::output()
 	}
 
 	foreach(QList<Message*>* log, buffer.values()) {
-		foreach(Message* msg, *log)
-			delete msg;
+		foreach(Message* message, *log)
+			delete message;
 		delete log;
 	}
 	buffer.clear();

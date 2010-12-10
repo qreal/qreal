@@ -317,7 +317,7 @@ void RepoApi::saveAll() const
 
 void RepoApi::saveTo(QString const &workingDir)
 {
-	mClient.setWorkingDir(workingDir);
+	setWorkingDir(workingDir);
 	mClient.saveAll();
 }
 
@@ -338,7 +338,10 @@ void RepoApi::remove(qReal::IdList list) const
 		}
 }
 
-
+void RepoApi::setWorkingDir(const QString &workingDir)
+{
+	mClient.setWorkingDir(workingDir);
+}
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {

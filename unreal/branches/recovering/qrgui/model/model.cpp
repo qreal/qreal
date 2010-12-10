@@ -197,8 +197,11 @@ bool Model::setData(QModelIndex const &index, QVariant const &newValue, int role
 		}
 
 		Id scene = isSituatedOn(item)->id();
-		mLogger->rememberNameOfScene(scene, mApi.name(scene));
-		mLogger->log(new Message(scene, id, actSetData, details, prevValue, newValue));
+		Message* message = new Message(scene, id, actSetData, details, prevValue, newValue);
+		if (message->valid()) {
+			mLogger->rememberNameOfScene(scene, mApi.name(scene));
+			mLogger->log(message);
+		}
 
 		emit dataChanged(index, index);
 		return true;
@@ -464,8 +467,11 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 
 	if ((!isDiagram(id)) || (parentItem != mRootItem)) {
 		Id scene = isSituatedOn(item)->id();
-		mLogger->rememberNameOfScene(scene, mApi.name(scene));
-		mLogger->log(new Message(scene, id, actAddElement));
+		Message* message = new Message(scene, id, actAddElement);
+		if (message->valid()) {
+			mLogger->rememberNameOfScene(scene, mApi.name(scene));
+			mLogger->log(message);
+		}
 	}
 
 	mApi.setProperty(id, "name", name);
@@ -589,14 +595,24 @@ void Model::save()
 	mApi.resetChangedDiagrams();
 }
 
+void Model::setWorkingDir(QString const &workingDir)
+{
+	mLogger->output();
+	mLogger->setWorkingDir(workingDir);
+	mApi.setWorkingDir(workingDir);
+}
+
 void Model::removeByIndex(QModelIndex const &index)
 {
 	Id id = idByIndex(index);
 	ModelTreeItem *item = mTreeItems.value(id);
 	if (item->parent() != mRootItem) {
 		Id scene = isSituatedOn(item)->id();
-		mLogger->rememberNameOfScene(scene, mApi.name(scene));
-		mLogger->log(new Message(scene, id, actRemoveElement));
+		Message* message = new Message(scene, id, actRemoveElement);
+		if (message->valid()) {
+			mLogger->rememberNameOfScene(scene, mApi.name(scene));
+			mLogger->log(message);
+		}
 	}
 
 	removeRow(index.row(), index.parent());

@@ -60,6 +60,7 @@ namespace qReal {
 			void reinit();
 			void open(QString const &workingDirectory);
 			void saveTo(QString const &workingDirectory);
+			void setWorkingDir(QString const &workingDir);
 
 			void removeByIndex(QModelIndex const &index);
 

@@ -7,9 +7,9 @@ namespace qReal {
 	enum action
 	{
 		actSetData,
+		actChangeType,
 		actAddElement,
-		actRemoveElement,
-		actReplaceElement
+		actRemoveElement
 	};
 
 	enum flag
@@ -21,10 +21,9 @@ namespace qReal {
 
 	const QString msgInvalid = "Invalid";
 	const QString msgSetData = "SetData";
+	const QString msgChangeType = "ChangeType";
 	const QString msgAddElement = "AddElement";
 	const QString msgRemoveElement = "RemoveElement";
-	const QString msgReplaceElement = "ReplaceElement";
-
 
 	const QString msgScene = "Scene: ";
 	const QString msgOperation = "Operation: ";
@@ -32,8 +31,6 @@ namespace qReal {
 	const QString msgDetails = "Details: ";
 	const QString msgPrevValue = "PrevValue: ";
 	const QString msgNewValue = "NewValue: ";
-
-	const QString msgAllElements = "<AllElements>";
 
 	const QString extensionLog = "log";
 	const QString extensionPatch = "patch";

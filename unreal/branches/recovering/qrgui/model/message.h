@@ -25,11 +25,11 @@ namespace qReal {
 				QVariant newValue() const;
 				QString toString() const;
 
-				Message generatePatchMessage() const;
 				static QString getDataString(QVariant const data);
 				static QVariant parseQVariant(QString const data);
 				static QLinkedList<Message> parseLog(QString const path);
 
+				Message generatePatchMessage(QString const diagram) const;
 			private:
 				Message();
 

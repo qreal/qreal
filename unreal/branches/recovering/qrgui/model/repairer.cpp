@@ -75,16 +75,29 @@ Id Repairer::correctId(const Id target)
 {
 	QLinkedList<Message> log = Message::parseLog("../logs/MetaEditor/" + target.diagram() + '/');
 	Id curr = Id::loadFromString(target.toString().remove('/' + target.id()));
-	foreach(Message msg, log)
-		if ((msg.prevValue().type() == QVariant::String) && (msg.newValue().type() == QVariant::String)
-			&& (msg.prevValue().toString() == curr.element()))
-				curr = Id::loadFromString(target.diagramId().toString() + '/' + msg.newValue().toString());
+	foreach(Message message, log)
+		if ((message.valid()) && (message.prevValue().type() == QVariant::String) &&
+			(message.newValue().type() == QVariant::String) && (message.prevValue().toString() == curr.element()))
+				curr = Id::loadFromString(target.diagramId().toString() + '/' + message.newValue().toString());
 
 	if (mEditorManager.elements(target.diagramId()).contains(curr))
 		return Id::loadFromString(curr.toString() + '/' + target.id());
 	else {
 		qDebug() << "Repairer::correctId() error | There is no final element in editor (incorrect log?).";
 		return Id();
+	}
+}
+
+void Repairer::changeType(Id const target, QString const &diagramName,
+		QString const prevType, QString const newType) const
+{
+	IdList childs = mApi.children(target);
+	if (childs.empty())
+		return;
+	foreach(Id child, childs) {
+		changeType(child, diagramName, prevType, newType);
+		if ((child.diagram() == diagramName) && (child.element() == prevType))
+			replace(child, Id(child.editor(),child.diagram(),newType,child.id()));
 	}
 }
 
@@ -108,9 +121,11 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 
 	int count = 0;
 	QLinkedList<Message> log = Message::parseLog(patchPath);
-	foreach(Message msg, log) {
-		Id target = msg.target();
-		switch (msg.performed()) {
+	foreach(Message message, log) {
+		if (!message.valid())
+			continue;
+		Id target = message.target();
+		switch (message.performed()) {
 			case qReal::actAddElement: {
 				Id parent;
 				foreach(Id child, mApi.children(rootId))
@@ -148,31 +163,12 @@ void Repairer::patchSave(QString savePath, QString patchPath)
 				break;
 			}
 			case qReal::actSetData: {
-				mApi.setProperty(target, msg.details(), msg.newValue());
+				mApi.setProperty(target, message.details(), message.newValue());
 				break;
 			}
-			case qReal::actReplaceElement: {
-				if (msg.details() == qReal::msgAllElements) {
-					Id parent;
-					Id diagram = msg.target();
-					if (diagram.diagramId() != diagram) {
-						qDebug() <<
-						"Repairer::patchSave() error | Not Implemented yet.";
-						break;	//I hope it is correct (it must quit from case).
-					}
-
-					foreach(Id child, mApi.children(rootId))
-						if (child.diagramId() == diagram)
-							parent = child;
-					foreach(Id element, mEditorManager.elementsOnDiagram(parent)) {
-						if (element.element() == msg.prevValue().toString())
-							replace(element, Id(element.editor(),element.diagram(),
-								msg.newValue().toString(),element.id()));
-					}
-				}
-				else
-					qDebug() <<
-					"Repairer::patchSave() error | Not Implemented yet.";
+			case qReal::actChangeType: {
+				changeType(Id::getRootId(), message.details(),
+					message.prevValue().toString(), message.newValue().toString());
 				break;
 			}
 			default:

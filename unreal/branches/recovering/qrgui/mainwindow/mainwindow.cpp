@@ -93,6 +93,7 @@ MainWindow::MainWindow()
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(open()));
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
 	connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
+
 	connect(ui.actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
@@ -885,6 +886,10 @@ void qReal::MainWindow::closeTab( int index )
 
 void MainWindow::exterminate()
 {
+	//now it will not delete saves in not default directories
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("workingDir", "./save");
+	mModel->setWorkingDir("./save");
 	int tabCount = ui.tabs->count();
 	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
