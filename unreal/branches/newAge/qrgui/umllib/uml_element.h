@@ -13,6 +13,8 @@
 
 // TODO: Actually it shall use AssistApi
 #include "../models/details/graphicalModel.h"
+#include "../models/graphicalModelAssistApi.h"
+#include "../models/logicalModelAssistApi.h"
 
 namespace UML {
 	/** @class Element
@@ -44,10 +46,10 @@ namespace UML {
 		virtual void setRoleValueByName(QString const &roleName, QString const &value);
 
 		virtual void setColorRect(bool bl) = 0;
-	protected:
-		// TODO: Actually it shall use AssistApi for all methods of model
-		qReal::models::details::GraphicalModel* model() const;
 
+		void setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+
+	protected:
 		QPersistentModelIndex mDataIndex;
 
 		qReal::Id mUuid;
@@ -59,5 +61,8 @@ namespace UML {
 		int roleIndexByName(QString const &roleName) const;
 		QString roleValueByName(QString const &roleName) const;
 		ElementImpl* elementImpl;
+
+		qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+		qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	};
 }

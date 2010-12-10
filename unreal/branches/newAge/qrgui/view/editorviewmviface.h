@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QAbstractItemView>
+#include "../models/graphicalModelAssistApi.h"
+#include "../models/logicalModelAssistApi.h"
 
 class QGraphicsItem;
 
@@ -12,6 +14,10 @@ namespace UML {
 
 namespace qReal {
 
+	namespace models {
+		class GraphicalModelAssistApi;
+		class LogicalModelAssistApi;
+	}
 	class EditorView;
 
 	class EditorViewMViface : public QAbstractItemView
@@ -27,6 +33,7 @@ namespace qReal {
 		QRect visualRect(const QModelIndex &index) const;
 		void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 		bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
+		void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
 
 		EditorViewScene *scene() const;
 
@@ -58,6 +65,8 @@ namespace qReal {
 
 		EditorViewScene *mScene;
 		qReal::EditorView *mView;
+		models::GraphicalModelAssistApi *mGraphicalAssistApi;
+		models::LogicalModelAssistApi *mLogicalAssistApi;
 
 
 		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */

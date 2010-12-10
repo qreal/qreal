@@ -6,7 +6,8 @@
 #include <QtCore/QDebug>
 
 using namespace qReal;
-using namespace models::details;
+using namespace models;
+using namespace details;
 using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
@@ -14,14 +15,13 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorMa
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	mModelItems.insert(Id::rootId(), mRootItem);
+	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
 }
 
 void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 {
 	mLogicalModelView.setModel(logicalModel);
 }
-
-
 
 AbstractModelItem *GraphicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
 {
@@ -219,4 +219,19 @@ bool GraphicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, 
 		addElementToModel(parentItem->id(), id, logicalId, name, position);
 		return true;
 	}
+}
+
+qrRepo::GraphicalRepoApi const &GraphicalModel::api() const
+{
+	return mApi;
+}
+
+qrRepo::GraphicalRepoApi &GraphicalModel::mutableApi() const
+{
+	return mApi;
+}
+
+GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
+{
+	return *mGraphicalAssistApi;
 }

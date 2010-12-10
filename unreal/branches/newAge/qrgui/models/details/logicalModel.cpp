@@ -4,7 +4,8 @@
 #include <QtCore/QUuid>
 
 using namespace qReal;
-using namespace models::details;
+using namespace models;
+using namespace details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager)
@@ -12,6 +13,7 @@ LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const 
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	mModelItems.insert(Id::rootId(), mRootItem);
+	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)
@@ -22,14 +24,6 @@ void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel
 AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
 {
 	return new LogicalModelItem(id, static_cast<LogicalModelItem *>(parentItem));
-}
-
-QModelIndex LogicalModel::indexById(Id const &id) const
-{
-	if (mModelItems.keys().contains(id)) {
-		return index(mModelItems.find(id).value());
-	}
-	return QModelIndex();
 }
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
@@ -239,4 +233,19 @@ bool LogicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, in
 		addElementToModel(parentItem->id(), id, logicalId, name, position);
 		return true;
 	}
+}
+
+qrRepo::LogicalRepoApi const &LogicalModel::api() const
+{
+	return mApi;
+}
+
+qrRepo::LogicalRepoApi &LogicalModel::mutableApi() const
+{
+	return mApi;
+}
+
+LogicalModelAssistApi &LogicalModel::logicalModelAssistApi() const
+{
+	return *mLogicalAssistApi;
 }

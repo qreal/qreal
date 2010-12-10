@@ -8,43 +8,48 @@
 #include "modelsImplementation/logicalModelItem.h"
 #include "modelsImplementation/abstractModel.h"
 #include "graphicalModelView.h"
+#include "../logicalModelAssistApi.h"
 
 namespace qReal {
 
-namespace models {
+	namespace models {
+		class LogicalModelAssistApi;
 
-namespace details {
+		namespace details {
 
-class GraphicalModel;
+			class GraphicalModel;
 
-class LogicalModel : public modelsImplementation::AbstractModel
-{
-	Q_OBJECT;
+			class LogicalModel : public modelsImplementation::AbstractModel
+			{
+				Q_OBJECT;
 
-public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager);
+			public:
+				LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager);
 
-	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
-	void updateElements(Id const &logicalId, QString const &name);
-	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-	virtual bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
-	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
-	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+				void connectToGraphicalModel(GraphicalModel * const graphicalModel);
+				void updateElements(Id const &logicalId, QString const &name);
+				virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+				virtual bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
+				void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
+				virtual QVariant data(const QModelIndex &index, int role) const;
+				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+				qrRepo::LogicalRepoApi const &api() const;
+				qrRepo::LogicalRepoApi &mutableApi() const;
+				LogicalModelAssistApi &logicalModelAssistApi() const;
 
-private:
-	GraphicalModelView mGraphicalModelView;
-	qrRepo::LogicalRepoApi &mApi;
-	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
-	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-			modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
-	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
-	QModelIndex indexById(Id const &id) const;
-};
+			private:
+				GraphicalModelView mGraphicalModelView;
+				qrRepo::LogicalRepoApi &mApi;
+				LogicalModelAssistApi *mLogicalAssistApi;
+				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
+				void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
+									   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+				QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
+			};
 
-}
+		}
 
-}
+	}
 
 }

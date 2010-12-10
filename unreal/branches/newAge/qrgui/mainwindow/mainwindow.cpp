@@ -1088,6 +1088,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))

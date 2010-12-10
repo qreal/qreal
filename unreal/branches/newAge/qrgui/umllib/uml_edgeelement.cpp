@@ -248,8 +248,6 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::connectToPort()
 {
-	QAbstractItemModel *graphicalModel = model();
-
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
 
@@ -269,8 +267,8 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	graphicalModel->setData(mDataIndex, (mSrc ? mSrc->uuid() : Id::rootId()).toVariant(), roles::fromRole);
-	graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+	mLogicalAssistApi->setFrom(uuid(), (mSrc ? mSrc->uuid() : Id::rootId()));
+	mGraphicalAssistApi->setFromPort(uuid(), mPortFrom);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
 	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
@@ -285,13 +283,13 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	graphicalModel->setData(mDataIndex, (mDst ? mDst->uuid() : Id::rootId()).toVariant(), roles::toRole);
-	graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
+	mLogicalAssistApi->setTo(uuid(), (mDst ? mDst->uuid() : Id::rootId()));
+	mGraphicalAssistApi->setToPort(uuid(), mPortTo);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	graphicalModel->setData(mDataIndex, pos(), roles::positionRole);
-	graphicalModel->setData(mDataIndex, mLine.toPolygon(), roles::configurationRole);
+	mGraphicalAssistApi->setPosition(uuid(), pos());
+	mGraphicalAssistApi->setConfiguration(uuid(), mLine.toPolygon());
 
 	mMoving = false;
 
@@ -302,13 +300,10 @@ bool EdgeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	models::details::GraphicalModel *itemModel = model();
-	if (!itemModel)
-		return false;
 	QString editor = uuid().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = uuid().diagram();
-	EditorInterface * editorInterface = itemModel->editorManager().getEditorInterface(editor);
+	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().getEditorInterface(editor);
 	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{
@@ -545,18 +540,17 @@ bool EdgeElement::reconnectToNearestPorts(qreal delta)
 {
 	Q_UNUSED(delta);
 	bool reconnected = false;
-	QAbstractItemModel *graphicalModel = model();
 	if (mSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		mGraphicalAssistApi->setFromPort(uuid(), mPortFrom);
 	}
 	if (mDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
+		mGraphicalAssistApi->setToPort(uuid(), mPortTo);
 	}
 
 	return reconnected;
@@ -625,14 +619,13 @@ void EdgeElement::placeEndTo(QPointF const &place)
 
 void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
 	qDebug() << "portId setting: " << portId;
-	QAbstractItemModel *graphicalModel = model();
 	if (node == mSrc) {
 		mPortFrom = portId;
-		graphicalModel->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		mGraphicalAssistApi->setFromPort(uuid(), mPortFrom);
 	}
 	if (node == mDst) {
 		mPortTo = portId;
-		graphicalModel->setData(mDataIndex, mPortTo, roles::toPortRole);
+		mGraphicalAssistApi->setToPort(uuid(), mPortTo);
 	}
 }
 

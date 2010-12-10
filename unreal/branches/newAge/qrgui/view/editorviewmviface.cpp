@@ -128,6 +128,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		elem->setAssistApi(*mGraphicalAssistApi, *mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -308,4 +309,10 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 		if (pair.first == index)
 			mItems.remove(pair);
 	}
+}
+
+void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi)
+{
+	mGraphicalAssistApi = &graphicalAssistApi;
+	mLogicalAssistApi = &logicalAssistApi;
 }

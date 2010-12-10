@@ -8,7 +8,10 @@ HEADERS += \
 	models/details/modelsImplementation/abstractModelItem.h \
 	models/details/modelsImplementation/logicalModelItem.h \
 	models/details/modelsImplementation/abstractView.h \
-	models/models.h
+	models/details/modelsAssistApi.h \
+	models/models.h \
+	models/graphicalModelAssistApi.h \
+	models/logicalModelAssistApi.h
 
 SOURCES += models/details/graphicalModel.cpp \
 	models/details/graphicalModelView.cpp \
@@ -19,4 +22,7 @@ SOURCES += models/details/graphicalModel.cpp \
 	models/details/modelsImplementation/abstractModelItem.cpp \
 	models/details/modelsImplementation/logicalModelItem.cpp \
 	models/details/modelsImplementation/abstractView.cpp \
-	models/models.cpp
+	models/details/modelsAssistApi.cpp \
+	models/models.cpp \
+	models/graphicalModelAssistApi.cpp \
+	models/logicalModelAssistApi.cpp

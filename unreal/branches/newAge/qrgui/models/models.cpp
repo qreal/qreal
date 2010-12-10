@@ -11,6 +11,8 @@ Models::Models(QString const &workingCopy, EditorManager const &editorManager)
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);
+
+	mRepoApi = repoApi;
 }
 
 Models::~Models()
@@ -28,4 +30,14 @@ QAbstractItemModel* Models::graphicalModel() const
 QAbstractItemModel* Models::logicalModel() const
 {
 	return mLogicalModel;
+}
+
+GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
+{
+	return mGraphicalModel->graphicalModelAssistApi();
+}
+
+LogicalModelAssistApi &Models::logicalModelAssistApi() const
+{
+	return mLogicalModel->logicalModelAssistApi();
 }

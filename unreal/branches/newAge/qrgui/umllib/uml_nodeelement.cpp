@@ -71,8 +71,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::setName(QString value)
 {
-	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
-	im->setData(mDataIndex, value, Qt::DisplayRole);
+	mGraphicalAssistApi->setName(uuid(), value);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -146,10 +145,8 @@ void NodeElement::arrangeLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	QAbstractItemModel *itemModel = model();
-	//model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
-	itemModel->setData(mDataIndex, pos(), roles::positionRole);
-	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
+	mGraphicalAssistApi->setPosition(uuid(), pos());
+	mGraphicalAssistApi->setConfiguration(uuid(), QPolygon(tmp.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
@@ -429,10 +426,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *newParent = getNodeAt(newParentInnerPoint);
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		models::details::GraphicalModel *itemModel = model();
 		if (newParent) {
-			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-					mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			mGraphicalAssistApi->changeParent(uuid(), newParent->uuid(),
+					mapToItem(evScene->getElem(newParent->uuid()), mapFromScene(scenePos())));
 
 			newParent->resize(newParent->mContents);
 
@@ -442,7 +438,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+			mGraphicalAssistApi->changeParent(uuid(), evScene->rootItem().data(roles::idRole).value<Id>(), scenePos());
 	}
 
 	mDragState = None;
@@ -512,17 +508,12 @@ bool NodeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	models::details::GraphicalModel *itemModel = model();
-	//model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (!itemModel)
-		return false;
-
 	foreach(QString elementName,
-			itemModel->editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
-		int ne = itemModel->editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
+			mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
+		int ne = mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= itemModel->editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
+					= mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if ((pEdge.first.first == uuid().element())
 					|| ((pEdge.first.second == uuid().element()) && (!pEdge.second.first))) {
@@ -1173,5 +1164,3 @@ void NodeElement::setColorRect(bool value)
 {
 	mSelectionNeeded = value;
 }
-
-

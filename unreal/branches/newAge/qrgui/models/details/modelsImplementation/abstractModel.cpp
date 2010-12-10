@@ -121,3 +121,11 @@ EditorManager const &AbstractModel::editorManager() const
 {
 	return mEditorManager;
 }
+
+QModelIndex AbstractModel::indexById(Id const &id) const
+{
+	if (mModelItems.keys().contains(id)) {
+		return index(mModelItems.find(id).value());
+	}
+	return QModelIndex();
+}
