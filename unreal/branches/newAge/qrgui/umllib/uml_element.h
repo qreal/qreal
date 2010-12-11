@@ -47,7 +47,7 @@ namespace UML {
 
 		virtual void setColorRect(bool bl) = 0;
 
-		void setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+		void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	protected:
 		QPersistentModelIndex mDataIndex;
@@ -58,11 +58,12 @@ namespace UML {
 
 		QList<ElementTitle*> mTitles;
 
-		int roleIndexByName(QString const &roleName) const;
-		QString roleValueByName(QString const &roleName) const;
-		ElementImpl* elementImpl;
+		ElementImpl* mElementImpl;
 
 		qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 		qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
+
+		int roleIndexByName(QString const &roleName) const;
+		QString roleValueByName(QString const &roleName) const;
 	};
 }

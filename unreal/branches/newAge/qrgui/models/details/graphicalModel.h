@@ -22,6 +22,7 @@ namespace qReal {
 
 			public:
 				GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManager const &editorManager);
+				virtual ~GraphicalModel();
 
 				void connectToLogicalModel(LogicalModel * const logicalModel);
 				void updateElements(Id const &logicalId, QString const &name);

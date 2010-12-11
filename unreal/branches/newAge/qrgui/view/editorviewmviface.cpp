@@ -13,10 +13,11 @@ using namespace qReal;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
+	, mScene(scene)
+	, mView(view)
+	, mGraphicalAssistApi(NULL)
+	, mLogicalAssistApi(NULL)
 {
-	mView = view;
-	mScene = scene;
-
 	mScene->mv_iface = this;
 	mScene->view = mView;
 }
@@ -128,7 +129,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
-		elem->setAssistApi(*mGraphicalAssistApi, *mLogicalAssistApi);
+		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;

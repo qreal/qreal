@@ -7,6 +7,9 @@ using namespace UML;
 
 Element::Element()
 	: mMoving(false)
+	, mElementImpl(NULL)
+	, mGraphicalAssistApi(NULL)
+	, mLogicalAssistApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -53,7 +56,6 @@ QString Element::roleValueByName(QString const &roleName) const
 	if (roleIndex < roles::customPropertiesBeginRole)
 	// we'd better check (in generators) that we're binding on an existing field here
 		return "";
-		// Надо бы проверять в генераторе, что мы биндимся на существующее поле, а то будет как в сильверлайте.
 	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
 }
 
@@ -66,8 +68,8 @@ void Element::setRoleValueByName(QString const &roleName, QString const &value)
 	itemModel->setData(mDataIndex, value, roleIndex);
 }
 
-void Element::setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi, qReal::models::LogicalModelAssistApi &logicalAssistApi)
+void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
 {
-	mGraphicalAssistApi = &graphicalAssistApi;
-	mLogicalAssistApi = &logicalAssistApi;
+	mGraphicalAssistApi = graphicalAssistApi;
+	mLogicalAssistApi = logicalAssistApi;
 }

@@ -18,6 +18,12 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorMa
 	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
 }
 
+GraphicalModel::~GraphicalModel()
+{
+	delete mGraphicalAssistApi;
+	// TODO: Cleanup tree
+}
+
 void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 {
 	mLogicalModelView.setModel(logicalModel);
