@@ -31,8 +31,12 @@ namespace UML {
 			virtual bool initPossibleEdges();
 
 			void adjustLink();
-			bool reconnectToNearestPorts(bool updateModel);
+			bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
 			bool shouldReconnect() const;
+			UML::NodeElement *Src() const;
+			UML::NodeElement *Dst() const;
+			bool isSrc(UML::NodeElement const *node) const;
+			bool isDst(UML::NodeElement const *node) const;
 			qreal portIdOn(UML::NodeElement const *node) const;
 			QPointF nextFrom(UML::NodeElement const *node) const;
 			UML::NodeElement* otherSide(UML::NodeElement const *node) const;

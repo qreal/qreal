@@ -102,18 +102,25 @@ void NodeElement::adjustLinks()
 	}
 }
 
-void NodeElement::arrangeLinks()
+void NodeElement::arrangeLinks() {
+	QSet<NodeElement*> toArrange;
+	QSet<NodeElement*> arranged;
+	arrangeLinksRecursively(toArrange, arranged);
+}
+
+void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
 {
-	qDebug() << "reconnecting " << uuid().toString();
 	const qreal indent = 0.1;
 
-	//recursion
-	static QSet<NodeElement*> nodesToUpdate;
-	nodesToUpdate.remove(this);
+	toArrange.remove(this);
 
 	foreach (EdgeElement* edge, mEdgeList) {
-		if (edge->reconnectToNearestPorts(false))
-			nodesToUpdate.insert(edge->otherSide(this));
+		NodeElement* src = edge->Src();
+		NodeElement* dst = edge->Dst();
+		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst && !arranged.contains(dst));
+		NodeElement* other = edge->otherSide(this);
+		if (!arranged.contains(other) && other != 0)
+			toArrange.insert(other);
 	}
 	
 	//make equal space on all linear ports.
@@ -128,7 +135,6 @@ void NodeElement::arrangeLinks()
 		qreal y1 = portLine.y1();
 		foreach (EdgeElement* edge, mEdgeList) {
 			if (portId(edge->portIdOn(this)) == lpId) {
-				qDebug() << "+ line at " << lpId;
 				QPointF next = edge->nextFrom(this);
 				qreal x = next.x();
 				qreal y = next.y();
@@ -150,10 +156,10 @@ void NodeElement::arrangeLinks()
 	}
 
 	//recursive calls
-	while (!nodesToUpdate.isEmpty()) {
-		NodeElement *next = *nodesToUpdate.begin();
-		qDebug() << "recursive call by " << next->uuid().toString();
-		next->arrangeLinks();
+	arranged.insert(this);
+	while (!toArrange.isEmpty()) {
+		NodeElement *next = *toArrange.begin();
+		next->arrangeLinksRecursively(toArrange, arranged);
 	}
 }
 

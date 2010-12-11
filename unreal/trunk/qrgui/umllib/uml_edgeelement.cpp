@@ -523,6 +523,26 @@ bool EdgeElement::shouldReconnect() const
 	return false;
 }
 
+UML::NodeElement *EdgeElement::Src() const
+{
+	return mSrc;
+}
+
+UML::NodeElement *EdgeElement::Dst() const
+{
+	return mDst;
+}
+
+bool EdgeElement::isSrc(UML::NodeElement const *node) const
+{
+	return (mSrc == node);
+}
+
+bool EdgeElement::isDst(UML::NodeElement const *node) const
+{
+	return (mDst == node);
+}
+
 qreal EdgeElement::portIdOn(UML::NodeElement const *node) const
 {
 	if (node == mSrc)
@@ -551,23 +571,21 @@ UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool updateModel)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
 	bool reconnected = false;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
-	if (mSrc) {
+	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		if (updateModel)
-			model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
-	if (mDst) {
+	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		if (updateModel)
-			model->setData(mDataIndex, mPortTo, roles::toPortRole);
+		model->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
 
 	return reconnected;
@@ -635,17 +653,14 @@ void EdgeElement::placeEndTo(QPointF const &place)
 }
 
 void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
-	qDebug() << "portId setting: " << portId;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
 	if (node == mSrc) {
 		mPortFrom = portId;
 		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
-		qDebug() << "   ... to src";
 	}
 	if (node == mDst) {
 		mPortTo = portId;
 		model->setData(mDataIndex, mPortTo, roles::toPortRole);
-		qDebug() << "   ... to dst";
 	}
 
 }
