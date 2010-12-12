@@ -106,6 +106,12 @@ void NodeElement::arrangeLinks() {
 	QSet<NodeElement*> toArrange;
 	QSet<NodeElement*> arranged;
 	arrangeLinksRecursively(toArrange, arranged);
+
+	foreach (QGraphicsItem *child, childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element)
+			element->arrangeLinks();
+	}
 }
 
 void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
@@ -115,8 +121,8 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 	toArrange.remove(this);
 
 	foreach (EdgeElement* edge, mEdgeList) {
-		NodeElement* src = edge->Src();
-		NodeElement* dst = edge->Dst();
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
 		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst && !arranged.contains(dst));
 		NodeElement* other = edge->otherSide(this);
 		if (!arranged.contains(other) && other != 0)

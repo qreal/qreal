@@ -356,6 +356,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragState] = event->pos();
 		updateLongestPart();
 	}
+
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -424,6 +425,12 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	// cleanup after moving/resizing
 	mBeginning = mEnding = NULL;
+
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	} else if (mDst) {
+		mDst->arrangeLinks();
+	} 
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -523,12 +530,12 @@ bool EdgeElement::shouldReconnect() const
 	return false;
 }
 
-UML::NodeElement *EdgeElement::Src() const
+UML::NodeElement *EdgeElement::src() const
 {
 	return mSrc;
 }
 
-UML::NodeElement *EdgeElement::Dst() const
+UML::NodeElement *EdgeElement::dst() const
 {
 	return mDst;
 }

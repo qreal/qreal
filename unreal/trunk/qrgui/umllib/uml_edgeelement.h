@@ -33,8 +33,8 @@ namespace UML {
 			void adjustLink();
 			bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
 			bool shouldReconnect() const;
-			UML::NodeElement *Src() const;
-			UML::NodeElement *Dst() const;
+			UML::NodeElement *src() const;
+			UML::NodeElement *dst() const;
 			bool isSrc(UML::NodeElement const *node) const;
 			bool isDst(UML::NodeElement const *node) const;
 			qreal portIdOn(UML::NodeElement const *node) const;
