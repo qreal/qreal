@@ -75,6 +75,11 @@ void LogicObject::setProperty(const QString &name, const QVariant &value)
 	mProperties.insert(name,value);
 }
 
+QStringList LogicObject::propertyNames() const
+{
+	return mProperties.keys();
+}
+
 QVariant LogicObject::property(const QString &name) const
 {
 	if (mProperties.contains(name)) {

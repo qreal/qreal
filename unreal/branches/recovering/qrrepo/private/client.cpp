@@ -131,7 +131,7 @@ QVariant Client::property( const Id &id, const QString &name ) const
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
 	} else {
-		throw Exception("Client: Requesting property of nonexistent object " + id.toString());
+		throw Exception("Client: Requesting property (" + name + ") of nonexistent object " + id.toString());
 	}
 }
 
@@ -140,7 +140,7 @@ void Client::removeProperty( const Id &id, const QString &name )
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
 	} else {
-		throw Exception("Client: Removing property of nonexistent object " + id.toString());
+		throw Exception("Client: Removing property (" + name + ") of nonexistent object " + id.toString());
 	}
 }
 
@@ -149,13 +149,41 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name);
 	} else {
-		throw Exception("Client: Checking the existence of a property of nonexistent object " + id.toString());
+		throw Exception("Client: Checking the existence of a property (" + name + ") of nonexistent object " + id.toString());
 	}
 }
 
 void Client::replace(const qReal::Id oldId, const qReal::Id newId)
 {
 	LogicObject *object = mObjects[oldId];
+
+	//this code searches for references to current object
+	//and changes them
+	/**
+	foreach(QString propertyName, object->propertyNames()) {
+		QVariant property = object->property(propertyName);
+		qReal::Id idValue = property.value<qReal::Id>();
+		if (idValue.idSize() > 0) {
+			qDebug() << propertyName;
+			qDebug() << property.typeName();
+			changeReferences(idValue, oldId, newId);
+			continue;
+		}
+		qReal::IdList idListValue = property.value<qReal::IdList>();
+		if (idListValue.size() > 0) {
+			qDebug() << propertyName;
+			qDebug() << property.typeName();
+			foreach(qReal::Id target, idListValue)
+				changeReferences(idValue, oldId, newId);
+			continue;
+		}
+	}
+	**/
+
+	//brute force version
+	foreach(LogicObject *lo, mObjects.values())
+		changeReferences(lo->id(), oldId, newId);
+
 	mObjects.remove(oldId);
 	mObjects.insert(newId, object);
 	object->setId(newId);
@@ -167,6 +195,35 @@ void Client::replace(const qReal::Id oldId, const qReal::Id newId)
 	foreach(Id parent, object->parents()) {
 		mObjects[parent]->removeChild(oldId);
 		mObjects[parent]->addChild(newId);
+	}
+}
+
+void Client::changeReferences(const qReal::Id target, const qReal::Id oldId, const qReal::Id newId)
+{
+	if (target.idSize() == 0)
+		return;
+	LogicObject *object = mObjects[target];
+	foreach(QString propertyName, object->propertyNames()) {
+		QVariant property = object->property(propertyName);
+		qReal::Id idValue = property.value<qReal::Id>();
+		if (idValue.idSize() > 0) {
+			if (idValue == oldId) {
+				property.setValue(newId);
+				object->setProperty(propertyName, property);
+			}
+			continue;
+		}
+		qReal::IdList idListValue = property.value<qReal::IdList>();
+		if (idListValue.size() > 0) {
+			if (idListValue.contains(oldId)) {
+				int pos = idListValue.indexOf(oldId);
+				idListValue.removeAt(pos);;
+				idListValue.insert(pos, newId);
+				property.setValue(idListValue);
+				object->setProperty(propertyName, property);
+			}
+			continue;
+		}
 	}
 }
 
@@ -188,8 +245,6 @@ void Client::addChildrenToRootObject()
 
 IdList Client::idsOfAllChildrenOf(Id id) const
 {
-	qDebug() << "ID: " << mObjects[id];
-
 	IdList result;
 	result.append(id);
 	foreach(Id childId,mObjects[id]->children())

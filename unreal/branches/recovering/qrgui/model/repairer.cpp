@@ -58,7 +58,7 @@ void Repairer::repairElements(const Id target)
 			continue;
 		if (!checkId(child)) {
 			Id newId = correctId(child);
-			mApi.replace(child, newId);
+			replace(child, newId);
 			repairElements(newId);
 			continue;
 		}

@@ -31,6 +31,8 @@ namespace qrRepo {
 			qReal::IdList elements() const;
 
 			void replace(qReal::Id const oldId, qReal::Id const newId);
+			void changeReferences(qReal::Id const target,
+					qReal::Id const oldId, qReal::Id const newId);
 
 			void svnUpdate();
 			void svnCommit();

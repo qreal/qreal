@@ -20,6 +20,7 @@ namespace qrRepo {
 			void addChild(const qReal::Id &child);
 			void removeChild(const qReal::Id &child);
 
+			QStringList propertyNames() const;
 			QVariant property(const QString &name) const;
 			void setProperty(const QString &name, const QVariant &value);
 			bool hasProperty(const QString &name) const;
