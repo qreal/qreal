@@ -33,6 +33,7 @@ namespace UML {
 			void adjustLink();
 			bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
 			bool shouldReconnect() const;
+			void arrangeSrcAndDst();
 			UML::NodeElement *src() const;
 			UML::NodeElement *dst() const;
 			bool isSrc(UML::NodeElement const *node) const;

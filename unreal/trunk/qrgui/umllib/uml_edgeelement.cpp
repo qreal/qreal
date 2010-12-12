@@ -297,6 +297,8 @@ void EdgeElement::connectToPort()
 	mMoving = false;
 
 	adjustLink();
+
+	arrangeSrcAndDst();
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -426,11 +428,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// cleanup after moving/resizing
 	mBeginning = mEnding = NULL;
 
-	if (mSrc) {
-		mSrc->arrangeLinks();
-	} else if (mDst) {
-		mDst->arrangeLinks();
-	} 
+	arrangeSrcAndDst();
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -528,6 +526,15 @@ bool EdgeElement::shouldReconnect() const
 			return true;
 	}
 	return false;
+}
+
+void EdgeElement::arrangeSrcAndDst()
+{
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	} else if (mDst) {
+		mDst->arrangeLinks();
+	} 
 }
 
 UML::NodeElement *EdgeElement::src() const
