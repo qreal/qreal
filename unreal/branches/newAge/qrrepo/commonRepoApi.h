@@ -21,6 +21,7 @@ public:
 	virtual void removeProperty(qReal::Id const &id, QString const &propertyName) = 0;
 	virtual bool hasProperty(qReal::Id const &id, QString const &propertyName) const = 0;
 
+	virtual void saveTo(QString const &workingDir) = 0;
 	virtual bool exist(qReal::Id const &id) const = 0;
 	virtual void removeElement(qReal::Id const &id) = 0;
 

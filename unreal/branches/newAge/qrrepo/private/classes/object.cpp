@@ -6,7 +6,14 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-Object::Object(const Id &id, const Id &parent) : mId(id)
+Object::Object(const Id &id, const Id &parent)
+	: mId(id)
+{
+	addParent(parent);
+}
+
+Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
+	: mId(id), mLogicalId(logicalId)
 {
 	addParent(parent);
 }
@@ -101,6 +108,11 @@ void Object::removeProperty(const QString &name)
 Id Object::id() const
 {
 	return mId;
+}
+
+Id Object::logicalId() const
+{
+	return mLogicalId;
 }
 
 QMapIterator<QString, QVariant> Object::propertiesIterator()

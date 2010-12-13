@@ -4,7 +4,7 @@
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"
-//#include "commonRepoApi.h"
+#include "commonRepoApi.h"
 #include "graphicalRepoApi.h"
 #include "logicalRepoApi.h"
 
@@ -22,8 +22,8 @@ namespace qrRepo {
 		void setName(qReal::Id const &id, QString const &name);
 
 		qReal::IdList children(qReal::Id const &id) const;
-		void addChild(qReal::Id const &id, qReal::Id const &child);
-		virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child);
+		virtual void addChild(qReal::Id const &id, qReal::Id const &child);
+		virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId);
 		void removeChild(qReal::Id const &id, qReal::Id const &child);
 		void removeChildren(qReal::Id const &id);
 
@@ -31,6 +31,7 @@ namespace qrRepo {
 
 		qReal::IdList parents(qReal::Id const &id) const;
 		void addParent(qReal::Id const &id, qReal::Id const &parent);
+		void addParent(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId);
 		void removeParent(qReal::Id const &id, qReal::Id const &parent);
 
 		qReal::IdList outgoingLinks(qReal::Id const &id) const;

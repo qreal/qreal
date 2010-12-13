@@ -27,7 +27,7 @@ namespace qrRepo {
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 
 			QString pathToElement(qReal::Id const &id) const;
-			QString createDirectory(qReal::Id const &id) const;
+			QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId) const;
 
 			Object *parseLogicObject(QDomElement const &elem);
 			static void clearDir(QString const &path);

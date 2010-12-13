@@ -14,6 +14,7 @@ namespace qrRepo {
 		public:
 			explicit Object(const qReal::Id &id);
 			Object(const qReal::Id &id, const qReal::Id &parent);
+			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
 			void addParent(const qReal::Id &parent);
 			void removeParent(const qReal::Id &parent);
 			void addChild(const qReal::Id &child);
@@ -25,11 +26,12 @@ namespace qrRepo {
 			bool hasProperty(const QString &name) const;
 			void removeProperty(const QString &name);
 			qReal::Id id() const;
+			qReal::Id logicalId() const;
 			QMapIterator<QString, QVariant> propertiesIterator();
 
 		private:
 			const qReal::Id mId;
-			const qReal::Id mLogicalId;
+			qReal::Id mLogicalId;
 			qReal::IdList mParents;
 			qReal::IdList mChildren;
 			QMap<QString, QVariant> mProperties;

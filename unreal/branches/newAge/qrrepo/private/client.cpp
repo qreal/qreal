@@ -26,7 +26,7 @@ Client::~Client()
 {
 	delete mObjects[Id::rootId()];
 	mObjects.remove(Id::rootId());
-	//serializer.saveToDisk(mObjects.values());
+	serializer.saveToDisk(mObjects.values());
 }
 
 IdList Client::children(Id const &id) const
@@ -64,13 +64,19 @@ void Client::addParent(Id const &id, Id const &parent)
 
 void Client::addChild(const Id &id, const Id &child)
 {
+	addChild(id, child, Id());
+}
+
+
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
+{
 	if (mObjects.contains(id)) {
 		if (!failSafe || !mObjects[id]->children().contains(child))
 			mObjects[id]->addChild(child);
 		if (mObjects.contains(child)) {
 			mObjects[child]->addParent(id);
 		} else {
-			mObjects.insert(child,new Object(child,id));
+			mObjects.insert(child,new Object(child, id, logicalId));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());

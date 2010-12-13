@@ -8,6 +8,7 @@ Models::Models(QString const &workingCopy, EditorManager const &editorManager)
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager);
 	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
+	mRepoApi = repoApi;
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
 	mGraphicalModel->connectToLogicalModel(mLogicalModel);
@@ -32,6 +33,17 @@ QAbstractItemModel* Models::logicalModel() const
 	return mLogicalModel;
 }
 
+void Models::saveTo(QString const &workingDirectory)
+{
+	mRepoApi->saveTo(workingDirectory);
+}
+
+void Models::save()
+{
+	mRepoApi->saveAll();
+	mRepoApi->resetChangedDiagrams();
+}
+
 GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 {
 	return mGraphicalModel->graphicalModelAssistApi();
@@ -40,4 +52,19 @@ GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 LogicalModelAssistApi &Models::logicalModelAssistApi() const
 {
 	return mLogicalModel->logicalModelAssistApi();
+}
+
+qrRepo::RepoControlInterface const *Models::api() const
+{
+	return mRepoApi;
+}
+
+void Models::resetChangedDiagrams()
+{
+	mRepoApi->resetChangedDiagrams();
+}
+
+void Models::resetChangedDiagrams(const IdList &list)
+{
+	mRepoApi->resetChangedDiagrams(list);
 }

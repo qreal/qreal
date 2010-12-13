@@ -70,7 +70,7 @@ void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, models
 
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), logicalId, id);
+	mApi.addChild(parentItem->id(), id, logicalId);
 	mApi.setName(id, name);
 	mApi.setFromPort(id, 0.0);
 	mApi.setToPort(id, 0.0);
@@ -227,6 +227,11 @@ bool GraphicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, 
 	}
 }
 
+void GraphicalModel::saveTo(QString const &workingDirectory)
+{
+	mApi.saveTo(workingDirectory);
+}
+
 qrRepo::GraphicalRepoApi const &GraphicalModel::api() const
 {
 	return mApi;
@@ -294,5 +299,3 @@ QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logi
 	}
 	return indexes;
 }
-
-

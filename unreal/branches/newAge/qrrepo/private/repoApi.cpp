@@ -36,9 +36,10 @@ void RepoApi::addChild(Id const &id, Id const &child)
 }
 
 //TODO: Реализовать
-void RepoApi::addChild(Id const &id, Id const &logicalId, Id const &child)
+void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
-	mClient.addChild(id, child);
+	mClient.addChild(id, child, logicalId);
+	addChangedDiagram(id.diagramId());
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
@@ -130,6 +131,13 @@ void RepoApi::addParent(Id const &id, Id const &parent)
 	mClient.addParent(id, parent);
 	addChangedDiagram(id.diagramId());
 }
+
+void RepoApi::addParent(Id const &id, Id const &parent, Id const &logicalId)
+{
+	mClient.addParent(id, parent);
+	addChangedDiagram(id.diagramId());
+}
+
 
 void RepoApi::removeParent(Id const &id, Id const &parent)
 {

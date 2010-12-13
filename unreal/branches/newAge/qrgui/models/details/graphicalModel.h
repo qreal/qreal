@@ -36,6 +36,7 @@ namespace qReal {
 				GraphicalModelAssistApi &graphicalModelAssistApi() const;
 				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 				QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
+	void saveTo(QString const &workingDirectory);
 
 			private:
 				LogicalModelView mLogicalModelView;

@@ -1321,39 +1321,39 @@ void MainWindow::createDiagram(const QString &idString)
 
 void MainWindow::save()
 {
-	QSettings settings("SPbSU", "QReal");
-	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
+//	QSettings settings("SPbSU", "QReal");
+//	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
 		saveAll();
 		return;
-	}
+//	}
 
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	QPushButton saveButton;
-	QPushButton cancelButton;
-	saveButton.setText("Save");
-	cancelButton.setText("Cancel");
-	QWidget* saveListWidget = createSaveListWidget();
-	vLayout.addWidget(saveListWidget);
+//	QDialog dialog;
+//	QVBoxLayout vLayout;
+//	QHBoxLayout hLayout;
+//	QPushButton saveButton;
+//	QPushButton cancelButton;
+//	saveButton.setText("Save");
+//	cancelButton.setText("Cancel");
+//	QWidget* saveListWidget = createSaveListWidget();
+//	vLayout.addWidget(saveListWidget);
 
-	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
+//	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+//	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
+//	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
 
-	hLayout.addWidget(&saveButton);
-	hLayout.addWidget(&cancelButton);
+//	hLayout.addWidget(&saveButton);
+//	hLayout.addWidget(&cancelButton);
 
-	vLayout.addLayout(&hLayout);
-	dialog.setLayout(&vLayout);
-	saveListWidget->show();
-	dialog.exec();
+//	vLayout.addLayout(&hLayout);
+//	dialog.setLayout(&vLayout);
+//	saveListWidget->show();
+//	dialog.exec();
 }
 
 void MainWindow::saveAll()
 {
-//	mModel->api().saveAll();
-//	mModel->resetChangedDiagrams();
+	mModels->api()->saveAll();
+	mModels->resetChangedDiagrams();
 }
 
 void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
@@ -1364,43 +1364,42 @@ void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
 	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
 	//add choosing of just created diagrams
 
-//	mModel->api().save(toSave);
-//	mModel->api().remove(toRemove);
-//	mModel->resetChangedDiagrams(toSave);
-//	mModel->resetChangedDiagrams(toRemove);
+	mModels->api()->save(toSave);
+	mModels->api()->remove(toRemove);
+	mModels->resetChangedDiagrams(toSave);
+	mModels->resetChangedDiagrams(toRemove);
 }
 
 void MainWindow::saveAs()	//TODO: change
 {
-//	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
-//	if (dirName.isEmpty())
-//		return;
-
-//	mModel->saveTo(dirName);
+	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
+	if (dirName.isEmpty())
+		return;
+	mModels->saveTo(dirName);
 }
 
 QListWidget* MainWindow::createSaveListWidget()
 {
-//	mSaveListChecked.clear();
-//	mSaveListChecked.resize(mModel->api().getOpenedDiagrams().size());
-//	QListWidget *listWidget = new QListWidget();
+	mSaveListChecked.clear();
+	mSaveListChecked.resize(mModels->api()->getOpenedDiagrams().size());
+	QListWidget *listWidget = new QListWidget();
 
-//	int i =0;
-//	foreach(Id id, mModel->api().getOpenedDiagrams()) {
-//		listWidget->addItem(id.diagram());
-//		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
-//			mSaveListChecked[i] = true;
-//			listWidget->item(i)->setCheckState(Qt::Checked);
-//		} else {
-//			listWidget->item(i)->setCheckState(Qt::Unchecked);
-//			mSaveListChecked[i] = false;
-//		}
-//		i++;
-//	}
+	int i =0;
+	foreach(Id id, mModels->api()->getOpenedDiagrams()) {
+		listWidget->addItem(id.diagram());
+		if (mModels->api()->getChangedDiagrams().contains(id.diagramId())) {
+			mSaveListChecked[i] = true;
+			listWidget->item(i)->setCheckState(Qt::Checked);
+		} else {
+			listWidget->item(i)->setCheckState(Qt::Unchecked);
+			mSaveListChecked[i] = false;
+		}
+		i++;
+	}
 
-//	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
-//					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
-//	return listWidget;
+	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
+					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
+	return listWidget;
 	return NULL;
 }
 
@@ -1417,7 +1416,7 @@ void MainWindow::saveListClosed()
 {
 //	IdList toSave;
 //	IdList toRemove;
-//	IdList current = mModel->api().children(Id::rootId());
+//	IdList current = mModels->api()->children(Id::rootId());
 //	IdList opened = mModel->api().getOpenedDiagrams();
 
 //	int i = 0;

@@ -7,25 +7,31 @@
 
 namespace qReal {
 
-	namespace models {
+namespace models {
 
-		class Models
-		{
-		public:
-			explicit Models(QString const &workingCopy, EditorManager const &editorManager);
-			~Models();
+class Models
+{
+public:
+	explicit Models(QString const &workingCopy, EditorManager const &editorManager);
+	~Models();
 
-			QAbstractItemModel* graphicalModel() const;
-			QAbstractItemModel* logicalModel() const;
-			GraphicalModelAssistApi &graphicalModelAssistApi() const;
-			LogicalModelAssistApi &logicalModelAssistApi() const;
+	QAbstractItemModel* graphicalModel() const;
+	QAbstractItemModel* logicalModel() const;
+	void saveTo(QString const &workingDirectory);
+	GraphicalModelAssistApi &graphicalModelAssistApi() const;
+	LogicalModelAssistApi &logicalModelAssistApi() const;
+	qrRepo::RepoControlInterface const *api() const;
+	void resetChangedDiagrams();
+	void resetChangedDiagrams(const IdList &list);
+public slots:
+	void save();
 
-		private:
-			models::details::GraphicalModel *mGraphicalModel;
-			models::details::LogicalModel *mLogicalModel;
-			qrRepo::RepoControlInterface *mRepoApi;
-		};
+private:
+	models::details::GraphicalModel *mGraphicalModel;
+	models::details::LogicalModel *mLogicalModel;
+	qrRepo::RepoControlInterface *mRepoApi;
+};
 
-	}
+}
 
 }

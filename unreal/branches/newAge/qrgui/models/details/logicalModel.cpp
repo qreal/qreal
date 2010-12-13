@@ -241,6 +241,11 @@ bool LogicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, in
 	}
 }
 
+void LogicalModel::saveTo(QString const &workingDirectory)
+{
+	mApi.saveTo(workingDirectory);
+}
+
 qrRepo::LogicalRepoApi const &LogicalModel::api() const
 {
 	return mApi;
@@ -296,5 +301,3 @@ void LogicalModel::removeModelItems(details::modelsImplementation::AbstractModel
 		endRemoveRows();
 	}
 }
-
-

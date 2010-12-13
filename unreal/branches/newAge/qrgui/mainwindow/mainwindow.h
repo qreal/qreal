@@ -127,13 +127,13 @@ namespace qReal {
 
 	private:
 		QCloseEvent *mCloseEvent;
-//		model::Model *mModel;
+		models::Models *mModels;
 		EditorManager mEditorManager;
 		ListenerManager *mListenerManager;
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
-		models::Models *mModels;
+
 
 		QVector<bool> mSaveListChecked;
 		bool mDiagramCreateFlag;

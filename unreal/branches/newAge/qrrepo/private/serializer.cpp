@@ -39,13 +39,14 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
 	foreach (Object *object, objects) {
 		qDebug() << "SAVED: " << object->id().toString();
-		QString filePath = createDirectory(object->id());
+		QString filePath = createDirectory(object->id(), object->logicalId());
 
 		QDomDocument doc;
-		QDomElement root = doc.createElement("object.h");
+		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
-
+		if(object->logicalId() != Id())
+			root.setAttribute("logicalId", object->logicalId().toString());
 		root.appendChild(idListToXml("parents", object->parents(), doc));
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
@@ -295,9 +296,14 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id) const
+QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
 {
 	QString dirName = mWorkingDir+"/tree";
+	if(logicalId == Id()){
+		dirName += "/logical";
+	}else{
+		dirName += "/graphical";
+	}
 	QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
