@@ -59,7 +59,6 @@ namespace qReal {
 		EditorViewScene *mScene;
 		qReal::EditorView *mView;
 
-
 		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 		QSet<IndexElementPair> mItems;
 

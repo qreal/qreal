@@ -109,6 +109,8 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
+	QList<QPair<int, UML::Element*> > queue;
+
 	for (int row = start; row <= end; ++row) {
 		mScene->setEnabled(true);
 
@@ -126,7 +128,22 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		UML::Element* element = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		int pos = queue.size();
+		while ((pos > 0) && (dynamic_cast<UML::EdgeElement*>(queue.at(pos - 1).second)))
+			pos--;
+		queue.insert(pos, QPair<int, UML::Element*>(row, element));
+	}
+
+	for(int i = 0; i < queue.size(); i++)
+	{
+		QPair<int, UML::Element*> pair = queue.at(i);
+		int row = pair.first;
+		UML::Element* elem = pair.second;
+		QPersistentModelIndex current = model()->index(row, 0, parent);
+		Id currentUuid = current.data(roles::idRole).value<Id>();
+
+		qDebug() << currentUuid.toString();
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -273,7 +290,6 @@ EditorViewScene *EditorViewMViface::scene() const
 
 void EditorViewMViface::clearItems()
 {
-
 	QList<QGraphicsItem *> toRemove;
 	foreach (IndexElementPair pair, mItems)
 		if (!pair.second->parentItem())

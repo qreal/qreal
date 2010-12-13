@@ -159,7 +159,7 @@ void Client::replace(const qReal::Id oldId, const qReal::Id newId)
 
 	//this code searches for references to current object
 	//and changes them
-	/**
+/**
 	foreach(QString propertyName, object->propertyNames()) {
 		QVariant property = object->property(propertyName);
 		qReal::Id idValue = property.value<qReal::Id>();
@@ -178,7 +178,8 @@ void Client::replace(const qReal::Id oldId, const qReal::Id newId)
 			continue;
 		}
 	}
-	**/
+**/
+	//it is incorrect because of properties like "links" are not simmetrical
 
 	//brute force version
 	foreach(LogicObject *lo, mObjects.values())
