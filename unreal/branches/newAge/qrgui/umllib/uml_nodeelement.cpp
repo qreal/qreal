@@ -71,7 +71,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::setName(QString value)
 {
-	mGraphicalAssistApi->setName(uuid(), value);
+	mGraphicalAssistApi->setName(id(), value);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -145,8 +145,8 @@ void NodeElement::arrangeLinks()
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	mGraphicalAssistApi->setPosition(uuid(), pos());
-	mGraphicalAssistApi->setConfiguration(uuid(), QPolygon(tmp.toAlignedRect()));
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mGraphicalAssistApi->setConfiguration(id(), QPolygon(tmp.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
@@ -427,8 +427,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 		if (newParent) {
-			mGraphicalAssistApi->changeParent(uuid(), newParent->uuid(),
-					mapToItem(evScene->getElem(newParent->uuid()), mapFromScene(scenePos())));
+			mGraphicalAssistApi->changeParent(id(), newParent->id(),
+					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
 			newParent->resize(newParent->mContents);
 
@@ -438,7 +438,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			mGraphicalAssistApi->changeParent(uuid(), evScene->rootItem().data(roles::idRole).value<Id>(), scenePos());
+			mGraphicalAssistApi->changeParent(id(), evScene->rootItem().data(roles::idRole).value<Id>(), scenePos());
 	}
 
 	mDragState = None;
@@ -509,14 +509,14 @@ bool NodeElement::initPossibleEdges()
 	if (!possibleEdges.isEmpty())
 		return true;
 	foreach(QString elementName,
-			mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
-		int ne = mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
+			mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->elements(id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= mGraphicalAssistApi->editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
+					= mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if ((pEdge.first.first == uuid().element())
-					|| ((pEdge.first.second == uuid().element()) && (!pEdge.second.first))) {
+				if ((pEdge.first.first == id().element())
+					|| ((pEdge.first.second == id().element()) && (!pEdge.second.first))) {
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					possibleEdges.insert(possibleEdge);
 					possibleEdgeTypes.insert(possibleEdge.second);
@@ -602,8 +602,8 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
-		QPointF newpos = mDataIndex.data(roles::positionRole).toPointF();
-		QPolygon newpoly = mDataIndex.data(roles::configurationRole).value<QPolygon>();
+		QPointF newpos = mGraphicalAssistApi->position(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -1146,8 +1146,8 @@ QList<double> NodeElement::borderValues()
 
 PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
 {
-	QString editor = uuid().editor();
-	QString diagram = uuid().diagram();
+	QString editor = id().editor();
+	QString diagram = id().diagram();
 	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
 									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
 	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,

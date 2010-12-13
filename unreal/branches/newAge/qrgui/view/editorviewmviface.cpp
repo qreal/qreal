@@ -117,8 +117,8 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex()))
 			continue;
-		Id currentUuid = current.data(roles::idRole).value<Id>();
-		if (currentUuid == Id::rootId())
+		Id currentId = current.data(roles::idRole).value<Id>();
+		if (currentId == Id::rootId())
 			continue;
 		Id parentUuid;
 		if (parent != rootIndex())
@@ -128,14 +128,14 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
 		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (elem) {
 			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
-			elem->setIndex(current);
+			elem->setId(currentId);
 			if (item(parent) != NULL)
 				elem->setParentItem(item(parent));
 			else {
@@ -161,8 +161,8 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 //			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
 //			model::Model* realModel = dynamic_cast<model::Model*>(model());
-//			if (nodeElem && currentUuid.element() == "Class" && realModel &&
-//				realModel->api().children(currentUuid).empty()) {
+//			if (nodeElem && currentId.element() == "Class" && realModel &&
+//				realModel->api().children(currentId).empty()) {
 //				needToProcessChildren = false;
 //				for (int i = 0; i < 2; i++) {
 //					QString curChildElementType;

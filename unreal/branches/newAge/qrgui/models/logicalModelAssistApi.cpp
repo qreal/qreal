@@ -121,3 +121,19 @@ qReal::Id LogicalModelAssistApi::from(qReal::Id const &elem) const
 {
 	return property(elem, roles::fromRole).value<qReal::Id>();
 }
+
+void LogicalModelAssistApi::setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName)
+{
+	int roleIndex = roleIndexByName(elem, roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
+		return;
+	setProperty(elem, newValue, roleIndex);
+}
+
+QVariant LogicalModelAssistApi::propertyByRoleName(qReal::Id const &elem, QString const &roleName) const
+{
+	int roleIndex = roleIndexByName(elem, roleName);
+	if (roleIndex < roles::customPropertiesBeginRole)
+		return "";
+	return property(elem, roleIndex);
+}

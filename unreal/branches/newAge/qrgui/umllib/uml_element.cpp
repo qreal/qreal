@@ -17,26 +17,25 @@ Element::Element()
 	setCursor(Qt::PointingHandCursor);
 }
 
-void Element::setIndex(QPersistentModelIndex &index)
+void Element::setId(qReal::Id &id)
 {
-	mDataIndex = index;
-	mUuid = mDataIndex.data(roles::idRole).value<Id>();
+	mId = id;
 	update();
 }
 
-Id Element::uuid() const
+Id Element::id() const
 {
-	return mUuid;
-}
-
-void Element::updateData()
-{
-	setToolTip(mDataIndex.data(Qt::ToolTipRole).toString());
+	return mId;
 }
 
 QPersistentModelIndex Element::index() const
 {
-	return mDataIndex;
+	return mGraphicalAssistApi->indexById(id());
+}
+
+void Element::updateData()
+{
+	setToolTip(mGraphicalAssistApi->toolTip(id()));
 }
 
 QList<ContextMenuAction*> Element::contextMenuActions()
@@ -44,28 +43,14 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 	return QList<ContextMenuAction*>();
 }
 
-int Element::roleIndexByName(QString const &roleName) const
+QString Element::property(QString const &roleName) const
 {
-	QStringList properties = mGraphicalAssistApi->editorManager().getPropertyNames(uuid().type());
-	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
+	return mLogicalAssistApi->propertyByRoleName(id(), roleName).toString();
 }
 
-QString Element::roleValueByName(QString const &roleName) const
+void Element::setProperty(QString const &roleName, QString const &value)
 {
-	int roleIndex = roleIndexByName(roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
-	// we'd better check (in generators) that we're binding on an existing field here
-		return "";
-	return mDataIndex.model()->data(mDataIndex, roleIndex).toString();
-}
-
-void Element::setRoleValueByName(QString const &roleName, QString const &value)
-{
-	int roleIndex = roleIndexByName(roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
-		return;
-	QAbstractItemModel *itemModel = const_cast<QAbstractItemModel*>(mDataIndex.model());
-	itemModel->setData(mDataIndex, value, roleIndex);
+	mLogicalAssistApi->setPropertyByRoleName(id(), value, roleName);
 }
 
 void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)

@@ -111,7 +111,7 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 	UML::Element *elem = NULL;
 	while (i < count) {
 		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
-		if (elem && elem->uuid().element().compare(name) == 0) {
+		if (elem && elem->id().element().compare(name) == 0) {
 			break;
 		}
 		i++;
@@ -180,7 +180,7 @@ void VisualDebugger::doStep(Id id) {
 
 	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 	if (elem) {
-		if (elem->uuid().element().compare("Action") == 0) {
+		if (elem->id().element().compare("Action") == 0) {
 			processAction();
 		}
 	}

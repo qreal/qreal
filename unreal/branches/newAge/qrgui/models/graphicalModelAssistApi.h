@@ -36,9 +36,12 @@ namespace qReal {
 			void setName(qReal::Id const &elem, QString const &newValue);
 			QString name(qReal::Id const &elem) const;
 
+			void setToolTip(qReal::Id const &elem, QString const &newValue);
+			QString toolTip(qReal::Id const &elem) const;
+
 		private:
-			GraphicalModelAssistApi(GraphicalModelAssistApi const &);  // Copying is forbidden
-			GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &); // Assignment is forbidden also
+			GraphicalModelAssistApi(GraphicalModelAssistApi const &);
+			GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
 
 			details::GraphicalModel &mGraphicalModel;
 		};

@@ -99,7 +99,7 @@ UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-			if (elem->uuid() == uuid) {
+			if (elem->id() == uuid) {
 				return elem;
 			}
 		}
@@ -190,9 +190,9 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	foreach(UML::PossibleEdge pEdge, edge->getPossibleEdges())
 	{
 		QString target;
-		if (pEdge.first.first.element() == node->uuid().element())
+		if (pEdge.first.first.element() == node->id().element())
 			target = pEdge.first.second.element();
-		else if ((pEdge.first.second.element() == node->uuid().element()) && (!pEdge.second.first))
+		else if ((pEdge.first.second.element() == node->id().element()) && (!pEdge.second.first))
 			target = pEdge.first.first.element();
 		else continue;
 
@@ -200,7 +200,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->uuid().editor()+"/"+node->uuid().diagram()+"/"+target);
+		menuSignalMapper->setMapping(element, "qrm:/"+node->id().editor()+"/"+node->id().diagram()+"/"+target);
 	}
 
 	mCreatePoint = scenePos;
@@ -292,7 +292,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 		delete e;
 
 	if( newParent ){
-		if (!canBeContainedBy(newParent->uuid(), id)){
+		if (!canBeContainedBy(newParent->id(), id)){
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
 		}
@@ -492,7 +492,7 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 
 		connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
 				Qt::UniqueConnection);
-		mActionSignalMapper->setMapping(action, action->text() + "###" + e->uuid().toString());
+		mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 	}
 	menu.addSeparator();
 
@@ -526,9 +526,9 @@ void EditorViewScene::getLinkByGesture(UML::NodeElement * parent, const UML::Nod
 	QList<QString> allLinks;
 	foreach (UML::PossibleEdge possibleEdge, edges)
 	{
-		if (possibleEdge.first.second.editor() == child.uuid().editor()
-			&& possibleEdge.first.second.diagram() == child.uuid().diagram()
-			&& possibleEdge.first.second.element() == child.uuid().element())
+		if (possibleEdge.first.second.editor() == child.id().editor()
+			&& possibleEdge.first.second.diagram() == child.id().diagram()
+			&& possibleEdge.first.second.element() == child.id().element())
 			allLinks.push_back(possibleEdge.second.second.toString());
 	}
 	if (!allLinks.empty())
@@ -592,12 +592,12 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	UML::Element *parent;
 	parent = getElemByModelIndex(element->index().parent());
 	if (parent) {
-		if (!canBeContainedBy(parent->uuid(), element->uuid())){
+		if (!canBeContainedBy(parent->id(), element->id())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				UML::Element * elem = dynamic_cast < UML::Element * >(item);
-				if (elem && elem->uuid() == element->uuid()) {
+				if (elem && elem->id() == element->id()) {
 					QModelIndex ind = mv_iface->rootIndex();
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
 					if (prevParent)

@@ -25,3 +25,14 @@ QVariant ModelsAssistApi::property(qReal::Id const &elem, int const role) const
 {
 	return mModel.data(mModel.indexById(elem), role);
 }
+
+int ModelsAssistApi::roleIndexByName(qReal::Id const &elem, QString const &roleName) const
+{
+	QStringList properties = editorManager().getPropertyNames(elem.type());
+	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
+}
+
+QModelIndex ModelsAssistApi::indexById(Id const &id) const
+{
+	return mModel.indexById(id);
+}

@@ -58,7 +58,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		field = "repo->index().data(Qt::DisplayRole).toString()";
 	else
 		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
-		field = "repo->roleValueByName(\"" + mTextBinded + "\")";
+		field = "repo->property(\"" + mTextBinded + "\")";
 	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
 		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + "));\n";
 }

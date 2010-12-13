@@ -88,3 +88,13 @@ QString GraphicalModelAssistApi::name(qReal::Id const &elem) const
 {
 	return property(elem, Qt::DisplayRole).value<QString>();
 }
+
+void GraphicalModelAssistApi::setToolTip(qReal::Id const &elem, QString const &newValue)
+{
+	setProperty(elem, QVariant(newValue), Qt::ToolTipRole);
+}
+
+QString GraphicalModelAssistApi::toolTip(qReal::Id const &elem) const
+{
+	return property(elem, Qt::ToolTipRole).value<QString>();
+}
