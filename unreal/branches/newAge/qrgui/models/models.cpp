@@ -38,12 +38,6 @@ void Models::saveTo(QString const &workingDirectory)
 	mRepoApi->saveTo(workingDirectory);
 }
 
-void Models::save()
-{
-	mRepoApi->saveAll();
-	mRepoApi->resetChangedDiagrams();
-}
-
 GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 {
 	return mGraphicalModel->graphicalModelAssistApi();

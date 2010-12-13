@@ -23,8 +23,6 @@ public:
 	qrRepo::RepoControlInterface const *api() const;
 	void resetChangedDiagrams();
 	void resetChangedDiagrams(const IdList &list);
-public slots:
-	void save();
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;
