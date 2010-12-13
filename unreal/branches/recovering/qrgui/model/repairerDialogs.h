@@ -27,6 +27,8 @@ class RepairerDialog : public QDialog {
 	private:
 		qReal::Repairer* mRepairer;
 
+		QString mSavePath;
+
 		QGridLayout *layout;
 		QLabel* mCommonText;
 		QPushButton* mRunButton;
@@ -54,10 +56,17 @@ class RepairerDialog : public QDialog {
 		QGridLayout* mAutorepairLayout;
 		QGridLayout* mGenerateEditorLayout;
 
+		void connectSwitchers();
+		void disconnectSwitchers();
+
 	private slots:
 		void run();
 		void openEditorXML();
 		bool checkEditorPath();
+
+		void switchPatchSave();
+		void switchAutorepair();
+		void switchGenerateEditor();
 };
 
 class PatchSaveDialog : public QWidget {

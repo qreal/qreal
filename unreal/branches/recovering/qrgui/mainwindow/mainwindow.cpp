@@ -385,6 +385,11 @@ void MainWindow::open()
 	if (dirName.isEmpty())
 		return;
 
+	open(dirName);
+}
+
+void MainWindow::open(QString const dirName)
+{
 	mModel->open(dirName);
 }
 
@@ -653,6 +658,7 @@ void MainWindow::generateEditorFromXML(QString fileName)
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
+	exterminate();
 	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
 	parser.parseFile(fileName);
 	mModel->reinit();
@@ -805,7 +811,6 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
 				foreach (Id const diagram, mEditorManager.diagrams(Id(normalizeDirName))) {
 					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
-
 					foreach (Id const element, mEditorManager.elements(diagram))
 						ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
 				}
@@ -819,7 +824,6 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	progress->setValue(100);
 	progress->close();
 	delete progress;
-
 }
 
 void MainWindow::parseEditorXML()

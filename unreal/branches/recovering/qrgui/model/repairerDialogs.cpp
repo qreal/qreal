@@ -3,6 +3,7 @@
 RepairerDialog::RepairerDialog(qReal::Repairer *repairer, QString const savePath)
 {
 	mRepairer = repairer;
+	mSavePath = savePath;
 
 	layout = new QGridLayout();
 
@@ -60,9 +61,8 @@ RepairerDialog::RepairerDialog(qReal::Repairer *repairer, QString const savePath
 	connect(mRunButton, SIGNAL(clicked()),this,SLOT(run()));
 	connect(mGenerateEditorPathBrowse, SIGNAL(clicked()),this,SLOT(openEditorXML()));
 	connect(mGenerateEditorPath, SIGNAL(editingFinished()), this, SLOT(checkEditorPath()));
-	connect(mPatchSaveSwitcher, SIGNAL(toggled(bool)),mPatchSaveDialog,SLOT(setVisible(bool)));
-	connect(mAutorepairSwitcher, SIGNAL(toggled(bool)),mAutorepairDialog,SLOT(setVisible(bool)));
-	connect(mGenerateEditorSwitcher, SIGNAL(toggled(bool)),mGenerateEditorDialog,SLOT(setVisible(bool)));
+
+	connectSwitchers();
 
 	int width = this->width() + 20;
 	setFixedSize(width,heightForWidth(width));
@@ -77,23 +77,19 @@ RepairerDialog::~RepairerDialog()
 
 void RepairerDialog::run()
 {
-	bool executed = false;
 	mGenerateEditorPathError->hide();
 	if (mPatchSaveSwitcher->checkState() == Qt::Checked) {
-		executed = true;
+		hide();
 		mPatchSaveDialog->run();
-	}
-	if (mAutorepairSwitcher->checkState() == Qt::Checked) {
-		executed = true;
+	} else if (mAutorepairSwitcher->checkState() == Qt::Checked) {
+		hide();
 		mRepairer->repairElements(qReal::Id::getRootId());
+	} else if ((mGenerateEditorSwitcher->checkState() == Qt::Checked) && (checkEditorPath())) {
+		hide();
+		mRepairer->getMainWindow()->generateEditorFromXML(mGenerateEditorPath->text());
+		mRepairer->getMainWindow()->open(mSavePath);
 	}
-	QString editorPath = mGenerateEditorPath->text();
-	if ((mGenerateEditorSwitcher->checkState() == Qt::Checked) && (checkEditorPath())) {
-		executed = true;
-		mRepairer->getMainWindow()->generateEditorFromXML(editorPath);
-	}
-	if (executed)
-		close();
+	close();
 }
 
 void RepairerDialog::openEditorXML()
@@ -114,6 +110,61 @@ bool RepairerDialog::checkEditorPath()
 	return true;
 }
 
+void RepairerDialog::switchPatchSave()
+{
+	disconnectSwitchers();
+	if (mPatchSaveSwitcher->checkState() == Qt::Checked) {
+		mAutorepairSwitcher->setCheckState(Qt::Unchecked);
+		mGenerateEditorSwitcher->setCheckState(Qt::Unchecked);
+		mPatchSaveDialog->setVisible(true);
+		mAutorepairDialog->setVisible(false);
+		mGenerateEditorDialog->setVisible(false);
+	} else
+		mPatchSaveSwitcher->setCheckState(Qt::Checked);
+	connectSwitchers();
+}
+
+void RepairerDialog::switchAutorepair()
+{
+	disconnectSwitchers();
+	if (mAutorepairSwitcher->checkState() == Qt::Checked) {
+		mPatchSaveSwitcher->setCheckState(Qt::Unchecked);
+		mGenerateEditorSwitcher->setCheckState(Qt::Unchecked);
+		mPatchSaveDialog->setVisible(false);
+		mAutorepairDialog->setVisible(true);
+		mGenerateEditorDialog->setVisible(false);
+	} else
+		mAutorepairSwitcher->setCheckState(Qt::Checked);
+	connectSwitchers();
+}
+
+void RepairerDialog::switchGenerateEditor()
+{
+	disconnectSwitchers();
+	if (mGenerateEditorSwitcher->checkState() == Qt::Checked) {
+		mPatchSaveSwitcher->setCheckState(Qt::Unchecked);
+		mAutorepairSwitcher->setCheckState(Qt::Unchecked);
+		mPatchSaveDialog->setVisible(false);
+		mAutorepairDialog->setVisible(false);
+		mGenerateEditorDialog->setVisible(true);
+	} else
+		mGenerateEditorSwitcher->setCheckState(Qt::Checked);
+	connectSwitchers();
+}
+
+void RepairerDialog::connectSwitchers()
+{
+	connect(mPatchSaveSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchPatchSave()));
+	connect(mAutorepairSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchAutorepair()));
+	connect(mGenerateEditorSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchGenerateEditor()));
+}
+
+void RepairerDialog::disconnectSwitchers()
+{
+	disconnect(mPatchSaveSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchPatchSave()));
+	disconnect(mAutorepairSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchAutorepair()));
+	disconnect(mGenerateEditorSwitcher, SIGNAL(toggled(bool)), this, SLOT(switchGenerateEditor()));
+}
 
 /**		PatchSaveDialog		**/
 

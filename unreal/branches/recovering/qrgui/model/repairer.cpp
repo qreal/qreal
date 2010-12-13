@@ -4,7 +4,7 @@
 
 using namespace qReal;
 
-Repairer::Repairer(qrRepo::RepoApi &api, const EditorManager &editorManager)
+Repairer::Repairer(qrRepo::RepoApi &api, EditorManager const &editorManager)
 	:
 	mApi(api),
 	mEditorManager(editorManager)
@@ -43,6 +43,8 @@ bool Repairer::checkIds(Id const target)
 
 void Repairer::repair()
 {
+	if (inProgress)
+		return;
 	inProgress = true;
 	mRepairerDialog = new RepairerDialog(this, lastOpenedSave);
 	mRepairerDialog->show();

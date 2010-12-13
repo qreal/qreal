@@ -143,8 +143,6 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		Id currentUuid = current.data(roles::idRole).value<Id>();
 
-		qDebug() << currentUuid.toString();
-
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (elem) {

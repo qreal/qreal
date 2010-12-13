@@ -51,6 +51,7 @@ namespace qReal {
 		void checkoutDialogOk();
 		void checkoutDialogCancel();
 		void open();
+		void open(QString const dirName);
 
 		void save();
 		void saveAs();
