@@ -40,6 +40,7 @@ namespace UML {
 			bool isDst(UML::NodeElement const *node) const;
 			qreal portIdOn(UML::NodeElement const *node) const;
 			QPointF nextFrom(UML::NodeElement const *node) const;
+			QPointF connectionPoint(UML::NodeElement const *node) const;
 			UML::NodeElement* otherSide(UML::NodeElement const *node) const;
 			void removeLink(UML::NodeElement const *from);
 

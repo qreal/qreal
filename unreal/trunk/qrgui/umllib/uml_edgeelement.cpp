@@ -576,6 +576,16 @@ QPointF EdgeElement::nextFrom(UML::NodeElement const *node) const
 
 }
 
+QPointF EdgeElement::connectionPoint(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mapToItem(mSrc, mLine[0]);
+	if (node == mDst)
+		return mapToItem(mDst, mLine[mLine.count() - 1]);
+	return QPointF();
+
+}
+
 UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
 {
 	if (node == mSrc)
