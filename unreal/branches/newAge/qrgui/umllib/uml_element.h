@@ -30,8 +30,8 @@ namespace UML {
 
 		virtual void updateData();
 
-		virtual QPersistentModelIndex index() const;
 		virtual qReal::Id id() const;
+		virtual QString name() const;
 
 		virtual void connectToPort() { }
 		virtual QList<ContextMenuAction*> contextMenuActions();

@@ -28,9 +28,9 @@ Id Element::id() const
 	return mId;
 }
 
-QPersistentModelIndex Element::index() const
+QString Element::name() const
 {
-	return mGraphicalAssistApi->indexById(id());
+	return mGraphicalAssistApi->name(id());
 }
 
 void Element::updateData()

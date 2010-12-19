@@ -34,8 +34,11 @@ namespace qReal {
 		void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 		bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 		void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
+		Id rootId();
 
 		EditorViewScene *scene() const;
+		models::GraphicalModelAssistApi *graphicalAssistApi() const;
+		models::LogicalModelAssistApi *logicalAssistApi() const;
 
 	public slots:
 		void reset();

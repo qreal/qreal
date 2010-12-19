@@ -36,3 +36,14 @@ QModelIndex ModelsAssistApi::indexById(Id const &id) const
 {
 	return mModel.indexById(id);
 }
+
+Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
+{
+	return mModel.idByIndex(index);
+}
+
+bool ModelsAssistApi::dropMimeData(QMimeData const *data, Qt::DropAction action, qReal::Id const &parent)
+{
+	QModelIndex parentIndex = indexById(parent);
+	return mModel.dropMimeData(data, action, mModel.rowCount(parentIndex), mModel.columnCount(parentIndex), parentIndex);
+}

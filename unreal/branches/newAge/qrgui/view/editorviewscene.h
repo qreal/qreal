@@ -13,9 +13,6 @@ namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
 	class MainWindow;
-//	namespace model {
-//		class Model;
-//	}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -34,7 +31,7 @@ public:
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual UML::Element *getElem(qReal::Id const &uuid);
+	virtual UML::Element *getElem(qReal::Id const &id);
 	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
 
 	virtual QPersistentModelIndex rootItem();
@@ -98,9 +95,6 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-
-	// TODO: Actually it shall use AssistApi
-	qReal::models::details::GraphicalModel* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;

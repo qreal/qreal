@@ -109,6 +109,11 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
+Id EditorViewMViface::rootId()
+{
+	return mGraphicalAssistApi->idByIndex(rootIndex());
+}
+
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
@@ -274,6 +279,16 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 EditorViewScene *EditorViewMViface::scene() const
 {
 	return mScene;
+}
+
+models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
+{
+	return mGraphicalAssistApi;
+}
+
+models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
+{
+	return mLogicalAssistApi;
 }
 
 void EditorViewMViface::clearItems()

@@ -45,7 +45,7 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!model())
+	if (!mv_iface || !mv_iface->graphicalAssistApi())
 		return;
 	qReal::Id diagram; // = model()->getRootDiagram();
 	if (diagram == Id())
@@ -90,16 +90,15 @@ void EditorViewScene::clearScene()
 			removeItem(item);
 }
 
-UML::Element * EditorViewScene::getElem(qReal::Id const &uuid)
+UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 {
-	if (uuid == Id::rootId())
+	if (id == Id::rootId())
 		return NULL;
 
-	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-			if (elem->id() == uuid) {
+			if (elem->id() == id) {
 				return elem;
 			}
 		}
@@ -114,7 +113,7 @@ UML::Element * EditorViewScene::getElemByModelIndex(const QModelIndex &ind)
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-			if (elem->index() == ind)
+			if (elem->id() == ind.data(roles::idRole).value<Id>())
 				return elem;
 		}
 	}
@@ -288,10 +287,11 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	if (dynamic_cast<UML::NodeElement*>(e))
 		newParent = getElemAt(scenePos);
 
-	if (e)
+	if (e) {
 		delete e;
+	}
 
-	if( newParent ){
+	if(newParent){
 		if (!canBeContainedBy(newParent->id(), id)){
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
@@ -316,10 +316,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	QMimeData *newMimeData = new QMimeData;
 	newMimeData->setData("application/x-real-uml-data", newItemData);
-	QModelIndex parentIndex = newParent ? QModelIndex(newParent->index()) : mv_iface->rootIndex();
-	mv_iface->model()->dropMimeData(newMimeData, Qt::CopyAction,
-									mv_iface->model()->rowCount(parentIndex), 0, parentIndex);
-
+	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
+	mv_iface->graphicalAssistApi()->dropMimeData(newMimeData, Qt::CopyAction, parentId);
 	emit elementCreated(id);
 
 	delete newMimeData;
@@ -590,7 +588,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (!element)
 		return;
 	UML::Element *parent;
-	parent = getElemByModelIndex(element->index().parent());
+	parent = dynamic_cast < UML::Element *>(getElem(element->id())->parent());
 	if (parent) {
 		if (!canBeContainedBy(parent->id(), element->id())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
@@ -598,12 +596,13 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				UML::Element * elem = dynamic_cast < UML::Element * >(item);
 				if (elem && elem->id() == element->id()) {
-					QModelIndex ind = mv_iface->rootIndex();
+					qReal::Id id = qReal::Id::rootId();
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
 					if (prevParent)
-						ind = prevParent->index();
-					if (model())
-						model()->changeParent(element->index(), ind, mPrevPosition);
+						id = prevParent->id();
+					if (mv_iface && mv_iface->graphicalAssistApi()) {
+						mv_iface->graphicalAssistApi()->changeParent(element->id(), id, mPrevPosition);
+					}
 				}
 			}
 		}
@@ -739,11 +738,6 @@ void EditorViewScene::deleteUsageActionTriggered()
 //	Id source = connection[0].value<Id>();
 //	Id destination = connection[1].value<Id>();
 //	model()->assistApi().deleteUsage(source, destination);
-}
-
-qReal::models::details::GraphicalModel *EditorViewScene::model() const
-{
-	return dynamic_cast<qReal::models::details::GraphicalModel *>(mv_iface->model());
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

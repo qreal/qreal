@@ -23,7 +23,10 @@ namespace qReal {
 				virtual qReal::Id createElement(qReal::Id const &parent, qReal::Id const &type) = 0;
 				virtual qReal::IdList children(qReal::Id const &element) const = 0;
 				virtual void changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position = QPointF()) = 0;
+
+				bool dropMimeData(QMimeData const *data, Qt::DropAction action, qReal::Id const &parent);
 				QModelIndex indexById(Id const &id) const;
+				Id idByIndex(QModelIndex const &index) const;
 
 			protected:
 				void setProperty(qReal::Id const &elem, QVariant const &newValue, int const role);

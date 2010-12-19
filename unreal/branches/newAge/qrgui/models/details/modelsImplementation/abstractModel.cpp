@@ -129,3 +129,9 @@ QModelIndex AbstractModel::indexById(Id const &id) const
 	}
 	return QModelIndex();
 }
+
+Id AbstractModel::idByIndex(QModelIndex const &index) const
+{
+	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
+	return mModelItems.key(item);
+}

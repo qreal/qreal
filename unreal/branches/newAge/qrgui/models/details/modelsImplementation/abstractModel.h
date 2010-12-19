@@ -37,7 +37,9 @@ namespace qReal {
 					//void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
 					//		details::AbstractModelItem *item, QString const &name, QPointF const &position);
 					EditorManager const &editorManager() const;
+
 					QModelIndex indexById(Id const &id) const;
+					Id idByIndex(QModelIndex const &index) const;
 
 				protected:
 					EditorManager const &mEditorManager;

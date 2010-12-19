@@ -55,7 +55,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 	}
 	QString field;
 	if (mTextBinded == "name")
-		field = "repo->index().data(Qt::DisplayRole).toString()";
+		field = "repo->name()";
 	else
 		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
 		field = "repo->property(\"" + mTextBinded + "\")";

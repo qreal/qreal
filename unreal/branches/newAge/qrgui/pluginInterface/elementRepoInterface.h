@@ -13,6 +13,6 @@ namespace UML {
 		public:
 			virtual QString property(QString const &roleName) const = 0;
 			virtual qReal::Id id() const = 0;
-			virtual QPersistentModelIndex index() const = 0;
+			virtual QString name() const = 0;
 	};
 }
