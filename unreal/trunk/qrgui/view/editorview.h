@@ -34,6 +34,7 @@ namespace qReal {
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
+		virtual void mouseReleaseEvent(QMouseEvent *event);
 		virtual void scrollContentsBy(int dx, int dy);
 
 	private:
