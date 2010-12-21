@@ -7,14 +7,15 @@
 #include <QMessageBox>
 
 #include "propertyeditorproxymodel.h"
+#include "../models/models.h"
 
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 
 using namespace qReal;
 
-VisualDebugger::VisualDebugger(/*model::Model *model*/) {
-//	mModel = model;
+VisualDebugger::VisualDebugger(models::Models *models) {
+	mModels = models;
 	mEffect = new QGraphicsColorizeEffect();
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
@@ -68,7 +69,8 @@ VisualDebugger::ErrorType VisualDebugger::checkEditor() {
 		error(VisualDebugger::someDiagramIsRunning);
 		return VisualDebugger::someDiagramIsRunning;
 	}
-	QString editorName = mEditor->mvIface()->scene()->rootItem().data().toString();
+	Id idRootItem = mEditor->mvIface()->scene()->rootItemId();
+	QString editorName = mModels->graphicalModelAssistApi().name(idRootItem);
 	if (editorName.compare("(Block Diagram)") != 0) {
 		error(VisualDebugger::wrongEditor);
 		return VisualDebugger::wrongEditor;

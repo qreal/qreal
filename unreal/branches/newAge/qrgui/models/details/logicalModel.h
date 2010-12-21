@@ -30,7 +30,6 @@ namespace qReal {
 				void connectToGraphicalModel(GraphicalModel * const graphicalModel);
 				void updateElements(Id const &logicalId, QString const &name);
 				virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-				virtual bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 				void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
 				virtual QVariant data(const QModelIndex &index, int role) const;
 				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
@@ -38,8 +37,9 @@ namespace qReal {
 				qrRepo::LogicalRepoApi const &api() const;
 				qrRepo::LogicalRepoApi &mutableApi() const;
 				LogicalModelAssistApi &logicalModelAssistApi() const;
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-	void saveTo(QString const &workingDirectory);
+				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+				void saveTo(QString const &workingDirectory);
+				virtual ModelsAssistApi* modelAssistApi() const;
 
 		private:
 				GraphicalModelView mGraphicalModelView;

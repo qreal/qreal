@@ -15,7 +15,7 @@ qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
 	return mLogicalModel.api();
 }
 
-Id LogicalModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 {
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
@@ -26,33 +26,38 @@ Id LogicalModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const
 	return newElementId;
 }
 
-IdList LogicalModelAssistApi::children(qReal::Id const &element) const
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+{
+	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+}
+
+IdList LogicalModelAssistApi::children(Id const &element) const
 {
 	return mLogicalModel.api().children(element);
 }
 
-void LogicalModelAssistApi::changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position)
+void LogicalModelAssistApi::changeParent(Id const &element, Id const &parent, QPointF const &position)
 {
 	Q_UNUSED(position);
 	mLogicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), QPointF());
 }
 
-void LogicalModelAssistApi::connect(qReal::Id const &source, qReal::Id const &destination)
+void LogicalModelAssistApi::connect(Id const &source, Id const &destination)
 {
 	mLogicalModel.mutableApi().connect(source, destination);
 }
 
-void LogicalModelAssistApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
+void LogicalModelAssistApi::disconnect(Id const &source, Id const &destination)
 {
 	mLogicalModel.mutableApi().disconnect(source, destination);
 }
 
-void LogicalModelAssistApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
+void LogicalModelAssistApi::addUsage(Id const &source, Id const &destination)
 {
 	mLogicalModel.mutableApi().addUsage(source, destination);
 }
 
-void LogicalModelAssistApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
+void LogicalModelAssistApi::deleteUsage(Id const &source, Id const &destination)
 {
 	mLogicalModel.mutableApi().deleteUsage(source, destination);
 }
@@ -102,27 +107,27 @@ IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 	return diagramsFromList(editorManager().getUsedTypes(element.type()));
 }
 
-void LogicalModelAssistApi::setTo(qReal::Id const &elem, qReal::Id const &newValue)
+void LogicalModelAssistApi::setTo(Id const &elem, Id const &newValue)
 {
 	setProperty(elem, newValue.toVariant(), roles::toRole);
 }
 
-qReal::Id LogicalModelAssistApi::to(qReal::Id const &elem) const
+Id LogicalModelAssistApi::to(Id const &elem) const
 {
-	return property(elem, roles::toRole).value<qReal::Id>();
+	return property(elem, roles::toRole).value<Id>();
 }
 
-void LogicalModelAssistApi::setFrom(qReal::Id const &elem, qReal::Id const &newValue)
+void LogicalModelAssistApi::setFrom(Id const &elem, Id const &newValue)
 {
 	setProperty(elem, newValue.toVariant(), roles::fromRole);
 }
 
-qReal::Id LogicalModelAssistApi::from(qReal::Id const &elem) const
+Id LogicalModelAssistApi::from(Id const &elem) const
 {
-	return property(elem, roles::fromRole).value<qReal::Id>();
+	return property(elem, roles::fromRole).value<Id>();
 }
 
-void LogicalModelAssistApi::setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName)
+void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
 {
 	int roleIndex = roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
@@ -130,7 +135,7 @@ void LogicalModelAssistApi::setPropertyByRoleName(qReal::Id const &elem, QVarian
 	setProperty(elem, newValue, roleIndex);
 }
 
-QVariant LogicalModelAssistApi::propertyByRoleName(qReal::Id const &elem, QString const &roleName) const
+QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const &roleName) const
 {
 	int roleIndex = roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)

@@ -31,6 +31,7 @@ namespace UML {
 		virtual void updateData();
 
 		virtual qReal::Id id() const;
+		virtual qReal::Id logicalId() const;
 		virtual QString name() const;
 
 		virtual void connectToPort() { }

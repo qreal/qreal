@@ -35,7 +35,7 @@ void RepoApi::addChild(Id const &id, Id const &child)
 	addChangedDiagram(id.diagramId());
 }
 
-//TODO: Реализовать
+//TODO: реализовать
 void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
 {
 	mClient.addChild(id, child, logicalId);
@@ -412,16 +412,25 @@ Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 		return to(linkId);
 }
 
-IdList RepoApi::elements(Id const &type) const
+IdList RepoApi::logicalElements(Id const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);  // Применимо только к типам
+	Q_ASSERT(type.idSize() == 3);
 
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		 // Так должно быть
-		// if (id.type() == type)
-		// Так есть
-		if (id.element() == type.element())
+		if (id.element() == type.element() && mClient.isLogicalId(id))
+			result.append(id);
+	}
+	return result;
+}
+
+IdList RepoApi::graphicalElements(Id const &type) const
+{
+	Q_ASSERT(type.idSize() == 3);
+
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (id.element() == type.element() && !mClient.isLogicalId(id))
 			result.append(id);
 	}
 	return result;

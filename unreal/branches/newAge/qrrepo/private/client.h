@@ -30,6 +30,7 @@ namespace qrRepo {
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
 
 			qReal::IdList elements() const;
+			bool isLogicalId(qReal::Id const &elem) const;
 
 			void svnUpdate();
 			void svnCommit();

@@ -32,9 +32,8 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual UML::Element *getElem(qReal::Id const &id);
-	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
 
-	virtual QPersistentModelIndex rootItem();
+	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);

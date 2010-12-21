@@ -1,7 +1,9 @@
 #pragma once
 #include <QtCore/QVariant>
 #include <QtCore/QPointF>
-#include "modelsImplementation/abstractModel.h"
+#include <QtCore/QModelIndex>
+#include <QtCore/QUuid>
+#include "../../kernel/ids.h"
 
 namespace qReal {
 
@@ -20,18 +22,24 @@ namespace qReal {
 			public:
 				ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
 				EditorManager const &editorManager() const;
-				virtual qReal::Id createElement(qReal::Id const &parent, qReal::Id const &type) = 0;
-				virtual qReal::IdList children(qReal::Id const &element) const = 0;
-				virtual void changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position = QPointF()) = 0;
+				virtual Id createElement(Id const &parent, Id const &type) = 0;
+				virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+				virtual IdList children(Id const &element) const = 0;
+				virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 
-				bool dropMimeData(QMimeData const *data, Qt::DropAction action, qReal::Id const &parent);
 				QModelIndex indexById(Id const &id) const;
 				Id idByIndex(QModelIndex const &index) const;
+				QPersistentModelIndex rootIndex() const;
+				Id rootId() const;
+
+				bool hasRootDiagrams() const;
+				int childrenOfRootDiagram() const;
+				int childrenOfDiagram(const Id &parent) const;
 
 			protected:
-				void setProperty(qReal::Id const &elem, QVariant const &newValue, int const role);
-				QVariant property(qReal::Id const &elem, int const role) const;
-				int roleIndexByName(qReal::Id const &elem, QString const &roleName) const;
+				void setProperty(Id const &elem, QVariant const &newValue, int const role);
+				QVariant property(Id const &elem, int const role) const;
+				int roleIndexByName(Id const &elem, QString const &roleName) const;
 
 				ModelsAssistApi(ModelsAssistApi const &);
 				ModelsAssistApi& operator =(ModelsAssistApi const &);

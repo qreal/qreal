@@ -41,6 +41,7 @@ namespace qReal {
 		ListenerManager *listenerManager();
 		IGesturesPainter *gesturesPainter();
 		Ui::MainWindowUi ui;
+		QModelIndex rootIndex() const ;
 
 	signals:
 		void gesturesShowed();
@@ -139,6 +140,7 @@ namespace qReal {
 		bool mDiagramCreateFlag;
 
 		QStringList mDiagramsList;
+		QModelIndex mRootIndex;
 
 		void createDiagram(const QString &idString);
 		void loadNewEditor(QString const &directoryName, QString const &metamodelName,

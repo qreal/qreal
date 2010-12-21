@@ -192,16 +192,14 @@ MainWindow::MainWindow()
 
 //	mPropertyModel.setSourceModel(mModel);
 //	ui.diagramExplorer->setModel(mModel);
-//	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
-
-//	ui.diagramExplorer->setModel(mModel);
-//	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
+//	ui.diagramExplorer->setRootIndex(mModels->graphicalModelAssistApi().rootIndex());
 
 //	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
 
 //	if (mModel->rowCount() > 0)
 //		openNewTab(mModel->index(0, 0, QModelIndex()));
 
+	mRootIndex = QModelIndex();
 	mModels = new models::Models(".", mEditorManager);
 //	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(".");
 //	mGraphicalModel = new models::GraphicalModel(repoApi, mEditorManager);
@@ -228,10 +226,15 @@ MainWindow::MainWindow()
 
 	initGridProperties();
 
-//	mVisualDebugger = new VisualDebugger(mModel);
+	mVisualDebugger = new VisualDebugger(mModels);
 
 //	mGraphicalModel->addElementToModel(Id::rootId(), Id::createElementId("ololo", "ololo", "ololo"), Id::rootId()
 //			, "ololo", QPointF(0, 0));
+}
+
+QModelIndex MainWindow::rootIndex() const
+{
+	return mRootIndex;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
@@ -310,14 +313,16 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 	int numTab = getTabIndex(idx);
 	if (numTab != -1)
 		ui.tabs->setCurrentIndex(numTab);
+	else
+		openNewTab(idx);
 	if (ui.tabs->isEnabled()) {
-//		if (parent == mModel->rootIndex()) {
-//			getCurrentTab()->mvIface()->setRootIndex(idx);
-//		} else {
+		if (parent == mModels->graphicalModelAssistApi().rootIndex()) {
+			getCurrentTab()->mvIface()->setRootIndex(idx);
+		} else {
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElemByModelIndex(idx);
+			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
 				e->setColorRect(bl);
 				if (isSetSel)
@@ -325,40 +330,41 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 			} else {
 				Q_ASSERT(false);
 			}
-//		}
+		}
 	}
 }
 
 void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 {
-//	activateItemOrDiagram(mModel->indexById(id), bl, isSetSel);
+	activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 	// end-to-end links: if there's a first-level diagram with the same name as
 	// this element, show it
-//	QString targetName = mModel->data(idx, Qt::DisplayRole).toString();
-//	int rows = mModel->rowCount(mModel->rootIndex());
-//	for (int i = 0; i < rows; ++i) {
-//		QModelIndex child = mModel->index(i, 0, mModel->rootIndex());
-//		if (mModel->data(child, Qt::DisplayRole).toString() == targetName)
-//		{
-//			activateItemOrDiagram(child);
-//			return;
-//		}
-//	}
+	Id id = idx.data(roles::idRole).value<Id>();
+	QString targetName = mModels->graphicalModelAssistApi().name(id);
+	int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
+	for (int i = 0; i < rows; ++i) {
+		Id child = mModels->graphicalModelAssistApi().rootId();
+		if (mModels->graphicalModelAssistApi().name(child) == targetName)
+		{
+			activateItemOrDiagram(child);
+			return;
+		}
+	}
 
-//	QModelIndex diagramToActivate = idx;
-//	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-//		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-//		{
-//		diagramToActivate = diagramToActivate.parent();
-//	}
+	QModelIndex diagramToActivate = idx;
+	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
+		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
+		{
+		diagramToActivate = diagramToActivate.parent();
+	}
 
-//	if (diagramToActivate.model()->rowCount(diagramToActivate) > 0) {
-//		QModelIndex childIndex = diagramToActivate.model()->index(0, 0, diagramToActivate);
-//		activateItemOrDiagram(childIndex);
-//	}
+	if (diagramToActivate.model()->rowCount(diagramToActivate) > 0) {
+		QModelIndex childIndex = diagramToActivate.model()->index(0, 0, diagramToActivate);
+		activateItemOrDiagram(childIndex);
+	}
 }
 
 void MainWindow::sceneSelectionChanged()
@@ -881,24 +887,23 @@ EditorView * MainWindow::getCurrentTab()
 
 void MainWindow::changeMiniMapSource( int index )
 {
-//	if (index != -1) {
-//		ui.tabs->setEnabled(true);
-//		EditorView *editorView = getCurrentTab();
-//		setConnectActionZoomTo(ui.tabs->currentWidget());
+	if (index != -1) {
+		ui.tabs->setEnabled(true);
+		EditorView *editorView = getCurrentTab();
+		setConnectActionZoomTo(ui.tabs->currentWidget());
 
-//		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
-//		{
-//			ui.minimapView->setScene(editorView->scene());
-//			getCurrentTab()->mvIface()->setModel(mGraphicalModel);
-//			QModelIndex modelIndex = editorView->mvIface()->rootIndex();
-//			mModel->setRootIndex(modelIndex);
-//		}
-//	} else
-//	{
-//		ui.tabs->setEnabled(false);
-//		ui.minimapView->setScene(0);;
-//	}
-//	emit rootDiagramChanged();
+		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
+		{
+			ui.minimapView->setScene(editorView->scene());
+			getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+			mRootIndex = editorView->mvIface()->rootIndex();
+		}
+	} else
+	{
+		ui.tabs->setEnabled(false);
+		ui.minimapView->setScene(0);;
+	}
+	emit rootDiagramChanged();
 }
 
 void qReal::MainWindow::closeTab( int index )
@@ -938,11 +943,11 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::openNewEmptyTab()
 {
-//	QObject *object = sender();
-//	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
-//	QString text = "Shape Editor";
-//	ShapeEdit *shapeEdit = NULL;
-//	if (button != NULL) {
+	QObject *object = sender();
+	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
+	QString text = "Shape Editor";
+	ShapeEdit *shapeEdit = NULL;
+	if (button != NULL) {
 //		QPersistentModelIndex index = button->getIndex();
 //		int role = button->getRole();
 //		QString propertyValue = button->getPropertyValue();
@@ -951,14 +956,14 @@ void MainWindow::openNewEmptyTab()
 //			shapeEdit->load(propertyValue);
 //		mModel->setData(index, propertyValue, role);
 //		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
-//	}
-//	else {
-//		shapeEdit = new ShapeEdit();
-//	}
+	}
+	else {
+		shapeEdit = new ShapeEdit();
+	}
 
-//	ui.tabs->addTab(shapeEdit, text);
-//	ui.tabs->setCurrentWidget(shapeEdit);
-//	setConnectActionZoomTo(shapeEdit);
+	ui.tabs->addTab(shapeEdit, text);
+	ui.tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)
@@ -1093,13 +1098,13 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	getCurrentTab()->setMainWindow(this);
 	QModelIndex index = rootIndex;
 
+	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 	changeMiniMapSource(ui.tabs->currentIndex());
 
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
-	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 

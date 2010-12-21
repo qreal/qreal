@@ -28,6 +28,11 @@ Id Element::id() const
 	return mId;
 }
 
+qReal::Id Element::logicalId() const
+{
+	return mGraphicalAssistApi->logicalId(mId);
+}
+
 QString Element::name() const
 {
 	return mGraphicalAssistApi->name(id());

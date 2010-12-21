@@ -438,7 +438,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItem().data(roles::idRole).value<Id>(), scenePos());
+			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
 	}
 
 	mDragState = None;

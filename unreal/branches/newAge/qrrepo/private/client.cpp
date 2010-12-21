@@ -271,3 +271,8 @@ qReal::IdList Client::elements() const
 {
 	return mObjects.keys();
 }
+
+bool Client::isLogicalId(qReal::Id const &elem) const
+{
+	return (mObjects[elem]->logicalId() == qReal::Id());
+}

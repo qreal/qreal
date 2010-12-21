@@ -187,46 +187,6 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 	}
 }
 
-bool GraphicalModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
-{
-	Q_UNUSED(row)
-	Q_UNUSED(column)
-	if (action == Qt::IgnoreAction)
-		return true;
-	else {
-		AbstractModelItem *parentItem = parentAbstractItem(parent);
-
-		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
-
-		QDataStream stream(&dragData, QIODevice::ReadOnly);
-		QString idString;
-		QString pathToItem;
-		QString name;
-		QPointF position;
-		bool isFromLogicalModel = false;
-		stream >> idString;
-		stream >> pathToItem;
-		stream >> name;
-		stream >> position;
-		stream >> isFromLogicalModel;
-
-		Id logicalId = Id::rootId();
-		Id id = Id::loadFromString(idString);
-		if (isFromLogicalModel) {
-			logicalId = id;
-			Id newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
-			id = newId;
-		}
-		Q_ASSERT(id.idSize() == 4);
-
-		if (mModelItems.contains(id))
-			return false;
-
-		addElementToModel(parentItem->id(), id, logicalId, name, position);
-		return true;
-	}
-}
-
 void GraphicalModel::saveTo(QString const &workingDirectory)
 {
 	mApi.saveTo(workingDirectory);
@@ -298,4 +258,9 @@ QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logi
 			indexes.append(index(item));
 	}
 	return indexes;
+}
+
+ModelsAssistApi* GraphicalModel::modelAssistApi() const
+{
+	return mGraphicalAssistApi;
 }

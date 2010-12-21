@@ -17,27 +17,31 @@ namespace qReal {
 		public:
 			GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
 			qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
-			virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
-			virtual qReal::IdList children(qReal::Id const &element) const;
-			virtual void changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position);
+			virtual Id createElement(Id const &parent, Id const &type);
+			virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+			virtual IdList children(Id const &element) const;
+			virtual void changeParent(Id const &element, Id const &parent, QPointF const &position);
 
-			void setConfiguration(qReal::Id const &elem, QPolygon const &newValue);
-			QPolygon configuration(qReal::Id const &elem) const;
+			void setConfiguration(Id const &elem, QPolygon const &newValue);
+			QPolygon configuration(Id const &elem) const;
 
-			void setPosition(qReal::Id const &elem, QPointF const &newValue);
-			QPointF position(qReal::Id const &elem) const;
+			void setPosition(Id const &elem, QPointF const &newValue);
+			QPointF position(Id const &elem) const;
 
-			void setToPort(qReal::Id const &elem, qreal const &newValue);
-			qreal toPort(qReal::Id const &elem) const;
+			void setToPort(Id const &elem, qreal const &newValue);
+			qreal toPort(Id const &elem) const;
 
-			void setFromPort(qReal::Id const &elem, qreal const &newValue);
-			qreal fromPort(qReal::Id const &elem) const;
+			void setFromPort(Id const &elem, qreal const &newValue);
+			qreal fromPort(Id const &elem) const;
 
-			void setName(qReal::Id const &elem, QString const &newValue);
-			QString name(qReal::Id const &elem) const;
+			void setName(Id const &elem, QString const &newValue);
+			QString name(Id const &elem) const;
 
-			void setToolTip(qReal::Id const &elem, QString const &newValue);
-			QString toolTip(qReal::Id const &elem) const;
+			void setToolTip(Id const &elem, QString const &newValue);
+			QString toolTip(Id const &elem) const;
+
+			Id logicalId(Id const &elem) const;
+			IdList graphicalIdsByLogicalId(Id const &logicalId) const;
 
 		private:
 			GraphicalModelAssistApi(GraphicalModelAssistApi const &);

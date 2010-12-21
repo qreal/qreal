@@ -4,6 +4,7 @@
 #include <QMimeData>
 #include <QModelIndexList>
 
+#include "../modelsAssistApi.h"
 #include "../../../qrrepo/repoApi.h"
 #include "../../editorManager/editorManager.h"
 #include "abstractModelItem.h"
@@ -30,6 +31,8 @@ namespace qReal {
 					virtual Qt::ItemFlags flags(QModelIndex const &index) const;
 					virtual Qt::DropActions supportedDropActions() const;
 					virtual QStringList mimeTypes() const;
+					virtual ModelsAssistApi* modelAssistApi() const = 0;
+					bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 					AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
 
 					virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;

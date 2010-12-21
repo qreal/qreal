@@ -21,7 +21,7 @@ public:
 	virtual void addUsage(qReal::Id const &source, qReal::Id const &destination) = 0;
 	virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination) = 0;
 
-	virtual qReal::IdList elements(qReal::Id const &type) const = 0;
+	virtual qReal::IdList logicalElements(qReal::Id const &type) const = 0;
 
 	virtual qReal::IdList elementsByType(QString const &type) const = 0;
 	virtual int elementsCount() const = 0;

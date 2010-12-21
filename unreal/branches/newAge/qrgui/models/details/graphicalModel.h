@@ -30,13 +30,13 @@ namespace qReal {
 				virtual QVariant data(const QModelIndex &index, int role) const;
 				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
-				virtual bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 				qrRepo::GraphicalRepoApi const &api() const;
 				qrRepo::GraphicalRepoApi &mutableApi() const;
 				GraphicalModelAssistApi &graphicalModelAssistApi() const;
 				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 				QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
-	void saveTo(QString const &workingDirectory);
+				void saveTo(QString const &workingDirectory);
+				virtual ModelsAssistApi* modelAssistApi() const;
 
 			private:
 				LogicalModelView mLogicalModelView;

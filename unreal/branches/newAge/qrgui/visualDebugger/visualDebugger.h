@@ -21,7 +21,7 @@ namespace qReal {
 			fullDebug
 		};
 	public:
-		VisualDebugger(/*model::Model *model*/);
+		VisualDebugger(models::Models *models);
 		~VisualDebugger();
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
@@ -41,7 +41,7 @@ namespace qReal {
 		};
 	private:
 		EditorView *mEditor;
-//		model::Model *mModel;
+		models::Models *mModels;
 		UML::Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;

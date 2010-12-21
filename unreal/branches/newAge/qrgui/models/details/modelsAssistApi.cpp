@@ -1,5 +1,5 @@
 #include "modelsAssistApi.h"
-//#include <QtCore/QUuid>
+#include "modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models;
@@ -16,17 +16,30 @@ EditorManager const &ModelsAssistApi::editorManager() const
 	return mEditorManager;
 }
 
-void ModelsAssistApi::setProperty(qReal::Id const &elem, QVariant const &newValue, int const role)
+Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	mModel.setData(mModel.indexById(elem), newValue, role);
+	Q_ASSERT(parent.idSize() == 4);
+	Id logicalId = Id::rootId();
+	Id newId = id;
+	if (isFromLogicalModel) {
+		logicalId = id;
+		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+	}
+	mModel.addElementToModel(parent, newId, logicalId, name, position);
+	return newId;
 }
 
-QVariant ModelsAssistApi::property(qReal::Id const &elem, int const role) const
+void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
 {
-	return mModel.data(mModel.indexById(elem), role);
+	mModel.setData(indexById(elem), newValue, role);
 }
 
-int ModelsAssistApi::roleIndexByName(qReal::Id const &elem, QString const &roleName) const
+QVariant ModelsAssistApi::property(Id const &elem, int const role) const
+{
+	return mModel.data(indexById(elem), role);
+}
+
+int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
 {
 	QStringList properties = editorManager().getPropertyNames(elem.type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
@@ -42,8 +55,27 @@ Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
 	return mModel.idByIndex(index);
 }
 
-bool ModelsAssistApi::dropMimeData(QMimeData const *data, Qt::DropAction action, qReal::Id const &parent)
+bool ModelsAssistApi::hasRootDiagrams() const
 {
-	QModelIndex parentIndex = indexById(parent);
-	return mModel.dropMimeData(data, action, mModel.rowCount(parentIndex), mModel.columnCount(parentIndex), parentIndex);
+	 return !(mModel.rowCount(QModelIndex()) == 0);
+}
+
+int ModelsAssistApi::childrenOfRootDiagram() const
+{
+	return mModel.rowCount(rootIndex());
+}
+
+int ModelsAssistApi::childrenOfDiagram(const Id &parent) const
+{
+	return mModel.rowCount(indexById(parent));
+}
+
+QPersistentModelIndex ModelsAssistApi::rootIndex() const
+{
+	return mModel.rootIndex();
+}
+
+Id ModelsAssistApi::rootId() const
+{
+	return idByIndex(mModel.rootIndex());
 }

@@ -24,6 +24,8 @@ public:
 
 	virtual void setPosition(qReal::Id const &id, QVariant const &position) = 0;
 	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
+
+	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
 };
 
 }

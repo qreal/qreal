@@ -89,7 +89,8 @@ namespace qrRepo {
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
-		qReal::IdList elements(qReal::Id const &type) const;
+		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
+		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 
 		//Returns all elements with .element() == type
 		qReal::IdList elementsByType(QString const &type) const;

@@ -135,3 +135,36 @@ Id AbstractModel::idByIndex(QModelIndex const &index) const
 	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 	return mModelItems.key(item);
 }
+
+bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
+{
+	Q_UNUSED(row)
+	Q_UNUSED(column)
+	if (action == Qt::IgnoreAction)
+		return true;
+	else {
+		AbstractModelItem *parentItem = parentAbstractItem(parent);
+
+		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+
+		QDataStream stream(&dragData, QIODevice::ReadOnly);
+		QString idString;
+		QString pathToItem;
+		QString name;
+		QPointF position;
+		bool isFromLogicalModel = false;
+		stream >> idString;
+		stream >> pathToItem;
+		stream >> name;
+		stream >> position;
+		stream >> isFromLogicalModel;
+
+		Id id = Id::loadFromString(idString);
+		Q_ASSERT(id.idSize() == 4);
+		if (mModelItems.contains(id))
+			return false;
+
+		modelAssistApi()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
+		return true;
+	}
+}
