@@ -10,6 +10,7 @@ public:
 	QString name();
 	QString type();
 	QString defaultValue();
+	QString description();
 	Property *clone();
 	bool operator == (Property const &other) const;
 	bool operator != (Property const &other) const;

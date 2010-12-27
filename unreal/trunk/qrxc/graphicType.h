@@ -20,6 +20,8 @@ public:
 	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
+	virtual void generateDescriptionMapping(utils::OutFile &out);
+	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
@@ -29,6 +31,8 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+        QString description() const;
+        void setDescription(QString const &description);
 
 protected:
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
@@ -58,6 +62,7 @@ protected:
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
+
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -96,4 +101,6 @@ private:
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
+        QString mDescription;
 };

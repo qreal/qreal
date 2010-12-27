@@ -72,6 +72,11 @@ QString Property::defaultValue()
 	return mDefaultValue;
 }
 
+QString Property::description()
+{
+	return mDescription;
+}
+
 Property * Property::clone()
 {
 	Property *result = new Property();

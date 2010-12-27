@@ -999,7 +999,7 @@
             </properties>
           </logic>
         </node>
-        <node displayedName="Structured Activity Node" name="StructuredActivityNode">
+        <node displayedName="Structured Activity Node" name="StructuredActivityNode" description="Represenattion of Structured Activity Node">
           <graphics>
             <picture sizex="100" sizey="100">
               <path fill="#f8f8f8" stroke-style="solid" int="17" stroke="#000000" stroke-width="1" d=" M 20.6 1 C 9.77522 1 1 9.77522 1 20.6 L 1 79.4 C 1 90.2248 9.77522 99 20.6 99 L 79.4 99 C 90.2248 99 99 90.2248 99 79.4 L 99 20.6 C 99 9.77522 90.2248 1 79.4 1 L 20.6 1" fill-style="solid"/>
@@ -1021,7 +1021,9 @@
               </property>
               <property type="Variable" name="variable"/>
               <property type="ActivityNode" name="node"/>
-              <property type="ActivityEdge" name="edge"/>
+              <property type="ActivityEdge" name="edge">
+                <description>Letters to ToolTip: Test for propery edge.</description>
+              </property>
               <property type="Activity" name="activity"/>
             </properties>
           </logic>
