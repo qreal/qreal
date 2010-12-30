@@ -1,11 +1,12 @@
 #pragma once
 
+#include <QtCore/QHash>
+#include <QtCore/QFileInfo>
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
 #include "../../kernel/ids.h"
-#include <QtCore/QHash>
-#include <QtCore/QFileInfo>
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qrRepo {
 	class RepoApi;
@@ -20,13 +21,13 @@ namespace qReal {
 		class XmlParser
 		{
 		public:
-			explicit XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
+			explicit XmlParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager);
 
 			void parseFile(QString const &fileName);
 			void loadIncludeList(QString const &fileName);
 
 		private:
-			qrRepo::RepoApi &mApi;
+			qrRepo::LogicalRepoApi &mApi;
 			EditorManager const &mEditorManager;
 			Id mMetamodel;
 			QHash<QString, Id> mElements;
@@ -96,4 +97,3 @@ namespace qReal {
 		};
 	}
 }
-

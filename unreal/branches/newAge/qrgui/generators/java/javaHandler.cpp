@@ -9,12 +9,11 @@
 #include <QDir>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
 
 using namespace qReal;
 using namespace generators;
 
-JavaHandler::JavaHandler(qrRepo::RepoApi const &api)
+JavaHandler::JavaHandler(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }

@@ -588,107 +588,99 @@ void MainWindow::doCommit()
 
 void MainWindow::exportToXmi()
 {
-//	generators::XmiHandler xmi(mModel->api());
+	generators::XmiHandler xmi(mModels->logicalRepoApi());
 
-//	QString const fileName = QFileDialog::getSaveFileName(this);
-//	if (fileName.isEmpty())
-//		return;
+	QString const fileName = QFileDialog::getSaveFileName(this);
+	if (fileName.isEmpty())
+		return;
 
-//	QString const errors = xmi.exportToXmi(fileName);
+	QString const errors = xmi.exportToXmi(fileName);
 
-//	if (!errors.isEmpty()) {
-//		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-//	} else {
-//		QMessageBox::information(this, tr("finished"), "Export is finished");
-//	}
-
-//	qDebug() << "Done.";
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Export is finished");
+	}
 }
 
 void MainWindow::generateToJava()
 {
-//	generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModels->logicalRepoApi());
 
-//	QString const dirName = QFileDialog::getExistingDirectory(this);
-//	if (dirName.isEmpty())
-//		return;
+	QString const dirName = QFileDialog::getExistingDirectory(this);
+	if (dirName.isEmpty())
+		return;
 
-//	QString const errors = java.generateToJava(dirName);
+	QString const errors = java.generateToJava(dirName);
 
-//	if (!errors.isEmpty()) {
-//		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-//	} else {
-//		QMessageBox::information(this, tr("finished"), "Export is finished");
-//	}
-
-//	qDebug() << "Done.";
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Export is finished");
+	}
 }
 
 void MainWindow::parseJavaLibraries()
 {
-//	generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModels->logicalRepoApi());
 
-//	QString const dirName = QFileDialog::getExistingDirectory(this);
-//	if (dirName.isEmpty())
-//		return;
+	QString const dirName = QFileDialog::getExistingDirectory(this);
+	if (dirName.isEmpty())
+		return;
 
-//	QString const errors = java.parseJavaLibraries(dirName);
+	QString const errors = java.parseJavaLibraries(dirName);
 
-//	if (!errors.isEmpty()) {
-//		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-//	} else {
-//		QMessageBox::information(this, tr("finished"), "Parsing is finished");
-//	}
-
-//	qDebug() << "Done.";
+	if (!errors.isEmpty()) {
+		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+	} else {
+		QMessageBox::information(this, tr("finished"), "Parsing is finished");
+	}
 }
 
 void MainWindow::generateToHascol()
 {
-//	generators::HascolGenerator hascolGenerator(mModel->api());
+	generators::HascolGenerator hascolGenerator(mModels->logicalRepoApi());
 
-//	gui::ErrorReporter& errors = hascolGenerator.generate();
-//	errors.showErrors(ui.errorListWidget, ui.errorDock);
-
-//	qDebug() << "Done.";
+	gui::ErrorReporter& errors = hascolGenerator.generate();
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 }
 
 void MainWindow::generateEditor()
 {
-//	generators::EditorGenerator editorGenerator(mModel->api());
+	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
 
-//	QString directoryName;
-//	QFileInfo directoryXml;
-//	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
-//	QDir dir(".");
-//	bool found = false;
-//	while (dir.cdUp() && !found) {
-//		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
-//		foreach (QFileInfo const directory, infoList){
-//			if (directory.baseName() == "qrxml") {
-//				found = true;
-//				directoryXml = directory;
-//				directoryName = directory.absolutePath();
-//			}
-//		}
-//	}
-//	if (!found) {
-//		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
-//		return;
-//	}
-//	foreach (Id const key, metamodelList.keys()) {
-//		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
-//		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
+	QString directoryName;
+	QFileInfo directoryXml;
+	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
+	QDir dir(".");
+	bool found = false;
+	while (dir.cdUp() && !found) {
+		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				found = true;
+				directoryXml = directory;
+				directoryName = directory.absolutePath();
+			}
+		}
+	}
+	if (!found) {
+		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
+		return;
+	}
+	foreach (Id const key, metamodelList.keys()) {
+		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
+		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
-//		if (errors.showErrors(ui.errorListWidget, ui.errorDock)) {
-//			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
-//					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
-//				return;
-//			QSettings settings("SPbSU", "QReal");
-//			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
-//					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
-//		}
-//	}
+		if (errors.showErrors(ui.errorListWidget, ui.errorDock)) {
+			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
+					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+				return;
+			QSettings settings("SPbSU", "QReal");
+			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
+					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
+		}
+	}
 }
 
 void MainWindow::generateEditorWithQRMC()
@@ -853,31 +845,31 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 
 void MainWindow::parseEditorXml()
 {
-//	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
-//		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
-//		return;
-//	}
-//	QDir dir(".");
-//	QString directoryName = ".";
-//	while (dir.cdUp()) {
-//		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
-//		foreach (QFileInfo const directory, infoList){
-//			if (directory.baseName() == "qrxml") {
-//				directoryName = directory.absolutePath() + "/qrxml";
-//			}
-//		}
-//	}
-//	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"), directoryName, "XML files (*.xml)");
-//	if (fileName == "")
-//		return;
+	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
+		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
+		return;
+	}
+	QDir dir(".");
+	QString directoryName = ".";
+	while (dir.cdUp()) {
+		QFileInfoList infoList = dir.entryInfoList(QDir::Dirs);
+		foreach (QFileInfo const directory, infoList){
+			if (directory.baseName() == "qrxml") {
+				directoryName = directory.absolutePath() + "/qrxml";
+			}
+		}
+	}
+	QString const fileName = QFileDialog::getOpenFileName(this, tr("Select xml file to parse"), directoryName, "XML files (*.xml)");
+	if (fileName == "")
+		return;
 
-//	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+	parsers::XmlParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
 
-//	parser.parseFile(fileName);
+	parser.parseFile(fileName);
 
-//	parser.loadIncludeList(fileName);
+	parser.loadIncludeList(fileName);
 
-//	mModel->reinit();
+	mModels->reinit();
 }
 
 EditorView * MainWindow::getCurrentTab()
@@ -923,16 +915,16 @@ void MainWindow::exterminate()
 
 void MainWindow::parseHascol()
 {
-//	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
-//	if (fileNames.empty())
-//		return;
+	QStringList const fileNames = QFileDialog::getOpenFileNames(this, tr("Select Hascol files to parse"), ".", "*.md;;*.*");
+	if (fileNames.empty())
+		return;
 
-//	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
-//	gui::ErrorReporter& errors = parser.parse(fileNames);
+	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
+	gui::ErrorReporter& errors = parser.parse(fileNames);
 
-//	errors.showErrors(ui.errorListWidget, ui.errorDock);
+	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
-//	mModel->reinit();
+	mModels->reinit();
 }
 
 void MainWindow::showPreferencesDialog()
@@ -1357,7 +1349,7 @@ void MainWindow::save()
 
 void MainWindow::saveAll()
 {
-	mModels->api()->saveAll();
+	mModels->repoControlApi()->saveAll();
 	mModels->resetChangedDiagrams();
 }
 
@@ -1369,8 +1361,8 @@ void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
 	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
 	//add choosing of just created diagrams
 
-	mModels->api()->save(toSave);
-	mModels->api()->remove(toRemove);
+	mModels->repoControlApi()->save(toSave);
+	mModels->repoControlApi()->remove(toRemove);
 	mModels->resetChangedDiagrams(toSave);
 	mModels->resetChangedDiagrams(toRemove);
 }
@@ -1386,13 +1378,13 @@ void MainWindow::saveAs()	//TODO: change
 QListWidget* MainWindow::createSaveListWidget()
 {
 	mSaveListChecked.clear();
-	mSaveListChecked.resize(mModels->api()->getOpenedDiagrams().size());
+	mSaveListChecked.resize(mModels->repoControlApi()->getOpenedDiagrams().size());
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
-	foreach(Id id, mModels->api()->getOpenedDiagrams()) {
+	foreach(Id id, mModels->repoControlApi()->getOpenedDiagrams()) {
 		listWidget->addItem(id.diagram());
-		if (mModels->api()->getChangedDiagrams().contains(id.diagramId())) {
+		if (mModels->repoControlApi()->getChangedDiagrams().contains(id.diagramId())) {
 			mSaveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 		} else {

@@ -20,9 +20,13 @@ public:
 	void saveTo(QString const &workingDirectory);
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
-	qrRepo::RepoControlInterface const *api() const;
+	qrRepo::RepoControlInterface const *repoControlApi() const;
 	void resetChangedDiagrams();
 	void resetChangedDiagrams(const IdList &list);
+
+	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
+	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
+	void reinit();
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;

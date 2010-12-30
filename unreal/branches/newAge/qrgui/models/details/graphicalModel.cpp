@@ -187,11 +187,6 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 	}
 }
 
-void GraphicalModel::saveTo(QString const &workingDirectory)
-{
-	mApi.saveTo(workingDirectory);
-}
-
 qrRepo::GraphicalRepoApi const &GraphicalModel::api() const
 {
 	return mApi;

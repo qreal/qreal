@@ -8,7 +8,6 @@
 #include <QMessageBox>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
 
 #include "../../../utils/outFile.h"
 
@@ -16,7 +15,7 @@ using namespace qReal;
 using namespace generators;
 using namespace utils;
 
-EditorGenerator::EditorGenerator(qrRepo::RepoApi const &api)
+EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../qrgui/kernel/roles.h"
 #include "commonRepoApi.h"
 
@@ -8,9 +10,6 @@ class GraphicalRepoApi : public CommonRepoApi
 public:
 	virtual ~GraphicalRepoApi(){}
 
-	virtual qReal::IdList outgoingLinks(qReal::Id const &id) const = 0;
-	virtual qReal::IdList incomingLinks(qReal::Id const &id) const = 0;
-	virtual qReal::IdList links(qReal::Id const &id) const = 0;
 	virtual void addChild(qReal::Id const &id, qReal::Id const &logicalId, qReal::Id const &child) = 0;
 
 	virtual double fromPort(qReal::Id const &id) const = 0;

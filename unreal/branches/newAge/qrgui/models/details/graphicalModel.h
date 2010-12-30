@@ -32,11 +32,10 @@ namespace qReal {
 				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
 				qrRepo::GraphicalRepoApi const &api() const;
 				qrRepo::GraphicalRepoApi &mutableApi() const;
-				GraphicalModelAssistApi &graphicalModelAssistApi() const;
 				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 				QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
-				void saveTo(QString const &workingDirectory);
 				virtual ModelsAssistApi* modelAssistApi() const;
+				GraphicalModelAssistApi &graphicalModelAssistApi() const;
 
 			private:
 				LogicalModelView mLogicalModelView;

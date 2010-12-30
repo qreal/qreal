@@ -6,14 +6,13 @@
 #include <QtCore/QDebug>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
 #include "../../../utils/outFile.h"
 
 using namespace qReal;
 using namespace generators;
 using utils::OutFile;
 
-HascolGenerator::HascolGenerator(qrRepo::RepoApi const &api)
+HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }

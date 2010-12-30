@@ -18,7 +18,7 @@
 using namespace qReal;
 using namespace parsers;
 
-XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
+XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
 	mMoveWidth(180), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(280)
 {

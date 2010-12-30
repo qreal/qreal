@@ -48,9 +48,24 @@ LogicalModelAssistApi &Models::logicalModelAssistApi() const
 	return mLogicalModel->logicalModelAssistApi();
 }
 
-qrRepo::RepoControlInterface const *Models::api() const
+qrRepo::RepoControlInterface const *Models::repoControlApi() const
 {
 	return mRepoApi;
+}
+
+qrRepo::LogicalRepoApi const &Models::logicalRepoApi() const
+{
+	return mLogicalModel->api();
+}
+
+qrRepo::LogicalRepoApi &Models::mutableLogicalRepoApi() const
+{
+	return mLogicalModel->mutableApi();
+}
+
+void Models::reinit()
+{
+	// TODO: Implement this.
 }
 
 void Models::resetChangedDiagrams()

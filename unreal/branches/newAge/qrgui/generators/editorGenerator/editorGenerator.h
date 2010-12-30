@@ -7,10 +7,7 @@
 
 #include "../../kernel/ids.h"
 #include "../../mainwindow/errorReporter.h"
-
-namespace qrRepo {
-	class RepoApi;
-}
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {
 
@@ -19,7 +16,7 @@ namespace qReal {
 		class EditorGenerator
 		{
 		public:
-			explicit EditorGenerator(qrRepo::RepoApi const &api);
+			explicit EditorGenerator(qrRepo::LogicalRepoApi const &api);
 
 			QHash<Id, QString> getMetamodelList();
 			gui::ErrorReporter& generateEditor(Id const metamodelId, QString const &pathToFile);
@@ -49,7 +46,7 @@ namespace qReal {
 			void setBoolValuesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
 			void setSizesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
 
-			qrRepo::RepoApi const &mApi;
+			qrRepo::LogicalRepoApi const &mApi;
 			QDomDocument mDocument;
 			QString mErrorText;
 			IdList mElements;

@@ -3,10 +3,7 @@
 #include <QtCore/QString>
 
 #include "../../kernel/ids.h"
-
-namespace qrRepo {
-	class RepoApi;
-}
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {
 
@@ -15,7 +12,7 @@ namespace qReal {
 		class JavaHandler
 		{
 		public:
-			explicit JavaHandler(qrRepo::RepoApi const &api);
+			explicit JavaHandler(qrRepo::LogicalRepoApi const &api);
 
 			QString generateToJava(QString const &pathToDir);
 			QString parseJavaLibraries(QString const &pathToDir);
@@ -62,7 +59,7 @@ namespace qReal {
 
 			void addError(QString const &errorText);
 
-			qrRepo::RepoApi const &mApi;
+			qrRepo::LogicalRepoApi const &mApi;
 			QString mErrorText;
 			QString pathToDir;
 

@@ -9,14 +9,13 @@
 
 #include "math.h"
 
-#include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
 
 using namespace qReal;
 using namespace parsers;
 using gui::ErrorReporter;
 
-HascolParser::HascolParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mErrorReporter()
 {
 }

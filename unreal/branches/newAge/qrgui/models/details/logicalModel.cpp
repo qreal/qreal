@@ -201,11 +201,6 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 	}
 }
 
-void LogicalModel::saveTo(QString const &workingDirectory)
-{
-	mApi.saveTo(workingDirectory);
-}
-
 qrRepo::LogicalRepoApi const &LogicalModel::api() const
 {
 	return mApi;

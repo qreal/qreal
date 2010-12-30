@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../qrgui/kernel/roles.h"
 #include "commonRepoApi.h"
 

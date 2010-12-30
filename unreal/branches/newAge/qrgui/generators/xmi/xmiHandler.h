@@ -5,10 +5,7 @@
 #include <QtXml/QDomElement>
 
 #include "../../kernel/ids.h"
-
-namespace qrRepo {
-	class RepoApi;
-}
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {
 
@@ -17,7 +14,7 @@ namespace qReal {
 		class XmiHandler
 		{
 		public:
-			explicit XmiHandler(qrRepo::RepoApi const &api);
+			explicit XmiHandler(qrRepo::LogicalRepoApi const &api);
 
 			QString exportToXmi(QString const &pathToFile);
 		private:
@@ -45,7 +42,7 @@ namespace qReal {
 
 			void addError(QString const &errorText);
 
-			qrRepo::RepoApi const &mApi;
+			qrRepo::LogicalRepoApi const &mApi;
 			QDomDocument mDocument;
 			QString mErrorText;
 		};

@@ -2,19 +2,18 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QVariant>
 
 #include <QtCore/QDebug>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
-
 #include "../../../utils/outFile.h"
 
 using namespace qReal;
 using namespace generators;
 using namespace utils;
 
-XmiHandler::XmiHandler(qrRepo::RepoApi const &api)
+XmiHandler::XmiHandler(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }
