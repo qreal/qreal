@@ -36,6 +36,7 @@ private:
 	void generateMouseGestureMap(utils::OutFile &out);
 	void generatePropertyMap(utils::OutFile &out);
 	void generatePropertyDefaultsMap(utils::OutFile &out);
+	void generateDescriptionMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);

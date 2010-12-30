@@ -7,9 +7,10 @@ class Property
 {
 public:
 	bool init(QDomElement const &element);
-	QString name();
-	QString type();
-	QString defaultValue();
+	QString name() const;
+	QString type() const;
+	QString defaultValue() const;
+	QString description() const;
 	Property *clone();
 	bool operator == (Property const &other) const;
 	bool operator != (Property const &other) const;

@@ -2,7 +2,6 @@
 
 #include <QtCore/QVariant>
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
 
 using namespace qReal;
 

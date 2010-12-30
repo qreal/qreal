@@ -266,7 +266,7 @@ void MainWindow::loadPlugins()
 			ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram) );
 
 			foreach (Id const element, mEditorManager.elements(diagram)) {
-				ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+				ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 			}
 		}
 	}
@@ -741,7 +741,7 @@ void MainWindow::generateEditorWithQRMC()
 								ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
 								foreach (Id const element, mEditorManager.elements(diagram))
-									ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+									ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 							}
 						}
 					}
@@ -811,7 +811,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 					ui.paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
 					foreach (Id const element, mEditorManager.elements(diagram))
-						ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.icon(element));
+						ui.paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 				}
 				ui.paletteToolbox->initDone();
 				progress->setValue(100);

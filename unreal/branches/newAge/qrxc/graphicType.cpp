@@ -55,6 +55,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	mElement = element;
 	if (Type::init(element, context))
 	{
+		mDescription = element.attribute("description", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull())
 		{
@@ -287,7 +288,7 @@ bool GraphicType::addProperty(Property *property)
 	if (mProperties.contains(propertyName)) {
 		// Множественное наследование может приводить к тому, что одно свойство
 		// может быть добавлено классу дважды (ромбовидное наследование, например).
-		// Ругаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
+		// � угаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
 		// у одноимённых свойств различны - тогда непонятно, что делать.
 		if (mProperties[propertyName] != property
 			&& *mProperties[propertyName] != *property)
@@ -360,6 +361,33 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
 		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
+	}
+}
+
+void GraphicType::generateDescriptionMapping(OutFile &out)
+{
+	if (mVisible) {
+		if (!mDescription.isEmpty()) {
+			QString diagramName = NameNormalizer::normalize(mDiagram->name());
+			QString normalizedName = NameNormalizer::normalize(qualifiedName());
+			out() << "\telementsDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << mDescription << "\";\n";
+		}
+	}
+}
+
+void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
+{
+	if (mVisible) {
+		QString diagramName = NameNormalizer::normalize(mDiagram->name());
+		QString normalizedName = NameNormalizer::normalize(qualifiedName());
+		foreach (Property *p, mProperties) {
+				if (p->description().compare("") != 0){
+				QString propertyName = p->name();
+				QString propertyDescription = p->description();
+				out() << "\tpropertiesDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"][\"" << propertyName << "\"] = \"" << propertyDescription << "\";\n";
+			}
+		}
+
 	}
 }
 

@@ -294,6 +294,8 @@ void EdgeElement::connectToPort()
 	mMoving = false;
 
 	adjustLink();
+
+	arrangeSrcAndDst();
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -350,6 +352,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragState] = event->pos();
 		updateLongestPart();
 	}
+
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -418,6 +421,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	// cleanup after moving/resizing
 	mBeginning = mEnding = NULL;
+
+	arrangeSrcAndDst();
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -517,7 +522,36 @@ bool EdgeElement::shouldReconnect() const
 	return false;
 }
 
-qreal EdgeElement::portIdOn(UML::NodeElement const *node)
+void EdgeElement::arrangeSrcAndDst()
+{
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	} else if (mDst) {
+		mDst->arrangeLinks();
+	} 
+}
+
+UML::NodeElement *EdgeElement::src() const
+{
+	return mSrc;
+}
+
+UML::NodeElement *EdgeElement::dst() const
+{
+	return mDst;
+}
+
+bool EdgeElement::isSrc(UML::NodeElement const *node) const
+{
+	return (mSrc == node);
+}
+
+bool EdgeElement::isDst(UML::NodeElement const *node) const
+{
+	return (mDst == node);
+}
+
+qreal EdgeElement::portIdOn(UML::NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mPortFrom;
@@ -526,7 +560,7 @@ qreal EdgeElement::portIdOn(UML::NodeElement const *node)
 	return -1;
 }
 
-QPointF EdgeElement::nextFrom(UML::NodeElement const *node)
+QPointF EdgeElement::nextFrom(UML::NodeElement const *node) const
 {
 	if (node == mSrc)
 		return mapToItem(mSrc, mLine[1]);
@@ -536,17 +570,35 @@ QPointF EdgeElement::nextFrom(UML::NodeElement const *node)
 
 }
 
-bool EdgeElement::reconnectToNearestPorts(qreal delta)
+QPointF EdgeElement::connectionPoint(UML::NodeElement const *node) const
 {
-	Q_UNUSED(delta);
+	if (node == mSrc)
+		return mapToItem(mSrc, mLine[0]);
+	if (node == mDst)
+		return mapToItem(mDst, mLine[mLine.count() - 1]);
+	return QPointF();
+
+}
+
+UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mDst;
+	if (node == mDst)
+		return mSrc;
+	return 0;
+}
+
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
+{
 	bool reconnected = false;
-	if (mSrc) {
+	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 	}
-	if (mDst) {
+	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
@@ -618,7 +670,6 @@ void EdgeElement::placeEndTo(QPointF const &place)
 }
 
 void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
-	qDebug() << "portId setting: " << portId;
 	if (node == mSrc) {
 		mPortFrom = portId;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);

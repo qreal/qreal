@@ -100,46 +100,77 @@ void NodeElement::adjustLinks()
 	}
 }
 
-void NodeElement::arrangeLinks()
+void NodeElement::arrangeLinks() {
+	qDebug() << "---------------\nDirect call " << id().toString();
+	QSet<NodeElement*> toArrange;
+	QSet<NodeElement*> arranged;
+	arrangeLinksRecursively(toArrange, arranged);
+
+	foreach (QGraphicsItem *child, childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element)
+			element->arrangeLinks();
+	}
+}
+
+void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
 {
+	qDebug() << "==" << id().toString();
+	toArrange.remove(this);
 	const qreal indent = 0.1;
 
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->reconnectToNearestPorts();
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
+		edge->reconnectToNearestPorts(this == src || !arranged.contains(src), this == dst || !arranged.contains(dst));
+		NodeElement* other = edge->otherSide(this);
+		if (!arranged.contains(other) && other != 0)
+			toArrange.insert(other);
 	}
 
 	//make equal space on all linear ports.
 	int lpId = 0;
 	foreach (StatLine line, mLinePorts) {
-		QMap<qreal, EdgeElement*> edges;
+		//sort first by slope, then by current portId
+		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
 		QLineF portLine = line;
 		qreal dx = portLine.dx();
 		qreal dy = portLine.dy();
-		qreal det = dx * dx + dy * dy;
-		qreal x1 = portLine.x1();
-		qreal y1 = portLine.y1();
 		foreach (EdgeElement* edge, mEdgeList) {
 			if (portId(edge->portIdOn(this)) == lpId) {
-				qDebug() << "+ line at " << lpId;
+				QPointF conn = edge->connectionPoint(this);
 				QPointF next = edge->nextFrom(this);
-				qreal x = next.x();
-				qreal y = next.y();
-				qreal detP = (x - x1) * dx + (y - y1) * dy;
-				//key=dp/d, ...
-				edges.insert(detP / det, edge);
+				qreal x1 = conn.x();
+				qreal y1 = conn.y();
+				qreal x2 = next.x();
+				qreal y2 = next.y();
+				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
+				sortedEdges.insertMulti(qMakePair(scalarProduct, edge->portIdOn(this)), edge);
+				qDebug() << "+" << edge->id().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
+				qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
+				qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
-		//by now, edges of this port are sorted by their optimal port id.
-		int N = edges.size();
+		//by now, edges of this port are sorted by their optimal slope.
+		int N = sortedEdges.size();
 		int i = 0;
-		foreach (EdgeElement* edge, edges) {
-			edge->moveConnection(this, lpId + indent + (1.0 - 2 * indent) * i++ / N); //N == 0 <=> 0 iterations
+		foreach (EdgeElement* edge, sortedEdges) {
+			qDebug() << "-" << edge->id().toString() << lpId + (1.0 + i) / (N + 1);
+			edge->moveConnection(this, lpId + (1.0 + i++) / (N + 1));
 		}
 
 		lpId++; //next linear port.
 
 	}
+
+	//recursive calls
+	arranged.insert(this);
+	while (!toArrange.isEmpty()) {
+		NodeElement *next = *toArrange.begin();
+		next->arrangeLinksRecursively(toArrange, arranged);
+}
 }
 
 void NodeElement::storeGeometry()

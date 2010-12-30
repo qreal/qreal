@@ -155,7 +155,7 @@
 		</logic>
         </node>	
 
-	<node displayedName="Man" name="Man">
+	<node displayedName="Man" name="Man" description="A something that represent a human picture smth smth alola magic smoke on the green wilderness">
 		<graphics>
 			<picture sizex="31" sizey="100">
 				<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1" x1="1" y2="31" stroke-width="2" x2="31" fill-style="solid"/>

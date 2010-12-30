@@ -153,6 +153,23 @@ QString EditorManager::friendlyName(const Id &id) const
 	}
 }
 
+QString EditorManager::description(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (id.idSize() != 3)
+		return "";
+	return mPluginIface[id.editor()]->elementDescription(id.diagram(), id.element());
+}
+
+QString EditorManager::propertyDescription(const Id &id, const QString &propertyName) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	if (id.idSize() != 4)
+		return "";
+	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
+}
+
 QString EditorManager::mouseGesture(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

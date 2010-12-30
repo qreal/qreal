@@ -11,7 +11,7 @@
 using namespace qReal;
 using namespace qReal::gui;
 
-PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name,
+PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
 	QIcon const &icon, QWidget *parent)
 : QWidget(parent), mId(id), mIcon(icon), mText(name)
 {
@@ -28,6 +28,13 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 	layout->addWidget(text);
 
 	setLayout(layout);
+
+	QString modifiedDescription = description;
+	if (!modifiedDescription.isEmpty()){
+		modifiedDescription.insert(0, "<body>");//turns alignment on
+		setToolTip(modifiedDescription);
+	}
+
 }
 
 PaletteToolbox::PaletteToolbox(QWidget *parent)
@@ -86,13 +93,13 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	Q_ASSERT(mTabNames.size() == mTabs.size());
 }
 
-void PaletteToolbox::addItemType(Id const &id, QString const &name, QIcon const &icon)
+void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description,  QIcon const &icon)
 {
 	Id category(id.editor(), id.diagram());
 	QWidget *tab = mTabs[mCategories[category]];
 	Q_ASSERT(tab);
 
-	DraggableElement *element = new DraggableElement(id, name, icon, this);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, this);
 	tab->layout()->addWidget(element);
 }
 

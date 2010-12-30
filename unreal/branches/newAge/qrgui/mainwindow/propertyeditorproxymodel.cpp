@@ -54,9 +54,17 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	if (!targetObject.isValid())
 		return QVariant();
 
+	if (role == Qt::ToolTipRole) {
+		Id const id = targetObject.data(roles::idRole).value<Id>();
+		QString const description = mEditorManager.propertyDescription(id, mFieldNames.at(index.row()));
+		if (description != NULL) 
+			return "<body>" + mEditorManager.propertyDescription(id, mFieldNames.at(index.row()));
+		else
+			return QVariant();
+	}
+
 	if (role != Qt::DisplayRole)
 		return QVariant();
-
 
 	if (index.column() == 0) {
 		return mFieldNames.at(index.row());

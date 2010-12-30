@@ -303,7 +303,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 //				return *mErrorReporter;
 //			}
 
-//			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
+//			if (mCurrentElem->id().element().compare("ConditionNode") == 0) {
 //				Id validLinkId = findValidLink();
 //				if (mBlockParser->hasErrors()) {
 //					deinitialize();

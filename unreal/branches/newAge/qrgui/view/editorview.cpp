@@ -75,6 +75,13 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	QGraphicsView::mouseMoveEvent(event);
 }
 
+void EditorView::mouseReleaseEvent(QMouseEvent *event)
+{
+	QGraphicsView::mouseReleaseEvent(event);
+	if (mScene->getNeedDrawGrid())
+		mScene->invalidate();
+}
+
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);

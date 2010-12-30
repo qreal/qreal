@@ -57,19 +57,24 @@ bool Property::initReferenceType(QString typeName, QDomElement const &element)
 	return true;
 }
 
-QString Property::name()
+QString Property::name() const
 {
 	return mName;
 }
 
-QString Property::type()
+QString Property::type() const
 {
 	return mType;
 }
 
-QString Property::defaultValue()
+QString Property::defaultValue() const
 {
 	return mDefaultValue;
+}
+
+QString Property::description() const
+{
+	return mDescription;
 }
 
 Property * Property::clone()
