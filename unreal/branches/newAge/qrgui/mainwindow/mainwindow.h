@@ -52,7 +52,7 @@ namespace qReal {
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
-//		void updateTab(QModelIndex const &index);
+		void updateTabName(Id const &id);
 
 		void settingsPlugins();
 
@@ -105,7 +105,7 @@ namespace qReal {
 		void parseHascol();
 		void showPreferencesDialog();
 
-		void centerOn(const QModelIndex &rootIndex);
+		void centerOn(Id const &id);
 		void graphicalModelExplorerClicked(const QModelIndex &rootIndex);
 
 		void openNewEmptyTab();
@@ -134,7 +134,6 @@ namespace qReal {
 		PropertyEditorModel mPropertyModel;
 		PropertyEditorDelegate mDelegate;
 		GesturesWidget *mGesturesWidget;
-
 
 		QVector<bool> mSaveListChecked;
 		bool mDiagramCreateFlag;

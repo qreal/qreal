@@ -194,19 +194,13 @@ MainWindow::MainWindow()
 //	ui.diagramExplorer->setModel(mModel);
 //	ui.diagramExplorer->setRootIndex(mModels->graphicalModelAssistApi().rootIndex());
 
-//	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
-
 //	if (mModel->rowCount() > 0)
 //		openNewTab(mModel->index(0, 0, QModelIndex()));
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(".", mEditorManager);
-//	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(".");
-//	mGraphicalModel = new models::GraphicalModel(repoApi, mEditorManager);
-//	mLogicalModel = new models::LogicalModel(repoApi, mEditorManager);
 
-//	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
-//	mGraphicalModel->connectToLogicalModel(mLogicalModel);
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 
 	ui.graphicalModelExplorer->setModel(mModels->graphicalModel());
 	ui.logicalModelExplorer->setModel(mModels->logicalModel());
@@ -299,11 +293,11 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId()) {
+	if (id == Id::rootId())
 		return;
-	}
-//	mPropertyModel.setIndex(mModel->indexById(id));
-//	centerOn(mModel->indexById(id));
+
+	mPropertyModel.setIndex(mModels->graphicalModelAssistApi().indexById(id));
+	centerOn(id);
 }
 
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
@@ -369,38 +363,39 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 void MainWindow::sceneSelectionChanged()
 {
-//	if (!getCurrentTab())
-//		return;
-//	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
-//	int length = graphicsItems.size();
-//	if (length == 1) {
-//		QGraphicsItem *item = graphicsItems[0];
-//		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
-//			if (elem->index().isValid()) {
-//				ui.diagramExplorer->setCurrentIndex(elem->index());
-//				mPropertyModel.setIndex(elem->index());
-//			}
-//		} else {
-//			ui.diagramExplorer->setCurrentIndex(QModelIndex());
-//			mPropertyModel.setIndex(QModelIndex());
+	if (!getCurrentTab())
+		return;
+	QList<QGraphicsItem*> graphicsItems = getCurrentTab()->scene()->selectedItems();
+	int length = graphicsItems.size();
+	if (length == 1) {
+		QGraphicsItem *item = graphicsItems[0];
+		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
+			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
+			if (index.isValid()) {
+				ui.graphicalModelExplorer->setCurrentIndex(index);
+				mPropertyModel.setIndex(index);
+			}
+		} else {
+			ui.graphicalModelExplorer->setCurrentIndex(QModelIndex());
+			mPropertyModel.setIndex(QModelIndex());
 
-//			foreach(QGraphicsItem* item, graphicsItems) {
-//				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
-//				if (edge) {
-//					length--;
-//					graphicsItems.removeOne(edge);
-//				}
-//			}
-//			//TODO: remove it? length < 2
-//			if (length > 1) {
-//				foreach(QGraphicsItem* item, graphicsItems) {
-//					UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
-//					if (node)
-//						node->hideEmbeddedLinkers();
-//				}
-//			}
-//		}
-//	}
+			foreach(QGraphicsItem* item, graphicsItems) {
+				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
+				if (edge) {
+					length--;
+					graphicsItems.removeOne(edge);
+				}
+			}
+			//TODO: remove it? length < 2
+			if (length > 1) {
+				foreach(QGraphicsItem* item, graphicsItems) {
+					UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+					if (node)
+						node->hideEmbeddedLinkers();
+				}
+			}
+		}
+	}
 }
 
 QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
@@ -428,7 +423,7 @@ void MainWindow::open()
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
 {
-//	mModel->setData(index, data, role);
+//	mModels->setData(index, data, role);
 }
 
 void MainWindow::print()
@@ -907,10 +902,10 @@ void qReal::MainWindow::closeTab( int index )
 
 void MainWindow::exterminate()
 {
-//	int tabCount = ui.tabs->count();
-//	for (int i = 0; i < tabCount; i++)
-//		closeTab(i);
-//	mModel->exterminate();
+	int tabCount = ui.tabs->count();
+	for (int i = 0; i < tabCount; i++)
+		closeTab(i);
+	mModels->repoControlApi().exterminate();
 }
 
 void MainWindow::parseHascol()
@@ -933,29 +928,30 @@ void MainWindow::showPreferencesDialog()
 	preferencesDialog.exec();
 }
 
+// TODO: Fix it after new property editor will be implemented.
 void MainWindow::openNewEmptyTab()
 {
-	QObject *object = sender();
-	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
-	QString text = "Shape Editor";
-	ShapeEdit *shapeEdit = NULL;
-	if (button != NULL) {
+//	QObject const *object = sender();
+//	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
+//	QString const text = "Shape Editor";
+//	ShapeEdit *shapeEdit = NULL;
+//	if (button != NULL) {
 //		QPersistentModelIndex index = button->getIndex();
 //		int role = button->getRole();
-//		QString propertyValue = button->getPropertyValue();
+//		QString const propertyValue = button->getPropertyValue();
 //		shapeEdit = new ShapeEdit(index, role);
-//		if (propertyValue != "")
+//		if (!propertyValue.isEmpty())
 //			shapeEdit->load(propertyValue);
-//		mModel->setData(index, propertyValue, role);
-//		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
-	}
-	else {
-		shapeEdit = new ShapeEdit();
-	}
+//		mModels->logicalModel().setData(index, propertyValue, role);
+////		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+//	}
+//	else {
+//		shapeEdit = new ShapeEdit();
+//	}
 
-	ui.tabs->addTab(shapeEdit, text);
-	ui.tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+//	ui.tabs->addTab(shapeEdit, text);
+//	ui.tabs->setCurrentWidget(shapeEdit);
+//	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)
@@ -1002,25 +998,24 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 	connectActionZoomTo(widget);
 }
 
-void MainWindow::centerOn(const QModelIndex &index)
+void MainWindow::centerOn(Id const &id)
 {
-//	Id itemId = mModel->idByIndex(index);
-//	if (itemId.element() == mModel->assistApi().editorManager().getEditorInterface(itemId.editor())->diagramNodeName(itemId.diagram()))
-//		return;
-//	EditorView* view = getCurrentTab();
-//	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(view->scene());
-//	UML::Element* element = scene->getElem(itemId);
+	if (mEditorManager.isDiagramNode(id))
+		return;
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* const element = scene->getElem(id);
 
-//	scene->clearSelection();
-//	if (element != NULL) {
-//		element->setSelected(true);
+	scene->clearSelection();
+	if (element != NULL) {
+		element->setSelected(true);
 
-//		float widthTab = ui.tabs->size().width();
-//		float heightTab = ui.tabs->size().height();
-//		float widthEl = element->boundingRect().width();
-//		float heightEl = element->boundingRect().height();
-//		view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
-//	}
+		float const widthTab = ui.tabs->size().width();
+		float const heightTab = ui.tabs->size().height();
+		float const widthEl = element->boundingRect().width();
+		float const heightEl = element->boundingRect().height();
+		view->ensureVisible(element, (widthTab - widthEl) / 2, (heightTab - heightEl) / 2);
+	}
 }
 
 void MainWindow::propertyEditorScrollTo(const QModelIndex &index)
@@ -1032,7 +1027,7 @@ void MainWindow::graphicalModelExplorerClicked(const QModelIndex &index)
 {
 	mPropertyModel.setIndex(index);
 	openNewTab(index);
-	centerOn(index);
+	centerOn(mModels->graphicalModelAssistApi().idByIndex(index));
 }
 
 void MainWindow::openNewTab(const QModelIndex &arg)
@@ -1106,19 +1101,16 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
-// TODO: Reimplement this for new models
-/*
-void MainWindow::updateTab(QModelIndex const &index)
+void MainWindow::updateTabName(Id const &id)
 {
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
-			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
+		if (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id)) {
+			ui.tabs->setTabText(i, mModels->graphicalModelAssistApi().name(id));
 			return;
 		}
 	}
 }
-*/
 
 void MainWindow::closeTab(QModelIndex const &index)
 {
@@ -1349,7 +1341,7 @@ void MainWindow::save()
 
 void MainWindow::saveAll()
 {
-	mModels->repoControlApi()->saveAll();
+	mModels->repoControlApi().saveAll();
 	mModels->resetChangedDiagrams();
 }
 
@@ -1361,8 +1353,8 @@ void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
 	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
 	//add choosing of just created diagrams
 
-	mModels->repoControlApi()->save(toSave);
-	mModels->repoControlApi()->remove(toRemove);
+	mModels->repoControlApi().save(toSave);
+	mModels->repoControlApi().remove(toRemove);
 	mModels->resetChangedDiagrams(toSave);
 	mModels->resetChangedDiagrams(toRemove);
 }
@@ -1378,13 +1370,13 @@ void MainWindow::saveAs()	//TODO: change
 QListWidget* MainWindow::createSaveListWidget()
 {
 	mSaveListChecked.clear();
-	mSaveListChecked.resize(mModels->repoControlApi()->getOpenedDiagrams().size());
+	mSaveListChecked.resize(mModels->repoControlApi().getOpenedDiagrams().size());
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
-	foreach(Id id, mModels->repoControlApi()->getOpenedDiagrams()) {
+	foreach(Id id, mModels->repoControlApi().getOpenedDiagrams()) {
 		listWidget->addItem(id.diagram());
-		if (mModels->repoControlApi()->getChangedDiagrams().contains(id.diagramId())) {
+		if (mModels->repoControlApi().getChangedDiagrams().contains(id.diagramId())) {
 			mSaveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 		} else {

@@ -128,6 +128,7 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			mApi.setName(item->id(), value.toString());
+			emit nameChanged(item->id());
 			break;
 		case roles::positionRole:
 			mApi.setPosition(item->id(), value);

@@ -37,6 +37,9 @@ namespace qReal {
 				virtual ModelsAssistApi* modelAssistApi() const;
 				GraphicalModelAssistApi &graphicalModelAssistApi() const;
 
+			signals:
+				void nameChanged(Id const &id);
+
 			private:
 				LogicalModelView mLogicalModelView;
 				qrRepo::GraphicalRepoApi &mApi;

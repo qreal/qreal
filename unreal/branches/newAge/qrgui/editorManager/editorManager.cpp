@@ -310,7 +310,12 @@ QList<Listener*> EditorManager::listeners() const
 	return result;
 }
 
-EditorInterface* EditorManager::getEditorInterface(QString editor) const
+EditorInterface* EditorManager::editorInterface(QString const &editor) const
 {
 	return mPluginIface[editor];
+}
+
+bool EditorManager::isDiagramNode(Id const &id) const
+{
+	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
 }

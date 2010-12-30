@@ -58,7 +58,9 @@ namespace qReal {
 		Id findElementByType(QString const &type) const;
 		QList<Listener *> listeners() const;
 
-				EditorInterface* getEditorInterface(QString editor) const;
+		EditorInterface* editorInterface(QString const &editor) const;
+
+		bool isDiagramNode(Id const &id) const;
 	private:
 		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
 

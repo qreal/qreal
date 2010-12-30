@@ -509,11 +509,11 @@ bool NodeElement::initPossibleEdges()
 	if (!possibleEdges.isEmpty())
 		return true;
 	foreach(QString elementName,
-			mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->elements(id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->isNodeOrEdge(elementName);
+			mGraphicalAssistApi->editorManager().editorInterface(id().editor())->elements(id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManager().editorInterface(id().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= mGraphicalAssistApi->editorManager().getEditorInterface(id().editor())->getPossibleEdges(elementName);
+					= mGraphicalAssistApi->editorManager().editorInterface(id().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if ((pEdge.first.first == id().element())
 					|| ((pEdge.first.second == id().element()) && (!pEdge.second.first))) {

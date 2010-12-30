@@ -11,6 +11,7 @@ using namespace details;
 GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager)
 	: ModelsAssistApi(graphicalModel, editorManager), mGraphicalModel(graphicalModel)
 {
+	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
 
 qrRepo::GraphicalRepoApi const &GraphicalModelAssistApi::graphicalRepoApi() const
@@ -62,60 +63,60 @@ void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, 
 
 void GraphicalModelAssistApi::setConfiguration(Id const &elem, QPolygon const &newValue)
 {
-	setProperty(elem, QVariant(newValue), roles::configurationRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::configurationRole);
 }
 
 QPolygon GraphicalModelAssistApi::configuration(Id const &elem) const
 {
-	return property(elem, roles::configurationRole).value<QPolygon>();
+	return ModelsAssistApi::property(elem, roles::configurationRole).value<QPolygon>();
 }
 
 void GraphicalModelAssistApi::setPosition(Id const &elem, QPointF const &newValue)
 {
-	setProperty(elem, QVariant(newValue), roles::positionRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::positionRole);
 }
 
 QPointF GraphicalModelAssistApi::position(Id const &elem) const
 {
-	return property(elem, roles::positionRole).value<QPointF>();
+	return ModelsAssistApi::property(elem, roles::positionRole).value<QPointF>();
 }
 
 void GraphicalModelAssistApi::setToPort(Id const &elem, qreal const &newValue)
 {
-	setProperty(elem, QVariant(newValue), roles::toPortRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::toPortRole);
 }
 
 qreal GraphicalModelAssistApi::toPort(Id const &elem) const
 {
-	return property(elem, roles::toPortRole).value<qreal>();
+	return ModelsAssistApi::property(elem, roles::toPortRole).value<qreal>();
 }
 
 void GraphicalModelAssistApi::setFromPort(Id const &elem, qreal const &newValue)
 {
-	setProperty(elem, QVariant(newValue), roles::fromPortRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), roles::fromPortRole);
 }
 
 qreal GraphicalModelAssistApi::fromPort(Id const &elem) const
 {
-	return property(elem, roles::fromPortRole).value<qreal>();
+	return ModelsAssistApi::property(elem, roles::fromPortRole).value<qreal>();
 }
 
 void GraphicalModelAssistApi::setName(Id const &elem, QString const &newValue)
 {
-	setProperty(elem, QVariant(newValue), Qt::DisplayRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), Qt::DisplayRole);
 }
 
 QString GraphicalModelAssistApi::name(Id const &elem) const
 {
-	return property(elem, Qt::DisplayRole).value<QString>();
+	return ModelsAssistApi::property(elem, Qt::DisplayRole).value<QString>();
 }
 
 void GraphicalModelAssistApi::setToolTip(Id const &elem, QString const &newValue)
 {
-	setProperty(elem, QVariant(newValue), Qt::ToolTipRole);
+	ModelsAssistApi::setProperty(elem, QVariant(newValue), Qt::ToolTipRole);
 }
 
 QString GraphicalModelAssistApi::toolTip(Id const &elem) const
 {
-	return property(elem, Qt::ToolTipRole).value<QString>();
+	return ModelsAssistApi::property(elem, Qt::ToolTipRole).value<QString>();
 }

@@ -48,9 +48,9 @@ LogicalModelAssistApi &Models::logicalModelAssistApi() const
 	return mLogicalModel->logicalModelAssistApi();
 }
 
-qrRepo::RepoControlInterface const *Models::repoControlApi() const
+qrRepo::RepoControlInterface &Models::repoControlApi() const
 {
-	return mRepoApi;
+	return *mRepoApi;
 }
 
 qrRepo::LogicalRepoApi const &Models::logicalRepoApi() const
