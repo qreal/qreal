@@ -1282,15 +1282,19 @@ void MainWindow::diagramInCreateListDeselect()
 void MainWindow::diagramInCreateListSelected(int num)
 {
 	deleteFromExplorer(false);
+	deleteFromExplorer(true);
 	createDiagram(mDiagramsList.at(num));
 }
 
-void MainWindow::createDiagram(const QString &idString)
+void MainWindow::createDiagram(QString const &idString)
 {
-//	Id created = mModel->assistApi().createElement(Id::rootId(), Id::loadFromString(idString));
-//	QModelIndex index = mModel->indexById(created);
-//	ui.diagramExplorer->setCurrentIndex(index);
-//	openNewTab(index);
+	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
+	ui.graphicalModelExplorer->setCurrentIndex(index);
+	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
+	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
+	ui.logicalModelExplorer->setCurrentIndex(logicalIndex);
+	openNewTab(index);
 }
 
 void MainWindow::save()
