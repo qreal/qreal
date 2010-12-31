@@ -8,7 +8,7 @@
 #include "graphicalRepoApi.h"
 #include "logicalRepoApi.h"
 
-#include <QSet>
+#include <QtCore/QSet>
 
 namespace qrRepo {
 
@@ -76,6 +76,9 @@ namespace qrRepo {
 
 		qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
+		virtual bool isLogicalElement(qReal::Id const &id) const;
+		virtual bool isGraphicalElement(qReal::Id const &id) const;
+
 		void exterminate();
 
 		void saveAll() const;
@@ -91,6 +94,8 @@ namespace qrRepo {
 		//Returns all elements with .element() == type.element()
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
+
+		virtual qReal::Id logicalId(qReal::Id const &id) const;
 
 		//Returns all elements with .element() == type
 		qReal::IdList elementsByType(QString const &type) const;

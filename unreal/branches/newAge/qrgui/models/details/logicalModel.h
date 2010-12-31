@@ -44,6 +44,12 @@ namespace qReal {
 				GraphicalModelView mGraphicalModelView;
 				qrRepo::LogicalRepoApi &mApi;
 				LogicalModelAssistApi *mLogicalAssistApi;
+
+				void init();
+				void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
+				modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem, Id const &id);
+				void checkProperties(Id const &id);
+
 				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 				void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
 						modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);

@@ -12,7 +12,7 @@ LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const 
 	: AbstractModel(editorManager), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
-	mModelItems.insert(Id::rootId(), mRootItem);
+	init();
 	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
 }
 
@@ -20,6 +20,58 @@ LogicalModel::~LogicalModel()
 {
 	delete mLogicalAssistApi;
 	// TODO: Cleanup tree
+}
+
+void LogicalModel::init()
+{
+	mModelItems.insert(Id::rootId(), mRootItem);
+	mApi.setName(Id::rootId(), Id::rootId().toString());
+	// Turn off view notification while loading.
+	blockSignals(true);
+	loadSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
+	blockSignals(false);
+}
+
+void LogicalModel::loadSubtreeFromClient(LogicalModelItem * const parent)
+{
+	foreach (Id childId, mApi.children(parent->id())) {
+		if (mApi.isLogicalElement(childId)) {
+			LogicalModelItem *child = loadElement(parent, childId);
+			loadSubtreeFromClient(child);
+		}
+	}
+}
+
+LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id const &id)
+{
+//	if (isDiagram(id)) {
+//		mApi.addOpenedDiagram(id);
+//	}
+
+	int newRow = parentItem->children().size();
+
+	beginInsertRows(index(parentItem), newRow, newRow);
+	LogicalModelItem *item = new LogicalModelItem(id, parentItem);
+	checkProperties(id);
+	parentItem->addChild(item);
+	mModelItems.insert(id, item);
+	endInsertRows();
+
+	return item;
+}
+
+void LogicalModel::checkProperties(Id const &id)
+{
+	if (!mEditorManager.hasElement(id.type()))
+		return;
+	QStringList const propertiesThatShallBe = mEditorManager.getPropertyNames(id.type());
+	foreach (QString const property, propertiesThatShallBe)
+		if (!api().hasProperty(id, property))
+			mApi.setProperty(id, property, "");  // There shall be default value.
+	if (!mApi.hasProperty(id, "outgoingUsages"))
+		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+	if (!mApi.hasProperty(id, "incomingUsages"))
+		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)

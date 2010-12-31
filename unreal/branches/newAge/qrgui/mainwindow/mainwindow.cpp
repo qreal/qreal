@@ -186,9 +186,6 @@ MainWindow::MainWindow()
 
 //	mPropertyModel.setSourceModel(mModel);
 
-//	if (mModel->rowCount() > 0)
-//		openNewTab(mModel->index(0, 0, QModelIndex()));
-
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(".", mEditorManager);
 
@@ -201,6 +198,9 @@ MainWindow::MainWindow()
 	if (showSplash)
 		splash->close();
 	delete splash;
+
+	if (mModels->graphicalModel()->rowCount() > 0)
+		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
 	//choosing diagrams to save isn't implemented yet
 	settings.setValue("ChooseDiagramsToSave", false);
@@ -1212,7 +1212,7 @@ IGesturesPainter * MainWindow::gesturesPainter()
 
 void MainWindow::suggestToCreateDiagram()
 {
-	if (getCurrentTab())
+	if (mModels->logicalModel()->rowCount() > 0)
 		return;
 	QDialog dialog;
 	QVBoxLayout vLayout;

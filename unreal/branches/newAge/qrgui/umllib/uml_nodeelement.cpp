@@ -117,7 +117,7 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 {
 	qDebug() << "==" << id().toString();
 	toArrange.remove(this);
-	const qreal indent = 0.1;
+//	const qreal indent = 0.1;
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();

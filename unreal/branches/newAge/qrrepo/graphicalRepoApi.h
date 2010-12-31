@@ -25,6 +25,9 @@ public:
 	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
 
 	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
+
+	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
+	virtual qReal::Id logicalId(qReal::Id const &id) const = 0;
 };
 
 }

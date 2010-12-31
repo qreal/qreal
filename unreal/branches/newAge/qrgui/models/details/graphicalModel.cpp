@@ -14,7 +14,7 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorMa
 	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
-	mModelItems.insert(Id::rootId(), mRootItem);
+	init();
 	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
 }
 
@@ -22,6 +22,46 @@ GraphicalModel::~GraphicalModel()
 {
 	delete mGraphicalAssistApi;
 	// TODO: Cleanup tree
+}
+
+void GraphicalModel::init()
+{
+	mModelItems.insert(Id::rootId(), mRootItem);
+	mApi.setName(Id::rootId(), Id::rootId().toString());
+	// Turn off view notification while loading. Model can be inconsistent during a process,
+	// so views shall not update themselves before time. It is important for
+	// scene, where adding edge before adding nodes may lead to disconnected edge.	blockSignals(true);
+	blockSignals(true);
+	loadSubtreeFromClient(static_cast<GraphicalModelItem *>(mRootItem));
+	blockSignals(false);
+}
+
+void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
+{
+	foreach (Id childId, mApi.children(parent->id())) {
+		if (mApi.isGraphicalElement(childId)) {
+			GraphicalModelItem *child = loadElement(parent, childId);
+			loadSubtreeFromClient(child);
+		}
+	}
+}
+
+GraphicalModelItem *GraphicalModel::loadElement(GraphicalModelItem *parentItem, Id const &id)
+{
+//	if (isDiagram(id)) {
+//		mApi.addOpenedDiagram(id);
+//	}
+
+	int newRow = parentItem->children().size();
+
+	beginInsertRows(index(parentItem), newRow, newRow);
+	Id const logicalId = mApi.logicalId(id);
+	GraphicalModelItem *item = new GraphicalModelItem(id, logicalId, parentItem);
+	parentItem->addChild(item);
+	mModelItems.insert(id, item);
+	endInsertRows();
+
+	return item;
 }
 
 void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)

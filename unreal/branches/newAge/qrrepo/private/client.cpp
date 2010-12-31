@@ -7,10 +7,8 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-bool const failSafe = true;
-
 Client::Client(QString const &workingDirectory)
-	: serializer(workingDirectory, failSafe)
+	: serializer(workingDirectory)
 {
 	init();
 	loadFromDisk();
@@ -52,7 +50,7 @@ void Client::addParent(Id const &id, Id const &parent)
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
 			mObjects[id]->addParent(parent);
-			if (!failSafe || !mObjects[parent]->children().contains(id))
+			if (!mObjects[parent]->children().contains(id))
 				mObjects[parent]->addChild(id);
 		} else {
 			throw Exception("Client: Adding nonexistent parent " + parent.toString() + " to  object " + id.toString());
@@ -71,12 +69,12 @@ void Client::addChild(const Id &id, const Id &child)
 void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 {
 	if (mObjects.contains(id)) {
-		if (!failSafe || !mObjects[id]->children().contains(child))
+		if (!mObjects[id]->children().contains(child))
 			mObjects[id]->addChild(child);
 		if (mObjects.contains(child)) {
 			mObjects[child]->addParent(id);
 		} else {
-			mObjects.insert(child,new Object(child, id, logicalId));
+			mObjects.insert(child, new Object(child, id, logicalId));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
@@ -169,7 +167,7 @@ void Client::addChildrenToRootObject()
 {
 	foreach (Object *object, mObjects.values()) {
 		if (object->parents().contains(Id::rootId())) {
-			if (!failSafe || !mObjects[Id::rootId()]->children().contains(object->id()))
+			if (!mObjects[Id::rootId()]->children().contains(object->id()))
 				mObjects[Id::rootId()]->addChild(object->id());
 		}
 	}
@@ -177,8 +175,6 @@ void Client::addChildrenToRootObject()
 
 IdList Client::idsOfAllChildrenOf(Id id) const
 {
-	qDebug() << "ID: " << mObjects[id];
-
 	IdList result;
 	result.append(id);
 	foreach(Id childId,mObjects[id]->children())
@@ -274,5 +270,11 @@ qReal::IdList Client::elements() const
 
 bool Client::isLogicalId(qReal::Id const &elem) const
 {
-	return (mObjects[elem]->logicalId() == qReal::Id());
+	return mObjects[elem]->logicalId() == qReal::Id();
 }
+
+qReal::Id Client::logicalId(qReal::Id const &elem) const
+{
+	return mObjects[elem]->logicalId();
+}
+

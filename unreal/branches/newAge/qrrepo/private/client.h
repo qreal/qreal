@@ -31,6 +31,7 @@ namespace qrRepo {
 
 			qReal::IdList elements() const;
 			bool isLogicalId(qReal::Id const &elem) const;
+			qReal::Id logicalId(qReal::Id const &elem) const;
 
 			void svnUpdate();
 			void svnCommit();
@@ -49,13 +50,14 @@ namespace qrRepo {
 			void setWorkingDir(QString const &workingDir);
 			void log(QString const message, const qReal::Id diagram);
 
-			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
-			QList<Object*> allChildrenOf(qReal::Id id) const;
 		private:
 			void init();
 
 			void loadFromDisk();
 			void addChildrenToRootObject();
+
+			qReal::IdList idsOfAllChildrenOf(qReal::Id id) const;
+			QList<Object*> allChildrenOf(qReal::Id id) const;
 
 			QHash<qReal::Id, Object*> mObjects;
 			Serializer serializer;

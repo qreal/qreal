@@ -24,6 +24,7 @@ public:
 	virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination) = 0;
 
 	virtual qReal::IdList logicalElements(qReal::Id const &type) const = 0;
+	virtual bool isLogicalElement(qReal::Id const &id) const = 0;
 
 	virtual qReal::IdList elementsByType(QString const &type) const = 0;
 	virtual int elementsCount() const = 0;

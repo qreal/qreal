@@ -329,6 +329,21 @@ void RepoApi::setConfiguration(Id const &id, QVariant const &configuration)
 	mClient.setProperty(id, "configuration", configuration);
 }
 
+bool RepoApi::isLogicalElement(qReal::Id const &id) const
+{
+	return mClient.isLogicalId(id);
+}
+
+bool RepoApi::isGraphicalElement(qReal::Id const &id) const
+{
+	return !mClient.isLogicalId(id);
+}
+
+qReal::Id RepoApi::logicalId(qReal::Id const &id) const
+{
+	return mClient.logicalId(id);
+}
+
 void RepoApi::exterminate()
 {
 	mClient.exterminate();
@@ -371,8 +386,6 @@ void RepoApi::remove(qReal::IdList list) const
 				mClient.remove(pair.second);
 		}
 }
-
-
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
 {

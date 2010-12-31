@@ -6,7 +6,8 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
 
-#include <QFile>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 
 namespace qrRepo {
 
@@ -14,7 +15,7 @@ namespace qrRepo {
 
 		class Serializer {
 		public:
-			Serializer(QString const& saveDirName, bool failSafeMode);
+			Serializer(QString const& saveDirName);
 			void clearWorkingDir() const;
 			void setWorkingDir(QString const& workingDir);
 
@@ -25,11 +26,12 @@ namespace qrRepo {
 			void log(QString const message, qReal::Id const diagram);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
+			void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
 
 			QString pathToElement(qReal::Id const &id) const;
 			QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId) const;
 
-			Object *parseLogicObject(QDomElement const &elem);
+			Object *parseObject(QDomElement const &elem);
 			static void clearDir(QString const &path);
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);
 			static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
@@ -43,7 +45,6 @@ namespace qrRepo {
 			static QDomElement propertiesToXml(Object * const object, QDomDocument &doc);
 
 			QString mWorkingDir;
-			bool const mFailSafe;
 
 			QMap<QString, QFile*> files;
 		};

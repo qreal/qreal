@@ -45,10 +45,14 @@ namespace qReal {
 				qrRepo::GraphicalRepoApi &mApi;
 				GraphicalModelAssistApi *mGraphicalAssistApi;
 
+				void init();
+				void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
+				modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem, Id const &id);
+
 				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 				void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
 				modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
-				void removeModelItems(details::modelsImplementation::AbstractModelItem * const root);
+				void removeModelItems(modelsImplementation::AbstractModelItem * const root);
 			};
 		}
 	}
