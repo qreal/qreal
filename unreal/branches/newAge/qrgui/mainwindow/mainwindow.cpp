@@ -893,6 +893,7 @@ void MainWindow::exterminate()
 	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
 	mModels->repoControlApi().exterminate();
+	mModels->reinit();
 }
 
 void MainWindow::parseHascol()

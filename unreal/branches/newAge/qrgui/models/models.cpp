@@ -65,7 +65,8 @@ qrRepo::LogicalRepoApi &Models::mutableLogicalRepoApi() const
 
 void Models::reinit()
 {
-	// TODO: Implement this.
+	mLogicalModel->reinit();
+	mGraphicalModel->reinit();
 }
 
 void Models::resetChangedDiagrams()
