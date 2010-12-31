@@ -52,15 +52,17 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 	AbstractModelItem *parentItem = mModelItems[parent];
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
+	Id actualLogicalId = logicalId;
 	if (logicalId == Id::rootId()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
+		actualLogicalId = newGraphicalModelItem->logicalId();
 	}
 	else {
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
-	initializeElement(id, logicalId, parentItem, newGraphicalModelItem, name, position);
+	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,

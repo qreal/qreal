@@ -243,11 +243,11 @@ QString Serializer::serializeQVariant(QVariant const &v)
 {
 	switch (v.type()) {
 	case QVariant::Int:
-		return QString("%1").arg(v.toInt());
+		return QString::number(v.toInt());
 	case QVariant::UInt:
-		return QString("%1").arg(v.toUInt());
+		return QString::number(v.toUInt());
 	case QVariant::Double:
-		return QString("%1").arg(v.toDouble());
+		return QString::number(v.toDouble());
 	case QVariant::Bool:
 		return QString("%1").arg(v.toBool());
 	case QVariant::String:
@@ -271,7 +271,7 @@ QString Serializer::serializeQVariant(QVariant const &v)
 
 QString Serializer::serializeQPointF(QPointF const &p)
 {
-	return QString("%1").arg(p.x()) + ", " + QString("%1").arg(p.y());
+	return QString::number(p.x()) + ", " + QString::number(p.y());
 }
 
 QString Serializer::serializeQPolygon(QPolygon const &p)
