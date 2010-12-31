@@ -36,7 +36,6 @@ namespace qReal {
 				QList<QPersistentModelIndex> indexesWithLogicalId(Id const &logicalId) const;
 				virtual ModelsAssistApi* modelAssistApi() const;
 				GraphicalModelAssistApi &graphicalModelAssistApi() const;
-				void reinit();
 
 			signals:
 				void nameChanged(Id const &id);
@@ -46,10 +45,9 @@ namespace qReal {
 				qrRepo::GraphicalRepoApi &mApi;
 				GraphicalModelAssistApi *mGraphicalAssistApi;
 
-				void init();
+				virtual void init();
 				void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
 				modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem, Id const &id);
-				void cleanupTree(modelsImplementation::AbstractModelItem * item);
 
 				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 				void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,

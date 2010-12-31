@@ -168,3 +168,18 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		return true;
 	}
 }
+
+void AbstractModel::reinit()
+{
+	cleanupTree(mRootItem);
+	mModelItems.clear();
+	delete mRootItem;
+	mRootItem = createModelItem(Id::rootId(), NULL);
+	reset();
+	init();
+}
+
+void AbstractModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
+{
+	// TODO: Implement
+}

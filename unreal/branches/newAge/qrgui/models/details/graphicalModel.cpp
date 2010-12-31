@@ -64,21 +64,6 @@ GraphicalModelItem *GraphicalModel::loadElement(GraphicalModelItem *parentItem, 
 	return item;
 }
 
-void GraphicalModel::reinit()
-{
-	cleanupTree(mRootItem);
-	mModelItems.clear();
-	delete mRootItem;
-	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
-	reset();
-	init();
-}
-
-void GraphicalModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
-{
-	// TODO: Implement
-}
-
 void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 {
 	mLogicalModelView.setModel(logicalModel);

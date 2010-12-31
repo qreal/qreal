@@ -39,18 +39,16 @@ namespace qReal {
 				virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 				virtual ModelsAssistApi* modelAssistApi() const;
 				LogicalModelAssistApi &logicalModelAssistApi() const;
-				void reinit();
 
 		private:
 				GraphicalModelView mGraphicalModelView;
 				qrRepo::LogicalRepoApi &mApi;
 				LogicalModelAssistApi *mLogicalAssistApi;
 
-				void init();
+				virtual void init();
 				void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
 				modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem, Id const &id);
 				void checkProperties(Id const &id);
-				void cleanupTree(modelsImplementation::AbstractModelItem * item);
 
 				virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 				void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,

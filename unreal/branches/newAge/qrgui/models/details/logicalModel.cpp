@@ -74,21 +74,6 @@ void LogicalModel::checkProperties(Id const &id)
 		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 }
 
-void LogicalModel::reinit()
-{
-	cleanupTree(mRootItem);
-	mModelItems.clear();
-	delete mRootItem;
-	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
-	reset();
-	init();
-}
-
-void LogicalModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
-{
-	// TODO: Implement
-}
-
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)
 {
 	mGraphicalModelView.setModel(graphicalModel);

@@ -44,6 +44,8 @@ namespace qReal {
 					QModelIndex indexById(Id const &id) const;
 					Id idByIndex(QModelIndex const &index) const;
 
+					void reinit();
+
 				protected:
 					EditorManager const &mEditorManager;
 					QHash<Id, AbstractModelItem *> mModelItems;
@@ -54,6 +56,9 @@ namespace qReal {
 
 				private:
 					virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
+					virtual void init() = 0;
+
+					void cleanupTree(modelsImplementation::AbstractModelItem * item);
 				};
 
 			}
