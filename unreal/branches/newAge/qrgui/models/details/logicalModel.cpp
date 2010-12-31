@@ -19,7 +19,7 @@ LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const 
 LogicalModel::~LogicalModel()
 {
 	delete mLogicalAssistApi;
-	// TODO: Cleanup tree
+	cleanupTree(mRootItem);
 }
 
 void LogicalModel::init()

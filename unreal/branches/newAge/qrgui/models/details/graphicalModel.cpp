@@ -21,7 +21,7 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorMa
 GraphicalModel::~GraphicalModel()
 {
 	delete mGraphicalAssistApi;
-	// TODO: Cleanup tree
+	cleanupTree(mRootItem);
 }
 
 void GraphicalModel::init()

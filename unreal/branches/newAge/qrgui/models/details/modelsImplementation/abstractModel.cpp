@@ -181,5 +181,9 @@ void AbstractModel::reinit()
 
 void AbstractModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
 {
-	// TODO: Implement
+	foreach (AbstractModelItem *childItem, item->children()) {
+		cleanupTree(childItem);
+		delete childItem;
+	}
+	item->clearChildren();
 }

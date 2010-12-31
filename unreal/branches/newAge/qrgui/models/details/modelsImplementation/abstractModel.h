@@ -54,11 +54,11 @@ namespace qReal {
 					QString findPropertyName(Id const &id, int const role) const;
 					QModelIndex index(AbstractModelItem const * const item) const;
 
+					void cleanupTree(modelsImplementation::AbstractModelItem * item);
+
 				private:
 					virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
 					virtual void init() = 0;
-
-					void cleanupTree(modelsImplementation::AbstractModelItem * item);
 				};
 
 			}
