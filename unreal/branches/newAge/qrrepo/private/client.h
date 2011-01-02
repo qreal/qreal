@@ -18,8 +18,8 @@ namespace qrRepo {
 			QRREPO_EXPORT Client(QString const &workingDirectory);
 			QRREPO_EXPORT ~Client();
 			qReal::IdList children(const qReal::Id &id) const;
-			qReal::IdList parents(const qReal::Id &id) const;
-			void addParent(const qReal::Id &id, const qReal::Id &parent);
+			qReal::Id parent(const qReal::Id &id) const;
+			void setParent(const qReal::Id &id, const qReal::Id &parent);
 			void addChild(const qReal::Id &id, const qReal::Id &child);
 			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId);
 			void removeParent(const qReal::Id &id, const qReal::Id &parent);

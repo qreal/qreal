@@ -195,8 +195,8 @@ bool JavaHandler::checkTheModel()
 	features.append(classFields);
 	features.append(classMethods);
 	foreach (Id id, features) {
-		IdList parents = mApi.parents(id);
-		if (parents.isEmpty()) {
+		Id parent = mApi.parent(id);
+		if (parent == Id()) {
 			addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
 			result = false;
 		}
@@ -247,10 +247,10 @@ bool JavaHandler::checkTheModel()
 	foreach (Id aLink, activityEdges) {
 		Id fromId = mApi.from(aLink);
 		Id toId = mApi.to(aLink);
-		IdList fromIdParents = mApi.parents(fromId);
-		IdList toIdParents = mApi.parents(toId);
+		Id fromIdParent = mApi.parent(fromId);
+		Id toIdParent = mApi.parent(toId);
 
-		if (fromIdParents.isEmpty() || toIdParents.isEmpty() || fromIdParents.at(0) != toIdParents.at(0)) {
+		if (fromIdParent == Id() || toIdParent == Id() || fromIdParent != toIdParent) {
 			addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". The source and the target of an edge must be in the same activity as the edge.");
 			result = false;
 		}
@@ -742,9 +742,8 @@ QString JavaHandler::serializeObject(Id const &id)
 	} else if (objectType(id) == "ClassDiagram_View") {
 		//	    to do someting
 	} else if (objectType(id) == "ClassDiagram_ClassMethod") {
-		IdList parents = mApi.parents(id);
-		if (!parents.isEmpty()) {
-			Id parentId = parents.at(0);
+		Id parentId = mApi.parent(id);
+		if (parentId != Id()) {
 			QString const parentType = objectType(parentId);
 
 			if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
@@ -775,9 +774,8 @@ QString JavaHandler::serializeObject(Id const &id)
 			}
 		}
 	} else if (objectType(id) == "ClassDiagram_ClassField") {
-		IdList parents = mApi.parents(id);
-		if (!parents.isEmpty()) {
-			Id parentId = parents.at(0);
+		Id parentId = mApi.parent(id);
+		if (parentId != Id()) {
 			QString const parentType = objectType(parentId);
 
 			if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {

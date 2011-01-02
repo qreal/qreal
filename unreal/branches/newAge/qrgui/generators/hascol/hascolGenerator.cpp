@@ -144,7 +144,7 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 							Id const link = mApi.links(port).at(0);
 							Id const mappedPort = mApi.otherEntityFromLink(link, port);
 
-							Id const mappedPortParent = mApi.parents(mappedPort).at(0);
+							Id const mappedPortParent = mApi.parent(mappedPort);
 							QString parentName;
 							if (mappedPortParent == child)
 								parentName = "";

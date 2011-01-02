@@ -35,6 +35,7 @@ namespace qrRepo {
 			static void clearDir(QString const &path);
 			static QVariant parseValue(QString const &typeName, QString const &valueStr);
 			static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
+			static qReal::Id loadId(QString const &elementStr);
 			static bool loadProperties(QDomElement const &elem, Object &object);
 			static QPointF parsePointF(QString const &str);
 

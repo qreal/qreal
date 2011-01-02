@@ -45,7 +45,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		root.setAttribute("id", object->id().toString());
 		if (object->logicalId() != Id())
 			root.setAttribute("logicalId", object->logicalId().toString());
-		root.appendChild(idListToXml("parents", object->parents(), doc));
+
+		root.setAttribute("parent", object->parent().toString());
+
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
@@ -96,7 +98,7 @@ void  Serializer::log(QString const message, qReal::Id const diagram)
 
 	QFile *file;
 	if (!files.contains(name)) {
-		file = new QFile(path+"/"+name+".log");
+		file = new QFile(path + "/" + name + ".log");
 		files.insert(name, file);
 	} else {
 		file = files.value(name);
@@ -117,13 +119,14 @@ Object *Serializer::parseObject(QDomElement const &elem)
 		return NULL;
 
 	QString const logicalIdString = elem.attribute("logicalId", "");
-	Id const logicalId = logicalIdString.isEmpty() ? Id() : Id::loadFromString(logicalIdString);
+	Id const logicalId = loadId(logicalIdString);
 
 	Object object(Id::loadFromString(id), Id(), logicalId);
 
-	foreach (Id parent, loadIdList(elem, "parents"))
-		if (!object.parents().contains(parent))
-			object.addParent(parent);
+	QString const parentIdString = elem.attribute("parent", "");
+	Id const parent = loadId(parentIdString);
+	if (object.parent() != parent)
+		object.setParent(parent);
 
 	foreach (Id child, loadIdList(elem, "children"))
 		if (!object.children().contains(child))
@@ -193,6 +196,11 @@ IdList Serializer::loadIdList(QDomElement const &elem, QString const &name)
 		element = element.nextSiblingElement();
 	}
 	return result;
+}
+
+Id Serializer::loadId(QString const &elementStr)
+{
+	return elementStr.isEmpty() ? Id() : Id::loadFromString(elementStr);
 }
 
 QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr)

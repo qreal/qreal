@@ -23,24 +23,20 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	int sizeStr = str.count("$$");
 	for (int i = 0; i < size; ++i)
 	{
-		qReal::IdList parentsIdList = api->parents(idList[i]);
-		int parentsListSize = parentsIdList.size();
-		for (int j = 0; j < parentsListSize; ++j)
+		qReal::Id parentId = api->parent(idList[i]);
+		QString parentName = api->name(parentId);
+		if (parentName.contains("Diagram"))
 		{
-			QString parentName = api->name(parentsIdList[j]);
-			if (parentName.contains("Diagram"))
+			QListWidgetItem *item = new QListWidgetItem();
+			QString text = parentName + "::" + api->name(parentId);
+			item->setText(text);
+			QVariant val = idList[i].toString();
+			item->setData(Qt::ToolTipRole, val);
+			ui->listWidget->addItem(item);
+			for (int k = 0; k < sizeStr; ++k)
 			{
-				QListWidgetItem *item = new QListWidgetItem();
-				QString text = parentName + "::" + api->name(idList[i]);
-				item->setText(text);
-				QVariant val = idList[i].toString();
-				item->setData(Qt::ToolTipRole, val);
-				ui->listWidget->addItem(item);
-				for (int k = 0; k < sizeStr; ++k)
-				{
-					if (val == str.section("$$", k, k))
-						item->setSelected(true);
-				}
+				if (val == str.section("$$", k, k))
+					item->setSelected(true);
 			}
 		}
 	}

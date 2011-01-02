@@ -218,8 +218,7 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		elementItem->parent()->removeChild(elementItem);
 		AbstractModelItem *parentItem = parentAbstractItem(parent);
 
-		mApi.addParent(elementItem->id(), parentItem->id());
-		mApi.removeParent(elementItem->id(), elementItem->parent()->id());
+		mApi.setParent(elementItem->id(), parentItem->id());
 
 		elementItem->setParent(parentItem);
 		parentItem->addChild(elementItem);

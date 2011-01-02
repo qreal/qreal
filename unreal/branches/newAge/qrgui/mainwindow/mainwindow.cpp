@@ -163,7 +163,7 @@ MainWindow::MainWindow()
 	}
 	settings.endGroup();
 
-//	QString workingDir = settings.value("workingDir", "./save").toString();
+	QString workingDir = settings.value("workingDir", ".").toString();
 
 //	mModel = new model::Model(mEditorManager, workingDir);
 //	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
@@ -187,7 +187,7 @@ MainWindow::MainWindow()
 //	mPropertyModel.setSourceModel(mModel);
 
 	mRootIndex = QModelIndex();
-	mModels = new models::Models(".", mEditorManager);
+	mModels = new models::Models(workingDir, mEditorManager);
 
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 

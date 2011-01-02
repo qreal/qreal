@@ -121,20 +121,20 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 	addChangedDiagram(id.diagramId());
 }
 
-IdList RepoApi::parents(Id const &id) const
+Id RepoApi::parent(Id const &id) const
 {
-	return mClient.parents(id);
+	return mClient.parent(id);
 }
 
-void RepoApi::addParent(Id const &id, Id const &parent)
+void RepoApi::setParent(Id const &id, Id const &parent)
 {
-	mClient.addParent(id, parent);
+	mClient.setParent(id, parent);
 	addChangedDiagram(id.diagramId());
 }
 
-void RepoApi::addParent(Id const &id, Id const &parent, Id const &logicalId)
+void RepoApi::setParent(Id const &id, Id const &parent, Id const &logicalId)
 {
-	mClient.addParent(id, parent);
+	mClient.setParent(id, parent);
 	addChangedDiagram(id.diagramId());
 }
 

@@ -9,39 +9,27 @@ using namespace qReal;
 Object::Object(const Id &id, const Id &parent)
 	: mId(id)
 {
-	addParent(parent);
+	setParent(parent);
 }
 
 Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
 	: mId(id), mLogicalId(logicalId)
 {
-	addParent(parent);
+	setParent(parent);
 }
 
 Object::Object(const Id &id) : mId(id)
 {
 }
 
-void Object::addParent(const Id &parent)
+void Object::setParent(const Id &parent)
 {
-	if (!mParents.contains(parent)) {
-		mParents.append(parent);
-	} else {
-		throw Exception("Object " + mId.toString() + ": adding existing parent " + parent.toString());
-	}
+	mParent = parent;
 }
 
-void Object::removeParent(const Id &parent)
+void Object::removeParent()
 {
-	if (mParents.contains(parent)) {
-		if (mParents.size() != 1) {
-			mParents.removeAll(parent);
-		} else {
-			throw Exception("Object " + mId.toString() + ": removing the only parent " + parent.toString());
-		}
-	} else {
-		throw Exception("Object " + mId.toString() + ": removing nonexistent parent " + parent.toString());
-	}
+	mParent = qReal::Id();
 }
 
 void Object::addChild(const Id &child)
@@ -67,9 +55,9 @@ IdList Object::children() const
 	return mChildren;
 }
 
-IdList Object::parents() const
+Id Object::parent() const
 {
-	return mParents;
+	return mParent;
 }
 
 void Object::setProperty(const QString &name, const QVariant &value)
