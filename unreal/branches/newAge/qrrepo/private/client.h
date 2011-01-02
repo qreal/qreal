@@ -22,12 +22,13 @@ namespace qrRepo {
 			void setParent(const qReal::Id &id, const qReal::Id &parent);
 			void addChild(const qReal::Id &id, const qReal::Id &child);
 			void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId);
-			void removeParent(const qReal::Id &id, const qReal::Id &parent);
+			void removeParent(const qReal::Id &id);
 			void removeChild(const qReal::Id &id, const qReal::Id &child);
 			void setProperty(const qReal::Id &id, const QString &name, const QVariant &value);
 			QVariant property(const qReal::Id &id, const QString &name) const;
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
+			void remove(const qReal::Id &id);
 
 			qReal::IdList elements() const;
 			bool isLogicalId(qReal::Id const &elem) const;
@@ -42,7 +43,6 @@ namespace qrRepo {
 			void open(QString const &workingDir);
 
 			bool exist(qReal::Id const &id) const;
-
 
 			void saveAll() const;
 			void save(qReal::IdList list) const;

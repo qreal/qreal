@@ -31,8 +31,6 @@ namespace qrRepo {
 
 		qReal::Id parent(qReal::Id const &id) const;
 		void setParent(qReal::Id const &id, qReal::Id const &parent);
-		void setParent(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId);
-		void removeParent(qReal::Id const &id, qReal::Id const &parent);
 
 		qReal::IdList outgoingLinks(qReal::Id const &id) const;
 		qReal::IdList incomingLinks(qReal::Id const &id) const;

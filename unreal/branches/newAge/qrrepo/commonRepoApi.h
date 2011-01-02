@@ -37,7 +37,6 @@ public:
 
 	virtual qReal::Id parent(qReal::Id const &id) const = 0;
 	virtual void setParent(qReal::Id const &id, qReal::Id const &parent) = 0;
-	virtual void removeParent(qReal::Id const &id, qReal::Id const &parent) = 0;
 
 	virtual QString typeName(qReal::Id const &id) const = 0;
 };

@@ -65,7 +65,6 @@ void Client::addChild(const Id &id, const Id &child)
 	addChild(id, child, Id());
 }
 
-
 void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 {
 	if (mObjects.contains(id)) {
@@ -81,9 +80,10 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 	}
 }
 
-void Client::removeParent(const Id &id, const Id &parent)
+void Client::removeParent(const Id &id)
 {
 	if (mObjects.contains(id)) {
+		Id const parent = mObjects[id]->parent();
 		if (mObjects.contains(parent)) {
 			mObjects[id]->removeParent();
 			mObjects[parent]->removeChild(id);
@@ -91,7 +91,7 @@ void Client::removeParent(const Id &id, const Id &parent)
 			throw Exception("Client: Removing nonexistent parent " + parent.toString() + " from object " + id.toString());
 		}
 	} else {
-		throw Exception("Client: Removing parent " + parent.toString() + " from nonexistent object " + id.toString());
+		throw Exception("Client: Removing parent from nonexistent object " + id.toString());
 	}
 }
 
@@ -100,12 +100,6 @@ void Client::removeChild(const Id &id, const Id &child)
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(child)) {
 			mObjects[id]->removeChild(child);
-			if (mObjects[child]->parent() == id) {
-				delete mObjects[child];
-				mObjects.remove(child);
-			} else {
-				throw Exception("Client: removing child " + child.toString() + " from object " + id.toString() + ", which is not his parent");
-			}
 		} else {
 			throw Exception("Client: removing nonexistent child " + child.toString() + " from object " + id.toString());
 		}
@@ -213,6 +207,16 @@ void Client::remove(IdList list) const
 	foreach(Id id, list) {
 		qDebug() << id.toString();
 		serializer.removeFromDisk(id);
+	}
+}
+
+void Client::remove(const qReal::Id &id)
+{
+	if (mObjects.contains(id)) {
+		delete mObjects[id];
+		mObjects.remove(id);
+	} else {
+		throw Exception("Client: Trying to remove nonexistent object " + id.toString());
 	}
 }
 

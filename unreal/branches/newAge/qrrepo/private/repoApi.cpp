@@ -62,12 +62,6 @@ void RepoApi::removeElement(Id const &id)
 	foreach (Id const child, children(id))
 		removeElement(child);
 
-// 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
-
-//	foreach (Id const parent, parents(id)) {
-//		removeChild(parent, id);
-//	}
-
 	if (hasProperty(id, "links")) {
 		IdList links = property(id, "links").value<IdList>();
 		foreach (Id const link, links) {
@@ -108,6 +102,8 @@ void RepoApi::removeElement(Id const &id)
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
 
+	mClient.remove(id);
+
 	addChangedDiagram(id.diagramId());
 }
 
@@ -128,20 +124,9 @@ Id RepoApi::parent(Id const &id) const
 
 void RepoApi::setParent(Id const &id, Id const &parent)
 {
+	Id const oldParent = mClient.parent(id);
+	mClient.removeChild(oldParent, id);
 	mClient.setParent(id, parent);
-	addChangedDiagram(id.diagramId());
-}
-
-void RepoApi::setParent(Id const &id, Id const &parent, Id const &logicalId)
-{
-	mClient.setParent(id, parent);
-	addChangedDiagram(id.diagramId());
-}
-
-
-void RepoApi::removeParent(Id const &id, Id const &parent)
-{
-	mClient.removeParent(id, parent);
 	addChangedDiagram(id.diagramId());
 }
 
