@@ -1,0 +1,24 @@
+<LogicObject id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{cf9a7cea-8cfe-45a3-a043-288f4fc359dd}">
+  <parents>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/BlockDiagramNode/{3146b26f-8df4-40c8-9f31-0967421d308e}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QString key="Ports" value=""/>
+    <QPolygon key="configuration" value="0, 0 : 138, 0 : 138, 109 : 0, 109 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{943966a3-83bc-41fb-bb57-08ce9d980c15}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e57e378c-0027-4787-a082-499a8473d49e}"/>
+    </links>
+    <QString key="name" value="(Engines Stop)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QPointF key="position" value="376, -368"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

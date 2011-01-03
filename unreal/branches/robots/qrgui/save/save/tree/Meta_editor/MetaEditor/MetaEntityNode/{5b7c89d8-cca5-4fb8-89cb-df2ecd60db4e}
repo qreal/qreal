@@ -1,0 +1,32 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5b7c89d8-cca5-4fb8-89cb-df2ecd60db4e}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{8989ee51-64af-4029-9436-9b45ab73a668}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{dbd8c17c-0783-4679-9e02-7242187935d8}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 91 : 0, 91 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Wait For Timer"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{b98d30b0-1845-473c-98fb-6be07f0a5e96}"/>
+    </links>
+    <QString key="name" value="Timer"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="307.668, 622.823"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;139&quot; sizey=&quot;143&quot;>&#xa;        &lt;image y1=&quot;32&quot; name=&quot;GreenHourglass_up.svg&quot; x1=&quot;53&quot; y2=&quot;82&quot; x2=&quot;83&quot;/>&#xa;        &lt;text i=&quot;0&quot; font-fill=&quot;#000000&quot; b=&quot;0&quot; y1=&quot;110&quot; font-name=&quot;MS Shell Dlg 2&quot; x1=&quot;8&quot; u=&quot;1&quot; font-size=&quot;15&quot;>Delay (ms):&lt;/text>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;95&quot; y=&quot;96&quot; textBinded=&quot;Delay&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;65&quot;/>&#xa;        &lt;pointPort x=&quot;66&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;137&quot; y=&quot;58&quot;/>&#xa;        &lt;pointPort x=&quot;70&quot; y=&quot;141&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

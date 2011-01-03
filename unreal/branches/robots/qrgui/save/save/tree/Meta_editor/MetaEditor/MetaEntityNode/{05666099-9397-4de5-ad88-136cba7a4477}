@@ -1,0 +1,30 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{05666099-9397-4de5-ad88-136cba7a4477}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{8989ee51-64af-4029-9436-9b45ab73a668}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 100 : 0, 100 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Engines Stop"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bc77ec7-bdb2-4647-8dca-84e1a97da844}"/>
+    </links>
+    <QString key="name" value="EnginesStop"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="61.4214, 752.953"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;138&quot; sizey=&quot;109&quot;>&#xa;        &lt;image y1=&quot;0&quot; name=&quot;lego-mindstorms-nxt-servo-motor.jpg&quot; x1=&quot;17&quot; y2=&quot;97&quot; x2=&quot;121&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#dc143c&quot; y1=&quot;18&quot; stroke-width=&quot;5&quot; x1=&quot;31&quot; y2=&quot;77.2222&quot; fill-style=&quot;none&quot; x2=&quot;97.1852&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#dc143c&quot; y1=&quot;17&quot; stroke-width=&quot;5&quot; x1=&quot;92&quot; y2=&quot;81.1481&quot; fill-style=&quot;none&quot; x2=&quot;36.1111&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;60&quot;/>&#xa;        &lt;pointPort x=&quot;67&quot; y=&quot;4&quot;/>&#xa;        &lt;pointPort x=&quot;136&quot; y=&quot;59&quot;/>&#xa;        &lt;pointPort x=&quot;70&quot; y=&quot;107&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

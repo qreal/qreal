@@ -1,0 +1,35 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{bb5ee3d8-1807-4e18-9b70-dc6061317db6}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{8989ee51-64af-4029-9436-9b45ab73a668}"/>
+  </parents>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{af942982-bb68-46fe-a670-05236ff66b83}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 91 : 0, 91 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{38d832ed-3a32-4562-8741-09b71249f126}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4525137d-2795-43b4-a729-86d12f6ae625}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{18e4d5a7-b091-4c8f-a4ee-0724763d12fa}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bc77ec7-bdb2-4647-8dca-84e1a97da844}"/>
+    </links>
+    <QString key="name" value="EngineCommand"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="50.4104, 392.593"/>
+    <QString key="shape" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

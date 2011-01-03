@@ -1,0 +1,30 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9ff2c0b5-ef5f-41e8-8f24-8ea6a7016bd2}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{8989ee51-64af-4029-9436-9b45ab73a668}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 150, 0 : 150, 100 : 0, 100 : "/>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Engines Forward"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value=""/>
+    <QString key="isPin" value=""/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4525137d-2795-43b4-a729-86d12f6ae625}"/>
+    </links>
+    <QString key="name" value="EnginesForward"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QPointF key="position" value="57.007, 511.231"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;150&quot; sizey=&quot;135&quot;>&#xa;        &lt;image y1=&quot;4&quot; name=&quot;lego-mindstorms-nxt-servo-motor.jpg&quot; x1=&quot;23&quot; y2=&quot;101&quot; x2=&quot;127&quot;/>&#xa;        &lt;text i=&quot;0&quot; font-fill=&quot;#000000&quot; b=&quot;0&quot; y1=&quot;103&quot; font-name=&quot;MS Shell Dlg 2&quot; x1=&quot;29&quot; u=&quot;1&quot; font-size=&quot;15&quot;>Ports:&lt;/text>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;13.7407&quot; stroke-width=&quot;5&quot; x1=&quot;19.8148&quot; y2=&quot;13.2222&quot; fill-style=&quot;none&quot; x2=&quot;44.1852&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;13.1481&quot; stroke-width=&quot;5&quot; x1=&quot;44.1111&quot; y2=&quot;6.14815&quot; fill-style=&quot;none&quot; x2=&quot;37.1111&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;13.4444&quot; stroke-width=&quot;5&quot; x1=&quot;44.4074&quot; y2=&quot;20.4444&quot; fill-style=&quot;none&quot; x2=&quot;37.4074&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;89&quot; y=&quot;91&quot; textBinded=&quot;Ports&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;49&quot;/>&#xa;        &lt;pointPort x=&quot;75&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;148&quot; y=&quot;50&quot;/>&#xa;        &lt;pointPort x=&quot;76&quot; y=&quot;133&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</LogicObject>

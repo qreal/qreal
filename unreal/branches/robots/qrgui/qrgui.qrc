@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/print.png</file>
+        <file>icons/zoomin.png</file>
+        <file>icons/zoomout.png</file>
+        <file>icons/qreal.png</file>
+        <file>icons/kroki2.PNG</file>
+        <file>icons/kroki3.PNG</file>
+        <file>icons/clear.png</file>
+        <file>icons/line.png</file>
+        <file>icons/curve.png</file>
+        <file>icons/ellipse.png</file>
+        <file>icons/linePort.png</file>
+        <file>icons/rect.png</file>
+        <file>icons/staticText.png</file>
+        <file>icons/dynamicText.png</file>
+        <file>icons/textPicture.png</file>
+        <file>icons/pencil.png</file>
+        <file>icons/error.png</file>
+        <file>icons/warning.png</file>
+        <file>icons/information.png</file>
+        <file>icons/critical.png</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>icons/slavery.jpg</file>
+    </qresource>
+</RCC>

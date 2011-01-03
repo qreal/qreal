@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/" >
+ <include>kernel_metamodel</include>
+ <namespace>trace</namespace>
+ <editor name="TRACE" >
+   <graph_types>
+  <edge id="traceeTraceRelationship" name="TraceRelationship" >
+   <graphics>
+    <view>
+     <picture sizex="30" sizey="30" >
+      <line fill="#000000" stroke-style="solid" stroke="#0000ff" y1="50" x1="3" y2="52" stroke-width="1" x2="99" fill-style="solid" />
+      <text i="0" font-fill="#0000ff" y1="37" b="0" x1="34" font-name="Helvetica" u="0" font-size="12a" >&lt;&lt;Trace&gt;&gt;</text>
+     </picture>
+     <repo_info>
+      <html:html xmlns:html="http://www.w3.org/html/" >
+       <html:text text="&lt;&lt;Trace>>" />
+      </html:html>
+     </repo_info>
+     <line_type type="dotLine" />
+    </view>
+   </graphics>
+   <logic>
+    <generalizations>
+     <generalization>
+      <parent parent_id="krneDirRelationship" />
+     </generalization>
+    </generalizations>
+    <associations>
+     <association role="traceSourceElement" id="traceaElem-Elem-Trace" >
+      <begin idref="krnnElement" />
+     </association>
+     <association role="traceTargetElement" id="ktraceaElem-Elem-Trace" >
+      <end idref="krnnElement" />
+     </association>
+    </associations>
+   </logic>
+  </edge>
+   </graph_types>
+ </editor>
+</metamodel>
