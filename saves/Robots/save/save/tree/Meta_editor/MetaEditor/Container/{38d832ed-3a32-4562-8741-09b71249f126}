@@ -1,0 +1,22 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/Container/{38d832ed-3a32-4562-8741-09b71249f126}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{93c56e45-8147-4868-bff8-3f61d48408d7}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : -49, 3 : -52, 110 : -26, 121 : "/>
+    <QString key="displayedName" value="BlockDiagramNode_Contains_Action"/>
+    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{04e282f4-4182-489b-9547-769992600c58}"/>
+    <double key="fromPort" value="0.75"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="BlockDiagramNode_Contains_Action"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="436.026, 495.125"/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{bb5ee3d8-1807-4e18-9b70-dc6061317db6}"/>
+    <double key="toPort" value="0.2"/>
+  </properties>
+</LogicObject>
