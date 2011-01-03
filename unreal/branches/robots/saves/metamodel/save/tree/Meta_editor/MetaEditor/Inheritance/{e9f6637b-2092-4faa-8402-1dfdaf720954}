@@ -1,0 +1,22 @@
+<LogicObject id="qrm:/Meta_editor/MetaEditor/Inheritance/{e9f6637b-2092-4faa-8402-1dfdaf720954}">
+  <parents>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{93c56e45-8147-4868-bff8-3f61d48408d7}"/>
+  </parents>
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : -1, 61 : 204, 61 : "/>
+    <QString key="displayedName" value="BlockDiagramNode_Inherits_KernelDiagram::Diagram"/>
+    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityImport/{65fac1ca-a413-492b-b076-a4cd77fbf1d6}"/>
+    <double key="fromPort" value="1.5"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="BlockDiagramNode_Inherits_KernelDiagram::Diagram"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QPointF key="position" value="231.932, 393.794"/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{04e282f4-4182-489b-9547-769992600c58}"/>
+    <double key="toPort" value="0.25"/>
+  </properties>
+</LogicObject>
