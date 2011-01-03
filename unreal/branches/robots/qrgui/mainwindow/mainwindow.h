@@ -87,6 +87,8 @@ namespace qReal {
 		void debug();
 		void debugSingleStep();
 
+		void generateAndRun();
+
 	private slots:
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);

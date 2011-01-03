@@ -20,6 +20,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
+#include <QtCore/QProcess>
 
 #include "errorReporter.h"
 #include "pluginInterface.h"
@@ -28,7 +29,6 @@
 #include "openShapeEditorButton.h"
 #include "propertyeditorproxymodel.h"
 #include "gesturesShow/gestureswidget.h"
-
 
 #include "../model/model.h"
 #include "../view/editorview.h"
@@ -70,10 +70,6 @@ MainWindow::MainWindow()
 		QApplication::processEvents();
 	}
 	ui.setupUi(this);
-
-#if defined(Q_WS_WIN)
-	ui.menuSvn->setEnabled(false);  // Doesn't work under Windows anyway.
-#endif
 
 	ui.tabs->setTabsClosable(true);
 	ui.tabs->setMovable(true);
@@ -134,6 +130,8 @@ MainWindow::MainWindow()
 
 	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
 	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+
+	connect(ui.actionGenerate_and_run, SIGNAL(triggered()), this, SLOT(generateAndRun()));
 
 	adjustMinimapZoom(ui.minimapZoomSlider->value());
 
@@ -1496,3 +1494,10 @@ void MainWindow::debugSingleStep()
 	}
 }
 
+void MainWindow::generateAndRun()
+{
+#ifndef Q_WS_WIN
+	QProcess process;
+	process.startDetached("bash runme.sh");
+#endif
+}

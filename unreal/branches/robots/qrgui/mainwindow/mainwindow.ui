@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -66,8 +66,6 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionHelp"/>
-    <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
@@ -76,47 +74,26 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
-    <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
-   </widget>
-   <widget class="QMenu" name="menuMouse_gestures">
-    <property name="title">
-     <string>Mouse gestures</string>
-    </property>
-    <addaction name="actionShow"/>
-   </widget>
-   <widget class="QMenu" name="menuSvn">
-    <property name="title">
-     <string>Svn</string>
-    </property>
-    <addaction name="actionCommit"/>
-    <addaction name="actionCheckout"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
     <addaction name="actionClear"/>
-    <addaction name="actionExport_to_XMI"/>
-    <addaction name="actionGenerate_to_Java"/>
-    <addaction name="actionGenerate_to_Hascol"/>
+    <addaction name="actionGenerate_Editor"/>
+    <addaction name="separator"/>
     <addaction name="actionDebug"/>
     <addaction name="actionDebug_Single_step"/>
-    <addaction name="actionShape_Edit"/>
-    <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionParse_Editor_xml"/>
-    <addaction name="separator"/>
-    <addaction name="actionGenerate_Editor_qrmc"/>
+    <addaction name="actionGenerate_and_run"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
-   <addaction name="menuSvn"/>
    <addaction name="menuSettings"/>
-   <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -168,6 +145,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionPrint"/>
+   <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
@@ -276,34 +254,6 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="generatorsToolbar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionGenerate_to_Hascol"/>
-   <addaction name="actionGenerate_to_Java"/>
-   <addaction name="actionExport_to_XMI"/>
-   <addaction name="actionShape_Edit"/>
-  </widget>
-  <widget class="QToolBar" name="parsersToolbar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionParse_Hascol_sources"/>
-   <addaction name="actionParse_Java_Libraries"/>
-  </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -347,6 +297,20 @@
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QToolBar" name="debuggerToolBar">
+   <property name="windowTitle">
+    <string>Debugger Tool Bar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionDebug"/>
+   <addaction name="actionDebug_Single_step"/>
+   <addaction name="actionGenerate_and_run"/>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -512,12 +476,8 @@
    </property>
   </action>
   <action name="actionClear">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
-   </property>
    <property name="text">
-    <string>Exterminatus</string>
+    <string>Clear</string>
    </property>
   </action>
   <action name="actionExport_to_XMI">
@@ -635,7 +595,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Switch on alignment</string>
@@ -646,7 +606,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Show alignment</string>
@@ -666,6 +626,14 @@
    </property>
    <property name="shortcut">
     <string>F10</string>
+   </property>
+  </action>
+  <action name="actionGenerate_and_run">
+   <property name="text">
+    <string>Generate and run</string>
+   </property>
+   <property name="toolTip">
+    <string>Generate robot controlling code from this diagram, upload it to robot and run it.</string>
    </property>
   </action>
  </widget>
