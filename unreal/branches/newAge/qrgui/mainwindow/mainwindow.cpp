@@ -88,7 +88,7 @@ MainWindow::MainWindow()
 	connect(ui.actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(open()));
-	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
 	connect(ui.actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
