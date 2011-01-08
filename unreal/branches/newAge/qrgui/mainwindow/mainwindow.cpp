@@ -146,6 +146,8 @@ MainWindow::MainWindow()
 	mDelegate.setMainWindow(this);
 
 	connect(ui.graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
+	connect(ui.logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
+
 	ui.graphicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
 
 	ui.logicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
@@ -402,12 +404,13 @@ QString MainWindow::getWorkingDir(QString const &dialogWindowTitle)
 
 void MainWindow::open()
 {
-//	QString const dirName = getWorkingDir(tr("Select directory with a save to open"));
+	QString const dirName = getWorkingDir(tr("Select directory with a save to open"));
 
-//	if (dirName.isEmpty())
-//		return;
+	if (dirName.isEmpty())
+		return;
 
-//	mModel->open(dirName);
+	mModels->repoControlApi().open(dirName);
+	mModels->reinit();
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
@@ -421,7 +424,6 @@ void MainWindow::print()
 	QPrintDialog dialog(&printer, this);
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
-		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
 		getCurrentTab()->scene()->render(&painter);
 	}
 }
@@ -435,7 +437,7 @@ void MainWindow::makeSvg()
 		return;
 
 	newSvg.setFileName(fileName);
-	newSvg.setSize(QSize(800,600));
+	newSvg.setSize(QSize(800, 600));
 
 	QPainter painter(&newSvg);
 	getCurrentTab()->scene()->render(&painter);
@@ -471,8 +473,7 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
-	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
-	{
+	if (UML::Element *elem = dynamic_cast<UML::Element *>(target)) {
 		QPersistentModelIndex index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
 			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
@@ -1020,6 +1021,22 @@ void MainWindow::graphicalModelExplorerClicked(const QModelIndex &index)
 	centerOn(id);
 }
 
+void MainWindow::logicalModelExplorerClicked(const QModelIndex &index)
+{
+	Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
+	IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+	if (!graphicalIds.empty()) {
+		// By now we will select first graphical representation of selected element.
+		// In the future it may be needed to make this more intellectual, like
+		// selecting the representation in current tab.
+		Id const graphicalId = graphicalIds.first();
+		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(graphicalId);
+		graphicalModelExplorerClicked(graphicalIndex);
+
+	} else
+		setIndexesOfPropertyEditor(logicalId);
+}
+
 void MainWindow::openNewTab(const QModelIndex &arg)
 {
 	QModelIndex index = arg;
@@ -1074,7 +1091,6 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	QModelIndex index = rootIndex;
 
 	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
-	changeMiniMapSource(ui.tabs->currentIndex());
 
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
@@ -1082,6 +1098,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
+	changeMiniMapSource(ui.tabs->currentIndex());
 
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));

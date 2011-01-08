@@ -106,7 +106,8 @@ namespace qReal {
 		void showPreferencesDialog();
 
 		void centerOn(Id const &id);
-		void graphicalModelExplorerClicked(const QModelIndex &rootIndex);
+		void graphicalModelExplorerClicked(const QModelIndex &index);
+		void logicalModelExplorerClicked(const QModelIndex &index);
 
 		void openNewEmptyTab();
 		void openNewTab(const QModelIndex &index);
