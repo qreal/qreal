@@ -203,7 +203,6 @@ void Client::save(IdList list) const
 
 void Client::remove(IdList list) const
 {
-	qDebug() << "Client::remove(IdList), list.size() > 0 == " << (list.size()>0);
 	foreach(Id id, list) {
 		qDebug() << id.toString();
 		serializer.removeFromDisk(id);

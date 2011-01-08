@@ -162,7 +162,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
-	edgeMenu->addAction(mWindow->ui.actionDeleteFromDiagram);
+	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
 	edgeMenu->addAction(QString("Discard"));
 	edgeMenu->addSeparator();
 
@@ -198,7 +198,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 
 	int result = 0;
 	if (executed) {
-		if (executed == mWindow->ui.actionDeleteFromDiagram)
+		if (executed == mWindow->actionDeleteFromDiagram())
 			result = -1;
 		else if (!(executed->text() == "Discard"))
 			result = +1;
@@ -449,7 +449,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 {
 	QMenu menu;
-	menu.addAction(mWindow->ui.actionDeleteFromDiagram);
+	menu.addAction(mWindow->actionDeleteFromDiagram());
 	QList<UML::ContextMenuAction*> elementActions = e->contextMenuActions();
 
 	if (!elementActions.isEmpty())

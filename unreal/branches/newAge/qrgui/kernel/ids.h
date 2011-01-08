@@ -18,9 +18,6 @@ namespace qReal {
 			QString  const &element = "", QString  const &id = "");
 		Id(Id const &base, QString const &additional);
 
-		Id editorId() const;
-		Id diagramId() const;
-
 		QUrl toUrl() const;
 		QString id() const;
 		QString editor() const;

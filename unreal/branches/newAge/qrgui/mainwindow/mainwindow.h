@@ -20,10 +20,6 @@ namespace qReal {
 	class ListenerManager;
 	class VisualDebugger;
 
-//	namespace model {
-//		class Model;
-//	}
-
 	namespace models {
 		class Models;
 	}
@@ -40,8 +36,9 @@ namespace qReal {
 		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
 		IGesturesPainter *gesturesPainter();
-		Ui::MainWindowUi ui;
 		QModelIndex rootIndex() const ;
+
+		QAction *actionDeleteFromDiagram() const;
 
 	signals:
 		void gesturesShowed();
@@ -62,10 +59,8 @@ namespace qReal {
 		void checkoutDialogOk();
 		void checkoutDialogCancel();
 		void open();
-		void save();
 		void saveAs();
 		void saveAll();
-		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
 
 		void print();
 		void makeSvg();
@@ -119,15 +114,13 @@ namespace qReal {
 		void switchAlignment(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
-		void saveListClosed();
-
 		void setDiagramCreateFlag();
 		void diagramInCreateListDeselect();
 		void diagramInCreateListSelected(int num);
 
-		void diagramInSaveListChanged(QListWidgetItem* diagram);
-
 	private:
+		Ui::MainWindowUi ui;
+
 		QCloseEvent *mCloseEvent;
 		models::Models *mModels;
 		EditorManager mEditorManager;

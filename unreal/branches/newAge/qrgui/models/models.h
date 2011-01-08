@@ -23,9 +23,6 @@ public:
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
 
-	void resetChangedDiagrams();
-	void resetChangedDiagrams(const IdList &list);
-
 	qrRepo::RepoControlInterface &repoControlApi() const;
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;

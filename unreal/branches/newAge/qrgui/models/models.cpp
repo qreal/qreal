@@ -73,13 +73,3 @@ void Models::reinit()
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
 }
-
-void Models::resetChangedDiagrams()
-{
-	mRepoApi->resetChangedDiagrams();
-}
-
-void Models::resetChangedDiagrams(const IdList &list)
-{
-	mRepoApi->resetChangedDiagrams(list);
-}

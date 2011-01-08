@@ -202,13 +202,8 @@ MainWindow::MainWindow()
 	if (mModels->graphicalModel()->rowCount() > 0)
 		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
-	//choosing diagrams to save isn't implemented yet
-	settings.setValue("ChooseDiagramsToSave", false);
-	//so it is turned off
-
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
-//	mModel->resetChangedDiagrams();
 
 	initGridProperties();
 
@@ -222,19 +217,23 @@ QModelIndex MainWindow::rootIndex() const
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
-	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
+	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
-	} else if ( keyEvent->key() == Qt::Key_F2 ){
-		save();
+	} else if (keyEvent->key() == Qt::Key_F2
+			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+	{
+		saveAll();
 	}
 }
 
 MainWindow::~MainWindow()
 {
+	saveAll();
 	delete mListenerManager;
 }
 
-EditorManager* MainWindow::manager() {
+EditorManager* MainWindow::manager()
+{
 	return &mEditorManager;
 }
 
@@ -247,16 +246,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	mCloseEvent = event;
 	QSettings settings("SPbSU", "QReal");
-//	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
-//		event->ignore();
-//		suggestToSave();
-//	} else {
-		settings.beginGroup("MainWindow");
-		settings.setValue("maximized", isMaximized());
-		settings.setValue("size", size());
-		settings.setValue("pos", pos());
-		settings.endGroup();
-//	}
+	settings.beginGroup("MainWindow");
+	settings.setValue("maximized", isMaximized());
+	settings.setValue("size", size());
+	settings.setValue("pos", pos());
+	settings.endGroup();
 }
 
 void MainWindow::loadPlugins()
@@ -504,16 +498,16 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-					   tr("<center>This is <b>QReal</b><br>"
-						  "Just another CASE tool</center>"));
+			tr("<center>This is <b>QReal</b><br>"
+			"Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-					   tr("To begin:\n"
-						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
-						  "2. Get more help from author :)"));
+			tr("To begin:\n"
+			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
+			"2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -1314,169 +1308,17 @@ void MainWindow::createDiagram(QString const &idString)
 	openNewTab(index);
 }
 
-void MainWindow::save()
-{
-//	QSettings settings("SPbSU", "QReal");
-//	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		saveAll();
-		return;
-//	}
-
-//	QDialog dialog;
-//	QVBoxLayout vLayout;
-//	QHBoxLayout hLayout;
-//	QPushButton saveButton;
-//	QPushButton cancelButton;
-//	saveButton.setText("Save");
-//	cancelButton.setText("Cancel");
-//	QWidget* saveListWidget = createSaveListWidget();
-//	vLayout.addWidget(saveListWidget);
-
-//	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-//	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-//	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
-
-//	hLayout.addWidget(&saveButton);
-//	hLayout.addWidget(&cancelButton);
-
-//	vLayout.addLayout(&hLayout);
-//	dialog.setLayout(&vLayout);
-//	saveListWidget->show();
-//	dialog.exec();
-}
-
 void MainWindow::saveAll()
 {
 	mModels->repoControlApi().saveAll();
-	mModels->resetChangedDiagrams();
 }
 
-void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
-{
-	//not implemented
-	//TODO:
-	//create structure to save deleted objects
-	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
-	//add choosing of just created diagrams
-
-	mModels->repoControlApi().save(toSave);
-	mModels->repoControlApi().remove(toRemove);
-	mModels->resetChangedDiagrams(toSave);
-	mModels->resetChangedDiagrams(toRemove);
-}
-
-void MainWindow::saveAs()	//TODO: change
+void MainWindow::saveAs()
 {
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
 		return;
 	mModels->saveTo(dirName);
-}
-
-QListWidget* MainWindow::createSaveListWidget()
-{
-	mSaveListChecked.clear();
-	mSaveListChecked.resize(mModels->repoControlApi().getOpenedDiagrams().size());
-	QListWidget *listWidget = new QListWidget();
-
-	int i =0;
-	foreach(Id id, mModels->repoControlApi().getOpenedDiagrams()) {
-		listWidget->addItem(id.diagram());
-		if (mModels->repoControlApi().getChangedDiagrams().contains(id.diagramId())) {
-			mSaveListChecked[i] = true;
-			listWidget->item(i)->setCheckState(Qt::Checked);
-		} else {
-			listWidget->item(i)->setCheckState(Qt::Unchecked);
-			mSaveListChecked[i] = false;
-		}
-		i++;
-	}
-
-	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
-					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
-	return listWidget;
-	return NULL;
-}
-
-void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
-{
-	QListWidget* listWidget = diagram->listWidget();
-	if (diagram->checkState() == Qt::Unchecked)
-		mSaveListChecked[listWidget->row(diagram)] = false;
-	else if (diagram->checkState() == Qt::Checked)
-		mSaveListChecked[listWidget->row(diagram)] = true;
-}
-
-void MainWindow::saveListClosed()
-{
-//	IdList toSave;
-//	IdList toRemove;
-//	IdList current = mModels->api()->children(Id::rootId());
-//	IdList opened = mModel->api().getOpenedDiagrams();
-
-//	int i = 0;
-//	foreach(Id id, opened) {
-//		qDebug() << "Was opened: " << id.diagram() << " / " << id.element();
-
-//		if (!mSaveListChecked[i]) {
-//			if (!current.contains(id))
-//				mModel->addDiagram(id);
-//			else
-//				continue;
-//		}
-//		if (current.contains(id))
-//			toSave.append(id);
-//		else
-//			toRemove.append(id);
-//		i++;
-//	}
-
-//	toSave.append(Id::rootId());
-//	saveIds(toSave, toRemove);
-}
-
-void MainWindow::suggestToSave()
-{
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	QPushButton saveButton;
-	QPushButton cancelButton;
-	QPushButton discardButton;
-	saveButton.setText("Save");
-	cancelButton.setText("Cancel");
-	discardButton.setText("Discard");
-	hLayout.addWidget(&saveButton);
-	hLayout.addWidget(&cancelButton);
-	hLayout.addWidget(&discardButton);
-	QString text = QString("The document has been modified.\n");
-	text += QString("Do you want to save your changes?");
-	QLabel label(text);
-	vLayout.addWidget(&label);
-
-	QWidget* saveListWidget = createSaveListWidget();
-	vLayout.addWidget(saveListWidget);
-	QSettings settings("SPbSU", "QReal");
-	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		saveListWidget->hide();
-		vLayout.removeWidget(saveListWidget);
-		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveAll()));
-	} else
-		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
-
-	vLayout.addLayout(&hLayout);
-	dialog.setLayout(&vLayout);
-	if (settings.value("ChooseDiagramsToSave", true).toBool())
-		saveListWidget->show();
-
-	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-
-	dialog.setWindowTitle(QString("Saving"));
-	dialog.exec();
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -1537,4 +1379,9 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 	} else {
 		mPropertyModel.clearModelIndexes();
 	}
+}
+
+QAction *MainWindow::actionDeleteFromDiagram() const
+{
+	return ui.actionDeleteFromDiagram;
 }

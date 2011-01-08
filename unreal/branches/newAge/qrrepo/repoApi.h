@@ -82,7 +82,6 @@ namespace qrRepo {
 		void saveAll() const;
 		void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);
-		void remove(qReal::IdList list) const;
 
 		void open(QString const &workingDir);
 
@@ -101,13 +100,6 @@ namespace qrRepo {
 
 		bool exist(qReal::Id const &id) const;
 
-		qReal::IdList getOpenedDiagrams() const;
-		qReal::IdList getChangedDiagrams() const;
-		void resetChangedDiagrams();
-		void addOpenedDiagram(const qReal::Id &id);
-		void addChangedDiagram(const qReal::Id &id);
-		void resetChangedDiagrams(const qReal::IdList &list);
-
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.
@@ -117,12 +109,6 @@ namespace qrRepo {
 
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
-
-		QSet<qReal::Id> mDiagramsOpened;
-		QSet<qReal::Id> mDiagramsChanged;
-
-		typedef QPair<qReal::Id, qReal::IdList> ChildsOfDiagram;
-		QList<ChildsOfDiagram> mDiagramsDeleted;
 
 		details::Client mClient;
 	};
