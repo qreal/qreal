@@ -155,7 +155,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
 				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
-				if ((master) && (master->connectionInProgress()))
+				if (master && master->connectionInProgress())
 					isEdgeFromEmbeddedLinker = true;
 			}
 
@@ -163,38 +163,23 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				mScene->clearSelection();
 			elem->setSelected(true);
 
+			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
+			if (nodeElem && currentId.element() == "Class" &&
+				mGraphicalAssistApi->children(currentId).empty())
+			{
+				needToProcessChildren = false;
+				for (int i = 0; i < 2; i++) {
+					QString curChildElementType;
+					if (i == 0)
+						curChildElementType = "MethodsContainer";
+					else
+						curChildElementType = "FieldsContainer";
+					Id newUuid = Id("Kernel_metamodel", "Kernel",
+							curChildElementType, QUuid::createUuid().toString());
 
-//			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-//			model::Model* realModel = dynamic_cast<model::Model*>(model());
-//			if (nodeElem && currentId.element() == "Class" && realModel &&
-//				realModel->api().children(currentId).empty()) {
-//				needToProcessChildren = false;
-//				for (int i = 0; i < 2; i++) {
-//					QString curChildElementType;
-//					if (i == 0)
-//						curChildElementType = "MethodsContainer";
-//					else
-//						curChildElementType = "FieldsContainer";
-//					Id newUuid = Id("Kernel_metamodel", "Kernel",
-//							curChildElementType, QUuid::createUuid().toString());
-//					QByteArray data;
-//					QMimeData *mimeData = new QMimeData();
-//					QDataStream stream(&data, QIODevice::WriteOnly);
-//					QString mimeType = QString("application/x-real-uml-data");
-//					QString newElemUuid = newUuid.toString();
-//					QString pathToItem = Id::rootId().toString();
-//					QString name = "(anonymous something)";
-//					QPointF pos = QPointF(0, 0);
-//					stream << newElemUuid;
-//					stream << pathToItem;
-//					stream << name;
-//					stream << pos;
-
-//					mimeData->setData(mimeType, data);
-//					model()->dropMimeData(mimeData, Qt::CopyAction, model()->rowCount(current), 0, current);
-//					delete mimeData;
-//				}
-//			}
+					mGraphicalAssistApi->createElement(currentId, newUuid, false,  "(anonymous something)", QPointF(0, 0));
+				}
+			}
 		}
 		if (needToProcessChildren && model()->hasChildren(current))
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
