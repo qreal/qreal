@@ -45,7 +45,7 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 		if (mBinding == "name")
 			static_cast<NodeElement*>(parentItem())->setName(value);
 		else
-			static_cast<NodeElement*>(parentItem())->setProperty(mBinding, value);
+			static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
 	}
 }
 

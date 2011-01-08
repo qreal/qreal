@@ -41,7 +41,7 @@ namespace UML {
 
 		// for inline editing we should be able to change properties value. right now via graphical
 		// representation. also labels could store indices and get data themselves
-		virtual void setProperty(QString const &roleName, QString const &value);
+		virtual void setLogicalProperty(QString const &roleName, QString const &value);
 
 		virtual void setColorRect(bool bl) = 0;
 
@@ -59,6 +59,6 @@ namespace UML {
 		qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 		qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 
-		QString property(QString const &roleName) const;
+		QString logicalProperty(QString const &roleName) const;
 	};
 }

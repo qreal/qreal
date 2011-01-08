@@ -293,7 +293,6 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 
 void EditorViewMViface::clearItems()
 {
-
 	QList<QGraphicsItem *> toRemove;
 	foreach (IndexElementPair pair, mItems)
 		if (!pair.second->parentItem())
@@ -331,4 +330,25 @@ void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalA
 {
 	mGraphicalAssistApi = &graphicalAssistApi;
 	mLogicalAssistApi = &logicalAssistApi;
+}
+
+void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
+{
+	connect(logicalModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))
+			, this, SLOT(logicalDataChanged(QModelIndex, QModelIndex)));
+}
+
+void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+		QModelIndex const curr = topLeft.sibling(row, 0);
+		Id const logicalId = curr.data(roles::idRole).value<Id>();
+		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
+		foreach (Id const graphicalId, graphicalIds) {
+			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
+			UML::Element *graphicalItem = item(graphicalIndex);
+			if (graphicalItem)
+				graphicalItem->updateData();
+		}
+	}
 }

@@ -141,7 +141,10 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 	if (attrClass != logicalAttribute && attrClass != graphicalAttribute)  // metatype, ids and name are definitely not enums
 		return QStringList();
 
-	Id const id = index.data(roles::idRole).value<Id>();
+	Id const id = attrClass == logicalAttribute
+			? mTargetLogicalObject.data(roles::idRole).value<Id>()
+			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
+
 	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
 }
 

@@ -33,6 +33,7 @@ namespace qReal {
 		void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 		bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 		void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
+		void setLogicalModel(QAbstractItemModel * const logicalModel);
 		Id rootId();
 
 		EditorViewScene *scene() const;
@@ -49,6 +50,7 @@ namespace qReal {
 		void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 		void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end);
 		void rowsInserted ( const QModelIndex & parent,	int start, int end);
+		void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 	private:
 		typedef QPair<QPersistentModelIndex, UML::Element*> IndexElementPair;

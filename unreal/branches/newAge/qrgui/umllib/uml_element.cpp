@@ -48,14 +48,14 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 	return QList<ContextMenuAction*>();
 }
 
-QString Element::property(QString const &roleName) const
+QString Element::logicalProperty(QString const &roleName) const
 {
-	return mLogicalAssistApi->propertyByRoleName(id(), roleName).toString();
+	return mLogicalAssistApi->propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setProperty(QString const &roleName, QString const &value)
+void Element::setLogicalProperty(QString const &roleName, QString const &value)
 {
-	mLogicalAssistApi->setPropertyByRoleName(id(), value, roleName);
+	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
 }
 
 void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)

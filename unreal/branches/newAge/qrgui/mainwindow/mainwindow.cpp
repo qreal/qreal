@@ -863,6 +863,7 @@ void MainWindow::changeMiniMapSource(int index)
 		{
 			ui.minimapView->setScene(editorView->scene());
 			getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+			getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 			mRootIndex = editorView->mvIface()->rootIndex();
 		}
 	} else
@@ -1091,6 +1092,7 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
 	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
 	changeMiniMapSource(ui.tabs->currentIndex());
 
