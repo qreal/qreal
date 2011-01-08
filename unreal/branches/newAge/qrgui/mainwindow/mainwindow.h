@@ -172,5 +172,6 @@ namespace qReal {
 		void setSwitchGrid(bool isChecked);
 		void setSwitchAlignment(bool isChecked);
 
+		void setIndexesOfPropertyEditor(Id const &id);
 	};
 }

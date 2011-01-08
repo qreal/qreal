@@ -184,10 +184,11 @@ MainWindow::MainWindow()
 
 	progress->setValue(80);
 
-//	mPropertyModel.setSourceModel(mModel);
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
+
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 
@@ -284,7 +285,7 @@ void MainWindow::selectItemWithError(Id const &id)
 	if (id == Id::rootId())
 		return;
 
-	mPropertyModel.setIndex(mModels->graphicalModelAssistApi().indexById(id));
+	setIndexesOfPropertyEditor(id);
 	centerOn(id);
 }
 
@@ -358,14 +359,14 @@ void MainWindow::sceneSelectionChanged()
 	if (length == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
+			setIndexesOfPropertyEditor(elem->id());
 			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 			if (index.isValid()) {
 				ui.graphicalModelExplorer->setCurrentIndex(index);
-				mPropertyModel.setIndex(index);
 			}
 		} else {
 			ui.graphicalModelExplorer->setCurrentIndex(QModelIndex());
-			mPropertyModel.setIndex(QModelIndex());
+			mPropertyModel.clearModelIndexes();
 
 			foreach(QGraphicsItem* item, graphicsItems) {
 				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
@@ -448,13 +449,13 @@ void MainWindow::settingsPlugins()
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex index = (isLogicalModel) ? (ui.logicalModelExplorer->currentIndex())
+	QModelIndex index = isLogicalModel ? (ui.logicalModelExplorer->currentIndex())
 			: (ui.graphicalModelExplorer->currentIndex());
 	closeTab(index);
 	if (index.isValid()) {
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
-		if (pModel->getModelIndex() == index)
-			pModel->setIndex(QModelIndex());
+		if (pModel->isCurrentIndex(index))
+			pModel->clearModelIndexes();
 		if (isLogicalModel)
 			mModels->logicalModel()->removeRow(index.row(), index.parent());
 		else
@@ -475,8 +476,8 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 		QPersistentModelIndex index = mModels->graphicalModelAssistApi().indexById(elem->id());
 		if (index.isValid()) {
 			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
-			if (pModel->getModelIndex() == index)
-				pModel->setIndex(QModelIndex());
+			if (pModel->isCurrentIndex(index))
+				pModel->clearModelIndexes();
 			ui.propertyEditor->setRootIndex(QModelIndex());
 			mModels->graphicalModel()->removeRow(index.row(), index.parent());
 		}
@@ -1013,9 +1014,10 @@ void MainWindow::propertyEditorScrollTo(const QModelIndex &index)
 
 void MainWindow::graphicalModelExplorerClicked(const QModelIndex &index)
 {
-	mPropertyModel.setIndex(index);
+	Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
+	setIndexesOfPropertyEditor(id);
 	openNewTab(index);
-	centerOn(mModels->graphicalModelAssistApi().idByIndex(index));
+	centerOn(id);
 }
 
 void MainWindow::openNewTab(const QModelIndex &arg)
@@ -1505,5 +1507,20 @@ void MainWindow::debugSingleStep()
 		gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
 		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
 		mVisualDebugger->clearErrorReporter();
+	}
+}
+
+void MainWindow::setIndexesOfPropertyEditor(Id const &id)
+{
+	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
+		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
+		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(id);
+		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
+	} else if (mModels->logicalModelAssistApi().isLogicalId(id)) {
+		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
+		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+	} else {
+		mPropertyModel.clearModelIndexes();
 	}
 }

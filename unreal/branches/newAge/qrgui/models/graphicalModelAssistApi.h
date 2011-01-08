@@ -49,6 +49,8 @@ public:
 	Id logicalId(Id const &elem) const;
 	IdList graphicalIdsByLogicalId(Id const &logicalId) const;
 
+	bool isGraphicalId(Id const &id) const;
+
 signals:
 	void nameChanged(Id const &id);
 

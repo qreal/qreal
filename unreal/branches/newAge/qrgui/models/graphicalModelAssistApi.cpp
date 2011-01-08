@@ -120,3 +120,8 @@ QString GraphicalModelAssistApi::toolTip(Id const &elem) const
 {
 	return ModelsAssistApi::property(elem, Qt::ToolTipRole).value<QString>();
 }
+
+bool GraphicalModelAssistApi::isGraphicalId(Id const &id) const
+{
+	return indexById(id) != QModelIndex();
+}

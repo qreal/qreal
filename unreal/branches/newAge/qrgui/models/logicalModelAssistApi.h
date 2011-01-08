@@ -43,6 +43,8 @@ namespace qReal {
 			void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 			QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
+			bool isLogicalId(Id const &id) const;
+
 		private:
 			LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 			LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

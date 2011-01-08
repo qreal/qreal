@@ -190,10 +190,10 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 			case roles::toRole:
 				return mApi.to(item->id()).toVariant();
 		}
-		/*if (role >= roles::customPropertiesBeginRole) {
+		if (role >= roles::customPropertiesBeginRole) {
 			QString selectedProperty = findPropertyName(item->id(), role);
 			return mApi.property(item->id(), selectedProperty);
-		}*/
+		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {
@@ -217,11 +217,11 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			mApi.setTo(item->id(), value.value<Id>());
 			break;
 		default:
-			/*if (role >= roles::customPropertiesBeginRole) {
+			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(item->id(), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
 				break;
-			}*/
+			}
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}

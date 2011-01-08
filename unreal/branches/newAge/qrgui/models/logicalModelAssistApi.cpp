@@ -142,3 +142,8 @@ QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const
 		return "";
 	return property(elem, roleIndex);
 }
+
+bool LogicalModelAssistApi::isLogicalId(Id const &id) const
+{
+	return indexById(id) != QModelIndex();
+}

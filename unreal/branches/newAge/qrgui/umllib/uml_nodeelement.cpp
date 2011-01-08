@@ -101,7 +101,6 @@ void NodeElement::adjustLinks()
 }
 
 void NodeElement::arrangeLinks() {
-	qDebug() << "---------------\nDirect call " << id().toString();
 	QSet<NodeElement*> toArrange;
 	QSet<NodeElement*> arranged;
 	arrangeLinksRecursively(toArrange, arranged);
@@ -404,8 +403,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
@@ -414,14 +412,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-			embeddedLinker->setCovered(true);
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
-	if (!isPort() && (flags() & ItemIsMovable))
-	{
+	if (!isPort() && (flags() & ItemIsMovable)) {
 		QPointF newParentInnerPoint = event->scenePos();
 		//switch нужен для случая, когда мы не можем растягивать объект.
 		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
