@@ -167,18 +167,6 @@ MainWindow::MainWindow()
 
 	QString workingDir = settings.value("workingDir", ".").toString();
 
-//	mModel = new model::Model(mEditorManager, workingDir);
-//	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
-//	if (!missingPlugins.isEmpty()) {
-//		QString text = "These plugins are not present, but needed to load the save:\n";
-//		foreach (Id const id, missingPlugins) {
-//			text += id.editor() + "\n";
-//		}
-//		QMessageBox::warning(this, tr("Some plugins are missing"), text);
-//		close();
-//		return;
-//	}
-
 	mListenerManager = new ListenerManager(mEditorManager.listeners() /*, &mModel->assistApi()*/);
 	mGesturesWidget = new GesturesWidget();
 
@@ -186,9 +174,18 @@ MainWindow::MainWindow()
 
 	progress->setValue(80);
 
-
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
+
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	if (!missingPlugins.isEmpty()) {
+		QString text = "These plugins are not present, but needed to load the save:\n";
+		foreach (Id const id, missingPlugins)
+			text += id.editor() + "\n";
+		QMessageBox::warning(this, tr("Some plugins are missing"), text);
+		close();
+		return;
+	}
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

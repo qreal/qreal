@@ -17,9 +17,12 @@ public:
 
 	QAbstractItemModel* graphicalModel() const;
 	QAbstractItemModel* logicalModel() const;
+
 	void saveTo(QString const &workingDirectory);
+
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
+
 	void resetChangedDiagrams();
 	void resetChangedDiagrams(const IdList &list);
 
@@ -27,6 +30,9 @@ public:
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
+
+	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+
 	void reinit();
 
 private:

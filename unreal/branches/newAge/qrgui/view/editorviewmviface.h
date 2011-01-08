@@ -26,7 +26,6 @@ namespace qReal {
 
 	public:
 		EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
-
 		~EditorViewMViface();
 
 		QModelIndex indexAt(const QPoint &point) const;
@@ -46,12 +45,22 @@ namespace qReal {
 		void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 		void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 
-	protected slots:
+	private slots:
 		void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 		void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end);
 		void rowsInserted ( const QModelIndex & parent,	int start, int end);
 
-	protected:
+	private:
+		typedef QPair<QPersistentModelIndex, UML::Element*> IndexElementPair;
+
+		EditorViewScene *mScene;
+		qReal::EditorView *mView;
+		models::GraphicalModelAssistApi *mGraphicalAssistApi;
+		models::LogicalModelAssistApi *mLogicalAssistApi;
+
+		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
+		QSet<IndexElementPair> mItems;
+
 		QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 
 		int horizontalOffset() const;
@@ -62,18 +71,6 @@ namespace qReal {
 		void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
 
 		QRegion visualRegionForSelection(const QItemSelection &selection ) const;
-
-	private:
-		typedef QPair<QPersistentModelIndex, UML::Element*> IndexElementPair;
-
-		EditorViewScene *mScene;
-		qReal::EditorView *mView;
-		models::GraphicalModelAssistApi *mGraphicalAssistApi;
-		models::LogicalModelAssistApi *mLogicalAssistApi;
-
-
-		/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
-		QSet<IndexElementPair> mItems;
 
 		UML::Element *item(QPersistentModelIndex const &index) const;
 		void setItem(QPersistentModelIndex const &index, UML::Element *item);

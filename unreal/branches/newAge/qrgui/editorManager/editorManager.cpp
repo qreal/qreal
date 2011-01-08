@@ -15,7 +15,7 @@
 using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
-	: QObject(parent), mRoot()
+	: QObject(parent)
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -271,14 +271,17 @@ QStringList EditorManager::getPropertiesWithDefaultValues(Id const &id) const
 	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
 }
 
-IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
+IdList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
+		, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
 	IdList result;
-	checkNeededPluginsRecursive(api, Id::rootId(), result);
+	checkNeededPluginsRecursive(logicalApi, Id::rootId(), result);
+	checkNeededPluginsRecursive(graphicalApi, Id::rootId(), result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api
+		, Id const &id, IdList &result) const
 {
 	if (id != Id::rootId() && !mPluginsLoaded.contains(id.editor())) {
 		Id missingEditor = Id(id.editor());

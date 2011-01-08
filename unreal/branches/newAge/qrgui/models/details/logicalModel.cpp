@@ -147,8 +147,8 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 			changeParent(index(mModelItems[logicalId]), index(parentItem), QPointF());
 		}
 	else {
-	 newItem = createModelItem(id, parentItem);
-	initializeElement(id, parentItem, newItem, name, position);
+		newItem = createModelItem(id, parentItem);
+		initializeElement(id, parentItem, newItem, name, position);
 	}
 }
 
@@ -167,6 +167,12 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+
+	QStringList const properties = mEditorManager.getPropertyNames(id.type());
+	foreach (QString const property, properties)
+	// for those properties that doesn't have default values, plugin will return empty string
+		mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+
 	mModelItems.insert(id, item);
 	endInsertRows();
 }

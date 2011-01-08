@@ -1,20 +1,18 @@
 #pragma once
 
-class QIcon;
-
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QStringList>
+#include <QtGui/QIcon>
 
 #include "listenerManager.h"
 #include "../kernel/ids.h"
 #include "../pluginInterface/editorInterface.h"
+#include "../../qrrepo/graphicalRepoApi.h"
+#include "../../qrrepo/logicalRepoApi.h"
 
-namespace qrRepo {
-	class RepoApi;
-}
 namespace UML {
 	class Element;
 }
@@ -54,7 +52,8 @@ namespace qReal {
 		virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
 		virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
 
-		IdList checkNeededPlugins(qrRepo::RepoApi const &api) const;
+		IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
+				, qrRepo::GraphicalRepoApi const &graphicalApi) const;
 		bool hasElement(Id const &element) const;
 
 		Id findElementByType(QString const &type) const;
@@ -64,8 +63,6 @@ namespace qReal {
 
 		bool isDiagramNode(Id const &id) const;
 	private:
-		void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const;
-
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;
 		QMap<QString, EditorInterface *> mPluginIface;
@@ -74,7 +71,7 @@ namespace qReal {
 		QDir mPluginsDir;
 		QStringList mPluginFileNames;
 
-		const Id mRoot;
+		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 	};
 
 }
