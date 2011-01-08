@@ -1023,9 +1023,12 @@ void MainWindow::logicalModelExplorerClicked(const QModelIndex &index)
 		Id const graphicalId = graphicalIds.first();
 		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(graphicalId);
 		graphicalModelExplorerClicked(graphicalIndex);
-
-	} else
+	} else {
 		setIndexesOfPropertyEditor(logicalId);
+		EditorView* const view = getCurrentTab();
+		EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+		scene->clearSelection();
+	}
 }
 
 void MainWindow::openNewTab(const QModelIndex &arg)

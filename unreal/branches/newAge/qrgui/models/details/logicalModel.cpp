@@ -281,7 +281,6 @@ bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	else {
 		for (int i = row; i < row + count; ++i) {
 			AbstractModelItem *child = parentItem->children().at(i);
-			mApi.removeElement(child->id());
 			removeModelItems(child);
 
 			int childRow = child->row();
@@ -290,6 +289,7 @@ bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 			mModelItems.remove(child->id());
 			if (mModelItems.count(child->id()) == 0)
 				mApi.removeChild(parentItem->id(), child->id());
+			mApi.removeElement(child->id());
 			delete child;
 			endRemoveRows();
 		}
