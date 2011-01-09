@@ -203,7 +203,7 @@ MainWindow::MainWindow()
 	ui.logicalModelExplorer->setModel(mModels->logicalModel());
 
 	mGesturesWidget = new GesturesWidget();
-	mVisualDebugger = new VisualDebugger(mModels);
+	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);

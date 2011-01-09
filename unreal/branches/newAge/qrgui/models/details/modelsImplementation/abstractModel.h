@@ -33,7 +33,6 @@ namespace qReal {
 					virtual QStringList mimeTypes() const;
 					virtual ModelsAssistApi* modelAssistApi() const = 0;
 					bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
-					AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
 
 					virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
 					QPersistentModelIndex rootIndex() const;
@@ -55,6 +54,8 @@ namespace qReal {
 					QModelIndex index(AbstractModelItem const * const item) const;
 
 					void cleanupTree(modelsImplementation::AbstractModelItem * item);
+
+					AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
 
 				private:
 					virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
