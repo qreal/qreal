@@ -57,6 +57,8 @@ MainWindow::MainWindow()
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
+
+	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
 	if (showSplash)
 	{
@@ -77,6 +79,7 @@ MainWindow::MainWindow()
 
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
+	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
@@ -129,8 +132,12 @@ MainWindow::MainWindow()
 	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
 	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 
-	adjustMinimapZoom(ui.minimapZoomSlider->value());
+	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
+	adjustMinimapZoom(ui.minimapZoomSlider->value());
+	initGridProperties();
+
+	// Step 3: Ui connects are done.
 	progress->setValue(40);
 
 	ui.paletteDock->setWidget(ui.paletteToolbox);
@@ -149,12 +156,14 @@ MainWindow::MainWindow()
 	connect(ui.logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 
 	ui.graphicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
-
 	ui.logicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
 
+	// Step 4: Property editor and model explorers are initialized.
 	progress->setValue(60);
 	loadPlugins();
 	showMaximized();
+
+	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
 	settings.beginGroup("MainWindow");
@@ -167,14 +176,11 @@ MainWindow::MainWindow()
 
 	QString workingDir = settings.value("workingDir", ".").toString();
 
-	mGesturesWidget = new GesturesWidget();
-
-	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
-
-	progress->setValue(80);
-
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
+
+	// Step 6: Save loaded, models initialized.
+	progress->setValue(80);
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners()
 			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
@@ -196,6 +202,10 @@ MainWindow::MainWindow()
 	ui.graphicalModelExplorer->setModel(mModels->graphicalModel());
 	ui.logicalModelExplorer->setModel(mModels->logicalModel());
 
+	mGesturesWidget = new GesturesWidget();
+	mVisualDebugger = new VisualDebugger(mModels);
+
+	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
 	if (showSplash)
 		splash->close();
@@ -206,10 +216,6 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
-
-	initGridProperties();
-
-	mVisualDebugger = new VisualDebugger(mModels);
 }
 
 QModelIndex MainWindow::rootIndex() const
