@@ -1,16 +1,16 @@
 #pragma once
 
 #include <QtGui/QPushButton>
-#include <QPersistentModelIndex>
+#include <QtCore/QPersistentModelIndex>
 
 class OpenShapeEditorButton: public QPushButton {
 
 public:
 	OpenShapeEditorButton(QWidget *parent, QPersistentModelIndex const &index, int const &role, QString const &propertyValue);
 
-	QPersistentModelIndex getIndex() const;
-	int getRole() const;
-	QString getPropertyValue() const;
+	QPersistentModelIndex index() const;
+	int role() const;
+	QString propertyValue() const;
 
 private:
 	QPersistentModelIndex const mIndex;

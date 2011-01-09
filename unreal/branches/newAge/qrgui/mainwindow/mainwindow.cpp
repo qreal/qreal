@@ -103,7 +103,7 @@ MainWindow::MainWindow()
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
+	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
@@ -408,7 +408,10 @@ void MainWindow::open()
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
 {
-//	mModels->setData(index, data, role);
+	// const_cast here is ok, since we need to set a shape in a correct model, and
+	// not going to use this index anymore.
+	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+	model->setData(index, data, role);
 }
 
 void MainWindow::print()
@@ -912,30 +915,31 @@ void MainWindow::showPreferencesDialog()
 	preferencesDialog.exec();
 }
 
-// TODO: Fix it after new property editor will be implemented.
-void MainWindow::openNewEmptyTab()
+void MainWindow::openShapeEditor()
 {
-//	QObject const *object = sender();
-//	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
-//	QString const text = "Shape Editor";
-//	ShapeEdit *shapeEdit = NULL;
-//	if (button != NULL) {
-//		QPersistentModelIndex index = button->getIndex();
-//		int role = button->getRole();
-//		QString const propertyValue = button->getPropertyValue();
-//		shapeEdit = new ShapeEdit(index, role);
-//		if (!propertyValue.isEmpty())
-//			shapeEdit->load(propertyValue);
-//		mModels->logicalModel().setData(index, propertyValue, role);
-////		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
-//	}
-//	else {
-//		shapeEdit = new ShapeEdit();
-//	}
+	QObject const *object = sender();
+	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
+	QString const text = "Shape Editor";
+	ShapeEdit *shapeEdit = NULL;
+	if (button != NULL) {
+		QPersistentModelIndex index = button->index();
+		int role = button->role();
+		QString const propertyValue = button->propertyValue();
+		shapeEdit = new ShapeEdit(index, role);
+		if (!propertyValue.isEmpty())
+			shapeEdit->load(propertyValue);
+		// Here we are going to actually modify model to set a value of a shape.
+		QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+		model->setData(index, propertyValue, role);
+		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
+	}
+	else {
+		shapeEdit = new ShapeEdit();
+	}
 
-//	ui.tabs->addTab(shapeEdit, text);
-//	ui.tabs->setCurrentWidget(shapeEdit);
-//	setConnectActionZoomTo(shapeEdit);
+	ui.tabs->addTab(shapeEdit, text);
+	ui.tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::disconnectZoom(QGraphicsView* view)

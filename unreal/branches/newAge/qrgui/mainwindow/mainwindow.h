@@ -104,7 +104,7 @@ namespace qReal {
 		void graphicalModelExplorerClicked(const QModelIndex &index);
 		void logicalModelExplorerClicked(const QModelIndex &index);
 
-		void openNewEmptyTab();
+		void openShapeEditor();
 		void openNewTab(const QModelIndex &index);
 		void initCurrentTab(const QModelIndex &rootIndex);
 

@@ -231,3 +231,21 @@ bool PropertyEditorModel::isValid() const
 	return mTargetGraphicalModel && mTargetLogicalModel
 			&& (mTargetLogicalObject.isValid() || mTargetGraphicalObject.isValid());
 }
+
+QModelIndex PropertyEditorModel::modelIndex(int row) const
+{
+	switch (mFields[row].attributeClass) {
+	case logicalAttribute:
+		return mTargetLogicalObject;
+	case graphicalAttribute:
+		return mTargetGraphicalObject;
+	default:
+		throw Exception("PropertyEditorModel::modelIndex: called for incorrect field, which is not graphical nor logical attribute");
+	}
+	return QModelIndex();
+}
+
+int PropertyEditorModel::roleByIndex(int row) const
+{
+	return mFields[row].role;
+}
