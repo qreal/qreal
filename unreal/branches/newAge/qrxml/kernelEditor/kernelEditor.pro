@@ -4,7 +4,8 @@ QREAL_EDITOR_NAME = kernelEditor
 include (../editorsCommon.pri)
 
 HEADERS += \
-	../../qrgui/editorManager/listener.h
+	../../qrgui/pluginInterface/listenerInterface.h \
+	../../qrgui/pluginInterface/listenerApiInterface.h
 
 HEADERS += \
 	contextMenuActionTrigger.h \

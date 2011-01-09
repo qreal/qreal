@@ -57,7 +57,7 @@ namespace qReal {
 		bool hasElement(Id const &element) const;
 
 		Id findElementByType(QString const &type) const;
-		QList<Listener *> listeners() const;
+		QList<ListenerInterface *> listeners() const;
 
 		EditorInterface* editorInterface(QString const &editor) const;
 

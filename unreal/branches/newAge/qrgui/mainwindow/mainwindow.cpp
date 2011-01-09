@@ -167,7 +167,6 @@ MainWindow::MainWindow()
 
 	QString workingDir = settings.value("workingDir", ".").toString();
 
-	mListenerManager = new ListenerManager(mEditorManager.listeners() /*, &mModel->assistApi()*/);
 	mGesturesWidget = new GesturesWidget();
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
@@ -176,6 +175,9 @@ MainWindow::MainWindow()
 
 	mRootIndex = QModelIndex();
 	mModels = new models::Models(workingDir, mEditorManager);
+
+	mListenerManager = new ListenerManager(mEditorManager.listeners()
+			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {

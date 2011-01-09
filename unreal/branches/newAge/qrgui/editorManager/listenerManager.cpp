@@ -4,24 +4,35 @@
 #include <QtCore/QDebug>
 
 #include "../kernel/exception/exception.h"
+#include "listenerApi.h"
+
+#include "../models/logicalModelAssistApi.h"
+#include "../models/graphicalModelAssistApi.h"
 
 using namespace qReal;
 
-ListenerManager::ListenerManager(QList<Listener *> const &listeners /*, model::ModelAssistApi *api*/)
+ListenerManager::ListenerManager(QList<ListenerInterface *> const &listeners
+		, models::LogicalModelAssistApi &logicalApi, models::GraphicalModelAssistApi &graphicalApi)
+	: mListenerApiInterface(new ListenerApi(logicalApi, graphicalApi))
 {
-	initListeners(listeners/*, api*/);
+	initListeners(listeners);
 	bindListenerSlotsByName(listeners);
 }
 
-void ListenerManager::initListeners(QList<Listener *> const &listeners /*, model::ModelAssistApi *api*/)
+ListenerManager::~ListenerManager()
 {
-	foreach (Listener *listener, listeners)
-		listener->init(/*api*/);
+	delete mListenerApiInterface;
 }
 
-void ListenerManager::bindListenerSlotsByName(QList<Listener *> const &listeners)
+void ListenerManager::initListeners(QList<ListenerInterface *> const &listeners)
 {
-	foreach (Listener *listener, listeners) {
+	foreach (ListenerInterface *listener, listeners)
+		listener->init(mListenerApiInterface);
+}
+
+void ListenerManager::bindListenerSlotsByName(QList<ListenerInterface *> const &listeners)
+{
+	foreach (ListenerInterface *listener, listeners) {
 		int methodCount = listener->metaObject()->methodCount();
 		for (int i = 0; i < methodCount; ++i) {
 
