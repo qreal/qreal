@@ -758,3 +758,13 @@ void EditorViewScene::deleteGesture()
 	}
 	mGesture.clear();
 }
+
+void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
+{
+	if (wheelEvent->delta() > 0)
+		emit zoomIn();
+	else
+		emit zoomOut();
+	wheelEvent->accept();
+	return;
+}

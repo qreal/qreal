@@ -48,7 +48,6 @@ namespace qrRepo {
 			void save(qReal::IdList list) const;
 			void remove(qReal::IdList list) const;
 			void setWorkingDir(QString const &workingDir);
-			void log(QString const message, const qReal::Id diagram);
 
 		private:
 			void init();

@@ -22,8 +22,6 @@ namespace qrRepo {
 			void removeFromDisk(qReal::Id id) const;
 			void saveToDisk(QList<Object*> const &objects) const;
 			void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
-
-			void log(QString const message, qReal::Id const diagram);
 		private:
 			void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
 			void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);

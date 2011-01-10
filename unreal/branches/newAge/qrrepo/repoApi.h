@@ -85,8 +85,6 @@ namespace qrRepo {
 
 		void open(QString const &workingDir);
 
-		void log(QString const message, qReal::Id const diagram);
-
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;

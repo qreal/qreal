@@ -89,29 +89,6 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 	}
 }
 
-void  Serializer::log(QString const message, qReal::Id const diagram)
-{
-	QString path = mWorkingDir + "/logs/" + diagram.diagram();
-	QString name = diagram.id();
-	QDir dir;
-	dir.mkpath(path);
-
-	QFile *file;
-	if (!files.contains(name)) {
-		file = new QFile(path + "/" + name + ".log");
-		files.insert(name, file);
-	} else {
-		file = files.value(name);
-	}
-
-	if (!file->isOpen())
-		file->open(QIODevice::Append | QIODevice::Text);
-	QTextStream out(file);
-	out << message << "\n";
-
-	//may be, file must be closed or smthng else
-}
-
 Object *Serializer::parseObject(QDomElement const &elem)
 {
 	QString const id = elem.attribute("id", "");

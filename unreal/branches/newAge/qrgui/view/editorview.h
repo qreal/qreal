@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QGraphicsView>
+#include <QtGui/QGraphicsView>
+#include <QtCore/QSettings>
 
 #include "editorviewscene.h"
 #include "editorviewmviface.h"
@@ -40,6 +41,7 @@ namespace qReal {
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
+		QSettings mSettings;
 	};
 
 }

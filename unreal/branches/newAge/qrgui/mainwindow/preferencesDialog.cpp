@@ -27,9 +27,9 @@ void PreferencesDialog::initPreferences()
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
 	ui->gridWidthSlider->setValue(settings.value("GridWidth", 10).toInt());
+	ui->zoomFactorSlider->setValue(settings.value("zoomFactor", 2).toInt());
 
-	ui->chooseDiagramsToSaveCheckBox->setChecked(
-		settings.value("ChooseDiagramsToSave", true).toBool());
+	ui->chooseDiagramsToSaveCheckBox->setChecked(settings.value("ChooseDiagramsToSave", true).toBool());
 	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->chaoticEditionCheckBox->setChecked(settings.value("ChaoticEdition", false).toBool());
@@ -50,7 +50,7 @@ void PreferencesDialog::initPreferences()
 	ui->pathToMake->setText(settings.value("pathToMake", "").toString());
 	ui->pluginExtension->setText(settings.value("pluginExtension", "").toString());
 	ui->prefix->setText(settings.value("prefix", "").toString());
-	
+
 	ui->timeoutLineEdit->setText(settings.value("debuggerTimeout", 750).toString());
 	ui->colorComboBox->addItems(QColor::colorNames());
 	QString curColor = settings.value("debugColor", "red").toString();
@@ -65,6 +65,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
 	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
 	settings.setValue("GridWidth", ui->gridWidthSlider->value());
+	settings.setValue("zoomFactor", ui->zoomFactorSlider->value());
 
 	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
@@ -87,7 +88,7 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("pathToMake", ui->pathToMake->text());
 	settings.setValue("pluginExtension", ui->pluginExtension->text());
 	settings.setValue("prefix", ui->prefix->text());
-	
+
 	settings.setValue("debuggerTimeout", ui->timeoutLineEdit->text());
 	settings.setValue("debugColor", ui->colorComboBox->currentText());
 

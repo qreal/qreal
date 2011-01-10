@@ -224,11 +224,6 @@ void Client::setWorkingDir(QString const &workingDir)
 	serializer.setWorkingDir(workingDir);
 }
 
-void Client::log(QString const message, const qReal::Id diagram)
-{
-	serializer.log(message, diagram);
-}
-
 void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";

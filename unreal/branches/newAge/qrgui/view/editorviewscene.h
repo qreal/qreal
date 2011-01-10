@@ -45,8 +45,12 @@ public:
 
 	UML::Element* getLastCreated();
 
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+
 signals:
 	void elementCreated(qReal::Id const &id);
+	void zoomIn();
+	void zoomOut();
 
 protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);

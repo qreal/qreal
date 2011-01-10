@@ -9,11 +9,14 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent)
+	: QGraphicsView(parent), mSettings("SPbSU", "QReal")
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
+	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
+
 	mMVIface = new EditorViewMViface(this, mScene);
 	setScene(mScene);
 
@@ -46,12 +49,14 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	scale(1.5,1.5);
+	double zoomFactor = static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1;
+	scale(zoomFactor, zoomFactor);
 }
 
 void EditorView::zoomOut()
 {
-	scale(0.666,0.666);
+	double zoomFactor = 1 / (static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1);
+	scale(zoomFactor, zoomFactor);
 }
 
 void EditorView::setMainWindow(qReal::MainWindow *mainWindow)
