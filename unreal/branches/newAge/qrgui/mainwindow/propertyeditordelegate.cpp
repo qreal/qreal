@@ -15,6 +15,8 @@ using namespace qReal;
 
 PropertyEditorDelegate::PropertyEditorDelegate(QObject *parent)
 		: QItemDelegate(parent)
+		, mMainWindow(NULL)
+		, mLogicalModelAssistApi(NULL)
 {
 }
 
@@ -34,25 +36,22 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		return button;
 	}
 
-	QStringList values = model->enumValues(index);
+	QStringList const values = model->enumValues(index);
 	if (!values.isEmpty()) {
-		QComboBox *editor = new QComboBox(parent);
+		QComboBox * const editor = new QComboBox(parent);
 		foreach (QString item, values)
 			editor->addItem(item);
 		return editor;
 	}
 
-//	QString typeName = model->getTypeName(index);
-//	if (typeName != "int" && typeName != "string" && typeName != "") {
-//		QAbstractItemModel* targModel = model->getTargetModel();
-//		int role = model->roleByIndex(index.row());
-//		const QModelIndex &ind = model->getModelIndex();
-//		qReal::MainWindow *mainWindow = mMainWindow;
-//		ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
-//													  targModel, role, ind, mainWindow);
-//		QVariant data = targModel->data(ind, role);
-//		return button;
-//	}
+	QString typeName = model->typeName(index);
+	if (typeName != "int" && typeName != "string" && typeName != "") {
+		int const role = model->roleByIndex(index.row());
+		QModelIndex const &actualIndex = model->modelIndex(index.row());
+		ButtonRefWindow * const button = new ButtonRefWindow(parent, typeName
+				, *mLogicalModelAssistApi, role, actualIndex, mMainWindow);
+		return button;
+	}
 	QLineEdit *editor = new QLineEdit(parent);
 
 	return editor;
@@ -98,7 +97,9 @@ void PropertyEditorDelegate::updateEditorGeometry(QWidget *editor,
 	editor->setGeometry(option.rect);
 }
 
-void PropertyEditorDelegate::setMainWindow(MainWindow *mainwindow)
+void PropertyEditorDelegate::init(MainWindow *mainWindow
+		, qReal::models::LogicalModelAssistApi * const logicalModelAssistApi)
 {
-	mMainWindow = mainwindow;
+	mMainWindow = mainWindow;
+	mLogicalModelAssistApi = logicalModelAssistApi;
 }

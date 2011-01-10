@@ -18,8 +18,6 @@ public:
 	QAbstractItemModel* graphicalModel() const;
 	QAbstractItemModel* logicalModel() const;
 
-	void saveTo(QString const &workingDirectory);
-
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
 

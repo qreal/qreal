@@ -150,8 +150,6 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&mDelegate);
 
-	mDelegate.setMainWindow(this);
-
 	connect(ui.graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
 	connect(ui.logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 
@@ -204,6 +202,8 @@ MainWindow::MainWindow()
 
 	mGesturesWidget = new GesturesWidget();
 	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
+
+	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -1335,7 +1335,7 @@ void MainWindow::saveAs()
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
 		return;
-	mModels->saveTo(dirName);
+	mModels->repoControlApi().saveTo(dirName);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)

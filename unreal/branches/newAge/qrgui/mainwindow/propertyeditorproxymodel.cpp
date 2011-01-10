@@ -249,3 +249,18 @@ int PropertyEditorModel::roleByIndex(int row) const
 {
 	return mFields[row].role;
 }
+
+QString PropertyEditorModel::typeName(QModelIndex const &index) const
+{
+	Id id;
+	switch (mFields[index.row()].attributeClass) {
+	case logicalAttribute:
+		id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		break;
+	case graphicalAttribute:
+		id = mTargetGraphicalObject.data(roles::idRole).value<Id>();
+	default:
+		return "";  // Non-logical and non-graphical attributes have no type by default
+	}
+	return mEditorManager.getTypeName(id, mFields[index.row()].fieldName);
+}

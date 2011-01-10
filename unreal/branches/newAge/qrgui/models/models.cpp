@@ -33,11 +33,6 @@ QAbstractItemModel* Models::logicalModel() const
 	return mLogicalModel;
 }
 
-void Models::saveTo(QString const &workingDirectory)
-{
-	mRepoApi->saveTo(workingDirectory);
-}
-
 GraphicalModelAssistApi &Models::graphicalModelAssistApi() const
 {
 	return mGraphicalModel->graphicalModelAssistApi();

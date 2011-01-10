@@ -36,7 +36,7 @@ namespace qReal {
 		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
 		IGesturesPainter *gesturesPainter();
-		QModelIndex rootIndex() const ;
+		QModelIndex rootIndex() const;
 
 		QAction *actionDeleteFromDiagram() const;
 

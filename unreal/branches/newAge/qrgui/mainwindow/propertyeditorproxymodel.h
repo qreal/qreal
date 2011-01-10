@@ -7,7 +7,7 @@
 #include <QtCore/QStringList>
 
 #include "../editorManager/editorManager.h"
-#include "../../qrrepo/repoApi.h"
+#include "../../qrrepo/logicalRepoApi.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств
@@ -36,8 +36,8 @@ public:
 
 	QStringList enumValues(const QModelIndex &index) const;
 
-//	QString typeName(const QModelIndex &index) const;
-//	qrRepo::RepoApi const &api() const;
+	// Methods needed by "Reference button" delegate
+	QString typeName(const QModelIndex &index) const;
 
 	// Methods for use in delegate, allow to determine where in actual models to put data
 	QModelIndex modelIndex(int row) const;

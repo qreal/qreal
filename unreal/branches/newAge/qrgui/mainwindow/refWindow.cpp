@@ -2,37 +2,36 @@
 #include "ui_refWindow.h"
 #include "../kernel/ids.h"
 
-RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
-					 QAbstractItemModel* tModel, int r, const QModelIndex &ind,
-					 qReal::MainWindow *mWindow, QWidget *parent):
-	QWidget(parent),
-	ui(new Ui::RefWindow),
-	api(mApi),
-	typeName(name),
-	model(tModel),
-	role(r),
-	index(ind),
-	mainWindow(mWindow),
-	mItem(NULL)
+RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
+		int role, QModelIndex const &index,
+		qReal::MainWindow &mainWindow)
+	: QWidget(NULL)
+	, mUi(new Ui::RefWindow)
+	, mApi(logicalRepoApi)
+	, mTypeName(name)
+	, mRole(role)
+	, mIndex(index)
+	, mMainWindow(mainWindow)
+	, mItem(NULL)
 {
-	ui->setupUi(this);
-	qReal::IdList idList = api->elementsByType(typeName);
+	mUi->setupUi(this);
+	qReal::IdList idList = mApi.elementsByType(mTypeName);
 	int size = idList.size();
-	ui->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
-	QString str = model->data(index, role).toString();
+	mUi->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
+	QString const str = mIndex.data(mRole).toString();
 	int sizeStr = str.count("$$");
 	for (int i = 0; i < size; ++i)
 	{
-		qReal::Id parentId = api->parent(idList[i]);
-		QString parentName = api->name(parentId);
+		qReal::Id parentId = mApi.parent(idList[i]);
+		QString parentName = mApi.name(parentId);
 		if (parentName.contains("Diagram"))
 		{
 			QListWidgetItem *item = new QListWidgetItem();
-			QString text = parentName + "::" + api->name(parentId);
+			QString text = parentName + "::" + mApi.name(parentId);
 			item->setText(text);
 			QVariant val = idList[i].toString();
 			item->setData(Qt::ToolTipRole, val);
-			ui->listWidget->addItem(item);
+			mUi->listWidget->addItem(item);
 			for (int k = 0; k < sizeStr; ++k)
 			{
 				if (val == str.section("$$", k, k))
@@ -40,18 +39,18 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 			}
 		}
 	}
-	ui->mButtonOk->setEnabled(false);
-	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
+	mUi->mButtonOk->setEnabled(false);
+	connect(mUi->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(highlightElement(QListWidgetItem*)));
-	connect(ui->mButtonCancel, SIGNAL(clicked()), this, SLOT(cancel()));
-	connect(ui->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
+	connect(mUi->mButtonCancel, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(mUi->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(enableOkButton(QListWidgetItem*)));
-	connect(ui->mButtonOk, SIGNAL(clicked()), this, SLOT(setElementId()));
+	connect(mUi->mButtonOk, SIGNAL(clicked()), this, SLOT(setElementId()));
 }
 
 RefWindow::~RefWindow()
 {
-	delete ui;
+	delete mUi;
 }
 
 void RefWindow::keyPressEvent(QKeyEvent *event)
@@ -62,7 +61,7 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 			highlightElement(mItem, false);
 		close();
 	}
-	if (((event->key()) == (Qt::Key_Return)) && (ui->mButtonOk->isEnabled()))
+	if (((event->key()) == (Qt::Key_Return)) && (mUi->mButtonOk->isEnabled()))
 	{
 		setPropertyValue();
 		setElementId();
@@ -71,13 +70,14 @@ void RefWindow::keyPressEvent(QKeyEvent *event)
 
 void RefWindow::setPropertyValue()
 {
-	QList<QListWidgetItem *> itemList = ui->listWidget->selectedItems();
+	QList<QListWidgetItem *> itemList = mUi->listWidget->selectedItems();
 	if (!itemList.isEmpty())
 	{
 		QString idStr;
 		for (int i = 0; i < itemList.size(); ++i)
 			idStr.append(itemList[i]->data(Qt::ToolTipRole).toString() + "$$");
-		model->setData(index, idStr, role);
+		QAbstractItemModel *model = const_cast<QAbstractItemModel *>(mIndex.model());
+		model->setData(mIndex, idStr, mRole);
 	}
 	close();
 }
@@ -87,21 +87,20 @@ void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 	Q_UNUSED(bl)
 	mItem = item;
 	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
-	if (item->isSelected())
-	{
-		mainWindow->activateItemOrDiagram(id, true, false);
-		elementList << item;
+	if (item->isSelected()) {
+		mMainWindow.activateItemOrDiagram(id, true, false);
+		mElementList << item;
 	}
-	else
-	{
-		mainWindow->activateItemOrDiagram(id, false, false);
+	else {
+		mMainWindow.activateItemOrDiagram(id, false, false);
 	}
 }
 
 void RefWindow::cancel()
 {
-	QVariant data = model->data(index, role);
-	model->setData(index, data, role);
+	QVariant data = mIndex.data(mRole);
+	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(mIndex.model());
+	model->setData(mIndex, data, mRole);
 	setElementId();
 	close();
 }
@@ -109,15 +108,15 @@ void RefWindow::cancel()
 void RefWindow::enableOkButton(QListWidgetItem* item)
 {
 	Q_UNUSED(item);
-	ui->mButtonOk->setEnabled(true);
+	mUi->mButtonOk->setEnabled(true);
 }
 
 void RefWindow::setElementId()
 {
-	for (int i = 0; i < elementList.size(); ++i)
+	for (int i = 0; i < mElementList.size(); ++i)
 	{
-		qReal::Id const id = qReal::Id::loadFromString(elementList[i]->data(Qt::ToolTipRole).toString());
-		mainWindow->activateItemOrDiagram(id, false, false);
+		qReal::Id const id = qReal::Id::loadFromString(mElementList[i]->data(Qt::ToolTipRole).toString());
+		mMainWindow.activateItemOrDiagram(id, false, false);
 	}
-	mainWindow->activateItemOrDiagram(index, false);
+	mMainWindow.activateItemOrDiagram(mIndex, false);
 }

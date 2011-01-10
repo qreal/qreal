@@ -6,9 +6,6 @@
 
 #include <QtGui/QIcon>
 
-// TODO: Выделить что-то вроде Plugins SDK - куски кода основной системы,
-// которые должны использоваться при написании плагинов.
-//#include "../qrgui/umllib/uml_element.h"
 #include "sdfRendererInterface.h"
 #include "elementImpl.h"
 #include "listenerInterface.h"
