@@ -155,6 +155,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
 		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
+	Q_UNUSED(position)
 	int const newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
@@ -239,6 +240,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 
 void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
+	Q_UNUSED(position)
 	if (!parent.isValid() || element.parent() == parent)
 		return;
 
