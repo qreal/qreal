@@ -267,7 +267,7 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	mLogicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
+	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
@@ -283,7 +283,7 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	mLogicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
+	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
 	mGraphicalAssistApi->setToPort(id(), mPortTo);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
@@ -528,7 +528,7 @@ void EdgeElement::arrangeSrcAndDst()
 		mSrc->arrangeLinks();
 	} else if (mDst) {
 		mDst->arrangeLinks();
-	} 
+	}
 }
 
 UML::NodeElement *EdgeElement::src() const
@@ -620,16 +620,16 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-	qReal::Id uuidFrom = mLogicalAssistApi->from(id());
-	qReal::Id uuidTo = mLogicalAssistApi->to(id());
+	qReal::Id idFrom = mLogicalAssistApi->from(logicalId());
+	qReal::Id idTo = mLogicalAssistApi->to(logicalId());
 
 	if (mSrc)
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
 
-	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
-	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
+	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
+	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
 	if (mSrc)
 		mSrc->addEdge(this);

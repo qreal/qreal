@@ -114,9 +114,7 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged)
 {
-	qDebug() << "==" << id().toString();
 	toArrange.remove(this);
-//	const qreal indent = 0.1;
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
@@ -146,9 +144,6 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
 				sortedEdges.insertMulti(qMakePair(scalarProduct, edge->portIdOn(this)), edge);
-				qDebug() << "+" << edge->id().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
-				qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
-				qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
 			}
 		}
 
@@ -156,7 +151,6 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 		int N = sortedEdges.size();
 		int i = 0;
 		foreach (EdgeElement* edge, sortedEdges) {
-			qDebug() << "-" << edge->id().toString() << lpId + (1.0 + i) / (N + 1);
 			edge->moveConnection(this, lpId + (1.0 + i++) / (N + 1));
 		}
 
@@ -169,7 +163,7 @@ void NodeElement::arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<No
 	while (!toArrange.isEmpty()) {
 		NodeElement *next = *toArrange.begin();
 		next->arrangeLinksRecursively(toArrange, arranged);
-}
+	}
 }
 
 void NodeElement::storeGeometry()

@@ -191,11 +191,11 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 			mApi.setToPort(item->id(), value.toDouble());
 			break;
 		default:
-			/*if (role >= roles::customPropertiesBeginRole) {
+			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(item->id(), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
 				break;
-			}*/
+			}
 			Q_ASSERT(role < Qt::UserRole);
 			return false;
 		}
