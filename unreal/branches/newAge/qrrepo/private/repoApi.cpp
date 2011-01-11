@@ -226,8 +226,10 @@ Id RepoApi::from(Id const &id) const
 
 void RepoApi::setFrom(Id const &id, Id const &from)
 {
-	Id prev = mClient.property(id, "from").value<Id>();
-	removeFromList(prev, "links", id);
+	if (hasProperty(id, "from")) {
+		Id prev = mClient.property(id, "from").value<Id>();
+		removeFromList(prev, "links", id);
+	}
 	mClient.setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id);
 }
@@ -240,8 +242,10 @@ Id RepoApi::to(Id const &id) const
 
 void RepoApi::setTo(Id const &id, Id const &to)
 {
-	Id prev = mClient.property(id, "to").value<Id>();
-	removeFromList(prev, "links", id);
+	if (hasProperty(id, "to")) {
+		Id prev = mClient.property(id, "to").value<Id>();
+		removeFromList(prev, "links", id);
+	}
 	mClient.setProperty(id, "to", to.toVariant());
 	addToIdList(to, "links", id);
 }

@@ -41,7 +41,7 @@ QVariant ModelsAssistApi::property(Id const &elem, int const role) const
 
 int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
 {
-	QStringList properties = editorManager().getPropertyNames(elem.type());
+	QStringList const properties = editorManager().getPropertyNames(elem.type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 
@@ -57,7 +57,7 @@ Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
 
 bool ModelsAssistApi::hasRootDiagrams() const
 {
-	 return !(mModel.rowCount(QModelIndex()) == 0);
+	 return mModel.rowCount(QModelIndex()) != 0;
 }
 
 int ModelsAssistApi::childrenOfRootDiagram() const
@@ -78,4 +78,24 @@ QPersistentModelIndex ModelsAssistApi::rootIndex() const
 Id ModelsAssistApi::rootId() const
 {
 	return idByIndex(mModel.rootIndex());
+}
+
+void ModelsAssistApi::setTo(Id const &elem, Id const &newValue)
+{
+	setProperty(elem, newValue.toVariant(), roles::toRole);
+}
+
+Id ModelsAssistApi::to(Id const &elem) const
+{
+	return property(elem, roles::toRole).value<Id>();
+}
+
+void ModelsAssistApi::setFrom(Id const &elem, Id const &newValue)
+{
+	setProperty(elem, newValue.toVariant(), roles::fromRole);
+}
+
+Id ModelsAssistApi::from(Id const &elem) const
+{
+	return property(elem, roles::fromRole).value<Id>();
 }

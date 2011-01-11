@@ -99,8 +99,7 @@ UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); it++) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-			// TODO: Fix that, "from" and "to" are graphical properties too.
-			if (elem->id() == id || elem->logicalId() == id) {
+			if (elem->id() == id) {
 				return elem;
 			}
 		}

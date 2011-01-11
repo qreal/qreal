@@ -27,6 +27,12 @@ namespace qReal {
 				virtual IdList children(Id const &element) const = 0;
 				virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 
+				void setTo(Id const &elem, Id const &newValue);
+				Id to(Id const &elem) const;
+
+				void setFrom(Id const &elem, Id const &newValue);
+				Id from(Id const &elem) const;
+
 				QModelIndex indexById(Id const &id) const;
 				Id idByIndex(QModelIndex const &index) const;
 				QPersistentModelIndex rootIndex() const;

@@ -107,26 +107,6 @@ IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 	return diagramsFromList(editorManager().getUsedTypes(element.type()));
 }
 
-void LogicalModelAssistApi::setTo(Id const &elem, Id const &newValue)
-{
-	setProperty(elem, newValue.toVariant(), roles::toRole);
-}
-
-Id LogicalModelAssistApi::to(Id const &elem) const
-{
-	return property(elem, roles::toRole).value<Id>();
-}
-
-void LogicalModelAssistApi::setFrom(Id const &elem, Id const &newValue)
-{
-	setProperty(elem, newValue.toVariant(), roles::fromRole);
-}
-
-Id LogicalModelAssistApi::from(Id const &elem) const
-{
-	return property(elem, roles::fromRole).value<Id>();
-}
-
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
 {
 	int roleIndex = roleIndexByName(elem, roleName);

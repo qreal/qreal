@@ -48,10 +48,6 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 
 GraphicalModelItem *GraphicalModel::loadElement(GraphicalModelItem *parentItem, Id const &id)
 {
-//	if (isDiagram(id)) {
-//		mApi.addOpenedDiagram(id);
-//	}
-
 	int newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
@@ -116,7 +112,9 @@ void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, models
 	mApi.setName(id, name);
 	mApi.setFromPort(id, 0.0);
 	mApi.setToPort(id, 0.0);
-	//mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
+	mApi.setFrom(id, Id::rootId());
+	mApi.setTo(id, Id::rootId());
+	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
 	mApi.setPosition(id, position);
 	mApi.setConfiguration(id, QVariant(QPolygon()));
 	mModelItems.insert(id, item);
@@ -133,8 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return QVariant();
-			// return mEditorManager.icon(item->id());
+			return mEditorManager.icon(item->id());
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:

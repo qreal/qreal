@@ -30,15 +30,8 @@ namespace qReal {
 			void createConnected(Id const &sourceElement, Id const &elementType);
 			void createUsed(Id const &sourceElement, Id const &elementType);
 			Id createConnectedElement(Id const &source, Id const &elementType);
-			IdList diagramsFromList(IdList const &list) const;
 			IdList diagramsAbleToBeConnectedTo(Id const &element) const;
 			IdList diagramsAbleToBeUsedIn(Id const &element) const;
-
-			void setTo(Id const &elem, Id const &newValue);
-			Id to(Id const &elem) const;
-
-			void setFrom(Id const &elem, Id const &newValue);
-			Id from(Id const &elem) const;
 
 			void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 			QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
@@ -46,10 +39,12 @@ namespace qReal {
 			bool isLogicalId(Id const &id) const;
 
 		private:
+			details::LogicalModel &mLogicalModel;
+
 			LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 			LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also
 
-			details::LogicalModel &mLogicalModel;
+			IdList diagramsFromList(IdList const &list) const;
 		};
 	}
 }
