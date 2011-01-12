@@ -103,7 +103,8 @@ void XmlCompiler::generateCode()
 
 void XmlCompiler::addResource(QString const &resourceName)
 {
-	mResources += resourceName;
+	if (!mResources.contains(resourceName))
+		mResources += resourceName;
 }
 
 void XmlCompiler::generateElementClasses()

@@ -62,6 +62,13 @@ void NodeType::generateSdf() const
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	mSdfDomElement.save(out(), 1);
+
+	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
+
+	for (int i = 0; i < images.size(); ++i) {
+		QString const name = images.at(i).toElement().attribute("name");
+		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
+	}
 }
 
 bool NodeType::initPorts()
