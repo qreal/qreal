@@ -1043,7 +1043,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 			//this conditions are not good because of strings comparing
 			QString tabName = name.trimmed().remove(" ");
 			QString diagramName = mModel->idByIndex(index).diagram().remove("_");
-			if (diagramName.contains(tabName)) {
+			if (diagramName.contains(tabName) || (tabName == "RobotBehaviorDiagram" && diagramName == "RobotsDiagram")) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 				diagram = true;
 			}
