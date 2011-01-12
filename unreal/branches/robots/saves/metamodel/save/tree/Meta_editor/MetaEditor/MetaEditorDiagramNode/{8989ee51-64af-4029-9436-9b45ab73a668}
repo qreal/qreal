@@ -11,8 +11,8 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{bb5ee3d8-1807-4e18-9b70-dc6061317db6}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5c728efd-4e2f-4e72-9c78-cc85ae90512e}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{05666099-9397-4de5-ad88-136cba7a4477}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5b7c89d8-cca5-4fb8-89cb-df2ecd60db4e}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{c51e21f9-b2dd-4fd4-b771-c753b39f5c62}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7fbe08a6-96e5-40fc-bd05-50dcf310d026}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value="0, 0 : 531, 0 : 531, 972 : 0, 972 : "/>
@@ -28,7 +28,7 @@
     <QString key="nodeName" value="BlockDiagramNode"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QPointF key="position" value="360, 200"/>
+    <QPointF key="position" value="355, 200"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

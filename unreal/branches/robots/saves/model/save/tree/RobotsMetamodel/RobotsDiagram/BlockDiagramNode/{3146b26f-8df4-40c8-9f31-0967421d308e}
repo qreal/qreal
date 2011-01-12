@@ -3,19 +3,19 @@
     <object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </parents>
   <children>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{0fbdad15-86ef-4eb6-87c9-821dd5a60b8b}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/BlockFinalNode/{af1ac4dc-c3b5-4d39-86e0-5cbe0d341b0e}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{3bcfccfe-6ed6-4817-99b1-be5f358a3da3}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Sensor/{1a74b2df-5e3e-428c-abc7-a8f7171862db}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{1ad9af75-499f-43bc-8f8c-1caa974083b4}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{cf9a7cea-8cfe-45a3-a043-288f4fc359dd}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{157c4b07-b1b0-4f85-beea-393e413592db}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e3797804-47ef-46c4-be9c-d2de47d10876}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{8f8164ad-3e86-475a-aa99-aecb6072a817}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{f0ae8c39-a82c-493f-a0d4-0e21632c64cb}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e57e378c-0027-4787-a082-499a8473d49e}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{943966a3-83bc-41fb-bb57-08ce9d980c15}"/>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{a3e5c877-4dc9-491e-8a41-9058b8a9ac21}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{54f7eeaa-99e3-48cf-968b-5f7aeff22c2c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{0e72747e-6159-4647-9c26-549e3329434b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Sensor/{1ce86932-a5e4-44c2-af09-aa352bf95eb6}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{7d695ffb-61a0-4ec5-ad6f-ac2d4fe29a63}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{b9a60d2a-9de0-4718-abb5-f818c458ea37}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{11c556a0-bab8-4759-85e1-b5f36e7f2e05}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/BlockFinalNode/{08cdb191-34e7-4d13-ad3a-37a19839bc98}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c0c343b3-5a23-4426-bc7c-32f208e75831}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{803a1d71-187f-4449-9a5e-a60c6907b3ab}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{71f13480-e699-40ed-8118-c785dd39a63b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b23ca51c-28f7-461d-b4a9-fb6cc72b44a5}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e1875e44-93ca-4cef-a6bb-67543fb33492}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{29e69580-bfef-4dea-b7eb-5bf8c0466909}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

@@ -4,7 +4,7 @@
   </parents>
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 29, -13 : 71, -114 : "/>
+    <QPolygon key="configuration" value="0, 0 : 34, -13 : 71, -114 : "/>
     <QString key="displayedName" value="BlockDiagramNode_Contains_InitialNode"/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{04e282f4-4182-489b-9547-769992600c58}"/>
     <double key="fromPort" value="1.2"/>
@@ -15,7 +15,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="ownedComment" value=""/>
-    <QPointF key="position" value="586.026, 451.125"/>
+    <QPointF key="position" value="581.026, 451.125"/>
     <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5a4cad16-ae5e-4a4b-b138-38b0c95bec6e}"/>
     <double key="toPort" value="0.5"/>
   </properties>

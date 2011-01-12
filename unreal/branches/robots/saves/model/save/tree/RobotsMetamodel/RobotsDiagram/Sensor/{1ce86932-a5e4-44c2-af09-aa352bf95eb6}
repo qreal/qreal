@@ -1,20 +1,22 @@
-<LogicObject id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{a3e5c877-4dc9-491e-8a41-9058b8a9ac21}">
+<LogicObject id="qrm:/RobotsMetamodel/RobotsDiagram/Sensor/{1ce86932-a5e4-44c2-af09-aa352bf95eb6}">
   <parents>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/BlockDiagramNode/{3146b26f-8df4-40c8-9f31-0967421d308e}"/>
   </parents>
   <children/>
   <properties>
-    <QString key="Delay" value="500"/>
-    <QPolygon key="configuration" value="0, 0 : 139, 0 : 139, 143 : 0, 143 : "/>
+    <QPolygon key="configuration" value="0, 0 : 165, 0 : 165, 100 : 0, 100 : "/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
-    <links type="qReal::IdList"/>
-    <QString key="name" value="(Wait For Timer)"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{803a1d71-187f-4449-9a5e-a60c6907b3ab}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{71f13480-e699-40ed-8118-c785dd39a63b}"/>
+    </links>
+    <QString key="name" value="(Wait For Touch Sensor)"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QPointF key="position" value="196, -366"/>
+    <QPointF key="position" value="-264, 77"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

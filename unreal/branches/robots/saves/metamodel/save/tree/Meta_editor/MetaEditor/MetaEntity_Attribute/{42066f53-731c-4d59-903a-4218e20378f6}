@@ -1,13 +1,13 @@
-<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{dbd8c17c-0783-4679-9e02-7242187935d8}">
+<LogicObject id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{42066f53-731c-4d59-903a-4218e20378f6}">
   <parents>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5b7c89d8-cca5-4fb8-89cb-df2ecd60db4e}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7fbe08a6-96e5-40fc-bd05-50dcf310d026}"/>
   </parents>
   <children/>
   <properties>
     <QString key="attributeType" value="int"/>
     <QPolygon key="configuration" value="0, 0 : 140, 0 : 140, 16 : 0, 16 : "/>
     <QString key="defaultValue" value="0"/>
-    <QString key="displayedName" value="Delay"/>
+    <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <incomingConnections type="qReal::IdList"/>

@@ -1,20 +1,20 @@
-<LogicObject id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{943966a3-83bc-41fb-bb57-08ce9d980c15}">
+<LogicObject id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{71f13480-e699-40ed-8118-c785dd39a63b}">
   <parents>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/BlockDiagramNode/{3146b26f-8df4-40c8-9f31-0967421d308e}"/>
   </parents>
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 74, 1 : "/>
-    <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{cf9a7cea-8cfe-45a3-a043-288f4fc359dd}"/>
-    <double key="fromPort" value="2"/>
+    <QPolygon key="configuration" value="0, 0 : 200, 60 : "/>
+    <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/Sensor/{1ce86932-a5e4-44c2-af09-aa352bf95eb6}"/>
+    <double key="fromPort" value="1"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(Next Instruction)"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QPointF key="position" value="512, -309"/>
-    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/BlockFinalNode/{af1ac4dc-c3b5-4d39-86e0-5cbe0d341b0e}"/>
+    <QPointF key="position" value="-128, 118"/>
+    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{7d695ffb-61a0-4ec5-ad6f-ac2d4fe29a63}"/>
     <double key="toPort" value="0"/>
   </properties>
 </LogicObject>

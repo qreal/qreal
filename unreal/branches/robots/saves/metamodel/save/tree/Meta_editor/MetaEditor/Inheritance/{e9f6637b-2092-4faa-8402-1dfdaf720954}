@@ -4,7 +4,7 @@
   </parents>
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : -1, 61 : 204, 61 : "/>
+    <QPolygon key="configuration" value="0, 0 : -1, 61 : 199, 61 : "/>
     <QString key="displayedName" value="BlockDiagramNode_Inherits_KernelDiagram::Diagram"/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityImport/{65fac1ca-a413-492b-b076-a4cd77fbf1d6}"/>
     <double key="fromPort" value="1.5"/>

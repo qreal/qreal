@@ -15,7 +15,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="ownedComment" value=""/>
-    <QPointF key="position" value="586.026, 467.125"/>
+    <QPointF key="position" value="581.026, 467.125"/>
     <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{c01bd3d8-351c-407f-964f-c191d6a29cc9}"/>
     <double key="toPort" value="0.5"/>
   </properties>

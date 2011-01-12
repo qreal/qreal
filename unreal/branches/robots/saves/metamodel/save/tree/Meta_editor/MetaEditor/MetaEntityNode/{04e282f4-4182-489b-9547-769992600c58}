@@ -21,8 +21,8 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{f50d0698-f330-4e94-a575-b5ae6950b4e2}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{38d832ed-3a32-4562-8741-09b71249f126}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{48cf56bc-2b33-4b1a-bec6-dcb924507e61}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{b98d30b0-1845-473c-98fb-6be07f0a5e96}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{22d55222-ba54-4b32-b2d7-104a439d3c17}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{3fa446d1-671b-432c-b05a-1cc7cddfd696}"/>
     </links>
     <QString key="name" value="BlockDiagramNode"/>
     <outgoingConnections type="qReal::IdList"/>
