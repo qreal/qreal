@@ -43,7 +43,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 	}
 	if (index.row() != 2)
 	{
-		QString typeName = model->getTypeName(index);
+		QString typeName = model->getTypeName(index).toLower();
 		if ((typeName != "int") && (typeName != "string") && (typeName != ""))
 		{
 			QAbstractItemModel* targModel = model->getTargetModel();
