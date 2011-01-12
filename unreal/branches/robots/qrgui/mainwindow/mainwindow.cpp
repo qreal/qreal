@@ -81,9 +81,9 @@ MainWindow::MainWindow()
 
 	progress->setValue(20);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
-	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
+	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", false).toBool());
 	ui.actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
-	ui.actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
+	ui.actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", false).toBool());
 
 	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 

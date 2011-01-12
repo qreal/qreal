@@ -10,9 +10,9 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNode = node;
-	mShowAlignment = settings.value("ShowAlignment", true).toBool();
+	mShowAlignment = settings.value("ShowAlignment", false).toBool();
 	mSwitchGrid = settings.value("ActivateGrid", false).toBool();
-	mSwitchAlignment = settings.value("ActivateAlignment", true).toBool();
+	mSwitchAlignment = settings.value("ActivateAlignment", false).toBool();
 }
 
 void SceneGridHandler::delUnusedLines()

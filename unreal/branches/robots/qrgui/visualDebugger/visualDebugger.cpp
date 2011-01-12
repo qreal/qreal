@@ -217,7 +217,7 @@ gui::ErrorReporter& VisualDebugger::debug() {
 	mDebugType = VisualDebugger::fullDebug;
 	QSettings settings("SPbSU", "QReal");
 	setTimeout(settings.value("debuggerTimeout", 750).toInt());
-	setDebugColor(settings.value("debugColor").toString());
+	setDebugColor(settings.value("debugColor", "red").toString());
 
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;
@@ -284,7 +284,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 
 	mDebugType = VisualDebugger::singleStepDebug;
 	QSettings settings("SPbSU", "QReal");
-	setDebugColor(settings.value("debugColor").toString());
+	setDebugColor(settings.value("debugColor", "red").toString());
 
 	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {

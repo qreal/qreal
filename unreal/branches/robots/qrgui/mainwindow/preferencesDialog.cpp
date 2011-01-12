@@ -34,9 +34,9 @@ void PreferencesDialog::initPreferences()
 	ui->paletteTabCheckBox->setChecked(settings.value("PaletteTabSwitching", true).toBool());
 	ui->saveExitCheckBox->setChecked(settings.value("SaveExitSuggestion", true).toBool());
 	ui->showGridCheckBox->setChecked(settings.value("ShowGrid", true).toBool());
-	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", true).toBool());
+	ui->showAlignmentCheckBox->setChecked(settings.value("ShowAlignment", false).toBool());
 	ui->activateGridCheckBox->setChecked(settings.value("ActivateGrid", false).toBool());
-	ui->activateAlignmentCheckBox->setChecked(settings.value("ActivateAlignment", true).toBool());
+	ui->activateAlignmentCheckBox->setChecked(settings.value("ActivateAlignment", false).toBool());
 	ui->antialiasingCheckBox->setChecked(settings.value("Antialiasing", true).toBool());
 	ui->splashScreenCheckBox->setChecked(settings.value("Splashscreen", true).toBool());
 	ui->openGLCheckBox->setChecked(settings.value("OpenGL", true).toBool());
