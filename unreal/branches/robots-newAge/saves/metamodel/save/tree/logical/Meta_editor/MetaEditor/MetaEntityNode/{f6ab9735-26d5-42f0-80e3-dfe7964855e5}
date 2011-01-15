@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{f6ab9735-26d5-42f0-80e3-dfe7964855e5}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a5dcb718-8101-4c64-b327-13b0d2a2abdd}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
+    </links>
+    <QString key="name" value="Timer"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;89&quot; sizey=&quot;137&quot;>&#xa;        &lt;text i=&quot;0&quot; font-fill=&quot;#000000&quot; b=&quot;0&quot; y1=&quot;110&quot; font-name=&quot;MS Shell Dlg 2&quot; x1=&quot;0&quot; u=&quot;1&quot; font-size=&quot;15&quot;>Delay&lt;/text>&#xa;        &lt;image y1=&quot;19&quot; name=&quot;GreenHourglass_up.svg&quot; x1=&quot;35&quot; y2=&quot;69&quot; x2=&quot;65&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;54&quot; y=&quot;116&quot; textBinded=&quot;Delay&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;15&quot; y=&quot;46&quot;/>&#xa;        &lt;pointPort x=&quot;86&quot; y=&quot;45&quot;/>&#xa;        &lt;pointPort x=&quot;50&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;50&quot; y=&quot;88&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

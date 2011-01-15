@@ -1,0 +1,20 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{0c59810b-3f48-47d6-8f7b-55aecef7a153}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{eace607f-cfbb-4bc3-aa57-5748cb93c6ce}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{cddfb604-f7fa-48c8-9a51-b76e72187986}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{6effc231-43e2-4ab8-9f33-a0a6c22a7b45}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{61384bc5-120d-4117-9d53-edf11cf915e9}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7693ce54-6343-42e1-8b35-94101a8fa20c}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9380a8a4-44bc-444b-9a43-75cf0591e523}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{803a7239-778b-4899-8361-71f3eab96758}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{2e56cb8b-a1ab-4373-8941-7f98050e090d}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

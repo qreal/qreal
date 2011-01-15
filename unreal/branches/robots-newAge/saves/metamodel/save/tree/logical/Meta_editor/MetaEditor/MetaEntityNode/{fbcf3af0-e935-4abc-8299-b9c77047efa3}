@@ -1,0 +1,23 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fbcf3af0-e935-4abc-8299-b9c77047efa3}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Wait For Touch Sensor"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
+    </links>
+    <QString key="name" value="Sensor"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;165&quot; sizey=&quot;100&quot;>&#xa;        &lt;image y1=&quot;9&quot; name=&quot;31jD6OTBzLL.jpg&quot; x1=&quot;0&quot; y2=&quot;87&quot; x2=&quot;165&quot;/>&#xa;        &lt;image y1=&quot;64&quot; name=&quot;GreenHourglass_up.svg&quot; x1=&quot;116&quot; y2=&quot;89&quot; x2=&quot;134&quot;/>&#xa;        &lt;image y1=&quot;23&quot; name=&quot;31jD6OTBzLL.jpg&quot; x1=&quot;29&quot; y2=&quot;74&quot; x2=&quot;142&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;20&quot; y=&quot;52&quot;/>&#xa;        &lt;pointPort x=&quot;151&quot; y=&quot;47&quot;/>&#xa;        &lt;pointPort x=&quot;85&quot; y=&quot;98&quot;/>&#xa;        &lt;pointPort x=&quot;82&quot; y=&quot;2&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

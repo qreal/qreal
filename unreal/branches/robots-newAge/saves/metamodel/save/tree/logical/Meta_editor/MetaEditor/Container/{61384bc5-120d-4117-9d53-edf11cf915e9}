@@ -1,0 +1,14 @@
+<object id="qrm:/Meta_editor/MetaEditor/Container/{61384bc5-120d-4117-9d53-edf11cf915e9}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{718c998b-fda6-4e67-bbb7-7902a3779f0f}"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Container)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{283c1c56-a533-45fb-a443-8366b653eee4}"/>
+  </properties>
+</object>

@@ -1,0 +1,23 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8f331752-5626-4564-93f4-715b2417295a}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{eace607f-cfbb-4bc3-aa57-5748cb93c6ce}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
+    </links>
+    <QString key="name" value="Beep"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;71&quot; sizey=&quot;83&quot;>&#xa;        &lt;image y1=&quot;16&quot; name=&quot;123185_42160_48_alarm_bell_icon.png&quot; x1=&quot;13&quot; y2=&quot;64&quot; x2=&quot;61&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;41&quot;/>&#xa;        &lt;pointPort x=&quot;35&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;69&quot; y=&quot;41&quot;/>&#xa;        &lt;pointPort x=&quot;37&quot; y=&quot;81&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

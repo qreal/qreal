@@ -1,0 +1,23 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{00efe382-6510-464a-bfe0-9f6cd6721714}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}"/>
+    </links>
+    <QString key="name" value="InitialNode"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;71&quot; sizey=&quot;107&quot;>&#xa;        &lt;image y1=&quot;14&quot; name=&quot;Svetofor_green.jpg&quot; x1=&quot;24&quot; y2=&quot;94&quot; x2=&quot;49&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;35&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;69&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;38&quot; y=&quot;105&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>
