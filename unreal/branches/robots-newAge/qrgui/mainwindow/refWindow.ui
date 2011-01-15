@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RefWindow</class>
+ <widget class="QWidget" name="RefWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Reference window</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="mButtonOk">
+     <property name="text">
+      <string>&amp;OK</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="mButtonCancel">
+     <property name="text">
+      <string>&amp;Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QListWidget" name="listWidget"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>mButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>RefWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>272</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>mButtonOk</sender>
+   <signal>clicked()</signal>
+   <receiver>RefWindow</receiver>
+   <slot>setPropertyValue()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>166</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>exit()</slot>
+  <slot>setPropertyValue()</slot>
+ </slots>
+</ui>
