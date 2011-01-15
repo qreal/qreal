@@ -162,9 +162,9 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		Id id = Id::loadFromString(idString);
 		Q_ASSERT(id.idSize() == 4);
 		if (mModelItems.contains(id))
-			return false;
-
-		modelAssistApi()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
+			modelAssistApi()->changeParent(id, parentItem->id());
+		else
+			modelAssistApi()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
 		return true;
 	}
 }

@@ -29,7 +29,7 @@ QHash<Id, QString> EditorGenerator::getMetamodelList()
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = mApi.typeName(key);
-		if (objectType == "MetamodelDiagram") {
+		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			QString name = mApi.stringProperty(key, "name of the directory");
 			if (!name.isEmpty())
 				metamodelList.insert(key, name);
@@ -65,7 +65,7 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	nameSpace.appendChild(nameSpaceName);
 	metamodel.appendChild(nameSpace);
 
-	createDiagrams (metamodel, metamodelId);
+	createDiagrams(metamodel, metamodelId);
 
 	OutFile outpro(pathToFile + ".pro");
 	outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
@@ -80,7 +80,6 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outxml() << mDocument.toString(4);
 	mDocument.clear();
 	return mErrorReporter;
-
 }
 
 void EditorGenerator::createDiagrams(QDomElement &parent, const Id &id)
