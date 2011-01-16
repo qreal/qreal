@@ -236,8 +236,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	if(mMapFileImage.contains(fileName)) {
 		pixmap = mMapFileImage.value(fileName);
 	} else {
-		QString fullFileName = mWorkingDirName + "/images/" + fileName.section('/', -1);
-		pixmap = QPixmap(fullFileName);
+		pixmap = QPixmap(":/" + fileName);
 		mMapFileImage.insert(fileName, pixmap);
 	}
 	QRect rect(x1, y1, x2-x1, y2-y1);

@@ -45,6 +45,7 @@ namespace qReal {
 			void ensureCorrectness (Id const &id, QDomElement element, QString const &tagName, QString const &value);
 			void setBoolValuesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
 			void setSizesForContainer (QString const &propertyName, QDomElement &properties, Id const &id);
+			static void copyImages(QString const &pathToFile);
 
 			qrRepo::LogicalRepoApi const &mApi;
 			QDomDocument mDocument;
