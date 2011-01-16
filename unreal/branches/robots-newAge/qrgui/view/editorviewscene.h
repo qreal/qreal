@@ -26,7 +26,7 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
-	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
+	virtual qReal::Id createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -46,6 +46,9 @@ public:
 	UML::Element* getLastCreated();
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+
+	void highlight(qReal::Id const &graphicalId, bool exclusive = true);
+	void dehighlight(qReal::Id const &graphicalId);
 
 signals:
 	void elementCreated(qReal::Id const &id);
@@ -68,11 +71,25 @@ protected:
 
 	virtual void drawBackground( QPainter *painter, const QRectF &rect);
 
+private slots:
+
+	qReal::Id createElement(const QString &);
+
+	void connectActionTriggered();
+	void goToActionTriggered();
+	void disconnectActionTriggered();
+	void addUsageActionTriggered();
+	void deleteUsageActionTriggered();
+	void printElementsOfRootDiagram();
+	void drawIdealGesture();
+	void initMouseMoveManager();
+	void createEdge(QString const &);
+
 private:
 	UML::Element* lastCreatedWithEdge;
 
 	bool mRightButtonPressed;
-	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
+	bool mNeedDrawGrid;  // if true, the grid will be shown (as scene's background)
 	qreal mWidthOfGrid;
 
 	void getObjectByGesture();
@@ -116,21 +133,7 @@ private:
 
 	QSignalMapper *mActionSignalMapper;
 
+	QSet<UML::Element *> mHighlightedElements;
+
 	friend class qReal::EditorViewMViface;
-
-public slots:
-
-	qReal::Id *createElement(const QString &);
-	// TODO: get rid of it here
-private slots:
-
-	void connectActionTriggered();
-	void goToActionTriggered();
-	void disconnectActionTriggered();
-	void addUsageActionTriggered();
-	void deleteUsageActionTriggered();
-	void printElementsOfRootDiagram();
-	void drawIdealGesture();
-	void initMouseMoveManager();
-	void createEdge(QString const &);
 };

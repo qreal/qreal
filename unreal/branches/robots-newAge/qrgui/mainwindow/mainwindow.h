@@ -13,6 +13,7 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
+#include "mainWindowInterpretersInterface.h"
 
 namespace qReal {
 
@@ -30,7 +31,7 @@ class Interpreter;
 }
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
 {
 	Q_OBJECT
 
@@ -46,6 +47,9 @@ public:
 
 	QAction *actionDeleteFromDiagram() const;
 
+	virtual void highlight(Id const &graphicalId, bool exclusive = true);
+	virtual void dehighlight(Id const &graphicalId);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -58,7 +62,7 @@ public slots:
 
 	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
 	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
-	void selectItemWithError(Id const &id);
+	virtual void selectItem(Id const &id);
 
 private slots:
 	void adjustMinimapZoom(int zoom);

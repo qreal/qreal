@@ -181,7 +181,7 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
 	mEffect->setColor(mDebugColor);
 	mEffect->setEnabled(true);
 
-	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
+	mCurrentElem->setGraphicsEffect(mEffect);
 	mCurrentId = mCurrentElem->id();
 	return VisualDebugger::noErrors;
 }
@@ -191,11 +191,10 @@ void VisualDebugger::doStep(Id id)
 	mEffect->setEnabled(true);
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
-	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
+	mCurrentElem->setGraphicsEffect(mEffect);
 
-	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
-	if (elem) {
-		if (elem->id().element().compare("Action") == 0) {
+	if (mCurrentElem) {
+		if (mCurrentElem->id().element() == "Action") {
 			processAction();
 		}
 	}

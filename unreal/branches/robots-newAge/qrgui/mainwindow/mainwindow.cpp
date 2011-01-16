@@ -271,7 +271,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 	mUi.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
-void MainWindow::selectItemWithError(Id const &id)
+void MainWindow::selectItem(Id const &id)
 {
 	if (id == Id::rootId())
 		return;
@@ -780,12 +780,7 @@ void MainWindow::centerOn(Id const &id)
 	scene->clearSelection();
 	if (element != NULL) {
 		element->setSelected(true);
-
-		float const widthTab = mUi.tabs->size().width();
-		float const heightTab = mUi.tabs->size().height();
-		float const widthEl = element->boundingRect().width();
-		float const heightEl = element->boundingRect().height();
-		view->ensureVisible(element, (widthTab - widthEl) / 2, (heightTab - heightEl) / 2);
+		view->ensureElementVisible(element);
 	}
 }
 
@@ -1154,4 +1149,20 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 QAction *MainWindow::actionDeleteFromDiagram() const
 {
 	return mUi.actionDeleteFromDiagram;
+}
+
+void MainWindow::highlight(Id const &graphicalId, bool exclusive)
+{
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* const element = scene->getElem(graphicalId);
+	scene->highlight(graphicalId, exclusive);
+	view->ensureElementVisible(element);
+}
+
+void MainWindow::dehighlight(Id const &graphicalId)
+{
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	scene->dehighlight(graphicalId);
 }

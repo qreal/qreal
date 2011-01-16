@@ -190,7 +190,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	}
 
 	mCreatePoint = scenePos;
-	QObject::connect(menuSignalMapper,SIGNAL(mapped(const QString &)),this,SLOT(createElement(const QString &)));
+	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(createElement(const QString &)));
 
 	QAction* executed;
 	QPoint cursorPos = QCursor::pos();
@@ -211,23 +211,23 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str)
+qReal::Id EditorViewScene::createElement(const QString &str)
 {
-	qReal::Id* result = createElement(str, mCreatePoint);
-	lastCreatedWithEdge = getElem(*result);
+	qReal::Id result = createElement(str, mCreatePoint);
+	lastCreatedWithEdge = getElem(result);
 	return result;
 }
 
-qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+qReal::Id EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
 	Id typeId = Id::loadFromString(str);
-	Id *objectId = new Id(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
+	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
-	QString uuid = objectId->toString();
+	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
@@ -530,8 +530,8 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
-	Id * id = createElement(idStr, start);
-	UML::Element * edgeElement = getElem(*id);
+	Id id = createElement(idStr, start);
+	UML::Element * edgeElement = getElem(id);
 	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
@@ -767,4 +767,34 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		emit zoomOut();
 	wheelEvent->accept();
 	return;
+}
+
+void EditorViewScene::highlight(Id const &graphicalId, bool exclusive)
+{
+	if (exclusive) {
+		foreach (UML::Element *element, mHighlightedElements) {
+			element->setGraphicsEffect(NULL);
+		}
+	}
+
+	UML::Element *elem = getElem(graphicalId);
+	if (!elem)
+		return;
+
+	QGraphicsColorizeEffect *effect = new QGraphicsColorizeEffect();
+	effect->setColor(Qt::red);
+	effect->setEnabled(true);
+
+	elem->setGraphicsEffect(effect);
+	mHighlightedElements.insert(elem);
+}
+
+void EditorViewScene::dehighlight(Id const &graphicalId)
+{
+	UML::Element *elem = getElem(graphicalId);
+	if (!elem)
+		return;
+
+	elem->setGraphicsEffect(NULL);
+	mHighlightedElements.remove(elem);
 }
