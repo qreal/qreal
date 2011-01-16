@@ -101,23 +101,11 @@ IdList EditorManager::elements(const Id &diagram) const
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		elements.append(Id(diagram, e));
-	}
-	return elements;
-}
-
-IdList EditorManager::elementsOnDiagram(const Id &diagram) const
-{
-	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
-
-	IdList elements;
-
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
-
 	return elements;
 }
+
 bool EditorManager::isEditor(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

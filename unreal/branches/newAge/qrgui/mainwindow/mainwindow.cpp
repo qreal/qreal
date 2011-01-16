@@ -1072,21 +1072,14 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (settings.value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
-		bool diagram = false;
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
-			//this conditions are not good because of strings comparing
-			QString const tabName = name.trimmed().remove(" ");
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
-			QString diagramName = id.diagram().remove("_");
-			if (diagramName.contains(tabName)) {
+			Id const diagramId = Id(id.editor(), id.diagram());
+			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			if (diagramName == name) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
-				diagram = true;
+				break;
 			}
-			if (diagram)
-				continue;
-			QString const editorName = id.diagram().remove("_");
-			if (editorName.contains(tabName))
-				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
 		}
 	}

@@ -52,7 +52,7 @@ void EditorViewScene::initMouseMoveManager()
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
 		return;
-	QList<qReal::Id> elements = mWindow->manager()->elementsOnDiagram(diagram);
+	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	mouseMovementManager = new MouseMovementManager(elements,
 			mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
