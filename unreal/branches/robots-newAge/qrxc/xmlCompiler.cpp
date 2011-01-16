@@ -103,7 +103,8 @@ void XmlCompiler::generateCode()
 
 void XmlCompiler::addResource(QString const &resourceName)
 {
-	mResources += resourceName;
+	if (!mResources.contains(resourceName))
+		mResources += resourceName;
 }
 
 void XmlCompiler::generateElementClasses()
@@ -113,8 +114,6 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
-// TODO: wt* uml_element.h is doing here?
-//		<< "#include \"../../../qrgui/umllib/uml_element.h\"\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
 		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
 		<< "namespace UML {\n\n";
@@ -561,7 +560,7 @@ void XmlCompiler::generateUsages(utils::OutFile &out)
 
 void XmlCompiler::generateResourceFile()
 {
-	OutFile out("generated/shapes/plugin.qrc");// mPluginName
+	OutFile out("plugin.qrc");
 	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";

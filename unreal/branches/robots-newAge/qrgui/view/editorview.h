@@ -36,12 +36,15 @@ namespace qReal {
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
 		virtual void mouseReleaseEvent(QMouseEvent *event);
+		virtual void mousePressEvent(QMouseEvent *event);
 		virtual void scrollContentsBy(int dx, int dy);
 
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
 		QSettings mSettings;
+		QPointF mMouseOldPosition;
+		bool mWheelPressed;
 	};
 
 }

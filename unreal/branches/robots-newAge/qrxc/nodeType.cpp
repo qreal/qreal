@@ -58,10 +58,17 @@ bool NodeType::initSdf()
 
 void NodeType::generateSdf() const
 {
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Class") + "</file>\n");
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
 	mSdfDomElement.save(out(), 1);
+
+	QDomNodeList images = mSdfDomElement.elementsByTagName("image");
+
+	for (int i = 0; i < images.size(); ++i) {
+		QString const name = images.at(i).toElement().attribute("name");
+		mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + name + "</file>\n");
+	}
 }
 
 bool NodeType::initPorts()
@@ -129,7 +136,7 @@ bool NodeType::initBooleanProperties()
 
 void NodeType::generatePorts() const
 {
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Ports") + "</file>\n");
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Ports") + "</file>\n");
 
 	OutFile out("generated/shapes/" + resourceName("Ports"));
 	out() << "<picture ";
@@ -234,14 +241,14 @@ void NodeType::generateCode(OutFile &out)
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
 		out() << "\t\t\tmRenderer = renderer;\n"
-				"\t\t\tmRenderer->load(QString(\":/" << className << "Class.sdf\"));\n";
+				"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n";
 		hasSdf = true;
 	} else
 		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
 
 	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
 	if (sdfFile.exists()) {
-		out() << "\t\t\tportRenderer->load(QString(\":/" << className << "Ports.sdf\"));\n";
+		out() << "\t\t\tportRenderer->load(QString(\":/generated/shapes/" << className << "Ports.sdf\"));\n";
 		hasPorts = true;
 	}
 

@@ -17,7 +17,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="path" value=""/>
-    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;71&quot; sizey=&quot;107&quot;>&#xa;        &lt;image y1=&quot;21&quot; name=&quot;Svetofor_red.jpg&quot; x1=&quot;21&quot; y2=&quot;92&quot; x2=&quot;50&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;35&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;69&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;38&quot; y=&quot;105&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;71&quot; sizey=&quot;107&quot;>&#xa;        &lt;image y1=&quot;21&quot; name=&quot;images/Svetofor_red.jpg&quot; x1=&quot;21&quot; y2=&quot;92&quot; x2=&quot;50&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels/>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;35&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;69&quot; y=&quot;53&quot;/>&#xa;        &lt;pointPort x=&quot;38&quot; y=&quot;105&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </properties>
 </object>

@@ -34,7 +34,7 @@ QHash<Id, QString> EditorGenerator::getMetamodelList()
 			if (!name.isEmpty())
 				metamodelList.insert(key, name);
 			else
-				mErrorReporter.addWarning("no the name of the directory", key);
+				mErrorReporter.addError("no name of the directory", key);
 		}
 	}
 	return metamodelList;
@@ -79,7 +79,28 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
 	outxml() << mDocument.toString(4);
 	mDocument.clear();
+
+	copyImages(pathToFile);
+
 	return mErrorReporter;
+}
+
+void EditorGenerator::copyImages(QString const &pathToFile)
+{
+	QSettings settings("SPbSU", "QReal");
+	QString workingDirName = settings.value("workingDir", "./save").toString();
+	QDir sourceDir(workingDirName);
+	sourceDir.cd("images");
+	if (!sourceDir.exists())
+		return;
+
+	QFileInfo const destDirInfo(pathToFile);
+	QDir destDir = destDirInfo.dir();
+	destDir.mkdir("images");
+	destDir.cd("images");
+
+	foreach (QString const file, sourceDir.entryList(QDir::Files))
+		QFile::copy(sourceDir.absolutePath() + "/" + file, destDir.absolutePath() + "/" + file);
 }
 
 void EditorGenerator::createDiagrams(QDomElement &parent, const Id &id)

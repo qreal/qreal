@@ -2,7 +2,6 @@
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityImport/{5303c8fa-e106-4ec6-87d7-0a5c1862cd68}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8f331752-5626-4564-93f4-715b2417295a}"/>
   </children>
   <properties>
     <QString key="displayedName" value=""/>

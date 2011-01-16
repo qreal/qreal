@@ -27,7 +27,6 @@ namespace qReal {
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
 		IdList elements(Id const &diagram) const;
-		IdList elementsOnDiagram(Id const &diagramNode) const;
 		bool loadPlugin(QString const &pluginName);
 		bool unloadPlugin(QString const &pluginName);
 

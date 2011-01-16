@@ -1,0 +1,17 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{2560cbd0-0eff-430e-bcd3-46e87f7f2e9a}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{a533baba-0b58-404e-b99b-65bcc89c5b6a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{7fb85530-7025-4446-b575-e5bd7acf30a8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{b8a48025-6da8-442e-831e-54b05fa55e42}"/>
+  </children>
+  <properties>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="Robot behavior diagram"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

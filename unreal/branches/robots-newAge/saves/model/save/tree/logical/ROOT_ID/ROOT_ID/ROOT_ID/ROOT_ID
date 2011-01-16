@@ -1,0 +1,11 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f69c70b1-05e9-4b81-b1fa-84b07e268a68}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{2560cbd0-0eff-430e-bcd3-46e87f7f2e9a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{7297d720-b952-4b59-8b60-93ffebf99b52}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{93f3c29f-d582-4401-9986-7b675acb63c5}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

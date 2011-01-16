@@ -1,0 +1,16 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{b8a48025-6da8-442e-831e-54b05fa55e42}" id="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{05537394-3afd-4a21-801b-62181019f9d4}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f69c70b1-05e9-4b81-b1fa-84b07e268a68}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 71, 0 : 71, 83 : 0, 83 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d9685de2-ff86-4480-87ae-73d51999bca3}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b37026e0-f29c-46b4-b6ca-03cf28e700e4}"/>
+    </links>
+    <QString key="name" value="(Beep)"/>
+    <QPointF key="position" value="-131, -95"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

@@ -10,6 +10,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7275e1c8-d32e-4b47-a91c-d05cf4352d99}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{f6ab9735-26d5-42f0-80e3-dfe7964855e5}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fbcf3af0-e935-4abc-8299-b9c77047efa3}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8f331752-5626-4564-93f4-715b2417295a}"/>
   </children>
   <properties>
     <QString key="displayedName" value="Robot Behavior Diagram"/>

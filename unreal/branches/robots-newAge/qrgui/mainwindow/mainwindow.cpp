@@ -38,7 +38,7 @@
 #include "../editorManager/listenerManager.h"
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
-#include "../visualDebugger/visualDebugger.h"
+#include "../interpreters/visualDebugger/visualDebugger.h"
 
 #include "metaCompiler.h"
 
@@ -48,7 +48,7 @@ MainWindow::MainWindow()
 	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
-	bool showSplash = settings.value("Splashscreen", true).toBool();
+	bool showSplash = false;  // settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -1072,21 +1072,14 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (settings.value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
-		bool diagram = false;
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
-			//this conditions are not good because of strings comparing
-			QString const tabName = name.trimmed().remove(" ");
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
-			QString diagramName = id.diagram().remove("_");
-			if (diagramName.contains(tabName)) {
+			Id const diagramId = Id(id.editor(), id.diagram());
+			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			if (diagramName == name) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
-				diagram = true;
+				break;
 			}
-			if (diagram)
-				continue;
-			QString const editorName = id.diagram().remove("_");
-			if (editorName.contains(tabName))
-				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
 		}
 	}
