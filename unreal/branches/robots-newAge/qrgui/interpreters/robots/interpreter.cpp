@@ -3,7 +3,8 @@
 using namespace qReal;
 using namespace interpreters::robots;
 
-Interpreter::Interpreter(models::GraphicalModelAssistApi const &modelApi)
+Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi,
+		models::LogicalModelAssistApi const &logicalModelApi)
 {
 
 }

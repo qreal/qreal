@@ -2,9 +2,12 @@
 
 #include <QtCore/QObject>
 
-#include "robotCommunicationInterface.h"
 #include "../../models/graphicalModelAssistApi.h"
+#include "../../models/logicalModelAssistApi.h"
 #include "../../mainwindow/errorReporter.h"
+
+#include "robotCommunicationInterface.h"
+#include "details/thread.h"
 
 namespace qReal {
 
@@ -17,7 +20,8 @@ class Interpreter : public QObject
 	Q_OBJECT
 
 public:
-	Interpreter(models::GraphicalModelAssistApi const &modelApi);
+	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
+			, models::LogicalModelAssistApi const &logicalModelApi);
 	~Interpreter();
 
 public slots:

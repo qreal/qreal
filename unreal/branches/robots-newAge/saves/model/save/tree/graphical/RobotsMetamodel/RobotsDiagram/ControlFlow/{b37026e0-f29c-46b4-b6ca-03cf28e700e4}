@@ -1,12 +1,12 @@
 <object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{93f3c29f-d582-4401-9986-7b675acb63c5}" id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b37026e0-f29c-46b4-b6ca-03cf28e700e4}" parent="qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f69c70b1-05e9-4b81-b1fa-84b07e268a68}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 200, 60 : "/>
+    <QPolygon key="configuration" value="0, 0 : 124, 0 : "/>
     <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{05537394-3afd-4a21-801b-62181019f9d4}"/>
     <double key="fromPort" value="2"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(ControlFlow)"/>
-    <QPointF key="position" value="-71, -57"/>
+    <QPointF key="position" value="-78, -42"/>
     <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{faf65ccd-545f-4a42-888e-98ba91935d34}"/>
     <double key="toPort" value="0"/>
   </properties>

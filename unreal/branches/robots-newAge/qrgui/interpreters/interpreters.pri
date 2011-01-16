@@ -14,8 +14,10 @@ HEADERS += \
 	interpreters/robots/interpreter.h \
 	interpreters/robots/robotCommunicationInterface.h \
 	interpreters/robots/bluetoothRobotCommunication.h \
+	interpreters/robots/details/thread.h \
 
 SOURCES += \
 	interpreters/robots/interpreter.cpp \
 	interpreters/robots/bluetoothRobotCommunication.cpp \
+	interpreters/robots/details/thread.cpp \
 
