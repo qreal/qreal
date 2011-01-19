@@ -68,6 +68,8 @@ namespace qReal {
 	public:
 		static QVariant toVariant(IdList const &list);
 	};
+
+	typedef Id Metatype;
 }
 
 // qReal::Id and qReal::IdList could be used straight in QVariant

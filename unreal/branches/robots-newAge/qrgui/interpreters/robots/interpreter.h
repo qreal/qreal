@@ -5,14 +5,14 @@
 #include "../../models/graphicalModelAssistApi.h"
 #include "../../models/logicalModelAssistApi.h"
 #include "../../mainwindow/errorReporter.h"
+#include "../../mainwindow/mainWindowInterpretersInterface.h"
 
 #include "robotCommunicationInterface.h"
 #include "details/thread.h"
+#include "details/blocksTable.h"
 
 namespace qReal {
-
 namespace interpreters {
-
 namespace robots {
 
 class Interpreter : public QObject
@@ -21,16 +21,33 @@ class Interpreter : public QObject
 
 public:
 	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi);
+			, models::LogicalModelAssistApi const &logicalModelApi
+			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface);
 	~Interpreter();
 
-public slots:
-	void interpret();
+	void interpret(Id const &currentDiagramId);
 	void stop();
+
+private slots:
+	void threadStopped();
+
+private:
+	enum InterpreterState {
+		interpreting
+		, idle
+	};
+
+	models::GraphicalModelAssistApi const &mGraphicalModelApi;
+	models::LogicalModelAssistApi const &mLogicalModelApi;
+	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
+
+	InterpreterState mState;
+	QList<details::Thread *> mThreads;  // Has ownership.
+	details::BlocksTable mBlocksTable;
+
+	Id const findStartingElement(Id const &diagram) const;
 };
 
 }
-
 }
-
 }

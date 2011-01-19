@@ -92,14 +92,7 @@ MainWindow::MainWindow()
 	connect(mUi.tabs, SIGNAL(currentChanged(int)), this, SLOT(changeMiniMapSource(int)));
 	connect(mUi.tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
-	connect(mUi.actionCheckout, SIGNAL(triggered()), this, SLOT(doCheckout()));
-	connect(mUi.actionCommit, SIGNAL(triggered()), this, SLOT(doCommit()));
-	connect(mUi.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
-	connect(mUi.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
-	connect(mUi.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(mUi.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(mUi.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
-	connect(mUi.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(mUi.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
 	connect(mUi.actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -117,10 +110,9 @@ MainWindow::MainWindow()
 
 	connect(mUi.minimapZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(adjustMinimapZoom(int)));
 
-	connect(mUi.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
-	connect(mUi.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
-
 	connect(mUi.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+
+	connect(mUi.actionRun, SIGNAL(triggered()), this, SLOT(run()));
 
 	adjustMinimapZoom(mUi.minimapZoomSlider->value());
 	initGridProperties();
@@ -193,7 +185,7 @@ MainWindow::MainWindow()
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
-	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
+	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), *this);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -1128,7 +1120,8 @@ void MainWindow::initGridProperties()
 
 void MainWindow::run()
 {
-	mRobotInterpreter->interpret();
+	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
+	mRobotInterpreter->interpret(currentDiagramId);
 }
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
