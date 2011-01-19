@@ -3,6 +3,7 @@
 #include "../../../kernel/ids.h"
 
 #include "blocks/block.h"
+#include "robotModel.h"
 
 namespace qReal {
 namespace interpreters {
@@ -12,11 +13,14 @@ namespace details {
 class BlocksFactory
 {
 public:
-	static blocks::Block *block(Id const &element
+	BlocksFactory(RobotModel * const robotModel);
+	blocks::Block *block(Id const &element
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, BlocksTable &blocksTable
 	);
+private:
+	RobotModel * mRobotModel;  // Doesnt't have ownership
 };
 
 }

@@ -19,7 +19,8 @@ class Block : public QObject
 	Q_OBJECT
 
 public:
-	Block(Id const &graphicalId);
+	Block(Id const &graphicalId, models::GraphicalModelAssistApi const &graphicalModelApi
+			, BlocksTable &blocksTable);
 	virtual ~Block() {};
 
 	void interpret();
@@ -27,6 +28,9 @@ public:
 
 signals:
 	void done(blocks::Block * const nextBlock);
+
+protected:
+	Block *mNextBlock;
 
 private slots:
 	void finishedRunning();

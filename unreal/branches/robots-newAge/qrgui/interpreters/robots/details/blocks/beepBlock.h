@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtCore/QTimer>
 
 #include "block.h"
+#include "../robotParts/brick.h"
 
 namespace qReal {
 namespace interpreters {
@@ -11,21 +11,19 @@ namespace robots {
 namespace details {
 namespace blocks {
 
-class SimpleTestBlock : public Block
+class BeepBlock : public Block
 {
 	Q_OBJECT
 
 public:
-	SimpleTestBlock(Id const &graphicalId
+	BeepBlock(Id const &graphicalId
 			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, BlocksTable &blocksTable);
+			, BlocksTable &blocksTable
+			, robotParts::Brick &brick);
 	virtual void run();
 
-private slots:
-	void timeout();
-
 private:
-	QTimer mTimer;
+	robotParts::Brick &mBrick;
 };
 
 }

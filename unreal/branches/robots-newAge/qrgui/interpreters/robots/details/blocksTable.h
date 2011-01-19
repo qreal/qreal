@@ -6,6 +6,8 @@
 #include "../../../models/graphicalModelAssistApi.h"
 #include "../../../models/logicalModelAssistApi.h"
 
+#include "robotModel.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -15,11 +17,14 @@ namespace blocks {
 class Block;
 }
 
+class BlocksFactory;
+
 class BlocksTable
 {
 public:
 	BlocksTable(models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
+			, RobotModel * const robotModel
 	);
 	~BlocksTable();
 	blocks::Block *block(Id const &element);
@@ -30,6 +35,8 @@ private:
 
 	models::GraphicalModelAssistApi const &mGraphicalModelApi;
 	models::LogicalModelAssistApi const &mLogicalModelApi;
+
+	BlocksFactory *mBlocksFactory;  // Has ownership
 };
 
 }

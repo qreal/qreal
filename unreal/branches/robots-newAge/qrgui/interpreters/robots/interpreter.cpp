@@ -8,19 +8,23 @@ const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNo
 
 Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
-		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, RobotCommunicationInterface * const robotCommunicationInterface)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
-	, mBlocksTable(graphicalModelApi, logicalModelApi)
+	, mRobotModel(robotCommunicationInterface)
+	, mBlocksTable(NULL)
 {
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, &mRobotModel);
 }
 
 Interpreter::~Interpreter()
 {
 	foreach (Thread * const thread, mThreads)
 		delete thread;
+	delete mBlocksTable;
 }
 
 void Interpreter::interpret(Id const &currentDiagramId)
@@ -32,7 +36,7 @@ void Interpreter::interpret(Id const &currentDiagramId)
 	if (startingElement == Id())
 		return;
 
-	Thread * const initialThread = new Thread(mInterpretersInterface, mBlocksTable, startingElement);
+	Thread * const initialThread = new Thread(mInterpretersInterface, *mBlocksTable, startingElement);
 	mThreads.append(initialThread);
 	connect(initialThread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
@@ -43,11 +47,12 @@ void Interpreter::interpret(Id const &currentDiagramId)
 void Interpreter::stop()
 {
 	mState = idle;
-	mBlocksTable.clear();
+	mBlocksTable->clear();
 	foreach (Thread *thread, mThreads) {
 		delete thread;
 	}
 	mThreads.clear();
+	mRobotModel.clear();
 }
 
 Id const Interpreter::findStartingElement(Id const &diagram) const

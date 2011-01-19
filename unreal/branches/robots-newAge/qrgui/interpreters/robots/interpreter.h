@@ -8,6 +8,7 @@
 #include "../../mainwindow/mainWindowInterpretersInterface.h"
 
 #include "robotCommunicationInterface.h"
+#include "details/robotModel.h"
 #include "details/thread.h"
 #include "details/blocksTable.h"
 
@@ -22,7 +23,8 @@ class Interpreter : public QObject
 public:
 	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
-			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface);
+			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
+			, RobotCommunicationInterface * const robotCommunicationInterface);
 	~Interpreter();
 
 	void interpret(Id const &currentDiagramId);
@@ -42,8 +44,9 @@ private:
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
-	QList<details::Thread *> mThreads;  // Has ownership.
-	details::BlocksTable mBlocksTable;
+	QList<details::Thread *> mThreads;  // Has ownership
+	details::RobotModel mRobotModel;
+	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	Id const findStartingElement(Id const &diagram) const;
 };

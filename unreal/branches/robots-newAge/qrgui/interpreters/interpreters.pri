@@ -17,8 +17,13 @@ HEADERS += \
 	interpreters/robots/details/thread.h \
 	interpreters/robots/details/blocksFactory.h \
 	interpreters/robots/details/blocksTable.h \
+	interpreters/robots/details/robotModel.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/simpleTestBlock.h \
+	interpreters/robots/details/blocks/beepBlock.h \
+	interpreters/robots/details/blocks/initialBlock.h \
+	interpreters/robots/details/robotParts/brick.h \
+	interpreters/robots/details/robotParts/robotPart.h \
 
 SOURCES += \
 	interpreters/robots/interpreter.cpp \
@@ -26,5 +31,10 @@ SOURCES += \
 	interpreters/robots/details/thread.cpp \
 	interpreters/robots/details/blocksTable.cpp \
 	interpreters/robots/details/blocksFactory.cpp \
+	interpreters/robots/details/robotModel.cpp \
 	interpreters/robots/details/blocks/block.cpp \
 	interpreters/robots/details/blocks/simpleTestBlock.cpp \
+	interpreters/robots/details/blocks/beepBlock.cpp \
+	interpreters/robots/details/blocks/initialBlock.cpp \
+	interpreters/robots/details/robotParts/brick.cpp \
+	interpreters/robots/details/robotParts/robotPart.cpp \

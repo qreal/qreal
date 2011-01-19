@@ -36,6 +36,7 @@
 #include "../interpreters/visualDebugger/visualDebugger.h"
 
 #include "../interpreters/robots/interpreter.h"
+#include "../interpreters/robots/bluetoothRobotCommunication.h"
 
 using namespace qReal;
 
@@ -185,7 +186,8 @@ MainWindow::MainWindow()
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
-	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), *this);
+	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, new interpreters::robots::BluetoothRobotCommunication());
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
