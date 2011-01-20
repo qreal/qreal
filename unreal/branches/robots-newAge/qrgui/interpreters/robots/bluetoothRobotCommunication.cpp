@@ -15,7 +15,7 @@ BluetoothRobotCommunication::BluetoothRobotCommunication()
 void BluetoothRobotCommunication::send(QByteArray const &buffer)
 {
 	qDebug() << "Sending: ";
-	qDebug() << buffer;
+	mPort->write(buffer);
 }
 
 void BluetoothRobotCommunication::connect(unsigned int comPort)

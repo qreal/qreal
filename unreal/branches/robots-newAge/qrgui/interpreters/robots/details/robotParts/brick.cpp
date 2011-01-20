@@ -9,8 +9,7 @@ Brick::Brick(RobotCommunicationInterface *robotCommunicationInterface)
 
 void Brick::playTone(unsigned freq, unsigned time)
 {
-	QByteArray command;
-	command.resize(8);
+	QByteArray command(8, 0);
 	command[0] = 0x06;  //command length
 	command[1] = 0x00;
 	command[2] = 0x80;
