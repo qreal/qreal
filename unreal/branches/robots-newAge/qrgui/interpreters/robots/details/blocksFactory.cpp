@@ -21,12 +21,22 @@ Block *BlocksFactory::block(Id const &element
 		, BlocksTable &blocksTable
 		)
 {
-	if (element.type() == Id("RobotsMetamodel", "RobotsDiagram", "InitialNode"))
-		return new InitialBlock(element, graphicalModelApi, blocksTable, *mRobotModel);
-	if (element.type() == Id("RobotsMetamodel", "RobotsDiagram", "Beep"))
-		return new BeepBlock(element, graphicalModelApi, blocksTable, mRobotModel->brick());
-	if (element.type() == Id("RobotsMetamodel", "RobotsDiagram", "Timer"))
-		return new TimerBlock(element, graphicalModelApi, logicalModelApi, blocksTable);
+	Block * newBlock = NULL;
+	if (elementMetatypeIs(element, "InitialNode"))
+		newBlock = new InitialBlock(*mRobotModel);
+	else if (elementMetatypeIs(element, "Beep"))
+		newBlock = new BeepBlock(mRobotModel->brick());
+	else if (elementMetatypeIs(element, "Timer"))
+		newBlock =new TimerBlock();
+	else
+		newBlock = new DummyBlock();
 
-	return new DummyBlock(element, graphicalModelApi, logicalModelApi, blocksTable);
+	newBlock->init(element, graphicalModelApi, logicalModelApi, blocksTable);
+	return newBlock;
 }
+
+bool BlocksFactory::elementMetatypeIs(Id const &element, QString const &metatype)
+{
+	return element.type() == Id("RobotsMetamodel", "RobotsDiagram", metatype);
+}
+

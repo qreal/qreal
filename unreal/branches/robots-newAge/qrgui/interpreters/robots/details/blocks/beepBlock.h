@@ -16,10 +16,7 @@ class BeepBlock : public Block
 	Q_OBJECT
 
 public:
-	BeepBlock(Id const &graphicalId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, BlocksTable &blocksTable
-			, robotParts::Brick &brick);
+	BeepBlock(robotParts::Brick &brick);
 	virtual void run();
 
 private:

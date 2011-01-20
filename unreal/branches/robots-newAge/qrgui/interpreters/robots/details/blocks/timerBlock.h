@@ -16,10 +16,6 @@ class TimerBlock : public Block
 	Q_OBJECT
 
 public:
-	TimerBlock(Id const &graphicalId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, models::LogicalModelAssistApi const &logicalModelApi
-			, BlocksTable &blocksTable);
 	virtual void run();
 
 private slots:
@@ -27,8 +23,6 @@ private slots:
 
 private:
 	QTimer mTimer;
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
 };
 
 }

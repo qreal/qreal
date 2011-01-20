@@ -4,23 +4,40 @@ using namespace qReal;
 using namespace interpreters::robots::details;
 using namespace blocks;
 
-Block::Block(Id const &graphicalId, models::GraphicalModelAssistApi const &graphicalModelApi
-			, BlocksTable &blocksTable)
+Block::Block()
 	: mNextBlock(NULL)
+	, mGraphicalModelApi(NULL)
+	, mLogicalModelApi(NULL)
+	, mBlocksTable(NULL)
 	, mState(idle)
-	, mGraphicalId(graphicalId)
+	, mGraphicalId(Id())
 {
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
+}
 
-	IdList const links = graphicalModelApi.graphicalRepoApi().outgoingLinks(graphicalId);
+void Block::init(Id const &graphicalId
+		, models::GraphicalModelAssistApi const &graphicalModelApi
+		, models::LogicalModelAssistApi const &logicalModelApi
+		, BlocksTable &blocksTable)
+{
+	mGraphicalId = graphicalId;
+	mGraphicalModelApi = &graphicalModelApi;
+	mLogicalModelApi = &logicalModelApi;
+	mBlocksTable = &blocksTable;
+	initNextBlocks();
+}
+
+void Block::initNextBlocks()
+{
+	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
 		// TODO: use ErrorReporter here
 	}
 
 	if (links.count() == 1) {
-		Id const nextBlockId = graphicalModelApi.graphicalRepoApi().otherEntityFromLink(links[0], id());
-		mNextBlock = blocksTable.block(nextBlockId);
+		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
+		mNextBlock = mBlocksTable->block(nextBlockId);
 	}
 }
 

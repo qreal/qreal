@@ -16,10 +16,7 @@ class InitialBlock : public Block
 	Q_OBJECT
 
 public:
-	InitialBlock(Id const &graphicalId
-			, models::GraphicalModelAssistApi const &graphicalModelApi
-			, BlocksTable &blocksTable
-			, RobotModel &robotModel);
+	InitialBlock(RobotModel &robotModel);
 	virtual void run();
 
 private slots:

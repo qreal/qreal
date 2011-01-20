@@ -21,6 +21,8 @@ public:
 	);
 private:
 	RobotModel * mRobotModel;  // Doesnt't have ownership
+
+	static bool elementMetatypeIs(Id const &element, QString const &metatype);
 };
 
 }

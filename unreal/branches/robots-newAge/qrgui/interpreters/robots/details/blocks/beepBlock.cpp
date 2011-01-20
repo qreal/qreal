@@ -3,12 +3,8 @@
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-BeepBlock::BeepBlock(Id const &graphicalId
-		, models::GraphicalModelAssistApi const &graphicalModelApi
-		, BlocksTable &blocksTable
-		, robotParts::Brick &brick)
-	: Block(graphicalId, graphicalModelApi, blocksTable)
-	, mBrick(brick)
+BeepBlock::BeepBlock(robotParts::Brick &brick)
+	: mBrick(brick)
 {
 }
 

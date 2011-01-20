@@ -19,8 +19,6 @@ class Block : public QObject
 	Q_OBJECT
 
 public:
-	Block(Id const &graphicalId, models::GraphicalModelAssistApi const &graphicalModelApi
-			, BlocksTable &blocksTable);
 	virtual ~Block() {};
 
 	void interpret();
@@ -30,10 +28,21 @@ signals:
 	void done(blocks::Block * const nextBlock);
 
 protected:
-	Block *mNextBlock;
+	Block();
+	Block *mNextBlock;  // Does not have ownership
+	models::GraphicalModelAssistApi const *mGraphicalModelApi;  // Does not have ownership
+	models::LogicalModelAssistApi const *mLogicalModelApi;  // Does not have ownership
+	BlocksTable *mBlocksTable;  // Does not have ownership
 
 private slots:
 	void finishedRunning();
+
+private:
+	friend class qReal::interpreters::robots::details::BlocksFactory;
+	void init(Id const &graphicalId
+			, models::GraphicalModelAssistApi const &graphicalModelApi
+			, models::LogicalModelAssistApi const &logicalModelApi
+			, BlocksTable &blocksTable);
 
 private:
 	enum State {
@@ -42,10 +51,10 @@ private:
 	};
 
 	State mState;
-	Id const mGraphicalId;
+	Id mGraphicalId;
 
+	virtual void initNextBlocks();
 	virtual void run() = 0;
-
 };
 
 }
