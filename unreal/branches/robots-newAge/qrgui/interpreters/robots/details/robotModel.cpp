@@ -26,5 +26,5 @@ void RobotModel::clear()
 
 void RobotModel::init()
 {
-	mRobotCommunicationInterface->connect(5);
+	mRobotCommunicationInterface->connect();
 }

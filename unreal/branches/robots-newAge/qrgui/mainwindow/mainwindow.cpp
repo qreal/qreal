@@ -30,18 +30,25 @@
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../dialogs/plugindialog.h"
+#include "../dialogs/robotSettingsDialog.h"
 #include "../parsers/xml/xmlParser.h"
 #include "../editorManager/listenerManager.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../interpreters/visualDebugger/visualDebugger.h"
 
 #include "../interpreters/robots/interpreter.h"
-#include "../interpreters/robots/bluetoothRobotCommunication.h"
 
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager)
+	: mCloseEvent(NULL)
+	, mModels(NULL)
+	, mListenerManager(NULL)
+	, mPropertyModel(mEditorManager)
+	, mGesturesWidget(NULL)
+	, mVisualDebugger(NULL)
+	, mRobotInterpreter(NULL)
+	, mBluetoothCommunication(NULL)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = false;  // settings.value("Splashscreen", true).toBool();
@@ -114,6 +121,7 @@ MainWindow::MainWindow()
 	connect(mUi.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
 	connect(mUi.actionRun, SIGNAL(triggered()), this, SLOT(run()));
+	connect(mUi.actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	adjustMinimapZoom(mUi.minimapZoomSlider->value());
 	initGridProperties();
@@ -186,8 +194,10 @@ MainWindow::MainWindow()
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
+	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
+	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, new interpreters::robots::BluetoothRobotCommunication());
+			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -1160,4 +1170,12 @@ void MainWindow::dehighlight(Id const &graphicalId)
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	scene->dehighlight(graphicalId);
+}
+
+void MainWindow::showRobotSettingsDialog()
+{
+	gui::RobotSettingsDialog robotSettingsDialog;
+	if (robotSettingsDialog.exec() == QDialog::Accepted) {
+		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
+	}
 }

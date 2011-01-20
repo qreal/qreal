@@ -7,8 +7,9 @@
 
 using namespace qReal::interpreters::robots;
 
-BluetoothRobotCommunication::BluetoothRobotCommunication()
-	: mPort(NULL)
+BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName)
+	: mPortName(portName)
+	, mPort(NULL)
 {
 }
 
@@ -18,21 +19,12 @@ void BluetoothRobotCommunication::send(QByteArray const &buffer)
 	mPort->write(buffer);
 }
 
-void BluetoothRobotCommunication::connect(unsigned int comPort)
+void BluetoothRobotCommunication::connect()
 {
 	qDebug() << "BluetoothRobotCommunication::connect";
 
-	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
-	qDebug() << "List of ports:";
-	foreach (QextPortInfo info, ports) {
-		qDebug() << "port name:" << info.portName.toLocal8Bit().constData();
-		qDebug() << "friendly name:" << info.friendName.toLocal8Bit().constData();
-		qDebug() << "physical name:" << info.physName.toLocal8Bit().constData();
-		qDebug() << "enumerator name:" << info.enumName.toLocal8Bit().constData();
-		qDebug() << "===================================";
-	}
-
-	mPort = new QextSerialPort("COM" + QString::number(comPort));
+//	mPort = new QextSerialPort("COM" + QString::number(comPort));
+	mPort = new QextSerialPort(mPortName);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
 	mPort->setParity(PAR_NONE);
@@ -65,4 +57,14 @@ void BluetoothRobotCommunication::disconnect()
 	mPort->close();
 	delete mPort;
 	mPort = NULL;
+}
+
+void BluetoothRobotCommunication::setPortName(QString const &portName)
+{
+	bool needReconnect = (portName != mPortName) && mPort->isOpen();
+	mPortName = portName;
+	if (needReconnect) {
+		disconnect();
+		connect();
+	}
 }

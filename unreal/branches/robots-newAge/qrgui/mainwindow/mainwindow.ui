@@ -75,6 +75,7 @@
      <string>&amp;Settings</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionRobot_Settings"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
     <addaction name="actionShow_alignment"/>
@@ -341,6 +342,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRun"/>
+   <addaction name="actionRobot_Settings"/>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -674,6 +676,11 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionRobot_Settings">
+   <property name="text">
+    <string>Robot Settings...</string>
    </property>
   </action>
  </widget>

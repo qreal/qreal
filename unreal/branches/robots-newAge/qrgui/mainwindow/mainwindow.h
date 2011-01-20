@@ -15,6 +15,8 @@
 #include "gesturesShow/gestureswidget.h"
 #include "mainWindowInterpretersInterface.h"
 
+#include "../interpreters/robots/bluetoothRobotCommunication.h"
+
 namespace qReal {
 
 class EditorView;
@@ -119,6 +121,7 @@ private slots:
 	void diagramInCreateListSelected(int num);
 
 	void run();
+	void showRobotSettingsDialog();
 
 private:
 	Ui::MainWindowUi mUi;
@@ -136,6 +139,10 @@ private:
 
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
+
+	VisualDebugger *mVisualDebugger;
+	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
+	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
@@ -161,8 +168,6 @@ private:
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
-	VisualDebugger *mVisualDebugger;
-	interpreters::robots::Interpreter *mRobotInterpreter;
 
 	void setShowGrid(bool isChecked);
 	void setShowAlignment(bool isChecked);
