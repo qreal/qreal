@@ -20,10 +20,10 @@ public:
 signals:
 	void connected();
 	void disconnected();
-	void response(QByteArray const &buffer);
+	void response(QObject *addressee, QByteArray const &buffer);
 
 public slots:
-	void send(QByteArray const &buffer);
+	void send(QObject *addressee, QByteArray const &buffer);
 	void connect(QString portName);
 	void reconnect(QString portName);
 	void disconnect();

@@ -5,6 +5,7 @@
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
 #include "blocks/dummyBlock.h"
+#include "blocks/waitForTouchSensorBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -27,7 +28,9 @@ Block *BlocksFactory::block(Id const &element
 	else if (elementMetatypeIs(element, "Beep"))
 		newBlock = new BeepBlock(mRobotModel->brick());
 	else if (elementMetatypeIs(element, "Timer"))
-		newBlock =new TimerBlock();
+		newBlock = new TimerBlock();
+	else if (elementMetatypeIs(element, "Sensor"))
+		newBlock = new WaitForTouchSensorBlock(mRobotModel->touchSensor());
 	else
 		newBlock = new DummyBlock();
 

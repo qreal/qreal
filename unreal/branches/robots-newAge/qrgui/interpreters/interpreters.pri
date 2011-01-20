@@ -24,8 +24,10 @@ HEADERS += \
 	interpreters/robots/details/blocks/timerBlock.h \
 	interpreters/robots/details/blocks/beepBlock.h \
 	interpreters/robots/details/blocks/initialBlock.h \
+	interpreters/robots/details/blocks/waitForTouchSensorBlock.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/robotPart.h \
+	interpreters/robots/details/robotParts/touchSensor.h \
 
 SOURCES += \
 	interpreters/robots/interpreter.cpp \
@@ -40,5 +42,7 @@ SOURCES += \
 	interpreters/robots/details/blocks/timerBlock.cpp \
 	interpreters/robots/details/blocks/beepBlock.cpp \
 	interpreters/robots/details/blocks/initialBlock.cpp \
+	interpreters/robots/details/blocks/waitForTouchSensorBlock.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
 	interpreters/robots/details/robotParts/robotPart.cpp \
+	interpreters/robots/details/robotParts/touchSensor.cpp \

@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 #include "robotParts/brick.h"
+#include "robotParts/touchSensor.h"
 #include "../robotCommunicationInterface.h"
 
 namespace qReal {
@@ -21,13 +22,18 @@ public:
 	void clear();
 
 	robotParts::Brick &brick();
+	robotParts::TouchSensor &touchSensor();
 
 signals:
 	void connected();
 
+private slots:
+	void connectedSlot();
+
 private:
 	RobotCommunicationInterface *mRobotCommunicationInterface;  // Has ownership
 	robotParts::Brick mBrick;
+	robotParts::TouchSensor mTouchSensor;
 };
 
 }

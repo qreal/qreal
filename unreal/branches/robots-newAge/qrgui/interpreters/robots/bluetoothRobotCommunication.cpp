@@ -16,16 +16,16 @@ BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName
 	QObject::connect(this, SIGNAL(threadConnect(QString)), &mRobotCommunicationThreadObject, SLOT(connect(QString)));
 	QObject::connect(this, SIGNAL(threadReconnect(QString)), &mRobotCommunicationThreadObject, SLOT(reconnect(QString)));
 	QObject::connect(this, SIGNAL(threadDisconnect()), &mRobotCommunicationThreadObject, SLOT(disconnect()));
-	QObject::connect(this, SIGNAL(threadSend(QByteArray)), &mRobotCommunicationThreadObject, SLOT(send(QByteArray)));
+	QObject::connect(this, SIGNAL(threadSend(QObject*, QByteArray)), &mRobotCommunicationThreadObject, SLOT(send(QObject*, QByteArray)));
 
 	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
-	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(response(QByteArray)), this, SLOT(responseSlot(QByteArray)));
+	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(response(QObject*, QByteArray)), this, SLOT(responseSlot(QObject*, QByteArray)));
 }
 
-void BluetoothRobotCommunication::send(QByteArray const &buffer)
+void BluetoothRobotCommunication::send(QObject *addressee, QByteArray const &buffer)
 {
-	emit threadSend(buffer);
+	emit threadSend(addressee, buffer);
 }
 
 void BluetoothRobotCommunication::connect()
@@ -56,6 +56,7 @@ void BluetoothRobotCommunication::disconnectedSlot()
 	emit disconnected();
 }
 
-void BluetoothRobotCommunication::responseSlot(QByteArray const &buffer)
+void BluetoothRobotCommunication::responseSlot(QObject *addressee, QByteArray const &buffer)
 {
+	emit response(addressee, buffer);
 }
