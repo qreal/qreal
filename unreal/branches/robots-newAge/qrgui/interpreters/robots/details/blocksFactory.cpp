@@ -3,6 +3,7 @@
 #include "../../../kernel/exception/exception.h"
 #include "blocks/simpleTestBlock.h"
 #include "blocks/beepBlock.h"
+#include "blocks/initialBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -19,6 +20,8 @@ Block *BlocksFactory::block(Id const &element
 		, BlocksTable &blocksTable
 		)
 {
+	if (element.type() == Id("RobotsMetamodel", "RobotsDiagram", "InitialNode"))
+		return new InitialBlock(element, graphicalModelApi, blocksTable, *mRobotModel);
 	if (element.type() == Id("RobotsMetamodel", "RobotsDiagram", "Beep"))
 		return new BeepBlock(element, graphicalModelApi, blocksTable, mRobotModel->brick());
 	return new SimpleTestBlock(element, graphicalModelApi, blocksTable);

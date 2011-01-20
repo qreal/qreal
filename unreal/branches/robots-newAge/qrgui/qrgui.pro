@@ -25,6 +25,12 @@ if (equals(QMAKE_CXX, "g++")) {
 # Путь до библиотеки с АПИ. Где-нибудь она найдётся...Path to the API library
 LIBS += -Ldebug -lqrrepo -Lrelease -lqrrepo -L. -lqrrepo -lqrmc
 
+CONFIG(debug, debug|release):LIBS  += -lqextserialportd
+else:LIBS  += -lqextserialport
+
+unix:DEFINES   = _TTY_POSIX_
+win32:DEFINES  = _TTY_WIN_
+
 # Graphical elements
 include (umllib/umllib.pri)
 
