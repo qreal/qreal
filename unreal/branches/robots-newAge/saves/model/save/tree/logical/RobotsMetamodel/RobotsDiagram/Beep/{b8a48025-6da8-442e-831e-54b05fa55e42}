@@ -5,8 +5,9 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{7297d720-b952-4b59-8b60-93ffebf99b52}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{93f3c29f-d582-4401-9986-7b675acb63c5}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{370ac436-0ffe-47be-ae23-729b85d6be46}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b022c14b-47ff-48d5-93e0-73b0aebd2538}"/>
     </links>
     <QString key="name" value="(Beep)"/>
     <outgoingConnections type="qReal::IdList"/>

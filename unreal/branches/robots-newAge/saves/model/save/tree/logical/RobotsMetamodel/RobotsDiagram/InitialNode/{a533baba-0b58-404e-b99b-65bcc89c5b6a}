@@ -6,6 +6,7 @@
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{7297d720-b952-4b59-8b60-93ffebf99b52}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{59899c0d-6563-41c2-b5d7-9e3fbf66701e}"/>
     </links>
     <QString key="name" value="(InitialNode)"/>
     <outgoingConnections type="qReal::IdList"/>

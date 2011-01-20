@@ -11,13 +11,14 @@ namespace robots {
 namespace details {
 namespace blocks {
 
-class SimpleTestBlock : public Block
+class DummyBlock : public Block
 {
 	Q_OBJECT
 
 public:
-	SimpleTestBlock(Id const &graphicalId
+	DummyBlock(Id const &graphicalId
 			, models::GraphicalModelAssistApi const &graphicalModelApi
+			, models::LogicalModelAssistApi const &logicalModelApi
 			, BlocksTable &blocksTable);
 	virtual void run();
 

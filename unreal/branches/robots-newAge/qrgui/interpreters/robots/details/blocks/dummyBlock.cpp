@@ -1,16 +1,17 @@
-#include "simpleTestBlock.h"
+#include "dummyBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-SimpleTestBlock::SimpleTestBlock(Id const &graphicalId
+DummyBlock::DummyBlock(Id const &graphicalId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
+		, models::LogicalModelAssistApi const &logicalModelApi
 		, BlocksTable &blocksTable)
 	: Block(graphicalId, graphicalModelApi, blocksTable)
 {
 }
 
-void SimpleTestBlock::run()
+void DummyBlock::run()
 {
 	mTimer.setInterval(500);
 	mTimer.setSingleShot(true);
@@ -18,7 +19,7 @@ void SimpleTestBlock::run()
 	mTimer.start();
 }
 
-void SimpleTestBlock::timeout()
+void DummyBlock::timeout()
 {
 	emit done(mNextBlock);
 }

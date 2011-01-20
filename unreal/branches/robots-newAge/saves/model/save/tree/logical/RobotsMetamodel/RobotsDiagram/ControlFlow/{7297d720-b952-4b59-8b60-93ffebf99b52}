@@ -8,6 +8,6 @@
     <QString key="name" value="(ControlFlow)"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{b8a48025-6da8-442e-831e-54b05fa55e42}"/>
+    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{72faddba-ac33-4ef3-9338-0341646ec51e}"/>
   </properties>
 </object>

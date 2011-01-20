@@ -5,11 +5,11 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d9685de2-ff86-4480-87ae-73d51999bca3}"/>
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b37026e0-f29c-46b4-b6ca-03cf28e700e4}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{431c34ea-06b1-45a3-b0d0-13574de27c45}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{374bc83b-58ec-4ec1-a9f5-05795415279b}"/>
     </links>
     <QString key="name" value="(Beep)"/>
-    <QPointF key="position" value="-147, -83"/>
+    <QPointF key="position" value="-203, -84"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
