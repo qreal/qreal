@@ -9,62 +9,53 @@ using namespace qReal::interpreters::robots;
 
 BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName)
 	: mPortName(portName)
-	, mPort(NULL)
 {
+	mRobotCommunicationThreadObject.moveToThread(&mRobotCommunicationThread);
+	mRobotCommunicationThread.start();
+
+	QObject::connect(this, SIGNAL(threadConnect(QString)), &mRobotCommunicationThreadObject, SLOT(connect(QString)));
+	QObject::connect(this, SIGNAL(threadReconnect(QString)), &mRobotCommunicationThreadObject, SLOT(reconnect(QString)));
+	QObject::connect(this, SIGNAL(threadDisconnect()), &mRobotCommunicationThreadObject, SLOT(disconnect()));
+	QObject::connect(this, SIGNAL(threadSend(QByteArray)), &mRobotCommunicationThreadObject, SLOT(send(QByteArray)));
+
+	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(connected()), this, SLOT(connectedSlot()));
+	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
+	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(response(QByteArray)), this, SLOT(responseSlot(QByteArray)));
 }
 
 void BluetoothRobotCommunication::send(QByteArray const &buffer)
 {
-	qDebug() << "Sending: ";
-	mPort->write(buffer);
+	emit threadSend(buffer);
 }
 
 void BluetoothRobotCommunication::connect()
 {
-	qDebug() << "BluetoothRobotCommunication::connect";
-
-//	mPort = new QextSerialPort("COM" + QString::number(comPort));
-	mPort = new QextSerialPort(mPortName);
-	mPort->setBaudRate(BAUD9600);
-	mPort->setFlowControl(FLOW_OFF);
-	mPort->setParity(PAR_NONE);
-	mPort->setDataBits(DATA_8);
-	mPort->setStopBits(STOP_2);
-	mPort->setTimeout(3000);
-
-	mPort->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
-
-	qDebug() << "Port" << mPort->portName() << "is open:" << mPort->isOpen();
-
-	QByteArray command(4, 0);
-	command[0] = 0x02;  //command length
-	command[1] = 0x00;
-	command[2] = 0x01;
-	command[3] = 0x88;
-
-	int bytesTransmitted = mPort->write(command);
-	qDebug() << "Trasmitted:" << bytesTransmitted;
-
-	qDebug() << "Reading response";
-
-	QByteArray response = mPort->read(9);
-	qDebug() << "Received:" << response;
+	emit threadConnect(mPortName);
 }
 
 void BluetoothRobotCommunication::disconnect()
 {
-	qDebug() << "BluetoothRobotCommunication::disconnect";
-	mPort->close();
-	delete mPort;
-	mPort = NULL;
+	emit threadDisconnect();
 }
 
 void BluetoothRobotCommunication::setPortName(QString const &portName)
 {
-	bool needReconnect = (portName != mPortName) && mPort->isOpen();
+	bool needReconnect = portName != mPortName;
 	mPortName = portName;
-	if (needReconnect) {
-		disconnect();
-		connect();
-	}
+	if (needReconnect)
+		emit threadReconnect(mPortName);
+}
+
+void BluetoothRobotCommunication::connectedSlot()
+{
+	emit connected();
+}
+
+void BluetoothRobotCommunication::disconnectedSlot()
+{
+	emit disconnected();
+}
+
+void BluetoothRobotCommunication::responseSlot(QByteArray const &buffer)
+{
 }

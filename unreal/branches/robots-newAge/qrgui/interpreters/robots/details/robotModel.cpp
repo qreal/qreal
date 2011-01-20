@@ -7,6 +7,7 @@ RobotModel::RobotModel(RobotCommunicationInterface * const robotCommunicationInt
 	: mRobotCommunicationInterface(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
 {
+	connect(mRobotCommunicationInterface, SIGNAL(connected()), this, SIGNAL(connected()));
 }
 
 RobotModel::~RobotModel()

@@ -22,6 +22,9 @@ public:
 			, RobotModel &robotModel);
 	virtual void run();
 
+private slots:
+	void connected();
+
 private:
 	RobotModel &mRobotModel;
 };

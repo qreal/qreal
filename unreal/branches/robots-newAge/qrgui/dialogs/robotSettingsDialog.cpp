@@ -30,7 +30,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 			qDebug() << "physical name:" << info.physName;
 			qDebug() << "enumerator name:" << info.enumName;
 			qDebug() << "===================================";
-			mUi->comPortComboBox->addItem(info.friendName);
+			mUi->comPortComboBox->addItem(info.portName.left(4));
 		}
 		QSettings settings("SPbSU", "QReal");
 		QString const defaultPortName = settings.value("bluetoothPortName", "").toString();

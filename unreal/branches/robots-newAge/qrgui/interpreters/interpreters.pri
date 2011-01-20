@@ -18,6 +18,7 @@ HEADERS += \
 	interpreters/robots/details/blocksFactory.h \
 	interpreters/robots/details/blocksTable.h \
 	interpreters/robots/details/robotModel.h \
+	interpreters/robots/details/bluetoothRobotCommunicationThread.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/simpleTestBlock.h \
 	interpreters/robots/details/blocks/beepBlock.h \
@@ -32,6 +33,7 @@ SOURCES += \
 	interpreters/robots/details/blocksTable.cpp \
 	interpreters/robots/details/blocksFactory.cpp \
 	interpreters/robots/details/robotModel.cpp \
+	interpreters/robots/details/bluetoothRobotCommunicationThread.cpp \
 	interpreters/robots/details/blocks/block.cpp \
 	interpreters/robots/details/blocks/simpleTestBlock.cpp \
 	interpreters/robots/details/blocks/beepBlock.cpp \
