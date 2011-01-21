@@ -3,8 +3,6 @@
 #include <QtCore/QObject>
 
 #include "../../../../kernel/ids.h"
-#include "../../../../models/graphicalModelAssistApi.h"
-#include "../../../../models/logicalModelAssistApi.h"
 
 #include "robotPart.h"
 

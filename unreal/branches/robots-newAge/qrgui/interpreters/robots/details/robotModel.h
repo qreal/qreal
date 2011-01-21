@@ -4,6 +4,7 @@
 
 #include "robotParts/brick.h"
 #include "robotParts/touchSensor.h"
+#include "robotParts/motor.h"
 #include "../robotCommunicationInterface.h"
 
 namespace qReal {
@@ -24,6 +25,10 @@ public:
 	robotParts::Brick &brick();
 	robotParts::TouchSensor &touchSensor();
 
+	robotParts::Motor &motorA();
+	robotParts::Motor &motorB();
+	robotParts::Motor &motorC();
+
 signals:
 	void connected();
 
@@ -35,6 +40,9 @@ private:
 	RobotCommunicationInterface *mRobotCommunicationInterface;  // Has ownership
 	robotParts::Brick mBrick;
 	robotParts::TouchSensor mTouchSensor;
+	robotParts::Motor mMotorA;
+	robotParts::Motor mMotorB;
+	robotParts::Motor mMotorC;
 };
 
 }

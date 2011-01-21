@@ -20,10 +20,12 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee, QByteArray cons
 {
 	qDebug() << "Sending...";
 	mPort->write(buffer);
-	qDebug() << "Receiving...";
-	QByteArray result = mPort->read(responseSize);
-	qDebug() << "Done.";
-	emit response(addressee, result);
+	if (buffer.size() >= 3 && buffer[2] == 0x00) {
+		qDebug() << "Receiving...";
+		QByteArray result = mPort->read(responseSize);
+		qDebug() << "Done.";
+		emit response(addressee, result);
+	}
 }
 
 void BluetoothRobotCommunicationThread::connect(QString portName)

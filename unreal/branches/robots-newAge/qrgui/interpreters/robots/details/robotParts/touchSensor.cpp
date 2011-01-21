@@ -1,5 +1,7 @@
 #include "touchSensor.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots::details::robotParts;
 
 TouchSensor::TouchSensor(RobotCommunicationInterface *robotCommunicationInterface)

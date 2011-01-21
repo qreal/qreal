@@ -6,6 +6,9 @@
 #include "blocks/initialBlock.h"
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
+#include "blocks/enginesForwardBlock.h"
+#include "blocks/enginesBackwardBlock.h"
+#include "blocks/enginesStopBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -31,6 +34,12 @@ Block *BlocksFactory::block(Id const &element
 		newBlock = new TimerBlock();
 	else if (elementMetatypeIs(element, "Sensor"))
 		newBlock = new WaitForTouchSensorBlock(mRobotModel->touchSensor());
+	else if (elementMetatypeIs(element, "EnginesForward"))
+		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
+	else if (elementMetatypeIs(element, "EnginesBackward"))
+		newBlock = new EnginesBackwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
+	else if (elementMetatypeIs(element, "EnginesStop"))
+		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB());
 	else
 		newBlock = new DummyBlock();
 

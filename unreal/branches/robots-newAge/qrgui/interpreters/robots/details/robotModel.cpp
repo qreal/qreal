@@ -1,5 +1,7 @@
 #include "robotModel.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace interpreters::robots::details;
 
@@ -7,6 +9,9 @@ RobotModel::RobotModel(RobotCommunicationInterface * const robotCommunicationInt
 	: mRobotCommunicationInterface(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
 	, mTouchSensor(robotCommunicationInterface)
+	, mMotorA(0, robotCommunicationInterface)
+	, mMotorB(1, robotCommunicationInterface)
+	, mMotorC(2, robotCommunicationInterface)
 {
 	connect(mRobotCommunicationInterface, SIGNAL(connected()), this, SLOT(connectedSlot()));
 }
@@ -49,4 +54,19 @@ void RobotModel::sensorConfigurationDoneSlot()
 {
 	qDebug() << "Touch sensor configuration done";
 	emit connected();
+}
+
+robotParts::Motor &RobotModel::motorA()
+{
+	return mMotorA;
+}
+
+robotParts::Motor &RobotModel::motorB()
+{
+	return mMotorB;
+}
+
+robotParts::Motor &RobotModel::motorC()
+{
+	return mMotorC;
 }
