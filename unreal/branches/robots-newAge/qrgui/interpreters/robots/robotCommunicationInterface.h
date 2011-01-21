@@ -12,7 +12,7 @@ class RobotCommunicationInterface : public QObject
 	Q_OBJECT
 
 public:
-	virtual void send(QObject *addressee, QByteArray const &buffer) = 0;
+	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize) = 0;
 	virtual void connect() = 0;
 	virtual void disconnect() = 0;
 

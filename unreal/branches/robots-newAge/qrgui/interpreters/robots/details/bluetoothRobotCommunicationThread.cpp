@@ -16,10 +16,13 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee, QByteArray const &buffer)
+void BluetoothRobotCommunicationThread::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
 {
+	qDebug() << "Sending...";
 	mPort->write(buffer);
-	QByteArray result = mPort->readAll();
+	qDebug() << "Receiving...";
+	QByteArray result = mPort->read(responseSize);
+	qDebug() << "Done.";
 	emit response(addressee, result);
 }
 

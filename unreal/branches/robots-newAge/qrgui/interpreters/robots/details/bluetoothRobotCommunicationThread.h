@@ -23,7 +23,7 @@ signals:
 	void response(QObject *addressee, QByteArray const &buffer);
 
 public slots:
-	void send(QObject *addressee, QByteArray const &buffer);
+	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void connect(QString portName);
 	void reconnect(QString portName);
 	void disconnect();

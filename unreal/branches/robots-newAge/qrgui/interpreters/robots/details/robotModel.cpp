@@ -33,11 +33,20 @@ void RobotModel::clear()
 
 void RobotModel::init()
 {
+	qDebug() << "Initializing robot model...";
+	qDebug() << "Connecting to robot...";
 	mRobotCommunicationInterface->connect();
 }
 
 void RobotModel::connectedSlot()
 {
+	qDebug() << "Connected. Initializing touch sensor...";
+	connect(&mTouchSensor, SIGNAL(configured()), this, SLOT(sensorConfigurationDoneSlot()));
 	mTouchSensor.configure(0);
+}
+
+void RobotModel::sensorConfigurationDoneSlot()
+{
+	qDebug() << "Touch sensor configuration done";
 	emit connected();
 }

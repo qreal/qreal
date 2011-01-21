@@ -18,7 +18,7 @@ void Brick::playTone(unsigned freq, unsigned time)
 	command[5] = freq >> 8;
 	command[6] = time;
 	command[7] = time >> 8;
-	mRobotCommunicationInterface->send(this, command);
+	mRobotCommunicationInterface->send(this, command, 5);
 }
 
 void Brick::beep(unsigned time)

@@ -25,8 +25,15 @@ public:
 
 signals:
 	void response(int reading);
+	void configured();
 
 private:
+	enum State {
+		idle
+		, pending
+	};
+
+	State mState;
 	int mPort;
 
 	virtual void processResponse(QByteArray const &reading);

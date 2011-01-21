@@ -23,8 +23,10 @@ void WaitForTouchSensorBlock::run()
 void WaitForTouchSensorBlock::response(int reading)
 {
 	qDebug() << "Touch sensor reading:" << reading;
-	if (reading == 1)
+	if (reading == 1) {
+		mActiveWaitingTimer.stop();
 		emit done(mNextBlock);
+	}
 }
 
 void WaitForTouchSensorBlock::timerTimeout()

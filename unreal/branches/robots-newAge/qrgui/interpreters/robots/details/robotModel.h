@@ -29,6 +29,7 @@ signals:
 
 private slots:
 	void connectedSlot();
+	void sensorConfigurationDoneSlot();
 
 private:
 	RobotCommunicationInterface *mRobotCommunicationInterface;  // Has ownership

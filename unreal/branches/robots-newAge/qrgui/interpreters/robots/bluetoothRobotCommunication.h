@@ -19,14 +19,14 @@ class BluetoothRobotCommunication : public RobotCommunicationInterface
 public:
 	BluetoothRobotCommunication(QString const &portName);
 
-	virtual void send(QObject *addressee, QByteArray const &buffer);
+	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	virtual void connect();
 	virtual void disconnect();
 
 	void setPortName(QString const &portName);
 
 signals:
-	void threadSend(QObject *addressee, QByteArray const &buffer);
+	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadConnect(QString portName);
 	void threadReconnect(QString portName);
 	void threadDisconnect();
