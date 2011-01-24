@@ -33,7 +33,7 @@ Block *BlocksFactory::block(Id const &element
 	else if (elementMetatypeIs(element, "Timer"))
 		newBlock = new TimerBlock();
 	else if (elementMetatypeIs(element, "Sensor"))
-		newBlock = new WaitForTouchSensorBlock(mRobotModel->touchSensor());
+		newBlock = new WaitForTouchSensorBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "EnginesForward"))
 		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
 	else if (elementMetatypeIs(element, "EnginesBackward"))

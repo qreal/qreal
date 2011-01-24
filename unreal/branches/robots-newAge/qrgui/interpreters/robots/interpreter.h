@@ -8,6 +8,7 @@
 #include "../../mainwindow/mainWindowInterpretersInterface.h"
 
 #include "robotCommunicationInterface.h"
+#include "sensorType.h"
 #include "details/robotModel.h"
 #include "details/thread.h"
 #include "details/blocksTable.h"
@@ -28,6 +29,8 @@ public:
 	~Interpreter();
 
 	void interpret(Id const &currentDiagramId);
+	void configureSensors(SensorType::SensorType const &port1, SensorType::SensorType const &port2
+			, SensorType::SensorType const &port3, SensorType::SensorType const &port4);
 	void stop();
 
 private slots:

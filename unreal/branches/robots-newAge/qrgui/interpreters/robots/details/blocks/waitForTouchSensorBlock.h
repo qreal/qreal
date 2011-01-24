@@ -4,7 +4,7 @@
 #include <QtCore/QTimer>
 
 #include "block.h"
-#include "../robotParts/touchSensor.h"
+#include "../robotModel.h"
 
 namespace qReal {
 namespace interpreters {
@@ -17,7 +17,7 @@ class WaitForTouchSensorBlock : public Block
 	Q_OBJECT
 
 public:
-	WaitForTouchSensorBlock(robotParts::TouchSensor &touchSensor);
+	WaitForTouchSensorBlock(RobotModel const * const robotModel);
 	virtual void run();
 
 private slots:
@@ -25,7 +25,7 @@ private slots:
 	void timerTimeout();
 
 private:
-	robotParts::TouchSensor &mTouchSensor;
+	robotParts::TouchSensor *mTouchSensor;  // Doesn't have ownership
 	QTimer mActiveWaitingTimer;
 };
 

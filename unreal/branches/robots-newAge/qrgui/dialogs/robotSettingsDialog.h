@@ -2,6 +2,8 @@
 
 #include <QtGui/QDialog>
 
+#include "../../interpreters/robots/sensorType.h"
+
 namespace Ui {
 	class RobotSettingsDialog;
 }
@@ -18,6 +20,10 @@ public:
 	~RobotSettingsDialog();
 
 	QString selectedPortName() const;
+	interpreters::robots::SensorType::SensorType selectedPort1Sensor() const;
+	interpreters::robots::SensorType::SensorType selectedPort2Sensor() const;
+	interpreters::robots::SensorType::SensorType selectedPort3Sensor() const;
+	interpreters::robots::SensorType::SensorType selectedPort4Sensor() const;
 
 private slots:
 	void ok();

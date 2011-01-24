@@ -198,6 +198,11 @@ MainWindow::MainWindow()
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication);
+	interpreters::robots::SensorType::SensorType port1 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port1SensorType", "0").toInt());
+	interpreters::robots::SensorType::SensorType port2 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port2SensorType", "0").toInt());
+	interpreters::robots::SensorType::SensorType port3 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port3SensorType", "0").toInt());
+	interpreters::robots::SensorType::SensorType port4 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port4SensorType", "0").toInt());
+	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
@@ -1177,5 +1182,12 @@ void MainWindow::showRobotSettingsDialog()
 	gui::RobotSettingsDialog robotSettingsDialog;
 	if (robotSettingsDialog.exec() == QDialog::Accepted) {
 		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
+		mRobotInterpreter->configureSensors(
+				robotSettingsDialog.selectedPort1Sensor()
+				, robotSettingsDialog.selectedPort2Sensor()
+				, robotSettingsDialog.selectedPort3Sensor()
+				, robotSettingsDialog.selectedPort4Sensor()
+		);
+
 	}
 }
