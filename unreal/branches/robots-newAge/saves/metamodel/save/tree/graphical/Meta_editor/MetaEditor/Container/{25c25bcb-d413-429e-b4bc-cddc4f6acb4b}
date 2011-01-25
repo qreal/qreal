@@ -3,7 +3,7 @@
   <properties>
     <QPolygon key="configuration" value="0, 0 : 62, 93 : 66, 364 : 102, 385 : "/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a054c63d-8b10-49c9-a5ab-11160a6e6d07}"/>
-    <double key="fromPort" value="1.66667"/>
+    <double key="fromPort" value="1.75"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(Container)"/>
     <QPointF key="position" value="-398, -508.666"/>

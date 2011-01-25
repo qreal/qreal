@@ -19,6 +19,8 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{fce87cde-73ec-408d-a755-4813d0c03a6d}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{801238cf-cb67-43e2-9567-4c960ec56b19}"/>
     </links>
     <QString key="name" value="DiagramNode"/>
     <outgoingConnections type="qReal::IdList"/>

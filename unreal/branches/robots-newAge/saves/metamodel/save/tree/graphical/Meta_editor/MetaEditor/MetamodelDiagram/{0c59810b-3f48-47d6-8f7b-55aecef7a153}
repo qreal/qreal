@@ -13,6 +13,8 @@
     <object id="qrm:/Meta_editor/MetaEditor/Container/{38774cd3-8fa3-4092-bac5-751879456797}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{25c25bcb-d413-429e-b4bc-cddc4f6acb4b}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{b77f76b4-2e69-45d8-b642-47587bd8c0d5}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{1bc37ba3-fe19-4679-8817-e6b5737c05b8}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Container/{040ae85b-f19a-4d70-bf0c-60f2fef11950}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

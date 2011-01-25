@@ -1,0 +1,23 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{fce87cde-73ec-408d-a755-4813d0c03a6d}"/>
+    </links>
+    <QString key="name" value="Loop"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;99&quot; sizey=&quot;60&quot;>&#xa;        &lt;ellipse fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;5&quot; stroke-width=&quot;4&quot; x1=&quot;6&quot; y2=&quot;59&quot; fill-style=&quot;none&quot; x2=&quot;91&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;34&quot; stroke-width=&quot;4&quot; x1=&quot;90&quot; y2=&quot;30&quot; fill-style=&quot;none&quot; x2=&quot;77&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;33&quot; stroke-width=&quot;4&quot; x1=&quot;91&quot; y2=&quot;26&quot; fill-style=&quot;none&quot; x2=&quot;99&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;33&quot; stroke-width=&quot;4&quot; x1=&quot;6&quot; y2=&quot;41&quot; fill-style=&quot;none&quot; x2=&quot;0&quot;/>&#xa;        &lt;line fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#000000&quot; y1=&quot;34&quot; stroke-width=&quot;4&quot; x1=&quot;6&quot; y2=&quot;38&quot; fill-style=&quot;none&quot; x2=&quot;18&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;32&quot; y=&quot;21&quot; textBinded=&quot;Iterations&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;3&quot; y=&quot;30&quot;/>&#xa;        &lt;pointPort x=&quot;94&quot; y=&quot;32&quot;/>&#xa;        &lt;pointPort x=&quot;48&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;51&quot; y=&quot;58&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>
