@@ -8,6 +8,7 @@
 
 using namespace qReal;
 using namespace gui;
+using interpreters::robots::SensorType::SensorType;
 
 RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	: QDialog(parent)
@@ -49,10 +50,10 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	mUi->port3ComboBox->addItems(sensorNames);
 	mUi->port4ComboBox->addItems(sensorNames);
 
-	interpreters::robots::SensorType::SensorType const port1 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port1SensorType", "0").toInt());
-	interpreters::robots::SensorType::SensorType const port2 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port2SensorType", "0").toInt());
-	interpreters::robots::SensorType::SensorType const port3 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port3SensorType", "0").toInt());
-	interpreters::robots::SensorType::SensorType const port4 = static_cast<interpreters::robots::SensorType::SensorType>(settings.value("port4SensorType", "0").toInt());
+	SensorType const port1 = static_cast<SensorType>(settings.value("port1SensorType", "0").toInt());
+	SensorType const port2 = static_cast<SensorType>(settings.value("port2SensorType", "0").toInt());
+	SensorType const port3 = static_cast<SensorType>(settings.value("port3SensorType", "0").toInt());
+	SensorType const port4 = static_cast<SensorType>(settings.value("port4SensorType", "0").toInt());
 
 	mUi->port1ComboBox->setCurrentIndex(port1);
 	mUi->port2ComboBox->setCurrentIndex(port2);
@@ -88,22 +89,22 @@ QString RobotSettingsDialog::selectedPortName() const
 	return mUi->comPortComboBox->currentText();
 }
 
-interpreters::robots::SensorType::SensorType RobotSettingsDialog::selectedPort1Sensor() const
+SensorType RobotSettingsDialog::selectedPort1Sensor() const
 {
-	return static_cast<interpreters::robots::SensorType::SensorType>(mUi->port1ComboBox->currentIndex());
+	return static_cast<SensorType>(mUi->port1ComboBox->currentIndex());
 }
 
-interpreters::robots::SensorType::SensorType RobotSettingsDialog::selectedPort2Sensor() const
+SensorType RobotSettingsDialog::selectedPort2Sensor() const
 {
-	return static_cast<interpreters::robots::SensorType::SensorType>(mUi->port2ComboBox->currentIndex());
+	return static_cast<SensorType>(mUi->port2ComboBox->currentIndex());
 }
 
-interpreters::robots::SensorType::SensorType RobotSettingsDialog::selectedPort3Sensor() const
+SensorType RobotSettingsDialog::selectedPort3Sensor() const
 {
-	return static_cast<interpreters::robots::SensorType::SensorType>(mUi->port3ComboBox->currentIndex());
+	return static_cast<SensorType>(mUi->port3ComboBox->currentIndex());
 }
 
-interpreters::robots::SensorType::SensorType RobotSettingsDialog::selectedPort4Sensor() const
+SensorType RobotSettingsDialog::selectedPort4Sensor() const
 {
-	return static_cast<interpreters::robots::SensorType::SensorType>(mUi->port4ComboBox->currentIndex());
+	return static_cast<SensorType>(mUi->port4ComboBox->currentIndex());
 }

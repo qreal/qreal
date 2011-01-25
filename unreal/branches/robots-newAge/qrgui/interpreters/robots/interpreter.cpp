@@ -101,4 +101,3 @@ void Interpreter::addThread(details::Thread * const thread)
 
 	thread->interpret();
 }
-
