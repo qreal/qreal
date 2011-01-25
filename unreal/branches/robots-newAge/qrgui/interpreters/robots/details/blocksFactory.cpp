@@ -51,4 +51,3 @@ bool BlocksFactory::elementMetatypeIs(Id const &element, QString const &metatype
 {
 	return element.type() == Id("RobotsMetamodel", "RobotsDiagram", metatype);
 }
-

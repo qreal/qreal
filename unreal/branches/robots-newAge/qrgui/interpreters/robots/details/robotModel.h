@@ -24,6 +24,7 @@ public:
 
 	void init();
 	void clear();
+	void stopRobot();
 
 	void configureSensors(SensorType::SensorType const &port1, SensorType::SensorType const &port2
 			, SensorType::SensorType const &port3, SensorType::SensorType const &port4);

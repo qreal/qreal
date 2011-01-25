@@ -32,6 +32,7 @@ public:
 	void configureSensors(SensorType::SensorType const &port1, SensorType::SensorType const &port2
 			, SensorType::SensorType const &port3, SensorType::SensorType const &port4);
 	void stop();
+	void stopRobot();
 
 private slots:
 	void threadStopped();

@@ -121,6 +121,8 @@ MainWindow::MainWindow()
 	connect(mUi.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
 	connect(mUi.actionRun, SIGNAL(triggered()), this, SLOT(run()));
+	connect(mUi.actionStop_Running, SIGNAL(triggered()), this, SLOT(stop()));
+	connect(mUi.actionStop_Robot, SIGNAL(triggered()), this, SLOT(stopRobot()));
 	connect(mUi.actionRobot_Settings, SIGNAL(triggered()), this, SLOT(showRobotSettingsDialog()));
 
 	adjustMinimapZoom(mUi.minimapZoomSlider->value());
@@ -1139,6 +1141,16 @@ void MainWindow::run()
 {
 	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
 	mRobotInterpreter->interpret(currentDiagramId);
+}
+
+void MainWindow::stop()
+{
+	mRobotInterpreter->stop();
+}
+
+void MainWindow::stopRobot()
+{
+	mRobotInterpreter->stopRobot();
 }
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)

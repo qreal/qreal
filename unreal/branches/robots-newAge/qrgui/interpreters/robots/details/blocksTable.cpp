@@ -35,5 +35,7 @@ blocks::Block *BlocksTable::block(Id const &element)
 
 void BlocksTable::clear()
 {
+	foreach (blocks::Block *block, mBlocks.values())
+		delete block;
 	mBlocks.clear();
 }

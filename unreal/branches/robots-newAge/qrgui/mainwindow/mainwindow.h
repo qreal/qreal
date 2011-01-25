@@ -114,13 +114,15 @@ private slots:
 	void showAlignment(bool isChecked);
 	void switchGrid(bool isChecked);
 	void switchAlignment(bool isChecked);
-	void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setShape(QString const &data, QPersistentModelIndex const &index, int const &role);
 
 	void setDiagramCreateFlag();
 	void diagramInCreateListDeselect();
 	void diagramInCreateListSelected(int num);
 
 	void run();
+	void stop();
+	void stopRobot();
 	void showRobotSettingsDialog();
 
 private:
@@ -146,7 +148,7 @@ private:
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+			QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
 	void loadPlugins();
 

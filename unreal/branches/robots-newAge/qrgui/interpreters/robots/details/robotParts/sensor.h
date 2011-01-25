@@ -22,6 +22,7 @@ public:
 
 signals:
 	void response(int reading);
+	void fail();
 	void configured();
 
 private:

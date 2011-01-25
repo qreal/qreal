@@ -13,6 +13,12 @@ Thread::Thread(gui::MainWindowInterpretersInterface &interpretersInterface, Bloc
 	mCurrentBlock = blocksTable.block(initialNode);
 }
 
+Thread::~Thread()
+{
+	if (mCurrentBlock != NULL)
+		mInterpretersInterface.dehighlight(mCurrentBlock->id());
+}
+
 void Thread::interpret()
 {
 	nextBlock(mCurrentBlock);

@@ -20,6 +20,7 @@ class Thread : public QObject
 public:
 	Thread(gui::MainWindowInterpretersInterface &interpretersInterface
 			, BlocksTable &blocksTable, Id const &initialNode);
+	~Thread();
 	void interpret();
 
 signals:

@@ -47,12 +47,17 @@ void Interpreter::interpret(Id const &currentDiagramId)
 void Interpreter::stop()
 {
 	mState = idle;
-	mBlocksTable->clear();
-	foreach (Thread *thread, mThreads) {
+	foreach (Thread *thread, mThreads)
 		delete thread;
-	}
+	mBlocksTable->clear();
 	mThreads.clear();
 	mRobotModel.clear();
+}
+
+void Interpreter::stopRobot()
+{
+	mRobotModel.stopRobot();
+	stop();
 }
 
 Id const Interpreter::findStartingElement(Id const &diagram) const

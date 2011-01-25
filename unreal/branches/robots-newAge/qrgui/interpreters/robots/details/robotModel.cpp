@@ -35,7 +35,6 @@ robotParts::TouchSensor *RobotModel::touchSensor(int port) const
 
 void RobotModel::clear()
 {
-	mRobotCommunicationInterface->disconnect();
 }
 
 void RobotModel::configureSensors(SensorType::SensorType const &port1
@@ -72,6 +71,13 @@ void RobotModel::init()
 	qDebug() << "Initializing robot model...";
 	qDebug() << "Connecting to robot...";
 	mRobotCommunicationInterface->connect();
+}
+
+void RobotModel::stopRobot()
+{
+	mMotorA.off();
+	mMotorB.off();
+	mMotorC.off();
 }
 
 void RobotModel::connectedSlot()

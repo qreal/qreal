@@ -35,10 +35,14 @@ void Sensor::processResponse(QByteArray const &reading)
 	mState = idle;
 	if (reading.isEmpty()) {
 		qDebug() << "Response is empty, seems to be a connection failure";
-		emit configured();
+		if (mIsConfigured)
+			emit fail();
+		else
+			emit configured();
 	} else if (reading[3] == 0x05) {
 		qDebug() << "Response is a configuration response package";
 		qDebug() << "Status byte is:" << static_cast<int>(reading[4]);
+		mIsConfigured = true;
 		emit configured();
 	} else {
 		qDebug() << "=========================================================";

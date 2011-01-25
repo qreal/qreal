@@ -342,6 +342,9 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRun"/>
+   <addaction name="actionStop_Running"/>
+   <addaction name="actionStop_Robot"/>
+   <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
   </widget>
   <action name="actionQuit">
@@ -681,6 +684,22 @@
   <action name="actionRobot_Settings">
    <property name="text">
     <string>Robot Settings...</string>
+   </property>
+  </action>
+  <action name="actionStop_Running">
+   <property name="text">
+    <string>Stop Running</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop Running</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="actionStop_Robot">
+   <property name="text">
+    <string>Stop Robot</string>
    </property>
   </action>
  </widget>

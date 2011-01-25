@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
+#include <QtCore/QThread>
 
 class QextSerialPort;
 
@@ -24,11 +25,20 @@ signals:
 
 public slots:
 	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	void connect(QString portName);
-	void reconnect(QString portName);
+	void connect(QString const &portName);
+	void reconnect(QString const &portName);
 	void disconnect();
 
 private:
+	class SleeperThread : public QThread
+	{
+	public:
+		static void msleep(unsigned long msecs)
+		{
+			QThread::msleep(msecs);
+		}
+	};
+
 	QextSerialPort *mPort;
 
 };

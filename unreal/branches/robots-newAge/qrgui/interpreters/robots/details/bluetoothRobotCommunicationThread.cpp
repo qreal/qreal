@@ -18,6 +18,11 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 
 void BluetoothRobotCommunicationThread::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
 {
+	if (!mPort) {
+		emit response(addressee, QByteArray());
+		return;
+	}
+
 	qDebug() << "Sending...";
 	mPort->write(buffer);
 	if (buffer.size() >= 3 && buffer[2] == 0x00) {
@@ -28,8 +33,13 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee, QByteArray cons
 	}
 }
 
-void BluetoothRobotCommunicationThread::connect(QString portName)
+void BluetoothRobotCommunicationThread::connect(QString const &portName)
 {
+	if (mPort != NULL) {
+		disconnect();
+		SleeperThread::msleep(1000);  // Give port some time to close
+	}
+
 	mPort = new QextSerialPort(portName);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
@@ -58,16 +68,17 @@ void BluetoothRobotCommunicationThread::connect(QString portName)
 	emit connected();
 }
 
-void BluetoothRobotCommunicationThread::reconnect(QString portName)
+void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
 {
-	disconnect();
 	connect(portName);
 }
 
 void BluetoothRobotCommunicationThread::disconnect()
 {
-	mPort->close();
-	delete mPort;
-	mPort = NULL;
+	if (mPort) {
+		mPort->close();
+		delete mPort;
+		mPort = NULL;
+	}
 	emit disconnected();
 }
