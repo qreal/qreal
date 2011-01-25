@@ -9,6 +9,8 @@
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
+#include "blocks/loopBlock.h"
+#include "blocks/forkBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -40,6 +42,10 @@ Block *BlocksFactory::block(Id const &element
 		newBlock = new EnginesBackwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
 	else if (elementMetatypeIs(element, "EnginesStop"))
 		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB());
+	else if (elementMetatypeIs(element, "Loop"))
+		newBlock = new LoopBlock();
+	else if (elementMetatypeIs(element, "Fork"))
+		newBlock = new ForkBlock();
 	else
 		newBlock = new DummyBlock();
 

@@ -37,11 +37,7 @@ void Interpreter::interpret(Id const &currentDiagramId)
 		return;
 
 	Thread * const initialThread = new Thread(mInterpretersInterface, *mBlocksTable, startingElement);
-	mThreads.append(initialThread);
-	connect(initialThread, SIGNAL(stopped()), this, SLOT(threadStopped()));
-
-	foreach (Thread * const thread, mThreads)
-		thread->interpret();
+	addThread(initialThread);
 }
 
 void Interpreter::stop()
@@ -83,6 +79,12 @@ void Interpreter::threadStopped()
 		stop();
 }
 
+void Interpreter::newThread(details::blocks::Block * const startBlock)
+{
+	Thread * const thread = new Thread(mInterpretersInterface, *mBlocksTable, startBlock->id());
+	addThread(thread);
+}
+
 void Interpreter::configureSensors(SensorType::SensorType const &port1
 		, SensorType::SensorType const &port2
 		, SensorType::SensorType const &port3
@@ -90,3 +92,13 @@ void Interpreter::configureSensors(SensorType::SensorType const &port1
 {
 	mRobotModel.configureSensors(port1, port2, port3, port4);
 }
+
+void Interpreter::addThread(details::Thread * const thread)
+{
+	mThreads.append(thread);
+	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
+	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
+
+	thread->interpret();
+}
+

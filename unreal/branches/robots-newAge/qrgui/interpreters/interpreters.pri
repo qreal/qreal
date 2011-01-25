@@ -29,6 +29,8 @@ HEADERS += \
 	interpreters/robots/details/blocks/enginesForwardBlock.h \
 	interpreters/robots/details/blocks/enginesBackwardBlock.h \
 	interpreters/robots/details/blocks/enginesStopBlock.h \
+	interpreters/robots/details/blocks/loopBlock.h \
+	interpreters/robots/details/blocks/forkBlock.h \
 	interpreters/robots/details/robotParts/robotPart.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
@@ -52,6 +54,8 @@ SOURCES += \
 	interpreters/robots/details/blocks/enginesForwardBlock.cpp \
 	interpreters/robots/details/blocks/enginesBackwardBlock.cpp \
 	interpreters/robots/details/blocks/enginesStopBlock.cpp \
+	interpreters/robots/details/blocks/loopBlock.cpp \
+	interpreters/robots/details/blocks/forkBlock.cpp \
 	interpreters/robots/details/robotParts/robotPart.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
 	interpreters/robots/details/robotParts/motor.cpp \

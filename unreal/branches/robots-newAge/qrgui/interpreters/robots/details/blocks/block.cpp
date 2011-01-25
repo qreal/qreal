@@ -25,6 +25,7 @@ void Block::init(Id const &graphicalId
 	mLogicalModelApi = &logicalModelApi;
 	mBlocksTable = &blocksTable;
 	initNextBlocks();
+	additionalInit();
 }
 
 void Block::initNextBlocks()

@@ -26,6 +26,7 @@ public:
 
 signals:
 	void done(blocks::Block * const nextBlock);
+	void newThread(details::blocks::Block * const startBlock);
 
 protected:
 	Block();
@@ -54,6 +55,7 @@ private:
 	Id mGraphicalId;
 
 	virtual void initNextBlocks();
+	virtual void additionalInit() {};
 	virtual void run() = 0;
 };
 

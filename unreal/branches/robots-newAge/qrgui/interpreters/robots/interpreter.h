@@ -36,6 +36,7 @@ public:
 
 private slots:
 	void threadStopped();
+	void newThread(details::blocks::Block * const startBlock);
 
 private:
 	enum InterpreterState {
@@ -53,6 +54,7 @@ private:
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	Id const findStartingElement(Id const &diagram) const;
+	void addThread(details::Thread * const thread);
 };
 
 }

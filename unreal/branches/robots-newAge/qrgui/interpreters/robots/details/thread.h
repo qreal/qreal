@@ -25,6 +25,7 @@ public:
 
 signals:
 	void stopped();
+	void newThread(details::blocks::Block * const startBlock);
 
 public slots:
 	void nextBlock(blocks::Block * const block);

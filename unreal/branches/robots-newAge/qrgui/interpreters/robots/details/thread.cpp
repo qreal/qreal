@@ -41,5 +41,6 @@ void Thread::nextBlock(blocks::Block * const block)
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
+	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
 	mCurrentBlock->interpret();
 }
