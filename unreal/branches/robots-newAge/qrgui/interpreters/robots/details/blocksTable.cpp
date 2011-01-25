@@ -29,7 +29,6 @@ blocks::Block *BlocksTable::block(Id const &element)
 		return mBlocks[element];
 
 	blocks::Block *newBlock = mBlocksFactory->block(element, mGraphicalModelApi, mLogicalModelApi, *this);
-	mBlocks.insert(element, newBlock);
 	return newBlock;
 }
 
@@ -38,4 +37,9 @@ void BlocksTable::clear()
 	foreach (blocks::Block *block, mBlocks.values())
 		delete block;
 	mBlocks.clear();
+}
+
+void BlocksTable::addBlock(Id const &element, blocks::Block *block)
+{
+	mBlocks.insert(element, block);
 }

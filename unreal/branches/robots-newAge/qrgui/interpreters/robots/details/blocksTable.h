@@ -29,6 +29,7 @@ public:
 	~BlocksTable();
 	blocks::Block *block(Id const &element);
 	void clear();
+	void addBlock(Id const &element, blocks::Block *block);
 
 private:
 	QHash<Id, blocks::Block *> mBlocks;  // Has ownership

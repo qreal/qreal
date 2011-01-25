@@ -43,6 +43,8 @@ Block *BlocksFactory::block(Id const &element
 	else
 		newBlock = new DummyBlock();
 
+	blocksTable.addBlock(element, newBlock);
+
 	newBlock->init(element, graphicalModelApi, logicalModelApi, blocksTable);
 	return newBlock;
 }
