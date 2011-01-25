@@ -1,6 +1,7 @@
 <object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f27bd64f-5bbc-48cc-9939-9b292021371f}" id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{b6cdb566-56b9-4ec6-a309-0fa519c8ab6c}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{74bf1209-f252-498c-9105-0affebb5ba91}">
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{acaa5dac-7911-4fdc-b0ce-d4db223d25b8}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a6daad08-9ad5-4902-930b-d46f6ee6fcbf}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value="0, 0 : 170, 0 : 170, 115 : 0, 115 : "/>

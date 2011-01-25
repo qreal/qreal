@@ -13,12 +13,8 @@
     <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{80be9bbb-926c-42de-85d3-1db5a1a144e2}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{c3a3ffa0-4a16-422b-8da0-9faef9e4ada2}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{fce87cde-73ec-408d-a755-4813d0c03a6d}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Container/{801238cf-cb67-43e2-9567-4c960ec56b19}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8359085e-3def-40b0-a4e6-52de5192d3f1}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

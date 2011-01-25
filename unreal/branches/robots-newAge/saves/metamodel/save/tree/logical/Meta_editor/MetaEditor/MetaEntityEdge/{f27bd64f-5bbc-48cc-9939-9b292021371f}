@@ -1,6 +1,7 @@
 <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f27bd64f-5bbc-48cc-9939-9b292021371f}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{14c05385-827f-4178-aff5-f95b10227c76}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a3025783-fcfb-4e39-a53e-abd3d93aa93f}"/>
   </children>
   <properties>
     <QString key="container" value=""/>

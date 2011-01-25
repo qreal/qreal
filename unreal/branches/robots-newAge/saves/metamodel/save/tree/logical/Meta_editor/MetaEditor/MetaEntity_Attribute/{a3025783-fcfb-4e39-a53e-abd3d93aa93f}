@@ -1,21 +1,16 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{c3a3ffa0-4a16-422b-8da0-9faef9e4ada2}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a3025783-fcfb-4e39-a53e-abd3d93aa93f}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f27bd64f-5bbc-48cc-9939-9b292021371f}">
   <children/>
   <properties>
-    <QString key="container" value=""/>
+    <QString key="attributeType" value="string"/>
+    <QString key="defaultValue" value=""/>
     <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
-    <QString key="isAction" value="false"/>
-    <QString key="isPin" value="false"/>
-    <QString key="isView" value=""/>
-    <QString key="language" value=""/>
     <links type="qReal::IdList"/>
-    <QString key="name" value="Goto"/>
+    <QString key="name" value="Guard"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
-    <QString key="path" value=""/>
-    <QString key="shape" value=""/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </properties>
 </object>

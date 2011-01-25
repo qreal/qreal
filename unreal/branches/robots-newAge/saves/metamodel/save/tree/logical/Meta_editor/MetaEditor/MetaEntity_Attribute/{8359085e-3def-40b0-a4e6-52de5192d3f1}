@@ -1,7 +1,7 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8359085e-3def-40b0-a4e6-52de5192d3f1}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8359085e-3def-40b0-a4e6-52de5192d3f1}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}">
   <children/>
   <properties>
-    <QString key="attributeType" value=""/>
+    <QString key="attributeType" value="int"/>
     <QString key="defaultValue" value=""/>
     <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

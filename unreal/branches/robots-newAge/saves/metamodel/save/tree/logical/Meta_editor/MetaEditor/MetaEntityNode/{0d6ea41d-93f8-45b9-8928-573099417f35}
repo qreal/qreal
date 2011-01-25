@@ -1,5 +1,7 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <children/>
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8359085e-3def-40b0-a4e6-52de5192d3f1}"/>
+  </children>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value=""/>
