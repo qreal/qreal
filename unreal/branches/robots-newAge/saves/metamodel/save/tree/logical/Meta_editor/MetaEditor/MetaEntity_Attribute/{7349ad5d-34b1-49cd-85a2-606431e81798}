@@ -1,14 +1,14 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{8359085e-3def-40b0-a4e6-52de5192d3f1}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0d6ea41d-93f8-45b9-8928-573099417f35}">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{7349ad5d-34b1-49cd-85a2-606431e81798}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8f331752-5626-4564-93f4-715b2417295a}">
   <children/>
   <properties>
-    <QString key="attributeType" value="string"/>
-    <QString key="defaultValue" value="10"/>
-    <QString key="displayedName" value=""/>
+    <QString key="attributeType" value="bool"/>
+    <QString key="defaultValue" value="true"/>
+    <QString key="displayedName" value="Wait For Completion"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>
-    <QString key="name" value="Iterations"/>
+    <QString key="name" value="WaitForCompletion"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

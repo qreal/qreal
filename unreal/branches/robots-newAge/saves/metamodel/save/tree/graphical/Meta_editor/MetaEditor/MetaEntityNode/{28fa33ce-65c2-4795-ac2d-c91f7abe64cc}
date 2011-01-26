@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{25c25bcb-d413-429e-b4bc-cddc4f6acb4b}"/>
     </links>
     <QString key="name" value="Sensor"/>
-    <QPointF key="position" value="379, 632"/>
+    <QPointF key="position" value="387, 552"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

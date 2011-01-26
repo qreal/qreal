@@ -13,14 +13,15 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5f4bfd7c-124b-4dae-9b88-d1942204fd2e}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{8d0a1c5d-618a-4f3d-ab66-c9a3f9d00e75}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{3a485903-d459-4ee7-ad5a-75659e2a298b}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{774646bf-d4b5-4d69-b31b-c9e7621c12e5}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 821, 0 : 821, 942 : 0, 942 : "/>
+    <QPolygon key="configuration" value="0, 0 : 821, 0 : 821, 946 : 0, 946 : "/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="RobotsDiagram"/>
-    <QPointF key="position" value="-667, -806"/>
+    <QPointF key="position" value="-678, -821"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

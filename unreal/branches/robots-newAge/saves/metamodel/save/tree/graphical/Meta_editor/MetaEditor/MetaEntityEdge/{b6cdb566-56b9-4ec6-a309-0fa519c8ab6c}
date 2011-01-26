@@ -4,14 +4,14 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a6daad08-9ad5-4902-930b-d46f6ee6fcbf}"/>
   </children>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 170, 0 : 170, 115 : 0, 115 : "/>
+    <QPolygon key="configuration" value="0, 0 : 190, 0 : 190, 136 : 0, 136 : "/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Container/{e7bb26a4-6eb6-461d-b2af-edb99dffffc7}"/>
     </links>
     <QString key="name" value="ControlFlow"/>
-    <QPointF key="position" value="370, 226"/>
+    <QPointF key="position" value="609, 108"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

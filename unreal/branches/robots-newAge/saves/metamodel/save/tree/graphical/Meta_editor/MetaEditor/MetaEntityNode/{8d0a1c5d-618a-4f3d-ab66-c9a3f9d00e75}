@@ -10,7 +10,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{1bc37ba3-fe19-4679-8817-e6b5737c05b8}"/>
     </links>
     <QString key="name" value="Loop"/>
-    <QPointF key="position" value="615, 229"/>
+    <QPointF key="position" value="378, 204"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

@@ -1,0 +1,27 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{e34d161b-fc63-4523-8feb-50c237e58a66}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ab92f0ca-9ee0-4440-827e-77e25d40e680}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a7e5a7a1-24f9-41b8-9863-74fbfa628014}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{89ee7b19-f98a-4711-8f48-3992bc332da5}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{6b5bf8e9-a146-4bf4-aa6f-4efeb53c5822}"/>
+    </links>
+    <QString key="name" value="PlayTone"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;182&quot; sizey=&quot;164&quot;>&#xa;        &lt;image y1=&quot;24&quot; name=&quot;images/123185_42160_48_alarm_bell_icon.png&quot; x1=&quot;40&quot; y2=&quot;72&quot; x2=&quot;88&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;16&quot; y=&quot;81&quot; text=&quot;Frequency&quot;/>&#xa;        &lt;label x=&quot;16&quot; y=&quot;104&quot; text=&quot;Duration&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;81&quot; textBinded=&quot;Frequency&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;104&quot; textBinded=&quot;Duration&quot;/>&#xa;        &lt;label x=&quot;16&quot; y=&quot;127&quot; text=&quot;Wait&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;127&quot; textBinded=&quot;WaitForCompletion&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;73&quot;/>&#xa;        &lt;pointPort x=&quot;148&quot; y=&quot;68&quot;/>&#xa;        &lt;pointPort x=&quot;75&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;75&quot; y=&quot;162&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

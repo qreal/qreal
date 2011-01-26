@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{040ae85b-f19a-4d70-bf0c-60f2fef11950}"/>
     </links>
     <QString key="name" value="Fork"/>
-    <QPointF key="position" value="629, 425"/>
+    <QPointF key="position" value="391, 321"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
