@@ -4,11 +4,20 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
-namespace SensorType {
-enum SensorType {
+namespace sensorType {
+enum SensorTypeEnum {
 	unused
 	, touchBoolean
 	, touchRaw
+};
+}
+
+namespace inputPort {
+enum InputPortEnum {
+	port1
+	, port2
+	, port3
+	, port4
 };
 }
 

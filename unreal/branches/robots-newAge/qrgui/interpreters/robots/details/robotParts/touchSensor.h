@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 #include "sensor.h"
+#include "../../sensorConstants.h"
 
 namespace qReal {
 namespace interpreters {
@@ -15,7 +16,8 @@ class TouchSensor : public Sensor
 	Q_OBJECT
 
 public:
-	TouchSensor(RobotCommunicationInterface *robotCommunicationInterface, int port);
+	TouchSensor(RobotCommunicationInterface *robotCommunicationInterface
+			, lowLevelInputPort::InputPortEnum const &port);
 };
 
 }

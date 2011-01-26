@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include "robotPart.h"
-#include "../../sensorType.h"
+#include "../robotCommandConstants.h"
 
 namespace qReal {
 namespace interpreters {
@@ -16,7 +16,11 @@ class Sensor : public RobotPart
 	Q_OBJECT
 
 public:
-	Sensor(RobotCommunicationInterface *robotCommunicationInterface, SensorType::SensorType const &sensorType, int port);
+	Sensor(RobotCommunicationInterface *robotCommunicationInterface
+			, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
+			, sensorMode::SensorModeEnum const &sensorMode
+			, lowLevelInputPort::InputPortEnum const &port
+			);
 	void configure();
 	void read();
 
@@ -32,8 +36,9 @@ private:
 	};
 
 	State mState;
-	int mPort;
-	SensorType::SensorType mSensorType;
+	lowLevelInputPort::InputPortEnum mPort;
+	lowLevelSensorType::SensorTypeEnum mSensorType;
+	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 
 	virtual void processResponse(QByteArray const &reading);

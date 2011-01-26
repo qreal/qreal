@@ -27,38 +27,39 @@ robotParts::Brick &RobotModel::brick()
 	return mBrick;
 }
 
-robotParts::TouchSensor *RobotModel::touchSensor(int port) const
+robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
 {
-	robotParts::TouchSensor *result = dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
-	return result;
+	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
 void RobotModel::clear()
 {
 }
 
-void RobotModel::configureSensors(SensorType::SensorType const &port1
-		, SensorType::SensorType const &port2
-		, SensorType::SensorType const &port3
-		, SensorType::SensorType const &port4)
+void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
+		, sensorType::SensorTypeEnum const &port2
+		, sensorType::SensorTypeEnum const &port3
+		, sensorType::SensorTypeEnum const &port4)
 {
-	configureSensor(port1, 0);
-	configureSensor(port2, 1);
-	configureSensor(port3, 2);
-	configureSensor(port4, 3);
+	configureSensor(port1, inputPort::port1);
+	configureSensor(port2, inputPort::port2);
+	configureSensor(port3, inputPort::port3);
+	configureSensor(port4, inputPort::port4);
 }
 
-void RobotModel::configureSensor(SensorType::SensorType const &sensorType, int port)
+void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
+		, inputPort::InputPortEnum const &port)
 {
 	delete mSensors[port];
 	mSensors[port] = NULL;
+	lowLevelInputPort::InputPortEnum lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
 	switch (sensorType) {
-	case SensorType::unused:
+	case sensorType::unused:
 		break;
-	case SensorType::touchBoolean:
-		mSensors[port] = new robotParts::TouchSensor(mRobotCommunicationInterface, port);
+	case sensorType::touchBoolean:
+		mSensors[port] = new robotParts::TouchSensor(mRobotCommunicationInterface, lowLevelPort);
 		break;
-	case SensorType::touchRaw:
+	case sensorType::touchRaw:
 		break;
 	default:
 		// TODO: Throw an exception

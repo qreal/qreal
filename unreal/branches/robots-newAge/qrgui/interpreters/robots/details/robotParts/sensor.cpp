@@ -6,11 +6,14 @@ using namespace qReal::interpreters::robots;
 using namespace details::robotParts;
 
 Sensor::Sensor(RobotCommunicationInterface *robotCommunicationInterface
-		, SensorType::SensorType const &sensorType, int port)
+		, lowLevelSensorType::SensorTypeEnum const &sensorType
+		, sensorMode::SensorModeEnum const &sensorMode
+		, lowLevelInputPort::InputPortEnum const &port)
 	: RobotPart(robotCommunicationInterface)
 	, mState(idle)
 	, mPort(port)
 	, mSensorType(sensorType)
+	, mSensorMode(sensorMode)
 	, mIsConfigured(false)
 {
 }
@@ -24,8 +27,8 @@ void Sensor::read()
 	QByteArray command(5, 0);
 	command[0] = 0x03;  //command length
 	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x07;
+	command[2] = telegramType::directCommandResponseRequired;
+	command[3] = commandCode::GETINPUTVALUES;
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
@@ -39,7 +42,7 @@ void Sensor::processResponse(QByteArray const &reading)
 			emit fail();
 		else
 			emit configured();
-	} else if (reading[3] == 0x05) {
+	} else if (reading[3] == commandCode::SETINPUTMODE) {
 		qDebug() << "Response is a configuration response package";
 		qDebug() << "Status byte is:" << static_cast<int>(reading[4]);
 		mIsConfigured = true;
@@ -76,11 +79,10 @@ void Sensor::configure()
 	QByteArray command(7, 0);
 	command[0] = 0x05;  //command length
 	command[1] = 0x00;
-	command[2] = 0x00;  // reply needed
-	command[3] = 0x05;
+	command[2] = telegramType::directCommandResponseRequired;  // reply needed
+	command[3] = commandCode::SETINPUTMODE;
 	command[4] = mPort;  // sensor port. always 0 for now.
-	command[5] = 0x01;  // sensor type: touch
-	command[6] = 0x20;  // sensor mode: boolean
-//	command[6] = 0x00;  // sensor mode: raw
+	command[5] = mSensorType;
+	command[6] = mSensorMode;
 	mRobotCommunicationInterface->send(this, command, 5);
 }

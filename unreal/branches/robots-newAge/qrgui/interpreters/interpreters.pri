@@ -12,7 +12,7 @@ SOURCES += \
 # Robots behavior diagrams interpreter
 HEADERS += \
 	interpreters/robots/interpreter.h \
-	interpreters/robots/sensorType.h \
+	interpreters/robots/sensorConstants.h \
 	interpreters/robots/robotCommunicationInterface.h \
 	interpreters/robots/bluetoothRobotCommunication.h \
 	interpreters/robots/details/thread.h \
@@ -20,6 +20,7 @@ HEADERS += \
 	interpreters/robots/details/blocksTable.h \
 	interpreters/robots/details/robotModel.h \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.h \
+	interpreters/robots/details/robotCommandConstants.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/dummyBlock.h \
 	interpreters/robots/details/blocks/timerBlock.h \

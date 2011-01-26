@@ -85,10 +85,10 @@ void Interpreter::newThread(details::blocks::Block * const startBlock)
 	addThread(thread);
 }
 
-void Interpreter::configureSensors(SensorType::SensorType const &port1
-		, SensorType::SensorType const &port2
-		, SensorType::SensorType const &port3
-		, SensorType::SensorType const &port4)
+void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
+		, sensorType::SensorTypeEnum const &port2
+		, sensorType::SensorTypeEnum const &port3
+		, sensorType::SensorTypeEnum const &port4)
 {
 	mRobotModel.configureSensors(port1, port2, port3, port4);
 }

@@ -5,6 +5,7 @@
 #include "../../../../kernel/ids.h"
 
 #include "robotPart.h"
+#include "../robotCommandConstants.h"
 
 namespace qReal {
 namespace interpreters {
@@ -26,7 +27,9 @@ public:
 private:
 	int mPort;
 
-	void setOutputState(int speed, int mode, int regulation, int turnRatio, int runState, unsigned long tachoLimit);
+	void setOutputState(int speed, int mode
+			, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState
+			, unsigned long tachoLimit);
 };
 
 }

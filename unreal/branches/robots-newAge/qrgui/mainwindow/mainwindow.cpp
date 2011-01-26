@@ -39,7 +39,7 @@
 #include "../interpreters/robots/interpreter.h"
 
 using namespace qReal;
-using interpreters::robots::SensorType::SensorType;
+using namespace interpreters::robots;
 
 MainWindow::MainWindow()
 	: mCloseEvent(NULL)
@@ -201,10 +201,10 @@ MainWindow::MainWindow()
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication);
-	SensorType port1 = static_cast<SensorType>(settings.value("port1SensorType", "0").toInt());
-	SensorType port2 = static_cast<SensorType>(settings.value("port2SensorType", "0").toInt());
-	SensorType port3 = static_cast<SensorType>(settings.value("port3SensorType", "0").toInt());
-	SensorType port4 = static_cast<SensorType>(settings.value("port4SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
+	sensorType::SensorTypeEnum port4 = static_cast<sensorType::SensorTypeEnum>(settings.value("port4SensorType", "0").toInt());
 	mRobotInterpreter->configureSensors(port1, port2, port3, port4);
 
 	// Step 7: Save consistency checked, interface is initialized with models.

@@ -4,7 +4,7 @@ using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(RobotModel const * const robotModel)
-	: mTouchSensor(robotModel->touchSensor(0))
+	: mTouchSensor(robotModel->touchSensor(inputPort::port1))
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.

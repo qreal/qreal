@@ -8,7 +8,7 @@
 #include "robotParts/sensor.h"
 #include "robotParts/touchSensor.h"
 #include "../robotCommunicationInterface.h"
-#include "../sensorType.h"
+#include "../sensorConstants.h"
 
 namespace qReal {
 namespace interpreters {
@@ -26,11 +26,13 @@ public:
 	void clear();
 	void stopRobot();
 
-	void configureSensors(SensorType::SensorType const &port1, SensorType::SensorType const &port2
-			, SensorType::SensorType const &port3, SensorType::SensorType const &port4);
+	void configureSensors(sensorType::SensorTypeEnum const &port1
+			, sensorType::SensorTypeEnum const &port2
+			, sensorType::SensorTypeEnum const &port3
+			, sensorType::SensorTypeEnum const &port4);
 
 	robotParts::Brick &brick();
-	robotParts::TouchSensor *touchSensor(int port) const;
+	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
 
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();
@@ -53,7 +55,8 @@ private:
 	QVector<robotParts::Sensor *> mSensors;  // Has ownership
 	int mSensorsToConfigure;
 
-	void configureSensor(SensorType::SensorType const &sensorType, int port);
+	void configureSensor(sensorType::SensorTypeEnum const &sensorType
+			, inputPort::InputPortEnum const &port);
 };
 
 }
