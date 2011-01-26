@@ -5,8 +5,7 @@ using namespace interpreters::robots::details::blocks;
 
 void TimerBlock::run()
 {
-	Id const logicalId = mGraphicalModelApi->logicalId(id());
-	int const interval = mLogicalModelApi->propertyByRoleName(logicalId, "Delay").toInt();
+	int const interval = intProperty("Delay");
 
 	mTimer.setInterval(interval);
 	mTimer.setSingleShot(true);

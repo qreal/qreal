@@ -1,27 +1,27 @@
-#include "beepBlock.h"
+#include "playToneBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-BeepBlock::BeepBlock(robotParts::Brick &brick)
+PlayToneBlock::PlayToneBlock(robotParts::Brick &brick)
 	: mBrick(brick)
 {
 }
 
-void BeepBlock::run()
+void PlayToneBlock::run()
 {
-	mBrick.beep(500);
+	mBrick.playTone(intProperty("Frequency"), intProperty("Duration"));
 	if (!boolProperty("WaitForCompletion"))
 		emit done(mNextBlock);
 	else {
-		mTimer.setInterval(500);
+		mTimer.setInterval(intProperty("Frequency"));
 		mTimer.setSingleShot(true);
 		connect(&mTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 		mTimer.start();
 	}
 }
 
-void BeepBlock::timeout()
+void PlayToneBlock::timeout()
 {
 	emit done(mNextBlock);
 }

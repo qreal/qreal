@@ -12,12 +12,12 @@ namespace robots {
 namespace details {
 namespace blocks {
 
-class BeepBlock : public Block
+class PlayToneBlock : public Block
 {
 	Q_OBJECT
 
 public:
-	BeepBlock(robotParts::Brick &brick);
+	PlayToneBlock(robotParts::Brick &brick);
 	virtual void run();
 
 private slots:

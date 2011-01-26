@@ -24,10 +24,9 @@ void ForkBlock::initNextBlocks()
 		foreach (Id const linkId, links) {
 			Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 			Block *targetBlock = mBlocksTable->block(targetBlockId);
-			Id const logicalLinkId = mGraphicalModelApi->logicalId(linkId);
-			if (mLogicalModelApi->propertyByRoleName(logicalLinkId, "Guard").toString() == "other") {
+			if (stringProperty(linkId, "Guard") == "other") {
 				mThreadStartBlock = targetBlock;
-			} else if (mLogicalModelApi->propertyByRoleName(logicalLinkId, "Guard").toString() == "") {
+			} else if (stringProperty(linkId, "Guard") == "") {
 				mNextBlock = targetBlock;
 			}
 		}

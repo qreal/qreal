@@ -4,7 +4,7 @@ using namespace qReal::interpreters::robots::details::robotParts;
 
 Motor::Motor(int const port, RobotCommunicationInterface *robotCommunicationInterface)
 	: RobotPart(robotCommunicationInterface)
-	, mPort(port)
+	, mPort(static_cast<outputPort::OutputPortEnum>(port))
 {
 }
 
@@ -57,5 +57,16 @@ void Motor::setOutputState(int speed, int mode
 	command[12] = tachoLimit >> 16;  // TachoLimit
 	command[13] = tachoLimit >> 24;  // TachoLimit
 	command[14] = 0;                 // TachoLimit, suddenly
+	mRobotCommunicationInterface->send(this, command, 3);
+}
+
+void Motor::resetMotorPosition(bool relative)
+{
+	QByteArray command(5, 0);
+	command[0] = 3;  // command length.
+	command[1] = 0x00;
+	command[2] = telegramType::directCommandNoResponse;
+	command[3] = commandCode::RESETMOTORPOSITION;
+	command[4] = relative;
 	mRobotCommunicationInterface->send(this, command, 3);
 }

@@ -11,6 +11,7 @@
 #include "blocks/enginesStopBlock.h"
 #include "blocks/loopBlock.h"
 #include "blocks/forkBlock.h"
+#include "blocks/playToneBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -37,15 +38,17 @@ Block *BlocksFactory::block(Id const &element
 	else if (elementMetatypeIs(element, "Sensor"))
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "EnginesForward"))
-		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
+		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 	else if (elementMetatypeIs(element, "EnginesBackward"))
-		newBlock = new EnginesBackwardBlock(mRobotModel->motorA(), mRobotModel->motorB());
+		newBlock = new EnginesBackwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 	else if (elementMetatypeIs(element, "EnginesStop"))
-		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB());
+		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 	else if (elementMetatypeIs(element, "Loop"))
 		newBlock = new LoopBlock();
 	else if (elementMetatypeIs(element, "Fork"))
 		newBlock = new ForkBlock();
+	else if (elementMetatypeIs(element, "PlayTone"))
+		newBlock = new PlayToneBlock(mRobotModel->brick());
 	else
 		newBlock = new DummyBlock();
 

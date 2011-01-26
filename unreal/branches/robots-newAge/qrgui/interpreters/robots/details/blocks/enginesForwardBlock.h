@@ -2,8 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "block.h"
-#include "../robotParts/motor.h"
+#include "engineCommandBlock.h"
 
 namespace qReal {
 namespace interpreters {
@@ -11,17 +10,13 @@ namespace robots {
 namespace details {
 namespace blocks {
 
-class EnginesForwardBlock : public Block
+class EnginesForwardBlock : public EngineCommandBlock
 {
 	Q_OBJECT
 
 public:
-	EnginesForwardBlock(robotParts::Motor &motor1, robotParts::Motor &motor2);
+	EnginesForwardBlock(robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3);
 	virtual void run();
-
-private:
-	robotParts::Motor &mMotor1;
-	robotParts::Motor &mMotor2;
 };
 
 }

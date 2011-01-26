@@ -3,15 +3,22 @@
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-EnginesBackwardBlock::EnginesBackwardBlock(robotParts::Motor &motor1, robotParts::Motor &motor2)
-	: mMotor1(motor1)
-	, mMotor2(motor2)
+EnginesBackwardBlock::EnginesBackwardBlock(robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3)
+	: EngineCommandBlock(motor1, motor2, motor3)
 {
 }
 
 void EnginesBackwardBlock::run()
 {
-	mMotor1.on(-100);
-	mMotor2.on(-100);
+	int const power = -intProperty("Power");
+	int const tachoLimit = intProperty("TachoLimit");
+	QVector<bool> ports = parsePorts();
+	if (ports[0])
+		mMotor1.on(power, tachoLimit);
+	if (ports[1])
+		mMotor2.on(power, tachoLimit);
+	if (ports[2])
+		mMotor3.on(power, tachoLimit);
+
 	emit done(mNextBlock);
 }

@@ -60,3 +60,44 @@ void Block::finishedRunning()
 {
 	mState = idle;
 }
+
+QVariant Block::property(QString const &propertyName) const
+{
+	return property(id(), propertyName);
+}
+
+QString Block::stringProperty(QString const &propertyName) const
+{
+	return stringProperty(id(), propertyName);
+}
+
+int Block::intProperty(QString const &propertyName) const
+{
+	return intProperty(id(), propertyName);
+}
+
+bool Block::boolProperty(QString const &propertyName) const
+{
+	return boolProperty(id(), propertyName);
+}
+
+QVariant Block::property(Id const &id, QString const &propertyName) const
+{
+	Id const logicalId = mGraphicalModelApi->logicalId(id);
+	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
+}
+
+QString Block::stringProperty(Id const &id, QString const &propertyName) const
+{
+	return property(id, propertyName).toString();
+}
+
+int Block::intProperty(Id const &id, QString const &propertyName) const
+{
+	return property(id, propertyName).toInt();
+}
+
+bool Block::boolProperty(Id const &id, QString const &propertyName) const
+{
+	return property(id, propertyName).toBool();
+}

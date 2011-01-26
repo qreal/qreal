@@ -23,9 +23,10 @@ public:
 	void on(int speed, long unsigned int degrees);
 	void stop();
 	void off();
+	void resetMotorPosition(bool relative);
 
 private:
-	int mPort;
+	outputPort::OutputPortEnum mPort;
 
 	void setOutputState(int speed, int mode
 			, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState

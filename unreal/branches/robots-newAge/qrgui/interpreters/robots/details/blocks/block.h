@@ -35,6 +35,16 @@ protected:
 	models::LogicalModelAssistApi const *mLogicalModelApi;  // Does not have ownership
 	BlocksTable *mBlocksTable;  // Does not have ownership
 
+	QVariant property(QString const &propertyName) const;
+	QString stringProperty(QString const &propertyName) const;
+	int intProperty(QString const &propertyName) const;
+	bool boolProperty(QString const &propertyName) const;
+
+	QVariant property(Id const &id, QString const &propertyName) const;
+	QString stringProperty(Id const &id, QString const &propertyName) const;
+	int intProperty(Id const &id, QString const &propertyName) const;
+	bool boolProperty(Id const &id, QString const &propertyName) const;
+
 private slots:
 	void finishedRunning();
 

@@ -26,10 +26,9 @@ void LoopBlock::initNextBlocks()
 		foreach (Id const linkId, links) {
 			Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 			Block *targetBlock = mBlocksTable->block(targetBlockId);
-			Id const logicalLinkId = mGraphicalModelApi->logicalId(linkId);
-			if (mLogicalModelApi->propertyByRoleName(logicalLinkId, "Guard").toString() == "iteration") {
+			if (stringProperty(linkId, "Guard") == "iteration") {
 				mIterationStartBlock = targetBlock;
-			} else if (mLogicalModelApi->propertyByRoleName(logicalLinkId, "Guard").toString() == "") {
+			} else if (stringProperty(linkId, "Guard") == "") {
 				mNextBlock = targetBlock;
 			}
 		}
@@ -38,6 +37,5 @@ void LoopBlock::initNextBlocks()
 
 void LoopBlock::additionalInit()
 {
-	Id const logicalId = mGraphicalModelApi->logicalId(id());
-	mIterations = mLogicalModelApi->propertyByRoleName(logicalId, "Iterations").toInt();
+	mIterations = intProperty("Iterations");
 }
