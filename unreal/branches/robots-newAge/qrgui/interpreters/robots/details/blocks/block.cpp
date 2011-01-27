@@ -11,6 +11,7 @@ Block::Block()
 	, mBlocksTable(NULL)
 	, mState(idle)
 	, mGraphicalId(Id())
+	, mErrorReporter(NULL)
 {
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
@@ -18,28 +19,40 @@ Block::Block()
 void Block::init(Id const &graphicalId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
-		, BlocksTable &blocksTable)
+		, BlocksTable &blocksTable
+		, gui::ErrorReporter * const errorReporter)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mBlocksTable = &blocksTable;
-	initNextBlocks();
+	mErrorReporter = errorReporter;
 	additionalInit();
 }
 
-void Block::initNextBlocks()
+bool Block::initNextBlocks()
 {
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
-		// TODO: use ErrorReporter here
+		error(tr("Too many outgoing links"));
+		return false;
+	}
+
+	if (links.count() == 0) {
+		error(tr("No outgoing links, please connect this block to something or use Final Node to end program"));
+		return false;
 	}
 
 	if (links.count() == 1) {
 		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
+		if (nextBlockId == Id()) {
+			error(tr("Outgoing link is not connected"));
+			return false;
+		}
 		mNextBlock = mBlocksTable->block(nextBlockId);
 	}
+	return true;
 }
 
 Id const Block::id() const
@@ -53,7 +66,9 @@ void Block::interpret()
 		return;
 
 	mState = running;
-	run();
+	bool result = initNextBlocks();
+	if (result)
+		run();
 }
 
 void Block::finishedRunning()
@@ -100,4 +115,10 @@ int Block::intProperty(Id const &id, QString const &propertyName) const
 bool Block::boolProperty(Id const &id, QString const &propertyName) const
 {
 	return property(id, propertyName).toBool();
+}
+
+void Block::error(QString const &message)
+{
+	mErrorReporter->addError(message, id());
+	emit failure();
 }

@@ -17,7 +17,7 @@ Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelAp
 	, mRobotModel(robotCommunicationInterface)
 	, mBlocksTable(NULL)
 {
-	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, &mRobotModel);
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, &mRobotModel, mInterpretersInterface.errorReporter());
 }
 
 Interpreter::~Interpreter()
@@ -29,12 +29,16 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret(Id const &currentDiagramId)
 {
-	if (mState == interpreting)
+	if (mState == interpreting) {
+		mInterpretersInterface.errorReporter()->addInformation(tr("Interpreter is already running"));
 		return;
+	}
 
 	Id const startingElement = findStartingElement(currentDiagramId);
-	if (startingElement == Id())
+	if (startingElement == Id()) {
+		mInterpretersInterface.errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
 		return;
+	}
 
 	Thread * const initialThread = new Thread(mInterpretersInterface, *mBlocksTable, startingElement);
 	addThread(initialThread);

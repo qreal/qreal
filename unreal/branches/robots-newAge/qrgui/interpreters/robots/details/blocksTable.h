@@ -5,6 +5,7 @@
 #include "../../../kernel/ids.h"
 #include "../../../models/graphicalModelAssistApi.h"
 #include "../../../models/logicalModelAssistApi.h"
+#include "../../../mainwindow/errorReporter.h"
 
 #include "robotModel.h"
 
@@ -25,6 +26,7 @@ public:
 	BlocksTable(models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, RobotModel * const robotModel
+			, gui::ErrorReporter * const errorReporter
 	);
 	~BlocksTable();
 	blocks::Block *block(Id const &element);
@@ -33,10 +35,6 @@ public:
 
 private:
 	QHash<Id, blocks::Block *> mBlocks;  // Has ownership
-
-	models::GraphicalModelAssistApi const &mGraphicalModelApi;
-	models::LogicalModelAssistApi const &mLogicalModelApi;
-
 	BlocksFactory *mBlocksFactory;  // Has ownership
 };
 

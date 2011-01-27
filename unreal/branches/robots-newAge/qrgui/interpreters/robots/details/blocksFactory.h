@@ -13,14 +13,18 @@ namespace details {
 class BlocksFactory
 {
 public:
-	BlocksFactory(RobotModel * const robotModel);
-	blocks::Block *block(Id const &element
-		, models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
-		, BlocksTable &blocksTable
-	);
+	BlocksFactory(models::GraphicalModelAssistApi const &graphicalModelApi
+			, models::LogicalModelAssistApi const &logicalModelApi
+			, RobotModel * const robotModel
+			, gui::ErrorReporter * const errorReporter
+			, BlocksTable * const blocksTable);
+	blocks::Block *block(Id const &element);
 private:
 	RobotModel * mRobotModel;  // Doesnt't have ownership
+	models::GraphicalModelAssistApi const &mGraphicalModelApi;
+	models::LogicalModelAssistApi const &mLogicalModelApi;
+	gui::ErrorReporter * const mErrorReporter;  // Doesn't have ownership
+	BlocksTable * const mBlocksTable;
 
 	static bool elementMetatypeIs(Id const &element, QString const &metatype);
 };

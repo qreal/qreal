@@ -62,7 +62,7 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 
 	QByteArray response = mPort->read(9);
 	qDebug() << "Received:" << response;
-	emit connected();
+	emit connected(response != QByteArray());
 }
 
 void BluetoothRobotCommunicationThread::reconnect(QString const &portName)

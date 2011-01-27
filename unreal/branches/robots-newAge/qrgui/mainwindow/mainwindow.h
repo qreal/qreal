@@ -33,6 +33,10 @@ class Interpreter;
 }
 }
 
+namespace gui {
+class ErrorReporter;
+}
+
 class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
 {
 	Q_OBJECT
@@ -51,6 +55,7 @@ public:
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true);
 	virtual void dehighlight(Id const &graphicalId);
+	virtual gui::ErrorReporter *errorReporter();
 
 signals:
 	void gesturesShowed();
@@ -145,6 +150,7 @@ private:
 	VisualDebugger *mVisualDebugger;
 	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
 	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
+	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	void createDiagram(const QString &idString);
 	void loadNewEditor(QString const &directoryName, QString const &metamodelName,

@@ -19,7 +19,7 @@ public:
 	~BluetoothRobotCommunicationThread();
 
 signals:
-	void connected();
+	void connected(bool success);
 	void disconnected();
 	void response(QObject *addressee, QByteArray const &buffer);
 

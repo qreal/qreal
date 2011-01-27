@@ -26,11 +26,14 @@ void Thread::interpret()
 
 void Thread::nextBlock(blocks::Block * const block)
 {
+	// This is a signal not from a current block of this thread.
+	// Other thread shall process it, we will just ignore.
 	if (sender() != NULL && sender() != mCurrentBlock)
 		return;
 
 	if (sender() != NULL)
 		disconnect(sender());
+
 	mInterpretersInterface.dehighlight(mCurrentBlock->id());
 
 	mCurrentBlock = block;
@@ -42,5 +45,11 @@ void Thread::nextBlock(blocks::Block * const block)
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
 	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
+	connect(mCurrentBlock, SIGNAL(failure()), this, SLOT(failure()));
 	mCurrentBlock->interpret();
+}
+
+void Thread::failure()
+{
+	emit stopped();
 }

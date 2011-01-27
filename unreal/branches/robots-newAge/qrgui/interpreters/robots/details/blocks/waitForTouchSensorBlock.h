@@ -22,7 +22,7 @@ public:
 
 private slots:
 	void response(int reading);
-	void fail();
+	void failure();
 	void timerTimeout();
 
 private:

@@ -32,7 +32,7 @@ signals:
 	void threadDisconnect();
 
 private slots:
-	void connectedSlot();
+	void connectedSlot(bool success);
 	void disconnectedSlot();
 	void responseSlot(QObject* addressee, QByteArray const &buffer);
 

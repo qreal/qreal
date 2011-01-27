@@ -9,10 +9,9 @@ using namespace interpreters::robots::details;
 BlocksTable::BlocksTable(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
+		, gui::ErrorReporter * const errorReporter
 	)
-	: mGraphicalModelApi(graphicalModelApi)
-	, mLogicalModelApi(logicalModelApi)
-	, mBlocksFactory(new BlocksFactory(robotModel))
+	: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this))
 {
 }
 
@@ -28,7 +27,8 @@ blocks::Block *BlocksTable::block(Id const &element)
 	if (mBlocks.contains(element))
 		return mBlocks[element];
 
-	blocks::Block *newBlock = mBlocksFactory->block(element, mGraphicalModelApi, mLogicalModelApi, *this);
+	blocks::Block *newBlock = mBlocksFactory->block(element);
+	addBlock(element, newBlock);
 	return newBlock;
 }
 

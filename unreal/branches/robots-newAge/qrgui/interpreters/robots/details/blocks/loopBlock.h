@@ -22,7 +22,7 @@ private:
 	Block *mIterationStartBlock;
 	int mIterations;
 
-	virtual void initNextBlocks();
+	virtual bool initNextBlocks();
 	virtual void additionalInit();
 };
 

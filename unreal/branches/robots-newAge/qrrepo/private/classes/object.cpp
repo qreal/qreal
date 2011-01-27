@@ -63,7 +63,7 @@ Id Object::parent() const
 void Object::setProperty(const QString &name, const QVariant &value)
 {
 	if (value == QVariant()) {
-		qDebug() << "Empty QVariant set as a property for " << id().toString();
+		qDebug() << "Empty QVariant set as a property for " << id();
 		qDebug() << ", property name " << name;
 		Q_ASSERT(!"Empty QVariant set as a property");
 	}

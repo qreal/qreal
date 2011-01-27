@@ -4,6 +4,7 @@
 #include "blocks/timerBlock.h"
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
+#include "blocks/finalBlock.h"
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/enginesForwardBlock.h"
@@ -17,20 +18,26 @@ using namespace qReal;
 using namespace interpreters::robots::details;
 using namespace blocks;
 
-BlocksFactory::BlocksFactory(RobotModel * const robotModel)
+BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalModelApi
+		, models::LogicalModelAssistApi const &logicalModelApi
+		, RobotModel * const robotModel
+		, gui::ErrorReporter * const errorReporter
+		, BlocksTable * const blocksTable)
 	: mRobotModel(robotModel)
+	, mGraphicalModelApi(graphicalModelApi)
+	, mLogicalModelApi(logicalModelApi)
+	, mErrorReporter(errorReporter)
+	, mBlocksTable(blocksTable)
 {
 }
 
-Block *BlocksFactory::block(Id const &element
-		, models::GraphicalModelAssistApi const &graphicalModelApi
-		, models::LogicalModelAssistApi const &logicalModelApi
-		, BlocksTable &blocksTable
-		)
+Block *BlocksFactory::block(Id const &element)
 {
 	Block * newBlock = NULL;
 	if (elementMetatypeIs(element, "InitialNode"))
 		newBlock = new InitialBlock(*mRobotModel);
+	else if (elementMetatypeIs(element, "FinalNode"))
+		newBlock = new FinalBlock();
 	else if (elementMetatypeIs(element, "Beep"))
 		newBlock = new BeepBlock(mRobotModel->brick());
 	else if (elementMetatypeIs(element, "Timer"))
@@ -52,9 +59,7 @@ Block *BlocksFactory::block(Id const &element
 	else
 		newBlock = new DummyBlock();
 
-	blocksTable.addBlock(element, newBlock);
-
-	newBlock->init(element, graphicalModelApi, logicalModelApi, blocksTable);
+	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, *mBlocksTable, mErrorReporter);
 	return newBlock;
 }
 

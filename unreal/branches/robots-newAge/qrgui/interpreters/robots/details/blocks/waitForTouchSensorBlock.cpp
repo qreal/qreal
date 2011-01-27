@@ -11,7 +11,7 @@ WaitForTouchSensorBlock::WaitForTouchSensorBlock(RobotModel const * const robotM
 	mActiveWaitingTimer.setInterval(100);
 
 	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(response(int)));
-	connect(mTouchSensor, SIGNAL(fail()), this, SLOT(fail()));
+	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failure()));
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 }
 
@@ -29,7 +29,7 @@ void WaitForTouchSensorBlock::response(int reading)
 	}
 }
 
-void WaitForTouchSensorBlock::fail()
+void WaitForTouchSensorBlock::failure()
 {
 	mActiveWaitingTimer.stop();
 	emit done(mNextBlock);

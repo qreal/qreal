@@ -21,7 +21,7 @@ public:
 private:
 	Block *mThreadStartBlock;
 
-	virtual void initNextBlocks();
+	virtual bool initNextBlocks();
 };
 
 }

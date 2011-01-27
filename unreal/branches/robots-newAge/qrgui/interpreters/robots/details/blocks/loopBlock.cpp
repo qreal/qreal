@@ -18,7 +18,7 @@ void LoopBlock::run()
 	--mIterations;
 }
 
-void LoopBlock::initNextBlocks()
+bool LoopBlock::initNextBlocks()
 {
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
@@ -33,6 +33,7 @@ void LoopBlock::initNextBlocks()
 			}
 		}
 	}
+	return true;
 }
 
 void LoopBlock::additionalInit()

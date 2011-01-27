@@ -3,7 +3,8 @@
 #include <QtCore/QString>
 #include "../kernel/ids.h"
 
-
+namespace qReal {
+namespace gui {
 
 class Error {
 public:
@@ -18,9 +19,12 @@ public:
 	Severity severity() const;
 	QString message() const;
 	qReal::Id  position() const;
+
 private:
 	QString mMessage;
 	Severity mSeverity;
 	qReal::Id  mPosition;
 };
 
+}
+}

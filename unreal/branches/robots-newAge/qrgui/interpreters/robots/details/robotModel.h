@@ -39,10 +39,10 @@ public:
 	robotParts::Motor &motorC();
 
 signals:
-	void connected();
+	void connected(bool success);
 
 private slots:
-	void connectedSlot();
+	void connectedSlot(bool success);
 	void sensorConfigurationDoneSlot();
 
 private:

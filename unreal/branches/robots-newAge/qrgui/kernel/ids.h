@@ -5,6 +5,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
 #include <QtCore/QMetaType>
+#include <QtCore/QDebug>
 
 namespace qReal {
 
@@ -43,7 +44,7 @@ namespace qReal {
 		bool checkIntegrity() const;
 	};
 
-	inline bool operator==(const Id &i1, const Id &i2)
+	inline bool operator==(Id const &i1, Id const &i2)
 	{
 		return i1.editor() == i2.editor()
 			&& i1.diagram() == i2.diagram()
@@ -51,15 +52,21 @@ namespace qReal {
 			&& i1.id() == i2.id();
 	}
 
-	inline bool operator!=(const Id &i1, const Id &i2)
+	inline bool operator!=(Id const &i1, Id const &i2)
 	{
 		return !(i1 == i2);
 	}
 
-	inline uint qHash(const Id &key)
+	inline uint qHash(Id const &key)
 	{
 		return qHash(key.editor()) ^ qHash(key.diagram()) ^ qHash(key.element())
 				^ qHash(key.id());
+	}
+
+	inline QDebug operator<<(QDebug dbg, Id const &id)
+	{
+		dbg << id.toString();
+		return dbg.space();
 	}
 
 	typedef QList<Id> IdList;

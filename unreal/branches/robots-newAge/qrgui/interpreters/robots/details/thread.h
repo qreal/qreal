@@ -27,8 +27,9 @@ signals:
 	void stopped();
 	void newThread(details::blocks::Block * const startBlock);
 
-public slots:
+private slots:
 	void nextBlock(blocks::Block * const block);
+	void failure();
 
 private:
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;

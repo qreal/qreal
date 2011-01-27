@@ -17,7 +17,7 @@ public:
 	virtual void disconnect() = 0;
 
 signals:
-	void connected();
+	void connected(bool success);
 	void disconnected();
 	void response(QObject *addressee, QByteArray const &buffer);
 };

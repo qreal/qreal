@@ -50,6 +50,7 @@ MainWindow::MainWindow()
 	, mVisualDebugger(NULL)
 	, mRobotInterpreter(NULL)
 	, mBluetoothCommunication(NULL)
+	, mErrorReporter(NULL)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = false;  // settings.value("Splashscreen", true).toBool();
@@ -197,6 +198,8 @@ MainWindow::MainWindow()
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
+	mErrorReporter = new gui::ErrorReporter(mUi.errorListWidget, mUi.errorDock);
+
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
@@ -240,6 +243,8 @@ MainWindow::~MainWindow()
 {
 	saveAll();
 	delete mListenerManager;
+	delete mRobotInterpreter;
+	delete mErrorReporter;
 }
 
 EditorManager* MainWindow::manager()
@@ -1140,6 +1145,7 @@ void MainWindow::initGridProperties()
 
 void MainWindow::run()
 {
+	mErrorReporter->clear();
 	Id const currentDiagramId = getCurrentTab()->mvIface()->rootId();
 	mRobotInterpreter->interpret(currentDiagramId);
 }
@@ -1201,6 +1207,10 @@ void MainWindow::showRobotSettingsDialog()
 				, robotSettingsDialog.selectedPort3Sensor()
 				, robotSettingsDialog.selectedPort4Sensor()
 		);
-
 	}
+}
+
+gui::ErrorReporter *MainWindow::errorReporter()
+{
+	return mErrorReporter;
 }

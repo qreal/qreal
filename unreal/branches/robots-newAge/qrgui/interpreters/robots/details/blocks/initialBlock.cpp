@@ -6,7 +6,7 @@ using namespace interpreters::robots::details::blocks;
 InitialBlock::InitialBlock(RobotModel &robotModel)
 	: mRobotModel(robotModel)
 {
-	connect(&mRobotModel, SIGNAL(connected()), this, SLOT(connected()));
+	connect(&mRobotModel, SIGNAL(connected(bool)), this, SLOT(connected(bool)));
 }
 
 void InitialBlock::run()
@@ -14,7 +14,12 @@ void InitialBlock::run()
 	mRobotModel.init();
 }
 
-void InitialBlock::connected()
+void InitialBlock::connected(bool success)
 {
-	emit done(mNextBlock);
+	if (success)
+		emit done(mNextBlock);
+	else {
+		error(tr("Can't connect to a robot."));
+		emit failure();
+	}
 }

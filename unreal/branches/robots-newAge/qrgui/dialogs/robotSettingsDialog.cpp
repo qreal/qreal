@@ -27,15 +27,8 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 		mUi->comPortComboBox->hide();
 		mUi->comPortLabel->setText(tr("No COM ports found"));
 	} else {
-		qDebug() << "List of ports:";
-		foreach (QextPortInfo info, ports) {
-			qDebug() << "port name:" << info.portName;
-			qDebug() << "friendly name:" << info.friendName;
-			qDebug() << "physical name:" << info.physName;
-			qDebug() << "enumerator name:" << info.enumName;
-			qDebug() << "===================================";
+		foreach (QextPortInfo info, ports)
 			mUi->comPortComboBox->addItem(info.portName.left(4));
-		}
 		QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
 		int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 		if (defaultIndex != -1)

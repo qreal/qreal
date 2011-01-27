@@ -16,7 +16,7 @@ void ForkBlock::run()
 	emit done(mNextBlock);
 }
 
-void ForkBlock::initNextBlocks()
+bool ForkBlock::initNextBlocks()
 {
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
@@ -31,4 +31,5 @@ void ForkBlock::initNextBlocks()
 			}
 		}
 	}
+	return true;
 }
