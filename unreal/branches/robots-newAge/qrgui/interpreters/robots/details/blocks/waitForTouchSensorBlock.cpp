@@ -32,7 +32,7 @@ void WaitForTouchSensorBlock::response(int reading)
 void WaitForTouchSensorBlock::failure()
 {
 	mActiveWaitingTimer.stop();
-	emit done(mNextBlock);
+	emit failure();
 }
 
 void WaitForTouchSensorBlock::timerTimeout()

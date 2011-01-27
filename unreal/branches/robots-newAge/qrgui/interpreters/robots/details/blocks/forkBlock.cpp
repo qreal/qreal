@@ -18,18 +18,47 @@ void ForkBlock::run()
 
 bool ForkBlock::initNextBlocks()
 {
+	bool otherFound = false;
+	bool nextFound = false;
+
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	if (links.count() == 2) {
-		foreach (Id const linkId, links) {
-			Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
-			Block *targetBlock = mBlocksTable->block(targetBlockId);
-			if (stringProperty(linkId, "Guard") == "other") {
+	foreach (Id const linkId, links) {
+		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
+		if (targetBlockId == Id()) {
+			error(tr("Outgoing link is not connected"));
+			return false;
+		}
+
+		Block *targetBlock = mBlocksTable->block(targetBlockId);
+		if (stringProperty(linkId, "Guard").toLower() == "other") {
+			if (!otherFound) {
 				mThreadStartBlock = targetBlock;
-			} else if (stringProperty(linkId, "Guard") == "") {
+				otherFound = true;
+			} else {
+				error(tr("Two links marked as \"other\" found"));
+				return false;
+			}
+		} else if (stringProperty(linkId, "Guard") == "") {
+			if (!nextFound) {
 				mNextBlock = targetBlock;
+				nextFound = true;
+			} else {
+				error(tr("Two outgoing links to a next element found"));
+				return false;
 			}
 		}
 	}
+
+	if (!otherFound) {
+		error(tr("There must be a link with property \"Guard\" set as \"other\""));
+		return false;
+	}
+
+	if (!nextFound) {
+		error(tr("There must be a non-marked outgoing link"));
+		return false;
+	}
+
 	return true;
 }

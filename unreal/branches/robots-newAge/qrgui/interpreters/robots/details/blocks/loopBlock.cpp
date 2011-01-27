@@ -20,19 +20,48 @@ void LoopBlock::run()
 
 bool LoopBlock::initNextBlocks()
 {
+	bool iterationFound = false;
+	bool nextFound = false;
+
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	if (links.count() == 2) {
-		foreach (Id const linkId, links) {
-			Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
-			Block *targetBlock = mBlocksTable->block(targetBlockId);
-			if (stringProperty(linkId, "Guard") == "iteration") {
+	foreach (Id const linkId, links) {
+		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
+		if (targetBlockId == Id()) {
+			error(tr("Outgoing link is not connected"));
+			return false;
+		}
+
+		Block *targetBlock = mBlocksTable->block(targetBlockId);
+		if (stringProperty(linkId, "Guard").toLower() == "iteration") {
+			if (!iterationFound) {
 				mIterationStartBlock = targetBlock;
-			} else if (stringProperty(linkId, "Guard") == "") {
+				iterationFound = true;
+			} else {
+				error(tr("Two links marked as \"iteration\" found"));
+				return false;
+			}
+		} else if (stringProperty(linkId, "Guard") == "") {
+			if (!nextFound) {
 				mNextBlock = targetBlock;
+				nextFound = true;
+			} else {
+				error(tr("Two outgoing links to a next element found"));
+				return false;
 			}
 		}
 	}
+
+	if (!iterationFound) {
+		error(tr("There must be a link with property \"Guard\" set as \"iteration\""));
+		return false;
+	}
+
+	if (!nextFound) {
+		error(tr("There must be a non-marked outgoing link"));
+		return false;
+	}
+
 	return true;
 }
 
