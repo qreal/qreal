@@ -362,10 +362,12 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 {
 	Id const fromId = from(linkId);
-	if (fromId != firstNode)
+	if (fromId != firstNode && fromId != Id::rootId())
 		return fromId;
-	else
+	else if (to(linkId) != Id::rootId())
 		return to(linkId);
+	else
+		return Id();
 }
 
 IdList RepoApi::logicalElements(Id const &type) const
