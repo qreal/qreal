@@ -20,6 +20,8 @@ public:
 	WaitForTouchSensorBlock(RobotModel const * const robotModel);
 	virtual void run();
 
+	virtual QList<SensorPortPair> usedSensors() const;
+
 private slots:
 	void response(int reading);
 	void failure();

@@ -1,7 +1,10 @@
 #include "waitForTouchSensorBlock.h"
 
+#include "../../sensorConstants.h"
+
 using namespace qReal;
-using namespace interpreters::robots::details::blocks;
+using namespace interpreters::robots;
+using namespace details::blocks;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(RobotModel const * const robotModel)
 	: mTouchSensor(NULL)
@@ -49,4 +52,10 @@ void WaitForTouchSensorBlock::failure()
 void WaitForTouchSensorBlock::timerTimeout()
 {
 	mTouchSensor->read();
+}
+
+QList<Block::SensorPortPair> WaitForTouchSensorBlock::usedSensors() const
+{
+	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	return QList<SensorPortPair>() << qMakePair(sensorType::touchBoolean, static_cast<int>(port));
 }

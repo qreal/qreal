@@ -122,3 +122,8 @@ void Block::error(QString const &message)
 	mErrorReporter->addError(message, id());
 	emit failure();
 }
+
+QList<Block::SensorPortPair> Block::usedSensors() const
+{
+	return QList<SensorPortPair>();
+}

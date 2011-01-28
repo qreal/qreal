@@ -1,5 +1,7 @@
 #include "interpreter.h"
 
+#include "details/autoconfigurer.h"
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace details;
@@ -39,6 +41,10 @@ void Interpreter::interpret(Id const &currentDiagramId)
 		mInterpretersInterface.errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
 		return;
 	}
+
+	Autoconfigurer configurer(mGraphicalModelApi, mBlocksTable, mInterpretersInterface.errorReporter(), mRobotModel);
+	if (!configurer.configure(currentDiagramId))
+		return;
 
 	Thread * const initialThread = new Thread(mInterpretersInterface, *mBlocksTable, startingElement);
 	addThread(initialThread);

@@ -20,10 +20,14 @@ class Block : public QObject
 	Q_OBJECT
 
 public:
+	typedef QPair<sensorType::SensorTypeEnum, int> SensorPortPair;
+
 	virtual ~Block() {};
 
 	void interpret();
 	Id const id() const;
+
+	virtual QList<SensorPortPair> usedSensors() const;
 
 signals:
 	void done(blocks::Block * const nextBlock);

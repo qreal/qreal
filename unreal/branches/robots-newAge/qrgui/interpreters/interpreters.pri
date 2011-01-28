@@ -21,6 +21,7 @@ HEADERS += \
 	interpreters/robots/details/robotModel.h \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.h \
 	interpreters/robots/details/robotCommandConstants.h \
+	interpreters/robots/details/autoconfigurer.h \
 	interpreters/robots/details/blocks/block.h \
 	interpreters/robots/details/blocks/dummyBlock.h \
 	interpreters/robots/details/blocks/timerBlock.h \
@@ -49,6 +50,7 @@ SOURCES += \
 	interpreters/robots/details/blocksFactory.cpp \
 	interpreters/robots/details/robotModel.cpp \
 	interpreters/robots/details/bluetoothRobotCommunicationThread.cpp \
+	interpreters/robots/details/autoconfigurer.cpp \
 	interpreters/robots/details/blocks/block.cpp \
 	interpreters/robots/details/blocks/dummyBlock.cpp \
 	interpreters/robots/details/blocks/timerBlock.cpp \
