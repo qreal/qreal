@@ -23,6 +23,11 @@ BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName
 	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(response(QObject*, QByteArray)), this, SLOT(responseSlot(QObject*, QByteArray)));
 }
 
+BluetoothRobotCommunication::~BluetoothRobotCommunication()
+{
+	mRobotCommunicationThread.exit(0);
+}
+
 void BluetoothRobotCommunication::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
 {
 	emit threadSend(addressee, buffer,responseSize);

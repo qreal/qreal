@@ -27,6 +27,7 @@ private slots:
 
 private:
 	robotParts::TouchSensor *mTouchSensor;  // Doesn't have ownership
+	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
 };
 

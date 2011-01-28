@@ -18,6 +18,7 @@ class BluetoothRobotCommunication : public RobotCommunicationInterface
 
 public:
 	BluetoothRobotCommunication(QString const &portName);
+	~BluetoothRobotCommunication();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	virtual void connect();

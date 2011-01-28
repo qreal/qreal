@@ -61,7 +61,7 @@ RobotSettingsDialog::~RobotSettingsDialog()
 
 void RobotSettingsDialog::ok()
 {
-	setResult(QDialog::Accepted);
+	accept();
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("bluetoothPortName", selectedPortName());
 	settings.setValue("port1SensorType", selectedPort1Sensor());
@@ -73,7 +73,7 @@ void RobotSettingsDialog::ok()
 
 void RobotSettingsDialog::cancel()
 {
-	setResult(QDialog::Rejected);
+	reject();
 	close();
 }
 

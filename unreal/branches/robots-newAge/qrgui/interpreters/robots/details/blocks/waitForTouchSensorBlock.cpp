@@ -4,19 +4,30 @@ using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(RobotModel const * const robotModel)
-	: mTouchSensor(robotModel->touchSensor(inputPort::port1))
+	: mTouchSensor(NULL)
+	, mRobotModel(robotModel)
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.
 	mActiveWaitingTimer.setInterval(100);
 
-	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(response(int)));
-	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failure()));
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 }
 
 void WaitForTouchSensorBlock::run()
 {
+	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	mTouchSensor = mRobotModel->touchSensor(port);
+
+	if (!mTouchSensor) {
+		mActiveWaitingTimer.stop();
+		error(tr("Touch sensor is not configured on this port"));
+		return;
+	}
+
+	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(response(int)));
+	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failure()));
+
 	mTouchSensor->read();
 	mActiveWaitingTimer.start();
 }

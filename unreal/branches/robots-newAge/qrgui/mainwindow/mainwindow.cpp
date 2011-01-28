@@ -1208,7 +1208,8 @@ void MainWindow::dehighlight(Id const &graphicalId)
 void MainWindow::showRobotSettingsDialog()
 {
 	gui::RobotSettingsDialog robotSettingsDialog;
-	if (robotSettingsDialog.exec() == QDialog::Accepted) {
+	int code = robotSettingsDialog.exec();
+	if (code == QDialog::Accepted) {
 		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
 		mRobotInterpreter->configureSensors(
 				robotSettingsDialog.selectedPort1Sensor()

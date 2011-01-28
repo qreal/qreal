@@ -42,7 +42,7 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new BeepBlock(mRobotModel->brick());
 	else if (elementMetatypeIs(element, "Timer"))
 		newBlock = new TimerBlock();
-	else if (elementMetatypeIs(element, "Sensor"))
+	else if (elementMetatypeIs(element, "WaitForTouchSensor"))
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "EnginesForward"))
 		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());

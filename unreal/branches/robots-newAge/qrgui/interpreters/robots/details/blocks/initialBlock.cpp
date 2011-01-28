@@ -20,6 +20,5 @@ void InitialBlock::connected(bool success)
 		emit done(mNextBlock);
 	else {
 		error(tr("Can't connect to a robot."));
-		emit failure();
 	}
 }
