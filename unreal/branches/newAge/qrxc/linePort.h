@@ -21,4 +21,6 @@ private:
 	ScalableCoordinate mStartY;
 	ScalableCoordinate mEndX;
 	ScalableCoordinate mEndY;
+	int mInitWidth;
+	int mInitHeight;
 };

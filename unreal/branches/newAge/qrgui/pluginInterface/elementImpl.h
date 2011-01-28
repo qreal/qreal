@@ -10,7 +10,7 @@
 #include "sdfRendererInterface.h"
 #include "../kernel/ids.h"
 
-namespace UML{
+namespace UML {
 
 	typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 	typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
@@ -24,9 +24,11 @@ namespace UML{
 		bool prop_y1;
 		bool prop_x2;
 		bool prop_y2;
+		int initWidth;
+		int initHeight;
 
 		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-			prop_x2(false), prop_y2(false) {}
+			prop_x2(false), prop_y2(false), initWidth(1), initHeight(1) {}
 
 		operator QLineF () const
 		{
@@ -40,6 +42,8 @@ namespace UML{
 			prop_x2 = false;
 			prop_y1 = false;
 			prop_y2 = false;
+			initHeight = 1;
+			initWidth = 1;
 		}
 	};
 

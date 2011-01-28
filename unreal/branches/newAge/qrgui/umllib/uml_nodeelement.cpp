@@ -85,8 +85,9 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
 
-	foreach (ElementTitle *title, mTitles)
-		title->setTextWidth(mContents.width() - title->pos().x());
+	foreach (ElementTitle * const title, mTitles) {
+		title->transform(geom);
+	}
 }
 
 void NodeElement::adjustLinks()
@@ -256,10 +257,6 @@ void NodeElement::resize(QRectF newContents)
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
 		parItem->resize(parItem->mContents); // recursive expansion of parents
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(newContents);
-	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
@@ -723,22 +720,22 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	float y2 = 0.0;
 
 	if (port.prop_x1)
-		x1 = port.line.x1() * 100;
+		x1 = port.line.x1() * port.initWidth;
 	else
 		x1 = port.line.x1() * contentsRect().width();
 
 	if (port.prop_y1)
-		y1 = port.line.y1() * 100;
+		y1 = port.line.y1() * port.initHeight;
 	else
 		y1 = port.line.y1() * contentsRect().height();
 
 	if (port.prop_x2)
-		x2 = port.line.x2() * 100;
+		x2 = port.line.x2() * port.initWidth;
 	else
 		x2 = port.line.x2() * contentsRect().width();
 
 	if (port.prop_y2)
-		y2 = port.line.y2() * 100;
+		y2 = port.line.y2() * port.initHeight;
 	else
 		y2 = port.line.y2() * contentsRect().height();
 
