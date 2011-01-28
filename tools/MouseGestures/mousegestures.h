@@ -1,7 +1,7 @@
 #pragma once
 #include "GeometricForms.h"
 #include "paintmanager.h"
-#include "multistrokekeybuilder.h"
+#include "test/testwindow.h"
 #include <QtGui/QMainWindow>
 #include <QPainter>
 #include <QMouseEvent>
@@ -44,6 +44,7 @@ private:
 	void increasePath(double koef);
 	AbstractRecognizer * mRecognizer;
 	GesturesManager * mGesturesManager;
+        TestWindow * mTestWindow;
 
 private slots:
 	void rotatePath();
@@ -53,4 +54,5 @@ private slots:
 	void changePath();
 	void drawGesture();
 	void save();
+        void chooseTestAlgorithm();
 };

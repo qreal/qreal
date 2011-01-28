@@ -12,7 +12,8 @@ SOURCES += main.cpp \
 	validpathcreator.cpp \
 	adopter.cpp \
 	paintmanager.cpp \
-	multistrokekeybuilder.cpp
+    test/testwindow.cpp \
+    test/xmlparser.cpp
 HEADERS += mousegestures.h \
 	mousemovementmanager.h \
 	pathcorrector.h \
@@ -22,6 +23,12 @@ HEADERS += mousegestures.h \
 	adopter.h \
 	paintmanager.h \
 	figures.h \
-	multistrokekeybuilder.h \
-	abstractRecognizer.h
-FORMS += mousegestures.ui
+	abstractRecognizer.h \
+    test/testwindow.h \
+    test/xmlparser.h \
+    multistrokeRecognizers/sorts.h \
+    multistrokeRecognizers/distance.h \
+    multistrokeRecognizers/curveKeyBuilder.h \
+    multistrokeRecognizers/multistrokeGesturesManagers.h
+FORMS += mousegestures.ui \
+    test/testwindow.ui

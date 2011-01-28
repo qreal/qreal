@@ -35,8 +35,10 @@ public:
 	{
 		foreach (QString object, objects.keys())
 		{
+                    qDebug() << object;
 			TKey key = getKey(objects[object]);
 			mGestures.insert(object, key);
+                        qDebug() << object << "inserted";
 		}
 	}
 
@@ -154,6 +156,13 @@ public:
 	{
 		return mGesture;
 	}
+
+        QString recognizeObject(QList<QPoint> const & gesture)
+        {
+            mGesture.clear();
+            mGesture.append(gesture);
+            return recognizeObject();
+        }
 
 private:
 	GesturesManager * mGesturesManager;

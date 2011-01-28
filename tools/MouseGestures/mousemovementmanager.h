@@ -11,6 +11,10 @@ public:
 	MouseMovementManager();
 	QString getKey(QList<QPoint> const & path);
 	double getMaxDistance();
+        bool isMultistroke()
+        {
+            return false;
+        }
 
 protected:
 	double getDistance(QString const & key1, QString const & key2);
