@@ -33,6 +33,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)
 			continue;
+		title->init(mContents);
 		title->setParentItem(this);
 		mTitles.append(title);
 	}
@@ -255,6 +256,10 @@ void NodeElement::resize(QRectF newContents)
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
 		parItem->resize(parItem->mContents); // recursive expansion of parents
+
+	foreach (ElementTitle * const title, mTitles) {
+		title->transform(newContents);
+	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()

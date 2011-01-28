@@ -95,8 +95,8 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 
 	//for save to xml
-	QString setScaleForDoc(int i, QRectF const &rect);
-	QString setSingleScaleForDoc(int i, qreal x, qreal y);
+	QString setScaleForDoc(int i, QRect const &rect);
+	QString setSingleScaleForDoc(int i, int x, int y);
 	void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);
 	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);

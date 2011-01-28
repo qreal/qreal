@@ -118,7 +118,7 @@ bool NodeType::initLinePorts(QDomElement const &portsElement)
 
 bool NodeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
-	return label->init(element, count, true);
+	return label->init(element, count, true, mWidth, mHeight);
 }
 
 bool NodeType::initBooleanProperties()

@@ -117,7 +117,8 @@ void EmbeddedLinker::initTitle()
 	else if (scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	title = new ElementTitle(x,y,edgeTypeFriendly);
+	title = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
+	title->init(boundingRect());
 	title->setTextWidth(textWidth);
 	title->setParentItem(this);
 }

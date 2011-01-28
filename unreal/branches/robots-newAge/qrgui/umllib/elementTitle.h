@@ -10,19 +10,22 @@ namespace UML {
 	class ElementTitleFactory : public ElementTitleFactoryInterface
 	{
 	public:
-		ElementTitleInterface *createTitle(int x, int y, QString const &text);
-		ElementTitleInterface *createTitle(int x, int y, QString const &binding, bool readOnly);
+		ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text);
+		ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly);
 	};
 
 	class ElementTitle : public ElementTitleInterface
 	{
 		Q_OBJECT
 	public:
-		ElementTitle(int x, int y, QString const &text);
-		ElementTitle(int x, int y, QString const &binding, bool readOnly);
+		ElementTitle(qreal x, qreal y, QString const &text);
+		ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly);
+		void init(QRectF const& contents);
 		void setBackground(Qt::GlobalColor const &background);
+		void setScaling(bool scalingX, bool scalingY);
 		~ElementTitle() {}
 		void startTextInteraction();
+		void transform(QRectF const& contents);
 
 	protected:
 		virtual void focusOutEvent(QFocusEvent *event);
@@ -32,6 +35,10 @@ namespace UML {
 	private:
 		bool mFocusIn;
 		bool mReadOnly;
+		bool mScalingX;
+		bool mScalingY;
+		QRectF mContents;
+		QPointF mPoint;
 		QString mOldText;
 		QString mBinding;
 		Qt::GlobalColor mBackground;

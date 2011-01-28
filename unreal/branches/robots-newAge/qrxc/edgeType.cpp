@@ -84,7 +84,7 @@ bool EdgeType::initGraphics()
 
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
-	return label->init(element, count, false);
+	return label->init(element, count, false, mWidth, mHeight);
 }
 
 void EdgeType::generateGraphics() const
@@ -109,7 +109,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n";
-		
+
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "() {\n";
 		out() << "\t\t\tmBonusContextMenuFields";
@@ -155,7 +155,7 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
-	
+
 	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())
 		out() << "mBonusContextMenuFields;";

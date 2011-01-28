@@ -63,3 +63,15 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 	mGraphicalAssistApi = graphicalAssistApi;
 	mLogicalAssistApi = logicalAssistApi;
 }
+
+void Element::initTitlesBy(QRectF const& contents)
+{
+	foreach (ElementTitle * const title, mTitles) {
+		title->transform(contents);
+	}
+}
+
+void Element::initTitles()
+{
+	initTitlesBy(boundingRect());
+}
