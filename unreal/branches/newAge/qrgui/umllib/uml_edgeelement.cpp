@@ -54,6 +54,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)
 			continue;
+		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
 	}
@@ -67,6 +68,12 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 
 	delete mElementImpl;
+}
+
+void EdgeElement::initTitles()
+{
+	Element::initTitles();
+	updateLongestPart();
 }
 
 QRectF EdgeElement::boundingRect() const

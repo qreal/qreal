@@ -7,17 +7,33 @@
 
 using namespace UML;
 
-ElementTitle::ElementTitle(int x, int y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mBinding(""), mBackground(Qt::transparent)
+ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
+	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
 {
 	setPos(x, y);
 	setHtml(text);
 }
 
-ElementTitle::ElementTitle(int x, int y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mBinding(binding), mBackground(Qt::transparent)
+ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
+	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(binding), mBackground(Qt::transparent)
 {
 	setPos(x, y);
+}
+
+void ElementTitle::init(QRectF const& contents)
+{
+	mContents = contents;
+
+	qreal x = mPoint.x() * mContents.width();
+	qreal y = mPoint.y() * mContents.height();
+
+	setPos(x, y);
+}
+
+void ElementTitle::setScaling(bool scalingX, bool scalingY)
+{
+	mScalingX = scalingX;
+	mScalingY = scalingY;
 }
 
 void ElementTitle::setBackground(Qt::GlobalColor const &background)
@@ -108,12 +124,31 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsTextItem::paint(painter, option, widget);
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(int x, int y, QString const &text)
+ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text)
 {
 	return new ElementTitle(x, y, text);
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(int x, int y, QString const &binding, bool readOnly)
+ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly)
 {
 	return new ElementTitle(x, y, binding, readOnly);
 }
+
+void ElementTitle::transform(QRectF const& contents)
+{
+	qreal x = 0;
+	qreal y = 0;
+
+	if (mScalingX)
+		x = mPoint.x() * mContents.width();
+	else
+		x = mPoint.x() * contents.width();
+
+	if (mScalingY)
+		y = mPoint.y() * mContents.height();
+	else
+		y = mPoint.y() * contents.height();
+
+	setPos(x, y);
+}
+

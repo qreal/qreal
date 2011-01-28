@@ -17,6 +17,29 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mBoundingRect = boundingRect();
 }
 
+Curve::Curve(Curve const &other)
+	:Path(QPainterPath())
+{
+	mNeedScalingRect = other.mNeedScalingRect ;
+	mPen = other.mPen;
+	mBrush = other.mBrush;
+	mDomElementType = Item::pictureType;
+	mX1 = other.mX1;
+	mX2 = other.mX2;
+	mY1 = other.mY1;
+	mY2 = other.mY2;
+	mC1 = other.mC1;
+	mCurvePath = other.mCurvePath;
+	mListScalePoint = other.mListScalePoint;
+	setPos(other.x(), other.y());
+}
+
+Item* Curve::clone()
+{
+	Curve* item = new Curve(*this);
+	return item;
+}
+
 QPainterPath Curve::shape() const
 {
 	QPainterPath path;
@@ -116,7 +139,7 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 		setCXandCY(x, y);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPointF const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement curve = setPenBrushToDoc(document, "curve");
 

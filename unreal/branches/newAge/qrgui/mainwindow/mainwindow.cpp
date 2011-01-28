@@ -216,6 +216,7 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
+
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -458,8 +459,10 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	closeTab(index);
 	if (index.isValid()) {
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
-		if (pModel->isCurrentIndex(index))
+		if (pModel->isCurrentIndex(index)) {
 			pModel->clearModelIndexes();
+			ui.propertyEditor->setRootIndex(QModelIndex());
+		}
 		if (isLogicalModel)
 			mModels->logicalModel()->removeRow(index.row(), index.parent());
 		else
@@ -899,6 +902,10 @@ void MainWindow::exterminate()
 		closeTab(i);
 	mModels->repoControlApi().exterminate();
 	mModels->reinit();
+
+	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
+	pModel->clearModelIndexes();
+	ui.propertyEditor->setRootIndex(QModelIndex());
 }
 
 void MainWindow::parseHascol()
@@ -1039,8 +1046,10 @@ void MainWindow::logicalModelExplorerClicked(const QModelIndex &index)
 	} else {
 		setIndexesOfPropertyEditor(logicalId);
 		EditorView* const view = getCurrentTab();
-		EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-		scene->clearSelection();
+		if (view != NULL) {
+			EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+			scene->clearSelection();
+		}
 	}
 }
 

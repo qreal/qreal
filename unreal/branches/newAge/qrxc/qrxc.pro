@@ -27,7 +27,8 @@ HEADERS += association.h \
     sdftocpp.h \
     stringType.h \
     type.h \
-    xmlCompiler.h
+    xmlCompiler.h \
+    scalableItem.h
 
 SOURCES += association.cpp \
     diagram.cpp \
@@ -49,7 +50,8 @@ SOURCES += association.cpp \
     sdftocpp.cpp \
     stringType.cpp \
     type.cpp \
-    xmlCompiler.cpp
+    xmlCompiler.cpp \
+    scalableItem.cpp
 		
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.

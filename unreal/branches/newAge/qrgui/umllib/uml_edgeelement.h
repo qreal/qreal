@@ -29,6 +29,7 @@ namespace UML {
 			virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
 
 			virtual bool initPossibleEdges();
+			virtual void initTitles();
 
 			void adjustLink();
 			bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);

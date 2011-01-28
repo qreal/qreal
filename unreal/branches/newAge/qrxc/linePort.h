@@ -21,6 +21,4 @@ private:
 	ScalableCoordinate mStartY;
 	ScalableCoordinate mEndX;
 	ScalableCoordinate mEndY;
-
-	void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
 };
