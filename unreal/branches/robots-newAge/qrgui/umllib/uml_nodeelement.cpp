@@ -85,8 +85,9 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
 
-	foreach (ElementTitle *title, mTitles)
-		title->setTextWidth(mContents.width() - title->pos().x());
+	foreach (ElementTitle * const title, mTitles) {
+		title->transform(geom);
+	}
 }
 
 void NodeElement::adjustLinks()
@@ -256,10 +257,6 @@ void NodeElement::resize(QRectF newContents)
 	NodeElement* parItem = dynamic_cast<NodeElement*>(parentItem());
 	if (parItem)
 		parItem->resize(parItem->mContents); // recursive expansion of parents
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(newContents);
-	}
 }
 
 QList<ContextMenuAction*> NodeElement::contextMenuActions()
@@ -673,7 +670,7 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	if (id < 0.0)
 		return QPointF(0, 0);
 	if (id < mPointPorts.size())
-		return mTransform.map(mPointPorts[iid]);
+		return newTransform(mPointPorts[iid]);
 	if (id < mPointPorts.size() + mLinePorts.size())
 		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
 	else
@@ -684,19 +681,21 @@ const QPointF NodeElement::getNearestPort(QPointF location) const
 {
 	QPointF min;
 	if (mPointPorts.size() > 0) {
-		min.setX(mPointPorts[0].x()*boundingRect().width() + boundingRect().left());
-		min.setY(mPointPorts[0].y()*boundingRect().height() + boundingRect().top());
+		QPointF const pointPort = newTransform(mPointPorts[0]);
+		min.setX(pointPort.x() + boundingRect().left());
+		min.setY(pointPort.y() + boundingRect().top());
 	}
 	else if (mLinePorts.size() > 0)
 		min = mLinePorts[0].line.p1();
 	else
 		return location;
 
-	foreach (QPointF port, mPointPorts) {
-		port.setX(port.x()*boundingRect().width() + boundingRect().left());
-		port.setY(port.y()*boundingRect().height() + boundingRect().top());
-		if (QLineF(port, location).length() < QLineF(min, location).length())
-			min = port;
+	foreach (StatPoint port, mPointPorts) {
+		QPointF const pointPort = newTransform(port);
+		port.point.setX(pointPort.x() + boundingRect().left());
+		port.point.setY(pointPort.y() + boundingRect().top());
+		if (QLineF(port.point, location).length() < QLineF(min, location).length())
+			min = port.point;
 	}
 	if (mPointPorts.size() > 0)
 		return min;
@@ -723,26 +722,44 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	float y2 = 0.0;
 
 	if (port.prop_x1)
-		x1 = port.line.x1() * 100;
+		x1 = port.line.x1() * port.initWidth;
 	else
 		x1 = port.line.x1() * contentsRect().width();
 
 	if (port.prop_y1)
-		y1 = port.line.y1() * 100;
+		y1 = port.line.y1() * port.initHeight;
 	else
 		y1 = port.line.y1() * contentsRect().height();
 
 	if (port.prop_x2)
-		x2 = port.line.x2() * 100;
+		x2 = port.line.x2() * port.initWidth;
 	else
 		x2 = port.line.x2() * contentsRect().width();
 
 	if (port.prop_y2)
-		y2 = port.line.y2() * 100;
+		y2 = port.line.y2() * port.initHeight;
 	else
 		y2 = port.line.y2() * contentsRect().height();
 
 	return QLineF(x1, y1, x2, y2);
+}
+
+QPointF NodeElement::newTransform(const StatPoint& port) const
+{
+	qreal x = 0;
+	qreal y = 0;
+
+	if (port.prop_x)
+		x = port.point.x() * port.initWidth;
+	else
+		x = port.point.x() * contentsRect().width();
+
+	if (port.prop_y)
+		y = port.point.y() * port.initHeight;
+	else
+		y = port.point.y() * contentsRect().height();
+
+	return QPointF(x, y);
 }
 
 qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
@@ -765,7 +782,7 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 
 qreal NodeElement::distanceFromPointPort(int pointPortNumber, const QPointF &location) const
 {
-	return QLineF(mTransform.map(mPointPorts[pointPortNumber]), location).length();
+	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
 }
 
 qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const
@@ -793,7 +810,7 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
-		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
+		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
 			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 		{
 			return 1.0 * i;

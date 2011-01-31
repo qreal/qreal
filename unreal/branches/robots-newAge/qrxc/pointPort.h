@@ -19,4 +19,6 @@ public:
 private:
 	ScalableCoordinate mX;
 	ScalableCoordinate mY;
+	int mInitWidth;
+	int mInitHeight;
 };

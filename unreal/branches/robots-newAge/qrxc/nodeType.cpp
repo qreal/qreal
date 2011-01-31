@@ -225,7 +225,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
-		<< "\t\tvoid init(QRectF &contents, QList<QPointF> &pointPorts,\n"
+		<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
 		<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 		<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
 		<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";

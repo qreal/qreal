@@ -126,6 +126,7 @@ namespace UML {
 		NodeElement *getNodeAt(const QPointF &position);
 
 		QLineF newTransform(const StatLine& port) const;
+		QPointF newTransform(const StatPoint& port) const;
 
 		void resize(QRectF newContents);
 		void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
@@ -149,7 +150,7 @@ namespace UML {
 
 		bool mPortsVisible;
 
-		QList<QPointF> mPointPorts;
+		QList<StatPoint> mPointPorts;
 		QList<StatLine> mLinePorts;
 		QRectF mContents;
 
