@@ -9,6 +9,6 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="ownedComment" value=""/>
-    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fbcf3af0-e935-4abc-8299-b9c77047efa3}"/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9c84779b-5642-40c8-8189-d04ec01705af}"/>
   </properties>
 </object>

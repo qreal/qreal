@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{018b4246-fe56-418b-8086-a1105cda26c7}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ea750be8-a94d-401c-95a2-fa239bc78a77}"/>
+  </children>
+  <properties>
+    <QString key="container" value=""/>
+    <QString key="displayedName" value="Wait For Sonar Distance"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{692fda09-8c15-4df4-acd0-a5b5fce0919e}"/>
+    </links>
+    <QString key="name" value="WaitForSonarDistance"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;145&quot; sizey=&quot;161&quot;>&#xa;        &lt;image y1=&quot;28&quot; name=&quot;images/Ultrasonic.png&quot; x1=&quot;21&quot; y2=&quot;87&quot; x2=&quot;105&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;21&quot; y=&quot;100&quot; text=&quot;Port:&quot;/>&#xa;        &lt;label x=&quot;74&quot; y=&quot;100&quot; textBinded=&quot;Port&quot;/>&#xa;        &lt;label x=&quot;21&quot; y=&quot;120&quot; text=&quot;Distance:&quot;/>&#xa;        &lt;label x=&quot;74&quot; y=&quot;121&quot; textBinded=&quot;Distance&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;88&quot;/>&#xa;        &lt;pointPort x=&quot;73&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;143&quot; y=&quot;86&quot;/>&#xa;        &lt;pointPort x=&quot;66&quot; y=&quot;159&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

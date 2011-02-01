@@ -13,7 +13,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a231f517-9cc1-4848-ba71-7cf3841a7110}"/>
     </links>
     <QString key="name" value="WaitForTouchSensor"/>
     <outgoingConnections type="qReal::IdList"/>

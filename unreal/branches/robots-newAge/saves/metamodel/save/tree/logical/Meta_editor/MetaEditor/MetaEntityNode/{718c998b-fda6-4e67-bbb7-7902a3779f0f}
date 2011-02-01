@@ -17,11 +17,11 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{2e56cb8b-a1ab-4373-8941-7f98050e090d}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{fce87cde-73ec-408d-a755-4813d0c03a6d}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{801238cf-cb67-43e2-9567-4c960ec56b19}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{6b5bf8e9-a146-4bf4-aa6f-4efeb53c5822}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Container/{6cbd5516-1fca-44cb-b779-f6ea42181bfb}"/>
     </links>
     <QString key="name" value="DiagramNode"/>
     <outgoingConnections type="qReal::IdList"/>
