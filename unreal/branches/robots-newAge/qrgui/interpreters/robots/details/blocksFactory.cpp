@@ -7,6 +7,7 @@
 #include "blocks/finalBlock.h"
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
+#include "blocks/waitForSonarDistanceBlock.h"
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
@@ -44,6 +45,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new TimerBlock();
 	else if (elementMetatypeIs(element, "WaitForTouchSensor"))
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
+	else if (elementMetatypeIs(element, "WaitForSonarDistance"))
+		newBlock = new WaitForSonarDistanceBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "EnginesForward"))
 		newBlock = new EnginesForwardBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 	else if (elementMetatypeIs(element, "EnginesBackward"))

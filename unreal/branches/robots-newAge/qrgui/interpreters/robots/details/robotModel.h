@@ -7,6 +7,7 @@
 #include "robotParts/motor.h"
 #include "robotParts/sensor.h"
 #include "robotParts/touchSensor.h"
+#include "robotParts/sonarSensor.h"
 #include "../robotCommunicationInterface.h"
 #include "../sensorConstants.h"
 
@@ -33,6 +34,7 @@ public:
 
 	robotParts::Brick &brick();
 	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
+	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
 
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();

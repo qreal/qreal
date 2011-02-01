@@ -6,6 +6,7 @@ namespace robots {
 namespace details {
 
 unsigned const maxMessageSize = 59;
+unsigned const i2cBufferSize = 24;
 
 namespace telegramType {
 enum TelegramTypeEnum {
@@ -146,6 +147,45 @@ enum SensorModeEnum {
 	, ANGLESTEPSMODE = 0xE0
 	, SLOPEMASK = 0x1F
 	, MODEMASK = 0xE0
+};
+}
+
+namespace sonarMode {
+enum SonarModeEnum {
+	OFF
+	, SINGLE_SHOT
+	, CONTINUOUS_MEASUREMENT
+	, EVENT_CAPTURE
+	, REQUEST_WARM_RESET
+};
+}
+
+namespace sonarRegisters {
+enum SonarRegistersEnum {
+	SONAR_ADDRESS = 0x02
+	, INTERVAL = 0x40
+	, COMMAND = 0x41
+	, RESULT_1 = 0x42
+	, RESULT_2 = 0x43
+	, RESULT_3 = 0x44
+	, RESULT_4 = 0x45
+	, RESULT_5 = 0x46
+	, RESULT_6 = 0x47
+	, RESULT_7 = 0x48
+	, RESULT_8 = 0x49
+	, ZERO_VALUE = 0x50
+	, SCALE_FACTOR = 0x51
+	, SCALE_DIVISOR = 0x52
+	, FACTORY_ZERO_VALUE = 0x11
+	, FACTORY_SCALE_FACTOR = 0x12
+	, FACTORY_SCALE_DIVISOR = 0x13
+};
+}
+
+namespace sonarReadingMode {
+enum SonarReadingModeEnum {
+	METRIC = 1
+	, INCH = 2
 };
 }
 

@@ -32,6 +32,11 @@ robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const 
 	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
+robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<robotParts::SonarSensor *>(mSensors[port]);
+}
+
 void RobotModel::clear()
 {
 }
@@ -52,7 +57,7 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 {
 	delete mSensors[port];
 	mSensors[port] = NULL;
-	lowLevelInputPort::InputPortEnum lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
+	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
 	switch (sensorType) {
 	case sensorType::unused:
 		break;
@@ -60,6 +65,9 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		mSensors[port] = new robotParts::TouchSensor(mRobotCommunicationInterface, lowLevelPort);
 		break;
 	case sensorType::touchRaw:
+		break;
+	case sensorType::sonar:
+		mSensors[port] = new robotParts::SonarSensor(mRobotCommunicationInterface, lowLevelPort);
 		break;
 	default:
 		// TODO: Throw an exception

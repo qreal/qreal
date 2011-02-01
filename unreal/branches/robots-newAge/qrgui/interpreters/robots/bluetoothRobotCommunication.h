@@ -5,6 +5,7 @@
 
 #include "robotCommunicationInterface.h"
 #include "details/bluetoothRobotCommunicationThread.h"
+#include "details/robotCommandConstants.h"
 
 class QextSerialPort;
 
@@ -21,6 +22,7 @@ public:
 	~BluetoothRobotCommunication();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
+	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port);
 	virtual void connect();
 	virtual void disconnect();
 
@@ -28,6 +30,8 @@ public:
 
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
+	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
+			, details::lowLevelInputPort::InputPortEnum const &port);
 	void threadConnect(QString portName);
 	void threadReconnect(QString portName);
 	void threadDisconnect();

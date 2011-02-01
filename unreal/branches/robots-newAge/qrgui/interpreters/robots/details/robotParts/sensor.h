@@ -22,26 +22,29 @@ public:
 			, lowLevelInputPort::InputPortEnum const &port
 			);
 	void configure();
-	void read();
+	virtual void read();
 
 signals:
 	void response(int reading);
-	void fail();
+	void failure();
 	void configured();
 
-private:
+protected:
 	enum State {
 		idle
 		, pending
 	};
 
-	State mState;
 	lowLevelInputPort::InputPortEnum mPort;
+	State mState;
+
+private:
 	lowLevelSensorType::SensorTypeEnum mSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 
 	virtual void processResponse(QByteArray const &reading);
+	virtual void sensorSpecificProcessResponse(QByteArray const &reading) = 0;
 };
 
 }

@@ -4,6 +4,8 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QThread>
 
+#include "robotCommandConstants.h"
+
 class QextSerialPort;
 
 namespace qReal {
@@ -28,6 +30,8 @@ public slots:
 	void connect(QString const &portName);
 	void reconnect(QString const &portName);
 	void disconnect();
+	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
+			, details::lowLevelInputPort::InputPortEnum const &port);
 
 private:
 	class SleeperThread : public QThread
@@ -39,8 +43,12 @@ private:
 		}
 	};
 
+	static int const timeout = 5000;
+
 	QextSerialPort *mPort;
 
+	bool waitForBytes(int bytes, lowLevelInputPort::InputPortEnum const &port) const;
+	int i2cBytesReady(lowLevelInputPort::InputPortEnum const &port) const;
 };
 
 }

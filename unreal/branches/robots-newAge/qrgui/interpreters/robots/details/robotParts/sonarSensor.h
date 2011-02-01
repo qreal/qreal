@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "sensor.h"
+#include "i2cSensor.h"
 #include "../../sensorConstants.h"
 
 namespace qReal {
@@ -11,15 +11,19 @@ namespace robots {
 namespace details {
 namespace robotParts {
 
-class TouchSensor : public Sensor
+class SonarSensor : public I2CSensor
 {
 	Q_OBJECT
 
 public:
-	TouchSensor(RobotCommunicationInterface *robotCommunicationInterface
+	SonarSensor(RobotCommunicationInterface *robotCommunicationInterface
 			, lowLevelInputPort::InputPortEnum const &port);
+	virtual void read();
 
 private:
+	void setMode(sonarMode::SonarModeEnum const &mode);
+	void writeRegister(sonarRegisters::SonarRegistersEnum const &reg, int value);
+
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
 };
 

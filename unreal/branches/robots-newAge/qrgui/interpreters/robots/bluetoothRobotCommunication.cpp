@@ -17,6 +17,8 @@ BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName
 	QObject::connect(this, SIGNAL(threadReconnect(QString)), &mRobotCommunicationThreadObject, SLOT(reconnect(QString)));
 	QObject::connect(this, SIGNAL(threadDisconnect()), &mRobotCommunicationThreadObject, SLOT(disconnect()));
 	QObject::connect(this, SIGNAL(threadSend(QObject*, QByteArray, unsigned)), &mRobotCommunicationThreadObject, SLOT(send(QObject*, QByteArray, unsigned)));
+	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, details::lowLevelInputPort::InputPortEnum))
+			, &mRobotCommunicationThreadObject, SLOT(sendI2C(QObject*, QByteArray, unsigned, details::lowLevelInputPort::InputPortEnum)));
 
 	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	QObject::connect(&mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
@@ -30,7 +32,13 @@ BluetoothRobotCommunication::~BluetoothRobotCommunication()
 
 void BluetoothRobotCommunication::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
 {
-	emit threadSend(addressee, buffer,responseSize);
+	emit threadSend(addressee, buffer, responseSize);
+}
+
+void BluetoothRobotCommunication::sendI2C(QObject *addressee, QByteArray const &buffer
+		, unsigned const responseSize, inputPort::InputPortEnum const &port)
+{
+	emit threadSendI2C(addressee, buffer, responseSize, static_cast<details::lowLevelInputPort::InputPortEnum>(port));
 }
 
 void BluetoothRobotCommunication::connect()
@@ -63,5 +71,6 @@ void BluetoothRobotCommunication::disconnectedSlot()
 
 void BluetoothRobotCommunication::responseSlot(QObject *addressee, QByteArray const &buffer)
 {
+	qDebug() << "Got response from communication thread";
 	emit response(addressee, buffer);
 }

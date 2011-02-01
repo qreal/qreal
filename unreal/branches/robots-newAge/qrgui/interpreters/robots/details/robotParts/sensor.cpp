@@ -10,8 +10,8 @@ Sensor::Sensor(RobotCommunicationInterface *robotCommunicationInterface
 		, sensorMode::SensorModeEnum const &sensorMode
 		, lowLevelInputPort::InputPortEnum const &port)
 	: RobotPart(robotCommunicationInterface)
-	, mState(idle)
 	, mPort(port)
+	, mState(idle)
 	, mSensorType(sensorType)
 	, mSensorMode(sensorMode)
 	, mIsConfigured(false)
@@ -39,38 +39,16 @@ void Sensor::processResponse(QByteArray const &reading)
 	if (reading.isEmpty()) {
 		qDebug() << "Response is empty, seems to be a connection failure";
 		if (mIsConfigured)
-			emit fail();
+			emit failure();
 		else
 			emit configured();
-	} else if (reading[3] == commandCode::SETINPUTMODE) {
+	} else if (reading.size() >= 4 && reading[3] == commandCode::SETINPUTMODE) {
 		qDebug() << "Response is a configuration response package";
 		qDebug() << "Status byte is:" << static_cast<int>(reading[4]);
 		mIsConfigured = true;
 		emit configured();
 	} else {
-		qDebug() << "=========================================================";
-		qDebug() << "Sensor reading:";
-		qDebug() << "Byte 0 (package type):" << static_cast<int>(reading[2]);
-		qDebug() << "Byte 1 (command code):" << static_cast<int>(reading[3]);
-		qDebug() << "Byte 2 (status byte):" << static_cast<int>(reading[4]);
-		qDebug() << "Byte 3 (input port):" << static_cast<int>(reading[5]);
-		qDebug() << "Byte 4 (valid):" << static_cast<int>(reading[6]);
-		qDebug() << "Byte 5 (calibrated):" << static_cast<int>(reading[7]);
-		qDebug() << "Byte 6 (sensor type):" << static_cast<int>(reading[8]);
-		qDebug() << "Byte 7 (sensor mode):" << static_cast<int>(reading[9]);
-		qDebug() << "Byte 8 (raw A/D, lower byte):" << static_cast<int>(reading[10]);
-		qDebug() << "Byte 9 (raw A/D, upper byte):" << static_cast<int>(reading[11]);
-		qDebug() << "Byte 10 (normalized A/D, lower byte):" << static_cast<int>(reading[12]);
-		qDebug() << "Byte 11 (normalized A/D, upper byte byte):" << static_cast<int>(reading[13]);
-		qDebug() << "Byte 12 (scaled value, lower byte):" << static_cast<int>(reading[14]);
-		qDebug() << "Byte 13 (scaled value, upper byte):" << static_cast<int>(reading[15]);
-		qDebug() << "Byte 14 (calibrated value, lower byte):" << static_cast<int>(reading[16]);
-		qDebug() << "Byte 15 (calibrated value, upper byte):" << static_cast<int>(reading[17]);
-		if (reading[4] == 0 && reading[14] == 1)  // Sensor is pressed.
-			emit response(1);
-		else
-			emit response(0);
-		// TODO: Where is the raw data?
+		sensorSpecificProcessResponse(reading);
 	}
 }
 

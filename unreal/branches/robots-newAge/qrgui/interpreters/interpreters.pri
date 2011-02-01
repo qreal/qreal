@@ -30,6 +30,7 @@ HEADERS += \
 	interpreters/robots/details/blocks/initialBlock.h \
 	interpreters/robots/details/blocks/finalBlock.h \
 	interpreters/robots/details/blocks/waitForTouchSensorBlock.h \
+	interpreters/robots/details/blocks/waitForSonarDistanceBlock.h \
 	interpreters/robots/details/blocks/engineCommandBlock.h \
 	interpreters/robots/details/blocks/enginesForwardBlock.h \
 	interpreters/robots/details/blocks/enginesBackwardBlock.h \
@@ -40,7 +41,9 @@ HEADERS += \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
 	interpreters/robots/details/robotParts/sensor.h \
+	interpreters/robots/details/robotParts/i2cSensor.h \
 	interpreters/robots/details/robotParts/touchSensor.h \
+	interpreters/robots/details/robotParts/sonarSensor.h \
 
 SOURCES += \
 	interpreters/robots/interpreter.cpp \
@@ -59,6 +62,7 @@ SOURCES += \
 	interpreters/robots/details/blocks/initialBlock.cpp \
 	interpreters/robots/details/blocks/finalBlock.cpp \
 	interpreters/robots/details/blocks/waitForTouchSensorBlock.cpp \
+	interpreters/robots/details/blocks/waitForSonarDistanceBlock.cpp \
 	interpreters/robots/details/blocks/engineCommandBlock.cpp \
 	interpreters/robots/details/blocks/enginesForwardBlock.cpp \
 	interpreters/robots/details/blocks/enginesBackwardBlock.cpp \
@@ -69,4 +73,6 @@ SOURCES += \
 	interpreters/robots/details/robotParts/brick.cpp \
 	interpreters/robots/details/robotParts/motor.cpp \
 	interpreters/robots/details/robotParts/sensor.cpp \
+	interpreters/robots/details/robotParts/i2cSensor.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
+	interpreters/robots/details/robotParts/sonarSensor.cpp \
