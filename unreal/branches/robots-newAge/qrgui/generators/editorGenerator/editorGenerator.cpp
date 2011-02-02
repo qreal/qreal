@@ -76,8 +76,9 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outpro() << "include (../editorsCommon.pri)";
 
 	OutFile outxml(pathToFile + ".xml");
-	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
-	outxml() << mDocument.toString(4);
+	QDomNode header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
+	mDocument.insertBefore(header, mDocument.firstChild());
+	mDocument.save(outxml(), 4);
 	mDocument.clear();
 
 	copyImages(pathToFile);
