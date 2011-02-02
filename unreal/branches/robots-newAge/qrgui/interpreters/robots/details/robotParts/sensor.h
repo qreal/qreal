@@ -42,6 +42,7 @@ private:
 	lowLevelSensorType::SensorTypeEnum mSensorType;
 	sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
+	bool mResetDone;
 
 	virtual void processResponse(QByteArray const &reading);
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading) = 0;

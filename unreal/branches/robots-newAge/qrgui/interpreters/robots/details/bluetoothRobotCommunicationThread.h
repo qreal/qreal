@@ -49,6 +49,9 @@ private:
 
 	bool waitForBytes(int bytes, lowLevelInputPort::InputPortEnum const &port) const;
 	int i2cBytesReady(lowLevelInputPort::InputPortEnum const &port) const;
+
+	void send(QByteArray const &buffer) const;
+	QByteArray receive(int size) const;
 };
 
 }

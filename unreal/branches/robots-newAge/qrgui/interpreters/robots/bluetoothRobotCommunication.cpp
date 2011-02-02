@@ -71,6 +71,5 @@ void BluetoothRobotCommunication::disconnectedSlot()
 
 void BluetoothRobotCommunication::responseSlot(QObject *addressee, QByteArray const &buffer)
 {
-	qDebug() << "Got response from communication thread";
 	emit response(addressee, buffer);
 }

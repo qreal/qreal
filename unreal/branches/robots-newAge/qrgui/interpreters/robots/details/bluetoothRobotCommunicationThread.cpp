@@ -27,10 +27,12 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 		return;
 	}
 
-	mPort->write(buffer);
+	send(buffer);
 	if (buffer.size() >= 3 && buffer[2] == 0x00) {
-		QByteArray const result = mPort->read(responseSize);
+		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
+	} else {
+		emit response(addressee, QByteArray());
 	}
 }
 
@@ -59,13 +61,9 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	command[2] = 0x01;
 	command[3] = 0x88;
 
-	int bytesTransmitted = mPort->write(command);
-	qDebug() << "Trasmitted:" << bytesTransmitted;
+	send(command);
+	QByteArray const response = receive(9);
 
-	qDebug() << "Reading response";
-
-	QByteArray const response = mPort->read(9);
-	qDebug() << "Received:" << response;
 	emit connected(response != QByteArray());
 }
 
@@ -88,18 +86,15 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
 		, details::lowLevelInputPort::InputPortEnum const &port)
 {
-	qDebug() << "Reading I2C data";
-	SleeperThread::msleep(500);
-
 	if (!mPort) {
 		emit response(addressee, QByteArray());
 		return;
 	}
 
-	QByteArray command(24, 0);
+	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
+	command[2] = telegramType::directCommandNoResponse;
 	command[3] = commandCode::LSWRITE;
 	command[4] = port;
 	command[5] = buffer.length();
@@ -108,41 +103,38 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 		command[i + 7] = buffer[i];
 	}
 
-	qDebug() << "Sending request command";
-	mPort->write(command);
-	QByteArray const temp = mPort->read(5);
-	for (int i = 0; i < temp.size(); ++i) {
-		qDebug() << "Byte" << i << "is" << static_cast<unsigned char>(temp[i]);
-	}
+	send(command);
 
 	if (responseSize < 0)
 		return;
 
-	qDebug() << "Waiting for response";
 	if (!waitForBytes(responseSize, port)) {
 		qDebug() << "No response, connection error";
 		emit response(addressee, QByteArray());
 		return;
 	}
 
-	command.clear();
-	command.resize(5);
+	if (responseSize > 0) {
+		command.clear();
+		command.resize(5);
 
-	command[0] = 0x03;
-	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::LSREAD;
-	command[4] = port;
-	mPort->write(command);
-	qDebug() << "Reading response";
-	QByteArray const result = mPort->read(responseSize);
-	QByteArray decodedResult = result.right(result.length() - 5);
+		command[0] = 0x03;
+		command[1] = 0x00;
+		command[2] = telegramType::directCommandResponseRequired;
+		command[3] = commandCode::LSREAD;
+		command[4] = port;
 
-	// TODO: Correctly process empty required response
-	if (decodedResult == QByteArray())
-		decodedResult.resize(1);
+		send(command);
 
-	emit response(addressee, decodedResult);
+		QByteArray const result = receive(22);
+		QByteArray decodedResult = result.right(result.length() - 5);
+
+		emit response(addressee, decodedResult);
+	} else {
+		// TODO: Correctly process empty required response
+		QByteArray result(1, 0);
+		emit response(addressee, result);
+	}
 }
 
 bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, lowLevelInputPort::InputPortEnum const &port) const
@@ -167,11 +159,32 @@ int BluetoothRobotCommunicationThread::i2cBytesReady(lowLevelInputPort::InputPor
 	command[2] = telegramType::directCommandResponseRequired;
 	command[3] = commandCode::LSGETSTATUS;
 	command[4] = port;
-	mPort->write(command);
-	QByteArray const result = mPort->read(6);
+
+	send(command);
+	QByteArray const result = receive(6);
+
 	if (result.isEmpty() || result[4] != errorCode::success) {
 		return 0;
 	} else {
 		return result[5];
 	}
+}
+
+void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
+{
+//	qDebug() << "Sending:";
+//	for (int i = 0; i < buffer.size(); ++i) {
+//		qDebug() << "Byte" << i << static_cast<unsigned char>(buffer[i]);
+//	}
+	mPort->write(buffer);
+}
+
+QByteArray BluetoothRobotCommunicationThread::receive(int size) const
+{
+	QByteArray const result = mPort->read(size);
+//	qDebug() << "Received:";
+//	for (int i = 0; i < result.size(); ++i) {
+//		qDebug() << "Byte" << i << static_cast<unsigned char>(result[i]);
+//	}
+	return result;
 }

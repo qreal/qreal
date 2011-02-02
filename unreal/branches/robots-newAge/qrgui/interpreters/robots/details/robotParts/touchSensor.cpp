@@ -11,6 +11,7 @@ TouchSensor::TouchSensor(RobotCommunicationInterface *robotCommunicationInterfac
 
 void TouchSensor::sensorSpecificProcessResponse(QByteArray const &reading)
 {
+	mState = idle;
 	if (reading[4] == 0 && reading[14] == 1)  // Sensor is pressed.
 		emit response(1);
 	else

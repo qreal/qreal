@@ -7,7 +7,7 @@ using namespace details::robotParts;
 
 SonarSensor::SonarSensor(RobotCommunicationInterface *robotCommunicationInterface
 		, lowLevelInputPort::InputPortEnum const &port)
-	: I2CSensor(robotCommunicationInterface, lowLevelSensorType::SONAR_METRIC, sensorMode::RAWMODE, port)
+	: I2CSensor(robotCommunicationInterface, lowLevelSensorType::LOWSPEED_9V, sensorMode::RAWMODE, port)
 {
 }
 
@@ -16,22 +16,25 @@ void SonarSensor::read()
 	if (mState == pending)
 		return;
 
-	qDebug() << "Setting sensor mode";
+	mState = pending;
+
 	setMode(sonarMode::SINGLE_SHOT);
 }
 
 void SonarSensor::sensorSpecificProcessResponse(QByteArray const &reading)
 {
-	qDebug() << "Response received";
-	if (reading.size() == 1 && reading[0] == 0) {
+	if (reading.isEmpty()) {
+		qDebug() << "Something is wrong, response is empty";
+	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
-		qDebug() << "Mode set";
 		QByteArray command(2, 0);
 		command[0] = sonarRegisters::SONAR_ADDRESS;
 		command[1] = sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
+	} else if (reading.size() == 1 && reading[0] != 0) {
+		qDebug() << "Reading malformed:" << static_cast<unsigned int>(reading[0]);
 	} else {
-		qDebug() << "Data received";
+		qDebug() << "Data received" << (0xff & reading[1]) << "cm";
 		mState = idle;
 		emit response(0xff & reading[1]);
 	}
