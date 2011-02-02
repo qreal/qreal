@@ -6,8 +6,6 @@
 #include <QSplashScreen>
 #include <QtGui>
 
-#include "ui_mainwindow.h"
-
 #include "../editorManager/editorManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
@@ -16,6 +14,10 @@
 #include "mainWindowInterpretersInterface.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
+
+namespace Ui {
+class MainWindowUi;
+}
 
 namespace qReal {
 
@@ -131,7 +133,7 @@ private slots:
 	void showRobotSettingsDialog();
 
 private:
-	Ui::MainWindowUi mUi;
+	Ui::MainWindowUi *mUi;
 
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;

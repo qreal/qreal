@@ -556,6 +556,9 @@
    <property name="text">
     <string>Open...</string>
    </property>
+   <property name="toolTip">
+    <string>Open</string>
+   </property>
   </action>
   <action name="actionParse_Hascol_sources">
    <property name="text">
