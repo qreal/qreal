@@ -14,18 +14,18 @@ bool Property::init()
 {
 	mIsEnum = false;
 	mIsReference = false;
-	mName = mApi->name(mId);
+        mName = mApi->name(mType);
 	if (mName.isEmpty()) {
 		qDebug() << "ERROR: anonymous property found";
 		return false;
 	}
-	mType = mApi->stringProperty(mId, "attributeType");
-	if (mType.isEmpty()) {
+        mTypeString = mApi->stringProperty(mType, "attributeType");
+        if (mTypeString.isEmpty()) {
 		qDebug() << "ERROR: empty type of property found";
 		return false;
 	}
 
-	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
+        mDefaultValue = mApi->stringProperty(mType, "defaultValue");
 	return true;
 }
 
@@ -37,7 +37,7 @@ QString Property::name()
 
 QString Property::type()
 {
-	return mType;
+        return mTypeString;
 }
 
 QString Property::defaultValue()
@@ -47,7 +47,7 @@ QString Property::defaultValue()
 
 Property * Property::clone()
 {
-	Property *result = new Property(mApi, mId);
+        Property *result = new Property(mApi, mType);
 	result->mName = mName;
 	result->mType = mType;
 	result->mIsEnum = mIsEnum;
@@ -77,7 +77,7 @@ void Property::print() const
 {
 	qDebug() << "property"
 			<< "\t" << mName
-			<< "\t" << mType
+                        << "\t" << mTypeString
 			<< "\t" << mIsEnum
 			<< "\t" << mIsReference
 			<< "\t" << mDescription
@@ -87,7 +87,7 @@ void Property::print() const
 QString Property::generatePropertyLine(const QString &lineTemplate) const
 {
 	QString result = lineTemplate;
-	result.replace(propertyNameTag, mName).replace(propertyTypeTag, mType);
+        result.replace(propertyNameTag, mName).replace(propertyTypeTag, mTypeString);
 	return result;
 }
 

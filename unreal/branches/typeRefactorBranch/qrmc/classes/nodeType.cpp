@@ -21,7 +21,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, mApi, mId);
+        NodeType *result = new NodeType(mDiagram, mApi, mType);
 	GraphicType::copyFields(result);
 	return result;
 }
@@ -66,13 +66,13 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	generateContextMenuItems(nodeClass, compiler);
 
 	QString isContainer  = mContains.isEmpty() ? "false" : "true";
-	QString isAction = loadBoolProperty(mId, "isAction");
+        QString isAction = loadBoolProperty(mType, "isAction");
 	QString border = isAction == "true"
 					? compiler->getTemplateUtils(nodeValidBorderTag)
 					: compiler->getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
-			.replace(isPortTag, loadBoolProperty(mId, "isPin"))
+                        .replace(isPortTag, loadBoolProperty(mType, "isPin"))
 			.replace(hasPinTag, isAction)
 			.replace(nodeBorderTag, border)
 			.replace(isNodeTag, "true")
@@ -100,7 +100,7 @@ QString NodeType::loadIntProperty(qReal::NewType const &type, const QString &pro
 
 void NodeType::generateContainerStuff(QString &classTemplate) const
 {
-        TypeList children = mApi->children(mId);
+        TypeList children = mApi->children(mType);
 	bool foundChild = false;
         foreach(NewType child, children){
 		if (child.element() == metaEntityPropertiesAsContainer) {

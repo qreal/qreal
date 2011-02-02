@@ -29,11 +29,13 @@ HEADERS += metaCompiler.h \
 	../qrgui/kernel/definitions.h \
 	../qrrepo/repoApi.h \
 	../qrgui/kernel/ids.h \
+        ../qrgui/kernel/NewType.h \
 	diagram.h \
 	editor.h
 
 SOURCES += \
 	../qrgui/kernel/ids.cpp \
+        ../qrgui/kernel/NewType.cpp \
 	metaCompiler.cpp \
 	diagram.cpp \
 	editor.cpp

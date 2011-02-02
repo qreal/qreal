@@ -26,7 +26,7 @@ namespace qrmc {
 		qrRepo::RepoApi *mApi;
                 qReal::NewType mType;
 		QString mName;
-		QString mType;
+                QString mTypeString;
 		bool mIsEnum;
 		bool mIsReference;
 		QString mDescription;

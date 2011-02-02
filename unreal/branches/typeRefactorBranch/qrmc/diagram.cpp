@@ -27,7 +27,7 @@ Diagram::~Diagram()
 
 bool Diagram::init()
 {
-        foreach(NewType type, mApi->children(mId)) {
+        foreach(NewType type, mApi->children(mType)) {
                 if (type.element() == metaEntityNode) {
                         Type *nodeType = new NodeType(this, mApi, type);
 			if (!nodeType->init(mDiagramName)) {

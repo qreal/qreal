@@ -21,7 +21,7 @@ EdgeType::~EdgeType()
 
 Type* EdgeType::clone() const
 {
-	EdgeType *result = new EdgeType(mDiagram, mApi, mId);
+        EdgeType *result = new EdgeType(mDiagram, mApi, mType);
 	GraphicType::copyFields(result);
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
@@ -75,7 +75,7 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 						 nodeIndent + "Q_UNUSED(titles)" + endline;
 	}
 
-	QString lineType = mApi->stringProperty(mId, "lineType");
+        QString lineType = mApi->stringProperty(mType, "lineType");
 	if (lineType.isEmpty())
 		lineType = "solidLine";
 	lineType = "Qt::" + NameNormalizer::normalize(lineType);
@@ -93,7 +93,7 @@ void EdgeType::generateArrows(QString &edgeClass) const
 {
 	QString beginType;
 	QString endType;
-        TypeList children = mApi->children(mId);
+        TypeList children = mApi->children(mType);
 
         foreach (NewType child, children){
 		if (child.element() == metaEntityAssociation) {
@@ -157,7 +157,7 @@ void EdgeType::generateSdf() const
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
 
 	QString result = compiler->getTemplateUtils(lineSdfTag);
-	result.replace(lineTypeTag, mApi->stringProperty(mId, "lineType"))
+        result.replace(lineTypeTag, mApi->stringProperty(mType, "lineType"))
 			.replace("\\n", "\n");
 
 	QTextStream out(&file);
@@ -168,7 +168,7 @@ void EdgeType::generateSdf() const
 // copy-pasted from Shape, quick workaround for #349
 void EdgeType::initLabels()
 {
-	QString xml = mApi->stringProperty(mId, "labels");
+        QString xml = mApi->stringProperty(mType, "labels");
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;

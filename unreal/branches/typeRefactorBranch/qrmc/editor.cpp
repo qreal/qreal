@@ -13,7 +13,7 @@ using namespace qrmc;
 Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::NewType &type)
         : mMetaCompiler(metaCompiler), mApi(api), mType(type), mLoadingComplete(false)
 {
-	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+        mName = mApi->property(mType, nameOfTheDirectory).toString().section("/", -1);
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -31,13 +31,13 @@ bool Editor::isLoaded()
 
 qReal::NewType Editor::type()
 {
-	return mId;
+        return mType;
 }
 
 bool Editor::load()
 {
 	// load includes
-	QStringList includes = mApi->stringProperty(mId, "include").split(",");
+        QStringList includes = mApi->stringProperty(mType, "include").split(",");
 	foreach(QString includedMetamodel, includes)
 	{
 		QString metamodelName = includedMetamodel.section("/", -1).section(".", 0, 0).trimmed();
@@ -63,7 +63,7 @@ bool Editor::load()
 	// TODO: load listeners
 
 	// load diagrams (no resolving yet)
-        TypeList children = mApi->children(mId);
+        TypeList children = mApi->children(mType);
         TypeList diagrams;
         foreach(NewType child, children)
 		if (child.element() == metaEditorDiagramNode)
