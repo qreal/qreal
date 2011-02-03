@@ -147,6 +147,42 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	}
 }
 
+void Client::setTemporaryRemovedLinks(Id const &id, QString const &direction, qReal::IdList const &linkIdList)
+{
+	if (mObjects.contains(id)) {
+		mObjects[id]->setTemporaryRemovedLinks(direction, linkIdList);
+	} else {
+		throw Exception("Client: Setting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+IdList Client::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->temporaryRemovedLinksAt(direction);
+	} else {
+		throw Exception("Client: Requesting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+IdList Client::temporaryRemovedLinks(Id const &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->temporaryRemovedLinks();
+	} else {
+		throw Exception("Client: Requesting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+void Client::removeTemporaryRemovedLinks(Id const &id)
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->removeTemporaryRemovedLinks();
+	} else {
+		throw Exception("Client: Removing temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
 void Client::loadFromDisk()
 {
 	serializer.loadFromDisk(mObjects);

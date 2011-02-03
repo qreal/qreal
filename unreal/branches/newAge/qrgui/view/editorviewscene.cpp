@@ -442,8 +442,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		//if (e)
 		//	initContextMenu(e, event->scenePos());
 	}
-	if (mNeedDrawGrid)
-		invalidate();
+	redraw();
 }
 
 void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
@@ -578,8 +577,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
-	if (mNeedDrawGrid)
-		invalidate();
+	redraw();
 }
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -767,4 +765,10 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		emit zoomOut();
 	wheelEvent->accept();
 	return;
+}
+
+void EditorViewScene::redraw()
+{
+	if (mNeedDrawGrid)
+		invalidate();
 }

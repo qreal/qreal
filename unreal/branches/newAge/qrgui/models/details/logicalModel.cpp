@@ -299,21 +299,12 @@ bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void LogicalModel::removeModelItems(details::modelsImplementation::AbstractModelItem *const root)
+void LogicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
 {
-	foreach (AbstractModelItem *child, root->children()) {
-		mApi.removeElement(child->id());
-		removeModelItems(child);
-		int childRow = child->row();
-		beginRemoveRows(index(root),childRow,childRow);
-		child->parent()->removeChild(child);
-		mModelItems.remove(child->id());
-		if (mModelItems.count(child->id())==0) {
-			mApi.removeChild(root->id(),child->id());
-		}
-		delete child;
-		endRemoveRows();
+	if (mModelItems.count(child->id())==0) {
+		mApi.removeChild(root->id(),child->id());
 	}
+	mApi.removeElement(child->id());
 }
 
 ModelsAssistApi* LogicalModel::modelAssistApi() const

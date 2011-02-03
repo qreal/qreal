@@ -187,3 +187,17 @@ void AbstractModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
 	}
 	item->clearChildren();
 }
+
+void AbstractModel::removeModelItems(details::modelsImplementation::AbstractModelItem *const root)
+{
+	foreach (AbstractModelItem *child, root->children()) {
+		removeModelItems(child);
+		int childRow = child->row();
+		beginRemoveRows(index(root),childRow,childRow);
+		child->parent()->removeChild(child);
+		mModelItems.remove(child->id());
+		removeModelItemFromApi(root, child);
+		delete child;
+		endRemoveRows();
+	}
+}

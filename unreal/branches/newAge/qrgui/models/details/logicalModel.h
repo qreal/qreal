@@ -54,7 +54,7 @@ namespace qReal {
 				void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
 						modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
 				QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
-				void removeModelItems(details::modelsImplementation::AbstractModelItem * const root);
+				virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
 			};
 		}
 

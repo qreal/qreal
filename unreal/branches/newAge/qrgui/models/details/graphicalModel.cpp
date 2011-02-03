@@ -264,23 +264,14 @@ bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void GraphicalModel::removeModelItems(details::modelsImplementation::AbstractModelItem *const root)
+void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
 {
-	foreach (AbstractModelItem *child, root->children()) {
-		mApi.removeElement(child->id());
-		removeModelItems(child);
-		int childRow = child->row();
-		beginRemoveRows(index(root),childRow,childRow);
-		mApi.removeProperty(child->id(), "position");
-		mApi.removeProperty(child->id(), "configuration");
-		child->parent()->removeChild(child);
-		mModelItems.remove(child->id());
-		if (mModelItems.count(child->id())==0) {
-			mApi.removeChild(root->id(),child->id());
-		}
-		delete child;
-		endRemoveRows();
+	mApi.removeProperty(child->id(), "position");
+	mApi.removeProperty(child->id(), "configuration");
+	if (mModelItems.count(child->id())==0) {
+		mApi.removeChild(root->id(),child->id());
 	}
+	mApi.removeElement(child->id());
 }
 
 QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(Id const &logicalId) const

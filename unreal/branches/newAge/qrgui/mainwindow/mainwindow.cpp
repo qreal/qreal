@@ -216,7 +216,6 @@ MainWindow::MainWindow()
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
-
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -487,6 +486,8 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 			ui.propertyEditor->setRootIndex(QModelIndex());
 			mModels->graphicalModel()->removeRow(index.row(), index.parent());
 		}
+		if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
+			getCurrentTab()->scene()->invalidate();
 	}
 }
 
@@ -507,6 +508,8 @@ void MainWindow::deleteFromDiagram()
 			deleteFromExplorer(isLogicalModel);
 		}
 	}
+	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
+		getCurrentTab()->scene()->invalidate();
 }
 
 void MainWindow::showAbout()

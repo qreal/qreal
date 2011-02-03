@@ -1208,3 +1208,30 @@ void NodeElement::setColorRect(bool value)
 {
 	mSelectionNeeded = value;
 }
+
+void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
+{
+	foreach (Id edgeId, temporaryRemovedLinks) {
+		EdgeElement *edge = dynamic_cast<EdgeElement *>(static_cast<EditorViewScene *>(scene())->getElem(edgeId));
+		if (edge != NULL) {
+			if (direction == "from") {
+				QPointF startPos = edge->mapFromItem(this, this->getNearestPort(edge->line().first()));
+				edge->placeStartTo(startPos);
+			}
+			else {
+				QPointF endPos = edge->mapFromItem(this, this->getNearestPort(edge->line().last()));
+				edge->placeEndTo(endPos);
+			}
+			edge->connectToPort();
+		}
+	}
+}
+
+void NodeElement::checkConnectionsToPort()
+{
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
+	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
+}
+

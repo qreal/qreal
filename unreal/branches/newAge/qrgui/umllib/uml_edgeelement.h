@@ -44,6 +44,7 @@ namespace UML {
 			QPointF connectionPoint(UML::NodeElement const *node) const;
 			UML::NodeElement* otherSide(UML::NodeElement const *node) const;
 			void removeLink(UML::NodeElement const *from);
+			QPolygonF line() const;
 
 			void placeStartTo(QPointF const &place);
 			void placeEndTo(QPointF const &place);

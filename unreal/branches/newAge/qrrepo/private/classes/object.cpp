@@ -79,6 +79,35 @@ QVariant Object::property(const QString &name) const
 	}
 }
 
+void Object::setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue)
+{
+	mTemporaryRemovedLinks.insert(direction, listValue);
+}
+
+IdList Object::temporaryRemovedLinksAt(QString const &direction) const
+{
+	return mTemporaryRemovedLinks.value(direction);
+}
+
+IdList Object::temporaryRemovedLinks() const
+{
+	return temporaryRemovedLinksAt("to") << temporaryRemovedLinksAt("from") << temporaryRemovedLinksAt(QString());
+}
+
+void Object::removeTemporaryRemovedLinksAt(QString const &direction)
+{
+	if (mTemporaryRemovedLinks.contains(direction)) {
+		mProperties.remove(direction);
+	}
+}
+
+void Object::removeTemporaryRemovedLinks()
+{
+	temporaryRemovedLinksAt("from");
+	temporaryRemovedLinksAt("to");
+	temporaryRemovedLinksAt(QString());
+}
+
 bool Object::hasProperty(const QString &name) const
 {
 	return mProperties.contains(name);

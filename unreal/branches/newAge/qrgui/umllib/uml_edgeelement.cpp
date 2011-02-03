@@ -81,6 +81,11 @@ QRectF EdgeElement::boundingRect() const
 	return mLine.boundingRect().adjusted(-20, -20, 20, 20);
 }
 
+QPolygonF EdgeElement::line() const
+{
+	return mLine;
+}
+
 static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
