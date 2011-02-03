@@ -10,7 +10,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Container/{38774cd3-8fa3-4092-bac5-751879456797}"/>
     </links>
     <QString key="name" value="Timer"/>
-    <QPointF key="position" value="380, 434"/>
+    <QPointF key="position" value="391, 435"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

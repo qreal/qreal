@@ -19,7 +19,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9c84779b-5642-40c8-8189-d04ec01705af}"/>
   </children>
   <properties>
-    <QString key="displayedName" value="Robot Behavior Diagram"/>
+    <QString key="displayedName" value="Диаграмма поведения робота"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>

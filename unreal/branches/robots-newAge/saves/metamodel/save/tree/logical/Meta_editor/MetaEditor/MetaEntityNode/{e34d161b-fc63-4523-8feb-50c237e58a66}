@@ -6,7 +6,7 @@
   </children>
   <properties>
     <QString key="container" value=""/>
-    <QString key="displayedName" value=""/>
+    <QString key="displayedName" value="Играть звук"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
@@ -21,7 +21,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="path" value=""/>
-    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;182&quot; sizey=&quot;164&quot;>&#xa;        &lt;image y1=&quot;24&quot; name=&quot;images/123185_42160_48_alarm_bell_icon.png&quot; x1=&quot;40&quot; y2=&quot;72&quot; x2=&quot;88&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;16&quot; y=&quot;81&quot; text=&quot;Frequency&quot;/>&#xa;        &lt;label x=&quot;16&quot; y=&quot;104&quot; text=&quot;Duration&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;81&quot; textBinded=&quot;Frequency&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;104&quot; textBinded=&quot;Duration&quot;/>&#xa;        &lt;label x=&quot;16&quot; y=&quot;127&quot; text=&quot;Wait&quot;/>&#xa;        &lt;label x=&quot;83&quot; y=&quot;127&quot; textBinded=&quot;WaitForCompletion&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;73&quot;/>&#xa;        &lt;pointPort x=&quot;148&quot; y=&quot;68&quot;/>&#xa;        &lt;pointPort x=&quot;75&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;75&quot; y=&quot;162&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;211&quot; sizey=&quot;164&quot;>&#xa;        &lt;image y1=&quot;24&quot; name=&quot;images/123185_42160_48_alarm_bell_icon.png&quot; x1=&quot;69&quot; y2=&quot;71&quot; x2=&quot;116&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;1&quot; y=&quot;83a&quot; text=&quot;Частота:&quot;/>&#xa;        &lt;label x=&quot;0&quot; y=&quot;105a&quot; text=&quot;Длительность:&quot;/>&#xa;        &lt;label x=&quot;112&quot; y=&quot;81&quot; textBinded=&quot;Frequency&quot;/>&#xa;        &lt;label x=&quot;112&quot; y=&quot;104&quot; textBinded=&quot;Duration&quot;/>&#xa;        &lt;label x=&quot;0&quot; y=&quot;127&quot; text=&quot;Ждать завершения:&quot;/>&#xa;        &lt;label x=&quot;112&quot; y=&quot;127&quot; textBinded=&quot;WaitForCompletion&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;31&quot; y=&quot;73&quot;/>&#xa;        &lt;pointPort x=&quot;177&quot; y=&quot;68&quot;/>&#xa;        &lt;pointPort x=&quot;104&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;104&quot; y=&quot;162&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </properties>
 </object>

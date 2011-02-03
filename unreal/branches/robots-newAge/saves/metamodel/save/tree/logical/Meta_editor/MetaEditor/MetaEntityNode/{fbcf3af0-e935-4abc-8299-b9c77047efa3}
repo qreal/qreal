@@ -4,7 +4,7 @@
   </children>
   <properties>
     <QString key="container" value=""/>
-    <QString key="displayedName" value="Wait For Touch Sensor"/>
+    <QString key="displayedName" value="Ждать сенсора касания"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
@@ -19,7 +19,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="path" value=""/>
-    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;165&quot; sizey=&quot;147&quot;>&#xa;        &lt;image y1=&quot;9&quot; name=&quot;images/31jD6OTBzLL.jpg&quot; x1=&quot;0&quot; y2=&quot;86&quot; x2=&quot;164&quot;/>&#xa;        &lt;image y1=&quot;64&quot; name=&quot;images/GreenHourglass_up.svg&quot; x1=&quot;116&quot; y2=&quot;88&quot; x2=&quot;133&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;47&quot; y=&quot;109&quot; text=&quot;Port:&quot;/>&#xa;        &lt;label x=&quot;88&quot; y=&quot;109&quot; textBinded=&quot;Port&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;15&quot; y=&quot;80&quot;/>&#xa;        &lt;pointPort x=&quot;157&quot; y=&quot;81&quot;/>&#xa;        &lt;pointPort x=&quot;86&quot; y=&quot;145&quot;/>&#xa;        &lt;pointPort x=&quot;82&quot; y=&quot;2&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;164&quot; sizey=&quot;147&quot;>&#xa;        &lt;image y1=&quot;9&quot; name=&quot;images/31jD6OTBzLL.jpg&quot; x1=&quot;0&quot; y2=&quot;85&quot; x2=&quot;163&quot;/>&#xa;        &lt;image y1=&quot;64&quot; name=&quot;images/GreenHourglass_up.svg&quot; x1=&quot;116&quot; y2=&quot;87&quot; x2=&quot;132&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;47&quot; y=&quot;109&quot; text=&quot;Порт:&quot;/>&#xa;        &lt;label x=&quot;88&quot; y=&quot;109&quot; textBinded=&quot;Port&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;15&quot; y=&quot;80&quot;/>&#xa;        &lt;pointPort x=&quot;157&quot; y=&quot;81&quot;/>&#xa;        &lt;pointPort x=&quot;86&quot; y=&quot;145&quot;/>&#xa;        &lt;pointPort x=&quot;82&quot; y=&quot;2&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </properties>
 </object>

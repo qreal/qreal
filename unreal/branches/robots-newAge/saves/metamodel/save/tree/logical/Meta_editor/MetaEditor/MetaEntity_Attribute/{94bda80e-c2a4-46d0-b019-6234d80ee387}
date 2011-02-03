@@ -3,7 +3,7 @@
   <properties>
     <QString key="attributeType" value="string"/>
     <QString key="defaultValue" value="A, B"/>
-    <QString key="displayedName" value=""/>
+    <QString key="displayedName" value="Порты"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>

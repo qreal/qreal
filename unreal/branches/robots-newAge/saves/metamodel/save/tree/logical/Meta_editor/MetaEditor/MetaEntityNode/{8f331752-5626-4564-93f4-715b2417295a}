@@ -4,7 +4,7 @@
   </children>
   <properties>
     <QString key="container" value=""/>
-    <QString key="displayedName" value="Beep"/>
+    <QString key="displayedName" value="Гудок"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
