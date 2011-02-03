@@ -180,7 +180,7 @@ MainWindow::MainWindow()
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
-		QString text = "These plugins are not present, but needed to load the save:\n";
+		QString text = tr("These plugins are not present, but needed to load the save:\n");
 		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
@@ -562,7 +562,7 @@ void MainWindow::generateEditor()
 		}
 	}
 	if (!found) {
-		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
+		QMessageBox::warning(this, tr("error"), tr("Cannot find the directory for saving"));
 		return;
 	}
 	foreach (Id const key, metamodelList.keys()) {
@@ -587,7 +587,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	int const progressBarHeight = 20;
 
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
-		QMessageBox::warning(this, tr("error"), "please, fill compiler settings");
+		QMessageBox::warning(this, tr("error"), tr("please, fill compiler settings"));
 		return;
 	}
 
@@ -610,7 +610,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 			mUi->paletteToolbox->deleteDiagramType(diagram);
 
 		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
-			QMessageBox::warning(this, "error", "cannot unload plugin");
+			QMessageBox::warning(this, tr("error"), tr("cannot unload plugin"));
 			progress->close();
 			delete progress;
 			return;
@@ -639,7 +639,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 		}
 	}
 	if (progress->value() != 100)
-		QMessageBox::warning(this, tr("error"), "cannot load new editor");
+		QMessageBox::warning(this, tr("error"), tr("cannot load new editor"));
 	progress->setValue(100);
 	progress->close();
 	delete progress;
@@ -648,7 +648,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 void MainWindow::parseEditorXml()
 {
 	if (!mEditorManager.editors().contains(Id("Meta_editor"))) {
-		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
+		QMessageBox::warning(this, tr("error"), tr("required plugin is not loaded"));
 		return;
 	}
 	QDir dir(".");
@@ -731,7 +731,7 @@ void MainWindow::openShapeEditor()
 {
 	QObject const *object = sender();
 	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
-	QString const text = "Shape Editor";
+	QString const text = tr("Shape Editor");
 	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
 		QPersistentModelIndex index = button->index();
@@ -1021,7 +1021,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
-	QString text = "Gestures Show";
+	QString text = tr("Gestures Show");
 	mGesturesWidget = new GesturesWidget();
 	mUi->tabs->addTab(mGesturesWidget, text);
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
@@ -1044,9 +1044,9 @@ void MainWindow::suggestToCreateDiagram()
 	dialog.setLayout(&vLayout);
 	dialog.setMinimumSize(320, 240);
 	dialog.setMaximumSize(320, 240);
-	dialog.setWindowTitle("Choose new diagram");
+	dialog.setWindowTitle(tr("Choose new diagram"));
 
-	QLabel label("There is no existing diagram,\n choose diagram you want work with:");
+	QLabel label(tr("There is no existing diagram,\n choose diagram you want work with:"));
 	QListWidget diagramsListWidget;
 	diagramsListWidget.setParent(&dialog);
 
@@ -1064,9 +1064,9 @@ void MainWindow::suggestToCreateDiagram()
 	}
 
 	QPushButton cancelButton;
-	cancelButton.setText("Cancel");
+	cancelButton.setText(tr("Cancel"));
 	QPushButton okButton;
-	okButton.setText("Done");
+	okButton.setText(tr("Done"));
 
 	QObject::connect(&diagramsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(diagramInCreateListSelected(int)));
 	QObject::connect(&diagramsListWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(setDiagramCreateFlag()));

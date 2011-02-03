@@ -997,6 +997,13 @@
 <context>
     <name>qReal::MainWindow</name>
     <message>
+        <location filename="mainwindow/mainwindow.cpp" line="183"/>
+        <source>These plugins are not present, but needed to load the save:
+</source>
+        <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
+</translation>
+    </message>
+    <message>
         <location filename="mainwindow/mainwindow.cpp" line="186"/>
         <source>Some plugins are missing</source>
         <translation>Некоторых плагинов не хватает</translation>
@@ -1045,10 +1052,16 @@
     <message>
         <location filename="mainwindow/mainwindow.cpp" line="565"/>
         <location filename="mainwindow/mainwindow.cpp" line="590"/>
+        <location filename="mainwindow/mainwindow.cpp" line="613"/>
         <location filename="mainwindow/mainwindow.cpp" line="642"/>
         <location filename="mainwindow/mainwindow.cpp" line="651"/>
         <source>error</source>
         <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="565"/>
+        <source>Cannot find the directory for saving</source>
+        <translation>Не удалось найти папку для сохранения</translation>
     </message>
     <message>
         <location filename="mainwindow/mainwindow.cpp" line="573"/>
@@ -1056,9 +1069,61 @@
         <translation>Загрузка..</translation>
     </message>
     <message>
+        <location filename="mainwindow/mainwindow.cpp" line="590"/>
+        <source>please, fill compiler settings</source>
+        <translation>Пожалуйста, укажите в окне &quot;Настройки&quot; настройки компилятора</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="613"/>
+        <source>cannot unload plugin</source>
+        <translation>Не могу выгрузить плагин</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="642"/>
+        <source>cannot load new editor</source>
+        <translation>Невозможно загрузить новый редактор</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="651"/>
+        <source>required plugin is not loaded</source>
+        <translation>Требуемый плагин не загружен</translation>
+    </message>
+    <message>
         <location filename="mainwindow/mainwindow.cpp" line="664"/>
         <source>Select xml file to parse</source>
         <translation>Выберите xml-файл для импорта</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="734"/>
+        <source>Shape Editor</source>
+        <translation>Редактор формы фигур</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="1024"/>
+        <source>Gestures Show</source>
+        <translation>Жесты мышью</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="1047"/>
+        <source>Choose new diagram</source>
+        <translation>Выберите новую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="1049"/>
+        <source>There is no existing diagram,
+ choose diagram you want work with:</source>
+        <translation>Диаграммы пока не создано,
+укажите диаграмму, с которой хотите работать</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="1067"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainwindow.cpp" line="1069"/>
+        <source>Done</source>
+        <translation>ОК</translation>
     </message>
     <message>
         <source>Select Hascol files to parse</source>
