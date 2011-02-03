@@ -129,7 +129,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
+   <widget class="QWidget" name="minimapDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -167,7 +167,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_5">
+   <widget class="QWidget" name="paletteDockWidgetContents">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -204,7 +204,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeView" name="logicalModelExplorer">
@@ -262,7 +262,7 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_6">
+   <widget class="QWidget" name="errorDockWidgetContents">
     <widget class="ErrorListWidget" name="errorListWidget">
      <property name="geometry">
       <rect>
@@ -282,7 +282,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_6">
+   <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
@@ -304,7 +304,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
+   <widget class="QWidget" name="propertyEditorDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
