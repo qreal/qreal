@@ -238,6 +238,7 @@ void XmlCompiler::generateIncludes(OutFile &out)
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
 }
+
 void XmlCompiler::generateInitPlugin(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
@@ -253,7 +254,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
-
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
@@ -262,7 +262,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->displayedName() << " \"" << ";\n";
+		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\"" << diagram->displayedName() << "\");\n";
 		out() << "\tdiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
 	}
@@ -314,7 +314,6 @@ void XmlCompiler::generatePropertyMap(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyTypes(out);
 	out() << "}\n\n";
-
 }
 
 void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
@@ -324,7 +323,6 @@ void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyDefaults(out);
 	out() << "}\n\n";
-
 }
 
 void XmlCompiler::generatePropertyTypesRequests(OutFile &out)
