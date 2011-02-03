@@ -9,6 +9,8 @@ INCLUDEPATH	+=	../qrmc\
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 
+TRANSLATIONS = qrgui_ru.ts
+
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
 QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
