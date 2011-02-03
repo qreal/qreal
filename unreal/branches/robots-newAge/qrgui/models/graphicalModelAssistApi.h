@@ -23,10 +23,15 @@ class GraphicalModelAssistApi : public QObject, public details::ModelsAssistApi
 public:
 	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	virtual Id createElement(Id const &parent, Id const &type);
 	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
 	virtual IdList children(Id const &element) const;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position);
+	IdList temporaryRemovedLinksFrom(Id const &elem) const;
+	IdList temporaryRemovedLinksTo(Id const &elem) const;
+	IdList temporaryRemovedLinksNone(Id const &elem) const;
+	void removeTemporaryRemovedLinks(Id const &elem);
 
 	void setConfiguration(Id const &elem, QPolygon const &newValue);
 	QPolygon configuration(Id const &elem) const;

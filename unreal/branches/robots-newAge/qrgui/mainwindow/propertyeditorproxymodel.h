@@ -66,11 +66,14 @@ private:
 
 	struct Field {
 		QString fieldName;
+		QString fieldDisplayedName;
 		AttributeClassEnum attributeClass;
 		int role;
 
-		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_)
-			: fieldName(fieldName_), attributeClass(attributeClass_), role(role_)
+		Field(QString const &fieldName_, QString const &fieldDisplayedName_
+				, AttributeClassEnum const &attributeClass_, int role_)
+			: fieldName(fieldName_), fieldDisplayedName(fieldDisplayedName_)
+			 , attributeClass(attributeClass_), role(role_)
 		{
 		}
 

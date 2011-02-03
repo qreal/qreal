@@ -56,10 +56,12 @@ namespace qReal {
 					void cleanupTree(modelsImplementation::AbstractModelItem * item);
 
 					AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
+					void removeModelItems(details::modelsImplementation::AbstractModelItem *const root);
 
 				private:
 					virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
 					virtual void init() = 0;
+					virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child) = 0;
 				};
 
 			}

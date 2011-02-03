@@ -149,6 +149,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			setItem(current, elem);
 			elem->updateData();
 			elem->connectToPort();
+			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
 
@@ -185,7 +186,6 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		if (needToProcessChildren && model()->hasChildren(current))
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 	}
-
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 

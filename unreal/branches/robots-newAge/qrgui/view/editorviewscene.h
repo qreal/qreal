@@ -99,6 +99,7 @@ private:
 	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
+	void redraw();
 
 	UML::Element *getElemAt(const QPointF &position);
 

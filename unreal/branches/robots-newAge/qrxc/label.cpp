@@ -37,7 +37,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mText + "\");\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", QString::fromUtf8(\"" + mText + "\"));\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 

@@ -28,5 +28,4 @@ public:
 	virtual qReal::IdList elementsByType(QString const &type) const = 0;
 	virtual int elementsCount() const = 0;
 };
-
 }

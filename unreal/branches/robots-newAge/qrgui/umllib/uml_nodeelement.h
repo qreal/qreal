@@ -90,6 +90,8 @@ namespace UML {
 		void adjustLinks();
 		void arrangeLinks();
 
+		virtual void checkConnectionsToPort();
+
 	public slots:
 		void switchGrid(bool isChecked);
 
@@ -143,6 +145,8 @@ namespace UML {
 
 		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
+
+		void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
 
 		ContextMenuAction mSwitchGridAction;
 		static int const objectMinSize = 10;

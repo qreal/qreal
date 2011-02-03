@@ -29,6 +29,10 @@ namespace qrRepo {
 			void removeProperty(const qReal::Id &id, const QString &name);
 			bool hasProperty(const qReal::Id &id, const QString &name) const;
 			void remove(const qReal::Id &id);
+			void setTemporaryRemovedLinks(qReal::Id const &id, QString const &direction, qReal::IdList const &linkIdList);
+			qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
+			qReal::IdList temporaryRemovedLinks(qReal::Id const &id) const;
+			void removeTemporaryRemovedLinks(qReal::Id const &id);
 
 			qReal::IdList elements() const;
 			bool isLogicalId(qReal::Id const &elem) const;

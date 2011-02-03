@@ -28,6 +28,11 @@ namespace qrRepo {
 			qReal::Id id() const;
 			qReal::Id logicalId() const;
 			QMapIterator<QString, QVariant> propertiesIterator();
+			void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
+			qReal::IdList temporaryRemovedLinksAt(QString const &direction) const;
+			qReal::IdList temporaryRemovedLinks() const;
+			void removeTemporaryRemovedLinksAt(QString const &direction);
+			void removeTemporaryRemovedLinks();
 
 		private:
 			const qReal::Id mId;
@@ -35,6 +40,7 @@ namespace qrRepo {
 			qReal::Id mParent;
 			qReal::IdList mChildren;
 			QMap<QString, QVariant> mProperties;
+			QMap<QString, qReal::IdList> mTemporaryRemovedLinks;
 		};
 
 	}

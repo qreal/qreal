@@ -99,7 +99,7 @@ void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
 	if (hasProperty(id, endName)) {
 		Id target = property(id, endName).value<Id>();
 		if (hasProperty(target, "links")) {
-			removeFromList(target, "links", id);
+			removeFromList(target, "links", id, endName);
 		}
 	}
 }
@@ -228,10 +228,10 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 {
 	if (hasProperty(id, "from")) {
 		Id prev = mClient.property(id, "from").value<Id>();
-		removeFromList(prev, "links", id);
+		removeFromList(prev, "links", id, "from");
 	}
 	mClient.setProperty(id, "from", from.toVariant());
-	addToIdList(from, "links", id);
+	addToIdList(from, "links", id, "from");
 }
 
 Id RepoApi::to(Id const &id) const
@@ -244,10 +244,10 @@ void RepoApi::setTo(Id const &id, Id const &to)
 {
 	if (hasProperty(id, "to")) {
 		Id prev = mClient.property(id, "to").value<Id>();
-		removeFromList(prev, "links", id);
+		removeFromList(prev, "links", id, "to");
 	}
 	mClient.setProperty(id, "to", to.toVariant());
-	addToIdList(to, "links", id);
+	addToIdList(to, "links", id, "to");
 }
 
 double RepoApi::fromPort(Id const &id) const
@@ -333,7 +333,7 @@ void RepoApi::save(qReal::IdList list) const
 	mClient.save(list);
 }
 
-void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data)
+void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
 	if (target == Id::rootId())
 		return;
@@ -346,17 +346,28 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	list.append(data);
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
+
+	if (listName == "links") {
+		IdList temporaryRemovedList = mClient.temporaryRemovedLinksAt(target, direction);
+		temporaryRemovedList.removeAll(data);
+		mClient.setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
+	}
 }
 
-void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data)
+void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
 	if (target == Id::rootId())
 		return;
 
 	IdList list = mClient.property(target, listName).value<IdList>();
+	IdList temporaryRemovedList = mClient.temporaryRemovedLinksAt(target, direction);
+	if(listName == "links" && list.contains(data)) {
+		temporaryRemovedList.append(data);
+	}
 	list.removeAll(data);
 
 	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
+	mClient.setTemporaryRemovedLinks(target, direction, temporaryRemovedList);
 }
 
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
@@ -412,4 +423,19 @@ int RepoApi::elementsCount() const
 bool RepoApi::exist(Id const &id) const
 {
 	return mClient.exist(id);
+}
+
+IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
+{
+	return mClient.temporaryRemovedLinksAt(id, direction);
+}
+
+void RepoApi::setTemporaryRemovedLinks(Id const &id, IdList const &value, QString const &direction)
+{
+	mClient.setTemporaryRemovedLinks(id, direction, value);
+}
+
+void RepoApi::removeTemporaryRemovedLinks(Id const &id)
+{
+	mClient.removeTemporaryRemovedLinks(id);
 }

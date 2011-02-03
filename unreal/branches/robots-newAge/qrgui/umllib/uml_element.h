@@ -34,7 +34,8 @@ namespace UML {
 		virtual qReal::Id logicalId() const;
 		virtual QString name() const;
 
-		virtual void connectToPort() { }
+		virtual void connectToPort() {};//for edge
+		virtual void checkConnectionsToPort() {};//for node
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
 		virtual bool initPossibleEdges() = 0;

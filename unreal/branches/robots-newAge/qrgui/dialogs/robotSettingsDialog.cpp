@@ -36,7 +36,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	}
 
 	QStringList sensorNames;
-	sensorNames << "Unused" << "Touch sensor (boolean value)" << "Touch sensor (raw value)" << "Sonar sensor";
+	sensorNames << tr("Unused") << tr("Touch sensor (boolean value)") << tr("Touch sensor (raw value)") << tr("Sonar sensor");
 
 	mUi->port1ComboBox->addItems(sensorNames);
 	mUi->port2ComboBox->addItems(sensorNames);

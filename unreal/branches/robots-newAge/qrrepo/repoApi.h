@@ -54,6 +54,10 @@ namespace qrRepo {
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		bool hasProperty(qReal::Id const &id, QString const &propertyName) const;
 
+		qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const;
+		void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction);
+		void removeTemporaryRemovedLinks(qReal::Id const &id);
+
 		qReal::Id from(qReal::Id const &id) const;
 		void setFrom(qReal::Id const &id, qReal::Id const &from);
 
@@ -102,8 +106,8 @@ namespace qrRepo {
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.
 
-		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data);
-		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data);
+		void addToIdList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
+		void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data, QString const &direction = QString());
 
 		qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);

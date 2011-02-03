@@ -50,7 +50,7 @@ Qt::ItemFlags PropertyEditorModel::flags(QModelIndex const &index) const
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
-		return QString(section == 1 ? "value" : "name");
+		return QString(section == 1 ? tr("value") : tr("name"));
 	else
 		return QVariant();
 }
@@ -199,7 +199,7 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
-			mFields << Field(property, logicalAttribute, role);
+			mFields << Field(property, property, logicalAttribute, role);
 			++role;
 		}
 		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);

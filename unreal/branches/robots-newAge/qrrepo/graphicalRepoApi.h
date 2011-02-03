@@ -28,6 +28,10 @@ public:
 
 	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
 	virtual qReal::Id logicalId(qReal::Id const &id) const = 0;
+
+	virtual qReal::IdList temporaryRemovedLinksAt(qReal::Id const &id, QString const &direction) const = 0;
+	virtual void setTemporaryRemovedLinks(qReal::Id const &id, qReal::IdList const &value, QString const &direction) = 0;
+	virtual void removeTemporaryRemovedLinks(qReal::Id const &id) = 0;
 };
 
 }

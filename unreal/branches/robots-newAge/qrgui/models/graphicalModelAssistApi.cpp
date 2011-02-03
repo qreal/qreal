@@ -19,6 +19,11 @@ qrRepo::GraphicalRepoApi const &GraphicalModelAssistApi::graphicalRepoApi() cons
 	return mGraphicalModel.api();
 }
 
+qrRepo::GraphicalRepoApi &GraphicalModelAssistApi::mutableGraphicalRepoApi() const
+{
+	return mGraphicalModel.mutableApi();
+}
+
 Id GraphicalModelAssistApi::logicalId(Id const &elem) const
 {
 	return mGraphicalModel.data(indexById(elem), roles::logicalIdRole).value<Id>();
@@ -124,4 +129,24 @@ QString GraphicalModelAssistApi::toolTip(Id const &elem) const
 bool GraphicalModelAssistApi::isGraphicalId(Id const &id) const
 {
 	return indexById(id) != QModelIndex();
+}
+
+IdList GraphicalModelAssistApi::temporaryRemovedLinksFrom(Id const &elem) const
+{
+	return graphicalRepoApi().temporaryRemovedLinksAt(elem, "from");
+}
+
+IdList GraphicalModelAssistApi::temporaryRemovedLinksTo(Id const &elem) const
+{
+	return graphicalRepoApi().temporaryRemovedLinksAt(elem, "to");
+}
+
+IdList GraphicalModelAssistApi::temporaryRemovedLinksNone(Id const &elem) const
+{
+	return graphicalRepoApi().temporaryRemovedLinksAt(elem, QString());
+}
+
+void GraphicalModelAssistApi::removeTemporaryRemovedLinks(Id const &elem)
+{
+	mutableGraphicalRepoApi().removeTemporaryRemovedLinks(elem);
 }
