@@ -45,9 +45,10 @@ public:
 	virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
 	virtual QString elementDescription(QString const &diagram, QString const &element) const = 0;
 	virtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const = 0;
+	virtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const = 0;
 	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
 };
 
 }
 
-Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.8")
+Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.9")

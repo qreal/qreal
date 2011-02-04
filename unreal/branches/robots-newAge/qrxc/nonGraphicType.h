@@ -19,6 +19,8 @@ public:
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
+	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 
 protected:
 	NonGraphicType();

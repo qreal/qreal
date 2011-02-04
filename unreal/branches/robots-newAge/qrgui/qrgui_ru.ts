@@ -1069,6 +1069,11 @@
         <translation>Загрузка..</translation>
     </message>
     <message>
+        <location filename="mainwindow/mainwindow.cpp" line="573"/>
+        <source>Do you want to load generated editor %1?</source>
+        <translation>Вы хотите загрузить сгенерированный редактор %1?</translation>
+    </message>
+    <message>
         <location filename="mainwindow/mainwindow.cpp" line="590"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, укажите в окне &quot;Настройки&quot; настройки компилятора</translation>

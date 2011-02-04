@@ -282,6 +282,7 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
 			QDomElement property = mDocument.createElement("property");
 			ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
 			ensureCorrectness(idChild, property, "name", mApi.name(idChild));
+			ensureCorrectness(idChild, property, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			if (mApi.stringProperty(idChild, "defaultValue") != "") {
 				QDomElement defaultTag = mDocument.createElement("default");
 				QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "defaultValue"));

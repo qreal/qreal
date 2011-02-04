@@ -43,7 +43,9 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
 	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
-	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;	
+	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out) = 0;
+	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
+	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
 
 protected:
 	void copyFields(Type *type) const;

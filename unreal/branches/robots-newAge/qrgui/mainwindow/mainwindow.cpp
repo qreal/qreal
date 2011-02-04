@@ -60,7 +60,7 @@ MainWindow::MainWindow()
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = new QProgressBar((QWidget*) splash);
-	progress->move(20,270);
+	progress->move(20, 270);
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
@@ -570,7 +570,7 @@ void MainWindow::generateEditor()
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
-			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
+			if (QMessageBox::question(this, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelList[key]),
 					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");

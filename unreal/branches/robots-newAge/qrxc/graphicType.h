@@ -21,6 +21,7 @@ public:
 	virtual bool resolve();
 	virtual void generateNameMapping(utils::OutFile &out);
 	virtual void generateDescriptionMapping(utils::OutFile &out);
+	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
