@@ -4,23 +4,25 @@
 
 const double mouseSpeed = 3;
 
-QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
+QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & graph)
 {
+    QList<QPoint> path = increase(graph, 10);
 	QList<QPoint> mousePath;
 	if (path.isEmpty())
 		return mousePath;
 	mousePath.append(path[0]);
+        int number = 20;
 	for (int i = 1; i < path.size(); i++)
 	{
 		QPoint currentPoint = path[i];
 		QPoint previousPoint = path[i - 1];
 		int length = currentPoint.x() - previousPoint.x();
 		int width = currentPoint.y() - previousPoint.y();
-		int number = static_cast<int>((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
-		for (int j = 1; j <= number; j++)
+                //int number = static_cast<int>((sqrt(pow(length, 2) + pow(width, 2))) / mouseSpeed + 1);
+                for (int j = 0; j <= number; j++)
 		{
-			QPoint point(int(previousPoint.x() + length * j / number),
-						 int(previousPoint.y() + width * j / number));
+                        QPoint point(previousPoint.x() + length * j / number,
+                                                 previousPoint.y() + width * j / number);
 			mousePath.append(point);
 		}
 	}

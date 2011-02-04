@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QTextStream>
 
-const QString pathToFile = "test/usersGestures.xml";
+const QString pathToFile = "../gesturesTest/usersGestures.xml";
 const QString matchingAlgorithmsFile = "matchingAlgorithms.txt";
 
 //TODO:: вынести в константы

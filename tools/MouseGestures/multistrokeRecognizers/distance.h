@@ -52,6 +52,12 @@ public:
         }
         return dist / (m * n);
     }
+    static double getL1Distance(const Key & currentKey1, const Key & currentKey2)
+    {
+        return std::max(getDist(currentKey1, currentKey2), getDist(currentKey2, currentKey1));
+                /// (currentKey1.size() + currentKey2.size());
+    }
+
 private:
     static Key transferKey(const Key &key, int size)
     {
@@ -66,5 +72,23 @@ private:
     static double norm(const SquarePos &pos1, const SquarePos &pos2)
     {
         return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
+    }
+    //todo:: rename
+    static double getDist(const Key & key, const Key & figure)
+    {
+        double figureDist = 0;
+        if (key.isEmpty())
+            return 0;
+        foreach (SquarePos position, figure)
+        {
+            double dist = norm(position, key.at(0));
+            foreach (SquarePos pos, key)
+            {
+                if (norm(pos, position) < dist)
+                    dist = norm(pos, position);
+            }
+            figureDist = std::max(dist, figureDist);
+        }
+        return figureDist;
     }
 };

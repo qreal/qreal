@@ -10,12 +10,14 @@ const QString levPictureAlgorithm = "levenshtein dist and picture sorting";
 const QString levCurveAlgorithm = "levenshtein dist and curve sorting";
 const QString curvePictureAlgorithm = "curve dist and picture sorting";
 const QString curveDistCurveSortAlgorithm = "curve dist and curve sorting";
+const QString l1Algorithm = "L1 algorithm";
 
 TestWindow::TestWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::TestWindow)
 {
     ui->setupUi(this);
+    ui->cbAlgorithm->addItem(l1Algorithm, QVariant());
     ui->cbAlgorithm->addItem(levPictureAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(levCurveAlgorithm, QVariant());
     ui->cbAlgorithm->addItem(curvePictureAlgorithm, QVariant());
@@ -70,6 +72,8 @@ GesturesManager * TestWindow::getGesturesManager()
         return new LevCurveGesturesManager();
     else if (name == curvePictureAlgorithm)
         return new CurvePictureGesturesManager();
+    else if (name == l1Algorithm)
+        return new L1GesturesManager();
     else return new CurveDistCurveSortGesturesManager();
 }
 

@@ -2,14 +2,14 @@
 #include "GeometricForms.h"
 
 static const int minMovement = 20;
-static const int heightSize = 7;
-static const int widthSize = 7;
-static const int unidimensionalLimit = 3;
+//static const int heightSize = 30;
+//static const int widthSize = 30;
+static const int unidimensionalLimit = 1;
 
 class KeyBuilder
 {
 public:
-    static Key getKey(const PointVector &path)
+    static Key getKey(const PointVector &path, int heightSize, int widthSize)
     {
         Key key;
         if (path.isEmpty())

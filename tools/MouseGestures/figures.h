@@ -8,7 +8,7 @@ static const QString x2Key = "x2";
 static const QString y1Key = "y1";
 static const QString y2Key = "y2";
 static const double pi = 3.141592;
-static const int pointsOnEllipse = 16;
+static const int pointsOnEllipse = 64;
 
 class Figure
 {
