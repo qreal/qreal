@@ -23,19 +23,26 @@ DEFINES += QRREPO_LIBRARY
 
 HEADERS += \
 	private/client.h \
-	private/classes/logicObject.h \
 	private/qrRepoGlobal.h \
 	private/serializer.h \
+    private/classes/object.h
 
 SOURCES += \
 	private/client.cpp \
-	private/classes/logicObject.cpp \
 	private/serializer.cpp \
+    private/classes/object.cpp
 
 # API репозитория
-HEADERS += repoApi.h \
+HEADERS += \
+	repoApi.h \
+	graphicalRepoApi.h \
+	logicalRepoApi.h \
+	repoControlInterface.h \
+	commonRepoApi.h \
 
-SOURCES += private/repoApi.cpp \
+
+SOURCES += \
+	private/repoApi.cpp \
 
 #svn support
 INCLUDEPATH += include

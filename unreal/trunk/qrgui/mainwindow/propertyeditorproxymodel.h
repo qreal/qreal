@@ -7,7 +7,7 @@
 #include <QtCore/QStringList>
 
 #include "../editorManager/editorManager.h"
-#include "../../qrrepo/repoApi.h"
+#include "../../qrrepo/logicalRepoApi.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств
@@ -18,11 +18,10 @@ class PropertyEditorModel : public QAbstractTableModel
 
 public:
 	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
-								 QObject *parent = 0);
+			QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
-	int roleByIndex(int const index) const;
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -31,30 +30,64 @@ public:
 
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
-	void setSourceModel(QAbstractItemModel *sourceModel);
-	QStringList getEnumValues(const QModelIndex &index) const;
-	QString getTypeName(const QModelIndex &index) const;
-	qrRepo::RepoApi const &getApi() const;
+	void setSourceModels(QAbstractItemModel * const logicalSourceModel, QAbstractItemModel * const graphicalSourceModel);
+	void setModelIndexes(QModelIndex const &logicalModelIndex, QModelIndex const &graphicalModelIndex);
+	void clearModelIndexes();
 
-	const QModelIndex& getModelIndex() const;
+	QStringList enumValues(const QModelIndex &index) const;
 
-	QAbstractItemModel* getTargetModel() const;
+	// Methods needed by "Reference button" delegate
+	QString typeName(const QModelIndex &index) const;
 
-public slots:
-	void setIndex(const QModelIndex &sourceIndex);
+	// Methods for use in delegate, allow to determine where in actual models to put data
+	QModelIndex modelIndex(int row) const;
+	int roleByIndex(int row) const;
+
+	const QModelIndex& logicalModelIndex() const;
+	const QModelIndex& graphicalModelIndex() const;
+
+	QAbstractItemModel* logicalTargetModel() const;
+	QAbstractItemModel* graphicalTargetModel() const;
+
+	bool isCurrentIndex(QModelIndex const &index) const;
 
 private slots:
 	void rereadData();
 
 private:
-	QAbstractItemModel *targetModel;
-	QPersistentModelIndex targetObject;
+	enum AttributeClassEnum {
+		namePseudoattribute
+		, logicalAttribute
+		, graphicalAttribute
+		, graphicalIdPseudoattribute
+		, logicalIdPseudoattribute
+		, metatypePseudoattribute
+	};
 
-	QStringList mFieldNames;
+	struct Field {
+		QString fieldName;
+		AttributeClassEnum attributeClass;
+		int role;
 
-	int mPseudoAttributesCount;
+		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_)
+			: fieldName(fieldName_), attributeClass(attributeClass_), role(role_)
+		{
+		}
 
-	int mEditablePseudoAttributesCount;
+		Field(QString fieldName_, AttributeClassEnum attributeClass_)
+			: fieldName(fieldName_), attributeClass(attributeClass_), role(-1)
+		{
+		}
+	};
+
+	QAbstractItemModel *mTargetLogicalModel;
+	QAbstractItemModel *mTargetGraphicalModel;
+	QPersistentModelIndex mTargetLogicalObject;
+	QPersistentModelIndex mTargetGraphicalObject;
+
+	QList<Field> mFields;
 
 	qReal::EditorManager const &mEditorManager;
+
+	bool isValid() const;
 };

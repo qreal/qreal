@@ -8,18 +8,18 @@
 class ButtonRefWindow : public QPushButton
 {
 	Q_OBJECT
+
 public:
-	ButtonRefWindow(QWidget *parent, QString typeName,const qrRepo::RepoApi *api,
-					QAbstractItemModel* tModel, int r, const QModelIndex &ind,
-					qReal::MainWindow *mWindow);
+	ButtonRefWindow(QWidget *parent, QString const &typeName
+			, qReal::models::LogicalModelAssistApi const &logicalModelAssistApi
+			, int role, const QModelIndex &index, qReal::MainWindow *mainWindow);
 
 private:
-	QString name;
-	const qrRepo::RepoApi *mApi;
-	QAbstractItemModel* targetModel;
-	int role;
-	const QModelIndex &index;
-	qReal::MainWindow *mainWindow;
+	QString mName;
+	qrRepo::LogicalRepoApi const &mApi;
+	int mRole;
+	QPersistentModelIndex const mIndex;
+	qReal::MainWindow * const mMainWindow;
 
 private slots:
 	void makeWindow();

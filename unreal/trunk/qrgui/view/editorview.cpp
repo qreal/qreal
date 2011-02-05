@@ -63,7 +63,8 @@ void EditorView::zoomOut()
 	scale(zoomFactor, zoomFactor);
 }
 
-void EditorView::setMainWindow(qReal::MainWindow *mainWindow) {
+void EditorView::setMainWindow(qReal::MainWindow *mainWindow)
+{
 	mMVIface->scene()->setMainWindow(mainWindow);
 }
 

@@ -4,7 +4,6 @@
 Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	:Path(QPainterPath(start))
 {
-	mNeedScalingRect = false;
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
 	mDomElementType = pictureType;
@@ -15,15 +14,16 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	mC1 = c1;
 	mCurvePath = new QPainterPath(QPointF(mX1, mY1));
 	mCurvePath->quadTo(mC1, QPointF(mX2, mY2));
+	mBoundingRect = boundingRect();
 }
 
 Curve::Curve(Curve const &other)
-	:Path(other)
+	:Path(QPainterPath())
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
 	mBrush = other.mBrush;
-	mDomElementType = pictureType;
+	mDomElementType = Item::pictureType;
 	mX1 = other.mX1;
 	mX2 = other.mX2;
 	mY1 = other.mY1;
@@ -77,11 +77,6 @@ QRectF Curve::searchMaxMinCoord() const
 QRectF Curve::boundingRect() const
 {
 	return searchMaxMinCoord().adjusted(-drift, -drift, drift, drift);
-}
-
-QRectF Curve::realBoundingRect() const
-{
-	return mapToScene(boundingRect().adjusted(drift, drift, -drift, -drift)).boundingRect();
 }
 
 void Curve::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

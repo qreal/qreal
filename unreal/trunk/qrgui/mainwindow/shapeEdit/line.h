@@ -20,7 +20,7 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
 
-	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(QRectF const &rect);
+	QPair<QPair<QString, QString>, QPair<QString, QString> > setXandYBefore(QRect const &rect);
 	void setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 };

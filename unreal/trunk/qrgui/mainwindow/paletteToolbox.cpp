@@ -29,10 +29,10 @@ PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &
 
 	setLayout(layout);
 
-	QString a = description;
-		if (a.compare("") != 0){
-		a.insert(0, "<body>");//turns alignment on
-		setToolTip(a);
+	QString modifiedDescription = description;
+	if (!modifiedDescription.isEmpty()){
+		modifiedDescription.insert(0, "<body>");//turns alignment on
+		setToolTip(modifiedDescription);
 	}
 
 }
@@ -157,12 +157,14 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	Id elementId(child->id(), QUuid::createUuid().toString());
 
 	QByteArray itemData;
+	bool isFromLogicalModel = false;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
-	stream << ROOT_ID.toString();  // pathToItem
+	stream << Id::rootId().toString();  // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);
+	stream << isFromLogicalModel;
 
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("application/x-real-uml-data", itemData);

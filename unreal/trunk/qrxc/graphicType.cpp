@@ -288,7 +288,7 @@ bool GraphicType::addProperty(Property *property)
 	if (mProperties.contains(propertyName)) {
 		// Множественное наследование может приводить к тому, что одно свойство
 		// может быть добавлено классу дважды (ромбовидное наследование, например).
-		// � угаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
+		// Ругаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
 		// у одноимённых свойств различны - тогда непонятно, что делать.
 		if (mProperties[propertyName] != property
 			&& *mProperties[propertyName] != *property)
@@ -360,17 +360,17 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
+		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
 	}
 }
 
 void GraphicType::generateDescriptionMapping(OutFile &out)
 {
 	if (mVisible) {
-		if (mDescription.compare("") != 0) {
+		if (!mDescription.isEmpty()) {
 			QString diagramName = NameNormalizer::normalize(mDiagram->name());
 			QString normalizedName = NameNormalizer::normalize(qualifiedName());
-			out() << "\telementsDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << mDescription << "\";\n";
+			out() << "\telementsDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
 		}
 	}
 }
@@ -384,7 +384,8 @@ void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 				if (p->description().compare("") != 0){
 				QString propertyName = p->name();
 				QString propertyDescription = p->description();
-				out() << "\tpropertiesDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"][\"" << propertyName << "\"] = \"" << propertyDescription << "\";\n";
+				out() << "\tpropertiesDescriptionMap[\"" << diagramName << "\"][\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\"" << propertyDescription << "\");\n";
 			}
 		}
 

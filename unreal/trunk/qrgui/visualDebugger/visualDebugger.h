@@ -1,8 +1,6 @@
 #pragma once
 
-#include <QGraphicsEffect>
-
-#include "propertyeditorproxymodel.h"
+#include <QtGui/QGraphicsEffect>
 
 #include "../view/editorview.h"
 #include "../mainwindow/errorReporter.h"
@@ -13,7 +11,7 @@ namespace qReal {
 	class VisualDebugger : QObject
 	{
 		Q_OBJECT
-		
+
 	public:
 		enum DebugType {
 			noDebug,
@@ -21,7 +19,7 @@ namespace qReal {
 			fullDebug
 		};
 	public:
-		VisualDebugger(model::Model *model);
+		VisualDebugger(models::GraphicalModelAssistApi const &modelApi);
 		~VisualDebugger();
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
@@ -41,7 +39,7 @@ namespace qReal {
 		};
 	private:
 		EditorView *mEditor;
-		model::Model *mModel;
+		models::GraphicalModelAssistApi const &mModelApi;
 		UML::Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
@@ -51,7 +49,7 @@ namespace qReal {
 		int mTimeout;
 		DebugType mDebugType;
 		QColor mDebugColor;
-		
+
 		void error(ErrorType e);
 		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);

@@ -31,8 +31,8 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
-        QString description() const;
-        void setDescription(QString const &description);
+	QString description() const;
+	void setDescription(QString const &description);
 
 protected:
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
@@ -62,7 +62,6 @@ protected:
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
-
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -102,5 +101,5 @@ private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
-        QString mDescription;
+	QString mDescription;
 };

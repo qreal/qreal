@@ -9,14 +9,13 @@
 
 #include "math.h"
 
-#include "../../../qrrepo/repoApi.h"
 #include "../../../utils/xmlUtils.h"
 
 using namespace qReal;
 using namespace parsers;
 using gui::ErrorReporter;
 
-HascolParser::HascolParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
+HascolParser::HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mErrorReporter()
 {
 }
@@ -70,7 +69,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	Id result;
 	Id const diagramTypeId = Id("HascolMetamodel", "HascolPortMapping", diagramType);
 
-	foreach(Id element, mApi.children(ROOT_ID)) {
+	foreach(Id element, mApi.children(Id::rootId())) {
 		if (element.type() == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
 			// full exterminatus
@@ -80,7 +79,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	}
 
 	if (result == Id())
-		result = addElement(ROOT_ID, diagramTypeId, diagramName);
+		result = addElement(Id::rootId(), diagramTypeId, diagramName);
 	return result;
 }
 
@@ -90,8 +89,8 @@ Id HascolParser::addElement(Id const &parent, Id const &elementType, QString con
 
 	mApi.addChild(parent, element);
 	mApi.setProperty(element, "name", name);
-	mApi.setProperty(element, "from", ROOT_ID.toVariant());
-	mApi.setProperty(element, "to", ROOT_ID.toVariant());
+	mApi.setProperty(element, "from", Id::rootId().toVariant());
+	mApi.setProperty(element, "to", Id::rootId().toVariant());
 	mApi.setProperty(element, "fromPort", 0.0);
 	mApi.setProperty(element, "toPort", 0.0);
 	mApi.setProperty(element, "links", IdListHelper::toVariant(IdList()));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include "../kernel/ids.h"
 #include <QtCore/QPersistentModelIndex>
 
 namespace UML {
@@ -10,7 +11,8 @@ namespace UML {
 	 * */
 	class ElementRepoInterface{
 		public:
-			virtual QString roleValueByName(QString const &roleName) const = 0;
-			virtual QPersistentModelIndex index() const = 0;
+			virtual QString logicalProperty(QString const &roleName) const = 0;
+			virtual qReal::Id id() const = 0;
+			virtual QString name() const = 0;
 	};
 }

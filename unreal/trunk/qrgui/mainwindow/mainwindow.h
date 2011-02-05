@@ -20,8 +20,8 @@ namespace qReal {
 	class ListenerManager;
 	class VisualDebugger;
 
-	namespace model {
-		class Model;
+	namespace models {
+		class Models;
 	}
 
 	class MainWindow : public QMainWindow
@@ -36,7 +36,9 @@ namespace qReal {
 		EditorView *getCurrentTab();
 		ListenerManager *listenerManager();
 		IGesturesPainter *gesturesPainter();
-		Ui::MainWindowUi ui;
+		QModelIndex rootIndex() const;
+
+		QAction *actionDeleteFromDiagram() const;
 
 	signals:
 		void gesturesShowed();
@@ -47,7 +49,7 @@ namespace qReal {
 		void adjustMinimapZoom(int zoom);
 		void toggleShowSplash(bool show);
 
-		void updateTab(QModelIndex const &index);
+		void updateTabName(Id const &id);
 
 		void settingsPlugins();
 
@@ -57,10 +59,8 @@ namespace qReal {
 		void checkoutDialogOk();
 		void checkoutDialogCancel();
 		void open();
-		void save();
 		void saveAs();
 		void saveAll();
-		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
 
 		void print();
 		void makeSvg();
@@ -100,10 +100,11 @@ namespace qReal {
 		void parseHascol();
 		void showPreferencesDialog();
 
-		void centerOn(const QModelIndex &rootIndex);
-		void diagramExplorerClicked(const QModelIndex &rootIndex);
+		void centerOn(Id const &id);
+		void graphicalModelExplorerClicked(const QModelIndex &index);
+		void logicalModelExplorerClicked(const QModelIndex &index);
 
-		void openNewEmptyTab();
+		void openShapeEditor();
 		void openNewTab(const QModelIndex &index);
 		void initCurrentTab(const QModelIndex &rootIndex);
 
@@ -113,15 +114,27 @@ namespace qReal {
 		void switchAlignment(bool isChecked);
 		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
-		void saveListClosed();
-
 		void setDiagramCreateFlag();
 		void diagramInCreateListDeselect();
 		void diagramInCreateListSelected(int num);
 
-		void diagramInSaveListChanged(QListWidgetItem* diagram);
-
 	private:
+		Ui::MainWindowUi ui;
+
+		QCloseEvent *mCloseEvent;
+		models::Models *mModels;
+		EditorManager mEditorManager;
+		ListenerManager *mListenerManager;
+		PropertyEditorModel mPropertyModel;
+		PropertyEditorDelegate mDelegate;
+		GesturesWidget *mGesturesWidget;
+
+		QVector<bool> mSaveListChecked;
+		bool mDiagramCreateFlag;
+
+		QStringList mDiagramsList;
+		QModelIndex mRootIndex;
+
 		void createDiagram(const QString &idString);
 		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
 				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
@@ -133,7 +146,7 @@ namespace qReal {
 		void suggestToCreateDiagram();
 
 		virtual void closeEvent(QCloseEvent *event);
-		void deleteFromExplorer();
+		void deleteFromExplorer(bool isLogicalModel);
 		void keyPressEvent(QKeyEvent *event);
 		QString getWorkingDir(QString const &dialogWindowTitle);
 
@@ -146,13 +159,6 @@ namespace qReal {
 		void connectActionZoomTo(QWidget* widget);
 		void setConnectActionZoomTo(QWidget* widget);
 		void clickErrorListWidget();
-		QCloseEvent *mCloseEvent;
-		model::Model *mModel;
-		EditorManager mEditorManager;
-		ListenerManager *mListenerManager;
-		PropertyEditorModel mPropertyModel;
-		PropertyEditorDelegate mDelegate;
-		GesturesWidget *mGesturesWidget;
 		VisualDebugger *mVisualDebugger;
 
 		void setShowGrid(bool isChecked);
@@ -160,9 +166,6 @@ namespace qReal {
 		void setSwitchGrid(bool isChecked);
 		void setSwitchAlignment(bool isChecked);
 
-		QVector<bool> mSaveListChecked;
-		bool mDiagramCreateFlag;
-
-		QStringList mDiagramsList;
+		void setIndexesOfPropertyEditor(Id const &id);
 	};
 }

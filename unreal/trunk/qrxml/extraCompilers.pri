@@ -28,7 +28,7 @@ QMAKE_EXTRA_COMPILERS += qrxc_elements
 qrxc_resource.commands = $$FAKE_COMMAND
 qrxc_resource.depends = $$QRXC $$QREAL_XML_DEPENDS
 qrxc_resource.input = QREAL_XML
-qrxc_resource.output = generated/shapes/plugin.qrc
+qrxc_resource.output = plugin.qrc
 qrxc_resource.variable_out = RESOURCES
 
 QMAKE_EXTRA_COMPILERS += qrxc_resource

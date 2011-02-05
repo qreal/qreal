@@ -40,7 +40,7 @@ namespace qReal {
 			class DraggableElement : public QWidget {
 			public:
 				DraggableElement(Id const &id, QString const &name, QString const &description,
-								 QIcon const &icon, QWidget *parent = NULL);
+					QIcon const &icon, QWidget *parent = NULL);
 
 				QIcon icon() const
 				{

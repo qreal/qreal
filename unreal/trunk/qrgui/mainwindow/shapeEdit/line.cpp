@@ -212,7 +212,7 @@ void Line::reshapeRectWithShift()
 		Item::reshapeRectWithShift();
 }
 
-QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QRectF const &rect)
+QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QRect const &rect)
 {
 	QString x1 = "";
 	QString y1 = "";
@@ -262,7 +262,7 @@ QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &docum
 	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QDomElement line = setPenBrushToDoc(document, "line");
-	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1, y2 - y1).normalized()));
+	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1, y2 - y1).normalized().toRect()));
 
 	return QPair<QDomElement, Item::DomElementTypes>(line, mDomElementType);
 }

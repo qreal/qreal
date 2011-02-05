@@ -8,7 +8,6 @@
 #include <QMessageBox>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
 
 #include "../../../utils/outFile.h"
 
@@ -16,26 +15,26 @@ using namespace qReal;
 using namespace generators;
 using namespace utils;
 
-EditorGenerator::EditorGenerator(qrRepo::RepoApi const &api)
+EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }
 
 QHash<Id, QString> EditorGenerator::getMetamodelList()
 {
-	Id repoId = ROOT_ID;
+	Id repoId = Id::rootId();
 
 	IdList const metamodels = mApi.children(repoId);
 	QHash<Id, QString> metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = mApi.typeName(key);
-		if (objectType == "MetamodelDiagram") {
+		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			QString name = mApi.stringProperty(key, "name of the directory");
 			if (!name.isEmpty())
 				metamodelList.insert(key, name);
 			else
-				mErrorReporter.addWarning("no the name of the directory", key);
+				mErrorReporter.addError("no name of the directory", key);
 		}
 	}
 	return metamodelList;
@@ -66,7 +65,7 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	nameSpace.appendChild(nameSpaceName);
 	metamodel.appendChild(nameSpace);
 
-	createDiagrams (metamodel, metamodelId);
+	createDiagrams(metamodel, metamodelId);
 
 	OutFile outpro(pathToFile + ".pro");
 	outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
@@ -80,8 +79,28 @@ gui::ErrorReporter &EditorGenerator::generateEditor(Id const metamodelId, const 
 	outxml() << "<?xml version='1.0' encoding='utf-8'?>\n";
 	outxml() << mDocument.toString(4);
 	mDocument.clear();
-	return mErrorReporter;
 
+	copyImages(pathToFile);
+
+	return mErrorReporter;
+}
+
+void EditorGenerator::copyImages(QString const &pathToFile)
+{
+	QSettings settings("SPbSU", "QReal");
+	QString workingDirName = settings.value("workingDir", "./save").toString();
+	QDir sourceDir(workingDirName);
+	sourceDir.cd("images");
+	if (!sourceDir.exists())
+		return;
+
+	QFileInfo const destDirInfo(pathToFile);
+	QDir destDir = destDirInfo.dir();
+	destDir.mkdir("images");
+	destDir.cd("images");
+
+	foreach (QString const file, sourceDir.entryList(QDir::Files))
+		QFile::copy(sourceDir.absolutePath() + "/" + file, destDir.absolutePath() + "/" + file);
 }
 
 void EditorGenerator::createDiagrams(QDomElement &parent, const Id &id)
@@ -117,7 +136,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	QDomElement tagNonGraphic = mDocument.createElement("nonGraphicTypes");
 
 	foreach (Id const id, childElems) {
-		if (idParent != ROOT_ID) {
+		if (idParent != Id::rootId()) {
 			QString const objectType = mApi.typeName(id);
 			if (objectType == "MetaEntityEnum")
 				createEnum(tagNonGraphic, id);
@@ -131,7 +150,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	parent.appendChild(tagGraphic);
 
 	foreach (Id const id, childElems) {
-		if (idParent != ROOT_ID) {
+		if (idParent != Id::rootId()) {
 			QString const objectType = mApi.typeName(id);
 			if (objectType == "MetaEntityImport")
 				createImport(tagGraphic, id);
@@ -256,7 +275,7 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &id)
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems)
-		if (idChild != ROOT_ID) {
+		if (idChild != Id::rootId()) {
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == "MetaEntity_Attribute"){
 			QDomElement property = mDocument.createElement("property");
@@ -282,7 +301,7 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems)
-		if (idChild != ROOT_ID) {
+		if (idChild != Id::rootId()) {
 		QString const objectType = mApi.typeName(idChild);
 		if (objectType == "MetaEntityContextMenuField"){
 			QDomElement field = mDocument.createElement("field");
@@ -300,7 +319,7 @@ void EditorGenerator::setValues(QDomElement &parent, const Id &id)
 	IdList childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems) {
-		if (idChild != ROOT_ID) {
+		if (idChild != Id::rootId()) {
 			QDomElement valueTag = mDocument.createElement("value");
 			QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "valueName"));
 			valueTag.appendChild(value);

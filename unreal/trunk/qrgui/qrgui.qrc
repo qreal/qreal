@@ -20,6 +20,7 @@
         <file>icons/warning.png</file>
         <file>icons/information.png</file>
         <file>icons/critical.png</file>
+        <file>qrgui_ru.qm</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

@@ -13,24 +13,20 @@
 
 #include <QtSvg/QSvgGenerator>
 
-#include <QtSql/QSqlQuery>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlDatabase>
-
 #include <QtCore/QDebug>
 #include <QtCore/QSettings>
 #include <QtCore/QPluginLoader>
 
 #include "errorReporter.h"
-#include "pluginInterface.h"
+
+#include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
 #include "openShapeEditorButton.h"
 #include "propertyeditorproxymodel.h"
 #include "gesturesShow/gestureswidget.h"
 
-
-#include "../model/model.h"
+#include "../models/models.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 #include "../dialogs/plugindialog.h"
@@ -43,8 +39,6 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
-
-//#include "../qrrepo/svnClient.h"
 
 #include "metaCompiler.h"
 
@@ -63,6 +57,8 @@ MainWindow::MainWindow()
 	progress->setFixedWidth(600);
 	progress->setFixedHeight(15);
 	progress->setRange(0, 100);
+
+	// Step 1: splash screen loaded, progress bar initialized.
 	progress->setValue(5);
 	if (showSplash)
 	{
@@ -83,6 +79,7 @@ MainWindow::MainWindow()
 
 	ui.minimapView->setRenderHint(QPainter::Antialiasing, true);
 
+	// Step 2: Ui is ready, splash screen shown.
 	progress->setValue(20);
 	ui.actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 	ui.actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
@@ -94,7 +91,7 @@ MainWindow::MainWindow()
 	connect(ui.actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(open()));
-	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(save()));
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveAll()));
 	connect(ui.actionSave_as, SIGNAL(triggered()), this, SLOT(saveAs()));
 	connect(ui.actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(ui.actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
@@ -109,7 +106,7 @@ MainWindow::MainWindow()
 	connect(ui.actionExport_to_XMI, SIGNAL(triggered()), this, SLOT(exportToXmi()));
 	connect(ui.actionGenerate_to_Java, SIGNAL(triggered()), this, SLOT(generateToJava()));
 	connect(ui.actionGenerate_to_Hascol, SIGNAL(triggered()), this, SLOT(generateToHascol()));
-	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openNewEmptyTab()));
+	connect(ui.actionShape_Edit, SIGNAL(triggered()), this, SLOT(openShapeEditor()));
 	connect(ui.actionGenerate_Editor, SIGNAL(triggered()), this, SLOT(generateEditor()));
 	connect(ui.actionGenerate_Editor_qrmc, SIGNAL(triggered()), this, SLOT(generateEditorWithQRMC()));
 	connect(ui.actionParse_Editor_xml, SIGNAL(triggered()), this, SLOT(parseEditorXml()));
@@ -135,12 +132,14 @@ MainWindow::MainWindow()
 	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
 	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
 
-	adjustMinimapZoom(ui.minimapZoomSlider->value());
+	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
+	adjustMinimapZoom(ui.minimapZoomSlider->value());
+	initGridProperties();
+
+	// Step 3: Ui connects are done.
 	progress->setValue(40);
 
-	// XXX: kludge... don't know how to do it in designer
-	ui.diagramDock->setWidget(ui.diagramExplorer);
 	ui.paletteDock->setWidget(ui.paletteToolbox);
 	ui.errorDock->setWidget(ui.errorListWidget);
 	ui.errorListWidget->init(this);
@@ -151,14 +150,18 @@ MainWindow::MainWindow()
 	ui.propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	ui.propertyEditor->setItemDelegate(&mDelegate);
 
-	mDelegate.setMainWindow(this);
+	connect(ui.graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));
+	connect(ui.logicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(logicalModelExplorerClicked(QModelIndex)));
 
-	connect(ui.diagramExplorer,SIGNAL(clicked(QModelIndex const &)),this,SLOT(diagramExplorerClicked(QModelIndex)));
-	ui.diagramExplorer->addAction(ui.actionDeleteFromDiagram);
+	ui.graphicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
+	ui.logicalModelExplorer->addAction(ui.actionDeleteFromDiagram);
 
+	// Step 4: Property editor and model explorers are initialized.
 	progress->setValue(60);
 	loadPlugins();
 	showMaximized();
+
+	// Step 5: Plugins are loaded.
 	progress->setValue(70);
 
 	settings.beginGroup("MainWindow");
@@ -169,70 +172,76 @@ MainWindow::MainWindow()
 	}
 	settings.endGroup();
 
-	QString workingDir = settings.value("workingDir", "./save").toString();
+	QString workingDir = settings.value("workingDir", ".").toString();
 
-	mModel = new model::Model(mEditorManager, workingDir);
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModel->api());
+	mRootIndex = QModelIndex();
+	mModels = new models::Models(workingDir, mEditorManager);
+
+	// Step 6: Save loaded, models initialized.
+	progress->setValue(80);
+
+	mListenerManager = new ListenerManager(mEditorManager.listeners()
+			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+
+	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
 		QString text = "These plugins are not present, but needed to load the save:\n";
-		foreach (Id const id, missingPlugins) {
+		foreach (Id const id, missingPlugins)
 			text += id.editor() + "\n";
-		}
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
 		close();
 		return;
 	}
 
-	mListenerManager = new ListenerManager(mEditorManager.listeners(), &mModel->assistApi());
+	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
+
+	ui.graphicalModelExplorer->setModel(mModels->graphicalModel());
+	ui.logicalModelExplorer->setModel(mModels->logicalModel());
+
 	mGesturesWidget = new GesturesWidget();
+	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
 
-	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
+	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
-	progress->setValue(80);
-
-	mPropertyModel.setSourceModel(mModel);
-	ui.diagramExplorer->setModel(mModel);
-	ui.diagramExplorer->setRootIndex(mModel->rootIndex());
-
-	connect(mModel, SIGNAL(nameChanged(QModelIndex const &)), this, SLOT(updateTab(QModelIndex const &)));
-
-	if (mModel->rowCount() > 0)
-		openNewTab(mModel->index(0, 0, QModelIndex()));
-
+	// Step 7: Save consistency checked, interface is initialized with models.
 	progress->setValue(100);
 	if (showSplash)
 		splash->close();
 	delete splash;
 
-	//choosing diagrams to save isn't implemented yet
-	settings.setValue("ChooseDiagramsToSave", false);
-	//so it is turned off
+	if (mModels->graphicalModel()->rowCount() > 0)
+		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
 
 	if (settings.value("diagramCreateSuggestion", true).toBool())
 		suggestToCreateDiagram();
-	mModel->resetChangedDiagrams();
+}
 
-	initGridProperties();
-
-	mVisualDebugger = new VisualDebugger(mModel);
+QModelIndex MainWindow::rootIndex() const
+{
+	return mRootIndex;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
-	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X){
+	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
-	} else if ( keyEvent->key() == Qt::Key_F2 ){
-		save();
+	} else if (keyEvent->key() == Qt::Key_F2
+			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+	{
+		saveAll();
 	}
 }
 
 MainWindow::~MainWindow()
 {
-	delete mModel;
+	saveAll();
 	delete mListenerManager;
 }
 
-EditorManager* MainWindow::manager() {
+EditorManager* MainWindow::manager()
+{
 	return &mEditorManager;
 }
 
@@ -245,16 +254,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	mCloseEvent = event;
 	QSettings settings("SPbSU", "QReal");
-	if ((mModel->isChanged()) && (settings.value("SaveExitSuggestion", true).toBool())) {
-		event->ignore();
-		suggestToSave();
-	} else {
-		settings.beginGroup("MainWindow");
-		settings.setValue("maximized", isMaximized());
-		settings.setValue("size", size());
-		settings.setValue("pos", pos());
-		settings.endGroup();
-	}
+	settings.beginGroup("MainWindow");
+	settings.setValue("maximized", isMaximized());
+	settings.setValue("size", size());
+	settings.setValue("pos", pos());
+	settings.endGroup();
 }
 
 void MainWindow::loadPlugins()
@@ -279,11 +283,11 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId()) {
+	if (id == Id::rootId())
 		return;
-	}
-	mPropertyModel.setIndex(mModel->indexById(id));
-	centerOn(mModel->indexById(id));
+
+	setIndexesOfPropertyEditor(id);
+	centerOn(id);
 }
 
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
@@ -293,39 +297,41 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 	int numTab = getTabIndex(idx);
 	if (numTab != -1)
 		ui.tabs->setCurrentIndex(numTab);
-	if (ui.tabs->isEnabled())
-	{
-		if (parent == mModel->rootIndex()) {
+	else
+		openNewTab(idx);
+	if (ui.tabs->isEnabled()) {
+		if (parent == mModels->graphicalModelAssistApi().rootIndex()) {
 			getCurrentTab()->mvIface()->setRootIndex(idx);
 		} else {
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElemByModelIndex(idx);
-			if (e)
-			{
+			UML::Element *e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
+			if (e) {
 				e->setColorRect(bl);
 				if (isSetSel)
 					e->setSelected(true);
+			} else {
+				Q_ASSERT(false);
 			}
-			else
-				qDebug() << "shit happened!!!\n";
 		}
 	}
 }
 
-void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel) {
-	activateItemOrDiagram(mModel->indexById(id), bl, isSetSel);
+void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
+{
+	activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 	// end-to-end links: if there's a first-level diagram with the same name as
 	// this element, show it
-	QString targetName = mModel->data(idx, Qt::DisplayRole).toString();
-	int rows = mModel->rowCount(mModel->rootIndex());
+	Id id = idx.data(roles::idRole).value<Id>();
+	QString targetName = mModels->graphicalModelAssistApi().name(id);
+	int rows = mModels->graphicalModelAssistApi().childrenOfRootDiagram();
 	for (int i = 0; i < rows; ++i) {
-		QModelIndex child = mModel->index(i, 0, mModel->rootIndex());
-		if (mModel->data(child, Qt::DisplayRole).toString() == targetName)
+		Id child = mModels->graphicalModelAssistApi().rootId();
+		if (mModels->graphicalModelAssistApi().name(child) == targetName)
 		{
 			activateItemOrDiagram(child);
 			return;
@@ -354,13 +360,14 @@ void MainWindow::sceneSelectionChanged()
 	if (length == 1) {
 		QGraphicsItem *item = graphicsItems[0];
 		if (UML::Element *elem = dynamic_cast<UML::Element *>(item)) {
-			if (elem->index().isValid()) {
-				ui.diagramExplorer->setCurrentIndex(elem->index());
-				mPropertyModel.setIndex(elem->index());
+			setIndexesOfPropertyEditor(elem->id());
+			QModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
+			if (index.isValid()) {
+				ui.graphicalModelExplorer->setCurrentIndex(index);
 			}
 		} else {
-			ui.diagramExplorer->setCurrentIndex(QModelIndex());
-			mPropertyModel.setIndex(QModelIndex());
+			ui.graphicalModelExplorer->setCurrentIndex(QModelIndex());
+			mPropertyModel.clearModelIndexes();
 
 			foreach(QGraphicsItem* item, graphicsItems) {
 				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
@@ -401,12 +408,16 @@ void MainWindow::open()
 	if (dirName.isEmpty())
 		return;
 
-	mModel->open(dirName);
+	mModels->repoControlApi().open(dirName);
+	mModels->reinit();
 }
 
 void MainWindow::setShape(const QString &data, const QPersistentModelIndex &index, const int &role)
 {
-	mModel->setData(index, data, role);
+	// const_cast here is ok, since we need to set a shape in a correct model, and
+	// not going to use this index anymore.
+	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+	model->setData(index, data, role);
 }
 
 void MainWindow::print()
@@ -415,7 +426,6 @@ void MainWindow::print()
 	QPrintDialog dialog(&printer, this);
 	if (dialog.exec() == QDialog::Accepted) {
 		QPainter painter(&printer);
-		//		QRect allScene = pieChart->mapFromScene(pieChart->scene()->sceneRect()).boundingRect();
 		getCurrentTab()->scene()->render(&painter);
 	}
 }
@@ -429,7 +439,7 @@ void MainWindow::makeSvg()
 		return;
 
 	newSvg.setFileName(fileName);
-	newSvg.setSize(QSize(800,600));
+	newSvg.setSize(QSize(800, 600));
 
 	QPainter painter(&newSvg);
 	getCurrentTab()->scene()->render(&painter);
@@ -441,15 +451,21 @@ void MainWindow::settingsPlugins()
 	dialog.exec();
 }
 
-void MainWindow::deleteFromExplorer()
+void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex index = ui.diagramExplorer->currentIndex();
+	QModelIndex index = isLogicalModel ? (ui.logicalModelExplorer->currentIndex())
+			: (ui.graphicalModelExplorer->currentIndex());
 	closeTab(index);
 	if (index.isValid()) {
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
-		if (pModel->getModelIndex() == index)
-			pModel->setIndex(QModelIndex());
-		mModel->removeRow(index.row(), index.parent());
+		if (pModel->isCurrentIndex(index)) {
+			pModel->clearModelIndexes();
+			ui.propertyEditor->setRootIndex(QModelIndex());
+		}
+		if (isLogicalModel)
+			mModels->logicalModel()->removeRow(index.row(), index.parent());
+		else
+			mModels->graphicalModel()->removeRow(index.row(), index.parent());
 	}
 }
 
@@ -461,43 +477,54 @@ void MainWindow::deleteFromScene()
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
-	if (UML::Element *elem = dynamic_cast<UML::Element *>(target))
-	{
-		if (elem->index().isValid()) {
-			QPersistentModelIndex index = elem->index();
+	if (UML::Element *elem = dynamic_cast<UML::Element *>(target)) {
+		QPersistentModelIndex index = mModels->graphicalModelAssistApi().indexById(elem->id());
+		if (index.isValid()) {
 			PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
-			if (pModel->getModelIndex() == index)
-				pModel->setIndex(QModelIndex());
+			if (pModel->isCurrentIndex(index))
+				pModel->clearModelIndexes();
 			ui.propertyEditor->setRootIndex(QModelIndex());
-			mModel->removeRow(index.row(), index.parent());
+			mModels->graphicalModel()->removeRow(index.row(), index.parent());
 		}
+		if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
+			getCurrentTab()->scene()->invalidate();
 	}
 }
 
 void MainWindow::deleteFromDiagram()
 {
-	if (mModel) {
-		if (ui.diagramExplorer->hasFocus()) {
-			deleteFromExplorer();
+	bool isLogicalModel = false;
+	if (mModels->graphicalModel()) {
+		if (ui.graphicalModelExplorer->hasFocus()) {
+			isLogicalModel = false;
+			deleteFromExplorer(isLogicalModel);
 		} else if (getCurrentTab() != NULL && getCurrentTab()->hasFocus()) {
 			deleteFromScene();
 		}
 	}
+	if (mModels->logicalModel()) {
+		if (ui.logicalModelExplorer->hasFocus()) {
+			isLogicalModel = true;
+			deleteFromExplorer(isLogicalModel);
+		}
+	}
+	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL)
+		getCurrentTab()->scene()->invalidate();
 }
 
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-					   tr("<center>This is <b>QReal</b><br>"
-						  "Just another CASE tool</center>"));
+			tr("<center>This is <b>QReal</b><br>"
+			"Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-					   tr("To begin:\n"
-						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
-						  "2. Get more help from author :)"));
+			tr("To begin:\n"
+			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
+			"2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -507,9 +534,12 @@ void MainWindow::toggleShowSplash(bool show)
 }
 
 void MainWindow::checkoutDialogOk()
-{}
+{
+}
+
 void MainWindow::checkoutDialogCancel()
-{}
+{
+}
 
 void MainWindow::doCheckout()
 {
@@ -551,7 +581,7 @@ void MainWindow::doCommit()
 
 void MainWindow::exportToXmi()
 {
-	generators::XmiHandler xmi(mModel->api());
+	generators::XmiHandler xmi(mModels->logicalRepoApi());
 
 	QString const fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty())
@@ -564,13 +594,11 @@ void MainWindow::exportToXmi()
 	} else {
 		QMessageBox::information(this, tr("finished"), "Export is finished");
 	}
-
-	qDebug() << "Done.";
 }
 
 void MainWindow::generateToJava()
 {
-	generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModels->logicalRepoApi());
 
 	QString const dirName = QFileDialog::getExistingDirectory(this);
 	if (dirName.isEmpty())
@@ -583,13 +611,11 @@ void MainWindow::generateToJava()
 	} else {
 		QMessageBox::information(this, tr("finished"), "Export is finished");
 	}
-
-	qDebug() << "Done.";
 }
 
 void MainWindow::parseJavaLibraries()
 {
-	generators::JavaHandler java(mModel->api());
+	generators::JavaHandler java(mModels->logicalRepoApi());
 
 	QString const dirName = QFileDialog::getExistingDirectory(this);
 	if (dirName.isEmpty())
@@ -602,23 +628,19 @@ void MainWindow::parseJavaLibraries()
 	} else {
 		QMessageBox::information(this, tr("finished"), "Parsing is finished");
 	}
-
-	qDebug() << "Done.";
 }
 
 void MainWindow::generateToHascol()
 {
-	generators::HascolGenerator hascolGenerator(mModel->api());
+	generators::HascolGenerator hascolGenerator(mModels->logicalRepoApi());
 
 	gui::ErrorReporter& errors = hascolGenerator.generate();
 	errors.showErrors(ui.errorListWidget, ui.errorDock);
-
-	qDebug() << "Done.";
 }
 
 void MainWindow::generateEditor()
 {
-	generators::EditorGenerator editorGenerator(mModel->api());
+	generators::EditorGenerator editorGenerator(mModels->logicalRepoApi());
 
 	QString directoryName;
 	QFileInfo directoryXml;
@@ -658,7 +680,7 @@ void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
-	IdList const metamodels = mModel->api().children(ROOT_ID);
+	IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
 
 	QSettings settings("SPbSU", "QReal");
 
@@ -677,9 +699,9 @@ void MainWindow::generateEditorWithQRMC()
 	int forEditor = 60 / metamodels.size();
 
 	foreach (Id const key, metamodels) {
-		QString const objectType = mModel->api().typeName(key);
+		QString const objectType = mModels->logicalRepoApi().typeName(key);
 		if (objectType == "MetamodelDiagram") {
-			QString name = mModel->api().stringProperty(key, "name of the directory");
+			QString name = mModels->logicalRepoApi().stringProperty(key, "name of the directory");
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
 									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
@@ -811,7 +833,6 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	progress->setValue(100);
 	progress->close();
 	delete progress;
-
 }
 
 void MainWindow::parseEditorXml()
@@ -834,13 +855,13 @@ void MainWindow::parseEditorXml()
 	if (fileName == "")
 		return;
 
-	parsers::XmlParser parser(mModel->mutableApi(), mEditorManager);
+	parsers::XmlParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
 
 	parser.parseFile(fileName);
 
 	parser.loadIncludeList(fileName);
 
-	mModel->reinit();
+	mModels->reinit();
 }
 
 EditorView * MainWindow::getCurrentTab()
@@ -848,7 +869,7 @@ EditorView * MainWindow::getCurrentTab()
 	return dynamic_cast<EditorView *>(ui.tabs->currentWidget());
 }
 
-void MainWindow::changeMiniMapSource( int index )
+void MainWindow::changeMiniMapSource(int index)
 {
 	if (index != -1) {
 		ui.tabs->setEnabled(true);
@@ -858,9 +879,9 @@ void MainWindow::changeMiniMapSource( int index )
 		if (editorView != NULL && (static_cast<EditorViewScene*>(editorView->scene()))->mainWindow() != NULL)
 		{
 			ui.minimapView->setScene(editorView->scene());
-			getCurrentTab()->mvIface()->setModel(mModel);
-			QModelIndex modelIndex = editorView->mvIface()->rootIndex();
-			mModel->setRootIndex(modelIndex);
+			getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+			getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
+			mRootIndex = editorView->mvIface()->rootIndex();
 		}
 	} else
 	{
@@ -870,7 +891,7 @@ void MainWindow::changeMiniMapSource( int index )
 	emit rootDiagramChanged();
 }
 
-void qReal::MainWindow::closeTab( int index )
+void qReal::MainWindow::closeTab(int index)
 {
 	QWidget *widget = ui.tabs->widget(index);
 	ui.tabs->removeTab(index);
@@ -882,7 +903,12 @@ void MainWindow::exterminate()
 	int tabCount = ui.tabs->count();
 	for (int i = 0; i < tabCount; i++)
 		closeTab(i);
-	mModel->exterminate();
+	mModels->repoControlApi().exterminate();
+	mModels->reinit();
+
+	PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
+	pModel->clearModelIndexes();
+	ui.propertyEditor->setRootIndex(QModelIndex());
 }
 
 void MainWindow::parseHascol()
@@ -891,12 +917,12 @@ void MainWindow::parseHascol()
 	if (fileNames.empty())
 		return;
 
-	parsers::HascolParser parser(mModel->mutableApi(), mEditorManager);
+	parsers::HascolParser parser(mModels->mutableLogicalRepoApi(), mEditorManager);
 	gui::ErrorReporter& errors = parser.parse(fileNames);
 
 	errors.showErrors(ui.errorListWidget, ui.errorDock);
 
-	mModel->reinit();
+	mModels->reinit();
 }
 
 void MainWindow::showPreferencesDialog()
@@ -905,20 +931,22 @@ void MainWindow::showPreferencesDialog()
 	preferencesDialog.exec();
 }
 
-void MainWindow::openNewEmptyTab()
+void MainWindow::openShapeEditor()
 {
-	QObject *object = sender();
-	OpenShapeEditorButton *button = dynamic_cast<OpenShapeEditorButton*>(object);
-	QString text = "Shape Editor";
+	QObject const *object = sender();
+	OpenShapeEditorButton const *button = dynamic_cast<OpenShapeEditorButton const *>(object);
+	QString const text = "Shape Editor";
 	ShapeEdit *shapeEdit = NULL;
 	if (button != NULL) {
-		QPersistentModelIndex index = button->getIndex();
-		int role = button->getRole();
-		QString propertyValue = button->getPropertyValue();
+		QPersistentModelIndex index = button->index();
+		int role = button->role();
+		QString const propertyValue = button->propertyValue();
 		shapeEdit = new ShapeEdit(index, role);
-		if (propertyValue != "")
+		if (!propertyValue.isEmpty())
 			shapeEdit->load(propertyValue);
-		mModel->setData(index, propertyValue, role);
+		// Here we are going to actually modify model to set a value of a shape.
+		QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
+		model->setData(index, propertyValue, role);
 		connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)), this, SLOT(setShape(QString, QPersistentModelIndex const &, int const &)));
 	}
 	else {
@@ -974,24 +1002,23 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 	connectActionZoomTo(widget);
 }
 
-void MainWindow::centerOn(const QModelIndex &index)
+void MainWindow::centerOn(Id const &id)
 {
-	Id itemId = mModel->idByIndex(index);
-	if (itemId.element() == mModel->assistApi().editorManager().getEditorInterface(itemId.editor())->diagramNodeName(itemId.diagram()))
+	if (mEditorManager.isDiagramNode(id))
 		return;
-	EditorView* view = getCurrentTab();
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(view->scene());
-	UML::Element* element = scene->getElem(itemId);
+	EditorView* const view = getCurrentTab();
+	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+	UML::Element* const element = scene->getElem(id);
 
 	scene->clearSelection();
 	if (element != NULL) {
 		element->setSelected(true);
 
-		float widthTab = ui.tabs->size().width();
-		float heightTab = ui.tabs->size().height();
-		float widthEl = element->boundingRect().width();
-		float heightEl = element->boundingRect().height();
-		view->ensureVisible(element, (widthTab - widthEl)/2, (heightTab - heightEl)/2);
+		float const widthTab = ui.tabs->size().width();
+		float const heightTab = ui.tabs->size().height();
+		float const widthEl = element->boundingRect().width();
+		float const heightEl = element->boundingRect().height();
+		view->ensureVisible(element, (widthTab - widthEl) / 2, (heightTab - heightEl) / 2);
 	}
 }
 
@@ -1000,22 +1027,41 @@ void MainWindow::propertyEditorScrollTo(const QModelIndex &index)
 	ui.propertyEditor->scrollTo(index);
 }
 
-void MainWindow::diagramExplorerClicked(const QModelIndex &index)
+void MainWindow::graphicalModelExplorerClicked(const QModelIndex &index)
 {
-	mPropertyModel.setIndex(index);
+	Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
+	setIndexesOfPropertyEditor(id);
 	openNewTab(index);
-	centerOn(index);
+	centerOn(id);
+}
+
+void MainWindow::logicalModelExplorerClicked(const QModelIndex &index)
+{
+	Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
+	IdList graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+	if (!graphicalIds.empty()) {
+		// By now we will select first graphical representation of selected element.
+		// In the future it may be needed to make this more intellectual, like
+		// selecting the representation in current tab.
+		Id const graphicalId = graphicalIds.first();
+		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(graphicalId);
+		graphicalModelExplorerClicked(graphicalIndex);
+	} else {
+		setIndexesOfPropertyEditor(logicalId);
+		EditorView* const view = getCurrentTab();
+		if (view != NULL) {
+			EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
+			scene->clearSelection();
+		}
+	}
 }
 
 void MainWindow::openNewTab(const QModelIndex &arg)
 {
-//	if( index.parent() != QModelIndex() ) // only first-level diagrams are opened in new tabs
-//		return;
 	QModelIndex index = arg;
 	while (index.parent() != QModelIndex())
 		index = index.parent();
 
-	mModel->setRootIndex(index);
 	int tabNumber = -1;
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (dynamic_cast<EditorView *>(ui.tabs->widget(i)));
@@ -1028,10 +1074,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		ui.tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView *view = new EditorView();
-		ui.tabs->addTab(view, mModel->data(index, Qt::EditRole).toString());
+		ui.tabs->addTab(view, index.data().toString());
 		ui.tabs->setCurrentWidget(view);
-		//		if (!index.isValid())
-		//			index = mModel->rootIndex();
 		initCurrentTab(index);
 	}
 
@@ -1040,20 +1084,14 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	if (settings.value("PaletteTabSwitching", true).toBool())
 	{
 		int i = 0;
-		bool diagram = false;
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
-			//this conditions are not good because of strings comparing
-			QString tabName = name.trimmed().remove(" ");
-			QString diagramName = mModel->idByIndex(index).diagram().remove("_");
-			if (diagramName.contains(tabName)) {
+			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
+			Id const diagramId = Id(id.editor(), id.diagram());
+			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			if (diagramName == name) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
-				diagram = true;
+				break;
 			}
-			if (diagram)
-				continue;
-			QString editorName = mModel->idByIndex(index).diagram().remove("_");
-			if (editorName.contains(tabName))
-				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
 		}
 	}
@@ -1064,27 +1102,29 @@ void MainWindow::initCurrentTab(const QModelIndex &rootIndex)
 	getCurrentTab()->setMainWindow(this);
 	QModelIndex index = rootIndex;
 
-	changeMiniMapSource(ui.tabs->currentIndex());
+	getCurrentTab()->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
 
 	connect(getCurrentTab()->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(ui.actionAntialiasing, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleAntialiasing(bool)));
 	connect(ui.actionOpenGL_Renderer, SIGNAL(toggled(bool)), getCurrentTab(), SLOT(toggleOpenGL(bool)));
 
-	getCurrentTab()->mvIface()->setModel(mModel);
+	getCurrentTab()->mvIface()->setModel(mModels->graphicalModel());
+	getCurrentTab()->mvIface()->setLogicalModel(mModels->logicalModel());
 	getCurrentTab()->mvIface()->setRootIndex(index);
+	changeMiniMapSource(ui.tabs->currentIndex());
 
-	connect(mModel, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
+	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
-	connect(mModel, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
+	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, getCurrentTab()->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 }
 
-void MainWindow::updateTab(QModelIndex const &index)
+void MainWindow::updateTabName(Id const &id)
 {
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
-			ui.tabs->setTabText(i, mModel->data(index, Qt::EditRole).toString());
+		if (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id)) {
+			ui.tabs->setTabText(i, mModels->graphicalModelAssistApi().name(id));
 			return;
 		}
 	}
@@ -1205,7 +1245,7 @@ IGesturesPainter * MainWindow::gesturesPainter()
 
 void MainWindow::suggestToCreateDiagram()
 {
-	if (getCurrentTab())
+	if (mModels->logicalModel()->rowCount() > 0)
 		return;
 	QDialog dialog;
 	QVBoxLayout vLayout;
@@ -1222,8 +1262,8 @@ void MainWindow::suggestToCreateDiagram()
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			const QString diagramName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramName(diagram.diagram());
-			const QString diagramNodeName = mModel->assistApi().editorManager().getEditorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			const QString diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
+			const QString diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
 			if (diagramNodeName.isEmpty())
 				continue;
 			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
@@ -1269,186 +1309,38 @@ void MainWindow::setDiagramCreateFlag()
 void MainWindow::diagramInCreateListDeselect()
 {
 	if (!mDiagramCreateFlag)
-		deleteFromExplorer();
+		deleteFromExplorer(false);
 }
 
 void MainWindow::diagramInCreateListSelected(int num)
 {
-	deleteFromExplorer();
+	deleteFromExplorer(false);
+	deleteFromExplorer(true);
 	createDiagram(mDiagramsList.at(num));
 }
 
-void MainWindow::createDiagram(const QString &idString)
+void MainWindow::createDiagram(QString const &idString)
 {
-	Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
-	QModelIndex index = mModel->indexById(created);
-	ui.diagramExplorer->setCurrentIndex(index);
+	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
+	ui.graphicalModelExplorer->setCurrentIndex(index);
+	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
+	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
+	ui.logicalModelExplorer->setCurrentIndex(logicalIndex);
 	openNewTab(index);
-}
-
-void MainWindow::save()
-{
-	QSettings settings("SPbSU", "QReal");
-	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		saveAll();
-		return;
-	}
-
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	QPushButton saveButton;
-	QPushButton cancelButton;
-	saveButton.setText("Save");
-	cancelButton.setText("Cancel");
-	QWidget* saveListWidget = createSaveListWidget();
-	vLayout.addWidget(saveListWidget);
-
-	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
-
-	hLayout.addWidget(&saveButton);
-	hLayout.addWidget(&cancelButton);
-
-	vLayout.addLayout(&hLayout);
-	dialog.setLayout(&vLayout);
-	saveListWidget->show();
-	dialog.exec();
 }
 
 void MainWindow::saveAll()
 {
-	mModel->api().saveAll();
-	mModel->resetChangedDiagrams();
+	mModels->repoControlApi().saveAll();
 }
 
-void MainWindow::saveIds(IdList const &toSave, IdList const &toRemove)
-{
-	//not implemented
-	//TODO:
-	//create structure to save deleted objects
-	//(look Client::exist(), remove methods in repoapi, model, client, serializer; addChangedDiagrams method)
-	//add choosing of just created diagrams
-
-	mModel->api().save(toSave);
-	mModel->api().remove(toRemove);
-	mModel->resetChangedDiagrams(toSave);
-	mModel->resetChangedDiagrams(toRemove);
-}
-
-void MainWindow::saveAs()	//TODO: change
+void MainWindow::saveAs()
 {
 	QString const dirName = getWorkingDir(tr("Select directory to save current model to"));
 	if (dirName.isEmpty())
 		return;
-
-	mModel->saveTo(dirName);
-}
-
-QListWidget* MainWindow::createSaveListWidget()
-{
-	mSaveListChecked.clear();
-	mSaveListChecked.resize(mModel->api().getOpenedDiagrams().size());
-	QListWidget *listWidget = new QListWidget();
-
-	int i =0;
-	foreach(Id id, mModel->api().getOpenedDiagrams()) {
-		listWidget->addItem(id.diagram());
-		if (mModel->api().getChangedDiagrams().contains(id.diagramId())) {
-			mSaveListChecked[i] = true;
-			listWidget->item(i)->setCheckState(Qt::Checked);
-		} else {
-			listWidget->item(i)->setCheckState(Qt::Unchecked);
-			mSaveListChecked[i] = false;
-		}
-		i++;
-	}
-
-	QObject::connect(listWidget,SIGNAL(itemChanged(QListWidgetItem*)),
-					 this,SLOT(diagramInSaveListChanged(QListWidgetItem*)));
-	return listWidget;
-}
-
-void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
-{
-	QListWidget* listWidget = diagram->listWidget();
-	if (diagram->checkState() == Qt::Unchecked)
-		mSaveListChecked[listWidget->row(diagram)] = false;
-	else if (diagram->checkState() == Qt::Checked)
-		mSaveListChecked[listWidget->row(diagram)] = true;
-}
-
-void MainWindow::saveListClosed()
-{
-	IdList toSave;
-	IdList toRemove;
-	IdList current = mModel->api().children(ROOT_ID);
-	IdList opened = mModel->api().getOpenedDiagrams();
-
-	int i = 0;
-	foreach(Id id, opened) {
-		qDebug() << "Was opened: " << id.diagram() << " / " << id.element();
-
-		if (!mSaveListChecked[i]) {
-			if (!current.contains(id))
-				mModel->addDiagram(id);
-			else
-				continue;
-		}
-		if (current.contains(id))
-			toSave.append(id);
-		else
-			toRemove.append(id);
-		i++;
-	}
-
-	toSave.append(ROOT_ID);
-	saveIds(toSave, toRemove);
-}
-
-void MainWindow::suggestToSave()
-{
-	QDialog dialog;
-	QVBoxLayout vLayout;
-	QHBoxLayout hLayout;
-	QPushButton saveButton;
-	QPushButton cancelButton;
-	QPushButton discardButton;
-	saveButton.setText("Save");
-	cancelButton.setText("Cancel");
-	discardButton.setText("Discard");
-	hLayout.addWidget(&saveButton);
-	hLayout.addWidget(&cancelButton);
-	hLayout.addWidget(&discardButton);
-	QString text = QString("The document has been modified.\n");
-	text += QString("Do you want to save your changes?");
-	QLabel label(text);
-	vLayout.addWidget(&label);
-
-	QWidget* saveListWidget = createSaveListWidget();
-	vLayout.addWidget(saveListWidget);
-	QSettings settings("SPbSU", "QReal");
-	if (!settings.value("ChooseDiagramsToSave", true).toBool()) {
-		saveListWidget->hide();
-		vLayout.removeWidget(saveListWidget);
-		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveAll()));
-	} else
-		QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(saveListClosed()));
-
-	vLayout.addLayout(&hLayout);
-	dialog.setLayout(&vLayout);
-	if (settings.value("ChooseDiagramsToSave", true).toBool())
-		saveListWidget->show();
-
-	QObject::connect(&saveButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&saveButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-	QObject::connect(&discardButton,SIGNAL(clicked()),this,SLOT(finalClose()));
-	QObject::connect(&cancelButton,SIGNAL(clicked()),&dialog,SLOT(close()));
-
-	dialog.setWindowTitle(QString("Saving"));
-	dialog.exec();
+	mModels->repoControlApi().saveTo(dirName);
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -1496,3 +1388,22 @@ void MainWindow::debugSingleStep()
 	}
 }
 
+void MainWindow::setIndexesOfPropertyEditor(Id const &id)
+{
+	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
+		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
+		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(id);
+		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
+	} else if (mModels->logicalModelAssistApi().isLogicalId(id)) {
+		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
+		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+	} else {
+		mPropertyModel.clearModelIndexes();
+	}
+}
+
+QAction *MainWindow::actionDeleteFromDiagram() const
+{
+	return ui.actionDeleteFromDiagram;
+}

@@ -13,9 +13,6 @@ namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
 	class MainWindow;
-	namespace model {
-		class Model;
-	}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -34,10 +31,9 @@ public:
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual UML::Element *getElem(qReal::Id const &uuid);
-	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
+	virtual UML::Element *getElem(qReal::Id const &id);
 
-	virtual QPersistentModelIndex rootItem();
+	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
@@ -86,6 +82,7 @@ private:
 	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
+	void redraw();
 
 	UML::Element *getElemAt(const QPointF &position);
 
@@ -102,7 +99,6 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::model::Model* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;

@@ -1,22 +1,22 @@
 defineTest(addExtraCompiler) {
-    eval($${1}.commands = $$FAKE_COMMAND)
-    eval($${1}.input = QREAL_XML)
+	eval($${1}.commands = $$FAKE_COMMAND)
+	eval($${1}.input = QREAL_XML)
 	eval($${1}.output = $${2})
-    eval($${1}.variable_out = GENERATED_RESOURCES)
-	
-    export($${1}.output)
-    export($${1}.input)
-    export($${1}.commands)
-    export($${1}.variable_out)
+	eval($${1}.variable_out = GENERATED_RESOURCES)
 
-    QMAKE_EXTRA_COMPILERS += $${1}
+	export($${1}.output)
+	export($${1}.input)
+	export($${1}.commands)
+	export($${1}.variable_out)
 
-    export(QMAKE_EXTRA_COMPILERS)
-	
-    return(true)
+	QMAKE_EXTRA_COMPILERS += $${1}
+
+	export(QMAKE_EXTRA_COMPILERS)
+
+	return(true)
 }
 
-SDF_FILES = $$files($$QREAL_EDITOR_NAME$$quote(\generated\shapes\*.sdf))
+SDF_FILES = $$files($$QREAL_EDITOR_NAME$$quote(/generated/shapes/*.sdf))
 
 for(sdfFile,SDF_FILES) {
 	FILE_NAME_LONG = $${sdfFile}
