@@ -31,7 +31,7 @@ namespace UML {
 			virtual bool initPossibleEdges();
 
 			void adjustLink();
-			bool reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst);
+			bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
 			bool shouldReconnect() const;
 			void arrangeSrcAndDst();
 			UML::NodeElement *src() const;

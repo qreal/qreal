@@ -530,11 +530,11 @@ bool EdgeElement::shouldReconnect() const
 
 void EdgeElement::arrangeSrcAndDst()
 {
-	if (mSrc) {
-		mSrc->arrangeLinks();
-	} else if (mDst) {
-		mDst->arrangeLinks();
-	} 
+	//if (mSrc) {
+		//mSrc->arrangeLinks();
+	//} else if (mDst) {
+		//mDst->arrangeLinks();
+	//} 
 }
 
 UML::NodeElement *EdgeElement::src() const
@@ -595,23 +595,29 @@ UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
 {
-	bool reconnected = false;
+	bool reconnectedSrc = false;
+	bool reconnectedDst = false;
 	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+		if (!jumpsOnly || reconnectedSrc)
+			model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		model->setData(mDataIndex, mPortTo, roles::toPortRole);
+		if (!jumpsOnly || reconnectedDst)
+			model->setData(mDataIndex, mPortTo, roles::toPortRole);
 	}
 
+	bool reconnected = reconnectedSrc || reconnectedDst;
+	if (reconnected)
+		qDebug() << uuid().toString() <<"jumps! " << reconnectedSrc << " " << reconnectedDst;
 	return reconnected;
 }
 

@@ -88,6 +88,7 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
+		void arrangeLinearPorts();
 		void arrangeLinks();
 
 	public slots:
