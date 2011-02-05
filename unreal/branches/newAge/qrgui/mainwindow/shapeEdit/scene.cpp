@@ -304,6 +304,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mImage = new Image(mFileName, mX1, mY1, NULL);
 		addItem(mImage);
+		setZValue(mImage);
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
@@ -318,9 +319,9 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				update();
 			}
 		}
+		setZValueSelectedItems();
 		break;
 	}
-	setZValueSelectedItems();
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
