@@ -1,8 +1,0 @@
-<picture sizex="31" sizey="100" >
-	<point stroke-width="11" stroke-style="solid" stroke="#c3dcc4" x1="1" y1="45" />
-	<point stroke-width="3" stroke-style="solid" stroke="#465945" x1="1" y1="45" />
-	<point stroke-width="11" stroke-style="solid" stroke="#c3dcc4" x1="31" y1="45" />
-	<point stroke-width="3" stroke-style="solid" stroke="#465945" x1="31" y1="45" />
-	<line x1="16" y1="31" x2="16" y2="66" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />
-	<line x1="16" y1="31" x2="16" y2="66" stroke-width="1" stroke-style="solid" stroke="#465945" />
-</picture>

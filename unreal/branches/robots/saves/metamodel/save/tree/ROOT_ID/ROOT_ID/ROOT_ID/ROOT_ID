@@ -1,9 +1,0 @@
-<LogicObject id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <parents/>
-  <children>
-    <object id="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{93c56e45-8147-4868-bff8-3f61d48408d7}"/>
-  </children>
-  <properties>
-    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
-  </properties>
-</LogicObject>
