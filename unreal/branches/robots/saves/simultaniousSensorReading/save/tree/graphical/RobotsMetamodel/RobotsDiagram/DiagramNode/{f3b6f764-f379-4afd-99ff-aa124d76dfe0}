@@ -1,0 +1,25 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{92327a54-2889-4db3-b5fe-3ad5d16d7811}" id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{f3b6f764-f379-4afd-99ff-aa124d76dfe0}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{5f35e84a-085f-47a6-8a14-2182ae6055e1}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5d3651a3-bfbc-4670-9a1f-b19c74b6098f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{c7f59459-0f17-4efe-b8f5-648e6c1e2225}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{b684ea0d-d79e-4f65-8988-db60bbef9db7}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForTouchSensor/{dc5325a2-c8a5-457e-a312-4313bbbd6eba}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0f7d0739-cba6-4250-bcbe-927263685198}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{bf65f197-90f6-4a70-a9c1-05f9b8bdc967}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{cdfb1645-0217-4493-9fd4-b83a2866aa0b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5e8585be-cc8a-40a5-ac55-5d5967496eb0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{bfcc8ba0-cf0e-46c6-9584-c5c33f2ce686}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{c1097550-a1ba-48eb-8a2c-5d2bd76633c7}"/>
+  </children>
+  <properties>
+    <QPolygon key="configuration" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Диаграмма поведения робота)"/>
+    <QPointF key="position" value="0, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

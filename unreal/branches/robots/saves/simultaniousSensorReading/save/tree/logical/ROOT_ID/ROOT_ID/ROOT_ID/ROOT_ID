@@ -1,0 +1,20 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{f3b6f764-f379-4afd-99ff-aa124d76dfe0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{92327a54-2889-4db3-b5fe-3ad5d16d7811}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{090cf09d-940a-440d-9386-cf2a3cde058f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{43beb93f-6307-435b-b1d5-6188a78c4141}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{b1caffd8-e237-42dc-94f5-7cefe151b2ef}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{fa264626-8a96-46a7-aa6c-dde34fe71794}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForTouchSensor/{124179e2-2191-4dd9-a194-3ff1c43c6334}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{3e2a4398-30ab-4200-9757-ae188c2fb463}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{96438c49-4336-4213-954d-87aab74cacdf}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6720089f-7353-4804-9e30-69c6bc2a2a77}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{dbfd736b-e0c0-4a62-94c5-a86e7228739f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{0fd763fe-e004-4d45-b553-f778149b5392}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{5afcafd3-cd86-481a-aa36-f83b4ecf25c9}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>
