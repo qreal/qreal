@@ -31,7 +31,7 @@ bool ForkBlock::initNextBlocks()
 		}
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
-		if (stringProperty(linkId, "Guard").toLower() == "other") {
+		if (stringProperty(linkId, "Guard").toLower() == tr("other")) {
 			if (!otherFound) {
 				mThreadStartBlock = targetBlock;
 				otherFound = true;

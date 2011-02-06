@@ -33,7 +33,7 @@ bool LoopBlock::initNextBlocks()
 		}
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
-		if (stringProperty(linkId, "Guard").toLower() == "iteration") {
+		if (stringProperty(linkId, "Guard").toLower() == tr("iteration")) {
 			if (!iterationFound) {
 				mIterationStartBlock = targetBlock;
 				iterationFound = true;

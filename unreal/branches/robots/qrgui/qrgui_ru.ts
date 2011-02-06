@@ -1161,22 +1161,22 @@
         <translation>COM-порты не найдены</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="39"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="44"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="39"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="44"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="39"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="44"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="39"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="44"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
     </message>
@@ -1224,6 +1224,11 @@
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
+        <location filename="interpreters/robots/details/blocks/forkBlock.cpp" line="34"/>
+        <source>other</source>
+        <translation>другой</translation>
+    </message>
+    <message>
         <location filename="interpreters/robots/details/blocks/forkBlock.cpp" line="39"/>
         <source>Two links marked as &quot;other&quot; found</source>
         <translation>Найдено две связи, помеченные как &quot;другой&quot;</translation>
@@ -1258,6 +1263,11 @@
         <location filename="interpreters/robots/details/blocks/loopBlock.cpp" line="31"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/loopBlock.cpp" line="36"/>
+        <source>iteration</source>
+        <translation>итерация</translation>
     </message>
     <message>
         <location filename="interpreters/robots/details/blocks/loopBlock.cpp" line="41"/>
