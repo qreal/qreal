@@ -16,8 +16,9 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 }
 
 TEMPLATE	= subdirs
-SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo
+SUBDIRS		= qrmc qrxc qrgui qrxml qrrepo qextserialport
 
 qrmc.depends = qrrepo
-qrgui.depends = qrxc qrxml qrrepo
+qrgui.depends = qrxc qrxml qrrepo qextserialport
 qrxml.depends = qrxc
+qextserialport.file = qrgui\thirdparty\qextserialport-1.2win-alpha\qextserialport.pro

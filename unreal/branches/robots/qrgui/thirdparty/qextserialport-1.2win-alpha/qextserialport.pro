@@ -41,9 +41,9 @@ DESTDIR                 = build
 #DESTDIR				= examples/event/debug
 
 CONFIG(debug, debug|release) {
-	TARGET = qextserialportd
+	TARGET = ../../../debug/qextserialportd
 } else {
-	TARGET = qextserialport
+	TARGET = ../../../release/qextserialport
 }
 
 unix:VERSION            = 1.2.0
