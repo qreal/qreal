@@ -1,7 +1,5 @@
 <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fbcf3af0-e935-4abc-8299-b9c77047efa3}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
-  <children>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{2667a8fb-8f81-4273-bd16-4b4123762bea}"/>
-  </children>
+  <children/>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value="Ждать сенсора касания"/>
