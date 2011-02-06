@@ -106,13 +106,13 @@ QString ErrorReporter::severityMessage(Error const &error)
 {
 	switch (error.severity()) {
 	case Error::information:
-		return "INFORMATION:";
+		return tr("INFORMATION:");
 	case Error::warning:
-		return "WARNING:";
+		return tr("WARNING:");
 	case Error::error:
-		return "ERROR:";
+		return tr("ERROR:");
 	case Error::critical:
-		return "CRITICAL:";
+		return tr("CRITICAL:");
 	default:
 		throw new Exception("Incorrect severity of an error");
 	}

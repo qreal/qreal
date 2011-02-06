@@ -55,7 +55,7 @@ MainWindow::MainWindow()
 	, mErrorReporter(NULL)
 {
 	QSettings settings("SPbSU", "QReal");
-	bool showSplash = false;  // settings.value("Splashscreen", true).toBool();
+	bool showSplash = settings.value("Splashscreen", true).toBool();
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -76,6 +76,7 @@ MainWindow::MainWindow()
 
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
+	mUi->logicalModelDock->setVisible(false);
 
 	if (!showSplash)
 		mUi->actionShowSplash->setChecked(false);

@@ -82,17 +82,13 @@
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
    </widget>
-   <widget class="QMenu" name="menuMouse_gestures">
-    <property name="title">
-     <string>Mouse gestures</string>
-    </property>
-    <addaction name="actionShow"/>
-   </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
     <addaction name="actionRun"/>
+    <addaction name="actionStop_Running"/>
+    <addaction name="actionStop_Robot"/>
     <addaction name="separator"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
@@ -101,7 +97,6 @@
    <addaction name="menu_View"/>
    <addaction name="menuTools"/>
    <addaction name="menuSettings"/>
-   <addaction name="menuMouse_gestures"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -193,43 +188,6 @@
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
-  </widget>
-  <widget class="QDockWidget" name="logicalModelDock">
-   <property name="features">
-    <set>QDockWidget::AllDockWidgetFeatures</set>
-   </property>
-   <property name="windowTitle">
-    <string>Logical Model Explorer</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="logicalModelDockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="dragEnabled">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropOverwriteMode">
-        <bool>false</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::DragDrop</enum>
-       </property>
-       <property name="defaultDropAction">
-        <enum>Qt::IgnoreAction</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
   </widget>
   <widget class="QDockWidget" name="errorDock">
    <property name="sizePolicy">
@@ -346,6 +304,43 @@
    <addaction name="actionStop_Robot"/>
    <addaction name="separator"/>
    <addaction name="actionRobot_Settings"/>
+  </widget>
+  <widget class="QDockWidget" name="logicalModelDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Logical Model Explorer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
