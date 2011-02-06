@@ -89,9 +89,7 @@
     <addaction name="actionRun"/>
     <addaction name="actionStop_Running"/>
     <addaction name="actionStop_Robot"/>
-    <addaction name="separator"/>
     <addaction name="actionGenerate_Editor"/>
-    <addaction name="actionParse_Editor_xml"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -590,6 +588,9 @@
   <action name="actionGenerate_Editor">
    <property name="text">
     <string>Generate Editor</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionParse_Editor_xml">
