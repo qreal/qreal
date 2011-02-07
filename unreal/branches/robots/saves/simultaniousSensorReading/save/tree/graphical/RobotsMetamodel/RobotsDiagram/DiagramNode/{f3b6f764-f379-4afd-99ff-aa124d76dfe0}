@@ -11,6 +11,10 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5e8585be-cc8a-40a5-ac55-5d5967496eb0}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{bfcc8ba0-cf0e-46c6-9584-c5c33f2ce686}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{c1097550-a1ba-48eb-8a2c-5d2bd76633c7}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5f5cde82-03ef-41f6-9c04-a1e30f961de3}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{06d984cc-ad62-473d-a7a5-2dd93e398b01}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{efc69949-daba-4b6c-981f-d5ff299944ba}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{304160a7-413c-4c24-acca-c38fb3251b33}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

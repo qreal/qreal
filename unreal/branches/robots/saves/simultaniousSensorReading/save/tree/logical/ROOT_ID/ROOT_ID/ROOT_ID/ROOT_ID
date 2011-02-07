@@ -13,6 +13,10 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{dbfd736b-e0c0-4a62-94c5-a86e7228739f}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{0fd763fe-e004-4d45-b553-f778149b5392}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{5afcafd3-cd86-481a-aa36-f83b4ecf25c9}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{bc715e67-c19d-48c1-9679-41623a51ddb9}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{661a77e6-434d-4fe7-bb3e-6b4e7f5ba59f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{1ade2f9e-3161-45aa-8a2e-0cb610026b78}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ea458786-3d73-4a90-b7e6-f52d80a68ec3}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

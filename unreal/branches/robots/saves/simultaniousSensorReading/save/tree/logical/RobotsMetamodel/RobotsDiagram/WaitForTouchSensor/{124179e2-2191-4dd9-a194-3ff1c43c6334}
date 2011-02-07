@@ -6,8 +6,8 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{96438c49-4336-4213-954d-87aab74cacdf}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{dbfd736b-e0c0-4a62-94c5-a86e7228739f}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{96438c49-4336-4213-954d-87aab74cacdf}"/>
     </links>
     <QString key="name" value="(Ждать сенсора касания)"/>
     <outgoingConnections type="qReal::IdList"/>

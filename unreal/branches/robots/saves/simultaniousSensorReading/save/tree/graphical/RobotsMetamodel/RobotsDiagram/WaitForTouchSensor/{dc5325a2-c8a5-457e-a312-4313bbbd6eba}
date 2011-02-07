@@ -5,8 +5,8 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{bf65f197-90f6-4a70-a9c1-05f9b8bdc967}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5e8585be-cc8a-40a5-ac55-5d5967496eb0}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{bf65f197-90f6-4a70-a9c1-05f9b8bdc967}"/>
     </links>
     <QString key="name" value="(Ждать сенсора касания)"/>
     <QPointF key="position" value="-651, -97"/>

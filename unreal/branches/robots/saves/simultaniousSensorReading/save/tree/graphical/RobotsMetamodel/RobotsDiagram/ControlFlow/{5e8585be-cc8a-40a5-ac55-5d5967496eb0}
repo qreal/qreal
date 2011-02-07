@@ -8,6 +8,6 @@
     <QString key="name" value="(Поток управления)"/>
     <QPointF key="position" value="-494, -16.0001"/>
     <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{c1097550-a1ba-48eb-8a2c-5d2bd76633c7}"/>
-    <double key="toPort" value="2"/>
+    <double key="toPort" value="0"/>
   </properties>
 </object>
