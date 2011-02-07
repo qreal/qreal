@@ -19,7 +19,7 @@ public:
 	virtual void run();
 
 private:
-	Block *mThreadStartBlock;
+	QList<Block*> mThreadStartBlocks;
 
 	virtual bool initNextBlocks();
 };

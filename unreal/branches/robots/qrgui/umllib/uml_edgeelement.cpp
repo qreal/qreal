@@ -538,11 +538,11 @@ bool EdgeElement::shouldReconnect() const
 
 void EdgeElement::arrangeSrcAndDst()
 {
-	//if (mSrc) {
-		//mSrc->arrangeLinks();
-	//} else if (mDst) {
-		//mDst->arrangeLinks();
-	//}
+	if (mSrc) {
+		mSrc->arrangeLinks();
+	} else if (mDst) {
+		mDst->arrangeLinks();
+	}
 }
 
 UML::NodeElement *EdgeElement::src() const
@@ -603,29 +603,22 @@ UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
-	bool reconnectedSrc = false;
-	bool reconnectedDst = false;
+	bool reconnected = false;
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
-		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		reconnected |= (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
 		mPortFrom = newFrom;
-		if (!jumpsOnly || reconnectedSrc)
-			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
-
+		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
-		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		reconnected |= (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		mPortTo = newTo;
-		if (!jumpsOnly || reconnectedDst)
-			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		mGraphicalAssistApi->setToPort(id(), mPortTo);
 	}
 
-	bool reconnected = reconnectedSrc || reconnectedDst;
-	if (reconnected)
-		qDebug() << id() <<"jumps! " << reconnectedSrc << " " << reconnectedDst;
 	return reconnected;
 }
 

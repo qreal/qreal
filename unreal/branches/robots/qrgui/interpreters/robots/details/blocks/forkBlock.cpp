@@ -6,21 +6,18 @@ using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
 ForkBlock::ForkBlock()
-	: mThreadStartBlock(NULL)
 {
 }
 
 void ForkBlock::run()
 {
-	emit newThread(mThreadStartBlock);
+	foreach (Block *block, mThreadStartBlocks)
+		emit newThread(block);
 	emit done(mNextBlock);
 }
 
 bool ForkBlock::initNextBlocks()
 {
-	bool otherFound = false;
-	bool nextFound = false;
-
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	foreach (Id const linkId, links) {
@@ -31,32 +28,20 @@ bool ForkBlock::initNextBlocks()
 		}
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
-		if (stringProperty(linkId, "Guard").toLower() == tr("other")) {
-			if (!otherFound) {
-				mThreadStartBlock = targetBlock;
-				otherFound = true;
-			} else {
-				error(tr("Two links marked as \"other\" found"));
-				return false;
-			}
-		} else if (stringProperty(linkId, "Guard") == "") {
-			if (!nextFound) {
-				mNextBlock = targetBlock;
-				nextFound = true;
-			} else {
-				error(tr("Two outgoing links to a next element found"));
-				return false;
-			}
+		if (mNextBlock == NULL) {
+			mNextBlock = targetBlock;
+		} else {
+			mThreadStartBlocks.append(targetBlock);
 		}
 	}
 
-	if (!otherFound) {
-		error(tr("There must be a link with property \"Guard\" set as \"other\""));
+	if (!mNextBlock ) {
+		error(tr("There must be an outgoing link, use \"End\" block to finish a program"));
 		return false;
 	}
 
-	if (!nextFound) {
-		error(tr("There must be a non-marked outgoing link"));
+	if (mThreadStartBlocks.isEmpty()) {
+		error(tr("There must be at least two outgoing links"));
 		return false;
 	}
 

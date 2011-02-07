@@ -88,7 +88,6 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
-		void arrangeLinearPorts();
 		void arrangeLinks();
 
 		virtual void checkConnectionsToPort();
@@ -110,6 +109,7 @@ namespace UML {
 		};
 
 		void delUnusedLines();
+		void arrangeLinksRecursively(QSet<NodeElement*>& toArrange, QSet<NodeElement*>& arranged);
 		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
