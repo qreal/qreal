@@ -53,6 +53,10 @@ void EditorView::zoomIn()
 		return;
 	double zoomFactor = static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1;
 	scale(zoomFactor, zoomFactor);
+	if (mSettings.value("ShowGrid", true).toBool()) {
+		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
+	}
+	checkGrid();
 }
 
 void EditorView::zoomOut()
@@ -61,6 +65,21 @@ void EditorView::zoomOut()
 		return;
 	double zoomFactor = 1 / (static_cast<double>(mSettings.value("ZoomFactor", 2).toInt()) / 10 + 1);
 	scale(zoomFactor, zoomFactor);
+	if (mSettings.value("ShowGrid", true).toBool()) {
+		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
+	}
+	checkGrid();
+}
+
+void EditorView::checkGrid()
+{
+	if (mSettings.value("ShowGrid", true).toBool()) {
+		if(mScene->realIndexGrid() < 2 || mScene->realIndexGrid() > 380) {
+			mScene->setNeedDrawGrid(false);
+		}
+		else
+			mScene->setNeedDrawGrid(true);
+	}
 }
 
 void EditorView::setMainWindow(qReal::MainWindow *mainWindow)

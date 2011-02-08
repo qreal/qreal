@@ -15,7 +15,7 @@
 using namespace qReal;
 
 EditorViewScene::EditorViewScene(QObject * parent)
-	:  QGraphicsScene(parent), mWindow(NULL), mPrevParent(0)
+	:  QGraphicsScene(parent), mRealIndexGrid(indexGrid), mWindow(NULL), mPrevParent(0)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
@@ -74,6 +74,16 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 		QLineF line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
+}
+
+double EditorViewScene::realIndexGrid()
+{
+	return mRealIndexGrid;
+}
+
+void EditorViewScene::setRealIndexGrid(double newIndexGrid)
+{
+	mRealIndexGrid = newIndexGrid;
 }
 
 void EditorViewScene::setEnabled(bool enabled)

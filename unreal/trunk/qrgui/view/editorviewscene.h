@@ -39,6 +39,8 @@ public:
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
+	double realIndexGrid();
+	void setRealIndexGrid(double indGrid);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 	bool getNeedDrawGrid();
@@ -74,6 +76,7 @@ private:
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 	qreal mWidthOfGrid;
+	double mRealIndexGrid;
 
 	void getObjectByGesture();
 	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);

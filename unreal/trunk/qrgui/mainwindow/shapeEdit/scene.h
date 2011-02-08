@@ -24,8 +24,8 @@
 
 using namespace UML;
 
-const int sizeEmrtyRectX = 690;
-const int sizeEmrtyRectY = 590;
+const int sizeEmptyRectX = 680;
+const int sizeEmptyRectY = 580;
 
 class Scene : public QGraphicsScene
 {

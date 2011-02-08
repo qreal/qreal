@@ -455,7 +455,14 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (ui.logicalModelExplorer->currentIndex())
 			: (ui.graphicalModelExplorer->currentIndex());
-	closeTab(index);
+	if (isLogicalModel) {
+		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
+		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+		foreach (Id graphicalId, graphicalIdList) {
+			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+		}
+	} else
+		closeTab(index);
 	if (index.isValid()) {
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(ui.propertyEditor->model());
 		if (pModel->isCurrentIndex(index)) {
@@ -1130,11 +1137,11 @@ void MainWindow::updateTabName(Id const &id)
 	}
 }
 
-void MainWindow::closeTab(QModelIndex const &index)
+void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 {
 	for (int i = 0; i < ui.tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(ui.tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
+		if (tab->mvIface()->rootIndex() == graphicsIndex) {
 			closeTab(i);
 			return;
 		}

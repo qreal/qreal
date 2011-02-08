@@ -91,7 +91,7 @@ namespace qReal {
 		void deleteFromDiagram();
 		void changeMiniMapSource(int index);
 		void closeTab(int index);
-		void closeTab(QModelIndex const &index);
+		void closeTab(QModelIndex const &graphicsIndex);
 		void exterminate();
 		void generateEditor();
 		void generateEditorWithQRMC();
