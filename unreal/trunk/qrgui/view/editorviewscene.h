@@ -7,7 +7,7 @@
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
 
-const int indexGrid = 30; // distance between two lines in the grid
+//const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
 	class EditorViewMViface;
@@ -40,7 +40,7 @@ public:
 
 	void setNeedDrawGrid(bool show);
 	double realIndexGrid();
-	void setRealIndexGrid(double indGrid);
+	void setRealIndexGrid(double newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 	bool getNeedDrawGrid();

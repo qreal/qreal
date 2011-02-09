@@ -14,6 +14,22 @@ PreferencesDialog::PreferencesDialog(QAction * const showGridAction, QAction * c
 	connect(ui->linuxButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 	connect(ui->windowsButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
 	connect(ui->otherButton, SIGNAL(clicked()), this, SLOT(systemChoosingButtonClicked()));
+	connect(ui->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
+	connect(ui->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+}
+
+void PreferencesDialog::widthGridSliderMoved(int value)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("GridWidth", value);
+	emit gridChanged();
+}
+
+void PreferencesDialog::indexGridSliderMoved(int value)
+{
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("IndexGrid", value);
+	emit gridChanged();
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -27,7 +43,10 @@ void PreferencesDialog::initPreferences()
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
 	ui->gridWidthSlider->setValue(settings.value("GridWidth", 10).toInt());
+	ui->indexGridSlider->setValue(settings.value("IndexGrid", 30).toInt());
 	ui->zoomFactorSlider->setValue(settings.value("zoomFactor", 2).toInt());
+	mWithGrid = ui->gridWidthSlider->value();
+	mIndexGrid = ui->indexGridSlider->value();
 
 	ui->chooseDiagramsToSaveCheckBox->setChecked(settings.value("ChooseDiagramsToSave", true).toBool());
 	ui->diagramCreateCheckBox->setChecked(settings.value("DiagramCreateSuggestion", true).toBool());
@@ -65,7 +84,10 @@ void PreferencesDialog::applyChanges()
 	settings.setValue("EmbeddedLinkerIndent", ui->embeddedLinkerIndentSlider->value());
 	settings.setValue("EmbeddedLinkerSize", ui->embeddedLinkerSizeSlider->value());
 	settings.setValue("GridWidth", ui->gridWidthSlider->value());
+	settings.setValue("IndexGrid", ui->indexGridSlider->value());
 	settings.setValue("zoomFactor", ui->zoomFactorSlider->value());
+	mWithGrid = ui->gridWidthSlider->value();
+	mIndexGrid = ui->indexGridSlider->value();
 
 	settings.setValue("ChooseDiagramsToSave", ui->chooseDiagramsToSaveCheckBox->isChecked());
 	settings.setValue("DiagramCreateSuggestion", ui->diagramCreateCheckBox->isChecked());
@@ -123,6 +145,11 @@ void PreferencesDialog::on_applyButton_clicked()
 
 void PreferencesDialog::on_cancelButton_clicked()
 {
+	ui->gridWidthSlider->setValue(mWithGrid);
+	ui->indexGridSlider->setValue(mIndexGrid);
+	QSettings settings("SPbSU", "QReal");
+	settings.setValue("GridWidth", mWithGrid);
+	settings.setValue("IndexGrid", mIndexGrid);
 	close();
 }
 

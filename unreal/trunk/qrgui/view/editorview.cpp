@@ -141,3 +141,8 @@ void EditorView::scrollContentsBy(int dx, int dy)
 		mScene->invalidate();
 }
 
+void EditorView::invalidateScene()
+{
+	scene()->invalidate();
+}
+

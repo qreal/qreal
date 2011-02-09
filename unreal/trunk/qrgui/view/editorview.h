@@ -32,6 +32,7 @@ namespace qReal {
 		void toggleOpenGL(bool);
 		void zoomIn();
 		void zoomOut();
+		void invalidateScene();
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);

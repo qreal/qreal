@@ -935,6 +935,9 @@ void MainWindow::parseHascol()
 void MainWindow::showPreferencesDialog()
 {
 	PreferencesDialog preferencesDialog(ui.actionShow_grid, ui.actionShow_alignment, ui.actionSwitch_on_grid, ui.actionSwitch_on_alignment);
+	if (getCurrentTab() != NULL) {
+		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+	}
 	preferencesDialog.exec();
 }
 
