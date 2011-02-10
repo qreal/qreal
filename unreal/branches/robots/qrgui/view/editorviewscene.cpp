@@ -20,6 +20,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
 	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
+	mRealIndexGrid = settings.value("IndexGrid", 30).toInt();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
 	mRightButtonPressed = false;
@@ -61,7 +62,9 @@ void EditorViewScene::initMouseMoveManager()
 
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-	qreal sceneX = rect.x(), sceneY = rect.y();
+	int const indexGrid = QSettings("SPbSU", "QReal").value("IndexGrid", 30).toInt();
+	qreal const sceneX = rect.x();
+	qreal const sceneY = rect.y();
 	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid;
 	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid;
 	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid;
@@ -74,6 +77,16 @@ void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 		QLineF line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
+}
+
+double EditorViewScene::realIndexGrid()
+{
+	return mRealIndexGrid;
+}
+
+void EditorViewScene::setRealIndexGrid(double newIndexGrid)
+{
+	mRealIndexGrid = newIndexGrid;
 }
 
 void EditorViewScene::setEnabled(bool enabled)

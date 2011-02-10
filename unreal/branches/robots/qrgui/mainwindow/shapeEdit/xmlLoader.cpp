@@ -64,7 +64,7 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 			sizePictureX = (type.attribute("sizex", "")).toInt();
 			sizePictureY = (type.attribute("sizey", "")).toInt();
 			if (mReadFile) {
-				if (mStrX + distanceFigure + sizePictureX >= sizeEmrtyRectX) {
+				if (mStrX + distanceFigure + sizePictureX >= sizeEmptyRectX) {
 					mStrY = mFloorY;
 					mStrX = 0;
 				}

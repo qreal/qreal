@@ -465,7 +465,14 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
 			: (mUi->graphicalModelExplorer->currentIndex());
-	closeTab(index);
+	if (isLogicalModel) {
+		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
+		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+		foreach (Id graphicalId, graphicalIdList) {
+			closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+		}
+	} else
+		closeTab(index);
 	if (index.isValid()) {
 		PropertyEditorModel* pModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
 		if (pModel->isCurrentIndex(index)) {
@@ -725,6 +732,9 @@ void MainWindow::exterminate()
 void MainWindow::showPreferencesDialog()
 {
 	PreferencesDialog preferencesDialog(mUi->actionShow_grid, mUi->actionShow_alignment, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+	if (getCurrentTab() != NULL) {
+		connect(&preferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
+	}
 	preferencesDialog.exec();
 }
 
@@ -922,11 +932,11 @@ void MainWindow::updateTabName(Id const &id)
 	}
 }
 
-void MainWindow::closeTab(QModelIndex const &index)
+void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView *tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == index) {
+		if (tab->mvIface()->rootIndex() == graphicsIndex) {
 			closeTab(i);
 			return;
 		}

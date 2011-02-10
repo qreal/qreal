@@ -22,6 +22,8 @@ private:
 	QAction * const mShowAlignmentAction;
 	QAction * const mActivateGridAction;
 	QAction * const mActivateAlignmentAction;
+	int mWithGrid;
+	int mIndexGrid;
 
 	void applyChanges();
 	void initPreferences();
@@ -32,4 +34,8 @@ private slots:
 	void on_applyButton_clicked();
 	void on_okButton_clicked();
 	void systemChoosingButtonClicked();
+	void widthGridSliderMoved(int value);
+	void indexGridSliderMoved(int value);
+signals:
+	void gridChanged();
 };

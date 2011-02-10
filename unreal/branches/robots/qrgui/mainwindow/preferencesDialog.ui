@@ -69,7 +69,7 @@
          <x>10</x>
          <y>30</y>
          <width>311</width>
-         <height>101</height>
+         <height>125</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -120,7 +120,32 @@
          </rect>
         </property>
         <property name="minimum">
-         <number>0</number>
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="pageStep">
+         <number>10</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSlider" name="indexGridSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>241</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>5</number>
         </property>
         <property name="maximum">
          <number>150</number>
@@ -146,6 +171,19 @@
         </property>
         <property name="text">
          <string>Width</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_20">
+        <property name="geometry">
+         <rect>
+          <x>263</x>
+          <y>90</y>
+          <width>46</width>
+          <height>13</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Cell size</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="activateAlignmentCheckBox">
@@ -210,7 +248,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>140</y>
+         <y>150</y>
          <width>121</width>
          <height>16</height>
         </rect>
@@ -223,7 +261,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+         <y>170</y>
          <width>311</width>
          <height>61</height>
         </rect>

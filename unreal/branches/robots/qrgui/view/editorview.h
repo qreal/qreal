@@ -33,6 +33,7 @@ namespace qReal {
 		void toggleOpenGL(bool);
 		void zoomIn();
 		void zoomOut();
+		void invalidateScene();
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
@@ -46,6 +47,7 @@ namespace qReal {
 		QSettings mSettings;
 		QPointF mMouseOldPosition;
 		bool mWheelPressed;
+		void checkGrid();
 	};
 
 }
