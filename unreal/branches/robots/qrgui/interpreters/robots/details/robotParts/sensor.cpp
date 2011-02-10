@@ -40,7 +40,8 @@ void Sensor::processResponse(QByteArray const &reading)
 		mState = idle;
 		if (mResetDone) {
 			qDebug() << "Response is empty, seems to be a connection failure";
-			emit failure();
+			// Just ignore connection failures for now
+//			emit failure();
 		} else {
 			if (mIsConfigured) {
 				mResetDone = true;

@@ -23,8 +23,8 @@ public:
 	virtual QList<SensorPortPair> usedSensors() const;
 
 private slots:
-	void response(int reading);
-	void failure();
+	void responseSlot(int reading);
+	void failureSlot();
 	void timerTimeout();
 
 private:

@@ -27,7 +27,8 @@ BluetoothRobotCommunication::BluetoothRobotCommunication(QString const &portName
 
 BluetoothRobotCommunication::~BluetoothRobotCommunication()
 {
-	mRobotCommunicationThread.exit(0);
+	mRobotCommunicationThread.quit();
+	mRobotCommunicationThread.wait();
 }
 
 void BluetoothRobotCommunication::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)

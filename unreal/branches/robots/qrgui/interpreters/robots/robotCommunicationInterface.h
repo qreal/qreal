@@ -14,6 +14,7 @@ class RobotCommunicationInterface : public QObject
 	Q_OBJECT
 
 public:
+	virtual ~RobotCommunicationInterface() {}
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize) = 0;
 	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port) = 0;
 	virtual void connect() = 0;

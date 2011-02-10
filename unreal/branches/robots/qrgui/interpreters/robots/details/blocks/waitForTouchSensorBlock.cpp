@@ -28,14 +28,14 @@ void WaitForTouchSensorBlock::run()
 		return;
 	}
 
-	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(response(int)));
-	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failure()));
+	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failureSlot()));
 
 	mTouchSensor->read();
 	mActiveWaitingTimer.start();
 }
 
-void WaitForTouchSensorBlock::response(int reading)
+void WaitForTouchSensorBlock::responseSlot(int reading)
 {
 	if (reading == 1) {
 		mActiveWaitingTimer.stop();
@@ -43,7 +43,7 @@ void WaitForTouchSensorBlock::response(int reading)
 	}
 }
 
-void WaitForTouchSensorBlock::failure()
+void WaitForTouchSensorBlock::failureSlot()
 {
 	mActiveWaitingTimer.stop();
 	emit failure();

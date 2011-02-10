@@ -28,14 +28,14 @@ void WaitForSonarDistanceBlock::run()
 		return;
 	}
 
-	connect(mSonarSensor, SIGNAL(response(int)), this, SLOT(response(int)));
-	connect(mSonarSensor, SIGNAL(failure()), this, SLOT(failure()));
+	connect(mSonarSensor, SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(mSonarSensor, SIGNAL(failure()), this, SLOT(failureSlot()));
 
 	mSonarSensor->read();
 	mActiveWaitingTimer.start();
 }
 
-void WaitForSonarDistanceBlock::response(int reading)
+void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
 	int const targetDistance = intProperty("Distance");
 	if (reading < targetDistance) {
@@ -44,7 +44,7 @@ void WaitForSonarDistanceBlock::response(int reading)
 	}
 }
 
-void WaitForSonarDistanceBlock::failure()
+void WaitForSonarDistanceBlock::failureSlot()
 {
 	mActiveWaitingTimer.stop();
 	emit failure();
