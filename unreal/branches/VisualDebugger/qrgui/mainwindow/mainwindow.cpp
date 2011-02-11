@@ -47,7 +47,7 @@
 using namespace qReal;
 
 MainWindow::MainWindow()
-	: mListenerManager(NULL), mPropertyModel(mEditorManager)
+	: /*mListenerManager(NULL),*/ mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
 	bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -182,8 +182,8 @@ MainWindow::MainWindow()
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
-	mListenerManager = new ListenerManager(mEditorManager.listeners()
-			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+//	mListenerManager = new ListenerManager(mEditorManager.listeners()
+//			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
 
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
@@ -239,7 +239,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 MainWindow::~MainWindow()
 {
 	saveAll();
-	delete mListenerManager;
+//	delete mListenerManager;
 }
 
 EditorManager* MainWindow::manager()
@@ -1153,10 +1153,10 @@ void MainWindow::closeTab(QModelIndex const &graphicsIndex)
 	}
 }
 
-ListenerManager *MainWindow::listenerManager()
-{
-	return mListenerManager;
-}
+//ListenerManager *MainWindow::listenerManager()
+//{
+//	return mListenerManager;
+//}
 
 void MainWindow::showGrid(bool isChecked)
 {
