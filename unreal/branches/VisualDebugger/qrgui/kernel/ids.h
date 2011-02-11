@@ -5,20 +5,19 @@
 #include <QtCore/QUrl>
 #include <QtCore/QHash>
 #include <QtCore/QMetaType>
+#include <QtCore/QDebug>
 
 namespace qReal {
 
 	class Id {
 	public:
 		static Id loadFromString(QString const &string);
-		static Id getRootId();
+		static Id createElementId(QString const &editor, QString const &diagram, QString const &element);
+		static Id rootId();
 
 		explicit Id(QString const &editor = "", QString  const &diagram = "",
 			QString  const &element = "", QString  const &id = "");
 		Id(Id const &base, QString const &additional);
-
-		Id editorId() const;
-		Id diagramId() const;
 
 		QUrl toUrl() const;
 		QString id() const;
@@ -45,7 +44,7 @@ namespace qReal {
 		bool checkIntegrity() const;
 	};
 
-	inline bool operator==(const Id &i1, const Id &i2)
+	inline bool operator==(Id const &i1, Id const &i2)
 	{
 		return i1.editor() == i2.editor()
 			&& i1.diagram() == i2.diagram()
@@ -53,15 +52,21 @@ namespace qReal {
 			&& i1.id() == i2.id();
 	}
 
-	inline bool operator!=(const Id &i1, const Id &i2)
+	inline bool operator!=(Id const &i1, Id const &i2)
 	{
 		return !(i1 == i2);
 	}
 
-	inline uint qHash(const Id &key)
+	inline uint qHash(Id const &key)
 	{
 		return qHash(key.editor()) ^ qHash(key.diagram()) ^ qHash(key.element())
 				^ qHash(key.id());
+	}
+
+	inline QDebug operator<<(QDebug dbg, Id const &id)
+	{
+		dbg << id.toString();
+		return dbg.space();
 	}
 
 	typedef QList<Id> IdList;
@@ -70,6 +75,8 @@ namespace qReal {
 	public:
 		static QVariant toVariant(IdList const &list);
 	};
+
+	typedef Id Metatype;
 }
 
 // qReal::Id and qReal::IdList could be used straight in QVariant

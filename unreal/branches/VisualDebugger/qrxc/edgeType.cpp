@@ -84,7 +84,7 @@ bool EdgeType::initGraphics()
 
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
-	return label->init(element, count, false);
+	return label->init(element, count, false, mWidth, mHeight);
 }
 
 void EdgeType::generateGraphics() const
@@ -98,7 +98,7 @@ void EdgeType::generateGraphics() const
 		"\t<line fill=\"#000000\" stroke-style=\"" << sdfType << "\" stroke=\"#000000\" y1=\"0\" " <<
 		"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
 		"</picture>";
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>" + resourceName("Class") + "</file>\n");
+	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 }
 
 void EdgeType::generateCode(OutFile &out)
@@ -109,7 +109,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\tclass " << className << " : public ElementImpl {\n"
 		<< "\tpublic:\n";
-		
+
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "() {\n";
 		out() << "\t\t\tmBonusContextMenuFields";
@@ -120,7 +120,7 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, QList<QPointF> &, QList<StatLine> &,\n"
+	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
 		<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
 		<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *) {}\n\n"
 		<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
@@ -155,7 +155,7 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "return " << mLineType << "; }\n";
 	else
 		out() << "return Qt::SolidLine; }\n";
-	
+
 	out() << "\t\tQStringList bonusContextMenuFields()\n\t\t{\n" << "\t\t\treturn ";
 	if (!mBonusContextMenuFields.empty())
 		out() << "mBonusContextMenuFields;";

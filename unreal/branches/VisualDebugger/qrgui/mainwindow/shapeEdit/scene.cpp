@@ -11,7 +11,7 @@ Scene::Scene(View *view, QObject * parent)
 {
 	mView = view;
 	setItemIndexMethod(NoIndex);
-	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
@@ -61,7 +61,7 @@ void Scene::setEmptyPenBrushItems()
 
 QPoint Scene::centerEmpty()
 {
-	return QPoint(sizeEmrtyRectX / 2, sizeEmrtyRectY / 2);
+	return QPoint(sizeEmptyRectX / 2, sizeEmptyRectY / 2);
 }
 
 void Scene::setX1andY1(QGraphicsSceneMouseEvent *event)
@@ -304,6 +304,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		setX1andY1(event);
 		mImage = new Image(mFileName, mX1, mY1, NULL);
 		addItem(mImage);
+		setZValue(mImage);
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
@@ -318,9 +319,9 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				update();
 			}
 		}
+		setZValueSelectedItems();
 		break;
 	}
-	setZValueSelectedItems();
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
@@ -546,7 +547,7 @@ void Scene::deleteItem()
 void Scene::clearScene()
 {
 	clear();
-	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 	mZValue = 0;
 }
 

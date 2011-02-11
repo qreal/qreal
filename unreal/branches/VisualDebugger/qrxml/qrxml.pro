@@ -1,14 +1,14 @@
 TEMPLATE = subdirs
 
 SUBDIRS	= \
-	activityEditor/activityEditor.pro \
+#	activityEditor/activityEditor.pro \
 	blockDiagramEditor/blockDiagramEditor.pro \
 #	bpelEditor/bpelEditor.pro \
-	classEditor/classEditor.pro \
+#	classEditor/classEditor.pro \
 #	communicationEditor/communicationEditor.pro \
 #	componentEditor/componentEditor.pro \
 #	deploymentEditor/deploymentEditor.pro \
-	kernelEditor/kernelEditor.pro \
+#	kernelEditor/kernelEditor.pro \
 #	hascolEditor/hascolEditor.pro \
 	metaEditor/metaEditor.pro \
 #	networkEditor/networkEditor.pro \
@@ -22,4 +22,4 @@ SUBDIRS	= \
 #	traceEditor/traceEditor.pro \
 #	usecaseEditor/usecaseEditor.pro \
 #	handmadeEditor/handmadeEditor.pro \
-	testEditor/testEditor.pro \
+#	testEditor/testEditor.pro \

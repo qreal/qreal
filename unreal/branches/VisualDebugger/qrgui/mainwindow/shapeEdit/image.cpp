@@ -73,7 +73,7 @@ QPair<QDomElement, Item::DomElementTypes> Image::generateItem(QDomDocument &docu
 {
 	QDomElement image = document.createElement("image");
 	setXandY(image, sceneBoundingRectCoord(topLeftPicture));
-	image.setAttribute("name", mFileName.section('/', -1));
+	image.setAttribute("name", "images/" + mFileName.section('/', -1));
 
 	return QPair<QDomElement, Item::DomElementTypes>(image, mDomElementType);
 }

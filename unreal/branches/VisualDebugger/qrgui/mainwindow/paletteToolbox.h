@@ -25,7 +25,7 @@ namespace qReal {
 			~PaletteToolbox();
 
 			void addDiagramType(Id const &id, QString const &name);
-			void addItemType(Id const &id, QString const &name, QIcon const &icon);
+			void addItemType(Id const &id, QString const &name, QString const &description, QIcon const &icon);
 			void initDone();
 			void deleteDiagramType(Id const &id);
 
@@ -39,8 +39,8 @@ namespace qReal {
 		private:
 			class DraggableElement : public QWidget {
 			public:
-				DraggableElement(Id const &id, QString const &name,
-								 QIcon const &icon, QWidget *parent = NULL);
+				DraggableElement(Id const &id, QString const &name, QString const &description,
+					QIcon const &icon, QWidget *parent = NULL);
 
 				QIcon icon() const
 				{

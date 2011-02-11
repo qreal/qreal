@@ -7,10 +7,8 @@ using namespace qReal;
 using namespace qrRepo;
 using namespace qrRepo::details;
 
-bool const failSafe = true;
-
 Client::Client(QString const &workingDirectory)
-	: serializer(workingDirectory, failSafe)
+	: serializer(workingDirectory)
 {
 	init();
 	loadFromDisk();
@@ -18,15 +16,15 @@ Client::Client(QString const &workingDirectory)
 
 void Client::init()
 {
-	mObjects.insert(ROOT_ID, new LogicObject(ROOT_ID));
-	mObjects[ROOT_ID]->setProperty("name", ROOT_ID.toString());
+	mObjects.insert(Id::rootId(), new Object(Id::rootId()));
+	mObjects[Id::rootId()]->setProperty("name", Id::rootId().toString());
 }
 
 Client::~Client()
 {
-	delete mObjects[ROOT_ID];
-	mObjects.remove(ROOT_ID);
-	//serializer.saveToDisk(mObjects.values());
+	delete mObjects[Id::rootId()];
+	mObjects.remove(Id::rootId());
+	serializer.saveToDisk(mObjects.values());
 }
 
 IdList Client::children(Id const &id) const
@@ -38,21 +36,21 @@ IdList Client::children(Id const &id) const
 	}
 }
 
-IdList Client::parents(Id const &id) const
+Id Client::parent(Id const &id) const
 {
 	if (mObjects.contains(id)) {
-		return mObjects[id]->parents();
+		return mObjects[id]->parent();
 	} else {
 		throw Exception("Client: Requesting parents of nonexistent object " + id.toString());
 	}
 }
 
-void Client::addParent(Id const &id, Id const &parent)
+void Client::setParent(Id const &id, Id const &parent)
 {
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(parent)) {
-			mObjects[id]->addParent(parent);
-			if (!failSafe || !mObjects[parent]->children().contains(id))
+			mObjects[id]->setParent(parent);
+			if (!mObjects[parent]->children().contains(id))
 				mObjects[parent]->addChild(id);
 		} else {
 			throw Exception("Client: Adding nonexistent parent " + parent.toString() + " to  object " + id.toString());
@@ -64,30 +62,36 @@ void Client::addParent(Id const &id, Id const &parent)
 
 void Client::addChild(const Id &id, const Id &child)
 {
+	addChild(id, child, Id());
+}
+
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
+{
 	if (mObjects.contains(id)) {
-		if (!failSafe || !mObjects[id]->children().contains(child))
+		if (!mObjects[id]->children().contains(child))
 			mObjects[id]->addChild(child);
 		if (mObjects.contains(child)) {
-			mObjects[child]->addParent(id);
+			mObjects[child]->setParent(id);
 		} else {
-			mObjects.insert(child,new LogicObject(child,id));
+			mObjects.insert(child, new Object(child, id, logicalId));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
 	}
 }
 
-void Client::removeParent(const Id &id, const Id &parent)
+void Client::removeParent(const Id &id)
 {
 	if (mObjects.contains(id)) {
+		Id const parent = mObjects[id]->parent();
 		if (mObjects.contains(parent)) {
-			mObjects[id]->removeParent(parent);
+			mObjects[id]->removeParent();
 			mObjects[parent]->removeChild(id);
 		} else {
 			throw Exception("Client: Removing nonexistent parent " + parent.toString() + " from object " + id.toString());
 		}
 	} else {
-		throw Exception("Client: Removing parent " + parent.toString() + " from nonexistent object " + id.toString());
+		throw Exception("Client: Removing parent from nonexistent object " + id.toString());
 	}
 }
 
@@ -96,16 +100,6 @@ void Client::removeChild(const Id &id, const Id &child)
 	if (mObjects.contains(id)) {
 		if (mObjects.contains(child)) {
 			mObjects[id]->removeChild(child);
-			if (mObjects[child]->parents().size()!=1) {
-				mObjects[child]->removeParent(id);
-			} else {
-				if (mObjects[child]->parents().first()==id) {
-					delete mObjects[child];
-					mObjects.remove(child);
-				} else {
-					throw Exception("Client: removing child " + child.toString() + " from object " + id.toString() + ", which is not his parent");
-				}
-			}
 		} else {
 			throw Exception("Client: removing nonexistent child " + child.toString() + " from object " + id.toString());
 		}
@@ -153,6 +147,42 @@ bool Client::hasProperty(const Id &id, const QString &name) const
 	}
 }
 
+void Client::setTemporaryRemovedLinks(Id const &id, QString const &direction, qReal::IdList const &linkIdList)
+{
+	if (mObjects.contains(id)) {
+		mObjects[id]->setTemporaryRemovedLinks(direction, linkIdList);
+	} else {
+		throw Exception("Client: Setting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+IdList Client::temporaryRemovedLinksAt(Id const &id, QString const &direction) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->temporaryRemovedLinksAt(direction);
+	} else {
+		throw Exception("Client: Requesting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+IdList Client::temporaryRemovedLinks(Id const &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->temporaryRemovedLinks();
+	} else {
+		throw Exception("Client: Requesting temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
+void Client::removeTemporaryRemovedLinks(Id const &id)
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->removeTemporaryRemovedLinks();
+	} else {
+		throw Exception("Client: Removing temporaryRemovedLinks of nonexistent object " + id.toString());
+	}
+}
+
 void Client::loadFromDisk()
 {
 	serializer.loadFromDisk(mObjects);
@@ -161,18 +191,16 @@ void Client::loadFromDisk()
 
 void Client::addChildrenToRootObject()
 {
-	foreach (LogicObject *object, mObjects.values()) {
-		if (object->parents().contains(ROOT_ID)) {
-			if (!failSafe || !mObjects[ROOT_ID]->children().contains(object->id()))
-				mObjects[ROOT_ID]->addChild(object->id());
+	foreach (Object *object, mObjects.values()) {
+		if (object->parent() == Id::rootId()) {
+			if (!mObjects[Id::rootId()]->children().contains(object->id()))
+				mObjects[Id::rootId()]->addChild(object->id());
 		}
 	}
 }
 
 IdList Client::idsOfAllChildrenOf(Id id) const
 {
-	qDebug() << "ID: " << mObjects[id];
-
 	IdList result;
 	result.append(id);
 	foreach(Id childId,mObjects[id]->children())
@@ -180,9 +208,9 @@ IdList Client::idsOfAllChildrenOf(Id id) const
 	return result;
 }
 
-QList<LogicObject*> Client::allChildrenOf(Id id) const
+QList<Object*> Client::allChildrenOf(Id id) const
 {
-	QList<LogicObject*> result;
+	QList<Object*> result;
 	result.append(mObjects[id]);
 	foreach(Id childId,mObjects[id]->children())
 		result.append(allChildrenOf(childId));
@@ -202,7 +230,7 @@ void Client::saveAll() const
 
 void Client::save(IdList list) const
 {
-	QList<LogicObject*> toSave;
+	QList<Object*> toSave;
 	foreach(Id id, list)
 		toSave.append(allChildrenOf(id));
 
@@ -211,10 +239,19 @@ void Client::save(IdList list) const
 
 void Client::remove(IdList list) const
 {
-	qDebug() << "Client::remove(IdList), list.size() > 0 == " << (list.size()>0);
 	foreach(Id id, list) {
 		qDebug() << id.toString();
 		serializer.removeFromDisk(id);
+	}
+}
+
+void Client::remove(const qReal::Id &id)
+{
+	if (mObjects.contains(id)) {
+		delete mObjects[id];
+		mObjects.remove(id);
+	} else {
+		throw Exception("Client: Trying to remove nonexistent object " + id.toString());
 	}
 }
 
@@ -223,22 +260,16 @@ void Client::setWorkingDir(QString const &workingDir)
 	serializer.setWorkingDir(workingDir);
 }
 
-void Client::log(QString const message, const qReal::Id diagram)
-{
-	serializer.log(message, diagram);
-}
-
 void Client::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";
-	foreach (LogicObject *object, mObjects.values()) {
+	foreach (Object *object, mObjects.values()) {
 		qDebug() << object->id().toString();
 		qDebug() << "Children:";
 		foreach (Id id, object->children())
 			qDebug() << id.toString();
-		qDebug() << "Parents:";
-		foreach (Id id, object->parents())
-			qDebug() << id.toString();
+		qDebug() << "Parent:";
+		qDebug() << object->parent().toString();
 		qDebug() << "============";
 	}
 }
@@ -265,3 +296,14 @@ qReal::IdList Client::elements() const
 {
 	return mObjects.keys();
 }
+
+bool Client::isLogicalId(qReal::Id const &elem) const
+{
+	return mObjects[elem]->logicalId() == qReal::Id();
+}
+
+qReal::Id Client::logicalId(qReal::Id const &elem) const
+{
+	return mObjects[elem]->logicalId();
+}
+

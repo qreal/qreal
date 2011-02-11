@@ -10,6 +10,7 @@ OutFile::OutFile(QString const &fileName)
 	if (!mFile.isOpen())
 		throw "File open operation failed";
 	mOut.setDevice(&mFile);
+	mOut.setCodec("UTF-8");
 }
 
 OutFile::~OutFile()

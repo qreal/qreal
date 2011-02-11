@@ -10,11 +10,38 @@
 #include "sdfRendererInterface.h"
 #include "../kernel/ids.h"
 
-namespace UML{
+namespace UML {
 
 	typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 	typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 	typedef QPair<bool, qReal::Id> PossibleEdgeType;
+
+/** @brief point port description */
+	struct StatPoint
+	{
+		QPointF point;
+		bool prop_x;
+		bool prop_y;
+		int initWidth;
+		int initHeight;
+
+		StatPoint() : point(QPointF(0, 0)), prop_x(false), prop_y(false),
+			initWidth(1), initHeight(1) {}
+
+		operator QPointF () const
+		{
+			return point;
+		}
+
+		void operator = (QPointF const &p)
+		{
+			point = p;
+			prop_x = false;
+			prop_y = false;
+			initHeight = 1;
+			initWidth = 1;
+		}
+	};
 
 /** @brief line port description */
 	struct StatLine
@@ -24,9 +51,11 @@ namespace UML{
 		bool prop_y1;
 		bool prop_x2;
 		bool prop_y2;
+		int initWidth;
+		int initHeight;
 
 		StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-			prop_x2(false), prop_y2(false) {}
+			prop_x2(false), prop_y2(false), initWidth(1), initHeight(1) {}
 
 		operator QLineF () const
 		{
@@ -40,6 +69,8 @@ namespace UML{
 			prop_x2 = false;
 			prop_y1 = false;
 			prop_y2 = false;
+			initHeight = 1;
+			initWidth = 1;
 		}
 	};
 
@@ -49,7 +80,7 @@ namespace UML{
 	 * */
 	class ElementImpl {
 		public:
-			virtual void init(QRectF &contents, QList<QPointF> &pointPorts,
+			virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
 					QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 					QList<ElementTitleInterface*> &titles,
 					SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) = 0;

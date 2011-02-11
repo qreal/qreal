@@ -49,108 +49,108 @@
 */
 class WindowsModernStyle : public QWindowsVistaStyle
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    /**
-    * Default constructor.
-    */
-    WindowsModernStyle();
+	/**
+	* Default constructor.
+	*/
+	WindowsModernStyle();
 
-    /**
-    * Destructor.
-    */
-    ~WindowsModernStyle();
+	/**
+	* Destructor.
+	*/
+	~WindowsModernStyle();
 
 public: // overrides
-    void polish( QApplication* application );
-    void unpolish( QApplication* application );
+	void polish( QApplication* application );
+	void unpolish( QApplication* application );
 
-    void polish( QPalette& palette );
+	void polish( QPalette& palette );
 
-    void polish( QWidget* widget );
-    void unpolish( QWidget* widget );
+	void polish( QWidget* widget );
+	void unpolish( QWidget* widget );
 
-    int pixelMetric( PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const;
+	int pixelMetric( PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const;
 
-    int styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget,
-        QStyleHintReturn* returnData = NULL ) const;
+	int styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget,
+		QStyleHintReturn* returnData = NULL ) const;
 
-    QSize sizeFromContents( ContentsType type, const QStyleOption* option,
-        const QSize& contentsSize, const QWidget* widget ) const;
+	QSize sizeFromContents( ContentsType type, const QStyleOption* option,
+		const QSize& contentsSize, const QWidget* widget ) const;
 
-    QRect subElementRect( SubElement element, const QStyleOption* option, const QWidget* widget ) const;
-    QRect subControlRect( ComplexControl control, const QStyleOptionComplex* option,
-        SubControl subControl, const QWidget* widget ) const;
+	QRect subElementRect( SubElement element, const QStyleOption* option, const QWidget* widget ) const;
+	QRect subControlRect( ComplexControl control, const QStyleOptionComplex* option,
+		SubControl subControl, const QWidget* widget ) const;
 
-    void drawPrimitive( PrimitiveElement element, const QStyleOption* option,
-        QPainter* painter, const QWidget* widget ) const;
-    void drawControl( ControlElement element, const QStyleOption* option,
-        QPainter* painter, const QWidget* widget ) const;
-    void drawComplexControl( ComplexControl control, const QStyleOptionComplex* option,
-        QPainter* painter, const QWidget* widget ) const;
+	void drawPrimitive( PrimitiveElement element, const QStyleOption* option,
+		QPainter* painter, const QWidget* widget ) const;
+	void drawControl( ControlElement element, const QStyleOption* option,
+		QPainter* painter, const QWidget* widget ) const;
+	void drawComplexControl( ComplexControl control, const QStyleOptionComplex* option,
+		QPainter* painter, const QWidget* widget ) const;
 
 public:
-    enum {
-        /**
-        * Primitive element filled with the main window's background gradient.
-        */
-        PE_WindowGradient = PE_CustomBase + 1
-    };
+	enum {
+		/**
+		* Primitive element filled with the main window's background gradient.
+		*/
+		PE_WindowGradient = PE_CustomBase + 1
+	};
 
 protected slots:
-    int layoutSpacingImplementation( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-        Qt::Orientation orientation, const QStyleOption* option, const QWidget* widget ) const;
+	int layoutSpacingImplementation( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
+		Qt::Orientation orientation, const QStyleOption* option, const QWidget* widget ) const;
 
 private:
-    enum Mode
-    {
-        Blue,
-        Silver,
-        Olive,
-        Classic
-    };
+	enum Mode
+	{
+		Blue,
+		Silver,
+		Olive,
+		Classic
+	};
 
 private:
-    Mode m_mode;
+	Mode m_mode;
 
-    // main window, toolbox
-    QColor m_colorBackgroundBegin;
-    QColor m_colorBackgroundEnd;
+	// main window, toolbox
+	QColor m_colorBackgroundBegin;
+	QColor m_colorBackgroundEnd;
 
-    // menu
-    QColor m_colorMenuBorder;
-    QColor m_colorMenuBackground;
-    QColor m_colorMenuTitleBegin;
-    QColor m_colorMenuTitleEnd;
+	// menu
+	QColor m_colorMenuBorder;
+	QColor m_colorMenuBackground;
+	QColor m_colorMenuTitleBegin;
+	QColor m_colorMenuTitleEnd;
 
-    // toolbar, tab, toolbox
-    QColor m_colorBarBegin;
-    QColor m_colorBarMiddle;
-    QColor m_colorBarEnd;
+	// toolbar, tab, toolbox
+	QColor m_colorBarBegin;
+	QColor m_colorBarMiddle;
+	QColor m_colorBarEnd;
 
-    // toolbar handle
-    QColor m_colorHandle;
-    QColor m_colorHandleLight;
+	// toolbar handle
+	QColor m_colorHandle;
+	QColor m_colorHandleLight;
 
-    // menu, toolbar
-    QColor m_colorSeparator;
-    QColor m_colorSeparatorLight;
+	// menu, toolbar
+	QColor m_colorSeparator;
+	QColor m_colorSeparatorLight;
 
-    // menu, toolbar, tab, toolbox
-    QColor m_colorItemBorder;
-    QColor m_colorItemBackgroundBegin;
-    QColor m_colorItemBackgroundMiddle;
-    QColor m_colorItemBackgroundEnd;
-    QColor m_colorItemCheckedBegin;
-    QColor m_colorItemCheckedMiddle;
-    QColor m_colorItemCheckedEnd;
-    QColor m_colorItemSunkenBegin;
-    QColor m_colorItemSunkenMiddle;
-    QColor m_colorItemSunkenEnd;
+	// menu, toolbar, tab, toolbox
+	QColor m_colorItemBorder;
+	QColor m_colorItemBackgroundBegin;
+	QColor m_colorItemBackgroundMiddle;
+	QColor m_colorItemBackgroundEnd;
+	QColor m_colorItemCheckedBegin;
+	QColor m_colorItemCheckedMiddle;
+	QColor m_colorItemCheckedEnd;
+	QColor m_colorItemSunkenBegin;
+	QColor m_colorItemSunkenMiddle;
+	QColor m_colorItemSunkenEnd;
 
-    // toolbar shadow, tab, toolbox tab
-    QColor m_colorBorder;
-    QColor m_colorBorderLight;
+	// toolbar shadow, tab, toolbox tab
+	QColor m_colorBorder;
+	QColor m_colorBorderLight;
 };
 
 #endif // !defined( NO_STYLE_WINDOWSMODERN )

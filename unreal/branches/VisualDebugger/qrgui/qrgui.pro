@@ -9,6 +9,8 @@ INCLUDEPATH	+=	../qrmc\
 RESOURCES	=	qrgui.qrc
 SOURCES		=	main.cpp
 
+TRANSLATIONS = qrgui_ru.ts
+
 # workaround для http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # как только поправят, можно будет юзать QMAKE_LFLAGS_RPATH
 QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
@@ -34,9 +36,6 @@ include (dialogs/dialogs.pri)
 # Main window
 include (mainwindow/mainwindow.pri)
 
-# Model
-include (model/model.pri)
-
 # View
 include (view/view.pri)
 
@@ -49,8 +48,6 @@ include (generators/generators.pri)
 # "Встроенные" средства реверс-инжиниринга
 include (parsers/parsers.pri)
 
-HEADERS += ../qrmc/plugins/pluginInterface.h
-
 # .pri заведён, чтобы структура папок более круто показывалась в креаторе.
 # Содержит код, общий для генератора редакторов и основной части.
 include (../utils/utils.pri)
@@ -60,6 +57,12 @@ include (thirdparty/thirdparty.pri)
 
 # Управление плагинами. Plugin managment
 include (editorManager/editorManager.pri)
+
+# Graphical and logical models
+include (models/models.pri)
+
+# Interfaces for plugins, used by qrxc and qrmc.
+include (pluginInterface/pluginInterface.pri)
 
 # Visual debugger
 include (visualDebugger/visualDebugger.pri)

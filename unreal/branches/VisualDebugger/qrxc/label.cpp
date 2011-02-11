@@ -5,10 +5,11 @@
 
 using namespace utils;
 
-bool Label::init(QDomElement const &element, int index, bool nodeLabel)
+bool Label::init(QDomElement const &element, int index, bool nodeLabel, int width, int height)
 {
-	mX = element.attribute("x", "0");
-	mY = element.attribute("y", "0");
+	mX = initCoordinate(element.attribute("x"), width);
+	mY = initCoordinate(element.attribute("y"), height);
+
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
@@ -32,13 +33,17 @@ void Label::generateCodeForConstructor(OutFile &out)
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ mX + ", " + mY + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ mX + ", " + mY + ", \"" + mText + "\");\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mText + "\");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
+
+	const QString scalingX = mX.isScalable() ? "true" : "false";
+	const QString scalingY = mY.isScalable() ? "true" : "false";
+	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 
 	// TODO: вынести отсюда в родительский класс.
 	out() << "			" + titleName() + "->setFlags(0);\n"
@@ -55,10 +60,10 @@ void Label::generateCodeForUpdateData(OutFile &out)
 	}
 	QString field;
 	if (mTextBinded == "name")
-		field = "repo->index().data(Qt::DisplayRole).toString()";
+		field = "repo->name()";
 	else
 		// Кастомное свойство. Если есть желание забиндиться на ещё какое-нибудь из предефайненных, надо тут дописать.
-		field = "repo->roleValueByName(\"" + mTextBinded + "\")";
+		field = "repo->logicalProperty(\"" + mTextBinded + "\")";
 	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
 		+ (mCenter == "true" ? "<center>%1</center>" : "%1") + "\").arg(" + field + "));\n";
 }

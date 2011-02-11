@@ -64,7 +64,7 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 			sizePictureX = (type.attribute("sizex", "")).toInt();
 			sizePictureY = (type.attribute("sizey", "")).toInt();
 			if (mReadFile) {
-				if (mStrX + distanceFigure + sizePictureX >= sizeEmrtyRectX) {
+				if (mStrX + distanceFigure + sizePictureX >= sizeEmptyRectX) {
 					mStrY = mFloorY;
 					mStrX = 0;
 				}
@@ -320,7 +320,7 @@ void XmlLoader::readImage(QDomElement const &image)
 	QString fileName = image.attribute("name", "error");
 	QSettings settings("SPbSU", "QReal");
 	QString workingDirName = settings.value("workingDir", "./save").toString();
-	QString fullFileName = workingDirName + "/images/" + fileName;
+	QString fullFileName = workingDirName +"/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);

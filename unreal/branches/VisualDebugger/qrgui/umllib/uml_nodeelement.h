@@ -15,7 +15,7 @@
 #include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
 
 #include "sceneGridHandler.h"
 #include "umlPortHandler.h"
@@ -46,6 +46,7 @@ namespace UML {
 		virtual void setName(QString name);
 
 		const QPointF getPortPos(qreal id) const;
+		static int portId(qreal id);
 		const QPointF getNearestPort(QPointF location) const;
 
 		qreal getPortId(const QPointF &location) const;
@@ -87,7 +88,10 @@ namespace UML {
 		void setConnectingState(bool arg);
 
 		void adjustLinks();
+		void arrangeLinearPorts();
 		void arrangeLinks();
+
+		virtual void checkConnectionsToPort();
 
 	public slots:
 		void switchGrid(bool isChecked);
@@ -124,6 +128,7 @@ namespace UML {
 		NodeElement *getNodeAt(const QPointF &position);
 
 		QLineF newTransform(const StatLine& port) const;
+		QPointF newTransform(const StatPoint& port) const;
 
 		void resize(QRectF newContents);
 		void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
@@ -141,13 +146,15 @@ namespace UML {
 		bool initEmbeddedLinkers();
 		void moveEmbeddedLinkers();
 
+		void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
+
 		ContextMenuAction mSwitchGridAction;
 		static int const objectMinSize = 10;
 		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
 
 		bool mPortsVisible;
 
-		QList<QPointF> mPointPorts;
+		QList<StatPoint> mPointPorts;
 		QList<StatLine> mLinePorts;
 		QRectF mContents;
 

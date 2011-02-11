@@ -15,7 +15,7 @@
 using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
-	: QObject(parent), mRoot()
+	: QObject(parent)
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -101,23 +101,11 @@ IdList EditorManager::elements(const Id &diagram) const
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		elements.append(Id(diagram, e));
-	}
-	return elements;
-}
-
-IdList EditorManager::elementsOnDiagram(const Id &diagram) const
-{
-	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
-
-	IdList elements;
-
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
-
 	return elements;
 }
+
 bool EditorManager::isEditor(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
@@ -153,6 +141,23 @@ QString EditorManager::friendlyName(const Id &id) const
 	}
 }
 
+QString EditorManager::description(const Id &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (id.idSize() != 3)
+		return "";
+	return mPluginIface[id.editor()]->elementDescription(id.diagram(), id.element());
+}
+
+QString EditorManager::propertyDescription(const Id &id, const QString &propertyName) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+
+	if (id.idSize() != 4)
+		return "";
+	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
+}
+
 QString EditorManager::mouseGesture(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
@@ -164,7 +169,7 @@ QString EditorManager::mouseGesture(const Id &id) const
 QIcon EditorManager::icon(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/" + id.element() + "Class.sdf");
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
 	// QIcon will take ownership of engine, no need for us to delete
 	return mPluginIface[id.editor()]->getIcon(engine);
 }
@@ -254,16 +259,19 @@ QStringList EditorManager::getPropertiesWithDefaultValues(Id const &id) const
 	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
 }
 
-IdList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
+IdList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
+		, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
 	IdList result;
-	checkNeededPluginsRecursive(api, ROOT_ID, result);
+	checkNeededPluginsRecursive(logicalApi, Id::rootId(), result);
+	checkNeededPluginsRecursive(graphicalApi, Id::rootId(), result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, IdList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api
+		, Id const &id, IdList &result) const
 {
-	if (id != ROOT_ID && !mPluginsLoaded.contains(id.editor())) {
+	if (id != Id::rootId() && !mPluginsLoaded.contains(id.editor())) {
 		Id missingEditor = Id(id.editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);
@@ -297,20 +305,20 @@ Id EditorManager::findElementByType(QString const &type) const
 	throw Exception("No type " + type + " in loaded plugins");
 }
 
-QList<Listener*> EditorManager::listeners() const
+QList<ListenerInterface*> EditorManager::listeners() const
 {
-	QList<Listener*> result;
-	foreach (EditorInterface *editor, mPluginIface.values()){
-		QList<ListenerInterface*> tmp = editor->listeners();
-		foreach (ListenerInterface *iface, tmp){
-			Listener *listener = dynamic_cast<Listener*>(iface);
-			result.append(listener);
-		}
-	}
+	QList<ListenerInterface*> result;
+	foreach (EditorInterface *editor, mPluginIface.values())
+		result << editor->listeners();
 	return result;
 }
 
-EditorInterface* EditorManager::getEditorInterface(QString editor) const
+EditorInterface* EditorManager::editorInterface(QString const &editor) const
 {
 	return mPluginIface[editor];
+}
+
+bool EditorManager::isDiagramNode(Id const &id) const
+{
+	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
 }

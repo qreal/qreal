@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QGraphicsView>
+#include <QtGui/QGraphicsView>
+#include <QtCore/QSettings>
 
 #include "editorviewscene.h"
 #include "editorviewmviface.h"
@@ -31,14 +32,21 @@ namespace qReal {
 		void toggleOpenGL(bool);
 		void zoomIn();
 		void zoomOut();
+		void invalidateScene();
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
+		virtual void mouseReleaseEvent(QMouseEvent *event);
+		virtual void mousePressEvent(QMouseEvent *event);
 		virtual void scrollContentsBy(int dx, int dy);
 
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
+		QSettings mSettings;
+		QPointF mMouseOldPosition;
+		bool mWheelPressed;
+		void checkGrid();
 	};
 
 }

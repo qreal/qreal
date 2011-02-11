@@ -236,8 +236,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	if(mMapFileImage.contains(fileName)) {
 		pixmap = mMapFileImage.value(fileName);
 	} else {
-		QString fullFileName = mWorkingDirName + "/images/" + fileName.section('/', -1);
-		pixmap = QPixmap(fullFileName);
+		pixmap = QPixmap(":/" + fileName);
 		mMapFileImage.insert(fileName, pixmap);
 	}
 	QRect rect(x1, y1, x2-x1, y2-y1);
@@ -507,18 +506,18 @@ void SdfRenderer::curve_draw(QDomElement &element)
 		{
 			if (elem.tagName() == "start")
 			{
-				start.setX(elem.attribute("startx").toDouble());
-				start.setY(elem.attribute("starty").toDouble());
+				start.setX(elem.attribute("startx").toDouble() * current_size_x / first_size_x);
+				start.setY(elem.attribute("starty").toDouble() * current_size_y / first_size_y);
 			}
 			else if (elem.tagName() == "end")
 			{
-				end.setX(elem.attribute("endx").toDouble());
-				end.setY(elem.attribute("endy").toDouble());
+				end.setX(elem.attribute("endx").toDouble() * current_size_x / first_size_x);
+				end.setY(elem.attribute("endy").toDouble() * current_size_y / first_size_y);
 			}
 			else if (elem.tagName() == "ctrl")
 			{
-				c1.setX(elem.attribute("x").toDouble());
-				c1.setY(elem.attribute("y").toDouble());
+				c1.setX(elem.attribute("x").toDouble() * current_size_x / first_size_x);
+				c1.setY(elem.attribute("y").toDouble() * current_size_y / first_size_y);
 			}
 		}
 		node = node.nextSibling();

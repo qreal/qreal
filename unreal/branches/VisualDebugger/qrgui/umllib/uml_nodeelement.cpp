@@ -1,7 +1,6 @@
 #include "uml_nodeelement.h"
-#include "../model/model.h"
 #include "../view/editorviewscene.h"
-#include "pluginInterface.h"
+#include "../pluginInterface/editorInterface.h"
 
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -34,6 +33,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)
 			continue;
+		title->init(mContents);
 		title->setParentItem(this);
 		mTitles.append(title);
 	}
@@ -72,8 +72,7 @@ NodeElement::~NodeElement()
 
 void NodeElement::setName(QString value)
 {
-	QAbstractItemModel *im = const_cast<QAbstractItemModel *>(mDataIndex.model());
-	im->setData(mDataIndex, value, Qt::DisplayRole);
+	mGraphicalAssistApi->setName(id(), value);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -86,8 +85,9 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
 
-	foreach (ElementTitle *title, mTitles)
-		title->setTextWidth(mContents.width() - title->pos().x());
+	foreach (ElementTitle * const title, mTitles) {
+		title->transform(geom);
+	}
 }
 
 void NodeElement::adjustLinks()
@@ -102,24 +102,88 @@ void NodeElement::adjustLinks()
 	}
 }
 
-void NodeElement::arrangeLinks()
-{
-	int N = mEdgeList.size();
-	int i = 0;
-	const qreal ampl = 0.5;
+void NodeElement::arrangeLinearPorts() {
+	//qDebug() << "linear ports on" << uuid().toString();
+	int lpId = mPointPorts.size(); //point ports before linear
+	foreach (StatLine line, mLinePorts) {
+		//sort first by slope, then by current portId
+		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
+		QLineF portLine = line;
+		qreal dx = portLine.dx();
+		qreal dy = portLine.dy();
+		foreach (EdgeElement* edge, mEdgeList) {
+			if (portId(edge->portIdOn(this)) == lpId) {
+				QPointF conn = edge->connectionPoint(this);
+				QPointF next = edge->nextFrom(this);
+				qreal x1 = conn.x();
+				qreal y1 = conn.y();
+				qreal x2 = next.x();
+				qreal y2 = next.y();
+				qreal len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+				qreal scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
+				sortedEdges.insertMulti(qMakePair(edge->portIdOn(this), scalarProduct), edge);
+				//qDebug() << "+" << edge->uuid().toString() <<"pr=" <<scalarProduct << "; p=" << edge->portIdOn(this);
+				//qDebug("'--> vector: (%g, %g)", (x2-x1)/len, (y2-y1)/len);
+				//qDebug() << "'------> because " << (QVariant)conn << "->" << (QVariant)next;
+			}
+		}
 
-	foreach(EdgeElement* edge, mEdgeList) {
-		qreal delta = ampl * (i++ - N / 2.0) / N;
-		edge->reconnectToNearestPorts(delta);
+		//by now, edges of this port are sorted by their optimal slope.
+		int N = sortedEdges.size();
+		int i = 0;
+		foreach (EdgeElement* edge, sortedEdges) {
+			qreal newId = lpId + (1.0 + i++) / (N + 1);
+			//qDebug() << "-" << edge->uuid().toString() << newId;
+			edge->moveConnection(this, newId);
+		}
+
+		lpId++; //next linear port.
+
+	}
+}
+
+
+void NodeElement::arrangeLinks() {
+	//qDebug() << "---------------\nDirect call " << uuid().toString();
+
+	//Episode I: Home Jumps
+	//qDebug() << "I";
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
+		edge->reconnectToNearestPorts(this == src, this == dst, true);
+}
+
+	//Episode II: Home Ports Arranging
+	//qDebug() << "II";
+	arrangeLinearPorts();
+
+	//Episode III: Remote Jumps
+	//qDebug() << "III";
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* src = edge->src();
+		NodeElement* dst = edge->dst();
+		NodeElement* other = edge->otherSide(this);
+		edge->reconnectToNearestPorts(other == src, other == dst, true);
+	}
+
+	//Episode IV: Remote Arrangigng
+	//qDebug() << "IV";
+	QSet<NodeElement*> arranged;
+	foreach (EdgeElement* edge, mEdgeList) {
+		NodeElement* other = edge->otherSide(this);
+		if (other && !arranged.contains(other)) {
+			other->arrangeLinearPorts();
+			arranged.insert(other);
+		}
 	}
 }
 
 void NodeElement::storeGeometry()
 {
 	QRectF tmp = mContents;
-	model::Model *itemModel = const_cast<model::Model*>(static_cast<model::Model const *>(mDataIndex.model()));
-	itemModel->setData(mDataIndex, pos(), roles::positionRole);
-	itemModel->setData(mDataIndex, QPolygon(tmp.toAlignedRect()), roles::configurationRole);
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mGraphicalAssistApi->setConfiguration(id(), QPolygon(tmp.toAlignedRect()));
 }
 
 void NodeElement::moveChildren(qreal dx, qreal dy)
@@ -346,8 +410,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
@@ -356,14 +419,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-			embeddedLinker->setCovered(true);
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(true);
 
 	if (mDragState == None)
 		Element::mouseReleaseEvent(event);
 
-	if (!isPort() && (flags() & ItemIsMovable))
-	{
+	if (!isPort() && (flags() & ItemIsMovable)) {
 		QPointF newParentInnerPoint = event->scenePos();
 		//switch нужен для случая, когда мы не можем растягивать объект.
 		//Его родитель должен определяться не по позиции мышки, а по позиции угла.
@@ -399,10 +461,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement *newParent = getNodeAt(newParentInnerPoint);
 
 		EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-		model::Model *itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 		if (newParent) {
-			itemModel->changeParent(mDataIndex, newParent->mDataIndex,
-					mapToItem(evScene->getElemByModelIndex(newParent->mDataIndex), mapFromScene(scenePos())));
+			mGraphicalAssistApi->changeParent(id(), newParent->id(),
+					mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
 			newParent->resize(newParent->mContents);
 
@@ -412,7 +473,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else
-			itemModel->changeParent(mDataIndex, evScene->rootItem(), scenePos());
+			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
 	}
 
 	mDragState = None;
@@ -482,19 +543,15 @@ bool NodeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (!itemModel)
-		return false;
-
 	foreach(QString elementName,
-			itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->elements(uuid().diagram())) {
-		int ne = itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->isNodeOrEdge(elementName);
+			mGraphicalAssistApi->editorManager().editorInterface(id().editor())->elements(id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManager().editorInterface(id().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= itemModel->assistApi().editorManager().getEditorInterface(uuid().editor())->getPossibleEdges(elementName);
+					= mGraphicalAssistApi->editorManager().editorInterface(id().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if ((pEdge.first.first == uuid().element())
-					|| ((pEdge.first.second == uuid().element()) && (!pEdge.second.first))) {
+				if ((pEdge.first.first == id().element())
+					|| ((pEdge.first.second == id().element()) && (!pEdge.second.first))) {
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					possibleEdges.insert(possibleEdge);
 					possibleEdgeTypes.insert(possibleEdge.second);
@@ -580,8 +637,8 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
-		QPointF newpos = mDataIndex.data(roles::positionRole).toPointF();
-		QPolygon newpoly = mDataIndex.data(roles::configurationRole).value<QPolygon>();
+		QPointF newpos = mGraphicalAssistApi->position(id());
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -608,7 +665,7 @@ void NodeElement::updateData()
 	update();
 }
 
-static int portId(qreal id)
+int NodeElement::portId(qreal id)
 {
 	int iid = qRound(id);
 	if (id < 1.0 * iid)
@@ -624,7 +681,7 @@ const QPointF NodeElement::getPortPos(qreal id) const
 	if (id < 0.0)
 		return QPointF(0, 0);
 	if (id < mPointPorts.size())
-		return mTransform.map(mPointPorts[iid]);
+		return newTransform(mPointPorts[iid]);
 	if (id < mPointPorts.size() + mLinePorts.size())
 		return newTransform(mLinePorts.at(iid - mPointPorts.size())).pointAt(id - 1.0 * iid);
 	else
@@ -635,19 +692,21 @@ const QPointF NodeElement::getNearestPort(QPointF location) const
 {
 	QPointF min;
 	if (mPointPorts.size() > 0) {
-		min.setX(mPointPorts[0].x()*boundingRect().width() + boundingRect().left());
-		min.setY(mPointPorts[0].y()*boundingRect().height() + boundingRect().top());
+		QPointF const pointPort = newTransform(mPointPorts[0]);
+		min.setX(pointPort.x() + boundingRect().left());
+		min.setY(pointPort.y() + boundingRect().top());
 	}
 	else if (mLinePorts.size() > 0)
 		min = mLinePorts[0].line.p1();
 	else
 		return location;
 
-	foreach (QPointF port, mPointPorts) {
-		port.setX(port.x()*boundingRect().width() + boundingRect().left());
-		port.setY(port.y()*boundingRect().height() + boundingRect().top());
-		if (QLineF(port, location).length() < QLineF(min, location).length())
-			min = port;
+	foreach (StatPoint port, mPointPorts) {
+		QPointF const pointPort = newTransform(port);
+		port.point.setX(pointPort.x() + boundingRect().left());
+		port.point.setY(pointPort.y() + boundingRect().top());
+		if (QLineF(port.point, location).length() < QLineF(min, location).length())
+			min = port.point;
 	}
 	if (mPointPorts.size() > 0)
 		return min;
@@ -674,26 +733,44 @@ QLineF NodeElement::newTransform(const StatLine& port) const
 	float y2 = 0.0;
 
 	if (port.prop_x1)
-		x1 = port.line.x1() * 100;
+		x1 = port.line.x1() * port.initWidth;
 	else
 		x1 = port.line.x1() * contentsRect().width();
 
 	if (port.prop_y1)
-		y1 = port.line.y1() * 100;
+		y1 = port.line.y1() * port.initHeight;
 	else
 		y1 = port.line.y1() * contentsRect().height();
 
 	if (port.prop_x2)
-		x2 = port.line.x2() * 100;
+		x2 = port.line.x2() * port.initWidth;
 	else
 		x2 = port.line.x2() * contentsRect().width();
 
 	if (port.prop_y2)
-		y2 = port.line.y2() * 100;
+		y2 = port.line.y2() * port.initHeight;
 	else
 		y2 = port.line.y2() * contentsRect().height();
 
 	return QLineF(x1, y1, x2, y2);
+}
+
+QPointF NodeElement::newTransform(const StatPoint& port) const
+{
+	qreal x = 0;
+	qreal y = 0;
+
+	if (port.prop_x)
+		x = port.point.x() * port.initWidth;
+	else
+		x = port.point.x() * contentsRect().width();
+
+	if (port.prop_y)
+		y = port.point.y() * port.initHeight;
+	else
+		y = port.point.y() * contentsRect().height();
+
+	return QPointF(x, y);
 }
 
 qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
@@ -716,7 +793,7 @@ qreal NodeElement::minDistanceFromLinePort(int linePortNumber, const QPointF &lo
 
 qreal NodeElement::distanceFromPointPort(int pointPortNumber, const QPointF &location) const
 {
-	return QLineF(mTransform.map(mPointPorts[pointPortNumber]), location).length();
+	return QLineF(newTransform(mPointPorts[pointPortNumber]), location).length();
 }
 
 qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const
@@ -744,7 +821,7 @@ qreal NodeElement::getNearestPointOfLinePort(int linePortNumber, const QPointF &
 qreal NodeElement::getPortId(const QPointF &location) const
 {
 	for (int i = 0; i < mPointPorts.size(); ++i) {
-		if (QRectF(mTransform.map(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
+		if (QRectF(newTransform(mPointPorts[i]) - QPointF(kvadratik, kvadratik),
 			QSizeF(kvadratik * 2, kvadratik * 2)).contains(location))
 		{
 			return 1.0 * i;
@@ -1124,8 +1201,8 @@ QList<double> NodeElement::borderValues()
 
 PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
 {
-	QString editor = uuid().editor();
-	QString diagram = uuid().diagram();
+	QString editor = id().editor();
+	QString diagram = id().diagram();
 	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
 									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
 	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
@@ -1142,3 +1219,30 @@ void NodeElement::setColorRect(bool value)
 {
 	mSelectionNeeded = value;
 }
+
+void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
+{
+	foreach (Id edgeId, temporaryRemovedLinks) {
+		EdgeElement *edge = dynamic_cast<EdgeElement *>(static_cast<EditorViewScene *>(scene())->getElem(edgeId));
+		if (edge != NULL) {
+			if (direction == "from") {
+				QPointF startPos = edge->mapFromItem(this, this->getNearestPort(edge->line().first()));
+				edge->placeStartTo(startPos);
+			}
+			else {
+				QPointF endPos = edge->mapFromItem(this, this->getNearestPort(edge->line().last()));
+				edge->placeEndTo(endPos);
+			}
+			edge->connectToPort();
+		}
+	}
+}
+
+void NodeElement::checkConnectionsToPort()
+{
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
+	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
+}
+

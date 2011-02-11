@@ -6,21 +6,20 @@
 #include <QtCore/QDebug>
 
 #include "../../kernel/roles.h"
-#include "../../../qrrepo/repoApi.h"
 #include "../../../utils/outFile.h"
 
 using namespace qReal;
 using namespace generators;
 using utils::OutFile;
 
-HascolGenerator::HascolGenerator(qrRepo::RepoApi const &api)
+HascolGenerator::HascolGenerator(qrRepo::LogicalRepoApi const &api)
 	: mApi(api)
 {
 }
 
 gui::ErrorReporter& HascolGenerator::generate()
 {
-	Id repoId = ROOT_ID;
+	Id repoId = Id::rootId();
 	IdList rootDiagrams = mApi.children(repoId);
 
 	foreach (Id const diagram, rootDiagrams) {
@@ -145,7 +144,7 @@ void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 							Id const link = mApi.links(port).at(0);
 							Id const mappedPort = mApi.otherEntityFromLink(link, port);
 
-							Id const mappedPortParent = mApi.parents(mappedPort).at(0);
+							Id const mappedPortParent = mApi.parent(mappedPort);
 							QString parentName;
 							if (mappedPortParent == child)
 								parentName = "";

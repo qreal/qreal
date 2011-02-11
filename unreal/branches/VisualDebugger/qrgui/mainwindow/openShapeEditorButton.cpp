@@ -2,22 +2,26 @@
 
 #include <QDebug>
 
-OpenShapeEditorButton::OpenShapeEditorButton(QWidget *parent, const QPersistentModelIndex &index, const int &role, const QString &propertyValue)
-	: QPushButton(parent), mIndex(index), mRole(role), mPropertyValue(propertyValue)
+OpenShapeEditorButton::OpenShapeEditorButton(QWidget *parent
+		, const QPersistentModelIndex &index, const int &role, const QString &propertyValue)
+	: QPushButton(parent)
+	, mIndex(index)
+	, mRole(role)
+	, mPropertyValue(propertyValue)
 {
 }
 
-QPersistentModelIndex OpenShapeEditorButton::getIndex() const
+QPersistentModelIndex OpenShapeEditorButton::index() const
 {
 	return mIndex;
 }
 
-int OpenShapeEditorButton::getRole() const
+int OpenShapeEditorButton::role() const
 {
 	return mRole;
 }
 
-QString OpenShapeEditorButton::getPropertyValue() const
+QString OpenShapeEditorButton::propertyValue() const
 {
 	return mPropertyValue;
 }

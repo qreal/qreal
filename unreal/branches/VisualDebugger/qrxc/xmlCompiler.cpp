@@ -103,7 +103,8 @@ void XmlCompiler::generateCode()
 
 void XmlCompiler::addResource(QString const &resourceName)
 {
-	mResources += resourceName;
+	if (!mResources.contains(resourceName))
+		mResources += resourceName;
 }
 
 void XmlCompiler::generateElementClasses()
@@ -112,10 +113,9 @@ void XmlCompiler::generateElementClasses()
 	out() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../../../qrgui/umllib/elementImpl.h\"\n"
-		<< "#include \"../../../qrgui/umllib/uml_element.h\"\n"
-		<< "#include \"../../../qrgui/umllib/elementRepoInterface.h\"\n"
-		<< "#include \"../../../qrgui/umllib/elementTitleHelpers.h\"\n\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementImpl.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/elementTitleHelpers.h\"\n\n"
 		<< "namespace UML {\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
@@ -138,7 +138,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
 		<< "\n"
-		<< "#include \"../../editorInterface.h\"\n"
+		<< "#include \"../../../qrgui/pluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
@@ -152,6 +152,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initNameMap();\n"
 		<< "\tvirtual void initPropertyMap();\n"
 		<< "\tvirtual void initPropertyDefaultsMap();\n"
+		<< "\tvirtual void initDescriptionMap();\n"
 		<< "\n"
 		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
@@ -177,6 +178,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
 		<< "\tvirtual QString diagramNodeName(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QString elementDescription(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
 		<< "\n"
 		<< 	"\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
@@ -188,6 +191,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString> > propertyTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > propertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementsNameMap;\n"
+
+		<< "\tQMap<QString, QMap<QString, QString> > elementsDescriptionMap;\n"
+		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
 		<< "};\n"
 		<< "\n";
@@ -232,6 +238,7 @@ void XmlCompiler::generateIncludes(OutFile &out)
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
 }
+
 void XmlCompiler::generateInitPlugin(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
@@ -239,12 +246,14 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitMouseGestureMap();\n"
 		<< "\tinitPropertyMap();\n"
 		<< "\tinitPropertyDefaultsMap();\n"
+		<< "\tinitDescriptionMap();\n"
 		<< "}\n\n";
 
 	generateNameMappings(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
+	generateDescriptionMappings(out);
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
@@ -253,7 +262,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = \"" << diagram->displayedName() << " \"" << ";\n";
+		out() << "\tdiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\"" << diagram->displayedName() << "\");\n";
 		out() << "\tdiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
 	}
@@ -263,6 +272,28 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 			type->generateNameMapping(out);
 
 	// property types
+
+	out() << "}\n\n";
+}
+
+
+void XmlCompiler::generateDescriptionMappings(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initDescriptionMap()\n{\n";
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()){
+		GraphicType *obj = dynamic_cast<GraphicType *>(type);
+		if (obj)
+			obj->generateDescriptionMapping(out);
+		}
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()){
+		GraphicType *obj = dynamic_cast<GraphicType *>(type);
+		if (obj)
+			obj->generatePropertyDescriptionMapping(out);
+		}
 
 	out() << "}\n\n";
 }
@@ -283,7 +314,6 @@ void XmlCompiler::generatePropertyMap(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyTypes(out);
 	out() << "}\n\n";
-
 }
 
 void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
@@ -293,7 +323,6 @@ void XmlCompiler::generatePropertyDefaultsMap(OutFile &out)
 		foreach (Type *type, diagram->types().values())
 			type->generatePropertyDefaults(out);
 	out() << "}\n\n";
-
 }
 
 void XmlCompiler::generatePropertyTypesRequests(OutFile &out)
@@ -342,6 +371,14 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::elementName(QString const &diagram, QString const &element) const\n{\n"
 		<< "\treturn elementsNameMap[diagram][element];\n"
+		<< "}\n\n"
+
+		<< "QString " << mPluginName << "Plugin::elementDescription(QString const &diagram, QString const &element) const\n{\n"
+		<< "\treturn elementsDescriptionMap[diagram][element];\n"
+		<< "}\n\n"
+
+		<< "QString " << mPluginName << "Plugin::propertyDescription(QString const &diagram, QString const &element, QString const &property) const\n{\n"
+		<< "\treturn propertiesDescriptionMap[diagram][element][property];\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::elementMouseGesture(QString const &diagram, QString const &element) const\n{\n"
@@ -521,7 +558,7 @@ void XmlCompiler::generateUsages(utils::OutFile &out)
 
 void XmlCompiler::generateResourceFile()
 {
-	OutFile out("generated/shapes/plugin.qrc");// mPluginName
+	OutFile out("plugin.qrc");
 	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";

@@ -55,6 +55,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	mElement = element;
 	if (Type::init(element, context))
 	{
+		mDescription = element.attribute("description", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull())
 		{
@@ -359,7 +360,35 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = \"" << actualDisplayedName << "\";\n";
+		out() << "\telementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
+	}
+}
+
+void GraphicType::generateDescriptionMapping(OutFile &out)
+{
+	if (mVisible) {
+		if (!mDescription.isEmpty()) {
+			QString diagramName = NameNormalizer::normalize(mDiagram->name());
+			QString normalizedName = NameNormalizer::normalize(qualifiedName());
+			out() << "\telementsDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
+		}
+	}
+}
+
+void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
+{
+	if (mVisible) {
+		QString diagramName = NameNormalizer::normalize(mDiagram->name());
+		QString normalizedName = NameNormalizer::normalize(qualifiedName());
+		foreach (Property *p, mProperties) {
+				if (p->description().compare("") != 0){
+				QString propertyName = p->name();
+				QString propertyDescription = p->description();
+				out() << "\tpropertiesDescriptionMap[\"" << diagramName << "\"][\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\"" << propertyDescription << "\");\n";
+			}
+		}
+
 	}
 }
 

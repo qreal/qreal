@@ -6,5 +6,5 @@
 class IKeyManager
 {
 public:
-    virtual QString getKey(QList<QPoint> const & path) = 0;
+	virtual QString getKey(QList<QPoint> const & path) = 0;
 };

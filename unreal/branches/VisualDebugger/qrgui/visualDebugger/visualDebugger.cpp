@@ -4,23 +4,24 @@
 
 #include <QEventLoop>
 #include <QTimer>
-#include <QMessageBox>
+#include <QFile>
 
 #include "propertyeditorproxymodel.h"
+#include "../models/models.h"
 
-#include "../model/model.h"
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
 
 using namespace qReal;
 
-VisualDebugger::VisualDebugger(model::Model *model) {
-	mModel = model;
+VisualDebugger::VisualDebugger(models::LogicalModelAssistApi const &logicalModelApi, models::GraphicalModelAssistApi const &graphicalModelApi)
+	: mLogicalModelApi(logicalModelApi), mGraphicalModelApi(graphicalModelApi)
+{
 	mEffect = new QGraphicsColorizeEffect();
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
 	mCurrentElem = NULL;
-	mCurrentId = mCurrentId.getRootId();
+	mCurrentId = Id::rootId();
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
 	mBlockParser = new BlockParser(mErrorReporter);
@@ -28,13 +29,23 @@ VisualDebugger::VisualDebugger(model::Model *model) {
 	mDebugType = VisualDebugger::noDebug;
 }
 
-VisualDebugger::~VisualDebugger() {
-		delete mEffect;
-		delete mErrorReporter;
-		delete mBlockParser;
+VisualDebugger::~VisualDebugger()
+{
+	delete mEffect;
+	delete mErrorReporter;
+	delete mBlockParser;
 }
 
-bool VisualDebugger::canDebug(DebugType type) {
+QVariant VisualDebugger::getProperty(Id id, QString propertyName) {
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
+	} else {
+		return mGraphicalModelApi.graphicalRepoApi().property(id, propertyName);
+	}
+}
+
+bool VisualDebugger::canDebug(DebugType type)
+{
 	switch (type) {
 		case VisualDebugger::singleStepDebug:
 			return mDebugType != VisualDebugger::fullDebug;
@@ -48,28 +59,33 @@ bool VisualDebugger::canDebug(DebugType type) {
 	}
 }
 
-void VisualDebugger::setTimeout(int timeout) {
+void VisualDebugger::setTimeout(int timeout)
+{
 	mTimeout = timeout;
 }
 
-void VisualDebugger::setDebugColor(QString color) {
+void VisualDebugger::setDebugColor(QString color)
+{
 	mDebugColor = QColor(color);
 }
 
-void VisualDebugger::setEditor(EditorView *editor) {
-	if (NULL == mEditor || mCurrentId == mCurrentId.getRootId() || mEditor == editor) {
+void VisualDebugger::setEditor(EditorView *editor)
+{
+	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor) {
 		mEditor = editor;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
 	}
 }
 
-VisualDebugger::ErrorType VisualDebugger::checkEditor() {
+VisualDebugger::ErrorType VisualDebugger::checkEditor()
+{
 	if (mError != VisualDebugger::noErrors) {
 		error(VisualDebugger::someDiagramIsRunning);
 		return VisualDebugger::someDiagramIsRunning;
 	}
-	QString editorName = mEditor->mvIface()->scene()->rootItem().data().toString();
+	Id idRootItem = mEditor->mvIface()->scene()->rootItemId();
+	QString editorName = mGraphicalModelApi.name(idRootItem);
 	if (editorName.compare("(Block Diagram)") != 0) {
 		error(VisualDebugger::wrongEditor);
 		return VisualDebugger::wrongEditor;
@@ -77,8 +93,8 @@ VisualDebugger::ErrorType VisualDebugger::checkEditor() {
 	return VisualDebugger::noErrors;
 }
 
-void VisualDebugger::error(ErrorType e) {
-	
+void VisualDebugger::error(ErrorType e)
+{
 	switch (e) {
 	case missingBeginNode:
 		mErrorReporter->addCritical("The diagram doesn't have Initial Node");
@@ -107,12 +123,14 @@ void VisualDebugger::error(ErrorType e) {
 	deinitialize();
 }
 
-UML::Element* VisualDebugger::findBeginNode(QString name) {
-	int i = 0, count = mEditor->mvIface()->scene()->items().count();
+UML::Element* VisualDebugger::findBeginNode(QString name)
+{
+	int i = 0;
+	int count = mEditor->mvIface()->scene()->items().count();
 	UML::Element *elem = NULL;
 	while (i < count) {
 		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
-		if (elem && elem->uuid().element().compare(name) == 0) {
+		if (elem && elem->id().element().compare(name) == 0) {
 			break;
 		}
 		i++;
@@ -124,13 +142,14 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 	return elem;
 }
 
-Id VisualDebugger::findValidLink() {
-	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
-	QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
+Id VisualDebugger::findValidLink()
+{
+	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
+	QString conditionStr = getProperty(mCurrentId, "condition").toString();
 	int pos=0;
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
 	for (int i=0; i<outLinks.count(); i++) {
-		bool type = mModel->api().property(outLinks.at(i), "type").toBool();
+		bool type = getProperty(outLinks.at(i), "type").toBool();
 		if (type == condition) {
 			return outLinks.at(i);
 		}
@@ -138,56 +157,62 @@ Id VisualDebugger::findValidLink() {
 	if (!mBlockParser->hasErrors()) {
 		error(VisualDebugger::missingValidLink);
 	}
-	return outLinks.at(0).getRootId();
+	return Id::rootId();
 }
 
-void VisualDebugger::pause(int time) {
+void VisualDebugger::pause(int time)
+{
 	QEventLoop loop;
 	QTimer::singleShot(time, &loop, SLOT(quit()));
 	loop.exec();
 }
 
-bool VisualDebugger::isFinalNode(Id id) {
-	IdList outLinks = mModel->api().outgoingLinks(id);
-	return (outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0);
+bool VisualDebugger::isFinalNode(Id id)
+{
+	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+	return outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0;
 }
 
-bool VisualDebugger::hasEndOfLinkNode(Id id) {
-	return !(mModel->api().to(id) == id.getRootId());
+bool VisualDebugger::hasEndOfLinkNode(Id id)
+{
+	return mLogicalModelApi.logicalRepoApi().to(id) != Id::rootId();
 }
 
-VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
+VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
+{
 	if (!elem) {
 		return VisualDebugger::missingBeginNode;
 	}
 	mCurrentElem = elem;
-	
+
 	mEffect = new QGraphicsColorizeEffect();
 	mEffect->setColor(mDebugColor);
 	mEffect->setEnabled(true);
-	
+
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
-	mCurrentId = mModel->idByIndex(mCurrentElem->index());
+	mCurrentId = mCurrentElem->id();
 	return VisualDebugger::noErrors;
 }
 
-void VisualDebugger::doStep(Id id) {
+void VisualDebugger::doStep(Id id)
+{
 	mEffect->setEnabled(true);
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
-	
+
 	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 	if (elem) {
-		if (elem->uuid().element().compare("Action") == 0) {
+		if (elem->id().element().compare("Action") == 0) {
 			processAction();
 		}
 	}
 }
 
-void VisualDebugger::deinitialize() {
+void VisualDebugger::deinitialize()
+{
 	mEffect->setEnabled(false);
-	mCurrentId = mCurrentId.getRootId();
+	mCurrentId = Id::rootId();
 	mCurrentElem = NULL;
 	mEditor = NULL;
 	mError = VisualDebugger::noErrors;
@@ -195,16 +220,19 @@ void VisualDebugger::deinitialize() {
 	mDebugType = VisualDebugger::noDebug;
 }
 
-void VisualDebugger::clearErrorReporter() {
+void VisualDebugger::clearErrorReporter()
+{
 	mErrorReporter = new gui::ErrorReporter();
 }
 
-void VisualDebugger::processAction() {
+void VisualDebugger::processAction()
+{
 	int pos = 0;
-	mBlockParser->parseProcess(mModel->api().property(mCurrentId, "process").toString(), pos, mCurrentId);
+	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(), pos, mCurrentId);
 }
 
-gui::ErrorReporter& VisualDebugger::debug() {
+gui::ErrorReporter& VisualDebugger::debug()
+{
 	if (VisualDebugger::noErrors != checkEditor()) {
 		return *mErrorReporter;
 	}
@@ -217,21 +245,21 @@ gui::ErrorReporter& VisualDebugger::debug() {
 	if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 		return *mErrorReporter;
 	}
-	
+
 	mBlockParser->setErrorReporter(mErrorReporter);
-	
-	IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
-	
+
+	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
+
 	while (outLinks.count() > 0) {
 		pause(mTimeout);
-		
-		if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
+
+		if (mCurrentElem->id().element().compare("ConditionNode") == 0) {
 			Id validLinkId = findValidLink();
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return *mErrorReporter;
 			}
-			if (validLinkId != validLinkId.getRootId()) {
+			if (validLinkId != Id::rootId()) {
 				doStep(validLinkId);
 			} else {
 				return *mErrorReporter;
@@ -243,36 +271,37 @@ gui::ErrorReporter& VisualDebugger::debug() {
 				return *mErrorReporter;
 			}
 		}
-		
+
 		pause(mTimeout);
-		
+
 		if (!hasEndOfLinkNode(mCurrentId)) {
 			error(VisualDebugger::missingEndOfLinkNode);
 			return *mErrorReporter;
 		}
-		
-		doStep(mModel->api().to(mCurrentId));
+
+		doStep(mLogicalModelApi.logicalRepoApi().to(mCurrentId));
 		if (mBlockParser->hasErrors()) {
 			deinitialize();
 			return *mErrorReporter;
 		}
-			
-		outLinks = mModel->api().outgoingLinks(mCurrentId);
+
+		outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
 	}
-	
+
 	pause(mTimeout);
-	
+
 	if (!isFinalNode(mCurrentId)) {
 		error(VisualDebugger::endWithNotEndNode);
 		return *mErrorReporter;
 	}
-	
+
 	mErrorReporter->addInformation("Debug finished successfully");
 	deinitialize();
 	return *mErrorReporter;
 }
 
-gui::ErrorReporter& VisualDebugger::debugSingleStep() {
+gui::ErrorReporter& VisualDebugger::debugSingleStep()
+{
 	if (VisualDebugger::noErrors != checkEditor()) {
 		return *mErrorReporter;
 	}
@@ -281,16 +310,16 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	QSettings settings("SPbSU", "QReal");
 	setDebugColor(settings.value("debugColor").toString());
 
-	if (mCurrentElem == NULL && mCurrentId == mCurrentId.getRootId()) {
+	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 			return *mErrorReporter;
 		}
 	} else {
 		mBlockParser->setErrorReporter(mErrorReporter);
-		
+
 		UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 		if (elem) {
-			if (mModel->api().outgoingLinks(mCurrentId).count() == 0) {
+			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId).count() == 0) {
 				if (!isFinalNode(mCurrentId)) {
 					error(VisualDebugger::endWithNotEndNode);
 					return *mErrorReporter;
@@ -299,20 +328,20 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 				mErrorReporter->addInformation("Debug (single step) finished successfully");
 				return *mErrorReporter;
 			}
-			
-			if (mCurrentElem->uuid().element().compare("ConditionNode") == 0) {
+
+			if (mCurrentElem->id().element().compare("ConditionNode") == 0) {
 				Id validLinkId = findValidLink();
 				if (mBlockParser->hasErrors()) {
 					deinitialize();
 					return *mErrorReporter;
 				}
-				if (validLinkId != validLinkId.getRootId()) {
+				if (validLinkId != Id::rootId()) {
 					doStep(validLinkId);
 				} else {
 					return *mErrorReporter;
 				}
 			} else {
-				doStep(mModel->api().outgoingLinks(mCurrentId).at(0));
+				doStep(mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId).at(0));
 				if (mBlockParser->hasErrors()) {
 					deinitialize();
 					return *mErrorReporter;
@@ -325,14 +354,84 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 				error(VisualDebugger::missingEndOfLinkNode);
 				return *mErrorReporter;
 			}
-			doStep(mModel->api().to(mCurrentId));
+			doStep(mLogicalModelApi.logicalRepoApi().to(mCurrentId));
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return *mErrorReporter;
 			}
 		}
 	}
-	
+
 	mErrorReporter->addInformation("Debug (single step) finished successfully");
 	return *mErrorReporter;
+}
+
+void VisualDebugger::generateCode() {
+	QFile codeFile("code.c");
+	codeFile.open(QIODevice::WriteOnly);
+	
+	codeFile.write("void main(int argc, char* argv[]) {\n");
+	UML::Element *curElem = findBeginNode("InitialNode");
+	codeFile.close();
+	generateCode(curElem);
+	codeFile.open(QIODevice::Append);
+	codeFile.write("}");
+	codeFile.close();
+}
+
+void VisualDebugger::generateCode(UML::Element *elem) {
+	QFile codeFile("code.c");
+	codeFile.open(QIODevice::Append);
+	
+	
+	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
+	if (curElem && elem->id().element().compare("InitialNode") != 0) {
+		if (elem->id().element().compare("Action") == 0) {
+			codeFile.write(getProperty(curElem->id(), "process").toByteArray());
+			codeFile.write("\n");
+			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).count() != 0) {
+				Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
+				codeFile.close();
+				generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+			}
+		} else {
+			if (elem->id().element().compare("ConditionNode") == 0) {
+				codeFile.write("if (");
+				codeFile.write(getProperty(curElem->id(), "condition").toByteArray());
+				codeFile.write(") {\n");
+				IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id());
+				Id falseEdge = falseEdge.rootId();
+				Id trueEdge = trueEdge.rootId();
+				for (int i=0; i<outLinks.count(); i++) {
+					bool type = getProperty(outLinks.at(i), "type").toBool();
+					if (type == true) {
+						trueEdge = outLinks.at(i);
+					}
+					if (type == false) {
+						falseEdge = outLinks.at(i);
+					}
+				}
+				codeFile.close();
+				generateCode(mEditor->mvIface()->scene()->getElem(trueEdge));
+				codeFile.open(QIODevice::Append);
+				codeFile.write("}\n");
+				if (falseEdge != falseEdge.rootId()) {
+					codeFile.write("else {\n");
+					generateCode(mEditor->mvIface()->scene()->getElem(falseEdge));
+					codeFile.write("}\n");
+				}
+				codeFile.close();
+			}
+		}
+	} else {
+		if (elem->id().element().compare("InitialNode") != 0) {
+			Id nextEdge  = mLogicalModelApi.logicalRepoApi().to(elem->id());
+			codeFile.close();
+			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+		} else {
+			Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
+			codeFile.close();
+			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+		}
+	}
 }

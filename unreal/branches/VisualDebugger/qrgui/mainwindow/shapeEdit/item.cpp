@@ -341,7 +341,7 @@ void Item::resizeItem(QGraphicsSceneMouseEvent *event)
 		setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
-QString Item::setScaleForDoc(int i, QRectF const &rect)
+QString Item::setScaleForDoc(int i, QRect const &rect)
 {
 	QString text = "";
 	if (i == 0)
@@ -365,7 +365,7 @@ QString Item::setScaleForDoc(int i, QRectF const &rect)
 	return text;
 }
 
-QString Item::setSingleScaleForDoc(int i, qreal x, qreal y)
+QString Item::setSingleScaleForDoc(int i, int x, int y)
 {
 	QString text = "";
 	if (i == 0)
@@ -379,10 +379,10 @@ QString Item::setSingleScaleForDoc(int i, qreal x, qreal y)
 
 void Item::setXandY(QDomElement& dom, QRectF const &rect)
 {
-	dom.setAttribute("y1", setScaleForDoc(4, rect));
-	dom.setAttribute("x1", setScaleForDoc(0, rect));
-	dom.setAttribute("y2", setScaleForDoc(7, rect));
-	dom.setAttribute("x2", setScaleForDoc(3, rect));
+	dom.setAttribute("y1", setScaleForDoc(4, rect.toRect()));
+	dom.setAttribute("x1", setScaleForDoc(0, rect.toRect()));
+	dom.setAttribute("y2", setScaleForDoc(7, rect.toRect()));
+	dom.setAttribute("x2", setScaleForDoc(3, rect.toRect()));
 }
 
 QDomElement Item::setPenBrushToDoc(QDomDocument &document, QString const &domName)

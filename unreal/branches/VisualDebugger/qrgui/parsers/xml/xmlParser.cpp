@@ -18,7 +18,7 @@
 using namespace qReal;
 using namespace parsers;
 
-XmlParser::XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager)
+XmlParser::XmlParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager)
 	: mApi(api), mEditorManager(editorManager), mElementsColumn(0), mElementCurrentColumn(0),
 	mMoveWidth(180), mMoveHeight(100), mCurrentWidth(0), mCurrentHeight(0), mParentPositionX(280)
 {
@@ -104,7 +104,7 @@ void XmlParser::loadIncludeList(const QString &fileName)
 
 bool XmlParser::containsName(const QString &name)
 {
-	IdList idList = mApi.children(ROOT_ID);
+	IdList idList = mApi.children(Id::rootId());
 	foreach (Id const &id, idList) {
 		if (mApi.name(id) == name)
 			return true;
@@ -114,14 +114,14 @@ bool XmlParser::containsName(const QString &name)
 
 Id XmlParser::getPackageId()
 {
-	IdList const children = mApi.children(ROOT_ID);
+	IdList const children = mApi.children(Id::rootId());
 	foreach (Id id, children) {
 		if (id.element() == "PackageDiagram")
 			return id;
 	}
 	Id const packageId("Meta_editor", "MetaEditor", "PackageDiagram",
 			QUuid::createUuid().toString());
-	setStandartConfigurations(packageId, ROOT_ID, "Package", "Package");
+	setStandartConfigurations(packageId, Id::rootId(), "Package", "Package");
 	return packageId;
 }
 
@@ -146,7 +146,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 
 	mMetamodel = Id("Meta_editor", "MetaEditor", "MetamodelDiagram",
 					QUuid::createUuid().toString());
-	setStandartConfigurations(mMetamodel, ROOT_ID, fileBaseName, "");
+	setStandartConfigurations(mMetamodel, Id::rootId(), fileBaseName, "");
 	mApi.setProperty(mMetamodel, "include", includeListString);
 	mApi.setProperty(mMetamodel, "name of the directory", fileBaseName);
 	mApi.connect(metamodelId, mMetamodel);
@@ -701,8 +701,8 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent,
 	mApi.setProperty(id, "name", name);
 	if (displayedName != "")
 		mApi.setProperty(id, "displayedName", displayedName);
-	mApi.setProperty(id, "from", ROOT_ID.toVariant());
-	mApi.setProperty(id, "to", ROOT_ID.toVariant());
+	mApi.setProperty(id, "from", Id::rootId().toVariant());
+	mApi.setProperty(id, "to", Id::rootId().toVariant());
 	mApi.setProperty(id, "fromPort", 0.0);
 	mApi.setProperty(id, "toPort", 0.0);
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
