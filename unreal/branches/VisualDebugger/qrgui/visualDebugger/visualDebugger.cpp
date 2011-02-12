@@ -11,6 +11,7 @@
 
 #include "../view/editorview.h"
 #include "../umllib/uml_element.h"
+#include "../kernel/exception/exception.h"
 
 using namespace qReal;
 
@@ -38,9 +39,19 @@ VisualDebugger::~VisualDebugger()
 
 QVariant VisualDebugger::getProperty(Id id, QString propertyName) {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
+		try {
+			return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
+		} catch (qReal::Exception e) {
+			return mGraphicalModelApi.graphicalRepoApi().property(
+				mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0), propertyName);
+		}
 	} else {
-		return mGraphicalModelApi.graphicalRepoApi().property(id, propertyName);
+		try {
+			return mGraphicalModelApi.graphicalRepoApi().property(id, propertyName);
+		} catch (qReal::Exception e) {
+			return mLogicalModelApi.logicalRepoApi().property(
+				mGraphicalModelApi.logicalId(mEditor->mvIface()->scene()->getElem(id)->id()), propertyName);
+		}
 	}
 }
 
@@ -387,7 +398,13 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
-			codeFile.write(getProperty(curElem->id(), "process").toByteArray());
+			QString code = getProperty(curElem->id(), "process").toString();
+			if (code.mid(0,4).compare("var ") == 0) {
+				codeFile.write(code.mid(4).toAscii());
+			} else {
+				codeFile.write(code.toAscii());
+			}
+			
 			codeFile.write("\n");
 			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).count() != 0) {
 				Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
@@ -417,7 +434,9 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 				codeFile.write("}\n");
 				if (falseEdge != falseEdge.rootId()) {
 					codeFile.write("else {\n");
+					codeFile.close();
 					generateCode(mEditor->mvIface()->scene()->getElem(falseEdge));
+					codeFile.open(QIODevice::Append);
 					codeFile.write("}\n");
 				}
 				codeFile.close();
@@ -425,9 +444,9 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 		}
 	} else {
 		if (elem->id().element().compare("InitialNode") != 0) {
-			Id nextEdge  = mLogicalModelApi.logicalRepoApi().to(elem->id());
+			Id nextNode  = mLogicalModelApi.logicalRepoApi().to(elem->id());
 			codeFile.close();
-			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+			generateCode(mEditor->mvIface()->scene()->getElem(nextNode));
 		} else {
 			Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
 			codeFile.close();

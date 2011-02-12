@@ -13,6 +13,7 @@
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
+#include "../visualDebugger/debuggerConnector.h"
 
 namespace qReal {
 
@@ -44,6 +45,11 @@ namespace qReal {
 		void gesturesShowed();
 		void currentIdealGestureChanged();
 		void rootDiagramChanged();
+		
+		void run(QString programPath);
+		void sendCommand(QString command);
+		void build(QString filePath);
+		void finishProcess();
 
 	public slots:
 		void adjustMinimapZoom(int zoom);
@@ -86,6 +92,13 @@ namespace qReal {
 
 		void debug();
 		void debugSingleStep();
+		void drawDebuggerStdOutput(QString output);
+		void drawDebuggerErrOutput(QString output);
+		void generateAndBuild();
+		void startDebugger();
+		void runProgramWithDebugger();
+		void killProgramWithDebugger();
+		void closeDebuggerProcessAndThread();
 
 	private slots:
 		void deleteFromDiagram();
@@ -160,6 +173,7 @@ namespace qReal {
 		void setConnectActionZoomTo(QWidget* widget);
 		void clickErrorListWidget();
 		VisualDebugger *mVisualDebugger;
+		DebuggerConnector *mDebuggerConnector;
 
 		void setShowGrid(bool isChecked);
 		void setShowAlignment(bool isChecked);

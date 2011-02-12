@@ -99,12 +99,23 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <widget class="QMenu" name="menuDebug_with_debugger">
+     <property name="title">
+      <string>Debug (with debugger)</string>
+     </property>
+     <addaction name="actionGenerate_and_build"/>
+     <addaction name="actionStart_debugger"/>
+     <addaction name="actionRun"/>
+     <addaction name="actionKill"/>
+     <addaction name="actionClose_all"/>
+    </widget>
     <addaction name="actionClear"/>
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_to_Hascol"/>
     <addaction name="actionDebug"/>
     <addaction name="actionDebug_Single_step"/>
+    <addaction name="menuDebug_with_debugger"/>
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
@@ -208,7 +219,7 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
   </widget>
-    <widget class="QDockWidget" name="logicalModelDock">
+  <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
@@ -694,6 +705,31 @@
    </property>
    <property name="shortcut">
     <string>F10</string>
+   </property>
+  </action>
+  <action name="actionGenerate_and_build">
+   <property name="text">
+    <string>Generate and build</string>
+   </property>
+  </action>
+  <action name="actionStart_debugger">
+   <property name="text">
+    <string>Start debugger</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run</string>
+   </property>
+  </action>
+  <action name="actionKill">
+   <property name="text">
+    <string>Kill</string>
+   </property>
+  </action>
+  <action name="actionClose_all">
+   <property name="text">
+    <string>Close all</string>
    </property>
   </action>
  </widget>

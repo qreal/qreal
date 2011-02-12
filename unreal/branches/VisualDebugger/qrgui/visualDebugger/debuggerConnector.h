@@ -1,21 +1,37 @@
 #pragma once
 
 #include <QString>
-#include <QObject>
+#include <QThread>
+#include <QProcess>
 
 namespace qReal {
-	class DebuggerConnector
+	class DebuggerConnector : public QThread
 	{
+		Q_OBJECT
+	
 		public:
-			DebuggerConnector(QObject* parent, QString debuggerPath, QString outputFile, QString inputFile);
+			DebuggerConnector(QString debuggerPath, QString builderPath);
 			~DebuggerConnector();
 			
-			void run(QString filePath, QStringList args);
+			void run();
+
+		signals:
+			void readyReadStdOutput(QString output);
+			void readyReadErrOutput(QString output);
+			
+		public slots:
+			void run(QString programPath);
+			void sendCommand(QString command);
+			void build(QString filePath);
+			void finishProcess();
 			
 		private:
+			QProcess *mProcess;
 			QString mDebuggerPath;
-			QString mOutputFile;
-			QString mInputFile;
-			QObject* mParent;
+			QString mBuilderPath;
+			
+		private slots:
+			void readOutput();
+			void readErrOutput();
 	};
 }

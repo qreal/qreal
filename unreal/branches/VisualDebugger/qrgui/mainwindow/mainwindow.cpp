@@ -39,8 +39,6 @@
 #include "../generators/hascol/hascolGenerator.h"
 #include "../generators/editorGenerator/editorGenerator.h"
 #include "../visualDebugger/visualDebugger.h"
-#include "../visualDebugger/debuggerConnector.h"
-#include "../visualDebugger/debuggerThread.h"
 
 #include "metaCompiler.h"
 
@@ -133,6 +131,11 @@ MainWindow::MainWindow()
 
 	connect(ui.actionDebug, SIGNAL(triggered()), this, SLOT(debug()));
 	connect(ui.actionDebug_Single_step, SIGNAL(triggered()), this, SLOT(debugSingleStep()));
+	connect(ui.actionGenerate_and_build, SIGNAL(triggered()), this, SLOT(generateAndBuild()));
+	connect(ui.actionStart_debugger, SIGNAL(triggered()), this, SLOT(startDebugger()));
+	connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runProgramWithDebugger()));
+	connect(ui.actionKill, SIGNAL(triggered()), this, SLOT(killProgramWithDebugger()));
+	connect(ui.actionClose_all, SIGNAL(triggered()), this, SLOT(closeDebuggerProcessAndThread()));
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -204,6 +207,7 @@ MainWindow::MainWindow()
 
 	mGesturesWidget = new GesturesWidget();
 	mVisualDebugger = new VisualDebugger(mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+	mDebuggerConnector = new DebuggerConnector("c:\\MinGW\\bin\\gdb.exe", "c:\\MinGW\\bin\\gcc.exe");
 
 	mDelegate.init(this, &mModels->logicalModelAssistApi());
 
@@ -1391,19 +1395,60 @@ void MainWindow::debug()
 
 void MainWindow::debugSingleStep()
 {
-	/*DebuggerThread *t = new DebuggerThread();
-	t->run();*/
-	/*DebuggerConnector *dc = new DebuggerConnector(this, "c:\\mingw\\bin\\gdb.exe", "e:\\downloads\\output", "e:\\downloads\\input");
-	QStringList *args = new QStringList();
-	dc->run("e:\\downloads\\code.c", *args);*/
-	/*EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
-	mVisualDebugger->generateCode();
-	/*if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
+	if (mVisualDebugger->canDebug(VisualDebugger::singleStepDebug)) {
 		gui::ErrorReporter &errorReporter = mVisualDebugger->debugSingleStep();
 		errorReporter.showErrors(ui.errorListWidget, ui.errorDock);
 		mVisualDebugger->clearErrorReporter();
-	}*/
+	}
+}
+
+void MainWindow::generateAndBuild() {
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
+	mVisualDebugger->generateCode();
+	mDebuggerConnector->build("f:\\QReal\\unreal\\branches\\VisualDebugger\\qrgui\\code.c");
+	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
+	errorReporter->addInformation("Code generated and builded successfully");
+	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
+}
+
+void MainWindow::startDebugger() {
+	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
+	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
+	connect(this, SIGNAL(run(QString)), mDebuggerConnector, SLOT(run(QString)));
+	connect(this, SIGNAL(sendCommand(QString)), mDebuggerConnector, SLOT(sendCommand(QString)));
+	connect(this, SIGNAL(build(QString)), mDebuggerConnector, SLOT(build(QString)));
+	connect(this, SIGNAL(finishProcess()), mDebuggerConnector, SLOT(finishProcess()));
+	mDebuggerConnector->start();
+}
+
+void MainWindow::runProgramWithDebugger() {
+	run("builded");
+}
+
+void MainWindow::killProgramWithDebugger() {
+	sendCommand("kill");
+}
+
+void MainWindow::closeDebuggerProcessAndThread() {
+	mDebuggerConnector->finishProcess();
+	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
+	errorReporter->addInformation("Debugger closed successfully");
+	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
+}
+
+void MainWindow::drawDebuggerStdOutput(QString output) {
+	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
+	errorReporter->addInformation(output);
+	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
+}
+
+void MainWindow::drawDebuggerErrOutput(QString output) {
+	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
+	errorReporter->addCritical(output);
+	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
 }
 
 void MainWindow::setIndexesOfPropertyEditor(Id const &id)
