@@ -9,9 +9,9 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::NewType &type) : GraphicType(diagram, api, type)
+EdgeType::EdgeType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
 {
-        mLineType = mApi->stringProperty(type, "lineType");
+        mLineType = mApi->stringProperty(id, "lineType");
 	initLabels();
 }
 
@@ -21,7 +21,7 @@ EdgeType::~EdgeType()
 
 Type* EdgeType::clone() const
 {
-        EdgeType *result = new EdgeType(mDiagram, mApi, mType);
+        EdgeType *result = new EdgeType(mDiagram, mApi, mId);
 	GraphicType::copyFields(result);
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
@@ -75,7 +75,7 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 						 nodeIndent + "Q_UNUSED(titles)" + endline;
 	}
 
-        QString lineType = mApi->stringProperty(mType, "lineType");
+        QString lineType = mApi->stringProperty(mId, "lineType");
 	if (lineType.isEmpty())
 		lineType = "solidLine";
 	lineType = "Qt::" + NameNormalizer::normalize(lineType);
@@ -93,10 +93,10 @@ void EdgeType::generateArrows(QString &edgeClass) const
 {
 	QString beginType;
 	QString endType;
-        TypeList children = mApi->children(mType);
+        IdList children = mApi->children(mId);
 
-        foreach (NewType child, children){
-		if (child.element() == metaEntityAssociation) {
+        foreach (Id child, children){
+                if (mApi->type(child).element() == metaEntityAssociation) {
 			beginType = mApi->stringProperty(child, "beginType");
 			endType = mApi->stringProperty(child, "endType");
 		}
@@ -157,7 +157,7 @@ void EdgeType::generateSdf() const
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
 
 	QString result = compiler->getTemplateUtils(lineSdfTag);
-        result.replace(lineTypeTag, mApi->stringProperty(mType, "lineType"))
+        result.replace(lineTypeTag, mApi->stringProperty(mId, "lineType"))
 			.replace("\\n", "\n");
 
 	QTextStream out(&file);
@@ -168,7 +168,7 @@ void EdgeType::generateSdf() const
 // copy-pasted from Shape, quick workaround for #349
 void EdgeType::initLabels()
 {
-        QString xml = mApi->stringProperty(mType, "labels");
+        QString xml = mApi->stringProperty(mId, "labels");
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;

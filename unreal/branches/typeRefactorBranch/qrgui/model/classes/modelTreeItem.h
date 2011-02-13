@@ -16,8 +16,8 @@ namespace qReal {
 			public:
 				typedef QList<ModelTreeItem*> PointerList;
 
-                                ModelTreeItem(NewType const &type, ModelTreeItem *parent);
-                                NewType type() const;
+                                ModelTreeItem(Id const &id, ModelTreeItem *parent);
+                                Id id() const;
 				ModelTreeItem *parent() const;
 				void setParent(ModelTreeItem *parent);
 				PointerList children() const;
@@ -28,7 +28,7 @@ namespace qReal {
 
 			private:
 				ModelTreeItem *mParent;
-                                const NewType mType;
+                                const Id mId;
 				PointerList mChildren;
 			};
 

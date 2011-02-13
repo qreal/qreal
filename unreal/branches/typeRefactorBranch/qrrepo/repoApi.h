@@ -14,62 +14,61 @@ namespace qrRepo {
 		explicit RepoApi(QString const &workingDirectory);
 		// Default destructor ok.
 
-                QString name(qReal::NewType const &type) const;
-                void setName(qReal::NewType const &type, QString const &name);
+                QString name(qReal::Id const &type) const;
+                void setName(qReal::Id const &id, QString const &name);
 
-                qReal::TypeList children(qReal::NewType const &type) const;
-                void addChild(qReal::NewType const &type, qReal::NewType const &child);
-                void removeChild(qReal::NewType const &type, qReal::NewType const &child);
-                void removeChildren(qReal::NewType const &type);
+                qReal::NewType type(qReal::Id const &id) const;
+                qReal::IdList children(qReal::Id const &id) const;
+                void addChild(qReal::Id const &id, qReal::Id const &child, qReal::NewType const &type);
+                void removeChild(qReal::Id const &type, qReal::Id const &child);
+                void removeChildren(qReal::Id const &type);
 
-                void removeElement(qReal::NewType const &type);
+                void removeElement(qReal::Id const &type);
 
-                qReal::TypeList parents(qReal::NewType const &type) const;
-                void addParent(qReal::NewType const &type, qReal::NewType const &parent);
-                void removeParent(qReal::NewType const &type, qReal::NewType const &parent);
+                qReal::IdList parents(qReal::Id const &type) const;
+                void addParent(qReal::Id const &id, qReal::Id const &parent, qReal::NewType const &type);
+                void removeParent(qReal::Id const &type, qReal::Id const &parent);
 
-                qReal::TypeList outgoingLinks(qReal::NewType const &type) const;
-                qReal::TypeList incomingLinks(qReal::NewType const &type) const;
-                qReal::TypeList links(qReal::NewType const &type) const;
+                qReal::IdList outgoingLinks(qReal::Id const &type) const;
+                qReal::IdList incomingLinks(qReal::Id const &type) const;
+                qReal::IdList links(qReal::Id const &id) const;
 
-                qReal::TypeList outgoingConnections(qReal::NewType const &type) const;
-                qReal::TypeList incomingConnections(qReal::NewType const &type) const;
-                void connect(qReal::NewType const &source, qReal::NewType const &destination);
-                void disconnect(qReal::NewType const &source, qReal::NewType const &destination);
+                qReal::IdList outgoingConnections(qReal::Id const &type) const;
+                qReal::IdList incomingConnections(qReal::Id const &type) const;
+                void connect(qReal::Id const &source, qReal::Id const &destination);
+                void disconnect(qReal::Id const &source, qReal::Id const &destination);
 
-                qReal::TypeList outgoingUsages(qReal::NewType const &type) const;
-                qReal::TypeList incomingUsages(qReal::NewType const &type) const;
-                void addUsage(qReal::NewType const &source, qReal::NewType const &destination);
-                void deleteUsage(qReal::NewType const &source, qReal::NewType const &destination);
+                qReal::IdList outgoingUsages(qReal::Id const &type) const;
+                qReal::IdList incomingUsages(qReal::Id const &type) const;
+                void addUsage(qReal::Id const &source, qReal::Id const &destination);
+                void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
-                QString typeName(qReal::NewType const &type) const;
+                QVariant property(qReal::Id const &id, QString const &propertyName) const;
+                QString stringProperty(qReal::Id const &type, QString const &propertyName) const;
+                void setProperty(qReal::Id const &type, QString const &propertyName, QVariant const &value);
+                void removeProperty(qReal::Id const &type, QString const &propertyName);
+                bool hasProperty(qReal::Id const &type, QString const &propertyName) const;
 
-                QVariant property(qReal::NewType const &type, QString const &propertyName) const;
-                QString stringProperty(qReal::NewType const &type, QString const &propertyName) const;
-                void setProperty(qReal::NewType const &type, QString const &propertyName, QVariant const &value);
-                void removeProperty(qReal::NewType const &type, QString const &propertyName);
-                bool hasProperty(qReal::NewType const &type, QString const &propertyName) const;
+                qReal::Id from(qReal::Id const &type) const;
+                void setFrom(qReal::Id const &type, qReal::Id const &from);
 
-                qReal::NewType from(qReal::NewType const &type) const;
-                void setFrom(qReal::NewType const &type, qReal::NewType const &from);
+                qReal::Id to(qReal::Id const &type) const;
+                void setTo(qReal::Id const &type, qReal::Id const &to);
 
-                qReal::NewType to(qReal::NewType const &type) const;
-                void setTo(qReal::NewType const &type, qReal::NewType const &to);
+                double fromPort(qReal::Id const &type) const;
+                void setFromPort(qReal::Id const &type, double fromPort);
 
-                double fromPort(qReal::NewType const &type) const;
-                void setFromPort(qReal::NewType const &type, double fromPort);
+                double toPort(qReal::Id const &type) const;
+                void setToPort(qReal::Id const &type, double toPort);
 
-                double toPort(qReal::NewType const &type) const;
-                void setToPort(qReal::NewType const &type, double toPort);
-
-                qReal::NewType otherEntityFromLink(qReal::NewType const &linkId, qReal::NewType const &firstNode) const;
+                qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const;
 
 		void exterminate();
 
 		void saveAll() const;
-                void save(qReal::TypeList list) const;
+                void save(qReal::IdList list) const;
 		void saveTo(QString const &workingDir);
-                void remove(qReal::TypeList list) const;
+                void remove(qReal::IdList list) const;
 
 		void open(QString const &workingDir);
 
@@ -77,35 +76,34 @@ namespace qrRepo {
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
-                qReal::TypeList elements(qReal::NewType const &type) const;
+                qReal::IdList elements(qReal::Id const &id) const;
 
 		//Returns all elements with .element() == type
-                qReal::TypeList elementsByType(QString const &type) const;
+                qReal::IdList elementsByType(QString const &type) const;
 		int elementsCount() const;
 
-                bool exist(qReal::NewType const &type) const;
+                bool exist(qReal::Id const &type) const;
 
-                qReal::TypeList getOpenedDiagrams() const;
-                qReal::TypeList getChangedDiagrams() const;
+                qReal::IdList getOpenedDiagrams() const;
+                qReal::IdList getChangedDiagrams() const;
 		void resetChangedDiagrams();
-                void addOpenedDiagram(const qReal::NewType &type);
-                void addChangedDiagram(const qReal::NewType &type);
-                void resetChangedDiagrams(const qReal::TypeList &list);
+                void addOpenedDiagram(const qReal::Id &type);
+                void resetChangedDiagrams(const qReal::IdList &list);
 
 	private:
 		RepoApi(RepoApi const &other);  // Копировать нельзя.
 		RepoApi& operator =(RepoApi const &);  // Присваивать тоже.
 
-                void addToTypeList(qReal::NewType const &target, QString const &listName, qReal::NewType const &data);
-                void removeFromList(qReal::NewType const &target, QString const &listName, qReal::NewType const &data);
+                void addToTypeList(qReal::Id const &target, QString const &listName, qReal::Id const &data);
+                void removeFromList(qReal::Id const &target, QString const &listName, qReal::Id const &data);
 
-                qReal::TypeList links(qReal::NewType const &type, QString const &direction) const;
-                void removeLinkEnds(QString const &endName, qReal::NewType const &type);
+                qReal::IdList links(qReal::Id const &id, QString const &direction) const;
+                void removeLinkEnds(QString const &endName, qReal::Id const &type);
 
-                QSet<qReal::NewType> mDiagramsOpened;
-                QSet<qReal::NewType> mDiagramsChanged;
+                QSet<qReal::Id> mDiagramsOpened;
+                QSet<qReal::Id> mDiagramsChanged;
 
-                typedef QPair<qReal::NewType, qReal::TypeList> ChildsOfDiagram;
+                typedef QPair<qReal::Id, qReal::IdList> ChildsOfDiagram;
 		QList<ChildsOfDiagram> mDiagramsDeleted;
 
 		details::Client mClient;

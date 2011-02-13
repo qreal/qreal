@@ -10,7 +10,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::NewType type) : GraphicType(diagram, api, type), mIsPin(false),
+NodeType::NodeType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
 mIsHavePin(false)
 {
 }
@@ -21,7 +21,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-        NodeType *result = new NodeType(mDiagram, mApi, mType);
+        NodeType *result = new NodeType(mDiagram, mApi, mId);
 	GraphicType::copyFields(result);
 	return result;
 }
@@ -66,13 +66,13 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	generateContextMenuItems(nodeClass, compiler);
 
 	QString isContainer  = mContains.isEmpty() ? "false" : "true";
-        QString isAction = loadBoolProperty(mType, "isAction");
+        QString isAction = loadBoolProperty(mId, "isAction");
 	QString border = isAction == "true"
 					? compiler->getTemplateUtils(nodeValidBorderTag)
 					: compiler->getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
-                        .replace(isPortTag, loadBoolProperty(mType, "isPin"))
+                        .replace(isPortTag, loadBoolProperty(mId, "isPin"))
 			.replace(hasPinTag, isAction)
 			.replace(nodeBorderTag, border)
 			.replace(isNodeTag, "true")
@@ -82,17 +82,17 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	return nodeClass;
 }
 
-QString NodeType::loadBoolProperty(qReal::NewType const &type, const QString &property) const
+QString NodeType::loadBoolProperty(qReal::Id const &id, const QString &property) const
 {
-        QString result = mApi->stringProperty(type, property);
+        QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty())
 		result = "false";
 	return result;
 }
 
-QString NodeType::loadIntProperty(qReal::NewType const &type, const QString &property) const
+QString NodeType::loadIntProperty(qReal::Id const &id, const QString &property) const
 {
-        QString result = mApi->stringProperty(type, property);
+        QString result = mApi->stringProperty(id, property);
 	if (result.isEmpty())
 		result = "0";
 	return result;
@@ -100,10 +100,10 @@ QString NodeType::loadIntProperty(qReal::NewType const &type, const QString &pro
 
 void NodeType::generateContainerStuff(QString &classTemplate) const
 {
-        TypeList children = mApi->children(mType);
+        IdList children = mApi->children(mId);
 	bool foundChild = false;
-        foreach(NewType child, children){
-		if (child.element() == metaEntityPropertiesAsContainer) {
+        foreach(Id child, children){
+                if (mApi->type(child).element() == metaEntityPropertiesAsContainer) {
 			foundChild = true;
 			QString movableChildren = mApi->stringProperty(child, "banChildrenMove") == "true" ? "false" : "true";
 			classTemplate.replace(sortingContainerTag, loadBoolProperty(child, "sortContainer"))

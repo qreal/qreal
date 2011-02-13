@@ -11,288 +11,280 @@ RepoApi::RepoApi(QString const &workingDirectory)
 {
 }
 
-QString RepoApi::name(NewType const &type) const
+QString RepoApi::name(Id const &id) const
 {
-        Q_ASSERT(mClient.property(type, "name").canConvert<QString>());
-        return mClient.property(type, "name").toString();
+        Q_ASSERT(mClient.property(id, "name").canConvert<QString>());
+        return mClient.property(id, "name").toString();
 }
 
-void RepoApi::setName(NewType const &type, QString const &name)
+void RepoApi::setName(Id const &id, QString const &name)
 {
-        mClient.setProperty(type, "name", name);
-        addChangedDiagram(type.diagramId());
+        mClient.setProperty(id, "name", name);
+}
+
+IdList RepoApi::children(Id const &id) const
+{
+        return mClient.children(id);
+}
+
+NewType RepoApi::type(Id const &id) const
+{
+    return mClient.type(id);
+}
+
+void RepoApi::addChild(Id const &id, Id const &child, NewType const &type)
+{
+        mClient.addChild(id, child, type);
 
 }
 
-TypeList RepoApi::children(NewType const &type) const
+void RepoApi::removeChild(Id const &id, Id const &child)
 {
-        return mClient.children(type);
+        mClient.removeChild(id, child);
+
 }
 
-void RepoApi::addChild(NewType const &type, NewType const &child)
+void RepoApi::removeChildren(Id const &id)
 {
-        mClient.addChild(type, child);
-        addChangedDiagram(type.diagramId());
+        foreach (Id const child, children(id))
+                removeChild(id, child);
+
 }
 
-void RepoApi::removeChild(NewType const &type, NewType const &child)
+void RepoApi::removeElement(Id const &id)
 {
-        mClient.removeChild(type, child);
-        addChangedDiagram(type.diagramId());
-}
+        Q_ASSERT(id != ROOT_ID);
 
-void RepoApi::removeChildren(NewType const &type)
-{
-        foreach (NewType const child, children(type))
-                removeChild(type, child);
-        addChangedDiagram(type.diagramId());
-}
-
-void RepoApi::removeElement(NewType const &type)
-{
-        Q_ASSERT(type != ROOT_ID);
-
-        foreach (NewType const child, children(type))
+        foreach (Id const child, children(id))
 		removeElement(child);
 
 // 	removeChild() в клиенте какой-то слишком умный, делает много лишнего, потому пока его убираем
 
-//	foreach (NewType const parent, parents(id)) {
+//	foreach (Id const parent, parents(id)) {
 //		removeChild(parent, id);
 //	}
 
-        if (hasProperty(type, "links")) {
-                TypeList links = property(type, "links").value<TypeList>();
-                foreach (NewType const link, links) {
-                        if (hasProperty(link, "from") && property(link, "from").value<NewType>() == type)
+        if (hasProperty(id, "links")) {
+                IdList links = property(id, "links").value<IdList>();
+                foreach (Id const link, links) {
+                        if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
 				setProperty(link, "from", ROOT_ID.toVariant());
-                        if (hasProperty(link, "to") && property(link, "to").value<NewType>() == type)
+                        if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
 				setProperty(link, "to", ROOT_ID.toVariant());
 		}
 	}
 
-        removeLinkEnds("from", type);
-        removeLinkEnds("to", type);
+        removeLinkEnds("from", id);
+        removeLinkEnds("to", id);
 
-        if (hasProperty(type, "outgoingConnections")) {
-                TypeList connections = property(type, "outgoingConnections").value<TypeList>();
-                foreach (NewType const target, connections)
-                        disconnect(type, target);
+        if (hasProperty(id, "outgoingConnections")) {
+                IdList connections = property(id, "outgoingConnections").value<IdList>();
+                foreach (Id const target, connections)
+                        disconnect(id, target);
 	}
 
-        if (hasProperty(type, "incomingConnections")) {
-                TypeList connections = property(type, "incomingConnections").value<TypeList>();
-                foreach (NewType const source, connections)
-                        disconnect(source, type);
+        if (hasProperty(id, "incomingConnections")) {
+                IdList connections = property(id, "incomingConnections").value<IdList>();
+                foreach (Id const source, connections)
+                        disconnect(source, id);
 	}
 
-        if (hasProperty(type, "outgoingUsages")) {
-                TypeList connections = property(type, "outgoingUsages").value<TypeList>();
-                foreach (NewType const target, connections)
-                        deleteUsage(type, target);
+        if (hasProperty(id, "outgoingUsages")) {
+                IdList connections = property(id, "outgoingUsages").value<IdList>();
+                foreach (Id const target, connections)
+                        deleteUsage(id, target);
 	}
 
-        if (hasProperty(type, "incomingUsages")) {
-                TypeList connections = property(type, "incomingUsages").value<TypeList>();
-                foreach (NewType const source, connections)
-                        deleteUsage(source, type);
+        if (hasProperty(id, "incomingUsages")) {
+                IdList connections = property(id, "incomingUsages").value<IdList>();
+                foreach (Id const source, connections)
+                        deleteUsage(source, id);
 	}
 
 	// И так далее для всех возможных видов ссылок и для всех их комбинаций...
 	// Впрочем, может, этого делать и не надо.
 
-        addChangedDiagram(type.diagramId());
+
 }
 
-void RepoApi::removeLinkEnds(QString const &endName, NewType const &type) {
-        if (hasProperty(type, endName)) {
-                NewType target = property(type, endName).value<NewType>();
+void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
+        if (hasProperty(id, endName)) {
+                Id target = property(id, endName).value<Id>();
 		if (hasProperty(target, "links")) {
-                        removeFromList(target, "links", type);
+                        removeFromList(target, "links", id);
 		}
 	}
-        addChangedDiagram(type.diagramId());
+
 }
 
-TypeList RepoApi::parents(NewType const &type) const
+IdList RepoApi::parents(Id const &id) const
 {
-        return mClient.parents(type);
+        return mClient.parents(id);
 }
 
-void RepoApi::addParent(NewType const &type, NewType const &parent)
+void RepoApi::addParent(Id const &id, Id const &parent, const NewType &type)
 {
-        mClient.addParent(type, parent);
-        addChangedDiagram(type.diagramId());
+        mClient.addParent(id, parent, type);
+
 }
 
-void RepoApi::removeParent(NewType const &type, qReal::NewType const &parent)
+void RepoApi::removeParent(Id const &id, qReal::Id const &parent)
 {
-        mClient.removeParent(type, parent);
-        addChangedDiagram(type.diagramId());
+        mClient.removeParent(id, parent);
+
 }
 
-TypeList RepoApi::links(NewType const &type, QString const &direction) const
+IdList RepoApi::links(Id const &id, QString const &direction) const
 {
-        TypeList links = mClient.property(type, "links").value<TypeList>();
-        TypeList result;
-        foreach (NewType const link, links) {
-                if (mClient.property(link, direction).value<NewType>() == type) {
+        IdList links = mClient.property(id, "links").value<IdList>();
+        IdList result;
+        foreach (Id const link, links) {
+                if (mClient.property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
 	return result;
 }
 
-TypeList RepoApi::outgoingLinks(NewType const &type) const
+IdList RepoApi::outgoingLinks(Id const &id) const
 {
-        return links(type, "from");
+        return links(id, "from");
 }
 
-TypeList RepoApi::incomingLinks(NewType const &type) const
+IdList RepoApi::incomingLinks(Id const &id) const
 {
-        return links(type, "to");
+        return links(id, "to");
 }
 
-TypeList RepoApi::links(NewType const &type) const
+IdList RepoApi::links(Id const &id) const
 {
-        return incomingLinks(type) << outgoingLinks(type);
+        return incomingLinks(id) << outgoingLinks(id);
 }
 
-qReal::TypeList RepoApi::outgoingConnections(qReal::NewType const &type) const
+qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
 {
-        return mClient.property(type, "outgoingConnections").value<TypeList>();
+        return mClient.property(id, "outgoingConnections").value<IdList>();
 }
 
-qReal::TypeList RepoApi::incomingConnections(qReal::NewType const &type) const
+qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
 {
-        return mClient.property(type, "incomingConnections").value<TypeList>();
+        return mClient.property(id, "incomingConnections").value<IdList>();
 }
 
-void RepoApi::connect(qReal::NewType const &source, qReal::NewType const &destination)
+void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
 {
         addToTypeList(source, "outgoingConnections", destination);
         addToTypeList(destination, "incomingConnections", source);
-	addChangedDiagram(source.diagramId());
 }
 
-void RepoApi::disconnect(qReal::NewType const &source, qReal::NewType const &destination)
+void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingConnections", destination);
 	removeFromList(destination, "incomingConnections", source);
-	addChangedDiagram(source.diagramId());
 }
 
-qReal::TypeList RepoApi::outgoingUsages(qReal::NewType const &type) const
+qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
 {
-        return mClient.property(type, "outgoingUsages").value<TypeList>();
+        return mClient.property(id, "outgoingUsages").value<IdList>();
 }
 
-qReal::TypeList RepoApi::incomingUsages(qReal::NewType const &type) const
+qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
 {
-        return mClient.property(type, "incomingUsages").value<TypeList>();
+        return mClient.property(id, "incomingUsages").value<IdList>();
 }
 
-void RepoApi::addUsage(qReal::NewType const &source, qReal::NewType const &destination)
+void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
 {
         addToTypeList(source, "outgoingUsages", destination);
         addToTypeList(destination, "incomingUsages", source);
-	addChangedDiagram(source.diagramId());
 }
 
-void RepoApi::deleteUsage(qReal::NewType const &source, qReal::NewType const &destination)
+void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 {
 	removeFromList(source, "outgoingUsages", destination);
 	removeFromList(destination, "incomingUsages", source);
-	addChangedDiagram(source.diagramId());
 }
 
-QString RepoApi::typeName(NewType const &type) const
+
+QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
-        return type.element();
+        return mClient.property(id, propertyName);
 }
 
-QVariant RepoApi::property(NewType const &type, QString const &propertyName) const
+QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 {
-        return mClient.property(type, propertyName);
+        Q_ASSERT(mClient.property(id, propertyName).canConvert<QString>());
+        return mClient.property(id, propertyName).toString();
 }
 
-QString RepoApi::stringProperty(NewType const &type, QString const &propertyName) const
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
-        Q_ASSERT(mClient.property(type, propertyName).canConvert<QString>());
-        return mClient.property(type, propertyName).toString();
+        if (mClient.hasProperty(id, propertyName) &&
+                (mClient.property(id, propertyName) != value))
+
+        mClient.setProperty(id, propertyName, value);
 }
 
-void RepoApi::setProperty(NewType const &type, QString const &propertyName, QVariant const &value)
+void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 {
-        if (mClient.hasProperty(type, propertyName) &&
-                (mClient.property(type, propertyName) != value))
-                addChangedDiagram(type.diagramId());
-        mClient.setProperty(type, propertyName, value);
+        mClient.removeProperty(id, propertyName);
 }
 
-void RepoApi::removeProperty(NewType const &type, QString const &propertyName)
+bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
-        mClient.removeProperty(type, propertyName);
-        addChangedDiagram(type.diagramId());
+        return mClient.hasProperty(id, propertyName);
 }
 
-bool RepoApi::hasProperty(NewType const &type, QString const &propertyName) const
+Id RepoApi::from(Id const &id) const
 {
-        return mClient.hasProperty(type, propertyName);
+        Q_ASSERT(mClient.property(id, "from").canConvert<Id>());
+        return mClient.property(id, "from").value<Id>();
 }
 
-NewType RepoApi::from(NewType const &type) const
+void RepoApi::setFrom(Id const &id, Id const &from)
 {
-        Q_ASSERT(mClient.property(type, "from").canConvert<NewType>());
-        return mClient.property(type, "from").value<NewType>();
+        Id prev = mClient.property(id, "from").value<Id>();
+        removeFromList(prev, "links", id);
+        mClient.setProperty(id, "from", from.toVariant());
+        addToTypeList(from, "links", id);
 }
 
-void RepoApi::setFrom(NewType const &type, NewType const &from)
+Id RepoApi::to(Id const &id) const
 {
-        NewType prev = mClient.property(type, "from").value<NewType>();
-        removeFromList(prev, "links", type);
-        mClient.setProperty(type, "from", from.toVariant());
-        addToTypeList(from, "links", type);
-        addChangedDiagram(type.diagramId());
+        Q_ASSERT(mClient.property(id, "to").canConvert<Id>());
+        return mClient.property(id, "to").value<Id>();
 }
 
-NewType RepoApi::to(NewType const &type) const
+void RepoApi::setTo(Id const &id, Id const &to)
 {
-        Q_ASSERT(mClient.property(type, "to").canConvert<NewType>());
-        return mClient.property(type, "to").value<NewType>();
+        Id prev = mClient.property(id, "to").value<Id>();
+        removeFromList(prev, "links", id);
+        mClient.setProperty(id, "to", to.toVariant());
+        addToTypeList(to, "links", id);
 }
 
-void RepoApi::setTo(NewType const &type, NewType const &to)
+double RepoApi::fromPort(Id const &id) const
 {
-        NewType prev = mClient.property(type, "to").value<NewType>();
-        removeFromList(prev, "links", type);
-        mClient.setProperty(type, "to", to.toVariant());
-        addToTypeList(to, "links", type);
-        addChangedDiagram(type.diagramId());
+        Q_ASSERT(mClient.property(id, "fromPort").canConvert<double>());
+        return mClient.property(id, "fromPort").value<double>();
 }
 
-double RepoApi::fromPort(NewType const &type) const
+void RepoApi::setFromPort(Id const &id, double fromPort)
 {
-        Q_ASSERT(mClient.property(type, "fromPort").canConvert<double>());
-        return mClient.property(type, "fromPort").value<double>();
+        mClient.setProperty(id, "fromPort", fromPort);
+
 }
 
-void RepoApi::setFromPort(NewType const &type, double fromPort)
+double RepoApi::toPort(Id const &id) const
 {
-        mClient.setProperty(type, "fromPort", fromPort);
-        addChangedDiagram(type.diagramId());
+        Q_ASSERT(mClient.property(id, "toPort").canConvert<double>());
+        return mClient.property(id, "toPort").value<double>();
 }
 
-double RepoApi::toPort(NewType const &type) const
+void RepoApi::setToPort(Id const &id, double toPort)
 {
-        Q_ASSERT(mClient.property(type, "toPort").canConvert<double>());
-        return mClient.property(type, "toPort").value<double>();
-}
+        mClient.setProperty(id, "toPort", toPort);
 
-void RepoApi::setToPort(NewType const &type, double toPort)
-{
-        mClient.setProperty(type, "toPort", toPort);
-        addChangedDiagram(type.diagramId());
 }
 
 void RepoApi::exterminate()
@@ -321,18 +313,18 @@ void RepoApi::saveTo(QString const &workingDir)
 	mClient.saveAll();
 }
 
-void RepoApi::save(qReal::TypeList list) const
+void RepoApi::save(qReal::IdList list) const
 {
-        qDebug() << "RepoApi::save(TypeList), list.size() > 0 == " << (list.size()>0);
+        qDebug() << "RepoApi::save(IdList), list.size() > 0 == " << (list.size()>0);
 	mClient.save(list);
 }
 
-void RepoApi::remove(qReal::TypeList list) const
+void RepoApi::remove(qReal::IdList list) const
 {
-        qDebug() << "RepoApi::remove(TypeList), list.size() > 0 == " << (list.size()>0);
+        qDebug() << "RepoApi::remove(IdList), list.size() > 0 == " << (list.size()>0);
 
 	foreach(ChildsOfDiagram pair, mDiagramsDeleted)
-                foreach(NewType diagram, list) {
+                foreach(Id diagram, list) {
 			if (pair.first == diagram)
 				mClient.remove(pair.second);
 		}
@@ -340,85 +332,83 @@ void RepoApi::remove(qReal::TypeList list) const
 
 
 
-void RepoApi::addToTypeList(NewType const &target, QString const &listName, NewType const &data)
+void RepoApi::addToTypeList(Id const &target, QString const &listName, Id const &data)
 {
 	if (target == ROOT_ID)
 		return;
 
-        TypeList list = mClient.property(target, listName).value<TypeList>();
+        IdList list = mClient.property(target, listName).value<IdList>();
 
 	// Значения в списке должны быть уникальны.
 	if (list.contains(data))
 		return;
 
 	list.append(data);
-        mClient.setProperty(target, listName, TypeListHelper::toVariant(list));
+        mClient.setProperty(target, listName, IdListHelper::toVariant(list));
 
-	addChangedDiagram(target.diagramId());
 }
 
-void RepoApi::removeFromList(NewType const &target, QString const &listName, NewType const &data)
+void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data)
 {
 	if (target == ROOT_ID)
 		return;
 
-        TypeList list = mClient.property(target, listName).value<TypeList>();
+        IdList list = mClient.property(target, listName).value<IdList>();
 	list.removeAll(data);
 
-        mClient.setProperty(target, listName, TypeListHelper::toVariant(list));
-	addChangedDiagram(target.diagramId());
+        mClient.setProperty(target, listName, IdListHelper::toVariant(list));
 }
 
-NewType RepoApi::otherEntityFromLink(NewType const &linkId, NewType const &firstNode) const
+Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 {
-        NewType const fromId = from(linkId);
+        Id const fromId = from(linkId);
         if (fromId != firstNode)
 		return fromId;
 	else
 		return to(linkId);
 }
 
-TypeList RepoApi::elements(NewType const &type) const
+IdList RepoApi::elements(Id const &id) const
 {
-        Q_ASSERT(type.typeSize() == 3);  // Применимо только к типам
+       // Q_ASSERT(id.typeSize() == 3);  // Применимо только к типам
 
-        TypeList result;
-        foreach (NewType type, mClient.elements()) {
+        IdList result;
+        foreach (Id t, mClient.elements()) {
 		 // Так должно быть
-		// if (id.type() == type)
+                // if (id.id() == id)
 		// Так есть
-                if (type.element() == type.element())
-                        result.append(type);
+                if (mClient.type(t).element() == mClient.type(id).element())
+                        result.append(t);
 	}
 	return result;
 }
 
-TypeList RepoApi::elementsByType(QString const &typeString) const
+IdList RepoApi::elementsByType(QString const &typeString) const
 {
-        TypeList result;
-        foreach (NewType type, mClient.elements()) {
-                if (type.element() == typeString)
-                        result.append(type);
+        IdList result;
+        foreach (Id id, mClient.elements()) {
+                if (mClient.type(id).element() == typeString)
+                        result.append(id);
 	}
 	return result;
 }
 
 int RepoApi::elementsCount() const
 {
-	return mClient.elements().size();
+        return mClient.types().size();
 }
 
-bool RepoApi::exist(NewType const &type) const
+bool RepoApi::exist(Id const &id) const
 {
-        return mClient.exist(type);
+        return mClient.exist(id);
 }
 
-TypeList RepoApi::getOpenedDiagrams() const
+IdList RepoApi::getOpenedDiagrams() const
 {
 	return mDiagramsOpened.values();
 }
 
-TypeList RepoApi::getChangedDiagrams() const
+IdList RepoApi::getChangedDiagrams() const
 {
 	return mDiagramsChanged.values();
 }
@@ -428,23 +418,13 @@ void RepoApi::resetChangedDiagrams()
 	mDiagramsChanged.clear();
 }
 
-void RepoApi::addOpenedDiagram(const NewType &type)
+void RepoApi::addOpenedDiagram(const Id &id)
 {
-        mDiagramsOpened.insert(type);
+        mDiagramsOpened.insert(id);
 }
 
-void RepoApi::addChangedDiagram(const NewType &type)
+void RepoApi::resetChangedDiagrams(const IdList &list)
 {
-        mDiagramsChanged.insert(type);
-/**	if (!exist(type)) {
-                QPair<Id,TypeList> pair = qMakePair(id,mClient.typesOfAllChildrenOf(id));
-		if (!mDiagramsDeleted.contains(pair))
-			this->mDiagramsDeleted.append(pair);
-	}**/
-}
-
-void RepoApi::resetChangedDiagrams(const TypeList &list)
-{
-        foreach(NewType type, list)
-                mDiagramsChanged.remove(type);
+        foreach(Id id, list)
+                mDiagramsChanged.remove(id);
 }

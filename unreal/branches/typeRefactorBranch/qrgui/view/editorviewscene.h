@@ -90,11 +90,11 @@ private:
 	UML::Element *getElemAt(const QPointF &position);
 
 	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
-        void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::TypeList const &types) const;
+        void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(UML::Element const * const element
 								 , QMenu &contextMenu, QString const &menuName
-                                                                 , qReal::TypeList const &connectableTypes, qReal::TypeList const &alreadyConnectedElements
-                                                                 , qReal::TypeList const &connectableDiagrams, const char *slot) const;
+                                                                 , qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
+                                                                 , qReal::IdList const &connectableDiagrams, const char *slot) const;
 
 	void createDisconnectMenu(UML::Element const * const element
 							  , QMenu &contextMenu, QString const &menuName

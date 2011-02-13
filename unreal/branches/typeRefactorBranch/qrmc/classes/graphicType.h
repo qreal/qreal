@@ -16,7 +16,7 @@ namespace qrmc {
 	class GraphicType : public Type
 	{
 	public:
-                GraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::NewType const &type);
+                GraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 		virtual ~GraphicType();
 		virtual bool init(QString const &context);
 		virtual bool resolve();

@@ -18,8 +18,8 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::NewType &type)
-        : Type(false, diagram, api, type), mResolving(false)
+GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
+        : Type(false, diagram, api, id), mResolving(false)
 {
 }
 
@@ -32,34 +32,34 @@ bool GraphicType::init(QString const &context)
 	Type::init(context);
 
 	mIsVisible = false;
-        if (mApi->hasProperty(mType, "shape"))
-                mIsVisible = !mApi->stringProperty(mType, "shape").isEmpty();
-        mContains << mApi->stringProperty(mType, "container").split(",", QString::SkipEmptyParts);
+        if (mApi->hasProperty(mId, "shape"))
+                mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
+        mContains << mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts);
 
-        foreach(NewType type, mApi->children(mType)) {
-                if (type.element() == metaEntityParent) {
-                        QString parentName = mApi->name(type);
+        foreach(Id id, mApi->children(mId)) {
+                if (mApi->type(id).element() == metaEntityParent) {
+                        QString parentName = mApi->name(id);
 			if (!mParents.contains(parentName))
 				mParents.append(parentName);
 			else {
 				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
 				return false;
 			}
-                } else if (type.element() == metaEntityAttribute) {
-                        Property *property = new Property(mApi, type);
+                } else if (mApi->type(id).element() == metaEntityAttribute) {
+                        Property *property = new Property(mApi, id);
 			if (!property->init()) {
 				delete property;
 				continue;
 			}
 			if (!addProperty(property))
 				return false;
-                } else if (type.element() == metaEntityConnection) {
-                        mConnections << mApi->stringProperty(type, "type").section("::", -1);
-                } else if (type.element() == metaEntityUsage) {
-                        mUsages << mApi->stringProperty(type, "type").section("::", -1);
-                } else if (type.element() == metaEntityContextMenuField)
+                } else if (mApi->type(id).element() == metaEntityConnection) {
+                        mConnections << mApi->stringProperty(id, "type").section("::", -1);
+                } else if (mApi->type(id).element() == metaEntityUsage) {
+                        mUsages << mApi->stringProperty(id, "type").section("::", -1);
+                } else if (mApi->type(id).element() == metaEntityContextMenuField)
 		{
-                        mContextMenuItems << mApi->name(type);
+                        mContextMenuItems << mApi->name(id);
 		}
 	}
 	initPossibleEdges();
@@ -69,13 +69,13 @@ bool GraphicType::init(QString const &context)
 
 bool GraphicType::initPossibleEdges()
 {
-        TypeList children = mApi->children(mType);
-        foreach(NewType type, children) {
-                if (type.element() != metaEntityPossibleEdge)
+        IdList children = mApi->children(mId);
+        foreach(Id id, children) {
+                if (mApi->type(id).element() != metaEntityPossibleEdge)
 			continue;
-                QString beginName = mApi->stringProperty(type, "beginName");
-                QString endName = mApi->stringProperty(type, "endName");
-                QString directedField = mApi->stringProperty(type, "directed");
+                QString beginName = mApi->stringProperty(id, "beginName");
+                QString endName = mApi->stringProperty(id, "endName");
+                QString directedField = mApi->stringProperty(id, "directed");
 		bool directed = false;
 
 		if (beginName.isEmpty() || endName.isEmpty() || ((directedField != "true") && (directedField != "false"))) {
@@ -102,8 +102,8 @@ bool GraphicType::initPossibleEdges()
 
 void GraphicType::initShape()
 {
-        if (mApi->hasProperty(mType, "shape")) {
-                QString shape = mApi->stringProperty(mType, "shape");
+        if (mApi->hasProperty(mId, "shape")) {
+                QString shape = mApi->stringProperty(mId, "shape");
 		if (shape.isEmpty())
 			return;
 		mShape.init(shape);

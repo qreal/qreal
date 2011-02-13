@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../kernel/NewType.h"
+#include "../kernel/ids.h"
 
 namespace qReal {
 
@@ -25,29 +26,29 @@ namespace qReal {
 			ModelAssistApi(Model &model, EditorManager const &editorManager);
 			virtual EditorManager const &editorManager() const;
 
-                        virtual void connect(qReal::NewType const &source, qReal::NewType const &destination);
-                        virtual void disconnect(qReal::NewType const &source, qReal::NewType const &destination);
-                        virtual void addUsage(qReal::NewType const &source, qReal::NewType const &destination);
-                        virtual void deleteUsage(qReal::NewType const &source, qReal::NewType const &destination);
+                        virtual void connect(qReal::Id const &source, qReal::Id const &destination);
+                        virtual void disconnect(qReal::Id const &source, qReal::Id const &destination);
+                        virtual void addUsage(qReal::Id const &source, qReal::Id const &destination);
+                        virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
-                        virtual NewType createElement(qReal::NewType const &parent, qReal::NewType const &type);
+                        virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
 
-                        virtual void setProperty(qReal::NewType const &elem, int const role, QVariant const &newValue);
-                        virtual QVariant getProperty(qReal::NewType const &elem, int const role) const;
+                        virtual void setProperty(qReal::Id const &elem, int const role, QVariant const &newValue);
+                        virtual QVariant getProperty(qReal::Id const &elem, int const role) const;
 
-                        void createConnected(qReal::NewType const &sourceElement, qReal::NewType const &elementType);
-                        void createUsed(qReal::NewType const &sourceElement, qReal::NewType const &elementType);
+                        void createConnected(qReal::Id const &sourceElement, qReal::Id const &elementId);
+                        void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementId);
                         qReal::TypeList diagramsAbleToBeConnectedTo(qReal::NewType const &element) const;
                         qReal::TypeList diagramsAbleToBeUsedIn(qReal::NewType const &element) const;
 
-                        qReal::TypeList children(qReal::NewType const &element) const;
+                        qReal::IdList children(qReal::Id const &element) const;
 
 		private:
 			ModelAssistApi(ModelAssistApi const &);  // Copying is forbidden
 			ModelAssistApi& operator =(ModelAssistApi const &); // Assignment is forbidden also
 
                         static TypeList diagramsFromList(TypeList const &list);
-                        NewType createConnectedElement(NewType const &source, NewType const &elementType);
+                        Id createConnectedElement(Id const &source, Id const &elementId);
 
 			Model &mModel;
 			EditorManager const &mEditorManager;

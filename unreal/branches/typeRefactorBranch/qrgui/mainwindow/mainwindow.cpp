@@ -277,13 +277,13 @@ void MainWindow::adjustMinimapZoom(int zoom)
 	ui.minimapView->scale(0.01*zoom,0.01*zoom);
 }
 
-void MainWindow::selectItemWithError(NewType const &type)
+void MainWindow::selectItemWithError(Id const &id)
 {
-        if (type == NewType::rootType()) {
+        if (id == ROOT_ID) {
 		return;
 	}
-        mPropertyModel.setIndex(mModel->indexByType(type));
-        centerOn(mModel->indexByType(type));
+        mPropertyModel.setIndex(mModel->indexById(id));
+        centerOn(mModel->indexById(id));
 }
 
 void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isSetSel)
@@ -314,8 +314,8 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool bl, bool isS
 	}
 }
 
-void MainWindow::activateItemOrDiagram(NewType const &type, bool bl, bool isSetSel) {
-        activateItemOrDiagram(mModel->indexByType(type), bl, isSetSel);
+void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel) {
+        activateItemOrDiagram(mModel->indexById(id), bl, isSetSel);
 }
 
 void MainWindow::activateSubdiagram(QModelIndex const &idx) {
@@ -658,7 +658,7 @@ void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
-        TypeList const metamodels = mModel->api().children(ROOT_ID);
+        IdList const metamodels = mModel->api().children(ROOT_ID);
 
 	QSettings settings("SPbSU", "QReal");
 
@@ -676,8 +676,8 @@ void MainWindow::generateEditorWithQRMC()
 
 	int forEditor = 60 / metamodels.size();
 
-        foreach (NewType const key, metamodels) {
-		QString const objectType = mModel->api().typeName(key);
+        foreach (Id const key, metamodels) {
+                QString const objectType = mModel->api().name(key);
 		if (objectType == "MetamodelDiagram") {
 			QString name = mModel->api().stringProperty(key, "name of the directory");
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
@@ -976,7 +976,8 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(const QModelIndex &index)
 {
-        NewType itemType = mModel->typeByIndex(index);
+        Id itemId = mModel->idByIndex(index);
+        NewType itemType = mModel->api().type(itemId);
         if (itemType.element() == mModel->assistApi().editorManager().getEditorInterface(itemType.editor())->diagramNodeName(itemType.diagram()))
 		return;
 	EditorView* view = getCurrentTab();
@@ -1044,14 +1045,14 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		foreach(QString name, ui.paletteToolbox->getTabNames()) {
 			//this conditions are not good because of strings comparing
 			QString tabName = name.trimmed().remove(" ");
-                        QString diagramName = mModel->typeByIndex(index).diagram().remove("_");
+                        QString diagramName = mModel->api().type(mModel->idByIndex(index)).diagram().remove("_");
 			if (diagramName.contains(tabName)) {
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 				diagram = true;
 			}
 			if (diagram)
 				continue;
-                        QString editorName = mModel->typeByIndex(index).diagram().remove("_");
+                        QString editorName = mModel->api().type(mModel->idByIndex(index)).diagram().remove("_");
 			if (editorName.contains(tabName))
 				ui.paletteToolbox->getComboBox()->setCurrentIndex(i);
 			i++;
@@ -1280,8 +1281,8 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(const QString &idString)
 {
-        NewType created = mModel->assistApi().createElement(ROOT_ID,NewType::loadFromString(idString));
-        QModelIndex index = mModel->indexByType(created);
+        Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
+        QModelIndex index = mModel->indexById(created);
 	ui.diagramExplorer->setCurrentIndex(index);
 	openNewTab(index);
 }
@@ -1323,7 +1324,7 @@ void MainWindow::saveAll()
 	mModel->resetChangedDiagrams();
 }
 
-void MainWindow::saveTypes(TypeList const &toSave, TypeList const &toRemove)
+void MainWindow::saveTypes(IdList const &toSave, IdList const &toRemove)
 {
 	//not implemented
 	//TODO:
@@ -1333,8 +1334,8 @@ void MainWindow::saveTypes(TypeList const &toSave, TypeList const &toRemove)
 
 	mModel->api().save(toSave);
 	mModel->api().remove(toRemove);
-	mModel->resetChangedDiagrams(toSave);
-	mModel->resetChangedDiagrams(toRemove);
+        //mModel->resetChangedDiagrams(toSave);
+        //mModel->resetChangedDiagrams(toRemove);
 }
 
 void MainWindow::saveAs()	//TODO: change
@@ -1353,9 +1354,10 @@ QListWidget* MainWindow::createSaveListWidget()
 	QListWidget *listWidget = new QListWidget();
 
 	int i =0;
-        foreach(NewType type, mModel->api().getOpenedDiagrams()) {
-                listWidget->addItem(type.diagram());
-                if (mModel->api().getChangedDiagrams().contains(type.diagramId())) {
+        foreach(Id id, mModel->api().getOpenedDiagrams()) {
+                listWidget->addItem(mModel->api().type(id).diagram());
+                //if (mModel->api().getChangedDiagrams().contains((mModel->api().type(id)).diagramId())) {
+                if (mModel->api().getChangedDiagrams().contains(id)) {
 			mSaveListChecked[i] = true;
 			listWidget->item(i)->setCheckState(Qt::Checked);
 		} else {
@@ -1381,25 +1383,25 @@ void MainWindow::diagramInSaveListChanged(QListWidgetItem* diagram)
 
 void MainWindow::saveListClosed()
 {
-        TypeList toSave;
-        TypeList toRemove;
-        TypeList current = mModel->api().children(ROOT_ID);
-        TypeList opened = mModel->api().getOpenedDiagrams();
+        IdList toSave;
+        IdList toRemove;
+        IdList current = mModel->api().children(ROOT_ID);
+        IdList opened = mModel->api().getOpenedDiagrams();
 
 	int i = 0;
-        foreach(NewType type, opened) {
-                qDebug() << "Was opened: " << type.diagram() << " / " << type.element();
+        foreach(Id id, opened) {
+                qDebug() << "Was opened: " << mModel->api().type(id).diagram() << " / " << mModel->api().type(id).element();
 
 		if (!mSaveListChecked[i]) {
-                        if (!current.contains(type))
-                                mModel->addDiagram(type);
+                        if (!current.contains(id))
+                                mModel->addDiagram(mModel->api().type(id));
 			else
 				continue;
 		}
-                if (current.contains(type))
-                        toSave.append(type);
+                if (current.contains(id))
+                        toSave.append(id);
 		else
-                        toRemove.append(type);
+                        toRemove.append(id);
 		i++;
 	}
 

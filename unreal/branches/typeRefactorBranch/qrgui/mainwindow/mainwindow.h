@@ -60,7 +60,7 @@ namespace qReal {
 		void save();
 		void saveAs();
 		void saveAll();
-                void saveTypes(QList<NewType> const &toSave, QList<NewType> const & toRemove);
+                void saveTypes(QList<Id> const &toSave, QList<Id> const & toRemove);
 
 		void print();
 		void makeSvg();
@@ -79,10 +79,10 @@ namespace qReal {
 		void deleteFromScene(QGraphicsItem *target);
 
 		void activateSubdiagram(QModelIndex const &idx);
-                void activateItemOrDiagram(NewType const &type, bool bl = true, bool isSetSel = true);
+                void activateItemOrDiagram(Id const &type, bool bl = true, bool isSetSel = true);
 		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
 		void propertyEditorScrollTo(QModelIndex const &index);
-                void selectItemWithError(NewType const &type);
+                void selectItemWithError(Id const &type);
 
 		void debug();
 		void debugSingleStep();

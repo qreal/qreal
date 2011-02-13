@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-                Diagram(qReal::NewType const &type, qrRepo::RepoApi *api, Editor *editor);
+                Diagram(qReal::Id const &id, qrRepo::RepoApi *api, Editor *editor);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -50,7 +50,7 @@ namespace qrmc {
 			QString as;
 			QString displayedName;
 		};
-                qReal::NewType mType;
+                qReal::Id mId;
 		qrRepo::RepoApi *mApi;
 		QMap<QString, Type*> mTypes;
 		QString mDiagramName;

@@ -6,8 +6,8 @@
 
 using namespace qrmc;
 
-Type::Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, const qReal::NewType &id)
-        : mResolvingFinished(isResolved), mDiagram(diagram), mType(id), mApi(api)
+Type::Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
+        : mResolvingFinished(isResolved), mDiagram(diagram), mId(id), mApi(api)
 {
 }
 
@@ -97,8 +97,8 @@ void Type::copyFields(Type *type) const
 
 bool Type::init(QString const &context)
 {
-        mName = mApi->name(mType);
-        mDisplayedName = mApi->stringProperty(mType, "displayedName");
+        mName = mApi->name(mId);
+        mDisplayedName = mApi->stringProperty(mId, "displayedName");
 	if (mDisplayedName.isEmpty())
 		mDisplayedName = mName;
 	mName = NameNormalizer::normalize(mName);
@@ -108,8 +108,8 @@ bool Type::init(QString const &context)
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
-        if (mApi->hasProperty(mType, "path"))
-                mPath = mApi->stringProperty(mType, "path");
+        if (mApi->hasProperty(mId, "path"))
+                mPath = mApi->stringProperty(mId, "path");
 	return true;
 }
 

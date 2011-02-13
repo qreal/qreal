@@ -14,7 +14,7 @@ void ErrorListWidget::clickList()
 
 void ErrorListWidget::highlightElement(QListWidgetItem* const item)
 {
-        qReal::NewType const id = qReal::NewType::loadFromString(item->data(Qt::ToolTipRole).toString());
+        qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	if (item->isSelected())
 		mMainWindow->selectItemWithError(id);
 }

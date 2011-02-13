@@ -31,7 +31,7 @@ namespace UML {
 		virtual void updateData();
 
                 qReal::NewType newType() const;
-
+                qReal::Id id() const;
 		virtual void connectToPort() { }
 		virtual QList<ContextMenuAction*> contextMenuActions();
 
@@ -46,7 +46,7 @@ namespace UML {
 		QPersistentModelIndex mDataIndex;
 
                 qReal::NewType mType;
-
+                qReal::Id mId;
 		bool mMoving;
 
 		QList<ElementTitle*> mTitles;

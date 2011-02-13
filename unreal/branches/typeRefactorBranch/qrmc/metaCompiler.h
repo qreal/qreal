@@ -19,7 +19,7 @@ namespace qrmc {
 		MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir);
 		~MetaCompiler();
 		bool compile(QString const &metamodel = "");
-                Editor *loadMetaModel(qReal::NewType const &type);
+                Editor *loadMetaModel(qReal::Id const &id);
 		Diagram *getDiagram(QString const &diagramName);
 		void addResource(QString const &resourceName);
 

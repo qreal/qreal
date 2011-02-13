@@ -5,15 +5,15 @@ using namespace qReal;
 using namespace model;
 using namespace details;
 
-ModelTreeItem::ModelTreeItem(NewType const &id, ModelTreeItem *parent)
-        : mType(id)
+ModelTreeItem::ModelTreeItem(Id const &id, ModelTreeItem *parent)
+        : mId(id)
 {
 	mParent = parent;
 }
 
-NewType ModelTreeItem::type() const
+Id ModelTreeItem::id() const
 {
-        return mType;
+        return mId;
 }
 
 ModelTreeItem* ModelTreeItem::parent() const
@@ -36,7 +36,7 @@ void ModelTreeItem::addChild(ModelTreeItem *child)
 	if (!mChildren.contains(child))
 		mChildren.append(child);
 	else
-                throw Exception("Model: Adding already existing child " + child->type().toString() + "  to object " + mType.toString());
+                throw Exception("Model: Adding already existing child " + child->id().toString() + "  to object " + mId.toString());
 }
 
 void ModelTreeItem::removeChild(ModelTreeItem *child)
@@ -44,7 +44,7 @@ void ModelTreeItem::removeChild(ModelTreeItem *child)
 	if (mChildren.contains(child))
 		mChildren.removeAll(child);
 	else
-                throw Exception("Model: Removing nonexistent child " + child->type().toString() + "  from object " + mType.toString());
+                throw Exception("Model: Removing nonexistent child " + child->id().toString() + "  from object " + mId.toString());
 }
 
 int ModelTreeItem::row()

@@ -16,14 +16,14 @@ RefWindow::RefWindow(const qrRepo::RepoApi *mApi, QString name,
 	mItem(NULL)
 {
 	ui->setupUi(this);
-        qReal::TypeList idList = api->elementsByType(typeName);
+        qReal::IdList idList = api->elementsByType(typeName);
 	int size = idList.size();
 	ui->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
 	QString str = model->data(index, role).toString();
 	int sizeStr = str.count("$$");
 	for (int i = 0; i < size; ++i)
 	{
-                qReal::TypeList parentsIdList = api->parents(idList[i]);
+                qReal::IdList parentsIdList = api->parents(idList[i]);
 		int parentsListSize = parentsIdList.size();
 		for (int j = 0; j < parentsListSize; ++j)
 		{
@@ -90,7 +90,7 @@ void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
 	Q_UNUSED(bl)
 	mItem = item;
-        qReal::NewType const id = qReal::NewType::loadFromString(item->data(Qt::ToolTipRole).toString());
+        qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	if (item->isSelected())
 	{
 		mainWindow->activateItemOrDiagram(id, true, false);
@@ -120,7 +120,7 @@ void RefWindow::setElementId()
 {
 	for (int i = 0; i < elementList.size(); ++i)
 	{
-                qReal::NewType const id = qReal::NewType::loadFromString(elementList[i]->data(Qt::ToolTipRole).toString());
+                qReal::Id const id = qReal::Id::loadFromString(elementList[i]->data(Qt::ToolTipRole).toString());
 		mainWindow->activateItemOrDiagram(id, false, false);
 	}
 	mainWindow->activateItemOrDiagram(index, false);

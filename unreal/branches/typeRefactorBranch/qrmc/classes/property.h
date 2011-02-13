@@ -8,7 +8,7 @@ namespace qrmc {
 	class Property
 	{
 	public:
-                Property(qrRepo::RepoApi *api, qReal::NewType const &type);
+                Property(qrRepo::RepoApi *api, qReal::Id const &id);
 
 		bool init();
 		QString name();
@@ -24,7 +24,7 @@ namespace qrmc {
 
 	private:
 		qrRepo::RepoApi *mApi;
-                qReal::NewType mType;
+                qReal::Id mId;
 		QString mName;
                 QString mTypeString;
 		bool mIsEnum;

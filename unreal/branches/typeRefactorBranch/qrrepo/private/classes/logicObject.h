@@ -12,25 +12,28 @@ namespace qrRepo {
 		class LogicObject
 		{
 		public:
-                        explicit LogicObject(const qReal::NewType &type);
-                        LogicObject(const qReal::NewType &id, const qReal::NewType &parent);
-                        void addParent(const qReal::NewType &parent);
-                        void removeParent(const qReal::NewType &parent);
-                        void addChild(const qReal::NewType &child);
-                        void removeChild(const qReal::NewType &child);
-                        qReal::TypeList children() const;
-                        qReal::TypeList parents() const;
+                        explicit LogicObject(const qReal::Id &id, const qReal::NewType &type);
+                        LogicObject(const qReal::Id &id, const qReal::Id &parent, const qReal::NewType &type);
+                        void addParent(const qReal::Id &parent);
+                        void removeParent(const qReal::Id &parent);
+                        void addChild(const qReal::Id &child);
+                        void removeChild(const qReal::Id &child);
+                        qReal::IdList children() const;
+                        qReal::IdList parents() const;
 			void setProperty(const QString &name, const QVariant &value);
 			QVariant property(const QString &name) const;
 			bool hasProperty(const QString &name) const;
 			void removeProperty(const QString &name);
+                        qReal::Id id() const;
                         qReal::NewType type() const;
+                        void setType(const qReal::NewType &type);
 			QMapIterator<QString, QVariant> propertiesIterator();
 
 		private:
-                        const qReal::NewType mType;
-                        qReal::TypeList mParents;
-                        qReal::TypeList mChildren;
+                        const qReal::Id mId;
+                        qReal::NewType mType;
+                        qReal::IdList mParents;
+                        qReal::IdList mChildren;
 			QMap<QString, QVariant> mProperties;
 		};
 

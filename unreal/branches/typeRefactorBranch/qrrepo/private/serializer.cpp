@@ -23,7 +23,7 @@ void Serializer::clearWorkingDir() const
 	clearDir(mWorkingDir+"/tree");
 }
 
-void Serializer::removeFromDisk(NewType type) const
+void Serializer::removeFromDisk(Id type) const
 {
         qDebug() << "deleteDiagramDir " << pathToElement(type);
 	QDir dir;
@@ -38,13 +38,13 @@ void Serializer::setWorkingDir(QString const &workingDir)
 void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 {
 	foreach (LogicObject *object, objects) {
-                qDebug() << "SAVED: " << object->type().toString();
-                QString filePath = createDirectory(object->type());
+                qDebug() << "SAVED: " << object->id().toString();
+                QString filePath = createDirectory(object->id());
 
 		QDomDocument doc;
 		QDomElement root = doc.createElement("LogicObject");
 		doc.appendChild(root);
-                root.setAttribute("type", object->type().toString());
+                root.setAttribute("type", object->id().toString());
 
                 root.appendChild(typeListToXml("parents", object->parents(), doc));
                 root.appendChild(typeListToXml("children", object->children(), doc));
@@ -55,12 +55,12 @@ void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 	}
 }
 
-void Serializer::loadFromDisk(QHash<qReal::NewType, LogicObject*> &objectsHash)
+void Serializer::loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash)
 {
 	loadFromDisk(mWorkingDir+"/tree", objectsHash);
 }
 
-void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::NewType, LogicObject*> &objectsHash)
+void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash)
 {
 	QDir dir(currentPath);
 	if (dir.exists()) {
@@ -73,7 +73,7 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::NewType, 
 				LogicObject *object = parseLogicObject(doc.documentElement());
 				Q_ASSERT(object);  // Пока требуем, что все объекты в репозитории загружаемы.
 				if (object != NULL)
-                                        objectsHash.insert(object->type(), object);
+                                        objectsHash.insert(object->id(), object);
 			}
 		}
 	}
@@ -104,17 +104,18 @@ void  Serializer::log(QString const message, qReal::NewType const diagram)
 
 LogicObject *Serializer::parseLogicObject(QDomElement const &elem)
 {
+        QString id = elem.attribute("id", "");
         QString type = elem.attribute("type", "");
-        if (type == "")
+        if (id == "")
 		return NULL;
 
-        LogicObject object(NewType::loadFromString(type));
+        LogicObject object(Id::loadFromString(id), NewType::loadFromString(type));
 
-        foreach (NewType parent, loadTypeList(elem, "parents"))
+        foreach (Id parent, loadIdList(elem, "parents"))
 		if (!mFailSafe || !object.parents().contains(parent))
 			object.addParent(parent);
 
-        foreach (NewType child, loadTypeList(elem, "children"))
+        foreach (Id child, loadIdList(elem, "children"))
 		if (!mFailSafe || !object.children().contains(child))
 			object.addChild(child);
 
@@ -140,8 +141,8 @@ bool Serializer::loadProperties(QDomElement const &elem, LogicObject &object)
 			// списками детей/родителей.
                         if (property.attribute("type", "") == "qReal::TypeList") {
 				QString key = property.tagName();
-                                TypeList value = loadTypeList(properties, property.tagName());
-                                object.setProperty(key, TypeListHelper::toVariant(value));
+                                IdList value = loadIdList(properties, property.tagName());
+                                object.setProperty(key, IdListHelper::toVariant(value));
 			} else {
 				Q_ASSERT(!"Unknown list type");
 			}
@@ -160,15 +161,15 @@ bool Serializer::loadProperties(QDomElement const &elem, LogicObject &object)
 	return true;
 }
 
-TypeList Serializer::loadTypeList(QDomElement const &elem, QString const &name)
+IdList Serializer::loadIdList(QDomElement const &elem, QString const &name)
 {
 	QDomNodeList list = elem.elementsByTagName(name);
 	if (list.count() != 1) {
 		qDebug() << "Incorrect element: " + name + " list must appear once";
-                return TypeList();
+                return IdList();
 	}
 
-        TypeList result;
+        IdList result;
 
 	QDomElement elements = list.at(0).toElement();
 	QDomElement element = elements.firstChildElement();
@@ -176,9 +177,9 @@ TypeList Serializer::loadTypeList(QDomElement const &elem, QString const &name)
                 QString elementStr = element.attribute("type", "");
 		if (elementStr == "") {
 			qDebug() << "Incorrect Child XML node";
-                        return TypeList();
+                        return IdList();
 		}
-                result.append(NewType::loadFromString(elementStr));
+                result.append(Id::loadFromString(elementStr));
 		element = element.nextSiblingElement();
 	}
 	return result;
@@ -282,7 +283,7 @@ QString Serializer::serializeQPolygon(QPolygon const &p)
 	return result;
 }
 
-QString Serializer::pathToElement(NewType const &type) const
+QString Serializer::pathToElement(Id const &type) const
 {
 	QString dirName = mWorkingDir;
 
@@ -295,10 +296,10 @@ QString Serializer::pathToElement(NewType const &type) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(NewType const &type) const
+QString Serializer::createDirectory(Id const &id) const
 {
 	QString dirName = mWorkingDir+"/tree";
-        QStringList partsList = type.toString().split('/');
+        QStringList partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
@@ -311,12 +312,12 @@ QString Serializer::createDirectory(NewType const &type) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QDomElement Serializer::typeListToXml(QString const &attributeName, TypeList const &typeList, QDomDocument &doc)
+QDomElement Serializer::typeListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)
 {
 	QDomElement result = doc.createElement(attributeName);
-        foreach (NewType type, typeList) {
+        foreach (Id id, idList) {
 		QDomElement element = doc.createElement("object");
-                element.setAttribute("type", type.toString());
+                element.setAttribute("type", id.toString());
 		result.appendChild(element);
 	}
 	return result;
@@ -330,7 +331,7 @@ QDomElement Serializer::propertiesToXml(LogicObject* const object, QDomDocument 
 		i.next();
 		QString typeName = i.value().typeName();
                 if (typeName == "qReal::TypeList") {
-                        QDomElement list = typeListToXml(i.key(), i.value().value<TypeList>(), doc);
+                        QDomElement list = typeListToXml(i.key(), i.value().value<IdList>(), doc);
                         list.setAttribute("type", "qReal::TypeList");
 			result.appendChild(list);
 		} else {

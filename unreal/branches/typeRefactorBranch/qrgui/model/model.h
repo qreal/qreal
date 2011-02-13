@@ -47,8 +47,8 @@ namespace qReal {
 			qrRepo::RepoApi const &api() const;
 			qrRepo::RepoApi &mutableApi();
 
-                        QModelIndex indexByType(NewType const &type) const;
-                        NewType typeByIndex(QModelIndex const &index) const;
+                        QModelIndex indexById(Id const &type) const;
+                        Id idByIndex(QModelIndex const &index) const;
 
                         NewType getRootDiagram();
 			void setRootIndex(QModelIndex const & index);
@@ -60,7 +60,7 @@ namespace qReal {
 			bool isChanged();
 			void resetChangedDiagrams();
                         void addDiagram(NewType const &type);
-                        void resetChangedDiagrams(const TypeList &list);
+                        void resetChangedDiagrams(const IdList &list);
 			QStringList getEnumValues(QModelIndex const &index, int const role) const;
 			QString getTypeName(QModelIndex const &index, int const role) const;
 
@@ -72,14 +72,14 @@ namespace qReal {
 			void nameChanged(QModelIndex const &index);
 
 		protected:
-                        QMultiHash<NewType, details::ModelTreeItem*> mTreeItems;
+                        QMultiHash<Id, details::ModelTreeItem*> mTreeItems;
 			QModelIndex index(details::ModelTreeItem const * const item) const;
-                        details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const NewType &type,
+                        details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
 				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		protected:
 			friend class ModelAssistApi;
-                        bool addElementToModel(NewType const &parent, NewType const &type, QString const &name, QPointF const &position);
+                        bool addElementToModel(Id const &parent, Id const &type, QString const &name, QPointF const &position);
 
 		private:
 			qrRepo::RepoApi mApi;
@@ -95,7 +95,7 @@ namespace qReal {
 			void removeConfigurationInClient(details::ModelTreeItem const * const item);
 			void removeModelItems(details::ModelTreeItem * const root);
 			void loadSubtreeFromClient(details::ModelTreeItem * const parent);
-                        details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const NewType &type);
+                        details::ModelTreeItem *loadElement(details::ModelTreeItem *parentItem, const Id &type);
 			details::ModelTreeItem *parentTreeItem(QModelIndex const &parent) const;
 
                         QString findPropertyName(NewType const &type, int const role) const;
@@ -104,7 +104,7 @@ namespace qReal {
 
 			void init();
 			void cleanupTree(details::ModelTreeItem *root);
-                        void checkProperties(NewType const &type);
+                        void checkProperties(Id const &id);
 
 			bool useFlagOfChange;
 

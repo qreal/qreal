@@ -93,7 +93,7 @@ void EditorViewScene::clearScene()
 
 UML::Element * EditorViewScene::getElem(qReal::NewType const &type)
 {
-        if (type == ROOT_ID)
+        if (type == ROOT_TYPE)
 		return NULL;
 
 	// FIXME: SLOW!
@@ -338,10 +338,10 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		QGraphicsScene::keyPressEvent(event);
 }
 
-void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::TypeList const &types) const
+void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
 	QMenu *menu = goToMenu->addMenu(name);
-        foreach (NewType element, types) {
+        foreach (Id element, ids) {
 		QAction *action = menu->addAction(model()->api().name(element));
 		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
 		action->setData(element.toVariant());
@@ -350,27 +350,27 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 
 void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 											  , QMenu &contextMenu, QString const &menuName
-                                                                                          , TypeList const &connectableTypes, TypeList const &alreadyConnectedElements
-                                                                                          , TypeList const &connectableDiagrams, const char *slot) const
+                                                                                          , IdList const &connectableIds, IdList const &alreadyConnectedElements
+                                                                                          , IdList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
-        foreach (NewType type, connectableTypes) {
-                foreach (NewType elementType, model()->api().elements(type)) {
-                        if (alreadyConnectedElements.contains(elementType))
+        foreach (Id id, connectableIds) {
+                foreach (Id elementId, model()->api().elements(id)) {
+                        if (alreadyConnectedElements.contains(elementId))
 				continue;
-                        QAction *action = addConnectionMenu->addAction(model()->api().name(elementType));
+                        QAction *action = addConnectionMenu->addAction(model()->api().name(elementId));
 			connect(action, SIGNAL(triggered()), slot);
 			QList<QVariant> tag;
-                        tag << element->newType().toVariant() << elementType.toVariant();
+                        //tag << element->newType().toVariant() << elementId.toVariant();
 			action->setData(tag);
 		}
 	}
 
-        foreach (NewType diagram, connectableDiagrams) {
-                NewType diagramType = model()->assistApi().editorManager().findElementByType(diagram.element());
-		QString name = model()->assistApi().editorManager().friendlyName(diagramType);
-                QString editorName = model()->assistApi().editorManager().friendlyName(NewType(diagramType.editor()));
+        foreach (Id diagram, connectableDiagrams) {
+                NewType diagramType = model()->assistApi().editorManager().findElementByType(model()->api().type(diagram).element());
+                QString name = model()->assistApi().editorManager().friendlyName(diagramType);
+                QString editorName = model()->assistApi().editorManager().friendlyName(NewType(model()->api().type(diagram).editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
@@ -385,14 +385,14 @@ void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 										   , const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
-        TypeList list = outgoingConnections;
+        IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
-        foreach (NewType elementType, list) {
-                QAction *action = disconnectMenu->addAction(model()->api().name(elementType));
+        foreach (Id elementId, list) {
+                QAction *action = disconnectMenu->addAction(model()->api().name(elementId));
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
-                tag << element->newType().toVariant() << elementType.toVariant();
+                //tag << element->type().toVariant() << elementId.toVariant();
 		action->setData(tag);
 	}
 }
@@ -403,36 +403,36 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 	// TODO: move to elements, they can call the model and API themselves
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
                                                         , mWindow->manager()->getConnectedTypes(element->newType())
-                                                        , model()->api().outgoingConnections(element->newType())
+                                                        , model()->api().outgoingConnections(element->id())
                                                         , model()->assistApi().diagramsAbleToBeConnectedTo(element->newType())
 							, SLOT(connectActionTriggered())
 							);
 
 	createDisconnectMenu(element, contextMenu, tr("Disconnect")
-                                                 , model()->api().outgoingConnections(element->newType())
-                                                 , model()->api().incomingConnections(element->newType())
+                                                 , model()->api().outgoingConnections(element->id())
+                                                 , model()->api().incomingConnections(element->id())
 						 , SLOT(disconnectActionTriggered())
 						 );
 
 	createAddConnectionMenu(element, contextMenu, tr("Add usage")
                                                         , mWindow->manager()->getUsedTypes(element->newType())
-                                                        , model()->api().outgoingUsages(element->newType())
+                                                        , model()->api().outgoingUsages(element->id())
                                                         , model()->assistApi().diagramsAbleToBeUsedIn(element->newType())
 							, SLOT(addUsageActionTriggered())
 							);
 
 	createDisconnectMenu(element, contextMenu, tr("Delete usage")
-                                                 , model()->api().outgoingUsages(element->newType())
-                                                 , model()->api().incomingUsages(element->newType())
+                                                 , model()->api().outgoingUsages(element->id())
+                                                 , model()->api().incomingUsages(element->id())
 						 , SLOT(deleteUsageActionTriggered())
 						 );
 
 	QMenu *goToMenu = contextMenu.addMenu(tr("Go to"));
 
-        createGoToSubmenu(goToMenu, tr("Forward connection"), model()->api().outgoingConnections(element->newType()));
-        createGoToSubmenu(goToMenu, tr("Backward connection"), model()->api().incomingConnections(element->newType()));
-        createGoToSubmenu(goToMenu, tr("Uses"), model()->api().outgoingUsages(element->newType()));
-        createGoToSubmenu(goToMenu, tr("Used in"), model()->api().incomingUsages(element->newType()));
+        createGoToSubmenu(goToMenu, tr("Forward connection"), model()->api().outgoingConnections(element->id()));
+        createGoToSubmenu(goToMenu, tr("Backward connection"), model()->api().incomingConnections(element->id()));
+        createGoToSubmenu(goToMenu, tr("Uses"), model()->api().outgoingUsages(element->id()));
+        createGoToSubmenu(goToMenu, tr("Used in"), model()->api().incomingUsages(element->id()));
 }
 
 void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -635,7 +635,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		else if (UML::NodeElement *element = dynamic_cast<UML::NodeElement*>(itemAt(event->scenePos()))) {
 			event->accept();
 
-                        TypeList outgoingLinks = model()->api().outgoingConnections(element->newType());
+                        IdList outgoingLinks = model()->api().outgoingConnections(element->id());
 
 			if (outgoingLinks.size() > 0)
 				mainWindow()->activateItemOrDiagram(outgoingLinks[0]);

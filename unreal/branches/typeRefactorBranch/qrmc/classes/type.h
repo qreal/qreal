@@ -15,7 +15,7 @@ namespace qrmc {
 	class Type
 	{
 	public:
-                Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, qReal::NewType const &id);
+                Type(bool isResolved, Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 		virtual ~Type();
 		virtual Type* clone() const = 0;
 		virtual bool resolve() = 0;
@@ -63,7 +63,7 @@ namespace qrmc {
 		QMap<QString, Property*> mProperties;
 		bool mResolvingFinished;
 		Diagram *mDiagram;
-                qReal::NewType mType;
+                qReal::Id mId;
 		qrRepo::RepoApi *mApi;
 		QString mName;  // metatype name
 		QString mContext;  // context if metatype. e.g. Kernel::Node: Node - name, Kernel - context.

@@ -21,10 +21,10 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-                Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, qReal::NewType const &type);
+                Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, qReal::Id const &id);
 		~Editor();
 		MetaCompiler *metaCompiler();
-                qReal::NewType type();
+                qReal::Id type();
 
 		bool isLoaded();
 		bool load();
@@ -63,7 +63,7 @@ namespace qrmc {
 
 		MetaCompiler *mMetaCompiler;
 		qrRepo::RepoApi *mApi;
-                qReal::NewType mType;
+                qReal::Id mId;
 		QString mName;
 		bool mLoadingComplete;
 		QList<Editor*> mIncludes;

@@ -11,7 +11,7 @@ using namespace details;
 Model::Model(EditorManager const &editorManager, QString const &workingDirectory)
 	:  mApi(workingDirectory), mEditorManager(editorManager), mAssistApi(*this, editorManager), mLogging(false)
 {
-	mRootItem = new ModelTreeItem(ROOT_ID, NULL);
+        mRootItem = new ModelTreeItem(ROOT_ID, NULL);
 	init();
 }
 
@@ -23,7 +23,7 @@ Model::~Model()
 
 bool Model::isDiagram(NewType const &type) const
 {
-        return ((type != ROOT_ID) && (type.element() == assistApi().editorManager().getEditorInterface(type.editor())->diagramNodeName(type.diagram())));
+        return ((type != ROOT_TYPE) && (type.element() == assistApi().editorManager().getEditorInterface(type.editor())->diagramNodeName(type.diagram())));
 }
 
 details::ModelTreeItem* Model::isSituatedOn(details::ModelTreeItem *element) const
@@ -35,7 +35,7 @@ details::ModelTreeItem* Model::isSituatedOn(details::ModelTreeItem *element) con
 
 void Model::init()
 {
-	mTreeItems.insert(ROOT_ID, mRootItem);
+        mTreeItems.insert(ROOT_ID, mRootItem);
 	mApi.setName(ROOT_ID, ROOT_ID.toString());
 	// Turn off view notification while loading. Model can be inconsistent during a process,
 	// so views shall not update themselves before time. It is important for
@@ -66,27 +66,27 @@ QVariant Model::data(QModelIndex const &index, int role) const
 		switch (role) {
 			case Qt::DisplayRole:
 			case Qt::EditRole:
-                                return mApi.name(item->type());
+                                return mApi.name(item->id());
 			case Qt::DecorationRole:
-                                return mEditorManager.icon(item->type());
+                                return mEditorManager.icon(mApi.type(item->id()));
 			case roles::idRole:
-                                return item->type().toVariant();
+                                return item->id().toVariant();
 			case roles::positionRole:
-                                return mApi.property(item->type(), "position");
+                                return mApi.property(item->id(), "position");
 			case roles::fromRole:
-                                return mApi.from(item->type()).toVariant();
+                                return mApi.from(item->id()).toVariant();
 			case roles::toRole:
-                                return mApi.to(item->type()).toVariant();
+                                return mApi.to(item->id()).toVariant();
 			case roles::fromPortRole:
-                                return mApi.fromPort(item->type());
+                                return mApi.fromPort(item->id());
 			case roles::toPortRole:
-                                return mApi.toPort(item->type());
+                                return mApi.toPort(item->id());
 			case roles::configurationRole:
-                                return mApi.property(item->type(), "configuration");
+                                return mApi.property(item->id(), "configuration");
 		}
 		if (role >= roles::customPropertiesBeginRole) {
-                        QString selectedProperty = findPropertyName(item->type(), role);
-                        return mApi.property(item->type(), selectedProperty);
+                        QString selectedProperty = findPropertyName(mApi.type(item->id()), role);
+                        return mApi.property(item->id(), selectedProperty);
 		}
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
@@ -99,43 +99,43 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 {
 	if (index.isValid()) {
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
-                NewType type = item->type();
-                QString message = QString("Data changed:\n"+type.toString()+"\n");
+                Id id = item->id();
+                QString message = QString("Data changed:\n"+id.toString()+"\n");
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-                        mApi.setName(type, value.toString());
+                        mApi.setName(id, value.toString());
 			message += "Set Name:\n";
 			emit nameChanged(index);
 			break;
 		case roles::positionRole:
-                        mApi.setProperty(type, "position", value);
+                        mApi.setProperty(id, "position", value);
 			message += "Set Position:\n";
 			break;
 		case roles::configurationRole:
-                        mApi.setProperty(type, "configuration", value);
+                        mApi.setProperty(id, "configuration", value);
 			message += "Set Configuration:\n";
 			break;
 		case roles::fromRole:
-                        mApi.setFrom(type, value.value<NewType>());
+                        mApi.setFrom(id, value.value<Id>());
 			message += "Set From:\n";
 			break;
 		case roles::toRole:
-                        mApi.setTo(type, value.value<NewType>());
+                        mApi.setTo(id, value.value<Id>());
 			message += "Set To:\n";
 			break;
 		case roles::fromPortRole:
-                        mApi.setFromPort(type, value.toDouble());
+                        mApi.setFromPort(id, value.toDouble());
 			message += "Set FromPort:\n";
 			break;
 		case roles::toPortRole:
-                        mApi.setToPort(type, value.toDouble());
+                        mApi.setToPort(id, value.toDouble());
 			message += "Set ToPort:\n";
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
-                                QString selectedProperty = findPropertyName(type, role);
-                                mApi.setProperty(type, selectedProperty, value);
+                                QString selectedProperty = findPropertyName(mApi.type(id), role);
+                                mApi.setProperty(id, selectedProperty, value);
 				message += "Set " + selectedProperty + "\n";
 				break;
 			}
@@ -147,7 +147,7 @@ bool Model::setData(QModelIndex const &index, QVariant const &value, int role)
 		QDebug qD = QDebug(&output);
 		qD << value;
 		message += output + "\n";
-                log(message, isSituatedOn(item)->type());
+                log(message, mApi.type(isSituatedOn(item)->id()));
 
 		emit dataChanged(index, index);
 		return true;
@@ -173,8 +173,8 @@ QStringList Model::getEnumValues(QModelIndex const &index, int const role) const
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		if (!item)
 			break;
-                QString selectedProperty = findPropertyName(item->type(), role);
-                return mEditorManager.getEnumValues(item->type(), selectedProperty);
+                QString selectedProperty = findPropertyName(mApi.type(item->id()), role);
+                return mEditorManager.getEnumValues(mApi.type(item->id()), selectedProperty);
 	} while (false);
 
 	return QStringList();
@@ -188,8 +188,8 @@ QString Model::getTypeName(QModelIndex const &index, int const role) const
 		ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 		if (!item)
 			break;
-                QString selectedProperty = findPropertyName(item->type(), role);
-                return mEditorManager.getTypeName(item->type(), selectedProperty);
+                QString selectedProperty = findPropertyName(mApi.type(item->id()), role);
+                return mEditorManager.getTypeName(mApi.type(item->id()), selectedProperty);
 	} while (false);
 
 	return QString();
@@ -223,16 +223,16 @@ bool Model::removeRows(int row, int count, QModelIndex const &parent)
 	else {
 		for (int i = row; i < row + count; ++i) {
 			ModelTreeItem *child = parentItem->children().at(i);
-                        mApi.removeElement(child->type());
+                        mApi.removeElement(child->id());
 			removeModelItems(child);
 
 			// TODO: Убрать копипасту.
 			int childRow = child->row();
 			beginRemoveRows(parent, childRow, childRow);
 			child->parent()->removeChild(child);
-                        mTreeItems.remove(child->type(), child);
-                        if (mTreeItems.count(child->type()) == 0)
-                                mApi.removeChild(parentItem->type(), child->type());
+                        mTreeItems.remove(child->id(), child);
+                        if (mTreeItems.count(child->id()) == 0)
+                                mApi.removeChild(parentItem->id(), child->id());
 			delete child;
 			endRemoveRows();
 		}
@@ -246,7 +246,7 @@ QString Model::pathToItem(ModelTreeItem const *item) const
 		QString path;
 		do {
 			item = item->parent();
-                        path = item->type().toString() + ID_PATH_DIVIDER + path;
+                        path = item->id().toString() + ID_PATH_DIVIDER + path;
 		} while (item != mRootItem);
 		return path;
 	}
@@ -256,8 +256,8 @@ QString Model::pathToItem(ModelTreeItem const *item) const
 
 void Model::removeConfigurationInClient(ModelTreeItem const * const item)
 {
-        mApi.removeProperty(item->type(), "position");
-        mApi.removeProperty(item->type(), "configuration");
+        mApi.removeProperty(item->id(), "position");
+        mApi.removeProperty(item->id(), "configuration");
 }
 
 QModelIndex Model::index(ModelTreeItem const * const item) const
@@ -282,15 +282,15 @@ QModelIndex Model::index(ModelTreeItem const * const item) const
 void Model::removeModelItems(ModelTreeItem *root)
 {
 	foreach (ModelTreeItem *child, root->children()) {
-                mApi.removeElement(child->type());
+                mApi.removeElement(child->id());
 		removeModelItems(child);
 		int childRow = child->row();
 		beginRemoveRows(index(root),childRow,childRow);
 		removeConfigurationInClient(child);
 		child->parent()->removeChild(child);
-                mTreeItems.remove(child->type(),child);
-                if (mTreeItems.count(child->type())==0) {
-                        mApi.removeChild(root->type(),child->type());
+                mTreeItems.remove(child->id(),child);
+                if (mTreeItems.count(child->id())==0) {
+                        mApi.removeChild(root->id(),child->id());
 		}
 		delete child;
 		endRemoveRows();
@@ -338,10 +338,10 @@ QMimeData* Model::mimeData(QModelIndexList const &indexes) const
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
-                        stream << item->type().toString();
+                        stream << item->id().toString();
 			stream << pathToItem(item);
-                        stream << mApi.property(item->type(), "name");
-                        stream << mApi.property(item->type(), "position").toPointF();
+                        stream << mApi.property(item->id(), "name");
+                        stream << mApi.property(item->id(), "position").toPointF();
 		} else {
 			stream << ROOT_ID.toString();
 			stream << QString();
@@ -373,8 +373,8 @@ bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, 
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
-                NewType type = NewType::loadFromString(typeString);
-                Q_ASSERT(type.typeSize() == 4);  // Бросать в модель мы можем только конкретные элементы.
+                Id type = Id::loadFromString(typeString);
+                //Q_ASSERT(type.() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
                 if (mTreeItems.contains(type))  // Пока на диаграмме не может быть больше одного экземпляра
 			// одной и той же сущности, бросать существующие элементы нельзя.
@@ -384,64 +384,64 @@ bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, 
 	}
 }
 
-ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, NewType const &type,
+ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 	QString const &oldPathToItem, QString const &name, QPointF const &position, Qt::DropAction action)
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
 
-        if (isDiagram(type)) {
-                if (!isDiagram(parentItem->type()) && parentItem != mRootItem) {
+        if (isDiagram(this->api().type(id))) {
+                if (!isDiagram(mApi.type(parentItem->id())) && parentItem != mRootItem) {
 			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-                        log("Creating diagram:\n" + type.toString() + "\n", type);
+                        log("Creating diagram:\n" + this->api().type(id).diagram() + "\n", this->api().type(id));
 		else
-                        log("Adding element:\n" + type.toString() + "\n", isSituatedOn(parentItem)->type());
+                        log("Adding element:\n" + this->api().type(id).element() + "\n", mApi.type(isSituatedOn(parentItem)->id()));
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-                log("Adding element:\n" + type.toString() + "\n", isSituatedOn(parentItem)->type());
+                log("Adding element:\n" + this->api().type(id).element() + "\n", this->api().type(isSituatedOn(parentItem)->id()));
 	}
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
-                ModelTreeItem *item = new ModelTreeItem(type, parentItem);
+                ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		parentItem->addChild(item);
-                mTreeItems.insert(type, item);
-                mApi.addChild(parentItem->type(), type);
-                mApi.setProperty(type, "name", name);
-                mApi.setProperty(type, "from", ROOT_ID.toVariant());
-                mApi.setProperty(type, "to", ROOT_ID.toVariant());
-                mApi.setProperty(type, "fromPort", 0.0);
-                mApi.setProperty(type, "toPort", 0.0);
-                mApi.setProperty(type, "links", TypeListHelper::toVariant(TypeList()));
-                mApi.setProperty(type, "outgoingConnections", TypeListHelper::toVariant(TypeList()));
-                mApi.setProperty(type, "incomingConnections", TypeListHelper::toVariant(TypeList()));
-                mApi.setProperty(type, "outgoingUsages", TypeListHelper::toVariant(TypeList()));
-                mApi.setProperty(type, "incomingUsages", TypeListHelper::toVariant(TypeList()));
-                mApi.setProperty(type, "position", position);
-                mApi.setProperty(type, "configuration", QVariant(QPolygon()));
+                mTreeItems.insert(id, item);
+                mApi.addChild(parentItem->id(), id, mApi.type(id));
+                mApi.setProperty(id, "name", name);
+                mApi.setProperty(id, "from", ROOT_ID.toVariant());
+                mApi.setProperty(id, "to", ROOT_ID.toVariant());
+                mApi.setProperty(id, "fromPort", 0.0);
+                mApi.setProperty(id, "toPort", 0.0);
+                mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
+                mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
+                mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
+                mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+                mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+                mApi.setProperty(id, "position", position);
+                mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
-                QStringList properties = mEditorManager.getPropertyNames(type);
+                QStringList properties = mEditorManager.getPropertyNames(mApi.type(id));
 		foreach (QString property, properties)
 		// for those properties that doesn't have default values, plugin will return empty string
-                        mApi.setProperty(type, property, mEditorManager.getDefaultPropertyValue(type, property));
+                        mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(this->api().type(id), property));
 
 		endInsertRows();
 	return item;
 }
 
-bool Model::addElementToModel(NewType const &parent, NewType const &type, QString const &name, QPointF const &position)
+bool Model::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
 {
 	ModelTreeItem *parentItem = parent == ROOT_ID ? mRootItem
-                : static_cast<ModelTreeItem*>(indexByType(parent).internalPointer());
+                : static_cast<ModelTreeItem*>(indexById(parent).internalPointer());
 	Q_ASSERT(parentItem != NULL);
-        return addElementToModel(parentItem, type, "", name, position, Qt::CopyAction) != NULL;
+        return addElementToModel(parentItem, id, "", name, position, Qt::CopyAction) != NULL;
 }
 
 void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
@@ -453,59 +453,59 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 
 	if (beginMoveRows(element.parent(), element.row(), element.row(), parent, destinationRow)) {
 		ModelTreeItem *elementItem = static_cast<ModelTreeItem*>(element.internalPointer());
-                QVariant configuration = mApi.property(elementItem->type(), "configuration");
+                QVariant configuration = mApi.property(elementItem->id(), "configuration");
 		elementItem->parent()->removeChild(elementItem);
 		ModelTreeItem *parentItem = parentTreeItem(parent);
 
-                mApi.addParent(elementItem->type(), parentItem->type());
-                mApi.removeParent(elementItem->type(), elementItem->parent()->type());
+                mApi.addParent(elementItem->id(), parentItem->id(), mApi.type(elementItem->id()));
+                mApi.removeParent(elementItem->id(), elementItem->parent()->id());
 
 		elementItem->setParent(parentItem);
 		parentItem->addChild(elementItem);
 
-                mApi.setProperty(elementItem->type(), "position", position);
-                mApi.setProperty(elementItem->type(), "configuration", configuration);
+                mApi.setProperty(elementItem->id(), "position", position);
+                mApi.setProperty(elementItem->id(), "configuration", configuration);
 		endMoveRows();
 	}
 }
 
 void Model::loadSubtreeFromClient(ModelTreeItem * const parent)
 {
-        foreach (NewType childType, mApi.children(parent->type())) {
-                ModelTreeItem *child = loadElement(parent, childType);
+        foreach (Id childId, mApi.children(parent->id())) {
+                ModelTreeItem *child = loadElement(parent, childId);
 		loadSubtreeFromClient(child);
 	}
 }
 
-ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, NewType const &type)
+ModelTreeItem *Model::loadElement(ModelTreeItem *parentItem, Id const &id)
 {
-        if (isDiagram(type)) {
-                        mApi.addOpenedDiagram(type);
-                        qDebug() << type.toString();
+        if (isDiagram(this->api().type(id))) {
+                        mApi.addOpenedDiagram(id);
+                        qDebug() << id.toString();
 		}
 
 	int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
-                ModelTreeItem *item = new ModelTreeItem(type, parentItem);
-                checkProperties(type);
+                ModelTreeItem *item = new ModelTreeItem(id, parentItem);
+                checkProperties(id);
 		parentItem->addChild(item);
-                mTreeItems.insert(type, item);
+                mTreeItems.insert(id, item);
 	endInsertRows();
 	return item;
 }
 
-void Model::checkProperties(NewType const &type)
+void Model::checkProperties(Id const &id)
 {
-        if (!mEditorManager.hasElement(type))
+        if (!mEditorManager.hasElement(this->api().type(id)))
 		return;
-        QStringList propertiesThatShallBe = mEditorManager.getPropertyNames(type);
+        QStringList propertiesThatShallBe = mEditorManager.getPropertyNames(mApi.type(id));
 	foreach (QString property, propertiesThatShallBe)
-                if (!api().hasProperty(type, property))
-                        mApi.setProperty(type, property, "");  // Типа значение по умолчанию.
-        if (!api().hasProperty(type, "outgoingUsages"))
-                mApi.setProperty(type, "outgoingUsages", TypeListHelper::toVariant(TypeList()));
-        if (!api().hasProperty(type, "incomingUsages"))
-                mApi.setProperty(type, "incomingUsages", TypeListHelper::toVariant(TypeList()));
+                if (!api().hasProperty(id, property))
+                        mApi.setProperty(id, property, "");  // Типа значение по умолчанию.
+        if (!api().hasProperty(id, "outgoingUsages"))
+                mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+        if (!api().hasProperty(id, "incomingUsages"))
+                mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 }
 
 QPersistentModelIndex Model::rootIndex() const
@@ -548,7 +548,7 @@ void Model::exterminate()
 
 void Model::addDiagram(NewType const &type)
 {
-        mApi.addChild(ROOT_ID, type);
+        mApi.addChild(ROOT_ID, ROOT_ID, type);
 }
 
 void Model::resetChangedDiagrams()
@@ -556,7 +556,7 @@ void Model::resetChangedDiagrams()
 	mApi.resetChangedDiagrams();
 }
 
-void Model::resetChangedDiagrams(const TypeList &list)
+void Model::resetChangedDiagrams(const IdList &list)
 {
 	mApi.resetChangedDiagrams(list);
 }
@@ -589,15 +589,15 @@ qrRepo::RepoApi& Model::mutableApi()
 	return mApi;
 }
 
-QModelIndex Model::indexByType(NewType const &type) const
+QModelIndex Model::indexById(Id const &id) const
 {
-        if (mTreeItems.keys().contains(type)) {
-                return index(mTreeItems.find(type).value());
+        if (mTreeItems.keys().contains(id)) {
+                return index(mTreeItems.find(id).value());
 	}
 	return QModelIndex();
 }
 
-NewType Model::typeByIndex(QModelIndex const &index) const
+Id Model::idByIndex(QModelIndex const &index) const
 {
 	ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
 	return mTreeItems.key(item);

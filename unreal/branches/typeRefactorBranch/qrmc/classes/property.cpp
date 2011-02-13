@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-Property::Property(qrRepo::RepoApi *api, qReal::NewType const &type) : mApi(api), mType(type)
+Property::Property(qrRepo::RepoApi *api, qReal::Id const &id) : mApi(api), mId(id)
 {
 
 }
@@ -14,18 +14,18 @@ bool Property::init()
 {
 	mIsEnum = false;
 	mIsReference = false;
-        mName = mApi->name(mType);
+        mName = mApi->name(mId);
 	if (mName.isEmpty()) {
 		qDebug() << "ERROR: anonymous property found";
 		return false;
 	}
-        mTypeString = mApi->stringProperty(mType, "attributeType");
+        mTypeString = mApi->stringProperty(mId, "attributeType");
         if (mTypeString.isEmpty()) {
 		qDebug() << "ERROR: empty type of property found";
 		return false;
 	}
 
-        mDefaultValue = mApi->stringProperty(mType, "defaultValue");
+        mDefaultValue = mApi->stringProperty(mId, "defaultValue");
 	return true;
 }
 
@@ -47,9 +47,9 @@ QString Property::defaultValue()
 
 Property * Property::clone()
 {
-        Property *result = new Property(mApi, mType);
+        Property *result = new Property(mApi, mId);
 	result->mName = mName;
-	result->mType = mType;
+        result->mId = mId;
 	result->mIsEnum = mIsEnum;
 	result->mIsReference = mIsReference;
 	result->mDescription = mDescription;
@@ -60,7 +60,7 @@ Property * Property::clone()
 bool Property::operator == (Property const &other) const
 {
 	return other.mName == mName
-		&& other.mType == mType
+                && other.mId == mId
 		&& other.mIsEnum == mIsEnum
 		&& other.mIsReference == mIsReference
 		&& other.mDescription == mDescription

@@ -10,10 +10,10 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::NewType &type)
-        : mMetaCompiler(metaCompiler), mApi(api), mType(type), mLoadingComplete(false)
+Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
+        : mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
-        mName = mApi->property(mType, nameOfTheDirectory).toString().section("/", -1);
+        mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -29,15 +29,15 @@ bool Editor::isLoaded()
 	return mLoadingComplete;
 }
 
-qReal::NewType Editor::type()
+qReal::Id Editor::type()
 {
-        return mType;
+        return mId;
 }
 
 bool Editor::load()
 {
 	// load includes
-        QStringList includes = mApi->stringProperty(mType, "include").split(",");
+        QStringList includes = mApi->stringProperty(mId, "include").split(",");
 	foreach(QString includedMetamodel, includes)
 	{
 		QString metamodelName = includedMetamodel.section("/", -1).section(".", 0, 0).trimmed();
@@ -45,8 +45,8 @@ bool Editor::load()
 			continue;
 
 		Editor *includedEditor = NULL;
-                TypeList metamodels = mApi->elementsByType(metamodelDiagram);
-                foreach(NewType metamodel, metamodels) {
+                IdList metamodels = mApi->elementsByType(metamodelDiagram);
+                foreach(Id metamodel, metamodels) {
 			if (mApi->name(metamodel) == metamodelName) {
 				includedEditor = mMetaCompiler->loadMetaModel(metamodel);
 				break;
@@ -63,13 +63,13 @@ bool Editor::load()
 	// TODO: load listeners
 
 	// load diagrams (no resolving yet)
-        TypeList children = mApi->children(mType);
-        TypeList diagrams;
-        foreach(NewType child, children)
-		if (child.element() == metaEditorDiagramNode)
+        IdList children = mApi->children(mId);
+        IdList diagrams;
+        foreach(Id child, children)
+                if (mApi->type(child).element() == metaEditorDiagramNode)
 			diagrams << child;
 
-        foreach(NewType diagramId, diagrams)
+        foreach(Id diagramId, diagrams)
 	{
 		qDebug() << "\tchildren:" << mApi->children(diagramId).size();
 		QString diagramName = mApi->name(diagramId);

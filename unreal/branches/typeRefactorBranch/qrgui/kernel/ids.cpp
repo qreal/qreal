@@ -5,6 +5,14 @@
 
 using namespace qReal;
 
+Id Id::loadFromString(QString const &string)
+{
+        Id result;
+        result.mId = string;
+        Q_ASSERT(string == result.toString());
+        return result;
+}
+
 
 Id::Id(QString  const &id)
         : mId(id)
@@ -38,6 +46,20 @@ bool Id::checkIntegrity() const
 		emptyPartsAllowed = false;
 
 	return true;
+}
+
+QVariant Id::toVariant() const
+{
+        QVariant result;
+        result.setValue(*this);
+        return result;
+}
+
+QVariant IdListHelper::toVariant(IdList const &list)
+{
+        QVariant v;
+        v.setValue(list);
+        return v;
 }
 
 

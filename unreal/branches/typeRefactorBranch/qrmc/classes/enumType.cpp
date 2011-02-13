@@ -4,16 +4,16 @@
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::NewType &type) : NonGraphicType(diagram, api, type)
+EnumType::EnumType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
 {
 }
 
 bool EnumType::init(QString const &context)
 {
 	Type::init(context);
-        TypeList children = mApi->children(mType);
-        foreach(NewType child, children) {
-		if (child.element() == metaEntityValue) {
+        IdList children = mApi->children(mId);
+        foreach(Id child, children) {
+                if (mApi->type(child).element() == metaEntityValue) {
 			mValues << mApi->stringProperty(child, "valueName");
 		}
 	}
@@ -23,7 +23,7 @@ bool EnumType::init(QString const &context)
 
 Type* EnumType::clone() const
 {
-        EnumType *result = new EnumType(NULL, mApi, mType);
+        EnumType *result = new EnumType(NULL, mApi, mId);
 	Type::copyFields(result);
 	result->mValues = mValues;
 	return result;

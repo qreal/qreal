@@ -10,12 +10,12 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(qReal::NewType const &type,  qrRepo::RepoApi *api, Editor *editor)
-        : mType(type), mApi(api), mEditor(editor)
+Diagram::Diagram(qReal::Id const &id,  qrRepo::RepoApi *api, Editor *editor)
+        : mId(id), mApi(api), mEditor(editor)
 {
-        mDiagramName = mApi->name(type);
-        mDiagramDisplayedName = mApi->stringProperty(type, "displayedName");
-        mDiagramNodeName  = mApi->stringProperty(type, "nodeName");
+        mDiagramName = mApi->name(id);
+        mDiagramDisplayedName = mApi->stringProperty(id, "displayedName");
+        mDiagramNodeName  = mApi->stringProperty(id, "nodeName");
 }
 
 Diagram::~Diagram()
@@ -27,32 +27,32 @@ Diagram::~Diagram()
 
 bool Diagram::init()
 {
-        foreach(NewType type, mApi->children(mType)) {
-                if (type.element() == metaEntityNode) {
-                        Type *nodeType = new NodeType(this, mApi, type);
+        foreach(Id id, mApi->children(mId)) {
+                if (mApi->type(id).element() == metaEntityNode) {
+                        Type *nodeType = new NodeType(this, mApi, id);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
 				qDebug() << "can't load node";
 				return false;
 			}
 			mTypes[nodeType->name()] = nodeType;
-                } else if (type.element() == metaEntityEdge) {
-                        Type *edgeType = new EdgeType(this, mApi, type);
+                } else if (mApi->type(id).element() == metaEntityEdge) {
+                        Type *edgeType = new EdgeType(this, mApi, id);
 			if (!edgeType->init(mDiagramName)) {
 				delete edgeType;
 				qDebug() << "can't load edge";
 				return false;
 			}
 			mTypes[edgeType->name()] = edgeType;
-                } else if (type.element() == metaEntityImport) {
+                } else if (mApi->type(id).element() == metaEntityImport) {
 			ImportSpecification import = {
-                                mApi->stringProperty(type, "importedFrom") + "::" + mApi->stringProperty(type, "as"),
-                                mApi->stringProperty(type, "as"),
-                                mApi->stringProperty(type, "displayedName"),
+                                mApi->stringProperty(id, "importedFrom") + "::" + mApi->stringProperty(id, "as"),
+                                mApi->stringProperty(id, "as"),
+                                mApi->stringProperty(id, "displayedName"),
 			};
 			mImports.append(import);
-                } else if (type.element() == metaEntityEnum) {
-                        Type *enumType = new EnumType(this, mApi, type);
+                } else if (mApi->type(id).element() == metaEntityEnum) {
+                        Type *enumType = new EnumType(this, mApi, id);
 			if (!enumType->init(mDiagramName))
 			{
 				delete enumType;
@@ -61,7 +61,7 @@ bool Diagram::init()
 			}
 			mTypes[enumType->name()] = enumType;
 		} else {
-                        qDebug() << "ERROR: unknown type" << type.element();
+                        qDebug() << "ERROR: unknown type" << mApi->type(id).element();
 			return false;
 		}
 	}

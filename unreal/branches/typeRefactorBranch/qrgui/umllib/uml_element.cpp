@@ -28,6 +28,11 @@ NewType Element::newType() const
         return mType;
 }
 
+Id Element::id() const
+{
+    return mId;
+}
+
 void Element::updateData()
 {
 	setToolTip(mDataIndex.data(Qt::ToolTipRole).toString());

@@ -270,7 +270,7 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-        model->setData(mDataIndex, (mSrc ? mSrc->newType() : ROOT_ID).toVariant(), roles::fromRole);
+        model->setData(mDataIndex, (mSrc ? mSrc->newType() : ROOT_TYPE).toVariant(), roles::fromRole);
 	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
@@ -286,7 +286,7 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-        model->setData(mDataIndex, (mDst ? mDst->newType() : ROOT_ID).toVariant(), roles::toRole);
+        model->setData(mDataIndex, (mDst ? mDst->newType() : ROOT_TYPE).toVariant(), roles::toRole);
 	model->setData(mDataIndex, mPortTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
