@@ -20,10 +20,10 @@ namespace qReal {
 			void readyReadErrOutput(QString output);
 			
 		public slots:
-			void run(QString programPath);
 			void sendCommand(QString command);
 			void build(QString filePath);
 			void finishProcess();
+			void configure(QString programPath);
 			
 		private:
 			QProcess *mProcess;

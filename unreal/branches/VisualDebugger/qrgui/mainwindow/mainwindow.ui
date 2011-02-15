@@ -105,8 +105,12 @@
      </property>
      <addaction name="actionGenerate_and_build"/>
      <addaction name="actionStart_debugger"/>
+     <addaction name="actionConfigure"/>
      <addaction name="actionRun"/>
      <addaction name="actionKill"/>
+     <addaction name="actionSet_Breakpoints"/>
+     <addaction name="actionCont"/>
+     <addaction name="actionNext"/>
      <addaction name="actionClose_all"/>
     </widget>
     <addaction name="actionClear"/>
@@ -730,6 +734,29 @@
   <action name="actionClose_all">
    <property name="text">
     <string>Close all</string>
+   </property>
+  </action>
+  <action name="actionSet_Breakpoints">
+   <property name="text">
+    <string>Set breakpoints</string>
+   </property>
+   <property name="iconText">
+    <string>Set breakpoints</string>
+   </property>
+  </action>
+  <action name="actionCont">
+   <property name="text">
+    <string>Cont</string>
+   </property>
+  </action>
+  <action name="actionNext">
+   <property name="text">
+    <string>Next</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configure</string>
    </property>
   </action>
  </widget>

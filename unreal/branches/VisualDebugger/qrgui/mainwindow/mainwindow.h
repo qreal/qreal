@@ -50,6 +50,7 @@ namespace qReal {
 		void sendCommand(QString command);
 		void build(QString filePath);
 		void finishProcess();
+		void configure(QString programPath);
 
 	public slots:
 		void adjustMinimapZoom(int zoom);
@@ -99,6 +100,10 @@ namespace qReal {
 		void runProgramWithDebugger();
 		void killProgramWithDebugger();
 		void closeDebuggerProcessAndThread();
+		void placeBreakpointsInDebugger();
+		void goToNextBreakpoint();
+		void goToNextInstruction();
+		void configureDebugger();
 
 	private slots:
 		void deleteFromDiagram();

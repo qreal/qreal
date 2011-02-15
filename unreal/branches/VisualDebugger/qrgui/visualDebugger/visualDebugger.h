@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QList>
 #include <QtGui/QGraphicsEffect>
 
 #include "../view/editorview.h"
@@ -24,6 +25,10 @@ namespace qReal {
 		void clearErrorReporter();
 		void setEditor(EditorView *editor);
 		bool canDebug(VisualDebugger::DebugType type);
+		
+		void createIdByLineCorrelation();
+		QList<int>* computeBreakpoints();
+		Id getIdByLine(int line);
 	public slots:
 		void generateCode();
 		gui::ErrorReporter& debug();
@@ -51,10 +56,12 @@ namespace qReal {
 		int mTimeout;
 		DebugType mDebugType;
 		QColor mDebugColor;
+		QMap<int, Id> mIdByLineCorrelation;
 
 		void error(ErrorType e);
 		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);
+		UML::Element* findEndNode(QString name);
 		Id findValidLink();
 		void pause(int time);
 		bool isFinalNode(Id id);
@@ -67,5 +74,6 @@ namespace qReal {
 		void setDebugColor(QString color);
 		void generateCode(UML::Element* elem);
 		QVariant getProperty(Id id, QString propertyName);
+		void createIdByLineCorrelation(UML::Element *elem, int& line);
 	};
 }

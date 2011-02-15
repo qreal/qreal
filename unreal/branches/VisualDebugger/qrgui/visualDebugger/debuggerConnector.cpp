@@ -22,11 +22,10 @@ void DebuggerConnector::run() {
 	mProcess->waitForStarted();
 }
 
-void DebuggerConnector::run(QString programPath) {
-	QString command = "target exec ";
+void DebuggerConnector::configure(QString programPath) {
+	QString command = "file ";
 	command.append(programPath);
 	sendCommand(command);
-	sendCommand("run");
 }
 
 void DebuggerConnector::readOutput() {

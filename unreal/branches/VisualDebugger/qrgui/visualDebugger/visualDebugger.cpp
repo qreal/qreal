@@ -153,6 +153,25 @@ UML::Element* VisualDebugger::findBeginNode(QString name)
 	return elem;
 }
 
+UML::Element* VisualDebugger::findEndNode(QString name)
+{
+	int i = 0;
+	int count = mEditor->mvIface()->scene()->items().count();
+	UML::Element *elem = NULL;
+	while (i < count) {
+		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
+		if (elem && elem->id().element().compare(name) == 0) {
+			break;
+		}
+		i++;
+	}
+	if (i == count) {
+		error(VisualDebugger::missingBeginNode);
+		return NULL;
+	}
+	return elem;
+}
+
 Id VisualDebugger::findValidLink()
 {
 	IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(mCurrentId);
@@ -454,3 +473,84 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 		}
 	}
 }
+
+void VisualDebugger::createIdByLineCorrelation() {
+	int line = 2;
+	UML::Element *curElem = findBeginNode("InitialNode");
+	mIdByLineCorrelation[1] = curElem->id();
+	createIdByLineCorrelation(curElem, line);
+	curElem = findEndNode("BlockFinalNode");
+	mIdByLineCorrelation[line] = curElem->id();
+}
+
+void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line) {
+	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
+	if (curElem && elem->id().element().compare("InitialNode") != 0) {
+		if (elem->id().element().compare("Action") == 0) {
+			mIdByLineCorrelation[line] = elem->id();
+			line++;
+			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).count() != 0) {
+				Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
+				createIdByLineCorrelation(mEditor->mvIface()->scene()->getElem(nextEdge), line);
+			}
+		} else {
+			if (elem->id().element().compare("ConditionNode") == 0) {
+				mIdByLineCorrelation[line] = elem->id();
+				line++;
+				IdList outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id());
+				Id falseEdge = falseEdge.rootId();
+				Id trueEdge = trueEdge.rootId();
+				for (int i=0; i<outLinks.count(); i++) {
+					bool type = getProperty(outLinks.at(i), "type").toBool();
+					if (type == true) {
+						trueEdge = outLinks.at(i);
+					}
+					if (type == false) {
+						falseEdge = outLinks.at(i);
+					}
+				}
+				createIdByLineCorrelation(mEditor->mvIface()->scene()->getElem(trueEdge), line);
+				line++;
+				if (falseEdge != falseEdge.rootId()) {
+					line++;
+					createIdByLineCorrelation(mEditor->mvIface()->scene()->getElem(falseEdge), line);
+					line++;
+				}
+			}
+		}
+	} else {
+		if (elem->id().element().compare("InitialNode") != 0) {
+			Id nextNode  = mLogicalModelApi.logicalRepoApi().to(elem->id());
+			createIdByLineCorrelation(mEditor->mvIface()->scene()->getElem(nextNode), line);
+		} else {
+			Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
+			createIdByLineCorrelation(mEditor->mvIface()->scene()->getElem(nextEdge), line);
+		}
+	}
+}
+
+QList<int>* VisualDebugger::computeBreakpoints() {
+	QList<int> *breakpoints = new QList<int>();
+	int line=1;
+	Id curId = mIdByLineCorrelation[line];
+	while (mIdByLineCorrelation[line].element().compare("BlockFinalNode") != 0) {
+		
+		while (mIdByLineCorrelation.contains(line) && 
+				curId.toString().compare(mIdByLineCorrelation[line].toString()) == 0) {
+			line++;
+		}
+		breakpoints->append(line-1);
+		
+		while (!mIdByLineCorrelation.contains(line)) {
+			line++;
+		}
+		curId = mIdByLineCorrelation[line];
+	}
+	breakpoints->append(line);
+	return breakpoints;
+}
+
+Id VisualDebugger::getIdByLine(int line) {
+	return mIdByLineCorrelation[line];
+}
+
