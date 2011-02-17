@@ -143,7 +143,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
+   <widget class="QWidget" name="minimapDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -181,7 +181,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_5">
+   <widget class="QWidget" name="paletteDockWidgetContents">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -208,7 +208,7 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
   </widget>
-    <widget class="QDockWidget" name="logicalModelDock">
+  <widget class="QDockWidget" name="logicalModelDock">
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
@@ -218,7 +218,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3">
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeView" name="logicalModelExplorer">
@@ -282,8 +282,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>38</height>
+     <width>91</width>
+     <height>113</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -304,17 +304,12 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_6">
-    <widget class="ErrorListWidget" name="errorListWidget">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>738</width>
-       <height>191</height>
-      </rect>
-     </property>
-    </widget>
+   <widget class="QWidget" name="errorDockWidgetContents">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="ErrorListWidget" name="errorListWidget"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="graphicalModelDock">
@@ -324,7 +319,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_6">
+   <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTreeView" name="graphicalModelExplorer">
@@ -346,7 +341,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
+   <widget class="QWidget" name="propertyDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -487,9 +482,6 @@
    </property>
   </action>
   <action name="actionDeleteFromDiagram">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Delete</string>
    </property>
