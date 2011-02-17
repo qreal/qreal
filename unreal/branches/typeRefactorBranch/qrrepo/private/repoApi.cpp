@@ -122,9 +122,9 @@ IdList RepoApi::parents(Id const &id) const
         return mClient.parents(id);
 }
 
-void RepoApi::addParent(Id const &id, Id const &parent, const NewType &type)
+void RepoApi::addParent(Id const &id, Id const &parent)
 {
-        mClient.addParent(id, parent, type);
+        mClient.addParent(id, parent);
 
 }
 

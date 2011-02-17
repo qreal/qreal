@@ -55,7 +55,7 @@ bool EditorViewMViface::isDescendentOf(const QModelIndex &descendent, const QMod
 }
 
 QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
-		Qt::KeyboardModifiers)
+										  Qt::KeyboardModifiers)
 {
 	return QModelIndex();
 }
@@ -117,24 +117,16 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex()))
 			continue;
-                Id currentUuid = current.data(roles::idRole).value<Id>();
+		Id currentUuid = current.data(roles::idRole).value<Id>();
 		if (currentUuid == ROOT_ID)
 			continue;
-                Id parentUuid;
-		if (parent != rootIndex())
-                        parentUuid = parent.data(roles::idRole).value<Id>();
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
-                //TEMP HACK!
-                if (parentUuid.id() == "")
-                {
-                    parentUuid = ROOT_ID;
-                }
 
-                model::Model* realModel = dynamic_cast<model::Model*>(model());
-                UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(realModel->api().type(currentUuid));
+		model::Model* realModel = dynamic_cast<model::Model*>(model());
+		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(realModel->api().type(currentUuid));
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -165,7 +157,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-                        if (nodeElem && realModel->api().type(currentUuid).element() == "Class" && realModel &&
+			if (nodeElem && realModel->api().type(currentUuid).element() == "Class" && realModel &&
 				realModel->api().children(currentUuid).empty()) {
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
@@ -174,21 +166,21 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 						curChildElementType = "MethodsContainer";
 					else
 						curChildElementType = "FieldsContainer";
-                                        NewType newType = NewType("Kernel_metamodel", "Kernel",
-                                                        curChildElementType);
-                                        Id newUuid = Id(QUuid::createUuid().toString());
+					NewType newType = NewType("Kernel_metamodel", "Kernel",
+											  curChildElementType);
+					Id newUuid = Id(QUuid::createUuid().toString());
 
 					QByteArray data;
 					QMimeData *mimeData = new QMimeData();
 					QDataStream stream(&data, QIODevice::WriteOnly);
 					QString mimeType = QString("application/x-real-uml-data");
-                                        QString newElemUuid = newUuid.toString();
-                                        QString newElemType = newType.toString();
+					QString newElemUuid = newUuid.toString();
+					QString newElemType = newType.toString();
 					QString pathToItem = ROOT_ID.toString();
 					QString name = "(anonymous something)";
 					QPointF pos = QPointF(0, 0);
 					stream << newElemUuid;
-                                        stream << newElemType;
+					stream << newElemType;
 					stream << pathToItem;
 					stream << name;
 					stream << pos;
@@ -270,7 +262,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 }
 
 void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
-	const QModelIndex &bottomRight)
+									const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);

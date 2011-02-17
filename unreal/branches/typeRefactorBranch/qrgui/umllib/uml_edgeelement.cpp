@@ -270,7 +270,7 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-        model->setData(mDataIndex, (mSrc ? mSrc->newType() : ROOT_TYPE).toVariant(), roles::fromRole);
+	model->setData(mDataIndex, (mSrc ? mSrc->id() : ROOT_ID).toVariant(), roles::fromRole);
 	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
@@ -286,7 +286,7 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-        model->setData(mDataIndex, (mDst ? mDst->newType() : ROOT_TYPE).toVariant(), roles::toRole);
+	model->setData(mDataIndex, (mDst ? mDst->id() : ROOT_ID).toVariant(), roles::toRole);
 	model->setData(mDataIndex, mPortTo, roles::toPortRole);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
@@ -308,16 +308,16 @@ bool EdgeElement::initPossibleEdges()
 	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
 	if (!itemModel)
 		return false;
-        QString editor = newType().editor();
-		//TODO:: make code generation for diagrams
-        QString diagram = newType().diagram();
+	QString editor = newType().editor();
+	//TODO:: make code generation for diagrams
+	QString diagram = newType().diagram();
 	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
-        QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(newType().element());
+	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(newType().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{
-                QPair<qReal::NewType, qReal::NewType> nodes(NewType(editor, diagram, pEdge.first.first),
-                                                                                  NewType(editor, diagram, pEdge.first.second));
-                QPair<bool, qReal::NewType> edge(pEdge.second.first, NewType(editor, diagram, pEdge.second.second));
+		QPair<qReal::NewType, qReal::NewType> nodes(NewType(editor, diagram, pEdge.first.first),
+													NewType(editor, diagram, pEdge.first.second));
+		QPair<bool, qReal::NewType> edge(pEdge.second.first, NewType(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
 	}
@@ -534,7 +534,7 @@ void EdgeElement::arrangeSrcAndDst()
 		mSrc->arrangeLinks();
 	} else if (mDst) {
 		mDst->arrangeLinks();
-	} 
+	}
 }
 
 UML::NodeElement *EdgeElement::src() const
@@ -627,16 +627,16 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-        qReal::Id idFrom = mDataIndex.data(roles::fromRole).value<Id>();
-        qReal::Id idTo = mDataIndex.data(roles::toRole).value<Id>();
+	qReal::Id idFrom = mDataIndex.data(roles::fromRole).value<Id>();
+	qReal::Id idTo = mDataIndex.data(roles::toRole).value<Id>();
 
 	if (mSrc)
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
 
-        mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
-        mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
+	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
+	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
 	if (mSrc)
 		mSrc->addEdge(this);

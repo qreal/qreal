@@ -436,7 +436,7 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
 		// for those properties that doesn't have default values, plugin will return empty string
                         mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(elementType, property));
 
-		endInsertRows();
+                endInsertRows();
 	return item;
 }
 
@@ -461,7 +461,7 @@ void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, 
 		elementItem->parent()->removeChild(elementItem);
 		ModelTreeItem *parentItem = parentTreeItem(parent);
 
-                mApi.addParent(elementItem->id(), parentItem->id(), mApi.type(elementItem->id()));
+                mApi.addParent(elementItem->id(), parentItem->id());
                 mApi.removeParent(elementItem->id(), elementItem->parent()->id());
 
 		elementItem->setParent(parentItem);
