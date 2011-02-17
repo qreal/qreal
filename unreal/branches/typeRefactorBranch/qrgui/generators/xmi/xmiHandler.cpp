@@ -34,10 +34,10 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 	mDocument.appendChild(documentation);
 
 	//  --------------  content --------------- //
-        NewType repoId = ROOT_ID;
-        TypeList rootDiagrams = mApi.children(repoId);
+        Id repoId = ROOT_ID;
+        IdList rootDiagrams = mApi.children(repoId);
 
-        foreach (NewType const typeDiagram, rootDiagrams) {
+        foreach (Id const typeDiagram, rootDiagrams) {
 		QDomElement package = createDomElement("uml:Package", typeDiagram.toString());
 		package.setAttribute("name", mApi.name(typeDiagram));
 		mDocument.appendChild(package);
@@ -55,23 +55,23 @@ QString XmiHandler::exportToXmi(QString const &pathToFile)
 	return mErrorText;
 }
 
-void XmiHandler::serializeLinks(QDomElement &parent, bool direction, NewType const &idParent)
+void XmiHandler::serializeLinks(QDomElement &parent, bool direction, Id const &idParent)
 {
-        TypeList links = direction ? mApi.outgoingLinks(idParent) : mApi.incomingLinks(idParent);
+        IdList links = direction ? mApi.outgoingLinks(idParent) : mApi.incomingLinks(idParent);
 
-        foreach (NewType const type, links) {
-                QDomElement link = direction ? serializeOutcomingLink(type) : serializeIncomingLink(type);
+        foreach (Id const id, links) {
+                QDomElement link = direction ? serializeOutcomingLink(id) : serializeIncomingLink(id);
 		if (!link.isNull())
 			parent.appendChild(link);
 	}
 }
 
-void XmiHandler::serializeChildren(QDomElement &parent, NewType const &idParent)
+void XmiHandler::serializeChildren(QDomElement &parent, Id const &idParent)
 {
-        TypeList childElems = mApi.children(idParent);
+        IdList childElems = mApi.children(idParent);
 
-        foreach (NewType const type, childElems)
-                serializeObject(parent, type, idParent);
+        foreach (Id const id, childElems)
+                serializeObject(parent, id, idParent);
 
 	if (idParent != ROOT_ID) {
 		serializeLinks(parent, true, idParent);
@@ -79,7 +79,7 @@ void XmiHandler::serializeChildren(QDomElement &parent, NewType const &idParent)
 	}
 }
 
-void XmiHandler::serializeObject(QDomElement &parent, NewType const &type, NewType const &parentId)
+void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &parentId)
 {
 	typedef QPair<QString, QString> StringPair;
 
@@ -87,8 +87,8 @@ void XmiHandler::serializeObject(QDomElement &parent, NewType const &type, NewTy
 	QString typeOfTag = "";
 	QList<StringPair> additionalParams;
 
-        QString const objectType = mApi.typeName(type);
-	QString const parentType = mApi.typeName(parentId);
+        QString const objectType = mApi.name(id);
+        QString const parentType = mApi.name(id);
 
 	if (objectType == "krnnDiagram") {
 		typeOfTag = "ownedMember";
@@ -108,13 +108,13 @@ void XmiHandler::serializeObject(QDomElement &parent, NewType const &type, NewTy
 			typeOfTag = "ownedOperation";
 			typeOfElem = "uml:Operation";
 		} else
-                        addError("unable to serrialize object " + objectType + " with type: " + type.toString() + ". Move it inside some cnClass");
+                        addError("unable to serrialize object " + objectType + " with type: " + id.toString() + ". Move it inside some cnClass");
 	} else if (objectType == "cnClassField") {
 		if (parentType == "cnClass"){
 			typeOfTag = "ownedAttribute";
 			typeOfElem = "uml:Property";
 		} else
-                        addError("unable to serialize object " + objectType + " with type: " + type.toString() + ". Move it inside some cnClass");
+                        addError("unable to serialize object " + objectType + " with type: " + id.toString() + ". Move it inside some cnClass");
 	}
 
 	//use case diagram
@@ -138,8 +138,8 @@ void XmiHandler::serializeObject(QDomElement &parent, NewType const &type, NewTy
 	}
 
 	// additional params
-        if (mApi.hasProperty(type, "visibility")) {
-                QString visibility = mApi.stringProperty(type, "visibility");
+        if (mApi.hasProperty(id, "visibility")) {
+                QString visibility = mApi.stringProperty(id, "visibility");
 
 		if (!visibility.isEmpty()) {
 
@@ -155,115 +155,115 @@ void XmiHandler::serializeObject(QDomElement &parent, NewType const &type, NewTy
 			if (isVisibilitySuitable(visibility))
 				additionalParams << StringPair("visibility", visibility);
 			else
-                                addError("object " + objectType + " with type  " + type.toString() + " has invalid visibility property: " + visibility);
+                                addError("object " + objectType + " with type  " + id.toString() + " has invalid visibility property: " + visibility);
 		}
 	}
 
-        if (mApi.hasProperty(type, "type")) {
-                QString typeStr = mApi.stringProperty(type, "type");
+        if (mApi.hasProperty(id, "type")) {
+                QString typeStr = mApi.stringProperty(id, "type");
 
                 if (!typeStr.isEmpty()) {
                         if (isTypeSuitable(typeStr))
                                 additionalParams << StringPair("type", typeStr);
 			else
-                                addError("object " + objectType + " with type " + type.toString() + " has invalid type: " + typeStr);
+                                addError("object " + objectType + " with type " + id.toString() + " has invalid type: " + typeStr);
 		}
 	}
 
 	if (!typeOfElem.isEmpty() && !typeOfTag.isEmpty()) {
-                QDomElement object = createDomElement(typeOfTag, type.toString(), typeOfElem);
-                object.setAttribute("xmi:name", mApi.name(type));
+                QDomElement object = createDomElement(typeOfTag, id.toString(), typeOfElem);
+                object.setAttribute("xmi:name", mApi.name(id));
 
 		foreach (StringPair nameValuePair, additionalParams)
 			object.setAttribute(nameValuePair.first, nameValuePair.second);
 
-                serializeChildren(object, type);
+                serializeChildren(object, id);
 
 		parent.appendChild(object);
-                serializeLinkBodies(parent, type);
+                serializeLinkBodies(parent, id);
 	}
 }
 
-QDomElement XmiHandler::serializeOutcomingLink(NewType const &type)
+QDomElement XmiHandler::serializeOutcomingLink(Id const &id)
 {
-        QString linkType = mApi.typeName(type);
+        QString linkType = mApi.name(id);
 	QDomElement result;
 
 	// kernel diagram
 	if (linkType == "krnePackageImport") {
-                result = createDomElement("packageImport", type.toString(), "uml:PackageImport");
-                result.setAttribute("importedPackage", mApi.to(type).toString());
+                result = createDomElement("packageImport", id.toString(), "uml:PackageImport");
+                result.setAttribute("importedPackage", mApi.to(id).toString());
 	} else if (linkType == "krneElementImport") {
-                result = createDomElement("elementImport", type.toString(), "uml:ElementImport");
-                result.setAttribute("importedElement", mApi.to(type).toString());
+                result = createDomElement("elementImport", id.toString(), "uml:ElementImport");
+                result.setAttribute("importedElement", mApi.to(id).toString());
 	} else if (linkType == "krneGeneralization") {
-                result = createDomElement("generalization", type.toString(), "uml:Generalization");
-                result.setAttribute("general", mApi.to(type).toString());
+                result = createDomElement("generalization", id.toString(), "uml:Generalization");
+                result.setAttribute("general", mApi.to(id).toString());
 	} else if (linkType == "krneDirRelationship") {
-                result = createDomElement("ownedAttribute", type.toString(), "uml:Property");
+                result = createDomElement("ownedAttribute", id.toString(), "uml:Property");
 		result.setAttribute("visibility", "protected");
-                result.setAttribute("type", mApi.to(type).toString());
+                result.setAttribute("type", mApi.to(id).toString());
 
-                QString toMult = mApi.stringProperty(type, "toMultiplicity");
-                serializeMultiplicity(result, type, toMult);
+                QString toMult = mApi.stringProperty(id, "toMultiplicity");
+                serializeMultiplicity(result, id, toMult);
 
-                createDomElementWithIdRef(result, "association", type.toString());
+                createDomElementWithIdRef(result, "association", id.toString());
 	}
 
 	// class diagram
 	else if (linkType == "ceDependency")
-                result = createDomElementWithIdRef("clientDependency",  type.toString());
+                result = createDomElementWithIdRef("clientDependency",  id.toString());
 
 	// use case diagram
 	else if (linkType == "uscaExtend") {
-                result = createDomElement("extend", type.toString(), "uml:Extend");
-                result.setAttribute("extendedCase", mApi.to(type).toString());
+                result = createDomElement("extend", id.toString(), "uml:Extend");
+                result.setAttribute("extendedCase", mApi.to(id).toString());
 
-                createDomElementWithIdRef(result, "extension",  mApi.from(type).toString());
+                createDomElementWithIdRef(result, "extension",  mApi.from(id).toString());
 	} else if (linkType == "uscaInclude") {
-                result = createDomElement("include", type.toString(), "uml:Include");
-                result.setAttribute("addition", mApi.to(type).toString());
+                result = createDomElement("include", id.toString(), "uml:Include");
+                result.setAttribute("addition", mApi.to(id).toString());
 	}
 
 	return result;
 }
 
-QDomElement XmiHandler::serializeIncomingLink(NewType const &type)
+QDomElement XmiHandler::serializeIncomingLink(Id const &id)
 {
 	QDomElement result;
-        if (mApi.typeName(type) == "ceDependency")
-                result = createDomElementWithIdRef("supplierDependency", type.toString());
+        if (mApi.name(id) == "ceDependency")
+                result = createDomElementWithIdRef("supplierDependency", id.toString());
 	return result;
 }
 
-QDomElement XmiHandler::createOwnedEnd(QString const &direction, NewType const &type, NewType const &target)
+QDomElement XmiHandler::createOwnedEnd(QString const &direction, Id const &id, Id const &target)
 {
-        QDomElement result = createDomElement("ownedEnd", direction + "End" + type.toString(), "uml:Property");
+        QDomElement result = createDomElement("ownedEnd", direction + "End" + id.toString(), "uml:Property");
 	result.setAttribute("visibility", "protected");
-	result.setAttribute("type", target.toString());
+        result.setAttribute("type", target.toString());
 
-        QDomElement endAssociation = createDomElementWithIdRef("association", type.toString());
+        QDomElement endAssociation = createDomElementWithIdRef("association", id.toString());
 
 	QString multiplicityDirection = direction;
 	multiplicityDirection[0] = multiplicityDirection[0].toLower();
 
-        QString mult = mApi.stringProperty(type, multiplicityDirection + "Multiplicity");
-        serializeMultiplicity(endAssociation, type, mult);
+        QString mult = mApi.stringProperty(id, multiplicityDirection + "Multiplicity");
+        serializeMultiplicity(endAssociation, id, mult);
 	result.appendChild(endAssociation);
 
-        createDomElementWithIdRef(result, "association", type.toString());
+        createDomElementWithIdRef(result, "association", id.toString());
 	return result;
 }
 
-QDomElement XmiHandler::serializeLink(NewType const &type)
+QDomElement XmiHandler::serializeLink(Id const &id)
 {
 	QString visibility = "";
-        QString linkType = mApi.typeName(type);
+        QString linkType = mApi.name(id);
 
-        QDomElement result = createDomElement("ownedMember", type.toString());
+        QDomElement result = createDomElement("ownedMember", id.toString());
 
-        if (!mApi.stringProperty(type, "visibility").isEmpty())
-                visibility = mApi.property(type, "visibility").toString();
+        if (!mApi.stringProperty(id, "visibility").isEmpty())
+                visibility = mApi.property(id, "visibility").toString();
 
 	if (linkType == "ceComposition" || linkType == "ceAggregation"
 		|| linkType == "krneRelationship" || linkType == "ceRelation"
@@ -274,16 +274,16 @@ QDomElement XmiHandler::serializeLink(NewType const &type)
 			result.setAttribute("visibility", visibility);
 
 		// FromEnd
-                createDomElementWithIdRef(result, "memberEnd", "FromEnd" + type.toString());
+                createDomElementWithIdRef(result, "memberEnd", "FromEnd" + id.toString());
 
-                QDomElement fromOwnedEnd = createOwnedEnd("From", type, mApi.from(type));
+                QDomElement fromOwnedEnd = createOwnedEnd("From", id, mApi.from(id));
 		result.appendChild(fromOwnedEnd);
 
 		// ToEnd
-                createDomElementWithIdRef(result, "memberEnd", "ToEnd" + type.toString());
+                createDomElementWithIdRef(result, "memberEnd", "ToEnd" + id.toString());
 
 		if (linkType != "krneDirRelationship") {
-                        QDomElement toOwnedEnd = createOwnedEnd("To", type, mApi.to(type));
+                        QDomElement toOwnedEnd = createOwnedEnd("To", id, mApi.to(id));
 
 			if (linkType == "ceComposition")
 				toOwnedEnd.setAttribute("aggregation", "composite");
@@ -298,32 +298,32 @@ QDomElement XmiHandler::serializeLink(NewType const &type)
 		if (!visibility.isEmpty())
 			result.setAttribute("visibility", visibility);
 
-                createDomElementWithIdRef(result, "supplier", mApi.to(type).toString());
-                createDomElementWithIdRef(result, "client", mApi.from(type).toString());
+                createDomElementWithIdRef(result, "supplier", mApi.to(id).toString());
+                createDomElementWithIdRef(result, "client", mApi.from(id).toString());
 	} else
 		result = QDomElement();
 
 	return result;
 }
 
-void XmiHandler::serializeLinkBodies(QDomElement &parent, NewType const &type)
+void XmiHandler::serializeLinkBodies(QDomElement &parent, Id const &id)
 {
-        foreach (NewType const type, mApi.incomingLinks(type)) {
+        foreach (Id const type, mApi.incomingLinks(id)) {
                 QDomElement link = serializeLink(type);
 		if (!link.isNull())
 			parent.appendChild(link);
 	}
 }
 
-QDomElement XmiHandler::createMultiplicityNode(QString const &tagName, NewType const &type, QString const &value)
+QDomElement XmiHandler::createMultiplicityNode(QString const &tagName, Id const &id, QString const &value)
 {
-        QDomElement result = createDomElement(tagName, tagName + "To" + type.toString(), "uml:LiteralString");
+        QDomElement result = createDomElement(tagName, tagName + "To" + id.toString(), "uml:LiteralString");
 	result.setAttribute("visibility", "public");
 	result.setAttribute("value", value);
 	return result;
 }
 
-void XmiHandler::serializeMultiplicity(QDomElement &parent, NewType const &type, QString const &multiplicity)
+void XmiHandler::serializeMultiplicity(QDomElement &parent, Id const &id, QString const &multiplicity)
 {
 	if (!multiplicity.isEmpty()) {
 		QString valueLower;
@@ -344,8 +344,8 @@ void XmiHandler::serializeMultiplicity(QDomElement &parent, NewType const &type,
 		}
 
 		if (!valueLower.isEmpty() && !valueUpper.isEmpty()) {
-                        parent.appendChild(createMultiplicityNode("lowerValue", type, valueLower));
-                        parent.appendChild(createMultiplicityNode("upperValue", type, valueUpper));
+                        parent.appendChild(createMultiplicityNode("lowerValue", id, valueLower));
+                        parent.appendChild(createMultiplicityNode("upperValue", id, valueUpper));
 		}
 	}
 }

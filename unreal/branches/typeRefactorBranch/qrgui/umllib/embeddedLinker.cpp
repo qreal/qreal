@@ -220,7 +220,7 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 if (scene->mainWindow()->manager()->hasElement(NewType::loadFromString(type)))
 		{
 			master->setConnectingState(true);
-                        NewType *edgeType = scene->createElement(type, event->scenePos());
+                        Id *edgeType = scene->createElement(type, event->scenePos());
                         mEdge = dynamic_cast<EdgeElement*>(scene->getElem(*edgeType));
 		}
 		if (mEdge)

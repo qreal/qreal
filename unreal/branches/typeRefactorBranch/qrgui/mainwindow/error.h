@@ -2,6 +2,8 @@
 
 #include <QtCore/QString>
 #include "../kernel/NewType.h"
+#include "../kernel/ids.h"
+
 
 
 
@@ -14,13 +16,13 @@ public:
 		critical
 	};
 
-        Error(QString const &message, Severity const &severity, qReal::NewType  const &position);
+        Error(QString const &message, Severity const &severity, qReal::Id  const &position);
 	Severity severity() const;
 	QString message() const;
-        qReal::NewType  position() const;
+        qReal::Id  position() const;
 private:
 	QString mMessage;
 	Severity mSeverity;
-        qReal::NewType  mPosition;
+        qReal::Id  mPosition;
 };
 

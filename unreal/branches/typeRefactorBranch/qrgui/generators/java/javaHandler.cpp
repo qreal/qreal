@@ -85,27 +85,27 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 	mErrorText = "";
 	this->pathToDir = pathToDir;
 
-        NewType repoId = ROOT_ID;
+        Id repoId = ROOT_ID;
 
 	if (checkTheModel()) {
-                TypeList allDiagrams = mApi.children(repoId);
-                TypeList classDiagrams;
+                IdList allDiagrams = mApi.children(repoId);
+                IdList classDiagrams;
 
 		//separate just class diagrams, because they are the main diagrams, others are connected
-                foreach (NewType const aDiagram, allDiagrams) {
+                foreach (Id const aDiagram, allDiagrams) {
 			if (objectType(aDiagram) == "ClassDiagram_ClassDiagramNode") {
 				classDiagrams.append(aDiagram);
 			}
 			if (objectType(aDiagram) == "ActivityDiagram_ActivityDiagramNode") {
 				//If there is no connected Class Methods it won't be serialized
-                                TypeList incomingConnections = mApi.incomingConnections(aDiagram);
+                                IdList incomingConnections = mApi.incomingConnections(aDiagram);
 				if (incomingConnections.isEmpty()) {
                                         addError("Unable to serialize object " + objectType(aDiagram) + " with type: " + aDiagram.toString() + ". It is not connected to some class method.");
 				}
 			}
 		}
 
-                foreach (NewType const classDiagram, classDiagrams) {
+                foreach (Id const classDiagram, classDiagrams) {
 			serializeChildren(classDiagram);
 		}
 	}
@@ -118,24 +118,24 @@ bool JavaHandler::checkTheModel()
 {
 	bool result = true;
 
-        TypeList links;
+        IdList links;
 
 	//class diagram
-        TypeList aggregations = mApi.elementsByType("ClassDiagram_Aggregation");
-        TypeList associations = mApi.elementsByType("ClassDiagram_Association");
-        TypeList classDirectedAssociations = mApi.elementsByType("ClassDiagram_DirectedAssociation");
-//    TypeList classes = mApi.elementsByType("ClassDiagram_Class");
-        TypeList classFields = mApi.elementsByType("ClassDiagram_ClassField");
-        TypeList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
-//    TypeList comments = mApi.elementsByType("ClassDiagram_Comment");
-        TypeList classCommentLinks = mApi.elementsByType("ClassDiagram_CommentLink");
-        TypeList compositions = mApi.elementsByType("ClassDiagram_Composition");
-        TypeList dependencies = mApi.elementsByType("ClassDiagram_Dependency");
-        TypeList generalizations = mApi.elementsByType("ClassDiagram_Generalization");
-//    TypeList interfaces = mApi.elementsByType("ClassDiagram_Interface");
-        TypeList interfaceRealizations = mApi.elementsByType("ClassDiagram_InterfaceRealization");
-        TypeList realizations = mApi.elementsByType("ClassDiagram_Realization");
-//    TypeList views = mApi.elementsByType("ClassDiagram_View");
+        IdList aggregations = mApi.elementsByType("ClassDiagram_Aggregation");
+        IdList associations = mApi.elementsByType("ClassDiagram_Association");
+        IdList classDirectedAssociations = mApi.elementsByType("ClassDiagram_DirectedAssociation");
+//    IdList classes = mApi.elementsByType("ClassDiagram_Class");
+        IdList classFields = mApi.elementsByType("ClassDiagram_ClassField");
+        IdList classMethods = mApi.elementsByType("ClassDiagram_ClassMethod");
+//    IdList comments = mApi.elementsByType("ClassDiagram_Comment");
+        IdList classCommentLinks = mApi.elementsByType("ClassDiagram_CommentLink");
+        IdList compositions = mApi.elementsByType("ClassDiagram_Composition");
+        IdList dependencies = mApi.elementsByType("ClassDiagram_Dependency");
+        IdList generalizations = mApi.elementsByType("ClassDiagram_Generalization");
+//    IdList interfaces = mApi.elementsByType("ClassDiagram_Interface");
+        IdList interfaceRealizations = mApi.elementsByType("ClassDiagram_InterfaceRealization");
+        IdList realizations = mApi.elementsByType("ClassDiagram_Realization");
+//    IdList views = mApi.elementsByType("ClassDiagram_View");
 
 	links.append(aggregations);
 	links.append(associations);
@@ -149,12 +149,12 @@ bool JavaHandler::checkTheModel()
 
 
 	//activity diagram
-        TypeList activityCommentLinks = mApi.elementsByType("ActivityDiagram_CommentLink");
-        TypeList activityConstraintEdges = mApi.elementsByType("ActivityDiagram_ConstraintEdge");
-        TypeList controlFlows = mApi.elementsByType("ActivityDiagram_ControlFlow");
-        TypeList objectFlows = mApi.elementsByType("ActivityDiagram_ObjectFlow");
-        TypeList decisionNodes = mApi.elementsByType("ActivityDiagram_DecisionNode");
-        TypeList mergeNodes = mApi.elementsByType("ActivityDiagram_MergeNode");
+        IdList activityCommentLinks = mApi.elementsByType("ActivityDiagram_CommentLink");
+        IdList activityConstraintEdges = mApi.elementsByType("ActivityDiagram_ConstraintEdge");
+        IdList controlFlows = mApi.elementsByType("ActivityDiagram_ControlFlow");
+        IdList objectFlows = mApi.elementsByType("ActivityDiagram_ObjectFlow");
+        IdList decisionNodes = mApi.elementsByType("ActivityDiagram_DecisionNode");
+        IdList mergeNodes = mApi.elementsByType("ActivityDiagram_MergeNode");
 
 	links.append(activityCommentLinks);
 	links.append(activityConstraintEdges);
@@ -162,13 +162,13 @@ bool JavaHandler::checkTheModel()
 	links.append(objectFlows);
 
 	//use case diagram
-        TypeList useCaseCommentLinks = mApi.elementsByType("UseCaseDiagram_CommentLink");
-        TypeList useCaseConstraintEdges = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
-        TypeList useCaseDirectedAssociations = mApi.elementsByType("UseCaseDiagram_DirectedAssociation");
-        TypeList extends = mApi.elementsByType("UseCaseDiagram_Extend");
-        TypeList includes = mApi.elementsByType("UseCaseDiagram_Include");
-        TypeList actors = mApi.elementsByType("UseCaseDiagram_Actor");
-        TypeList useCases = mApi.elementsByType("UseCaseDiagram_UseCase");
+        IdList useCaseCommentLinks = mApi.elementsByType("UseCaseDiagram_CommentLink");
+        IdList useCaseConstraintEdges = mApi.elementsByType("UseCaseDiagram_ConstraintEdge");
+        IdList useCaseDirectedAssociations = mApi.elementsByType("UseCaseDiagram_DirectedAssociation");
+        IdList extends = mApi.elementsByType("UseCaseDiagram_Extend");
+        IdList includes = mApi.elementsByType("UseCaseDiagram_Include");
+        IdList actors = mApi.elementsByType("UseCaseDiagram_Actor");
+        IdList useCases = mApi.elementsByType("UseCaseDiagram_UseCase");
 
 	links.append(useCaseCommentLinks);
 	links.append(useCaseConstraintEdges);
@@ -177,9 +177,9 @@ bool JavaHandler::checkTheModel()
 	links.append(includes);
 
 	//Checking for links ends (both of them exist).
-        foreach (NewType aLink, links) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
+        foreach (Id aLink, links) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
 
 		if (fromId == ROOT_ID || toId == ROOT_ID) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have nodes on both ends.");
@@ -192,11 +192,11 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//Class Methods and Class Fields are inside some Class or Interface.
-        TypeList features;
+        IdList features;
 	features.append(classFields);
 	features.append(classMethods);
-        foreach (NewType type, features) {
-                TypeList parents = mApi.parents(type);
+        foreach (Id type, features) {
+                IdList parents = mApi.parents(type);
 		if (parents.isEmpty()) {
                         addError("Unable to serialize object " + objectType(type) + " with type: " + type.toString() + ". Move it inside some Class or Interface.");
 			result = false;
@@ -204,9 +204,9 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//[Superstructure][09-02-02][1] A decision node has one or two incoming edges and at least one outgoing edge.
-        foreach (NewType aDecision, decisionNodes) {
-                TypeList incomingLinks = mApi.incomingLinks(aDecision);
-                TypeList outgoingLinks = mApi.outgoingLinks(aDecision);
+        foreach (Id aDecision, decisionNodes) {
+                IdList incomingLinks = mApi.incomingLinks(aDecision);
+                IdList outgoingLinks = mApi.outgoingLinks(aDecision);
 
 		if ( !(incomingLinks.size() == 2 || incomingLinks.size() == 1) || !(outgoingLinks.size() >=1) ) {
                         addError("Unable to serialize object " + objectType(aDecision) + " with type: " + aDecision.toString() + ". A decision node has one or two incoming edges and at least one outgoing edge.");
@@ -215,8 +215,8 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//[Superstructure][09-02-02][1] A merge node has one outgoing edge.
-        foreach (NewType aMerge, mergeNodes) {
-                TypeList outgoingLinks = mApi.outgoingLinks(aMerge);
+        foreach (Id aMerge, mergeNodes) {
+                IdList outgoingLinks = mApi.outgoingLinks(aMerge);
 
 		if ( !outgoingLinks.size()==1 ) {
                         addError("Unable to serialize object " + objectType(aMerge) + " with type: " + aMerge.toString() + ". A merge node has one outgoing edge.");
@@ -225,15 +225,15 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//[Superstructure][09-02-02][3] A constraint cannot be applied to itself. (Comments too)
-        TypeList commentConstraintLinks;
+        IdList commentConstraintLinks;
 	commentConstraintLinks.append(classCommentLinks);
 	commentConstraintLinks.append(activityCommentLinks);
 	commentConstraintLinks.append(activityConstraintEdges);
 	commentConstraintLinks.append(useCaseCommentLinks);
 	commentConstraintLinks.append(useCaseConstraintEdges);
-        foreach (NewType aLink, commentConstraintLinks) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
+        foreach (Id aLink, commentConstraintLinks) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
 
 		if (fromId == toId) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It cannot be applied to itself.");
@@ -242,14 +242,14 @@ bool JavaHandler::checkTheModel()
 	}
 
 	///[Superstructure][09-02-02][1] The source and the target of an edge must be in the same activity as the edge.
-        TypeList activityEdges;
+        IdList activityEdges;
 	activityEdges.append(controlFlows);
 	activityEdges.append(objectFlows);
-        foreach (NewType aLink, activityEdges) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
-                TypeList fromIdParents = mApi.parents(fromId);
-                TypeList toIdParents = mApi.parents(toId);
+        foreach (Id aLink, activityEdges) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
+                IdList fromIdParents = mApi.parents(fromId);
+                IdList toIdParents = mApi.parents(toId);
 
 		if (fromIdParents.isEmpty() || toIdParents.isEmpty() || fromIdParents.at(0) != toIdParents.at(0)) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". The source and the target of an edge must be in the same activity as the edge.");
@@ -258,23 +258,25 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//UseCaseDiagram_Actor.
-        foreach (NewType anActor, actors) {
+        foreach (Id anActor, actors) {
 		//Check, that there is no incoming edges.
-                TypeList incomingLinks = mApi.incomingLinks(anActor);
+                IdList incomingLinks = mApi.incomingLinks(anActor);
 		if (!incomingLinks.isEmpty()) {
                         addError("Unable to serialize object " + objectType(anActor) + " with type: " + anActor.toString() + ". An actor can not have incoming edges.");
 			result = false;
 		}
-                TypeList outgoingLinks = mApi.outgoingLinks(anActor);
-                foreach (NewType aLink, outgoingLinks) {
+                IdList outgoingLinks = mApi.outgoingLinks(anActor);
+                foreach (Id aLink, outgoingLinks) {
+                        NewType aLinkType = mApi.type(aLink);
 			//Check, that just CommentLink or DirectedAssociation as an outgoing links. Not ConstrainEdge, Extend or Include.
-			if (aLink.element() != "UseCaseDiagram_CommentLink" || aLink.element() != "UseCaseDiagram_DirectedAssociation") {
+                        if (aLinkType.element() != "UseCaseDiagram_CommentLink" || aLinkType.element() != "UseCaseDiagram_DirectedAssociation") {
                                 addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". An actor can have only Comment Link or Directed Association as an outgoing link.");
 				result = false;
 			}
 			//[Superstructure][09-02-02][1] An actor can only have associations to use cases [,components and classes. ...].
-                        NewType toId = mApi.otherEntityFromLink(aLink, anActor);
-			if (toId.element() != "UseCaseDiagram_UseCase") {
+                        Id toId = mApi.otherEntityFromLink(aLink, anActor);
+                        NewType toIdType = mApi.type(toId);
+                        if (toIdType.element() != "UseCaseDiagram_UseCase") {
                                 addError("Unable to serialize object " + objectType(anActor) + " with type: " + anActor.toString() + ". An actor can only have associations to use cases.");
 				result = false;
 			}
@@ -287,47 +289,46 @@ bool JavaHandler::checkTheModel()
 	}
 
 	//Check, that Extend and Include connect UseCases.
-        TypeList extendAndIncludes;
+        IdList extendAndIncludes;
 	extendAndIncludes.append(extends);
 	extendAndIncludes.append(includes);
-        foreach (NewType aLink, extendAndIncludes) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
-
-		if (fromId.element() != "UseCaseDiagram_UseCase" || toId.element() != "UseCaseDiagram_UseCase") {
+        foreach (Id aLink, extendAndIncludes) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
+                if (mApi.type(fromId).element() != "UseCaseDiagram_UseCase" || mApi.type(toId).element() != "UseCaseDiagram_UseCase") {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have Use Case on both ends.");
 			result = false;
 		}
 	}
 
 	//[Superstructure][09-02-02][1] A UseCase must have a name.
-        foreach (NewType aUseCase, useCases) {
+        foreach (Id aUseCase, useCases) {
 		if (mApi.name(aUseCase).simplified() == "") {
                         addError("Unable to serialize object " + objectType(aUseCase) + " with type: " + aUseCase.toString() + ". A Use Case must have a name.");
 		}
 	}
 
 	//ClassDiagram_Generalization: edge between Classes
-        foreach (NewType aLink, generalizations) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
+        foreach (Id aLink, generalizations) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
 
-		if (fromId.element() != "ClassDiagram_Class" || toId.element() != "ClassDiagram_Class") {
+                if (mApi.type(fromId).element() != "ClassDiagram_Class" || mApi.type(toId).element() != "ClassDiagram_Class") {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have Classes on both ends.");
 			result = false;
 		}
 	}
 
 	//ClassDiagram_InterfaceRealization: edge between Class and Interface
-        foreach (NewType aLink, interfaceRealizations) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
+        foreach (Id aLink, interfaceRealizations) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
 
-		if (fromId.element() != "ClassDiagram_Class") {
+                if (mApi.type(fromId).element() != "ClassDiagram_Class") {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must starts with a Class.");
 			result = false;
 		}
-		if (toId.element() != "ClassDiagram_Interface") {
+                if (mApi.type(toId).element() != "ClassDiagram_Interface") {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must ends with an Interface.");
 			result = false;
 		}
@@ -361,20 +362,20 @@ bool JavaHandler::checkTheModel()
 	return result;
 }
 
-bool JavaHandler::commentAndConstraintChecking(TypeList const &idList, QString const &diagramType, QString const &nodeType)
+bool JavaHandler::commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType)
 {
 	bool result = true;
 	QString fullType = diagramType + "Diagram_" +nodeType;
 
-        foreach (NewType aLink, idList) {
-                NewType fromId = mApi.from(aLink);
-                NewType toId = mApi.to(aLink);
+        foreach (Id aLink, idList) {
+                Id fromId = mApi.from(aLink);
+                Id toId = mApi.to(aLink);
 
-		if (fromId.element() != fullType && toId.element() != fullType) {
+                if (mApi.type(fromId).element() != fullType && mApi.type(toId).element() != fullType) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have " + nodeType + " on one of the ends.");
 			result = false;
 		}
-		if (fromId.element() == fullType && toId.element() == fullType) {
+                if (mApi.type(fromId).element() == fullType && mApi.type(toId).element() == fullType) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have non-" + nodeType + " node on one of the ends.");
 			result = false;
 		}
@@ -383,21 +384,21 @@ bool JavaHandler::commentAndConstraintChecking(TypeList const &idList, QString c
 	return result;
 }
 
-NewType JavaHandler::findMergeNode(NewType const &idDecisionNode)
+Id JavaHandler::findMergeNode(Id const &idDecisionNode)
 {
-        NewType mergeNode = NewType();
+        Id mergeNode = Id();
 
 	//look for Merge Nodes connected with this Decision Node
-        TypeList mergeNodes;
-        TypeList incomingConnections = mApi.incomingConnections(idDecisionNode);
-        foreach (NewType aConnection, incomingConnections) {
-		if (aConnection.element() == "ActivityDiagram_MergeNode") {
+        IdList mergeNodes;
+        IdList incomingConnections = mApi.incomingConnections(idDecisionNode);
+        foreach (Id aConnection, incomingConnections) {
+                if (mApi.type(aConnection).element() == "ActivityDiagram_MergeNode") {
 			mergeNodes.append(aConnection);
 		}
 	}
 
 	if (mergeNodes.length() == 0) {
-                mergeNode = NewType();
+                mergeNode = Id();
 	} else if (mergeNodes.length() == 1) {
 		mergeNode = mergeNodes.at(0);
 	} else {
@@ -407,11 +408,11 @@ NewType JavaHandler::findMergeNode(NewType const &idDecisionNode)
 	return mergeNode;
 }
 
-NewType JavaHandler::findNonBodyLink(NewType const &idDecisionNode)
+Id JavaHandler::findNonBodyLink(Id const &idDecisionNode)
 {
-        NewType linkId = NewType();
+        Id linkId = Id();
 
-        TypeList outgoingLinks = mApi.outgoingLinks(idDecisionNode);
+        IdList outgoingLinks = mApi.outgoingLinks(idDecisionNode);
 	if (outgoingLinks.length() != 2) {
                 addError("Unable to serialize object " + objectType(idDecisionNode) + " with type: " + idDecisionNode.toString() + ". May be you forget a Merge Node before this Decision Node.");
 	} else {
@@ -440,21 +441,21 @@ NewType JavaHandler::findNonBodyLink(NewType const &idDecisionNode)
 }
 
 //Returns "importaint" nodes between startNode (including) and untilNode (excluding)
-TypeList JavaHandler::findIntermediateNodes(NewType const &startNode, NewType const &untilNode, bool const closesMethod)
+IdList JavaHandler::findIntermediateNodes(Id const &startNode, Id const &untilNode, bool const closesMethod)
 {
-        TypeList children;
+        IdList children;
 
 	if (startNode != untilNode) {
 		children.append(startNode);
 
-		if (startNode.element() == "ActivityDiagram_DecisionNode") {
+                if (mApi.type(startNode).element() == "ActivityDiagram_DecisionNode") {
 //            int isControlFlow = -1; //for checking in and outgoing links connected to DecisionNode
 			if (!mApi.links(startNode).isEmpty()) {
-                                TypeList outgoingLinks = mApi.outgoingLinks(startNode);
+                                IdList outgoingLinks = mApi.outgoingLinks(startNode);
 				if (!outgoingLinks.isEmpty()) {
 //                    // Very arched way to check:
 //                    // [Superstructure 09-02-02.pdf][2] The edges coming into and out of a DecisionNode, other than the decisionInputFlow (if any), must be either all ObjectFlows or all ControlFlows.
-//                    foreach (NewType const aLink, outgoingLinks) {
+//                    foreach (Id const aLink, outgoingLinks) {
 //                        if (aLink.element() == "ActivityDiagram_ControlFlow") {
 //                            if (isControlFlow == 0) {
 //                                addError("Unable to serialize object " + objectType(startNode) + " with type: " + startNode.toString() + ". The edges coming out must be either all Object Flows or all Control Flows.");
@@ -469,21 +470,21 @@ TypeList JavaHandler::findIntermediateNodes(NewType const &startNode, NewType co
 //                    }
 
 					//"if" or "while"?
-                                        TypeList incomingLinks = mApi.incomingLinks(startNode);
+                                        IdList incomingLinks = mApi.incomingLinks(startNode);
 					deleteCommentLinks(incomingLinks);
 					deleteConstraintEdges(incomingLinks);
 					if (incomingLinks.length() == 1) { //"if"
-                                                NewType mergeNode = findMergeNode(startNode);
+                                                Id mergeNode = findMergeNode(startNode);
 
-                                                if (mergeNode != NewType()) {
+                                                if (mergeNode != Id()) {
 							children.append(findIntermediateNodes(mergeNode, untilNode, closesMethod));
 						}
 					} else if (incomingLinks.length() == 2) { //"while"
-                                                NewType nonBodyLink = findNonBodyLink(startNode);
+                                                Id nonBodyLink = findNonBodyLink(startNode);
 
-                                                if (nonBodyLink != NewType()) {
-                                                        NewType firstNonBodyElement = mApi.otherEntityFromLink(nonBodyLink, startNode);
-                                                        if (firstNonBodyElement != NewType()) {
+                                                if (nonBodyLink != Id()) {
+                                                        Id firstNonBodyElement = mApi.otherEntityFromLink(nonBodyLink, startNode);
+                                                        if (firstNonBodyElement != Id()) {
 								children.append(findIntermediateNodes(firstNonBodyElement, untilNode, closesMethod));
 							} else { //wrong end of the link
                                                                 addError("Unable to serialize object " + objectType(nonBodyLink) + " with type: " + nonBodyLink.toString() + ". A decision Node has one or two incoming edges.");
@@ -499,40 +500,40 @@ TypeList JavaHandler::findIntermediateNodes(NewType const &startNode, NewType co
 			} else {
                                 addError("Unable to serialize object " + objectType(startNode) + " with type: " + startNode.toString() + ". Is must have at least one outgoing edge.");
 			}
-		} else if (startNode.element() == "ActivityDiagram_MergeNode") {
+                } else if (mApi.type(startNode).element() == "ActivityDiagram_MergeNode") {
 			//TODO: fill this
-                        TypeList outgoingLinks = mApi.outgoingLinks(startNode);
+                        IdList outgoingLinks = mApi.outgoingLinks(startNode);
 			deleteCommentLinks(outgoingLinks);
 			deleteConstraintEdges(outgoingLinks);
 
-                        foreach (NewType aLink, outgoingLinks) {
-                                NewType nextElement = mApi.otherEntityFromLink(aLink, startNode);
-                                if (nextElement != NewType()) {
+                        foreach (Id aLink, outgoingLinks) {
+                                Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
+                                if (nextElement != Id()) {
 					children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));;
 				} else {
                                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It does not have the target-node.");
 				}
 			}
-		} else if (startNode.element() == "ActivityDiagram_ActivityFinalNode") {
+                } else if (mApi.type(startNode).element() == "ActivityDiagram_ActivityFinalNode") {
 			if (!closesMethod) {
-                                NewType returnNode = children.at(children.length() - 1);
+                                Id returnNode = children.at(children.length() - 1);
 				addError("Node: " + returnNode.toString() + ". If you want \"return;\" you should write it in the Action before this Final Node.");
 			}
-		} else if (startNode.element() == "ActivityDiagram_Activity") { //"try-catch" or just Activity
-                        TypeList outgoingLinks = mApi.outgoingLinks(startNode);
+                } else if (mApi.type(startNode).element() == "ActivityDiagram_Activity") { //"try-catch" or just Activity
+                        IdList outgoingLinks = mApi.outgoingLinks(startNode);
 			deleteCommentLinks(outgoingLinks);
 			deleteConstraintEdges(outgoingLinks);
 
 			//Delete all "exception"-links from the list. They will be serialized by the Activity itself.
-                        foreach (NewType aLink, outgoingLinks) {
+                        foreach (Id aLink, outgoingLinks) {
 				if (getFlowGuard(aLink) != "") {
 					outgoingLinks.removeAll(aLink);
 				}
 			}
 
-                        foreach (NewType aLink, outgoingLinks) {
-                                NewType nextElement = mApi.otherEntityFromLink(aLink, startNode);
-                                if (nextElement != NewType()) {
+                        foreach (Id aLink, outgoingLinks) {
+                                Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
+                                if (nextElement != Id()) {
 					children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));
 				} else {
                                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It does not have the target-node.");
@@ -540,13 +541,13 @@ TypeList JavaHandler::findIntermediateNodes(NewType const &startNode, NewType co
 			}
 		} //TODO: add other "importaint" nodes
 		else { //Think, that it is Action, Initial, Final.
-                        TypeList outgoingLinks = mApi.outgoingLinks(startNode);
+                        IdList outgoingLinks = mApi.outgoingLinks(startNode);
 			deleteCommentLinks(outgoingLinks);
 			deleteConstraintEdges(outgoingLinks);
 
-                        foreach (NewType aLink, outgoingLinks) {
-                                NewType nextElement = mApi.otherEntityFromLink(aLink, startNode);
-                                if (nextElement != NewType()) {
+                        foreach (Id aLink, outgoingLinks) {
+                                Id nextElement = mApi.otherEntityFromLink(aLink, startNode);
+                                if (nextElement != Id()) {
 					children.append(findIntermediateNodes(nextElement, untilNode, closesMethod));
 				} else {
                                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It does not have the target-node.");
@@ -559,13 +560,13 @@ TypeList JavaHandler::findIntermediateNodes(NewType const &startNode, NewType co
 }
 
 //Delete all CommentLink links from idList. Returns deleted CommentLinks.
-TypeList JavaHandler::deleteCommentLinks(TypeList &idList)
+IdList JavaHandler::deleteCommentLinks(IdList &idList)
 {
-        TypeList result;
+        IdList result;
 
-        foreach (NewType aLink, idList) {
-		if (aLink.element() == "ActivityDiagram_CommentLink" || aLink.element() == "ClassDiagram_CommentLink"
-				|| aLink.element() == "UseCaseDiagram_CommentLink") {
+        foreach (Id aLink, idList) {
+                if (mApi.type(aLink).element() == "ActivityDiagram_CommentLink" || mApi.type(aLink).element() == "ClassDiagram_CommentLink"
+                                || mApi.type(aLink).element() == "UseCaseDiagram_CommentLink") {
 			result.append(aLink);
 			idList.removeAll(aLink);
 		}
@@ -575,12 +576,12 @@ TypeList JavaHandler::deleteCommentLinks(TypeList &idList)
 }
 
 //Delete all ConstraintEdge links from idList. Returns deleted ConstraintEdges.
-TypeList JavaHandler::deleteConstraintEdges(TypeList &idList)
+IdList JavaHandler::deleteConstraintEdges(IdList &idList)
 {
-        TypeList result;
+        IdList result;
 
-        foreach (NewType aLink, idList) {
-		if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+        foreach (Id aLink, idList) {
+                if (mApi.type(aLink).element() == "ActivityDiagram_ConstraintEdge") {
 			result.append(aLink);
 			idList.removeAll(aLink);
 		}
@@ -589,35 +590,35 @@ TypeList JavaHandler::deleteConstraintEdges(TypeList &idList)
 	return result;
 }
 
-//Returns "importaint" nodes between startNode (including) and untilNode (including, if it is not "NewType()")
-TypeList JavaHandler::getActivityChildren(NewType const &idStartNode, NewType const &idUntilNode)
+//Returns "importaint" nodes between startNode (including) and untilNode (including, if it is not "Id()")
+IdList JavaHandler::getActivityChildren(Id const &idStartNode, Id const &idUntilNode)
 {
-        TypeList result;
+        IdList result;
 
 	//if the Final Node, that we will find closes the Method
-        bool closesMethod = idStartNode != NewType() && idStartNode.element() == "ActivityDiagram_InitialNode";
+        bool closesMethod = idStartNode != Id() && mApi.type(idStartNode).element() == "ActivityDiagram_InitialNode";
 
 	result.append(findIntermediateNodes(idStartNode, idUntilNode, closesMethod));
-        if (idUntilNode != NewType()) {
+        if (idUntilNode != Id()) {
 		result.append(idUntilNode);
 	}
 
 	return result;
 }
 
-QString JavaHandler::serializeChildren(NewType const &idParent)
+QString JavaHandler::serializeChildren(Id const &idParent)
 {
 	QString result = "";
-        TypeList childElems, allChildren = mApi.children(idParent);
+        IdList childElems, allChildren = mApi.children(idParent);
 
 	if (objectType(idParent) == "ActivityDiagram_ActivityDiagramNode" || objectType(idParent) == "ActivityDiagram_Activity") {
-                TypeList startNodes;
+                IdList startNodes;
 
-                foreach (NewType aChild, allChildren) {
+                foreach (Id aChild, allChildren) {
 			//Search for the nodes that can start control flows
 			//We are hoping that there is just one such node on the Activity Diagram
-			if (aChild.element() == "ActivityDiagram_InitialNode" || aChild.element() == "ActivityDiagram_ActivityParameterNode"
-				|| aChild.element() == "ActivityDiagram_AcceptEventAction") {
+                        if (mApi.type(aChild).element() == "ActivityDiagram_InitialNode" || mApi.type(aChild).element() == "ActivityDiagram_ActivityParameterNode"
+                                || mApi.type(aChild).element() == "ActivityDiagram_AcceptEventAction") {
 				startNodes.append(aChild);
 			}
 		}
@@ -627,17 +628,17 @@ QString JavaHandler::serializeChildren(NewType const &idParent)
 		} else if (startNodes.length() > 1) { //TODO: to find out if it is possible. If so, write the appropriate serialization
 			addError("AAA!!! There are too many start nodes. I don't know which to choose.");
 		} else {
-                        NewType startNode = startNodes.at(0);
-                        childElems = getActivityChildren(startNode, NewType());
+                        Id startNode = startNodes.at(0);
+                        childElems = getActivityChildren(startNode, Id());
 		}
 	} else if (objectType(idParent) == "ClassDiagram_Class") {
 		//All fields in the beginning, all methods in the end.
-                TypeList fields, methods;
+                IdList fields, methods;
 
-                foreach (NewType aChild, allChildren) {
-			if (aChild.element() == "ClassDiagram_ClassField") {
+                foreach (Id aChild, allChildren) {
+                        if (mApi.type(aChild).element() == "ClassDiagram_ClassField") {
 				fields.append(aChild);
-			} else if (aChild.element() == "ClassDiagram_ClassMethod") {
+                        } else if (mApi.type(aChild).element() == "ClassDiagram_ClassMethod") {
 				methods.append(aChild);
 			} //TODO: add processing of another nodes that may be in Class
 		}
@@ -649,14 +650,14 @@ QString JavaHandler::serializeChildren(NewType const &idParent)
 	}
 
 
-        foreach (NewType const type, childElems) {
+        foreach (Id const type, childElems) {
                 result += serializeObject(type);
 	}
 
 	return result;
 }
 
-QString JavaHandler::serializeObject(NewType const &type)
+QString JavaHandler::serializeObject(Id const &type)
 {
 	QString result = "";
 
@@ -695,10 +696,10 @@ QString JavaHandler::serializeObject(NewType const &type)
 
                 if (!mApi.links(type).isEmpty()) {
 			// search for the Class-typed attrbutes
-                        TypeList outgoingLinks = mApi.outgoingLinks(type);
-                        foreach (NewType const aLink, outgoingLinks) {
-				if (aLink.element() == "ClassDiagram_DirectedAssociation" || aLink.element() == "ClassDiagram_Association"
-						|| aLink.element() == "ClassDiagram_Composition" || aLink.element() == "ClassDiagram_Aggregation") {
+                        IdList outgoingLinks = mApi.outgoingLinks(type);
+                        foreach (Id const aLink, outgoingLinks) {
+                                if (mApi.type(aLink).element() == "ClassDiagram_DirectedAssociation" || mApi.type(aLink).element() == "ClassDiagram_Association"
+                                                || mApi.type(aLink).element() == "ClassDiagram_Composition" || mApi.type(aLink).element() == "ClassDiagram_Aggregation") {
                                         QString typeStr = mApi.name(mApi.otherEntityFromLink(aLink, type)) + " ";
 					QString visibility = getVisibility(aLink);
 					QString isFinalField = hasModifier(aLink, "final");
@@ -716,10 +717,10 @@ QString JavaHandler::serializeObject(NewType const &type)
 			}
 
 			//search for bidirectional assocciation
-                        TypeList linksIn = mApi.incomingLinks(type);
-                        foreach (NewType const aLink, linksIn) {
-				if (aLink.element() == "ClassDiagram_Association" || aLink.element() == "ClassDiagram_Composition"
-						|| aLink.element() == "ClassDiagram_Aggregation") {
+                        IdList linksIn = mApi.incomingLinks(type);
+                        foreach (Id const aLink, linksIn) {
+                                if (mApi.type(aLink).element() == "ClassDiagram_Association" || mApi.type(aLink).element() == "ClassDiagram_Composition"
+                                                || mApi.type(aLink).element() == "ClassDiagram_Aggregation") {
                                         QString typeStr = mApi.name(mApi.otherEntityFromLink(aLink, type)) + " ";
 					QString visibility = getVisibility(aLink);
 					QString isFinalField = hasModifier(aLink, "final");
@@ -743,9 +744,9 @@ QString JavaHandler::serializeObject(NewType const &type)
         } else if (objectType(type) == "ClassDiagram_View") {
 		//	    to do someting
         } else if (objectType(type) == "ClassDiagram_ClassMethod") {
-                TypeList parents = mApi.parents(type);
+                IdList parents = mApi.parents(type);
 		if (!parents.isEmpty()) {
-                        NewType parentId = parents.at(0);
+                        Id parentId = parents.at(0);
 			QString const parentType = objectType(parentId);
 
 			if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
@@ -776,9 +777,9 @@ QString JavaHandler::serializeObject(NewType const &type)
 			}
 		}
         } else if (objectType(type) == "ClassDiagram_ClassField") {
-                TypeList parents = mApi.parents(type);
+                IdList parents = mApi.parents(type);
 		if (!parents.isEmpty()) {
-                        NewType parentId = parents.at(0);
+                        Id parentId = parents.at(0);
 			QString const parentType = objectType(parentId);
 
 			if (parentType == "ClassDiagram_Class" || parentType == "ClassDiagram_Interface") {
@@ -816,9 +817,9 @@ QString JavaHandler::serializeObject(NewType const &type)
 			}
 
 			//[Superstructure 09-02-02][2] Only control edges can have initial nodes as source.
-                        TypeList outgoingLinks = mApi.outgoingLinks(type);
-                        foreach (NewType const aLink, outgoingLinks) {
-				if (aLink.element() == "ActivityDiagram_ObjectFlow") {
+                        IdList outgoingLinks = mApi.outgoingLinks(type);
+                        foreach (Id const aLink, outgoingLinks) {
+                                if (mApi.type(aLink).element() == "ActivityDiagram_ObjectFlow") {
                                         addError("Object " + objectType(type) + " with type  " + type.toString() + ". Only Control Edges can have Initial Nodes as source.");
 				}
 			}
@@ -826,10 +827,10 @@ QString JavaHandler::serializeObject(NewType const &type)
 
                 result += getConstraints(type);
         } else if (objectType(type) == "ActivityDiagram_Action") {
-                TypeList outgoingConnections = mApi.outgoingConnections(type);
-                TypeList activityDiagrams;
-                foreach (NewType aConnection, outgoingConnections) {
-			if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+                IdList outgoingConnections = mApi.outgoingConnections(type);
+                IdList activityDiagrams;
+                foreach (Id aConnection, outgoingConnections) {
+                        if (mApi.type(aConnection).element() == "ActivityDiagram_ActivityDiagramNode") {
 				activityDiagrams.append(aConnection);
 			}
 		}
@@ -856,14 +857,14 @@ QString JavaHandler::serializeObject(NewType const &type)
                 result += getComments(type) + getConstraints(type);
 
 		//[Superstructure 09-02-02][1] A final node has no outgoing edges.
-                TypeList outgoingLinks = mApi.outgoingLinks(type);
+                IdList outgoingLinks = mApi.outgoingLinks(type);
 		if (!outgoingLinks.isEmpty()) {
                         addError("Unable to serialize object " + objectType(type) + " with type: " + type.toString() + ". A final node has no outgoing edges.");
 		}
         } else if (objectType(type) == "ActivityDiagram_DecisionNode") {
                 result += getComments(type);
 		//"if" or "while"?
-                TypeList incomingLinks = mApi.incomingLinks(type);
+                IdList incomingLinks = mApi.incomingLinks(type);
 		deleteCommentLinks(incomingLinks);
 		deleteConstraintEdges(incomingLinks);
 		if (incomingLinks.length() == 1) { //"if"
@@ -878,9 +879,9 @@ QString JavaHandler::serializeObject(NewType const &type)
         } else if (objectType(type) == "ActivityDiagram_Activity") {
                 result += getComments(type) + getConstraints(type);
 		//search for "exception"-links
-                TypeList outgoingLinks = mApi.outgoingLinks(type);
-                TypeList exceptions;
-                foreach (NewType aLink, outgoingLinks) {
+                IdList outgoingLinks = mApi.outgoingLinks(type);
+                IdList exceptions;
+                foreach (Id aLink, outgoingLinks) {
 			if (getFlowGuard(aLink) != "") {
 				exceptions.append(aLink);
 			}
@@ -896,23 +897,23 @@ QString JavaHandler::serializeObject(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::serializeActivity(NewType const &idStartNode, NewType const &idUntilNode)
+QString JavaHandler::serializeActivity(Id const &idStartNode, Id const &idUntilNode)
 {
 	QString result = "";
 
-        TypeList childElems = getActivityChildren(idStartNode, idUntilNode);
+        IdList childElems = getActivityChildren(idStartNode, idUntilNode);
 
 	if (!childElems.isEmpty()) {
-                NewType last = childElems.takeLast(); //it will be serialized in the upper level activity
+                Id last = childElems.takeLast(); //it will be serialized in the upper level activity
 
-                if (last != NewType() && (last.element() == "ActivityDiagram_Action" ||
-							 last.element() == "ActivityDiagram_Activity")) {
+                if (last != Id() && (mApi.type(last).element() == "ActivityDiagram_Action" ||
+                                                         mApi.type(last).element() == "ActivityDiagram_Activity")) {
 			childElems.append(last);
 		}
 	}
 
-        foreach (NewType type, childElems) {
-           if (type != NewType()) {
+        foreach (Id type, childElems) {
+           if (type != Id()) {
                         result += serializeObject(type);
 		}
 	}
@@ -920,22 +921,22 @@ QString JavaHandler::serializeActivity(NewType const &idStartNode, NewType const
 	return result;
 }
 
-QString JavaHandler::tryCatch(NewType const &type)
+QString JavaHandler::tryCatch(Id const &type)
 {
 	QString result = "";
 	int existFinally = 0; //for checking that there is no 2 outgoing links with "finally" as a guard
 
 	//search for "exception"-links
-        TypeList outgoingLinks = mApi.outgoingLinks(type);
-        TypeList exceptions;
-        foreach (NewType aLink, outgoingLinks) {
+        IdList outgoingLinks = mApi.outgoingLinks(type);
+        IdList exceptions;
+        foreach (Id aLink, outgoingLinks) {
 		if (getFlowGuard(aLink) != "") {
 			exceptions.append(aLink);
 		}
 	}
 
 	//move "finally"-link to the end of the list
-        foreach (NewType aLink, exceptions) {
+        foreach (Id aLink, exceptions) {
 		//if this link represent "finally" case than change it with the last link in the serialization sequence
 		if (getFlowGuard(aLink) == "finally") {
 			if (existFinally == 1) {
@@ -952,15 +953,15 @@ QString JavaHandler::tryCatch(NewType const &type)
 	mIndent--;
 	result += indent() + "}";
 
-        foreach (NewType anException, exceptions) {
+        foreach (Id anException, exceptions) {
 		if (getFlowGuard(anException) != "finally") {
 			result += " catch (" + getFlowGuard(anException) + ") {\n";
 		} else {
 			result += " finally {\n";
 		}
 		mIndent++;
-                NewType exceptionHandler = mApi.otherEntityFromLink(anException, type);
-                result += serializeActivity(exceptionHandler, NewType());
+                Id exceptionHandler = mApi.otherEntityFromLink(anException, type);
+                result += serializeActivity(exceptionHandler, Id());
 		mIndent--;
 		result += indent() + "}";
 	}
@@ -970,19 +971,19 @@ QString JavaHandler::tryCatch(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::ifStatement(NewType const &type)
+QString JavaHandler::ifStatement(Id const &type)
 {
 	QString result = indent() + "";
 
-        NewType untilMergeNode = findMergeNode(type);
+        Id untilMergeNode = findMergeNode(type);
 	int existElse = 0; //for checking that there is no 2 outgoing links with "else" as a guard
 
 	//move "else" link to the end of the list and delete Constraint Edges.
-        TypeList outgoingLinks = mApi.outgoingLinks(type);
+        IdList outgoingLinks = mApi.outgoingLinks(type);
 	deleteCommentLinks(outgoingLinks);
 	deleteConstraintEdges(outgoingLinks);
-        foreach (NewType aLink, outgoingLinks) {
-		if (aLink.element() == "ActivityDiagram_ConstraintEdge") {
+        foreach (Id aLink, outgoingLinks) {
+                if (mApi.type(aLink).element() == "ActivityDiagram_ConstraintEdge") {
 			outgoingLinks.removeAll(aLink);
 			break;
 		}
@@ -997,8 +998,8 @@ QString JavaHandler::ifStatement(NewType const &type)
 	}
 
 	//serialization
-        foreach (NewType aLink, outgoingLinks) {
-                NewType caseBody = mApi.otherEntityFromLink(aLink, type);
+        foreach (Id aLink, outgoingLinks) {
+                Id caseBody = mApi.otherEntityFromLink(aLink, type);
 		if (caseBody != untilMergeNode) {
 			if (aLink != outgoingLinks.at(0)) { //if it is not the first link, connected to the Decision Node
 				result += " else ";
@@ -1018,7 +1019,7 @@ QString JavaHandler::ifStatement(NewType const &type)
 	}
 
 	//if there is no merge node than we must close the function
-        if (untilMergeNode == NewType()) {
+        if (untilMergeNode == Id()) {
 		mIndent--;
 		result += indent() + "}\n";
 	}
@@ -1026,21 +1027,21 @@ QString JavaHandler::ifStatement(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::whileDoLoop(NewType const &type)
+QString JavaHandler::whileDoLoop(Id const &type)
 {
 	QString result = indent() + "";
 
 	//get the "body" link
-        NewType nonBodyLink = findNonBodyLink(type);
-        TypeList outgoingLinks = mApi.outgoingLinks(type);
+        Id nonBodyLink = findNonBodyLink(type);
+        IdList outgoingLinks = mApi.outgoingLinks(type);
 	outgoingLinks.removeAll(nonBodyLink);
-        NewType bodyLink = outgoingLinks.at(0);
+        Id bodyLink = outgoingLinks.at(0);
 
 	result += "while (" + getFlowGuard(bodyLink) + ") {\n";
 	mIndent++;
 
 	//Serialization of the loop's body
-        NewType nextElement = mApi.otherEntityFromLink(bodyLink, type);
+        Id nextElement = mApi.otherEntityFromLink(bodyLink, type);
         result += serializeActivity(nextElement, type);
 \
 	mIndent--;
@@ -1049,7 +1050,7 @@ QString JavaHandler::whileDoLoop(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getVisibility(NewType const &type)
+QString JavaHandler::getVisibility(Id const &type)
 {
 	QString result = "";
 
@@ -1077,7 +1078,7 @@ QString JavaHandler::getVisibility(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getFlowGuard(NewType const &type)
+QString JavaHandler::getFlowGuard(Id const &type)
 {
 	QString result = "";
 
@@ -1097,7 +1098,7 @@ QString JavaHandler::getFlowGuard(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getMultiplicity(NewType const &type)
+QString JavaHandler::getMultiplicity(Id const &type)
 {
 	QString result = "";
 
@@ -1109,7 +1110,7 @@ QString JavaHandler::getMultiplicity(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getType(NewType const &type)
+QString JavaHandler::getType(Id const &type)
 {
 	QString result = "";
 
@@ -1125,16 +1126,16 @@ QString JavaHandler::getType(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getSuperclass(NewType const &type)
+QString JavaHandler::getSuperclass(Id const &type)
 {
 	QString result = "";
 	bool hasParentClass = false;
 
         if (!mApi.links(type).isEmpty()) {
-                TypeList links = mApi.outgoingLinks(type);
+                IdList links = mApi.outgoingLinks(type);
 
-                foreach (NewType const aLink, links) {
-			if (aLink.element() == "ClassDiagram_Generalization") {
+                foreach (Id const aLink, links) {
+                        if (mApi.type(aLink).element() == "ClassDiagram_Generalization") {
 				if (hasParentClass == false) {
 					hasParentClass = true;
                                         if (type == mApi.otherEntityFromLink(aLink, type)) {
@@ -1154,16 +1155,16 @@ QString JavaHandler::getSuperclass(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getInterfaces(NewType const &type)
+QString JavaHandler::getInterfaces(Id const &type)
 {
 	QString result = "";
 	bool hasInterface = false;
 
         if (!mApi.links(type).isEmpty()) {
-                TypeList links = mApi.outgoingLinks(type);
+                IdList links = mApi.outgoingLinks(type);
 
-                foreach (NewType const aLink, links) {
-			if (aLink.element() == "ClassDiagram_InterfaceRealization") {
+                foreach (Id const aLink, links) {
+                        if (mApi.type(aLink).element() == "ClassDiagram_InterfaceRealization") {
                                  QString interface = mApi.name(mApi.otherEntityFromLink(aLink, type));
 				 hasInterface = true;
 				 if (!hasInterface) {
@@ -1179,18 +1180,18 @@ QString JavaHandler::getInterfaces(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getMethodCode(NewType const &type)
+QString JavaHandler::getMethodCode(Id const &type)
 {
 	QString result = "{\n";
 	mIndent++;
 
         if (!mApi.outgoingConnections(type).isEmpty()) {
-                TypeList outgoingConnections = mApi.outgoingConnections(type);
-                NewType realizationDiagram;
+                IdList outgoingConnections = mApi.outgoingConnections(type);
+                Id realizationDiagram;
 
 		int realizationsCount = 0;
-                foreach (NewType aConnection, outgoingConnections) {
-			if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+                foreach (Id aConnection, outgoingConnections) {
+                        if (mApi.type(aConnection).element() == "ActivityDiagram_ActivityDiagramNode") {
 				realizationDiagram = aConnection;
 				realizationsCount++;
 			}
@@ -1213,7 +1214,7 @@ QString JavaHandler::getMethodCode(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::hasModifier(NewType const &type, QString const &modifier)
+QString JavaHandler::hasModifier(Id const &type, QString const &modifier)
 {
 	QString result = "";
 
@@ -1238,7 +1239,7 @@ QString JavaHandler::hasModifier(NewType const &type, QString const &modifier)
 	return result;
 }
 
-QString JavaHandler::getOperationFactors(NewType const &type)
+QString JavaHandler::getOperationFactors(Id const &type)
 {
 	QString result = "";
 
@@ -1251,7 +1252,7 @@ QString JavaHandler::getOperationFactors(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getDefaultValue(NewType const &type)
+QString JavaHandler::getDefaultValue(Id const &type)
 {
 	QString result = "";
 
@@ -1264,7 +1265,7 @@ QString JavaHandler::getDefaultValue(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getImports(NewType const &type)
+QString JavaHandler::getImports(Id const &type)
 {
 	QString result = "";
 
@@ -1285,29 +1286,29 @@ QString JavaHandler::getImports(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getConstraints(NewType const &type)
+QString JavaHandler::getConstraints(Id const &type)
 {
 	QString result = "";
 
 	//if it has the Constraint nodes
-        TypeList outgoingLinks = mApi.outgoingLinks(type);
-        TypeList constraints = deleteConstraintEdges(outgoingLinks);
-        TypeList incomingLinks = mApi.incomingLinks(type);
+        IdList outgoingLinks = mApi.outgoingLinks(type);
+        IdList constraints = deleteConstraintEdges(outgoingLinks);
+        IdList incomingLinks = mApi.incomingLinks(type);
 	constraints.append(deleteConstraintEdges(incomingLinks));
 
 	if (constraints.length() >= 2) {
                 addError("Object " + objectType(type) + " with type: " + type.toString() + ". The order of Constraints generalization can not be defined.");
 	}
 
-        foreach (NewType aConstraint, constraints) {
-                NewType constraint = mApi.otherEntityFromLink(aConstraint, type);
+        foreach (Id aConstraint, constraints) {
+                Id constraint = mApi.otherEntityFromLink(aConstraint, type);
 		result += getConstraint(constraint) + "\n";
 	}
 
 	return result;
 }
 
-QString JavaHandler::getConstraint(NewType const &type)
+QString JavaHandler::getConstraint(Id const &type)
 {
 	QString result = "";
 
@@ -1321,28 +1322,28 @@ QString JavaHandler::getConstraint(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::getComments(NewType const &type)
+QString JavaHandler::getComments(Id const &type)
 {
 	QString result = "";
 
-        TypeList outgoingLinks = mApi.outgoingLinks(type);
-        TypeList comments = deleteCommentLinks(outgoingLinks);
-        TypeList incominglinks = mApi.incomingLinks(type);
+        IdList outgoingLinks = mApi.outgoingLinks(type);
+        IdList comments = deleteCommentLinks(outgoingLinks);
+        IdList incominglinks = mApi.incomingLinks(type);
 	comments.append(deleteCommentLinks(incominglinks));
 
 	if (comments.length() >= 2) {
                 addError("Object " + objectType(type) + " with type: " + type.toString() + ". The order of Comments generalization can not be defined.");
 	}
 
-        foreach (NewType aCommentLink, comments) {
-                NewType comment = mApi.otherEntityFromLink(aCommentLink, type);
+        foreach (Id aCommentLink, comments) {
+                Id comment = mApi.otherEntityFromLink(aCommentLink, type);
 		result += getComment(comment) + "\n";
 	}
 
 	return result;
 }
 
-QString JavaHandler::getComment(NewType const &type)
+QString JavaHandler::getComment(Id const &type)
 {
 	QString result = "";
 
@@ -1364,9 +1365,9 @@ QString JavaHandler::getComment(NewType const &type)
 	return result;
 }
 
-QString JavaHandler::objectType(NewType const &type)
+QString JavaHandler::objectType(Id const &type)
 {
-        return mApi.typeName(type);
+        return mApi.name(type);
 }
 
 bool JavaHandler::isTypeSuitable(QString const &type) const

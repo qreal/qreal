@@ -1,6 +1,6 @@
 #include "error.h"
 
-Error::Error(QString const &message, Severity const &severity, qReal::NewType const &position)
+Error::Error(QString const &message, Severity const &severity, qReal::Id const &position)
 	: mMessage(message), mSeverity(severity), mPosition(position)
 {
 }
@@ -15,7 +15,7 @@ QString Error::message() const
 	return mMessage;
 }
 
-qReal::NewType Error::position() const
+qReal::Id Error::position() const
 {
 	return mPosition;
 }

@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "../../kernel/NewType.h"
+#include "../../kernel/ids.h"
 
 namespace qrRepo {
     class RepoApi;
@@ -21,44 +21,44 @@ namespace qReal {
             QString parseJavaLibraries(QString const &pathToDir);
         private:
             bool checkTheModel();
-            bool commentAndConstraintChecking(TypeList const &idList, QString const &diagramType, QString const &nodeType);
+            bool commentAndConstraintChecking(IdList const &idList, QString const &diagramType, QString const &nodeType);
 
-            TypeList getActivityChildren(NewType const &idStartNode, NewType const &untilNode);
+            IdList getActivityChildren(Id const &idStartNode, Id const &untilNode);
 
-            QString serializeObject(NewType const &type);
-            QString serializeChildren(NewType const &type);
-            QString serializeActivity(NewType const &idStartNode, NewType const &idUntilNode);
+            QString serializeObject(Id const &type);
+            QString serializeChildren(Id const &type);
+            QString serializeActivity(Id const &idStartNode, Id const &idUntilNode);
 
-            QString getVisibility(NewType const &type);
-            QString getMultiplicity(NewType const &type);
-            QString getType(NewType const &type);
-            QString getDefaultValue(NewType const &type);
-            QString getImports(NewType const &type);
-            QString getConstraints(NewType const &type);
-            QString getConstraint(NewType const &type);
-            QString getComments(NewType const &type);
-            QString getComment(NewType const &type);
-            QString getOperationFactors(NewType const &type);
-            QString hasModifier(NewType const &type, QString const &modifier);
-            QString getSuperclass(NewType const &type);
-            QString getInterfaces(NewType const &type);
-            QString getMethodCode(NewType const &type);
-            QString getFlowGuard(NewType const &type);
-            QString serializeMultiplicity(NewType const &type, QString const &multiplicity) const;
+            QString getVisibility(Id const &type);
+            QString getMultiplicity(Id const &type);
+            QString getType(Id const &type);
+            QString getDefaultValue(Id const &type);
+            QString getImports(Id const &type);
+            QString getConstraints(Id const &type);
+            QString getConstraint(Id const &type);
+            QString getComments(Id const &type);
+            QString getComment(Id const &type);
+            QString getOperationFactors(Id const &type);
+            QString hasModifier(Id const &type, QString const &modifier);
+            QString getSuperclass(Id const &type);
+            QString getInterfaces(Id const &type);
+            QString getMethodCode(Id const &type);
+            QString getFlowGuard(Id const &type);
+            QString serializeMultiplicity(Id const &type, QString const &multiplicity) const;
 
             bool isTypeSuitable(QString const &type) const;
             bool isVisibilitySuitable(QString const &type) const;
 
-            QString objectType(NewType const &type);
-            QString tryCatch(NewType const &type);
-            QString ifStatement(NewType const &type);
-            QString whileDoLoop(NewType const &type);
+            QString objectType(Id const &type);
+            QString tryCatch(Id const &type);
+            QString ifStatement(Id const &type);
+            QString whileDoLoop(Id const &type);
 
-            NewType findMergeNode(NewType const &idDecisionNode);
-            NewType findNonBodyLink(NewType const &idDecisionNode);
-            TypeList findIntermediateNodes(NewType const &type, NewType const &untilNode, bool const closesFunction);
-            TypeList deleteCommentLinks(TypeList &idList);
-            TypeList deleteConstraintEdges(TypeList &idList);
+            Id findMergeNode(Id const &idDecisionNode);
+            Id findNonBodyLink(Id const &idDecisionNode);
+            IdList findIntermediateNodes(Id const &type, Id const &untilNode, bool const closesFunction);
+            IdList deleteCommentLinks(IdList &idList);
+            IdList deleteConstraintEdges(IdList &idList);
 
             void addError(QString const &errorText);
 

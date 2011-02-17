@@ -338,7 +338,8 @@ QMimeData* Model::mimeData(QModelIndexList const &indexes) const
 	foreach (QModelIndex index, indexes) {
 		if (index.isValid()) {
 			ModelTreeItem *item = static_cast<ModelTreeItem*>(index.internalPointer());
-                        stream << item->id().toString();
+                        stream << item->id().toString(); //uuid
+                        stream << mApi.type(item->id()).toString(); //type
 			stream << pathToItem(item);
                         stream << mApi.property(item->id(), "name");
                         stream << mApi.property(item->id(), "position").toPointF();
@@ -365,47 +366,50 @@ bool Model::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, 
 
 		QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
 		QDataStream stream(&dragData, QIODevice::ReadOnly);
+                QString idString;
                 QString typeString;
 		QString pathToItem;
 		QString name;
 		QPointF position;
+                stream >> idString;
                 stream >> typeString;
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
-                Id type = Id::loadFromString(typeString);
+                Id id = Id::loadFromString(idString);
+                NewType type = NewType::loadFromString(typeString);
                 //Q_ASSERT(type.() == 4);  // Бросать в модель мы можем только конкретные элементы.
 
-                if (mTreeItems.contains(type))  // Пока на диаграмме не может быть больше одного экземпляра
+                if (mTreeItems.contains(id))  // Пока на диаграмме не может быть больше одного экземпляра
 			// одной и той же сущности, бросать существующие элементы нельзя.
 			return false;
 
-                return addElementToModel(parentItem, type, pathToItem, name, position, action) != NULL;
+                return addElementToModel(parentItem, id, type, pathToItem, name, position, action) != NULL;
 	}
 }
 
-ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
+ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id, NewType const &elementType,
 	QString const &oldPathToItem, QString const &name, QPointF const &position, Qt::DropAction action)
 {
 	Q_UNUSED(oldPathToItem)
 	Q_UNUSED(action)
 
-        if (isDiagram(this->api().type(id))) {
+        if (isDiagram(elementType)) {
                 if (!isDiagram(mApi.type(parentItem->id())) && parentItem != mRootItem) {
 			qDebug() << "Diagram cannot be placed into element.";
 			return NULL;
 		}
 		if (parentItem == mRootItem)
-                        log("Creating diagram:\n" + this->api().type(id).diagram() + "\n", this->api().type(id));
+                        log("Creating diagram:\n" + elementType.diagram() + "\n", elementType);
 		else
-                        log("Adding element:\n" + this->api().type(id).element() + "\n", mApi.type(isSituatedOn(parentItem)->id()));
+                        log("Adding element:\n" + elementType.element() + "\n", mApi.type(isSituatedOn(parentItem)->id()));
 	}
 	else {
 		if (parentItem == mRootItem) {
 			qDebug() << "Element can be placed only on diagram.";
 			return NULL;
 		}
-                log("Adding element:\n" + this->api().type(id).element() + "\n", this->api().type(isSituatedOn(parentItem)->id()));
+                log("Adding element:\n" + elementType.element() + "\n", this->api().type(isSituatedOn(parentItem)->id()));
 	}
 
 	int newRow = parentItem->children().size();
@@ -413,7 +417,7 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
                 ModelTreeItem *item = new ModelTreeItem(id, parentItem);
 		parentItem->addChild(item);
                 mTreeItems.insert(id, item);
-                mApi.addChild(parentItem->id(), id, mApi.type(id));
+                mApi.addChild(parentItem->id(), id, elementType);
                 mApi.setProperty(id, "name", name);
                 mApi.setProperty(id, "from", ROOT_ID.toVariant());
                 mApi.setProperty(id, "to", ROOT_ID.toVariant());
@@ -427,21 +431,21 @@ ModelTreeItem *Model::addElementToModel(ModelTreeItem *parentItem, Id const &id,
                 mApi.setProperty(id, "position", position);
                 mApi.setProperty(id, "configuration", QVariant(QPolygon()));
 
-                QStringList properties = mEditorManager.getPropertyNames(mApi.type(id));
+                QStringList properties = mEditorManager.getPropertyNames(elementType);
 		foreach (QString property, properties)
 		// for those properties that doesn't have default values, plugin will return empty string
-                        mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(this->api().type(id), property));
+                        mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(elementType, property));
 
 		endInsertRows();
 	return item;
 }
 
-bool Model::addElementToModel(Id const &parent, Id const &id, QString const &name, QPointF const &position)
+bool Model::addElementToModel(Id const &parent, Id const &id, NewType const &type, QString const &name, QPointF const &position)
 {
 	ModelTreeItem *parentItem = parent == ROOT_ID ? mRootItem
                 : static_cast<ModelTreeItem*>(indexById(parent).internalPointer());
 	Q_ASSERT(parentItem != NULL);
-        return addElementToModel(parentItem, id, "", name, position, Qt::CopyAction) != NULL;
+        return addElementToModel(parentItem, id, type, "", name, position, Qt::CopyAction) != NULL;
 }
 
 void Model::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
@@ -615,7 +619,8 @@ ModelAssistApi const &Model::assistApi() const
 
 NewType Model::getRootDiagram()
 {
-        return mRootIndex.data(roles::idRole).value<NewType>();
+    Id id = mRootIndex.data(roles::idRole).value<Id>();
+        return mApi.type(id);
 }
 
 void Model::setRootIndex(const QModelIndex &index)

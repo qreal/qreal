@@ -223,6 +223,9 @@ void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant co
                 (mClient.property(id, propertyName) != value))
 
         mClient.setProperty(id, propertyName, value);
+
+        if (!mClient.hasProperty(id, propertyName))
+            mClient.setProperty(id, propertyName, value);
 }
 
 void RepoApi::removeProperty(Id const &id, QString const &propertyName)

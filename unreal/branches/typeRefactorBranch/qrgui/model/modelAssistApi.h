@@ -31,13 +31,13 @@ namespace qReal {
                         virtual void addUsage(qReal::Id const &source, qReal::Id const &destination);
                         virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
 
-                        virtual Id createElement(qReal::Id const &parent, qReal::Id const &type);
+                        virtual Id createElement(qReal::Id const &parent, qReal::NewType const &type);
 
                         virtual void setProperty(qReal::Id const &elem, int const role, QVariant const &newValue);
                         virtual QVariant getProperty(qReal::Id const &elem, int const role) const;
 
-                        void createConnected(qReal::Id const &sourceElement, qReal::Id const &elementId);
-                        void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementId);
+                        void createConnected(qReal::Id const &sourceElement, qReal::NewType const &elementType);
+                        void createUsed(qReal::Id const &sourceElement, qReal::NewType const &elementType);
                         qReal::TypeList diagramsAbleToBeConnectedTo(qReal::NewType const &element) const;
                         qReal::TypeList diagramsAbleToBeUsedIn(qReal::NewType const &element) const;
 
@@ -48,7 +48,7 @@ namespace qReal {
 			ModelAssistApi& operator =(ModelAssistApi const &); // Assignment is forbidden also
 
                         static TypeList diagramsFromList(TypeList const &list);
-                        Id createConnectedElement(Id const &source, Id const &elementId);
+                        Id createConnectedElement(Id const &source, NewType const &elementType);
 
 			Model &mModel;
 			EditorManager const &mEditorManager;

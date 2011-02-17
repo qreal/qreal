@@ -19,7 +19,9 @@ Element::Element()
 void Element::setIndex(QPersistentModelIndex &index)
 {
 	mDataIndex = index;
-        mType = mDataIndex.data(roles::idRole).value<NewType>();
+        mId = mDataIndex.data(roles::idRole).value<Id>();
+        model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
+        mType = itemModel->api().type(mId);
 	update();
 }
 

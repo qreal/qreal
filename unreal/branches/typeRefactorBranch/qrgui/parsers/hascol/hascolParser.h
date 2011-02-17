@@ -23,28 +23,28 @@ namespace qReal {
 
 			gui::ErrorReporter &parse(QStringList const &files);
 		private:
-                        NewType mImportedPortMappingDiagramId;
-                        NewType mImportedStructureDiagramId;
+                        Id mImportedPortMappingDiagramId;
+                        Id mImportedStructureDiagramId;
 
 			qrRepo::RepoApi &mApi;
 			EditorManager const &mEditorManager;
 			gui::ErrorReporter mErrorReporter;
 
-                        NewType initDiagram(QString const &diagramName, QString const &diagramType);
-                        NewType addElement(NewType const &parent, NewType const &elementType, QString const &name);
+                        Id initDiagram(QString const &diagramName, QString const &diagramType);
+                        Id addElement(Id const &parent, NewType const &elementType, QString const &name);
 			void preprocessFile(QString const &fileName);
 			void parseFile(QString const &fileName);
 			void parseProcess(QDomElement const &element);
 			void parsePorts(QDomNodeList const &ports, QString const &direction
-                                , NewType const &parentOnAPortMap, NewType const &parentOnAStructure);
-                        void initClassifierFields(NewType const &classifier);
+                                , Id const &parentOnAPortMap, Id const &parentOnAStructure);
+                        void initClassifierFields(Id const &classifier);
 
-                        void doLayout(NewType const &diagram, unsigned cellWidth, unsigned cellHeight);
+                        void doLayout(Id const &diagram, unsigned cellWidth, unsigned cellHeight);
 			void doPortMappingLayout();
 			void doStructureLayout();
-                        void doPlugsLayout(NewType const &parent);
-                        void doPortsLayout(NewType const &parent);
-                        void doLayoutForPortsType(NewType const &parent, unsigned margin, QString const &direction, unsigned count);
+                        void doPlugsLayout(Id const &parent);
+                        void doPortsLayout(Id const &parent);
+                        void doLayoutForPortsType(Id const &parent, unsigned margin, QString const &direction, unsigned count);
 		};
 
 	}

@@ -65,13 +65,13 @@ void HascolParser::preprocessFile(QString const &fileName)
 		mErrorReporter.addInformation(QString("Error stream: %1").arg(standardError.data()));
 }
 
-NewType HascolParser::initDiagram(QString const &diagramName, QString const &diagramType)
+Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramType)
 {
-        NewType result;
+        Id result;
         NewType const diagramTypeId = NewType("HascolMetamodel", "HascolPortMapping", diagramType);
 
-        foreach(NewType element, mApi.children(ROOT_ID)) {
-                if (element == diagramTypeId && mApi.name(element) == diagramName) {
+        foreach(Id element, mApi.children(ROOT_ID)) {
+                if (mApi.type(element) == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
 			// full exterminatus
 			// should track changed elements, but it's tricky
@@ -79,22 +79,22 @@ NewType HascolParser::initDiagram(QString const &diagramName, QString const &dia
 		}
 	}
 
-        if (result == NewType())
+        if (result == Id())
 		result = addElement(ROOT_ID, diagramTypeId, diagramName);
 	return result;
 }
 
-NewType HascolParser::addElement(NewType const &parent, NewType const &elementType, QString const &name)
+Id HascolParser::addElement(Id const &parent, NewType const &elementType, QString const &name)
 {
-        NewType element(elementType, QUuid::createUuid().toString());
+        Id element = Id(QUuid::createUuid());
 
-	mApi.addChild(parent, element);
+        mApi.addChild(parent, element, elementType);
 	mApi.setProperty(element, "name", name);
 	mApi.setProperty(element, "from", ROOT_ID.toVariant());
 	mApi.setProperty(element, "to", ROOT_ID.toVariant());
 	mApi.setProperty(element, "fromPort", 0.0);
 	mApi.setProperty(element, "toPort", 0.0);
-        mApi.setProperty(element, "links", TypeListHelper::toVariant(TypeList()));
+        mApi.setProperty(element, "links", IdListHelper::toVariant(IdList()));
 
 	mApi.setProperty(element, "position", QPointF(0,0));
 	mApi.setProperty(element, "configuration", QVariant(QPolygon()));
@@ -119,7 +119,7 @@ void HascolParser::parseFile(QString const& fileName)
 	}
 }
 
-void HascolParser::initClassifierFields(NewType const &classifier)
+void HascolParser::initClassifierFields(Id const &classifier)
 {
 	// TODO: remove from here. make something like auto-completion of fields
 	mApi.setProperty(classifier, "clientDependency", "");
@@ -151,8 +151,8 @@ void HascolParser::parseProcess(QDomElement const &element)
         NewType structureElementType = functor ? NewType(structureBaseId, "HascolStructure_Functor")
                 : NewType(structureBaseId, "HascolStructure_Process");
 
-        NewType processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
-        NewType processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
+        Id processOnAPortMap = addElement(mImportedPortMappingDiagramId, portMappingElementType, "a" + name + " : " + name);
+        Id processOnAStructure = addElement(mImportedStructureDiagramId, structureElementType, name);
 	initClassifierFields(processOnAStructure);
 
 	QDomNodeList insList = element.elementsByTagName("ins");
@@ -169,7 +169,7 @@ void HascolParser::parseProcess(QDomElement const &element)
 }
 
 void HascolParser::parsePorts(QDomNodeList const &ports, QString const &direction
-        , NewType const &parentOnAPortMap, NewType const &parentOnAStructure)
+        , Id const &parentOnAPortMap, Id const &parentOnAStructure)
 {
 	for (unsigned i = 0; i < ports.length(); ++i) {
                 NewType const portMappingBaseId = NewType("HascolMetamodel", "HascolPortMapping");
@@ -190,24 +190,24 @@ void HascolParser::parsePorts(QDomNodeList const &ports, QString const &directio
 
 		// ports should be without arguments here
                 NewType attrType = NewType(portMappingBaseId, "HascolPortMapping_Port");
-                NewType portId = addElement(parentOnAPortMap, attrType, portName);
+                Id portId = addElement(parentOnAPortMap, attrType, portName);
 		mApi.setProperty(portId, "direction", direction);
 
 		portName += "(" + parameters + ")";
 
                 NewType structureAttrType = NewType(structureBaseId, "HascolStructure_ProcessOperation");
-                NewType plugId = addElement(parentOnAStructure, structureAttrType, portName);
+                Id plugId = addElement(parentOnAStructure, structureAttrType, portName);
 		mApi.setProperty(plugId, "direction", direction);
 		initClassifierFields(plugId);
 	}
 }
 
-void HascolParser::doLayout(NewType const &diagram, unsigned cellWidth, unsigned cellHeight)
+void HascolParser::doLayout(Id const &diagram, unsigned cellWidth, unsigned cellHeight)
 {
 	unsigned rowWidth = ceil(sqrt(static_cast<qreal>(mApi.children(diagram).count())));
 	unsigned currentRow = 0;
 	unsigned currentColumn = 0;
-        foreach(NewType element, mApi.children(diagram)) {
+        foreach(Id element, mApi.children(diagram)) {
 		mApi.setProperty(element, "position", QPointF(currentColumn * cellWidth, currentRow * cellHeight));
 		++currentColumn;
 		if (currentColumn >= rowWidth) {
@@ -220,35 +220,35 @@ void HascolParser::doLayout(NewType const &diagram, unsigned cellWidth, unsigned
 void HascolParser::doPortMappingLayout()
 {
 	doLayout(mImportedPortMappingDiagramId, 300, 150);
-        foreach(NewType element, mApi.children(mImportedPortMappingDiagramId))
+        foreach(Id element, mApi.children(mImportedPortMappingDiagramId))
 		doPortsLayout(element);
 }
 
 void HascolParser::doStructureLayout()
 {
 	doLayout(mImportedStructureDiagramId, 300, 250);
-        foreach(NewType element, mApi.children(mImportedStructureDiagramId))
+        foreach(Id element, mApi.children(mImportedStructureDiagramId))
 		doPlugsLayout(element);
 }
 
-void HascolParser::doPlugsLayout(NewType const &parent)
+void HascolParser::doPlugsLayout(Id const &parent)
 {
 	unsigned const startY = 50;
 
 	double step = 25;
 	unsigned current = 1;
 
-        foreach(NewType element, mApi.children(parent)) {
+        foreach(Id element, mApi.children(parent)) {
 		mApi.setProperty(element, "position", QPointF(10, startY + step * current));
 		++current;
 	}
 }
 
-void HascolParser::doPortsLayout(NewType const &parent)
+void HascolParser::doPortsLayout(Id const &parent)
 {
 	unsigned inputPorts = 0;
 	unsigned outputPorts = 0;
-        foreach(NewType element, mApi.children(parent)) {
+        foreach(Id element, mApi.children(parent)) {
 		if (mApi.hasProperty(element, "direction")) {
 			if (mApi.stringProperty(element, "direction") == "in")
 				++inputPorts;
@@ -261,7 +261,7 @@ void HascolParser::doPortsLayout(NewType const &parent)
 	doLayoutForPortsType(parent, 175, "out", outputPorts);
 }
 
-void HascolParser::doLayoutForPortsType(NewType const &parent, unsigned margin, QString const &direction, unsigned count)
+void HascolParser::doLayoutForPortsType(Id const &parent, unsigned margin, QString const &direction, unsigned count)
 {
 	unsigned const startY = 0;
 	unsigned const endY = 100;
@@ -269,7 +269,7 @@ void HascolParser::doLayoutForPortsType(NewType const &parent, unsigned margin, 
 	double step = (endY - startY) / (count + 1);
 	unsigned current = 1;
 
-        foreach(NewType element, mApi.children(parent)) {
+        foreach(Id element, mApi.children(parent)) {
 		if (mApi.hasProperty(element, "direction")) {
 			if (mApi.stringProperty(element, "direction") == direction) {
 				mApi.setProperty(element, "position", QPointF(margin, startY + step * current));

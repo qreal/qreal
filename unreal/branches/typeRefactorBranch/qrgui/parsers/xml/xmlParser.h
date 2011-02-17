@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
+#include "../../kernel/ids.h"
 #include "../../kernel/NewType.h"
 #include <QtCore/QHash>
 #include <QtCore/QFileInfo>
@@ -28,10 +29,10 @@ namespace qReal {
 		private:
 			qrRepo::RepoApi &mApi;
 			EditorManager const &mEditorManager;
-                        NewType mMetamodel;
-                        QHash<QString, NewType> mElements;
-                        QHash<NewType, QStringList> mParents;
-                        QHash<NewType, QStringList> mContainers;
+                        Id mMetamodel;
+                        QHash<QString, Id> mElements;
+                        QHash<Id, QStringList> mParents;
+                        QHash<Id, QStringList> mContainers;
 			int mElementsColumn;
 			int mElementCurrentColumn;
 			int mMoveWidth;
@@ -41,55 +42,55 @@ namespace qReal {
 			int mParentPositionX;
 
 			QStringList getIncludeList(QString const &fileName);
-                        NewType getPackageId();
-                        void initMetamodel(QDomDocument const &document, QString const &directoryName, NewType const &type);
-                        NewType initListener(QString const &name, QString const &className, QString const &fileName);
-                        void createDiagramAttributes(QDomElement const &diagram, NewType const &diagramId);
-                        void createNonGraphicElements(QDomElement const &type, NewType const &diagramId);
-                        void createGraphicElements(QDomElement const &type, NewType const &diagramId);
-                        void initEnum(QDomElement const &enumElement, NewType const &diagramId);
-                        void initNode(QDomElement const &node, NewType const &diagramId);
-                        void initEdge(QDomElement const &edge, NewType const &diagramId);
-                        void initImport(QDomElement const &import, NewType const &diagramId);
-                        void setStandartConfigurations(NewType const &type, NewType const &parent, QString const &name,
+                        Id getPackageId();
+                        void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &type);
+                        Id initListener(QString const &name, QString const &className, QString const &fileName);
+                        void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
+                        void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
+                        void createGraphicElements(QDomElement const &type, Id const &diagramId);
+                        void initEnum(QDomElement const &enumElement, Id const &diagramId);
+                        void initNode(QDomElement const &node, Id const &diagramId);
+                        void initEdge(QDomElement const &edge, Id const &diagramId);
+                        void initImport(QDomElement const &import, Id const &diagramId);
+                        void setStandartConfigurations(Id const &id, Id const &parent, NewType const &type, QString const &name,
 					QString const &displayedName);
-                        void setEnumAttributes(QDomElement const &enumElement, NewType const &enumId);
-                        void setNodeAttributes(QDomElement const &node, NewType const &nodeId);
-                        void setEdgeAttributes(QDomElement const &edge, NewType const &edgeId);
-                        void setNodeConfigurations(QDomElement const &tag, NewType const &nodeId);
-                        void setEdgeConfigurations(QDomElement const &tag, NewType const &edgeId);
-                        void setGeneralization(QDomElement const &element, NewType const &elementId);
-                        void setContainers(QDomElement const &element, NewType const &elementId);
-                        void setContainerProperties(QDomElement const &element, NewType const &elementId);
-                        void setBoolValuesForContainer(QString const &tagName, QDomElement const &property, NewType const &type);
-                        void setSizesForContainer(QString const &tagName, QDomElement const &property, NewType const &type);
-                        void setProperties(QDomElement const &element, NewType const &elementId);
-                        void setConnections(QDomElement const &element, NewType const &elementId);
-                        void setAssociations(QDomElement const &element, NewType const &elementId);
-                        void setUsages(QDomElement const &element, NewType const &elementId);
-                        void setPossibleEdges(QDomElement const &element, NewType const &elementId);
-                        void setFields(QDomElement const &element, NewType const &elementId);
-                        void setPin(NewType const &elementId);
-                        void setAction(NewType const &elementId);
-                        void setLineType(QDomElement const &tag, NewType const &edgeId);
-                        void initPossibleEdge(QDomElement const &possibleEdge, NewType const &elementId);
-                        void initDiagram(QDomElement const &diagram, NewType const &parent,
+                        void setEnumAttributes(QDomElement const &enumElement, Id const &enumId);
+                        void setNodeAttributes(QDomElement const &node, Id const &nodeId);
+                        void setEdgeAttributes(QDomElement const &edge, Id const &edgeId);
+                        void setNodeConfigurations(QDomElement const &tag, Id const &nodeId);
+                        void setEdgeConfigurations(QDomElement const &tag, Id const &edgeId);
+                        void setGeneralization(QDomElement const &element, Id const &elementId);
+                        void setContainers(QDomElement const &element, Id const &elementId);
+                        void setContainerProperties(QDomElement const &element, Id const &elementId);
+                        void setBoolValuesForContainer(QString const &tagName, QDomElement const &property, Id const &type);
+                        void setSizesForContainer(QString const &tagName, QDomElement const &property, Id const &type);
+                        void setProperties(QDomElement const &element, Id const &elementId);
+                        void setConnections(QDomElement const &element, Id const &elementId);
+                        void setAssociations(QDomElement const &element, Id const &elementId);
+                        void setUsages(QDomElement const &element, Id const &elementId);
+                        void setPossibleEdges(QDomElement const &element, Id const &elementId);
+                        void setFields(QDomElement const &element, Id const &elementId);
+                        void setPin(Id const &elementId);
+                        void setAction(Id const &elementId);
+                        void setLineType(QDomElement const &tag, Id const &edgeId);
+                        void initPossibleEdge(QDomElement const &possibleEdge, Id const &elementId);
+                        void initDiagram(QDomElement const &diagram, Id const &parent,
 					QString const &name, QString const &displayedName);
-                        void initProperty(QDomElement const &property, NewType const &elementId);
-                        void initConnection(QDomElement const &connection, NewType const &elementId);
-                        void initUsage(QDomElement const &usage, NewType const &elementId);
+                        void initProperty(QDomElement const &property, Id const &elementId);
+                        void initConnection(QDomElement const &connection, Id const &elementId);
+                        void initUsage(QDomElement const &usage, Id const &elementId);
 			void initGeneralization(QString const &diagramName);
-                        void setParents(NewType const &type, QString const &diagramName);
-                        void initInheritance(NewType const &idFrom, NewType const &idTo);
+                        void setParents(Id const &type, QString const &diagramName);
+                        void initInheritance(Id const &idFrom, Id const &idTo);
 			void initContainer(QString const &diagramName);
-                        void setContains(NewType const &type, QString const &diagramName);
-                        void initContains(NewType const &idFrom, NewType const &idTo);
-                        NewType getParentId(QString const &elementName);
+                        void setContains(Id const &type, QString const &diagramName);
+                        void initContains(Id const &idFrom, Id const &idTo);
+                        Id getParentId(QString const &elementName);
 
-                        void setChildrenPositions(NewType const &type, unsigned cellWidth, unsigned cellHeight);
-                        void setElementPosition(NewType const &type);
+                        void setChildrenPositions(Id const &type, unsigned cellWidth, unsigned cellHeight);
+                        void setElementPosition(Id const &type);
 			void checkIndex();
-                        void manageParents(TypeList const &parents);
+                        void manageParents(IdList const &parents);
 
 			bool containsName(QString const &name);
 			void clear();

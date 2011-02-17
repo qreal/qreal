@@ -57,8 +57,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (role == Qt::ToolTipRole){
-                NewType type = targetObject.data(roles::idRole).value<NewType>();
-                return "<body>" + mEditorManager.propertyDescription(type, mFieldNames.at(index.row()));
+                Id id = targetObject.data(roles::idRole).value<Id>();
+                return "<body>" + mEditorManager.propertyDescription(getApi().type(id), mFieldNames.at(index.row()));
 }
 
 	if (role != Qt::DisplayRole)
@@ -69,8 +69,9 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	} else if (index.column() == 1) {
 		if (index.row() >= mPseudoAttributesCount)
 			return targetObject.data(roleByIndex(index.row()));
-		else if (index.row() == 0) {
-                        NewType type = targetObject.data(roles::idRole).value<NewType>();
+                else if (index.row() == 0) {
+                        Id id = targetObject.data(roles::idRole).value<Id>();
+                        NewType type = getApi().type(id);
                         return QVariant(type.editor() + "/" + type.diagram() + "/" + type.element());
 		} else if (index.row() == 1)
 			return targetObject.data(roles::idRole).value<Id>().id();
@@ -173,8 +174,8 @@ void PropertyEditorModel::setIndex(const QModelIndex &sourceIndex)
 
 	targetObject = sourceIndex;
 
-        NewType type = targetObject.data(roles::idRole).value<NewType>();
-        mFieldNames = mEditorManager.getPropertyNames(type);
+        Id id = targetObject.data(roles::idRole).value<Id>();
+        mFieldNames = mEditorManager.getPropertyNames(getApi().type(id));
 
 	// non-editable fields go first
 	// fields order is hard-coded in data() and setData(), beware

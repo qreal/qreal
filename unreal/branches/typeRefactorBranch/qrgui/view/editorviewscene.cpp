@@ -91,16 +91,16 @@ void EditorViewScene::clearScene()
 			removeItem(item);
 }
 
-UML::Element * EditorViewScene::getElem(qReal::NewType const &type)
+UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 {
-        if (type == ROOT_TYPE)
+        if (id == ROOT_ID)
 		return NULL;
 
 	// FIXME: SLOW!
 	QList < QGraphicsItem * > list = items();
 	for (QList < QGraphicsItem * >::Iterator it = list.begin(); it != list.end(); ++it) {
 		if (UML::Element * elem = dynamic_cast < UML::Element * >(*it)) {
-                        if (elem->newType() == type) {
+                        if (elem->id() == id) {
 				return elem;
 			}
 		}
@@ -226,14 +226,14 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	return result;
 }
 
-qReal::NewType *EditorViewScene::createElement(const QString &str)
+qReal::Id *EditorViewScene::createElement(const QString &str)
 {
-        qReal::NewType* result = createElement(str, mCreatePoint);
+        qReal::Id* result = createElement(str, mCreatePoint);
 	lastCreatedWithEdge = getElem(*result);
 	return result;
 }
 
-qReal::NewType *EditorViewScene::createElement(const QString &str, QPointF scenePos)
+qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
         NewType typeId = NewType::loadFromString(str);
         NewType *objectType = new NewType(typeId.editor(),typeId.diagram(),typeId.element());
@@ -244,10 +244,12 @@ qReal::NewType *EditorViewScene::createElement(const QString &str, QPointF scene
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId->toString();
+        QString type = objectType->toString();
 	QString pathToItem = ROOT_ID.toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
 	stream << uuid;
+        stream << type;
 	stream << pathToItem;
 	stream << name;
 	stream << pos;
@@ -256,7 +258,7 @@ qReal::NewType *EditorViewScene::createElement(const QString &str, QPointF scene
 	createElement(mimeData, scenePos);
 	delete mimeData;
 
-        return objectType;
+        return objectId;
 }
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
@@ -265,10 +267,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
+        QString elemtype = "";
 	QString pathToItem = "";
 	QString name;
 	QPointF pos;
 	in_stream >> uuid;
+        in_stream >> elemtype;
 	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
@@ -279,7 +283,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	UML::Element *newParent = NULL;
 
 	// TODO: make it simpler
-        qReal::NewType type = qReal::NewType::loadFromString(uuid);
+        qReal::NewType type = qReal::NewType::loadFromString(elemtype);
         UML::Element* e = mWindow->manager()->graphicalObject(type);
 
 	// TODO: what is it??
@@ -302,6 +306,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	}
 
 	stream << uuid;
+        stream << elemtype;
 	stream << pathToItem;
 	stream << name;
 
@@ -350,13 +355,13 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 
 void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 											  , QMenu &contextMenu, QString const &menuName
-                                                                                          , IdList const &connectableIds, IdList const &alreadyConnectedElements
-                                                                                          , IdList const &connectableDiagrams, const char *slot) const
+                                                                                          , TypeList const &connectableIds, IdList const &alreadyConnectedElements
+                                                                                          , TypeList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
-        foreach (Id id, connectableIds) {
-                foreach (Id elementId, model()->api().elements(id)) {
+        foreach (NewType id, connectableIds) {
+                foreach (Id elementId, model()->api().elementsByType(id.element())) {
                         if (alreadyConnectedElements.contains(elementId))
 				continue;
                         QAction *action = addConnectionMenu->addAction(model()->api().name(elementId));
@@ -367,10 +372,10 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 		}
 	}
 
-        foreach (Id diagram, connectableDiagrams) {
-                NewType diagramType = model()->assistApi().editorManager().findElementByType(model()->api().type(diagram).element());
+        foreach (NewType diagram, connectableDiagrams) {
+                NewType diagramType = model()->assistApi().editorManager().findElementByType(diagram.element());
                 QString name = model()->assistApi().editorManager().friendlyName(diagramType);
-                QString editorName = model()->assistApi().editorManager().friendlyName(NewType(model()->api().type(diagram).editor()));
+                QString editorName = model()->assistApi().editorManager().friendlyName(diagram.editorId());
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
@@ -381,7 +386,7 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 
 void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 										   , QMenu &contextMenu, QString const &menuName
-                                                                                   , TypeList const &outgoingConnections, TypeList const &incomingConnections
+                                                                                   , IdList const &outgoingConnections, IdList const &incomingConnections
 										   , const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
@@ -557,8 +562,8 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
-        NewType * type = createElement(idStr, start);
-        UML::Element * edgeElement = getElem(*type);
+        Id * id = createElement(idStr, start);
+        UML::Element * edgeElement = getElem(*id);
 	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
@@ -643,7 +648,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
                                 TypeList diagrams = model()->assistApi().diagramsAbleToBeConnectedTo(element->newType());
 				if (!diagrams.isEmpty()) {
                                         NewType diagramType = model()->assistApi().editorManager().findElementByType(diagrams[0].element());
-                                        model()->assistApi().createConnected(element->newType(), diagramType);
+                                        model()->assistApi().createConnected(element->id(), diagramType);
 				}
 			}
 
@@ -689,12 +694,12 @@ void EditorViewScene::connectActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        NewType source = connection[0].value<NewType>();
-        NewType destination = connection[1].value<NewType>();
+        Id source = connection[0].value<Id>();
+        Id destination = connection[1].value<Id>();
 	if (!action->text().startsWith("New ")) {
 		model()->assistApi().connect(source, destination);
 	} else {
-		model()->assistApi().createConnected(source, destination);
+                model()->assistApi().createConnected(source, model()->api().type(destination));
 	}
 }
 
@@ -702,19 +707,19 @@ void EditorViewScene::addUsageActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        NewType source = connection[0].value<NewType>();
-        NewType destination = connection[1].value<NewType>();
+        Id source = connection[0].value<Id>();
+        Id destination = connection[1].value<Id>();
 	if (!action->text().startsWith("New ")) {
 		model()->assistApi().addUsage(source, destination);
 	} else {
-		model()->assistApi().createUsed(source, destination);
+                model()->assistApi().createUsed(source, model()->api().type(destination));
 	}
 }
 
 void EditorViewScene::goToActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-        NewType target = action->data().value<NewType>();
+        Id target = action->data().value<Id>();
 	mainWindow()->activateItemOrDiagram(target);
 	return;
 }
@@ -723,8 +728,8 @@ void EditorViewScene::disconnectActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        NewType source = connection[0].value<NewType>();
-        NewType destination = connection[1].value<NewType>();
+        Id source = connection[0].value<Id>();
+        Id destination = connection[1].value<Id>();
 	model()->assistApi().disconnect(source, destination);
 }
 
@@ -732,8 +737,8 @@ void EditorViewScene::deleteUsageActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        NewType source = connection[0].value<NewType>();
-        NewType destination = connection[1].value<NewType>();
+        Id source = connection[0].value<Id>();
+        Id destination = connection[1].value<Id>();
 	model()->assistApi().deleteUsage(source, destination);
 }
 

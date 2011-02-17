@@ -54,7 +54,8 @@ MainWindow::MainWindow()
 	: mListenerManager(NULL), mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
-	bool showSplash = settings.value("Splashscreen", true).toBool();
+        //bool showSplash = settings.value("Splashscreen", true).toBool();
+        bool showSplash = false;
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -622,7 +623,7 @@ void MainWindow::generateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
-        const QHash<NewType, QString> metamodelList = editorGenerator.getMetamodelList();
+        const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -639,7 +640,7 @@ void MainWindow::generateEditor()
 		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
 		return;
 	}
-        foreach (NewType const key, metamodelList.keys()) {
+        foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
@@ -982,7 +983,7 @@ void MainWindow::centerOn(const QModelIndex &index)
 		return;
 	EditorView* view = getCurrentTab();
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(view->scene());
-        UML::Element* element = scene->getElem(itemType);
+        UML::Element* element = scene->getElem(itemId);
 
 	scene->clearSelection();
 	if (element != NULL) {
@@ -1281,7 +1282,7 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(const QString &idString)
 {
-        Id created = mModel->assistApi().createElement(ROOT_ID,Id::loadFromString(idString));
+        Id created = mModel->assistApi().createElement(ROOT_ID,NewType::loadFromString(idString));
         QModelIndex index = mModel->indexById(created);
 	ui.diagramExplorer->setCurrentIndex(index);
 	openNewTab(index);

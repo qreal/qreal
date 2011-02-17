@@ -29,12 +29,12 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
-        virtual qReal::NewType *createElement(const QString &, QPointF scenePos);
+        virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-        virtual UML::Element *getElem(qReal::NewType const &type);
+        virtual UML::Element *getElem(qReal::Id const &type);
 	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
 
 	virtual QPersistentModelIndex rootItem();
@@ -93,12 +93,12 @@ private:
         void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddConnectionMenu(UML::Element const * const element
 								 , QMenu &contextMenu, QString const &menuName
-                                                                 , qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-                                                                 , qReal::IdList const &connectableDiagrams, const char *slot) const;
+                                                                 , qReal::TypeList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
+                                                                 , qReal::TypeList const &connectableDiagrams, const char *slot) const;
 
 	void createDisconnectMenu(UML::Element const * const element
 							  , QMenu &contextMenu, QString const &menuName
-                                                          , qReal::TypeList const &outgoingConnections, qReal::TypeList const &incomingConnections
+                                                          , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
@@ -125,7 +125,7 @@ private:
 
 public slots:
 
-        qReal::NewType *createElement(const QString &);
+        qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 private slots:
 

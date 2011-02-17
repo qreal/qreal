@@ -160,8 +160,8 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	QByteArray itemData;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
-        stream << elementType.toString();  // uuid
-        stream << elementId.toString();
+        stream << elementId.toString(); //uuid
+        stream << elementType.toString();  // type
 	stream << ROOT_ID.toString();  // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);

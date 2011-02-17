@@ -7,7 +7,7 @@ using namespace qReal;
 BlockParser::BlockParser(gui::ErrorReporter* errorReporter) {
 	hasParseErrors = false;
 	mErrorReporter = errorReporter;
-        mCurrentId = NewType::rootType();
+        mCurrentId = ROOT_ID;
 }
 
 BlockParser::~BlockParser() {
@@ -375,7 +375,7 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 	}
 }
 
-void BlockParser::parseProcess(QString stream, int& pos, NewType curId) {
+void BlockParser::parseProcess(QString stream, int& pos, Id curId) {
 	mCurrentId = curId;
 
 	if (checkForEmptiness(stream, pos)) {
@@ -527,7 +527,7 @@ bool BlockParser::parseConditionPrivate(QString stream, int& pos) {
 	return res;
 }
 
-bool BlockParser::parseCondition(QString stream, int& pos, NewType curId) {
+bool BlockParser::parseCondition(QString stream, int& pos, Id curId) {
 	mCurrentId = curId;
 	if (checkForEmptiness(stream, pos)) {
 		error(emptyCondition);
@@ -668,5 +668,5 @@ void BlockParser::clear() {
 	hasParseErrors = false;
 	mErrorReporter = NULL;
 	mVariables.clear();
-        mCurrentId = NewType::rootType();
+        mCurrentId = ROOT_ID;
 }

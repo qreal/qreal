@@ -61,7 +61,7 @@ namespace qReal {
 
 				EditorInterface* getEditorInterface(QString editor) const;
 	private:
-                void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, NewType const &type, TypeList &result) const;
+                void checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, TypeList &result) const;
 
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

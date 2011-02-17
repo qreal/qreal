@@ -16,10 +16,10 @@ namespace qReal {
 			Q_OBJECT
 
 		public:
-                        void addInformation(QString const &message, NewType const &position = ROOT_TYPE);
-                        void addWarning(QString const &message, NewType const &position = ROOT_TYPE);
-                        void addError(QString const &message, NewType const &position = ROOT_TYPE);
-                        void addCritical(QString const &message, NewType const &position = ROOT_TYPE);
+                        void addInformation(QString const &message, Id const &position = ROOT_ID);
+                        void addWarning(QString const &message, Id const &position = ROOT_ID);
+                        void addError(QString const &message, Id const &position = ROOT_ID);
+                        void addCritical(QString const &message, Id const &position = ROOT_ID);
 			bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 		private:
 			static QString severityMessage(Error const &error);

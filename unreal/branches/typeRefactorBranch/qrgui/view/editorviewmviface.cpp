@@ -117,18 +117,24 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex()))
 			continue;
-                NewType currentUuid = current.data(roles::idRole).value<NewType>();
+                Id currentUuid = current.data(roles::idRole).value<Id>();
 		if (currentUuid == ROOT_ID)
 			continue;
-                NewType parentUuid;
+                Id parentUuid;
 		if (parent != rootIndex())
-                        parentUuid = parent.data(roles::idRole).value<NewType>();
+                        parentUuid = parent.data(roles::idRole).value<Id>();
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
+                //TEMP HACK!
+                if (parentUuid.id() == "")
+                {
+                    parentUuid = ROOT_ID;
+                }
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+                model::Model* realModel = dynamic_cast<model::Model*>(model());
+                UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(realModel->api().type(currentUuid));
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -159,8 +165,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-			model::Model* realModel = dynamic_cast<model::Model*>(model());
-			if (nodeElem && currentUuid.element() == "Class" && realModel &&
+                        if (nodeElem && realModel->api().type(currentUuid).element() == "Class" && realModel &&
 				realModel->api().children(currentUuid).empty()) {
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {

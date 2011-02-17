@@ -20,7 +20,7 @@ VisualDebugger::VisualDebugger(model::Model *model) {
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
 	mCurrentElem = NULL;
-        mCurrentId = NewType::rootType();
+        mCurrentId = ROOT_ID;
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
 	mBlockParser = new BlockParser(mErrorReporter);
@@ -57,7 +57,7 @@ void VisualDebugger::setDebugColor(QString color) {
 }
 
 void VisualDebugger::setEditor(EditorView *editor) {
-        if (NULL == mEditor || mCurrentId == NewType::rootType() || mEditor == editor) {
+        if (NULL == mEditor || mCurrentId == ROOT_ID || mEditor == editor) {
 		mEditor = editor;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
@@ -124,8 +124,8 @@ UML::Element* VisualDebugger::findBeginNode(QString name) {
 	return elem;
 }
 
-NewType VisualDebugger::findValidLink() {
-        TypeList outLinks = mModel->api().outgoingLinks(mCurrentId);
+Id VisualDebugger::findValidLink() {
+        IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
 	QString conditionStr = mModel->api().property(mCurrentId, "condition").toString();
 	int pos=0;
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
@@ -138,7 +138,7 @@ NewType VisualDebugger::findValidLink() {
 	if (!mBlockParser->hasErrors()) {
 		error(VisualDebugger::missingValidLink);
 	}
-        return NewType::rootType();
+        return ROOT_ID;
 }
 
 void VisualDebugger::pause(int time) {
@@ -147,13 +147,13 @@ void VisualDebugger::pause(int time) {
 	loop.exec();
 }
 
-bool VisualDebugger::isFinalNode(NewType id) {
-        TypeList outLinks = mModel->api().outgoingLinks(id);
-	return (outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0);
+bool VisualDebugger::isFinalNode(Id id) {
+        IdList outLinks = mModel->api().outgoingLinks(id);
+        return (outLinks.count() == 0 && mModel->api().type(id).element().compare("BlockFinalNode") == 0);
 }
 
-bool VisualDebugger::hasEndOfLinkNode(NewType id) {
-        return !(mModel->api().to(id) == NewType::rootType());
+bool VisualDebugger::hasEndOfLinkNode(Id id) {
+        return !(mModel->api().to(id) == ROOT_ID);
 }
 
 VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
@@ -167,11 +167,11 @@ VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem) {
 	mEffect->setEnabled(true);
 
 	dynamic_cast<QGraphicsItem *>(mCurrentElem)->setGraphicsEffect(mEffect);
-        mCurrentId = mModel->typeByIndex(mCurrentElem->index());
+        mCurrentId = mModel->idByIndex(mCurrentElem->index());
 	return VisualDebugger::noErrors;
 }
 
-void VisualDebugger::doStep(NewType id) {
+void VisualDebugger::doStep(Id id) {
 	mEffect->setEnabled(true);
 	mCurrentId = id;
 	mCurrentElem = mEditor->mvIface()->scene()->getElem(id);
@@ -187,7 +187,7 @@ void VisualDebugger::doStep(NewType id) {
 
 void VisualDebugger::deinitialize() {
 	mEffect->setEnabled(false);
-        mCurrentId = NewType::rootType();
+        mCurrentId = ROOT_ID;
 	mCurrentElem = NULL;
 	mEditor = NULL;
 	mError = VisualDebugger::noErrors;
@@ -220,18 +220,18 @@ gui::ErrorReporter& VisualDebugger::debug() {
 
 	mBlockParser->setErrorReporter(mErrorReporter);
 
-        TypeList outLinks = mModel->api().outgoingLinks(mCurrentId);
+        IdList outLinks = mModel->api().outgoingLinks(mCurrentId);
 
 	while (outLinks.count() > 0) {
 		pause(mTimeout);
 
                 if (mCurrentElem->newType().element().compare("ConditionNode") == 0) {
-                        NewType validLinkId = findValidLink();
+                        Id validLinkId = findValidLink();
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
 				return *mErrorReporter;
 			}
-                        if (validLinkId != NewType::rootType()) {
+                        if (validLinkId != ROOT_ID) {
 				doStep(validLinkId);
 			} else {
 				return *mErrorReporter;
@@ -281,7 +281,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 	QSettings settings("SPbSU", "QReal");
 	setDebugColor(settings.value("debugColor").toString());
 
-        if (mCurrentElem == NULL && mCurrentId == NewType::rootType()) {
+        if (mCurrentElem == NULL && mCurrentId == ROOT_ID) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 			return *mErrorReporter;
 		}
@@ -301,12 +301,12 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep() {
 			}
 
                         if (mCurrentElem->newType().element().compare("ConditionNode") == 0) {
-                                NewType validLinkId = findValidLink();
+                                Id validLinkId = findValidLink();
 				if (mBlockParser->hasErrors()) {
 					deinitialize();
 					return *mErrorReporter;
 				}
-                                if (validLinkId != NewType::rootType()) {
+                                if (validLinkId != ROOT_ID) {
 					doStep(validLinkId);
 				} else {
 					return *mErrorReporter;

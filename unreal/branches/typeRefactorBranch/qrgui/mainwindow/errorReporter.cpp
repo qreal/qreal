@@ -6,25 +6,25 @@
 using namespace qReal;
 using namespace gui;
 
-void ErrorReporter::addInformation(QString const &message, NewType const &position)
+void ErrorReporter::addInformation(QString const &message, Id const &position)
 {
 	Error error(message, Error::information, position);
 	mErrors.append(error);
 }
 
-void ErrorReporter::addWarning(QString const &message, NewType const &position)
+void ErrorReporter::addWarning(QString const &message, Id const &position)
 {
 	Error error(message, Error::warning, position);
 	mErrors.append(error);
 }
 
-void ErrorReporter::addError(QString const &message, NewType const &position)
+void ErrorReporter::addError(QString const &message, Id const &position)
 {
 	Error error(message, Error::error, position);
 	mErrors.append(error);
 }
 
-void ErrorReporter::addCritical(QString const &message, NewType const &position)
+void ErrorReporter::addCritical(QString const &message, Id const &position)
 {
 	Error error(message, Error::critical, position);
 	mErrors.append(error);

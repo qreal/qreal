@@ -14,9 +14,9 @@ namespace qReal {
 		BlockParser(gui::ErrorReporter* errorReporter);
 		~BlockParser();
 		Number parseExpression(QString stream, int& pos);
-                void parseProcess(QString stream, int& pos, NewType curId);
+                void parseProcess(QString stream, int& pos, Id curId);
 		bool parseConditionPrivate(QString stream, int& pos);
-                bool parseCondition(QString stream, int& pos, NewType curId);
+                bool parseCondition(QString stream, int& pos, Id curId);
 		gui::ErrorReporter& getErrors();
 		bool hasErrors();
 		void setErrorReporter(gui::ErrorReporter* errorReporter);
@@ -38,7 +38,7 @@ namespace qReal {
 		QMap<QString, Number> mVariables;
 		bool hasParseErrors;
 		gui::ErrorReporter* mErrorReporter;
-                NewType mCurrentId;
+                Id mCurrentId;
 		
 		bool isDigit(QChar c);
 		bool isSign(QChar c);

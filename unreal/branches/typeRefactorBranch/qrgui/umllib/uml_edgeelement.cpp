@@ -627,16 +627,16 @@ void EdgeElement::updateData()
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-        qReal::NewType newTypeFrom = mDataIndex.data(roles::fromRole).value<NewType>();
-        qReal::NewType newTypeTo = mDataIndex.data(roles::toRole).value<NewType>();
+        qReal::Id idFrom = mDataIndex.data(roles::fromRole).value<Id>();
+        qReal::Id idTo = mDataIndex.data(roles::toRole).value<Id>();
 
 	if (mSrc)
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
 
-        mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(newTypeFrom));
-        mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(newTypeTo));
+        mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
+        mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
 	if (mSrc)
 		mSrc->addEdge(this);

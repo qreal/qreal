@@ -275,20 +275,20 @@ QStringList EditorManager::getPropertiesWithDefaultValues(NewType const &type) c
 TypeList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
 {
         TypeList result;
-	checkNeededPluginsRecursive(api, ROOT_ID, result);
+        checkNeededPluginsRecursive(api, ROOT_ID, result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, NewType const &type, TypeList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, TypeList &result) const
 {
-        if (type != ROOT_ID && !mPluginsLoaded.contains(type.editor())) {
-                NewType missingEditor = NewType(type.editor());
+        if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
+                NewType missingEditor = NewType(api.type(id).editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);
 	}
 
-        foreach (NewType child, api.children(type)) {
-		checkNeededPluginsRecursive(api, child, result);
+        foreach (Id child, api.children(id)) {
+                checkNeededPluginsRecursive(api, child, result);
 	}
 }
 

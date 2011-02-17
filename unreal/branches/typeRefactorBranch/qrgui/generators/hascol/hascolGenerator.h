@@ -24,26 +24,26 @@ namespace qReal {
 
 			gui::ErrorReporter &generate();
 		private:
-                        void generateDiagram(NewType const &type);
-                        void generateProcess(NewType const &type, utils::OutFile &out);
-                        void generateProcessTypeBody(NewType const &type, utils::OutFile &out);
-                        void generateProcessOperation(NewType const &type, utils::OutFile &out);
-                        void generateLetBinding(NewType const &type, utils::OutFile &out);
-                        void generateResource(NewType const &type, bool first, utils::OutFile &out);
-                        void generateActivity(NewType const &type, utils::OutFile &out);
-                        void generateHandler(NewType const &type, utils::OutFile &out);
-                        void generateFunctor(NewType const &type, utils::OutFile &out);
-                        void generateFunctorFormalParameter(NewType const &type, utils::OutFile &out);
-                        void generatePortMap(NewType const &type, utils::OutFile &out);
-                        NewType generateChain(NewType const &startNode, utils::OutFile &out);
-                        void generateActivityNode(NewType const &type, utils::OutFile &out);
-                        NewType generateIf(NewType const &type, utils::OutFile &out);
+                        void generateDiagram(Id const &type);
+                        void generateProcess(Id const &type, utils::OutFile &out);
+                        void generateProcessTypeBody(Id const &type, utils::OutFile &out);
+                        void generateProcessOperation(Id const &type, utils::OutFile &out);
+                        void generateLetBinding(Id const &type, utils::OutFile &out);
+                        void generateResource(Id const &type, bool first, utils::OutFile &out);
+                        void generateActivity(Id const &type, utils::OutFile &out);
+                        void generateHandler(Id const &type, utils::OutFile &out);
+                        void generateFunctor(Id const &type, utils::OutFile &out);
+                        void generateFunctorFormalParameter(Id const &type, utils::OutFile &out);
+                        void generatePortMap(Id const &type, utils::OutFile &out);
+                        Id generateChain(Id const &startNode, utils::OutFile &out);
+                        void generateActivityNode(Id const &type, utils::OutFile &out);
+                        Id generateIf(Id const &type, utils::OutFile &out);
 
 			qrRepo::RepoApi const &mApi;
 			gui::ErrorReporter mErrorReporter;
 
-                        TypeList mPortMappingDiagrams;
-                        TypeList mActivityDiagrams;
+                        IdList mPortMappingDiagrams;
+                        IdList mActivityDiagrams;
 		};
 
 	}

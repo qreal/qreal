@@ -74,14 +74,14 @@ namespace qReal {
 		protected:
                         QMultiHash<Id, details::ModelTreeItem*> mTreeItems;
 			QModelIndex index(details::ModelTreeItem const * const item) const;
-                        details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id,
+                        details::ModelTreeItem* addElementToModel(details::ModelTreeItem *parentItem, const Id &id, const NewType &type,
 				const QString &oldPathToItem, const QString &name, const QPointF &position, Qt::DropAction action);
 
 		protected:
 			friend class ModelAssistApi;
-                        bool addElementToModel(Id const &parent, Id const &type, QString const &name, QPointF const &position);
+                        bool addElementToModel(Id const &parent, Id const &id, NewType const &type, QString const &name, QPointF const &position);
 
-		private:
+                private:
 			qrRepo::RepoApi mApi;
 			details::ModelTreeItem *mRootItem;
 			EditorManager const &mEditorManager;

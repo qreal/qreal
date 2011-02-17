@@ -44,7 +44,7 @@ namespace qReal {
 		model::Model *mModel;
 		UML::Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
-                NewType mCurrentId;
+                Id mCurrentId;
 		QGraphicsColorizeEffect *mEffect;
 		gui::ErrorReporter *mErrorReporter;
 		BlockParser *mBlockParser;
@@ -55,12 +55,12 @@ namespace qReal {
 		void error(ErrorType e);
 		ErrorType checkEditor();
 		UML::Element* findBeginNode(QString name);
-                NewType findValidLink();
+                Id findValidLink();
 		void pause(int time);
-                bool isFinalNode(NewType id);
-                bool hasEndOfLinkNode(NewType id);
+                bool isFinalNode(Id id);
+                bool hasEndOfLinkNode(Id id);
 		ErrorType doFirstStep(UML::Element* elem);
-                void doStep(NewType id);
+                void doStep(Id id);
 		void deinitialize();
 		void processAction();
 		void setTimeout(int timeout);

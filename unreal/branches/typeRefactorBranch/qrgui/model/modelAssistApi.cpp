@@ -38,36 +38,36 @@ void ModelAssistApi::deleteUsage(qReal::Id const &source, qReal::Id const &desti
 	mModel.mutableApi().deleteUsage(source, destination);
 }
 
-Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::Id const &type)
+Id ModelAssistApi::createElement(qReal::Id const &parent, qReal::NewType const &type)
 {
         //Q_ASSERT(type.typeSize() == 3);
         //Q_ASSERT(parent.typeSize() == 4);
 
         Id const newElementId(QUuid::createUuid().toString());
-        QString const elementFriendlyName = editorManager().friendlyName(mModel.api().type(type));
-	if (!mModel.addElementToModel(parent, newElementId, "(" + elementFriendlyName + ")", QPointF(0, 0)))
+        QString const elementFriendlyName = editorManager().friendlyName(type);
+        if (!mModel.addElementToModel(parent, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0)))
 		throw Exception("Incorrect automatic element creation");
 	return newElementId;
 }
 
-Id ModelAssistApi::createConnectedElement(Id const &source, Id const &elementId)
+Id ModelAssistApi::createConnectedElement(Id const &source, NewType const &elementType)
 {
-        Id element = createElement(ROOT_ID, elementId);
+        Id element = createElement(ROOT_ID, elementType);
         QString sourceName = mModel.data(mModel.indexById(source), Qt::DisplayRole).toString();
-        QString typeName = editorManager().friendlyName(mModel.api().type(elementId));
+        QString typeName = editorManager().friendlyName(elementType);
         mModel.setData(mModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
 	return element;
 }
 
-void ModelAssistApi::createConnected(Id const &sourceElement, Id const &elementId)
+void ModelAssistApi::createConnected(Id const &sourceElement, NewType const &elementType)
 {
-        Id element = createConnectedElement(sourceElement, elementId);
+        Id element = createConnectedElement(sourceElement, elementType);
 	connect(sourceElement, element);
 }
 
-void ModelAssistApi::createUsed(Id const &sourceElement, Id const &elementId)
+void ModelAssistApi::createUsed(Id const &sourceElement, NewType const &elementType)
 {
-        Id element = createConnectedElement(sourceElement, elementId);
+        Id element = createConnectedElement(sourceElement, elementType);
 	addUsage(sourceElement, element);
 }
 
@@ -76,7 +76,7 @@ TypeList ModelAssistApi::diagramsFromList(TypeList const &list)
 	// TODO: diagrams are kinda special, so we need the editor to be able to
 	// tell us whether this particular element is a diagram or not
         TypeList result;
-        foreach (TypeList type, list) {
+        foreach (NewType type, list) {
                 if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
                         if (!result.contains(type))
                                 result.append(type);
@@ -85,14 +85,14 @@ TypeList ModelAssistApi::diagramsFromList(TypeList const &list)
 	return result;
 }
 
-TypeList ModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
+TypeList ModelAssistApi::diagramsAbleToBeConnectedTo(NewType const &element) const
 {
-        return diagramsFromList(editorManager().getConnectedTypes(mModel.api(element)));
+        return diagramsFromList(editorManager().getConnectedTypes(element));
 }
 
-TypeList ModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
+TypeList ModelAssistApi::diagramsAbleToBeUsedIn(NewType const &element) const
 {
-        return diagramsFromList(editorManager().getUsedTypes(mModel.api(element)));
+        return diagramsFromList(editorManager().getUsedTypes(element));
 }
 
 void ModelAssistApi::setProperty(qReal::Id const &elem, int const role, QVariant const &newValue)
