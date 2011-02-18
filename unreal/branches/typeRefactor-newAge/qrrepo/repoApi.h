@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../qrgui/kernel/roles.h"
-#include "../qrgui/kernel/NewType.h"
+#include "../qrgui/kernel/newType.h"
 #include "private/client.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"
@@ -20,10 +20,11 @@ public:
 	// Default destructor ok.
 
 	QString name(qReal::Id const &id) const;
+	qReal::NewType newtype(qReal::Id const &id) const;
 	void setName(qReal::Id const &id, QString const &name);
 	qReal::IdList children(qReal::Id const &id) const;
 	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::NewType const &type);
-	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId, qReal::NewType const &type);
+	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId);
 	void removeChild(qReal::Id const &id, qReal::Id const &child);
 	void removeChildren(qReal::Id const &id);
 

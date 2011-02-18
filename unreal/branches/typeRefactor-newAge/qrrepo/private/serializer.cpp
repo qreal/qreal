@@ -97,10 +97,9 @@ Object *Serializer::parseObject(QDomElement const &elem)
 		return NULL;
 
 	QString const logicalIdString = elem.attribute("logicalId", "");
-	QString const typeString = elem.attribute("type", "");
 	Id const logicalId = loadId(logicalIdString);
 
-	Object object(Id::loadFromString(id), Id(), logicalId, NewType::loadFromString(typeString));
+	Object object(Id::loadFromString(id), Id(), logicalId);
 
 	QString const parentIdString = elem.attribute("parent", "");
 	Id const parent = loadId(parentIdString);

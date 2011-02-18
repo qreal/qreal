@@ -130,7 +130,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(mLogicalAssistApi->type(currentId));
 		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
@@ -163,7 +163,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->setSelected(true);
 
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-			if (nodeElem && currentId.element() == "Class" &&
+			if (nodeElem && elem->newType().element() == "Class" &&
 				mGraphicalAssistApi->children(currentId).empty())
 			{
 				needToProcessChildren = false;

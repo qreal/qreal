@@ -53,7 +53,8 @@ void EditorViewScene::initMouseMoveManager()
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
 		return;
-	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
+	NewType diagramType = mv_iface->logicalAssistApi()->type(diagram);
+	QList<qReal::NewType> elements = mWindow->manager()->elements(diagramType);
 	mouseMovementManager = new MouseMovementManager(elements,
 													mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
@@ -233,8 +234,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str)
 
 qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
-	NewType typeId = NewType::loadFromString(str);
-	NewType *objectType = new NewType(typeId.editor(),typeId.diagram(),typeId.element());
+	NewType objectType= NewType::loadFromString(str);
 	Id *objectId = new Id(QUuid::createUuid().toString());
 
 	QByteArray data;
@@ -242,6 +242,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId->toString();
+	QString type = objectType.toString();
 	QString pathToItem = ROOT_ID.toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
@@ -281,6 +282,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	UML::Element *newParent = NULL;
 
 	// TODO: make it simpler
+	qReal::Id id = qReal::Id::loadFromString(uuid);
 	qReal::NewType type = qReal::NewType::loadFromString(elemtype);
 	UML::Element* e = mWindow->manager()->graphicalObject(type);
 
@@ -307,7 +309,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
 	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
-	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	mv_iface->graphicalAssistApi()->createElement(parentId, id, type, isFromLogicalModel, name, position);
 	emit elementCreated(type);
 }
 
@@ -360,7 +362,7 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 	foreach (NewType diagram, connectableDiagrams) {
 		NewType diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagram.element());
 		QString name = mv_iface->logicalAssistApi()->editorManager().friendlyName(diagramType);
-		QString editorName = mv_iface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
+		QString editorName = mv_iface->logicalAssistApi()->editorManager().friendlyName(diagramType.editorId());
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
@@ -393,7 +395,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
-							, mWindow->manager()->getConnectedTypes(element->id().type())
+							, mWindow->manager()->getConnectedTypes(element->newType())
 							, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
 							, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
 							, SLOT(connectActionTriggered())
@@ -406,7 +408,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 						 );
 
 	createAddConnectionMenu(element, contextMenu, tr("Add usage")
-							, mWindow->manager()->getUsedTypes(element->id().type())
+							, mWindow->manager()->getUsedTypes(element->newType())
 							, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
 							, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
 							, SLOT(addUsageActionTriggered())
@@ -512,9 +514,9 @@ void EditorViewScene::getLinkByGesture(UML::NodeElement * parent, const UML::Nod
 	QList<QString> allLinks;
 	foreach (UML::PossibleEdge possibleEdge, edges)
 	{
-		if (possibleEdge.first.second.editor() == child.id().editor()
-				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& possibleEdge.first.second.element() == child.id().element())
+		if (possibleEdge.first.second.editor() == child.newType().editor()
+				&& possibleEdge.first.second.diagram() == child.newType().diagram()
+				&& possibleEdge.first.second.element() == child.newType().element())
 			allLinks.push_back(possibleEdge.second.second.toString());
 	}
 	if (!allLinks.empty())
@@ -578,7 +580,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	UML::Element *parent;
 	parent = dynamic_cast < UML::Element *>(getElem(element->id())->parent());
 	if (parent) {
-		if (!canBeContainedBy(parent->id(), element->id())){
+		if (!canBeContainedBy(parent->newType(), element->newType())){
 			QMessageBox::critical(0, "Ololo", "can't drop it here!111");
 			// fail, reparenting the element as it was before
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
@@ -630,9 +632,9 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 				if (graphicalIdsOfOutgoingLinks.size() > 0)
 					mainWindow()->activateItemOrDiagram(graphicalIdsOfOutgoingLinks[0]);
 			} else {
-				IdList diagrams = mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
+				TypeList diagrams = mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
 				if (!diagrams.isEmpty()) {
-					Id diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagrams[0].element());
+					NewType diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagrams[0].element());
 					mv_iface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
 				}
 			}
@@ -684,7 +686,7 @@ void EditorViewScene::connectActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mv_iface->logicalAssistApi()->connect(source, destination);
 	} else {
-		mv_iface->logicalAssistApi()->createConnected(source, destination);
+		mv_iface->logicalAssistApi()->createConnected(source, mv_iface->logicalAssistApi()->type(destination));
 	}
 }
 

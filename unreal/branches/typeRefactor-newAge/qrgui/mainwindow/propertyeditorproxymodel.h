@@ -8,6 +8,7 @@
 
 #include "../editorManager/editorManager.h"
 #include "../../qrrepo/logicalRepoApi.h"
+#include "../models/logicalModelAssistApi.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств
@@ -18,7 +19,8 @@ class PropertyEditorModel : public QAbstractTableModel
 
 public:
 	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
-			QObject *parent = 0);
+								 qReal::models::LogicalModelAssistApi &sapi,
+								 QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
@@ -84,6 +86,7 @@ private:
 	QAbstractItemModel *mTargetGraphicalModel;
 	QPersistentModelIndex mTargetLogicalObject;
 	QPersistentModelIndex mTargetGraphicalObject;
+	qReal::models::LogicalModelAssistApi &mLogicalModelAssistApi;
 
 	QList<Field> mFields;
 

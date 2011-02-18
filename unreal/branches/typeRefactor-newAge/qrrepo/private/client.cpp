@@ -71,10 +71,21 @@ void Client::setParent(Id const &id, Id const &parent)
 
 void Client::addChild(const Id &id, const Id &child, const NewType &type)
 {
-	addChild(id, child, Id(),type);
+	if (mObjects.contains(id)) {
+		if (!mObjects[id]->children().contains(child))
+			mObjects[id]->addChild(child);
+
+		if (mObjects.contains(child)) {
+			mObjects[child]->setParent(id);
+		} else {
+			mObjects.insert(child, new Object(child, id, type));
+		}
+	} else {
+		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
+	}
 }
 
-void Client::addChild(const Id &id, const Id &child, Id const &logicalId, NewType const &type)
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 {
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
@@ -83,7 +94,7 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId, NewTyp
 		if (mObjects.contains(child)) {
 			mObjects[child]->setParent(id);
 		} else {
-			mObjects.insert(child, new Object(child, id, logicalId, type));
+			mObjects.insert(child, new Object(child, id, logicalId));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());

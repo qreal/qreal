@@ -49,7 +49,7 @@ using namespace qReal;
 MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi())
 	, mListenerManager(NULL)
-	, mPropertyModel(mEditorManager)
+	, mPropertyModel(mEditorManager, mModels->logicalModelAssistApi())
 {
 	QSettings settings("SPbSU", "QReal");
 	//bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -1020,7 +1020,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id))
+	if (mEditorManager.isDiagramNode(mModels->logicalModelAssistApi().type(id)))
 		return;
 	EditorView* const view = getCurrentTab();
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());

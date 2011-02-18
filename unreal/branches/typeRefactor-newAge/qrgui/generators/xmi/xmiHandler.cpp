@@ -7,6 +7,7 @@
 #include <QtCore/QDebug>
 
 #include "../../kernel/roles.h"
+#include "../../kernel/definitions.h"
 #include "../../../utils/outFile.h"
 
 using namespace qReal;

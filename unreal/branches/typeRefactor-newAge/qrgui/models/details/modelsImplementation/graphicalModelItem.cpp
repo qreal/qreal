@@ -5,8 +5,8 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-GraphicalModelItem::GraphicalModelItem(Id const &id, Id const &logicalId, NewType const &type, GraphicalModelItem *parent)
-	: AbstractModelItem(id, parent), mLogicalId(logicalId), mType(type)
+GraphicalModelItem::GraphicalModelItem(Id const &id, Id const &logicalId, GraphicalModelItem *parent)
+	: AbstractModelItem(id, parent), mLogicalId(logicalId)
 {
 }
 

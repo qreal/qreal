@@ -61,7 +61,7 @@ public:
 
 	EditorInterface* getEditorInterface(QString editor) const;
 
-	bool isDiagramNode(Id const &id) const;
+	bool isDiagramNode(NewType const &id) const;
 private:
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
@@ -72,7 +72,8 @@ private:
 	QStringList mPluginFileNames;
 
 	const NewType mRoot;
-	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+	void checkNeededPluginsRecursive(qrRepo::GraphicalRepoApi const *graphApi,
+		qrRepo::LogicalRepoApi const &api, Id const &id, TypeList &result) const;
 };
 
 }

@@ -11,11 +11,13 @@
 using namespace qReal;
 
 PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManager,
+		qReal::models::LogicalModelAssistApi &api,
 		QObject *parent)
 	: QAbstractTableModel(parent)
 	, mTargetLogicalModel(NULL)
 	, mTargetGraphicalModel(NULL)
 	, mEditorManager(editorManager)
+	, mLogicalModelAssistApi(api)
 {
 }
 
@@ -64,8 +66,10 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			NewType type =
-			QString const description = mEditorManager.propertyDescription(id, mFields[index.row()].fieldName);
+			//temp hack
+			NewType type = NewType("", "", "");
+			//
+			QString const description = mEditorManager.propertyDescription(type, mFields[index.row()].fieldName);
 			if (!description.isEmpty())
 				return "<body>" + description;
 			else
@@ -93,7 +97,8 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
 		case metatypePseudoattribute: {
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
+			NewType type = mLogicalModelAssistApi.type(id);
+			return QVariant(type.editor() + "/" + type.diagram() + "/" + type.element());
 		}
 		case namePseudoattribute:
 			return mTargetLogicalObject.data(Qt::DisplayRole);
@@ -147,17 +152,9 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
+	NewType type = mLogicalModelAssistApi.type(id);
+	return mEditorManager.getEnumValues(type, mFields[index.row()].fieldName);
 }
-
-//QString PropertyEditorModel::typeName(const QModelIndex &index) const
-//{
-//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im){
-//		return im->getTypeName(targetObject, roleByIndex(index.row()));
-//	}
-//	return QString();
-//}
 
 void PropertyEditorModel::rereadData()
 {
@@ -165,7 +162,7 @@ void PropertyEditorModel::rereadData()
 }
 
 void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogicalModel
-		, QAbstractItemModel * const sourceGraphicalModel)
+										  , QAbstractItemModel * const sourceGraphicalModel)
 {
 	mTargetLogicalModel = sourceLogicalModel;
 	mTargetGraphicalModel = sourceGraphicalModel;
@@ -184,7 +181,7 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 }
 
 void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
-		, QModelIndex const &graphicalModelIndex)
+										  , QModelIndex const &graphicalModelIndex)
 {
 	mFields.clear();
 
@@ -198,9 +195,8 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 	if (logicalModelIndex != QModelIndex()) {
 		Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		///// Надо как-то получить тип!!!
-		/////
-		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
+		NewType type = mLogicalModelAssistApi.type(logicalId);
+		QStringList const logicalProperties = mEditorManager.getPropertyNames(type);
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -266,5 +262,6 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	default:
 		return "";  // Non-logical and non-graphical attributes have no type by default
 	}
-	return mEditorManager.getTypeName(id, mFields[index.row()].fieldName);
+	NewType type = mLogicalModelAssistApi.type(id);
+	return mEditorManager.getTypeName(type, mFields[index.row()].fieldName);
 }

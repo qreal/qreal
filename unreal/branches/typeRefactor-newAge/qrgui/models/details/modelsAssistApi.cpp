@@ -22,10 +22,13 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, NewType const 
 	Id logicalId = ROOT_ID;
 	Id newId = id;
 	if (isFromLogicalModel) {
-		logicalId = id;
 		newId = Id(QUuid::createUuid().toString());
+		mModel.addElementToModel(parent, newId, type, name, position);
 	}
-	mModel.addElementToModel(parent, newId, logicalId, type, name, position);
+	else
+	{
+		mModel.addElementToModel(parent, newId, logicalId, name, position);
+	}
 	return newId;
 }
 

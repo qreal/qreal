@@ -22,7 +22,7 @@ Id LogicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 
 	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), type, "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mLogicalModel.addElementToModel(parent, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
@@ -67,7 +67,7 @@ void LogicalModelAssistApi::deleteUsage(Id const &source, Id const &destination)
 	mLogicalModel.mutableApi().deleteUsage(source, destination);
 }
 
-Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
+Id LogicalModelAssistApi::createConnectedElement(Id const &source, NewType const &elementType)
 {
 	Id element = createElement(ROOT_ID, elementType);
 	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
@@ -76,7 +76,7 @@ Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &ele
 	return element;
 }
 
-void LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
+void LogicalModelAssistApi::createConnected(Id const &sourceElement, NewType const &elementType)
 {
 	Id element = createConnectedElement(sourceElement, elementType);
 	connect(sourceElement, element);

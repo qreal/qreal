@@ -272,22 +272,27 @@ QStringList EditorManager::getPropertiesWithDefaultValues(NewType const &type) c
 
 TypeList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
-	IdList result;
-	checkNeededPluginsRecursive(logicalApi, Id::rootId(), result);
-	checkNeededPluginsRecursive(graphicalApi, Id::rootId(), result);
+	TypeList result;
+	checkNeededPluginsRecursive(NULL, logicalApi, ROOT_ID, result);
+	const qrRepo::GraphicalRepoApi *gApi = &graphicalApi;
+	checkNeededPluginsRecursive(gApi, logicalApi, ROOT_ID, result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::GraphicalRepoApi const *graphApi, qrRepo::LogicalRepoApi const &api, Id const &id, TypeList &result) const
 {
-	if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
-		NewType missingEditor = NewType(api.type(id).editor());
+	Id logicId = id;
+	if (graphApi != NULL)
+		logicId = graphApi->logicalId(id);
+
+	if (logicId != ROOT_ID && !mPluginsLoaded.contains(api.type(logicId).editor())) {
+		NewType missingEditor = NewType(api.type(logicId).editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);
 	}
 
-	foreach (Id child, api.children(id)) {
-		checkNeededPluginsRecursive(api, child, result);
+	foreach (Id child, api.children(logicId)) {
+		checkNeededPluginsRecursive(graphApi, api, child, result);
 	}
 }
 
@@ -322,11 +327,12 @@ QList<ListenerInterface*> EditorManager::listeners() const
 	return result;
 }
 
-EditorInterface* EditorManager::editorInterface(QString const &editor) const
+EditorInterface* EditorManager::getEditorInterface(QString const editor) const
 {
 	return mPluginIface[editor];
 }
 
-bool EditorManager::isDiagramNode(Id const &id) const
+bool EditorManager::isDiagramNode(NewType const &type) const
 {
-	return id.element() == editorInterface(id.editor())->diagramNodeName(id.diagram());
+	return type.element() == getEditorInterface(type.editor())->diagramNodeName(type.diagram());
+}

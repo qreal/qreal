@@ -135,7 +135,7 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 		return ROOT_ID.toString();
 }
 
-void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const NewType &type, const QString &name, const QPointF &position)
+void LogicalModel::addElementToModel(const Id &parent, const Id &id, const NewType &type, const QString &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;

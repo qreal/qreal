@@ -15,7 +15,7 @@ namespace qrRepo {
 		public:
 			explicit Object(const qReal::Id &id, const qReal::NewType &type);
 			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::NewType &type);
-			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId, const qReal::NewType &type);
+			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
 			void setParent(const qReal::Id &parent);
 			void removeParent();
 			void addChild(const qReal::Id &child);

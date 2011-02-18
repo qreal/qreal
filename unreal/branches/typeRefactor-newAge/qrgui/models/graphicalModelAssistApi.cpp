@@ -47,7 +47,7 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 
 	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, ROOT_ID, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mGraphicalModel.addElementToModel(parent, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
