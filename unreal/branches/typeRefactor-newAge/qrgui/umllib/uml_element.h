@@ -33,10 +33,8 @@ public:
 
 	virtual void updateData();
 
-	qReal::NewType newType() const;
-	qReal::Id id() const;
-	virtual qReal::Id id() const;
 	virtual qReal::NewType newType() const;
+	virtual qReal::Id id() const;
 	virtual qReal::Id logicalId() const;
 	virtual QString name() const;
 

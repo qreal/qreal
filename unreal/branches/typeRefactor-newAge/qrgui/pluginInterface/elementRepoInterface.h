@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include "../kernel/ids.h"
+#include "../kernel/newType.h"
 #include <QtCore/QPersistentModelIndex>
 
 namespace UML {
@@ -13,6 +14,7 @@ namespace UML {
 		public:
 			virtual QString logicalProperty(QString const &roleName) const = 0;
 			virtual qReal::Id id() const = 0;
+			virtual qReal::NewType newType() const = 0;
 			virtual QString name() const = 0;
 	};
 }

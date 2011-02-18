@@ -52,8 +52,8 @@ MainWindow::MainWindow()
 	, mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
-        //bool showSplash = settings.value("Splashscreen", true).toBool();
-        bool showSplash = false;
+		//bool showSplash = settings.value("Splashscreen", true).toBool();
+		bool showSplash = false;
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -191,8 +191,8 @@ MainWindow::MainWindow()
 	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
 		QString text = "These plugins are not present, but needed to load the save:\n";
-                foreach (NewType const type, missingPlugins) {
-                        text += type.editor() + "\n";
+				foreach (NewType const type, missingPlugins) {
+						text += type.editor() + "\n";
 		QMessageBox::warning(this, tr("Some plugins are missing"), text);
 		close();
 		return;
@@ -268,11 +268,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-        foreach (NewType const editor, mEditorManager.editors()) {
-                foreach (NewType const diagram, mEditorManager.diagrams(editor)) {
+		foreach (NewType const editor, mEditorManager.editors()) {
+				foreach (NewType const diagram, mEditorManager.diagrams(editor)) {
 			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram) );
 
-                        foreach (NewType const element, mEditorManager.elements(diagram)) {
+						foreach (NewType const element, mEditorManager.elements(diagram)) {
 				mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 			}
 		}
@@ -656,7 +656,7 @@ void MainWindow::generateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
-        const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
+		const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -673,7 +673,7 @@ void MainWindow::generateEditor()
 		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
 		return;
 	}
-        foreach (Id const key, metamodelList.keys()) {
+		foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
@@ -711,7 +711,7 @@ void MainWindow::generateEditorWithQRMC()
 	int forEditor = 60 / metamodels.size();
 
 	foreach (Id const key, metamodels) {
-		QString const objectType = mModels->logicalRepoApi().typeName(key);
+		QString const objectType = mModels->logicalRepoApi().type(key).toString();
 		if (objectType == "MetamodelDiagram") {
 			QString name = mModels->logicalRepoApi().stringProperty(key, "name of the directory");
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to compile and load editor %1?").arg(name),
@@ -747,8 +747,8 @@ void MainWindow::generateEditorWithQRMC()
 
 					QString normalizedName = name.at(0).toUpper() + name.mid(1);
 					if (!name.isEmpty()) {
-                                                if (mEditorManager.editors().contains(NewType(normalizedName))) {
-                                                        foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName)))
+												if (mEditorManager.editors().contains(NewType(normalizedName))) {
+														foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName)))
 								mUi->paletteToolbox->deleteDiagramType(diagram);
 
 							if (!mEditorManager.unloadPlugin(normalizedName)) {
@@ -759,10 +759,10 @@ void MainWindow::generateEditorWithQRMC()
 							}
 						}
 						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
-                                                        foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName))) {
+														foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName))) {
 								mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
-                                                                foreach (NewType const element, mEditorManager.elements(diagram))
+																foreach (NewType const element, mEditorManager.elements(diagram))
 									mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 							}
 						}
@@ -807,8 +807,8 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-        if (mEditorManager.editors().contains(NewType(normalizeDirName))) {
-                foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName)))
+		if (mEditorManager.editors().contains(NewType(normalizeDirName))) {
+				foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName)))
 			mUi->paletteToolbox->deleteDiagramType(diagram);
 
 		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
@@ -829,10 +829,10 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
-                                foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName))) {
+								foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName))) {
 					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
-                                        foreach (NewType const element, mEditorManager.elements(diagram))
+										foreach (NewType const element, mEditorManager.elements(diagram))
 						mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 				}
 				mUi->paletteToolbox->initDone();
@@ -849,7 +849,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 
 void MainWindow::parseEditorXml()
 {
-        if (!mEditorManager.editors().contains(NewType("Meta_editor"))) {
+		if (!mEditorManager.editors().contains(NewType("Meta_editor"))) {
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
@@ -1274,8 +1274,8 @@ void MainWindow::suggestToCreateDiagram()
 	diagramsListWidget.setParent(&dialog);
 
 	int i = 0;
-        foreach(NewType editor, manager()->editors()) {
-                foreach(NewType diagram, manager()->diagrams(NewType::loadFromString("qrm:/" + editor.editor()))) {
+		foreach(NewType editor, manager()->editors()) {
+				foreach(NewType diagram, manager()->diagrams(NewType::loadFromString("qrm:/" + editor.editor()))) {
 			const QString diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
 			const QString diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
 			if (diagramNodeName.isEmpty())
