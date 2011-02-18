@@ -5,7 +5,7 @@
 #include <QProcess>
 
 namespace qReal {
-	class DebuggerConnector : public QThread
+	class DebuggerConnector : public QObject
 	{
 		Q_OBJECT
 	
@@ -26,6 +26,7 @@ namespace qReal {
 			void configure(QString programPath);
 			
 		private:
+			QThread *mThread;
 			QProcess *mProcess;
 			QString mDebuggerPath;
 			QString mBuilderPath;

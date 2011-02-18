@@ -140,6 +140,7 @@ MainWindow::MainWindow()
 	connect(ui.actionNext, SIGNAL(triggered()), this, SLOT(goToNextInstruction()));
 	connect(ui.actionSet_Breakpoints, SIGNAL(triggered()), this, SLOT(placeBreakpointsInDebugger()));
 	connect(ui.actionConfigure, SIGNAL(triggered()), this, SLOT(configureDebugger()));
+	connect(ui.actionBreak_main, SIGNAL(triggered()), this, SLOT(setBreakpointAtStart()));
 
 	connect(ui.actionClear, SIGNAL(triggered()), this, SLOT(exterminate()));
 
@@ -1420,24 +1421,33 @@ void MainWindow::generateAndBuild() {
 
 void MainWindow::startDebugger() {
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
-	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
+	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 	connect(this, SIGNAL(configure(QString)), mDebuggerConnector, SLOT(configure(QString)));
 	connect(this, SIGNAL(sendCommand(QString)), mDebuggerConnector, SLOT(sendCommand(QString)));
 	connect(this, SIGNAL(build(QString)), mDebuggerConnector, SLOT(build(QString)));
 	connect(this, SIGNAL(finishProcess()), mDebuggerConnector, SLOT(finishProcess()));
-	mDebuggerConnector->start();
+	mDebuggerConnector->run();
 }
 
 void MainWindow::configureDebugger() {
 	configure("f:/QReal/unreal/branches/VisualDebugger/qrgui/builded.exe");
 }
 
+void MainWindow::setBreakpointAtStart() {
+	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
+	mVisualDebugger->setEditor(editor);
+
+	mVisualDebugger->createIdByLineCorrelation();
+
+	sendCommand("break main\n");
+}
+
 void MainWindow::runProgramWithDebugger() {
-	sendCommand("run");
+	sendCommand("run\n");
 }
 
 void MainWindow::killProgramWithDebugger() {
-	sendCommand("kill");
+	sendCommand("kill\n");
 }
 
 void MainWindow::placeBreakpointsInDebugger() {
@@ -1448,16 +1458,16 @@ void MainWindow::placeBreakpointsInDebugger() {
 	QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
 
 	for (int i=0;i<breakpoints->size();i++) {
-		sendCommand("break " + QString::number(breakpoints->at(i)));
+		sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
 	}
 }
 
 void MainWindow::goToNextBreakpoint() {
-	sendCommand("cont");
+	sendCommand("cont\n");
 }
 
 void MainWindow::goToNextInstruction() {
-	sendCommand("next");
+	sendCommand("next\n");
 }
 
 void MainWindow::closeDebuggerProcessAndThread() {
@@ -1471,6 +1481,24 @@ void MainWindow::drawDebuggerStdOutput(QString output) {
 	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
 	errorReporter->addInformation(output);
 	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
+	
+	if ('1' <= output.at(0) && output.at(0) <= '9') {
+		int index = output.indexOf("\t");
+		Id idToLigth = mVisualDebugger->getIdByLine(output.mid(0,index).toInt());
+		mVisualDebugger->lightElement(idToLigth);
+	} else {
+		int index = output.indexOf("code.c:");
+		if (index > -1) {
+			index += 7;
+			int boundaryIndex = index;
+			while ('0' <= output.at(boundaryIndex) && output.at(boundaryIndex) <= '9') {
+				boundaryIndex++;
+			}
+			Id idToLigth = mVisualDebugger->getIdByLine(output.mid(index,boundaryIndex-index).toInt());
+			mVisualDebugger->lightElement(idToLigth);
+		}
+	}
+	
 }
 
 void MainWindow::drawDebuggerErrOutput(QString output) {

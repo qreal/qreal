@@ -104,6 +104,7 @@ namespace qReal {
 		void goToNextBreakpoint();
 		void goToNextInstruction();
 		void configureDebugger();
+		void setBreakpointAtStart();
 
 	private slots:
 		void deleteFromDiagram();

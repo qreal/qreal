@@ -6,25 +6,28 @@ DebuggerConnector::DebuggerConnector(QString debuggerPath, QString builderPath):
 	mDebuggerPath(debuggerPath), mBuilderPath(builderPath)
 {
 	mProcess = new QProcess(this);
+	mThread = new QThread();
+	moveToThread(mThread);
 	connect(mProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
 	connect(mProcess, SIGNAL(readyReadStandardError()), this, SLOT(readErrOutput()));
-	//moveToThread(this); 
 }
 
 DebuggerConnector::~DebuggerConnector() {
 	mProcess->closeWriteChannel();
 	mProcess->terminate();
+	mThread->terminate();
 	delete mProcess;
+	delete mThread;
 }
 
 void DebuggerConnector::run() {
+	mThread->start();
 	mProcess->start(mDebuggerPath, QStringList());
 	mProcess->waitForStarted();
 }
 
 void DebuggerConnector::configure(QString programPath) {
-	QString command = "file ";
-	command.append(programPath);
+	QString command = "file " + programPath + "\n";
 	sendCommand(command);
 }
 
@@ -54,6 +57,6 @@ void DebuggerConnector::build(QString filePath) {
 }
 
 void DebuggerConnector::finishProcess() {
-	mProcess->closeWriteChannel();
+	//mProcess->closeWriteChannel();
 	mProcess->terminate();
 }

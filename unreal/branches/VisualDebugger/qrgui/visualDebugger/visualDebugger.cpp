@@ -402,18 +402,12 @@ void VisualDebugger::generateCode() {
 	
 	codeFile.write("void main(int argc, char* argv[]) {\n");
 	UML::Element *curElem = findBeginNode("InitialNode");
-	codeFile.close();
-	generateCode(curElem);
-	codeFile.open(QIODevice::Append);
+	generateCode(curElem, codeFile);
 	codeFile.write("}");
 	codeFile.close();
 }
 
-void VisualDebugger::generateCode(UML::Element *elem) {
-	QFile codeFile("code.c");
-	codeFile.open(QIODevice::Append);
-	
-	
+void VisualDebugger::generateCode(UML::Element *elem, QFile &codeFile) {
 	UML::Element *curElem = dynamic_cast<UML::NodeElement *>(elem);
 	if (curElem && elem->id().element().compare("InitialNode") != 0) {
 		if (elem->id().element().compare("Action") == 0) {
@@ -427,8 +421,7 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 			codeFile.write("\n");
 			if (mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).count() != 0) {
 				Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
-				codeFile.close();
-				generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+				generateCode(mEditor->mvIface()->scene()->getElem(nextEdge), codeFile);
 			}
 		} else {
 			if (elem->id().element().compare("ConditionNode") == 0) {
@@ -440,36 +433,28 @@ void VisualDebugger::generateCode(UML::Element *elem) {
 				Id trueEdge = trueEdge.rootId();
 				for (int i=0; i<outLinks.count(); i++) {
 					bool type = getProperty(outLinks.at(i), "type").toBool();
-					if (type == true) {
+					if (type) {
 						trueEdge = outLinks.at(i);
-					}
-					if (type == false) {
+					} else {
 						falseEdge = outLinks.at(i);
 					}
 				}
-				codeFile.close();
-				generateCode(mEditor->mvIface()->scene()->getElem(trueEdge));
-				codeFile.open(QIODevice::Append);
+				generateCode(mEditor->mvIface()->scene()->getElem(trueEdge), codeFile);
 				codeFile.write("}\n");
 				if (falseEdge != falseEdge.rootId()) {
 					codeFile.write("else {\n");
-					codeFile.close();
-					generateCode(mEditor->mvIface()->scene()->getElem(falseEdge));
-					codeFile.open(QIODevice::Append);
+					generateCode(mEditor->mvIface()->scene()->getElem(falseEdge), codeFile);
 					codeFile.write("}\n");
 				}
-				codeFile.close();
 			}
 		}
 	} else {
 		if (elem->id().element().compare("InitialNode") != 0) {
 			Id nextNode  = mLogicalModelApi.logicalRepoApi().to(elem->id());
-			codeFile.close();
-			generateCode(mEditor->mvIface()->scene()->getElem(nextNode));
+			generateCode(mEditor->mvIface()->scene()->getElem(nextNode), codeFile);
 		} else {
 			Id nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(curElem->id()).at(0);
-			codeFile.close();
-			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge));
+			generateCode(mEditor->mvIface()->scene()->getElem(nextEdge), codeFile);
 		}
 	}
 }
@@ -502,10 +487,9 @@ void VisualDebugger::createIdByLineCorrelation(UML::Element *elem, int& line) {
 				Id trueEdge = trueEdge.rootId();
 				for (int i=0; i<outLinks.count(); i++) {
 					bool type = getProperty(outLinks.at(i), "type").toBool();
-					if (type == true) {
+					if (type) {
 						trueEdge = outLinks.at(i);
-					}
-					if (type == false) {
+					} else {
 						falseEdge = outLinks.at(i);
 					}
 				}
@@ -554,3 +538,9 @@ Id VisualDebugger::getIdByLine(int line) {
 	return mIdByLineCorrelation[line];
 }
 
+void VisualDebugger::lightElement(Id id) {
+	mEffect->setEnabled(true);
+
+	UML::Element *elemToLight = mEditor->mvIface()->scene()->getElem(id);
+	dynamic_cast<QGraphicsItem *>(elemToLight)->setGraphicsEffect(mEffect);
+}

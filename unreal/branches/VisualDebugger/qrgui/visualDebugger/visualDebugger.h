@@ -29,6 +29,7 @@ namespace qReal {
 		void createIdByLineCorrelation();
 		QList<int>* computeBreakpoints();
 		Id getIdByLine(int line);
+		void lightElement(Id id);
 	public slots:
 		void generateCode();
 		gui::ErrorReporter& debug();
@@ -72,7 +73,7 @@ namespace qReal {
 		void processAction();
 		void setTimeout(int timeout);
 		void setDebugColor(QString color);
-		void generateCode(UML::Element* elem);
+		void generateCode(UML::Element* elem, QFile &codeFile);
 		QVariant getProperty(Id id, QString propertyName);
 		void createIdByLineCorrelation(UML::Element *elem, int& line);
 	};
