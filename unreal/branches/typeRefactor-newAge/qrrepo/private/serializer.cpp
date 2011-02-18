@@ -43,6 +43,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
+		root.setAttribute("type", object->type().toString());
 		if (object->logicalId() != Id())
 			root.setAttribute("logicalId", object->logicalId().toString());
 
@@ -96,9 +97,10 @@ Object *Serializer::parseObject(QDomElement const &elem)
 		return NULL;
 
 	QString const logicalIdString = elem.attribute("logicalId", "");
+	QString const typeString = elem.attribute("type", "");
 	Id const logicalId = loadId(logicalIdString);
 
-	Object object(Id::loadFromString(id), Id(), logicalId);
+	Object object(Id::loadFromString(id), Id(), logicalId, NewType::loadFromString(typeString));
 
 	QString const parentIdString = elem.attribute("parent", "");
 	Id const parent = loadId(parentIdString);

@@ -95,12 +95,12 @@ QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
 	return result;
 }
 
-QString AbstractModel::findPropertyName(Id const &id, int const role) const
+QString AbstractModel::findPropertyName(NewType const &type, int const role) const
 {
 	//In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of propertires.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
-	QStringList properties = mEditorManager.getPropertyNames(id.type());
+	QStringList properties = mEditorManager.getPropertyNames(type);
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
 	return properties[role - roles::customPropertiesBeginRole];
 }
@@ -149,17 +149,21 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 
 		QDataStream stream(&dragData, QIODevice::ReadOnly);
 		QString idString;
+		QString typeString;
 		QString pathToItem;
 		QString name;
 		QPointF position;
 		bool isFromLogicalModel = false;
 		stream >> idString;
+		stream >> typeString;
 		stream >> pathToItem;
 		stream >> name;
 		stream >> position;
 		stream >> isFromLogicalModel;
 
 		Id id = Id::loadFromString(idString);
+		NewType type = NewType::loadFromString(typeStirng);
+
 		Q_ASSERT(id.idSize() == 4);
 		if (mModelItems.contains(id))
 			modelAssistApi()->changeParent(id, parentItem->id());
@@ -174,7 +178,7 @@ void AbstractModel::reinit()
 	cleanupTree(mRootItem);
 	mModelItems.clear();
 	delete mRootItem;
-	mRootItem = createModelItem(Id::rootId(), NULL);
+	mRootItem = createModelItem(ROOT_ID, NULL);
 	reset();
 	init();
 }

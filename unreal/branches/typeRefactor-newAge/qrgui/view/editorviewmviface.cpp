@@ -123,7 +123,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		if (!isDescendentOf(current, rootIndex()))
 			continue;
 		Id currentId = current.data(roles::idRole).value<Id>();
-		if (currentId == Id::rootId())
+		if (currentId == ROOT_ID)
 			continue;
 		if (!parent.isValid()) {
 			setRootIndex(current);

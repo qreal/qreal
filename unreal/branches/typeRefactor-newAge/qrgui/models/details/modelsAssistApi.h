@@ -4,6 +4,7 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 #include "../../kernel/ids.h"
+#include "../../kernel/newType.h"
 
 namespace qReal {
 
@@ -22,8 +23,8 @@ namespace qReal {
 			public:
 				ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
 				EditorManager const &editorManager() const;
-				virtual Id createElement(Id const &parent, Id const &type) = 0;
-				virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+				virtual Id createElement(Id const &parent, NewType const &type) = 0;
+				virtual Id createElement(Id const &parent, Id const &id, NewType const &type,  bool isFromLogicalModel, QString const &name, QPointF const &position);
 				virtual IdList children(Id const &element) const = 0;
 				virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 

@@ -22,7 +22,7 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api)
 
 QHash<Id, QString> EditorGenerator::getMetamodelList()
 {
-	Id repoId = Id::rootId();
+	Id repoId = ROOT_ID;
 
 	IdList const metamodels = mApi.children(repoId);
 	QHash<Id, QString> metamodelList;
@@ -136,7 +136,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	QDomElement tagNonGraphic = mDocument.createElement("nonGraphicTypes");
 
         foreach (Id const type, childElems) {
-		if (idParent != Id::rootId()) {
+		if (idParent != ROOT_ID) {
                         QString const objectType = mApi.name(type);
 			if (objectType == "MetaEntityEnum")
                                 createEnum(tagNonGraphic, type);
@@ -150,7 +150,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	parent.appendChild(tagGraphic);
 
         foreach (Id const type, childElems) {
-		if (idParent != Id::rootId()) {
+		if (idParent != ROOT_ID) {
                         QString const objectType = mApi.name(type);
 			if (objectType == "MetaEntityImport")
                                 createImport(tagGraphic, type);
@@ -275,7 +275,7 @@ void EditorGenerator::setProperties(QDomElement &parent,Id const &type)
         IdList const childElems = mApi.children(type);
 
 	foreach (Id const idChild, childElems)
-		if (idChild != Id::rootId()) {
+		if (idChild != ROOT_ID) {
                 QString const objectType = mApi.name(idChild);
 		if (objectType == "MetaEntity_Attribute"){
 			QDomElement property = mDocument.createElement("property");
@@ -301,7 +301,7 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &type)
         IdList const childElems = mApi.children(type);
 
 	foreach (Id const idChild, childElems)
-		if (idChild != Id::rootId()) {
+		if (idChild != ROOT_ID) {
                 QString const objectType = mApi.name(idChild);
 		if (objectType == "MetaEntityContextMenuField"){
 			QDomElement field = mDocument.createElement("field");
@@ -319,7 +319,7 @@ void EditorGenerator::setValues(QDomElement &parent, const Id &type)
         IdList childElems = mApi.children(type);
 
 	foreach (Id const idChild, childElems) {
-		if (idChild != Id::rootId()) {
+		if (idChild != ROOT_ID) {
 			QDomElement valueTag = mDocument.createElement("value");
 			QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "valueName"));
 			valueTag.appendChild(value);

@@ -15,20 +15,20 @@ qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
 	return mLogicalModel.api();
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
+Id LogicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 {
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	Id const newElementId(type, QUuid::createUuid().toString());
+	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mLogicalModel.addElementToModel(parent, newElementId, Id(), type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+	return ModelsAssistApi::createElement(parent, id, type, isFromLogicalModel, name, position);
 }
 
 IdList LogicalModelAssistApi::children(Id const &element) const
@@ -64,7 +64,7 @@ void LogicalModelAssistApi::deleteUsage(Id const &source, Id const &destination)
 
 Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
 {
-	Id element = createElement(Id::rootId(), elementType);
+	Id element = createElement(ROOT_ID, elementType);
 	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
 	QString typeName = editorManager().friendlyName(elementType);
 	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
@@ -83,12 +83,12 @@ void LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elemen
 	addUsage(sourceElement, element);
 }
 
-IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
+TypeList LogicalModelAssistApi::diagramsFromList(TypeList const &list) const
 {
 	// TODO: diagrams are kinda special, so we need the editor to be able to
 	// tell us whether this particular element is a diagram or not
 	IdList result;
-	foreach (Id type, list) {
+	foreach (NewType type, list) {
 		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
 			if (!result.contains(type))
 				result.append(type);
@@ -97,7 +97,7 @@ IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
 	return result;
 }
 
-IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
+TypeList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
 {
 	return diagramsFromList(editorManager().getConnectedTypes(element.type()));
 }

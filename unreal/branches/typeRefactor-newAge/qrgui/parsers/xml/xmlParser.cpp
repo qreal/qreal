@@ -104,7 +104,7 @@ void XmlParser::loadIncludeList(const QString &fileName)
 
 bool XmlParser::containsName(const QString &name)
 {
-	IdList idList = mApi.children(Id::rootId());
+	IdList idList = mApi.children(ROOT_ID);
 	foreach (Id const &id, idList) {
 		if (mApi.name(id) == name)
 			return true;
@@ -114,14 +114,14 @@ bool XmlParser::containsName(const QString &name)
 
 Id XmlParser::getPackageId()
 {
-	IdList const children = mApi.children(Id::rootId());
+	IdList const children = mApi.children(ROOT_ID);
 	foreach (Id id, children) {
 		if (id.element() == "PackageDiagram")
 			return id;
 	}
 	Id const packageId("Meta_editor", "MetaEditor", "PackageDiagram",
 			QUuid::createUuid().toString());
-	setStandartConfigurations(packageId, Id::rootId(), "Package", "Package");
+	setStandartConfigurations(packageId, ROOT_ID, "Package", "Package");
 	return packageId;
 }
 
@@ -700,8 +700,8 @@ void XmlParser::setStandartConfigurations(Id const &id, Id const &parent, NewTyp
         mApi.setProperty(id, "name", name);
 	if (displayedName != "")
 		mApi.setProperty(id, "displayedName", displayedName);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
+	mApi.setProperty(id, "from", ROOT_ID.toVariant());
+	mApi.setProperty(id, "to", ROOT_ID.toVariant());
 	mApi.setProperty(id, "fromPort", 0.0);
 	mApi.setProperty(id, "toPort", 0.0);
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));

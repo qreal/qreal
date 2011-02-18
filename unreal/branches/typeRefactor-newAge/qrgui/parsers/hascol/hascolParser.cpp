@@ -69,7 +69,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	Id result;
         NewType const diagramTypeId = NewType("HascolMetamodel", "HascolPortMapping", diagramType);
 
-	foreach(Id element, mApi.children(Id::rootId())) {
+	foreach(Id element, mApi.children(ROOT_ID)) {
                 if (mApi.type(element) == diagramTypeId && mApi.name(element) == diagramName) {
 			result = element;
 			// full exterminatus
@@ -79,7 +79,7 @@ Id HascolParser::initDiagram(QString const &diagramName, QString const &diagramT
 	}
 
 	if (result == Id())
-		result = addElement(Id::rootId(), diagramTypeId, diagramName);
+		result = addElement(ROOT_ID, diagramTypeId, diagramName);
 	return result;
 }
 
@@ -89,8 +89,8 @@ Id HascolParser::addElement(Id const &parent, NewType const &elementType, QStrin
 
         mApi.addChild(parent, element, elementType);
 	mApi.setProperty(element, "name", name);
-	mApi.setProperty(element, "from", Id::rootId().toVariant());
-	mApi.setProperty(element, "to", Id::rootId().toVariant());
+	mApi.setProperty(element, "from", ROOT_ID.toVariant());
+	mApi.setProperty(element, "to", ROOT_ID.toVariant());
 	mApi.setProperty(element, "fromPort", 0.0);
 	mApi.setProperty(element, "toPort", 0.0);
 	mApi.setProperty(element, "links", IdListHelper::toVariant(IdList()));

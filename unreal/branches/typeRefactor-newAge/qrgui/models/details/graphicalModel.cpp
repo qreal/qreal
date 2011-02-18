@@ -13,7 +13,7 @@ using namespace modelsImplementation;
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
 	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
 {
-	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
+	mRootItem = new GraphicalModelItem(ROOT_ID, Id(), NULL);
 	init();
 	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
 }
@@ -26,8 +26,8 @@ GraphicalModel::~GraphicalModel()
 
 void GraphicalModel::init()
 {
-	mModelItems.insert(Id::rootId(), mRootItem);
-	mApi.setName(Id::rootId(), Id::rootId().toString());
+	mModelItems.insert(ROOT_ID, mRootItem);
+	mApi.setName(ROOT_ID, ROOT_ID.toString());
 	// Turn off view notification while loading. Model can be inconsistent during a process,
 	// so views shall not update themselves before time. It is important for
 	// scene, where adding edge before adding nodes may lead to disconnected edge.	blockSignals(true);
@@ -65,9 +65,10 @@ void GraphicalModel::connectToLogicalModel(LogicalModel * const logicalModel)
 	mLogicalModelView.setModel(logicalModel);
 }
 
-AbstractModelItem *GraphicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
+AbstractModelItem *GraphicalModel::createModelItem(Id const &id, NewType const &type, AbstractModelItem *parentItem) const
 {
-	return new GraphicalModelItem(id, Id(id.type(), QUuid::createUuid().toString())
+	Id logicalId = Id.loadFromString(QUuid::createUuid().toString());
+	return new GraphicalModelItem(id, logicalId, type
 								  , static_cast<GraphicalModelItem *>(parentItem));
 }
 
@@ -82,38 +83,38 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, NewType const &type, const QString &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId()) {
+	if (logicalId == ROOT_ID) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
 	}
 	else {
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
-		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
+		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, type, graphicalParentItem);
 	}
-	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
+	initializeElement(id, actualLogicalId, type, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, const NewType &type, modelsImplementation::AbstractModelItem *parentItem,
+									   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id, logicalId);
+	mApi.addChild(parentItem->id(), id, logicalId, type);
 	mApi.setName(id, name);
 	mApi.setFromPort(id, 0.0);
 	mApi.setToPort(id, 0.0);
-	mApi.setFrom(id, Id::rootId());
-	mApi.setTo(id, Id::rootId());
+	mApi.setFrom(id, ROOT_ID);
+	mApi.setTo(id, ROOT_ID);
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
 	mApi.setPosition(id, position);
 	mApi.setConfiguration(id, QVariant(QPolygon()));

@@ -12,7 +12,7 @@ Element::Element()
 	, mLogicalAssistApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-		ItemClipsToShape | ItemSendsGeometryChanges);
+			 ItemClipsToShape | ItemSendsGeometryChanges);
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
 }
@@ -20,20 +20,20 @@ Element::Element()
 void Element::setId(qReal::Id &id)
 {
 	mDataIndex = index;
-        mId = mDataIndex.data(roles::idRole).value<Id>();
-        model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
-        mType = itemModel->api().type(mId);
+	mId = mDataIndex.data(roles::idRole).value<Id>();
+	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
+	mType = itemModel->api().type(mId);
 	update();
 }
 
 NewType Element::newType() const
 {
-        return mType;
+	return mType;
 }
 
 Id Element::id() const
 {
-    return mId;
+	return mId;
 }
 
 void Element::updateData()

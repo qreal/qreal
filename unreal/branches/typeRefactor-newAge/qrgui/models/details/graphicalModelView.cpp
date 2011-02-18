@@ -31,7 +31,7 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 		// some elements have no correspondences in another model, and tree
 		// structures may be very different by themselves.
 		LogicalModel * const mLogicalModel = static_cast<LogicalModel *>(mModel);
-		mLogicalModel->addElementToModel(Id::rootId(), logicalId, logicalId, name, QPoint(0, 0));
+		mLogicalModel->addElementToModel(ROOT_ID, logicalId, logicalId, mLogicalModel->api.type(logicalId), name, QPoint(0, 0));
 	}
 }
 

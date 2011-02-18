@@ -11,7 +11,7 @@ using namespace modelsImplementation;
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager)
 	: AbstractModel(editorManager), mGraphicalModelView(this), mApi(*repoApi)
 {
-	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
+	mRootItem = new LogicalModelItem(ROOT_ID, NULL);
 	init();
 	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManager);
 }
@@ -24,8 +24,8 @@ LogicalModel::~LogicalModel()
 
 void LogicalModel::init()
 {
-	mModelItems.insert(Id::rootId(), mRootItem);
-	mApi.setName(Id::rootId(), Id::rootId().toString());
+	mModelItems.insert(ROOT_ID, mRootItem);
+	mApi.setName(ROOT_ID, ROOT_ID.toString());
 	// Turn off view notification while loading.
 	blockSignals(true);
 	loadSubtreeFromClient(static_cast<LogicalModelItem *>(mRootItem));
@@ -62,7 +62,7 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 
 void LogicalModel::checkProperties(Id const &id)
 {
-	if (!mEditorManager.hasElement(id.type()))
+	if (!mEditorManager.hasElement(mApi.type(id)))
 		return;
 	QStringList const propertiesThatShallBe = mEditorManager.getPropertyNames(id.type());
 	foreach (QString const property, propertiesThatShallBe)
@@ -101,12 +101,14 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 			stream << item->id().toString();
+			stream << mApi.type(item->id());
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
 			stream << QPointF();
 			stream << isFromLogicalModel;
 		} else {
-			stream << Id::rootId().toString();
+			stream << ROOT_ID.toString();
+			stream << ROOT_TYPE.toString();
 			stream << QString();
 			stream << QString();
 			stream << QPointF();
@@ -130,17 +132,17 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 		return path;
 	}
 	else
-		return Id::rootId().toString();
+		return ROOT_ID.toString();
 }
 
-void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const NewType &type, const QString &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
 	AbstractModelItem *newItem = NULL;
-	if ((logicalId != Id::rootId()) && (mModelItems.contains(logicalId))) {
+	if ((logicalId != ROOT_ID) && (mModelItems.contains(logicalId))) {
 		 if (parent == logicalId)
 			 return;
 		else
@@ -148,31 +150,31 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 		}
 	else {
 		newItem = createModelItem(id, parentItem);
-		initializeElement(id, parentItem, newItem, name, position);
+		initializeElement(id, type, parentItem, newItem, name, position);
 	}
 }
 
-void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
+void LogicalModel::initializeElement(const Id &id, const NewType &type, modelsImplementation::AbstractModelItem *parentItem,
 		modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	Q_UNUSED(position)
 	int const newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id);
+	mApi.addChild(parentItem->id(), id, type);
 	mApi.setProperty(id, "name", name);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
+	mApi.setProperty(id, "from", ROOT_ID.toVariant());
+	mApi.setProperty(id, "to", ROOT_ID.toVariant());
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
-	QStringList const properties = mEditorManager.getPropertyNames(id.type());
+	QStringList const properties = mEditorManager.getPropertyNames(type);
 	foreach (QString const property, properties)
 	// for those properties that doesn't have default values, plugin will return empty string
-		mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(id, property));
+		mApi.setProperty(id, property, mEditorManager.getDefaultPropertyValue(type, property));
 
 	mModelItems.insert(id, item);
 	endInsertRows();

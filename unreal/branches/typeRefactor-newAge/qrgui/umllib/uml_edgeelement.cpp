@@ -279,8 +279,8 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
-	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
+	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : ROOT_ID));
+	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : ROOT_ID));
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
@@ -296,8 +296,8 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
-	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
+	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : ROOT_ID));
+	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : ROOT_ID));
 	mGraphicalAssistApi->setToPort(id(), mPortTo);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));

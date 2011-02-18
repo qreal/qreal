@@ -16,15 +16,25 @@ Client::Client(QString const &workingDirectory)
 
 void Client::init()
 {
-	mObjects.insert(Id::rootId(), new Object(Id::rootId()));
-	mObjects[Id::rootId()]->setProperty("name", Id::rootId().toString());
+	mObjects.insert(ROOT_ID, new Object(ROOT_ID, ROOT_TYPE));
+	mObjects[ROOT_ID]->setProperty("name", ROOT_ID.toString());
 }
 
 Client::~Client()
 {
-	delete mObjects[Id::rootId()];
-	mObjects.remove(Id::rootId());
+	delete mObjects[ROOT_ID];
+	mObjects.remove(ROOT_ID);
 	serializer.saveToDisk(mObjects.values());
+}
+
+NewType Client::type(Id const &id) const
+{
+	if (mObjects.contains(id)){
+		return mObjects[id]->type();
+	}
+	else {
+		throw Exception("There is no type for object with id " + id.toString());
+	}
 }
 
 IdList Client::children(Id const &id) const
@@ -48,34 +58,32 @@ Id Client::parent(Id const &id) const
 void Client::setParent(Id const &id, Id const &parent)
 {
 	if (mObjects.contains(id)) {
-		if (mObjects.contains(parent)) {
+		if (mObjects.contains(parent)){
 			mObjects[id]->setParent(parent);
 			if (!mObjects[parent]->children().contains(id))
 				mObjects[parent]->addChild(id);
-			}
+
 		} else {
 			throw Exception("Client: Adding nonexistent parent " + parent.toString() + " to  object " + id.toString());
 		}
-	} else {
-		throw Exception("Client: Adding parent " + parent.toString() + " to nonexistent object " + id.toString());
 	}
 }
 
 void Client::addChild(const Id &id, const Id &child, const NewType &type)
 {
-	addChild(id, child, Id());
+	addChild(id, child, Id(),type);
 }
 
-void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
+void Client::addChild(const Id &id, const Id &child, Id const &logicalId, NewType const &type)
 {
 	if (mObjects.contains(id)) {
 		if (!mObjects[id]->children().contains(child))
 			mObjects[id]->addChild(child);
-		}
+
 		if (mObjects.contains(child)) {
 			mObjects[child]->setParent(id);
 		} else {
-			mObjects.insert(child, new Object(child, id, logicalId));
+			mObjects.insert(child, new Object(child, id, logicalId, type));
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
@@ -198,9 +206,9 @@ void Client::loadFromDisk()
 void Client::addChildrenToRootObject()
 {
 	foreach (Object *object, mObjects.values()) {
-		if (object->parent() == Id::rootId()) {
-			if (!mObjects[Id::rootId()]->children().contains(object->id()))
-				mObjects[Id::rootId()]->addChild(object->id());
+		if (object->parent() == ROOT_ID) {
+			if (!mObjects[ROOT_ID]->children().contains(object->id()))
+				mObjects[ROOT_ID]->addChild(object->id());
 		}
 	}
 }
@@ -301,13 +309,6 @@ void Client::open(QString const &workingDir)
 qReal::IdList Client::elements() const
 {
 	return mObjects.keys();
-}\
-
-qReal::TypeList Client::types() const
-{
-TypeList result;
-foreach(LogicObject* logicObject, mObjects.values()){
-	result.append(logicObject->type());
 }
 
 bool Client::isLogicalId(qReal::Id const &elem) const

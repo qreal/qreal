@@ -84,7 +84,7 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 	mErrorText = "";
 	this->pathToDir = pathToDir;
 
-	Id repoId = Id::rootId();
+	Id repoId = ROOT_ID;
 
 	if (checkTheModel()) {
                 IdList allDiagrams = mApi.children(repoId);
@@ -180,7 +180,7 @@ bool JavaHandler::checkTheModel()
                 Id fromId = mApi.from(aLink);
                 Id toId = mApi.to(aLink);
 
-		if (fromId == Id::rootId() || toId == Id::rootId()) {
+		if (fromId == ROOT_ID || toId == ROOT_ID) {
                         addError("Unable to serialize object " + objectType(aLink) + " with type: " + aLink.toString() + ". It must have nodes on both ends.");
 			result = false;
 		}

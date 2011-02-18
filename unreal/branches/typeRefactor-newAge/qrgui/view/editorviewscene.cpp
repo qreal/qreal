@@ -55,7 +55,7 @@ void EditorViewScene::initMouseMoveManager()
 		return;
 	QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	mouseMovementManager = new MouseMovementManager(elements,
-			mWindow->manager(), mWindow->gesturesPainter());
+													mWindow->manager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -105,7 +105,7 @@ void EditorViewScene::clearScene()
 
 UML::Element * EditorViewScene::getElem(qReal::Id const &id)
 {
-	if (id == Id::rootId())
+	if (id == ROOT_ID)
 		return NULL;
 
 	// FIXME: SLOW!
@@ -146,13 +146,13 @@ bool EditorViewScene::canBeContainedBy(qReal::NewType container, qReal::NewType 
 	return true;
 
 	/*
-	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		if (candidate.element() ==  type.editor())
-			allowed = true;
-	}
-	return allowed;
-	*/
+ bool allowed = false;
+ foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+  if (candidate.element() ==  type.editor())
+   allowed = true;
+ }
+ return allowed;
+ */
 }
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
@@ -189,9 +189,9 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	foreach(UML::PossibleEdge pEdge, edge->getPossibleEdges())
 	{
 		QString target;
-		if (pEdge.first.first.element() == node->id().element())
+		if (pEdge.first.first.element() == node->newType().element())
 			target = pEdge.first.second.element();
-		else if ((pEdge.first.second.element() == node->id().element()) && (!pEdge.second.first))
+		else if ((pEdge.first.second.element() == node->newType().element()) && (!pEdge.second.first))
 			target = pEdge.first.first.element();
 		else continue;
 
@@ -199,7 +199,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 		createElemMenu->addAction(element);
 		toDelete.append(element);
 		QObject::connect(element,SIGNAL(triggered()), menuSignalMapper,SLOT(map()));
-		menuSignalMapper->setMapping(element, "qrm:/"+node->id().editor()+"/"+node->id().diagram()+"/"+target);
+		menuSignalMapper->setMapping(element, "qrm:/"+node->newType().editor()+"/"+node->newType().diagram()+"/"+target);
 	}
 
 	mCreatePoint = scenePos;
@@ -226,28 +226,28 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 
 qReal::Id *EditorViewScene::createElement(const QString &str)
 {
-        qReal::Id* result = createElement(str, mCreatePoint);
+	qReal::Id* result = createElement(str, mCreatePoint);
 	lastCreatedWithEdge = getElem(*result);
 	return result;
 }
 
 qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 {
-        NewType typeId = NewType::loadFromString(str);
-        NewType *objectType = new NewType(typeId.editor(),typeId.diagram(),typeId.element());
-        Id *objectId = new Id(QUuid::createUuid().toString());
+	NewType typeId = NewType::loadFromString(str);
+	NewType *objectType = new NewType(typeId.editor(),typeId.diagram(),typeId.element());
+	Id *objectId = new Id(QUuid::createUuid().toString());
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
 	QDataStream stream(&data, QIODevice::WriteOnly);
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId->toString();
-	QString pathToItem = Id::rootId().toString();
+	QString pathToItem = ROOT_ID.toString();
 	QString name = "(anonymous something)";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
-        stream << type;
+	stream << type;
 	stream << pathToItem;
 	stream << name;
 	stream << pos;
@@ -257,7 +257,7 @@ qReal::Id *EditorViewScene::createElement(const QString &str, QPointF scenePos)
 	createElement(mimeData, scenePos);
 	delete mimeData;
 
-        return objectId;
+	return objectId;
 }
 
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
@@ -266,13 +266,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
-        QString elemtype = "";
+	QString elemtype = "";
 	QString pathToItem = "";
 	QString name;
 	QPointF pos;
 	bool isFromLogicalModel;
 	in_stream >> uuid;
-        in_stream >> elemtype;
+	in_stream >> elemtype;
 	in_stream >> pathToItem;
 	in_stream >> name;
 	in_stream >> pos;
@@ -281,8 +281,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	UML::Element *newParent = NULL;
 
 	// TODO: make it simpler
-        qReal::NewType type = qReal::NewType::loadFromString(elemtype);
-        UML::Element* e = mWindow->manager()->graphicalObject(type);
+	qReal::NewType type = qReal::NewType::loadFromString(elemtype);
+	UML::Element* e = mWindow->manager()->graphicalObject(type);
 
 	// TODO: what is it??
 	if (dynamic_cast<UML::NodeElement*>(e))
@@ -293,7 +293,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 	}
 
 	if( newParent ){
-                if (!canBeContainedBy(newParent->newType(), type)){
+		if (!canBeContainedBy(newParent->newType(), type)){
 			QMessageBox::critical(0, "Error!", "[some text]");
 			return;
 		}
@@ -308,7 +308,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF scenePos)
 
 	Id parentId = newParent ? newParent->id() : mv_iface->rootId();
 	id = mv_iface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
-        emit elementCreated(type);
+	emit elementCreated(type);
 }
 
 UML::Element* EditorViewScene::getLastCreated()
@@ -331,7 +331,7 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
 	QMenu *menu = goToMenu->addMenu(name);
-        foreach (Id element, ids) {
+	foreach (Id element, ids) {
 		QAction *action = menu->addAction(mv_iface->logicalAssistApi()->logicalRepoApi().name(element));
 		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
 		action->setData(element.toVariant());
@@ -339,13 +339,13 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 }
 
 void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
-		, QMenu &contextMenu, QString const &menuName
-		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
-		, IdList const &connectableDiagrams, const char *slot) const
+											  , QMenu &contextMenu, QString const &menuName
+											  , TypeList const &connectableTypes, IdList const &alreadyConnectedElements
+											  , TypeList const &connectableDiagrams, const char *slot) const
 {
 	QMenu *addConnectionMenu = contextMenu.addMenu(menuName);
 
-	foreach (Id type, connectableTypes) {
+	foreach (NewType type, connectableTypes) {
 		foreach (Id elementId, mv_iface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
 			if (alreadyConnectedElements.contains(elementId))
 				continue;
@@ -357,8 +357,8 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 		}
 	}
 
-	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagram.element());
+	foreach (NewType diagram, connectableDiagrams) {
+		NewType diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagram.element());
 		QString name = mv_iface->logicalAssistApi()->editorManager().friendlyName(diagramType);
 		QString editorName = mv_iface->logicalAssistApi()->editorManager().friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
@@ -369,13 +369,14 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 	}
 }
 
+
 void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 										   , QMenu &contextMenu, QString const &menuName
-                                                                                   , IdList const &outgoingConnections, IdList const &incomingConnections
+										   , IdList const &outgoingConnections, IdList const &incomingConnections
 										   , const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
-        IdList list = outgoingConnections;
+	IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
 	foreach (Id elementId, list) {
@@ -499,9 +500,9 @@ void EditorViewScene::getObjectByGesture()
 	}
 	else
 	{
-                qReal::NewType type = mouseMovementManager->getObject();
-                if (type.element() != "")
-                        createElement(type.toString(), mouseMovementManager->pos());
+		qReal::NewType type = mouseMovementManager->getObject();
+		if (type.element() != "")
+			createElement(type.toString(), mouseMovementManager->pos());
 	}
 }
 
@@ -512,8 +513,8 @@ void EditorViewScene::getLinkByGesture(UML::NodeElement * parent, const UML::Nod
 	foreach (UML::PossibleEdge possibleEdge, edges)
 	{
 		if (possibleEdge.first.second.editor() == child.id().editor()
-			&& possibleEdge.first.second.diagram() == child.id().diagram()
-			&& possibleEdge.first.second.element() == child.id().element())
+				&& possibleEdge.first.second.diagram() == child.id().diagram()
+				&& possibleEdge.first.second.element() == child.id().element())
 			allLinks.push_back(possibleEdge.second.second.toString());
 	}
 	if (!allLinks.empty())
@@ -546,8 +547,8 @@ void EditorViewScene::createEdge(const QString & idStr)
 	QPointF start = mouseMovementManager->firstPoint();
 	QPointF end = mouseMovementManager->lastPoint();
 	UML::NodeElement * child = dynamic_cast <UML::NodeElement * > (getElemAt(end));
-        Id * id = createElement(idStr, start);
-        UML::Element * edgeElement = getElem(*id);
+	Id * id = createElement(idStr, start);
+	UML::Element * edgeElement = getElem(*id);
 	UML::EdgeElement * edge = dynamic_cast <UML::EdgeElement * > (edgeElement);
 	QPointF endPos = edge->mapFromItem(child, child->getNearestPort(end));
 	edge->placeEndTo(endPos);
@@ -583,7 +584,7 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 			foreach (QGraphicsItem *item, items(event->scenePos())) {
 				UML::Element * elem = dynamic_cast < UML::Element * >(item);
 				if (elem && elem->id() == element->id()) {
-					qReal::Id id = qReal::Id::rootId();
+					qReal::Id id = qReal::ROOT_ID;
 					UML::Element * prevParent = dynamic_cast < UML::Element * >(mPrevParent);
 					if (prevParent)
 						id = prevParent->id();
@@ -665,7 +666,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
-        connect(this, SIGNAL(elementCreated(qReal::NewType)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::NewType)));
+	connect(this, SIGNAL(elementCreated(qReal::NewType)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::NewType)));
 	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
 
@@ -678,8 +679,8 @@ void EditorViewScene::connectActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        Id source = connection[0].value<Id>();
-        Id destination = connection[1].value<Id>();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
 	if (!action->text().startsWith("New ")) {
 		mv_iface->logicalAssistApi()->connect(source, destination);
 	} else {
@@ -691,8 +692,8 @@ void EditorViewScene::addUsageActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        Id source = connection[0].value<Id>();
-        Id destination = connection[1].value<Id>();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
 	if (!action->text().startsWith("New ")) {
 		mv_iface->logicalAssistApi()->addUsage(source, destination);
 	} else {
@@ -703,7 +704,7 @@ void EditorViewScene::addUsageActionTriggered()
 void EditorViewScene::goToActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-        Id target = action->data().value<Id>();
+	Id target = action->data().value<Id>();
 	mainWindow()->activateItemOrDiagram(target);
 	return;
 }
@@ -712,8 +713,8 @@ void EditorViewScene::disconnectActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        Id source = connection[0].value<Id>();
-        Id destination = connection[1].value<Id>();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
 	mv_iface->logicalAssistApi()->disconnect(source, destination);
 }
 
@@ -721,8 +722,8 @@ void EditorViewScene::deleteUsageActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
-        Id source = connection[0].value<Id>();
-        Id destination = connection[1].value<Id>();
+	Id source = connection[0].value<Id>();
+	Id destination = connection[1].value<Id>();
 	mv_iface->logicalAssistApi()->deleteUsage(source, destination);
 }
 

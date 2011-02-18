@@ -34,7 +34,7 @@ namespace qReal {
 					virtual ModelsAssistApi* modelAssistApi() const = 0;
 					bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 
-					virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
+					virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, NewType const &type, QString const &name, QPointF const &position) = 0;
 					QPersistentModelIndex rootIndex() const;
 					//void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
 					//		details::AbstractModelItem *item, QString const &name, QPointF const &position);

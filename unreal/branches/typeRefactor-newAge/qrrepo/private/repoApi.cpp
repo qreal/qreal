@@ -13,8 +13,8 @@ RepoApi::RepoApi(QString const &workingDirectory)
 
 QString RepoApi::name(Id const &id) const
 {
-        Q_ASSERT(mClient.property(id, "name").canConvert<QString>());
-        return mClient.property(id, "name").toString();
+	Q_ASSERT(mClient.property(id, "name").canConvert<QString>());
+	return mClient.property(id, "name").toString();
 }
 
 void RepoApi::setName(Id const &id, QString const &name)
@@ -24,17 +24,22 @@ void RepoApi::setName(Id const &id, QString const &name)
 
 IdList RepoApi::children(Id const &id) const
 {
-        return mClient.children(id);
+	return mClient.children(id);
 }
 
 NewType RepoApi::type(Id const &id) const
 {
-	mClient.addChild(id, child);
+	return mClient.type(id);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
+void RepoApi::addChild(Id const &id, Id const &child, NewType const &type)
 {
-	mClient.addChild(id, child, logicalId);
+	mClient.addChild(id, child, type);
+}
+
+void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId, NewType const &type)
+{
+	mClient.addChild(id, child, logicalId, type);
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)
@@ -50,54 +55,54 @@ void RepoApi::removeChildren(Id const &id)
 
 void RepoApi::removeElement(Id const &id)
 {
-	Q_ASSERT(id != Id::rootId());
+	Q_ASSERT(id != ROOT_ID);
 
-        foreach (Id const child, children(id))
+	foreach (Id const child, children(id))
 		removeElement(child);
 
-        if (hasProperty(id, "links")) {
-                IdList links = property(id, "links").value<IdList>();
-                foreach (Id const link, links) {
-                        if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
-				setProperty(link, "from", Id::rootId().toVariant());
-                        if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
-				setProperty(link, "to", Id::rootId().toVariant());
+	if (hasProperty(id, "links")) {
+		IdList links = property(id, "links").value<IdList>();
+		foreach (Id const link, links) {
+			if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
+				setProperty(link, "from", ROOT_ID.toVariant());
+			if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
+				setProperty(link, "to", ROOT_ID.toVariant());
 		}
 	}
 
-        removeLinkEnds("from", id);
-        removeLinkEnds("to", id);
+	removeLinkEnds("from", id);
+	removeLinkEnds("to", id);
 
-        if (hasProperty(id, "outgoingConnections")) {
-                IdList connections = property(id, "outgoingConnections").value<IdList>();
-                foreach (Id const target, connections)
-                        disconnect(id, target);
+	if (hasProperty(id, "outgoingConnections")) {
+		IdList connections = property(id, "outgoingConnections").value<IdList>();
+		foreach (Id const target, connections)
+			disconnect(id, target);
 	}
 
-        if (hasProperty(id, "incomingConnections")) {
-                IdList connections = property(id, "incomingConnections").value<IdList>();
-                foreach (Id const source, connections)
-                        disconnect(source, id);
+	if (hasProperty(id, "incomingConnections")) {
+		IdList connections = property(id, "incomingConnections").value<IdList>();
+		foreach (Id const source, connections)
+			disconnect(source, id);
 	}
 
-        if (hasProperty(id, "outgoingUsages")) {
-                IdList connections = property(id, "outgoingUsages").value<IdList>();
-                foreach (Id const target, connections)
-                        deleteUsage(id, target);
+	if (hasProperty(id, "outgoingUsages")) {
+		IdList connections = property(id, "outgoingUsages").value<IdList>();
+		foreach (Id const target, connections)
+			deleteUsage(id, target);
 	}
 
-        if (hasProperty(id, "incomingUsages")) {
-                IdList connections = property(id, "incomingUsages").value<IdList>();
-                foreach (Id const source, connections)
-                        deleteUsage(source, id);
+	if (hasProperty(id, "incomingUsages")) {
+		IdList connections = property(id, "incomingUsages").value<IdList>();
+		foreach (Id const source, connections)
+			deleteUsage(source, id);
 	}
 
 	mClient.remove(id);
 }
 
 void RepoApi::removeLinkEnds(QString const &endName, Id const &id) {
-        if (hasProperty(id, endName)) {
-                Id target = property(id, endName).value<Id>();
+	if (hasProperty(id, endName)) {
+		Id target = property(id, endName).value<Id>();
 		if (hasProperty(target, "links")) {
 			removeFromList(target, "links", id, endName);
 		}
@@ -118,10 +123,10 @@ void RepoApi::setParent(Id const &id, Id const &parent)
 
 IdList RepoApi::links(Id const &id, QString const &direction) const
 {
-        IdList links = mClient.property(id, "links").value<IdList>();
-        IdList result;
-        foreach (Id const link, links) {
-                if (mClient.property(link, direction).value<Id>() == id) {
+	IdList links = mClient.property(id, "links").value<IdList>();
+	IdList result;
+	foreach (Id const link, links) {
+		if (mClient.property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
@@ -130,27 +135,27 @@ IdList RepoApi::links(Id const &id, QString const &direction) const
 
 IdList RepoApi::outgoingLinks(Id const &id) const
 {
-        return links(id, "from");
+	return links(id, "from");
 }
 
 IdList RepoApi::incomingLinks(Id const &id) const
 {
-        return links(id, "to");
+	return links(id, "to");
 }
 
 IdList RepoApi::links(Id const &id) const
 {
-        return incomingLinks(id) << outgoingLinks(id);
+	return incomingLinks(id) << outgoingLinks(id);
 }
 
 qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
 {
-        return mClient.property(id, "outgoingConnections").value<IdList>();
+	return mClient.property(id, "outgoingConnections").value<IdList>();
 }
 
 qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
 {
-        return mClient.property(id, "incomingConnections").value<IdList>();
+	return mClient.property(id, "incomingConnections").value<IdList>();
 }
 
 void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
@@ -167,12 +172,12 @@ void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
 
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
 {
-        return mClient.property(id, "outgoingUsages").value<IdList>();
+	return mClient.property(id, "outgoingUsages").value<IdList>();
 }
 
 qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
 {
-        return mClient.property(id, "incomingUsages").value<IdList>();
+	return mClient.property(id, "incomingUsages").value<IdList>();
 }
 
 void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
@@ -190,13 +195,13 @@ void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
-        return mClient.property(id, propertyName);
+	return mClient.property(id, propertyName);
 }
 
 QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 {
-        Q_ASSERT(mClient.property(id, propertyName).canConvert<QString>());
-        return mClient.property(id, propertyName).toString();
+	Q_ASSERT(mClient.property(id, propertyName).canConvert<QString>());
+	return mClient.property(id, propertyName).toString();
 }
 
 void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
@@ -211,13 +216,13 @@ void RepoApi::removeProperty(Id const &id, QString const &propertyName)
 
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
-        return mClient.hasProperty(id, propertyName);
+	return mClient.hasProperty(id, propertyName);
 }
 
 Id RepoApi::from(Id const &id) const
 {
-        Q_ASSERT(mClient.property(id, "from").canConvert<Id>());
-        return mClient.property(id, "from").value<Id>();
+	Q_ASSERT(mClient.property(id, "from").canConvert<Id>());
+	return mClient.property(id, "from").value<Id>();
 }
 
 void RepoApi::setFrom(Id const &id, Id const &from)
@@ -232,8 +237,8 @@ void RepoApi::setFrom(Id const &id, Id const &from)
 
 Id RepoApi::to(Id const &id) const
 {
-        Q_ASSERT(mClient.property(id, "to").canConvert<Id>());
-        return mClient.property(id, "to").value<Id>();
+	Q_ASSERT(mClient.property(id, "to").canConvert<Id>());
+	return mClient.property(id, "to").value<Id>();
 }
 
 void RepoApi::setTo(Id const &id, Id const &to)
@@ -248,8 +253,8 @@ void RepoApi::setTo(Id const &id, Id const &to)
 
 double RepoApi::fromPort(Id const &id) const
 {
-        Q_ASSERT(mClient.property(id, "fromPort").canConvert<double>());
-        return mClient.property(id, "fromPort").value<double>();
+	Q_ASSERT(mClient.property(id, "fromPort").canConvert<double>());
+	return mClient.property(id, "fromPort").value<double>();
 }
 
 void RepoApi::setFromPort(Id const &id, double fromPort)
@@ -259,8 +264,8 @@ void RepoApi::setFromPort(Id const &id, double fromPort)
 
 double RepoApi::toPort(Id const &id) const
 {
-        Q_ASSERT(mClient.property(id, "toPort").canConvert<double>());
-        return mClient.property(id, "toPort").value<double>();
+	Q_ASSERT(mClient.property(id, "toPort").canConvert<double>());
+	return mClient.property(id, "toPort").value<double>();
 }
 
 void RepoApi::setToPort(Id const &id, double toPort)
@@ -331,17 +336,17 @@ void RepoApi::save(qReal::IdList list) const
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-	if (target == Id::rootId())
+	if (target == ROOT_ID)
 		return;
 
-        IdList list = mClient.property(target, listName).value<IdList>();
+	IdList list = mClient.property(target, listName).value<IdList>();
 
 	// Значения в списке должны быть уникальны.
 	if (list.contains(data))
 		return;
 
 	list.append(data);
-        mClient.setProperty(target, listName, IdListHelper::toVariant(list));
+	mClient.setProperty(target, listName, IdListHelper::toVariant(list));
 
 	if (listName == "links") {
 		IdList temporaryRemovedList = mClient.temporaryRemovedLinksAt(target, direction);
@@ -352,10 +357,10 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 void RepoApi::removeFromList(Id const &target, QString const &listName, Id const &data, QString const &direction)
 {
-	if (target == Id::rootId())
+	if (target == ROOT_ID)
 		return;
 
-        IdList list = mClient.property(target, listName).value<IdList>();
+	IdList list = mClient.property(target, listName).value<IdList>();
 	IdList temporaryRemovedList = mClient.temporaryRemovedLinksAt(target, direction);
 	if(listName == "links" && list.contains(data)) {
 		temporaryRemovedList.append(data);
@@ -368,32 +373,32 @@ void RepoApi::removeFromList(Id const &target, QString const &listName, Id const
 
 Id RepoApi::otherEntityFromLink(Id const &linkId, Id const &firstNode) const
 {
-        Id const fromId = from(linkId);
-        if (fromId != firstNode)
+	Id const fromId = from(linkId);
+	if (fromId != firstNode)
 		return fromId;
 	else
 		return to(linkId);
 }
 
-IdList RepoApi::logicalElements(Id const &type) const
+IdList RepoApi::logicalElements(NewType const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);
+	Q_ASSERT(type.typeSize() == 3);
 
-        IdList result;
-        foreach (Id t, mClient.elements()) {
-		if (id.element() == type.element() && mClient.isLogicalId(id))
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (mClient.type(id).element() == type.element() && mClient.isLogicalId(id))
 			result.append(id);
 	}
 	return result;
 }
 
-IdList RepoApi::graphicalElements(Id const &type) const
+IdList RepoApi::graphicalElements(NewType const &type) const
 {
-	Q_ASSERT(type.idSize() == 3);
+	Q_ASSERT(type.typeSize() == 3);
 
 	IdList result;
 	foreach (Id id, mClient.elements()) {
-		if (id.element() == type.element() && !mClient.isLogicalId(id))
+		if (mClient.type(id).element() == type.element() && !mClient.isLogicalId(id))
 			result.append(id);
 	}
 	return result;
@@ -401,22 +406,22 @@ IdList RepoApi::graphicalElements(Id const &type) const
 
 IdList RepoApi::elementsByType(QString const &type) const
 {
-        IdList result;
-        foreach (Id id, mClient.elements()) {
-                if (mClient.type(id).element() == typeString)
-                        result.append(id);
+	IdList result;
+	foreach (Id id, mClient.elements()) {
+		if (mClient.type(id).element() == type)
+			result.append(id);
 	}
 	return result;
 }
 
 int RepoApi::elementsCount() const
 {
-        return mClient.types().size();
+	return mClient.elements().size();
 }
 
 bool RepoApi::exist(Id const &id) const
 {
-        return mClient.exist(id);
+	return mClient.exist(id);
 }
 
 IdList RepoApi::temporaryRemovedLinksAt(Id const &id, QString const &direction) const

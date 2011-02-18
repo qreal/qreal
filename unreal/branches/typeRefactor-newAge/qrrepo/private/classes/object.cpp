@@ -6,19 +6,19 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-Object::Object(const Id &id, const Id &parent)
-	: mId(id)
+Object::Object(const Id &id, const Id &parent, const NewType &type)
+	: mId(id), mType(type)
 {
 	setParent(parent);
 }
 
-Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
-	: mId(id), mLogicalId(logicalId)
+Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId, const qReal::NewType &type)
+	: mId(id), mLogicalId(logicalId), mType(type)
 {
 	setParent(parent);
 }
 
-Object::Object(const Id &id) : mId(id)
+Object::Object(const Id &id, const NewType &type) : mId(id), mType(type)
 {
 }
 
@@ -132,6 +132,15 @@ Id Object::logicalId() const
 	return mLogicalId;
 }
 
+NewType Object::type() const
+{
+	return mType;
+}
+
+void Object::setType(const NewType &type)
+{
+	mType = type;
+}
 QMapIterator<QString, QVariant> Object::propertiesIterator()
 {
 	return QMapIterator<QString, QVariant>(mProperties);

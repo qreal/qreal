@@ -40,20 +40,20 @@ IdList GraphicalModelAssistApi::graphicalIdsByLogicalId(Id const &logicalId) con
 	return result;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
+Id GraphicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 {
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	Id const newElementId(type, QUuid::createUuid().toString());
+	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mGraphicalModel.addElementToModel(parent, newElementId, ROOT_ID, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	return ModelsAssistApi::createElement(parent, id, isFromLogicalModel, name, position);
+	return ModelsAssistApi::createElement(parent, id, type, isFromLogicalModel, name, position);
 }
 
 IdList GraphicalModelAssistApi::children(Id const &element) const

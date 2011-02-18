@@ -21,7 +21,7 @@ VisualDebugger::VisualDebugger(models::GraphicalModelAssistApi const &modelApi)
 	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
 	mCurrentElem = NULL;
-	mCurrentId = Id::rootId();
+	mCurrentId = ROOT_ID;
 	mError = VisualDebugger::noErrors;
 	mErrorReporter = new gui::ErrorReporter();
 	mBlockParser = new BlockParser(mErrorReporter);
@@ -63,7 +63,7 @@ void VisualDebugger::setDebugColor(QString color)
 
 void VisualDebugger::setEditor(EditorView *editor)
 {
-	if (NULL == mEditor || mCurrentId == Id::rootId() || mEditor == editor) {
+	if (NULL == mEditor || mCurrentId == ROOT_ID || mEditor == editor) {
 		mEditor = editor;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
@@ -149,7 +149,7 @@ Id VisualDebugger::findValidLink()
 	if (!mBlockParser->hasErrors()) {
 		error(VisualDebugger::missingValidLink);
 	}
-	return Id::rootId();
+	return ROOT_ID;
 }
 
 void VisualDebugger::pause(int time)
@@ -167,7 +167,7 @@ bool VisualDebugger::isFinalNode(Id id)
 
 bool VisualDebugger::hasEndOfLinkNode(Id id)
 {
-	return mModelApi.graphicalRepoApi().to(id) != Id::rootId();
+	return mModelApi.graphicalRepoApi().to(id) != ROOT_ID;
 }
 
 VisualDebugger::ErrorType VisualDebugger::doFirstStep(UML::Element *elem)
@@ -204,7 +204,7 @@ void VisualDebugger::doStep(Id id)
 void VisualDebugger::deinitialize()
 {
 	mEffect->setEnabled(false);
-	mCurrentId = Id::rootId();
+	mCurrentId = ROOT_ID;
 	mCurrentElem = NULL;
 	mEditor = NULL;
 	mError = VisualDebugger::noErrors;
@@ -251,7 +251,7 @@ gui::ErrorReporter& VisualDebugger::debug()
 				deinitialize();
 				return *mErrorReporter;
 			}
-			if (validLinkId != Id::rootId()) {
+			if (validLinkId != ROOT_ID) {
 				doStep(validLinkId);
 			} else {
 				return *mErrorReporter;
@@ -302,7 +302,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 	QSettings settings("SPbSU", "QReal");
 	setDebugColor(settings.value("debugColor").toString());
 
-	if (mCurrentElem == NULL && mCurrentId == Id::rootId()) {
+	if (mCurrentElem == NULL && mCurrentId == ROOT_ID) {
 		if (VisualDebugger::noErrors != doFirstStep(findBeginNode("InitialNode"))) {
 			return *mErrorReporter;
 		}
@@ -327,7 +327,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 					deinitialize();
 					return *mErrorReporter;
 				}
-				if (validLinkId != Id::rootId()) {
+				if (validLinkId != ROOT_ID) {
 					doStep(validLinkId);
 				} else {
 					return *mErrorReporter;

@@ -288,7 +288,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId())
+	if (id == ROOT_ID)
 		return;
 
 	setIndexesOfPropertyEditor(id);
@@ -692,7 +692,7 @@ void MainWindow::generateEditorWithQRMC()
 {
 	qrmc::MetaCompiler metaCompiler("../qrmc", "./save");
 
-	IdList const metamodels = mModels->logicalRepoApi().children(Id::rootId());
+	IdList const metamodels = mModels->logicalRepoApi().children(ROOT_ID);
 
 	QSettings settings("SPbSU", "QReal");
 
@@ -1335,7 +1335,7 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(QString const &idString)
 {
-	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	Id const created = mModels->graphicalModelAssistApi().createElement(ROOT_ID, Id::loadFromString(idString));
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);

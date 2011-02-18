@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../qrgui/kernel/roles.h"
+#include "../../../qrgui/kernel/newType.h"
 
 #include <QMap>
 #include <QVariant>
@@ -12,9 +13,9 @@ namespace qrRepo {
 		class Object
 		{
 		public:
-			explicit Object(const qReal::Id &id);
-			Object(const qReal::Id &id, const qReal::Id &parent);
-			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
+			explicit Object(const qReal::Id &id, const qReal::NewType &type);
+			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::NewType &type);
+			Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId, const qReal::NewType &type);
 			void setParent(const qReal::Id &parent);
 			void removeParent();
 			void addChild(const qReal::Id &child);
@@ -27,6 +28,8 @@ namespace qrRepo {
 			void removeProperty(const QString &name);
 			qReal::Id id() const;
 			qReal::Id logicalId() const;
+			qReal::NewType type() const;
+			void setType(qReal::NewType const &type);
 			QMapIterator<QString, QVariant> propertiesIterator();
 			void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
 			qReal::IdList temporaryRemovedLinksAt(QString const &direction) const;
@@ -36,6 +39,7 @@ namespace qrRepo {
 
 		private:
 			const qReal::Id mId;
+			qReal::NewType mType;
 			qReal::Id mLogicalId;
 			qReal::Id mParent;
 			qReal::IdList mChildren;
