@@ -17,6 +17,11 @@ MethodEditorDialog::MethodEditorDialog(QWidget *parent) :
 		this, SLOT(accept()));
 	connect(ui->buttonBox, SIGNAL(rejected()),
 		this, SLOT(reject()));
+
+	parameterScrollAreaLayout = new QVBoxLayout();
+	parameterScrollAreaLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+
+	ui->parameterScrollAreaWidgetContents->setLayout(parameterScrollAreaLayout);
 }
 
 MethodEditorDialog::~MethodEditorDialog()
@@ -114,8 +119,7 @@ void MethodEditorDialog::createParameter()
 	newTypeEdit->setText("int");
 	hLayout->addWidget(newTypeEdit);
 
-	//hLayout->addWidget(new QPushButton(ui->layoutWidget));
-	ui->verticalLayout_2->addLayout(hLayout);
+	parameterScrollAreaLayout->addLayout(hLayout);
 
 	parameterList.append(ParameterEditor(newNameEdit, newTypeEdit));
 }

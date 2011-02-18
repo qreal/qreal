@@ -3,6 +3,7 @@
 #include <QDialog>
 #include <QString>
 #include <QLineEdit>
+#include <QVBoxLayout>
 
 namespace Ui {
 	class MethodEditorDialog;
@@ -39,4 +40,6 @@ class MethodEditorDialog : public QDialog {
 			QLineEdit *typeEdit;
 		};
 		QList<ParameterEditor> parameterList;
+
+		QVBoxLayout *parameterScrollAreaLayout;
 };

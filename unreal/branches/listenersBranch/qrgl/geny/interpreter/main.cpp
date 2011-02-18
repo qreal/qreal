@@ -4,11 +4,15 @@
 
 using namespace Geny;
 
-int main() {
-	Interpreter interpreter("../../..", "../classRep_2.geny", qReal::Id());
+int main(int argc, char *argv[]) {
+	if (argc < 2) {
+		qDebug() << "Нет параметра-файла!";
+		return 0;
+	}
+
+	Interpreter interpreter("../../..", argv[1], qReal::Id());
 	//Interpreter interpreter("../../..", "../classH_with_association.geny", qReal::Id());
 
-	qDebug() << interpreter.interpret(); 
 	qDebug() << interpreter.interpret(); 
 	return 0;
 }

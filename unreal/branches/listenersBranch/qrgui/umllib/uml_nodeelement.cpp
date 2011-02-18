@@ -46,6 +46,15 @@ NodeElement::NodeElement(ElementImpl* impl)
 	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
 	}
+
+	//setGeometry(mContents);//для инициализации mTitles норм размерами
+	if (!mTitles.empty()) {
+			mTitles.at(0)->setTextWidth(mContents.width() - mTitles.at(0)->pos().x());
+			//mTitles.at(0)->adjustSize();
+			qDebug() << "AAA" << mTitles.at(0)->boundingRect();
+	}
+	
+	resize(mContents);
 }
 
 NodeElement::~NodeElement()
@@ -132,7 +141,14 @@ void NodeElement::resize(QRectF newContents)
 		sortChildren();
 
 	if (mElementImpl->minimizesToChildren())
-		newContents = QRectF(0, 0, 0, 0);
+		//newContents = QRectF(0, 0, 0, 0);
+		newContents = mFoldedContents;
+
+	// if object needs to fit its title
+	//if (mElementImpl->isFitingTitle())
+	if (!mTitles.empty())
+		newContents = mTitles.at(0)->boundingRect().united(newContents);
+	//
 
 	//childrenMoving - negative shift of children from the point (SIZE_OF_FORESTALLING, SIZE_OF_FORESTALLING)
 	//whatever it means :)

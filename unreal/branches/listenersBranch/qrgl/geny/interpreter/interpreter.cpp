@@ -39,7 +39,7 @@ QString Interpreter::getCurrentObjectProperty(const QString& propertyName) {
 		return ""; //TODO: возможно лучше бросать исключение!
 	}
 
-	qDebug() << rApi.property(getCurObjectId(), propertyName).toString();
+	//qDebug() << rApi.property(getCurObjectId(), propertyName).toString();
 
 	return rApi.property(getCurObjectId(), propertyName).toString();
 }

@@ -17,13 +17,13 @@ void ContextMenuActionTrigger::writeMethodPropertiesToModel(qReal::Id methodElem
 {
 	QStringList listOfPropertyNames = mApi->editorManager().getPropertyNames(methodElemId);
 
-	qDebug() << listOfPropertyNames;
-
 	mApi->setProperty(methodElemId, listOfPropertyNames.indexOf("methodName") + roles::customPropertiesBeginRole, QVariant(name));
 	mApi->setProperty(methodElemId, listOfPropertyNames.indexOf("methodReturnType") + roles::customPropertiesBeginRole, QVariant(returnType));
 	mApi->setProperty(methodElemId, listOfPropertyNames.indexOf("methodParameters") + roles::customPropertiesBeginRole, QVariant(parameters));
 	mApi->setProperty(methodElemId, listOfPropertyNames.indexOf("methodVisibility") + roles::customPropertiesBeginRole, QVariant(visibility));
 	mApi->setProperty(methodElemId, Qt::DisplayRole, QVariant(displayName));
+
+	//qDebug() << "SASAAS" << mApi->children(methodElemId).size();
 }
 
 void ContextMenuActionTrigger::writeFieldPropertiesToModel(qReal::Id fieldElemId, QString name, QString type,
