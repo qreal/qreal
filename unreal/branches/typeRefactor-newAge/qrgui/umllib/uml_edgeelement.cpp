@@ -316,16 +316,16 @@ bool EdgeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	QString editor = id().editor();
+	QString editor = newType().editor();
 	//TODO: do a code generation for diagrams
-	QString diagram = id().diagram();
-	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().editorInterface(editor);
-	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
+	QString diagram = newType().diagram();
+	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().getEditorInterface(editor);
+	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(newType().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{
-		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-				Id(editor, diagram, pEdge.first.second));
-		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
+		QPair<qReal::NewType, qReal::NewType> nodes(NewType(editor, diagram, pEdge.first.first),
+				NewType(editor, diagram, pEdge.first.second));
+		QPair<bool, qReal::NewType> edge(pEdge.second.first, NewType(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
 	}

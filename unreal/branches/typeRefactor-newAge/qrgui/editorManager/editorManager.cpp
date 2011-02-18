@@ -78,31 +78,31 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 
 TypeList EditorManager::editors() const
 {
-        TypeList editors;
+	TypeList editors;
 	foreach (QString e, mPluginsLoaded) {
-                editors.append(NewType(e));
+		editors.append(NewType(e));
 	}
 	return editors;
 }
 
 TypeList EditorManager::diagrams(const NewType &editor) const
 {
-        TypeList diagrams;
+	TypeList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
 	foreach (QString e, mPluginIface[editor.editor()]->diagrams()) {
-                diagrams.append(NewType(editor, e));
+		diagrams.append(NewType(editor, e));
 	}
 	return diagrams;
 }
 
 TypeList EditorManager::elements(const NewType &diagram) const
 {
-        TypeList elements;
+	TypeList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-                elements.append(NewType(diagram, e));
+		elements.append(NewType(diagram, e));
 	}
 	return elements;
 }
@@ -111,41 +111,41 @@ TypeList EditorManager::elementsOnDiagram(const NewType &diagram) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-        TypeList elements;
+	TypeList elements;
 
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
-                elements.append(NewType(diagram.editor(), diagram.diagram(), e));
+		elements.append(NewType(diagram.editor(), diagram.diagram(), e));
 	return elements;
 }
 bool EditorManager::isEditor(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return type.typeSize() == 1;
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return type.typeSize() == 1;
 }
 
 bool EditorManager::isDiagram(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return type.typeSize() == 2;
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return type.typeSize() == 2;
 }
 
 bool EditorManager::isElement(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return type.typeSize() == 3;
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return type.typeSize() == 3;
 }
 
 QString EditorManager::friendlyName(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
 
-        switch (type.typeSize()) {
+	switch (type.typeSize()) {
 	case 1:
-                return mPluginIface[type.editor()]->editorName();
+		return mPluginIface[type.editor()]->editorName();
 	case 2:
-                return mPluginIface[type.editor()]->diagramName(type.diagram());
+		return mPluginIface[type.editor()]->diagramName(type.diagram());
 	case 3:
-                return mPluginIface[type.editor()]->elementName(type.diagram(), type.element());
+		return mPluginIface[type.editor()]->elementName(type.diagram(), type.element());
 	default:
 		Q_ASSERT(!"Malformed Id");
 		return "";
@@ -154,41 +154,41 @@ QString EditorManager::friendlyName(const NewType &type) const
 
 QString EditorManager::description(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        if (type.typeSize() != 3)
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	if (type.typeSize() != 3)
 		return "";
-        return mPluginIface[type.editor()]->elementDescription(type.diagram(), type.element());
+	return mPluginIface[type.editor()]->elementDescription(type.diagram(), type.element());
 }
 
 QString EditorManager::propertyDescription(const NewType &type, const QString &propertyName) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
 
-        if (type.typeSize() != 4)
+	if (type.typeSize() != 4)
 		return "";
-        return mPluginIface[type.editor()]->propertyDescription(type.diagram(), type.element(), propertyName);
+	return mPluginIface[type.editor()]->propertyDescription(type.diagram(), type.element(), propertyName);
 }
 
 QString EditorManager::mouseGesture(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        if (type.typeSize() != 3)
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	if (type.typeSize() != 3)
 		return "";
-        return mPluginIface[type.editor()]->elementMouseGesture(type.diagram(), type.element());
+	return mPluginIface[type.editor()]->elementMouseGesture(type.diagram(), type.element());
 }
 
 QIcon EditorManager::icon(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        SdfIconEngineV2 *engine = new SdfIconEngineV2(":/" + type.element() + "Class.sdf");
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/" + type.element() + "Class.sdf");
 	// QIcon will take ownership of engine, no need for us to delete
-        return mPluginIface[type.editor()]->getIcon(engine);
+	return mPluginIface[type.editor()]->getIcon(engine);
 }
 
 UML::Element* EditorManager::graphicalObject(const NewType &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        UML::ElementImpl *impl = mPluginIface[type.editor()]->getGraphicalObject(type.diagram(), type.element());
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	UML::ElementImpl *impl = mPluginIface[type.editor()]->getGraphicalObject(type.diagram(), type.element());
 	if( !impl ){
 		qDebug() << "no impl";
 		return 0;
@@ -201,104 +201,105 @@ UML::Element* EditorManager::graphicalObject(const NewType &type) const
 
 QStringList EditorManager::getPropertyNames(const NewType &type) const
 {
-        Q_ASSERT(type.typeSize() == 3); // Applicable only to element types
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return mPluginIface[type.editor()]->getPropertyNames(type.diagram(), type.element());
+	Q_ASSERT(type.typeSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return mPluginIface[type.editor()]->getPropertyNames(type.diagram(), type.element());
 }
 
 TypeList EditorManager::getContainedTypes(const NewType &type) const
 {
-        Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
 
-        TypeList result;
-        foreach (QString typeString, mPluginIface[type.editor()]->getTypesContainedBy(type.element()))
+	TypeList result;
+	foreach (QString typeString, mPluginIface[type.editor()]->getTypesContainedBy(type.element()))
 	{
-                result.append(NewType(typeString));
+		result.append(NewType(typeString));
 	}
 	return result;
 }
 
 TypeList EditorManager::getConnectedTypes(const NewType &type) const
 {
-        Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
+	Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
 
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
 
-        TypeList result;
-        foreach (QString typeString, mPluginIface[type.editor()]->getConnectedTypes(type.element()))
+	TypeList result;
+	foreach (QString typeString, mPluginIface[type.editor()]->getConnectedTypes(type.element()))
 		// a hack caused by absence  of ID entity in editors generator
-                result.append(NewType("?", "?", typeString));
+		result.append(NewType("?", "?", typeString));
 
 	return result;
 }
 
 TypeList EditorManager::getUsedTypes(const NewType &type) const
 {
-        Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
+	Q_ASSERT(type.typeSize() == 3);  // Applicable only to element types
 
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
 
-        TypeList result;
-        foreach (QString typeString, mPluginIface[type.editor()]->getUsedTypes(type.element()))
-                result.append(NewType("?", "?", typeString));
+	TypeList result;
+	foreach (QString typeString, mPluginIface[type.editor()]->getUsedTypes(type.element()))
+		result.append(NewType("?", "?", typeString));
 
 	return result;
 }
 
 QStringList EditorManager::getEnumValues(NewType const &type, const QString &name) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        QString typeName = mPluginIface[type.editor()]->getPropertyType(type.element(), name);
-        return mPluginIface[type.editor()]->getEnumValues(typeName);
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	QString typeName = mPluginIface[type.editor()]->getPropertyType(type.element(), name);
+	return mPluginIface[type.editor()]->getEnumValues(typeName);
 }
 
 QString EditorManager::getTypeName(const NewType &type, const QString &name) const
 {
-        return mPluginIface[type.editor()]->getPropertyType(type.element(), name);
+	return mPluginIface[type.editor()]->getPropertyType(type.element(), name);
 }
 
 QString EditorManager::getDefaultPropertyValue(NewType const &type, QString name) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return mPluginIface[type.editor()]->getPropertyDefaultValue(type.element(), name);
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return mPluginIface[type.editor()]->getPropertyDefaultValue(type.element(), name);
 }
 
 QStringList EditorManager::getPropertiesWithDefaultValues(NewType const &type) const
 {
-        Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-        return mPluginIface[type.editor()]->getPropertiesWithDefaultValues(type.element());
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return mPluginIface[type.editor()]->getPropertiesWithDefaultValues(type.element());
 }
 
-TypeList EditorManager::checkNeededPlugins(qrRepo::RepoApi const &api) const
+TypeList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
-        TypeList result;
-        checkNeededPluginsRecursive(api, ROOT_ID, result);
+	IdList result;
+	checkNeededPluginsRecursive(logicalApi, Id::rootId(), result);
+	checkNeededPluginsRecursive(graphicalApi, Id::rootId(), result);
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::RepoApi const &api, Id const &id, TypeList &result) const
+void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const
 {
-        if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
-                NewType missingEditor = NewType(api.type(id).editor());
+	if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
+		NewType missingEditor = NewType(api.type(id).editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);
 	}
 
-        foreach (Id child, api.children(id)) {
-                checkNeededPluginsRecursive(api, child, result);
+	foreach (Id child, api.children(id)) {
+		checkNeededPluginsRecursive(api, child, result);
 	}
 }
 
 bool EditorManager::hasElement(NewType const &type) const
 {
-        Q_ASSERT(type.typeSize() == 3);
-        if (!mPluginsLoaded.contains(type.editor()))
+	Q_ASSERT(type.typeSize() == 3);
+	if (!mPluginsLoaded.contains(type.editor()))
 		return false;
-        EditorInterface *editor = mPluginIface[type.editor()];
+	EditorInterface *editor = mPluginIface[type.editor()];
 	foreach (QString diagram, editor->diagrams())
 		foreach (QString element, editor->elements(diagram))
-                        if (type.diagram() == diagram && type.element() == element)
+			if (type.diagram() == diagram && type.element() == element)
 				return true;
 	return false;
 }
@@ -309,8 +310,8 @@ NewType EditorManager::findElementByType(QString const &type) const
 		foreach (QString diagram, editor->diagrams())
 			foreach (QString element, editor->elements(diagram))
 				if (type == element)
-                                        return NewType(editor->editorName(), diagram, element);
-        throw Exception("No type " + type + " in loaded plugins");
+					return NewType(editor->editorName(), diagram, element);
+	throw Exception("No type " + type + " in loaded plugins");
 }
 
 QList<ListenerInterface*> EditorManager::listeners() const

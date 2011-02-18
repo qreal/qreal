@@ -12,9 +12,9 @@
 
 namespace UML {
 
-	typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
+	typedef QPair<QPair<qReal::NewType, qReal::NewType>, QPair<bool, qReal::NewType> > PossibleEdge;
 	typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
-	typedef QPair<bool, qReal::Id> PossibleEdgeType;
+	typedef QPair<bool, qReal::NewType> PossibleEdgeType;
 
 /** @brief point port description */
 	struct StatPoint

@@ -6,6 +6,7 @@
 #include "../kernel/exception/exception.h"
 
 #include "propertyeditorproxymodel.h"
+#include "../models/details/logicalModel.h"
 
 using namespace qReal;
 
@@ -63,6 +64,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+			NewType type =
 			QString const description = mEditorManager.propertyDescription(id, mFields[index.row()].fieldName);
 			if (!description.isEmpty())
 				return "<body>" + description;
@@ -196,6 +198,8 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 	if (logicalModelIndex != QModelIndex()) {
 		Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		///// Надо как-то получить тип!!!
+		/////
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {

@@ -5,7 +5,6 @@
 
 #include "../kernel/roles.h"
 #include "../kernel/NewType.h"
-#include "elementRepoInterface.h"
 #include "../kernel/ids.h"
 #include "../pluginInterface/elementRepoInterface.h"
 #include "elementTitle.h"
@@ -54,9 +53,7 @@ public:
 
 protected:
 	qReal::Id mId;
-
 	qReal::NewType mType;
-	qReal::Id mId;
 	bool mMoving;
 
 	QList<ElementTitle*> mTitles;

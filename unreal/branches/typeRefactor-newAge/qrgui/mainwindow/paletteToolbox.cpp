@@ -11,9 +11,9 @@
 using namespace qReal;
 using namespace qReal::gui;
 
-PaletteToolbox::DraggableElement::DraggableElement(Id const &id, QString const &name, QString const &description,
-	QIcon const &icon, QWidget *parent)
-: QWidget(parent), mId(id), mIcon(icon), mText(name)
+PaletteToolbox::DraggableElement::DraggableElement(NewType const &type, QString const &name, QString const &description,
+												   QIcon const &icon, QWidget *parent)
+	: QWidget(parent), mType(type), mIcon(icon), mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(4, 4, 4, 4);
@@ -72,7 +72,7 @@ void PaletteToolbox::setActiveEditor(int const comboIndex)
 	}
 }
 
-void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
+void PaletteToolbox::addDiagramType(NewType const &type, QString const &name)
 {
 	QWidget *tab = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(tab);
@@ -85,31 +85,31 @@ void PaletteToolbox::addDiagramType(Id const &id, QString const &name)
 	mTabs.append(tab);
 	mTabNames.append(name);
 
-	Q_ASSERT(id.idSize() == 2); // it should be diagram
-	mCategories[id] = mTabs.size() - 1;
+	Q_ASSERT(type.typeSize() == 2); // it should be diagram
+	mCategories[type] = mTabs.size() - 1;
 
 	mComboBox->addItem(name);
 
 	Q_ASSERT(mTabNames.size() == mTabs.size());
 }
 
-void PaletteToolbox::addItemType(Id const &id, QString const &name, QString const &description,  QIcon const &icon)
+void PaletteToolbox::addItemType(NewType const &type, QString const &name, QString const &description,  QIcon const &icon)
 {
-	Id category(id.editor(), id.diagram());
+	NewType category(type.editor(), type.diagram());
 	QWidget *tab = mTabs[mCategories[category]];
 	Q_ASSERT(tab);
 
-	DraggableElement *element = new DraggableElement(id, name, description, icon, this);
+	DraggableElement *element = new DraggableElement(type, name, description, icon, this);
 	tab->layout()->addWidget(element);
 }
 
-void PaletteToolbox::deleteDiagramType(const Id &id)
+void PaletteToolbox::deleteDiagramType(const NewType &type)
 {
-	if (mCategories.contains(id)) {
-		mComboBox->removeItem(mCategories[id]);
-		mTabNames.remove(mCategories[id]);
-		mTabs.remove(mCategories[id]);
-		mCategories.remove(id);
+	if (mCategories.contains(type)) {
+		mComboBox->removeItem(mCategories[type]);
+		mTabNames.remove(mCategories[type]);
+		mTabs.remove(mCategories[type]);
+		mCategories.remove(type);
 	}
 }
 
@@ -149,18 +149,19 @@ void PaletteToolbox::mousePressEvent(QMouseEvent *event)
 	if (!child)
 		return;
 
-	Q_ASSERT(child->id().idSize() == 3); // it should be element type
+	Q_ASSERT(child->type().typeSize() == 3); // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId(child->id(), QUuid::createUuid().toString());
-
+	Id elementId(QUuid::createUuid().toString());
+	NewType elementType = child->type();
 	QByteArray itemData;
 	bool isFromLogicalModel = false;
 
 	QDataStream stream(&itemData, QIODevice::WriteOnly);
 	stream << elementId.toString();  // uuid
+	stream << elementType.toString(); //type
 	stream << ROOT_ID.toString();  // pathToItem
 	stream << QString("(" + child->text() + ")");
 	stream << QPointF(0, 0);

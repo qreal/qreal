@@ -24,8 +24,8 @@ public:
 	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
-	virtual Id createElement(Id const &parent, Id const &type);
-	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	virtual Id createElement(Id const &parent, Id const &id, NewType const &type);
+	virtual Id createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position);
 	virtual IdList children(Id const &element) const;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position);
 	IdList temporaryRemovedLinksFrom(Id const &elem) const;

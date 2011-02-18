@@ -19,10 +19,8 @@ Element::Element()
 
 void Element::setId(qReal::Id &id)
 {
-	mDataIndex = index;
-	mId = mDataIndex.data(roles::idRole).value<Id>();
-	model::Model const *itemModel = static_cast<model::Model const *>(mDataIndex.model());
-	mType = itemModel->api().type(mId);
+	mId = id;
+	mType = mLogicalAssistApi->type(id);
 	update();
 }
 
@@ -36,7 +34,7 @@ Id Element::id() const
 	return mId;
 }
 
-void Element::updateData()
+Id Element::logicalId() const
 {
 	return mGraphicalAssistApi->logicalId(mId);
 }

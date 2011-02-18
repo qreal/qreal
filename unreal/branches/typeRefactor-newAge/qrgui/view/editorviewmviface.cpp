@@ -178,7 +178,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 					Id newUuid = Id(QUuid::createUuid().toString());
 
 
-					mGraphicalAssistApi->createElement(currentId, newUuid, false,  "(anonymous something)", QPointF(0, 0));
+					mGraphicalAssistApi->createElement(currentId, newUuid, newType, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
 		}

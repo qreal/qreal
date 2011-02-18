@@ -42,6 +42,11 @@ void LogicalModelAssistApi::changeParent(Id const &element, Id const &parent, QP
 	mLogicalModel.changeParent(mModel.indexById(element), mModel.indexById(parent), QPointF());
 }
 
+NewType LogicalModelAssistApi::type(Id const &id) const
+{
+	return mLogicalModel.api().type(id);
+}
+
 void LogicalModelAssistApi::connect(Id const &source, Id const &destination)
 {
 	mLogicalModel.mutableApi().connect(source, destination);

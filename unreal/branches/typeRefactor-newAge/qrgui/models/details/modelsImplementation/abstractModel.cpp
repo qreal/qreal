@@ -164,11 +164,11 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		Id id = Id::loadFromString(idString);
 		NewType type = NewType::loadFromString(typeStirng);
 
-		Q_ASSERT(id.idSize() == 4);
+		Q_ASSERT(type.typeSize() == 4);
 		if (mModelItems.contains(id))
 			modelAssistApi()->changeParent(id, parentItem->id());
 		else
-			modelAssistApi()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
+			modelAssistApi()->createElement(parentItem->id(), id, type, isFromLogicalModel, name, position);
 		return true;
 	}
 }

@@ -52,8 +52,8 @@ MainWindow::MainWindow()
 	, mPropertyModel(mEditorManager)
 {
 	QSettings settings("SPbSU", "QReal");
-		//bool showSplash = settings.value("Splashscreen", true).toBool();
-		bool showSplash = false;
+	//bool showSplash = settings.value("Splashscreen", true).toBool();
+	bool showSplash = false;
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
@@ -186,41 +186,42 @@ MainWindow::MainWindow()
 	progress->setValue(80);
 
 	mListenerManager = new ListenerManager(mEditorManager.listeners()
-			, mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
+										   , mModels->logicalModelAssistApi(), mModels->graphicalModelAssistApi());
 
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	TypeList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	if (!missingPlugins.isEmpty()) {
 		QString text = "These plugins are not present, but needed to load the save:\n";
-				foreach (NewType const type, missingPlugins) {
-						text += type.editor() + "\n";
-		QMessageBox::warning(this, tr("Some plugins are missing"), text);
-		close();
-		return;
+		foreach (NewType const type, missingPlugins) {
+			text += type.editor() + "\n";
+			QMessageBox::warning(this, tr("Some plugins are missing"), text);
+			close();
+			return;
+		}
+
+		mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+
+		connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
+
+		mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+		mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+		mGesturesWidget = new GesturesWidget();
+		mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
+
+		mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+		// Step 7: Save consistency checked, interface is initialized with models.
+		progress->setValue(100);
+		if (showSplash)
+			splash->close();
+		delete splash;
+
+		if (mModels->graphicalModel()->rowCount() > 0)
+			openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
+
+		if (settings.value("diagramCreateSuggestion", true).toBool())
+			suggestToCreateDiagram();
 	}
-
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-
-	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
-
-	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-
-	mGesturesWidget = new GesturesWidget();
-	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
-
-	mDelegate.init(this, &mModels->logicalModelAssistApi());
-
-	// Step 7: Save consistency checked, interface is initialized with models.
-	progress->setValue(100);
-	if (showSplash)
-		splash->close();
-	delete splash;
-
-	if (mModels->graphicalModel()->rowCount() > 0)
-		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
-
-	if (settings.value("diagramCreateSuggestion", true).toBool())
-		suggestToCreateDiagram();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -233,7 +234,7 @@ void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
 	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
 		close();
 	} else if (keyEvent->key() == Qt::Key_F2
-			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
+			   || (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
 	{
 		saveAll();
 	}
@@ -268,11 +269,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
-		foreach (NewType const editor, mEditorManager.editors()) {
-				foreach (NewType const diagram, mEditorManager.diagrams(editor)) {
+	foreach (NewType const editor, mEditorManager.editors()) {
+		foreach (NewType const diagram, mEditorManager.diagrams(editor)) {
 			mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram) );
 
-						foreach (NewType const element, mEditorManager.elements(diagram)) {
+			foreach (NewType const element, mEditorManager.elements(diagram)) {
 				mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 			}
 		}
@@ -345,8 +346,8 @@ void MainWindow::activateSubdiagram(QModelIndex const &idx) {
 
 	QModelIndex diagramToActivate = idx;
 	while (diagramToActivate.isValid() && diagramToActivate.parent().isValid()
-		&& diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
-		{
+		   && diagramToActivate.parent() != getCurrentTab()->mvIface()->rootIndex())
+	{
 		diagramToActivate = diagramToActivate.parent();
 	}
 
@@ -459,7 +460,7 @@ void MainWindow::settingsPlugins()
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
 	QModelIndex index = isLogicalModel ? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
+									   : (mUi->graphicalModelExplorer->currentIndex());
 	if (isLogicalModel) {
 		Id logicalId = mModels->logicalModelAssistApi().idByIndex(index);
 		IdList graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
@@ -527,16 +528,16 @@ void MainWindow::deleteFromDiagram()
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"),
-			tr("<center>This is <b>QReal</b><br>"
-			"Just another CASE tool</center>"));
+					   tr("<center>This is <b>QReal</b><br>"
+						  "Just another CASE tool</center>"));
 }
 
 void MainWindow::showHelp()
 {
 	QMessageBox::about(this, tr("Help"),
-			tr("To begin:\n"
-			"1. To add items to diagrams, drag & drop them from Palette to editor\n"
-			"2. Get more help from author :)"));
+					   tr("To begin:\n"
+						  "1. To add items to diagrams, drag & drop them from Palette to editor\n"
+						  "2. Get more help from author :)"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -576,19 +577,19 @@ void MainWindow::doCommit()
 	if (path.isEmpty())
 		return;
 	/*	char* p;
-	QByteArray p1 = path.toAscii();
-	p = p1.data();
-	SvnClient client(p, "", "");
+ QByteArray p1 = path.toAscii();
+ p = p1.data();
+ SvnClient client(p, "", "");
 //	client.commit(path, )
-	QString *messag = new QString;
-	int revision = client.commit(*messag);
-	if (revision > 0)
-	{
-		QString success = tr("Committed successfully to revision ");
-		QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
-	}
-	else
-		QMessageBox::information(this, tr("Error"), *messag);*/
+ QString *messag = new QString;
+ int revision = client.commit(*messag);
+ if (revision > 0)
+ {
+  QString success = tr("Committed successfully to revision ");
+  QMessageBox::information(this, tr("Success"), success.append(QString(revision)));
+ }
+ else
+  QMessageBox::information(this, tr("Error"), *messag);*/
 }
 
 void MainWindow::exportToXmi()
@@ -656,7 +657,7 @@ void MainWindow::generateEditor()
 
 	QString directoryName;
 	QFileInfo directoryXml;
-		const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
+	const QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 	QDir dir(".");
 	bool found = false;
 	while (dir.cdUp() && !found) {
@@ -673,17 +674,17 @@ void MainWindow::generateEditor()
 		QMessageBox::warning(this, tr("error"), "Cannot find the directory for saving");
 		return;
 	}
-		foreach (Id const key, metamodelList.keys()) {
+	foreach (Id const key, metamodelList.keys()) {
 		dir.mkdir(directoryXml.absolutePath() + "/qrxml/" + metamodelList[key]);
 		gui::ErrorReporter& errors = editorGenerator.generateEditor(key, directoryName + "/qrxml/" + metamodelList[key] + "/" + metamodelList[key]);
 
 		if (errors.showErrors(mUi->errorListWidget, mUi->errorDock)) {
 			if (QMessageBox::question(this, tr("loading.."), QString("Do you want to load generated editor %1?").arg(metamodelList[key]),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 				return;
 			QSettings settings("SPbSU", "QReal");
 			loadNewEditor(directoryName + "/qrxml/", metamodelList[key], settings.value("pathToQmake", "").toString(),
-					settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
+						  settings.value("pathToMake", "").toString(), settings.value("pluginExtension", "").toString(), settings.value("prefix", "").toString());
 		}
 	}
 }
@@ -747,8 +748,8 @@ void MainWindow::generateEditorWithQRMC()
 
 					QString normalizedName = name.at(0).toUpper() + name.mid(1);
 					if (!name.isEmpty()) {
-												if (mEditorManager.editors().contains(NewType(normalizedName))) {
-														foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName)))
+						if (mEditorManager.editors().contains(NewType(normalizedName))) {
+							foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName)))
 								mUi->paletteToolbox->deleteDiagramType(diagram);
 
 							if (!mEditorManager.unloadPlugin(normalizedName)) {
@@ -759,10 +760,10 @@ void MainWindow::generateEditorWithQRMC()
 							}
 						}
 						if (mEditorManager.loadPlugin(settings.value("prefix", "").toString() + name + "." + settings.value("pluginExtension", "").toString())) {
-														foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName))) {
+							foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizedName))) {
 								mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
-																foreach (NewType const element, mEditorManager.elements(diagram))
+								foreach (NewType const element, mEditorManager.elements(diagram))
 									mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 							}
 						}
@@ -783,7 +784,7 @@ void MainWindow::generateEditorWithQRMC()
 }
 
 void MainWindow::loadNewEditor(const QString &directoryName, const QString &metamodelName,
-		const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
+							   const QString &commandFirst, const QString &commandSecond, const QString &extension, const QString &prefix)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -807,8 +808,8 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
-		if (mEditorManager.editors().contains(NewType(normalizeDirName))) {
-				foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName)))
+	if (mEditorManager.editors().contains(NewType(normalizeDirName))) {
+		foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName)))
 			mUi->paletteToolbox->deleteDiagramType(diagram);
 
 		if (!mEditorManager.unloadPlugin(normalizeDirName)) {
@@ -829,10 +830,10 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 			if (mEditorManager.loadPlugin(prefix + metamodelName + "." + extension)) {
-								foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName))) {
+				foreach (NewType const diagram, mEditorManager.diagrams(NewType(normalizeDirName))) {
 					mUi->paletteToolbox->addDiagramType(diagram, mEditorManager.friendlyName(diagram));
 
-										foreach (NewType const element, mEditorManager.elements(diagram))
+					foreach (NewType const element, mEditorManager.elements(diagram))
 						mUi->paletteToolbox->addItemType(element, mEditorManager.friendlyName(element), mEditorManager.description(element), mEditorManager.icon(element));
 				}
 				mUi->paletteToolbox->initDone();
@@ -849,7 +850,7 @@ void MainWindow::loadNewEditor(const QString &directoryName, const QString &meta
 
 void MainWindow::parseEditorXml()
 {
-		if (!mEditorManager.editors().contains(NewType("Meta_editor"))) {
+	if (!mEditorManager.editors().contains(NewType("Meta_editor"))) {
 		QMessageBox::warning(this, tr("error"), "required plugin is not loaded");
 		return;
 	}
@@ -1101,8 +1102,9 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		int i = 0;
 		foreach(QString name, mUi->paletteToolbox->getTabNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
-			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			NewType type = mModels->logicalModelAssistApi().type(id);
+			NewType const diagramType = NewType(type.editor(), type.diagram());
+			QString const diagramName = mEditorManager.friendlyName(diagramType);
 			if (diagramName == name) {
 				mUi->paletteToolbox->getComboBox()->setCurrentIndex(i);
 				break;
@@ -1274,10 +1276,10 @@ void MainWindow::suggestToCreateDiagram()
 	diagramsListWidget.setParent(&dialog);
 
 	int i = 0;
-		foreach(NewType editor, manager()->editors()) {
-				foreach(NewType diagram, manager()->diagrams(NewType::loadFromString("qrm:/" + editor.editor()))) {
-			const QString diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-			const QString diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+	foreach(NewType editor, manager()->editors()) {
+		foreach(NewType diagram, manager()->diagrams(NewType::loadFromString("qrm:/" + editor.editor()))) {
+			const QString diagramName = mEditorManager.getEditorInterface(editor.editor())->diagramName(diagram.diagram());
+			const QString diagramNodeName = mEditorManager.getEditorInterface(editor.editor())->diagramNodeName(diagram.diagram());
 			if (diagramNodeName.isEmpty())
 				continue;
 			mDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
@@ -1335,7 +1337,7 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(QString const &idString)
 {
-	Id const created = mModels->graphicalModelAssistApi().createElement(ROOT_ID, Id::loadFromString(idString));
+	Id const created = mModels->graphicalModelAssistApi().createElement(ROOT_ID, Id::loadFromString(idString), ROOT_TYPE);
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);

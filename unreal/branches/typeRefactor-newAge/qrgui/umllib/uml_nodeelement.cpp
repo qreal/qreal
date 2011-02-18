@@ -544,14 +544,14 @@ bool NodeElement::initPossibleEdges()
 	if (!possibleEdges.isEmpty())
 		return true;
 	foreach(QString elementName,
-			mGraphicalAssistApi->editorManager().editorInterface(id().editor())->elements(id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManager().editorInterface(id().editor())->isNodeOrEdge(elementName);
+			mGraphicalAssistApi->editorManager().getEditorInterface(newType().editor())->elements(newType().diagram())) {
+		int ne = mGraphicalAssistApi->editorManager().getEditorInterface(newType().editor())->isNodeOrEdge(elementName);
 		if (ne == -1) {
 			QList<StringPossibleEdge> list
-					= mGraphicalAssistApi->editorManager().editorInterface(id().editor())->getPossibleEdges(elementName);
+					= mGraphicalAssistApi->editorManager().getEditorInterface(newType().editor())->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if ((pEdge.first.first == id().element())
-					|| ((pEdge.first.second == id().element()) && (!pEdge.second.first))) {
+				if ((pEdge.first.first == newType().element())
+					|| ((pEdge.first.second == newType().element()) && (!pEdge.second.first))) {
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					possibleEdges.insert(possibleEdge);
 					possibleEdgeTypes.insert(possibleEdge.second);
@@ -566,7 +566,7 @@ bool NodeElement::initPossibleEdges()
 bool NodeElement::initEmbeddedLinkers()
 {
 	int counter = 0;
-        QSet<qReal::NewType> usedEdges;
+		QSet<qReal::NewType> usedEdges;
 	foreach(PossibleEdgeType type, possibleEdgeTypes) {
 		if (usedEdges.contains(type.second))
 			continue;
@@ -1201,13 +1201,13 @@ QList<double> NodeElement::borderValues()
 
 PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEdge)
 {
-	QString editor = id().editor();
-	QString diagram = id().diagram();
-	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
-									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
-	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
-			   qReal::Id(editor, diagram, strPossibleEdge.second.second));
-	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
+	QString editor = newType().editor();
+	QString diagram = newType().diagram();
+	QPair<qReal::NewType, qReal::NewType> nodes(qReal::NewType(editor, diagram, strPossibleEdge.first.first),
+									  qReal::NewType(editor, diagram, strPossibleEdge.first.second));
+	QPair<bool, qReal::NewType> link(strPossibleEdge.second.first,
+			   qReal::NewType(editor, diagram, strPossibleEdge.second.second));
+	return QPair<QPair<qReal::NewType, qReal::NewType>, PossibleEdgeType>(nodes, link);
 }
 
 QList<PossibleEdge> NodeElement::getPossibleEdges()
