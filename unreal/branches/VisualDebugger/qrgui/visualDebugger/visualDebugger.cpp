@@ -16,18 +16,13 @@
 using namespace qReal;
 
 VisualDebugger::VisualDebugger(models::LogicalModelAssistApi const &logicalModelApi, models::GraphicalModelAssistApi const &graphicalModelApi)
-	: mLogicalModelApi(logicalModelApi), mGraphicalModelApi(graphicalModelApi)
+	: mLogicalModelApi(logicalModelApi), mGraphicalModelApi(graphicalModelApi),
+	mCurrentElem(NULL), mError(VisualDebugger::noErrors), mCurrentId(Id::rootId()),
+	mEffect(new QGraphicsColorizeEffect()), mErrorReporter(new gui::ErrorReporter()),
+	mBlockParser(new BlockParser(mErrorReporter)), mTimeout(750), mDebugType(VisualDebugger::noDebug),
+	mDebugColor(Qt::red)
 {
-	mEffect = new QGraphicsColorizeEffect();
-	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
-	mCurrentElem = NULL;
-	mCurrentId = Id::rootId();
-	mError = VisualDebugger::noErrors;
-	mErrorReporter = new gui::ErrorReporter();
-	mBlockParser = new BlockParser(mErrorReporter);
-	mTimeout = 750;
-	mDebugType = VisualDebugger::noDebug;
 }
 
 VisualDebugger::~VisualDebugger()

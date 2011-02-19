@@ -2,11 +2,10 @@
 
 using namespace qReal;
 
-DebuggerConnector::DebuggerConnector(QString debuggerPath, QString builderPath): 
+DebuggerConnector::DebuggerConnector(QString debuggerPath, QString builderPath):
+	mThread(new QThread()), mProcess(new QProcess(this)), 
 	mDebuggerPath(debuggerPath), mBuilderPath(builderPath)
 {
-	mProcess = new QProcess(this);
-	mThread = new QThread();
 	moveToThread(mThread);
 	connect(mProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
 	connect(mProcess, SIGNAL(readyReadStandardError()), this, SLOT(readErrOutput()));
