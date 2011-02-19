@@ -12,8 +12,8 @@ Object::Object(const Id &id, const Id &parent, const NewType &type)
 	setParent(parent);
 }
 
-Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
-	: mId(id), mLogicalId(logicalId)
+Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId, const qReal::NewType &type)
+	: mId(id), mLogicalId(logicalId), mType(type)
 {
 	setParent(parent);
 }

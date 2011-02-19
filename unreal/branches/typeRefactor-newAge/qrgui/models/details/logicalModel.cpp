@@ -64,7 +64,7 @@ void LogicalModel::checkProperties(Id const &id)
 {
 	if (!mEditorManager.hasElement(mApi.type(id)))
 		return;
-	QStringList const propertiesThatShallBe = mEditorManager.getPropertyNames(id.type());
+	QStringList const propertiesThatShallBe = mEditorManager.getPropertyNames(mApi.type(id));
 	foreach (QString const property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // There shall be default value.
@@ -101,7 +101,7 @@ QMimeData* LogicalModel::mimeData(QModelIndexList const &indexes) const
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 			stream << item->id().toString();
-			stream << mApi.type(item->id());
+			stream << mApi.type(item->id()).toString();
 			stream << pathToItem(item);
 			stream << mApi.property(item->id(), "name").toString();
 			stream << QPointF();
@@ -135,7 +135,7 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 		return ROOT_ID.toString();
 }
 
-void LogicalModel::addElementToModel(const Id &parent, const Id &id, const NewType &type, const QString &name, const QPointF &position)
+void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const NewType &type, const QString &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
@@ -200,7 +200,8 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 				return mApi.to(item->id()).toVariant();
 		}
 		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
+			Id const &id = item->id();
+			QString selectedProperty = findPropertyName(mApi.type(id), role);
 			return mApi.property(item->id(), selectedProperty);
 		}
 		Q_ASSERT(role < Qt::UserRole);
@@ -227,7 +228,8 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
-				QString selectedProperty = findPropertyName(item->id(), role);
+				Id const &id = item->id();
+				QString selectedProperty = findPropertyName(mApi.type(id), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
 				break;
 			}

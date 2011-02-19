@@ -397,7 +397,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 	createAddConnectionMenu(element, contextMenu, tr("Add connection")
 							, mWindow->manager()->getConnectedTypes(element->newType())
 							, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-							, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+							, mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->newType())
 							, SLOT(connectActionTriggered())
 							);
 
@@ -410,7 +410,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 	createAddConnectionMenu(element, contextMenu, tr("Add usage")
 							, mWindow->manager()->getUsedTypes(element->newType())
 							, mv_iface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-							, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+							, mv_iface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->newType())
 							, SLOT(addUsageActionTriggered())
 							);
 
@@ -632,7 +632,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 				if (graphicalIdsOfOutgoingLinks.size() > 0)
 					mainWindow()->activateItemOrDiagram(graphicalIdsOfOutgoingLinks[0]);
 			} else {
-				TypeList diagrams = mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
+				TypeList diagrams = mv_iface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->newType());
 				if (!diagrams.isEmpty()) {
 					NewType diagramType = mv_iface->logicalAssistApi()->editorManager().findElementByType(diagrams[0].element());
 					mv_iface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
@@ -699,7 +699,7 @@ void EditorViewScene::addUsageActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mv_iface->logicalAssistApi()->addUsage(source, destination);
 	} else {
-		mv_iface->logicalAssistApi()->createUsed(source, destination);
+		mv_iface->logicalAssistApi()->createUsed(source, mv_iface->logicalAssistApi()->type(destination));
 	}
 }
 

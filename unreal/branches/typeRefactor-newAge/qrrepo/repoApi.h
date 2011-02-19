@@ -20,11 +20,11 @@ public:
 	// Default destructor ok.
 
 	QString name(qReal::Id const &id) const;
-	qReal::NewType newtype(qReal::Id const &id) const;
+	qReal::NewType type(qReal::Id const &id) const;
 	void setName(qReal::Id const &id, QString const &name);
 	qReal::IdList children(qReal::Id const &id) const;
 	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::NewType const &type);
-	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId);
+	virtual void addChild(qReal::Id const &id, qReal::Id const &child, qReal::Id const &logicalId, qReal::NewType const &type);
 	void removeChild(qReal::Id const &id, qReal::Id const &child);
 	void removeChildren(qReal::Id const &id);
 
@@ -97,7 +97,6 @@ public:
 
 	//Returns all elements with .element() == type
 	qReal::IdList elementsByType(QString const &type) const;
-	qReal::NewType type(const qReal::Id &id) const;
 	int elementsCount() const;
 
 	bool exist(qReal::Id const &id) const;

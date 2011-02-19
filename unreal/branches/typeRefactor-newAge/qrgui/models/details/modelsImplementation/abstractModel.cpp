@@ -162,7 +162,7 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		stream >> isFromLogicalModel;
 
 		Id id = Id::loadFromString(idString);
-		NewType type = NewType::loadFromString(typeStirng);
+		NewType type = NewType::loadFromString(typeString);
 
 		Q_ASSERT(type.typeSize() == 4);
 		if (mModelItems.contains(id))

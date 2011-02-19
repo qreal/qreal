@@ -93,13 +93,14 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 Object *Serializer::parseObject(QDomElement const &elem)
 {
 	QString const id = elem.attribute("id", "");
+	QString const type = elem.attribute("type", "");
 	if (id == "")
 		return NULL;
 
 	QString const logicalIdString = elem.attribute("logicalId", "");
 	Id const logicalId = loadId(logicalIdString);
 
-	Object object(Id::loadFromString(id), Id(), logicalId);
+	Object object(Id::loadFromString(id), Id(), logicalId, NewType::loadFromString(type));
 
 	QString const parentIdString = elem.attribute("parent", "");
 	Id const parent = loadId(parentIdString);

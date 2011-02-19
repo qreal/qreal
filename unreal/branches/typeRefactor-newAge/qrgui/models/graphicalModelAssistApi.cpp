@@ -42,13 +42,18 @@ IdList GraphicalModelAssistApi::graphicalIdsByLogicalId(Id const &logicalId) con
 
 Id GraphicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 {
-	Q_ASSERT(type.idSize() == 3);
-	Q_ASSERT(parent.idSize() == 4);
+	Q_ASSERT(type.typeSize() == 3);
+	//Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mGraphicalModel.addElementToModel(parent, newElementId, ROOT_ID, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
+}
+
+NewType GraphicalModelAssistApi::type(Id const &id) const
+{
+	return ROOT_TYPE;
 }
 
 Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position)

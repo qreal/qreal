@@ -17,12 +17,12 @@ qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
 
 Id LogicalModelAssistApi::createElement(Id const &parent, NewType const &type)
 {
-	Q_ASSERT(type.idSize() == 3);
-	Q_ASSERT(parent.idSize() == 4);
+	Q_ASSERT(type.typeSize() == 3);
+	//Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(QUuid::createUuid().toString());
 	QString const elementFriendlyName = mEditorManager.friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mLogicalModel.addElementToModel(parent, newElementId, newElementId, type, "(" + elementFriendlyName + ")", QPointF(0, 0));
 	return newElementId;
 }
 
@@ -82,7 +82,7 @@ void LogicalModelAssistApi::createConnected(Id const &sourceElement, NewType con
 	connect(sourceElement, element);
 }
 
-void LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
+void LogicalModelAssistApi::createUsed(Id const &sourceElement, NewType const &elementType)
 {
 	Id element = createConnectedElement(sourceElement, elementType);
 	addUsage(sourceElement, element);
@@ -92,7 +92,7 @@ TypeList LogicalModelAssistApi::diagramsFromList(TypeList const &list) const
 {
 	// TODO: diagrams are kinda special, so we need the editor to be able to
 	// tell us whether this particular element is a diagram or not
-	IdList result;
+	TypeList result;
 	foreach (NewType type, list) {
 		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
 			if (!result.contains(type))
@@ -102,14 +102,14 @@ TypeList LogicalModelAssistApi::diagramsFromList(TypeList const &list) const
 	return result;
 }
 
-TypeList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
+TypeList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(NewType const &element) const
 {
-	return diagramsFromList(editorManager().getConnectedTypes(element.type()));
+	return diagramsFromList(editorManager().getConnectedTypes(element));
 }
 
-IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
+TypeList LogicalModelAssistApi::diagramsAbleToBeUsedIn(NewType const &element) const
 {
-	return diagramsFromList(editorManager().getUsedTypes(element.type()));
+	return diagramsFromList(editorManager().getUsedTypes(element));
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)

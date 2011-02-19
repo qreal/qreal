@@ -1337,7 +1337,7 @@ void MainWindow::diagramInCreateListSelected(int num)
 
 void MainWindow::createDiagram(QString const &idString)
 {
-	Id const created = mModels->graphicalModelAssistApi().createElement(ROOT_ID, Id::loadFromString(idString), ROOT_TYPE);
+	Id const created = mModels->graphicalModelAssistApi().createElement(ROOT_ID, NewType::loadFromString(idString));
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);

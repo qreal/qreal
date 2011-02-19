@@ -122,7 +122,7 @@ UML::Element* VisualDebugger::findBeginNode(QString name)
 	UML::Element *elem = NULL;
 	while (i < count) {
 		elem = dynamic_cast<UML::Element *>(mEditor->mvIface()->scene()->items().at(i));
-		if (elem && elem->id().element().compare(name) == 0) {
+		if (elem && elem->newType().element().compare(name) == 0) {
 			break;
 		}
 		i++;
@@ -162,7 +162,7 @@ void VisualDebugger::pause(int time)
 bool VisualDebugger::isFinalNode(Id id)
 {
 	IdList outLinks = mModelApi.graphicalRepoApi().outgoingLinks(id);
-	return outLinks.count() == 0 && id.element().compare("BlockFinalNode") == 0;
+	return outLinks.count() == 0 && mModelApi.type(id).element().compare("BlockFinalNode") == 0;
 }
 
 bool VisualDebugger::hasEndOfLinkNode(Id id)
@@ -195,7 +195,7 @@ void VisualDebugger::doStep(Id id)
 
 	UML::Element *elem = dynamic_cast<UML::NodeElement *>(mCurrentElem);
 	if (elem) {
-		if (elem->id().element().compare("Action") == 0) {
+		if (elem->newType().element().compare("Action") == 0) {
 			processAction();
 		}
 	}
@@ -245,7 +245,7 @@ gui::ErrorReporter& VisualDebugger::debug()
 	while (outLinks.count() > 0) {
 		pause(mTimeout);
 
-		if (mCurrentElem->id().element().compare("ConditionNode") == 0) {
+		if (mCurrentElem->newType().element().compare("ConditionNode") == 0) {
 			Id validLinkId = findValidLink();
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
@@ -321,7 +321,7 @@ gui::ErrorReporter& VisualDebugger::debugSingleStep()
 				return *mErrorReporter;
 			}
 
-			if (mCurrentElem->id().element().compare("ConditionNode") == 0) {
+			if (mCurrentElem->newType().element().compare("ConditionNode") == 0) {
 				Id validLinkId = findValidLink();
 				if (mBlockParser->hasErrors()) {
 					deinitialize();

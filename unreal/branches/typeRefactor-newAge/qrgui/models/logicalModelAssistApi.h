@@ -29,10 +29,10 @@ public:
 	void addUsage(Id const &source, Id const &destination);
 	void deleteUsage(Id const &source, Id const &destination);
 	void createConnected(Id const &sourceElement, NewType const &elementType);
-	void createUsed(Id const &sourceElement, Id const &elementType);
+	void createUsed(Id const &sourceElement, NewType const &elementType);
 	Id createConnectedElement(Id const &source, NewType const &elementType);
-	TypeList diagramsAbleToBeConnectedTo(Id const &element) const;
-	TypeList diagramsAbleToBeUsedIn(Id const &element) const;
+	TypeList diagramsAbleToBeConnectedTo(NewType const &element) const;
+	TypeList diagramsAbleToBeUsedIn(NewType const &element) const;
 
 	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
@@ -46,7 +46,7 @@ private:
 
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also
 
-	IdList diagramsFromList(IdList const &list) const;
+	TypeList diagramsFromList(TypeList const &list) const;
 };
 }
 }

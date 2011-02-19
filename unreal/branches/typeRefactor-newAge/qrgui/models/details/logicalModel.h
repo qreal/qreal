@@ -30,7 +30,7 @@ namespace qReal {
 				void connectToGraphicalModel(GraphicalModel * const graphicalModel);
 				void updateElements(Id const &logicalId, QString const &name);
 				virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-				void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, NewType const &type, QString const &name, QPointF const &position);
+				void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, NewType const &type, QString const &name, QPointF const &position);
 				virtual QVariant data(const QModelIndex &index, int role) const;
 				virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 				virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);

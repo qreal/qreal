@@ -17,7 +17,7 @@ QString RepoApi::name(Id const &id) const
 	return mClient.property(id, "name").toString();
 }
 
-NewType RepoApi::newtype(const qReal::Id &id) const
+NewType RepoApi::type(const qReal::Id &id) const
 {
 	return mClient.type(id);
 }
@@ -32,19 +32,14 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-NewType RepoApi::type(Id const &id) const
-{
-	return mClient.type(id);
-}
-
 void RepoApi::addChild(Id const &id, Id const &child, NewType const &type)
 {
 	mClient.addChild(id, child, type);
 }
 
-void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId)
+void RepoApi::addChild(Id const &id, Id const &child, Id const &logicalId, NewType const &type)
 {
-	mClient.addChild(id, child, logicalId);
+	mClient.addChild(id, child, logicalId, type);
 }
 
 void RepoApi::removeChild(Id const &id, Id const &child)

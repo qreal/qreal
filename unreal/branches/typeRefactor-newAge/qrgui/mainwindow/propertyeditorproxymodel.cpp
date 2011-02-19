@@ -16,8 +16,8 @@ PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManag
 	: QAbstractTableModel(parent)
 	, mTargetLogicalModel(NULL)
 	, mTargetGraphicalModel(NULL)
-	, mEditorManager(editorManager)
 	, mLogicalModelAssistApi(api)
+	, mEditorManager(editorManager)
 {
 }
 

@@ -82,7 +82,7 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	}
 }
 
-void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const QString &name, const QPointF &position)
+void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId, const NewType &type, const QString &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -98,17 +98,17 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id, const Id 
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
-	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
+	initializeElement(id, actualLogicalId, type, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, const NewType &type, modelsImplementation::AbstractModelItem *parentItem,
 									   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), id, logicalId);
+	mApi.addChild(parentItem->id(), id, logicalId, type);
 	mApi.setName(id, name);
 	mApi.setFromPort(id, 0.0);
 	mApi.setToPort(id, 0.0);
@@ -131,7 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return mEditorManager.icon(mApi.newtype(item->logicalId()));
+			return mEditorManager.icon(mApi.type(item->logicalId()));
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:
@@ -189,7 +189,8 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 			break;
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
-				QString selectedProperty = findPropertyName(item->id(), role);
+				Id const &id = item->id();
+				QString selectedProperty = findPropertyName(mApi.type(id), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
 				break;
 			}

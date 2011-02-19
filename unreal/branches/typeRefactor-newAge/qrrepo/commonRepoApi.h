@@ -12,7 +12,7 @@ public:
 
 	virtual void setName(qReal::Id const &id, QString const &name) = 0;
 	virtual QString name(qReal::Id const &id) const = 0;
-	virtual qReal::NewType newtype(qReal::Id const &id) const = 0;
+	virtual qReal::NewType type(qReal::Id const &id) const = 0;
 	virtual qReal::IdList children(qReal::Id const &id) const = 0;
 	virtual void removeChild(qReal::Id const &id, qReal::Id const &child) = 0;
 	virtual void removeChildren(qReal::Id const &id) = 0;

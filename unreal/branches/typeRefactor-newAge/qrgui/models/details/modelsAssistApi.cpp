@@ -18,16 +18,16 @@ EditorManager const &ModelsAssistApi::editorManager() const
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	Q_ASSERT(parent.idSize() == 4);
+	//Q_ASSERT(parent.idSize() == 4);
 	Id logicalId = ROOT_ID;
 	Id newId = id;
 	if (isFromLogicalModel) {
 		newId = Id(QUuid::createUuid().toString());
-		mModel.addElementToModel(parent, newId, type, name, position);
+		mModel.addElementToModel(parent, newId, logicalId, type, name, position);
 	}
 	else
 	{
-		mModel.addElementToModel(parent, newId, logicalId, name, position);
+		mModel.addElementToModel(parent, newId, logicalId, type, name, position);
 	}
 	return newId;
 }
@@ -44,7 +44,7 @@ QVariant ModelsAssistApi::property(Id const &elem, int const role) const
 
 int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
 {
-	QStringList const properties = editorManager().getPropertyNames(elem.type());
+	QStringList const properties = editorManager().getPropertyNames(type(elem));
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 
