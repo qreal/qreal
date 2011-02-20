@@ -142,6 +142,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tbool hasMovableChildren() { return false; }\n"
 		<< "\t\tbool minimizesToChildren() { return false; }\n"
 		<< "\t\tbool maximizesChildren() { return false; }\n"
+		<< "\t\tbool isNeededToBeExpandToNameTitle() { return false; }\n"
 		<< "\t\tbool isPort() { return false; }\n"
 		<< "\t\tbool hasPin() { return false; }\n"
 		<< "\t\tQList<double> border()\n\t\t{\n"

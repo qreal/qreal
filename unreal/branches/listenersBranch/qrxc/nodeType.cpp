@@ -124,6 +124,10 @@ bool NodeType::initBooleanProperties()
 	QDomElement element1 = mLogic.firstChildElement("action");
 	if (!element1.isNull())
 		mIsHavePin = true;
+	
+	QDomElement element2 = mLogic.firstChildElement("NeededToBeExpandedToNameTitle");
+	if (!element.isNull())
+		mIsNeededToBeExpandedToNameTitle = true;
 	return true;
 }
 
@@ -309,6 +313,10 @@ void NodeType::generateCode(OutFile &out)
 
 		<< "\t\tbool maximizesChildren()\n\t\t{\n"
 		<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+		<< "\t\t}\n\n"
+
+		<< "\t\tbool isNeededToBeExpandToNameTitle()\n\t\t{\n"
+		<< (mIsNeededToBeExpandedToNameTitle ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
 		<< "\t\tbool isPort()\n\t\t{\n"

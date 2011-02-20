@@ -171,6 +171,7 @@
                 <default>public</default>
               </property>
 	    </properties>
+            <NeededToBeExpandedToNameTitle/>
             <bonusContextMenuFields>
               <field name="Add method"/>
             </bonusContextMenuFields>
@@ -221,6 +222,7 @@
                 <default>private</default>
               </property>
 	    </properties>
+            <NeededToBeExpandedToNameTitle/>
             <bonusContextMenuFields>
               <field name="Add field"/>
             </bonusContextMenuFields>

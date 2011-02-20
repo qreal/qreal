@@ -72,6 +72,8 @@ namespace UML{
 			virtual bool minimizesToChildren() = 0;
 			virtual bool maximizesChildren() = 0;
 
+			virtual bool isNeededToBeExpandedToNameTitle() = 0;
+
 			virtual bool isPort() = 0;
 			virtual bool hasPin() = 0;
 

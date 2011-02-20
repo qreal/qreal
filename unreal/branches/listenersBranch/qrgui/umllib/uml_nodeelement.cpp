@@ -145,8 +145,7 @@ void NodeElement::resize(QRectF newContents)
 		newContents = mFoldedContents;
 
 	// if object needs to fit its title
-	//if (mElementImpl->isFitingTitle())
-	if (!mTitles.empty())
+	if (mElementImpl->isNeededToBeExpandedToNameTitle() && !mTitles.empty())
 		newContents = mTitles.at(0)->boundingRect().united(newContents);
 	//
 
