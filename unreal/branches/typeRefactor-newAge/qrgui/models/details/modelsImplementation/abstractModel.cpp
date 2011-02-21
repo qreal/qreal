@@ -164,7 +164,7 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 		Id id = Id::loadFromString(idString);
 		NewType type = NewType::loadFromString(typeString);
 
-		Q_ASSERT(type.typeSize() == 4);
+		Q_ASSERT(type.typeSize() == 3);
 		if (mModelItems.contains(id))
 			modelAssistApi()->changeParent(id, parentItem->id());
 		else

@@ -127,7 +127,7 @@ private:
 	models::Models *mModels;
 	EditorManager mEditorManager;
 	ListenerManager *mListenerManager;
-	PropertyEditorModel mPropertyModel;
+	PropertyEditorModel *mPropertyModel;
 	PropertyEditorDelegate mDelegate;
 	GesturesWidget *mGesturesWidget;
 

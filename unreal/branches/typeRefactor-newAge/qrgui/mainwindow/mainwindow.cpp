@@ -49,7 +49,7 @@ using namespace qReal;
 MainWindow::MainWindow()
 	: mUi(new Ui::MainWindowUi())
 	, mListenerManager(NULL)
-	, mPropertyModel(mEditorManager, mModels->logicalModelAssistApi())
+	, mPropertyModel(NULL)
 {
 	QSettings settings("SPbSU", "QReal");
 	//bool showSplash = settings.value("Splashscreen", true).toBool();
@@ -145,11 +145,18 @@ MainWindow::MainWindow()
 	// Step 3: Ui connects are done.
 	progress->setValue(40);
 
+	QString workingDir = settings.value("workingDir", ".").toString();
+
+	mRootIndex = QModelIndex();
+	mModels = new models::Models(workingDir, mEditorManager);
+
+	mPropertyModel = new PropertyEditorModel(mEditorManager, mModels->logicalModelAssistApi());
+
 	mUi->paletteDock->setWidget(mUi->paletteToolbox);
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
-	mUi->propertyEditor->setModel(&mPropertyModel);
+	mUi->propertyEditor->setModel(mPropertyModel);
 	mUi->propertyEditor->verticalHeader()->hide();
 	mUi->propertyEditor->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
 	mUi->propertyEditor->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
@@ -177,11 +184,6 @@ MainWindow::MainWindow()
 	}
 	settings.endGroup();
 
-	QString workingDir = settings.value("workingDir", ".").toString();
-
-	mRootIndex = QModelIndex();
-	mModels = new models::Models(workingDir, mEditorManager);
-
 	// Step 6: Save loaded, models initialized.
 	progress->setValue(80);
 
@@ -197,31 +199,31 @@ MainWindow::MainWindow()
 			close();
 			return;
 		}
-
-		mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
-
-		connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
-
-		mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
-		mUi->logicalModelExplorer->setModel(mModels->logicalModel());
-
-		mGesturesWidget = new GesturesWidget();
-		mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
-
-		mDelegate.init(this, &mModels->logicalModelAssistApi());
-
-		// Step 7: Save consistency checked, interface is initialized with models.
-		progress->setValue(100);
-		if (showSplash)
-			splash->close();
-		delete splash;
-
-		if (mModels->graphicalModel()->rowCount() > 0)
-			openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
-
-		if (settings.value("diagramCreateSuggestion", true).toBool())
-			suggestToCreateDiagram();
 	}
+
+	mPropertyModel->setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
+
+	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+
+	mGesturesWidget = new GesturesWidget();
+	mVisualDebugger = new VisualDebugger(mModels->graphicalModelAssistApi());
+
+	mDelegate.init(this, &mModels->logicalModelAssistApi());
+
+	// Step 7: Save consistency checked, interface is initialized with models.
+	progress->setValue(100);
+	if (showSplash)
+		splash->close();
+	delete splash;
+
+	if (mModels->graphicalModel()->rowCount() > 0)
+		openNewTab(mModels->graphicalModel()->index(0, 0, QModelIndex()));
+
+	if (settings.value("diagramCreateSuggestion", true).toBool())
+		suggestToCreateDiagram();
 }
 
 QModelIndex MainWindow::rootIndex() const
@@ -244,6 +246,7 @@ MainWindow::~MainWindow()
 {
 	saveAll();
 	delete mListenerManager;
+	delete mPropertyModel;
 }
 
 EditorManager* MainWindow::manager()
@@ -373,7 +376,7 @@ void MainWindow::sceneSelectionChanged()
 			}
 		} else {
 			mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
-			mPropertyModel.clearModelIndexes();
+			mPropertyModel->clearModelIndexes();
 
 			foreach(QGraphicsItem* item, graphicsItems) {
 				UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
@@ -1410,12 +1413,12 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 		Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
 		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
+		mPropertyModel->setModelIndexes(logicalIndex, graphicalIndex);
 	} else if (mModels->logicalModelAssistApi().isLogicalId(id)) {
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+		mPropertyModel->setModelIndexes(logicalIndex, QModelIndex());
 	} else {
-		mPropertyModel.clearModelIndexes();
+		mPropertyModel->clearModelIndexes();
 	}
 }
 

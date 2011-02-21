@@ -285,13 +285,13 @@ void EditorManager::checkNeededPluginsRecursive(qrRepo::GraphicalRepoApi const *
 	if (graphApi != NULL)
 		logicId = graphApi->logicalId(id);
 
-	if (logicId != ROOT_ID && !mPluginsLoaded.contains(api.type(logicId).editor())) {
-		NewType missingEditor = NewType(api.type(logicId).editor());
+	if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
+		NewType missingEditor = NewType(api.type(id).editor());
 		if (!result.contains(missingEditor))
 			result.append(missingEditor);
 	}
 
-	foreach (Id child, api.children(logicId)) {
+	foreach (Id child, api.children(id)) {
 		checkNeededPluginsRecursive(graphApi, api, child, result);
 	}
 }
