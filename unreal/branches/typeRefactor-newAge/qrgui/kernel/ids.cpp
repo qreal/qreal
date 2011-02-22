@@ -7,24 +7,24 @@ using namespace qReal;
 
 Id Id::loadFromString(QString const &string)
 {
-        Id result;
-        result.mId = string;
-        Q_ASSERT(string == result.toString());
-        return result;
+	Id result;
+	result.mId = string;
+	Q_ASSERT(string == result.toString());
+	return result;
 }
 
 
 Id::Id(QString  const &id)
-        : mId(id)
+	: mId(id)
 {
 	Q_ASSERT(checkIntegrity());
 }
 
 Id::Id(Id const &base, QString const &additional)
-        : mId(base.mId)
+	: mId(base.mId)
 {
 
-        mId = additional;
+	mId = additional;
 	Q_ASSERT(checkIntegrity());
 }
 
@@ -35,7 +35,7 @@ QString Id::id() const
 
 QString Id::toString() const
 {
-        return mId;
+	return mId;
 }
 
 bool Id::checkIntegrity() const
@@ -50,16 +50,16 @@ bool Id::checkIntegrity() const
 
 QVariant Id::toVariant() const
 {
-        QVariant result;
-        result.setValue(*this);
-        return result;
+	QVariant result;
+	result.setValue(*this);
+	return result;
 }
 
 QVariant IdListHelper::toVariant(IdList const &list)
 {
-        QVariant v;
-        v.setValue(list);
-        return v;
+	QVariant v;
+	v.setValue(list);
+	return v;
 }
 
 

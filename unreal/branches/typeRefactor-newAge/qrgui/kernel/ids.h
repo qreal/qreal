@@ -9,54 +9,54 @@
 
 namespace qReal {
 
-	class Id {
-	public:
-                static Id loadFromString(QString const &string);
-                explicit Id(QString  const &id = "");
-		Id(Id const &base, QString const &additional);
+class Id {
+public:
+	static Id loadFromString(QString const &string);
+	explicit Id(QString const &id = "");
+	Id(Id const &base, QString const &additional);
 
-		QString id() const;
-		QString toString() const;
-                QVariant toVariant() const;
+	QString id() const;
+	QString toString() const;
+	QVariant toVariant() const;
 
-		// default destructor and copy constuctor are OK
-	private:
-		QString mId;
+	// default destructor and copy constuctor are OK
+private:
+	QString mId;
 
-		// used only for debug
-		bool checkIntegrity() const;
-	};
+	// used only for debug
+	bool checkIntegrity() const;
+};
 
-	inline bool operator==(Id const &i1, Id const &i2)
-	{
-                return 	i1.id() == i2.id();
-	}
+inline bool operator==(Id const &i1, Id const &i2)
+{
+	return 	i1.id() == i2.id();
+}
 
-	inline bool operator!=(Id const &i1, Id const &i2)
-	{
-		return !(i1 == i2);
-	}
+inline bool operator!=(Id const &i1, Id const &i2)
+{
+	return !(i1 == i2);
+}
 
-	inline uint qHash(Id const &key)
-	{
-                return qHash(key.id());
-	}
+inline uint qHash(Id const &key)
+{
+	return qHash(key.id());
+}
 
-	inline QDebug operator<<(QDebug dbg, Id const &id)
-	{
-		dbg << id.toString();
-		return dbg.space();
-	}
+inline QDebug operator<<(QDebug dbg, Id const &id)
+{
+	dbg << id.toString();
+	return dbg.space();
+}
 
-	typedef QList<Id> IdList;
+typedef QList<Id> IdList;
 
-        class IdListHelper {
-        public:
-                static QVariant toVariant(IdList const &list);
-        };
+class IdListHelper {
+public:
+	static QVariant toVariant(IdList const &list);
+};
 
 
-	typedef Id Metatype;
+typedef Id Metatype;
 }
 
 // qReal::Id and qReal::IdList could be used straight in QVariant

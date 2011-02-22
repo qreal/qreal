@@ -5,21 +5,21 @@
 
 namespace utils {
 
-	class OutFile
-	{
-	public:
-		explicit OutFile(QString const &fileName);
-		~OutFile();
-		QTextStream& operator()();
+class OutFile
+{
+public:
+	explicit OutFile(QString const &fileName);
+	~OutFile();
+	QTextStream& operator()();
 
-		void incIndent();
-		void decIndent();
-	private:
-		QString indent() const;
+	void incIndent();
+	void decIndent();
+private:
+	QString indent() const;
 
-		QTextStream mOut;
-		QFile mFile;
-		int mIndent;
-	};
+	QTextStream mOut;
+	QFile mFile;
+	int mIndent;
+};
 
 }

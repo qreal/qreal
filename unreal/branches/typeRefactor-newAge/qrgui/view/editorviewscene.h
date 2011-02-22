@@ -10,9 +10,9 @@
 //const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
-	class EditorViewMViface;
-	class EditorView;
-	class MainWindow;
+class EditorViewMViface;
+class EditorView;
+class MainWindow;
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -26,7 +26,7 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* node, QPointF scenePos);
-        virtual qReal::Id *createElement(const QString &, QPointF scenePos);
+	virtual qReal::Id *createElement(const QString &, QPointF scenePos);
 	virtual void createElement(const QMimeData *mimeData, QPointF scenePos);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -42,7 +42,7 @@ public:
 	double realIndexGrid();
 	void setRealIndexGrid(double newIndexGrid);
 
-        bool canBeContainedBy(qReal::NewType container, qReal::NewType candidate);
+	bool canBeContainedBy(qReal::NewType container, qReal::NewType candidate);
 	bool getNeedDrawGrid();
 
 	UML::Element* getLastCreated();
@@ -50,7 +50,7 @@ public:
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
 signals:
-        void elementCreated(qReal::NewType const &type);
+	void elementCreated(qReal::NewType const &type);
 	void zoomIn();
 	void zoomOut();
 
@@ -90,16 +90,16 @@ private:
 	UML::Element *getElemAt(const QPointF &position);
 
 	void createConnectionSubmenus(QMenu &contextMenu, UML::Element const * const element) const;
-        void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddConnectionMenu(UML::Element const * const element
-								 , QMenu &contextMenu, QString const &menuName
-                                                                 , qReal::TypeList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-                                                                 , qReal::TypeList const &connectableDiagrams, const char *slot) const;
+	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
+	void createAddConnectionMenu(UML::Element const * const element,
+			QMenu &contextMenu, QString const &menuName,
+			qReal::TypeList const &connectableTypes, qReal::IdList const &alreadyConnectedElements,
+			qReal::TypeList const &connectableDiagrams, const char *slot) const;
 
-	void createDisconnectMenu(UML::Element const * const element
-							  , QMenu &contextMenu, QString const &menuName
-                                                          , qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-							  , const char *slot) const;
+	void createDisconnectMenu(UML::Element const * const element,
+			QMenu &contextMenu, QString const &menuName,
+			qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections,
+			const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
 
@@ -124,7 +124,7 @@ private:
 
 public slots:
 
-        qReal::Id *createElement(const QString &);
+	qReal::Id *createElement(const QString &);
 	// TODO: get rid of it here
 private slots:
 

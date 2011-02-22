@@ -5,12 +5,12 @@
 #include "NewType.h"
 
 namespace qReal {
-        const NewType ROOT_TYPE = NewType("ROOT_ID","ROOT_ID","ROOT_ID");
+const NewType ROOT_TYPE = NewType("ROOT_TYPE","ROOT_TYPE","ROOT_TYPE");
 
-        const Id ROOT_ID = Id("ROOT_ID");
+const Id ROOT_ID = Id("ROOT_ID");
 
-	const char ID_PATH_DIVIDER = '#';
+const char ID_PATH_DIVIDER = '#';
 
-	const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
+const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
 }

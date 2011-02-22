@@ -49,7 +49,8 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
+	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
+			qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 protected:
 	qReal::Id mId;

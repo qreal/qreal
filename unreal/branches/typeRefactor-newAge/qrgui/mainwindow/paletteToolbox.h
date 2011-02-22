@@ -40,7 +40,7 @@ private:
 	class DraggableElement : public QWidget {
 	public:
 		DraggableElement(NewType const &type, QString const &name, QString const &description,
-						 QIcon const &icon, QWidget *parent = NULL);
+				QIcon const &icon, QWidget *parent = NULL);
 
 		QIcon icon() const
 		{

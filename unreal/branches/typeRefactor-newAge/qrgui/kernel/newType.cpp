@@ -50,7 +50,7 @@ NewType::NewType(NewType const &base, QString const &additional)
 	case 2:
 		mElement = additional;
 		break;
-	//default:
+		//default:
 		//Q_ASSERT(!"Can not add a part to NewType, it will be too long");
 	}
 	Q_ASSERT(checkIntegrity());

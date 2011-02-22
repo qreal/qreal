@@ -43,7 +43,7 @@ void EditorView::toggleOpenGL(bool checked)
 {
 	Q_UNUSED(checked)
 #ifdef QT_OPENGL_LIB
-			setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
+	setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
 #endif
 }
 

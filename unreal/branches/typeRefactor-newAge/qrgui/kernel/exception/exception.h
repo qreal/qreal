@@ -4,14 +4,14 @@
 
 namespace qReal {
 
-	class Exception
-	{
-	public:
-		explicit Exception(QString const &message);
-		QString message() const;
+class Exception
+{
+public:
+	explicit Exception(QString const &message);
+	QString message() const;
 
-	private:
-		const QString mMessage;
-	};
+private:
+	const QString mMessage;
+};
 
 }

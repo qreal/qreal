@@ -7,19 +7,19 @@
 namespace qReal {
 
 namespace models {
-	class LogicalModelAssistApi;
-	class GraphicalModelAssistApi;
+class LogicalModelAssistApi;
+class GraphicalModelAssistApi;
 }
 
 class ListenerManager: public QObject {
 	Q_OBJECT
 
 public:
-	ListenerManager(QList<ListenerInterface *> const &listeners
-			, models::LogicalModelAssistApi &logicalApi, models::GraphicalModelAssistApi &graphicalApi);
+	ListenerManager(QList<ListenerInterface *> const &listeners,
+			models::LogicalModelAssistApi &logicalApi, models::GraphicalModelAssistApi &graphicalApi);
 	~ListenerManager();
 signals:
-                void objectCreated(qReal::NewType const &type);
+	void objectCreated(qReal::NewType const &type);
 	void contextMenuActionTriggered(QString const &name);
 
 private:

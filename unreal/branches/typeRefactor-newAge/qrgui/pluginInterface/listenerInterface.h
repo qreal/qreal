@@ -5,16 +5,16 @@
 
 namespace qReal {
 
-	class ListenerInterface : public QObject
+class ListenerInterface : public QObject
+{
+public:
+	virtual ~ListenerInterface() {};
+	void init(ListenerApiInterface *listenerApiInterface)
 	{
-	public:
-		virtual ~ListenerInterface() {};
-		void init(ListenerApiInterface *listenerApiInterface)
-		{
-			mListenerApiInterface = listenerApiInterface;
-		}
-	private:
-		ListenerApiInterface *mListenerApiInterface;
-	};
+		mListenerApiInterface = listenerApiInterface;
+	}
+private:
+	ListenerApiInterface *mListenerApiInterface;
+};
 
 }

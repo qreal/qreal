@@ -7,7 +7,7 @@
 #include <QDebug>
 
 namespace utils {
-	class OutFile;
+class OutFile;
 }
 
 class EnumType : public NonGraphicType
@@ -22,6 +22,6 @@ public:
 
 private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
-	
+
 	QStringList mValues;
 };

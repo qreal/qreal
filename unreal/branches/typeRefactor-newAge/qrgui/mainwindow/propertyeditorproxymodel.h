@@ -19,8 +19,8 @@ class PropertyEditorModel : public QAbstractTableModel
 
 public:
 	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
-								 qReal::models::LogicalModelAssistApi &sapi,
-								 QObject *parent = 0);
+			qReal::models::LogicalModelAssistApi &sapi,
+			QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;

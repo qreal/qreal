@@ -52,13 +52,13 @@ class WindowsModernStyle : public QWindowsVistaStyle
 	Q_OBJECT
 public:
 	/**
-	* Default constructor.
-	*/
+ * Default constructor.
+ */
 	WindowsModernStyle();
 
 	/**
-	* Destructor.
-	*/
+ * Destructor.
+ */
 	~WindowsModernStyle();
 
 public: // overrides
@@ -73,33 +73,33 @@ public: // overrides
 	int pixelMetric( PixelMetric metric, const QStyleOption* option, const QWidget* widget ) const;
 
 	int styleHint( StyleHint hint, const QStyleOption* option, const QWidget* widget,
-		QStyleHintReturn* returnData = NULL ) const;
+			QStyleHintReturn* returnData = NULL ) const;
 
 	QSize sizeFromContents( ContentsType type, const QStyleOption* option,
-		const QSize& contentsSize, const QWidget* widget ) const;
+			const QSize& contentsSize, const QWidget* widget ) const;
 
 	QRect subElementRect( SubElement element, const QStyleOption* option, const QWidget* widget ) const;
 	QRect subControlRect( ComplexControl control, const QStyleOptionComplex* option,
-		SubControl subControl, const QWidget* widget ) const;
+			SubControl subControl, const QWidget* widget ) const;
 
 	void drawPrimitive( PrimitiveElement element, const QStyleOption* option,
-		QPainter* painter, const QWidget* widget ) const;
+			QPainter* painter, const QWidget* widget ) const;
 	void drawControl( ControlElement element, const QStyleOption* option,
-		QPainter* painter, const QWidget* widget ) const;
+					 QPainter* painter, const QWidget* widget ) const;
 	void drawComplexControl( ComplexControl control, const QStyleOptionComplex* option,
-		QPainter* painter, const QWidget* widget ) const;
+			QPainter* painter, const QWidget* widget ) const;
 
 public:
 	enum {
 		/**
-		* Primitive element filled with the main window's background gradient.
-		*/
+  * Primitive element filled with the main window's background gradient.
+  */
 		PE_WindowGradient = PE_CustomBase + 1
 	};
 
 protected slots:
 	int layoutSpacingImplementation( QSizePolicy::ControlType control1, QSizePolicy::ControlType control2,
-		Qt::Orientation orientation, const QStyleOption* option, const QWidget* widget ) const;
+			Qt::Orientation orientation, const QStyleOption* option, const QWidget* widget ) const;
 
 private:
 	enum Mode

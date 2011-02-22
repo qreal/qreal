@@ -4,9 +4,9 @@
 
 namespace utils {
 
-	class xmlUtils {
-	public:
-		static QDomDocument loadDocument(QString const& fileName);
-	};
+class xmlUtils {
+public:
+	static QDomDocument loadDocument(QString const& fileName);
+};
 
 }

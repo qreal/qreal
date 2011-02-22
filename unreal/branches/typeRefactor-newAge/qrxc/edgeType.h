@@ -6,7 +6,7 @@
 
 class Association;
 namespace utils {
-	class OutFile;
+class OutFile;
 }
 
 class EdgeType : public GraphicType

@@ -4,25 +4,25 @@
 #include "../../kernel/NewType.h"
 
 namespace qrRepo {
-	class RepoApi;
+class RepoApi;
 }
 
 namespace qReal {
 
-	class EditorManager;
+class EditorManager;
 
-	namespace parsers {
+namespace parsers {
 
-		class TreeElement
-		{
-		public:
-                        TreeElement(const NewType &id);
-			void addChild(TreeElement *const child);
+class TreeElement
+{
+public:
+	TreeElement(const NewType &id);
+	void addChild(TreeElement *const child);
 
-		private:
-			QList<TreeElement*> mChildren;
-                        NewType mType;
-		};
-	}
+private:
+	QList<TreeElement*> mChildren;
+	NewType mType;
+};
+}
 }
 

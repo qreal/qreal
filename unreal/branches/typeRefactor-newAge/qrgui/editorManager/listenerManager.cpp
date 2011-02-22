@@ -41,8 +41,8 @@ void ListenerManager::bindListenerSlotsByName(QList<ListenerInterface *> const &
 			int slotId = listener->metaObject()->indexOfSlot(slotName);
 
 			if (slotMethod.access() != QMetaMethod::Public
-				|| slotId == -1
-				|| QString(slotName).startsWith("deleteLater"))
+					|| slotId == -1
+					|| QString(slotName).startsWith("deleteLater"))
 			{
 				continue;
 			}

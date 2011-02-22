@@ -6,20 +6,20 @@
 #include <QDebug>
 
 namespace qrmc {
-	class EnumType : public NonGraphicType
-	{
-	public:
-		EnumType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+class EnumType : public NonGraphicType
+{
+public:
+	EnumType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
 
-		virtual bool init(QString const &context);
-		virtual Type* clone() const;
+	virtual bool init(QString const &context);
+	virtual Type* clone() const;
 
-		void print();
+	void print();
 
-		virtual QString generateEnums(QString const &lineTemplate) const;
+	virtual QString generateEnums(QString const &lineTemplate) const;
 
-	private:
+private:
 
-		QStringList mValues;
-	};
+	QStringList mValues;
+};
 }

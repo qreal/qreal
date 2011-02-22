@@ -13,7 +13,7 @@ class Type;
 class EnumType;
 
 namespace utils {
-	class OutFile;
+class OutFile;
 }
 
 class Editor

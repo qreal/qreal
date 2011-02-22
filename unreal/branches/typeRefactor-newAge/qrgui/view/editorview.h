@@ -8,45 +8,45 @@
 
 namespace qReal {
 
-	class EditorViewMViface;
-	class MainWindow;
+class EditorViewMViface;
+class MainWindow;
 
-	class EditorView : public QGraphicsView
+class EditorView : public QGraphicsView
+{
+	Q_OBJECT
+
+public:
+	explicit EditorView(QWidget *parent = NULL);
+	~EditorView();
+
+	EditorViewMViface * mvIface()
 	{
-		Q_OBJECT
+		return mMVIface;
+	}
 
-	public:
-		explicit EditorView(QWidget *parent = NULL);
-		~EditorView();
+	void setMainWindow(qReal::MainWindow *mainWindow);
+	void setDrawSceneGrid(bool show);
 
-		EditorViewMViface * mvIface()
-		{
-			return mMVIface;
-		}
+public slots:
+	void toggleAntialiasing(bool);
+	void toggleOpenGL(bool);
+	void zoomIn();
+	void zoomOut();
+	void invalidateScene();
 
-		void setMainWindow(qReal::MainWindow *mainWindow);
-		void setDrawSceneGrid(bool show);
+protected:
+	virtual void mouseMoveEvent(QMouseEvent *event);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
+	virtual void scrollContentsBy(int dx, int dy);
 
-	public slots:
-		void toggleAntialiasing(bool);
-		void toggleOpenGL(bool);
-		void zoomIn();
-		void zoomOut();
-		void invalidateScene();
-
-	protected:
-		virtual void mouseMoveEvent(QMouseEvent *event);
-		virtual void mouseReleaseEvent(QMouseEvent *event);
-		virtual void mousePressEvent(QMouseEvent *event);
-		virtual void scrollContentsBy(int dx, int dy);
-
-	private:
-		EditorViewMViface *mMVIface;
-		EditorViewScene *mScene;
-		QSettings mSettings;
-		QPointF mMouseOldPosition;
-		bool mWheelPressed;
-		void checkGrid();
-	};
+private:
+	EditorViewMViface *mMVIface;
+	EditorViewScene *mScene;
+	QSettings mSettings;
+	QPointF mMouseOldPosition;
+	bool mWheelPressed;
+	void checkGrid();
+};
 
 }

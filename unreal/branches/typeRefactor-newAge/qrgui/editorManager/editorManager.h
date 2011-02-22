@@ -52,8 +52,8 @@ public:
 	virtual QString getDefaultPropertyValue(NewType const &type, QString name) const;
 	virtual QStringList getPropertiesWithDefaultValues(NewType const &type) const;
 
-	TypeList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-								, qrRepo::GraphicalRepoApi const &graphicalApi) const;
+	TypeList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi,
+			qrRepo::GraphicalRepoApi const &graphicalApi) const;
 	bool hasElement(NewType const &element) const;
 
 	NewType findElementByType(QString const &type) const;
@@ -73,7 +73,7 @@ private:
 
 	const NewType mRoot;
 	void checkNeededPluginsRecursive(qrRepo::GraphicalRepoApi const *graphApi,
-		qrRepo::LogicalRepoApi const &api, Id const &id, TypeList &result) const;
+			qrRepo::LogicalRepoApi const &api, Id const &id, TypeList &result) const;
 };
 
 }
