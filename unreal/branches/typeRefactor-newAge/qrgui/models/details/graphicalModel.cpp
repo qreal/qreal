@@ -131,7 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return mEditorManager.icon(mApi.type(item->logicalId()));
+			return mEditorManager.icon(mApi.type(item->id()));
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:

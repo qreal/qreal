@@ -181,7 +181,7 @@ QString EditorManager::mouseGesture(const NewType &type) const
 QIcon EditorManager::icon(const NewType &type) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/" + type.element() + "Class.sdf");
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + type.element() + "Class.sdf");
 	// QIcon will take ownership of engine, no need for us to delete
 	return mPluginIface[type.editor()]->getIcon(engine);
 }
