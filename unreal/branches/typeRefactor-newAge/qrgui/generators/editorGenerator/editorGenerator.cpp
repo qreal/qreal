@@ -28,7 +28,7 @@ QHash<Id, QString> EditorGenerator::getMetamodelList()
 	QHash<Id, QString> metamodelList;
 
 	foreach (Id const key, metamodels) {
-		QString const objectType = mApi.name(key);
+		QString const objectType = mApi.type(key).element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			QString name = mApi.stringProperty(key, "name of the directory");
 			if (!name.isEmpty())
