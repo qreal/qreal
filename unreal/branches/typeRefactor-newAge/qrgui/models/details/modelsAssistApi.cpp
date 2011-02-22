@@ -18,17 +18,13 @@ EditorManager const &ModelsAssistApi::editorManager() const
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, NewType const &type, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
-	//Q_ASSERT(parent.idSize() == 4);
 	Id logicalId = ROOT_ID;
 	Id newId = id;
 	if (isFromLogicalModel) {
+		logicalId = id;
 		newId = Id(QUuid::createUuid().toString());
-		mModel.addElementToModel(parent, newId, logicalId, type, name, position);
 	}
-	else
-	{
-		mModel.addElementToModel(parent, newId, logicalId, type, name, position);
-	}
+	mModel.addElementToModel(parent, newId, logicalId, type, name, position);
 	return newId;
 }
 
@@ -60,7 +56,7 @@ Id ModelsAssistApi::idByIndex(QModelIndex const &index) const
 
 bool ModelsAssistApi::hasRootDiagrams() const
 {
-	 return mModel.rowCount(QModelIndex()) != 0;
+	return mModel.rowCount(QModelIndex()) != 0;
 }
 
 int ModelsAssistApi::childrenOfRootDiagram() const

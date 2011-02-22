@@ -103,6 +103,7 @@ TypeList EditorManager::elements(const NewType &diagram) const
 
 	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
 		elements.append(NewType(diagram, e));
+		//elements.append(NewType(diagram));
 	}
 	return elements;
 }
@@ -281,10 +282,6 @@ TypeList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logical
 
 void EditorManager::checkNeededPluginsRecursive(qrRepo::GraphicalRepoApi const *graphApi, qrRepo::LogicalRepoApi const &api, Id const &id, TypeList &result) const
 {
-	Id logicId = id;
-	if (graphApi != NULL)
-		logicId = graphApi->logicalId(id);
-
 	if (id != ROOT_ID && !mPluginsLoaded.contains(api.type(id).editor())) {
 		NewType missingEditor = NewType(api.type(id).editor());
 		if (!result.contains(missingEditor))
