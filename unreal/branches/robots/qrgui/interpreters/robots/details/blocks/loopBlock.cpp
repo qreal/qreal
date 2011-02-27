@@ -11,11 +11,11 @@ LoopBlock::LoopBlock()
 
 void LoopBlock::run()
 {
+	--mIterations;
 	if (mIterations <= 0)
 		emit done(mNextBlock);
 	else
 		emit done(mIterationStartBlock);
-	--mIterations;
 }
 
 bool LoopBlock::initNextBlocks()
