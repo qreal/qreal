@@ -14,6 +14,7 @@ enum {
 	positionRole, // element's position within current context (model knows which one it is)
 	configurationRole, // element's configuration (e.g. shape, size) within current context
 	fromRole,  // for edges it's an ID of a node, which this edge starts from. is ignored for nodes
+	typeRole,
 	toRole, // for edges it's an ID of a node, which this edge ends on. is ignored for nodes
 	fromPortRole, // for edges it's a port ID, which this edge starts from. is ignored for nodes
 	toPortRole, // for edges it's a port ID, which this edge ends on. is ignored for nodes

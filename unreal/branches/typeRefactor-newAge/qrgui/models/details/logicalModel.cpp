@@ -223,6 +223,9 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
 			break;
+		case roles::typeRole:
+			mApi.changeType(item->id(), value.value<NewType>());
+			break;
 		case roles::toRole:
 			mApi.setTo(item->id(), value.value<Id>());
 			break;

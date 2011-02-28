@@ -740,7 +740,7 @@ void EditorViewScene::changeTypeActionTriggered()
 	QList<QVariant> connection = action->data().toList();
 	Id source = connection[0].value<Id>();
 	NewType type = connection[1].value<NewType>();
-	mv_iface->logicalAssistApi()->logicalRepoApi().changeType(source, type);
+	mv_iface->model()->setData(mv_iface->logicalAssistApi()->indexById(source), type.toVariant(), roles::typeRole);
 }
 
 void EditorViewScene::deleteUsageActionTriggered()

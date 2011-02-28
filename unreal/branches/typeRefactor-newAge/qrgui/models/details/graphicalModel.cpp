@@ -169,6 +169,9 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 			mApi.setName(item->id(), value.toString());
 			emit nameChanged(item->id());
 			break;
+		case roles::typeRole:
+			mApi.changeType(item->id(), value.value<NewType>());
+			break;
 		case roles::positionRole:
 			mApi.setPosition(item->id(), value);
 			break;
