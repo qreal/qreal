@@ -610,17 +610,19 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
 		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
-		mPortFrom = newFrom;
-		if (!jumpsOnly || reconnectedSrc)
+		if (!jumpsOnly || reconnectedSrc) {
+			mPortFrom = newFrom;
 			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		}
 
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
-		mPortTo = newTo;
-		if (!jumpsOnly || reconnectedDst)
+		if (!jumpsOnly || reconnectedDst) {
+			mPortTo = newTo;
 			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		}
 	}
 
 	bool reconnected = reconnectedSrc || reconnectedDst;
