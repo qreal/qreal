@@ -4,9 +4,8 @@
 
 const double mouseSpeed = 3;
 
-QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & graph)
+QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const & path)
 {
-    QList<QPoint> path = increase(graph, 10);
 	QList<QPoint> mousePath;
 	if (path.isEmpty())
 		return mousePath;
@@ -100,4 +99,19 @@ QList<QPoint> PathCorrector::increase(const QList<QPoint> &path, double k)
 		newPath.push_back(QPoint((int)(pnt.x() * k), (int) (pnt.y() * k)));
 	}
 	return newPath;
+}
+
+QList<QPoint> PathCorrector::zoom(const QList<QPoint> &path, int k)
+{
+    QList<QPoint> newPath;
+    newPath.push_back(path.at(0) * k);
+    for (unsigned i = 1; i < path.size(); i++)
+    {
+        for (int j = 1; j <= k; j++)
+        {
+            QPoint pnt = path.at(i - 1) * k + j * (path.at(i) - path.at(i - 1));
+            newPath.push_back(pnt);
+        }
+    }
+    return newPath;
 }

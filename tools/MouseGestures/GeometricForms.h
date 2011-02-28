@@ -12,7 +12,7 @@ typedef QPair<QString, PathVector> Entity;
 
 typedef QList<Entity> EntityVector;
 
-typedef QPair<int, int> SquarePos;
+typedef QPair<double, double> SquarePos;
 
 typedef QList<SquarePos> Key;
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "GeometricForms.h"
+#include "pathcorrector.h"
 
 static const int minMovement = 20;
 //static const int heightSize = 30;
@@ -9,8 +10,10 @@ static const int unidimensionalLimit = 1;
 class KeyBuilder
 {
 public:
-    static Key getKey(const PointVector &path, int heightSize, int widthSize)
+    static Key getKey(const PointVector &mousePath, int heightSize, int widthSize)
     {
+        //todo::rasterize segment, kill zoom
+        PointVector path = PathCorrector::zoom(mousePath, std::max(heightSize, widthSize));
         Key key;
         if (path.isEmpty())
             return key;

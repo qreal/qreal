@@ -10,6 +10,7 @@ public:
     static QList<QPoint> getMousePath(QList<QPoint> const & path);
     static QList<QPoint> rotate(QList<QPoint> const & path);
     static QList<QPoint> increase(QList<QPoint> const & path, double k);
+    static QList<QPoint> zoom(QList<QPoint> const & path, int k);
 
 private:
     static double getCos(QPoint const & pnt1, QPoint const & pnt2, QPoint const & pnt3);

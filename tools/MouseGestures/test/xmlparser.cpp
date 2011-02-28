@@ -5,49 +5,52 @@
 #include <QStringList>
 #include <QTextStream>
 
-const QString pathToFile = "../gesturesTest/usersGestures.xml";
+
 const QString matchingAlgorithmsFile = "matchingAlgorithms.txt";
+const QString gestureKeyWord = "gesture";
+const QString idealPathKeyWord = "idealPath";
+const QString nameKeyWord = "name";
 
-//TODO:: вынести в константы
-QMap<QString, UsersGestures> XmlParser::parseXml()
+QMap<QString, QPair<QList<QPoint>, QList<QString> > >
+                XmlParser::parseXml(QString const & pathToFile)
 {
-	QMap<QString, QPair<QList<QPoint>, QList<QString> > > gestures;
-	QFile file(pathToFile);
+        QMap<QString, QPair<QList<QPoint>, QList<QString> > > gestures;
+        QFile file(pathToFile);
 
-	if (!file.exists())
-		file.setFileName("../" + pathToFile);
+        if (!file.exists())
+                file.setFileName("../" + pathToFile);
 
-	QDomDocument doc("document");
-	if (!file.open(QIODevice::ReadWrite))
-		return gestures;
-	doc.setContent(&file);
-	QDomNodeList elements = doc.elementsByTagName("gesture");
-	for (int i = 0; i < elements.size(); i++)
-	{
-		QDomElement element = elements.at(i).toElement();
-		QString path = element.attribute("idealPath");
-		QString name = element.attribute("name");
-		QDomNodeList paths = element.elementsByTagName("userPath");
-		if (!path.isEmpty())
-		{
-			QList<QPoint> points = Adopter::stringToPath(path);
-			QPair<QList<QPoint>, QList<QString> > usersGestures(points,
-														getUsersGestures(paths));
-			gestures.insert(name, usersGestures);
-		}
-	}
+        QDomDocument doc("document");
+        if (!file.open(QIODevice::ReadWrite))
+                return gestures;
+        doc.setContent(&file);
         file.close();
-	return gestures;
+        QDomNodeList elements = doc.elementsByTagName("gesture");
+        for (int i = 0; i < elements.size(); i++)
+        {
+                QDomElement element = elements.at(i).toElement();
+                QString path = element.attribute("idealPath");
+                QString name = element.attribute("name");
+                QDomNodeList paths = element.elementsByTagName("userPath");
+                if (!path.isEmpty())
+                {
+                        QList<QPoint> points = Adopter::stringToPath(path);
+                        QPair<QList<QPoint>, QList<QString> > usersGestures(points,
+                                                                                                                getUsersGestures(paths));
+                        gestures.insert(name, usersGestures);
+                }
+        }
+        return gestures;
 }
 
 QList<QString> XmlParser::getUsersGestures(const QDomNodeList &list)
 {
-	QList<QString> gestures;
-	for (int i = 0; i < list.size(); i++)
-	{
-		gestures.push_back(list.at(i).toElement().attribute("path", ""));
-	}
-	return gestures;
+        QList<QString> gestures;
+        for (int i = 0; i < list.size(); i++)
+        {
+                gestures.push_back(list.at(i).toElement().attribute("path", ""));
+        }
+        return gestures;
 }
 
 //map: name -> gestures

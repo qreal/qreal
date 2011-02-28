@@ -29,6 +29,7 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/sorts.h \
     multistrokeRecognizers/distance.h \
     multistrokeRecognizers/curveKeyBuilder.h \
-    multistrokeRecognizers/multistrokeGesturesManagers.h
+    multistrokeRecognizers/multistrokeGesturesManagers.h \
+    NeuralNetwork/neuralnetwork.h
 FORMS += mousegestures.ui \
     test/testwindow.ui

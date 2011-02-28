@@ -6,15 +6,15 @@
 #include "curveKeyBuilder.h"
 
 static const double keyDistance = 200;
-static const double size = 8;
-static const double gridSize = 30;
+static const int size = 8;
+static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
 
 //todo:: RENAME!!!!!! and do smth with Indian code
 class LevCurveGesturesManager : public GesturesRecognizer<Key>
 {
 public:
     LevCurveGesturesManager() {}
-    double getMaxDistance()
+    double getMaxDistance(QString const &)
     {
         return keyDistance;
     }
@@ -40,7 +40,7 @@ class CurveDistCurveSortGesturesManager : public GesturesRecognizer<Key>
 {
 public:
     CurveDistCurveSortGesturesManager() {}
-    double getMaxDistance()
+    double getMaxDistance(QString const &)
     {
         //todo:: change max distance
         return keyDistance;
@@ -67,7 +67,7 @@ class LevPictureGesturesManager : public GesturesRecognizer<Key>
 {
 public:
     LevPictureGesturesManager() {}
-    double getMaxDistance()
+    double getMaxDistance(const QString &)
     {
         //todo: change max distance
         return keyDistance;
@@ -94,7 +94,7 @@ class CurvePictureGesturesManager : public GesturesRecognizer<Key>
 {
 public:
     CurvePictureGesturesManager() {}
-    double getMaxDistance()
+    double getMaxDistance(QString const &)
     {
         //todo:: change max distance
         return keyDistance;
@@ -121,7 +121,7 @@ class L1GesturesManager : public GesturesRecognizer<Key>
 {
 public:
     L1GesturesManager() {}
-    double getMaxDistance()
+    double getMaxDistance(const QString &)
     {
         //todo:: change max distance
         return keyDistance;

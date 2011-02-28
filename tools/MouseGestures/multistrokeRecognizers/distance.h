@@ -1,5 +1,6 @@
 #pragma once
 #include "GeometricForms.h"
+#include "cmath"
 
 class Distance
 {
@@ -57,7 +58,10 @@ public:
         return std::max(getDist(currentKey1, currentKey2), getDist(currentKey2, currentKey1));
                 /// (currentKey1.size() + currentKey2.size());
     }
-
+    static double norm(const SquarePos &pos1, const SquarePos &pos2)
+    {
+        return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
+    }
 private:
     static Key transferKey(const Key &key, int size)
     {
@@ -69,10 +73,7 @@ private:
         }
         return newKey;
     }
-    static double norm(const SquarePos &pos1, const SquarePos &pos2)
-    {
-        return abs(pos1.first - pos2.first) + abs(pos1.second - pos2.second);
-    }
+
     //todo:: rename
     static double getDist(const Key & key, const Key & figure)
     {
