@@ -414,6 +414,24 @@ IdList RepoApi::elementsByType(QString const &type) const
 	return result;
 }
 
+TypeList RepoApi::getAllTypes() const
+{
+	TypeList result;
+	foreach (Id id, mClient.elements()) {
+		NewType type = mClient.type(id);
+		if (!result.contains(type))
+		{
+			result.append(type);
+		}
+	}
+	return result;
+}
+
+void RepoApi::changeType(Id const &id, NewType const &type) const
+{
+	mClient.changeType(id, type);
+}
+
 int RepoApi::elementsCount() const
 {
 	return mClient.elements().size();

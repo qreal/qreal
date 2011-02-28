@@ -26,6 +26,8 @@ public:
 
 	virtual qReal::IdList logicalElements(qReal::NewType const &type) const = 0;
 	virtual bool isLogicalElement(qReal::Id const &id) const = 0;
+	virtual qReal::TypeList getAllTypes() const = 0;
+	virtual void changeType(qReal::Id const &id, qReal::NewType const &type) const = 0;
 
 	virtual qReal::IdList elementsByType(QString const &type) const = 0;
 	virtual int elementsCount() const = 0;

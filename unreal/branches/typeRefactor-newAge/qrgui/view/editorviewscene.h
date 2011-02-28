@@ -101,6 +101,9 @@ private:
 			qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections,
 			const char *slot) const;
 
+	void createTypeChangeMenu(UML::Element const * const element,
+			QMenu &contextMenu, QString const &menuName, const char *slot) const;
+
 	void initContextMenu(UML::Element *e, QPointF const & pos);
 
 	QPointF newElementsPosition;
@@ -131,6 +134,7 @@ private slots:
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
+	void changeTypeActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
 	void printElementsOfRootDiagram();

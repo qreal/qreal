@@ -97,6 +97,10 @@ public:
 
 	//Returns all elements with .element() == type
 	qReal::IdList elementsByType(QString const &type) const;
+	qReal::TypeList getAllTypes() const;
+
+	void changeType(qReal::Id const &id, qReal::NewType const &type) const;
+
 	int elementsCount() const;
 
 	bool exist(qReal::Id const &id) const;

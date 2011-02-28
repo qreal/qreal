@@ -69,6 +69,14 @@ void Client::setParent(Id const &id, Id const &parent)
 	}
 }
 
+void Client::changeType(Id const &id, NewType const &type) const
+{
+	if (mObjects.contains(id))
+	{
+		mObjects[id]->setType(type);
+	}
+}
+
 void Client::addChild(const Id &id, const Id &child, const NewType &type)
 {
 	if (mObjects.contains(id)) {

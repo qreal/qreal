@@ -372,10 +372,9 @@ void EditorViewScene::createAddConnectionMenu(UML::Element const * const element
 }
 
 
-void EditorViewScene::createDisconnectMenu(UML::Element const * const element
-										   , QMenu &contextMenu, QString const &menuName
-										   , IdList const &outgoingConnections, IdList const &incomingConnections
-										   , const char *slot) const
+void EditorViewScene::createDisconnectMenu(UML::Element const * const element,
+		QMenu &contextMenu, QString const &menuName,
+		IdList const &outgoingConnections, IdList const &incomingConnections, const char *slot) const
 {
 	QMenu *disconnectMenu = contextMenu.addMenu(menuName);
 	IdList list = outgoingConnections;
@@ -386,6 +385,19 @@ void EditorViewScene::createDisconnectMenu(UML::Element const * const element
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << elementId.toVariant();
+		action->setData(tag);
+	}
+}
+
+void EditorViewScene::createTypeChangeMenu(UML::Element const * const element,
+		QMenu &contextMenu, QString const &menuName, const char *slot) const
+{
+	QMenu * changeTypeMenu = contextMenu.addMenu(menuName);
+	foreach (NewType type, mv_iface->logicalAssistApi()->logicalRepoApi().getAllTypes()) {
+		QAction *action = changeTypeMenu->addAction(type.element());
+		connect(action, SIGNAL(triggered()), slot);
+		QList<QVariant> tag;
+		tag << element->logicalId().toVariant() << type.toVariant();
 		action->setData(tag);
 	}
 }
@@ -406,6 +418,8 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, UML::Element 
 						 , mv_iface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
 						 , SLOT(disconnectActionTriggered())
 						 );
+
+	createTypeChangeMenu(element, contextMenu, tr("Change type"), SLOT(changeTypeActionTriggered()));
 
 	createAddConnectionMenu(element, contextMenu, tr("Add usage")
 							, mWindow->manager()->getUsedTypes(element->newType())
@@ -718,6 +732,15 @@ void EditorViewScene::disconnectActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	mv_iface->logicalAssistApi()->disconnect(source, destination);
+}
+
+void EditorViewScene::changeTypeActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	QList<QVariant> connection = action->data().toList();
+	Id source = connection[0].value<Id>();
+	NewType type = connection[1].value<NewType>();
+	mv_iface->logicalAssistApi()->logicalRepoApi().changeType(source, type);
 }
 
 void EditorViewScene::deleteUsageActionTriggered()

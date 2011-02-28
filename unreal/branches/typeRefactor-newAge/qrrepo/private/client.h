@@ -21,6 +21,7 @@ public:
 	qReal::IdList children(const qReal::Id &id) const;
 	qReal::NewType type(const qReal::Id &id) const;
 	qReal::Id parent(const qReal::Id &id) const;
+	void changeType(const qReal::Id &id, const qReal::NewType &type) const;
 	void setParent(const qReal::Id &id, const qReal::Id &parent);
 	void addChild(const qReal::Id &id, const qReal::Id &child, const qReal::NewType &type);
 	void addChild(const qReal::Id &id, const qReal::Id &child, qReal::Id const &logicalId, qReal::NewType const &type);
