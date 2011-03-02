@@ -6,7 +6,6 @@ TARGET = MouseGestures
 TEMPLATE = app
 SOURCES += main.cpp \
 	mousegestures.cpp \
-	mousemovementmanager.cpp \
 	pathcorrector.cpp \
 	serializer.cpp \
 	validpathcreator.cpp \
@@ -15,7 +14,6 @@ SOURCES += main.cpp \
     test/testwindow.cpp \
     test/xmlparser.cpp
 HEADERS += mousegestures.h \
-	mousemovementmanager.h \
 	pathcorrector.h \
 	serializer.h \
 	GeometricForms.h \
@@ -30,6 +28,7 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/distance.h \
     multistrokeRecognizers/curveKeyBuilder.h \
     multistrokeRecognizers/multistrokeGesturesManagers.h \
+    TrainingGesturesManager/TrainingGesturesManager.h \
     NeuralNetwork/neuralnetwork.h
 FORMS += mousegestures.ui \
     test/testwindow.ui

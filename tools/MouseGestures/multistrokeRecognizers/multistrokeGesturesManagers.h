@@ -7,13 +7,13 @@
 
 static const double keyDistance = 200;
 static const int size = 8;
+static const double e = 0.45;
 static const int gridSize = 80;//gridSize = 100 recognition = 833 gestures
 
-//todo:: RENAME!!!!!! and do smth with Indian code
-class LevCurveGesturesManager : public GesturesRecognizer<Key>
+class LevenshteinHullGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-    LevCurveGesturesManager() {}
+    LevenshteinHullGesturesManager() {}
     double getMaxDistance(QString const &)
     {
         return keyDistance;
@@ -36,14 +36,13 @@ protected:
         return Sorting::sortCurve(key);
     }
 };
-class CurveDistCurveSortGesturesManager : public GesturesRecognizer<Key>
+class OneSizeHullGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-    CurveDistCurveSortGesturesManager() {}
+    OneSizeHullGesturesManager() {}
     double getMaxDistance(QString const &)
     {
-        //todo:: change max distance
-        return keyDistance;
+        return size * size * e;
     }
 
     bool isMultistroke()
@@ -54,7 +53,7 @@ public:
 protected:
     double getDistance(Key const & key1, Key const & key2)
     {
-        return Distance::getCurveDistance(key1, key2);
+        return Distance::getOneSizeDistance(key1, key2);
     }
 
     Key getKey(PointVector const & path)
@@ -63,14 +62,13 @@ protected:
         return Sorting::sortCurve(key);
     }
 };
-class LevPictureGesturesManager : public GesturesRecognizer<Key>
+class LevenshteinXYSortGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-    LevPictureGesturesManager() {}
+    LevenshteinXYSortGesturesManager() {}
     double getMaxDistance(const QString &)
     {
-        //todo: change max distance
-        return keyDistance;
+        return size * size * e;
     }
 
     bool isMultistroke()
@@ -90,14 +88,13 @@ protected:
         return Sorting::sortPicture(key);
     }
 };
-class CurvePictureGesturesManager : public GesturesRecognizer<Key>
+class OneSizeXYSortGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-    CurvePictureGesturesManager() {}
+    OneSizeXYSortGesturesManager() {}
     double getMaxDistance(QString const &)
     {
-        //todo:: change max distance
-        return keyDistance;
+        return size * size * e;
     }
 
     bool isMultistroke()
@@ -108,7 +105,7 @@ public:
 protected:
     double getDistance(Key const & key1, Key const & key2)
     {
-        return Distance::getCurveDistance(key1, key2);
+        return Distance::getOneSizeDistance(key1, key2);
     }
 
     Key getKey(PointVector const & path)
@@ -117,14 +114,13 @@ protected:
         return Sorting::sortPicture(key);
     }
 };
-class L1GesturesManager : public GesturesRecognizer<Key>
+class SquaresCurveGesturesManager : public GesturesRecognizer<Key>
 {
 public:
-    L1GesturesManager() {}
+    SquaresCurveGesturesManager() {}
     double getMaxDistance(const QString &)
     {
-        //todo:: change max distance
-        return keyDistance;
+        return gridSize * e;
     }
 
     bool isMultistroke()
@@ -135,7 +131,7 @@ public:
 protected:
     double getDistance(Key const & key1, Key const & key2)
     {
-        return Distance::getL1Distance(key1, key2);
+        return Distance::getSquaresCurveDistance(key1, key2);
     }
 
     Key getKey(PointVector const & path)

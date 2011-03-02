@@ -5,12 +5,12 @@
 const QString comma = ", ";
 const QString pointDelimeter = " : ";
 
-QString Adopter::pointToString(QPoint const &p)
+QString Parser::pointToString(QPoint const &p)
 {
     return QString("%1").arg(p.x()) + comma + QString("%1").arg(p.y());
 }
 
-QString Adopter::pathToString(QList<QPoint> const &path)
+QString Parser::pathToString(QList<QPoint> const &path)
 {
     QString result = "";
     foreach (QPoint point, path)
@@ -20,7 +20,7 @@ QString Adopter::pathToString(QList<QPoint> const &path)
     return result;
 }
 
-QList<QPoint> Adopter::stringToPath(QString const &valueStr)
+QList<QPoint> Parser::stringToPath(QString const &valueStr)
 {
     QStringList points = valueStr.split(pointDelimeter, QString::SkipEmptyParts);
     QList<QPoint> result;
@@ -32,7 +32,7 @@ QList<QPoint> Adopter::stringToPath(QString const &valueStr)
     return result;
 }
 
-QPoint Adopter::parsePoint(QString const &str)
+QPoint Parser::parsePoint(QString const &str)
 {
     bool isInt;
     int x = str.section(comma, 0, 0).toInt(&isInt, 0);

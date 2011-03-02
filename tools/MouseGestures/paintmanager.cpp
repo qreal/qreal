@@ -1,6 +1,8 @@
 #include "paintmanager.h"
 #include "adopter.h"
 
+const int minBoarder = -1000;
+
 PaintManager::PaintManager(QGraphicsView *gestureView) : QObject(gestureView)
 {
 	mGestureScene = new QGraphicsScene(gestureView);
@@ -14,12 +16,12 @@ void PaintManager::drawPath(QPainter *painter, const PathVector &paths)
 {
 	foreach (QList<QPoint> path, paths)
 	{
-		QPoint previousPoint(-1, -1);
+                QPoint previousPoint(minBoarder, minBoarder);
 		if (path.isEmpty())
 			return;
 		foreach (QPoint currentPoint, path)
 		{
-			if (previousPoint.x() >= 0 && previousPoint.y() >= 0)
+                        if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder)
 				painter->drawLine(previousPoint, currentPoint);
 			else
 				painter->drawPoint(currentPoint);
@@ -28,18 +30,17 @@ void PaintManager::drawPath(QPainter *painter, const PathVector &paths)
 	}
 }
 
-//TODO:: safe princess, kill indian code
 void PaintManager::drawGesture(const QList<QList<QPoint> > &gesture)
 {
 	mGestureScene->clear();
 	foreach (QList<QPoint> path, gesture)
 	{
-		QPoint previousPoint(-1000, -1000);
+                QPoint previousPoint(minBoarder, minBoarder);
 		if (path.isEmpty())
 			return;
 		foreach (QPoint currentPoint, path)
 		{
-			if (previousPoint.x() != -1000 && previousPoint.y() != -1000)
+                        if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder)
 				mGestureScene->addLine(QLine(previousPoint, currentPoint));
 			previousPoint = currentPoint;
 		}

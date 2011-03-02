@@ -36,7 +36,7 @@ public:
         }
         return (double) (matrix[m][n] * (abs(m - n) + 1)) / std::min(n, m);
     }
-    static double getCurveDistance(const Key & currentKey1, const Key & currentKey2)
+    static double getOneSizeDistance(const Key & currentKey1, const Key & currentKey2)
     {
         int m = currentKey1.size();
         int n = currentKey2.size();
@@ -53,10 +53,10 @@ public:
         }
         return dist / (m * n);
     }
-    static double getL1Distance(const Key & currentKey1, const Key & currentKey2)
+    static double getSquaresCurveDistance(const Key & currentKey1, const Key & currentKey2)
     {
-        return std::max(getDist(currentKey1, currentKey2), getDist(currentKey2, currentKey1));
-                /// (currentKey1.size() + currentKey2.size());
+        return std::max(getNearestSquaresDist(currentKey1, currentKey2),
+                        getNearestSquaresDist(currentKey2, currentKey1));
     }
     static double norm(const SquarePos &pos1, const SquarePos &pos2)
     {
@@ -74,8 +74,7 @@ private:
         return newKey;
     }
 
-    //todo:: rename
-    static double getDist(const Key & key, const Key & figure)
+    static double getNearestSquaresDist(const Key & key, const Key & figure)
     {
         double figureDist = 0;
         if (key.isEmpty())

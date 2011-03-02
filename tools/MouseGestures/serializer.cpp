@@ -53,7 +53,7 @@ Entity Serializer::parseNode(QDomElement const & domElement)
 	QString path = domElement.attribute(pathKey, "");
 	if (!path.isEmpty())
 	{
-		components.push_back(Adopter::stringToPath(path));
+		components.push_back(Parser::stringToPath(path));
 	}
 	else
 	{
@@ -101,7 +101,7 @@ void Serializer::serialize(const Objects &objects)
 			{
 				if (object.name == element.attribute(nodeNameKey, ""))
 				{
-					QString path = Adopter::pathToString(object.path);
+					QString path = Parser::pathToString(object.path);
 					if (!path.isEmpty())
 						element.setAttribute(pathKey, path);
 				}

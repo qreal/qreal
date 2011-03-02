@@ -3,9 +3,7 @@
 #include <QPoint>
 #include <QString>
 
-//todo:: в этот класс пока пихается все по мелочи, со временем его надо разбить и убить (вмдимо на 2 класса)
-
-class Adopter
+class Parser
 {
 public:
     static QString pathToString(QList<QPoint> const &path);

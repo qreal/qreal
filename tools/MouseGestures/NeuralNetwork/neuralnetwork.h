@@ -14,7 +14,7 @@ class GridClassifier
 public:
     GridClassifier(const QList<QPoint> &path)
     {
-        mKey = KeyBuilder::getKey(path, 120, 120);
+        mKey = KeyBuilder::getKey(path, gridSize, gridSize);
     }
 
     GridClassifier(){}
@@ -22,7 +22,7 @@ public:
     double getDistance(const GridClassifier &classifier)
     {
         Key key = classifier.key();
-        return Distance::getL1Distance(key, mKey);
+        return Distance::getSquaresCurveDistance(key, mKey);
     }
     GridClassifier getPoint(GridClassifier const & centre, double centreWeight)
     {
@@ -32,43 +32,8 @@ public:
         if (mKey.empty())
             return centre;
         Key key;
-        foreach (SquarePos pos, key1)
-        {
-            SquarePos nearestPos = mKey.at(0);
-            double min = Distance::norm(pos, nearestPos);
-            foreach (SquarePos pos2, mKey)
-            {
-                double dist = Distance::norm(pos, pos2);
-                if (dist < min)
-                {
-                    min = dist;
-                    nearestPos = pos2;
-                }
-            }
-            SquarePos keyPos((pos.first * (centreWeight - 1) + nearestPos.first) / centreWeight,
-                             (pos.second * (centreWeight - 1) + nearestPos.second) / centreWeight);
-            if (!key.contains(keyPos))
-                key.push_back(keyPos);
-        }
-        //TODO:: kill Indian code
-        foreach (SquarePos pos, mKey)
-        {
-            SquarePos nearestPos = key1.at(0);
-            double min = Distance::norm(pos, nearestPos);
-            foreach (SquarePos pos2, key1)
-            {
-                double dist = Distance::norm(pos, pos2);
-                if (dist < min)
-                {
-                    min = dist;
-                    nearestPos = pos2;
-                }
-            }
-            SquarePos keyPos((pos.first + nearestPos.first * (centreWeight - 1)) / centreWeight,
-                             (pos.second + nearestPos.second * (centreWeight - 1)) / centreWeight);
-            if (!key.contains(keyPos))
-                key.push_back(keyPos);
-        }
+        key = getSquares(key1, mKey, key, centreWeight - 1, 1);
+        key = getSquares(mKey, key1, key, 1, centreWeight - 1);
         return GridClassifier(key);
     }
 
@@ -82,6 +47,31 @@ private:
     GridClassifier(Key key)
     {
         mKey = key;
+    }
+    Key getSquares(const Key & key1, const Key & key2,
+                   const Key & finalKey, int weight1, int weight2)
+    {
+        Key key = finalKey;
+        int sumWeight = weight1 + weight2;
+        foreach (SquarePos pos, key1)
+        {
+            SquarePos nearestPos = key2.at(0);
+            double min = Distance::norm(pos, nearestPos);
+            foreach (SquarePos pos2, key2)
+            {
+                double dist = Distance::norm(pos, pos2);
+                if (dist < min)
+                {
+                    min = dist;
+                    nearestPos = pos2;
+                }
+            }
+            SquarePos keyPos((pos.first * weight1 + nearestPos.first * weight2) / sumWeight,
+                             (pos.second * weight1 + nearestPos.second * weight2) / sumWeight);
+            if (!key.contains(keyPos))
+                key.push_back(keyPos);
+        }
+        return key;
     }
 };
 
@@ -102,10 +92,8 @@ public:
     Sphere(){}
 };
 
-//TODO:: rename, it's not neural network but training algorithm
-//TODO:: TAKE CLASSIFIER WITH FIXED DIMENION!!!
 template <class Classifier>
-        class NeuralNetwork : public GesturesManager
+        class TrainingGesturesManager : public GesturesManager
 {
 private:
     QMap<QString, Sphere<Classifier> > mSphereObject;
@@ -113,9 +101,9 @@ private:
     Classifier mCurrentClassifier;
 
 public:
-    NeuralNetwork()
+    TrainingGesturesManager()
     {
-        minR = 100;
+        minR = gridSize * e / 2;
     }
 
     void learn(QString const & object, QList<QPoint> const & path)

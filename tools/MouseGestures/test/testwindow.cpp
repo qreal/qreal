@@ -3,30 +3,29 @@
 #include "multistrokeRecognizers/multistrokeGesturesManagers.h"
 #include "xmlparser.h"
 #include "adopter.h"
-#include "NeuralNetwork/neuralnetwork.h"
+#include "NeuralNetwork/neuralNetwork.h"
 #include <QFileDialog>
 
-const QString pathToTestFile = "../gesturesTest/usersGestures.xml";
+const QString pathToTestFile = "usersGestures.xml";
 const QString pathToTrainingFile = "NeuralNetwork/learnGestures/learn_gestures1.xml";
-//todo::rename
-const QString levPictureAlgorithm = "levenshtein dist and picture sorting";
-const QString levCurveAlgorithm = "levenshtein dist and curve sorting";
-const QString curvePictureAlgorithm = "curve dist and picture sorting";
-const QString curveDistCurveSortAlgorithm = "curve dist and curve sorting";
-const QString l1Algorithm = "L1 algorithm";
-const QString neuralNetworkAlgorithm = "neural network";
+const QString levXYSortAlgorithm = "levenshtein distance square and sorting by XY coordinates";
+const QString levDistHullAlgorithm = "levenshtein distance and hull sorting";
+const QString sortXYAlgorithm = "one size keys and sorting by XY";
+const QString hullSortAlgorithm = "one size keys and hull sorting";
+const QString squaresCurvesAlgorithm = "distance between nearest squares";
+const QString trainingGesturesManagerAlgorithm = "training algorithm";
 
 TestWindow::TestWindow(QWidget *parent) :
         QMainWindow(parent),
         ui(new Ui::TestWindow)
 {
     ui->setupUi(this);
-    ui->cbAlgorithm->addItem(l1Algorithm, QVariant());
-    ui->cbAlgorithm->addItem(neuralNetworkAlgorithm, QVariant());
-    ui->cbAlgorithm->addItem(levPictureAlgorithm, QVariant());
-    ui->cbAlgorithm->addItem(levCurveAlgorithm, QVariant());
-    ui->cbAlgorithm->addItem(curvePictureAlgorithm, QVariant());
-    ui->cbAlgorithm->addItem(curveDistCurveSortAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(squaresCurvesAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(trainingGesturesManagerAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(levXYSortAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(levDistHullAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(sortXYAlgorithm, QVariant());
+    ui->cbAlgorithm->addItem(hullSortAlgorithm, QVariant());
     connect(ui->bTest, SIGNAL(clicked()), this, SLOT(test()));
     ui->pbTested->setValue(0);
 }
@@ -54,7 +53,7 @@ void TestWindow::test()
         foreach (QString pathStr, usersGestures[object].second)
         {
             all ++;
-            QList<QPoint> path = Adopter::stringToPath(pathStr);
+            QList<QPoint> path = Parser::stringToPath(pathStr);
             if (object == recognizer->recognizeObject(path))
                 recognized ++;
             else
@@ -72,17 +71,17 @@ GesturesManager * TestWindow::getGesturesManager()
 {
     //TODO:: add new thread
     QString name = ui->cbAlgorithm->currentText();
-    if (name == levPictureAlgorithm)
-        return new LevPictureGesturesManager();
-    else if (name == levCurveAlgorithm)
-        return new LevCurveGesturesManager();
-    else if (name == curvePictureAlgorithm)
-        return new CurvePictureGesturesManager();
-    else if (name == l1Algorithm)
-        return new L1GesturesManager();
-    else if (name == neuralNetworkAlgorithm)
+    if (name ==  levXYSortAlgorithm)
+        return new LevenshteinXYSortGesturesManager();
+    else if (name == levDistHullAlgorithm)
+        return new LevenshteinHullGesturesManager();
+    else if (name == sortXYAlgorithm)
+        return new OneSizeXYSortGesturesManager();
+    else if (name == squaresCurvesAlgorithm)
+        return new SquaresCurveGesturesManager();
+    else if (name == trainingGesturesManagerAlgorithm)
     {
-        NeuralNetwork<GridClassifier> * neuralNetwork = new NeuralNetwork<GridClassifier>();
+        TrainingGesturesManager<GridClassifier> * trainingGesturesManager = new TrainingGesturesManager<GridClassifier>();
         QMap<QString, UsersGestures> gestures = XmlParser::parseXml(pathToTrainingFile);
         foreach (QString object, gestures.keys())
         {
@@ -90,13 +89,13 @@ GesturesManager * TestWindow::getGesturesManager()
             foreach (QString path, paths.second)
             {
                 qDebug() << "new gesture";
-                neuralNetwork->learn(object, Adopter::stringToPath(path));
+                trainingGesturesManager->learn(object, Parser::stringToPath(path));
             }
         }
         qDebug() << "learnt";
-        return neuralNetwork;
+        return trainingGesturesManager;
     }
-    else return new CurveDistCurveSortGesturesManager();
+    else return new OneSizeHullGesturesManager();
 }
 
 
