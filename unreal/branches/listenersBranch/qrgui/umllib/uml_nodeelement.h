@@ -193,5 +193,7 @@ namespace UML {
 		bool connecting;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
+		
+		bool mFirstPaintResize;
 	};
 }

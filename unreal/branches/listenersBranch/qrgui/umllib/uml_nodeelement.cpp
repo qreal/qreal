@@ -46,13 +46,11 @@ NodeElement::NodeElement(ElementImpl* impl)
 	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
 	}
-
-	//setGeometry(mContents);//для инициализации mTitles норм размерами
-	if (!mTitles.empty()) {
-			mTitles.at(0)->setTextWidth(mContents.width() - mTitles.at(0)->pos().x());
-			//mTitles.at(0)->adjustSize();
-			qDebug() << "AAA" << mTitles.at(0)->boundingRect();
-	}
+	
+	if (mElementImpl->isNeededToBeExpandedToNameTitle())
+		mFirstPaintResize = true;
+	else
+		mFirstPaintResize = false;
 	
 	resize(mContents);
 }
@@ -1143,6 +1141,14 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style
 		painter->drawRect(QRectF(QPointF(x1, y1), QPointF(x2, y2)));
 		painter->restore();
 	}
+
+	//
+	if (mFirstPaintResize) {
+		resize(mContents);
+		mFirstPaintResize = false;
+		paint(painter, style, widget);
+	}
+	//
 }
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
