@@ -315,7 +315,7 @@ void NodeType::generateCode(OutFile &out)
 		<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
-		<< "\t\tbool isNeededToBeExpandToNameTitle()\n\t\t{\n"
+		<< "\t\tbool isNeededToBeExpandedToNameTitle()\n\t\t{\n"
 		<< (mIsNeededToBeExpandedToNameTitle ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 		<< "\t\t}\n\n"
 
