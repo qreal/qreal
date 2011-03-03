@@ -22,11 +22,19 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 
 	QSettings settings("SPbSU", "QReal");
+	QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
 
 	if (ports.isEmpty()) {
 		mUi->comPortComboBox->hide();
-		mUi->comPortLabel->setText(tr("No COM ports found"));
+		mUi->comPortLabel->setText(tr("No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3"));
+		mUi->directInputComPortLabel->show();
+		mUi->directInputComPortLineEdit->show();
+		mUi->directInputComPortLineEdit->setText(defaultPortName);
 	} else {
+		mUi->comPortComboBox->show();
+		mUi->directInputComPortLabel->hide();
+		mUi->directInputComPortLineEdit->hide();
+
 		foreach (QextPortInfo info, ports) {
 			QRegExp const portNameRegexp("COM\\d+", Qt::CaseInsensitive);
 			if (portNameRegexp.indexIn(info.portName) != -1) {
@@ -34,7 +42,6 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 				mUi->comPortComboBox->addItem(portName);
 			}
 		}
-		QString const defaultPortName = settings.value("bluetoothPortName", "").toString();
 		int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 		if (defaultIndex != -1)
 			mUi->comPortComboBox->setCurrentIndex(defaultIndex);
@@ -84,7 +91,10 @@ void RobotSettingsDialog::cancel()
 
 QString RobotSettingsDialog::selectedPortName() const
 {
-	return mUi->comPortComboBox->currentText();
+	if (mUi->comPortComboBox->isVisible())
+		return mUi->comPortComboBox->currentText();
+	else
+		return mUi->directInputComPortLineEdit->text();
 }
 
 sensorType::SensorTypeEnum RobotSettingsDialog::selectedPort1Sensor() const

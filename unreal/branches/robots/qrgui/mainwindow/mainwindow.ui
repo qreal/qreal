@@ -530,11 +530,6 @@
     <string>Save</string>
    </property>
   </action>
-  <action name="actionGenerate_editor">
-   <property name="text">
-    <string>Generate editor</string>
-   </property>
-  </action>
   <action name="actionGenerate_to_Hascol">
    <property name="text">
     <string>Generate to Hascol</string>
@@ -590,7 +585,7 @@
     <string>Generate Editor</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionParse_Editor_xml">
