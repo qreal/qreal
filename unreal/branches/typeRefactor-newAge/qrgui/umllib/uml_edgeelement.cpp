@@ -26,8 +26,9 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	: mPenStyle(Qt::SolidLine), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW),
 	mSrc(NULL), mDst(NULL), mPortFrom(0), mPortTo(0),
 	mDragState(-1), mLongPart(0), mBeginning(NULL), mEnding(NULL), mAddPointAction("Add point", this),
-	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this), mElementImpl(impl)
+	mDelPointAction("Delete point", this), mSquarizeAction("Squarize", this)
 {
+	mElementImpl = impl;
 	mPenStyle = mElementImpl->getPenStyle();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
@@ -716,4 +717,12 @@ void EdgeElement::drawEndArrow(QPainter *painter) const
 void EdgeElement::setColorRect(bool bl)
 {
 	Q_UNUSED(bl);
+}
+
+void EdgeElement::setElementImpl(ElementImpl* const impl)
+{
+	mElementImpl = impl;
+	ElementTitleFactory factory;
+	QList<ElementTitleInterface*> titles;
+	mElementImpl->init(factory, titles);
 }

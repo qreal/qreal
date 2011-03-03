@@ -18,6 +18,7 @@ class NodeElement;
 class EdgeElement : public Element
 {
 	Q_OBJECT
+
 public:
 	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
@@ -57,6 +58,8 @@ public:
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
+	virtual void setElementImpl(ElementImpl* const impl);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -107,7 +110,7 @@ private:
 
 	bool mChaoticEdition;
 
-	ElementImpl *mElementImpl;
+//	ElementImpl *mElementImpl;
 };
 }
 

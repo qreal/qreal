@@ -148,6 +148,8 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 			return mApi.toPort(item->id());
 		case roles::configurationRole:
 			return mApi.configuration(item->id());
+		case roles::typeRole:
+			return mApi.type(item->id()).toVariant();
 		}
 		if (role >= roles::customPropertiesBeginRole) {
 			return QVariant();  // Custom properties are invalid for graphical objects for now.

@@ -17,10 +17,12 @@ using namespace qReal;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: mSwitchGridAction("Switch on grid", this),
-		mPortsVisible(false), mDragState(None), mElementImpl(impl), mIsFolded(false),
+		mPortsVisible(false), mDragState(None), mIsFolded(false),
 		mLeftPressed(false), mParentNodeElement(NULL), mPos(QPointF(0,0)),
 		mSelectionNeeded(false), mConnectionInProgress(false)
 {
+	mElementImpl = impl;
+
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 
@@ -1246,3 +1248,10 @@ void NodeElement::checkConnectionsToPort()
 	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
 }
 
+void NodeElement::setElementImpl(ElementImpl* const impl)
+{
+	mElementImpl = impl;
+	ElementTitleFactory factory;
+	QList<ElementTitleInterface*> titles;
+	mElementImpl->init(mContents, mPointPorts, mLinePorts, factory, titles, mRenderer, mPortRenderer);
+}

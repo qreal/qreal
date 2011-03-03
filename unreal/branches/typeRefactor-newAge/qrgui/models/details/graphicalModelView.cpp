@@ -43,7 +43,7 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 		QModelIndex current = topLeft.sibling(row, 0);
 
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
-		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
+		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString(), current.data(roles::typeRole));
 	}
 }
 

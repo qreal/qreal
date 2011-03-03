@@ -37,6 +37,7 @@ public:
 	QString propertyDescription(NewType const &type, QString const &propertyName) const;
 	QIcon icon(NewType const &type) const;
 	UML::Element* graphicalObject(NewType const &type) const;
+	UML::ElementImpl* elementImpl(NewType const &type) const;
 
 	TypeList getContainedTypes(const NewType &type) const;
 	TypeList getConnectedTypes(const NewType &type) const;

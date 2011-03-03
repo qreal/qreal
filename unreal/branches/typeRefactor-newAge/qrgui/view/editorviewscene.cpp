@@ -397,7 +397,7 @@ void EditorViewScene::createTypeChangeMenu(UML::Element const * const element,
 		QAction *action = changeTypeMenu->addAction(type.element());
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
-		tag << element->logicalId().toVariant() << type.toVariant();
+		tag << element->id().toVariant() << type.toVariant();
 		action->setData(tag);
 	}
 }
@@ -740,7 +740,9 @@ void EditorViewScene::changeTypeActionTriggered()
 	QList<QVariant> connection = action->data().toList();
 	Id source = connection[0].value<Id>();
 	NewType type = connection[1].value<NewType>();
-	mv_iface->model()->setData(mv_iface->logicalAssistApi()->indexById(source), type.toVariant(), roles::typeRole);
+	mv_iface->model()->setData(mv_iface->graphicalAssistApi()->indexById(source), type.toVariant(), roles::typeRole);
+	mainWindow()->setIndexesOfPropertyEditor(source);
+	getElem(source)->setElementImpl(mainWindow()->manager()->elementImpl(type));
 }
 
 void EditorViewScene::deleteUsageActionTriggered()

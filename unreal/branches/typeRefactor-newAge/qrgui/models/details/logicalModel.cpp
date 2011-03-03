@@ -84,8 +84,9 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 	return new LogicalModelItem(id, static_cast<LogicalModelItem *>(parentItem));
 }
 
-void LogicalModel::updateElements(Id const &logicalId, QString const &name)
+void LogicalModel::updateElements(Id const &logicalId, QString const &name, QVariant const &type)
 {
+	setData(indexById(logicalId), type, roles::typeRole);
 	if (mApi.name(logicalId) == name)
 		return;
 	mApi.setName(logicalId, name);
@@ -193,11 +194,14 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 				return QVariant();
 				// return mEditorManager.icon(item->id());
 			case roles::idRole:
+			case roles::logicalIdRole:
 				return item->id().toVariant();
 			case roles::fromRole:
 				return mApi.from(item->id()).toVariant();
 			case roles::toRole:
 				return mApi.to(item->id()).toVariant();
+			case roles::typeRole:
+				return mApi.type(item->id()).toVariant();
 		}
 		if (role >= roles::customPropertiesBeginRole) {
 			Id const &id = item->id();
@@ -224,8 +228,16 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			mApi.setFrom(item->id(), value.value<Id>());
 			break;
 		case roles::typeRole:
-			mApi.changeType(item->id(), value.value<NewType>());
-			break;
+		{
+			NewType prevType = mApi.type(item->id());
+			if (prevType !=  value.value<NewType>())
+			{
+				mApi.changeType(item->id(), value.value<NewType>());
+				checkProperties(item->id());
+			}
+			return true;
+		}
+		break;
 		case roles::toRole:
 			mApi.setTo(item->id(), value.value<Id>());
 			break;

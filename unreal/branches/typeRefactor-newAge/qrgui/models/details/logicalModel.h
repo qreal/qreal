@@ -28,7 +28,7 @@ public:
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
-	void updateElements(Id const &logicalId, QString const &name);
+	void updateElements(Id const &logicalId, QString const &name, QVariant const &type);
 	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
 	void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, NewType const &type, QString const &name, QPointF const &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;

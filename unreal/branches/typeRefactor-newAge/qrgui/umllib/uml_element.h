@@ -36,7 +36,7 @@ public:
 	virtual qReal::Id id() const;
 	virtual qReal::Id logicalId() const;
 	virtual QString name() const;
-
+	virtual void setElementImpl(ElementImpl* const impl) = 0;
 	virtual void connectToPort() {};//for edge
 	virtual void checkConnectionsToPort() {};//for node
 	virtual QList<ContextMenuAction*> contextMenuActions();

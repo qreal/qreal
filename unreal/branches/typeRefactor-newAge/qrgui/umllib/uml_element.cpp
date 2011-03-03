@@ -44,6 +44,11 @@ QString Element::name() const
 	return mGraphicalAssistApi->name(id());
 }
 
+void Element::setElementImpl(ElementImpl *const impl)
+{
+	mElementImpl = impl;
+}
+
 void Element::updateData()
 {
 	setToolTip(mGraphicalAssistApi->toolTip(id()));

@@ -41,6 +41,7 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
+	void setIndexesOfPropertyEditor(Id const &id);
 
 signals:
 	void gesturesShowed();
@@ -167,7 +168,5 @@ private:
 	void setShowAlignment(bool isChecked);
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
-
-	void setIndexesOfPropertyEditor(Id const &id);
 };
 }

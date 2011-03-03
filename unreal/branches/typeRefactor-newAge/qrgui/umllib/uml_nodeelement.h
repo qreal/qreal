@@ -92,6 +92,7 @@ public:
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
+	virtual void setElementImpl(ElementImpl* const impl);
 
 public slots:
 	void switchGrid(bool isChecked);
@@ -169,7 +170,7 @@ private:
 
 	QTransform mTransform;
 
-	ElementImpl* mElementImpl;
+//	ElementImpl* mElementImpl;
 
 	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;

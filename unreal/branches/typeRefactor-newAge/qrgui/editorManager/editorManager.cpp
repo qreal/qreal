@@ -188,8 +188,7 @@ QIcon EditorManager::icon(const NewType &type) const
 
 UML::Element* EditorManager::graphicalObject(const NewType &type) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
-	UML::ElementImpl *impl = mPluginIface[type.editor()]->getGraphicalObject(type.diagram(), type.element());
+	UML::ElementImpl *impl = elementImpl(type);
 	if( !impl ){
 		qDebug() << "no impl";
 		return 0;
@@ -198,6 +197,12 @@ UML::Element* EditorManager::graphicalObject(const NewType &type) const
 		return new UML::NodeElement(impl);
 
 	return  new UML::EdgeElement(impl);
+}
+
+UML::ElementImpl* EditorManager::elementImpl(const NewType &type) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(type.editor()));
+	return mPluginIface[type.editor()]->getGraphicalObject(type.diagram(), type.element());
 }
 
 QStringList EditorManager::getPropertyNames(const NewType &type) const
