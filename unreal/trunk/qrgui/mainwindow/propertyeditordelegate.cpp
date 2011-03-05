@@ -21,9 +21,11 @@ PropertyEditorDelegate::PropertyEditorDelegate(QObject *parent)
 }
 
 QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
-		const QStyleOptionViewItem &/*option*/,
+		const QStyleOptionViewItem &option,
 		const QModelIndex &index) const
 {
+	Q_UNUSED(option);
+
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
 	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
 	if (propertyName == "shape") {
@@ -44,8 +46,8 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 		return editor;
 	}
 
-	QString typeName = model->typeName(index);
-	if (typeName != "int" && typeName != "string" && typeName != "") {
+	QString typeName = model->typeName(index).toLower();
+	if (typeName != "int" && typeName != "string" && !typeName.isEmpty()) {
 		int const role = model->roleByIndex(index.row());
 		QModelIndex const &actualIndex = model->modelIndex(index.row());
 		ButtonRefWindow * const button = new ButtonRefWindow(parent, typeName
