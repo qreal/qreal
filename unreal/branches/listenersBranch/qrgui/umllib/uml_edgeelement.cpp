@@ -11,17 +11,13 @@
 
 #include "uml_edgeelement.h"
 #include "uml_nodeelement.h"
-#include "../model/model.h"
 #include "../view/editorviewscene.h"
-#include "pluginInterface.h"
+#include "../pluginInterface/editorInterface.h"
 
 using namespace UML;
 using namespace qReal;
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846264338327950288419717
-#define M_1_PI 1/M_PI;
-#endif //M_PI
+const double pi = 3.14159265358979;
 
 /** @brief indicator of edges' movement */
 // static bool moving = false;
@@ -58,6 +54,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
 		if (!title)
 			continue;
+		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
 	}
@@ -73,18 +70,29 @@ EdgeElement::~EdgeElement()
 	delete mElementImpl;
 }
 
+void EdgeElement::initTitles()
+{
+	Element::initTitles();
+	updateLongestPart();
+}
+
 QRectF EdgeElement::boundingRect() const
 {
 	return mLine.boundingRect().adjusted(-20, -20, 20, 20);
+}
+
+QPolygonF EdgeElement::line() const
+{
+	return mLine;
 }
 
 static double lineAngle(const QLineF &line)
 {
 	double angle = ::acos(line.dx() / line.length());
 	if (line.dy() >= 0)
-		angle = 2 * M_PI - angle;
+		angle = 2 * pi - angle;
 
-	return angle * 180 * M_1_PI;
+	return angle * 180 / pi;
 }
 
 static void drawChaosStar(QPainter *painter)
@@ -252,8 +260,6 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::connectToPort()
 {
-	model::Model *model = const_cast<model::Model *>(static_cast<model::Model const *>(mDataIndex.model()));  // TODO: OMG!
-
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
 
@@ -273,8 +279,9 @@ void EdgeElement::connectToPort()
 		mSrc->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mSrc ? mSrc->uuid() : ROOT_ID).toVariant(), roles::fromRole);
-	model->setData(mDataIndex, mPortFrom, roles::fromPortRole);
+	mLogicalAssistApi->setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
+	mGraphicalAssistApi->setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 
 	NodeElement *new_dst = getNodeAt(mLine.last());
 	mPortTo = new_dst ? new_dst->getPortId(mapToItem(new_dst, mLine.last())) : -1.0;
@@ -289,35 +296,35 @@ void EdgeElement::connectToPort()
 		mDst->addEdge(this);
 	}
 
-	model->setData(mDataIndex, (mDst ? mDst->uuid() : ROOT_ID).toVariant(), roles::toRole);
-	model->setData(mDataIndex, mPortTo, roles::toPortRole);
+	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
+	mGraphicalAssistApi->setTo(id(), (mDst ? mDst->id() : Id::rootId()));
+	mGraphicalAssistApi->setToPort(id(), mPortTo);
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	model->setData(mDataIndex, pos(), roles::positionRole);
-	model->setData(mDataIndex, mLine.toPolygon(), roles::configurationRole);
+	mGraphicalAssistApi->setPosition(id(), pos());
+	mGraphicalAssistApi->setConfiguration(id(), mLine.toPolygon());
 
 	mMoving = false;
 
 	adjustLink();
+
+	arrangeSrcAndDst();
 }
 
 bool EdgeElement::initPossibleEdges()
 {
 	if (!possibleEdges.isEmpty())
 		return true;
-	model::Model* itemModel = const_cast<model::Model*>(static_cast<const model::Model*>(mDataIndex.model()));
-	if (!itemModel)
-		return false;
-	QString editor = uuid().editor();
-	//TODO:: сделать генерацию кода для диаграм
-	QString diagram = uuid().diagram();
-	EditorInterface * editorInterface = itemModel->assistApi().editorManager().getEditorInterface(editor);
-	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(uuid().element());
+	QString editor = id().editor();
+	//TODO: do a code generation for diagrams
+	QString diagram = id().diagram();
+	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().editorInterface(editor);
+	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges)
 	{
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-										  Id(editor, diagram, pEdge.first.second));
+				Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 		PossibleEdge possibleEdge(nodes, edge);
 		possibleEdges.push_back(possibleEdge);
@@ -359,6 +366,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragState] = event->pos();
 		updateLongestPart();
 	}
+
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -427,6 +435,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	// cleanup after moving/resizing
 	mBeginning = mEnding = NULL;
+
+	arrangeSrcAndDst();
 }
 
 NodeElement *EdgeElement::getNodeAt(QPointF const &position)
@@ -511,6 +521,116 @@ void EdgeElement::adjustLink()
 	updateLongestPart();
 }
 
+bool EdgeElement::shouldReconnect() const
+{
+	if (mSrc) {
+		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		if (floor(newFrom) != floor(mPortFrom))
+			return true;
+	}
+	if (mDst) {
+		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		if (floor(newTo) != floor(mPortTo))
+			return true;
+	}
+	return false;
+}
+
+void EdgeElement::arrangeSrcAndDst()
+{
+	//if (mSrc) {
+		//mSrc->arrangeLinks();
+	//} else if (mDst) {
+		//mDst->arrangeLinks();
+	//}
+}
+
+UML::NodeElement *EdgeElement::src() const
+{
+	return mSrc;
+}
+
+UML::NodeElement *EdgeElement::dst() const
+{
+	return mDst;
+}
+
+bool EdgeElement::isSrc(UML::NodeElement const *node) const
+{
+	return (mSrc == node);
+}
+
+bool EdgeElement::isDst(UML::NodeElement const *node) const
+{
+	return (mDst == node);
+}
+
+qreal EdgeElement::portIdOn(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mPortFrom;
+	if (node == mDst)
+		return mPortTo;
+	return -1;
+}
+
+QPointF EdgeElement::nextFrom(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mapToItem(mSrc, mLine[1]);
+	if (node == mDst)
+		return mapToItem(mDst, mLine[mLine.count() - 2]);
+	return QPointF();
+
+}
+
+QPointF EdgeElement::connectionPoint(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mapToItem(mSrc, mLine[0]);
+	if (node == mDst)
+		return mapToItem(mDst, mLine[mLine.count() - 1]);
+	return QPointF();
+
+}
+
+UML::NodeElement* EdgeElement::otherSide(UML::NodeElement const *node) const
+{
+	if (node == mSrc)
+		return mDst;
+	if (node == mDst)
+		return mSrc;
+	return 0;
+}
+
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
+{
+	bool reconnectedSrc = false;
+	bool reconnectedDst = false;
+	if (mSrc && reconnectSrc) {
+		qreal newFrom = mSrc->getPortId(mapToItem(mSrc, mLine[1]));
+		reconnectedSrc = (NodeElement::portId(newFrom) != NodeElement::portId(mPortFrom));
+		if (!jumpsOnly || reconnectedSrc) {
+			mPortFrom = newFrom;
+			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		}
+
+	}
+	if (mDst && reconnectDst) {
+		qreal newTo = mDst->getPortId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
+		if (!jumpsOnly || reconnectedDst) {
+			mPortTo = newTo;
+			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		}
+	}
+
+	bool reconnected = reconnectedSrc || reconnectedDst;
+	if (reconnected)
+		qDebug() << id() <<"jumps! " << reconnectedSrc << " " << reconnectedDst;
+	return reconnected;
+}
+
 void EdgeElement::updateData()
 {
 	if (mMoving)
@@ -518,21 +638,21 @@ void EdgeElement::updateData()
 
 	Element::updateData();
 
-	setPos(mDataIndex.data(roles::positionRole).toPointF());
-	QPolygonF newLine = mDataIndex.data(roles::configurationRole).value<QPolygon>();
+	setPos(mGraphicalAssistApi->position(id()));
+	QPolygonF newLine = mGraphicalAssistApi->configuration(id());
 	if (!newLine.isEmpty())
 		mLine = newLine;
 
-	qReal::Id uuidFrom = mDataIndex.data(roles::fromRole).value<Id>();
-	qReal::Id uuidTo = mDataIndex.data(roles::toRole).value<Id>();
+	qReal::Id idFrom = mGraphicalAssistApi->from(id());
+	qReal::Id idTo = mGraphicalAssistApi->to(id());
 
 	if (mSrc)
 		mSrc->delEdge(this);
 	if (mDst)
 		mDst->delEdge(this);
 
-	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidFrom));
-	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(uuidTo));
+	mSrc = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idFrom));
+	mDst = dynamic_cast<NodeElement *>(static_cast<EditorViewScene *>(scene())->getElem(idTo));
 
 	if (mSrc)
 		mSrc->addEdge(this);
@@ -541,8 +661,8 @@ void EdgeElement::updateData()
 
 	setFlag(ItemIsMovable, !(mDst || mSrc));
 
-	mPortFrom = mDataIndex.data(roles::fromPortRole).toDouble();
-	mPortTo = mDataIndex.data(roles::toPortRole).toDouble();
+	mPortFrom = mGraphicalAssistApi->fromPort(id());
+	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
 	mElementImpl->updateData(this);
@@ -570,6 +690,17 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	mLine[mLine.size() - 1] = place;
 	updateLongestPart();
 	adjustLink();
+}
+
+void EdgeElement::moveConnection(UML::NodeElement *node, qreal const portId) {
+	if (node == mSrc) {
+		mPortFrom = portId;
+		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+	}
+	if (node == mDst) {
+		mPortTo = portId;
+		mGraphicalAssistApi->setToPort(id(), mPortTo);
+	}
 }
 
 void EdgeElement::drawStartArrow(QPainter *painter) const

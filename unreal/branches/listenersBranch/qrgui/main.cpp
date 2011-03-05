@@ -10,6 +10,10 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 
+	QTranslator appTranslator;
+	appTranslator.load(":/qrgui_" + QLocale::system().name());
+	app.installTranslator(&appTranslator);
+
 #ifndef NO_STYLE_WINDOWSMODERN
 	app.setStyle(new WindowsModernStyle());
 #endif
@@ -17,6 +21,6 @@ int main(int argc, char *argv[])
 	MainWindow window;
 	if (window.isVisible())
 		return app.exec();
-	else  // Окно решило в конструкторе не показывать себя, выходим сразу.
+	else  // The window decided to not show itself, exiting now.
 		return 0;
 }

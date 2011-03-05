@@ -5,7 +5,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QPushButton>
 
-#include "../model/model.h"
 #include "mainwindow.h"
 #include "openShapeEditorButton.h"
 
@@ -16,45 +15,42 @@ using namespace qReal;
 
 PropertyEditorDelegate::PropertyEditorDelegate(QObject *parent)
 		: QItemDelegate(parent)
+		, mMainWindow(NULL)
+		, mLogicalModelAssistApi(NULL)
 {
 }
 
 QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
-											  const QStyleOptionViewItem &/*option*/,
-											  const QModelIndex &index) const
+		const QStyleOptionViewItem &/*option*/,
+		const QModelIndex &index) const
 {
 	PropertyEditorModel *model = const_cast<PropertyEditorModel*>(dynamic_cast<const PropertyEditorModel*>(index.model()));
 	QString propertyName = model->data(index.sibling(index.row(), 0), Qt::DisplayRole).toString();
 	if (propertyName == "shape") {
 		QString propertyValue = model->data(index.sibling(index.row(), index.column()), Qt::DisplayRole).toString();
-		QPersistentModelIndex const myIndex = model->getModelIndex();
+		QPersistentModelIndex const actualIndex = model->modelIndex(index.row());
 		int role = model->roleByIndex(index.row());
-		OpenShapeEditorButton *button = new OpenShapeEditorButton(parent, myIndex, role, propertyValue);
-		button->setText("open Shape Editor");
-		QObject::connect(button, SIGNAL(clicked()), mMainWindow, SLOT(openNewEmptyTab()));
+		OpenShapeEditorButton *button = new OpenShapeEditorButton(parent, actualIndex, role, propertyValue);
+		button->setText("Open Shape Editor");
+		QObject::connect(button, SIGNAL(clicked()), mMainWindow, SLOT(openShapeEditor()));
 		return button;
 	}
-	QStringList values = model->getEnumValues(index);
+
+	QStringList const values = model->enumValues(index);
 	if (!values.isEmpty()) {
-		QComboBox *editor = new QComboBox(parent);
+		QComboBox * const editor = new QComboBox(parent);
 		foreach (QString item, values)
 			editor->addItem(item);
 		return editor;
 	}
-	if (index.row() != 2)
-	{
-		QString typeName = model->getTypeName(index);
-		if ((typeName != "int") && (typeName != "string") && (typeName != ""))
-		{
-			QAbstractItemModel* targModel = model->getTargetModel();
-			int role = model->roleByIndex(index.row());
-			const QModelIndex &ind = model->getModelIndex();
-			qReal::MainWindow *mainWindow = mMainWindow;
-			ButtonRefWindow *button = new ButtonRefWindow(parent, typeName, &(model->getApi()),
-														  targModel, role, ind, mainWindow);
-			QVariant data = targModel->data(ind, role);
-			return button;
-		}
+
+	QString typeName = model->typeName(index);
+	if (typeName != "int" && typeName != "string" && typeName != "") {
+		int const role = model->roleByIndex(index.row());
+		QModelIndex const &actualIndex = model->modelIndex(index.row());
+		ButtonRefWindow * const button = new ButtonRefWindow(parent, typeName
+				, *mLogicalModelAssistApi, role, actualIndex, mMainWindow);
+		return button;
 	}
 	QLineEdit *editor = new QLineEdit(parent);
 
@@ -62,7 +58,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 }
 
 void PropertyEditorDelegate::setEditorData(QWidget *editor,
-										   const QModelIndex &index) const
+		const QModelIndex &index) const
 {
 	QString value = index.model()->data(index, Qt::DisplayRole).toString();
 
@@ -76,9 +72,9 @@ void PropertyEditorDelegate::setEditorData(QWidget *editor,
 	}
 }
 
-void PropertyEditorDelegate::setModelData(QWidget *editor,
-										  QAbstractItemModel *model,
-										  const QModelIndex &index) const
+void PropertyEditorDelegate::setModelData(QWidget *editor
+		, QAbstractItemModel *model
+		, const QModelIndex &index) const
 {
 	QLineEdit *lineEdit = dynamic_cast<QLineEdit*>(editor);
 	QComboBox *comboEdit = dynamic_cast<QComboBox*>(editor);
@@ -96,12 +92,14 @@ void PropertyEditorDelegate::setModelData(QWidget *editor,
 }
 
 void PropertyEditorDelegate::updateEditorGeometry(QWidget *editor,
-												  const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
+		const QStyleOptionViewItem &option, const QModelIndex &/*index*/) const
 {
 	editor->setGeometry(option.rect);
 }
 
-void PropertyEditorDelegate::setMainWindow(MainWindow *mainwindow)
+void PropertyEditorDelegate::init(MainWindow *mainWindow
+		, qReal::models::LogicalModelAssistApi * const logicalModelAssistApi)
 {
-	mMainWindow = mainwindow;
+	mMainWindow = mainWindow;
+	mLogicalModelAssistApi = logicalModelAssistApi;
 }

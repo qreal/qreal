@@ -1,16 +1,12 @@
 #include "../../qrgui/editorManager/editorManager.h"
 
 #include "contextMenuActionTrigger.h"
-#include "methodeditordialog.h"
-#include "fieldeditordialog.h"
 
 #include <QtCore/QDebug>
 #include <QUuid>
 #include <QVariant>
-#include "../../qrgui/kernel/ids.h"
 
 using namespace kernelEditor;
-using namespace qReal;
 
 void ContextMenuActionTrigger::writeMethodPropertiesToModel(qReal::Id methodElemId, QString name, QString returnType, 
 		QString parameters, QString visibility, QString displayName)

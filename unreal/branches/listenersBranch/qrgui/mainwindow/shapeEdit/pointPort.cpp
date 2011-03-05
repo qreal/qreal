@@ -114,8 +114,8 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 {
 	QRectF itemBoundingRect = boundingRect().adjusted(scalingDrift, scalingDrift, -scalingDrift, -scalingDrift);
 	QDomElement pointPort = document.createElement("pointPort");
-	qreal const x = scenePos().x() + itemBoundingRect.x() + mRadius / 2 - topLeftPicture.x();
-	qreal const y = scenePos().y() + itemBoundingRect.y() + mRadius / 2 - topLeftPicture.y();
+	int const x = static_cast<int>(scenePos().x() + itemBoundingRect.x() + mRadius / 2 - topLeftPicture.x());
+	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius / 2 - topLeftPicture.y());
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
 

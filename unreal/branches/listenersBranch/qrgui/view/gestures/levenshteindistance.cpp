@@ -1,4 +1,5 @@
 #include "levenshteindistance.h"
+#include <QtCore/QList>
 
 int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString const & key2)
 {
@@ -8,15 +9,20 @@ int LevenshteinDistance::getLevenshteinDistance(QString const & key1, QString co
 		return n;
 	if (n == 0)
 		return m;
-	int matrix[m + 1][n + 1];
+	QList<QList<int> > matrix;
 	for (int i = 0; i <= m; i++)
 	{
+		QList<int> list;
 		for (int j = 0; j <= n; j++)
-		{
-			if (i == 0 || j ==0)
-				matrix[i][j] = std::max(i, j);
-		}
+			list << 0;
+		matrix << list;
 	}
+
+	for (int i = 0; i <= m; i++)
+		for (int j = 0; j <= n; j++)
+			if (i == 0 || j == 0)
+				matrix[i][j] = std::max(i, j);
+
 	matrix[0][0] = 0;
 	int cost = 0;
 	for (int i = 1; i <= m; ++i)

@@ -63,6 +63,7 @@ void ShapeEdit::init()
 	connect(mUi->addLinePortButton, SIGNAL(clicked(bool)), mScene, SLOT(addLinePort(bool)));
 	connect(mUi->stylusButton, SIGNAL(clicked(bool)), mScene, SLOT(addStylus(bool)));
 	connect(mUi->noneButton, SIGNAL(clicked(bool)), mScene, SLOT(addNone(bool)));
+	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
 
 	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
@@ -264,6 +265,16 @@ void ShapeEdit::load(const QString &text)
 		return;
 	XmlLoader loader(mScene);
 	loader.readString(text);
+}
+
+void ShapeEdit::addImage(bool checked)
+{
+	if (checked) {
+		QString fileName = QFileDialog::getOpenFileName(this);
+		if (fileName.isEmpty())
+			return;
+		mScene->addImage(fileName);
+	}
 }
 
 void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)

@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>280</height>
+    <width>355</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>350</width>
-    <height>280</height>
+    <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>350</width>
-    <height>280</height>
+    <width>400</width>
+    <height>1000</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -57,7 +57,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="editorTab">
       <attribute name="title">
@@ -69,7 +69,7 @@
          <x>10</x>
          <y>30</y>
          <width>311</width>
-         <height>61</height>
+         <height>125</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -83,7 +83,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>191</width>
+          <width>101</width>
           <height>20</height>
          </rect>
         </property>
@@ -97,9 +97,9 @@
        <widget class="QCheckBox" name="activateGridCheckBox">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>150</x>
           <y>10</y>
-          <width>91</width>
+          <width>151</width>
           <height>20</height>
          </rect>
         </property>
@@ -114,13 +114,38 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>40</y>
-          <width>251</width>
+          <y>70</y>
+          <width>241</width>
           <height>19</height>
          </rect>
         </property>
         <property name="minimum">
-         <number>0</number>
+         <number>3</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="pageStep">
+         <number>10</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSlider" name="indexGridSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>90</y>
+          <width>241</width>
+          <height>19</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>5</number>
         </property>
         <property name="maximum">
          <number>150</number>
@@ -138,8 +163,8 @@
        <widget class="QLabel" name="label_13">
         <property name="geometry">
          <rect>
-          <x>270</x>
-          <y>40</y>
+          <x>263</x>
+          <y>70</y>
           <width>46</width>
           <height>13</height>
          </rect>
@@ -148,17 +173,58 @@
          <string>Width</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="activateAlignmentCheckBox">
+       <widget class="QLabel" name="label_20">
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>10</y>
-          <width>111</width>
-          <height>17</height>
+          <x>263</x>
+          <y>90</y>
+          <width>46</width>
+          <height>13</height>
          </rect>
         </property>
         <property name="text">
+         <string>Cell size</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="activateAlignmentCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>40</y>
+          <width>151</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
          <string>Activate alignment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="showAlignmentCheckBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>131</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Show alignment</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -182,7 +248,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
+         <y>150</y>
          <width>121</width>
          <height>16</height>
         </rect>
@@ -195,7 +261,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>170</y>
          <width>311</width>
          <height>61</height>
         </rect>
@@ -211,7 +277,7 @@
          <rect>
           <x>10</x>
           <y>10</y>
-          <width>251</width>
+          <width>241</width>
           <height>16</height>
          </rect>
         </property>
@@ -228,7 +294,7 @@
        <widget class="QLabel" name="label_3">
         <property name="geometry">
          <rect>
-          <x>270</x>
+          <x>263</x>
           <y>10</y>
           <width>51</width>
           <height>16</height>
@@ -243,7 +309,7 @@
          <rect>
           <x>10</x>
           <y>30</y>
-          <width>251</width>
+          <width>241</width>
           <height>16</height>
          </rect>
         </property>
@@ -260,7 +326,7 @@
        <widget class="QLabel" name="label_4">
         <property name="geometry">
          <rect>
-          <x>270</x>
+          <x>263</x>
           <y>30</y>
           <width>101</width>
           <height>16</height>
@@ -270,6 +336,79 @@
          <string>Indent</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QFrame" name="frame_8">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>250</y>
+         <width>311</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>321</width>
+         <height>41</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLabel" name="label_17">
+        <property name="geometry">
+         <rect>
+          <x>223</x>
+          <y>10</y>
+          <width>81</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Zoom factor</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="zoomFactorSlider">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>201</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="pageStep">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>4</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>230</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Zoom</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="miscTab">
@@ -581,6 +720,86 @@
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="debuggerTab">
+      <attribute name="title">
+       <string>Debugger</string>
+      </attribute>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Presentation</string>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frame_7">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>311</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLabel" name="label_14">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>141</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Debug timeout (ms):</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="timeoutLineEdit">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>8</y>
+          <width>41</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_15">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Color of highlight:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="colorComboBox">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>40</y>
+          <width>101</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </item>

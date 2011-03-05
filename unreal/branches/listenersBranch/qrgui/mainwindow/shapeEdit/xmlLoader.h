@@ -30,6 +30,7 @@ private:
 	void readPicture(QDomElement const &picture);
 	void readLabels(QDomElement const &label);
 	void readPorts(QDomElement const &port);
+	void readImage(QDomElement const &image);
 	void changeScaleColor(int i);
 	void checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
 	QPair<QString, bool> readScaleCoord(QString point, QDomElement const &docItem);

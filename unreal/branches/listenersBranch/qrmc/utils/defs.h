@@ -1,4 +1,5 @@
 #pragma once
+#include <QtCore/QString>
 
 QString const endline = "\n";
 QString const nodeIndent = "\t\t\t";

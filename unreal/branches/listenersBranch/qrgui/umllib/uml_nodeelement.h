@@ -15,7 +15,10 @@
 #include "sdfrenderer.h"
 #include "uml_element.h"
 #include "uml_edgeelement.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
+
+#include "sceneGridHandler.h"
+#include "umlPortHandler.h"
 
 /** @brief size of a point port */
 const int kvadratik = 5;
@@ -43,6 +46,7 @@ namespace UML {
 		virtual void setName(QString name);
 
 		const QPointF getPortPos(qreal id) const;
+		static int portId(qreal id);
 		const QPointF getNearestPort(QPointF location) const;
 
 		qreal getPortId(const QPointF &location) const;
@@ -57,7 +61,7 @@ namespace UML {
 
 		virtual bool initPossibleEdges();
 
-		bool getPortStatus();
+		bool isPort();
 
 		bool canHavePorts();
 
@@ -65,49 +69,48 @@ namespace UML {
 
 		QList<PossibleEdge> getPossibleEdges();
 
-		bool isLowSide(QPointF& point, double x, double y) const;
-		bool isHighSide(QPointF& point, double x, double y) const;
-		bool isLeftSide(QPointF& point, double x, double y) const;
-		bool isRightSide(QPointF& point, double x, double y) const;
-		bool isNoBorderX(QPointF& point, double x, double y) const;
-		bool isNoBorderY(QPointF& point, double x, double y) const;
+		bool checkLowerBorder(QPointF& point, double x, double y) const;
+		bool checkUpperBorder(QPointF& point, double x, double y) const;
+		bool checkLeftBorder(QPointF& point, double x, double y) const;
+		bool checkRightBorder(QPointF& point, double x, double y) const;
+		bool checkNoBorderX(QPointF& point, double x, double y) const; // TODO: rename
+		bool checkNoBorderY(QPointF& point, double x, double y) const;
 
 		void resizeChild(QRectF newContents, QRectF oldContents);
 
 		virtual QList<ContextMenuAction*> contextMenuActions();
-		void switchOnOffGrid(bool isSwitchedOn);
 		void switchAlignment(bool isSwitchedOn);
+		void showAlignment(bool isChecked);
 
 		virtual void setColorRect(bool bl);
 
-		bool getConnectingState();
+		bool connectionInProgress();
 		void setConnectingState(bool arg);
 
-	private slots:
+		void adjustLinks();
+		void arrangeLinearPorts();
+		void arrangeLinks();
+
+		virtual void checkConnectionsToPort();
+
+	public slots:
 		void switchGrid(bool isChecked);
 
 	private:
-		QList<QGraphicsLineItem*> mLines;
-		bool mSwitchGrid;  //if true, the object will be aligned to indexGrid
-		bool mSwitchAlignment;
-		ContextMenuAction mSwitchGridAction;
-		void delUnusedLines();
-		void drawLineX(qreal pointX, qreal myY);
-		void drawLineY(qreal pointY, qreal myX);
-		bool makeJumpX(qreal deltaX, qreal radiusJump, qreal pointX);
-		bool makeJumpY(qreal deltaY, qreal radiusJump, qreal pointY);
-		void buildLineX(qreal deltaX, qreal radius, bool doAlways, qreal radiusJump, qreal pointX, qreal correctionX, qreal &myX1, qreal &myX2, qreal myY);
-		void buildLineY(qreal deltaY, qreal radius, bool doAlways, qreal radiusJump, qreal pointY, qreal correctionY, qreal &myY1, qreal &myY2, qreal myX);
-		qreal recountX1();
-		qreal recountX2(qreal myX1);
-		qreal recountY1();
-		qreal recountY2(qreal myY1);
-		void makeGridMovingX(qreal myX, int koef, int indexGrid);
-		void makeGridMovingY(qreal myY, int koef, int indexGrid);
-		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
+		enum DragState {
+			None,
+			TopLeft,
+			Top,
+			TopRight,
+			Left,
+			Right,
+			BottomLeft,
+			Bottom,
+			BottomRight
+		};
 
-		static int const objectMinSize = 10;
-		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
+		void delUnusedLines();
+		PossibleEdge toPossibleEdge(const StringPossibleEdge & strPossibleEdge);
 
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -122,29 +125,10 @@ namespace UML {
 		void changeFoldState();
 		void setLinksVisible(bool);
 
-		bool mPortsVisible;
-
-		QList<QPointF> mPointPorts;
-		QList<StatLine> mLinePorts;
-		QRectF mContents;
-
-		enum DragState {
-			None,
-			TopLeft,
-			Top,
-			TopRight,
-			Left,
-			Right,
-			BottomLeft,
-			Bottom,
-			BottomRight
-		};
-
 		NodeElement *getNodeAt(const QPointF &position);
 
-		void adjustLinks();
-
 		QLineF newTransform(const StatLine& port) const;
+		QPointF newTransform(const StatPoint& port) const;
 
 		void resize(QRectF newContents);
 		void updateByChild(NodeElement* item, bool isItemAddedOrDeleted);
@@ -159,6 +143,21 @@ namespace UML {
 		qreal distanceFromPointPort(int pointPortNumber, const QPointF &location) const;
 		qreal getNearestPointOfLinePort(int linePortNumber, const QPointF &location) const;
 
+		bool initEmbeddedLinkers();
+		void moveEmbeddedLinkers();
+
+		void connectTemporaryRemovedLinksToPort(qReal::IdList const &rtemporaryRemovedLinks, QString const &direction);
+
+		ContextMenuAction mSwitchGridAction;
+		static int const objectMinSize = 10;
+		//static int const sizeOfForestalling = 25;//TODO: must be used mElementImpl->sizeOfForestalling
+
+		bool mPortsVisible;
+
+		QList<StatPoint> mPointPorts;
+		QList<StatLine> mLinePorts;
+		QRectF mContents;
+
 		QList<EdgeElement *> mEdgeList;
 
 		DragState mDragState;
@@ -167,9 +166,6 @@ namespace UML {
 
 		QSet<PossibleEdge> possibleEdges;
 		QSet<PossibleEdgeType> possibleEdgeTypes;
-
-		bool initEmbeddedLinkers();
-		void moveEmbeddedLinkers();
 
 		QTransform mTransform;
 
@@ -187,13 +183,15 @@ namespace UML {
 		NodeElement* mParentNodeElement;
 
 		QPointF mPos;
-		bool inHor;
-		bool isColorRect;
+		bool mSelectionNeeded;
 
-		bool connecting;
+		bool mConnectionInProgress;
 
 		QList<ContextMenuAction*> mBonusContextMenuActions;
 		
 		bool mFirstPaintResize;
+
+		SceneGridHandler *mGrid;
+		UmlPortHandler *mUmlPortHandler;
 	};
 }

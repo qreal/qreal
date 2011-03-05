@@ -4,7 +4,7 @@
 #include <QPair>
 
 #include "uml_element.h"
-#include "elementImpl.h"
+#include "../pluginInterface/elementImpl.h"
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
@@ -29,12 +29,26 @@ namespace UML {
 			virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
 
 			virtual bool initPossibleEdges();
+			virtual void initTitles();
 
 			void adjustLink();
+			bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
+			bool shouldReconnect() const;
+			void arrangeSrcAndDst();
+			UML::NodeElement *src() const;
+			UML::NodeElement *dst() const;
+			bool isSrc(UML::NodeElement const *node) const;
+			bool isDst(UML::NodeElement const *node) const;
+			qreal portIdOn(UML::NodeElement const *node) const;
+			QPointF nextFrom(UML::NodeElement const *node) const;
+			QPointF connectionPoint(UML::NodeElement const *node) const;
+			UML::NodeElement* otherSide(UML::NodeElement const *node) const;
 			void removeLink(UML::NodeElement const *from);
+			QPolygonF line() const;
 
 			void placeStartTo(QPointF const &place);
 			void placeEndTo(QPointF const &place);
+			void moveConnection(UML::NodeElement *node, qreal const portId);
 
 			virtual void connectToPort();
 

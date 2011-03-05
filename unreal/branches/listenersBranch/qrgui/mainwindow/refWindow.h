@@ -14,28 +14,27 @@ class RefWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit RefWindow(const qrRepo::RepoApi *mApi, QString name,
-					   QAbstractItemModel* tModel, int r, const QModelIndex &ind,
-					   qReal::MainWindow *mWindow, QWidget *parent = 0);
+	explicit RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
+			int role, QModelIndex const &index,
+			qReal::MainWindow &mainWindow);
 	~RefWindow();
 
 public slots:
 	void setPropertyValue();
-	void highlightElement(QListWidgetItem * item, bool bl = true);
+	void highlightElement(QListWidgetItem *item, bool bl = true);
 	void cancel();
 
 private:
 	void keyPressEvent(QKeyEvent *event);
 
-	Ui::RefWindow *ui;
-	const qrRepo::RepoApi *api;
-	QString typeName;
-	QAbstractItemModel* model;
-	int role;
-	const QModelIndex &index;
-	qReal::MainWindow *mainWindow;
+	Ui::RefWindow *mUi;
+	qrRepo::LogicalRepoApi const &mApi;
+	QString mTypeName;
+	int mRole;
+	QModelIndex const &mIndex;
+	qReal::MainWindow &mMainWindow;
 	QListWidgetItem *mItem;
-	QList<QListWidgetItem *> elementList;
+	QList<QListWidgetItem *> mElementList;
 
 private slots:
 	void enableOkButton(QListWidgetItem* item);

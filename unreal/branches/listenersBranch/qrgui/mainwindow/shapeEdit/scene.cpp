@@ -2,13 +2,16 @@
 
 #include <QtCore/QPointF>
 #include <QtGui/QKeyEvent>
+#include <QtCore/QFile>
+#include <QtCore/QSettings>
+#include <QtCore/QDir>
 
 Scene::Scene(View *view, QObject * parent)
 	:  QGraphicsScene(parent), mItemType(none), mWaitMove(false), mCount(0), mGraphicsItem(NULL), mSelectedTextPicture(NULL)
 {
 	mView = view;
 	setItemIndexMethod(NoIndex);
-	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
@@ -58,7 +61,7 @@ void Scene::setEmptyPenBrushItems()
 
 QPoint Scene::centerEmpty()
 {
-	return QPoint(sizeEmrtyRectX / 2, sizeEmrtyRectY / 2);
+	return QPoint(sizeEmptyRectX / 2, sizeEmptyRectY / 2);
 }
 
 void Scene::setX1andY1(QGraphicsSceneMouseEvent *event)
@@ -297,6 +300,12 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		removeMoveFlag(event, mLinePort);
 		mWaitMove = true;
 		break;
+	case image :
+		setX1andY1(event);
+		mImage = new Image(mFileName, mX1, mY1, NULL);
+		addItem(mImage);
+		setZValue(mImage);
+		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
 		mGraphicsItem = dynamic_cast<Item *>(itemAt(event->scenePos()));
@@ -310,9 +319,9 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				update();
 			}
 		}
+		setZValueSelectedItems();
 		break;
 	}
-	setZValueSelectedItems();
 }
 
 void Scene::mouseMoveEvent( QGraphicsSceneMouseEvent *event)
@@ -513,6 +522,19 @@ void Scene::addNone(bool checked)
 	}
 }
 
+void Scene::addImage(QString const &fileName)
+{
+	mItemType = image;
+	mFileName = fileName;
+
+	QSettings settings("SPbSU", "QReal");
+	QString workingDirName = settings.value("workingDir", "./save").toString();
+	QDir dir(workingDirName);
+	dir.mkdir("images");
+	mFileName = workingDirName + "/images/" + fileName.section('/', -1);
+	QFile::copy(fileName, mFileName);
+}
+
 void Scene::deleteItem()
 {
 	QList<QGraphicsItem *> list = selectedItems();
@@ -525,7 +547,7 @@ void Scene::deleteItem()
 void Scene::clearScene()
 {
 	clear();
-	mEmptyRect = addRect(0, 0, sizeEmrtyRectX, sizeEmrtyRectY, QPen(Qt::white));
+	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
 	mZValue = 0;
 }
 

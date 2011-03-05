@@ -13,19 +13,18 @@ using namespace details;
 using namespace utils;
 using namespace qReal;
 
-Serializer::Serializer(QString const& saveDirName, bool failSafeMode)
-	: mWorkingDir(saveDirName + "/save"), mFailSafe(failSafeMode)
+Serializer::Serializer(QString const& saveDirName)
+	: mWorkingDir(saveDirName + "/save")
 {
 }
 
 void Serializer::clearWorkingDir() const
 {
-	clearDir(mWorkingDir+"/tree");
+	clearDir(mWorkingDir + "/tree");
 }
 
 void Serializer::removeFromDisk(Id id) const
 {
-	qDebug() << "deleteDiagramDir " << pathToElement(id);
 	QDir dir;
 	dir.remove(pathToElement(id));
 }
@@ -35,18 +34,20 @@ void Serializer::setWorkingDir(QString const &workingDir)
 	mWorkingDir = workingDir + "/save";
 }
 
-void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
+void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
-	foreach (LogicObject *object, objects) {
-		qDebug() << "SAVED: " << object->id().toString();
-		QString filePath = createDirectory(object->id());
+	foreach (Object *object, objects) {
+		QString filePath = createDirectory(object->id(), object->logicalId());
 
 		QDomDocument doc;
-		QDomElement root = doc.createElement("LogicObject");
+		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
+		if (object->logicalId() != Id())
+			root.setAttribute("logicalId", object->logicalId().toString());
 
-		root.appendChild(idListToXml("parents", object->parents(), doc));
+		root.setAttribute("parent", object->parent().toString());
+
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
@@ -55,76 +56,66 @@ void Serializer::saveToDisk(QList<LogicObject*> const &objects) const
 	}
 }
 
-void Serializer::loadFromDisk(QHash<qReal::Id, LogicObject*> &objectsHash)
+void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 {
-	loadFromDisk(mWorkingDir+"/tree", objectsHash);
+	loadFromDisk(mWorkingDir + "/tree", objectsHash);
 }
 
-void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, LogicObject*> &objectsHash)
+void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
 {
 	QDir dir(currentPath);
 	if (dir.exists()) {
-		foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-			QString path = fileInfo.filePath();
-			if (fileInfo.isDir())
-				loadFromDisk(path, objectsHash);
-			else if (fileInfo.isFile()) {
-				QDomDocument doc = xmlUtils::loadDocument(path);
-				LogicObject *object = parseLogicObject(doc.documentElement());
-				Q_ASSERT(object);  // Пока требуем, что все объекты в репозитории загружаемы.
-				if (object != NULL)
-					objectsHash.insert(object->id(), object);
-			}
+		dir.cd("logical");
+		loadModel(dir, objectsHash);
+		dir.cdUp();
+		dir.cd("graphical");
+		loadModel(dir, objectsHash);
+	}
+}
+
+void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
+{
+	foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		QString const path = fileInfo.filePath();
+		if (fileInfo.isDir())
+			loadModel(path, objectsHash);
+		else if (fileInfo.isFile()) {
+			QDomDocument doc = xmlUtils::loadDocument(path);
+			Object *object = parseObject(doc.documentElement());
+			Q_ASSERT(object);  // All objects in a repository shall be loadable.
+			if (object != NULL)
+				objectsHash.insert(object->id(), object);
 		}
 	}
 }
 
-void  Serializer::log(QString const message, qReal::Id const diagram)
+Object *Serializer::parseObject(QDomElement const &elem)
 {
-	QString path = mWorkingDir+"/logs/"+diagram.diagram();
-	QString name = diagram.id();
-	QDir dir;
-	dir.mkpath(path);
-
-	QFile *file;
-	if (!files.contains(name)) {
-		file = new QFile(path+"/"+name+".log");
-		files.insert(name, file);
-	} else {
-		file = files.value(name);
-	}
-
-	if (!file->isOpen())
-		file->open(QIODevice::Append | QIODevice::Text);
-	QTextStream out(file);
-	out << message << "\n";
-
-	//may be, file must be closed or smthng else
-}
-
-LogicObject *Serializer::parseLogicObject(QDomElement const &elem)
-{
-	QString id = elem.attribute("id", "");
+	QString const id = elem.attribute("id", "");
 	if (id == "")
 		return NULL;
 
-	LogicObject object(Id::loadFromString(id));
+	QString const logicalIdString = elem.attribute("logicalId", "");
+	Id const logicalId = loadId(logicalIdString);
 
-	foreach (Id parent, loadIdList(elem, "parents"))
-		if (!mFailSafe || !object.parents().contains(parent))
-			object.addParent(parent);
+	Object object(Id::loadFromString(id), Id(), logicalId);
+
+	QString const parentIdString = elem.attribute("parent", "");
+	Id const parent = loadId(parentIdString);
+	if (object.parent() != parent)
+		object.setParent(parent);
 
 	foreach (Id child, loadIdList(elem, "children"))
-		if (!mFailSafe || !object.children().contains(child))
+		if (!object.children().contains(child))
 			object.addChild(child);
 
 	if (!loadProperties(elem, object))
 		return NULL;
 
-	return new LogicObject(object);
+	return new Object(object);
 }
 
-bool Serializer::loadProperties(QDomElement const &elem, LogicObject &object)
+bool Serializer::loadProperties(QDomElement const &elem, Object &object)
 {
 	QDomNodeList propertiesList = elem.elementsByTagName("properties");
 	if (propertiesList.count() != 1) {
@@ -182,6 +173,11 @@ IdList Serializer::loadIdList(QDomElement const &elem, QString const &name)
 		element = element.nextSiblingElement();
 	}
 	return result;
+}
+
+Id Serializer::loadId(QString const &elementStr)
+{
+	return elementStr.isEmpty() ? Id() : Id::loadFromString(elementStr);
 }
 
 QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr)
@@ -242,11 +238,11 @@ QString Serializer::serializeQVariant(QVariant const &v)
 {
 	switch (v.type()) {
 	case QVariant::Int:
-		return QString("%1").arg(v.toInt());
+		return QString::number(v.toInt());
 	case QVariant::UInt:
-		return QString("%1").arg(v.toUInt());
+		return QString::number(v.toUInt());
 	case QVariant::Double:
-		return QString("%1").arg(v.toDouble());
+		return QString::number(v.toDouble());
 	case QVariant::Bool:
 		return QString("%1").arg(v.toBool());
 	case QVariant::String:
@@ -270,7 +266,7 @@ QString Serializer::serializeQVariant(QVariant const &v)
 
 QString Serializer::serializeQPointF(QPointF const &p)
 {
-	return QString("%1").arg(p.x()) + ", " + QString("%1").arg(p.y());
+	return QString::number(p.x()) + ", " + QString::number(p.y());
 }
 
 QString Serializer::serializeQPolygon(QPolygon const &p)
@@ -295,11 +291,16 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id) const
+QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
 {
-	QString dirName = mWorkingDir+"/tree";
-	QStringList partsList = id.toString().split('/');
-	Q_ASSERT(partsList.size() >=1 && partsList.size() <= 5);
+	QString dirName = mWorkingDir + "/tree";
+	if (logicalId == Id()) {
+		dirName += "/logical";
+	} else {
+		dirName += "/graphical";
+	}
+	QStringList const partsList = id.toString().split('/');
+	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
 	}
@@ -322,7 +323,7 @@ QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &
 	return result;
 }
 
-QDomElement Serializer::propertiesToXml(LogicObject* const object, QDomDocument &doc)
+QDomElement Serializer::propertiesToXml(Object* const object, QDomDocument &doc)
 {
 	QDomElement result = doc.createElement("properties");
 	QMapIterator<QString, QVariant> i = object->propertiesIterator();

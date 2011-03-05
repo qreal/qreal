@@ -99,7 +99,7 @@ void EmbeddedLinker::setDirected(bool arg)
 void EmbeddedLinker::initTitle()
 {
 	EditorManager* editorManager = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
-	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->uuid().editor()+"/"+master->uuid().diagram()+"/"+edgeType.element()));
+	QString edgeTypeFriendly = editorManager->friendlyName(Id::loadFromString("qrm:/"+master->id().editor()+"/"+master->id().diagram()+"/"+edgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = master->boundingRect().right() - master->boundingRect().left();
@@ -117,7 +117,8 @@ void EmbeddedLinker::initTitle()
 	else if (scenePos().x() > master->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	title = new ElementTitle(x,y,edgeTypeFriendly);
+	title = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
+	title->init(boundingRect());
 	title->setTextWidth(textWidth);
 	title->setParentItem(this);
 }
@@ -215,8 +216,8 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (scene)
 	{
-		const QString type = "qrm:/" + master->uuid().editor() + "/" +
-							 master->uuid().diagram() + "/" + edgeType.element();
+		const QString type = "qrm:/" + master->id().editor() + "/" +
+							 master->id().diagram() + "/" + edgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type)))
 		{
 			master->setConnectingState(true);

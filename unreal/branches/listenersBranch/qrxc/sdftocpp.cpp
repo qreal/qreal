@@ -32,15 +32,15 @@ SdfRenderer::~SdfRenderer()
 }
 SdfRenderer::SdfRenderer(const QDomNode &bla)
 {
-    toGen.setString(&toGenerator, QIODevice::ReadWrite);
-    QTextStream str;
-    QString tr;
-    str.setString(&tr,QIODevice::ReadWrite);
-    str << bla;
-    doc.setContent(*(str.string()));
-    QDomElement docElem = doc.documentElement();
-    first_size_x = docElem.attribute("sizex").toInt();
-    first_size_y = docElem.attribute("sizey").toInt();
+	toGen.setString(&toGenerator, QIODevice::ReadWrite);
+	QTextStream str;
+	QString tr;
+	str.setString(&tr,QIODevice::ReadWrite);
+	str << bla;
+	doc.setContent(*(str.string()));
+	QDomElement docElem = doc.documentElement();
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
 }
 
 bool SdfRenderer::load(const QString &filename)
@@ -132,7 +132,7 @@ void SdfRenderer::line(QDomElement &element)
 
 void SdfRenderer::ellipse(QDomElement &element)
 {
-    	toGen << "{\n";
+	toGen << "{\n";
 	toGen << QString("\tfloat x1 = x_def(\"%1\");\n").arg(element.attribute("x1"));
 	toGen << QString("\tfloat y1 = y_def(\"%1\");\n").arg(element.attribute("y1"));
 	toGen << QString("\tfloat x2 = x_def(\"%1\");\n").arg(element.attribute("x2"));
@@ -236,7 +236,7 @@ void SdfRenderer::draw_text(QDomElement &element)
 
 void SdfRenderer::rectangle(QDomElement &element)
 {
-    	toGen << "{\n";
+	toGen << "{\n";
 	toGen << QString("\tfloat x1 = x_def(\"%1\");\n").arg(element.attribute("x1"));
 	toGen << QString("\tfloat y1 = y_def(\"%1\");\n").arg(element.attribute("y1"));
 	toGen << QString("\tfloat x2 = x_def(\"%1\");\n").arg(element.attribute("x2"));
@@ -522,7 +522,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 			int blue = color.blue();
 			toGen << QString("\tbrush.setStyle(Qt::SolidPattern);\n");
 			toGen << "\tbrush.setColor(QColor("<< red << ", "
-			      << green << ", " << blue <<"));\n";
+				  << green << ", " << blue <<"));\n";
 		}
 
 		if (elem.hasAttribute("stroke"))
@@ -532,7 +532,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 			int green = color.green();
 			int blue = color.blue();
 			toGen << "\tpen.setColor(QColor("<< red << ", "
-			      << green << ", " << blue <<"));\n";
+				  << green << ", " << blue <<"));\n";
 		}
 
 		if (elem.hasAttribute("stroke-style"))
@@ -563,9 +563,9 @@ void SdfRenderer::parsestyle(QDomElement &element)
 
 
 		if (!elem.hasAttribute("stroke"))
-		    toGen << "\tpen.setColor(QColor(0,0,0));\n";
+			toGen << "\tpen.setColor(QColor(0,0,0));\n";
 		if (!elem.hasAttribute("fill"))
-		    toGen << "\tbrush.setColor(QColor(255,255,255));\n";
+			toGen << "\tbrush.setColor(QColor(255,255,255));\n";
 
 		toGen << "\n\tpainter->setFont(font);\n";
 		toGen << "\tpainter->setPen(pen);\n";

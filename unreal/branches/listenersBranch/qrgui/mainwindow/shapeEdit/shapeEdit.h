@@ -35,6 +35,7 @@ private slots:
 	void saveToXml();
 	void save();
 	void open();
+	void addImage(bool checked);
 	void setNoPalette();
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoFontPalette();

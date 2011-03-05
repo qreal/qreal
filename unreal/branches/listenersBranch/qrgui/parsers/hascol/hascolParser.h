@@ -5,10 +5,7 @@
 
 #include "../../kernel/ids.h"
 #include "../../mainwindow/errorReporter.h"
-
-namespace qrRepo {
-	class RepoApi;
-}
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qReal {
 
@@ -19,14 +16,14 @@ namespace qReal {
 		class HascolParser
 		{
 		public:
-			explicit HascolParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
+			explicit HascolParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager);
 
-			gui::ErrorReporter parse(QStringList const &files);
+			gui::ErrorReporter &parse(QStringList const &files);
 		private:
 			Id mImportedPortMappingDiagramId;
 			Id mImportedStructureDiagramId;
 
-			qrRepo::RepoApi &mApi;
+			qrRepo::LogicalRepoApi &mApi;
 			EditorManager const &mEditorManager;
 			gui::ErrorReporter mErrorReporter;
 

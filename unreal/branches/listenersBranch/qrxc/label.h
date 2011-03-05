@@ -1,15 +1,16 @@
 #pragma once
 
 #include <QDomElement>
+#include "scalableItem.h"
 
 namespace utils {
 	class OutFile;
 }
 
-class Label
+class Label : public ScalableItem
 {
 public:
-	bool init(QDomElement const &element, int index, bool nodeLabel);
+	bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
 	void generateCodeForConstructor(utils::OutFile &out);
 	void generateCodeForUpdateData(utils::OutFile &out);
 	void generateCodeForFields(utils::OutFile &out);
@@ -17,8 +18,8 @@ public:
 private:
 	QString titleName() const;
 
-	QString mX;
-	QString mY;
+	ScalableCoordinate mX;
+	ScalableCoordinate mY;
 	int mIndex;
 	QString mText;
 	QString mTextBinded;

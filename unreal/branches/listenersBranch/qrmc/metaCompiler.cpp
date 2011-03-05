@@ -19,7 +19,7 @@ using namespace qrmc;
 MetaCompiler::MetaCompiler(QString const &qrmcDir, QString const &workingCopyDir) : mApi(workingCopyDir)
 {
 	mLocalDir = qrmcDir;
-	mApi.setName(ROOT_ID, ROOT_ID.toString());
+	mApi.setName(Id::rootId(), Id::rootId().toString());
 	loadTemplateFromFile(pluginHeaderTemplate, mPluginHeaderTemplate);
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
 	loadTemplateFromFile(nodeClassTemplate, mNodeTemplate);
@@ -41,7 +41,7 @@ MetaCompiler::~MetaCompiler()
 bool MetaCompiler::compile(QString const &targetMetamodel)
 {
 	mTargetMetamodel = targetMetamodel;
-	IdList rootItems = mApi.children(ROOT_ID);
+	IdList rootItems = mApi.children(Id::rootId());
 	qDebug() << "root diagrams:" << rootItems.size();
 	if (rootItems.isEmpty())
 		qDebug() << "couldn't load any root diagrams";

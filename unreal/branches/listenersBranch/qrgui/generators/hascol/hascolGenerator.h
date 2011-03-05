@@ -5,10 +5,6 @@
 #include "../../kernel/ids.h"
 #include "../../mainwindow/errorReporter.h"
 
-namespace qrRepo {
-	class RepoApi;
-}
-
 namespace utils {
 	class OutFile;
 }
@@ -20,9 +16,9 @@ namespace qReal {
 		class HascolGenerator
 		{
 		public:
-			explicit HascolGenerator(qrRepo::RepoApi const &api);
+			explicit HascolGenerator(qrRepo::LogicalRepoApi const &api);
 
-			gui::ErrorReporter generate();
+			gui::ErrorReporter &generate();
 		private:
 			void generateDiagram(Id const &id);
 			void generateProcess(Id const &id, utils::OutFile &out);
@@ -39,7 +35,7 @@ namespace qReal {
 			void generateActivityNode(Id const &id, utils::OutFile &out);
 			Id generateIf(Id const &id, utils::OutFile &out);
 
-			qrRepo::RepoApi const &mApi;
+			qrRepo::LogicalRepoApi const &mApi;
 			gui::ErrorReporter mErrorReporter;
 
 			IdList mPortMappingDiagrams;

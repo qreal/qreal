@@ -19,12 +19,13 @@
 #include "stylus.h"
 #include "path.h"
 #include "curve.h"
+#include "image.h"
 #include "../umllib/elementTitle.h"
 
 using namespace UML;
 
-const int sizeEmrtyRectX = 690;
-const int sizeEmrtyRectY = 590;
+const int sizeEmptyRectX = 680;
+const int sizeEmptyRectY = 580;
 
 class Scene : public QGraphicsScene
 {
@@ -36,6 +37,7 @@ public:
 	QRect realItemsBoundingRect() const;
 	void changeTextName(const QString &name);
 	void setZValue(Item* item);
+	void addImage(QString const &fileName);
 
 signals:
 	void noSelectedItems();
@@ -86,7 +88,8 @@ private:
 		pointPort,
 		linePort,
 		stylus,
-		curve
+		curve,
+		image
 	};
 	enum CopyPasteType {
 		nonePaste,
@@ -108,7 +111,9 @@ private:
 	LinePort *mLinePort;
 	Stylus *mStylus;
 	Curve* mCurve;
+	Image* mImage;
 	Item *mGraphicsItem;
+	QString mFileName;
 	qreal mX1;
 	qreal mX2;
 	qreal mY1;

@@ -14,7 +14,6 @@ public:
 	void  setCXandCY(qreal x, qreal y);
 	QRectF searchMaxMinCoord() const;
 	virtual QRectF boundingRect() const;
-	virtual QRectF realBoundingRect() const;
 	QPainterPath shape() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
 	virtual void drawExtractionForItem(QPainter* painter);
@@ -28,5 +27,6 @@ public:
 
 private:
 	QPointF mC1;
+	QPointF mC2;
 	QPainterPath* mCurvePath;
 };

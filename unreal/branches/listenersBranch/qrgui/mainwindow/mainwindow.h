@@ -6,150 +6,168 @@
 #include <QSplashScreen>
 #include <QtGui>
 
-#include "ui_mainwindow.h"
-
 #include "../editorManager/editorManager.h"
 #include "propertyeditorproxymodel.h"
 #include "propertyeditordelegate.h"
 #include "igesturespainter.h"
 #include "gesturesShow/gestureswidget.h"
 
+namespace Ui{
+class MainWindowUi;
+}
+
 namespace qReal {
 
-	class EditorView;
-	class ListenerManager;
+class EditorView;
+class ListenerManager;
+class VisualDebugger;
 
-	namespace model {
-		class Model;
-	}
+namespace models {
+class Models;
+}
 
-	class MainWindow : public QMainWindow
-	{
-		Q_OBJECT
+class MainWindow : public QMainWindow
+{
+	Q_OBJECT
 
-	public:
-		MainWindow();
-		~MainWindow();
+public:
+	MainWindow();
+	~MainWindow();
 
-		EditorManager* manager();
-		EditorView *getCurrentTab();
-		ListenerManager *listenerManager();
-		IGesturesPainter *gesturesPainter();
-		Ui::MainWindowUi ui;
+	EditorManager* manager();
+	EditorView *getCurrentTab();
+	ListenerManager *listenerManager();
+	IGesturesPainter *gesturesPainter();
+	QModelIndex rootIndex() const;
 
-	public slots:
-		void adjustMinimapZoom(int zoom);
-		void toggleShowSplash(bool show);
+	QAction *actionDeleteFromDiagram() const;
 
-		void updateTab(QModelIndex const &index);
+signals:
+	void gesturesShowed();
+	void currentIdealGestureChanged();
+	void rootDiagramChanged();
 
-		void settingsPlugins();
+public slots:
+	void adjustMinimapZoom(int zoom);
+	void toggleShowSplash(bool show);
 
-		void showAbout();
-		void showHelp();
+	void updateTabName(Id const &id);
 
-		void checkoutDialogOk();
-		void checkoutDialogCancel();
-		void open();
-		void save();
-		void saveAs();
-		void saveAll();
-		void saveIds(QList<Id> const &toSave, QList<Id> const & toRemove);
+	void settingsPlugins();
 
-		void print();
-		void makeSvg();
-		void showGrid(bool show);
+	void showAbout();
+	void showHelp();
 
-		void finalClose();
+	void checkoutDialogOk();
+	void checkoutDialogCancel();
+	void open();
+	void saveAs();
+	void saveAll();
 
-		void sceneSelectionChanged();
+	void print();
+	void makeSvg();
+	void showGrid(bool isChecked);
 
-		void doCheckout();
-		void doCommit();
-		void exportToXmi();
-		void generateToJava();
-		void parseJavaLibraries();
-		void deleteFromScene();
-		void deleteFromScene(QGraphicsItem *target);
+	void finalClose();
 
-		void activateSubdiagram(QModelIndex const &idx);
-		void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-		void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
-		void propertyEditorScrollTo(QModelIndex const &index);
+	void sceneSelectionChanged();
 
-	private slots:
-		void deleteFromDiagram();
-		void changeMiniMapSource(int index);
-		void closeTab(int index);
-		void closeTab(QModelIndex const &index);
-		void exterminate();
-		void generateEditor();
-		void generateEditorWithQRMC();
-		void parseEditorXml();
-		void generateToHascol();
-		void parseHascol();
-		void showPreferencesDialog();
+	void doCheckout();
+	void doCommit();
+	void exportToXmi();
+	void generateToJava();
+	void parseJavaLibraries();
+	void deleteFromScene();
+	void deleteFromScene(QGraphicsItem *target);
 
-		void centerOn(const QModelIndex &rootIndex);
-		void diagramExplorerClicked(const QModelIndex &rootIndex);
+	void activateSubdiagram(QModelIndex const &idx);
+	void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	void propertyEditorScrollTo(QModelIndex const &index);
+	void selectItemWithError(Id const &id);
 
-		void openNewEmptyTab();
-		void openNewTab(const QModelIndex &index);
-		void initCurrentTab(const QModelIndex &rootIndex);
+	void debug();
+	void debugSingleStep();
 
-		void showGestures();
-		void switchGrid(bool isChecked);
-		void switchAlignment(bool isChecked);
-		void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
+private slots:
+	void deleteFromDiagram();
+	void changeMiniMapSource(int index);
+	void closeTab(int index);
+	void closeTab(QModelIndex const &graphicsIndex);
+	void exterminate();
+	void generateEditor();
+	void generateEditorWithQRMC();
+	void parseEditorXml();
+	void generateToHascol();
+	void parseHascol();
+	void showPreferencesDialog();
 
-		void saveListClosed();
+	void centerOn(Id const &id);
+	void graphicalModelExplorerClicked(const QModelIndex &index);
+	void logicalModelExplorerClicked(const QModelIndex &index);
 
-		void setDiagramCreateFlag();
-		void diagramInCreateListDeselect();
-		void diagramInCreateListSelected(int num);
+	void openShapeEditor();
+	void openNewTab(const QModelIndex &index);
+	void initCurrentTab(const QModelIndex &rootIndex);
 
-		void diagramInSaveListChanged(QListWidgetItem* diagram);
+	void showGestures();
+	void showAlignment(bool isChecked);
+	void switchGrid(bool isChecked);
+	void switchAlignment(bool isChecked);
+	void setShape( QString const &data, QPersistentModelIndex const &index, int const &role);
 
-	private:
-		QCloseEvent *mCloseEvent;
-		model::Model *mModel;
-		EditorManager mEditorManager;
-		ListenerManager *mListenerManager;
-		PropertyEditorModel mPropertyModel;
-		PropertyEditorDelegate mDelegate;
-		GesturesWidget *mGesturesWidget;
+	void setDiagramCreateFlag();
+	void diagramInCreateListDeselect();
+	void diagramInCreateListSelected(int num);
 
-		bool *mSaveListChecked;  // TODO: It's actually dynamically allocated plain C array. Change this to QVector.
-		bool mDiagramCreateFlag;
+private:
+	Ui::MainWindowUi *mUi;
 
-		QStringList mDiagramsList;
-		void createDiagram(const QString &idString);
-		void loadNewEditor(QString const &directoryName, QString const &metamodelName,
-				QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
+	QCloseEvent *mCloseEvent;
+	models::Models *mModels;
+	EditorManager mEditorManager;
+	ListenerManager *mListenerManager;
+	PropertyEditorModel mPropertyModel;
+	PropertyEditorDelegate mDelegate;
+	GesturesWidget *mGesturesWidget;
 
-		void loadPlugins();
+	QVector<bool> mSaveListChecked;
+	bool mDiagramCreateFlag;
 
-		QListWidget* createSaveListWidget();
-		void suggestToSave();
-		void suggestToCreateDiagram();
+	QStringList mDiagramsList;
+	QModelIndex mRootIndex;
 
-		virtual void closeEvent(QCloseEvent *event);
-		void deleteFromExplorer();
-		void keyPressEvent(QKeyEvent *event);
-		QString getWorkingDir(QString const &dialogWindowTitle);
+	void createDiagram(const QString &idString);
+	void loadNewEditor(QString const &directoryName, QString const &metamodelName,
+					   QString const &commandFirst, QString const &commandSecond, QString const &extension, QString const &prefix);
 
-		int getTabIndex(const QModelIndex &index);
+	void loadPlugins();
 
-		void initGridProperties();
-		void disconnectZoom(QGraphicsView* view);
-		void connectZoom(QGraphicsView* view);
-		void disconnectActionZoomTo(QWidget* widget);
-		void connectActionZoomTo(QWidget* widget);
-		void setConnectActionZoomTo(QWidget* widget);
+	QListWidget* createSaveListWidget();
+	void suggestToSave();
+	void suggestToCreateDiagram();
 
-	signals:
-		void gesturesShowed();
-		void currentIdealGestureChanged();
-		void rootDiagramChanged();
-	};
+	virtual void closeEvent(QCloseEvent *event);
+	void deleteFromExplorer(bool isLogicalModel);
+	void keyPressEvent(QKeyEvent *event);
+	QString getWorkingDir(QString const &dialogWindowTitle);
+
+	int getTabIndex(const QModelIndex &index);
+
+	void initGridProperties();
+	void disconnectZoom(QGraphicsView* view);
+	void connectZoom(QGraphicsView* view);
+	void disconnectActionZoomTo(QWidget* widget);
+	void connectActionZoomTo(QWidget* widget);
+	void setConnectActionZoomTo(QWidget* widget);
+	void clickErrorListWidget();
+	VisualDebugger *mVisualDebugger;
+
+	void setShowGrid(bool isChecked);
+	void setShowAlignment(bool isChecked);
+	void setSwitchGrid(bool isChecked);
+	void setSwitchAlignment(bool isChecked);
+
+	void setIndexesOfPropertyEditor(Id const &id);
+};
 }

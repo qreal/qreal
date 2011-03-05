@@ -27,7 +27,9 @@ HEADERS += mainwindow/mainwindow.h \
 	mainwindow/refWindow.h \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
-
+	mainwindow/shapeEdit/image.h \
+	mainwindow/error.h \
+	mainwindow/errorlistwidget.h
 SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/paletteToolbox.cpp \
 	mainwindow/propertyeditorproxymodel.cpp \
@@ -55,7 +57,9 @@ SOURCES += mainwindow/mainwindow.cpp \
 	mainwindow/buttonRefWindow.cpp \
 	mainwindow/refWindow.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
-
+	mainwindow/shapeEdit/image.cpp \
+	mainwindow/error.cpp \
+	mainwindow/errorlistwidget.cpp
 FORMS += mainwindow/mainwindow.ui \
 	mainwindow/shapeEdit/shapeEdit.ui \
 	mainwindow/gesturesShow/gestureswidget.ui \

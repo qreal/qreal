@@ -1,11 +1,12 @@
 #pragma once
 
+#include <QtCore/QHash>
+#include <QtCore/QFileInfo>
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
 #include "../../kernel/ids.h"
-#include <QtCore/QHash>
-#include <QtCore/QFileInfo>
+#include "../../../qrrepo/logicalRepoApi.h"
 
 namespace qrRepo {
 	class RepoApi;
@@ -20,28 +21,30 @@ namespace qReal {
 		class XmlParser
 		{
 		public:
-			explicit XmlParser(qrRepo::RepoApi &api, EditorManager const &editorManager);
+			explicit XmlParser(qrRepo::LogicalRepoApi &api, EditorManager const &editorManager);
 
 			void parseFile(QString const &fileName);
 			void loadIncludeList(QString const &fileName);
 
 		private:
-			qrRepo::RepoApi &mApi;
+			qrRepo::LogicalRepoApi &mApi;
 			EditorManager const &mEditorManager;
 			Id mMetamodel;
-			Id mDiagram;
-			QHash<Id, QString> mElements;
+			QHash<QString, Id> mElements;
+			QHash<Id, QStringList> mParents;
+			QHash<Id, QStringList> mContainers;
 			int mElementsColumn;
 			int mElementCurrentColumn;
 			int mMoveWidth;
 			int mMoveHeight;
 			int mCurrentWidth;
 			int mCurrentHeight;
-			QStringList mIncludeList;
+			int mParentPositionX;
 
 			QStringList getIncludeList(QString const &fileName);
 			Id getPackageId();
 			void initMetamodel(QDomDocument const &document, QString const &directoryName, Id const &id);
+			Id initListener(QString const &name, QString const &className, QString const &fileName);
 			void createDiagramAttributes(QDomElement const &diagram, Id const &diagramId);
 			void createNonGraphicElements(QDomElement const &type, Id const &diagramId);
 			void createGraphicElements(QDomElement const &type, Id const &diagramId);
@@ -76,12 +79,21 @@ namespace qReal {
 			void initProperty(QDomElement const &property, Id const &elementId);
 			void initConnection(QDomElement const &connection, Id const &elementId);
 			void initUsage(QDomElement const &usage, Id const &elementId);
-			void initGeneralization(QDomElement const &generalization, Id const &elementId);
+			void initGeneralization(QString const &diagramName);
+			void setParents(Id const &id, QString const &diagramName);
+			void initInheritance(Id const &idFrom, Id const &idTo);
+			void initContainer(QString const &diagramName);
+			void setContains(Id const &id, QString const &diagramName);
+			void initContains(Id const &idFrom, Id const &idTo);
+			Id getParentId(QString const &elementName);
 
 			void setChildrenPositions(Id const &id, unsigned cellWidth, unsigned cellHeight);
 			void setElementPosition(Id const &id);
 			void checkIndex();
+			void manageParents(IdList const &parents);
+
+			bool containsName(QString const &name);
+			void clear();
 		};
 	}
 }
-

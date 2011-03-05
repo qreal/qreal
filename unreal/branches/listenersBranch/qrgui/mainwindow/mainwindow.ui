@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>738</width>
-    <height>559</height>
+    <height>523</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,6 +78,7 @@
     <addaction name="actionPreferences"/>
     <addaction name="actionPlugins"/>
     <addaction name="actionShow_grid"/>
+    <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
    </widget>
@@ -102,6 +103,8 @@
     <addaction name="actionExport_to_XMI"/>
     <addaction name="actionGenerate_to_Java"/>
     <addaction name="actionGenerate_to_Hascol"/>
+    <addaction name="actionDebug"/>
+    <addaction name="actionDebug_Single_step"/>
     <addaction name="actionShape_Edit"/>
     <addaction name="actionGenerate_Editor"/>
     <addaction name="actionParse_Editor_xml"/>
@@ -117,40 +120,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="diagramDock">
-   <property name="allowedAreas">
-    <set>Qt::AllDockWidgetAreas</set>
-   </property>
-   <property name="windowTitle">
-    <string>Diagram Explorer</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QTreeView" name="diagramExplorer">
-       <property name="contextMenuPolicy">
-        <enum>Qt::ActionsContextMenu</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>true</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::DragDrop</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
   <widget class="QToolBar" name="fileToolbar">
    <property name="windowTitle">
     <string>File Toolbar</string>
@@ -174,7 +143,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_4">
+   <widget class="QWidget" name="minimapDockWidgetContents">
     <layout class="QVBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -212,7 +181,7 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents_5">
+   <widget class="QWidget" name="paletteDockWidgetContents">
     <layout class="QHBoxLayout">
      <property name="spacing">
       <number>6</number>
@@ -239,28 +208,37 @@
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
   </widget>
-  <widget class="QDockWidget" name="propertyDock">
+  <widget class="QDockWidget" name="logicalModelDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
    <property name="windowTitle">
-    <string>Property Editor</string>
+    <string>Logical Model Explorer</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
+   <widget class="QWidget" name="logicalModelDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTableView" name="propertyEditor">
-       <property name="alternatingRowColors">
+      <widget class="QTreeView" name="logicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
         <bool>true</bool>
        </property>
-       <property name="showGrid">
+       <property name="dragEnabled">
         <bool>false</bool>
+       </property>
+       <property name="dragDropOverwriteMode">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
        </property>
       </widget>
      </item>
@@ -295,7 +273,105 @@
    <addaction name="actionParse_Hascol_sources"/>
    <addaction name="actionParse_Java_Libraries"/>
   </widget>
+  <widget class="QDockWidget" name="errorDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>91</width>
+     <height>113</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>524287</width>
+     <height>524287</height>
+    </size>
+   </property>
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Error List</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="errorDockWidgetContents">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="ErrorListWidget" name="errorListWidget"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="graphicalModelDock">
+   <property name="windowTitle">
+    <string>Graphical Model Explorer</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="graphicalModelDockWidgetContents">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTreeView" name="graphicalModelExplorer">
+       <property name="contextMenuPolicy">
+        <enum>Qt::ActionsContextMenu</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="propertyDock">
+   <property name="windowTitle">
+    <string>Property Editor</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="propertyDockWidgetContents">
+    <layout class="QVBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTableView" name="propertyEditor">
+       <property name="maximumSize">
+        <size>
+         <width>16777214</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="showGrid">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionQuit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -438,7 +514,7 @@
   </action>
   <action name="actionPlugins">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>Plugins...</string>
@@ -585,6 +661,33 @@
     <string>Switch on alignment</string>
    </property>
   </action>
+  <action name="actionShow_alignment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show alignment</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="text">
+    <string>Debug</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="actionDebug_Single_step">
+   <property name="text">
+    <string>Debug (Single step)</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
@@ -593,6 +696,11 @@
    <extends>QToolBox</extends>
    <header>paletteToolbox.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ErrorListWidget</class>
+   <extends>QListWidget</extends>
+   <header>errorlistwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

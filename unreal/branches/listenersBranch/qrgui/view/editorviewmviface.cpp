@@ -1,4 +1,5 @@
 #include <QtGui>
+#include <QtCore/QDebug>
 
 #include "editorviewmviface.h"
 #include "editorview.h"
@@ -8,16 +9,15 @@
 #include "../editorManager/editorManager.h"
 #include "../mainwindow/mainwindow.h"
 
-#include "../model/model.h"
-
 using namespace qReal;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
+	, mScene(scene)
+	, mView(view)
+	, mGraphicalAssistApi(NULL)
+	, mLogicalAssistApi(NULL)
 {
-	mView = view;
-	mScene = scene;
-
 	mScene->mv_iface = this;
 	mScene->view = mView;
 }
@@ -109,6 +109,11 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
+Id EditorViewMViface::rootId()
+{
+	return mGraphicalAssistApi->idByIndex(rootIndex());
+}
+
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
@@ -117,8 +122,8 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex()))
 			continue;
-		Id currentUuid = current.data(roles::idRole).value<Id>();
-		if (currentUuid == ROOT_ID)
+		Id currentId = current.data(roles::idRole).value<Id>();
+		if (currentId == Id::rootId())
 			continue;
 		Id parentUuid;
 		if (parent != rootIndex())
@@ -128,13 +133,14 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentUuid);
+		UML::Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (elem) {
 			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
-			elem->setIndex(current);
+			elem->setId(currentId);
 			if (item(parent) != NULL)
 				elem->setParentItem(item(parent));
 			else {
@@ -143,13 +149,15 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			setItem(current, elem);
 			elem->updateData();
 			elem->connectToPort();
+			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
+			elem->initTitles();
 
 			bool isEdgeFromEmbeddedLinker = false;
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
 			if (selectedItems.size() == 1) {
 				UML::NodeElement* master = dynamic_cast<UML::NodeElement*>(selectedItems.at(0));
-				if ((master) && (master->getConnectingState()))
+				if (master && master->connectionInProgress())
 					isEdgeFromEmbeddedLinker = true;
 			}
 
@@ -157,11 +165,10 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				mScene->clearSelection();
 			elem->setSelected(true);
 
-
 			UML::NodeElement* nodeElem = dynamic_cast<UML::NodeElement*>(elem);
-			model::Model* realModel = dynamic_cast<model::Model*>(model());
-			if (nodeElem && currentUuid.element() == "Class" && realModel &&
-			    realModel->api().children(currentUuid).empty()) {
+			if (nodeElem && currentId.element() == "Class" &&
+				mGraphicalAssistApi->children(currentId).empty())
+			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
 					QString curChildElementType;
@@ -171,29 +178,14 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 						curChildElementType = "FieldsContainer";
 					Id newUuid = Id("Kernel_metamodel", "Kernel",
 							curChildElementType, QUuid::createUuid().toString());
-					QByteArray data;
-					QMimeData *mimeData = new QMimeData();
-					QDataStream stream(&data, QIODevice::WriteOnly);
-					QString mimeType = QString("application/x-real-uml-data");
-					QString newElemUuid = newUuid.toString();
-					QString pathToItem = ROOT_ID.toString();
-					QString name = "(anonymous something)";
-					QPointF pos = QPointF(0, 0);
-					stream << newElemUuid;
-					stream << pathToItem;
-					stream << name;
-					stream << pos;
 
-					mimeData->setData(mimeType, data);
-					model()->dropMimeData(mimeData, Qt::CopyAction, model()->rowCount(current), 0, current);
-					delete mimeData;
+					mGraphicalAssistApi->createElement(currentId, newUuid, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
 		}
 		if (needToProcessChildren && model()->hasChildren(current))
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 	}
-
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 
@@ -275,9 +267,18 @@ EditorViewScene *EditorViewMViface::scene() const
 	return mScene;
 }
 
+models::GraphicalModelAssistApi *EditorViewMViface::graphicalAssistApi() const
+{
+	return mGraphicalAssistApi;
+}
+
+models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
+{
+	return mLogicalAssistApi;
+}
+
 void EditorViewMViface::clearItems()
 {
-
 	QList<QGraphicsItem *> toRemove;
 	foreach (IndexElementPair pair, mItems)
 		if (!pair.second->parentItem())
@@ -308,5 +309,32 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 	foreach (IndexElementPair pair, mItems) {
 		if (pair.first == index)
 			mItems.remove(pair);
+	}
+}
+
+void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi)
+{
+	mGraphicalAssistApi = &graphicalAssistApi;
+	mLogicalAssistApi = &logicalAssistApi;
+}
+
+void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
+{
+	connect(logicalModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))
+			, this, SLOT(logicalDataChanged(QModelIndex, QModelIndex)));
+}
+
+void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
+		QModelIndex const curr = topLeft.sibling(row, 0);
+		Id const logicalId = curr.data(roles::idRole).value<Id>();
+		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
+		foreach (Id const graphicalId, graphicalIds) {
+			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
+			UML::Element *graphicalItem = item(graphicalIndex);
+			if (graphicalItem)
+				graphicalItem->updateData();
+		}
 	}
 }

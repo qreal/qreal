@@ -7,15 +7,12 @@
 #include "../umllib/uml_nodeelement.h"
 #include "gestures/mousemovementmanager.h"
 
-const int indexGrid = 30; // distance between two lines in the grid
+//const int indexGrid = 30; // distance between two lines in the grid
 
 namespace qReal {
 	class EditorViewMViface;
 	class EditorView;
 	class MainWindow;
-	namespace model {
-		class Model;
-	}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -34,23 +31,28 @@ public:
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual UML::Element *getElem(qReal::Id const &uuid);
-	virtual UML::Element *getElemByModelIndex(const QModelIndex& index );
+	virtual UML::Element *getElem(qReal::Id const &id);
 
-	virtual QPersistentModelIndex rootItem();
+	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
+	double realIndexGrid();
+	void setRealIndexGrid(double newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id container, qReal::Id candidate);
 	bool getNeedDrawGrid();
 
 	UML::Element* getLastCreated();
 
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+
 signals:
 	void elementCreated(qReal::Id const &id);
+	void zoomIn();
+	void zoomOut();
 
 protected:
 	void dragEnterEvent( QGraphicsSceneDragDropEvent *event);
@@ -73,7 +75,8 @@ private:
 
 	bool mRightButtonPressed;
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
-	qreal widthOfGrid;
+	qreal mWidthOfGrid;
+	double mRealIndexGrid;
 
 	void getObjectByGesture();
 	void getLinkByGesture(UML::NodeElement * parent, UML::NodeElement const & child);
@@ -82,6 +85,7 @@ private:
 	void createEdgeMenu(QList<QString> const & ids);
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
+	void redraw();
 
 	UML::Element *getElemAt(const QPointF &position);
 
@@ -98,7 +102,6 @@ private:
 							  , const char *slot) const;
 
 	void initContextMenu(UML::Element *e, QPointF const & pos);
-	qReal::model::Model* model() const;
 
 	QPointF newElementsPosition;
 	QList<QGraphicsItem*> mGesture;
