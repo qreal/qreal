@@ -489,7 +489,7 @@
          <x>10</x>
          <y>120</y>
          <width>311</width>
-         <height>61</height>
+         <height>41</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -509,19 +509,6 @@
         </property>
         <property name="text">
          <string>Show splashscreen</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="chaoticEditionCheckBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>291</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Chaotic Edition</string>
         </property>
        </widget>
       </widget>
