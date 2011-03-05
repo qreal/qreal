@@ -23,6 +23,7 @@ void DebuggerConnector::run() {
 	mThread->start();
 	mProcess->start(mDebuggerPath, QStringList());
 	mProcess->waitForStarted();
+	mProcess->waitForReadyRead();
 }
 
 void DebuggerConnector::configure(QString programPath) {
@@ -43,6 +44,7 @@ void DebuggerConnector::readErrOutput() {
 void DebuggerConnector::sendCommand(QString command) {
 	mProcess->write(command.toAscii());  
 	mProcess->waitForBytesWritten();
+	mProcess->waitForReadyRead();
 }
 
 void DebuggerConnector::build(QString filePath) {
@@ -57,5 +59,5 @@ void DebuggerConnector::build(QString filePath) {
 
 void DebuggerConnector::finishProcess() {
 	//mProcess->closeWriteChannel();
-	mProcess->terminate();
+	mProcess->close();
 }

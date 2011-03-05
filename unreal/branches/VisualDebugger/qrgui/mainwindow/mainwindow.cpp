@@ -1413,24 +1413,57 @@ void MainWindow::generateAndBuild() {
 	EditorView *editor = dynamic_cast<EditorView *>(ui.tabs->widget(ui.tabs->currentIndex()));
 	mVisualDebugger->setEditor(editor);
 	mVisualDebugger->generateCode();
-	mDebuggerConnector->build("f:/QReal/unreal/branches/VisualDebugger/qrgui/code.c");
+	
+	connect(this, SIGNAL(build(QString)), mDebuggerConnector, SLOT(build(QString)));
+	
+	emit build("f:/QReal/unreal/branches/VisualDebugger/qrgui/code.c");
+	
 	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
 	errorReporter->addInformation("Code generated and builded successfully");
 	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
 }
 
 void MainWindow::startDebugger() {
+	/*QProcess *p = new QProcess(this);
+    p->start("c:\\MinGW\\bin\\gdb.exe", QIODevice::ReadWrite);
+    if (p->waitForStarted() == false) {
+        qDebug() << "Error starting process";
+        qDebug() << p->errorString();
+        return;
+    }
+    p->waitForReadyRead();
+    qDebug() << p->readAllStandardOutput();
+    p->write("file f:/QReal/unreal/branches/VisualDebugger/qrgui/builded.exe\n");
+    p->waitForBytesWritten();
+    p->waitForReadyRead();
+    qDebug() << p->readAllStandardOutput();
+    
+    p->write("break main\n");
+    p->waitForBytesWritten();
+    p->waitForReadyRead();
+    qDebug() << p->readAllStandardOutput();
+    
+    p->write("run\n");
+    p->waitForBytesWritten();
+    p->waitForReadyRead();
+    qDebug() << p->readAllStandardOutput();
+    p->write("next\n");
+    p->waitForBytesWritten();
+    p->waitForReadyRead();
+    qDebug() << p->readAllStandardOutput();
+    p->close();*/
+	
 	connect(mDebuggerConnector, SIGNAL(readyReadStdOutput(QString)), this, SLOT(drawDebuggerStdOutput(QString)));
 	connect(mDebuggerConnector, SIGNAL(readyReadErrOutput(QString)), this, SLOT(drawDebuggerErrOutput(QString)));
 	connect(this, SIGNAL(configure(QString)), mDebuggerConnector, SLOT(configure(QString)));
 	connect(this, SIGNAL(sendCommand(QString)), mDebuggerConnector, SLOT(sendCommand(QString)));
-	connect(this, SIGNAL(build(QString)), mDebuggerConnector, SLOT(build(QString)));
 	connect(this, SIGNAL(finishProcess()), mDebuggerConnector, SLOT(finishProcess()));
+
 	mDebuggerConnector->run();
 }
 
 void MainWindow::configureDebugger() {
-	configure("f:/QReal/unreal/branches/VisualDebugger/qrgui/builded.exe");
+	emit configure("f:/QReal/unreal/branches/VisualDebugger/qrgui/builded.exe");
 }
 
 void MainWindow::setBreakpointAtStart() {
@@ -1439,15 +1472,15 @@ void MainWindow::setBreakpointAtStart() {
 
 	mVisualDebugger->createIdByLineCorrelation();
 
-	sendCommand("break main\n");
+	emit sendCommand("break main\n");
 }
 
 void MainWindow::runProgramWithDebugger() {
-	sendCommand("run\n");
+	emit sendCommand("run\n");
 }
 
 void MainWindow::killProgramWithDebugger() {
-	sendCommand("kill\n");
+	emit sendCommand("kill\n");
 }
 
 void MainWindow::placeBreakpointsInDebugger() {
@@ -1458,20 +1491,20 @@ void MainWindow::placeBreakpointsInDebugger() {
 	QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
 
 	for (int i=0;i<breakpoints->size();i++) {
-		sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
+		emit sendCommand("break " + QString::number(breakpoints->at(i)) + "\n");
 	}
 }
 
 void MainWindow::goToNextBreakpoint() {
-	sendCommand("cont\n");
+	emit sendCommand("cont\n");
 }
 
 void MainWindow::goToNextInstruction() {
-	sendCommand("next\n");
+	emit sendCommand("next\n");
 }
 
 void MainWindow::closeDebuggerProcessAndThread() {
-	mDebuggerConnector->finishProcess();
+	emit finishProcess();
 	gui::ErrorReporter *errorReporter = new gui::ErrorReporter();
 	errorReporter->addInformation("Debugger closed successfully");
 	errorReporter->showErrors(ui.errorListWidget, ui.errorDock);
