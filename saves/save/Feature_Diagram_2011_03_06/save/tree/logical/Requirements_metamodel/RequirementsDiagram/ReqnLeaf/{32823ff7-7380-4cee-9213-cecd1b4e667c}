@@ -1,0 +1,20 @@
+<object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{32823ff7-7380-4cee-9213-cecd1b4e667c}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="description" value=""/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqeP2N/{ef56e15c-f7f4-4d66-a01f-66dae74b0ca5}"/>
+    </links>
+    <QString key="name" value="Free Notation"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <QString key="priority" value=""/>
+    <QString key="source" value=""/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <QString key="type" value=""/>
+  </properties>
+</object>

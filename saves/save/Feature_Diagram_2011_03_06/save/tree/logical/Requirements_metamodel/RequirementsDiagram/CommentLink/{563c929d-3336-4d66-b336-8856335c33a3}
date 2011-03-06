@@ -1,0 +1,13 @@
+<object id="qrm:/Requirements_metamodel/RequirementsDiagram/CommentLink/{563c929d-3336-4d66-b336-8856335c33a3}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <qReal::Id key="from" value="qrm:/Requirements_metamodel/RequirementsDiagram/Comment/{1aa52cc0-555f-4297-bf8c-5594ddf6ffc5}"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Comment Link)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentMandatory/{7f887e82-f53d-484b-bab7-ddba48ccd649}"/>
+  </properties>
+</object>

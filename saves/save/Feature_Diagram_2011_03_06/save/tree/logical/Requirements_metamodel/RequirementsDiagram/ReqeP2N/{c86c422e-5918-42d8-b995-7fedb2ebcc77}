@@ -1,0 +1,14 @@
+<object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqeP2N/{c86c422e-5918-42d8-b995-7fedb2ebcc77}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <qReal::Id key="from" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentMandatory/{3f991bdf-a877-4730-b718-6c0e993a1155}"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Feature P2N Relationship)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="ownedComment" value=""/>
+    <qReal::Id key="to" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{f340b13a-f81f-41bd-a4e5-9ab8b0c2bcb4}"/>
+  </properties>
+</object>

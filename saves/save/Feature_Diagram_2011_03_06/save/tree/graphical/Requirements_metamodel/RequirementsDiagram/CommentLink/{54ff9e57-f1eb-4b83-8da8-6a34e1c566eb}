@@ -1,0 +1,13 @@
+<object logicalId="qrm:/Requirements_metamodel/RequirementsDiagram/CommentLink/{563c929d-3336-4d66-b336-8856335c33a3}" id="qrm:/Requirements_metamodel/RequirementsDiagram/CommentLink/{54ff9e57-f1eb-4b83-8da8-6a34e1c566eb}" parent="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{23d02ac1-b6ca-4b49-bdfb-31e71057755e}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 98, 68 : "/>
+    <qReal::Id key="from" value="qrm:/Requirements_metamodel/RequirementsDiagram/Comment/{0e5662f3-176a-45c9-b6fc-40a4d7802178}"/>
+    <double key="fromPort" value="2.5"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Comment Link)"/>
+    <QPointF key="position" value="-388, -498.992"/>
+    <qReal::Id key="to" value="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnParentMandatory/{83323836-dc91-48b1-8c6c-bf358d9892e2}"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

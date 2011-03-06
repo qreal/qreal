@@ -1,0 +1,15 @@
+<object logicalId="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{32823ff7-7380-4cee-9213-cecd1b4e667c}" id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqnLeaf/{3eddacd9-ed05-4929-879d-cb954bab6839}" parent="qrm:/Requirements_metamodel/RequirementsDiagram/RequirementsDiagramNode/{23d02ac1-b6ca-4b49-bdfb-31e71057755e}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 30, 0 : 30, 30 : 0, 30 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Requirements_metamodel/RequirementsDiagram/ReqeP2N/{184e75ef-b9bb-4df5-83a6-14a1be75add0}"/>
+    </links>
+    <QString key="name" value="Free Notation"/>
+    <QPointF key="position" value="-568, -315"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
