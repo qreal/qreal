@@ -40,10 +40,10 @@ namespace qReal {
 	private:
 		EditorView *mEditor;
 		models::GraphicalModelAssistApi const &mModelApi;
+		QGraphicsColorizeEffect *mEffect;
 		UML::Element *mCurrentElem;
 		VisualDebugger::ErrorType mError;
 		Id mCurrentId;
-		QGraphicsColorizeEffect *mEffect;
 		gui::ErrorReporter *mErrorReporter;
 		BlockParser *mBlockParser;
 		int mTimeout;

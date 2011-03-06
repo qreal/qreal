@@ -4,10 +4,9 @@
 
 using namespace qReal;
 
-BlockParser::BlockParser(gui::ErrorReporter* errorReporter) {
-	hasParseErrors = false;
-	mErrorReporter = errorReporter;
-	mCurrentId = Id::rootId();
+BlockParser::BlockParser(gui::ErrorReporter* errorReporter)
+	: mHasParseErrors(false), mErrorReporter(errorReporter), mCurrentId (Id::rootId())
+{
 }
 
 BlockParser::~BlockParser() {
@@ -19,73 +18,64 @@ QMap<QString, Number>* BlockParser::getVariables() {
 }
 
 bool BlockParser::isDigit(QChar c) {
-	char c1 = c.toAscii();
-	return '0'<=c1 && c1<='9';
+	char symbol = c.toAscii();
+	return '0' <= symbol && symbol <= '9';
 }
 
 bool BlockParser::isSign(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='-' || c1=='+';
+	char symbol = c.toAscii();
+	return symbol == '-' || symbol == '+';
 }
 
 bool BlockParser::isLetter(QChar c) {
-	char c1 = c.toAscii();
-	return ('A'<=c1 && c1<='Z') || ('a'<=c1 && c1<='z');
+	char symbol = c.toAscii();
+	return ('A'<= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <='z');
 }
 
 bool BlockParser::isExp(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='e' || c1=='E';
+	char symbol = c.toAscii();
+	return symbol == 'e' || symbol == 'E';
 }
 
 bool BlockParser::isPoint(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='.';
+	return c.toAscii() == '.';
 }
 
 bool BlockParser::isRoundBracket(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='(' || c1==')';
+	char symbol = c.toAscii();
+	return symbol == '(' || symbol == ')';
 }
 
-bool BlockParser::isLogDis(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='|';
+bool BlockParser::isDisjunction(QChar c) {
+	return c.toAscii() == '|';
 }
 
-bool BlockParser::isLogCon(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='&';
+bool BlockParser::isConjunction(QChar c) {
+	return c.toAscii() == '&';
 }
 
-bool BlockParser::isLogComp(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='<' || c1=='>';
+bool BlockParser::isComparison(QChar c) {
+	char symbol = c.toAscii();
+	return symbol == '<' || symbol == '>';
 }
 
-bool BlockParser::isArOpLP(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='-' || c1=='+';
+bool BlockParser::isArithmeticalMinusOrPlus(QChar c) {
+	char symbol = c.toAscii();
+	return symbol == '-' || symbol == '+';
 }
 
-bool BlockParser::isArOpHP(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='*' || c1=='/';
+bool BlockParser::isMultiplicationOrDivision(QChar c) {
+	char symbol = c.toAscii();
+	return symbol == '*' || symbol == '/';
 }
 
-bool BlockParser::isUnOp(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='-' || c1=='+';
-}
-
-bool BlockParser::isUseless(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='\n' || c1=='\r' || c1==' ' || c1=='\t';
+bool BlockParser::isDelimiter(QChar c) {
+	char symbol = c.toAscii();
+	return symbol == '\n' || symbol == '\r' || symbol == ' ' || symbol == '\t';
 }
 
 bool BlockParser::isAssignment(QChar c) {
-	char c1 = c.toAscii();
-	return c1=='=';
+	return c.toAscii() == '=';
 }
 
 Number BlockParser::parseNumber(QString stream, int& pos) {
@@ -118,7 +108,7 @@ Number BlockParser::parseNumber(QString stream, int& pos) {
 		isDouble = true;
 		pos++;
 
-		if (checkForEndOfStream(stream, pos)) {
+		if (isEndOfStream(stream, pos)) {
 			return Number();
 		}
 
@@ -155,10 +145,10 @@ QString BlockParser::parseIdentifier(QString stream, int& pos) {
 
 void BlockParser::skip(QString stream, int& pos) {
 	while (pos < stream.length() &&
-		(isUseless(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
+		(isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<'))
 	{
 		if (isHtmlBrTag(stream, pos)) {
-			pos+=4;
+			pos += 4;
 			return;
 		}
 		if (stream.at(pos).toAscii() == '<'){
@@ -183,7 +173,7 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 	Number res;
 	skip(stream, pos);
 
-	if (hasParseErrors || checkForEndOfStream(stream, pos)) {
+	if (hasErrors() || isEndOfStream(stream, pos)) {
 		return Number();
 	}
 
@@ -203,7 +193,7 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 			skip(stream, pos);
 			res = parseExpression(stream, pos);
 			skip(stream, pos);
-			if (!checkForEndBracket(stream, pos)) {
+			if (!checkForClosingBracket(stream, pos)) {
 				return res;
 			}
 			pos++;
@@ -231,7 +221,7 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 
 Number BlockParser::parseMult(QString stream, int& pos) {
 	Number res = parseTerm(stream, pos);
-	while (pos < stream.length() && isArOpHP(stream.at(pos))) {
+	while (pos < stream.length() && isMultiplicationOrDivision(stream.at(pos))) {
 		pos++;
 		switch (stream.at(pos - 1).toAscii()) {
 			case '*':
@@ -247,7 +237,7 @@ Number BlockParser::parseMult(QString stream, int& pos) {
 
 Number BlockParser::parseExpression(QString stream, int& pos) {
 	Number res = parseMult(stream, pos);
-	while (pos < stream.length() && isArOpLP(stream.at(pos))) {
+	while (pos < stream.length() && isArithmeticalMinusOrPlus(stream.at(pos))) {
 		pos++;
 		switch (stream.at(pos - 1).toAscii()) {
 			case '+':
@@ -263,38 +253,38 @@ Number BlockParser::parseExpression(QString stream, int& pos) {
 
 void BlockParser::parseVarPart(QString stream, int& pos) {
 	skip(stream, pos);
-	if (stream.mid(pos,4).compare("var ") == 0) {
-		pos+=4;
+	if (stream.mid(pos, 4).compare("var ") == 0) {
+		pos += 4;
 		skip(stream, pos);
-		if (!checkForEndOfStream(stream, pos) &&
-			stream.mid(pos,4).compare("int ") != 0 && stream.mid(pos,7).compare("double ") != 0)
+		if (!isEndOfStream(stream, pos) &&
+			stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
 		{
-			error(unexpectedSymbol, QString::number(pos+1), "int\' or \'double", stream.at(pos));
+			error(unexpectedSymbol, QString::number(pos + 1), "int\' or \'double", stream.at(pos));
 			return;
 		}
 
 		while (pos < stream.length() &&
-			(stream.mid(pos,4).compare("int ") == 0 || stream.mid(pos,7).compare("double ") == 0))
+			(stream.mid(pos, 4).compare("int ") == 0 || stream.mid(pos, 7).compare("double ") == 0))
 		{
 			Number::Type curType;
-			if (stream.mid(pos,4).compare("int ") == 0) {
+			if (stream.mid(pos, 4).compare("int ") == 0) {
 				curType = Number::intType;
-				pos+=4;
+				pos += 4;
 			} else {
 				curType = Number::doubleType;
-				pos+=7;
+				pos += 7;
 			}
 			skip(stream, pos);
 			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
 				skip(stream, pos);
 				QString variable = parseIdentifier(stream, pos);
-				if (hasParseErrors) {
+				if (hasErrors()) {
 					return;
 				}
 				skip(stream, pos);
 
 				Number n;
-				if (checkForEndOfStream(stream, pos)) {
+				if (isEndOfStream(stream, pos)) {
 					return;
 				}
 				switch (stream.at(pos).toAscii()) {
@@ -329,7 +319,7 @@ void BlockParser::parseVarPart(QString stream, int& pos) {
 				skip(stream, pos);
 			}
 
-			if (hasParseErrors) {
+			if (hasErrors()) {
 				return;
 			}
 			pos++;
@@ -342,7 +332,7 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 	int typesMismatchIndex = pos;
 	QString variable = parseIdentifier(stream, pos);
 	skip(stream, pos);
-	if (hasParseErrors || checkForEndOfStream(stream, pos)) {
+	if (hasErrors() || isEndOfStream(stream, pos)) {
 		return;
 	}
 	if (!mVariables.contains(variable)) {
@@ -352,7 +342,7 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 	if (isAssignment(stream.at(pos))) {
 		pos++;
 		Number n = parseExpression(stream, pos);
-		if (!hasParseErrors) {
+		if (!hasErrors()) {
 			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
 			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
 			if (t1==t2) {
@@ -370,7 +360,7 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 		error(unexpectedSymbol, QString::number(pos+1), "=", QString(stream.at(pos)));
 		return;
 	}
-	if (!hasParseErrors && checkForColon(stream, pos)) {
+	if (!hasErrors() && checkForColon(stream, pos)) {
 		pos++;
 	}
 }
@@ -378,15 +368,15 @@ void BlockParser::parseCommand(QString stream, int& pos) {
 void BlockParser::parseProcess(QString stream, int& pos, Id curId) {
 	mCurrentId = curId;
 
-	if (checkForEmptiness(stream, pos)) {
+	if (isEmpty(stream, pos)) {
 		error(emptyProcess);
 		return;
 	}
 	parseVarPart(stream, pos);
-	if (hasParseErrors) {
+	if (hasErrors()) {
 		return;
 	}
-	while (pos < stream.length() && !hasParseErrors) {
+	while (pos < stream.length() && !hasErrors()) {
 		parseCommand(stream, pos);
 		skip(stream, pos);
 	}
@@ -395,7 +385,7 @@ void BlockParser::parseProcess(QString stream, int& pos, Id curId) {
 bool BlockParser::parseSingleComprasion(QString stream, int& pos) {
 	Number left = parseExpression(stream, pos);
 	Number right;
-	if (hasParseErrors || checkForEndOfStream(stream, pos)) {
+	if (hasErrors() || isEndOfStream(stream, pos)) {
 		return false;
 	}
 
@@ -463,9 +453,9 @@ bool BlockParser::parseDisjunction(QString stream, int& pos) {
 				res = parseSingleComprasion(stream, pos);
 			} else {
 				pos++;
-				res = parseConditionPrivate(stream, pos);
+				res = parseConditionHelper(stream, pos);
 				skip(stream, pos);
-				if (!hasParseErrors && checkForEndBracket(stream, pos)) {
+				if (!hasErrors() && checkForClosingBracket(stream, pos)) {
 					pos++;
 				}
 			}
@@ -473,13 +463,13 @@ bool BlockParser::parseDisjunction(QString stream, int& pos) {
 		case '!':
 			pos++;
 			skip(stream, pos);
-			if (hasParseErrors || !checkForBeginBracket(stream, pos)) {
+			if (hasErrors() || !checkForOpeningBracket(stream, pos)) {
 				return res;
 			}
 			pos++;
-			res = !(parseConditionPrivate(stream, pos));
+			res = !(parseConditionHelper(stream, pos));
 
-			if (hasParseErrors || !checkForEndBracket(stream, pos)) {
+			if (hasErrors() || !checkForClosingBracket(stream, pos)) {
 				return res;
 			}
 			pos++;
@@ -499,9 +489,9 @@ bool BlockParser::parseDisjunction(QString stream, int& pos) {
 
 bool BlockParser::parseConjunction(QString stream, int& pos) {
 	bool res = parseDisjunction(stream, pos);
-	while (pos < (stream.length()-1) && isLogCon(stream.at(pos))) {
+	while (pos < (stream.length()-1) && isConjunction(stream.at(pos))) {
 		pos++;
-		if (isLogCon(stream.at(pos))) {
+		if (isConjunction(stream.at(pos))) {
 			pos++;
 			res = parseDisjunction(stream, pos) && res;
 		} else {
@@ -512,11 +502,11 @@ bool BlockParser::parseConjunction(QString stream, int& pos) {
 	return res;
 }
 
-bool BlockParser::parseConditionPrivate(QString stream, int& pos) {
+bool BlockParser::parseConditionHelper(QString stream, int& pos) {
 	bool res = parseConjunction(stream, pos);
-	while (pos < (stream.length()-1) && isLogDis(stream.at(pos))) {
+	while (pos < (stream.length()-1) && isDisjunction(stream.at(pos))) {
 		pos++;
-		if (isLogDis(stream.at(pos))) {
+		if (isDisjunction(stream.at(pos))) {
 			pos++;
 			res = parseConjunction(stream, pos) || res;
 		} else {
@@ -529,14 +519,14 @@ bool BlockParser::parseConditionPrivate(QString stream, int& pos) {
 
 bool BlockParser::parseCondition(QString stream, int& pos, Id curId) {
 	mCurrentId = curId;
-	if (checkForEmptiness(stream, pos)) {
+	if (isEmpty(stream, pos)) {
 		error(emptyCondition);
 		return false;
 	}
 
-	bool res = parseConditionPrivate(stream, pos);
+	bool res = parseConditionHelper(stream, pos);
 	skip(stream, pos);
-	if (!hasParseErrors && pos < stream.length()) {
+	if (!hasErrors() && pos < stream.length()) {
 		error(unexpectedSymbol, QString::number(pos), "null string", QString(stream.at(pos)));
 	}
 	return res;
@@ -547,84 +537,84 @@ gui::ErrorReporter& BlockParser::getErrors() {
 }
 
 bool BlockParser::hasErrors() {
-	return hasParseErrors;
+	return mHasParseErrors;
 }
 
-bool BlockParser::checkForEndOfStream(QString stream, int& pos) {
+bool BlockParser::isEndOfStream(QString stream, int& pos) {
 	if (pos == stream.length()) {
-		error(unexpectedEndOfStream, QString::number(pos+1));
+		error(unexpectedEndOfStream, QString::number(pos + 1));
 		return true;
 	}
 	return false;
 }
 
 bool BlockParser::checkForLetter(QString stream, int &pos) {
-	if (checkForEndOfStream(stream, pos)) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (!isLetter(stream.at(pos))) {
-		error(unexpectedSymbol, QString::number(pos+1), "letter", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), "letter", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
 bool BlockParser::checkForDigit(QString stream, int &pos) {
-	if (checkForEndOfStream(stream, pos)) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (!isDigit(stream.at(pos))) {
-		error(unexpectedSymbol, QString::number(pos+1), "digit", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), "digit", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
-bool BlockParser::checkForBeginBracket(QString stream, int &pos) {
-	if (checkForEndOfStream(stream, pos)) {
+bool BlockParser::checkForOpeningBracket(QString stream, int &pos) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (stream.at(pos).toAscii() != '(') {
-		error(unexpectedSymbol, QString::number(pos+1), "(", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), "(", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
-bool BlockParser::checkForEndBracket(QString stream, int &pos) {
-	if (checkForEndOfStream(stream, pos)) {
+bool BlockParser::checkForClosingBracket(QString stream, int &pos) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (stream.at(pos).toAscii() != ')') {
-		error(unexpectedSymbol, QString::number(pos+1), ")", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), ")", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
 bool BlockParser::checkForColon(QString stream, int &pos) {
-	if (checkForEndOfStream(stream, pos)) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (stream.at(pos).toAscii() != ';') {
-		error(unexpectedSymbol, QString::number(pos+1), ";", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), ";", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
 bool BlockParser::checkForEqual(QString stream, int pos) {
-	if (checkForEndOfStream(stream, pos)) {
+	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
 	if (stream.at(pos).toAscii() != '=') {
-		error(unexpectedSymbol, QString::number(pos+1), "=", QString(stream.at(pos)));
+		error(unexpectedSymbol, QString::number(pos + 1), "=", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
 }
 
-bool BlockParser::checkForEmptiness(QString stream, int &pos) {
+bool BlockParser::isEmpty(QString stream, int &pos) {
 	skip(stream, pos);
 	return pos == stream.length();
 }
@@ -632,13 +622,13 @@ bool BlockParser::checkForEmptiness(QString stream, int &pos) {
 void BlockParser::error(ParseErrorType type, QString pos, QString expected, QString got) {
 	switch (type) {
 		case unexpectedEndOfStream:
-			hasParseErrors = true;
+			mHasParseErrors = true;
 			mErrorReporter->addCritical(
 				"Unexpected end of stream at " + pos + ". Mb you forget \';\'?",
 				mCurrentId);
 			break;
 		case unexpectedSymbol:
-			hasParseErrors = true;
+			mHasParseErrors = true;
 			mErrorReporter->addCritical("Unexpected symbol at " + pos +
 				" : expected \'" + expected + "\', got \'" + got + "\'", mCurrentId);
 			break;
@@ -647,14 +637,14 @@ void BlockParser::error(ParseErrorType type, QString pos, QString expected, QStr
 				expected + " = " + got + ". Possible loss of data", mCurrentId);
 			break;
 		case unknownIdentifier:
-			hasParseErrors = true;
+			mHasParseErrors = true;
 			mErrorReporter->addCritical("Unknown identifier at " + pos + " \'" + got + "\'", mCurrentId);
 			break;
 		case emptyProcess:
 			mErrorReporter->addWarning("Empty process is unnecessary", mCurrentId);
 			break;
 		case emptyCondition:
-			hasParseErrors = true;
+			mHasParseErrors = true;
 			mErrorReporter->addCritical("Condition can\'t be empty", mCurrentId);
 			break;
 	}
@@ -665,7 +655,7 @@ void BlockParser::setErrorReporter(gui::ErrorReporter *errorReporter) {
 }
 
 void BlockParser::clear() {
-	hasParseErrors = false;
+	mHasParseErrors = false;
 	mErrorReporter = NULL;
 	mVariables.clear();
 	mCurrentId = Id::rootId();

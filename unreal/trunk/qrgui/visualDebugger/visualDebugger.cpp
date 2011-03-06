@@ -16,17 +16,17 @@ using namespace qReal;
 
 VisualDebugger::VisualDebugger(models::GraphicalModelAssistApi const &modelApi)
 	: mModelApi(modelApi)
+	, mEffect(new QGraphicsColorizeEffect())
+	, mCurrentElem(NULL)
+	, mError(VisualDebugger::noErrors)
+	, mCurrentId(Id::rootId())
+	, mErrorReporter(new gui::ErrorReporter())
+	, mBlockParser(new BlockParser(mErrorReporter))
+	, mTimeout(750)
+	, mDebugType(VisualDebugger::noDebug)
+	, mDebugColor(Qt::red)
 {
-	mEffect = new QGraphicsColorizeEffect();
-	mDebugColor = Qt::red;
 	mEffect->setColor(mDebugColor);
-	mCurrentElem = NULL;
-	mCurrentId = Id::rootId();
-	mError = VisualDebugger::noErrors;
-	mErrorReporter = new gui::ErrorReporter();
-	mBlockParser = new BlockParser(mErrorReporter);
-	mTimeout = 750;
-	mDebugType = VisualDebugger::noDebug;
 }
 
 VisualDebugger::~VisualDebugger()
@@ -138,9 +138,9 @@ Id VisualDebugger::findValidLink()
 {
 	IdList outLinks = mModelApi.graphicalRepoApi().outgoingLinks(mCurrentId);
 	QString conditionStr = mModelApi.graphicalRepoApi().property(mCurrentId, "condition").toString();
-	int pos=0;
+	int pos = 0;
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
-	for (int i=0; i<outLinks.count(); i++) {
+	for (int i = 0; i < outLinks.count(); i++) {
 		bool type = mModelApi.graphicalRepoApi().property(outLinks.at(i), "type").toBool();
 		if (type == condition) {
 			return outLinks.at(i);
