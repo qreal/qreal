@@ -6,7 +6,7 @@ Number::Number(QVariant n, Type t): mNumber(n), mType(t)
 {
 }
 
-Number::Number() : mType(Number::intType), mNumber(0)
+Number::Number() : mNumber(0), mType(Number::intType)
 {
 }
 
