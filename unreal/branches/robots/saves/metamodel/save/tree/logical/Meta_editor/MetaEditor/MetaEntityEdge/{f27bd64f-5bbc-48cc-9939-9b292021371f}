@@ -2,6 +2,7 @@
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityAssociation/{14c05385-827f-4178-aff5-f95b10227c76}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a3025783-fcfb-4e39-a53e-abd3d93aa93f}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{7cc4148b-6c26-44b9-9e9f-4109410044ad}"/>
   </children>
   <properties>
     <QString key="container" value=""/>
@@ -13,9 +14,7 @@
     <QString key="labelType" value="Dynamic text"/>
     <QString key="labels" value=""/>
     <QString key="lineType" value="solidLine"/>
-    <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{2e56cb8b-a1ab-4373-8941-7f98050e090d}"/>
-    </links>
+    <links type="qReal::IdList"/>
     <QString key="name" value="ControlFlow"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>

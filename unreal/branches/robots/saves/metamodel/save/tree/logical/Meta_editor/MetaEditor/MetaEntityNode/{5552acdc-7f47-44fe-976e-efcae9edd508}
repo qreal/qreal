@@ -1,8 +1,5 @@
 <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{5552acdc-7f47-44fe-976e-efcae9edd508}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
-  <children>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a74fe92b-88ca-4653-8ea3-7cdcac0bc504}"/>
-    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{30a5721f-1f83-4ae1-9224-ae8eb72fce67}"/>
-  </children>
+  <children/>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value="Моторы назад"/>

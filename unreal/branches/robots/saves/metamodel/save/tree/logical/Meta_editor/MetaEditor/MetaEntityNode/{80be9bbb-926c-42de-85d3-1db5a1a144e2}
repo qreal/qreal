@@ -12,7 +12,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{801238cf-cb67-43e2-9567-4c960ec56b19}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7ebcf888-b5a6-4967-9272-f57112d1084e}"/>
     </links>
     <QString key="name" value="Fork"/>
     <outgoingConnections type="qReal::IdList"/>

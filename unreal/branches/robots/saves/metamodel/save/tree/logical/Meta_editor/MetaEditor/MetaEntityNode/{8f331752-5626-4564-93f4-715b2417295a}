@@ -14,7 +14,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{d4f815fe-b33e-463e-bfbf-01cec06c0944}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a0401a4e-208c-4055-9f41-219dbb5791dc}"/>
     </links>
     <QString key="name" value="Beep"/>
     <outgoingConnections type="qReal::IdList"/>

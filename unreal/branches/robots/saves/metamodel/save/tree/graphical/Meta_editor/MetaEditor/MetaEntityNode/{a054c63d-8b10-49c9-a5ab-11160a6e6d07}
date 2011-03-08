@@ -6,19 +6,10 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{5ecd8f4e-4021-4bdf-9d7f-2aec02336b9e}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{d4e13ebf-97eb-497e-85a7-9266758fd697}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{2e89d3ef-c592-4d4d-a54c-835cd76c9aeb}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{62ff1e27-c5e4-41f3-90bc-a0bfa85d226b}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{e7bb26a4-6eb6-461d-b2af-edb99dffffc7}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{38774cd3-8fa3-4092-bac5-751879456797}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{25c25bcb-d413-429e-b4bc-cddc4f6acb4b}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{b77f76b4-2e69-45d8-b642-47587bd8c0d5}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{1bc37ba3-fe19-4679-8817-e6b5737c05b8}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{040ae85b-f19a-4d70-bf0c-60f2fef11950}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{5d987857-7cee-4602-a211-8752a5a35e57}"/>
     </links>
     <QString key="name" value="DiagramNode"/>
-    <QPointF key="position" value="128, 234"/>
+    <QPointF key="position" value="96.896, 152.784"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

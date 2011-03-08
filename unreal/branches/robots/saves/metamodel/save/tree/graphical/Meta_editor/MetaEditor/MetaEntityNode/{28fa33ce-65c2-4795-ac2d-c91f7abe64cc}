@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{ff8d1e84-9af2-41fa-b885-1d05e719fdd1}"/>
     </links>
     <QString key="name" value="WaitForTouchSensor"/>
-    <QPointF key="position" value="706.36, 618.36"/>
+    <QPointF key="position" value="722.054, 529.005"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

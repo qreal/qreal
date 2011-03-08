@@ -12,7 +12,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{bcd70d55-29cf-4ae8-8ca0-6c0550aef141}"/>
     </links>
     <QString key="name" value="InitialNode"/>
     <outgoingConnections type="qReal::IdList"/>

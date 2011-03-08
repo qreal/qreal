@@ -1,13 +1,13 @@
 <object logicalId="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}" id="qrm:/Meta_editor/MetaEditor/Container/{62ff1e27-c5e4-41f3-90bc-a0bfa85d226b}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{0c59810b-3f48-47d6-8f7b-55aecef7a153}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 96, -143 : "/>
+    <QPolygon key="configuration" value="0, 0 : 68, -2 : "/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a054c63d-8b10-49c9-a5ab-11160a6e6d07}"/>
-    <double key="fromPort" value="1.11111"/>
+    <double key="fromPort" value="1.5"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(Container)"/>
-    <QPointF key="position" value="-399.88, -569.551"/>
-    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{9d1a6ded-7aab-4afa-aa29-fca53bb91703}"/>
+    <QPointF key="position" value="-403.336, -617.928"/>
+    <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{74003cfd-b2a4-44dd-a365-430d3960db3b}"/>
     <double key="toPort" value="0.5"/>
   </properties>
 </object>

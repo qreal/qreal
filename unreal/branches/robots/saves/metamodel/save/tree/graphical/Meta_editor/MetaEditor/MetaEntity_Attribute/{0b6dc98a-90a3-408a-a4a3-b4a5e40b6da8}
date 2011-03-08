@@ -1,4 +1,4 @@
-<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a74fe92b-88ca-4653-8ea3-7cdcac0bc504}" id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{fe9da77b-36e9-4963-8ce5-48c0fb9e6c1f}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d7ed8e6f-7744-4543-a1f8-5fd4f765ccc5}">
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ae8101da-f821-41b3-a099-aa2c4fcc088c}" id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{0b6dc98a-90a3-408a-a4a3-b4a5e40b6da8}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{33e7fd84-bc5f-43c0-b262-e273be9843e5}">
   <children/>
   <properties>
     <QPolygon key="configuration" value="0, 0 : 140, 0 : 140, 16 : 0, 16 : "/>

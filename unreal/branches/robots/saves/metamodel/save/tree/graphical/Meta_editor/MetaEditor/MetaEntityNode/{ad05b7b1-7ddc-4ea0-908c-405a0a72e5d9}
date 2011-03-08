@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8ac88aa7-0e00-4aea-8535-81c52dd08c13}"/>
     </links>
     <QString key="name" value="EnginesStop"/>
-    <QPointF key="position" value="107, 786"/>
+    <QPointF key="position" value="44.024, 549.648"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

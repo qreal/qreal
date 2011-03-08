@@ -10,7 +10,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0dcd6e55-e696-477f-a5a2-d4f82ad04d7d}"/>
     </links>
     <QString key="name" value="WaitForSonarDistance"/>
-    <QPointF key="position" value="702.96, 746.36"/>
+    <QPointF key="position" value="500.16, 539.457"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

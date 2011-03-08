@@ -1,7 +1,7 @@
 <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9380a8a4-44bc-444b-9a43-75cf0591e523}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
   <children/>
   <properties>
-    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{283c1c56-a533-45fb-a443-8366b653eee4}"/>
+    <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{83782bf4-77a3-4668-8f07-ca0004b7ae71}"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>

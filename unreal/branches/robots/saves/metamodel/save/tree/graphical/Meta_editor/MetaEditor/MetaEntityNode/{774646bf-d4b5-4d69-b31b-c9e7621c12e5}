@@ -9,10 +9,10 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{5d987857-7cee-4602-a211-8752a5a35e57}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4f191274-5d2d-4884-ad1b-32b283ef5e66}"/>
     </links>
     <QString key="name" value="PlayTone"/>
-    <QPointF key="position" value="388, 813"/>
+    <QPointF key="position" value="1476.5, 202.488"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

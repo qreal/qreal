@@ -7,10 +7,10 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{b77f76b4-2e69-45d8-b642-47587bd8c0d5}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b86b50e-950e-4c4b-9d6b-9770656653f8}"/>
     </links>
     <QString key="name" value="Beep"/>
-    <QPointF key="position" value="385, 682"/>
+    <QPointF key="position" value="985.576, 175.744"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

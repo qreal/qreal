@@ -14,7 +14,7 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{7adad862-eadd-46be-9d23-c011f4aab172}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7ba9caa8-1c29-4859-b6ff-cc6ff8faa28f}"/>
     </links>
     <QString key="name" value="Timer"/>
     <outgoingConnections type="qReal::IdList"/>

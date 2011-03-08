@@ -7,10 +7,10 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Container/{38774cd3-8fa3-4092-bac5-751879456797}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{906da261-7ace-42fb-b0ec-80fafdc239f2}"/>
     </links>
     <QString key="name" value="Timer"/>
-    <QPointF key="position" value="391, 435"/>
+    <QPointF key="position" value="1421.06, 668.52"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
