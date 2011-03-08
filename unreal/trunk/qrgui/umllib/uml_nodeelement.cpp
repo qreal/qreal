@@ -309,10 +309,10 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	if (embeddedLinkers.isEmpty())
+	if (mEmbeddedLinkers.isEmpty())
 		initEmbeddedLinkers();
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->setCovered(true);
 
 	if (isSelected()) {
@@ -346,7 +346,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	scene()->invalidate();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->setCovered(false);
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
@@ -419,7 +419,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	storeGeometry();
 
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->setCovered(true);
 
 	if (mDragState == None)
@@ -505,9 +505,9 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 	if (!isSelected())
 		return;
 
-	if (embeddedLinkers.isEmpty())
+	if (mEmbeddedLinkers.isEmpty())
 		initEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->setCovered(true);
 }
 
@@ -527,7 +527,7 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hideEmbeddedLinkers()
 {
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->setCovered(false);
 }
 
@@ -543,46 +543,48 @@ void NodeElement::setConnectingState(bool arg)
 
 bool NodeElement::initPossibleEdges()
 {
-	if (!possibleEdges.isEmpty())
+	if (!mPossibleEdges.isEmpty())
 		return true;
-	foreach(QString elementName,
-			mGraphicalAssistApi->editorManager().editorInterface(id().editor())->elements(id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManager().editorInterface(id().editor())->isNodeOrEdge(elementName);
+
+	EditorInterface const * const editorInterface = mGraphicalAssistApi->editorManager().editorInterface(id().editor());
+	foreach(QString elementName, editorInterface->elements(id().diagram()))
+	{
+		int ne = editorInterface->isNodeOrEdge(elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> list
-					= mGraphicalAssistApi->editorManager().editorInterface(id().editor())->getPossibleEdges(elementName);
+			QList<StringPossibleEdge> list = editorInterface->getPossibleEdges(elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if ((pEdge.first.first == id().element())
-					|| ((pEdge.first.second == id().element()) && (!pEdge.second.first))) {
+				if (editorInterface->isParentOf(id().diagram(), pEdge.first.first, id().diagram(), id().element())
+					|| (editorInterface->isParentOf(id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
-					possibleEdges.insert(possibleEdge);
-					possibleEdgeTypes.insert(possibleEdge.second);
+					mPossibleEdges.insert(possibleEdge);
+					mPossibleEdgeTypes.insert(possibleEdge.second);
 				}
 			}
 		}
 	}
 
-	return (!possibleEdges.isEmpty());
+	return !mPossibleEdges.isEmpty();
 }
 
 bool NodeElement::initEmbeddedLinkers()
 {
 	int counter = 0;
 	QSet<qReal::Id> usedEdges;
-	foreach(PossibleEdgeType type, possibleEdgeTypes) {
+	foreach(PossibleEdgeType type, mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second))
 			continue;
 		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
 		scene()->addItem(embeddedLinker);
 		embeddedLinker->setEdgeType(type.second);
 		embeddedLinker->setDirected(type.first);
-		embeddedLinkers.append(embeddedLinker);
+		mEmbeddedLinkers.append(embeddedLinker);
 		embeddedLinker->setMaster(this);
 		usedEdges.insert(type.second);
 		counter++;
 	}
 	moveEmbeddedLinkers();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 		embeddedLinker->initTitle();
 
 	return (counter > 0);
@@ -591,8 +593,8 @@ bool NodeElement::initEmbeddedLinkers()
 void NodeElement::moveEmbeddedLinkers()
 {
 	int index = 0;
-	int maxIndex = embeddedLinkers.size();
-	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+	int maxIndex = mEmbeddedLinkers.size();
+	foreach(EmbeddedLinker* embeddedLinker, mEmbeddedLinkers)
 	{
 		embeddedLinker->takePosition(index,maxIndex);
 	index++;
@@ -1218,7 +1220,7 @@ PossibleEdge NodeElement::toPossibleEdge(const StringPossibleEdge &strPossibleEd
 
 QList<PossibleEdge> NodeElement::getPossibleEdges()
 {
-	return QList<PossibleEdge>::fromSet(possibleEdges);
+	return QList<PossibleEdge>::fromSet(mPossibleEdges);
 }
 
 void NodeElement::setColorRect(bool value)

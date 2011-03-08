@@ -162,10 +162,10 @@ namespace UML {
 
 		DragState mDragState;
 
-		QList<EmbeddedLinker*> embeddedLinkers;
+		QList<EmbeddedLinker*> mEmbeddedLinkers;
 
-		QSet<PossibleEdge> possibleEdges;
-		QSet<PossibleEdgeType> possibleEdgeTypes;
+		QSet<PossibleEdge> mPossibleEdges;
+		QSet<PossibleEdgeType> mPossibleEdgeTypes;
 
 		QTransform mTransform;
 

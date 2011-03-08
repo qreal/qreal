@@ -31,11 +31,12 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateParentsMapping(utils::OutFile &out);
 	QString description() const;
 	void setDescription(QString const &description);
 
 protected:
-	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;
+	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
 
 	struct ContainerProperties {
 		ContainerProperties();

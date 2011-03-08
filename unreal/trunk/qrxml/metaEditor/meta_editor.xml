@@ -144,6 +144,14 @@
 							<start startx="150" starty="10"/>
 							<end endx="150" endy="90"/>
 						</linePort>
+						<linePort>
+							<start startx="10" starty="0"/>
+							<end endx="140" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="10" starty="100"/>
+							<end endx="140" endy="100"/>
+						</linePort>
 					</ports>
 				</graphics>
 				<logic>
