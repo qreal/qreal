@@ -15,11 +15,11 @@ SUBDIRS	= \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	packageEditor/packageEditor.pro \
 #	parallelEditor/parallelEditor.pro \
-        requirementsEditor/requirementsEditor.pro \
+	requirementsEditor/requirementsEditor.pro \
 #	sequenceEditor/sequenceEditor.pro \
 #	stateMachinesEditor/stateMachinesEditor.pro \
 #	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
-       usecaseEditor/usecaseEditor.pro \
+	usecaseEditor/usecaseEditor.pro \
 #	handmadeEditor/handmadeEditor.pro \
 #	testEditor/testEditor.pro \

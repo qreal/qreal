@@ -155,9 +155,9 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 			if (objectType == "MetaEntityImport")
 				createImport(tagGraphic, id);
 			if (objectType == "MetaEntityNode")
-				createNode (tagGraphic, id);
+				createNode(tagGraphic, id);
 			if (objectType == "MetaEntityEdge")
-				createEdge (tagGraphic, id);
+				createEdge(tagGraphic, id);
 		}
 	}
 }
@@ -215,6 +215,23 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 		QDomElement lineType = mDocument.createElement("lineType");
 		ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
 		graphics.appendChild(lineType);
+
+		QString const labelText = mApi.stringProperty(id, "labelText");
+		if (!labelText.isEmpty()) {
+			QDomElement labels = mDocument.createElement("labels");
+			graphics.appendChild(labels);
+
+			QDomElement label = mDocument.createElement("label");
+			labels.appendChild(label);
+
+			QString const labelType = mApi.stringProperty(id, "labelType");
+			if (labelType == "Static text")
+				label.setAttribute("text", labelText);
+			else if (labelType == "Dynamic text")
+				label.setAttribute("textBinded", labelText);
+			else
+				mErrorReporter.addWarning("Incorrect label type", id);
+		}
 	}
 
 	QDomElement logic = mDocument.createElement("logic");
@@ -419,18 +436,6 @@ void EditorGenerator::setStatusElement(QDomElement &parent, const Id &id, const 
 
 void EditorGenerator::setContainer(QDomElement &parent, const Id &id)
 {
-	/*if (!mApi.hasProperty(id, "container") || mApi.stringProperty(id, "container").isEmpty())
-		return;
-
-	QDomElement container = mDocument.createElement("container");
-	parent.appendChild(container);
-
-	QStringList const types = mApi.stringProperty(id, "container").split(',');
-	foreach (QString type, types) {
-		QDomElement contains = mDocument.createElement("contains");
-		ensureCorrectness(id, contains, "type", type);
-		container.appendChild(contains);
-	}*/
 	QDomElement container = mDocument.createElement("container");
 	parent.appendChild(container);
 
@@ -494,10 +499,10 @@ void EditorGenerator::setBoolValuesForContainer(const QString &propertyName,QDom
 
 void EditorGenerator::ensureCorrectness(const Id &id, QDomElement element, const QString &tagName, const QString &value)
 {
-	QString tag = tagName;
-	if ((value == "") && ((tag == "displayedName")))
+	QString const tag = tagName;
+	if (value.isEmpty() && tag == "displayedName")
 		return;
-	if (value == "") {
+	if (value.isEmpty()) {
 		mErrorReporter.addWarning(QString ("not filled %1\n").arg(tagName), id);
 		element.setAttribute(tagName, "");
 	}
@@ -507,7 +512,7 @@ void EditorGenerator::ensureCorrectness(const Id &id, QDomElement element, const
 		if (patten.exactMatch(value))
 			element.setAttribute(tagName, value);
 		else {
-			mErrorReporter.addWarning("wrong name\n",id);
+			mErrorReporter.addWarning("wrong name\n", id);
 			element.setAttribute(tagName, value);
 		}
 	}
