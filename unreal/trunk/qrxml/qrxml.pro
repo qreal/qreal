@@ -20,6 +20,6 @@ SUBDIRS	= \
 #	stateMachinesEditor/stateMachinesEditor.pro \
 #	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
-#        usecaseEditor/usecaseEditor.pro \
+       usecaseEditor/usecaseEditor.pro \
 #	handmadeEditor/handmadeEditor.pro \
 #	testEditor/testEditor.pro \
