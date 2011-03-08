@@ -190,6 +190,11 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	graphics.setContent(mApi.stringProperty(id, "shape"));
 	node.appendChild(graphics);
 
+	if (mApi.stringProperty(id, "isResizeable") == "false") {
+		QDomElement nonResizeable = mDocument.createElement("nonResizeable");
+		graphics.firstChild().appendChild(nonResizeable);
+	}
+
 	QDomElement logic = mDocument.createElement("logic");
 	node.appendChild(logic);
 
@@ -217,9 +222,21 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 		ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
 		graphics.appendChild(lineType);
 
-		if (mApi.stringProperty(id, "labels") != "") {
+		QString const labelText = mApi.stringProperty(id, "labelText");
+		if (!labelText.isEmpty()) {
 			QDomElement labels = mDocument.createElement("labels");
 			graphics.appendChild(labels);
+
+			QDomElement label = mDocument.createElement("label");
+			labels.appendChild(label);
+
+			QString const labelType = mApi.stringProperty(id, "labelType");
+			if (labelType == "Static text")
+				label.setAttribute("text", labelText);
+			else if (labelType == "Dynamic text")
+				label.setAttribute("textBinded", labelText);
+			else
+				mErrorReporter.addWarning("Incorrect label type", id);
 		}
 	}
 
@@ -426,18 +443,6 @@ void EditorGenerator::setStatusElement(QDomElement &parent, const Id &id, const 
 
 void EditorGenerator::setContainer(QDomElement &parent, const Id &id)
 {
-	/*if (!mApi.hasProperty(id, "container") || mApi.stringProperty(id, "container").isEmpty())
-		return;
-
-	QDomElement container = mDocument.createElement("container");
-	parent.appendChild(container);
-
-	QStringList const types = mApi.stringProperty(id, "container").split(',');
-	foreach (QString type, types) {
-		QDomElement contains = mDocument.createElement("contains");
-		ensureCorrectness(id, contains, "type", type);
-		container.appendChild(contains);
-	}*/
 	QDomElement container = mDocument.createElement("container");
 	parent.appendChild(container);
 
@@ -501,10 +506,10 @@ void EditorGenerator::setBoolValuesForContainer(const QString &propertyName,QDom
 
 void EditorGenerator::ensureCorrectness(const Id &id, QDomElement element, const QString &tagName, const QString &value)
 {
-	QString tag = tagName;
-	if ((value == "") && ((tag == "displayedName")))
+	QString const tag = tagName;
+	if (value.isEmpty() && tag == "displayedName")
 		return;
-	if (value == "") {
+	if (value.isEmpty()) {
 		mErrorReporter.addWarning(QString ("not filled %1\n").arg(tagName), id);
 		element.setAttribute(tagName, "");
 	}

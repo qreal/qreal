@@ -305,13 +305,13 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		embeddedLinker->setCovered(true);
 
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()))
+		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
 			mDragState = TopLeft;
-		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()))
+		else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable())
 			mDragState = TopRight;
-		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()))
+		else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable())
 			mDragState = BottomRight;
-		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()))
+		else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable())
 			mDragState = BottomLeft;
 		else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos())
 				&& mElementImpl->isContainer())
@@ -321,7 +321,6 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 	else
 		Element::mousePressEvent(event);
-
 
 	mLeftPressed = true;
 	setZValue(1);
@@ -341,7 +340,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mDragState == None) {
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent();
-	} else {
+	} else if (mElementImpl->isResizeable()) {
 		QRectF newContents = mContents;
 
 		QPointF parentPos = QPointF(0, 0);
@@ -391,6 +390,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		resize(newContents);
 	}
+
 	if (isPort())
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 
@@ -471,31 +471,33 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+	Q_UNUSED(event);
+
 	QList<QGraphicsItem*> graphicsItems = scene()->selectedItems();
 	int length = graphicsItems.size();
 	foreach(QGraphicsItem* item, graphicsItems) {
 		UML::EdgeElement* edge = dynamic_cast<UML::EdgeElement*>(item);
 		if (edge) {
-		length--;
-		graphicsItems.removeOne(edge);
+			length--;
+			graphicsItems.removeOne(edge);
 		}
 	}
 
 	if (length > 1) {
 		foreach(QGraphicsItem* item, scene()->selectedItems()) {
-		UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
-		if (node)
-			node->hideEmbeddedLinkers();
+			UML::NodeElement* node = dynamic_cast<UML::NodeElement*>(item);
+			if (node)
+				node->hideEmbeddedLinkers();
 		}
 	}
-		Q_UNUSED(event);
+
 	if (!isSelected())
 		return;
 
-		if (embeddedLinkers.isEmpty())
-			initEmbeddedLinkers();
-		foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
-			embeddedLinker->setCovered(true);
+	if (embeddedLinkers.isEmpty())
+		initEmbeddedLinkers();
+	foreach(EmbeddedLinker* embeddedLinker, embeddedLinkers)
+		embeddedLinker->setCovered(true);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -943,10 +945,14 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->drawRect(QRectF(mContents.topRight(), QSizeF(-4, 4)));
 			painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(4, -4)));
 
-			painter->translate(mContents.bottomRight());
-			painter->drawLine(QLineF(-4, 0, 0, -4));
-			painter->drawLine(QLineF(-8, 0, 0, -8));
-			painter->drawLine(QLineF(-12, 0, 0, -12));
+			if (mElementImpl->isResizeable()) {
+				painter->translate(mContents.bottomRight());
+				painter->drawLine(QLineF(-4, 0, 0, -4));
+				painter->drawLine(QLineF(-8, 0, 0, -8));
+				painter->drawLine(QLineF(-12, 0, 0, -12));
+			} else {
+				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(4, 4)));
+			}
 
 			painter->restore();
 		}

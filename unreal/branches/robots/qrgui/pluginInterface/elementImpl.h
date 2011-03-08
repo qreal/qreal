@@ -90,6 +90,7 @@ namespace UML {
 			virtual void updateData(ElementRepoInterface *repo) const = 0;
 			virtual bool isNode() = 0;
 			virtual bool hasPorts() = 0;
+			virtual bool isResizeable() = 0;
 			virtual Qt::PenStyle getPenStyle() = 0;
 			virtual void drawStartArrow(QPainter *painter) const = 0;
 			virtual void drawEndArrow(QPainter *painter) const = 0;

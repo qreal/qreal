@@ -25,6 +25,7 @@ private:
 	QDomElement mPortsDomElement;
 	bool mIsPin;
 	bool mIsHavePin;
+	bool mIsResizeable;
 
 	virtual bool initAssociations();
 	virtual bool initGraphics();
