@@ -2,7 +2,6 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
-
 #include "../../../qrrepo/repoApi.h"
 
 namespace Geny {

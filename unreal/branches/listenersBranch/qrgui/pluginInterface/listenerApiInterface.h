@@ -3,8 +3,10 @@
 namespace qReal {
 
 class ListenerApiInterface {
-public:
-	virtual ~ListenerApiInterface() {}
+	public:
+		virtual ~ListenerApiInterface() {}
+
+	protected:
 
 };
 

@@ -90,8 +90,8 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	if (methodName == "children")
 		return rApi.children(getCurObjectId());
 
-	if (methodName == "parents")
-		return rApi.parents(getCurObjectId());
+//	if (methodName == "parents")
+//		return rApi.parents(getCurObjectId());
 
 	if (methodName == "outgoingLinks")
 		return rApi.outgoingLinks(getCurObjectId());
@@ -114,8 +114,8 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	if (methodName == "incomingUsages")
 		return rApi.incomingUsages(getCurObjectId());
 	
-	if (methodName == "elements")
-		return rApi.elements(getCurObjectId());
+//	if (methodName == "elements")
+//		return rApi.elements(getCurObjectId());
 
 	//Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 	if (methodName.startsWith("elementsByType")) {
@@ -132,11 +132,11 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 		return rApi.elementsByType(elementsType);
 	}
 
-	if (methodName == "getOpenedDiagrams")
-		return rApi.getOpenedDiagrams();
+//	if (methodName == "getOpenedDiagrams")
+//		return rApi.getOpenedDiagrams();
 
-	if (methodName == "getChangedDiagrams")
-		return rApi.getChangedDiagrams();
+//	if (methodName == "getChangedDiagrams")
+//		return rApi.getChangedDiagrams();
 
 	qDebug() << "Error! Uses unknown RepoApi list method!";
 
