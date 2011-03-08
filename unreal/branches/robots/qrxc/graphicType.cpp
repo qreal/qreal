@@ -498,6 +498,7 @@ void GraphicType::generatePropertyTypes(OutFile &out)
 
 	foreach (Property *property, mProperties) {
 		// skipping basic types since we're not really interested in them
+		// TODO: lolwut?
 		if (property->type() == "string" || property->name() == "int")
 			continue;
 		out() << "\tpropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << NameNormalizer::normalize(property->type()) << "\";\n";

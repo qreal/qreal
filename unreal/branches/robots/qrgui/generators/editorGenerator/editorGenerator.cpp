@@ -156,9 +156,9 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 			if (objectType == "MetaEntityImport")
 				createImport(tagGraphic, id);
 			if (objectType == "MetaEntityNode")
-				createNode (tagGraphic, id);
+				createNode(tagGraphic, id);
 			if (objectType == "MetaEntityEdge")
-				createEdge (tagGraphic, id);
+				createEdge(tagGraphic, id);
 		}
 	}
 }
@@ -216,6 +216,11 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 		QDomElement lineType = mDocument.createElement("lineType");
 		ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
 		graphics.appendChild(lineType);
+
+		if (mApi.stringProperty(id, "labels") != "") {
+			QDomElement labels = mDocument.createElement("labels");
+			graphics.appendChild(labels);
+		}
 	}
 
 	QDomElement logic = mDocument.createElement("logic");

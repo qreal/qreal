@@ -14,7 +14,7 @@ win32 | win32-msvc* {
 		error(Windows build definitely needs to be fixed)
 	}
 } else {
-	QRXC = ..\\..\\qrxc\\qrxc
+	QRXC = ../../qrxc/qrxc
 }
 
 isEmpty(QREAL_EDITOR_NAME) {
