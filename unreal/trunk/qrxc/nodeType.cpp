@@ -12,8 +12,11 @@
 
 using namespace utils;
 
-NodeType::NodeType(Diagram *diagram) : GraphicType(diagram), mIsPin(false),
-mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram)
+	: GraphicType(diagram)
+	, mIsPin(false)
+	, mIsHavePin(false)
+	, mIsResizeable(true)
 {}
 
 NodeType::~NodeType()
@@ -30,6 +33,9 @@ Type* NodeType::clone() const
 		result->mPorts.append(port->clone());
 	result->mSdfDomElement = mSdfDomElement;
 	result->mPortsDomElement = mPortsDomElement;
+	result->mIsPin = mIsPin;
+	result->mIsHavePin = mIsHavePin;
+	result->mIsResizeable = mIsResizeable;
 	return result;
 }
 
@@ -125,12 +131,16 @@ bool NodeType::initBooleanProperties()
 {
 	mIsPin = false;
 	mIsHavePin = false;
-	QDomElement element = mLogic.firstChildElement("pin");
+	mIsResizeable = true;
+	QDomElement const element = mLogic.firstChildElement("pin");
 	if (!element.isNull())
 		mIsPin = true;
-	QDomElement element1 = mLogic.firstChildElement("action");
+	QDomElement const element1 = mLogic.firstChildElement("action");
 	if (!element1.isNull())
 		mIsHavePin = true;
+	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
+	if (!element2.isNull())
+		mIsResizeable = false;
 	return true;
 }
 
@@ -288,6 +298,10 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t}\n\n"
 		<< "\t\tbool isNode()\n\t\t{\n"
 		<< "\t\t\treturn true;\n"
+		<< "\t\t}\n\n"
+
+		<< "\t\tbool isResizeable()\n\t\t{\n"
+		<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
 		<< "\t\t}\n\n"
 
 		<< "\t\tbool isContainer()\n\t\t{\n"

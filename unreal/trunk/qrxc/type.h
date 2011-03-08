@@ -43,7 +43,7 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
 	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
-	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;	
+	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
 
 protected:
 	void copyFields(Type *type) const;
@@ -56,7 +56,7 @@ protected:
 private:
 	QString mName;  // Неквалифицированное имя метатипа
 	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
-	QString mNativeContext;  // "� одной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
+	QString mNativeContext;  // "Pодной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
 	QString mDisplayedName;
 	QString mPath;
 };

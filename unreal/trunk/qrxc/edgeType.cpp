@@ -135,6 +135,7 @@ void EdgeType::generateCode(OutFile &out)
 		<< "\t\tvirtual ~" << className << "() {}\n\n"
 		<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 		<< "\t\tbool isNode() { return false; }\n"
+		<< "\t\tbool isResizeable() { return true; }\n"
 		<< "\t\tbool isContainer() { return false; }\n"
 		<< "\t\tbool isSortingContainer() { return false; }\n"
 		<< "\t\tint sizeOfForestalling() { return 0; }\n"

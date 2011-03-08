@@ -189,6 +189,11 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	graphics.setContent(mApi.stringProperty(id, "shape"));
 	node.appendChild(graphics);
 
+	if (mApi.stringProperty(id, "isResizeable") == "false") {
+		QDomElement nonResizeable = mDocument.createElement("nonResizeable");
+		graphics.firstChild().appendChild(nonResizeable);
+	}
+
 	QDomElement logic = mDocument.createElement("logic");
 	node.appendChild(logic);
 
