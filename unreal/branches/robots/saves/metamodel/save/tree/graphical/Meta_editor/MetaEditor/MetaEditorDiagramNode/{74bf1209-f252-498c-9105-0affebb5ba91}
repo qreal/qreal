@@ -17,6 +17,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{e0886847-515c-408a-94ef-b44088d9da4c}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d0a18fab-b5ae-4bb2-ba4a-6ff6323583e2}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{83ac2700-9ebb-48e3-87a7-53380eaacf2a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{66d10854-2874-47d8-ab8c-e607d924b297}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value="0, 0 : 1004, 0 : 1004, 1025 : 0, 1025 : "/>
