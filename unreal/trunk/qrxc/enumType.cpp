@@ -5,7 +5,7 @@
 bool EnumType::init(QDomElement const &element, QString const &context)
 {
 	if (NonGraphicType::init(element, context)) {
-		for (QDomElement valueElement = element.firstChildElement("value"); 
+		for (QDomElement valueElement = element.firstChildElement("value");
 			!valueElement.isNull();
 			valueElement = valueElement.nextSiblingElement("value"))
 		{
@@ -32,15 +32,15 @@ bool EnumType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
 
 	out() << "\t\tresult";
 	foreach (QString value, mValues)
-		out() << " << \"" << value << "\"";
-	out() << ";\n";	
+		out() << " << QString::fromUtf8(\"" << value << "\")";
+	out() << ";\n";
 	return true;
 }
 
 void EnumType::generateOneCase(utils::OutFile &out, bool isNotFirst) const
 {
 	//QString name = NameNormalizer::normalize(qualifiedName());
-	
+
 	if (!isNotFirst)
 		out() << "\tif (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
 	else
