@@ -4,11 +4,11 @@
     <namespace>UML 2.1</namespace>
     <diagram displayedName="Use Case Diagram" name="UseCaseDiagram">
       <graphicTypes>
-        <import as="DirectedAssociation" displayedName="Directed Association" name="Kernel::Directed Association"/>
-        <import as="Constraint" displayedName="Constraint" name="Kernel::Constraint"/>
+        <import as="DirectedAssociation" displayedName="Directed Association" name="KernelDiagram::DirectedAssociation"/>
+        <import as="Constraint" displayedName="Constraint" name="KernelDiagram::Constraint"/>
         <import as="ConstraintEdge" displayedName="Constraint Edge" name="ActivityDiagram::ConstraintEdge"/>
-        <import as="Comment" displayedName="Comment" name="Kernel::Comment"/>
-        <import as="CommentLink" displayedName="Comment Link" name="Kernel::Comment Link"/>
+        <import as="Comment" displayedName="Comment" name="KernelDiagram::Comment"/>
+        <import as="CommentLink" displayedName="Comment Link" name="KernelDiagram::CommentLink"/>
         <node displayedName="Use Case Diagram" path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="UseCaseDiagramNode">
           <graphics>
             <picture sizex="200" sizey="200">
@@ -33,7 +33,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Diagram"/>
+              <parent parentName="KernelDiagram::Diagram"/>
             </generalizations>
             <container>
               <contains type="UseCaseDiagram::Aggregation"/>
@@ -77,7 +77,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Behaviors::Behaviored Classifier"/>
+              <parent parentName="BasicBehaviorsDiagram::BehavioredClassifier"/>
             </generalizations>
             <container>
               <contains type="UseCase"/>
@@ -113,7 +113,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Classifier"/>
+              <parent parentName="KernelDiagram::Classifier"/>
             </generalizations>
             <properties>
               <property type="UseCase" name="ownedUseCase"/>
@@ -133,8 +133,8 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Named Element"/>
-              <parent parentName="Kernel::Directed Relationship"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
+              <parent parentName="KernelDiagram::DirectedAssociation"/>
             </generalizations>
             <properties>
               <property type="UseCase" name="extendedUseCase"/>
@@ -150,7 +150,7 @@
         <node displayedName="Extension Point" name="ExtensionPoint">
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Redefinable Element"/>
+              <parent parentName="KernelDiagram::RedefinableElement"/>
             </generalizations>
             <properties>
               <property type="UseCase" name="useCase"/>
@@ -163,8 +163,8 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Kernel::Directed Relationship"/>
-              <parent parentName="Kernel::Named Element"/>
+              <parent parentName="KernelDiagram::DirectedRelationship"/>
+              <parent parentName="KernelDiagram::NamedElement"/>
             </generalizations>
             <associations endType="open_arrow" beginType="no_arrow">
               <association beginName="UseCase" endName="UseCase"/>
@@ -200,7 +200,7 @@
           </graphics>
           <logic>
             <generalizations>
-              <parent parentName="Basic Behaviors::Behaviored Classifier"/>
+              <parent parentName="BasicBehaviorsDiagram::BehavioredClassifier"/>
             </generalizations>
             <properties>
               <property type="Classifier" name="subject"/>
