@@ -10,7 +10,7 @@ using namespace details;
 Autoconfigurer::Autoconfigurer(models::GraphicalModelAssistApi const &graphicalModelApi
 		, BlocksTable * const blocksTable
 		, gui::ErrorReporter * const errorReporter
-		, RobotModel &robotModel
+		, RobotModel *robotModel
 		)
 	: mGraphicalModelApi(&graphicalModelApi)
 	, mBlocksTable(blocksTable)
@@ -47,7 +47,7 @@ bool Autoconfigurer::configure(Id const &diagram)
 	}
 
 	if (result)
-		mRobotModel.configureSensors(
+		mRobotModel->configureSensors(
 				mUsedSensors[0]
 				, mUsedSensors[1]
 				, mUsedSensors[2]

@@ -1,9 +1,8 @@
 #pragma once
-
 #include <QtCore/QObject>
-
-#include "i2cSensor.h"
+#include "sensor.h"
 #include "../../sensorConstants.h"
+#include "../robotCommandConstants.h"
 
 namespace qReal {
 namespace interpreters {
@@ -11,20 +10,11 @@ namespace robots {
 namespace details {
 namespace robotParts {
 
-class SonarSensor : public I2CSensor
+class SonarSensor : public Sensor
 {
 	Q_OBJECT
-
 public:
-	SonarSensor(RobotCommunicationInterface *robotCommunicationInterface
-			, lowLevelInputPort::InputPortEnum const &port);
-	virtual void read();
-
-private:
-	void setMode(sonarMode::SonarModeEnum const &mode);
-	void writeRegister(sonarRegisters::SonarRegistersEnum const &reg, int value);
-
-	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
+	SonarSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
 };
 
 }

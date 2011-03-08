@@ -4,7 +4,7 @@
 #include <QtCore/QTimer>
 
 #include "block.h"
-#include "../robotModel.h"
+#include "../robotParts/robotModel.h"
 
 namespace qReal {
 namespace interpreters {

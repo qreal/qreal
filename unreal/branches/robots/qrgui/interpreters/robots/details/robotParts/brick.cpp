@@ -1,29 +1,32 @@
 #include "brick.h"
-
+#include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
 #include "../robotCommandConstants.h"
 
-using namespace qReal::interpreters::robots::details::robotParts;
+using namespace qReal::interpreters::robots::details;
+using namespace robotImplementations::brickImplementations;
+using namespace robotParts;
 
-Brick::Brick(RobotCommunicationInterface *robotCommunicationInterface)
-	: RobotPart(robotCommunicationInterface)
+Brick::Brick(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl)
+	: mBrickImpl(brickImpl)
 {
+}
+
+Brick::~Brick()
+{
+	delete mBrickImpl;
+}
+
+AbstractBrickImplementation &Brick::brickImpl()
+{
+	return *mBrickImpl;
 }
 
 void Brick::playTone(unsigned freq, unsigned time)
 {
-	QByteArray command(8, 0);
-	command[0] = 0x06;  //command length
-	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::PLAYTONE;
-	command[4] = freq;
-	command[5] = freq >> 8;
-	command[6] = time;
-	command[7] = time >> 8;
-	mRobotCommunicationInterface->send(this, command, 5);
+	mBrickImpl->playTone(freq, time);
 }
 
 void Brick::beep(unsigned time)
 {
-	playTone(1000, time);
+	mBrickImpl->beep(time);
 }

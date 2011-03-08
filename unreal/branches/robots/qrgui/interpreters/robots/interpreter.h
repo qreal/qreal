@@ -9,7 +9,7 @@
 
 #include "robotCommunicationInterface.h"
 #include "sensorConstants.h"
-#include "details/robotModel.h"
+#include "details/robotParts/robotModel.h"
 #include "details/thread.h"
 #include "details/blocksTable.h"
 
@@ -25,7 +25,7 @@ public:
 	Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterface
-			, RobotCommunicationInterface * const robotCommunicationInterface);
+			, details::RobotModel * const robotModel);
 	~Interpreter();
 
 	void interpret(Id const &currentDiagramId);
@@ -52,7 +52,7 @@ private:
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-	details::RobotModel mRobotModel;
+	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
 	Id const findStartingElement(Id const &diagram) const;

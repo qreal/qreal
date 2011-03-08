@@ -6,7 +6,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace details::blocks;
 
-WaitForTouchSensorBlock::WaitForTouchSensorBlock(RobotModel const * const robotModel)
+WaitForTouchSensorBlock::WaitForTouchSensorBlock(details::RobotModel const * const robotModel)
 	: mTouchSensor(NULL)
 	, mRobotModel(robotModel)
 {
@@ -28,8 +28,8 @@ void WaitForTouchSensorBlock::run()
 		return;
 	}
 
-	connect(mTouchSensor, SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mTouchSensor, SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(mTouchSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(mTouchSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
 	mTouchSensor->read();
 	mActiveWaitingTimer.start();

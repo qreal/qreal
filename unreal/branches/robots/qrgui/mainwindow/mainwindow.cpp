@@ -20,6 +20,9 @@
 #include "ui_mainwindow.h"
 #include "errorReporter.h"
 
+#include "../interpreters/robots/details/robotImplementations/nullRobotModelImplementation.h"
+#include "../interpreters/robots/details/robotImplementations/realRobotModelImplementation.h"
+#include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
 #include "preferencesDialog.h"
 #include "shapeEdit/shapeEdit.h"
@@ -205,8 +208,11 @@ MainWindow::MainWindow()
 
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
+	interpreters::robots::details::robotImplementations::RealRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::RealRobotModelImplementation(mBluetoothCommunication);
+//	interpreters::robots::details::robotImplementations::NullRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::NullRobotModelImplementation();
+	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel(robotImpl);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, mBluetoothCommunication);
+			, mModels->logicalModelAssistApi(), *this, robotModel);
 	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());

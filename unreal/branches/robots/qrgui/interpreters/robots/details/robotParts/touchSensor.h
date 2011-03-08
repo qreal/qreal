@@ -1,7 +1,5 @@
 #pragma once
-
 #include <QtCore/QObject>
-
 #include "sensor.h"
 #include "../../sensorConstants.h"
 
@@ -14,13 +12,8 @@ namespace robotParts {
 class TouchSensor : public Sensor
 {
 	Q_OBJECT
-
 public:
-	TouchSensor(RobotCommunicationInterface *robotCommunicationInterface
-			, lowLevelInputPort::InputPortEnum const &port);
-
-private:
-	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
+	TouchSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
 };
 
 }

@@ -11,15 +11,15 @@ const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNo
 Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-		, RobotCommunicationInterface * const robotCommunicationInterface)
+		, RobotModel * const robotModel)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
-	, mRobotModel(robotCommunicationInterface)
+	, mRobotModel(robotModel)
 	, mBlocksTable(NULL)
 {
-	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, &mRobotModel, mInterpretersInterface.errorReporter());
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter());
 }
 
 Interpreter::~Interpreter()
@@ -57,12 +57,12 @@ void Interpreter::stop()
 		delete thread;
 	mBlocksTable->clear();
 	mThreads.clear();
-	mRobotModel.clear();
+	mRobotModel->clear();
 }
 
 void Interpreter::stopRobot()
 {
-	mRobotModel.stopRobot();
+	mRobotModel->stopRobot();
 	stop();
 }
 
@@ -100,7 +100,7 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		, sensorType::SensorTypeEnum const &port3
 		, sensorType::SensorTypeEnum const &port4)
 {
-	mRobotModel.configureSensors(port1, port2, port3, port4);
+	mRobotModel->configureSensors(port1, port2, port3, port4);
 }
 
 void Interpreter::addThread(details::Thread * const thread)

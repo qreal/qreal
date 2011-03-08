@@ -3,10 +3,10 @@
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-InitialBlock::InitialBlock(RobotModel &robotModel)
+InitialBlock::InitialBlock(details::RobotModel &robotModel)
 	: mRobotModel(robotModel)
 {
-	connect(&mRobotModel, SIGNAL(connected(bool)), this, SLOT(connected(bool)));
+	connect(&mRobotModel.robotImpl(), SIGNAL(connected(bool)), this, SLOT(connected(bool)));
 }
 
 void InitialBlock::run()

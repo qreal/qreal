@@ -1,9 +1,10 @@
 #pragma once
-
+#include <QtCore/QDebug>
 #include <QtCore/QObject>
 
-#include "robotPart.h"
 #include "../robotCommandConstants.h"
+#include "../../sensorConstants.h"
+#include "../robotImplementations/sensorImplementations/abstractSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -11,41 +12,18 @@ namespace robots {
 namespace details {
 namespace robotParts {
 
-class Sensor : public RobotPart
+class Sensor : public QObject
 {
 	Q_OBJECT
-
 public:
-	Sensor(RobotCommunicationInterface *robotCommunicationInterface
-			, lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
-			, sensorMode::SensorModeEnum const &sensorMode
-			, lowLevelInputPort::InputPortEnum const &port
-			);
-	void configure();
+	Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	virtual ~Sensor();
 	virtual void read();
-
-signals:
-	void response(int reading);
-	void failure();
-	void configured();
+	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
 
 protected:
-	enum State {
-		idle
-		, pending
-	};
-
-	lowLevelInputPort::InputPortEnum mPort;
-	State mState;
-
-private:
-	lowLevelSensorType::SensorTypeEnum mSensorType;
-	sensorMode::SensorModeEnum mSensorMode;
-	bool mIsConfigured;
-	bool mResetDone;
-
-	virtual void processResponse(QByteArray const &reading);
-	virtual void sensorSpecificProcessResponse(QByteArray const &reading) = 0;
+	inputPort::InputPortEnum mPort;
+	robotImplementations::sensorImplementations::AbstractSensorImplementation *mSensorImpl;
 };
 
 }

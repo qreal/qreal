@@ -6,7 +6,7 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace details::blocks;
 
-WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(RobotModel const * const robotModel)
+WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(details::RobotModel const * const robotModel)
 	: mSonarSensor(NULL)
 	, mRobotModel(robotModel)
 {
@@ -28,8 +28,8 @@ void WaitForSonarDistanceBlock::run()
 		return;
 	}
 
-	connect(mSonarSensor, SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mSonarSensor, SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(mSonarSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(mSonarSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
 	mSonarSensor->read();
 	mActiveWaitingTimer.start();

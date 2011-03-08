@@ -3,7 +3,7 @@
 #include "../../../kernel/ids.h"
 
 #include "blocks/block.h"
-#include "robotModel.h"
+#include "robotParts/robotModel.h"
 
 namespace qReal {
 namespace interpreters {

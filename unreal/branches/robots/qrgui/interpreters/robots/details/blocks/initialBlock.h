@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include "block.h"
-#include "../robotModel.h"
+#include "../robotParts/robotModel.h"
 
 namespace qReal {
 namespace interpreters {
