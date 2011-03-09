@@ -134,6 +134,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionPrint"/>
+   <addaction name="actionNew_Diagram"/>
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
@@ -686,6 +687,14 @@
    </property>
    <property name="shortcut">
     <string>F10</string>
+   </property>
+  </action>
+  <action name="actionNew_Diagram">
+   <property name="text">
+    <string>New Diagram</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new diagram in a current model</string>
    </property>
   </action>
  </widget>
