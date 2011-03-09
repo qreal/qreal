@@ -153,6 +153,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPropertyMap();\n"
 		<< "\tvirtual void initPropertyDefaultsMap();\n"
 		<< "\tvirtual void initDescriptionMap();\n"
+		<< "\tvirtual void initParentsMap();\n"
 		<< "\n"
 		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\n"
@@ -185,6 +186,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< 	"\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
 		<< "\n"
+		<< "\tvirtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;\n"
+		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> iconMap;\n"
 		<< "\tQMap<QString, QString> diagramNameMap;\n"
@@ -197,6 +200,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;\n"
 		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > elementMouseGesturesMap;\n"
+		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -211,6 +215,7 @@ void XmlCompiler::generatePluginSource()
 	generateInitPlugin(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
+	generateIsParentOfRequest(out);
 	generateProperties(out);
 	generateContainedTypes(out);
 	generateConnections(out);
@@ -249,6 +254,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitPropertyMap();\n"
 		<< "\tinitPropertyDefaultsMap();\n"
 		<< "\tinitDescriptionMap();\n"
+		<< "\tinitParentsMap();\n"
 		<< "}\n\n";
 
 	generateNameMappings(out);
@@ -256,6 +262,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
+	generateParentsMappings(out);
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
@@ -300,6 +307,21 @@ void XmlCompiler::generateDescriptionMappings(OutFile &out)
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj)
 				obj->generatePropertyDescriptionMapping(out);
+		}
+
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generateParentsMappings(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initParentsMap()\n"
+		<< "{\n";
+
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values()) {
+			GraphicType *obj = dynamic_cast<GraphicType *>(type);
+			if (obj)
+				obj->generateParentsMapping(out);
 		}
 
 	out() << "}\n\n";
@@ -418,6 +440,22 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 			<< "	return NULL;\n";
 	}
 	out() << "}\n\n";
+}
+
+void XmlCompiler::generateIsParentOfRequest(OutFile &out)
+{
+	out() << "bool " << mPluginName << "Plugin::isParentOf(QString const &parentDiagram"
+			 << ", QString const &parentElement, QString const &childDiagram, QString const &childElement) const\n"
+		<< "{\n"
+		<< "\tif (parentsMap[childDiagram][childElement].contains(qMakePair(parentDiagram, parentElement)))\n"
+		<< "\t\treturn true;\n"
+		<< "\ttypedef QPair<QString, QString> StringPair;\n"
+		<< "\tforeach (StringPair const &pair, parentsMap[childDiagram][childElement])\n"
+		<< "\t\tif (isParentOf(parentDiagram, parentElement, pair.first, pair.second))\n"
+		<< "\t\t\treturn true;\n"
+		<< "\treturn false;\n"
+		<< "}\n"
+	;
 }
 
 // Набор классов ниже представляет собой эмуляцию средствами C++ лямбда-выражений.

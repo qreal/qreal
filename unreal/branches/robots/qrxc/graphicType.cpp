@@ -551,11 +551,10 @@ bool GraphicType::generateUsages(OutFile &out, bool isNotFirst)
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
 	if (mPossibleEdges.isEmpty())
-			return false;
+		return false;
 	generateOneCase(out, isNotFirst);
 
 	out() << "\t\tresult";
-	//suddenly, "foreach" doesn't work with "QPair<QPair<QString,QString>,bool>"
 	foreach (PossibleEdge element, mPossibleEdges) {
 		QString directed = "false";
 		if (element.second.first)
@@ -580,4 +579,18 @@ bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, Q
 
 	out() << ";\n";
 	return true;
+}
+
+void GraphicType::generateParentsMapping(utils::OutFile &out)
+{
+	if (mParents.isEmpty())
+		return;
+
+	QString diagramName = NameNormalizer::normalize(mDiagram->name());
+	QString normalizedName = NameNormalizer::normalize(qualifiedName());
+	out() << "\tparentsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]\n";
+	foreach (QString const &parent, mParents) {
+		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << parent << "\"))\n";
+	}
+	out() << "\t;\n";
 }

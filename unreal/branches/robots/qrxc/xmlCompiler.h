@@ -37,8 +37,10 @@ private:
 	void generatePropertyMap(utils::OutFile &out);
 	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateDescriptionMappings(utils::OutFile &out);
+	void generateParentsMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
+	void generateIsParentOfRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
 	void generateConnections(utils::OutFile &out);

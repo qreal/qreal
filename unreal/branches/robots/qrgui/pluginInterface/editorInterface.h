@@ -47,6 +47,8 @@ public:
 	virtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const = 0;
 	virtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const = 0;
 	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
+
+	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
 };
 
 }
