@@ -1,7 +1,13 @@
 #include "abstractRobotModelImplementation.h"
+
+#include <QtCore/QDebug>
+
+#include "../../../../kernel/exception/exception.h"
+
 #include "nullRobotModelImplementation.h"
 #include "realRobotModelImplementation.h"
-#include <QtCore/QDebug>
+
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 
@@ -41,6 +47,8 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 		return nullRobotModel();
 	else if (type == robotModelType::real)
 		return realRobotModel(robotCommunicationInterface);
+	else
+		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 }
 
 QVector<sensorImplementations::AbstractSensorImplementation *> AbstractRobotModelImplementation::sensors()

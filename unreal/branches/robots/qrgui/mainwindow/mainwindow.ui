@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>738</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -112,6 +112,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionPrint"/>
+   <addaction name="actionNew_Diagram"/>
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
   </widget>
@@ -224,8 +225,8 @@
       <widget class="ErrorListWidget" name="errorListWidget"/>
      </item>
     </layout>
-    </widget>
    </widget>
+  </widget>
   <widget class="QDockWidget" name="graphicalModelDock">
    <property name="windowTitle">
     <string>Graphical Model Explorer</string>
@@ -686,6 +687,14 @@
   <action name="actionStop_Robot">
    <property name="text">
     <string>Stop Robot</string>
+   </property>
+  </action>
+  <action name="actionNew_Diagram">
+   <property name="text">
+    <string>New Diagram</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new diagram in a current model</string>
    </property>
   </action>
  </widget>

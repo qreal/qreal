@@ -132,6 +132,8 @@ private slots:
 	void stopRobot();
 	void showRobotSettingsDialog();
 
+	void on_actionNew_Diagram_triggered();
+
 private:
 	Ui::MainWindowUi *mUi;
 

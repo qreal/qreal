@@ -1252,3 +1252,9 @@ gui::ErrorReporter *MainWindow::errorReporter()
 {
 	return mErrorReporter;
 }
+
+void qReal::MainWindow::on_actionNew_Diagram_triggered()
+{
+	Id const diagram = getCurrentTab()->mvIface()->rootId();  // Or some other way to find current diagram.
+	createDiagram(diagram.type().toString());
+}
