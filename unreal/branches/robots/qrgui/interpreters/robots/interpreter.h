@@ -28,6 +28,8 @@ public:
 			, details::RobotModel * const robotModel);
 	~Interpreter();
 
+	details::RobotModel *robotModel();
+	void setRobotModel(details::RobotModel * const robotModel);
 	void interpret(Id const &currentDiagramId);
 	void configureSensors(sensorType::SensorTypeEnum const &port1
 			, sensorType::SensorTypeEnum const &port2

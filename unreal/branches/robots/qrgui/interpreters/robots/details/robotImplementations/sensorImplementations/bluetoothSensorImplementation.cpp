@@ -20,7 +20,6 @@ BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunicationI
 
 BluetoothSensorImplementation::~BluetoothSensorImplementation()
 {
-	delete mRobotCommunicationInterface;
 }
 
 void BluetoothSensorImplementation::readingDone(QObject *addressee, QByteArray const &reading)

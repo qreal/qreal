@@ -111,3 +111,13 @@ void Interpreter::addThread(details::Thread * const thread)
 
 	thread->interpret();
 }
+
+details::RobotModel *Interpreter::robotModel()
+{
+	return mRobotModel;
+}
+
+void Interpreter::setRobotModel(details::RobotModel * const robotModel)
+{
+	mRobotModel = robotModel;
+}

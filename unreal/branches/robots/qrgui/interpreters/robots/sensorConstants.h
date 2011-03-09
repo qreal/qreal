@@ -22,6 +22,13 @@ enum InputPortEnum {
 };
 }
 
+namespace robotModelType {
+enum robotModelTypeEnum {
+	null
+	, real
+};
+}
+
 }
 }
 }

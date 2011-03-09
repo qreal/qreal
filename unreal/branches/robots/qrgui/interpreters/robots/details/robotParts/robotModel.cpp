@@ -84,3 +84,8 @@ robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 {
 	return *mRobotImpl;
 }
+
+void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
+{
+	mRobotImpl = robotImpl;
+}

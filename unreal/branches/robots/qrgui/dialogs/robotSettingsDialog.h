@@ -24,13 +24,16 @@ public:
 	interpreters::robots::sensorType::SensorTypeEnum selectedPort2Sensor() const;
 	interpreters::robots::sensorType::SensorTypeEnum selectedPort3Sensor() const;
 	interpreters::robots::sensorType::SensorTypeEnum selectedPort4Sensor() const;
+	interpreters::robots::robotModelType::robotModelTypeEnum selectedRobotModel() const;
 
 private slots:
 	void ok();
 	void cancel();
+	void activatedNullModel(bool checked);
 
 private:
 	Ui::RobotSettingsDialog *mUi;
+	void initRobotModelType(interpreters::robots::robotModelType::robotModelTypeEnum type);
 };
 
 }

@@ -1,7 +1,12 @@
 #include "abstractRobotModelImplementation.h"
+#include "nullRobotModelImplementation.h"
+#include "realRobotModelImplementation.h"
 #include <QtCore/QDebug>
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
+
+NullRobotModelImplementation *AbstractRobotModelImplementation::mNullRobotModel = NULL;
+RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel = NULL;
 
 AbstractRobotModelImplementation::AbstractRobotModelImplementation()
 	: mSensorsToConfigure(0)
@@ -14,6 +19,28 @@ AbstractRobotModelImplementation::~AbstractRobotModelImplementation()
 	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mSensors) {
 		delete sensor;
 	}
+}
+
+NullRobotModelImplementation *AbstractRobotModelImplementation::nullRobotModel()
+{
+	if (mNullRobotModel == NULL)
+		mNullRobotModel = new NullRobotModelImplementation();
+	return mNullRobotModel;
+}
+
+RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(RobotCommunicationInterface * const robotCommunicationInterface)
+{
+	if (mRealRobotModel == NULL)
+		mRealRobotModel = new RealRobotModelImplementation(robotCommunicationInterface);
+	return mRealRobotModel;
+}
+
+AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface)
+{
+	if (type == robotModelType::null)
+		return nullRobotModel();
+	else if (type == robotModelType::real)
+		return realRobotModel(robotCommunicationInterface);
 }
 
 QVector<sensorImplementations::AbstractSensorImplementation *> AbstractRobotModelImplementation::sensors()

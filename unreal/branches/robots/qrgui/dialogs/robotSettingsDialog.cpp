@@ -18,6 +18,7 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 
 	connect(mUi->okButton, SIGNAL(clicked()), this, SLOT(ok()));
 	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedNullModel(bool)));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 
@@ -64,6 +65,9 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	mUi->port2ComboBox->setCurrentIndex(port2);
 	mUi->port3ComboBox->setCurrentIndex(port3);
 	mUi->port4ComboBox->setCurrentIndex(port4);
+
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
+	initRobotModelType(typeOfRobotModel);
 }
 
 RobotSettingsDialog::~RobotSettingsDialog()
@@ -80,13 +84,39 @@ void RobotSettingsDialog::ok()
 	settings.setValue("port2SensorType", selectedPort2Sensor());
 	settings.setValue("port3SensorType", selectedPort3Sensor());
 	settings.setValue("port4SensorType", selectedPort4Sensor());
+	settings.setValue("robotModel", selectedRobotModel());
 	close();
+}
+
+void RobotSettingsDialog::initRobotModelType(robotModelType::robotModelTypeEnum type)
+{
+	if(type == robotModelType::null) {
+		mUi->nullModelRadioButton->setChecked(true);
+		activatedNullModel(true);
+	} else
+		mUi->realModelRadioButton->setChecked(true);
+}
+
+robotModelType::robotModelTypeEnum RobotSettingsDialog::selectedRobotModel() const
+{
+	if (mUi->nullModelRadioButton->isChecked())
+		return robotModelType::null;
+	else
+		return robotModelType::real;
 }
 
 void RobotSettingsDialog::cancel()
 {
 	reject();
 	close();
+}
+
+void RobotSettingsDialog::activatedNullModel(bool checked)
+{
+	if (checked)
+		mUi->bluetoothSettingsGroupBox->setEnabled(false);
+	else
+		mUi->bluetoothSettingsGroupBox->setEnabled(true);
 }
 
 QString RobotSettingsDialog::selectedPortName() const

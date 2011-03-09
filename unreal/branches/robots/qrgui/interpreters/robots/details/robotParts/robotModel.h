@@ -27,11 +27,11 @@ public:
 	RobotModel(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	virtual ~RobotModel();
 
-	virtual void init();
-	virtual void clear();
-	virtual void stopRobot();
+	void init();
+	void clear();
+	void stopRobot();
 
-	virtual void configureSensors(sensorType::SensorTypeEnum const &port1
+	void configureSensors(sensorType::SensorTypeEnum const &port1
 			, sensorType::SensorTypeEnum const &port2
 			, sensorType::SensorTypeEnum const &port3
 			, sensorType::SensorTypeEnum const &port4);
@@ -43,7 +43,8 @@ public:
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();
 	robotParts::Motor &motorC();
-	virtual robotImplementations::AbstractRobotModelImplementation &robotImpl();
+	robotImplementations::AbstractRobotModelImplementation &robotImpl();
+	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;
