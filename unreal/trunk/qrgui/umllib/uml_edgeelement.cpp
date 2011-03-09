@@ -621,7 +621,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, 
 		reconnectedDst = (NodeElement::portId(newTo) != NodeElement::portId(mPortTo));
 		if (!jumpsOnly || reconnectedDst) {
 			mPortTo = newTo;
-			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+			mGraphicalAssistApi->setToPort(id(), mPortTo);
 		}
 	}
 
