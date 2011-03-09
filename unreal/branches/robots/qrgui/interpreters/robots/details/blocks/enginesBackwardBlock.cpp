@@ -10,8 +10,8 @@ EnginesBackwardBlock::EnginesBackwardBlock(robotParts::Motor &motor1, robotParts
 
 void EnginesBackwardBlock::run()
 {
-	int const power = -intProperty("Power");
-	int const tachoLimit = intProperty("TachoLimit");
+	int const power = -evaluate("Power").toInt();
+	int const tachoLimit = evaluate("TachoLimit").toInt();
 	QVector<bool> ports = parsePorts();
 	if (ports[0])
 		mMotor1.on(power, tachoLimit);

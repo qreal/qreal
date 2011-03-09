@@ -9,6 +9,8 @@
 
 #include "../blocksTable.h"
 
+#include "../../../visualDebugger/blockParser.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -54,6 +56,8 @@ protected:
 
 	void error(QString const &message);
 
+	QVariant evaluate(QString const &propertyName);
+
 private slots:
 	void finishedRunning();
 
@@ -64,6 +68,7 @@ private:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, BlocksTable &blocksTable
 			, gui::ErrorReporter * const errorReporter
+			, BlockParser * const parser
 			);
 
 private:
@@ -75,6 +80,7 @@ private:
 	State mState;
 	Id mGraphicalId;
 	gui::ErrorReporter * mErrorReporter;
+	BlockParser * mParser;
 
 	virtual bool initNextBlocks();
 	virtual void additionalInit() {};

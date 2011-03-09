@@ -37,7 +37,7 @@ void WaitForSonarDistanceBlock::run()
 
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
-	int const targetDistance = intProperty("Distance");
+	int const targetDistance = evaluate("Distance").toInt();
 	if (reading < targetDistance) {
 		mActiveWaitingTimer.stop();
 		emit done(mNextBlock);

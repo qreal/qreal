@@ -9,7 +9,7 @@
 namespace qReal {
 	class BlockParser
 	{
-		
+
 	public:
 		BlockParser(gui::ErrorReporter* errorReporter);
 		~BlockParser();
@@ -21,16 +21,18 @@ namespace qReal {
 		bool hasErrors();
 		void setErrorReporter(gui::ErrorReporter* errorReporter);
 		void clear();
-		
+
 		QMap<QString, Number>* getVariables(); //only for test using
-		
+
+		Number parseProcessForRobots(QString stream, int& pos, Id curId);
+
 	private:
 		enum ParseErrorType {
 			unexpectedEndOfStream,
 			unexpectedSymbol,
 			typesMismatch,
 			unknownIdentifier,
-			emptyProcess, 
+			emptyProcess,
 			emptyCondition
 		};
 
@@ -39,7 +41,7 @@ namespace qReal {
 		bool hasParseErrors;
 		gui::ErrorReporter* mErrorReporter;
 		Id mCurrentId;
-		
+
 		bool isDigit(QChar c);
 		bool isSign(QChar c);
 		bool isLetter(QChar c);
@@ -54,23 +56,23 @@ namespace qReal {
 		bool isUnOp(QChar c);
 		bool isUseless(QChar c);
 		bool isAssignment(QChar c);
-		
+
 		bool isHtmlBrTag(QString stream, int& pos);
-		
+
 		QString parseIdentifier(QString stream, int& pos);
 		Number parseNumber(QString stream, int& pos);
 		void skip(QString stream, int& pos);
-		
+
 		Number parseTerm(QString stream, int& pos);
 		Number parseMult(QString stream, int& pos);
-		
+
 		void parseVarPart(QString stream, int& pos);
 		void parseCommand(QString stream, int& pos);
-		
+
 		bool parseSingleComprasion(QString stream, int& pos);
 		bool parseConjunction(QString stream, int& pos);
 		bool parseDisjunction(QString stream, int& pos);
-		
+
 		void error(ParseErrorType type, QString pos = "", QString expected = "", QString got = "");
 		bool checkForEndOfStream(QString stream, int& pos);
 		bool checkForLetter(QString stream, int& pos);
@@ -80,5 +82,7 @@ namespace qReal {
 		bool checkForColon(QString stream, int& pos);
 		bool checkForEmptiness(QString stream, int& pos);
 		bool checkForEqual(QString stream, int pos);
+		bool isFunction(QString const &variable);
+		Number applyFunction(QString const &variable, Number value);
 	};
 }

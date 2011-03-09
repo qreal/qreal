@@ -4,6 +4,7 @@
 
 #include "blocks/block.h"
 #include "robotParts/robotModel.h"
+#include "../../visualDebugger/blockParser.h"
 
 namespace qReal {
 namespace interpreters {
@@ -25,6 +26,7 @@ private:
 	models::LogicalModelAssistApi const &mLogicalModelApi;
 	gui::ErrorReporter * const mErrorReporter;  // Doesn't have ownership
 	BlocksTable * const mBlocksTable;
+	BlockParser * mParser;
 
 	static bool elementMetatypeIs(Id const &element, QString const &metatype);
 };

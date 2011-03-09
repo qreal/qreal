@@ -67,5 +67,5 @@ bool LoopBlock::initNextBlocks()
 
 void LoopBlock::additionalInit()
 {
-	mIterations = intProperty("Iterations");
+	mIterations = evaluate("Iterations").toInt();
 }

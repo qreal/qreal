@@ -12,6 +12,7 @@ Block::Block()
 	, mState(idle)
 	, mGraphicalId(Id())
 	, mErrorReporter(NULL)
+	, mParser(NULL)
 {
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
@@ -20,13 +21,15 @@ void Block::init(Id const &graphicalId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, BlocksTable &blocksTable
-		, gui::ErrorReporter * const errorReporter)
+		, gui::ErrorReporter * const errorReporter
+		, BlockParser * const parser)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mBlocksTable = &blocksTable;
 	mErrorReporter = errorReporter;
+	mParser = parser;
 	additionalInit();
 }
 
@@ -127,3 +130,10 @@ QList<Block::SensorPortPair> Block::usedSensors() const
 {
 	return QList<SensorPortPair>();
 }
+
+QVariant Block::evaluate(const QString &propertyName)
+{
+	int position = 0;
+	return mParser->parseProcessForRobots(stringProperty(propertyName), position, mGraphicalId).property("Number");
+}
+

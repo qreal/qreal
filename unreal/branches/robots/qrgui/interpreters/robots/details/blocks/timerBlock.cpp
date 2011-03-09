@@ -1,11 +1,14 @@
 #include "timerBlock.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
 void TimerBlock::run()
 {
-	int const interval = intProperty("Delay");
+	int const interval = evaluate("Delay").toInt();
+	qDebug() << "interval=" << interval;
 
 	mTimer.setInterval(interval);
 	mTimer.setSingleShot(true);

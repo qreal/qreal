@@ -30,6 +30,7 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 	, mErrorReporter(errorReporter)
 	, mBlocksTable(blocksTable)
 {
+	mParser = new BlockParser(mErrorReporter);
 }
 
 Block *BlocksFactory::block(Id const &element)
@@ -62,7 +63,7 @@ Block *BlocksFactory::block(Id const &element)
 	else
 		newBlock = new DummyBlock();
 
-	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, *mBlocksTable, mErrorReporter);
+	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, *mBlocksTable, mErrorReporter, mParser);
 	return newBlock;
 }
 

@@ -208,8 +208,8 @@ MainWindow::MainWindow()
 
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
-	interpreters::robots::details::robotImplementations::RealRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::RealRobotModelImplementation(mBluetoothCommunication);
-//	interpreters::robots::details::robotImplementations::NullRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::NullRobotModelImplementation();
+//	interpreters::robots::details::robotImplementations::RealRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::RealRobotModelImplementation(mBluetoothCommunication);
+	interpreters::robots::details::robotImplementations::NullRobotModelImplementation *robotImpl = new interpreters::robots::details::robotImplementations::NullRobotModelImplementation();
 	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel(robotImpl);
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, robotModel);
