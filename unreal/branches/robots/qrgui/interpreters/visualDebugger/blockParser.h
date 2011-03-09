@@ -25,6 +25,7 @@ namespace qReal {
 		QMap<QString, Number>* getVariables(); //only for test using
 
 		Number parseProcessForRobots(QString stream, int& pos, Id curId);
+		void clearForRobots();
 
 	private:
 		enum ParseErrorType {

@@ -134,6 +134,9 @@ QList<Block::SensorPortPair> Block::usedSensors() const
 QVariant Block::evaluate(const QString &propertyName)
 {
 	int position = 0;
-	return mParser->parseProcessForRobots(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	QVariant value = mParser->parseProcessForRobots(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	if (mParser->hasErrors())
+		mParser->clearForRobots();
+	return value;
 }
 

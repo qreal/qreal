@@ -756,6 +756,10 @@ Number BlockParser::parseProcessForRobots(QString stream, int &pos, Id curId)
 		return Number(0, Number::intType);
 	}
 	QString newStream = stream.mid(pos, stream.length());
+	if (newStream.isEmpty()){
+		mErrorReporter->addCritical("No value of expression", mCurrentId);
+		return Number(0, Number::intType);
+	}
 	QStringList exprs = newStream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < (exprs.length()-1); ++i) {
 		if (hasParseErrors)
@@ -766,5 +770,16 @@ Number BlockParser::parseProcessForRobots(QString stream, int &pos, Id curId)
 		parseCommand(expr + ";", position);
 	}
 	int position = 0;
-	return parseExpression(exprs.last(), position);
+	QString valueExpression = exprs.last();
+	if(!valueExpression.contains("="))
+		return parseExpression(valueExpression, position);
+	else {
+		mErrorReporter->addCritical("No value of expression", mCurrentId);
+		return Number(0, Number::intType);
+	}
+}
+
+void BlockParser::clearForRobots()
+{
+	hasParseErrors = false;
 }
