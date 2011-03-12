@@ -1,3 +1,5 @@
+#pragma once
+
 #include <QPair>
 #include <QString>
 #include <QFile>
@@ -23,12 +25,13 @@ namespace Geny {
 			enum ControlStringType {
 				commentType, foreachType, 
 				leftBraceType, rightBraceType,
+				toFileType,
 				notControlType
 			};
 			ControlStringType controlStringType(const QString&);
 			
 			//Can move cursor position in stream!
-			QString nonControlStringParse(const QString&, QTextStream& stream);
+			QString nonControlStringParse(const QString&);
 			//Can move cursor position in stream!
 			QString controlStringParse(const QString&, QTextStream& stream);
 
@@ -40,6 +43,10 @@ namespace Geny {
 			QString getCurrentObjectProperty(const QString& propertyName);
 
 			qReal::IdList getCurObjectMethodResultList(const QString&);
+
+			QString getBraceBlock(QTextStream&);
+
+			QString toFileStringFilename(const QString&);
 
 			//нужно, так как возможно использование списка Id вместо одного
 			qReal::Id getCurObjectId();

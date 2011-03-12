@@ -17,7 +17,7 @@ SUBDIRS	= \
 #	parallelEditor/parallelEditor.pro \
 #	requirementsEditor/requirementsEditor.pro \
 #	sequenceEditor/sequenceEditor.pro \
-#	stateMachinesEditor/stateMachinesEditor.pro \
+	stateMachinesEditor/stateMachinesEditor.pro \
 #	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
 #	usecaseEditor/usecaseEditor.pro \

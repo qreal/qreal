@@ -3,6 +3,8 @@ Task JavaClass
 
 #!foreach Class in elementsByType(Class)
 #!{
+#!toFile @@name@@.h
+#!{
 class @@name@@ {
 #!foreach MethodsContainer in children
 #!{
@@ -21,4 +23,5 @@ class @@name@@ {
 #!}
 #!}
 }
+#!}
 #!}

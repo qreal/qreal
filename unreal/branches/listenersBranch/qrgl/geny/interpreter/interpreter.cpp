@@ -59,6 +59,8 @@ Interpreter::ControlStringType Interpreter::controlStringType(const QString& str
 		return leftBraceType;
 	if (workStr.startsWith("}"))
 		return rightBraceType;
+	if (workStr.startsWith("toFile"))
+		return toFileType;
 
 	return notControlType;
 }
@@ -85,13 +87,29 @@ QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
 	return QPair<QString, QString>(strElements.at(1), strElements.at(3));
 }
 
+QString Interpreter::toFileStringFilename(const QString& str) {
+	QStringList strElements = str.split(' ');
+	strElements.removeAll("");
+
+	if ( (strElements.length() != 2) || 
+			(strElements[0] != "#!toFile")) {
+		qDebug()  << "Error! Bad \'toFile\' structure!";
+		return ""; //TODO: возможно лучше бросать исключение!
+	}
+
+	return nonControlStringParse(strElements[1]);
+}
+
 //Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodName) {
 	if (methodName == "children")
 		return rApi.children(getCurObjectId());
 
-//	if (methodName == "parents")
-//		return rApi.parents(getCurObjectId());
+	if (methodName == "parent") {
+		qReal::IdList resultList;
+		resultList.append(rApi.parent(getCurObjectId()));
+		return resultList;
+	}
 
 	if (methodName == "outgoingLinks")
 		return rApi.outgoingLinks(getCurObjectId());
@@ -113,7 +131,7 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 
 	if (methodName == "incomingUsages")
 		return rApi.incomingUsages(getCurObjectId());
-	
+
 //	if (methodName == "elements")
 //		return rApi.elements(getCurObjectId());
 
@@ -132,20 +150,12 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 		return rApi.elementsByType(elementsType);
 	}
 
-//	if (methodName == "getOpenedDiagrams")
-//		return rApi.getOpenedDiagrams();
-
-//	if (methodName == "getChangedDiagrams")
-//		return rApi.getChangedDiagrams();
-
 	qDebug() << "Error! Uses unknown RepoApi list method!";
 
 	return qReal::IdList();
 }
 
-QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStream& stream) {
-	Q_UNUSED(stream);
-
+QString Interpreter::nonControlStringParse(const QString& parsingStr) {
 	//Обработка @@_smth_@@
 	QStringList listOfSplitting = parsingStr.split("@@");
 	if (listOfSplitting.length() % 2 == 0) {
@@ -166,7 +176,37 @@ QString Interpreter::nonControlStringParse(const QString& parsingStr, QTextStrea
 		resultStr += curElem;
 	}
 
-	return resultStr + '\n';
+	return resultStr;
+}
+
+QString Interpreter::getBraceBlock(QTextStream& stream) {
+	QString resultStr;
+
+	QString curLine = stream.readLine();
+	if (controlStringType(curLine) != leftBraceType) {
+		qDebug() << "Error! After block operator not #!{ but \'" << curLine << "\' found!";
+		return "";
+	}
+
+	int braceBalance = 1;
+	curLine = "";
+
+	while ( (braceBalance != 0) && !stream.atEnd() ) {
+		resultStr += curLine + "\n";
+
+		curLine  = stream.readLine();
+		if (controlStringType(curLine) == leftBraceType)
+			braceBalance++;
+		if (controlStringType(curLine) == rightBraceType)
+			braceBalance--;
+	}
+
+	if ( (braceBalance != 0) && (stream.atEnd()) ) {
+		qDebug() << "Error! There is no brace balance!";
+		return "";
+	}
+
+	return resultStr;
 }
 
 QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& stream) {
@@ -175,32 +215,8 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 			return "";
 		case foreachType:
 			{
-				QString foreachBlockString; //for foreachBlockStream only
-				QTextStream foreachBlockStream(&foreachBlockString);
-
-				QString curLine = stream.readLine();
-				if (controlStringType(curLine) != leftBraceType) {
-					qDebug() << "Error! After #!foreach not #!{ but \'" << curLine << "\' found!";
-					return "";
-				}
-
-				int braceBalance = 1;
-				curLine = "";
-
-				while ( (braceBalance != 0) && !stream.atEnd() ) {
-					foreachBlockStream << curLine << '\n';
-
-					curLine  = stream.readLine();
-					if (controlStringType(curLine) == leftBraceType)
-						braceBalance++;
-					if (controlStringType(curLine) == rightBraceType)
-						braceBalance--;
-				}
-				
-				if ( (braceBalance != 0) && (stream.atEnd()) ) {
-					qDebug() << "Error! There is no brace balance!";
-					return "";
-				}
+				QString braceBlock = getBraceBlock(stream);
+				QTextStream foreachBlockStream(&braceBlock);
 
 				QString resultStr;
 
@@ -233,6 +249,24 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				qDebug() << "Error! In" << taskFile.fileName() << ". #!} but not control expression (e.g. #!foreach) found!";
 				return "";
 			}
+		case toFileType:
+			{
+				//TODO
+				QFile file(toFileStringFilename(parsingStr));
+				if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+					qDebug() << "cannot open \"" << file.fileName() << "\"";
+					return "";
+				}	
+				
+				QString braceBlock = getBraceBlock(stream);
+				QTextStream toFileBlockStream(&braceBlock);
+
+				QTextStream out(&file);
+				out << interpret(toFileBlockStream);
+				file.close();
+
+				return "";
+			}
 		case notControlType:
 			{
 				return "";
@@ -249,7 +283,7 @@ QString Interpreter::interpret(QTextStream& stream) {
 		QString curStr = stream.readLine();
 
 		if (!isControlString(curStr)) {
-			resultStr += nonControlStringParse(curStr, stream);
+			resultStr += nonControlStringParse(curStr) + "\n";
 		}
 		else {
 			resultStr += controlStringParse(curStr, stream);//может сдвигать stream! Это нужно для for'а
