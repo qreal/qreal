@@ -25,36 +25,39 @@ namespace Geny {
 			enum ControlStringType {
 				commentType, foreachType, 
 				leftBraceType, rightBraceType,
-				toFileType,
+				toFileType, saveObjType,
 				notControlType
 			};
 			ControlStringType controlStringType(const QString&);
 			
 			//Can move cursor position in stream!
-			QString nonControlStringParse(const QString&);
+			QString notControlStringParse(const QString&);
 			//Can move cursor position in stream!
 			QString controlStringParse(const QString&, QTextStream& stream);
 
 			QPair<QString, QString> foreachStringParse(const QString&);
+			QString toFileStringFilename(const QString&);
+
+			QString saveObjLabel(const QString&);
+			void addLabel(const QString&);
 
 			//Control expression between @@ @@
 			QString controlExpressionParse(const QString& expression);
-
-			QString getCurrentObjectProperty(const QString& propertyName);
-
-			qReal::IdList getCurObjectMethodResultList(const QString&);
-
 			QString getBraceBlock(QTextStream&);
 
-			QString toFileStringFilename(const QString&);
+			QString getObjProperty(const qReal::Id& objectId, const QString& propertyName);
+			QString getCurObjProperty(const QString& propertyName);
+			qReal::IdList getCurObjectMethodResultList(const QString&);
+
 
 			//нужно, так как возможно использование списка Id вместо одного
-			qReal::Id getCurObjectId();
+			qReal::Id getCurObjId();
 	
 			QFile taskFile;
 			QTextStream* inStream;
 
 			qrRepo::RepoApi rApi;
 			qReal::Id curObjectId;
+			QMap<QString, qReal::Id> objectsByLabels;
 	};
 }

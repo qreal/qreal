@@ -16,32 +16,44 @@ Interpreter::~Interpreter() {
 	taskFile.close();
 }
 
-qReal::Id Interpreter::getCurObjectId() {
+qReal::Id Interpreter::getCurObjId() {
 	return curObjectId;
 }
 
 QString Interpreter::controlExpressionParse(const QString& expression) {
-	if (expression.at(0) != '!')
-		return getCurrentObjectProperty(expression);
-	else
-		//TODO: обработка случая управляющего события, такого как ' task "__taskName__" '
-		return "";
+	if (expression.at(0) != '!') {
+		if (!expression.contains('@'))
+			return getCurObjProperty(expression);
+		else {
+			QStringList listOfSplitting = expression.split("@");
+			if (listOfSplitting.size() == 2) {
+				return getObjProperty(objectsByLabels[listOfSplitting[0].trimmed()], listOfSplitting[1].trimmed());
+			}
+			else
+				qDebug() << "Fail in \'@@ @ @@\' expression";
+		}
+	}
+	
+	//TODO: обработка случая управляющего события, такого как ' task "__taskName__" '
+	return "";
 }
 
-QString Interpreter::getCurrentObjectProperty(const QString& propertyName) {
-	if (!rApi.exist(getCurObjectId())) {
+QString Interpreter::getObjProperty(const qReal::Id& objectId, const QString& propertyName) {
+	if (!rApi.exist(objectId)) {
 		qDebug() << "Error! Trying to work with not existed element Id in current repository!";
 		return ""; //TODO: возможно лучше бросать исключение!
 	}
 
-	if (!rApi.hasProperty(getCurObjectId(), propertyName)) {
+	if (!rApi.hasProperty(objectId, propertyName)) {
 		qDebug() << "Error! Trying to get not existed property of current element!";
 		return ""; //TODO: возможно лучше бросать исключение!
 	}
 
-	//qDebug() << rApi.property(getCurObjectId(), propertyName).toString();
+	return rApi.property(objectId, propertyName).toString();
+}
 
-	return rApi.property(getCurObjectId(), propertyName).toString();
+QString Interpreter::getCurObjProperty(const QString& propertyName) {
+	return getObjProperty(getCurObjId(), propertyName);
 }
 
 Interpreter::ControlStringType Interpreter::controlStringType(const QString& str) {
@@ -61,6 +73,8 @@ Interpreter::ControlStringType Interpreter::controlStringType(const QString& str
 		return rightBraceType;
 	if (workStr.startsWith("toFile"))
 		return toFileType;
+	if (workStr.startsWith("saveObj"))
+		return saveObjType;
 
 	return notControlType;
 }
@@ -97,43 +111,51 @@ QString Interpreter::toFileStringFilename(const QString& str) {
 		return ""; //TODO: возможно лучше бросать исключение!
 	}
 
-	return nonControlStringParse(strElements[1]);
+	return notControlStringParse(strElements[1]);
+}
+
+QString Interpreter::saveObjLabel(const QString& str) {
+	return str.mid(9).trimmed();//object label
+}
+
+void Interpreter::addLabel(const QString& str) {
+	objectsByLabels.insert(str, getCurObjId());
 }
 
 //Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodName) {
 	if (methodName == "children")
-		return rApi.children(getCurObjectId());
+		return rApi.children(getCurObjId());
 
 	if (methodName == "parent") {
 		qReal::IdList resultList;
-		resultList.append(rApi.parent(getCurObjectId()));
+		resultList.append(rApi.parent(getCurObjId()));
 		return resultList;
 	}
 
 	if (methodName == "outgoingLinks")
-		return rApi.outgoingLinks(getCurObjectId());
+		return rApi.outgoingLinks(getCurObjId());
 
 	if (methodName == "incomingLinks")
-		return rApi.incomingLinks(getCurObjectId());
+		return rApi.incomingLinks(getCurObjId());
 
 	if (methodName == "links")
-		return rApi.links(getCurObjectId());
+		return rApi.links(getCurObjId());
 
 	if (methodName == "outgoingConnections")
-		return rApi.outgoingConnections(getCurObjectId());
+		return rApi.outgoingConnections(getCurObjId());
 
 	if (methodName == "incomingConnections")
-		return rApi.incomingConnections(getCurObjectId());
+		return rApi.incomingConnections(getCurObjId());
 
 	if (methodName == "outgoingUsages")
-		return rApi.outgoingUsages(getCurObjectId());
+		return rApi.outgoingUsages(getCurObjId());
 
 	if (methodName == "incomingUsages")
-		return rApi.incomingUsages(getCurObjectId());
+		return rApi.incomingUsages(getCurObjId());
 
 //	if (methodName == "elements")
-//		return rApi.elements(getCurObjectId());
+//		return rApi.elements(getCurObjId());
 
 	//Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 	if (methodName.startsWith("elementsByType")) {
@@ -155,7 +177,7 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	return qReal::IdList();
 }
 
-QString Interpreter::nonControlStringParse(const QString& parsingStr) {
+QString Interpreter::notControlStringParse(const QString& parsingStr) {
 	//Обработка @@_smth_@@
 	QStringList listOfSplitting = parsingStr.split("@@");
 	if (listOfSplitting.length() % 2 == 0) {
@@ -221,7 +243,7 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				QString resultStr;
 
 				QPair<QString, QString> elemAndListNames = foreachStringParse(parsingStr);
-				qReal::Id objectId = getCurObjectId();//TODO: change this method
+				qReal::Id objectId = getCurObjId();//TODO: change this method
 
 				// Здесь развертка foreach
 				foreach (qReal::Id element, getCurObjectMethodResultList(elemAndListNames.second)) {
@@ -267,6 +289,11 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 
 				return "";
 			}
+		case saveObjType:
+			{
+				addLabel(saveObjLabel(parsingStr));
+				return "";
+			}
 		case notControlType:
 			{
 				return "";
@@ -283,7 +310,7 @@ QString Interpreter::interpret(QTextStream& stream) {
 		QString curStr = stream.readLine();
 
 		if (!isControlString(curStr)) {
-			resultStr += nonControlStringParse(curStr) + "\n";
+			resultStr += notControlStringParse(curStr) + "\n";
 		}
 		else {
 			resultStr += controlStringParse(curStr, stream);//может сдвигать stream! Это нужно для for'а

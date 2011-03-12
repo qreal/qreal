@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS	= \
-#	activityEditor/activityEditor.pro \
-#	blockDiagramEditor/blockDiagramEditor.pro \
+	activityEditor/activityEditor.pro \
+	blockDiagramEditor/blockDiagramEditor.pro \
 #	bpelEditor/bpelEditor.pro \
 #	classEditor/classEditor.pro \
 #	communicationEditor/communicationEditor.pro \
@@ -17,7 +17,7 @@ SUBDIRS	= \
 #	parallelEditor/parallelEditor.pro \
 #	requirementsEditor/requirementsEditor.pro \
 #	sequenceEditor/sequenceEditor.pro \
-	stateMachinesEditor/stateMachinesEditor.pro \
+#	stateMachinesEditor/stateMachinesEditor.pro \
 #	timingEditor/timingEditor.pro \
 #	traceEditor/traceEditor.pro \
 #	usecaseEditor/usecaseEditor.pro \
