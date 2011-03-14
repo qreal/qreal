@@ -1,95 +1,159 @@
 #pragma once
 #include "GeometricForms.h"
 #include "pathcorrector.h"
+#include "cmath"
 
 static const int minMovement = 20;
 //static const int heightSize = 30;
 //static const int widthSize = 30;
-static const int unidimensionalLimit = 1;
+static const double maxRelation = 8;
+static const int minPoint = -1000;
 
 class KeyBuilder
 {
 public:
-    static Key getKey(const PointVector &mousePath, int heightSize, int widthSize)
+    static Key getKey(const PathVector &mousePath, int heightSize, int widthSize)
     {
-        //todo::rasterize segment, kill zoom
-        PointVector path = PathCorrector::zoom(mousePath, std::max(heightSize, widthSize));
         Key key;
-        if (path.isEmpty())
+        if (mousePath.isEmpty())
             return key;
-        SquarePos last;
-        SquarePos previous(-1, -1);
-        int lower = lowerBound(path);
-        int upper = upperBound(path);
-        int right = rightBound(path);
-        int left = leftBound(path);
-        if ((lower - upper) / heightSize < unidimensionalLimit
-            && (right - left) / widthSize < unidimensionalLimit)
+        double lower = lowerBound(mousePath);
+        double upper = upperBound(mousePath);
+        double right = rightBound(mousePath);
+        double left = leftBound(mousePath);
+        if (right - left < minMovement && lower - upper < minMovement)
             return key;
-        foreach (QPoint point, path)
+        foreach (PointVector path, mousePath)
         {
-            if((lower - upper) / heightSize < unidimensionalLimit)
+            SquarePos previous(minPoint, minPoint);
+            SquarePos last;
+            foreach (QPoint point, path)
             {
-                last.first = (point.x() - left) * widthSize / (right - left);
-                last.second = 0;
-            }
-            else if((right - left) / widthSize < unidimensionalLimit)
-            {
-                last.first = 0;
-                last.second = (point.y() - upper) * heightSize / (lower - upper);
-            }
-            else
-            {
-                last.first = (int)((point.x() - left) * widthSize / (double)(right - left));
-                last.second = (int)((point.y() - upper) * heightSize / (double)(lower - upper));
-            }
-            if (previous != last)
-            {
+                if((lower - upper) * maxRelation  < right - left)
+                {
+                    last.first = (point.x() - left) * widthSize / (right - left);
+                    last.second = 0;
+                }
+                else if((right - left) * maxRelation < lower - upper)
+                {
+                    last.first = 0;
+                    last.second = (point.y() - upper) * heightSize / (lower - upper);
+                }
+                else
+                {
+                    last.first = (int)((point.x() - left) * widthSize / (right - left));
+                    last.second = (int)((point.y() - upper) * heightSize / (lower - upper));
+                }
+                if (previous.first != minPoint || previous.second != minPoint)
+                {
+                    rasterizeSegment(previous, last, &key);
+                }
                 previous = last;
-                key.push_back(last);
             }
         }
         return key;
     }
 private:
-    static int upperBound(const PointVector & path)
+    static int upperBound(const PathVector & mousePath)
     {
-        if (path.isEmpty())
+        if (mousePath.isEmpty())
             return 0;
-        int upperBound = path.at(0).y();
-        foreach (QPoint pnt, path)
-            if (pnt.y() < upperBound)
-                upperBound = pnt.y();
+        int upperBound = mousePath.at(0).at(0).y();
+        foreach (PointVector path, mousePath)
+        {
+            foreach (QPoint pnt, path)
+                if (pnt.y() < upperBound)
+                    upperBound = pnt.y();
+        }
         return upperBound;
     }
-    static int lowerBound(const PointVector & path)
+    static int lowerBound(const PathVector & mousePath)
     {
-        if (path.isEmpty())
+        if (mousePath.isEmpty())
             return 0;
-        int lowerBound = path.at(0).y();
-        foreach (QPoint pnt, path)
-            if (pnt.y() > lowerBound)
-                lowerBound = pnt.y();
+        int lowerBound = mousePath.at(0).at(0).y();
+        foreach (PointVector path, mousePath)
+        {
+            foreach (QPoint pnt, path)
+                if (pnt.y() > lowerBound)
+                    lowerBound = pnt.y();
+        }
         return lowerBound;
     }
-    static int leftBound(const PointVector & path)
+    static int leftBound(const PathVector & mousePath)
     {
-        if (path.isEmpty())
+        if (mousePath.isEmpty())
             return 0;
-        int leftBound = path.at(0).x();
-        foreach (QPoint pnt, path)
-            if (pnt.x() < leftBound)
-                leftBound = pnt.x();
+        int leftBound = mousePath.at(0).at(0).x();
+        foreach (PointVector path, mousePath)
+        {
+            foreach (QPoint pnt, path)
+                if (pnt.x() < leftBound)
+                    leftBound = pnt.x();
+        }
         return leftBound;
     }
-    static int rightBound(const PointVector & path)
+    static int rightBound(const PathVector & mousePath)
     {
-        if (path.isEmpty())
+        if (mousePath.isEmpty())
             return 0;
-        int rightBound = path.at(0).x();
-        foreach (QPoint pnt, path)
-            if (pnt.x() > rightBound)
-                rightBound = pnt.x();
+        int rightBound = mousePath.at(0).at(0).x();
+        foreach (PointVector path, mousePath)
+        {
+            foreach (QPoint pnt, path)
+                if (pnt.x() > rightBound)
+                    rightBound = pnt.x();
+        }
         return rightBound;
+    }
+    static void rasterizeSegment(SquarePos const & pos1, SquarePos const & pos2, Key * segment)
+    {
+        if (!segment->isEmpty() && pos1 == segment->at(0))
+            segment->pop_back();
+        if (pos1 == pos2)
+        {
+            segment->push_back(pos1);
+            return;
+        }
+        int x = pos1.first;
+        int y = pos1.second;
+        int deltaX = abs(pos2.first - x);
+        int deltaY = abs(pos2.second - y);
+        int signX = sign(pos2.first - x);
+        int signY = sign(pos2.second - y);
+        bool isChanged = false;
+        if (deltaY > deltaX)
+        {
+            int c = deltaX;
+            deltaX = deltaY;
+            deltaY = c;
+            isChanged = true;
+        }
+        int e = 2 * deltaY - deltaX;
+        for (int i = 0; i < deltaX; i ++)
+        {
+            segment->push_back(SquarePos(x, y));
+            while (e >= 0)
+            {
+                if (isChanged)
+                    x += signX;
+                else
+                    y +=signY;
+                e -= 2 * deltaX;
+            }
+            if (isChanged)
+                y += signY;
+            else
+                x += signX;
+            e += 2 * deltaY;
+        }
+    }
+    static int sign(int a)
+    {
+        if (a < 0)
+            return -1;
+        else if (a > 0)
+            return 1;
+        else return 0;
     }
 };

@@ -113,7 +113,14 @@
     <addaction name="separator"/>
     <addaction name="actionTest"/>
    </widget>
+   <widget class="QMenu" name="menuTraininng_algorithm">
+    <property name="title">
+     <string>Traininng algorithm</string>
+    </property>
+    <addaction name="actionGenerate_gestures"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuTraininng_algorithm"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -148,6 +155,11 @@
   <action name="actionTest">
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="actionGenerate_gestures">
+   <property name="text">
+    <string>Generate gestures</string>
    </property>
   </action>
  </widget>

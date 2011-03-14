@@ -12,7 +12,7 @@
 class GridClassifier
 {
 public:
-    GridClassifier(const QList<QPoint> &path)
+    GridClassifier(const PathVector &path)
     {
         mKey = KeyBuilder::getKey(path, gridSize, gridSize);
     }
@@ -105,8 +105,13 @@ public:
     {
         minR = gridSize * e / 2;
     }
-
-    void learn(QString const & object, QList<QPoint> const & path)
+    void learn(const QString &object, const PointVector &path)
+    {
+        PathVector learnPath;
+        learnPath.append(path);
+        learn(object, learnPath);
+    }
+    void learn(QString const & object, PathVector const & path)
     {
         Classifier newPoint(path);
         qDebug() << "classifier built";
@@ -130,14 +135,14 @@ public:
     {
         mSphereObject.clear();
     }
-    void initIdealGestures(const QMap<QString, QList<QPoint> > &objects)
+    void initIdealGestures(const QMap<QString, PathVector> &objects)
     {
         foreach (QString name, objects.keys())
         {
             learn(name, objects[name]);
         }
     }
-    void setKey(const QList<QPoint> &path)
+    void setKey(const PathVector &path)
     {
         mCurrentClassifier = Classifier(path);
     }

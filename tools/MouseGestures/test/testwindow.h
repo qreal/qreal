@@ -21,6 +21,6 @@ private:
 
 private slots:
     void test();
-
+    void printData(int, int, int);
 };
 

@@ -29,6 +29,7 @@ HEADERS += mousegestures.h \
     multistrokeRecognizers/curveKeyBuilder.h \
     multistrokeRecognizers/multistrokeGesturesManagers.h \
     TrainingGesturesManager/TrainingGesturesManager.h \
-    NeuralNetwork/neuralnetwork.h
+    NeuralNetwork/neuralnetwork.h \
+    test/testThread.h
 FORMS += mousegestures.ui \
     test/testwindow.ui

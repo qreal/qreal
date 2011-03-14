@@ -55,4 +55,5 @@ private slots:
 	void drawGesture();
 	void save();
         void chooseTestAlgorithm();
+        void generateGestures();
 };

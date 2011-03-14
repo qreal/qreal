@@ -52,3 +52,31 @@ QList<QString> XmlParser::getUsersGestures(const QDomNodeList &list)
         }
         return gestures;
 }
+
+void XmlParser::save(const QMap<QString, UsersGestures> &map,
+                     const QString &pathToFile)
+{
+        QFile file(pathToFile);
+        if (!file.open(QFile::ReadWrite))
+                return;
+        QTextStream textStream(&file);
+        QDomDocument doc;
+        QDomElement root = doc.createElement("usersGestures");
+        doc.appendChild(root);
+        foreach (QString name, map.keys())
+        {
+                QDomElement element = doc.createElement("gesture");
+                element.setAttribute("name", name);
+                element.setAttribute("idealPath", Parser::pathToString(map[name].first));
+                foreach (QString usersGesture, map[name].second)
+                {
+                        QDomElement usersPath = doc.createElement("userPath");
+                        usersPath.setAttribute("path", usersGesture);
+                        element.appendChild(usersPath);
+                }
+                root.appendChild(element);
+        }
+        doc.save(textStream, 2);
+        file.close();
+}
+

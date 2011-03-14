@@ -12,8 +12,8 @@
 class GesturesManager
 {
 public:
-    virtual void initIdealGestures(QMap<QString, QList<QPoint> > const & objects) = 0;
-    virtual void setKey(const QList<QPoint> & path) = 0;
+    virtual void initIdealGestures(QMap<QString, PathVector> const & objects) = 0;
+    virtual void setKey(const PathVector & path) = 0;
     virtual double getMaxDistance(QString const & object) = 0;
     virtual double getDistance(QString const & object) = 0;
     virtual bool isMultistroke() = 0;
@@ -31,7 +31,7 @@ public:
         return getDistance(mKey, key);
     }
 
-    void initIdealGestures(QMap<QString, QList<QPoint> > const & objects)
+    void initIdealGestures(QMap<QString, PathVector> const & objects)
     {
         foreach (QString object, objects.keys())
         {
@@ -42,7 +42,7 @@ public:
         }
     }
 
-    void setKey(QList<QPoint> const & path)
+    void setKey(PathVector const & path)
     {
         mKey = getKey(path);
     }
@@ -52,7 +52,7 @@ public:
 protected:
     TKey mKey;
     virtual double getDistance(TKey const & key1, TKey const & key2) = 0;
-    virtual TKey getKey(QList<QPoint> const & path) = 0;
+    virtual TKey getKey(PathVector const & path) = 0;
     QMap<QString, TKey> mGestures;
     //maybe to do several lists for multistroke gestures
 };
@@ -74,7 +74,7 @@ public:
     void setIdealGestures(const QList<Entity> & objects)
     {
         mObjects.clear();
-        QMap<QString, QList<QPoint> > gestures;
+        QMap<QString, PathVector> gestures;
         foreach (Entity entity, objects)
         {
             PathVector paths;
@@ -83,12 +83,7 @@ public:
             else
                 paths = entity.second;
             mObjects.insert(entity.first, paths);
-            QList<QPoint> path;
-            foreach (QList<QPoint> gesture, paths)
-            {
-                path.append(PathCorrector::getMousePath(gesture));
-            }
-            gestures.insert(entity.first, path);
+            gestures.insert(entity.first, paths);
         }
         mGesturesManager->initIdealGestures(gestures);
     }
@@ -98,15 +93,7 @@ public:
         if (mObjects.empty())
             return "";
         QString recognizedObject;
-        if (!mGesturesManager->isMultistroke())
-            mGesturesManager->setKey(mGesture.back());
-        else
-        {
-            QList<QPoint> gesturePath;
-            foreach (QList<QPoint> path, mGesture)
-                gesturePath.append(path);
-            mGesturesManager->setKey(gesturePath);
-        }
+        mGesturesManager->setKey(mGesture);
         double minDist = mGesturesManager->getMaxDistance(mObjects.keys().at(0));
         foreach (QString object, mObjects.keys())
         {
@@ -146,6 +133,7 @@ public:
     {
         return mObjects.keys();
     }
+
 
     void drawGesture(QString const & object, PaintManager * paintManager)
     {

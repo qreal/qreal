@@ -7,20 +7,49 @@
 #include "GeometricForms.h"
 #include "paintmanager.h"
 #include "multistrokeRecognizers/multistrokeGesturesManagers.h"
+#include "test/xmlparser.h"
+
 
 static const QString xmlDir = "../../unreal/trunk/qrxml";
+static const QString idealGesturesFile =
+        "NeuralNetwork/learnGestures/ideal_gestures.xml";
+static const QString generatedGesturesFile = "NeuralNetwork/learnGestures/generated_gestures.xml";
 
 MouseGestures::MouseGestures(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MouseGestures)
 {
     ui->setupUi(this);
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(loadFile()));
-    connect(ui->twObjectPathTable, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(drawGesture()));
+    connect(ui->twObjectPathTable, SIGNAL
+            (currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(drawGesture()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(save()));
     connect(ui->actionTest, SIGNAL(triggered()), this, SLOT(chooseTestAlgorithm()));
+    connect(ui->actionGenerate_gestures, SIGNAL(triggered()), this, SLOT(generateGestures()));
     mPaintManager = new PaintManager(ui->gvGesture);
     mGesturesManager = new LevenshteinHullGesturesManager();
     mRecognizer = new AbstractRecognizer(mGesturesManager);
+}
+
+void MouseGestures::generateGestures()
+{
+    //TODO:: change idealGestures
+    QMap<QString, UsersGestures> usersGestures = XmlParser::parseXml(idealGesturesFile);
+    QMap<QString, UsersGestures> generatedGestures;
+    foreach (QString object, usersGestures.keys())
+    {
+        PathVector idealGesture;
+        idealGesture.push_back(usersGestures[object].first);
+        QList<QString> newGestures;
+        for (int i = 0; i < 5; i++)
+        {
+            PathVector gesture = PathCorrector::distortGesture(idealGesture);
+            //TODO:: change for incoherent gestures
+            newGestures.push_back(Parser::pathToString(gesture.first()));
+        }
+        UsersGestures generatedGesture(usersGestures[object].first, newGestures);
+        generatedGestures.insert(object, generatedGesture);
+    }
+    XmlParser::save(generatedGestures, generatedGesturesFile);
 }
 
 void MouseGestures::chooseTestAlgorithm()

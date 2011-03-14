@@ -5,8 +5,9 @@
 #include "adopter.h"
 #include "NeuralNetwork/neuralNetwork.h"
 #include <QFileDialog>
+#include "testThread.h"
 
-const QString pathToTestFile = "usersGestures.xml";
+//const QString pathToTestFile = "usersGestures.xml";
 const QString pathToTrainingFile = "NeuralNetwork/learnGestures/learn_gestures1.xml";
 const QString levXYSortAlgorithm = "levenshtein distance square and sorting by XY coordinates";
 const QString levDistHullAlgorithm = "levenshtein distance and hull sorting";
@@ -34,42 +35,22 @@ void TestWindow::test()
 {
     ui->pbTested->setValue(0);
     GesturesManager * gesturesManager = getGesturesManager();
-    QMap<QString, UsersGestures> usersGestures = XmlParser::parseXml(pathToTestFile);
-    QList<Entity> entities;
-    int objectsNum = usersGestures.keys().size();
-    foreach (QString key, usersGestures.keys())
-    {
-        PathVector path;
-        path.push_back(usersGestures[key].first);
-        entities.push_back(QPair<QString, PathVector>(key, path));
-    }
-    AbstractRecognizer * recognizer = new AbstractRecognizer(gesturesManager, entities);
-    int all = 0;
-    int recognized = 0;
-    int notRecognized = 0;
-    int checkedObjects = 0;
-    foreach (QString object, usersGestures.keys())
-    {
-        foreach (QString pathStr, usersGestures[object].second)
-        {
-            all ++;
-            QList<QPoint> path = Parser::stringToPath(pathStr);
-            if (object == recognizer->recognizeObject(path))
-                recognized ++;
-            else
-                notRecognized ++;
-        }
-        checkedObjects ++;
-        ui->pbTested->setValue(100 * checkedObjects / objectsNum);
-    }
+    TestThread * thread = new TestThread(gesturesManager, this);
+    connect(thread, SIGNAL(tested(int, int, int)), this, SLOT(printData(int,int,int)));
+    ui->pbTested->setValue(1);
+    thread->run();
+}
+
+void TestWindow::printData(int percent, int all, int recognized)
+{
+    ui->pbTested->setValue(percent);
     ui->teAll->setText(QString::number(all));
     ui->teRecognized->setText(QString::number(recognized));
-    ui->teNotRecognized->setText(QString::number(notRecognized));
+    ui->teNotRecognized->setText(QString::number(all - recognized));
 }
 
 GesturesManager * TestWindow::getGesturesManager()
 {
-    //TODO:: add new thread
     QString name = ui->cbAlgorithm->currentText();
     if (name ==  levXYSortAlgorithm)
         return new LevenshteinXYSortGesturesManager();
@@ -81,8 +62,11 @@ GesturesManager * TestWindow::getGesturesManager()
         return new SquaresCurveGesturesManager();
     else if (name == trainingGesturesManagerAlgorithm)
     {
-        TrainingGesturesManager<GridClassifier> * trainingGesturesManager = new TrainingGesturesManager<GridClassifier>();
-        QMap<QString, UsersGestures> gestures = XmlParser::parseXml(pathToTrainingFile);
+        TrainingGesturesManager<GridClassifier> * trainingGesturesManager
+                = new TrainingGesturesManager<GridClassifier>();
+        QString trainingFile = QFileDialog::getOpenFileName(this, tr("Open Xml"), "",
+                                               tr("Xml files (*.xml)"));
+        QMap<QString, UsersGestures> gestures = XmlParser::parseXml(trainingFile);
         foreach (QString object, gestures.keys())
         {
             UsersGestures paths = gestures[object];

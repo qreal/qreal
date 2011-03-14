@@ -30,7 +30,7 @@ protected:
         return Distance::getLevenshteinDistance(key1, key2);
     }
 
-    Key getKey(PointVector const & path)
+    Key getKey(PathVector const & path)
     {
         Key key = KeyBuilder::getKey(path, size, size);
         return Sorting::sortCurve(key);
@@ -56,7 +56,7 @@ protected:
         return Distance::getOneSizeDistance(key1, key2);
     }
 
-    Key getKey(PointVector const & path)
+    Key getKey(PathVector const & path)
     {
         Key key = KeyBuilder::getKey(path, size, size);
         return Sorting::sortCurve(key);
@@ -82,7 +82,7 @@ protected:
         return Distance::getLevenshteinDistance(key1, key2);
     }
 
-    Key getKey(PointVector const & path)
+    Key getKey(PathVector const & path)
     {
         Key key = KeyBuilder::getKey(path, size, size);
         return Sorting::sortPicture(key);
@@ -108,7 +108,7 @@ protected:
         return Distance::getOneSizeDistance(key1, key2);
     }
 
-    Key getKey(PointVector const & path)
+    Key getKey(PathVector const & path)
     {
         Key key = KeyBuilder::getKey(path, size, size);
         return Sorting::sortPicture(key);
@@ -134,7 +134,7 @@ protected:
         return Distance::getSquaresCurveDistance(key1, key2);
     }
 
-    Key getKey(PointVector const & path)
+    Key getKey(PathVector const & path)
     {
         return KeyBuilder::getKey(path, gridSize, gridSize);
     }

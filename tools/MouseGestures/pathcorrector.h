@@ -1,6 +1,7 @@
 #pragma once
 #include <QList>
 #include <QPoint>
+#include "GeometricForms.h"
 
 class PathCorrector
 {
@@ -10,7 +11,7 @@ public:
     static QList<QPoint> getMousePath(QList<QPoint> const & path);
     static QList<QPoint> rotate(QList<QPoint> const & path);
     static QList<QPoint> increase(QList<QPoint> const & path, double k);
-    static QList<QPoint> zoom(QList<QPoint> const & path, int k);
+    static PathVector distortGesture(PathVector const & idealGesture);
 
 private:
     static double getCos(QPoint const & pnt1, QPoint const & pnt2, QPoint const & pnt3);
