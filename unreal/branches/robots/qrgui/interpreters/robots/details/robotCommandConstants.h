@@ -122,16 +122,12 @@ enum SensorTypeEnum {
 	, CUSTOM = 0x09
 	, LOWSPEED = 0x0A
 	, LOWSPEED_9V = 0x0B
-
-	// Some not documented sensors, from Bluetooth Communication Library sources
-	, SONAR_METRIC = 0x0C
-	, SONAR_INCH = 0x0D
-	, COMPASS = 0x0E
-	, IO_8574_SENSOR = 0x0F
-	, ADC_8591_SENSOR = 0x10
-	, COLOR = 0x11
-	, GYRO = 0x12
-	, TILT = 0x13
+	, SONAR_METRIC = 0x0C  // Not documented
+	, COLORFULL = 0x0D
+	, COLORRED = 0x0E
+	, COLORGREEN = 0x0F
+	, COLORBLUE = 0x10
+	, COLORNONE = 0x11
 };
 }
 

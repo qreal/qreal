@@ -12,14 +12,16 @@ namespace sensorImplementations {
 class NullSensorImplementation : public AbstractSensorImplementation
 {
 	Q_OBJECT
+
 public:
 	NullSensorImplementation(inputPort::InputPortEnum const &port);
 	virtual void read();
 
-private:
-	QTimer mActiveWaitingTimer;
 protected slots:
 	virtual void timerTimeout() = 0;
+
+private:
+	QTimer mActiveWaitingTimer;
 };
 
 }

@@ -28,6 +28,11 @@ sensorImplementations::NullSonarSensorImplementation *NullRobotModelImplementati
 	return dynamic_cast<sensorImplementations::NullSonarSensorImplementation *>(mSensors[port]);
 }
 
+sensorImplementations::NullColorSensorImplementation *NullRobotModelImplementation::colorSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<sensorImplementations::NullColorSensorImplementation *>(mSensors[port]);
+}
+
 void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
 //	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
@@ -38,6 +43,11 @@ void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const
 {
 //	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
 	mSensors[port] = new sensorImplementations::NullSonarSensorImplementation(port);
+}
+
+void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port)
+{
+	mSensors[port] = new sensorImplementations::NullColorSensorImplementation(port);
 }
 
 void NullRobotModelImplementation::init()

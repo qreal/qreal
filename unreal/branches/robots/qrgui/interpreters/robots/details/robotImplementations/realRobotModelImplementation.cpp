@@ -33,6 +33,11 @@ sensorImplementations::BluetoothSonarSensorImplementation *RealRobotModelImpleme
 	return dynamic_cast<sensorImplementations::BluetoothSonarSensorImplementation *>(mSensors[port]);
 }
 
+sensorImplementations::BluetoothColorSensorImplementation *RealRobotModelImplementation::colorSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<sensorImplementations::BluetoothColorSensorImplementation *>(mSensors[port]);
+}
+
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
 //	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
@@ -43,6 +48,12 @@ void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const
 {
 //	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
 	mSensors[port] = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicationInterface, port/*lowLevelPort*/);
+}
+
+void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port)
+{
+//	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
+	mSensors[port] = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicationInterface, port/*lowLevelPort*/);
 }
 
 void RealRobotModelImplementation::init()

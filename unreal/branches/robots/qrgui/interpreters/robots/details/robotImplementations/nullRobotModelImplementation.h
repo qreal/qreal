@@ -5,6 +5,7 @@
 #include "motorImplementations/nullMotorImplementation.h"
 #include "sensorImplementations/nullTouchSensorImplementation.h"
 #include "sensorImplementations/nullSonarSensorImplementation.h"
+#include "sensorImplementations/nullColorSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -24,6 +25,7 @@ public:
 	virtual brickImplementations::NullBrickImplementation &brick();
 	virtual sensorImplementations::NullTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::NullMotorImplementation &motorA();
 	virtual motorImplementations::NullMotorImplementation &motorB();
@@ -40,6 +42,7 @@ private:
 	motorImplementations::NullMotorImplementation mMotorC;
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
+	virtual void addColorSensor(inputPort::InputPortEnum const &port);
 };
 
 }

@@ -1,10 +1,12 @@
 #pragma once
+
 #include "abstractRobotModelImplementation.h"
 #include "../../robotCommunicationInterface.h"
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "sensorImplementations/bluetoothSonarSensorImplementation.h"
+#include "sensorImplementations/bluetoothColorSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -24,6 +26,7 @@ public:
 	virtual brickImplementations::RealBrickImplementation &brick();
 	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::BluetoothSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::RealMotorImplementation &motorA();
 	virtual motorImplementations::RealMotorImplementation &motorB();
@@ -41,6 +44,7 @@ private:
 	motorImplementations::RealMotorImplementation mMotorC;
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
+	virtual void addColorSensor(inputPort::InputPortEnum const &port);
 };
 
 }

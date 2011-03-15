@@ -42,13 +42,16 @@ HEADERS += \
 	interpreters/robots/details/robotParts/sensor.h \
 	interpreters/robots/details/robotParts/touchSensor.h \
 	interpreters/robots/details/robotParts/sonarSensor.h \
+	interpreters/robots/details/robotParts/colorSensor.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.h \
+	interpreters/robots/details/robotImplementations/sensorImplementations/nullColorSensorImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/abstractMotorImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/realMotorImplementation.h \
 	interpreters/robots/details/robotImplementations/motorImplementations/nullMotorImplementation.h \
@@ -85,6 +88,7 @@ SOURCES += \
 	interpreters/robots/details/robotParts/robotModel.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
 	interpreters/robots/details/robotParts/sonarSensor.cpp \
+	interpreters/robots/details/robotParts/colorSensor.cpp \
 	interpreters/robots/details/robotParts/sensor.cpp \
 	interpreters/robots/details/robotParts/motor.cpp \
 	interpreters/robots/details/robotParts/brick.cpp \
@@ -92,9 +96,11 @@ SOURCES += \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullTouchSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/sensorImplementations/nullSonarSensorImplementation.cpp \
+	interpreters/robots/details/robotImplementations/sensorImplementations/nullColorSensorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/abstractMotorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/realMotorImplementation.cpp \
 	interpreters/robots/details/robotImplementations/motorImplementations/nullMotorImplementation.cpp \

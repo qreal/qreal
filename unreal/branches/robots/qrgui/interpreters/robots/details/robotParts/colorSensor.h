@@ -10,11 +10,12 @@ namespace robots {
 namespace details {
 namespace robotParts {
 
-class TouchSensor : public Sensor
+class ColorSensor : public Sensor
 {
 	Q_OBJECT
+
 public:
-	TouchSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	ColorSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
 };
 
 }

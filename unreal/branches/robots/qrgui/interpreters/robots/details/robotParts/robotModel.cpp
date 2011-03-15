@@ -34,6 +34,11 @@ robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const 
 	return new robotParts::SonarSensor(mRobotImpl->sensors().at(port), port);
 }
 
+robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
+{
+	return new robotParts::ColorSensor(mRobotImpl->sensors().at(port), port);
+}
+
 void RobotModel::clear()
 {
 }
