@@ -27,14 +27,17 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 
 	if (ports.isEmpty()) {
 		mUi->comPortComboBox->hide();
-		mUi->comPortLabel->setText(tr("No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3"));
+		mUi->comPortLabel->hide();
+		mUi->noComPortsFoundLabel->show();
 		mUi->directInputComPortLabel->show();
 		mUi->directInputComPortLineEdit->show();
 		mUi->directInputComPortLineEdit->setText(defaultPortName);
 	} else {
 		mUi->comPortComboBox->show();
+		mUi->comPortLabel->show();
 		mUi->directInputComPortLabel->hide();
 		mUi->directInputComPortLineEdit->hide();
+		mUi->noComPortsFoundLabel->hide();
 
 		foreach (QextPortInfo info, ports) {
 			QRegExp const portNameRegexp("COM\\d+", Qt::CaseInsensitive);
@@ -77,7 +80,6 @@ RobotSettingsDialog::~RobotSettingsDialog()
 
 void RobotSettingsDialog::ok()
 {
-	accept();
 	QSettings settings("SPbSU", "QReal");
 	settings.setValue("bluetoothPortName", selectedPortName());
 	settings.setValue("port1SensorType", selectedPort1Sensor());
@@ -85,7 +87,7 @@ void RobotSettingsDialog::ok()
 	settings.setValue("port3SensorType", selectedPort3Sensor());
 	settings.setValue("port4SensorType", selectedPort4Sensor());
 	settings.setValue("robotModel", selectedRobotModel());
-	close();
+	accept();
 }
 
 void RobotSettingsDialog::initRobotModelType(robotModelType::robotModelTypeEnum type)
