@@ -271,8 +271,11 @@ void NodeType::generateCode(OutFile &out)
 	foreach (Label *label, mLabels)
 		label->generateCodeForConstructor(out);
 
-	out() << "\t\t}\n\n"
-		<< "\t\t~" << className << "() {}\n\n"
+	out() << "\t\t}\n\n";
+
+	out() << "\t\t ElementImpl *clone() { return NULL; }\n";
+
+	out() << "\t\t~" << className << "() {}\n\n"
 		<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
 
 	if (hasSdf)

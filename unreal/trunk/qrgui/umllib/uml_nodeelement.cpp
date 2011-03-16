@@ -70,6 +70,32 @@ NodeElement::~NodeElement()
 	delete mUmlPortHandler;
 }
 
+NodeElement *NodeElement::clone()
+{
+	ElementImpl *impl = mElementImpl->clone();
+	NodeElement *result = new NodeElement(impl);
+
+	result->copyChildren(this);
+	result->copyEdges(this);
+
+	return result;
+}
+
+void NodeElement::copyChildren(NodeElement *source)
+{
+	foreach (QGraphicsItem *child, source->childItems()) {
+		NodeElement *element = dynamic_cast<NodeElement*>(child);
+		if (element) {
+
+		}
+	}
+}
+
+void NodeElement::copyEdges(NodeElement *source)
+{
+
+}
+
 void NodeElement::setName(QString value)
 {
 	mGraphicalAssistApi->setName(id(), value);

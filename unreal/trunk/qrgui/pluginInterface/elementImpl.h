@@ -110,5 +110,7 @@ namespace UML {
 			virtual QList<double> border() = 0;
 
 			virtual QStringList bonusContextMenuFields() = 0;
+
+			virtual ElementImpl *clone() = 0;
 	};
 }
