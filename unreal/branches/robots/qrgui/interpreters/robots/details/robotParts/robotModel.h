@@ -16,6 +16,8 @@
 #include "../robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h"
 
+#include "../robotImplementations/nullRobotModelImplementation.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -25,7 +27,7 @@ class RobotModel : public QObject {
 	Q_OBJECT
 
 public:
-	RobotModel(robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	RobotModel();
 	virtual ~RobotModel();
 
 	void init();
@@ -40,6 +42,7 @@ public:
 	robotParts::Brick &brick();
 	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
+	robotParts::Sensor *sensor(inputPort::InputPortEnum const &port) const;
 	robotParts::ColorSensor *colorSensor(inputPort::InputPortEnum const &port) const;
 
 	robotParts::Motor &motorA();

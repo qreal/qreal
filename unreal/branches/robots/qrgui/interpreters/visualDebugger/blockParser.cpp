@@ -11,14 +11,24 @@ BlockParser::BlockParser(gui::ErrorReporter* errorReporter) {
 	QString pi = "pi";
 	Number value = Number(3.14, Number::doubleType);
 	mVariables.insert(pi, value);
+	for (int i = 1; i <= 4; ++i) {
+		QString variable = "Sensor" + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
+	for (int i = 1; i <= 4; ++i) {
+		QString variable = "SensorRaw" + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
 }
 
 BlockParser::~BlockParser() {
 	//	delete &mVariables;
 }
 
-QMap<QString, Number>* BlockParser::getVariables() {
-	return &mVariables;
+QMap<QString, Number> &BlockParser::getVariables() {
+	return mVariables;
 }
 
 bool BlockParser::isDigit(QChar c) {
@@ -211,26 +221,6 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 		}
 		pos++;
 		break;
-//		default:
-//			if (isDigit(stream.at(pos))) {
-//				res = parseNumber(stream, pos);
-//			} else if (isLetter(stream.at(pos))) {
-//				int unknownIdentifierIndex = pos;
-//				QString variable = parseIdentifier(stream, pos);
-//				if (mVariables.contains(variable)) {
-//					res = mVariables[variable];
-//				} else {
-//					error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
-//				}
-//			} else {
-//				error(unexpectedSymbol, QString::number(pos+1),
-//					"digit\'' or \'letter\' or \'bracket\' or \'sign", QString(stream.at(pos)));
-//			}
-//			break;
-//	}
-//	skip(stream, pos);
-//	return res;
-//}
 	default:
 		if (isDigit(stream.at(pos))) {
 			res = parseNumber(stream, pos);
@@ -249,12 +239,16 @@ Number BlockParser::parseTerm(QString stream, int& pos) {
 					}
 				}
 			}
-			else
-				if (mVariables.contains(variable)) {
-					res = mVariables[variable];
-				} else {
-					error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
-				}
+			else if (mReservedVariables.contains(variable)) {
+				hasParseErrors = true;
+				mErrorReporter->addError(QObject::tr("Using reserved variables %1").arg(variable), mCurrentId);
+				res = Number(0, Number::intType);
+			}
+			else if (mVariables.contains(variable)) {
+				res = mVariables[variable];
+			} else {
+				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
+			}
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
 				  "digit\'' or \'letter\' or \'bracket\' or \'sign", QString(stream.at(pos)));
@@ -306,7 +300,9 @@ void BlockParser::parseVarPart(QString stream, int& pos) {
 		if (!checkForEndOfStream(stream, pos) &&
 				stream.mid(pos,4).compare("int ") != 0 && stream.mid(pos,7).compare("double ") != 0)
 		{
-			error(unexpectedSymbol, QString::number(pos+1), "int\' or \'double", stream.at(pos));
+			QString errorTypeName = stream.mid(pos);
+			errorTypeName.truncate(errorTypeName.indexOf(" "));
+			error(unexpectedSymbol, QString::number(pos+1), "int\' or \'double", errorTypeName);
 			return;
 		}
 
@@ -325,6 +321,11 @@ void BlockParser::parseVarPart(QString stream, int& pos) {
 			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
 				skip(stream, pos);
 				QString variable = parseIdentifier(stream, pos);
+				if ((mReservedVariables.contains(variable)) || (isFunction(variable))) {
+					hasParseErrors = true;
+					mErrorReporter->addError(QObject::tr("Using reserved variable %1").arg(variable), mCurrentId);
+					return;
+				}
 				if (hasParseErrors) {
 					return;
 				}
@@ -378,6 +379,11 @@ void BlockParser::parseVarPart(QString stream, int& pos) {
 void BlockParser::parseCommand(QString stream, int& pos) {
 	int typesMismatchIndex = pos;
 	QString variable = parseIdentifier(stream, pos);
+	if ((mReservedVariables.contains(variable))|| (isFunction(variable))) {
+		hasParseErrors = true;
+		mErrorReporter->addError(QObject::tr("Using reserved variable %1").arg(variable), mCurrentId);
+		return;
+	}
 	skip(stream, pos);
 	if (hasParseErrors || checkForEndOfStream(stream, pos)) {
 		return;
@@ -671,28 +677,26 @@ void BlockParser::error(ParseErrorType type, QString pos, QString expected, QStr
 	case unexpectedEndOfStream:
 		hasParseErrors = true;
 		mErrorReporter->addCritical(
-					"Unexpected end of stream at " + pos + ". Mb you forget \';\'?",
+					QObject::tr("Unexpected end of stream at %1. Maybe you forget \';\'?").arg(pos),
 					mCurrentId);
 		break;
 	case unexpectedSymbol:
 		hasParseErrors = true;
-		mErrorReporter->addCritical("Unexpected symbol at " + pos +
-									" : expected \'" + expected + "\', got \'" + got + "\'", mCurrentId);
+		mErrorReporter->addCritical(QObject::tr("Unexpected symbol at %1 : expected \'%2\', got \'%3\'").arg(pos, expected, got), mCurrentId);
 		break;
 	case typesMismatch:
-		mErrorReporter->addWarning("Types mismatch at " + pos + ": " +
-								   expected + " = " + got + ". Possible loss of data", mCurrentId);
+		mErrorReporter->addWarning(QObject::tr("Types mismatch at %1: %2  = %3. Possible loss of data").arg(pos, expected, got), mCurrentId);
 		break;
 	case unknownIdentifier:
 		hasParseErrors = true;
-		mErrorReporter->addCritical("Unknown identifier at " + pos + " \'" + got + "\'", mCurrentId);
+		mErrorReporter->addCritical(QObject::tr("Unknown identifier at %1 \'%2\'").arg(pos, got), mCurrentId);
 		break;
 	case emptyProcess:
-		mErrorReporter->addWarning("Empty process is unnecessary", mCurrentId);
+		mErrorReporter->addWarning(QObject::tr("Empty process is unnecessary"), mCurrentId);
 		break;
 	case emptyCondition:
 		hasParseErrors = true;
-		mErrorReporter->addCritical("Condition can\'t be empty", mCurrentId);
+		mErrorReporter->addCritical(QObject::tr("Condition can\'t be empty"), mCurrentId);
 		break;
 	}
 }
@@ -757,7 +761,8 @@ Number BlockParser::parseProcessForRobots(QString stream, int &pos, Id curId)
 	}
 	QString newStream = stream.mid(pos, stream.length());
 	if (newStream.isEmpty()){
-		mErrorReporter->addCritical("No value of expression", mCurrentId);
+		hasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("No value of expression"), mCurrentId);
 		return Number(0, Number::intType);
 	}
 	QStringList exprs = newStream.split(";", QString::SkipEmptyParts);
@@ -774,7 +779,8 @@ Number BlockParser::parseProcessForRobots(QString stream, int &pos, Id curId)
 	if(!valueExpression.contains("="))
 		return parseExpression(valueExpression, position);
 	else {
-		mErrorReporter->addCritical("No value of expression", mCurrentId);
+		hasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("No value of expression"), mCurrentId);
 		return Number(0, Number::intType);
 	}
 }
@@ -782,4 +788,22 @@ Number BlockParser::parseProcessForRobots(QString stream, int &pos, Id curId)
 void BlockParser::clearForRobots()
 {
 	hasParseErrors = false;
+}
+
+void BlockParser::clearVariables()
+{
+	mVariables.clear();
+	QString pi = "pi";
+	Number value = Number(3.14, Number::doubleType);
+	mVariables.insert(pi, value);
+	for (int i = 1; i <= 4; ++i) {
+		QString variable = "Sensor" + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
+	for (int i = 1; i <= 4; ++i) {
+		QString variable = "SensorRaw" + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
 }

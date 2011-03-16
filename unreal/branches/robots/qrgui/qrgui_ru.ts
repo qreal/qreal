@@ -750,6 +750,54 @@
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
         <translation>Конфликт конфигурации сенсоров, пожалуйста, проверьте, что порты используются в программе согласованно</translation>
     </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="244"/>
+        <source>Using reserved variables %1</source>
+        <translation type="unfinished">Используется зарезервированная переменная &apos;%1&apos;
+</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="326"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="384"/>
+        <source>Using reserved variable %1</source>
+        <translation type="unfinished">Используется зарезервированная переменная &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="680"/>
+        <source>Unexpected end of stream at %1. Maybe you forget &apos;;&apos;?</source>
+        <translation type="unfinished">Нераспознаваемый символ в позиции %1. Возможно, пропущен символ  &apos;;&apos;.</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="685"/>
+        <source>Unexpected symbol at %1 : expected &apos;%2&apos;, got &apos;%3&apos;</source>
+        <translation>Нераспознаваемый символ на позиции %1: ожидается символ &apos;%2&apos;, а получен символ &apos;%3&apos;</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="688"/>
+        <source>Types mismatch at %1: %2  = %3. Possible loss of data</source>
+        <translation>Несогласованы типы в позиции %1: %2 = %3. Возможно, пропущены значения</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="692"/>
+        <source>Unknown identifier at %1 &apos;%2&apos;</source>
+        <translation>Неопределенная переменная в позиции %1 &apos;%2&apos;</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="695"/>
+        <source>Empty process is unnecessary</source>
+        <translation>Пустое поле значения элемента</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="699"/>
+        <source>Condition can&apos;t be empty</source>
+        <translation>Условие не может быть пустым</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="765"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="783"/>
+        <source>No value of expression</source>
+        <translation>Отсутвует выражение для подстчета значения поля</translation>
+    </message>
 </context>
 <context>
     <name>RefWindow</name>
@@ -777,22 +825,22 @@
         <translation>Настройки робота</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="101"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="111"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="104"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="114"/>
         <source>Return</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="114"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="124"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="117"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="127"/>
         <source>Esc</source>
         <translation></translation>
     </message>
@@ -808,42 +856,47 @@
         <translation>COM-порт:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="49"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="46"/>
+        <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
+        <translation type="unfinished">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.ui" line="59"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="58"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="68"/>
         <source>Port 1:</source>
         <translation>Порт 1:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="68"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="78"/>
         <source>Port 2:</source>
         <translation>Порт 2:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="78"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="88"/>
         <source>Port 3:</source>
         <translation>Порт 3:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="88"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="98"/>
         <source>Port 4:</source>
         <translation>Порт 4:</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="127"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="137"/>
         <source>Type of Robot Model</source>
         <translation>Тип модели робота</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="136"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="146"/>
         <source>Null model</source>
         <translation>Пустая модель</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.ui" line="143"/>
+        <location filename="dialogs/robotSettingsDialog.ui" line="153"/>
         <source>Real robot</source>
         <translation>Реальный робот</translation>
     </message>
@@ -1034,27 +1087,27 @@
         <translation>Некоторых плагинов не хватает</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="423"/>
+        <location filename="mainwindow/mainwindow.cpp" line="424"/>
         <source>Select directory with a save to open</source>
         <translation>Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="541"/>
+        <location filename="mainwindow/mainwindow.cpp" line="542"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="542"/>
+        <location filename="mainwindow/mainwindow.cpp" line="543"/>
         <source>&lt;center&gt;This is &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Just another CASE tool&lt;/center&gt;</source>
         <translation>&lt;center&gt;Это &lt;b&gt;QReal&lt;/b&gt;&lt;br&gt;Просто ещё одно CASE-средство&lt;/center&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="548"/>
+        <location filename="mainwindow/mainwindow.cpp" line="549"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="549"/>
+        <location filename="mainwindow/mainwindow.cpp" line="550"/>
         <source>To begin:
 1. To add items to diagrams, drag &amp; drop them from Palette to editor
 2. Get more help from author :)</source>
@@ -1075,83 +1128,83 @@
         <translation type="obsolete">Закончено</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="580"/>
-        <location filename="mainwindow/mainwindow.cpp" line="605"/>
-        <location filename="mainwindow/mainwindow.cpp" line="628"/>
-        <location filename="mainwindow/mainwindow.cpp" line="657"/>
-        <location filename="mainwindow/mainwindow.cpp" line="666"/>
+        <location filename="mainwindow/mainwindow.cpp" line="581"/>
+        <location filename="mainwindow/mainwindow.cpp" line="606"/>
+        <location filename="mainwindow/mainwindow.cpp" line="629"/>
+        <location filename="mainwindow/mainwindow.cpp" line="658"/>
+        <location filename="mainwindow/mainwindow.cpp" line="667"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="580"/>
+        <location filename="mainwindow/mainwindow.cpp" line="581"/>
         <source>Cannot find the directory for saving</source>
         <translation>Не удалось найти папку для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="588"/>
+        <location filename="mainwindow/mainwindow.cpp" line="589"/>
         <source>loading..</source>
         <translation>Загрузка..</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="588"/>
+        <location filename="mainwindow/mainwindow.cpp" line="589"/>
         <source>Do you want to load generated editor %1?</source>
         <translation>Вы хотите загрузить сгенерированный редактор %1?</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="605"/>
+        <location filename="mainwindow/mainwindow.cpp" line="606"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, укажите в окне &quot;Настройки&quot; настройки компилятора</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="628"/>
+        <location filename="mainwindow/mainwindow.cpp" line="629"/>
         <source>cannot unload plugin</source>
         <translation>Не могу выгрузить плагин</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="657"/>
+        <location filename="mainwindow/mainwindow.cpp" line="658"/>
         <source>cannot load new editor</source>
         <translation>Невозможно загрузить новый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="666"/>
+        <location filename="mainwindow/mainwindow.cpp" line="667"/>
         <source>required plugin is not loaded</source>
         <translation>Требуемый плагин не загружен</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="679"/>
+        <location filename="mainwindow/mainwindow.cpp" line="680"/>
         <source>Select xml file to parse</source>
         <translation>Выберите xml-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="752"/>
+        <location filename="mainwindow/mainwindow.cpp" line="753"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1042"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1043"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1065"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1066"/>
         <source>Choose new diagram</source>
         <translation>Выберите новую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1067"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1068"/>
         <source>There is no existing diagram,
  choose diagram you want work with:</source>
         <translation>Диаграммы пока не создано,
 укажите диаграмму, с которой хотите работать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1085"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1086"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1087"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1088"/>
         <source>Done</source>
         <translation>ОК</translation>
     </message>
@@ -1160,7 +1213,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainwindow.cpp" line="1149"/>
+        <location filename="mainwindow/mainwindow.cpp" line="1150"/>
         <source>Select directory to save current model to</source>
         <translation>Выберите папку, в которую сохранить текущую модель</translation>
     </message>
@@ -1208,29 +1261,33 @@
         <translation type="obsolete">COM-порты не найдены</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="30"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="52"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="52"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="52"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="52"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
+        <source>Color sensor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sonar sensor)</source>
@@ -1240,12 +1297,12 @@
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="35"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="39"/>
         <source>Interpreter is already running</source>
         <translation>Интерпретатор уже выполняется</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="41"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="45"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;.</translation>
     </message>

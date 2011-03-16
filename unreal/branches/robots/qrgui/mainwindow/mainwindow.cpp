@@ -211,9 +211,10 @@ MainWindow::MainWindow()
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
 	interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication);
-	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel(robotImpl);
+	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel();
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, robotModel);
+	mRobotInterpreter->setRobotImplementation(robotImpl);
 	sensorType::SensorTypeEnum port1 = static_cast<sensorType::SensorTypeEnum>(settings.value("port1SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port2 = static_cast<sensorType::SensorTypeEnum>(settings.value("port2SensorType", "0").toInt());
 	sensorType::SensorTypeEnum port3 = static_cast<sensorType::SensorTypeEnum>(settings.value("port3SensorType", "0").toInt());
@@ -1238,7 +1239,7 @@ void MainWindow::showRobotSettingsDialog()
 		QSettings settings("SPbSU", "QReal");
 		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
 		interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication);
-		mRobotInterpreter->robotModel()->setRobotImplementation(robotImpl);
+		mRobotInterpreter->setRobotImplementation(robotImpl);
 		mRobotInterpreter->configureSensors(
 				robotSettingsDialog.selectedPort1Sensor()
 				, robotSettingsDialog.selectedPort2Sensor()

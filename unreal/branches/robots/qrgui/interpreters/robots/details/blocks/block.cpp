@@ -135,8 +135,9 @@ QVariant Block::evaluate(const QString &propertyName)
 {
 	int position = 0;
 	QVariant value = mParser->parseProcessForRobots(stringProperty(propertyName), position, mGraphicalId).property("Number");
-	if (mParser->hasErrors())
+	if (mParser->hasErrors()) {
 		mParser->clearForRobots();
+//		emit failure();
+	}
 	return value;
 }
-

@@ -2,6 +2,8 @@
 
 #include "details/autoconfigurer.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace details;
@@ -19,7 +21,9 @@ Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelAp
 	, mRobotModel(robotModel)
 	, mBlocksTable(NULL)
 {
-	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter());
+	mParser = new BlockParser(mInterpretersInterface.errorReporter());
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface.errorReporter(), mParser);
+	mTimer = new QTimer();
 }
 
 Interpreter::~Interpreter()
@@ -121,3 +125,78 @@ void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 {
 	mRobotModel = robotModel;
 }
+
+void Interpreter::setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl)
+{
+	mRobotModel->setRobotImplementation(robotImpl);
+	if (robotImpl)
+		connect(&mRobotModel->robotImpl(), SIGNAL(connected(bool)), this, SLOT(runTimer()));
+}
+
+void Interpreter::runTimer()
+{
+	mTimer->start(1000);
+	connect (mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
+//	for (inputPort::InputPortEnum port = inputPort::port1; port <= inputPort::port4; ++port) {
+//	}
+	if (mRobotModel->sensor(inputPort::port1)) {
+		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
+		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+	}
+	if (mRobotModel->sensor(inputPort::port2)) {
+		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot2(int)));
+		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+	}
+	if (mRobotModel->sensor(inputPort::port3)) {
+		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot3(int)));
+		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+	}
+	if (mRobotModel->sensor(inputPort::port4)) {
+		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot4(int)));
+		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+	}
+}
+
+void Interpreter::readSensorValues()
+{
+	if (mRobotModel->sensor(inputPort::port1))
+		mRobotModel->sensor(inputPort::port1)->read();
+	if (mRobotModel->sensor(inputPort::port2))
+		mRobotModel->sensor(inputPort::port2)->read();
+	if (mRobotModel->sensor(inputPort::port3))
+		mRobotModel->sensor(inputPort::port3)->read();
+	if (mRobotModel->sensor(inputPort::port4))
+		mRobotModel->sensor(inputPort::port4)->read();
+}
+
+void Interpreter::slotFailure()
+{
+	qDebug() << "FAILURE, just lol";
+}
+
+void Interpreter::responseSlot1(int sensorValue)
+{
+	updateSensorValues("Sensor1", sensorValue);
+}
+
+void Interpreter::responseSlot2(int sensorValue)
+{
+	updateSensorValues("Sensor2", sensorValue);
+}
+
+void Interpreter::responseSlot3(int sensorValue)
+{
+	updateSensorValues("Sensor3", sensorValue);
+}
+
+void Interpreter::responseSlot4(int sensorValue)
+{
+	updateSensorValues("Sensor4", sensorValue);
+}
+
+void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)
+{
+	mParser->getVariables()[sensorVariableName] = Number(sensorValue, Number::intType);
+	qDebug() << sensorVariableName << sensorValue;
+}
+

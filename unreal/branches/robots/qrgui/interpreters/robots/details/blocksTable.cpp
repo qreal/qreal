@@ -10,8 +10,9 @@ BlocksTable::BlocksTable(models::GraphicalModelAssistApi const &graphicalModelAp
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
 		, gui::ErrorReporter * const errorReporter
+		, BlockParser * const parser
 	)
-	: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this))
+	: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this, parser))
 {
 }
 
@@ -34,6 +35,7 @@ blocks::Block *BlocksTable::block(Id const &element)
 
 void BlocksTable::clear()
 {
+	mBlocksFactory->getParser()->clearVariables();
 	foreach (blocks::Block *block, mBlocks.values())
 		delete block;
 	mBlocks.clear();

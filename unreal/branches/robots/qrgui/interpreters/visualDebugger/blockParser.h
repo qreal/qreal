@@ -22,10 +22,11 @@ namespace qReal {
 		void setErrorReporter(gui::ErrorReporter* errorReporter);
 		void clear();
 
-		QMap<QString, Number>* getVariables(); //only for test using
+		QMap<QString, Number> &getVariables(); //only for test using
 
 		Number parseProcessForRobots(QString stream, int& pos, Id curId);
 		void clearForRobots();
+		void clearVariables();
 
 	private:
 		enum ParseErrorType {
@@ -42,6 +43,7 @@ namespace qReal {
 		bool hasParseErrors;
 		gui::ErrorReporter* mErrorReporter;
 		Id mCurrentId;
+		QStringList mReservedVariables;
 
 		bool isDigit(QChar c);
 		bool isSign(QChar c);

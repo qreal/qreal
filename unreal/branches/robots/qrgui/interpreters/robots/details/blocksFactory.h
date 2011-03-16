@@ -18,8 +18,11 @@ public:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, RobotModel * const robotModel
 			, gui::ErrorReporter * const errorReporter
-			, BlocksTable * const blocksTable);
+			, BlocksTable * const blocksTable
+			, BlockParser * const parser);
 	blocks::Block *block(Id const &element);
+
+	BlockParser * getParser();
 private:
 	RobotModel * mRobotModel;  // Doesnt't have ownership
 	models::GraphicalModelAssistApi const &mGraphicalModelApi;

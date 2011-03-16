@@ -13,6 +13,8 @@
 #include "details/thread.h"
 #include "details/blocksTable.h"
 
+#include "../visualDebugger/blockParser.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -37,10 +39,18 @@ public:
 			, sensorType::SensorTypeEnum const &port4);
 	void stop();
 	void stopRobot();
+	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 
 private slots:
 	void threadStopped();
 	void newThread(details::blocks::Block * const startBlock);
+	void runTimer();
+	void readSensorValues();
+	void slotFailure();
+	void responseSlot1(int sensorValue);
+	void responseSlot2(int sensorValue);
+	void responseSlot3(int sensorValue);
+	void responseSlot4(int sensorValue);
 
 private:
 	enum InterpreterState {
@@ -56,9 +66,12 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
+	BlockParser *mParser;
+	QTimer *mTimer;
 
 	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);
+	void updateSensorValues (QString const &sensorVariableName, int sensorValue);
 };
 
 }

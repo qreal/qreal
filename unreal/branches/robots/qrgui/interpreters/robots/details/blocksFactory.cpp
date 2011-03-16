@@ -23,14 +23,19 @@ BlocksFactory::BlocksFactory(models::GraphicalModelAssistApi const &graphicalMod
 		, models::LogicalModelAssistApi const &logicalModelApi
 		, RobotModel * const robotModel
 		, gui::ErrorReporter * const errorReporter
-		, BlocksTable * const blocksTable)
+		, BlocksTable * const blocksTable, BlockParser * const parser)
 	: mRobotModel(robotModel)
 	, mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mErrorReporter(errorReporter)
 	, mBlocksTable(blocksTable)
+	, mParser(parser)
 {
-	mParser = new BlockParser(mErrorReporter);
+}
+
+BlockParser * BlocksFactory::getParser()
+{
+	return mParser;
 }
 
 Block *BlocksFactory::block(Id const &element)

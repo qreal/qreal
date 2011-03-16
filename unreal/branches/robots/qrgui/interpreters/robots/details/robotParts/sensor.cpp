@@ -9,6 +9,7 @@ using namespace robotParts;
 Sensor::Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port)
 	: mPort(port), mSensorImpl(sensorImpl)
 {
+
 	mSensorImpl->setPort(mPort);
 }
 

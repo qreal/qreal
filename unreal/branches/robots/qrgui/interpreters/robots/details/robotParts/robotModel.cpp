@@ -5,12 +5,12 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations;
 
-RobotModel::RobotModel(AbstractRobotModelImplementation *robotImpl)
-	: mRobotImpl(robotImpl)
-	, mBrick(&robotImpl->brick())
-	, mMotorA(0, &robotImpl->motorA())
-	, mMotorB(1, &robotImpl->motorB())
-	, mMotorC(2, &robotImpl->motorC())
+RobotModel::RobotModel()
+	: mRobotImpl(new NullRobotModelImplementation())
+	, mBrick(&mRobotImpl->brick())
+	, mMotorA(0, &mRobotImpl->motorA())
+	, mMotorB(1, &mRobotImpl->motorB())
+	, mMotorC(2, &mRobotImpl->motorC())
 {
 }
 
@@ -32,6 +32,13 @@ robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const 
 robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
 {
 	return new robotParts::SonarSensor(mRobotImpl->sensors().at(port), port);
+}
+
+robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
+{
+	if (mRobotImpl->sensors().at(port))
+		return new robotParts::Sensor(mRobotImpl->sensors().at(port), port);
+	return NULL;
 }
 
 robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
@@ -92,5 +99,6 @@ robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
+	mRobotImpl->disconnect();
 	mRobotImpl = robotImpl;
 }

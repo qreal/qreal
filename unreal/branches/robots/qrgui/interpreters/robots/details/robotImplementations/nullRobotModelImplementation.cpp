@@ -10,6 +10,7 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 	, mMotorC(2)
 {
 	mActiveWaitingTimer.setInterval(100);
+	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 }
 

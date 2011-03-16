@@ -9,6 +9,8 @@
 
 #include "robotParts/robotModel.h"
 
+#include "../../visualDebugger/blockParser.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -27,6 +29,7 @@ public:
 			, models::LogicalModelAssistApi const &logicalModelApi
 			, RobotModel * const robotModel
 			, gui::ErrorReporter * const errorReporter
+			, BlockParser * const parser
 	);
 	~BlocksTable();
 	blocks::Block *block(Id const &element);
