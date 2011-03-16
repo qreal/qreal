@@ -495,6 +495,30 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 	}
 }
 
+bool EdgeElement::isBreakPointPressed()
+{
+	return mBreakPointPressed;
+}
+
+void EdgeElement::breakPointUnpressed()
+{
+	mBreakPointPressed = false;
+}
+
+void EdgeElement::breakPointHandler(QPointF const &pos)
+{
+	mBreakPointPressed = true;
+	if (mLine.startsWith(pos.toPoint())) {
+		mLine.insert(0, pos);
+		mDragState = 0;
+	}
+
+	if (mLine.endsWith(pos.toPoint())) {
+		mLine.insert(mLine.size() - 1, pos);
+		mDragState = mLine.size() - 1;
+	}
+}
+
 void EdgeElement::squarizeHandler(QPointF const &pos)
 {
 	Q_UNUSED(pos);

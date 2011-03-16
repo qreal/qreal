@@ -57,6 +57,10 @@ namespace UML {
 			QList<PossibleEdge> getPossibleEdges();
 
 			virtual void setColorRect(bool bl);
+			void breakPointHandler(QPointF const &pos);
+			bool isBreakPointPressed();
+			void breakPointUnpressed();
+			bool mBreakPointPressed;
 		protected:
 			virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 			virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

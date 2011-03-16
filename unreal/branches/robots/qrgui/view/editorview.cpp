@@ -106,13 +106,24 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 		}
 		mMouseOldPosition = event->posF();
 	}
-	if (event->buttons() & Qt::RightButton)
+	QGraphicsView::mouseMoveEvent(event);
+	if (event->buttons() & Qt::RightButton) {
 		setDragMode(NoDrag);
-	else
-		setDragMode(RubberBandDrag);
+	} else {
+		if (event->buttons() & Qt::LeftButton ) {
+			UML::EdgeElement *newEdgeEl = dynamic_cast<UML::EdgeElement *>(itemAt(event->pos()));
+			if (newEdgeEl == NULL) {
+				setDragMode(RubberBandDrag);
+			} else {
+				if (newEdgeEl->isBreakPointPressed()) {
+					newEdgeEl->breakPointUnpressed();
+					setDragMode(NoDrag);
+				}
+			}
+		}
+	}
 	if (mScene->getNeedDrawGrid())
 		mScene->invalidate();
-	QGraphicsView::mouseMoveEvent(event);
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
