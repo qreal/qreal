@@ -563,6 +563,12 @@ void EditorViewScene::mouseReleaseEvent ( QGraphicsSceneMouseEvent * event )
 	if (event->button() == Qt::RightButton)
 	{
 		mouseMovementManager->addPoint(event->scenePos());
+		UML::EdgeElement *edgeElement = dynamic_cast<UML::EdgeElement *>(element);
+		if(edgeElement != NULL)
+			if (event->buttons() & Qt::LeftButton ) {
+				edgeElement->breakPointHandler(element->mapFromScene(event->scenePos()));
+				mRightButtonPressed = false;
+				return;}
 		if (mouseMovementManager->wasMoving())
 			getObjectByGesture();
 		else if (element)
