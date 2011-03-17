@@ -1,0 +1,13 @@
+<object logicalId="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{b461a4be-7506-403d-b47a-a1798b34b9c6}" id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{127079de-d1c5-4c1e-834a-bf349836592e}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{178bad52-0c3a-4ce3-aeb7-c07cf7ead74a}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 25, 0 : 25, 25 : 0, 25 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(Possible Edge)"/>
+    <QPointF key="position" value="25, 110"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
