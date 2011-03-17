@@ -7,10 +7,12 @@
 #include "../../../qrrepo/repoApi.h"
 
 namespace Geny {
+	class Gemake;
+
 	class Interpreter {
 		public:
-			//Interpreter(const QString& taskFilename);
-			Interpreter(const QString& repoDirectory, const QString& taskFileName, qReal::Id curObject);
+			Interpreter(const QString& repoPath, const QString& taskFilename,
+					qReal::Id curObject, Gemake* gemaker);
 			~Interpreter();
 
 			QString interpret();
@@ -49,7 +51,6 @@ namespace Geny {
 			QString getCurObjProperty(const QString& propertyName);
 			qReal::IdList getCurObjectMethodResultList(const QString&);
 
-
 			//нужно, так как возможно использование списка Id вместо одного
 			qReal::Id getCurObjId();
 	
@@ -57,6 +58,10 @@ namespace Geny {
 			QTextStream* inStream;
 
 			qrRepo::RepoApi rApi;
+			QString repoPath;
+
+			Gemake* geMaker;
+
 			qReal::Id curObjectId;
 			QMap<QString, qReal::Id> objectsByLabels;
 	};

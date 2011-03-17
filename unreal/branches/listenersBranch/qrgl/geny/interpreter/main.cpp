@@ -1,4 +1,4 @@
-#include "interpreter.h"
+#include "gemake.h"
 #include <QDebug>
 #include "../../../qrrepo/repoApi.h"
 
@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
-	Interpreter interpreter("../../..", argv[1], qReal::Id());
-	//Interpreter interpreter("../../..", "../classH_with_association.geny", qReal::Id());
+	Gemake geMake(argv[1]);
+	geMake.make();
 
-	qDebug() << interpreter.interpret(); 
+	//qDebug() << interpreter.interpret(); 
 	return 0;
 }

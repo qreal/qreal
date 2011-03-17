@@ -1,13 +1,15 @@
 #include <QDebug>
 #include <QStringList>
 #include "interpreter.h"
+#include "gemake.h"
 
 using namespace Geny;
 
 //TODO: добавить выброс исключений по error'ам
 
-Interpreter::Interpreter(const QString& repoDirectory, const QString& taskFileName, qReal::Id curObjectId): 
-	taskFile(taskFileName), inStream(0), rApi(repoDirectory), curObjectId(curObjectId) {
+Interpreter::Interpreter(const QString& repoPath, const QString& taskFilename, qReal::Id curObjectId, Gemake* geMaker): 
+		taskFile(taskFilename), inStream(0), rApi(repoPath), repoPath(repoPath), 
+		geMaker(geMaker), curObjectId(curObjectId) {
 }
 
 Interpreter::~Interpreter() {
@@ -33,8 +35,14 @@ QString Interpreter::controlExpressionParse(const QString& expression) {
 				qDebug() << "Fail in \'@@ @ @@\' expression";
 		}
 	}
+	else if (expression.startsWith("!task ")){
+		QString subTaskName = expression.mid(6).trimmed();
+
+		Interpreter ipreter(repoPath, geMaker->getTaskFilename(subTaskName), getCurObjId(), geMaker);
+		return ipreter.interpret();
+	} else
+		qDebug() << "Fail in @@! expression";
 	
-	//TODO: обработка случая управляющего события, такого как ' task "__taskName__" '
 	return "";
 }
 

@@ -10,7 +10,7 @@ class @@name@@ {
 #!{
 #!foreach Method in children
 #!{
-	@@methodVisibility@@ @@methodReturnType@@ @@methodName@@( @@!task "MethodParameters"@@ ) {
+	@@methodVisibility@@ @@methodReturnType@@ @@methodName@@( @@!task MethodParameters@@ ) {
 	}
 #!}
 #!}
