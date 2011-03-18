@@ -38,7 +38,11 @@ void BluetoothColorSensorImplementation::sensorSpecificProcessResponse(QByteArra
 				<< (0xff & reading[14]) << (0xff & reading[15])
 		;
 		mState = idle;
-		emit response(0xff & reading[14]);  // Scaled value, used in ColorFull mode.
+		if (mSensorType == lowLevelSensorType::COLORFULL) {
+			emit response(0xff & reading[14]);  // Scaled value, used in ColorFull mode.
+		} else {
+			emit response((0xff & reading[10]) | ((0xff & reading[11]) << 8));
+		}
 	}
 }
 

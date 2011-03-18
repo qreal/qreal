@@ -40,6 +40,8 @@ void Interpreter::interpret(Id const &currentDiagramId)
 		return;
 	}
 
+	mState = interpreting;
+
 	Id const startingElement = findStartingElement(currentDiagramId);
 	if (startingElement == Id()) {
 		mInterpretersInterface.errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
@@ -136,7 +138,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 void Interpreter::runTimer()
 {
 	mTimer->start(1000);
-	connect (mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
