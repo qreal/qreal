@@ -1,6 +1,7 @@
 <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{018b4246-fe56-418b-8086-a1105cda26c7}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ea750be8-a94d-401c-95a2-fa239bc78a77}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a37e42e2-5a8d-4763-9a6b-c11e82f006fa}"/>
   </children>
   <properties>
     <QString key="container" value=""/>
@@ -20,7 +21,7 @@
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <QString key="path" value=""/>
-    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;145&quot; sizey=&quot;161&quot;>&#xa;        &lt;image y1=&quot;28&quot; name=&quot;images/Ultrasonic.png&quot; x1=&quot;21&quot; y2=&quot;85&quot; x2=&quot;103&quot;/>&#xa;        &lt;image y1=&quot;69&quot; name=&quot;images/GreenHourglass_up.png&quot; x1=&quot;116&quot; y2=&quot;93&quot; x2=&quot;129&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;8&quot; y=&quot;101a&quot; text=&quot;Порт:&quot;/>&#xa;        &lt;label x=&quot;74&quot; y=&quot;100&quot; textBinded=&quot;Port&quot;/>&#xa;        &lt;label x=&quot;5&quot; y=&quot;121&quot; text=&quot;Дистанция:&quot;/>&#xa;        &lt;label x=&quot;74&quot; y=&quot;121&quot; textBinded=&quot;Distance&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;88&quot;/>&#xa;        &lt;pointPort x=&quot;73&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;143&quot; y=&quot;86&quot;/>&#xa;        &lt;pointPort x=&quot;66&quot; y=&quot;159&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;145&quot; sizey=&quot;162&quot;>&#xa;        &lt;image y1=&quot;28&quot; name=&quot;images/Ultrasonic.png&quot; x1=&quot;21&quot; y2=&quot;84&quot; x2=&quot;102&quot;/>&#xa;        &lt;image y1=&quot;69&quot; name=&quot;images/GreenHourglass_up.png&quot; x1=&quot;116&quot; y2=&quot;92&quot; x2=&quot;128&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;8&quot; y=&quot;101a&quot; text=&quot;Порт:&quot;/>&#xa;        &lt;label x=&quot;74&quot; y=&quot;100&quot; textBinded=&quot;Port&quot;/>&#xa;        &lt;label x=&quot;5&quot; y=&quot;121&quot; text=&quot;Дистанция:&quot;/>&#xa;        &lt;label x=&quot;73&quot; y=&quot;121&quot; textBinded=&quot;Distance&quot;/>&#xa;        &lt;label x=&quot;9a&quot; y=&quot;139&quot; text=&quot;Знак:&quot;/>&#xa;        &lt;label x=&quot;75&quot; y=&quot;141&quot; textBinded=&quot;Sign&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;2&quot; y=&quot;88&quot;/>&#xa;        &lt;pointPort x=&quot;73&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;143&quot; y=&quot;86&quot;/>&#xa;        &lt;pointPort x=&quot;66&quot; y=&quot;159&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
   </properties>
 </object>

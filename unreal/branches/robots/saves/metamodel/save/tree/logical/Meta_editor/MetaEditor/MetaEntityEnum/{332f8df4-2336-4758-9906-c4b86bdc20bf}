@@ -4,6 +4,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{7ed2f927-5ee0-46a9-bd63-27a37dd0bf54}"/>
   </children>
   <properties>
+    <QString key="container" value=""/>
     <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>

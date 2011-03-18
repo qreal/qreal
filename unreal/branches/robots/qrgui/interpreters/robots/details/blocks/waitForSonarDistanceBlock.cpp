@@ -35,9 +35,31 @@ void WaitForSonarDistanceBlock::run()
 	mActiveWaitingTimer.start();
 }
 
+void WaitForSonarDistanceBlock::stop()
+{
+	mActiveWaitingTimer.stop();
+	emit done(mNextBlock);
+}
+
+
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
 	int const targetDistance = evaluate("Distance").toInt();
+	if (stringProperty("Sign") == "=")
+		if (reading != targetDistance)
+			stop();
+	if (stringProperty("Sign") == ">")
+		if (reading <= targetDistance)
+			stop();
+	if (stringProperty("Sign") == "<")
+		if (reading >= targetDistance)
+			stop();
+	if (stringProperty("Sign") == ">=")
+		if (reading < targetDistance)
+			stop();
+	if (stringProperty("Sign") == "<=")
+		if (reading > targetDistance)
+			stop();
 	if (reading < targetDistance) {
 		mActiveWaitingTimer.stop();
 		emit done(mNextBlock);

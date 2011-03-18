@@ -84,7 +84,14 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute:
+		{
+			QVariant data = mTargetLogicalObject.data(mFields[index.row()].role);
+			if (data.canConvert<QString>()){
+				data = data.toString().replace("&lt;", "<");
+				return data;
+			}
 			return mTargetLogicalObject.data(mFields[index.row()].role);
+		}
 		case graphicalAttribute:
 			return mTargetGraphicalObject.data(mFields[index.row()].role);
 		case graphicalIdPseudoattribute:

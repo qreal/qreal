@@ -17,6 +17,15 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{661a77e6-434d-4fe7-bb3e-6b4e7f5ba59f}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{1ade2f9e-3161-45aa-8a2e-0cb610026b78}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ea458786-3d73-4a90-b7e6-f52d80a68ec3}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{3ed54186-d823-4148-aa19-918ea3e8edaa}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{bf9e8a60-e361-4418-b2f4-a29778be3a7f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{2b4eac42-a020-45d8-98f0-49e299bf4ae7}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{0ab4db52-76bb-4bbb-9a9a-e6551252031c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{14e13d29-51c1-4d96-a484-5ca548ec203d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{d6285690-5ab3-461f-87f8-c9c218e06ea1}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a839033b-58d3-4935-91ed-9e84efa2cc9d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{783a6c4f-89a0-4a68-af7e-c1cac5c2aea3}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{71615838-c109-427a-b9a5-5ad6af8e2a4a}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

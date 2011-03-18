@@ -9,7 +9,7 @@
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{cdfb1645-0217-4493-9fd4-b83a2866aa0b}"/>
     </links>
     <QString key="name" value="(Ждать сонар)"/>
-    <QPointF key="position" value="-626, -281"/>
+    <QPointF key="position" value="-632, -279"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

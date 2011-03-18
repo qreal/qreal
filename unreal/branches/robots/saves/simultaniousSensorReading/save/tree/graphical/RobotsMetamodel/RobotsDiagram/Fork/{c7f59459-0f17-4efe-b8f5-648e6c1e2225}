@@ -7,8 +7,8 @@
     <links type="qReal::IdList">
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5d3651a3-bfbc-4670-9a1f-b19c74b6098f}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0f7d0739-cba6-4250-bcbe-927263685198}"/>
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5f5cde82-03ef-41f6-9c04-a1e30f961de3}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{bf65f197-90f6-4a70-a9c1-05f9b8bdc967}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5f5cde82-03ef-41f6-9c04-a1e30f961de3}"/>
     </links>
     <QString key="name" value="(Породить поток)"/>
     <QPointF key="position" value="-871, -195"/>

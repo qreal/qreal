@@ -3,6 +3,7 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{3579100f-1da5-41a8-a8d4-a10bd8a4d39c}"/>
   </children>
   <properties>
+    <QString key="container" value=""/>
     <QString key="displayedName" value="Функция"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>

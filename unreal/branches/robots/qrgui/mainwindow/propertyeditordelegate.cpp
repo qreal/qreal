@@ -42,7 +42,7 @@ QWidget *PropertyEditorDelegate::createEditor(QWidget *parent,
 	if (!values.isEmpty()) {
 		QComboBox * const editor = new QComboBox(parent);
 		foreach (QString item, values)
-			editor->addItem(item);
+			editor->addItem(item.replace("&lt;", "<"));
 		return editor;
 	}
 
@@ -85,7 +85,7 @@ void PropertyEditorDelegate::setModelData(QWidget *editor
 	if (lineEdit)
 		value = lineEdit->text();
 	else if (comboEdit)
-		value = comboEdit->currentText();
+		value = comboEdit->currentText().replace("<", "&lt;");
 	else
 		return;
 
