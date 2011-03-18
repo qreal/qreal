@@ -28,6 +28,7 @@ namespace Geny {
 				commentType, foreachType, 
 				leftBraceType, rightBraceType,
 				toFileType, saveObjType,
+				switchType, caseType,
 				notControlType
 			};
 			ControlStringType controlStringType(const QString&);
@@ -37,8 +38,18 @@ namespace Geny {
 			//Can move cursor position in stream!
 			QString controlStringParse(const QString&, QTextStream& stream);
 
+			//Returns a pair of the type name of searching objects
+			//and in that list they are searched
 			QPair<QString, QString> foreachStringParse(const QString&);
+
+			//Returns filename to write 
 			QString toFileStringFilename(const QString&);
+
+			//Returns a property name for the switch
+			QString switchStringParse(const QString&);
+
+			//Returns a case value
+			QString caseStringParse(const QString&);
 
 			QString saveObjLabel(const QString&);
 			void addLabel(const QString&);
@@ -46,6 +57,8 @@ namespace Geny {
 			//Control expression between @@ @@
 			QString controlExpressionParse(const QString& expression);
 			QString getBraceBlock(QTextStream&);
+
+			QPair<QString, QString> getNextCaseBlock(QTextStream&);
 
 			QString getObjProperty(const qReal::Id& objectId, const QString& propertyName);
 			QString getCurObjProperty(const QString& propertyName);

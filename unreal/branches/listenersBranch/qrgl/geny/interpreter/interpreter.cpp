@@ -83,6 +83,10 @@ Interpreter::ControlStringType Interpreter::controlStringType(const QString& str
 		return toFileType;
 	if (workStr.startsWith("saveObj"))
 		return saveObjType;
+	if (workStr.startsWith("switch"))
+		return switchType;
+	if (workStr.startsWith("case"))
+		return caseType;
 
 	return notControlType;
 }
@@ -120,6 +124,38 @@ QString Interpreter::toFileStringFilename(const QString& str) {
 	}
 
 	return notControlStringParse(strElements[1]);
+}
+
+QString Interpreter::switchStringParse(const QString& str) {
+	QStringList strElements = str.split(' ');
+	
+	if ( (strElements.length() != 2) || 
+			(strElements[0] != "#!switch")) {
+		qDebug()  << "Error! Bad \'switch\' structure!";
+		return ""; //TODO: возможно лучше бросать исключение!
+	}
+
+	return strElements[1].trimmed();
+}
+
+QString Interpreter::caseStringParse(const QString& str) {
+	QStringList strElements = str.split(' ');
+
+	if (!strElements.startsWith("#!case")) {
+		qDebug()  << "Error! Bad \'case\' structure!";
+		return ""; //TODO: возможно лучше бросать исключение!
+	}
+
+	QString caseValue = str.mid(7).trimmed();//отрезаем "#!case "
+	int firstApostoIndex = caseValue.indexOf("\'");
+	int lastApostoIndex = caseValue.lastIndexOf("\'");
+
+	if (firstApostoIndex == -1) {
+		qDebug() << "Error! Bad \'case\' structure!";
+		return "";
+	}
+
+	return caseValue.mid(firstApostoIndex, lastApostoIndex - firstApostoIndex);
 }
 
 QString Interpreter::saveObjLabel(const QString& str) {
@@ -239,6 +275,19 @@ QString Interpreter::getBraceBlock(QTextStream& stream) {
 	return resultStr;
 }
 
+QPair<QString, QString> Interpreter::getNextCaseBlock(QTextStream& stream) {
+	QString caseStr = stream.readLine();
+	if (controlStringType(caseStr) != caseType) {
+		qDebug() << "Error! There is must be case string but \'" << caseStr << "\' found!";
+		return QPair<QString, QString>();
+	}
+
+	QString braceBlock = getBraceBlock(stream);
+	QTextStream caseBlockStream(&braceBlock);
+
+	return QPair<QString, QString>(caseStringParse(caseStr), interpret( caseBlockStream ));
+}
+
 QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& stream) {
 	switch (controlStringType(parsingStr)) {
 		case commentType:
@@ -301,6 +350,26 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 			{
 				addLabel(saveObjLabel(parsingStr));
 				return "";
+			}
+		case switchType:
+			{
+				QString resultStr;
+				QString switchPropertyName = switchStringParse(parsingStr);
+				QString switchProperty = getCurObjProperty(switchPropertyName);
+
+				QString braceBlock = getBraceBlock(stream);
+				QTextStream switchBlockStream(&braceBlock);
+
+				for (QPair<QString, QString> nextCaseBlock = getNextCaseBlock(switchBlockStream);
+				    !nextCaseBlock.second.isEmpty(); 
+				    nextCaseBlock = getNextCaseBlock(switchBlockStream)) {
+					if (nextCaseBlock.first == switchProperty) {
+						QTextStream caseBlockStream(&(nextCaseBlock.second));
+						resultStr += interpret(caseBlockStream);
+					}
+				}
+
+				return resultStr;
 			}
 		case notControlType:
 			{
