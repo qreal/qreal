@@ -753,19 +753,18 @@
     <message>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="244"/>
         <source>Using reserved variables %1</source>
-        <translation type="unfinished">Используется зарезервированная переменная &apos;%1&apos;
-</translation>
+        <translation>Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="326"/>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="384"/>
         <source>Using reserved variable %1</source>
-        <translation type="unfinished">Используется зарезервированная переменная &apos;%1&apos;</translation>
+        <translation>Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="680"/>
         <source>Unexpected end of stream at %1. Maybe you forget &apos;;&apos;?</source>
-        <translation type="unfinished">Нераспознаваемый символ в позиции %1. Возможно, пропущен символ  &apos;;&apos;.</translation>
+        <translation>Нераспознаваемый символ в позиции %1. Возможно, пропущен символ  &apos;;&apos;?</translation>
     </message>
     <message>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="685"/>
@@ -858,7 +857,7 @@
     <message>
         <location filename="dialogs/robotSettingsDialog.ui" line="46"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="unfinished">COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
+        <translation>COM-порты не найдены. Если есть установленное Bluetooth-соединение с активным COM-портом, введите его имя. Например, COM3</translation>
     </message>
     <message>
         <location filename="dialogs/robotSettingsDialog.ui" line="59"/>
@@ -1270,24 +1269,44 @@
         <translation>Не используется</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="56"/>
         <source>Touch sensor (boolean value)</source>
         <translation>Сенсор нажатия (булево значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="57"/>
         <source>Touch sensor (raw value)</source>
         <translation>Сенсор нажатия (сырое значение)</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="58"/>
         <source>Sonar sensor</source>
         <translation>Ультразвуковой сенсор</translation>
     </message>
     <message>
-        <location filename="dialogs/robotSettingsDialog.cpp" line="55"/>
-        <source>Color sensor</source>
-        <translation type="unfinished"></translation>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="59"/>
+        <source>Color sensor (full colors)</source>
+        <translation>Сенсор цвета (полные цвета)</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="60"/>
+        <source>Color sensor (red)</source>
+        <translation>Сенсор цвета (красный)</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="61"/>
+        <source>Color sensor (green)</source>
+        <translation>Сенсор цвета (зелёный)</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="62"/>
+        <source>Color sensor (blue)</source>
+        <translation>Сенсор цвета (синий)</translation>
+    </message>
+    <message>
+        <location filename="dialogs/robotSettingsDialog.cpp" line="63"/>
+        <source>Color sensor (passive)</source>
+        <translation>Сенсор цвета (пассивный)</translation>
     </message>
     <message>
         <source>Sonar sensor)</source>
@@ -1402,6 +1421,52 @@
         <location filename="interpreters/robots/details/blocks/loopBlock.cpp" line="61"/>
         <source>There must be a non-marked outgoing link</source>
         <translation>Должна быть непомеченная исходящая связь</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForColorBlock</name>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="27"/>
+        <source>Color sensor is not configured on this port or it is configured in a wrong mode (&quot;Full color&quot; mode needed)</source>
+        <translation>Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим &quot;полные цвета&quot;)</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="43"/>
+        <source>Black</source>
+        <translation>Чёрный</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="45"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="47"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="49"/>
+        <source>Yellow</source>
+        <translation>Жёлтый</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="51"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorBlock.cpp" line="53"/>
+        <source>White</source>
+        <translation>Белый</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForColorIntensityBlock</name>
+    <message>
+        <location filename="interpreters/robots/details/blocks/waitForColorIntensityBlock.cpp" line="27"/>
+        <source>Color sensor is not configured on this port or it is configured in a wrong mode (not &quot;Full color&quot; mode needed)</source>
+        <translation>Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
     </message>
 </context>
 <context>

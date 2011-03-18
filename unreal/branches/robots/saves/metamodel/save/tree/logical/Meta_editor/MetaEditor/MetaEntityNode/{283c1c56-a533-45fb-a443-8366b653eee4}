@@ -14,9 +14,9 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{803a7239-778b-4899-8361-71f3eab96758}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{d66c78de-3a74-4b4d-8dd6-15a815edb5ea}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8cdd5376-865c-4536-b0f8-f42624caedab}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{803a7239-778b-4899-8361-71f3eab96758}"/>
     </links>
     <QString key="name" value="EngineCommand"/>
     <outgoingConnections type="qReal::IdList"/>

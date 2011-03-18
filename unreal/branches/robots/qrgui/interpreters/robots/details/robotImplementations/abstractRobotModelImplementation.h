@@ -50,7 +50,7 @@ protected:
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void addColorSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode) = 0;
 
 	static NullRobotModelImplementation *nullRobotModel();
 	static RealRobotModelImplementation *realRobotModel(RobotCommunicationInterface * const robotCommunicationInterface);

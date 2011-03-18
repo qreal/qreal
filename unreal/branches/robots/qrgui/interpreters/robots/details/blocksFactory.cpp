@@ -14,6 +14,9 @@
 #include "blocks/loopBlock.h"
 #include "blocks/forkBlock.h"
 #include "blocks/playToneBlock.h"
+#include "blocks/functionBlock.h"
+#include "blocks/waitForColorBlock.h"
+#include "blocks/waitForColorIntensityBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -65,6 +68,12 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new ForkBlock();
 	else if (elementMetatypeIs(element, "PlayTone"))
 		newBlock = new PlayToneBlock(mRobotModel->brick());
+	else if (elementMetatypeIs(element, "Function"))
+		newBlock = new FunctionBlock();
+	else if (elementMetatypeIs(element, "WaitForColor"))
+		newBlock = new WaitForColorBlock(mRobotModel);
+	else if (elementMetatypeIs(element, "WaitForColorIntensity"))
+		newBlock = new WaitForColorIntensityBlock(mRobotModel);
 	else
 		newBlock = new DummyBlock();
 

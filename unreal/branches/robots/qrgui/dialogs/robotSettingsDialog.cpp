@@ -52,7 +52,16 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 	}
 
 	QStringList sensorNames;
-	sensorNames << tr("Unused") << tr("Touch sensor (boolean value)") << tr("Touch sensor (raw value)") << tr("Sonar sensor") << tr("Color sensor");
+	sensorNames << tr("Unused")
+			<< tr("Touch sensor (boolean value)")
+			<< tr("Touch sensor (raw value)")
+			<< tr("Sonar sensor")
+			<< tr("Color sensor (full colors)")
+			<< tr("Color sensor (red)")
+			<< tr("Color sensor (green)")
+			<< tr("Color sensor (blue)")
+			<< tr("Color sensor (passive)")
+	;
 
 	mUi->port1ComboBox->addItems(sensorNames);
 	mUi->port2ComboBox->addItems(sensorNames);
@@ -92,7 +101,7 @@ void RobotSettingsDialog::ok()
 
 void RobotSettingsDialog::initRobotModelType(robotModelType::robotModelTypeEnum type)
 {
-	if(type == robotModelType::null) {
+	if (type == robotModelType::null) {
 		mUi->nullModelRadioButton->setChecked(true);
 		activatedNullModel(true);
 	} else
@@ -123,6 +132,11 @@ void RobotSettingsDialog::activatedNullModel(bool checked)
 
 QString RobotSettingsDialog::selectedPortName() const
 {
+	if (!isVisible()) {
+		QSettings settings("SPbSU", "QReal");
+		return settings.value("bluetoothPortName", "").toString();
+	}
+
 	if (mUi->comPortComboBox->isVisible())
 		return mUi->comPortComboBox->currentText();
 	else

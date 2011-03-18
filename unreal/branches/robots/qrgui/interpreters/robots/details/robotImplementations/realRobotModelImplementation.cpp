@@ -40,20 +40,17 @@ sensorImplementations::BluetoothColorSensorImplementation *RealRobotModelImpleme
 
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
-//	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
-	mSensors[port] = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicationInterface, port/*lowLevelPort*/);
+	mSensors[port] = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicationInterface, port);
 }
 
 void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
-//	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
-	mSensors[port] = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicationInterface, port/*lowLevelPort*/);
+	mSensors[port] = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicationInterface, port);
 }
 
-void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port)
+void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode)
 {
-//	lowLevelInputPort::InputPortEnum const lowLevelPort = static_cast<lowLevelInputPort::InputPortEnum>(port);
-	mSensors[port] = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicationInterface, port/*lowLevelPort*/);
+	mSensors[port] = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicationInterface, port, mode);
 }
 
 void RealRobotModelImplementation::init()
@@ -67,6 +64,9 @@ void RealRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
+	for (unsigned i = 0; i < 4; ++i)
+		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL)
+			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(lowLevelSensorType::COLORNONE);
 }
 
 void RealRobotModelImplementation::connectedSlot(bool success)

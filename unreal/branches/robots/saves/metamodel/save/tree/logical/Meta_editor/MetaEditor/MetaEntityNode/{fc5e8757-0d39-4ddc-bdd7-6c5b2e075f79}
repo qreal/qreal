@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fc5e8757-0d39-4ddc-bdd7-6c5b2e075f79}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{3579100f-1da5-41a8-a8d4-a10bd8a4d39c}"/>
+  </children>
+  <properties>
+    <QString key="displayedName" value="Функция"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value="true"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f8ced802-8494-47f9-80e5-7f4c36055c64}"/>
+    </links>
+    <QString key="name" value="Function"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;124&quot; sizey=&quot;97&quot;>&#xa;        &lt;text i=&quot;1&quot; font-fill=&quot;#000000&quot; b=&quot;1&quot; y1=&quot;23&quot; font-name=&quot;MS Shell Dlg 2&quot; x1=&quot;43&quot; u=&quot;0&quot; font-size=&quot;24&quot;>f(x)&lt;/text>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;0&quot; y=&quot;66&quot; text=&quot;Тело функции:&quot;/>&#xa;        &lt;label x=&quot;92&quot; y=&quot;67&quot; textBinded=&quot;Body&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;22&quot; y=&quot;31&quot;/>&#xa;        &lt;pointPort x=&quot;111&quot; y=&quot;30&quot;/>&#xa;        &lt;pointPort x=&quot;68&quot; y=&quot;2&quot;/>&#xa;        &lt;pointPort x=&quot;69&quot; y=&quot;95&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

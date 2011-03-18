@@ -1,0 +1,18 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{d80c949b-b53e-4411-b05b-76288db31479}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Intensity" value="100"/>
+    <QString key="Port" value="1"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{86923218-0fd9-4852-acf9-a1663a51c64e}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4df42876-9e3c-49b7-972c-92a0eeb0d281}"/>
+    </links>
+    <QString key="name" value="(Ждать интенсивность цвета)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

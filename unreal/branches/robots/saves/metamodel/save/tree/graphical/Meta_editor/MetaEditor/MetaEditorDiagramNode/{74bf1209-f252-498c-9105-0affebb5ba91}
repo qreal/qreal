@@ -21,6 +21,10 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{74003cfd-b2a4-44dd-a365-430d3960db3b}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{33e7fd84-bc5f-43c0-b262-e273be9843e5}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fa5204c9-9382-48fd-8e2b-ce16465a24b5}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7f0d0911-ec65-45b5-88c1-8a27c5e24887}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0a912bde-cb5b-46a4-b6b1-fb1a59f0ed0a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{ff0fbbe3-51c3-4025-be21-2faf209e24b4}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{bc7fa321-637a-47f1-9985-165e0cb3c31d}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value="0, 0 : 1770, 0 : 1770, 1191 : 0, 1191 : "/>

@@ -36,6 +36,9 @@ HEADERS += \
 	interpreters/robots/details/blocks/enginesStopBlock.h \
 	interpreters/robots/details/blocks/loopBlock.h \
 	interpreters/robots/details/blocks/forkBlock.h \
+	interpreters/robots/details/blocks/waitForColorBlock.h \
+	interpreters/robots/details/blocks/waitForColorIntensityBlock.h \
+	interpreters/robots/details/blocks/functionBlock.h \
 	interpreters/robots/details/robotParts/robotModel.h \
 	interpreters/robots/details/robotParts/brick.h \
 	interpreters/robots/details/robotParts/motor.h \
@@ -85,6 +88,9 @@ SOURCES += \
 	interpreters/robots/details/blocks/enginesStopBlock.cpp \
 	interpreters/robots/details/blocks/loopBlock.cpp \
 	interpreters/robots/details/blocks/forkBlock.cpp \
+	interpreters/robots/details/blocks/waitForColorBlock.cpp \
+	interpreters/robots/details/blocks/waitForColorIntensityBlock.cpp \
+	interpreters/robots/details/blocks/functionBlock.cpp \
 	interpreters/robots/details/robotParts/robotModel.cpp \
 	interpreters/robots/details/robotParts/touchSensor.cpp \
 	interpreters/robots/details/robotParts/sonarSensor.cpp \

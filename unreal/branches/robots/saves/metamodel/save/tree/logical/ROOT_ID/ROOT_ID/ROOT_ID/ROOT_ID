@@ -19,6 +19,9 @@
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7ba9caa8-1c29-4859-b6ff-cc6ff8faa28f}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{bbac3e0f-6513-480c-8e9e-d9988d2c4fb2}"/>
     <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8cdd5376-865c-4536-b0f8-f42624caedab}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{40800b3b-01f3-473e-ba69-dd1f2851d0f7}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9981dda4-e343-43bc-91f2-3e371cae32a5}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f8ced802-8494-47f9-80e5-7f4c36055c64}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

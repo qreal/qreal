@@ -1,0 +1,25 @@
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{becd404b-1f56-4cd6-b726-cdcda239459e}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{97d0b55d-257a-487e-8d68-eab5b44b1d91}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{37b20877-a52a-409d-8de9-b1907753b9dc}"/>
+  </children>
+  <properties>
+    <QString key="displayedName" value="Ждать интенсивность цвета"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <QString key="isAction" value="false"/>
+    <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value="true"/>
+    <QString key="isView" value=""/>
+    <QString key="language" value=""/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9981dda4-e343-43bc-91f2-3e371cae32a5}"/>
+    </links>
+    <QString key="name" value="WaitForColorIntensity"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <QString key="path" value=""/>
+    <QString key="shape" value="&lt;graphics>&#xa;    &lt;picture sizex=&quot;159&quot; sizey=&quot;156&quot;>&#xa;        &lt;image y1=&quot;64&quot; name=&quot;images/GreenHourglass_up.png&quot; x1=&quot;116&quot; y2=&quot;82&quot; x2=&quot;127&quot;/>&#xa;        &lt;image y1=&quot;33&quot; name=&quot;images/colorSensor.png&quot; x1=&quot;37&quot; y2=&quot;84&quot; x2=&quot;107&quot;/>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#dc143c&quot; y1=&quot;7&quot; stroke-width=&quot;13&quot; x1=&quot;20&quot; y2=&quot;18&quot; fill-style=&quot;none&quot; x2=&quot;31&quot;/>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#008000&quot; y1=&quot;4&quot; stroke-width=&quot;13&quot; x1=&quot;47&quot; y2=&quot;16&quot; fill-style=&quot;none&quot; x2=&quot;57&quot;/>&#xa;        &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;solid&quot; stroke=&quot;#0000ff&quot; y1=&quot;5&quot; stroke-width=&quot;13&quot; x1=&quot;71&quot; y2=&quot;17&quot; fill-style=&quot;none&quot; x2=&quot;82&quot;/>&#xa;    &lt;/picture>&#xa;    &lt;labels>&#xa;        &lt;label x=&quot;47&quot; y=&quot;109&quot; text=&quot;Порт:&quot;/>&#xa;        &lt;label x=&quot;88&quot; y=&quot;109&quot; textBinded=&quot;Port&quot;/>&#xa;        &lt;label x=&quot;0&quot; y=&quot;128&quot; text=&quot;Интенсивность:&quot;/>&#xa;        &lt;label x=&quot;88&quot; y=&quot;128&quot; textBinded=&quot;Intensity&quot;/>&#xa;    &lt;/labels>&#xa;    &lt;ports>&#xa;        &lt;pointPort x=&quot;15&quot; y=&quot;80&quot;/>&#xa;        &lt;pointPort x=&quot;157&quot; y=&quot;81&quot;/>&#xa;        &lt;pointPort x=&quot;84&quot; y=&quot;154&quot;/>&#xa;        &lt;pointPort x=&quot;82&quot; y=&quot;2&quot;/>&#xa;    &lt;/ports>&#xa;&lt;/graphics>&#xa;"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

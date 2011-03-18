@@ -10,7 +10,11 @@ enum SensorTypeEnum {
 	, touchBoolean
 	, touchRaw
 	, sonar
-	, color
+	, colorFull
+	, colorRed
+	, colorGreen
+	, colorBlue
+	, colorNone
 };
 }
 

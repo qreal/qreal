@@ -5,16 +5,17 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{906da261-7ace-42fb-b0ec-80fafdc239f2}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a33aae13-dd73-4322-b32a-26f018822fdd}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b86b50e-950e-4c4b-9d6b-9770656653f8}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{77d2c5ef-f216-4e71-9093-264506b1b694}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7abee067-5a70-4137-bbd6-6b9ba8af3ce3}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b86b50e-950e-4c4b-9d6b-9770656653f8}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4f191274-5d2d-4884-ad1b-32b283ef5e66}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{b29f6991-e6b3-408e-975e-4b43555ca3ca}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7abee067-5a70-4137-bbd6-6b9ba8af3ce3}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{906da261-7ace-42fb-b0ec-80fafdc239f2}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a33aae13-dd73-4322-b32a-26f018822fdd}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b717f1e-9d1d-4421-b88a-cc83314cc351}"/>
     </links>
     <QString key="name" value="AbstractNode"/>
-    <QPointF key="position" value="1135.74, 404.714"/>
+    <QPointF key="position" value="1106.74, 404.714"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
