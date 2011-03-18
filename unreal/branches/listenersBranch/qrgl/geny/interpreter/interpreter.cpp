@@ -201,9 +201,6 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	if (methodName == "incomingUsages")
 		return rApi.incomingUsages(getCurObjId());
 
-//	if (methodName == "elements")
-//		return rApi.elements(getCurObjId());
-
 	//Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 	if (methodName.startsWith("elementsByType")) {
 		QString elementsType;
@@ -216,7 +213,8 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 		else
 			return qReal::IdList();
 
-		return rApi.elementsByType(elementsType);
+		//return rApi.elementsByType(elementsType);
+		return rApi.logicalElements(qReal::Id("", "", elementsType, ""));
 	}
 
 	qDebug() << "Error! Uses unknown RepoApi list method!";
