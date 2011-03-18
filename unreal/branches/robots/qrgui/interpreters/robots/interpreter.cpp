@@ -56,6 +56,7 @@ void Interpreter::interpret(Id const &currentDiagramId)
 
 void Interpreter::stop()
 {
+	mRobotModel->stopRobot();
 	mState = idle;
 	foreach (Thread *thread, mThreads)
 		delete thread;
@@ -66,7 +67,6 @@ void Interpreter::stop()
 
 void Interpreter::stopRobot()
 {
-	mRobotModel->stopRobot();
 	stop();
 }
 
@@ -137,8 +137,6 @@ void Interpreter::runTimer()
 {
 	mTimer->start(1000);
 	connect (mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
-//	for (inputPort::InputPortEnum port = inputPort::port1; port <= inputPort::port4; ++port) {
-//	}
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
@@ -159,6 +157,9 @@ void Interpreter::runTimer()
 
 void Interpreter::readSensorValues()
 {
+	if (mState == idle)
+		return;
+
 	if (mRobotModel->sensor(inputPort::port1))
 		mRobotModel->sensor(inputPort::port1)->read();
 	if (mRobotModel->sensor(inputPort::port2))
@@ -199,4 +200,3 @@ void Interpreter::updateSensorValues(const QString &sensorVariableName, int sens
 	mParser->getVariables()[sensorVariableName] = Number(sensorValue, Number::intType);
 	qDebug() << sensorVariableName << sensorValue;
 }
-
