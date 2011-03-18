@@ -85,7 +85,7 @@ Interpreter::ControlStringType Interpreter::controlStringType(const QString& str
 		return saveObjType;
 	if (workStr.startsWith("switch"))
 		return switchType;
-	if (workStr.startsWith("case"))
+	if (workStr.startsWith("case") || workStr.startsWith("default"))
 		return caseType;
 
 	return notControlType;
@@ -141,10 +141,13 @@ QString Interpreter::switchStringParse(const QString& str) {
 QString Interpreter::caseStringParse(const QString& str) {
 	QStringList strElements = str.split(' ');
 
-	if (!strElements.startsWith("#!case")) {
+	if (controlStringType(strElements[0]) != caseType) {
 		qDebug()  << "Error! Bad \'case\' structure!";
 		return ""; //TODO: возможно лучше бросать исключение!
 	}
+
+	if (strElements[0].startsWith("#!default"))
+		return "";
 
 	QString caseValue = str.mid(7).trimmed();//отрезаем "#!case "
 	int firstApostoIndex = caseValue.indexOf("\'");
@@ -155,7 +158,7 @@ QString Interpreter::caseStringParse(const QString& str) {
 		return "";
 	}
 
-	return caseValue.mid(firstApostoIndex, lastApostoIndex - firstApostoIndex);
+	return caseValue.mid(firstApostoIndex + 1, lastApostoIndex - firstApostoIndex - 1);
 }
 
 QString Interpreter::saveObjLabel(const QString& str) {
@@ -276,13 +279,18 @@ QString Interpreter::getBraceBlock(QTextStream& stream) {
 }
 
 QPair<QString, QString> Interpreter::getNextCaseBlock(QTextStream& stream) {
+	if (stream.atEnd())
+		return QPair<QString, QString>();
+
 	QString caseStr = stream.readLine();
+
 	if (controlStringType(caseStr) != caseType) {
 		qDebug() << "Error! There is must be case string but \'" << caseStr << "\' found!";
 		return QPair<QString, QString>();
 	}
 
 	QString braceBlock = getBraceBlock(stream);
+	
 	QTextStream caseBlockStream(&braceBlock);
 
 	return QPair<QString, QString>(caseStringParse(caseStr), interpret( caseBlockStream ));
@@ -358,14 +366,18 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 				QString switchProperty = getCurObjProperty(switchPropertyName);
 
 				QString braceBlock = getBraceBlock(stream);
+
 				QTextStream switchBlockStream(&braceBlock);
+				switchBlockStream.readLine(); //TODO FAIL
 
 				for (QPair<QString, QString> nextCaseBlock = getNextCaseBlock(switchBlockStream);
 				    !nextCaseBlock.second.isEmpty(); 
 				    nextCaseBlock = getNextCaseBlock(switchBlockStream)) {
-					if (nextCaseBlock.first == switchProperty) {
+					if (nextCaseBlock.first == switchProperty || nextCaseBlock.first == "") { 
+					//nextCaseBlock.first == "" - default case
 						QTextStream caseBlockStream(&(nextCaseBlock.second));
 						resultStr += interpret(caseBlockStream);
+						break;
 					}
 				}
 
