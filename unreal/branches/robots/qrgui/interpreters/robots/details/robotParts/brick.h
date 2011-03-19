@@ -19,8 +19,10 @@ public:
 	void beep(unsigned time);
 	void playTone(unsigned freq, unsigned time);
 	robotImplementations::brickImplementations::AbstractBrickImplementation &brickImpl();
+	void setImplementation(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl);
+
 private:
-	robotImplementations::brickImplementations::AbstractBrickImplementation *mBrickImpl;
+	robotImplementations::brickImplementations::AbstractBrickImplementation *mBrickImpl;  // Doesn't have ownership
 };
 
 }

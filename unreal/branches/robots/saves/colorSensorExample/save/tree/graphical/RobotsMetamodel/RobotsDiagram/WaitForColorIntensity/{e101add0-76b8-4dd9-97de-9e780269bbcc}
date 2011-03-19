@@ -6,7 +6,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{fe0ed6c7-d9d2-4646-918d-265d578b8bf7}"/>
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a0eade36-00aa-4d9b-8465-9d2da52c26bc}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{8e9168c1-5478-4053-9f23-d16a8375fa13}"/>
     </links>
     <QString key="name" value="(Ждать интенсивность цвета)"/>
     <QPointF key="position" value="-335, -148"/>

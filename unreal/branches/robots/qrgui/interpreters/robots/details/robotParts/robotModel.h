@@ -52,11 +52,13 @@ public:
 	void setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl);
 
 private:
-	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;
+	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.
 	robotParts::Brick mBrick;
 	robotParts::Motor mMotorA;
 	robotParts::Motor mMotorB;
 	robotParts::Motor mMotorC;
+
+	QVector<robotParts::Sensor *> mSensors;  // Has ownership.
 
 	void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);

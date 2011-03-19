@@ -13,7 +13,6 @@ Brick::Brick(robotImplementations::brickImplementations::AbstractBrickImplementa
 
 Brick::~Brick()
 {
-	delete mBrickImpl;
 }
 
 AbstractBrickImplementation &Brick::brickImpl()
@@ -29,4 +28,9 @@ void Brick::playTone(unsigned freq, unsigned time)
 void Brick::beep(unsigned time)
 {
 	mBrickImpl->beep(time);
+}
+
+void Brick::setImplementation(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl)
+{
+	mBrickImpl = brickImpl;
 }

@@ -1,13 +1,13 @@
 <object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4df42876-9e3c-49b7-972c-92a0eeb0d281}" id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a0eade36-00aa-4d9b-8465-9d2da52c26bc}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0e40e0fa-39be-4916-9f30-525095bbe3c2}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 270, -4 : "/>
+    <QPolygon key="configuration" value="0, 0 : 235, -5 : "/>
     <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{3169f694-d600-4d7c-98ce-571969ec054c}"/>
     <double key="fromPort" value="2"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(anonymous something)"/>
-    <QPointF key="position" value="-466, -68"/>
-    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{e101add0-76b8-4dd9-97de-9e780269bbcc}"/>
+    <QPointF key="position" value="-650.136, -70.488"/>
+    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{a9d4a98e-e428-42bc-b63f-0da2dbc00170}"/>
     <double key="toPort" value="0"/>
   </properties>
 </object>

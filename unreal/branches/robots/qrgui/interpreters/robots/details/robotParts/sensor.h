@@ -20,10 +20,11 @@ public:
 	virtual ~Sensor();
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
+	void setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl);
 
 protected:
 	inputPort::InputPortEnum mPort;
-	robotImplementations::sensorImplementations::AbstractSensorImplementation *mSensorImpl;
+	robotImplementations::sensorImplementations::AbstractSensorImplementation *mSensorImpl;  // Doesn't have ownership
 };
 
 }

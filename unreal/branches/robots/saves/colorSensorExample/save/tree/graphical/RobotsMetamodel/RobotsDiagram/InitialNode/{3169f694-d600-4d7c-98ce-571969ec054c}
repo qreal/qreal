@@ -8,7 +8,7 @@
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a0eade36-00aa-4d9b-8465-9d2da52c26bc}"/>
     </links>
     <QString key="name" value="(Начало)"/>
-    <QPointF key="position" value="-535, -121"/>
+    <QPointF key="position" value="-719.136, -123.488"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

@@ -22,9 +22,10 @@ public:
 	virtual void off();
 	virtual void resetMotorPosition(bool relative);
 	robotImplementations::motorImplementations::AbstractMotorImplementation &motorImpl();
+	void setImplementation(robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl);
 private:
 	outputPort::OutputPortEnum mPort;
-	robotImplementations::motorImplementations::AbstractMotorImplementation *mMotorImpl;
+	robotImplementations::motorImplementations::AbstractMotorImplementation *mMotorImpl;  // Doesn't have ownership.
 };
 
 }

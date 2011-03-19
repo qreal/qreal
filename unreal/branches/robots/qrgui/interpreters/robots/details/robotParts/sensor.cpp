@@ -15,7 +15,6 @@ Sensor::Sensor(robotImplementations::sensorImplementations::AbstractSensorImplem
 
 Sensor::~Sensor()
 {
-	delete mSensorImpl;
 }
 
 void Sensor::read()
@@ -26,4 +25,10 @@ void Sensor::read()
 AbstractSensorImplementation *Sensor::sensorImpl()
 {
 	return mSensorImpl;
+}
+
+void Sensor::setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl)
+{
+	mSensorImpl = sensorImpl;
+	mSensorImpl->setPort(mPort);
 }

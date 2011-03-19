@@ -13,7 +13,6 @@ Motor::Motor(int const port, robotImplementations::motorImplementations::Abstrac
 
 Motor::~Motor()
 {
-	delete mMotorImpl;
 }
 
 AbstractMotorImplementation &Motor::motorImpl()
@@ -44,4 +43,10 @@ void Motor::off()
 void Motor::resetMotorPosition(bool relative)
 {
 	mMotorImpl->resetMotorPosition(relative);
+}
+
+void Motor::setImplementation(robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl)
+{
+	mMotorImpl = motorImpl;
+	mMotorImpl->setPort(mPort);
 }

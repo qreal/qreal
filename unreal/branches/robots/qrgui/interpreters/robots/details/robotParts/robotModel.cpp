@@ -6,17 +6,20 @@ using namespace details;
 using namespace robotImplementations;
 
 RobotModel::RobotModel()
-	: mRobotImpl(new NullRobotModelImplementation())
+	: mRobotImpl(new NullRobotModelImplementation)
 	, mBrick(&mRobotImpl->brick())
 	, mMotorA(0, &mRobotImpl->motorA())
-	, mMotorB(1, &mRobotImpl->motorB())
-	, mMotorC(2, &mRobotImpl->motorC())
+	, mMotorB(1, &mRobotImpl->motorA())
+	, mMotorC(2, &mRobotImpl->motorA())
 {
+	mSensors.resize(4);
 }
 
 RobotModel::~RobotModel()
 {
 	delete mRobotImpl;
+	for (int i = 0; i < 4; ++i)
+		delete mSensors[i];
 }
 
 robotParts::Brick &RobotModel::brick()
@@ -26,24 +29,22 @@ robotParts::Brick &RobotModel::brick()
 
 robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
 {
-	return new robotParts::TouchSensor(mRobotImpl->sensors().at(port), port);
+	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
 robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
 {
-	return new robotParts::SonarSensor(mRobotImpl->sensors().at(port), port);
-}
-
-robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
-{
-	if (mRobotImpl->sensors().at(port))
-		return new robotParts::Sensor(mRobotImpl->sensors().at(port), port);
-	return NULL;
+	return dynamic_cast<robotParts::SonarSensor *>(mSensors[port]);
 }
 
 robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
 {
-	return new robotParts::ColorSensor(mRobotImpl->sensors().at(port), port);
+	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
+}
+
+robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
+{
+	return mSensors[port];
 }
 
 void RobotModel::clear()
@@ -65,6 +66,31 @@ void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
 		, inputPort::InputPortEnum const &port)
 {
 	mRobotImpl->configureSensor(sensorType, port);
+
+	delete mSensors[port];  // Since it deletes a sensor that is exposed to blocks, this method can not be called when diagram is interpreted. Blocks shall be recreated after calling this one.
+	mSensors[port] = NULL;
+	switch (sensorType) {
+	case sensorType::unused:
+		break;
+	case sensorType::touchBoolean:
+		mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensors()[port], port);
+		break;
+	case sensorType::touchRaw:
+		break;
+	case sensorType::sonar:
+		mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensors()[port], port);
+		break;
+	case sensorType::colorFull:
+	case sensorType::colorRed:
+	case sensorType::colorGreen:
+	case sensorType::colorBlue:
+	case sensorType::colorNone:
+		mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensors()[port], port);
+		break;
+	default:
+		// TODO: Throw an exception
+		break;
+	}
 }
 
 void RobotModel::init()
@@ -99,6 +125,15 @@ robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
-	mRobotImpl->disconnect();
+	delete mRobotImpl;
 	mRobotImpl = robotImpl;
+	mMotorA.setImplementation(&mRobotImpl->motorA());
+	mMotorB.setImplementation(&mRobotImpl->motorB());
+	mMotorC.setImplementation(&mRobotImpl->motorC());
+	mBrick.setImplementation(&mRobotImpl->brick());
+
+	for (int i = 0; i < 4; ++i) {
+		if (mSensors[i] != NULL)
+			mSensors[i]->setImplementation(mRobotImpl->sensors()[i]);
+	}
 }

@@ -7,6 +7,8 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{f2d97e4c-f5a2-492d-9887-c23ed72d8ba5}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{94c87b0b-0ce3-46de-ba8d-65cac2133f03}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{e101add0-76b8-4dd9-97de-9e780269bbcc}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{a9d4a98e-e428-42bc-b63f-0da2dbc00170}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{8e9168c1-5478-4053-9f23-d16a8375fa13}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>
