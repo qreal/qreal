@@ -7,7 +7,6 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7e16bcf1-0ab3-47f5-81b6-604e9a32cff2}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{ce9985a6-d3ed-4a4d-8ae4-911e57f12833}"/>
     </links>
     <QString key="name" value="Radio Group"/>
