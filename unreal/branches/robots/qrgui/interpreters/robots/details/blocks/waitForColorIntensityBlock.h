@@ -31,6 +31,8 @@ private:
 	robotParts::ColorSensor *mColorSensor;  // Doesn't have ownership
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
+
+	void stop();
 };
 
 }

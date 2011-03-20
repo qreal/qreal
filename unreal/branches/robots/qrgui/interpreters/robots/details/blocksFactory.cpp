@@ -17,6 +17,7 @@
 #include "blocks/functionBlock.h"
 #include "blocks/waitForColorBlock.h"
 #include "blocks/waitForColorIntensityBlock.h"
+#include "blocks/ifBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -74,6 +75,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForColorBlock(mRobotModel);
 	else if (elementMetatypeIs(element, "WaitForColorIntensity"))
 		newBlock = new WaitForColorIntensityBlock(mRobotModel);
+	else if (elementMetatypeIs(element, "IfBlock"))
+		newBlock = new IfBlock();
 	else
 		newBlock = new DummyBlock();
 

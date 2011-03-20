@@ -35,14 +35,35 @@ void WaitForColorIntensityBlock::run()
 	mActiveWaitingTimer.start();
 }
 
+void WaitForColorIntensityBlock::stop()
+{
+	mActiveWaitingTimer.stop();
+	emit done(mNextBlock);
+}
+
 void WaitForColorIntensityBlock::responseSlot(int reading)
 {
 	int const targetIntensity = evaluate("Intensity").toInt();
 
-	if (targetIntensity < reading) {
-		mActiveWaitingTimer.stop();
-		emit done(mNextBlock);
-	}
+	QString const sign = stringProperty("Sign");
+	if (sign == "=")
+		if (reading != targetIntensity)
+			stop();
+	if (sign == ">")
+		if (reading <= targetIntensity)
+			stop();
+	if (sign == "<")
+		if (reading >= targetIntensity)
+			stop();
+	if (sign == ">=")
+		if (reading < targetIntensity)
+			stop();
+	if (sign == "<=")
+		if (reading > targetIntensity)
+			stop();
+
+	if (targetIntensity < reading)
+		stop();
 }
 
 void WaitForColorIntensityBlock::failureSlot()

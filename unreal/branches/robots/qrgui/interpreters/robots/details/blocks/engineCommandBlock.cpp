@@ -16,11 +16,11 @@ QVector<bool> EngineCommandBlock::parsePorts()
 	QVector<bool> result(3, false);
 	QStringList splitted = ports.split(',', QString::SkipEmptyParts);
 	foreach (QString port, splitted) {
-		if (port.trimmed() == "A")
+		if (port.trimmed().toUpper() == "A")
 			result[0] = true;
-		else if (port.trimmed() == "B")
+		else if (port.trimmed().toUpper() == "B")
 			result[1] = true;
-		else if (port.trimmed() == "C")
+		else if (port.trimmed().toUpper() == "C")
 			result[2] = true;
 	}
 	return result;

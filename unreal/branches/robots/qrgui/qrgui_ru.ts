@@ -721,7 +721,7 @@
         <translation>имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyeditorproxymodel.cpp" line="188"/>
+        <location filename="mainwindow/propertyeditorproxymodel.cpp" line="195"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -795,7 +795,7 @@
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="765"/>
         <location filename="interpreters/visualDebugger/blockParser.cpp" line="783"/>
         <source>No value of expression</source>
-        <translation>Отсутвует выражение для подстчета значения поля</translation>
+        <translation>Отсутвует выражение для подсчета значения поля</translation>
     </message>
 </context>
 <context>
@@ -1321,7 +1321,7 @@
         <translation>Интерпретатор уже выполняется</translation>
     </message>
     <message>
-        <location filename="interpreters/robots/interpreter.cpp" line="45"/>
+        <location filename="interpreters/robots/interpreter.cpp" line="47"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;.</translation>
     </message>
@@ -1380,6 +1380,52 @@
     <message>
         <source>There must be a non-marked outgoing link</source>
         <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::IfBlock</name>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="14"/>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="40"/>
+        <source>less than 0</source>
+        <translation>меньше 0</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="15"/>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="41"/>
+        <source>greater than 0</source>
+        <translation>больше 0</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="16"/>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="42"/>
+        <source>equals to 0</source>
+        <translation>равно 0</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="34"/>
+        <source>Outgoing link is not connected</source>
+        <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="49"/>
+        <source>Two links marked with condition found</source>
+        <translation>Найдено две связи, помеченные условием</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="57"/>
+        <source>Two outgoing links to a next element found</source>
+        <translation>Найдено две исходящие связи к следующему элементу</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="64"/>
+        <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
+        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/details/blocks/ifBlock.cpp" line="69"/>
+        <source>There must be a non-marked outgoing link</source>
+        <translation>Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>

@@ -26,12 +26,13 @@ private slots:
 	void responseSlot(int reading);
 	void failureSlot();
 	void timerTimeout();
-	void stop();
 
 private:
 	robotParts::SonarSensor *mSonarSensor;  // Doesn't have ownership
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
+
+	void stop();
 };
 
 }
