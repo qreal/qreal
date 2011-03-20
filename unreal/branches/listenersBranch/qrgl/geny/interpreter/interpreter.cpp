@@ -195,12 +195,6 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	if (methodName == "children")
 		return rApi.children(getCurObjId());
 
-	if (methodName == "parent") {
-		qReal::IdList resultList;
-		resultList.append(rApi.parent(getCurObjId()));
-		return resultList;
-	}
-
 	if (methodName == "outgoingLinks")
 		return rApi.outgoingLinks(getCurObjId());
 
@@ -253,7 +247,6 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 }
 
 qReal::Id Interpreter::getCurObjectMethodResult(const QString& methodName) {	
-	qDebug() << methodName;
 	if (methodName == "parent")
 		return rApi.parent(getCurObjId());
 
@@ -423,7 +416,12 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 			{
 				QString resultStr;
 				QString switchPropertyName = switchStringParse(parsingStr);
-				QString switchProperty = getCurObjProperty(switchPropertyName);
+				
+				QString switchProperty;
+				if (switchPropertyName == "ELEMENT_TYPE")
+					switchProperty = getCurObjId().element();
+				else
+					switchProperty = getCurObjProperty(switchPropertyName);
 
 				QString braceBlock = getBraceBlock(stream);
 
