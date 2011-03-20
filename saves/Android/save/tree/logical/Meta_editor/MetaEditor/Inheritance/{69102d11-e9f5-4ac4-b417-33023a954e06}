@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/Inheritance/{69102d11-e9f5-4ac4-b417-33023a954e06}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/Inheritance/{69102d11-e9f5-4ac4-b417-33023a954e06}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{242d1b17-b293-4c65-ae3a-039539dbd5cb}">
   <children/>
   <properties>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a8db6481-d59d-428d-9c1f-4473fe9b0661}"/>

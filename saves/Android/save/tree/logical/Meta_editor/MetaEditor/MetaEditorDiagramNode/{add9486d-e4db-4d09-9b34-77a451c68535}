@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{add9486d-e4db-4d09-9b34-77a451c68535}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{add9486d-e4db-4d09-9b34-77a451c68535}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{242d1b17-b293-4c65-ae3a-039539dbd5cb}">
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{969a0885-8bde-4d9e-8a01-aa8c00d78700}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{dd88dff8-9b60-4b65-b04a-d16f64ed0250}"/>
@@ -21,7 +21,7 @@
     <QString key="language" value=""/>
     <links type="qReal::IdList"/>
     <QString key="name" value="Handler Diagram"/>
-    <QString key="nodeName" value=""/>
+    <QString key="nodeName" value="Handler Diagram"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

@@ -3,7 +3,7 @@
   <properties>
     <QString key="beginName" value="Show Text Dialog"/>
     <QString key="directed" value="true"/>
-    <QString key="endName" value=""/>
+    <QString key="endName" value="*"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
