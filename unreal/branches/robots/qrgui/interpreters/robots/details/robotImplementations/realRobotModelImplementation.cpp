@@ -15,9 +15,8 @@ RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicationInt
 RealRobotModelImplementation::~RealRobotModelImplementation()
 {
 	delete mRobotCommunicationInterface;
-	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mSensors)
-		delete sensor;
 }
+
 brickImplementations::RealBrickImplementation &RealRobotModelImplementation::brick()
 {
 	return mBrick;

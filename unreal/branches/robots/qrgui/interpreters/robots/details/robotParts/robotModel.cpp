@@ -125,7 +125,6 @@ robotImplementations::AbstractRobotModelImplementation &RobotModel::robotImpl()
 
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
-	delete mRobotImpl;
 	mRobotImpl = robotImpl;
 	mMotorA.setImplementation(&mRobotImpl->motorA());
 	mMotorB.setImplementation(&mRobotImpl->motorB());
