@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{77d2c5ef-f216-4e71-9093-264506b1b694}"/>
     </links>
     <QString key="name" value="InitialNode"/>
-    <QPointF key="position" value="1252.54, 176.352"/>
+    <QPointF key="position" value="1425.34, 170.592"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

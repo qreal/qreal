@@ -13,9 +13,10 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{906da261-7ace-42fb-b0ec-80fafdc239f2}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{a33aae13-dd73-4322-b32a-26f018822fdd}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b717f1e-9d1d-4421-b88a-cc83314cc351}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bcea992-59d8-437e-8980-8038cbd3e27f}"/>
     </links>
     <QString key="name" value="AbstractNode"/>
-    <QPointF key="position" value="1106.74, 404.714"/>
+    <QPointF key="position" value="1178.74, 398.954"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

@@ -12,7 +12,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{4f191274-5d2d-4884-ad1b-32b283ef5e66}"/>
     </links>
     <QString key="name" value="PlayTone"/>
-    <QPointF key="position" value="1476.5, 202.488"/>
+    <QPointF key="position" value="1456.34, 307.608"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

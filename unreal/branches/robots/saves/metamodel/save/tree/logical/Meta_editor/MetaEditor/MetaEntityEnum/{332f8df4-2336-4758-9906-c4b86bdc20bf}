@@ -2,6 +2,9 @@
   <children>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{df27ef0f-c586-4732-9743-b14c8e78beb9}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{7ed2f927-5ee0-46a9-bd63-27a37dd0bf54}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{8045de35-1e57-402c-9879-64de249a2e1a}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{dbcb0aa9-9260-4253-b9b1-3988c1965d75}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{42332fee-8218-4a4e-b9d6-fdbfe3f7eed4}"/>
   </children>
   <properties>
     <QString key="container" value=""/>

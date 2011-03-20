@@ -1,14 +1,14 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a37e42e2-5a8d-4763-9a6b-c11e82f006fa}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{018b4246-fe56-418b-8086-a1105cda26c7}">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{0240b5b0-6dd6-4cd0-b114-b3b09683576d}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{36e096c1-d1dc-4a32-9c9e-10581f2f07d9}">
   <children/>
   <properties>
-    <QString key="attributeType" value="DistanceSign"/>
-    <QString key="defaultValue" value="&lt;"/>
-    <QString key="displayedName" value="Знак"/>
+    <QString key="attributeType" value="int"/>
+    <QString key="defaultValue" value="0"/>
+    <QString key="displayedName" value="Условие"/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>
-    <QString key="name" value="Sign"/>
+    <QString key="name" value="Condition"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

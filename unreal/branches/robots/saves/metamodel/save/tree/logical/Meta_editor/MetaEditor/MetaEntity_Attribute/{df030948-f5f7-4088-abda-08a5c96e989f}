@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a37e42e2-5a8d-4763-9a6b-c11e82f006fa}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{018b4246-fe56-418b-8086-a1105cda26c7}">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{df030948-f5f7-4088-abda-08a5c96e989f}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{becd404b-1f56-4cd6-b726-cdcda239459e}">
   <children/>
   <properties>
     <QString key="attributeType" value="DistanceSign"/>

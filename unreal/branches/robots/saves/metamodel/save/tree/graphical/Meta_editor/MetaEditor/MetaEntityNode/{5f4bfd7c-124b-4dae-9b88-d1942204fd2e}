@@ -10,7 +10,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0b86b50e-950e-4c4b-9d6b-9770656653f8}"/>
     </links>
     <QString key="name" value="Beep"/>
-    <QPointF key="position" value="985.576, 175.744"/>
+    <QPointF key="position" value="1136.78, 161.344"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
