@@ -187,6 +187,31 @@ void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
 	removeFromList(destination, "incomingUsages", source);
 }
 
+qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result = outgoingConnectedElements(id);
+	result.append(incomingConnectedElements(id));
+	return result;
+}
+
+qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result;
+	foreach (qReal::Id curLink, outgoingLinks(id)) {
+		result.append(to(curLink));
+	}
+	return result; 
+}
+
+qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
+{
+	qReal::IdList result;
+	foreach (qReal::Id curLink, incomingLinks(id)) {
+		result.append(from(curLink));
+	}
+	return result; 
+}
+
 QString RepoApi::typeName(Id const &id) const
 {
 	return id.element();

@@ -73,8 +73,10 @@ Interpreter::ControlStringType Interpreter::controlStringType(const QString& str
 
 	if (workStr.startsWith("/"))
 		return commentType;
-	if (workStr.startsWith("foreach"))
-		return foreachType;
+	if (workStr.startsWith("foreach "))
+		return foreachType;	
+	if (workStr.startsWith("for "))
+		return forType;
 	if (workStr.startsWith("{"))
 		return leftBraceType;
 	if (workStr.startsWith("}"))
@@ -111,6 +113,25 @@ QPair<QString, QString> Interpreter::foreachStringParse(const QString& str) {
 	*/
 
 	return QPair<QString, QString>(strElements.at(1), strElements.at(3));
+}
+
+QString Interpreter::forStringParse(const QString& str) {
+	QStringList strElements = str.split(' ');
+	strElements.removeAll("");
+
+	if ( (strElements.length() != 2) || 
+			(strElements[0] != "#!for")) {
+		qDebug()  << "Error! Bad \'for\' structure!";
+		return QString(); //TODO: возможно лучше бросать исключение!
+	}
+
+	/*
+	strElements.at(1) : that method to call;
+	ex : #!for to - strElements.at(1) = "to"
+	ex : #!for parent - strElements.at(1) = "parent"
+	*/
+
+	return strElements.at(1);
 }
 
 QString Interpreter::toFileStringFilename(const QString& str) {
@@ -201,6 +222,15 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	if (methodName == "incomingUsages")
 		return rApi.incomingUsages(getCurObjId());
 
+	if (methodName == "connectedElements")
+		return rApi.connectedElements(getCurObjId());
+
+	if (methodName == "outgoingConnectedElements")
+		return rApi.outgoingConnectedElements(getCurObjId());
+
+	if (methodName == "incomingConnectedElements")
+		return rApi.incomingConnectedElements(getCurObjId());
+
 	//Для обращения к методу elementsByType передается "elementsByType(__type_name__)"
 	if (methodName.startsWith("elementsByType")) {
 		QString elementsType;
@@ -220,6 +250,20 @@ qReal::IdList Interpreter::getCurObjectMethodResultList(const QString& methodNam
 	qDebug() << "Error! Uses unknown RepoApi list method!";
 
 	return qReal::IdList();
+}
+
+qReal::Id Interpreter::getCurObjectMethodResult(const QString& methodName) {	
+	qDebug() << methodName;
+	if (methodName == "parent")
+		return rApi.parent(getCurObjId());
+
+	if (methodName == "to")
+		return rApi.to(getCurObjId());
+
+	if (methodName == "from")
+		return rApi.from(getCurObjId());
+
+	return qReal::Id();
 }
 
 QString Interpreter::notControlStringParse(const QString& parsingStr) {
@@ -323,6 +367,24 @@ QString Interpreter::controlStringParse(const QString& parsingStr, QTextStream& 
 
 				return resultStr;
 			}
+		case forType:
+			{
+				QString braceBlock = getBraceBlock(stream);
+				QTextStream forBlockStream(&braceBlock);
+
+				QString resultStr;
+
+				QString methodName = forStringParse(parsingStr);
+				qReal::Id objectId = getCurObjId();//TODO: change this method
+
+				curObjectId = getCurObjectMethodResult(methodName);
+				resultStr += interpret(forBlockStream);
+				
+				curObjectId = objectId;//TODO: change this method
+
+				return resultStr;
+			}
+
 		case leftBraceType:			
 			{
 				qDebug() << "Error! In" << taskFile.fileName() << ". #!{ but not control expression (e.g. #!foreach) found!";

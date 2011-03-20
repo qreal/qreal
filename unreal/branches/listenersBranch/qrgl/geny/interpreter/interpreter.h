@@ -25,7 +25,8 @@ namespace Geny {
 			bool isControlString(const QString&);
 
 			enum ControlStringType {
-				commentType, foreachType, 
+				commentType, foreachType,
+			        forType,
 				leftBraceType, rightBraceType,
 				toFileType, saveObjType,
 				switchType, caseType,
@@ -41,6 +42,9 @@ namespace Geny {
 			//Returns a pair of the type name of searching objects
 			//and in that list they are searched
 			QPair<QString, QString> foreachStringParse(const QString&);
+
+			//Returns a method name in 'for' string
+			QString forStringParse(const QString& str);
 
 			//Returns filename to write 
 			QString toFileStringFilename(const QString&);
@@ -62,6 +66,8 @@ namespace Geny {
 
 			QString getObjProperty(const qReal::Id& objectId, const QString& propertyName);
 			QString getCurObjProperty(const QString& propertyName);
+			
+			qReal::Id getCurObjectMethodResult(const QString& methodName);
 			qReal::IdList getCurObjectMethodResultList(const QString&);
 
 			//нужно, так как возможно использование списка Id вместо одного
