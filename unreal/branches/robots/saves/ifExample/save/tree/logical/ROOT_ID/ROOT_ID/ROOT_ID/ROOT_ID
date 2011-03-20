@@ -1,0 +1,26 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{13db46e2-1beb-4916-8528-f7d8ab699c4b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0c0e92d2-dd8c-4051-bfcf-38e8ca7974bf}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{91ce36b9-182a-4503-ab77-cf29b571e3d1}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{f688f041-46b7-4504-beda-cf207029b797}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{d9a5e3a6-9074-4357-88bf-4b865402e936}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6add1aa6-5188-44a4-b181-e1defe23edb9}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/IfBlock/{d2d813e5-0f8f-46a6-b0e6-b230134d6fa0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{49c39af2-eb25-46e8-bd3c-c491cdb48f4a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{91bd518a-5139-42c2-b495-867b04df6d6f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{37b89f7d-713c-4fd3-97c3-abae37a854f0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{f949cec2-009a-4522-9e99-8f674d6b1c7f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{37f4c7ba-68ee-400c-a4e7-71864eed1648}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4247a706-cb99-4b71-bce0-1ebdb429ebdb}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{a987b3f0-d8f2-4297-bf68-35b95bd89e27}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{86f94da1-2dfa-4db1-b789-2ef2d39318ce}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{680a0491-b4da-438e-b369-33115a46db06}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{f008cda6-0a43-4d59-b59d-402efbb5de4a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c2189ea7-00b5-4b7e-902d-9881d2e3054d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{425dd3bd-d904-4711-9ad1-c1dc639c7a47}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>
