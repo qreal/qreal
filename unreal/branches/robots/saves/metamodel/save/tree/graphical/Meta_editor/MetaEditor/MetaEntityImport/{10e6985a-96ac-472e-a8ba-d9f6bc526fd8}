@@ -8,7 +8,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{5ecd8f4e-4021-4bdf-9d7f-2aec02336b9e}"/>
     </links>
     <QString key="name" value="KernelDiagram::Diagram"/>
-    <QPointF key="position" value="-855.64, -824.592"/>
+    <QPointF key="position" value="-1131.84, -837.034"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

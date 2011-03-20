@@ -12,8 +12,8 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{cddfb604-f7fa-48c8-9a51-b76e72187986}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Container/{2b6d20a2-f74b-4cb4-a1b2-4dceae0d605b}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{cddfb604-f7fa-48c8-9a51-b76e72187986}"/>
     </links>
     <QString key="name" value="DiagramNode"/>
     <outgoingConnections type="qReal::IdList"/>
