@@ -6,6 +6,8 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
+    <QString key="labelText" value=""/>
+    <QString key="labelType" value=""/>
     <QString key="labels" value="var"/>
     <QString key="lineType" value="solidLine"/>
     <links type="qReal::IdList"/>

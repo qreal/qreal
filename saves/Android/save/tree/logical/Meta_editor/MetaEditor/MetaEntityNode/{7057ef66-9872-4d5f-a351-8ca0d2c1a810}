@@ -1,5 +1,9 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7057ef66-9872-4d5f-a351-8ca0d2c1a810}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <children/>
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{7057ef66-9872-4d5f-a351-8ca0d2c1a810}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{3bb57393-a68f-4b27-9e86-24caf6c389fe}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{a3454f27-ae8a-4180-9a73-8804c5d19144}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{c449ffba-b4f4-4a94-acd8-6087b36469ba}"/>
+  </children>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value=""/>
@@ -8,6 +12,7 @@
     <incomingUsages type="qReal::IdList"/>
     <QString key="isAction" value="false"/>
     <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
@@ -23,8 +28,8 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{de033ecb-8a8c-4e85-aa30-8822edc5e13f}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{24d5609d-56e2-48fd-9b0e-c0780b84df2d}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{02a378ac-22c4-4faa-9965-a67c8a166521}"/>
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{fd5ea650-5817-4597-8e1d-d34ea2b48051}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{2731f106-09af-4a72-b9f7-485d0895465f}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{fd5ea650-5817-4597-8e1d-d34ea2b48051}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{78f9ba6b-369e-4e88-a83b-ce238997fd87}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{520d9937-688d-416f-a1aa-3f2c3271da5f}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f3b8a4b7-6dc0-45c5-9cf0-e51d70e01cf1}"/>

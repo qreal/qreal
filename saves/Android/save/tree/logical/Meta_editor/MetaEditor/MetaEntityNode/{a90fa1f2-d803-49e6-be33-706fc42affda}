@@ -1,5 +1,7 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a90fa1f2-d803-49e6-be33-706fc42affda}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <children/>
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a90fa1f2-d803-49e6-be33-706fc42affda}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{121e1ae3-f191-4b02-8e0c-a3632817b3b6}"/>
+  </children>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value=""/>
@@ -8,10 +10,12 @@
     <incomingUsages type="qReal::IdList"/>
     <QString key="isAction" value="false"/>
     <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3ba47bcf-5d7e-4e6f-9114-f565f427cad4}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{78f9ba6b-369e-4e88-a83b-ce238997fd87}"/>
     </links>
     <QString key="name" value="Radio Group"/>
     <outgoingConnections type="qReal::IdList"/>

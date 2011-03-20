@@ -1,11 +1,21 @@
 <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{658345bd-7ad4-4699-8dbd-c9b91129ebc0}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <children/>
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{1e0c69c8-1723-4772-879e-8d51aeebb9eb}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{16336332-c153-4086-b84e-b99f63baa0a4}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{cebfa3a7-5317-4129-85bb-90f2e25a7c71}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{d17f89e6-99c8-4f60-b2d7-3e5a10de6f17}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{34702d84-35c6-477b-b2b7-821aab572389}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{8d7271df-7b3a-41c0-98fe-0af5f70c7fca}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{502378d7-dc9d-4a28-a6a4-6aca37dcdf95}"/>
+  </children>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value=""/>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
+    <QString key="labelText" value=""/>
+    <QString key="labelType" value=""/>
     <QString key="labels" value=""/>
     <QString key="lineType" value="solidLine"/>
     <links type="qReal::IdList"/>

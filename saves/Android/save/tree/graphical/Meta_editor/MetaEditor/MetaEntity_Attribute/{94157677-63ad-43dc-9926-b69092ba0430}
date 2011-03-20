@@ -6,7 +6,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="numColunts"/>
-    <QPointF key="position" value="25, 129"/>
+    <QPointF key="position" value="25, 113"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

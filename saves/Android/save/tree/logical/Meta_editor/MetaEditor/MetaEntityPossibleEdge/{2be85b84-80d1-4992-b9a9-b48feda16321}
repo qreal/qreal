@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{2be85b84-80d1-4992-b9a9-b48feda16321}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{2be85b84-80d1-4992-b9a9-b48feda16321}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{f6eeab6d-cadc-4bd6-ab27-e463c7101ccf}">
   <children/>
   <properties>
     <QString key="beginName" value="Create Tab Layout"/>

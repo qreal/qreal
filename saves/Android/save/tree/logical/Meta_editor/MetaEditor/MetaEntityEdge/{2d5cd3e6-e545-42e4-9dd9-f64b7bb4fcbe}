@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{2d5cd3e6-e545-42e4-9dd9-f64b7bb4fcbe}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{2d5cd3e6-e545-42e4-9dd9-f64b7bb4fcbe}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
   <children/>
   <properties>
     <QString key="container" value=""/>
@@ -6,6 +6,8 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
+    <QString key="labelText" value=""/>
+    <QString key="labelType" value=""/>
     <QString key="labels" value=""/>
     <QString key="lineType" value="solidLine"/>
     <links type="qReal::IdList"/>

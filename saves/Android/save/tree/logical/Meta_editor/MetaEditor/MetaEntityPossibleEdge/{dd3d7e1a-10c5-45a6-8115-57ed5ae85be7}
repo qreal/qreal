@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{dd3d7e1a-10c5-45a6-8115-57ed5ae85be7}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{dd3d7e1a-10c5-45a6-8115-57ed5ae85be7}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{a6e7e293-61e3-4859-8650-60ab857ea04c}">
   <children/>
   <properties>
     <QString key="beginName" value="Create Activity"/>

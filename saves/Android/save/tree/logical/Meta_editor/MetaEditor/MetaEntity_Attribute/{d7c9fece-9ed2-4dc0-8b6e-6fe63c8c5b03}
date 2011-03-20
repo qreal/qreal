@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{d7c9fece-9ed2-4dc0-8b6e-6fe63c8c5b03}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{d7c9fece-9ed2-4dc0-8b6e-6fe63c8c5b03}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{d327726e-4b4a-40e4-820a-7c11d438af58}">
   <children/>
   <properties>
     <QString key="attributeType" value="boolean"/>

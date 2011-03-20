@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{08ffc9e2-b796-4ebf-81bc-7485cb23a0a6}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{08ffc9e2-b796-4ebf-81bc-7485cb23a0a6}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{14981c98-e612-4a24-bb0d-7b80d839e0b5}">
   <children/>
   <properties>
     <QString key="container" value=""/>
@@ -8,6 +8,7 @@
     <incomingUsages type="qReal::IdList"/>
     <QString key="isAction" value="false"/>
     <QString key="isPin" value="false"/>
+    <QString key="isResizeable" value=""/>
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">

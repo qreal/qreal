@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{16336332-c153-4086-b84e-b99f63baa0a4}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{16336332-c153-4086-b84e-b99f63baa0a4}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{658345bd-7ad4-4699-8dbd-c9b91129ebc0}">
   <children/>
   <properties>
     <QString key="beginName" value="Scroll View"/>

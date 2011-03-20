@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{2a3ef0af-2750-41a1-bf4a-2e33d5b34015}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{2a3ef0af-2750-41a1-bf4a-2e33d5b34015}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{557c0013-ddf7-4d49-9922-c74201c0ca3f}">
   <children/>
   <properties>
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

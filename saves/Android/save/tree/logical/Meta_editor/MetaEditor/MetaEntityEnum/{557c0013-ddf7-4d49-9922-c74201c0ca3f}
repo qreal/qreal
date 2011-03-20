@@ -1,5 +1,9 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{557c0013-ddf7-4d49-9922-c74201c0ca3f}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
-  <children/>
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{557c0013-ddf7-4d49-9922-c74201c0ca3f}" parent="qrm:/Meta_editor/MetaEditor/MetaEditorDiagramNode/{097b9b24-3b5c-4736-9864-dd6dd186fb62}">
+  <children>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{a6afdb90-2264-43cc-aea0-94fff4d80335}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{2a3ef0af-2750-41a1-bf4a-2e33d5b34015}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityValue/{750946bf-3eae-459c-8d86-402c01a2311b}"/>
+  </children>
   <properties>
     <QString key="container" value=""/>
     <QString key="displayedName" value=""/>

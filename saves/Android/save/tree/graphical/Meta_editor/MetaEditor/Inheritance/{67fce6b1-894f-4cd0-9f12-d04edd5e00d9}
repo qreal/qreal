@@ -1,7 +1,7 @@
 <object logicalId="qrm:/Meta_editor/MetaEditor/Inheritance/{181b7b27-a5b3-44c8-b57b-fb7aeca391de}" id="qrm:/Meta_editor/MetaEditor/Inheritance/{67fce6b1-894f-4cd0-9f12-d04edd5e00d9}" parent="qrm:/Meta_editor/MetaEditor/MetamodelDiagram/{da3f466a-4306-4d6c-a0c0-1d9e8471a301}">
   <children/>
   <properties>
-    <QPolygon key="configuration" value="0, 0 : 26, -180 : "/>
+    <QPolygon key="configuration" value="0, 0 : -12, -196 : "/>
     <qReal::Id key="from" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{29fdded2-3d7d-4036-b1fd-ed8d0de8ed78}"/>
     <double key="fromPort" value="1"/>
     <links type="qReal::IdList"/>

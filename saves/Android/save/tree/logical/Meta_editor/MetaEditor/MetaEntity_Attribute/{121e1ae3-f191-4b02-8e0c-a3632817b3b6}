@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{121e1ae3-f191-4b02-8e0c-a3632817b3b6}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{121e1ae3-f191-4b02-8e0c-a3632817b3b6}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{a90fa1f2-d803-49e6-be33-706fc42affda}">
   <children/>
   <properties>
     <QString key="attributeType" value="Orientation Value"/>

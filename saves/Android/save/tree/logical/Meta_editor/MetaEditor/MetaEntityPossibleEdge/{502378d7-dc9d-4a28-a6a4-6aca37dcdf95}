@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{502378d7-dc9d-4a28-a6a4-6aca37dcdf95}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{502378d7-dc9d-4a28-a6a4-6aca37dcdf95}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{658345bd-7ad4-4699-8dbd-c9b91129ebc0}">
   <children/>
   <properties>
     <QString key="beginName" value="Radio Group"/>

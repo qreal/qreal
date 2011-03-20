@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ec47bf3c-2e6d-4387-ac0b-dfd263050a01}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntity_Attribute/{ec47bf3c-2e6d-4387-ac0b-dfd263050a01}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{feb6b4c2-b957-4415-8a30-72fff4265e27}">
   <children/>
   <properties>
     <QString key="attributeType" value="HandlerDiagram"/>

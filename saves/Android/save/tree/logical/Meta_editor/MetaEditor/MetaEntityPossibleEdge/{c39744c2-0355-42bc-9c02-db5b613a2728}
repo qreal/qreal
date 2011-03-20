@@ -1,4 +1,4 @@
-<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{c39744c2-0355-42bc-9c02-db5b613a2728}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+<object id="qrm:/Meta_editor/MetaEditor/MetaEntityPossibleEdge/{c39744c2-0355-42bc-9c02-db5b613a2728}" parent="qrm:/Meta_editor/MetaEditor/MetaEntityEdge/{afd3b4f9-5c6a-440b-a54d-79d80557834a}">
   <children/>
   <properties>
     <QString key="beginName" value="Tag"/>
