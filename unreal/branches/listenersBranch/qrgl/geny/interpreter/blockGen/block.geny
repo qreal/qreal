@@ -1,0 +1,12 @@
+Task Main
+
+#!toFile block.ex
+#!{
+#!foreach InitialNode in elementsByType(InitialNode)
+#!{
+int main() {
+	@@!task NextBlockElem@@
+	return 0;
+}
+#!}
+#!}

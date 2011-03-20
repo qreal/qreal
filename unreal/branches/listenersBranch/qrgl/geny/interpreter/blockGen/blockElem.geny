@@ -1,0 +1,38 @@
+Task BlockElem
+#!switch ELEMENT_TYPE
+#!{
+#!case 'Action':
+#!{
+	@@process@@
+	@@!task NextBlockElem@@
+#!}
+#!case 'ConditionNode':
+#!{
+	if (@@condition@@)
+#!foreach ControlFlow in outgoingLinks
+#!{
+#!switch type
+#!{
+#!case 'true':
+#!{
+#!for to
+#!{
+	{
+		@@!task BlockElem@@
+	} 
+#!}
+#!}
+#!case 'false':
+#!{
+#!for to
+#!{
+	else 
+	{
+		@@!task BlockElem@@
+	}
+#!}
+#!}
+#!}
+#!}
+#!}
+#!}

@@ -1,0 +1,10 @@
+Task NextBlockElem
+#!/
+#!foreach Action in outgoingConnectedElements
+#!{
+	@@!task BlockElem@@
+#!}
+#!foreach ConditionNode in outgoingConnectedElements
+#!{
+	@@!task BlockElem@@
+#!}
