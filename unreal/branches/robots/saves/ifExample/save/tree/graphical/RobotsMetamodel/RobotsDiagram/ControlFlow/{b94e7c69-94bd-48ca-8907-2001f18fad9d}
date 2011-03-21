@@ -6,7 +6,7 @@
     <double key="fromPort" value="2.5"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(anonymous something)"/>
-    <QPointF key="position" value="50, 172"/>
+    <QPointF key="position" value="246, 172"/>
     <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{3e661268-c292-4c56-a6ae-16eaa4ed7693}"/>
     <double key="toPort" value="0.5"/>
   </properties>

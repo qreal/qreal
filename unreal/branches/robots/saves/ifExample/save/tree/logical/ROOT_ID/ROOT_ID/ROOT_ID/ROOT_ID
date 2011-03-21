@@ -19,6 +19,41 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{f008cda6-0a43-4d59-b59d-402efbb5de4a}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c2189ea7-00b5-4b7e-902d-9881d2e3054d}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{425dd3bd-d904-4711-9ad1-c1dc639c7a47}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{e6f2026e-7f81-4dda-892f-1a459e8f5735}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{504c1f8c-9b46-4a4c-bbaf-48bd0b22e8a0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{07e7dabb-0bd4-47ea-8bfb-929cd44f64cf}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a3a76ce6-2f3d-4d9f-9264-83c2c3634032}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Function/{7300f50e-2c04-40c6-b3fb-ca8fb771f9aa}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{9dc682b9-b970-47c3-b582-d371d359fd4b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{2a43ffa0-8092-4d02-9e56-c9c6b4f2bff8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{68d4b3b0-995a-43c6-981f-abf03dc367eb}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/IfBlock/{ea5ccf10-59e0-4a87-8c5b-c25f8feb98c2}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{72ecc377-55c1-46bc-b32b-69803a6cd468}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{960fc54c-11dd-4374-a7a5-c0bba0a4eb7f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{54cc772f-2ba4-438c-bc3a-3225d955c6ea}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{864e6a40-6509-4b43-816f-ec424402cebc}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{35f06aa3-d9f2-44cd-8bb3-e87d9bb11797}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{08442b7c-9d11-4d02-93b8-17277c8f05b5}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{6c9f51a6-66d8-43f2-b844-2de24e7da813}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{3fc727b2-ff9d-4148-89f3-0b1365b3243a}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{2a845117-ea39-4249-8e41-ab72a81cbb75}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b18817f3-284f-4643-9f2a-3454a2ed942b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{36651178-8b0d-46e7-a073-2f015be3ecbb}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{3bb60d6a-b346-46d4-98ee-d9f1f9f53405}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{368cec31-89da-4fe6-958e-1821af79a8c8}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{34456ad0-8e18-412c-9ebe-3588ec32f79c}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{661e9794-8047-4a2a-bcd4-3c2599856051}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ba452e57-c3f5-4006-91d2-66c3caf2104d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{7dfce3e1-40a4-4d5c-9c27-3f5818602c4d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a13286d4-2452-4756-8dba-f388ef23e82e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{d2ad41e4-dfb3-48a4-b30e-10eeb7cabe07}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{7ca4cb1d-182f-45a4-961d-c4ffefea3158}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColor/{94d0d929-32ac-4e00-b651-e5d6143636e7}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{e55dc446-c5ae-4eac-b923-395ae5451153}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b72aac1e-5e41-4fce-98b5-efb44c8e3d45}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5b02dcd1-62e6-4f34-85cb-c890959ebd07}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{e8b31206-8b4b-4a38-8c93-1d5a0def09d9}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a4546ff2-4246-42e6-9ce4-237ac71e6d3d}"/>
   </children>
   <properties>
     <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>

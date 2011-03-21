@@ -1,0 +1,19 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{3826b02f-867e-4ee5-9efd-cdef63e6ef67}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Distance" value="40"/>
+    <QString key="Port" value="4"/>
+    <QString key="Sign" value="&amp;lt;"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6651c0fa-0ca1-4fca-bc26-0f855c225fc6}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a168509e-76d8-488f-8ed6-4ac8e89dc953}"/>
+    </links>
+    <QString key="name" value="(Ждать сонар)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>
