@@ -91,7 +91,7 @@ MainWindow::MainWindow()
 	progress->setValue(20);
 	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());
 	mUi->actionShow_alignment->setChecked(settings.value("ShowAlignment", true).toBool());
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
 	mUi->actionSwitch_on_alignment->setChecked(settings.value("ActivateAlignment", true).toBool());
 
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
@@ -1170,7 +1170,7 @@ void MainWindow::initGridProperties()
 {
 	QSettings settings("SPbSU", "QReal");
 	mUi->actionSwitch_on_grid->blockSignals(false);
-	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", false).toBool());
+	mUi->actionSwitch_on_grid->setChecked(settings.value("ActivateGrid", true).toBool());
 
 	mUi->actionShow_grid->blockSignals(false);
 	mUi->actionShow_grid->setChecked(settings.value("ShowGrid", true).toBool());

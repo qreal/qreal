@@ -19,7 +19,7 @@ EditorViewScene::EditorViewScene(QObject * parent)
 {
 	QSettings settings("SPbSU", "QReal");
 	mNeedDrawGrid = settings.value("ShowGrid", true).toBool();
-	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 10).toInt()) / 100;
+	mWidthOfGrid = static_cast<double>(settings.value("GridWidth", 50).toInt()) / 100;
 	mRealIndexGrid = settings.value("IndexGrid", 30).toInt();
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
@@ -176,10 +176,10 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
 	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
-	edgeMenu->addAction(QString("Discard"));
+	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
-	QMenu *createElemMenu = new QMenu(QString("Create new element"), edgeMenu);
+	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu);
 	toDelete.append(createElemMenu);
 	edgeMenu->addMenu(createElemMenu);
 
@@ -213,7 +213,7 @@ int EditorViewScene::launchEdgeMenu(UML::EdgeElement* edge, UML::NodeElement* no
 	if (executed) {
 		if (executed == mWindow->actionDeleteFromDiagram())
 			result = -1;
-		else if (!(executed->text() == "Discard"))
+		else if (!(executed->text() == tr("Discard")))
 			result = +1;
 	}
 
@@ -475,9 +475,9 @@ void EditorViewScene::initContextMenu(UML::Element *e, const QPointF &pos)
 				Qt::UniqueConnection);
 		mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 	}
-	menu.addSeparator();
+//	menu.addSeparator();
 
-	createConnectionSubmenus(menu, e);
+//	createConnectionSubmenus(menu, e);
 
 	menu.exec(QCursor::pos());
 }
@@ -736,7 +736,7 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
 		QSettings settings("SPbSU", "QReal");
-		mWidthOfGrid = (settings.value("GridWidth", 10).toDouble()) / 100;
+		mWidthOfGrid = (settings.value("GridWidth", 50).toDouble()) / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}

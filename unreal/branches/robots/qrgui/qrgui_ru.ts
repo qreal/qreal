@@ -55,6 +55,17 @@
 <context>
     <name>EditorViewScene</name>
     <message>
+        <location filename="view/editorviewscene.cpp" line="179"/>
+        <location filename="view/editorviewscene.cpp" line="216"/>
+        <source>Discard</source>
+        <translation>Сбросить</translation>
+    </message>
+    <message>
+        <location filename="view/editorviewscene.cpp" line="182"/>
+        <source>Create new element</source>
+        <translation>Создать новый элемент</translation>
+    </message>
+    <message>
         <location filename="view/editorviewscene.cpp" line="390"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
@@ -1069,6 +1080,32 @@
         <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="229"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
+    </message>
+</context>
+<context>
+    <name>UML::EdgeElement</name>
+    <message>
+        <location filename="umllib/uml_edgeelement.cpp" line="28"/>
+        <source>Add point</source>
+        <translation>Добавить точку</translation>
+    </message>
+    <message>
+        <location filename="umllib/uml_edgeelement.cpp" line="29"/>
+        <source>Delete point</source>
+        <translation>Удалить точку</translation>
+    </message>
+    <message>
+        <location filename="umllib/uml_edgeelement.cpp" line="29"/>
+        <source>Squarize</source>
+        <translation>Сделать квадратным</translation>
+    </message>
+</context>
+<context>
+    <name>UML::NodeElement</name>
+    <message>
+        <location filename="umllib/uml_nodeelement.cpp" line="19"/>
+        <source>Switch on grid</source>
+        <translation>Включить сетку</translation>
     </message>
 </context>
 <context>

@@ -11,7 +11,7 @@ SceneGridHandler::SceneGridHandler(NodeElement *node)
 	QSettings settings("SPbSU", "QReal");
 	mNode = node;
 	mShowAlignment = settings.value("ShowAlignment", true).toBool();
-	mSwitchGrid = settings.value("ActivateGrid", false).toBool();
+	mSwitchGrid = settings.value("ActivateGrid", true).toBool();
 	mSwitchAlignment = settings.value("ActivateAlignment", true).toBool();
 }
 
