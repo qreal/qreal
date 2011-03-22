@@ -27,10 +27,10 @@ RobotDrawer::~RobotDrawer()
 
 void RobotDrawer::init()
 {
-	mLine.startsWith(QPointF(0, 0));
-	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 	QImage image = QImage(":/icons/robot.png");
 	mRobot = mScene->addRect(0, 0, robotWidth, robotHeight, QPen(Qt::green), QBrush(image));
+	mLine.startsWith(mRobot->mapToScene(mRobot->boundingRect().center()));
+	mPolygon = mScene->addPolygon(mLine, QPen(Qt::black));
 //	QGraphicsRectItem *wheel1 = new QGraphicsRectItem(robotWidth - widthBigWheel, 0 - heightBigWheel, widthBigWheel, heightBigWheel, mRobot);
 //	wheel1->setBrush(QBrush(Qt::gray));
 //	QGraphicsRectItem *wheel2 = new QGraphicsRectItem(robotWidth - widthBigWheel, robotHeight, widthBigWheel, heightBigWheel, mRobot);
@@ -59,7 +59,7 @@ void RobotDrawer::draw(QPointF newCoord, qreal angle, QPointF dPoint)
 {
 	mRobot->setPos(newCoord);
 	mRobot->setTransform(QTransform().translate(dPoint.x(), dPoint.y()).rotate(angle).translate(-dPoint.x(), -dPoint.y()));
-	mLine.push_back(mRobot->scenePos());
+	mLine.push_back(mRobot->mapToScene(mRobot->boundingRect().center()));
 	mPolygon->setPolygon(mLine);
 
 	QPoint relativeCoords = mUi->graphicsView->mapFromScene(mRobot->pos());
