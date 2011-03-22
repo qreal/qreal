@@ -12,7 +12,7 @@ void TimerBlock::run()
 
 	mTimer.setInterval(interval);
 	mTimer.setSingleShot(true);
-	connect(&mTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+	connect(&mTimer, SIGNAL(timeout()), this, SLOT(timeout()), Qt::UniqueConnection);
 	mTimer.start();
 }
 
