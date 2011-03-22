@@ -42,8 +42,8 @@ void PreferencesDialog::initPreferences()
 	QSettings settings("SPbSU", "QReal");
 	ui->embeddedLinkerIndentSlider->setValue(settings.value("EmbeddedLinkerIndent", 8).toInt());
 	ui->embeddedLinkerSizeSlider->setValue(settings.value("EmbeddedLinkerSize", 6).toInt());
-	ui->gridWidthSlider->setValue(settings.value("GridWidth", 50).toInt());
-	ui->indexGridSlider->setValue(settings.value("IndexGrid", 30).toInt());
+	ui->gridWidthSlider->setValue(settings.value("GridWidth", 10).toInt());
+	ui->indexGridSlider->setValue(settings.value("IndexGrid", 50).toInt());
 	ui->zoomFactorSlider->setValue(settings.value("zoomFactor", 2).toInt());
 	mWithGrid = ui->gridWidthSlider->value();
 	mIndexGrid = ui->indexGridSlider->value();

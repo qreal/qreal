@@ -1,0 +1,20 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{889266c5-f237-436e-9440-ab12ecbcee67}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Ports" value="A, B"/>
+    <QString key="Power" value="x = x + 1; x"/>
+    <QString key="TachoLimit" value="0"/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6247d811-cc15-4331-8c9f-b39a0443072a}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c82bf08-b90b-4d61-bd5b-d18d52c73ae1}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{39894edc-0150-4e95-863e-50edae2a880b}"/>
+    </links>
+    <QString key="name" value="(Моторы вперёд)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

@@ -1,0 +1,27 @@
+<object id="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID" parent="qrm:/">
+  <children>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{02984a6f-989d-47a4-b72b-97fa9ae86b96}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{2dc2ac02-5fc9-4037-a671-068f214eabba}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{643b855a-20f0-490f-abfe-7548f1d00f76}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{10881311-f72f-475f-9387-31b317bb2b06}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{7a9835c4-2012-420f-b3b1-4b3ea4e85aec}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForTouchSensor/{f07cf731-c943-4dc2-bb34-c12df329fe6d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{d5761665-3020-4b56-99a5-595c957f7376}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{121599f5-7312-4345-8483-a8309cdeccb6}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{32177e5a-3aea-41dd-9da1-21e056b75790}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{df1daa5b-fccc-4859-8e03-ca79bac9a7db}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/FinalNode/{dc995270-ba26-4158-b9a6-1dbe6c208ac0}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c745a7d3-bd27-4106-a97b-d81f811a136b}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{43f1d519-5539-43a0-94d0-922e2fdb2b0d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{6de656b5-a36c-4c1a-96dd-c847cff62b4e}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{c455f5c2-807d-46c3-82e8-4d0a5e3c0b30}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{cc580992-8cfe-4005-b621-239c459cc7fe}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Beep/{054280c0-5f59-4399-98fa-db25d084dd9d}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesStop/{ecb6b015-cc36-4fa1-92e3-b39a00822782}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c72f242-1e62-4694-ac5f-4b22131c1cac}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{b4088e3f-7f4e-49b1-a483-2c371e5be317}"/>
+  </children>
+  <properties>
+    <QString key="name" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+  </properties>
+</object>

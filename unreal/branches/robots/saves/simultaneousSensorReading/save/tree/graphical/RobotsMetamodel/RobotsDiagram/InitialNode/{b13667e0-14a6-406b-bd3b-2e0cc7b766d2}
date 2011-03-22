@@ -1,0 +1,15 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{643b855a-20f0-490f-abfe-7548f1d00f76}" id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{b13667e0-14a6-406b-bd3b-2e0cc7b766d2}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{02984a6f-989d-47a4-b72b-97fa9ae86b96}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{4afdf870-6c9e-4562-ba8d-3311dc19c3ce}"/>
+    </links>
+    <QString key="name" value="(Начало)"/>
+    <QPointF key="position" value="-250, -500"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
