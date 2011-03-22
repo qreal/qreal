@@ -26,6 +26,8 @@
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{fc5e8757-0d39-4ddc-bdd7-6c5b2e075f79}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{8661ef1c-4cdc-4a51-9baf-ec14c031b829}"/>
     <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{36e096c1-d1dc-4a32-9c9e-10581f2f07d9}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{1335f6dc-e112-4fc5-a367-5014faea120d}"/>
+    <object id="qrm:/Meta_editor/MetaEditor/MetaEntityEnum/{d30c9247-cd7f-47c2-85fa-167549a6c437}"/>
   </children>
   <properties>
     <QString key="displayedName" value="Диаграмма поведения робота"/>

@@ -1,6 +1,5 @@
 <object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{7ae98686-2430-4761-b43f-39859468ca05}" id="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{8ddad027-715e-4d51-8ecc-8e33e3efca8b}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
   <children>
-    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialNode/{fa97a04d-9843-4e26-9f5f-99a82d1425f5}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{ded4097f-c668-42d8-a74c-d0113c7b20c5}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForSonarDistance/{a6c152ec-ecd8-465a-afa8-1536236d7480}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{f3070f8f-8199-4488-941a-5bc658837d11}"/>
@@ -10,6 +9,9 @@
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c6cb0414-cbca-42a0-acda-33e47153563b}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{dd80ec44-672a-4824-b531-1a37128e1bc3}"/>
     <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{435841fa-2d9c-4039-9bd8-d0ac1c104473}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/InitialBlock/{d37f8fbd-f18f-4104-a75e-5627cb95e5e4}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{60ec02ec-ee34-4a77-8163-b65f3600a03f}"/>
+    <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{64dfccb9-3f4f-4077-982d-008362e5d949}"/>
   </children>
   <properties>
     <QPolygon key="configuration" value=""/>

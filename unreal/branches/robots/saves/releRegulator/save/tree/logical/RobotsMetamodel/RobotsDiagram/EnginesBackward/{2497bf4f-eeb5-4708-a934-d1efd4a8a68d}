@@ -8,8 +8,9 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{867a6f12-87b6-403f-95c5-e5ea05e3de55}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{a168509e-76d8-488f-8ed6-4ac8e89dc953}"/>
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{3e251b37-a68e-4d56-a187-29ff6baa5a99}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{83115e0d-88a7-465a-8597-c00ad224e617}"/>
     </links>
     <QString key="name" value="(Моторы назад)"/>
     <outgoingConnections type="qReal::IdList"/>

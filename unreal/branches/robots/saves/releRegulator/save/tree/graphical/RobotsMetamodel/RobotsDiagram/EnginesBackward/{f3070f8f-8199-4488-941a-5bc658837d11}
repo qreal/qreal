@@ -6,7 +6,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c6cb0414-cbca-42a0-acda-33e47153563b}"/>
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{dd80ec44-672a-4824-b531-1a37128e1bc3}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{64dfccb9-3f4f-4077-982d-008362e5d949}"/>
     </links>
     <QString key="name" value="(Моторы назад)"/>
     <QPointF key="position" value="0, -120"/>

@@ -9,6 +9,7 @@ using namespace interpreters::robots;
 using namespace details;
 
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
+const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialBlock");
 
 Interpreter::Interpreter(models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
@@ -77,7 +78,7 @@ Id const Interpreter::findStartingElement(Id const &diagram) const
 	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
 	foreach (Id const child, children) {
-		if (child.type() == startingElementType)
+		if (child.type() == startingElementType || child.type() == startingElementType1)
 			return child;
 	}
 

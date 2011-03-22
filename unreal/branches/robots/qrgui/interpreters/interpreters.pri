@@ -3,11 +3,13 @@ HEADERS += \
 	interpreters/visualDebugger/visualDebugger.h \
 	interpreters/visualDebugger/blockParser.h \
 	interpreters/visualDebugger/number.h \
+    interpreters/robots/details/blocks/initialBlockWithPorts.h
 
 SOURCES += \
 	interpreters/visualDebugger/visualDebugger.cpp \
 	interpreters/visualDebugger/blockParser.cpp \
 	interpreters/visualDebugger/number.cpp \
+    interpreters/robots/details/blocks/initialBlockWithPorts.cpp
 
 # Robots behavior diagrams interpreter
 HEADERS += \

@@ -2,7 +2,7 @@
   <children/>
   <properties>
     <QString key="Guard" value=""/>
-    <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/EnginesBackward/{2497bf4f-eeb5-4708-a934-d1efd4a8a68d}"/>
+    <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/Timer/{bafd3db1-dacd-4047-8e48-eeb0ce88e0d6}"/>
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList"/>

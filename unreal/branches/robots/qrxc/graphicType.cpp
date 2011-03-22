@@ -514,7 +514,7 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 	foreach (Property *property, mProperties)
 		if (!property->defaultValue().isEmpty())
 			out() << "\tpropertyDefault[\"" << name << "\"][\"" << property->name()
-									<< "\"] = \"" << property->defaultValue() << "\";\n";
+									<< "\"] = QString::fromUtf8(\"" << property->defaultValue() << "\");\n";
 }
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const

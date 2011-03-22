@@ -6,7 +6,7 @@
     <double key="fromPort" value="0.666667"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="(Inheritance)"/>
-    <QPointF key="position" value="-242.457, -336.45"/>
+    <QPointF key="position" value="-241.257, -341.338"/>
     <qReal::Id key="to" value="qrm:/Meta_editor/MetaEditor/MetaEntityNode/{0a912bde-cb5b-46a4-b6b1-fb1a59f0ed0a}"/>
     <double key="toPort" value="1.5"/>
   </properties>
