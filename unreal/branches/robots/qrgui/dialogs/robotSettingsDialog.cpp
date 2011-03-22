@@ -18,7 +18,8 @@ RobotSettingsDialog::RobotSettingsDialog(QWidget *parent)
 
 	connect(mUi->okButton, SIGNAL(clicked()), this, SLOT(ok()));
 	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
-	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedNullModel(bool)));
+	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
+	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 
@@ -103,7 +104,10 @@ void RobotSettingsDialog::initRobotModelType(robotModelType::robotModelTypeEnum 
 {
 	if (type == robotModelType::null) {
 		mUi->nullModelRadioButton->setChecked(true);
-		activatedNullModel(true);
+		activatedUnrealModel(true);
+	} else if (type == robotModelType::unreal) {
+		mUi->d2ModelRadioButton->setChecked(true);
+		activatedUnrealModel(true);
 	} else
 		mUi->realModelRadioButton->setChecked(true);
 }
@@ -112,6 +116,8 @@ robotModelType::robotModelTypeEnum RobotSettingsDialog::selectedRobotModel() con
 {
 	if (mUi->nullModelRadioButton->isChecked())
 		return robotModelType::null;
+	else if (mUi->d2ModelRadioButton->isChecked())
+		return robotModelType::unreal;
 	else
 		return robotModelType::real;
 }
@@ -122,7 +128,7 @@ void RobotSettingsDialog::cancel()
 	close();
 }
 
-void RobotSettingsDialog::activatedNullModel(bool checked)
+void RobotSettingsDialog::activatedUnrealModel(bool checked)
 {
 	if (checked)
 		mUi->bluetoothSettingsGroupBox->setEnabled(false);

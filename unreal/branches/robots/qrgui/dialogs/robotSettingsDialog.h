@@ -29,7 +29,7 @@ public:
 private slots:
 	void ok();
 	void cancel();
-	void activatedNullModel(bool checked);
+	void activatedUnrealModel(bool checked);
 
 private:
 	Ui::RobotSettingsDialog *mUi;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>242</width>
-    <height>351</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -154,6 +154,13 @@
         </property>
         <property name="checked">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="d2ModelRadioButton">
+        <property name="text">
+         <string>2D robot model</string>
         </property>
        </widget>
       </item>

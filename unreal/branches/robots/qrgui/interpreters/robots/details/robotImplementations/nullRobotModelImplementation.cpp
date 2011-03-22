@@ -82,4 +82,3 @@ motorImplementations::NullMotorImplementation &NullRobotModelImplementation::mot
 {
 	return mMotorC;
 }
-

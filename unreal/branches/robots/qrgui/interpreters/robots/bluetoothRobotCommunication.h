@@ -31,7 +31,7 @@ public:
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-			, details::lowLevelInputPort::InputPortEnum const &port);
+					, details::lowLevelInputPort::InputPortEnum const &port);
 	void threadConnect(QString portName);
 	void threadReconnect(QString portName);
 	void threadDisconnect();

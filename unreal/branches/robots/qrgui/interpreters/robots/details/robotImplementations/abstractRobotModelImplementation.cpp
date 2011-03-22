@@ -6,13 +6,14 @@
 
 #include "nullRobotModelImplementation.h"
 #include "realRobotModelImplementation.h"
-
-
+#include "unrealRobotModelImplementation.h"
+#include <QtCore/QDebug>
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 
 NullRobotModelImplementation *AbstractRobotModelImplementation::mNullRobotModel = NULL;
 RealRobotModelImplementation *AbstractRobotModelImplementation::mRealRobotModel = NULL;
+UnrealRobotModelImplementation *AbstractRobotModelImplementation::mUnrealRobotModel = NULL;
 
 AbstractRobotModelImplementation::AbstractRobotModelImplementation()
 	: mSensorsToConfigure(0)
@@ -41,10 +42,19 @@ RealRobotModelImplementation *AbstractRobotModelImplementation::realRobotModel(R
 	return mRealRobotModel;
 }
 
-AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface)
+UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotModel(d2Model::D2RobotModel *d2RobotModel)
+{
+	if (mUnrealRobotModel == NULL)
+		mUnrealRobotModel = new UnrealRobotModelImplementation(d2RobotModel);
+	return mUnrealRobotModel;
+}
+
+AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface, d2Model::D2RobotModel *d2RobotModel)
 {
 	if (type == robotModelType::null)
 		return nullRobotModel();
+	else if (type == robotModelType::unreal)
+		return unrealRobotModel(d2RobotModel);
 	else if (type == robotModelType::real)
 		return realRobotModel(robotCommunicationInterface);
 	else

@@ -113,4 +113,3 @@ motorImplementations::RealMotorImplementation &RealRobotModelImplementation::mot
 {
 	return mMotorC;
 }
-

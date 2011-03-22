@@ -22,6 +22,7 @@
         <file>icons/information.png</file>
         <file>icons/critical.png</file>
         <file>qrgui_ru.qm</file>
+        <file>icons/robot.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

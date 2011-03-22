@@ -31,6 +31,7 @@ namespace robotModelType {
 enum robotModelTypeEnum {
 	null
 	, real
+	, unreal
 };
 }
 

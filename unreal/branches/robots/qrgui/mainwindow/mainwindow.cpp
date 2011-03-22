@@ -20,8 +20,6 @@
 #include "ui_mainwindow.h"
 #include "errorReporter.h"
 
-#include "../interpreters/robots/details/robotImplementations/nullRobotModelImplementation.h"
-#include "../interpreters/robots/details/robotImplementations/realRobotModelImplementation.h"
 #include "../interpreters/robots/details/robotImplementations/abstractRobotModelImplementation.h"
 #include "../interpreters/robots/details/robotParts/robotModel.h"
 #include "../pluginInterface/editorInterface.h"
@@ -209,8 +207,9 @@ MainWindow::MainWindow()
 
 	QString const defaultBluetoothPortName = settings.value("bluetoothPortName", "").toString();
 	mBluetoothCommunication = new interpreters::robots::BluetoothRobotCommunication(defaultBluetoothPortName);
+	mD2Model = new interpreters::robots::details::d2Model::D2RobotModel();
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
-	interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication);
+	interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
 	interpreters::robots::details::RobotModel *robotModel = new interpreters::robots::details::RobotModel();
 	mRobotInterpreter = new interpreters::robots::Interpreter(mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, robotModel);
@@ -1238,7 +1237,7 @@ void MainWindow::showRobotSettingsDialog()
 		mBluetoothCommunication->setPortName(robotSettingsDialog.selectedPortName());
 		QSettings settings("SPbSU", "QReal");
 		robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(settings.value("robotModel", "1").toInt());
-		interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication);
+		interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation *robotImpl = interpreters::robots::details::robotImplementations::AbstractRobotModelImplementation::robotModel(typeOfRobotModel, mBluetoothCommunication, mD2Model);
 		mRobotInterpreter->setRobotImplementation(robotImpl);
 		mRobotInterpreter->configureSensors(
 				robotSettingsDialog.selectedPort1Sensor()

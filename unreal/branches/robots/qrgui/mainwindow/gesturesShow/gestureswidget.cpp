@@ -8,7 +8,7 @@ GesturesWidget::GesturesWidget(QWidget *parent) :
 	ui->setupUi(this);
 	mGestureScene = new QGraphicsScene(ui->graphicsView);
 	ui->graphicsView->setScene(mGestureScene);
-	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
 			this, SIGNAL(currentElementChanged()));
 	mTimer = new QTimer(this);
 	QObject::connect(mTimer, SIGNAL(timeout()), this, SLOT(drawGesture()));
@@ -26,7 +26,6 @@ void GesturesWidget::draw(QList<QPoint> const & path)
 	mCurrentPointNumber = 0;
 	mGestureScene->clear();
 	mPath = path;
-
 }
 
 void GesturesWidget::drawGesture()

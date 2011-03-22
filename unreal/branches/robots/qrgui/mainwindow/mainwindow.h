@@ -14,6 +14,7 @@
 #include "mainWindowInterpretersInterface.h"
 
 #include "../interpreters/robots/bluetoothRobotCommunication.h"
+#include "../interpreters/robots/details/d2RobotModel/d2RobotModel.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -154,6 +155,7 @@ private:
 	VisualDebugger *mVisualDebugger;
 	interpreters::robots::Interpreter *mRobotInterpreter;  // Has ownership
 	interpreters::robots::BluetoothRobotCommunication *mBluetoothCommunication;  // Does not have ownership
+	interpreters::robots::details::d2Model::D2RobotModel *mD2Model;// Does not have ownership
 	gui::ErrorReporter *mErrorReporter;  // Has ownership
 
 	void createDiagram(const QString &idString);

@@ -6,6 +6,7 @@
 #include "sensorImplementations/abstractSensorImplementation.h"
 #include "../../sensorConstants.h"
 #include "../../robotCommunicationInterface.h"
+#include "../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {
 namespace interpreters {
@@ -15,6 +16,7 @@ namespace robotImplementations {
 
 class NullRobotModelImplementation;
 class RealRobotModelImplementation;
+class UnrealRobotModelImplementation;
 
 class AbstractRobotModelImplementation : public QObject
 {
@@ -23,7 +25,7 @@ public:
 	AbstractRobotModelImplementation();
 	virtual ~AbstractRobotModelImplementation();
 
-	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface = NULL);
+	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicationInterface * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
 
 	virtual void init();
 	virtual void clear();
@@ -46,6 +48,7 @@ protected:
 	int mSensorsToConfigure;
 	static NullRobotModelImplementation *mNullRobotModel;
 	static RealRobotModelImplementation *mRealRobotModel;
+	static UnrealRobotModelImplementation *mUnrealRobotModel;
 	QVector<sensorImplementations::AbstractSensorImplementation *> mSensors;
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
@@ -54,6 +57,7 @@ protected:
 
 	static NullRobotModelImplementation *nullRobotModel();
 	static RealRobotModelImplementation *realRobotModel(RobotCommunicationInterface * const robotCommunicationInterface);
+	static UnrealRobotModelImplementation *unrealRobotModel(d2Model::D2RobotModel *d2RobotModel);
 };
 
 }
@@ -61,4 +65,3 @@ protected:
 }
 }
 }
-
