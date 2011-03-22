@@ -32,7 +32,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", QString::fromUtf8(\"" + mTextBinded + "\", " + mReadOnly + "));\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
 		out() << "			" + titleName() + " = factory.createTitle("

@@ -73,7 +73,6 @@ void Block::interpret()
 	mState = running;
 	bool result = initNextBlocks();
 	if (result) {
-		qDebug() <<"run";
 		run();
 	}
 }

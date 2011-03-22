@@ -32,7 +32,7 @@ void Thread::nextBlock(blocks::Block * const block)
 		return;
 
 	if (sender() != NULL)
-		disconnect(sender());
+		sender()->disconnect(this);
 
 	mInterpretersInterface.dehighlight(mCurrentBlock->id());
 
@@ -46,9 +46,7 @@ void Thread::nextBlock(blocks::Block * const block)
 	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
 	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
 	connect(mCurrentBlock, SIGNAL(failure()), this, SLOT(failure()));
-	qDebug() <<"before mCurrentBlock->interpret();";
 	mCurrentBlock->interpret();
-	qDebug() <<"after mCurrentBlock->interpret();";
 }
 
 void Thread::failure()
