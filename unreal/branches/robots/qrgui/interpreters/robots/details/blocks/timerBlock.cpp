@@ -18,5 +18,6 @@ void TimerBlock::run()
 
 void TimerBlock::timeout()
 {
+	qDebug() << "emit done(mNextBlock)";
 	emit done(mNextBlock);
 }

@@ -762,51 +762,87 @@
         <translation>Конфликт конфигурации сенсоров, пожалуйста, проверьте, что порты используются в программе согласованно</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="244"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="380"/>
         <source>Using reserved variables %1</source>
         <translation>Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="326"/>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="384"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="322"/>
         <source>Using reserved variable %1</source>
         <translation>Используется зарезервированная переменная &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="680"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="15"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="796"/>
+        <source>Sensor</source>
+        <translation>Сенсор</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="20"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="801"/>
+        <source>SensorRaw</source>
+        <translation>СыройСенсор</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="250"/>
+        <source>digit&apos;&apos; or &apos;letter&apos; or &apos;bracket&apos; or &apos;sign</source>
+        <translation>цифра или буква или скобка или знак</translation>
+    </message>
+    <message>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="676"/>
         <source>Unexpected end of stream at %1. Maybe you forget &apos;;&apos;?</source>
         <translation>Нераспознаваемый символ в позиции %1. Возможно, пропущен символ  &apos;;&apos;?</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="685"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="681"/>
         <source>Unexpected symbol at %1 : expected &apos;%2&apos;, got &apos;%3&apos;</source>
         <translation>Нераспознаваемый символ на позиции %1: ожидается символ &apos;%2&apos;, а получен символ &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="688"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="684"/>
         <source>Types mismatch at %1: %2  = %3. Possible loss of data</source>
         <translation>Несогласованы типы в позиции %1: %2 = %3. Возможно, пропущены значения</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="692"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="688"/>
         <source>Unknown identifier at %1 &apos;%2&apos;</source>
         <translation>Неопределенная переменная в позиции %1 &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="695"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="691"/>
         <source>Empty process is unnecessary</source>
         <translation>Пустое поле значения элемента</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="699"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="695"/>
         <source>Condition can&apos;t be empty</source>
         <translation>Условие не может быть пустым</translation>
     </message>
     <message>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="765"/>
-        <location filename="interpreters/visualDebugger/blockParser.cpp" line="783"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="761"/>
+        <location filename="interpreters/visualDebugger/blockParser.cpp" line="779"/>
         <source>No value of expression</source>
         <translation>Отсутвует выражение для подсчета значения поля</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="182"/>
+        <source>Sensor1</source>
+        <translation>Сенсор1</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="187"/>
+        <source>Sensor2</source>
+        <translation>Сенсор2</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="192"/>
+        <source>Sensor3</source>
+        <translation>Сенсор3</translation>
+    </message>
+    <message>
+        <location filename="interpreters/robots/interpreter.cpp" line="197"/>
+        <source>Sensor4</source>
+        <translation>Сенсор4</translation>
     </message>
 </context>
 <context>

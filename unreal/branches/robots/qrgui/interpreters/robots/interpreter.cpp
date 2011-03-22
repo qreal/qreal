@@ -113,6 +113,7 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 void Interpreter::addThread(details::Thread * const thread)
 {
 	mThreads.append(thread);
+	qDebug() << mThreads.size();
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
@@ -175,27 +176,27 @@ void Interpreter::readSensorValues()
 
 void Interpreter::slotFailure()
 {
-	qDebug() << "FAILURE, just lol";
+	qDebug() << "slotFailure";
 }
 
 void Interpreter::responseSlot1(int sensorValue)
 {
-	updateSensorValues("Sensor1", sensorValue);
+	updateSensorValues(QObject::tr("Sensor1"), sensorValue);
 }
 
 void Interpreter::responseSlot2(int sensorValue)
 {
-	updateSensorValues("Sensor2", sensorValue);
+	updateSensorValues(QObject::tr("Sensor2"), sensorValue);
 }
 
 void Interpreter::responseSlot3(int sensorValue)
 {
-	updateSensorValues("Sensor3", sensorValue);
+	updateSensorValues(QObject::tr("Sensor3"), sensorValue);
 }
 
 void Interpreter::responseSlot4(int sensorValue)
 {
-	updateSensorValues("Sensor4", sensorValue);
+	updateSensorValues(QObject::tr("Sensor4"), sensorValue);
 }
 
 void Interpreter::updateSensorValues(const QString &sensorVariableName, int sensorValue)

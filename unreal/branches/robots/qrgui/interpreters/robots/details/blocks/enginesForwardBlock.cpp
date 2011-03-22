@@ -1,5 +1,7 @@
 #include "enginesForwardBlock.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
@@ -10,6 +12,7 @@ EnginesForwardBlock::EnginesForwardBlock(robotParts::Motor &motor1, robotParts::
 
 void EnginesForwardBlock::run()
 {
+	qDebug() <<"EnginesForwardBlock run";
 	int const power = evaluate("Power").toInt();
 	int const tachoLimit = evaluate("TachoLimit").toInt();
 	QVector<bool> ports = parsePorts();

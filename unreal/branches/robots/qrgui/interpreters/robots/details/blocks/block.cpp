@@ -1,5 +1,7 @@
 #include "block.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace interpreters::robots::details;
 using namespace blocks;
@@ -70,8 +72,10 @@ void Block::interpret()
 
 	mState = running;
 	bool result = initNextBlocks();
-	if (result)
+	if (result) {
+		qDebug() <<"run";
 		run();
+	}
 }
 
 void Block::finishedRunning()
