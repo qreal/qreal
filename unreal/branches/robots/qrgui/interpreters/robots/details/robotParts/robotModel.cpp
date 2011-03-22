@@ -132,7 +132,13 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mBrick.setImplementation(&mRobotImpl->brick());
 
 	for (int i = 0; i < 4; ++i) {
-		if (mSensors[i] != NULL)
-			mSensors[i]->setImplementation(mRobotImpl->sensors()[i]);
+		if (mSensors[i] != NULL) {
+			if (mRobotImpl->sensors()[i])
+				mSensors[i]->setImplementation(mRobotImpl->sensors()[i]);
+			else {
+				delete mSensors[i];
+				mSensors[i] = NULL;
+			}
+		}
 	}
 }
