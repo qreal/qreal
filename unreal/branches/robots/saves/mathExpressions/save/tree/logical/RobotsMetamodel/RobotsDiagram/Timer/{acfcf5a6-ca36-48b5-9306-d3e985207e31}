@@ -6,8 +6,8 @@
     <incomingConnections type="qReal::IdList"/>
     <incomingUsages type="qReal::IdList"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c82bf08-b90b-4d61-bd5b-d18d52c73ae1}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{39894edc-0150-4e95-863e-50edae2a880b}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{0c82bf08-b90b-4d61-bd5b-d18d52c73ae1}"/>
     </links>
     <QString key="name" value="(Таймер)"/>
     <outgoingConnections type="qReal::IdList"/>

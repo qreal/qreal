@@ -5,11 +5,11 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ab2659d6-a8a6-4362-aefd-57def32733c8}"/>
       <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{5e07fb8e-93c3-42b9-8e85-a302d095998e}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ab2659d6-a8a6-4362-aefd-57def32733c8}"/>
     </links>
     <QString key="name" value="(Таймер)"/>
-    <QPointF key="position" value="250, -650"/>
+    <QPointF key="position" value="245, -637"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
