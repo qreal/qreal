@@ -10,7 +10,7 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0bcea992-59d8-437e-8980-8038cbd3e27f}"/>
     </links>
     <QString key="name" value="IfBlock"/>
-    <QPointF key="position" value="911.157, 229.707"/>
+    <QPointF key="position" value="894.357, 62.907"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>
