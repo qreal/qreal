@@ -1,0 +1,17 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{21a2c2e9-4dca-499b-b4d9-732aa0edeaba}" id="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{235dfee2-9f61-4101-a532-7f6f52af2042}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0e40e0fa-39be-4916-9f30-525095bbe3c2}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c1e668c8-5f52-4c9b-a336-ad964e76386f}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{f50502e4-cd39-45d5-a78a-2a5647a0e822}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{06180822-9625-484d-8dce-6ded95274b1e}"/>
+    </links>
+    <QString key="name" value="(Ждать интенсивность цвета)"/>
+    <QPointF key="position" value="-343, 245"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

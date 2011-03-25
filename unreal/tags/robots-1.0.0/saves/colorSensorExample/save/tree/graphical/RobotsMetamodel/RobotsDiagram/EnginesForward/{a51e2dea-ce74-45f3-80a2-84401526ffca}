@@ -1,0 +1,16 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{a635b5f6-013d-4971-898d-dc38dd0a36bf}" id="qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward/{a51e2dea-ce74-45f3-80a2-84401526ffca}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0e40e0fa-39be-4916-9f30-525095bbe3c2}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{291f0cfb-5f8f-4168-b3ba-36ad21b778f2}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{fbbc1120-5dde-4261-96a5-18db3ebb0808}"/>
+    </links>
+    <QString key="name" value="(Моторы вперёд)"/>
+    <QPointF key="position" value="-637, 0"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

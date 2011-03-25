@@ -1,0 +1,14 @@
+<object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{2ddcda4f-7195-4161-ba84-9c30e17ecbc3}" parent="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID">
+  <children/>
+  <properties>
+    <QString key="Guard" value=""/>
+    <qReal::Id key="from" value="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{7ec808a2-96d7-426f-aa28-47857500cfbf}"/>
+    <incomingConnections type="qReal::IdList"/>
+    <incomingUsages type="qReal::IdList"/>
+    <links type="qReal::IdList"/>
+    <QString key="name" value="(anonymous something)"/>
+    <outgoingConnections type="qReal::IdList"/>
+    <outgoingUsages type="qReal::IdList"/>
+    <qReal::Id key="to" value="qrm:/RobotsMetamodel/RobotsDiagram/WaitForColorIntensity/{21a2c2e9-4dca-499b-b4d9-732aa0edeaba}"/>
+  </properties>
+</object>

@@ -1,0 +1,17 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/Loop/{d10f691c-ee55-485a-9bc5-5af8c740a3c7}" id="qrm:/RobotsMetamodel/RobotsDiagram/Loop/{695a2b0b-22de-43cb-ace2-2534b5f22a8f}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{0e40e0fa-39be-4916-9f30-525095bbe3c2}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{f50502e4-cd39-45d5-a78a-2a5647a0e822}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{06180822-9625-484d-8dce-6ded95274b1e}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{c2682a2a-13c0-409f-9fd4-0bb811faab1e}"/>
+    </links>
+    <QString key="name" value="(Цикл)"/>
+    <QPointF key="position" value="-245, 245"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>

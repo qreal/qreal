@@ -1,0 +1,18 @@
+<object logicalId="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{7a9835c4-2012-420f-b3b1-4b3ea4e85aec}" id="qrm:/RobotsMetamodel/RobotsDiagram/Fork/{6776f36d-a9f3-4c49-b82e-8b70b67d15f1}" parent="qrm:/RobotsMetamodel/RobotsDiagram/DiagramNode/{02984a6f-989d-47a4-b72b-97fa9ae86b96}">
+  <children/>
+  <properties>
+    <QPolygon key="configuration" value="0, 0 : 50, 0 : 50, 50 : 0, 50 : "/>
+    <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="fromPort" value="0"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{d417f57d-7d7e-4166-acad-d542e7c46963}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{edea64ac-2183-440d-b48d-3fe2ab211f8e}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{ca843711-bc90-48ec-8f9a-c4b8b66aa4cb}"/>
+      <object id="qrm:/RobotsMetamodel/RobotsDiagram/ControlFlow/{e54205e9-5f05-48fe-8024-5ae04ffd565c}"/>
+    </links>
+    <QString key="name" value="(Породить поток)"/>
+    <QPointF key="position" value="-50, -500"/>
+    <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
+    <double key="toPort" value="0"/>
+  </properties>
+</object>
