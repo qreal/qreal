@@ -16,6 +16,7 @@
     <QString key="language" value=""/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{41fa87ad-1f83-4a80-91f1-9eb3834e3856}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3fa4c9ac-6b70-4745-980a-5af0426a556a}"/>
     </links>
     <QString key="name" value="Button"/>
     <outgoingConnections type="qReal::IdList"/>

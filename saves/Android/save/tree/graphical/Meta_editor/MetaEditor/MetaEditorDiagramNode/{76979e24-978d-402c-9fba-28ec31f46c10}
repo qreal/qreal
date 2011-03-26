@@ -32,7 +32,7 @@
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList"/>
     <QString key="name" value="Layout Diagram"/>
-    <QPointF key="position" value="2360.06, -72.7088"/>
+    <QPointF key="position" value="2292.67, -85.7088"/>
     <qReal::Id key="to" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="toPort" value="0"/>
   </properties>

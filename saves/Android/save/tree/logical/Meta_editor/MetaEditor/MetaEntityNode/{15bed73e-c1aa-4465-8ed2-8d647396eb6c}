@@ -16,6 +16,8 @@
     <QString key="language" value=""/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0abe32af-46ec-4ad8-ace9-5ce258540cbc}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{2c91b374-bb02-49ae-8f71-8c3e9572136f}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8e4f6a45-bd96-44fe-956c-4c50f7e8b3de}"/>
     </links>
     <QString key="name" value="Linear Layout"/>
     <outgoingConnections type="qReal::IdList"/>

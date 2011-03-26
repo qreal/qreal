@@ -8,7 +8,7 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{183f9ba2-49f4-4ed4-87a6-b35790d2042c}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{9a33b143-b8a8-4ac5-80ba-5bbddbb3d4d1}"/>
     </links>
     <QString key="name" value="Radio Button"/>
     <QPointF key="position" value="74.3438, 678.2"/>

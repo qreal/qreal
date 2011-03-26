@@ -17,7 +17,9 @@
     <QString key="isResizeable" value=""/>
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
-    <links type="qReal::IdList"/>
+    <links type="qReal::IdList">
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{212926d8-f4b7-4d17-a4ab-97db320ada97}"/>
+    </links>
     <QString key="name" value="Grid View"/>
     <outgoingConnections type="qReal::IdList"/>
     <outgoingUsages type="qReal::IdList"/>

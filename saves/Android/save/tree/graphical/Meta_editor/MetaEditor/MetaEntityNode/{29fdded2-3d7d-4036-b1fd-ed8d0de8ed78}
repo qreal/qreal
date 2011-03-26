@@ -7,7 +7,7 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{67fce6b1-894f-4cd0-9f12-d04edd5e00d9}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{5c0777c8-be6a-45e1-bc66-51a5b8948d41}"/>
     </links>
     <QString key="name" value="Edit Text"/>
     <QPointF key="position" value="343.912, 321.541"/>

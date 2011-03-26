@@ -16,6 +16,7 @@
     <QString key="language" value=""/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{69102d11-e9f5-4ac4-b417-33023a954e06}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{620d2e9a-e519-44d3-9c41-2f46e3674aec}"/>
     </links>
     <QString key="name" value="Image"/>
     <outgoingConnections type="qReal::IdList"/>

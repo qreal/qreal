@@ -16,7 +16,6 @@
     <QString key="isView" value=""/>
     <QString key="language" value=""/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0abe32af-46ec-4ad8-ace9-5ce258540cbc}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{ee270a1f-e02d-4f9f-ac79-c496a35efb37}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{41fa87ad-1f83-4a80-91f1-9eb3834e3856}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{69102d11-e9f5-4ac4-b417-33023a954e06}"/>
@@ -33,6 +32,17 @@
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{520d9937-688d-416f-a1aa-3f2c3271da5f}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{f3b8a4b7-6dc0-45c5-9cf0-e51d70e01cf1}"/>
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{031f5d0a-1002-44a0-bda9-0bb967bb4900}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0abe32af-46ec-4ad8-ace9-5ce258540cbc}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{3fa4c9ac-6b70-4745-980a-5af0426a556a}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{620d2e9a-e519-44d3-9c41-2f46e3674aec}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{7bb5ea8c-6b20-41ce-965c-ccaa1fbaa301}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0317b9b5-d856-4e92-bc1f-e0d988f41a2a}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0a8de3e0-9f6a-4c31-abb9-3da8d427e1dd}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{d0b14465-6c08-48a5-bb17-c4892887fef8}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{914962b1-e953-4e70-94a0-3ba2e836d818}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{760850b7-a5b7-4530-b5fa-37f5496791b6}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{8e4f6a45-bd96-44fe-956c-4c50f7e8b3de}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{2de7fa4d-23e5-4271-89f2-202e775265b2}"/>
     </links>
     <QString key="name" value="View"/>
     <outgoingConnections type="qReal::IdList"/>

@@ -13,6 +13,7 @@
     <QString key="language" value=""/>
     <links type="qReal::IdList">
       <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{02a378ac-22c4-4faa-9965-a67c8a166521}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{0a8de3e0-9f6a-4c31-abb9-3da8d427e1dd}"/>
     </links>
     <QString key="name" value="Scroll View"/>
     <outgoingConnections type="qReal::IdList"/>

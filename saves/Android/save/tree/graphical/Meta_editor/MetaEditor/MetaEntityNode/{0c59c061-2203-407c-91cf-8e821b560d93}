@@ -8,7 +8,7 @@
     <qReal::Id key="from" value="qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID"/>
     <double key="fromPort" value="0"/>
     <links type="qReal::IdList">
-      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{123c3a9a-8bed-4013-971c-e8449fe6cdca}"/>
+      <object id="qrm:/Meta_editor/MetaEditor/Inheritance/{e4fe7da4-f6d1-4fa5-b23d-dd0e7962d90b}"/>
     </links>
     <QString key="name" value="Spinner"/>
     <QPointF key="position" value="520.168, 462.546"/>
