@@ -1,0 +1,75 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>kernel_metamodel.xml</include>
+	<namespace>UML 2.1</namespace>
+	<diagram name="BasicBehaviorsDiagram" displayedName="Basic Behaviors Diagram">
+		<nonGraphicTypes>
+			<enum name="CallConcurrencyKind" displayedName="Call Concurrency Kind">
+				<value>sequential</value>
+				<value>guarded</value>
+				<value>concurrent</value>
+			</enum>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<node name="Behavior" displayedName="Behavior">
+				<logic>
+					<generalizations>
+						<parent parentName="KernelDiagram::Class"/>
+					</generalizations>
+					<properties>
+						<property type="text" name="body"/>
+						<property type="text" name="language"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="BehavioredClassifier" displayedName="Behaviored Classifier">
+				<logic>
+					<generalizations>
+						<parent parentName="KernelDiagram::Classifier"/>
+					</generalizations>
+				</logic>
+			</node>
+			<!--
+			<node name="Opaque Behavior">
+				<logic>
+					<properties>
+						<property type="text" name="body"/>
+						<property type="text" name="language"/>
+					</properties>
+					<generalizations>
+							<parent parentName="Basic Behaviors Diagram::Behavior"/>
+					</generalizations>
+					<containers>
+						<container>
+							<contains idref="Basic Behaviors Diagram::Behavior"/>
+						</container>
+					</containers>
+				</logic>
+			</node>
+			<node name="Function Behavior">
+				<logic>
+					<generalizations>
+						<generalization>
+							<parent parentName="Basic Behaviors Diagram::Opaque Behavior"/>
+						</generalization>
+					</generalizations>
+				</logic>
+			</node>
+			-->
+			<node name="BehavioralFeature" displayedName="Behavioral Feature">
+				<logic>
+					<generalizations>
+						<parent parentName="KernelDiagram::BehavioralFeature"/>
+					</generalizations>
+					<properties>
+						<property type="CallConcurrencyKind" name="concurrency">
+							<default>sequential</default>
+						</property>
+						<property type="Behavior" name="methods"/>
+<!--						<property type="Classifier" name="raisedException"/>-->
+					</properties>
+				</logic>
+			</node>
+		</graphicTypes>
+	</diagram>
+</metamodel>
